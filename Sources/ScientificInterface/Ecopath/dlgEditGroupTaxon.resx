@@ -580,7 +580,7 @@
     <value>m_hdrOrder</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.929, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1001, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Parent" xml:space="preserve">
     <value>$this</value>
@@ -613,7 +613,7 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.929, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1001, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>$this</value>
@@ -649,7 +649,7 @@
     <value>m_hdrExternal</value>
   </data>
   <data name="&gt;&gt;m_hdrExternal.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.929, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1001, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExternal.Parent" xml:space="preserve">
     <value>$this</value>
@@ -718,7 +718,7 @@
     <value>m_gridGroups</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Type" xml:space="preserve">
-    <value>ScientificInterface.gridEditGroupTaxon, EwE6, Version=6.1.0.929, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridEditGroupTaxon, EwE6, Version=6.1.0.1001, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -754,7 +754,7 @@
     <value>m_gridResults</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.1.0.929, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.1.0.1001, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
     <value>m_tpSearch</value>
@@ -819,6 +819,66 @@
   <data name="&gt;&gt;m_tpSearch.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_lblSelectedGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblSelectedGroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblSelectedGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>101, 11</value>
+  </data>
+  <data name="m_lblSelectedGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>511, 18</value>
+  </data>
+  <data name="m_lblSelectedGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="m_lblSelectedGroup.Text" xml:space="preserve">
+    <value>&lt;group&gt;</value>
+  </data>
+  <data name="&gt;&gt;m_lblSelectedGroup.Name" xml:space="preserve">
+    <value>m_lblSelectedGroup</value>
+  </data>
+  <data name="&gt;&gt;m_lblSelectedGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblSelectedGroup.Parent" xml:space="preserve">
+    <value>m_tpDetails</value>
+  </data>
+  <data name="&gt;&gt;m_lblSelectedGroup.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblGroup.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblGroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 11</value>
+  </data>
+  <data name="m_lblGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 13</value>
+  </data>
+  <data name="m_lblGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="m_lblGroup.Text" xml:space="preserve">
+    <value>Functional group:</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.Name" xml:space="preserve">
+    <value>m_lblGroup</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.Parent" xml:space="preserve">
+    <value>m_tpDetails</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroup.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_btnSearchClass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -829,7 +889,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSearchClass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 140</value>
+    <value>585, 166</value>
   </data>
   <data name="m_btnSearchClass.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 21</value>
@@ -847,7 +907,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_btnSearchClass.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_btnSearchOrder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -859,7 +919,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSearchOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 113</value>
+    <value>585, 139</value>
   </data>
   <data name="m_btnSearchOrder.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 21</value>
@@ -877,7 +937,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_btnSearchOrder.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_btnSearchFamily.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -889,7 +949,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSearchFamily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 85</value>
+    <value>585, 111</value>
   </data>
   <data name="m_btnSearchFamily.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 21</value>
@@ -907,7 +967,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_btnSearchFamily.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_btnSearchGenus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -919,7 +979,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSearchGenus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 59</value>
+    <value>585, 85</value>
   </data>
   <data name="m_btnSearchGenus.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 21</value>
@@ -937,7 +997,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_btnSearchGenus.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_btnSearchSpecies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -949,7 +1009,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSearchSpecies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 32</value>
+    <value>585, 58</value>
   </data>
   <data name="m_btnSearchSpecies.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 21</value>
@@ -967,7 +1027,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_btnSearchSpecies.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_btnSearchCommon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -979,7 +1039,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSearchCommon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 6</value>
+    <value>585, 32</value>
   </data>
   <data name="m_btnSearchCommon.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 20</value>
@@ -997,13 +1057,13 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_btnSearchCommon.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_cmbSpecies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbSpecies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 32</value>
+    <value>104, 58</value>
   </data>
   <data name="m_cmbSpecies.Size" type="System.Drawing.Size, System.Drawing">
     <value>475, 21</value>
@@ -1021,13 +1081,13 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_cmbSpecies.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_cmbGenus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbGenus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 59</value>
+    <value>104, 85</value>
   </data>
   <data name="m_cmbGenus.Size" type="System.Drawing.Size, System.Drawing">
     <value>475, 21</value>
@@ -1045,13 +1105,13 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_cmbGenus.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="m_cmbFamily.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbFamily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 86</value>
+    <value>104, 112</value>
   </data>
   <data name="m_cmbFamily.Size" type="System.Drawing.Size, System.Drawing">
     <value>475, 21</value>
@@ -1069,13 +1129,13 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_cmbFamily.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="m_cmbOrder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 113</value>
+    <value>104, 139</value>
   </data>
   <data name="m_cmbOrder.Size" type="System.Drawing.Size, System.Drawing">
     <value>475, 21</value>
@@ -1093,13 +1153,13 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_cmbOrder.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_cmbClass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbClass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 140</value>
+    <value>104, 166</value>
   </data>
   <data name="m_cmbClass.Size" type="System.Drawing.Size, System.Drawing">
     <value>475, 21</value>
@@ -1117,7 +1177,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_cmbClass.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="m_lbSpecies.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1126,7 +1186,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbSpecies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 35</value>
+    <value>6, 62</value>
   </data>
   <data name="m_lbSpecies.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 13</value>
@@ -1147,7 +1207,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_lbSpecies.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="m_lbGenus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1156,7 +1216,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbGenus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 62</value>
+    <value>6, 89</value>
   </data>
   <data name="m_lbGenus.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 13</value>
@@ -1177,7 +1237,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_lbGenus.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="m_lbFamily.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1186,7 +1246,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbFamily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 89</value>
+    <value>6, 116</value>
   </data>
   <data name="m_lbFamily.Size" type="System.Drawing.Size, System.Drawing">
     <value>39, 13</value>
@@ -1207,7 +1267,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_lbFamily.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="m_lbOrder.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1216,7 +1276,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 116</value>
+    <value>6, 143</value>
   </data>
   <data name="m_lbOrder.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 13</value>
@@ -1237,13 +1297,13 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_lbOrder.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="m_tbCommon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbCommon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 6</value>
+    <value>104, 32</value>
   </data>
   <data name="m_tbCommon.Size" type="System.Drawing.Size, System.Drawing">
     <value>475, 20</value>
@@ -1261,7 +1321,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_tbCommon.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="m_lbClass.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1270,7 +1330,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbClass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 143</value>
+    <value>6, 170</value>
   </data>
   <data name="m_lbClass.Size" type="System.Drawing.Size, System.Drawing">
     <value>35, 13</value>
@@ -1291,7 +1351,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_lbClass.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>18</value>
   </data>
   <data name="m_lbCommon.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1300,7 +1360,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbCommon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 9</value>
+    <value>6, 36</value>
   </data>
   <data name="m_lbCommon.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 13</value>
@@ -1321,7 +1381,7 @@
     <value>m_tpDetails</value>
   </data>
   <data name="&gt;&gt;m_lbCommon.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>19</value>
   </data>
   <data name="m_tpDetails.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>

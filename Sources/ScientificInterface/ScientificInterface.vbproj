@@ -872,9 +872,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmModelDescription.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\frmSearchResults.resx">
-      <DependentUpon>frmSearchResults.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Tools\frmPedigree.resx">
       <DependentUpon>frmPedigree.vb</DependentUpon>
     </EmbeddedResource>
@@ -1100,12 +1097,6 @@
       <DependentUpon>EditPedigree.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecopath\EditPedigree.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecopath\frmSearchResults.Designer.vb">
-      <DependentUpon>frmSearchResults.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecopath\frmSearchResults.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\gridEditGroupTaxon.vb">

@@ -33,7 +33,7 @@ Namespace Controls.EwEGrid
         : Inherits PropertyHeaderCell
 
         ''' <summary>One visualizer for all cells</summary>
-        Private Shared g_visualizer As EwECellVisualizerBase
+        Private Shared g_visualizer As cEwEGridVisualizerBase
 
 #Region " Construction "
 
@@ -47,7 +47,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal prop As cProperty)
             MyBase.New(prop)
-            Me.VisualModel = New cVisualizerEwERowHeader
+            Me.VisualModel = New cEwEGridRowHeaderVisualizer
         End Sub
 
         ''' -------------------------------------------------------------------

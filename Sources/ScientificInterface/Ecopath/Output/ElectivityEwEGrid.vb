@@ -36,7 +36,7 @@ Namespace Ecopath.Output
             ''' </summary>
             ''' ---------------------------------------------------------------------------
             Private Class ElectivityGridCellVisualizer
-                : Inherits EwECellVisualizerBase
+                : Inherits cEwEGridVisualizerBase
 
                 Protected Overrides Sub DrawCell_Background(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
                         ByVal p_CellPosition As SourceGrid2.Position, _

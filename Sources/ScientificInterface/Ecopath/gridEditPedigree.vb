@@ -631,7 +631,7 @@ Imports SourceGrid2.Cells
             Me(iRow, eColumnTypes.LevelName).DataModel.EditableMode = EditableMode.Default
 
             Me(iRow, eColumnTypes.LevelColor) = New Cells.Real.Cell()
-            Me(iRow, eColumnTypes.LevelColor).VisualModel = New cColorCellVisualizer()
+            Me(iRow, eColumnTypes.LevelColor).VisualModel = New cEwEGridColorVisualizer()
             Me(iRow, eColumnTypes.LevelColor).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iRow, eColumnTypes.LevelIndexValue) = New EwECell(0.0!, GetType(Single))

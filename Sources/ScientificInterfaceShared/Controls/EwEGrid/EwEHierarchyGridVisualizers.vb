@@ -24,7 +24,7 @@ Namespace Controls.EwEGrid
     ''' -------------------------------------------------------------------
     <CLSCompliant(False)> _
      Public Class cVisualizerEwECollapseExpandRowHeader
-        : Inherits cVisualizerEwERowHeader
+        : Inherits cEwEGridRowHeaderVisualizer
 
         Public Sub New()
             MyBase.new()
@@ -51,7 +51,7 @@ Namespace Controls.EwEGrid
     ''' -------------------------------------------------------------------
     <CLSCompliant(False)> _
      Public Class cVisualizerEwEParentRowHeader
-        : Inherits cVisualizerEwERowHeader
+        : Inherits cEwEGridRowHeaderVisualizer
 
         Public Sub New()
             MyBase.new()
@@ -67,7 +67,7 @@ Namespace Controls.EwEGrid
     ''' -------------------------------------------------------------------
     <CLSCompliant(False)> _
      Public Class cVisualizerEwEChildRowHeader
-        : Inherits cVisualizerEwERowHeader
+        : Inherits cEwEGridRowHeaderVisualizer
 
         ''' <summary>Size of label indentation</summary>
         Private Const cINDENT_SIZE As Integer = 20

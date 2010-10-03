@@ -24,7 +24,7 @@ Namespace Controls.EwEGrid
         : Inherits EwECell
 
         ''' <summary>One visualizer for all cells</summary>
-        Private Shared g_visualizer As EwECellVisualizerBase
+        Private Shared g_visualizer As cEwEGridVisualizerBase
         Protected m_aUnitTypes() As cStyleGuide.eUnitType
         Protected m_strUnitMask As String = ""
 

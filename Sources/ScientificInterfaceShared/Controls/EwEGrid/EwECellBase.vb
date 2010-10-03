@@ -46,7 +46,7 @@ Namespace Controls.EwEGrid
 #Region " Construction and destruction"
 
         ''' <summary>Default visualizer for EwECells</summary>
-        Private Shared g_visualizer As New EwECellVisualizer()
+        Private Shared g_visualizer As New cEwECellVisualizer()
         ''' <summary>UI context to operate onto.</summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary>Behaviour model to catch [ENTER] key presses.</summary>

@@ -34,7 +34,7 @@ Namespace Controls.EwEGrid
         : Inherits PropertyHeaderCell
 
         ''' <summary>One visualizer for all cells</summary>
-        Private Shared g_visualizer As New EwEColumnHeaderVisualizer()
+        Private Shared g_visualizer As New cEwEGridColumnHeaderVisualizer()
         ''' <summary>Secundary property for monitoring tooltip.</summary>
         Private m_propTooltip As cProperty = Nothing
 

@@ -24,7 +24,7 @@ Namespace Controls.EwEGrid
         : Inherits EwEHeaderCell
 
         ''' <summary>One visualizer for all cells</summary>
-        Private Shared g_visualizer As New EwEColumnHeaderVisualizer()
+        Private Shared g_visualizer As New cEwEGridColumnHeaderVisualizer()
 
 #Region " Construction "
 

@@ -97,6 +97,12 @@
     <Compile Include="Controls\EwEGrid\EwERowHeaderCell.vb" />
     <Compile Include="Controls\EwEGrid\EwEHeaderCell.vb" />
     <Compile Include="Controls\EwEGrid\EwEGridCell.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridColumnHeaderVisualizer.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridRowHeaderVisualizer.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridVisualizer.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridVisualizerBase.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridProportionVisualizer.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridRowIndexVisualizer.vb" />
     <Compile Include="Controls\Format provider\cPropertyFormatProvider.vb" />
     <Compile Include="Controls\Graph renderers\ArrayGraph.vb" />
     <Compile Include="Controls\Format provider\cEwEFormatProvider.vb" />
@@ -130,7 +136,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\EwEGrid\EwECellBase.vb" />
-    <Compile Include="Controls\EwEGrid\EwEGridVisualizers.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridColorVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\EwEHierarchyGridCell.vb" />
     <Compile Include="Controls\EwEGrid\EwEHierarchyGridVisualizers.vb" />
     <Compile Include="Controls\GlyphSelect\ucGlyph.Designer.vb">

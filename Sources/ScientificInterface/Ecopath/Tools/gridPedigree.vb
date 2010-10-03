@@ -29,7 +29,7 @@ Namespace Ecopath.Tools
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Class cPedigreeCellVisualizer
-            Inherits EwECellVisualizerBase
+            Inherits cEwEGridVisualizerBase
 
             Private m_psg As cPedigreeStyleGuide = Nothing
 

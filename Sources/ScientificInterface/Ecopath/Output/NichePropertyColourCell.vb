@@ -27,7 +27,7 @@ Public Class NichePropertyColourCell
     ''' ---------------------------------------------------------------------------
     <CLSCompliant(False)> _
     Private Class NicePropertyColourCellVisualizer
-        : Inherits EwECellVisualizerBase
+        : Inherits cEwEGridVisualizerBase
 
         Protected Overrides Sub DrawCell_Background(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, ByVal p_CellPosition As SourceGrid2.Position, ByVal e As System.Windows.Forms.PaintEventArgs, ByVal p_ClientRectangle As System.Drawing.Rectangle, ByVal p_Status As SourceGrid2.DrawCellStatus)
 

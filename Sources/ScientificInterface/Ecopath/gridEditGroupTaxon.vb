@@ -30,10 +30,13 @@ Public Class gridEditGroupTaxon
     ''' <summary>Internal item linked to the search term.</summary>
     Private m_tiSearchLinked As ITaxonData = Nothing
 
+    Private m_vizPropNormalized As New cEwEGridProportionVisualizer()
+
     ''' <summary>Enumerated type defining the columns in this grid.</summary>
     Private Enum eColumnTypes
         Hierarchy = 0
         Name
+        PropNorm
         Proportion
         LastUpdated
         Status
@@ -64,7 +67,8 @@ Public Class gridEditGroupTaxon
         Private m_sSouth As Single = cCore.NULL_VALUE
         Private m_sWest As Single = cCore.NULL_VALUE
         Private m_sEast As Single = cCore.NULL_VALUE
-        Private m_sProportion As Single = 0.0!
+        Private m_sProportion As Single = 1.0!
+        Private m_sPropNorm As Single = 1.0!
         ''' <summary>Index of the ecopath group that this taxon contributes to.</summary>
         Private m_iGroup As Integer = Nothing
 
@@ -275,6 +279,15 @@ Public Class gridEditGroupTaxon
             End Get
             Set(ByVal value As Single)
                 Me.m_sProportion = value
+            End Set
+        End Property
+
+        Public Property PropNormalized() As Single
+            Get
+                Return Me.m_sPropNorm
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sPropNorm = value
             End Set
         End Property
 
@@ -546,6 +559,7 @@ Public Class gridEditGroupTaxon
         ' Group index cell
         Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
+        Me(0, eColumnTypes.PropNorm) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(My.Resources.HEADER_PROPORTION)
         Me(0, eColumnTypes.LastUpdated) = New EwEColumnHeaderCell(My.Resources.HEADER_LASTUPDATED)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
@@ -576,6 +590,8 @@ Public Class gridEditGroupTaxon
             Me.m_lTaxonInfo.Add(ti)
         Next
 
+        Me.NormalizeProportions()
+
         ' Brute-force update grid
         Me.UpdateGrid()
 
@@ -587,6 +603,9 @@ Public Class gridEditGroupTaxon
         For iCol As Integer = 1 To Me.ColumnsCount - 1
             Select Case DirectCast(iCol, eColumnTypes)
                 Case eColumnTypes.Hierarchy
+                    Me.Columns(iCol).Width = 20
+                Case eColumnTypes.PropNorm
+                    Me.Columns(iCol).Width = 100
                 Case Else
                     Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
                     Me.AutoSizeColumn(iCol, 100)
@@ -645,6 +664,7 @@ Public Class gridEditGroupTaxon
 
             Me(iRow, eColumnTypes.Hierarchy) = hgcGroup
             Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.PropNorm) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.Proportion) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.LastUpdated) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.Status) = New EwERowHeaderCell("")
@@ -660,6 +680,8 @@ Public Class gridEditGroupTaxon
                     Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(hgcGroup.NumChildRows)
                     Me(iRow, eColumnTypes.Hierarchy).Tag = ti
                     Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(ti.Common)
+                    Me(iRow, eColumnTypes.PropNorm) = New EwECell(ti.PropNormalized, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.PropNorm).VisualModel = Me.m_vizPropNormalized
                     Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
                     Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.LastUpdated) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
@@ -695,6 +717,7 @@ Public Class gridEditGroupTaxon
         ti = DirectCast(tag, cTaxonInfo)
 
         Me(iRow, eColumnTypes.Name).Value = ti.Common
+        Me(iRow, eColumnTypes.PropNorm).Value = ti.PropNormalized
         Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
         ' Last updated
         If (ti.LastUpdated > 0) Then
@@ -741,6 +764,11 @@ Public Class gridEditGroupTaxon
         Dim ti As cTaxonInfo = Me.TaxonInfo(p.Row)
         If ti Is Nothing Then Return False
         ti.Proportion = CSng(Me(p.Row, p.Column).Value)
+        Me.NormalizeProportions()
+
+        For iRow As Integer = 1 To Me.RowsCount - 1
+            Me.UpdateRow(iRow)
+        Next
         Return True
 
     End Function
@@ -830,8 +858,8 @@ Public Class gridEditGroupTaxon
         Else
             ti = New cTaxonInfo(taxon)
             ti.Group = Me.SelectedGroup.Index
-            ti.Proportion = 1.0!
             Me.m_lTaxonInfo.Add(ti)
+            Me.NormalizeProportions()
         End If
         Me.UpdateGrid()
         Me.SelectedTaxon = ti
@@ -853,37 +881,44 @@ Public Class gridEditGroupTaxon
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Delete a row from the grid
+    ''' Set the delete state of all selected rows
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub ToggleDeleteRow()
 
-        Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
+        Dim sel As Selection = Me.Selection
+        Dim ti As cTaxonInfo = Nothing
 
-        If ti Is Nothing Then Return
+        For iRow As Integer = 1 To Me.RowsCount - 1
+            If Me.Selection.ContainsRow(iRow) Then
+                ti = Me.TaxonInfo(iRow)
 
-        ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
+                If (ti IsNot Nothing) Then
+                    ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
 
-        ' Check to see what is to happen to the MPA now
-        Select Case ti.Status
+                    ' Check to see what is to happen to the MPA now
+                    Select Case ti.Status
 
-            Case eItemStatusTypes.Original
-                ' Clear removed status 
-                Me.m_lTaxonInfoRemoved.Remove(ti)
+                        Case eItemStatusTypes.Original
+                            ' Clear removed status 
+                            Me.m_lTaxonInfoRemoved.Remove(ti)
 
-            Case eItemStatusTypes.Added
-                ' Remove new item
-                Me.m_lTaxonInfo.Remove(ti)
+                        Case eItemStatusTypes.Added
+                            ' Remove new item
+                            Me.m_lTaxonInfo.Remove(ti)
 
-            Case eItemStatusTypes.Removed
-                ' Set removed status
-                Me.m_lTaxonInfoRemoved.Add(ti)
+                        Case eItemStatusTypes.Removed
+                            ' Set removed status
+                            Me.m_lTaxonInfoRemoved.Add(ti)
 
-            Case eItemStatusTypes.Invalid
-                ' Set removed status
-                Me.m_lTaxonInfo.Remove(ti)
+                        Case eItemStatusTypes.Invalid
+                            ' Set removed status
+                            Me.m_lTaxonInfo.Remove(ti)
 
-        End Select
+                    End Select
+                End If
+            End If
+        Next
 
         Me.UpdateGrid()
         Me.SelectedTaxon = ti
@@ -980,10 +1015,10 @@ Public Class gridEditGroupTaxon
 
 #Region " Apply changes "
 
-    Public Sub SumRatiosToOne()
+    Public Sub NormalizeProportions()
 
         Dim asTotal(Me.Core.nGroups) As Single
-        Dim iGroup As Integer = 0
+        Dim aiTotal(Me.Core.nGroups) As Integer
         Dim ti As cTaxonInfo = Nothing
         Dim iTaxon As Integer = 0
 
@@ -991,17 +1026,20 @@ Public Class gridEditGroupTaxon
             ti = Me.m_lTaxonInfo(iTaxon)
             If (ti.Status <> eItemStatusTypes.Removed) Then
                 asTotal(ti.Group) += ti.Proportion
+                aiTotal(ti.Group) += 1
             End If
-        Next
-
-        For iGroup = 1 To Me.Core.nGroups - 1
-            If (asTotal(iGroup) = 0) Then asTotal(iGroup) = 1.0!
         Next
 
         For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
             ti = Me.m_lTaxonInfo(iTaxon)
             If (ti.Status <> eItemStatusTypes.Removed) Then
-                ti.Proportion /= asTotal(ti.Group)
+                ' Has a total of 0?
+                If (asTotal(ti.Group) = 0.0!) Then
+                    ' #Yes: redistribute values
+                    ti.PropNormalized = 1.0! / aiTotal(ti.Group)
+                Else
+                    ti.PropNormalized = ti.Proportion / asTotal(ti.Group)
+                End If
             End If
         Next
 
@@ -1016,7 +1054,7 @@ Public Class gridEditGroupTaxon
         Dim iTaxon As Integer = 0
         Dim bSuccess As Boolean = True
 
-        Me.SumRatiosToOne()
+        Me.NormalizeProportions()
 
         ' Assess Taxon changes
         For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1

@@ -63,6 +63,8 @@ Partial Class dlgEditGroupTaxon
         Me.m_tbCommon = New System.Windows.Forms.TextBox
         Me.m_lbClass = New System.Windows.Forms.Label
         Me.m_lbCommon = New System.Windows.Forms.Label
+        Me.m_lblGroup = New System.Windows.Forms.Label
+        Me.m_lblSelectedGroup = New System.Windows.Forms.Label
         Me.m_gridGroups = New ScientificInterface.gridEditGroupTaxon
         Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults
         Me.m_scMain.Panel1.SuspendLayout()
@@ -211,6 +213,8 @@ Partial Class dlgEditGroupTaxon
         '
         'm_tpDetails
         '
+        Me.m_tpDetails.Controls.Add(Me.m_lblSelectedGroup)
+        Me.m_tpDetails.Controls.Add(Me.m_lblGroup)
         Me.m_tpDetails.Controls.Add(Me.m_btnSearchClass)
         Me.m_tpDetails.Controls.Add(Me.m_btnSearchOrder)
         Me.m_tpDetails.Controls.Add(Me.m_btnSearchFamily)
@@ -344,6 +348,16 @@ Partial Class dlgEditGroupTaxon
         '
         resources.ApplyResources(Me.m_lbCommon, "m_lbCommon")
         Me.m_lbCommon.Name = "m_lbCommon"
+        '
+        'm_lblGroup
+        '
+        resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
+        Me.m_lblGroup.Name = "m_lblGroup"
+        '
+        'm_lblSelectedGroup
+        '
+        resources.ApplyResources(Me.m_lblSelectedGroup, "m_lblSelectedGroup")
+        Me.m_lblSelectedGroup.Name = "m_lblSelectedGroup"
         '
         'm_gridGroups
         '
@@ -482,5 +496,7 @@ Partial Class dlgEditGroupTaxon
     Private WithEvents m_btnSearchFamily As System.Windows.Forms.Button
     Private WithEvents m_btnSearchClass As System.Windows.Forms.Button
     Private WithEvents m_btnSearchOrder As System.Windows.Forms.Button
+    Private WithEvents m_lblSelectedGroup As System.Windows.Forms.Label
+    Private WithEvents m_lblGroup As System.Windows.Forms.Label
 
 End Class

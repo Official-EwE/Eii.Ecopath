@@ -407,6 +407,7 @@ Public Class dlgEditGroupTaxon
 
         ' Config taxon controls
         If (taxon Is Nothing) Then
+            Me.m_lblSelectedGroup.Text = My.Resources.GENERIC_VALUE_NONE
             Me.m_tbCommon.Enabled = False : Me.m_tbCommon.Text = ""
             Me.m_btnSearchCommon.Enabled = False
             Me.m_cmbClass.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
@@ -426,6 +427,7 @@ Public Class dlgEditGroupTaxon
             Me.m_btnMoveDown.Enabled = False
             Me.m_btnUpdate.Enabled = False
         Else
+            Me.m_lblSelectedGroup.Text = group.Name
             Me.m_tbCommon.Enabled = True : Me.m_tbCommon.Text = taxon.Common
             Me.m_btnSearchCommon.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_tbCommon.Text.Trim))
             Me.m_cmbClass.Enabled = True : Me.m_cmbClass.Text = taxon.Class

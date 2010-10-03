@@ -310,7 +310,7 @@ Imports SourceGrid2.VisualModels
             Me(iRow, eColumnTypes.FleetName).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iRow, eColumnTypes.FleetColor) = New Cells.Real.Cell()
-            Me(iRow, eColumnTypes.FleetColor).VisualModel = New cColorCellVisualizer()
+            Me(iRow, eColumnTypes.FleetColor).VisualModel = New cEwEGridColorVisualizer()
             Me(iRow, eColumnTypes.FleetColor).Behaviors.Add(Me.EwEEditHandler)
 
             ' Status

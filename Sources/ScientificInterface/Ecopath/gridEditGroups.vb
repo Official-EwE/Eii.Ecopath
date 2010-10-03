@@ -826,7 +826,7 @@ Public Class gridEditGroups
             Me(iRow, eColumnTypes.GroupPP).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iRow, eColumnTypes.GroupColor) = New Cells.Real.Cell()
-            Me(iRow, eColumnTypes.GroupColor).VisualModel = New cColorCellVisualizer()
+            Me(iRow, eColumnTypes.GroupColor).VisualModel = New cEwEGridColorVisualizer()
             Me(iRow, eColumnTypes.GroupColor).Behaviors.Add(Me.EwEEditHandler)
 
             Dim cmb As Cells.Real.ComboBox = New Cells.Real.ComboBox("", GetType(String), astrStanzaNames, False)

@@ -1,9 +1,8 @@
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports System.Windows.Forms
 Imports System.Drawing
-Imports EwECore
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
@@ -13,16 +12,14 @@ Imports SourceGrid2.VisualModels
 
 Namespace Controls.EwEGrid
 
-#Region " EwECellVisualizerBase "
-
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' PropertyCellVisualizerBase is a base class visualizer that provides EwE
-    ''' colour feedback
+    ''' EwEGridVisualizerBase is a base class visualizer that provides 
+    ''' <see cref="cStyleGuide.eStyleFlags">status</see> colour feedback.
     ''' </summary>
     ''' -------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Public MustInherit Class EwECellVisualizerBase
+    Public MustInherit Class cEwEGridVisualizerBase
         Inherits SourceGrid2.VisualModels.Common
 
 #Region " Private bits "
@@ -68,23 +65,12 @@ Namespace Controls.EwEGrid
 
             If cell Is Nothing Then Return
 
-            Dim style As cStyleGuide.eStyleFlags = 0
+            Dim sg As cStyleGuide = Me.StyleGuide(cell)
+            Dim style As cStyleGuide.eStyleFlags = Me.Style(cell)
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
-            Dim sg As cStyleGuide = Me.StyleGuide(cell)
 
-            ' Rendering a cell with an associated property?
-            If (TypeOf cell Is EwECellBase) Then
-                ' #Yes: obtain cell style
-                style = DirectCast(cell, EwECellBase).Style()
-                ' Get SG colours for this style
-                If (sg IsNot Nothing) Then
-                    ' ! Note that when obtaining the background color the remarks style is excluded. This
-                    ' ! style will not be not reflected via the background colour but instead via a 
-                    ' ! dedicated indicator (see below)
-                    sg.GetStyleColors(style And (Not cStyleGuide.eStyleFlags.Remarks), clrFore, clrBack)
-                End If
-            End If
+            sg.GetStyleColors(style, clrFore, clrBack)
 
             ' Does cell have focus?
             If (status = DrawCellStatus.Focus) Then
@@ -129,23 +115,16 @@ Namespace Controls.EwEGrid
 
             If cell Is Nothing Then Return
 
-            Dim style As cStyleGuide.eStyleFlags = 0
-            Dim clrFore As Color = Me.ForeColor
-            Dim clrBack As Color = Nothing ' Not used here
             Dim rcBorder As RectangleBorder = Me.Border
             Dim fontCell As Font = Me.GetCellFont()
             Dim rcClient As New Rectangle(rc.X, rc.Y, rc.Width, rc.Height)
-            Dim sg As cStyleGuide = Me.StyleGuide(cell)
 
-            ' Rendering a cell with an associated property?
-            If (TypeOf cell Is EwECellBase) Then
-                ' #Yes: obtain cell style
-                style = DirectCast(cell, EwECellBase).Style()
-                If (sg IsNot Nothing) Then
-                    ' Get SG colours for this style
-                    sg.GetStyleColors(style, clrFore, clrBack)
-                End If
-            End If
+            Dim sg As cStyleGuide = Me.StyleGuide(cell)
+            Dim style As cStyleGuide.eStyleFlags = Me.Style(cell)
+            Dim clrBack As Color = Me.BackColor
+            Dim clrFore As Color = Nothing ' Not used here
+
+            sg.GetStyleColors(style, clrFore, clrBack)
 
             ' Does cell have focus?
             If (status = DrawCellStatus.Focus) Then
@@ -186,15 +165,9 @@ Namespace Controls.EwEGrid
             If cell Is Nothing Then Return
 
             Dim sg As cStyleGuide = Me.StyleGuide(cell)
-            Dim style As cStyleGuide.eStyleFlags = 0
+            Dim style As cStyleGuide.eStyleFlags = Me.Style(cell)
             Dim clrFore As Color = Me.ForeColor
             Dim rcBorder As RectangleBorder = Me.Border
-
-            ' Rendering a cell with an associated property?
-            If (TypeOf cell Is EwECellBase) Then
-                ' #Yes: obtain cell style
-                style = DirectCast(cell, EwECellBase).Style()
-            End If
 
             ' Does cell have focus?
             If (status = DrawCellStatus.Focus) Then
@@ -231,9 +204,10 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Borrow style guide from parent cell, if possible.
+        ''' Extract the <see cref="cStyleGuide">style guide</see> from a cell, 
+        ''' if possible.
         ''' </summary>
-        ''' <param name="cell"></param>
+        ''' <param name="cell">The cell to query.</param>
         ''' -------------------------------------------------------------------
         Protected ReadOnly Property StyleGuide(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide
             Get
@@ -247,159 +221,27 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Extract the <see cref="cStyleGuide.eStyleFlags">style</see> from 
+        ''' a given cell, if possible.
+        ''' </summary>
+        ''' <param name="cell">The cell to query.</param>
+        ''' -------------------------------------------------------------------
+        Protected ReadOnly Property Style(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide.eStyleFlags
+            Get
+                ' Rendering a cell with an associated property?
+                If (TypeOf cell Is EwECellBase) Then
+                    ' #Yes: obtain cell style
+                    Return DirectCast(cell, EwECellBase).Style()
+                End If
+                Return cStyleGuide.eStyleFlags.OK
+            End Get
+        End Property
+
 #End Region ' Internals
 
     End Class
 
-#End Region ' EwECellVisualizerBase
-
-#Region " EwECellVisualizer "
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' EwECellVisualizer implements a EwECellVisualizerBase visualizer
-    ''' for rendering EwE property cells
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class EwECellVisualizer
-        : Inherits EwECellVisualizerBase
-
-        Public Shared Generic As New EwECellVisualizer()
-
-        Public Sub New()
-            MyBase.New()
-            Me.TextAlignment = ContentAlignment.MiddleCenter
-            Me.WordWrap = True
-            Me.AlignTextToImage = True
-        End Sub
-
-    End Class
-
-#End Region ' EwECellVisualizer
-
-#Region " cVisualizerEwERowHeader "
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' PropertyRowHeaderVisualizer implements a PropertyCellVisualizerBase visualizer
-    ''' for rendering EwE row header cells
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class cVisualizerEwERowHeader
-        : Inherits EwECellVisualizerBase
-
-        Public Sub New()
-            MyBase.new()
-            Me.TextAlignment = ContentAlignment.MiddleLeft
-            Me.WordWrap = True
-        End Sub
-
-    End Class
-
-#End Region ' cVisualizerEwERowHeader
-
-#Region " EwERowIndexVisualizer "
-
-    <CLSCompliant(False)> _
-    Public Class EwERowIndexVisualizer
-        : Inherits EwECellVisualizerBase
-
-        Public Sub New()
-            MyBase.New()
-            Me.TextAlignment = ContentAlignment.MiddleCenter
-            Me.WordWrap = True
-        End Sub
-
-    End Class
-
-#End Region ' EwERowIndexVisualizer
-
-#Region " EwEColumnHeaderVisualizer "
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' PropertyColumnHeaderVisualizer implements a PropertyCellVisualizerBase visualizer
-    ''' for rendering EwE column header cells
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class EwEColumnHeaderVisualizer
-        : Inherits SourceGrid2.VisualModels.Header
-
-        Public Sub New()
-            MyBase.New(False)
-            Me.TextAlignment = ContentAlignment.MiddleCenter
-            Me.WordWrap = True
-            Me.AlignTextToImage = True
-        End Sub
-
-        Protected Overrides Sub DrawCell_Border(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, ByVal p_CellPosition As SourceGrid2.Position, ByVal e As System.Windows.Forms.PaintEventArgs, ByVal p_ClientRectangle As System.Drawing.Rectangle, ByVal p_Status As SourceGrid2.DrawCellStatus)
-
-            Dim border As RectangleBorder = Me.Border
-            Dim rc As Rectangle = p_ClientRectangle
-            Dim l_BackColor As Color = Me.BackColor
-
-            If (p_Status = DrawCellStatus.Focus) Then
-                l_BackColor = FocusBackColor
-            ElseIf (p_Status = DrawCellStatus.Selected) Then
-                l_BackColor = SelectionBackColor
-                l_BackColor = BackColor
-            End If
-
-            ' Draw the border
-            ControlPaint.DrawBorder(e.Graphics, rc, _
-                SystemColors.ButtonHighlight, 1, ButtonBorderStyle.Solid, _
-                Color.Transparent, 0, ButtonBorderStyle.Solid, _
-                SystemColors.ButtonShadow, 1, ButtonBorderStyle.Solid, _
-                SystemColors.ButtonShadow, 1, ButtonBorderStyle.Solid)
-
-        End Sub
-
-    End Class
-
-#End Region ' EwEColumnHeaderVisualizer
-
-#Region " cColorCellVisualizer "
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' cColorCellVisualizer is a cell visualizer that provides color feedback.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class cColorCellVisualizer
-        Inherits SourceGrid2.VisualModels.Common
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Overidden to render cell value as a color
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_ImageAndText( _
-                ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                ByVal p_CellPosition As SourceGrid2.Position, _
-                ByVal e As System.Windows.Forms.PaintEventArgs, _
-                ByVal p_ClientRectangle As System.Drawing.Rectangle, _
-                ByVal p_Status As SourceGrid2.DrawCellStatus)
-
-            Dim value As Object = p_Cell.GetValue(p_CellPosition)
-
-            If Not (TypeOf value Is Color) Then Return
-
-            Dim clr As Color = DirectCast(value, Color)
-            Dim rcColor As New Rectangle(p_ClientRectangle.X + 2, p_ClientRectangle.Y + 2, p_ClientRectangle.Width - 4, p_ClientRectangle.Height - 4)
-
-            ' Draw the background
-            Using br As New SolidBrush(clr)
-                e.Graphics.FillRectangle(br, rcColor)
-            End Using
-
-        End Sub
-
-    End Class
-
-#End Region ' cColorCellVisualizer
-
 End Namespace
+

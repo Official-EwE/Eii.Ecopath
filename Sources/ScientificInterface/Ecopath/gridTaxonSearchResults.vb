@@ -24,6 +24,7 @@ Public Class gridTaxonSearchResults
         Family
         Order
         [Class]
+        Code
     End Enum
 
     Public Sub New()
@@ -78,6 +79,7 @@ Public Class gridTaxonSearchResults
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell("Code")
         Me(0, eColumnTypes.Common) = New EwEColumnHeaderCell("Common name")
         Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell("Species")
         Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell("Family")
@@ -151,6 +153,7 @@ Public Class gridTaxonSearchResults
             Case eColumnTypes.Genus : strValue = result.Genus
             Case eColumnTypes.Order : strValue = result.Order
             Case eColumnTypes.Class : strValue = result.Class
+            Case eColumnTypes.Code : strValue = result.SourceKey
         End Select
 
         cell = New EwECell(strValue, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
