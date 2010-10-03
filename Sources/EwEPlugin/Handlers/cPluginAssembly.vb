@@ -111,25 +111,21 @@ Public Class cPluginAssembly
 
 #Region " Enabling/disabling "
 
-    ' JS 23Jun2010: dynamic enabling/disabling revealed that the GUI is not 
-    '               capable of responding to these dynamics well. Removed these
-    '               events, a system restart to apply changes is good enough.
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Assembly enabled state changed delegate.
+    ''' </summary>
+    ''' <param name="pa">The Plugin assembly that changed enabled state.</param>
+    ''' <param name="bEnabled">The new enabled state.</param>
+    ''' -----------------------------------------------------------------------
+    Public Delegate Sub AssemblyEnabledHandler(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
 
-    '''' -----------------------------------------------------------------------
-    '''' <summary>
-    '''' Assembly enabled state changed delegate.
-    '''' </summary>
-    '''' <param name="pa">The Plugin assembly that changed enabled state.</param>
-    '''' <param name="bEnabled">The new enabled state.</param>
-    '''' -----------------------------------------------------------------------
-    'Public Delegate Sub AssemblyEnabledHandler(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
-
-    '''' -----------------------------------------------------------------------
-    '''' <summary>
-    '''' Assembly enabled state changed event.
-    '''' </summary>
-    '''' -----------------------------------------------------------------------
-    'Public Event AssemblyEnabled As AssemblyEnabledHandler
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Assembly enabled state changed event.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Event AssemblyEnabled As AssemblyEnabledHandler
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -148,8 +144,8 @@ Public Class cPluginAssembly
 
             ' Update enabled state
             Me.m_bEnabled = bEnabled
-            '' Notify the world (at least, the probably minute portion of the world interested in hearing this, phah!)
-            'RaiseEvent AssemblyEnabled(Me, bEnabled)
+            ' Notify the world (at least, the probably minute portion of the world interested in hearing this, phah!)
+            RaiseEvent AssemblyEnabled(Me, bEnabled)
         End Set
     End Property
 

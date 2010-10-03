@@ -110,9 +110,9 @@ Public MustInherit Class cPluginGUIHandler
     ''' <param name="pa">The added plugin assembly.</param>
     ''' -----------------------------------------------------------------------
     Private Sub OnAssemblyAdded(ByVal pa As cPluginAssembly)
-        '' Start listening to events originating from this assembly
-        '' - Assembly enabled state changed event
-        'AddHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
+        ' Start listening to events originating from this assembly
+        ' - Assembly enabled state changed event
+        AddHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
         Me.ActivateAssembly(pa, pa.Enabled)
     End Sub
 
@@ -126,9 +126,9 @@ Public MustInherit Class cPluginGUIHandler
     Private Sub OnAssemblyRemoved(ByVal pa As cPluginAssembly)
         ' Remove the assembly
         Me.ActivateAssembly(pa, False)
-        '' Stop listening to assemble enabled events
-        '' - Assembly enabled state changed event
-        'RemoveHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
+        ' Stop listening to assemble enabled events
+        ' - Assembly enabled state changed event
+        RemoveHandler pa.AssemblyEnabled, AddressOf ActivateAssembly
     End Sub
 
     ''' -----------------------------------------------------------------------

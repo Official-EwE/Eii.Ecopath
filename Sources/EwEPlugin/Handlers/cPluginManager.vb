@@ -14,6 +14,7 @@ Imports EwEUtils.Database
 Imports EwEPlugin.Data
 Imports System.Xml
 Imports System.Text
+Imports System.Collections
 
 #End Region ' Imports
 
@@ -248,15 +249,18 @@ Public Class cPluginManager
     Private m_settingsDoc As XmlDocument = cPluginSettings.DefaultDocument
     ''' <summary>Flag stating whether plug-ins have been loaded.</summary>
     Private m_bLoaded As Boolean = False
+    ''' <summary>List of names of disabled plug-ins.</summary>
+    Private m_alDisabledplugins As ArrayList
 
 #End Region ' Private variables
 
 #Region " Initialization "
 
-    Public Sub New()
+    Public Sub New(Optional ByVal alDisabledPlugins As ArrayList = Nothing)
         'Store the Thread ID of the thread that created the Plugin Manager 
         'It will be used to decide if a call to TryInvokeMethod needs to marshall the call
         Me.m_ThreadID = Threading.Thread.CurrentThread.ManagedThreadId
+        Me.m_alDisabledplugins = alDisabledPlugins
     End Sub
 
     ''' ---------------------------------------------------------------------------
@@ -332,6 +336,17 @@ Public Class cPluginManager
             Me.m_sync = value
         End Set
     End Property
+
+    '''' ---------------------------------------------------------------------------
+    '''' <summary>
+    '''' Get an arraylist with names of all disabled plug-in assemblies.
+    '''' </summary>
+    '''' ---------------------------------------------------------------------------
+    'Public ReadOnly Property DisabledPlugins() As ArrayList
+    '    Get
+    '        Return Me.m_alDisabledplugins
+    '    End Get
+    'End Property
 
 #End Region ' Initialization 
 
