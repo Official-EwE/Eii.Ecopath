@@ -110,7 +110,7 @@ Public MustInherit Class cPluginGUIHandler
     ''' <param name="pa">The added plugin assembly.</param>
     ''' -----------------------------------------------------------------------
     Private Sub OnAssemblyAdded(ByVal pa As cPluginAssembly)
-          Me.ActivateAssembly(pa, pa.Enabled)
+        If pa.CanRun Then Me.ActivateAssembly(pa, True)
     End Sub
 
     ''' -----------------------------------------------------------------------

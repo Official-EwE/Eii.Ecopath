@@ -29,6 +29,8 @@ Public Class cPluginAssembly
     Private m_strFileName As String = ""
     ''' <summary>Assembly enable state.</summary>
     Private m_bEnabled As Boolean = True
+    ''' <summary>Assembly enabled state at startup.</summary>
+    Private m_bEnabledInitially As Boolean = True
     ''' <summary>Assembly compatibility state.</summary>
     Private m_compatibility As ePluginCompatibilityTypes = ePluginCompatibilityTypes.VersionCompatible
 
@@ -36,8 +38,10 @@ Public Class cPluginAssembly
 
 #Region " Constructor "
 
-    Public Sub New(ByVal an As AssemblyName)
+    Public Sub New(ByVal an As AssemblyName, ByVal bEnabled As Boolean)
         Me.m_an = an
+        Me.m_bEnabledInitially = bEnabled
+        Me.m_bEnabled = bEnabled
     End Sub
 
 #End Region ' Constructor
@@ -60,7 +64,7 @@ Public Class cPluginAssembly
             Dim ip As IPlugin = Nothing
 
             strName = strName.ToLower()
-            If (Me.Enabled Or bAllowDisabled) Then
+            If (Me.CanRun Or bAllowDisabled) Then
                 If Me.m_dictPlugins.ContainsKey(strName) Then
                     ip = Me.m_dictPlugins(strName)
                 End If
@@ -91,7 +95,7 @@ Public Class cPluginAssembly
         Get
             Dim collPlugins As New List(Of IPlugin)
 
-            If (Me.Enabled Or bAllowDisabled) Then
+            If (Me.CanRun Or bAllowDisabled) Then
                 If t Is Nothing Then
                     Return Me.m_dictPlugins.Values
                 Else
@@ -113,6 +117,18 @@ Public Class cPluginAssembly
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' States whether this assembly is allowed to be accessed for invoking 
+    ''' plug-ins.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    ReadOnly Property CanRun() As Boolean
+        Get
+            Return (Me.Enabled And Me.SessionEnabled) Or Me.AlwaysEnabled
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get/Set assembly enabled state.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -128,6 +144,19 @@ Public Class cPluginAssembly
             ' Update enabled state
             Me.m_bEnabled = bEnabled
         End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get whether this assembly is enable for a session. This flag can only
+    ''' be set at plugin assembly load time to ensure that a plug-in assembly
+    ''' enabled state does not change thoughtout a session.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property SessionEnabled() As Boolean
+        Get
+            Return Me.m_bEnabledInitially
+        End Get
     End Property
 
     ''' -----------------------------------------------------------------------

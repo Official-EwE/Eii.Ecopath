@@ -238,12 +238,13 @@ Public Class cPluginManager
     Private m_core As Object = Nothing
     ''' <summary>The one UI context for this plug-in manager.</summary>
     Private m_uic As Object = Nothing
-    ''' <summary>Delegate that this class can use to check whether the current core
-    ''' execution state allows a plug-in to run.</summary>
+    ''' <summary>Delegate that this class can use to check whether the current 
+    ''' core execution state allows a plug-in to run.</summary>
     Private m_dlgtCoreState As CanExecutePlugin = Nothing
     ''' <summary>Sync object to marshall plug-in calls across threads.</summary>
     Private m_sync As System.Threading.SynchronizationContext = Nothing
-    ''' <summary>Id of the thread that create the plugin manager used to decide if the sync object should be used to marshall plug-in calls across threads.</summary>
+    ''' <summary>Id of the thread that create the plugin manager used to decide
+    ''' if the sync object should be used to marshall plug-in calls across threads.</summary>
     Private m_ThreadID As Integer = 0
     ''' <summary>Plug-in settings document.</summary>
     Private m_settingsDoc As XmlDocument = cPluginSettings.DefaultDocument
@@ -336,8 +337,8 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Get an arraylist with names of all plug-in assemblies that are marked as
-    ''' 'disabled'.
+    ''' Get an arraylist with names of all plug-in assemblies that are the user has
+    ''' marked as 'disabled'.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public ReadOnly Property DisabledPlugins() As ArrayList
@@ -555,14 +556,12 @@ Public Class cPluginManager
             ' Test if valid
             If clsAssembly Is Nothing Then Return False
 
-            ' Create plugin assembly
-            plugAssem = New cPluginAssembly(nameAssembly)
+            ' Create plugin assembly and set initial enabled state
+            plugAssem = New cPluginAssembly(nameAssembly, bEnable)
             plugAssem.Filename = strFileName
 
             ' Set compatible flag for EwE assemblies
             plugAssem.Compatibility = Me.GetCompatibility(clsAssembly)
-            ' Set enabled state
-            plugAssem.Enabled = (plugAssem.Enabled And bEnable) Or (plugAssem.AlwaysEnabled)
 
             ' Look for appropriate types
             For Each clsType In clsAssembly.GetTypes
@@ -584,7 +583,7 @@ Public Class cPluginManager
                             End Try
 
                             ' Is assembly compatible to run?
-                            If (plugAssem.Enabled) Then
+                            If (plugAssem.CanRun) Then
 
                                 ' Is core assigned?
                                 If (Me.m_core IsNot Nothing) Then
