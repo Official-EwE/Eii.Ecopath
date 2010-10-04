@@ -81,6 +81,8 @@
   <ItemGroup>
     <Compile Include="cAccessNetAnaly.vb" />
     <Compile Include="cCreatedObjects.vb" />
+    <Compile Include="cDataOutputter.vb" />
+    <Compile Include="cDataSheet.vb" />
     <Compile Include="cPredatorPreySelection.vb" />
     <Compile Include="CreateCollectionForData.Designer.vb">
       <DependentUpon>CreateCollectionForData.vb</DependentUpon>
