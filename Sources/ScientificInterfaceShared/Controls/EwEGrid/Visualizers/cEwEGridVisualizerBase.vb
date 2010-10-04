@@ -122,7 +122,7 @@ Namespace Controls.EwEGrid
             Dim sg As cStyleGuide = Me.StyleGuide(cell)
             Dim style As cStyleGuide.eStyleFlags = Me.Style(cell)
             Dim clrBack As Color = Me.BackColor
-            Dim clrFore As Color = Nothing ' Not used here
+            Dim clrFore As Color = Me.ForeColor
 
             sg.GetStyleColors(style, clrFore, clrBack)
 
