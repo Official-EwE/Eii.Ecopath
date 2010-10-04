@@ -37,8 +37,8 @@ Partial Class frmResults
         Me.btnSetParentOnly = New System.Windows.Forms.Button
         Me.chkFishMortFleetToPrey = New System.Windows.Forms.CheckBox
         Me.Panel1 = New System.Windows.Forms.Panel
-        Me.Label1 = New System.Windows.Forms.Label
         Me.chkCatch = New System.Windows.Forms.CheckBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.chkDietProportions = New System.Windows.Forms.CheckBox
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
@@ -74,6 +74,13 @@ Partial Class frmResults
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.Label5 = New System.Windows.Forms.Label
+        Me.Panel5 = New System.Windows.Forms.Panel
+        Me.optCSV = New System.Windows.Forms.RadioButton
+        Me.optExcel = New System.Windows.Forms.RadioButton
+        Me.Label7 = New System.Windows.Forms.Label
+        Me.chkresiduals = New System.Windows.Forms.CheckBox
+        Me.Panel8 = New System.Windows.Forms.Panel
+        Me.chkSS = New System.Windows.Forms.CheckBox
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel3.SuspendLayout()
@@ -82,12 +89,14 @@ Partial Class frmResults
         Me.Panel7.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel5.SuspendLayout()
+        Me.Panel8.SuspendLayout()
         Me.SuspendLayout()
         '
         'chkBiomass
         '
         Me.chkBiomass.AutoSize = True
-        Me.chkBiomass.Location = New System.Drawing.Point(16, 33)
+        Me.chkBiomass.Location = New System.Drawing.Point(16, 32)
         Me.chkBiomass.Name = "chkBiomass"
         Me.chkBiomass.Size = New System.Drawing.Size(65, 17)
         Me.chkBiomass.TabIndex = 1
@@ -97,7 +106,7 @@ Partial Class frmResults
         'chkConsumption
         '
         Me.chkConsumption.AutoSize = True
-        Me.chkConsumption.Location = New System.Drawing.Point(13, 27)
+        Me.chkConsumption.Location = New System.Drawing.Point(13, 28)
         Me.chkConsumption.Name = "chkConsumption"
         Me.chkConsumption.Size = New System.Drawing.Size(87, 17)
         Me.chkConsumption.TabIndex = 4
@@ -107,7 +116,7 @@ Partial Class frmResults
         'chkBiomassInteg
         '
         Me.chkBiomassInteg.AutoSize = True
-        Me.chkBiomassInteg.Location = New System.Drawing.Point(16, 56)
+        Me.chkBiomassInteg.Location = New System.Drawing.Point(16, 63)
         Me.chkBiomassInteg.Name = "chkBiomassInteg"
         Me.chkBiomassInteg.Size = New System.Drawing.Size(115, 17)
         Me.chkBiomassInteg.TabIndex = 8
@@ -117,7 +126,7 @@ Partial Class frmResults
         'chkPredationMortality
         '
         Me.chkPredationMortality.AutoSize = True
-        Me.chkPredationMortality.Location = New System.Drawing.Point(141, 33)
+        Me.chkPredationMortality.Location = New System.Drawing.Point(141, 63)
         Me.chkPredationMortality.Name = "chkPredationMortality"
         Me.chkPredationMortality.Size = New System.Drawing.Size(112, 17)
         Me.chkPredationMortality.TabIndex = 9
@@ -127,7 +136,7 @@ Partial Class frmResults
         'chkFishingMortality
         '
         Me.chkFishingMortality.AutoSize = True
-        Me.chkFishingMortality.Location = New System.Drawing.Point(16, 79)
+        Me.chkFishingMortality.Location = New System.Drawing.Point(16, 94)
         Me.chkFishingMortality.Name = "chkFishingMortality"
         Me.chkFishingMortality.Size = New System.Drawing.Size(100, 17)
         Me.chkFishingMortality.TabIndex = 10
@@ -137,7 +146,7 @@ Partial Class frmResults
         'btnSetPredPrey
         '
         Me.btnSetPredPrey.Enabled = False
-        Me.btnSetPredPrey.Location = New System.Drawing.Point(169, 33)
+        Me.btnSetPredPrey.Location = New System.Drawing.Point(169, 80)
         Me.btnSetPredPrey.Name = "btnSetPredPrey"
         Me.btnSetPredPrey.Size = New System.Drawing.Size(99, 27)
         Me.btnSetPredPrey.TabIndex = 35
@@ -147,7 +156,7 @@ Partial Class frmResults
         'btnSetPreyPred
         '
         Me.btnSetPreyPred.Enabled = False
-        Me.btnSetPreyPred.Location = New System.Drawing.Point(169, 22)
+        Me.btnSetPreyPred.Location = New System.Drawing.Point(172, 35)
         Me.btnSetPreyPred.Name = "btnSetPreyPred"
         Me.btnSetPreyPred.Size = New System.Drawing.Size(99, 27)
         Me.btnSetPreyPred.TabIndex = 36
@@ -157,7 +166,7 @@ Partial Class frmResults
         'btnSaveResults
         '
         Me.btnSaveResults.Enabled = False
-        Me.btnSaveResults.Location = New System.Drawing.Point(507, 449)
+        Me.btnSaveResults.Location = New System.Drawing.Point(506, 562)
         Me.btnSaveResults.Name = "btnSaveResults"
         Me.btnSaveResults.Size = New System.Drawing.Size(86, 28)
         Me.btnSaveResults.TabIndex = 4
@@ -166,7 +175,7 @@ Partial Class frmResults
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(415, 449)
+        Me.btnCancel.Location = New System.Drawing.Point(414, 562)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(86, 28)
         Me.btnCancel.TabIndex = 3
@@ -176,7 +185,7 @@ Partial Class frmResults
         'chkPredationPerPredator
         '
         Me.chkPredationPerPredator.AutoSize = True
-        Me.chkPredationPerPredator.Location = New System.Drawing.Point(13, 18)
+        Me.chkPredationPerPredator.Location = New System.Drawing.Point(16, 20)
         Me.chkPredationPerPredator.Name = "chkPredationPerPredator"
         Me.chkPredationPerPredator.Size = New System.Drawing.Size(115, 30)
         Me.chkPredationPerPredator.TabIndex = 38
@@ -186,7 +195,7 @@ Partial Class frmResults
         'btnSetParentOnly
         '
         Me.btnSetParentOnly.Enabled = False
-        Me.btnSetParentOnly.Location = New System.Drawing.Point(172, 92)
+        Me.btnSetParentOnly.Location = New System.Drawing.Point(172, 88)
         Me.btnSetParentOnly.Name = "btnSetParentOnly"
         Me.btnSetParentOnly.Size = New System.Drawing.Size(99, 27)
         Me.btnSetParentOnly.TabIndex = 39
@@ -207,17 +216,26 @@ Partial Class frmResults
         '
         Me.Panel1.BackColor = System.Drawing.Color.Azure
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.chkCatch)
         Me.Panel1.Controls.Add(Me.chkPredationMortality)
         Me.Panel1.Controls.Add(Me.chkBiomass)
         Me.Panel1.Controls.Add(Me.btnSetParentOnly)
         Me.Panel1.Controls.Add(Me.chkBiomassInteg)
         Me.Panel1.Controls.Add(Me.chkFishingMortality)
-        Me.Panel1.Location = New System.Drawing.Point(28, 71)
+        Me.Panel1.Location = New System.Drawing.Point(28, 85)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(283, 140)
+        Me.Panel1.Size = New System.Drawing.Size(283, 132)
         Me.Panel1.TabIndex = 41
+        '
+        'chkCatch
+        '
+        Me.chkCatch.AutoSize = True
+        Me.chkCatch.Location = New System.Drawing.Point(141, 32)
+        Me.chkCatch.Name = "chkCatch"
+        Me.chkCatch.Size = New System.Drawing.Size(54, 17)
+        Me.chkCatch.TabIndex = 44
+        Me.chkCatch.Text = "Catch"
+        Me.chkCatch.UseVisualStyleBackColor = True
         '
         'Label1
         '
@@ -225,26 +243,16 @@ Partial Class frmResults
         Me.Label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Label1.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label1.Location = New System.Drawing.Point(-1, -1)
+        Me.Label1.Location = New System.Drawing.Point(28, 85)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(283, 18)
         Me.Label1.TabIndex = 45
         Me.Label1.Text = "Functional groups only"
         '
-        'chkCatch
-        '
-        Me.chkCatch.AutoSize = True
-        Me.chkCatch.Location = New System.Drawing.Point(16, 102)
-        Me.chkCatch.Name = "chkCatch"
-        Me.chkCatch.Size = New System.Drawing.Size(54, 17)
-        Me.chkCatch.TabIndex = 44
-        Me.chkCatch.Text = "Catch"
-        Me.chkCatch.UseVisualStyleBackColor = True
-        '
         'chkDietProportions
         '
         Me.chkDietProportions.AutoSize = True
-        Me.chkDietProportions.Location = New System.Drawing.Point(13, 50)
+        Me.chkDietProportions.Location = New System.Drawing.Point(13, 59)
         Me.chkDietProportions.Name = "chkDietProportions"
         Me.chkDietProportions.Size = New System.Drawing.Size(100, 17)
         Me.chkDietProportions.TabIndex = 44
@@ -255,13 +263,12 @@ Partial Class frmResults
         '
         Me.Panel2.BackColor = System.Drawing.Color.Azure
         Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel2.Controls.Add(Me.Label3)
         Me.Panel2.Controls.Add(Me.chkDietProportions)
         Me.Panel2.Controls.Add(Me.chkConsumption)
         Me.Panel2.Controls.Add(Me.btnSetPredPrey)
-        Me.Panel2.Location = New System.Drawing.Point(309, 71)
+        Me.Panel2.Location = New System.Drawing.Point(309, 89)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(283, 86)
+        Me.Panel2.Size = New System.Drawing.Size(283, 124)
         Me.Panel2.TabIndex = 42
         '
         'Label3
@@ -270,22 +277,21 @@ Partial Class frmResults
         Me.Label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Label3.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label3.Location = New System.Drawing.Point(-1, -1)
+        Me.Label3.Location = New System.Drawing.Point(309, 85)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(283, 18)
         Me.Label3.TabIndex = 47
-        Me.Label3.Text = "Predators with attached preys"
+        Me.Label3.Text = "Predators with attached prey"
         '
         'Panel3
         '
         Me.Panel3.BackColor = System.Drawing.Color.Azure
         Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel3.Controls.Add(Me.Label4)
         Me.Panel3.Controls.Add(Me.btnSetPreyPred)
         Me.Panel3.Controls.Add(Me.chkPredationPerPredator)
-        Me.Panel3.Location = New System.Drawing.Point(309, 145)
+        Me.Panel3.Location = New System.Drawing.Point(28, 223)
         Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(283, 62)
+        Me.Panel3.Size = New System.Drawing.Size(283, 70)
         Me.Panel3.TabIndex = 42
         '
         'Label4
@@ -294,11 +300,11 @@ Partial Class frmResults
         Me.Label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Label4.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label4.Location = New System.Drawing.Point(-1, -1)
+        Me.Label4.Location = New System.Drawing.Point(28, 210)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(283, 18)
         Me.Label4.TabIndex = 55
-        Me.Label4.Text = "Preys with attached predators"
+        Me.Label4.Text = "Prey with attached predators"
         '
         'Panel4
         '
@@ -308,7 +314,7 @@ Partial Class frmResults
         Me.Panel4.Controls.Add(Me.btnSetFleetPrey)
         Me.Panel4.Controls.Add(Me.chkCatchFleet)
         Me.Panel4.Controls.Add(Me.chkFishMortFleetToPrey)
-        Me.Panel4.Location = New System.Drawing.Point(28, 203)
+        Me.Panel4.Location = New System.Drawing.Point(28, 292)
         Me.Panel4.Name = "Panel4"
         Me.Panel4.Size = New System.Drawing.Size(283, 85)
         Me.Panel4.TabIndex = 43
@@ -323,7 +329,7 @@ Partial Class frmResults
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(283, 18)
         Me.Label2.TabIndex = 46
-        Me.Label2.Text = "Fleets with attached preys"
+        Me.Label2.Text = "Fleets with attached prey"
         '
         'btnSetFleetPrey
         '
@@ -338,7 +344,7 @@ Partial Class frmResults
         'chkCatchFleet
         '
         Me.chkCatchFleet.AutoSize = True
-        Me.chkCatchFleet.Location = New System.Drawing.Point(17, 52)
+        Me.chkCatchFleet.Location = New System.Drawing.Point(16, 52)
         Me.chkCatchFleet.Name = "chkCatchFleet"
         Me.chkCatchFleet.Size = New System.Drawing.Size(95, 17)
         Me.chkCatchFleet.TabIndex = 45
@@ -372,9 +378,9 @@ Partial Class frmResults
         Me.Panel6.Controls.Add(Me.chkEffort)
         Me.Panel6.Controls.Add(Me.btnSetFleetOnly)
         Me.Panel6.Controls.Add(Me.chkFleetValue)
-        Me.Panel6.Location = New System.Drawing.Point(309, 217)
+        Me.Panel6.Location = New System.Drawing.Point(309, 227)
         Me.Panel6.Name = "Panel6"
-        Me.Panel6.Size = New System.Drawing.Size(283, 71)
+        Me.Panel6.Size = New System.Drawing.Size(283, 67)
         Me.Panel6.TabIndex = 45
         '
         'chkEffort
@@ -415,7 +421,7 @@ Partial Class frmResults
         Me.Panel7.Controls.Add(Me.chkMortalityCoefficients)
         Me.Panel7.Controls.Add(Me.chkKeyIndices)
         Me.Panel7.Controls.Add(Me.chkBasicEstimates)
-        Me.Panel7.Location = New System.Drawing.Point(28, 283)
+        Me.Panel7.Location = New System.Drawing.Point(28, 372)
         Me.Panel7.Name = "Panel7"
         Me.Panel7.Size = New System.Drawing.Size(564, 129)
         Me.Panel7.TabIndex = 45
@@ -554,7 +560,7 @@ Partial Class frmResults
         '
         'btnAllOptions
         '
-        Me.btnAllOptions.Location = New System.Drawing.Point(314, 449)
+        Me.btnAllOptions.Location = New System.Drawing.Point(313, 562)
         Me.btnAllOptions.Name = "btnAllOptions"
         Me.btnAllOptions.Size = New System.Drawing.Size(86, 28)
         Me.btnAllOptions.TabIndex = 48
@@ -563,7 +569,7 @@ Partial Class frmResults
         '
         'prgSave
         '
-        Me.prgSave.Location = New System.Drawing.Point(314, 483)
+        Me.prgSave.Location = New System.Drawing.Point(313, 596)
         Me.prgSave.Name = "prgSave"
         Me.prgSave.Size = New System.Drawing.Size(279, 18)
         Me.prgSave.TabIndex = 49
@@ -572,7 +578,7 @@ Partial Class frmResults
         'lblPrgInfo
         '
         Me.lblPrgInfo.AutoSize = True
-        Me.lblPrgInfo.Location = New System.Drawing.Point(460, 511)
+        Me.lblPrgInfo.Location = New System.Drawing.Point(459, 624)
         Me.lblPrgInfo.Name = "lblPrgInfo"
         Me.lblPrgInfo.Size = New System.Drawing.Size(133, 13)
         Me.lblPrgInfo.TabIndex = 50
@@ -582,7 +588,7 @@ Partial Class frmResults
         'chkYearly
         '
         Me.chkYearly.AutoSize = True
-        Me.chkYearly.Location = New System.Drawing.Point(538, 426)
+        Me.chkYearly.Location = New System.Drawing.Point(537, 534)
         Me.chkYearly.Name = "chkYearly"
         Me.chkYearly.Size = New System.Drawing.Size(55, 17)
         Me.chkYearly.TabIndex = 51
@@ -593,7 +599,7 @@ Partial Class frmResults
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.White
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(12, 398)
+        Me.PictureBox1.Location = New System.Drawing.Point(12, 507)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(270, 107)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -616,11 +622,85 @@ Partial Class frmResults
         Me.Label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Label5.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label5.Location = New System.Drawing.Point(309, 203)
+        Me.Label5.Location = New System.Drawing.Point(309, 210)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(283, 18)
         Me.Label5.TabIndex = 55
         Me.Label5.Text = "Fleets only"
+        '
+        'Panel5
+        '
+        Me.Panel5.Controls.Add(Me.optCSV)
+        Me.Panel5.Controls.Add(Me.optExcel)
+        Me.Panel5.Location = New System.Drawing.Point(406, 530)
+        Me.Panel5.Name = "Panel5"
+        Me.Panel5.Size = New System.Drawing.Size(125, 26)
+        Me.Panel5.TabIndex = 57
+        '
+        'optCSV
+        '
+        Me.optCSV.AutoSize = True
+        Me.optCSV.Location = New System.Drawing.Point(67, 3)
+        Me.optCSV.Name = "optCSV"
+        Me.optCSV.Size = New System.Drawing.Size(49, 17)
+        Me.optCSV.TabIndex = 1
+        Me.optCSV.TabStop = True
+        Me.optCSV.Text = ".CSV"
+        Me.optCSV.UseVisualStyleBackColor = True
+        '
+        'optExcel
+        '
+        Me.optExcel.AutoSize = True
+        Me.optExcel.Location = New System.Drawing.Point(10, 3)
+        Me.optExcel.Name = "optExcel"
+        Me.optExcel.Size = New System.Drawing.Size(51, 17)
+        Me.optExcel.TabIndex = 0
+        Me.optExcel.TabStop = True
+        Me.optExcel.Text = "Excel"
+        Me.optExcel.UseVisualStyleBackColor = True
+        '
+        'Label7
+        '
+        Me.Label7.BackColor = System.Drawing.Color.RoyalBlue
+        Me.Label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label7.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.Label7.Location = New System.Drawing.Point(309, 292)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(283, 18)
+        Me.Label7.TabIndex = 55
+        Me.Label7.Text = "Fitting Statistics"
+        '
+        'chkresiduals
+        '
+        Me.chkresiduals.AutoSize = True
+        Me.chkresiduals.Location = New System.Drawing.Point(13, 18)
+        Me.chkresiduals.Name = "chkresiduals"
+        Me.chkresiduals.Size = New System.Drawing.Size(72, 17)
+        Me.chkresiduals.TabIndex = 38
+        Me.chkresiduals.Text = "Residuals"
+        Me.chkresiduals.UseVisualStyleBackColor = True
+        '
+        'Panel8
+        '
+        Me.Panel8.BackColor = System.Drawing.Color.Azure
+        Me.Panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel8.Controls.Add(Me.chkSS)
+        Me.Panel8.Controls.Add(Me.chkresiduals)
+        Me.Panel8.Location = New System.Drawing.Point(309, 307)
+        Me.Panel8.Name = "Panel8"
+        Me.Panel8.Size = New System.Drawing.Size(283, 66)
+        Me.Panel8.TabIndex = 59
+        '
+        'chkSS
+        '
+        Me.chkSS.AutoSize = True
+        Me.chkSS.Location = New System.Drawing.Point(13, 41)
+        Me.chkSS.Name = "chkSS"
+        Me.chkSS.Size = New System.Drawing.Size(99, 17)
+        Me.chkSS.TabIndex = 39
+        Me.chkSS.Text = "Sum of squares"
+        Me.chkSS.UseVisualStyleBackColor = True
         '
         'frmResults
         '
@@ -628,6 +708,12 @@ Partial Class frmResults
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(881, 699)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.Panel8)
+        Me.Controls.Add(Me.Panel5)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.chkYearly)
         Me.Controls.Add(Me.lblPrgInfo)
@@ -640,12 +726,12 @@ Partial Class frmResults
         Me.Controls.Add(Me.Panel4)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.PictureBox1)
-        Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.PictureBox2)
+        Me.Controls.Add(Me.Panel3)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmResults"
-        Me.Text = "Results plug-in"
+        Me.Text = "Results Extractor"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
@@ -660,6 +746,10 @@ Partial Class frmResults
         Me.Panel7.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel5.ResumeLayout(False)
+        Me.Panel5.PerformLayout()
+        Me.Panel8.ResumeLayout(False)
+        Me.Panel8.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -715,4 +805,11 @@ Partial Class frmResults
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Panel5 As System.Windows.Forms.Panel
+    Friend WithEvents optCSV As System.Windows.Forms.RadioButton
+    Friend WithEvents optExcel As System.Windows.Forms.RadioButton
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents chkresiduals As System.Windows.Forms.CheckBox
+    Friend WithEvents Panel8 As System.Windows.Forms.Panel
+    Friend WithEvents chkSS As System.Windows.Forms.CheckBox
 End Class
