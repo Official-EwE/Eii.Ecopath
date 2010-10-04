@@ -386,29 +386,41 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <param name="group">The group to update.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub Set_Pedigree_Flags(ByVal group As cCoreGroupBase)
+    Friend Sub Set_Pedigree_Flags(ByVal group As cEcoPathGroupInput)
+
+        Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
         ' Borrow status flags from groups
         Me.AllowValidation = False
 
-        Select Case Me.m_varName
+        If group.IsDetritus Then
+            Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
+        Else
+            Select Case Me.m_varName
 
-            Case eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.TCatchInput
+                Case eVarNameFlags.PBInput, eVarNameFlags.QBInput
+                    If (group.IsProducer()) Then
+                        Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
+                    Else
+                        Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                    End If
 
-                Dim status As eStatusFlags = group.GetStatus(Me.m_varName)
-                If (status And eStatusFlags.NotEditable) > 0 Then
-                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
-                Else
-                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
-                End If
+                Case eVarNameFlags.DietComp
+                    If group.IsConsumer Then
+                        Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                    Else
+                        Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                    End If
 
-            Case eVarNameFlags.DietComp
-                If group.IsConsumer Then
-                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
-                Else
-                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
-                End If
-        End Select
+                Case eVarNameFlags.TCatchInput
+                    If epdata.fCatch(group.Index) > 0 Then
+                        Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                    Else
+                        Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
+                    End If
+
+            End Select
+        End If
 
         Me.AllowValidation = True
 
