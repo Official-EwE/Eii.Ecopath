@@ -79,7 +79,7 @@ Namespace Ecospace
             ''' <summary>MPA to allocate this region to, if any</summary>
             Private m_mpa As cEcospaceMPA = Nothing
             ''' <summary>Cell (col, row) to allocate this region to, if any</summary>
-            Private m_ptCell As New Point(0, 0)
+            Private m_ptCell As Point = Nothing
             ''' <summary>Number of cells in a region.</summary>
             Private m_iNumCells As Integer = 0
 
@@ -281,6 +281,15 @@ Namespace Ecospace
                     Me.m_iNumCells = value
                 End Set
             End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get whether this region has computed, unsaved content.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public Function IsComputed() As Boolean
+                Return (Me.m_hab IsNot Nothing) Or (Me.m_mpa IsNot Nothing) Or (Me.m_ptCell <> Nothing)
+            End Function
 
         End Class
 
@@ -832,14 +841,6 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Private Function ValidateContent() As Boolean
 
-            '' Check if the user is about to delete all fleets - one should remain
-            'If Me.m_alRegionsRemoved.Count = Me.m_alRegions.Count Then
-            '    MsgBox(My.Resources.ECOPATH_EDITREGION_PROMPT_CANNOTDELETEALL, _
-            '            MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, _
-            '            My.Resources.ECOPATH_EDITREGION_CONFIRMDELETE_CAPTION)
-            '    Return False
-            'End If
-
             Return True
 
         End Function
@@ -895,6 +896,8 @@ Namespace Ecospace
 
                 Next iCol
             Next iRow
+
+            Me.Core.onChanged(bmlRegions)
 
             Return True
 
@@ -952,6 +955,8 @@ Namespace Ecospace
                 Next iCol
             Next iRow
 
+            Me.Core.onChanged(bmlRegions)
+
             Return True
 
         End Function
@@ -994,6 +999,8 @@ Namespace Ecospace
 
                 Next iCol
             Next iRow
+
+            Me.Core.onChanged(bmlRegions)
 
             Return True
 
@@ -1106,60 +1113,68 @@ Namespace Ecospace
                 Next iRegion
             End If
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
             ' Handle added and removed items
             If (bConfigurationChanged) Then
 
                 If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+                cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
 
-                ' Add new Regions
-                For iRegion = 0 To Me.m_lregions.Count - 1
-                    ri = Me.m_lregions(iRegion)
-                    If (ri.IsNew()) Then
-                        bSuccess = bSuccess And Me.Core.AddEcospaceRegion(ri.Name, iDBID)
+                Try
 
-                        ' Prepare mapping
-                        Select Case Me.m_allocateRegionsFlag
+                    ' Add new Regions
+                    For iRegion = 0 To Me.m_lregions.Count - 1
+                        ri = Me.m_lregions(iRegion)
+                        If (ri.IsNew()) Then
+                            bSuccess = bSuccess And Me.Core.AddEcospaceRegion(ri.Name, iDBID)
 
-                            Case AllocationModeType.None
+                            ' Prepare mapping
+                            Select Case Me.m_allocateRegionsFlag
 
-                            Case AllocationModeType.MPA
-                                Dim mpa As cEcospaceMPA = ri.MPA
-                                If (mpa IsNot Nothing) Then dtSourceIDToRegionID(CInt(mpa.GetVariable(eVarNameFlags.DBID))) = iDBID
+                                Case AllocationModeType.None
 
-                            Case AllocationModeType.Habitat
-                                Dim hab As cEcospaceHabitat = ri.Habitat
-                                If (hab IsNot Nothing) Then dtSourceIDToRegionID(CInt(hab.GetVariable(eVarNameFlags.DBID))) = iDBID
+                                Case AllocationModeType.MPA
+                                    Dim mpa As cEcospaceMPA = ri.MPA
+                                    If (mpa IsNot Nothing) Then dtSourceIDToRegionID(CInt(mpa.GetVariable(eVarNameFlags.DBID))) = iDBID
 
-                            Case AllocationModeType.Cell
-                                Dim pt As Point = ri.Cell
-                                If ((pt.X > 0) And (pt.Y > 0)) Then dtCellToRegionID(pt) = iDBID
+                                Case AllocationModeType.Habitat
+                                    Dim hab As cEcospaceHabitat = ri.Habitat
+                                    If (hab IsNot Nothing) Then dtSourceIDToRegionID(CInt(hab.GetVariable(eVarNameFlags.DBID))) = iDBID
 
-                        End Select
-                    End If
-                Next
+                                Case AllocationModeType.Cell
+                                    Dim pt As Point = ri.Cell
+                                    If (pt <> Nothing) Then
+                                        If ((pt.X > 0) And (pt.Y > 0)) Then dtCellToRegionID(pt) = iDBID
+                                    End If
 
-                ' Remove deleted (and confirmed) Regions
-                Dim iRegionRemove As Integer = 0
-                For iRegion = 0 To Me.m_alRegionsRemoved.Count - 1
-                    ri = Me.m_alRegionsRemoved(iRegionRemove)
-
-                    ' Sanity check
-                    Debug.Assert(Not ri.IsNew())
-
-                    If (ri.Confirmed()) Then
-                        ' Find region to remove
-                        If (Me.Core.RemoveEcospaceRegion(ri.Region)) Then
-                            Me.m_lregions.Remove(ri)
-                            Me.m_alRegionsRemoved.Remove(ri)
-                        Else
-                            bSuccess = False
-                            iRegionRemove += 1
+                            End Select
                         End If
-                    End If
-                Next iRegion
+                    Next
 
+                    ' Remove deleted (and confirmed) Regions
+                    Dim iRegionRemove As Integer = 0
+                    For iRegion = 0 To Me.m_alRegionsRemoved.Count - 1
+                        ri = Me.m_alRegionsRemoved(iRegionRemove)
+
+                        ' Sanity check
+                        Debug.Assert(Not ri.IsNew())
+
+                        If (ri.Confirmed()) Then
+                            ' Find region to remove
+                            If (Me.Core.RemoveEcospaceRegion(ri.Region)) Then
+                                Me.m_lregions.Remove(ri)
+                                Me.m_alRegionsRemoved.Remove(ri)
+                            Else
+                                bSuccess = False
+                                iRegionRemove += 1
+                            End If
+                        End If
+                    Next iRegion
+                Catch ex As Exception
+                    bSuccess = False
+                End Try
+
+                cApplicationStatusNotifier.SetStatusText("", TriState.False)
                 Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
 
                 ' Test whether new Regions were loaded correctly
@@ -1168,36 +1183,47 @@ Namespace Ecospace
 
             ' Update core objects
             If (bRegionsChanged) Then
-                ' For each local region admin unit
-                For iRegion = 0 To Me.m_lregions.Count - 1
-                    ' Get local admin unit
-                    ri = Me.m_lregions(iRegion)
-                    ' Has it changed?
-                    If ri.IsChanged() Then
-                        ' Find core region with same BDID (cannot use cached cEcospaceRegion instances since the core has reloaded)
-                        Dim bFound As Boolean = False
-                        ' For every core region instance
-                        For iRegionTest As Integer = 1 To Me.Core.nRegions - 1
-                            ' Get core region instance
-                            Dim RegionTest As cEcospaceRegion = Me.Core.EcospaceRegions(iRegionTest)
-                            ' Has matching ID?
-                            If (RegionTest.getID = ri.Region.getID) Then
-                                ' #Yes: Update
-                                RegionTest.Name = ri.Name
-                                ' Oh yes! YES! YESSS!
-                                bFound = True
-                            End If
-                        Next
-                        ' All went well?
-                        If Not bFound Then
-                            ' #No?! Uh oh...
-                            Debug.Assert(False, ">> Internal panic: Unable to apply changes to region id " & ri.Region.getID)
-                        End If
-                    End If
-                Next
 
-                '' Apply all changes
-                'Me.Core.SaveEcospaceScenario()
+                If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Update) Then Return False
+                cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+
+                Try
+                    ' For each local region admin unit
+                    For iRegion = 0 To Me.m_lregions.Count - 1
+                        ' Get local admin unit
+                        ri = Me.m_lregions(iRegion)
+                        ' Has it changed?
+                        If ri.IsChanged() Then
+                            ' Find core region with same BDID (cannot use cached cEcospaceRegion instances since the core has reloaded)
+                            Dim bFound As Boolean = False
+                            ' For every core region instance
+                            For iRegionTest As Integer = 1 To Me.Core.nRegions - 1
+                                ' Get core region instance
+                                Dim RegionTest As cEcospaceRegion = Me.Core.EcospaceRegions(iRegionTest)
+                                ' Has matching ID?
+                                If (RegionTest.getID = ri.Region.getID) Then
+                                    ' #Yes: Update
+                                    RegionTest.Name = ri.Name
+                                    ' Oh yes! YES! YESSS!
+                                    bFound = True
+                                End If
+                            Next
+                            ' All went well?
+                            If Not bFound Then
+                                ' #No?! Uh oh...
+                                Debug.Assert(False, ">> Internal panic: Unable to apply changes to region id " & ri.Region.getID)
+                            End If
+                        End If
+
+                    Next
+                Catch ex As Exception
+                    bSuccess = False
+                End Try
+
+                cApplicationStatusNotifier.SetStatusText("", TriState.False)
+                Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+
+
             End If
 
             Select Case Me.m_allocateRegionsFlag
@@ -1214,7 +1240,6 @@ Namespace Ecospace
                     bSuccess = bSuccess And Me.AllocateRegionsFromCells(dtCellToRegionID)
 
             End Select
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
             Return bSuccess
 
