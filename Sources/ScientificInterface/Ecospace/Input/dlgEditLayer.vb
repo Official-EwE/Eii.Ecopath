@@ -36,8 +36,6 @@ Namespace Ecospace.Basemap.Layers
 
         ''' <summary>Work layer (a copy of the original) for this dialog to work on.</summary>
         Private m_layerWork As cLayer = Nothing
-        '''' <summary>Basemap zoom wrapper</summary>
-        Private m_ucZoomControl As ucMapZoom = Nothing
         '''' <summary>Preview pane</summary>
         Private m_ucPreview As ucMap = Nothing
         ''' <summary>Editor to transmogrify the representation of the layer.</summary>
@@ -91,36 +89,28 @@ Namespace Ecospace.Basemap.Layers
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            ' Hook up preview Layer to user control
-            Me.m_ucZoomControl = New ucMapZoom()
-            Me.m_ucZoomControl.Dock = DockStyle.Fill
-            Me.m_ucZoomControl.UIContext = Me.m_uic
+            Me.m_zoommap.UIContext = Me.m_uic
+            Me.m_grid.UIContext = Me.m_uic
 
-            Me.m_ucPreview = Me.m_ucZoomControl.Map()
+            ' Show your stuff
+            Me.m_ucPreview = Me.m_zoommap.Map()
             Me.m_ucPreview.Basemap = Me.m_uic.Core.EcospaceBasemap
             Me.m_ucPreview.AddLayer(Me.m_layerWork)
             If ((Not Object.ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And _
                 (Not Object.ReferenceEquals(Me.m_layerDepth, Nothing))) Then
                 Me.m_ucPreview.AddLayer(Me.m_layerDepth)
             End If
-
-            ' Add basemap to Panel
-            Me.pnBasemap.Controls.Add(Me.m_ucZoomControl)
-            Me.m_ucZoomControl.PositionMode = ucMapZoom.ePositionModeTypes.Center
-            Me.m_ucZoomControl.ZoomPercentage = 1.0!
-
-            Me.m_grid.UIContext = Me.m_uic
-
-            ' Show your stuff
-            Me.LoadLayer()
-            Me.UpdateControls()
-            Me.DrawPreview()
+            Me.m_zoommap.PositionMode = ucMapZoom.ePositionModeTypes.Center
 
             Me.m_tcLayerView.SelectedIndex = CInt(Me.m_openType)
 
             If Me.m_ucEditVisualStyle IsNot Nothing Then
                 AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
             End If
+
+            Me.LoadLayer()
+            Me.UpdateControls()
+            Me.DrawPreview()
 
         End Sub
 

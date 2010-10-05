@@ -27,7 +27,6 @@ Partial Class dlgEditLayer
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
             Me.Apply_Button = New System.Windows.Forms.Button
-            Me.pnBasemap = New System.Windows.Forms.Panel
             Me.lbName = New System.Windows.Forms.Label
             Me.m_tbNameValue = New System.Windows.Forms.TextBox
             Me.m_lblRemarks = New System.Windows.Forms.Label
@@ -38,16 +37,17 @@ Partial Class dlgEditLayer
             Me.m_tcLayerView = New System.Windows.Forms.TabControl
             Me.m_tbAppearance = New System.Windows.Forms.TabPage
             Me.m_scDetails = New System.Windows.Forms.SplitContainer
-            Me.m_hdrDescription = New cEwEHeaderLabel
+            Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.m_lblWeight = New System.Windows.Forms.Label
             Me.m_lblDescription = New System.Windows.Forms.Label
             Me.m_nudWeight = New System.Windows.Forms.NumericUpDown
-            Me.m_hdrAppearance = New cEwEHeaderLabel
+            Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tpData = New System.Windows.Forms.TabPage
-            Me.m_hdrStaticData = New cEwEHeaderLabel
+            Me.m_hdrStaticData = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_grid = New ScientificInterface.gridLayerData
+            Me.m_zoommap = New ScientificInterface.Ecospace.ucMapZoom
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tbAppearance.SuspendLayout()
@@ -83,12 +83,6 @@ Partial Class dlgEditLayer
             '
             resources.ApplyResources(Me.Apply_Button, "Apply_Button")
             Me.Apply_Button.Name = "Apply_Button"
-            '
-            'pnBasemap
-            '
-            resources.ApplyResources(Me.pnBasemap, "pnBasemap")
-            Me.pnBasemap.BackColor = System.Drawing.SystemColors.HighlightText
-            Me.pnBasemap.Name = "pnBasemap"
             '
             'lbName
             '
@@ -137,8 +131,8 @@ Partial Class dlgEditLayer
             '
             'm_tbAppearance
             '
+            Me.m_tbAppearance.Controls.Add(Me.m_zoommap)
             Me.m_tbAppearance.Controls.Add(Me.m_scDetails)
-            Me.m_tbAppearance.Controls.Add(Me.pnBasemap)
             resources.ApplyResources(Me.m_tbAppearance, "m_tbAppearance")
             Me.m_tbAppearance.Name = "m_tbAppearance"
             Me.m_tbAppearance.UseVisualStyleBackColor = True
@@ -218,6 +212,7 @@ Partial Class dlgEditLayer
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = True
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
@@ -241,6 +236,14 @@ Partial Class dlgEditLayer
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
+            '
+            'm_zoommap
+            '
+            resources.ApplyResources(Me.m_zoommap, "m_zoommap")
+            Me.m_zoommap.Name = "m_zoommap"
+            Me.m_zoommap.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
+            Me.m_zoommap.UIContext = Nothing
+            Me.m_zoommap.ZoomPercentage = 100.0!
             '
             'dlgEditLayer
             '
@@ -272,7 +275,6 @@ Partial Class dlgEditLayer
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
-        Private WithEvents pnBasemap As System.Windows.Forms.Panel
         Private WithEvents lbName As System.Windows.Forms.Label
         Private WithEvents m_lblRemarks As System.Windows.Forms.Label
         Private WithEvents m_tbRemarks As System.Windows.Forms.TextBox
@@ -294,6 +296,7 @@ Partial Class dlgEditLayer
         Private WithEvents m_lblWeight As System.Windows.Forms.Label
         Private WithEvents m_nudWeight As System.Windows.Forms.NumericUpDown
         Private WithEvents m_scDetails As System.Windows.Forms.SplitContainer
+        Private WithEvents m_zoommap As ScientificInterface.Ecospace.ucMapZoom
 
     End Class
 End Namespace
