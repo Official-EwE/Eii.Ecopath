@@ -6063,9 +6063,10 @@ Public Class cCore
     ''' <summary>
     ''' Update all the underlying data structures that contain fleet input info for EcoSim
     ''' </summary>
+    ''' <param name="iDBID">Database ID of Ecosim fleet to update</param>
     Private Function UpdateEcoSimFleetInput(ByVal iDBID As Integer) As Boolean
 
-        Dim iFleet As Integer = Array.IndexOf(m_EcoPathData.FleetDBID, iDBID)
+        Dim iFleet As Integer = Array.IndexOf(m_EcoSimData.FleetDBID, iDBID)
         Dim fleet As cEcosimFleetInput = Me.EcosimFleetInputs(iFleet)
 
         Try
