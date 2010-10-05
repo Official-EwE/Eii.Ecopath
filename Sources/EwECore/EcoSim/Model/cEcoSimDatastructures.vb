@@ -145,7 +145,6 @@ Public Class cEcosimDatastructures
     Public maxflow(,) As Single
 
     Public FlowType(,) As Single
-    Public PoolForceCatch(,) As Single
 
     Public Eatenof() As Single
     Public Eatenby() As Single
@@ -636,6 +635,7 @@ Public Class cEcosimDatastructures
             FisForced(igrp) = False
         Next
     End Sub
+
 
     Public Sub Clear()
         Me.nGroups = 0
