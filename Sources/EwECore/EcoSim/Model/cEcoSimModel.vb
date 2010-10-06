@@ -6,6 +6,7 @@ Imports EwEUtils.Core
 
 Imports System.Threading
 Imports EwECore.MSE
+Imports EwECore.FishingPolicy
 
 
 
@@ -54,6 +55,9 @@ Namespace Ecosim
         Private m_ConTracer As cContaminantTracer
         Private m_TracerData As cContaminantTracerDataStructures
         Private m_MSEData As cMSEDataStructures
+        'Management Strategy Evaluator 
+        Private m_MSE As MSE.cMSE
+
 
         Private m_pluginManager As cPluginManager
 
@@ -222,9 +226,6 @@ Namespace Ecosim
         Private m_bInit As Boolean
         Private m_OnTimeStepDelegate As EcoSimTimeStepDelegate = Nothing
         Private m_OnRunCompletedDelegate As EcoSimRunCompletedDelegate
-
-        'Management Strategy Evaluator 
-        Private m_MSE As MSE.cMSE
 
         ''' <summary>
         ''' Public flag to stop the currently running EcoSim model
@@ -496,11 +497,11 @@ Namespace Ecosim
                 'InitAssessment()
 
                 If bFullInitialization Then
-                    Dim qyear() As Single
-                    ReDim qyear(Me.nGroups)
-                    For i As Integer = 1 To Me.m_Data.nGear : qyear(i) = 1 : Next
+                    'Dim qyear() As Single
+                    'ReDim qyear(Me.nGroups)
+                    'For i As Integer = 1 To Me.m_Data.nGear : qyear(i) = 1 : Next
 
-                    SetFFromGear(qyear)
+                    SetBaseFFromGear()
 
                 End If
 
@@ -548,6 +549,10 @@ Namespace Ecosim
             m_MSE = MSEModel
         End Sub
 
+
+        'Public Sub InitFPS(ByRef FPS As cFishingPolicySearch)
+        '    Me.m_FPS = FPS
+        'End Sub
 
 
 #End Region
@@ -702,18 +707,12 @@ Namespace Ecosim
 
                 m_search.InitForYear()
 
-                'set Fgear() fishing effort 
-                Me.SetFGear(Fgear, RelFopt, iyr, NumberOfYears)
-
-                If m_search.SearchMode = eSearchModes.MSE Then
-                    'if the MSE is turned on then vary Fgear(nFleets) and Qyear(nFleets)
-                    'this overwrites the values set above in SetFGear()
-                    Me.m_MSE.VaryEffortCatchability(Fgear, QYear, iyr)
-                End If
+                'set Fgear() fishing effort at timestep that can be modified by a search routine
+                Me.SetFGear(Fgear, RelFopt, QYear, iyr, NumberOfYears)
 
                 'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
                 '*
-                If m_search.bInSearch Then 'And iyr > m_search.BaseYear Then
+                If m_search.bInSearch Then
 
                     'Calculates NetCost() 
                     m_search.calcNetCost(Fgear, iyr)
@@ -724,10 +723,11 @@ Namespace Ecosim
                         'used to overwrite FishRateNo() inside the month time loop
                         For iFlt As Integer = 1 To m_EPData.NumFleet
                             For j = 1 To m_EPData.NumGroups
+
                                 m_search.FishYear(j) += Fgear(iFlt) * m_Data.relQ(iFlt, j) * QYear(iFlt)
-                                '        '********following line stops gear overwrite for cases where
-                                '        'model has been fit to historical data by using species F forcing
-                                '        'for years 1 to NYRDAT (policy impact allowed only for future years)
+                                '********following line stops gear overwrite for cases where
+                                'model has been fit to historical data by using species F forcing
+                                'for years 1 to NYRDAT (policy impact allowed only for future years)
                                 If m_Data.FisForced(j) And iyr < m_RefData.NdatYear Then m_search.FishYear(j) = m_Data.FishRateNo(j, 12 * iyr - 11)
                             Next j
                         Next iFlt
@@ -744,40 +744,33 @@ Namespace Ecosim
                 For ipct = 1 To 12
 
                     itime = itime + 1
+                    'set QMult() (density dependent catchability) multiplier to the current biomass for this timestep
+                    Me.setDenDepCatchMult(BB)
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimBeginTimeStep(BB, m_Data, itime)
 
                     If ipct = 6 Then AccumulateDataInfo(Int(itime / 12), BB, m_Data.loss)
 
-                    'Sets FishTime() density dependant catchability  
-                    'search routines vary FishYear() which is then used to set FishTime()
+                    'Set FishTime() (fishing mort at timestep)
                     Me.setFishTime(itime, iyr)
 
-                    Me.m_MSE.setTime(itime, iyr)
-
-                    If Me.m_search.SearchMode = eSearchModes.MSE And Me.m_MSE.Data.UseQuotaRegs Then
-                        'Effort is being regulated by the Quota's
-                        'Effort can be either predicted or tracked from the existing Ecosim value
-                        Debug.Assert(Me.m_MSE.Data.RegulationMode <> eMSERegulationMode.NoRegulations)
-
-                        If ipct = 1 Then
-                            'only do the assessment and update the quotas once at the start of each year
-                            'set Bestimate() 
-                            Me.m_MSE.DoAssessment(BB)
-                            'update the Quota for this timestep
-                            Me.m_MSE.UpdateQuotas(BB)
-                        End If
-
-                        'regulate the effort base on the Quota for this year on each timestep
-                        Me.SetFtimeFromGear(BB, itime, m_Data.FishTime, QYear, True)
-
+                    If Me.m_search.SearchMode = eSearchModes.MSE Then
+                        'MSE Quota regulations
+                        'Overwrites FishTime() set above in setFishTime()
+                        Me.m_MSE.DoRegulations(BB, Qmult, QYear, itime, ipct, iyr)
                     End If
 
                     If m_Data.PredictSimEffort Then
 
                         'Predict Effort
                         PredictCurrentEffort(itime)
-                        SetFtimeFromGear(BB, itime, m_Data.FishTime, QYear, True)
+                        If Me.m_search.SearchMode = eSearchModes.MSE Then
+                            'if MSE is running then regulate the predicted Effort 
+                            Me.m_MSE.RegulateEffort(BB, Qmult, QYear, itime)
+                        End If
+                        'set the F using the Predicted and Regulated (if MSE is running) effort
+                        SetFtimeFromGear(BB, itime, QYear, True)
+
                         FindCurrentProfit(BB, itime)
                         PredictCapacityChange()
                     End If
@@ -965,21 +958,26 @@ Namespace Ecosim
         '''  Otherwise (in a search) use FishYear() to set the user inputed fishing mortality then use this to computed density dependant mortality. </remarks>
         Private Sub setFishTime(ByVal iTime As Integer, ByVal iYear As Integer)
 
-            If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
-                'in Fishing Polcy or MSE search
-                'sets FishRateNo to FishYear() computed before this is called then computes FishTime() with FishRateNo
+            If m_search.SearchMode = eSearchModes.FishingPolicy Then
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Fishing Policy 
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
                 For igrp As Integer = 1 To nvar
                     'overwrite FishRateNo() with computed mortality rates (FishYear(group)) if in Fishing Policy or MSE 
                     'see EwE5 RunModelValue()
                     m_Data.FishRateNo(igrp, iTime) = m_search.FishYear(igrp) 'fish year was computed or set to FishRateNo(j, 12 * iyr - 11) if FisForced() = True (forcing data loaded)
-                    m_Data.FishTime(igrp) = m_Data.QmQo(igrp) * m_Data.FishRateNo(igrp, iTime) / (1 + (m_Data.QmQo(igrp) - 1) * BB(igrp) / m_Data.StartBiomass(igrp))
+                    m_Data.FishTime(igrp) = m_Data.FishRateNo(igrp, iTime) * Qmult(igrp)
 
                 Next igrp
 
             Else
 
-                Debug.Assert(Me.m_search.SearchMode <> eSearchModes.FishingPolicy Or Me.m_search.SearchMode <> eSearchModes.MSE, Me.ToString & ".setFishTime() incorrect search mode.")
-
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Normal run
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'FishRateNo(group,time) fishing mortality at the current effort 
+                'Qmult(group) density dependent catchability at the current biomass set in setDenDepCatchMult()
                 For iGrp As Integer = 1 To nvar
 
                     'Catches forced or computed
@@ -987,7 +985,6 @@ Namespace Ecosim
                         'Forced catch rates
                         'Was up to Sep 2008:
                         m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
-                        'Dim CBratio As Double = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
                         'VC Sep 2008. Based on discussion with CJW, we'll cap the FishTime to be a logistic function 
                         'Carl suggests the following:
                         'predict F from
@@ -995,30 +992,17 @@ Namespace Ecosim
                         'Where the “weight” w is given by the logistic function, and K = 5
                         'w = 1 / (1 + exp(-K * (C / B - Fmax)))
                         'Fmax is the Flimit from the search
-                        'Dim w As Double = 1 / (1 + Math.Exp(-5 * (CBratio - m_search.FLimit(iGrp))))
-                        'm_Data.FishTime(iGrp) = w * m_search.FLimit(iGrp) + (1 - w) * CBratio
+                        'Dim w As Double = 1 / (1 + Math.Exp(-5 * (CBratio - FLimit(iGrp))))
+                        'FishTime(iGrp) = w * FLimit(iGrp) + (1 - w) * CBratio
 
                         'The next is easier, and gives almost the same answer:
-                        ' If m_Data.FishTime(iGrp) > m_search.FLimit(iGrp) Then m_Data.FishTime(iGrp) = 3 ' m_search.FLimit(iGrp) ' : Stop
-                        If m_Data.FishTime(iGrp) > 3 Then m_Data.FishTime(iGrp) = 3 ' m_search.FLimit(iGrp) ' : Stop
+                        If m_Data.FishTime(iGrp) > 3 Then m_Data.FishTime(iGrp) = 3
                     Else
-                        ''Computed fishing mortality
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        'ToDo_jb April-08-2010 Allow Effort to be set from the IEcosimModifyFGearPlugin
-                        'FGear(fleets) needs to be set to FishRateGear(fleet,itime) for every time step not just in search modes
-                        'FGear(fleets) needs to be accessable from here(passed in)
-                        'Total fishing mortality needs to be set using modified effort
+                        'Computed fishing mortality
 
-                        'Dim ft As Single
-                        'For ift As Integer = 1 To Me.m_Data.nGear
-                        '    ft = ft + m_Data.FishMGear(ift, iGrp) * fgear(ift) * (Me.m_Quota.PropLandedTime(ift, iGrp) + Me.m_Quota.Propdiscardtime(ift, iGrp))
-                        'Next
-                        'm_Data.FishRateNo(iGrp, iTime) = ft
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-                        'total fishing mortality  = density dependent catchability, effort and base mortality
-                        'FishRateNo() is mortality at the current effort 
-                        m_Data.FishTime(iGrp) = m_Data.QmQo(iGrp) * m_Data.FishRateNo(iGrp, iTime) / (1 + (m_Data.QmQo(iGrp) - 1) * BB(iGrp) / m_Data.StartBiomass(iGrp))
+                        'FishRateNo() is fishing mortality at the current effort by group,time
+                        m_Data.FishTime(iGrp) = m_Data.FishRateNo(iGrp, iTime) * Qmult(iGrp)
+                        'Debug.Assert(m_Data.FishTime(iGrp) = m_Data.QmQo(iGrp) * m_Data.FishRateNo(iGrp, iTime) / (1 + (m_Data.QmQo(iGrp) - 1) * BB(iGrp) / m_Data.StartBiomass(iGrp)))
                     End If
 
                     'PoolForceZ(iGroup,0) is used in Derivt() to force mortality
@@ -1051,24 +1035,29 @@ Namespace Ecosim
         ''' <param name="NumberOfYears"></param>
         ''' <remarks>At the start of a year Fgear(nFleets)(fishing effort) is set to a user entered value FishRateGear(nFleets,nTime) or effort set by a search. 
         ''' If in a search Fgear() is then used to compute FishYear() which is used to set FishRateNo() and compute FishTime(). FishTime() is what is used by Derivt() Confused yet???? </remarks>
-        Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByVal iYear As Integer, ByVal NumberOfYears As Integer)
-            'set Fgear() to either 
-            'RelFopt() Effort set by the Fishing Policy search
-            'or
-            'FishRateGear() user entered fishing effort multilpier or Time Series Forcing data loaded via the applied time series data
-            ' If Me.m_search.bInSearch Then
-            If Me.m_search.SearchMode = eSearchModes.FishingPolicy Then
+        Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByRef QYear() As Single, ByVal iYear As Integer, ByVal NumberOfYears As Integer)
 
-                'if in a (fishing policy) search then get the Fgear values set by the optimization routine
+
+            'not in the search so get Fgear() from user-entered fishing rate shape
+            Dim iyf As Integer = CInt(IIf(iYear <= NumberOfYears, iYear, NumberOfYears))
+            For iFlt As Integer = 1 To Me.m_EPData.NumFleet
+                Fgear(iFlt) = Me.m_Data.FishRateGear(iFlt, 12 * iyf - 11)
+            Next iFlt
+
+            If Me.m_search.SearchMode = eSearchModes.FishingPolicy Then
+                'xxxxxxxxxxxxxxxx
+                'Fishing Policy search
+                'xxxxxxxxxxxxxxxxxxxxxx
+
+                'get the Fgear values set by the optimization routine
                 Me.m_search.SetFGear(Fgear, RelFopt, iYear, NumberOfYears)
 
-            Else
-
-                'not in the search so get Fgear() from user-entered fishing rate shape
-                Dim iyf As Integer = CInt(IIf(iYear <= NumberOfYears, iYear, NumberOfYears))
-                For iFlt As Integer = 1 To Me.m_EPData.NumFleet
-                    Fgear(iFlt) = Me.m_Data.FishRateGear(iFlt, 12 * iyf - 11)
-                Next iFlt
+            ElseIf m_search.SearchMode = eSearchModes.MSE Then
+                'xxxxxxxxxxxxxxxxxxxxxx
+                'MSE
+                'xxxxxxxxxxxxxxxxxxxxxxx
+                'vary Fgear(nFleets) and Qyear(nFleets)
+                Me.m_MSE.VaryEffortCatchability(Fgear, QYear, iYear)
 
             End If
 
@@ -3883,19 +3872,37 @@ Namespace Ecosim
         End Sub
 
         ''' <summary>
-        ''' Populates FishRateNo(group,time) with fishing mortality rates for all time steps
+        ''' Populates FishRateNo(group,time) with base fishing mortality rates for all time steps
         ''' </summary>
         ''' <remarks>
         ''' Fishing mortality rates include fishing effort, density dependent catchability and discard mortality rates. 
         ''' Called to initialize <see cref="cEcosimDatastructures.FishRateNo">FishRateNo(group,time)</see> or when effort changes.
         ''' </remarks>
-        Public Sub SetFFromGear(ByVal QYear() As Single)
+        Public Sub SetBaseFFromGear()
             'calculates Fishrateno by group from fishing efforts except for groups flagged
             'to be forced by group F over time using csv file (fisforced(i)=true if i is forced in csv)
             Dim t As Integer
 
+            Dim QYear() As Single
+            ReDim QYear(Me.nGroups)
+            For i As Integer = 1 To Me.nGroups
+                QYear(i) = 1
+            Next
+
+            Me.setDenDepCatchMult(m_Data.StartBiomass)
+
             For t = 1 To m_Data.NTimes
-                SetFtimeFromGear(m_Data.StartBiomass, t, m_Data.FishTime, QYear, False)
+                SetFtimeFromGear(m_Data.StartBiomass, t, QYear, False)
+            Next
+
+        End Sub
+
+        Private Sub setDenDepCatchMult(ByVal BB() As Single)
+
+            ReDim Qmult(m_Data.nGroups)
+            'Density dependent catchability recalculation
+            For igrp As Integer = 1 To m_Data.nGroups
+                Qmult(igrp) = m_Data.QmQo(igrp) / (1 + (m_Data.QmQo(igrp) - 1) * BB(igrp) / m_Data.StartBiomass(igrp))
             Next
 
         End Sub
@@ -3905,30 +3912,14 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="BB">Biomass(group).</param>
         ''' <param name="t">Timestep.</param>
-        ''' <param name="fishtime">Fishing Mortality at the current time step.</param>
         ''' <param name="PredEffort">Boolean flag True if effort being predicted, False otherwise.</param>
         ''' <remarks>
-        ''' Called by <see cref="SetFFromGear">SetFFromGear()</see> during initialization 
+        ''' Called by <see cref="SetBaseFFromGear">SetFFromGear()</see> during initialization 
         ''' and by <see cref="RunModelValue">RunModelValue</see> when the MSE is running so Fishing Mortality includes discards at the current discard mortality rates.</remarks>
-        Friend Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByRef fishtime() As Single, ByVal QYear() As Single, ByVal PredEffort As Boolean)
+        Friend Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean)
             Dim i As Integer, ig As Integer, Ft As Single
 
-            ReDim Qmult(m_Data.nGroups)
-
-            'Density dependent catchability recalculation
-            For i = 1 To m_Data.nGroups
-                Qmult(i) = m_Data.QmQo(i) / (1 + (m_Data.QmQo(i) - 1) * BB(i) / m_Data.StartBiomass(i))
-            Next
-
-            If Me.m_search.SearchMode = eSearchModes.MSE Then
-
-                'do the regulatory reduction in FishRateGear(ig,t) for each ig (gear) 
-                'based on the target fishing mortalty set by the user
-                Me.m_MSE.DoRegulations(BB, Qmult, QYear, t)
-
-            End If
-
-            'Apply this to get the actual fishing mortality
+            'fishing mortality at the current effort
             For i = 1 To m_Data.nGroups
                 If (m_Data.FisForced(i) = False Or PredEffort) Then
 
@@ -3944,6 +3935,7 @@ Namespace Ecosim
                     m_Data.FishRateNo(i, t) = Qmult(i) * Ft
                     m_Data.FishTime(i) = m_Data.FishRateNo(i, t)
                 End If
+
             Next i
 
         End Sub

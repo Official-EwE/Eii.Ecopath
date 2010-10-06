@@ -88,9 +88,9 @@ Namespace MSEBatchManager
         ''' <summary>
         ''' Vary the Primary Production forcing function value of the current time step
         ''' </summary>
-        ''' <param name="tval"></param>
+        ''' <param name="ForcingMultTime"></param>
         ''' <remarks></remarks>
-        Public Sub varyForcing(ByVal tval() As Single)
+        Public Sub varyForcing(ByRef ForcingMultTime() As Single)
             Dim iGrp As Integer = Me.BatchData.ForcingGroup(Me.m_curForceIter)
             Dim simData As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
@@ -103,10 +103,10 @@ Namespace MSEBatchManager
                     Dim iforce As Integer = simData.FunctionNumber(iGrp, iGrp, ifn)
                     'Yes vary the forcing data for this timestep
                     'System.Console.Write("tval=" & tval(iforce).ToString & ", ")
-                    tval(iforce) = Me.m_MSE.RandNormDist(tval(iforce), Me.BatchData.STDevForcing)
+                    ForcingMultTime(iforce) = Me.m_MSE.RandNormDist(Me.BatchData.STDevForcing, ForcingMultTime(iforce))
 
                     'constrain the forcing value to >= zero
-                    If tval(iforce) < 0 Then tval(iforce) = 0
+                    If ForcingMultTime(iforce) < 0 Then ForcingMultTime(iforce) = 0
                     'System.Console.WriteLine("varied=" & tval(iforce).ToString)
 
                 End If

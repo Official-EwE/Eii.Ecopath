@@ -111,6 +111,14 @@ Public Class cTimeSeriesDataStructures
         Me.ClearTimeSeries()
     End Sub
 
+    Private Sub ClearForcing()
+
+        Array.Clear(Me.PoolForceBB, 0, Me.PoolForceBB.Length)
+        Array.Clear(Me.PoolForceCatch, 0, Me.PoolForceCatch.Length)
+        Array.Clear(Me.PoolForceZ, 0, Me.PoolForceZ.Length)
+
+    End Sub
+
     Friend Sub RedimTimeSeriesDatasets()
 
         ReDim Me.iDatasetDBID(nDatasets)
@@ -363,6 +371,8 @@ Public Class cTimeSeriesDataStructures
 
         'clear out the FishForced flag
         EcosimData.clearFishForced()
+
+        Me.ClearForcing()
 
         Try
 

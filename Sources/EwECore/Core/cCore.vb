@@ -1654,12 +1654,12 @@ Public Class cCore
         Me.m_EcoSimData.setEffortToDefault(lstEffortToReset)
 
         'set fishing mortality from Fleet Effort/Gear
-        Dim QYear() As Single
-        ReDim QYear(Me.nGroups)
-        For i As Integer = 1 To Me.nGroups
-            QYear(i) = 1
-        Next
-        Me.m_EcoSim.SetFFromGear(QYear)
+        'Dim QYear() As Single
+        'ReDim QYear(Me.nGroups)
+        'For i As Integer = 1 To Me.nGroups
+        '    QYear(i) = 1
+        'Next
+        Me.m_EcoSim.SetBaseFFromGear()
 
         Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
 
@@ -5045,6 +5045,22 @@ Public Class cCore
         ' Flag datasource as dirty
         Me.DataSource.SetChanged(eCoreComponentType.MSE)
         Me.m_StateMonitor.UpdateDataState(DataSource)
+    End Sub
+
+    Public Sub SetDefaultTFM()
+
+        ' Sanity check
+        Debug.Assert(Me.StateMonitor.HasEcosimLoaded())
+        ' Set default MSE quota share values
+        Me.MSEManager.SetDefaultTFM()
+        Me.m_StateMonitor.SetEcoSimLoaded(True)
+        ' Send out data changed message for MSE
+        Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
+        Me.m_publisher.sendAllMessages()
+        ' Flag datasource as dirty
+        Me.DataSource.SetChanged(eCoreComponentType.MSE)
+        Me.m_StateMonitor.UpdateDataState(DataSource)
+
     End Sub
 
 
@@ -11496,12 +11512,12 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
                 Case eDataTypes.FishingEffort, eDataTypes.FishingPolicyManager
-                    Dim qyear() As Single
-                    ReDim qyear(Me.nGroups)
-                    For i As Integer = 1 To Me.nFleets : qyear(i) = 1 : Next
+                    'Dim qyear() As Single
+                    'ReDim qyear(Me.nGroups)
+                    'For i As Integer = 1 To Me.nFleets : qyear(i) = 1 : Next
 
                     'reset the mortaility due to fishing to the new values
-                    Me.m_EcoSim.SetFFromGear(qyear)
+                    Me.m_EcoSim.SetBaseFFromGear()
 
                     'now load the interface data
                     'if the FishRate shape manager has changed the data then fishmort was also changed

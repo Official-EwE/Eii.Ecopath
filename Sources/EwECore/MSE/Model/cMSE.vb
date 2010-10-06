@@ -84,6 +84,12 @@ Namespace MSE
         'FishRateNo(), FishForced(), PoolForceZ()?? See cTimeSeriesDataStructures.DoDatValCalculations(). I think Effort is already dealt with.
 
 
+        'ToDo_jb 29-Sept-2010 why is there no variation when running Fixed F policy
+        'ToDo_jb 29-Sept-2010 fix StartT it needs to be 1 when Start Year = 1 
+        'ToDo_jb 29-Sept-2010 check setFTimeToGear
+
+
+
         'Filenames prefixes for output file
         Public Const BIOMASS_DATA As String = "MSE_Biomass_"
         Public Const CATCH_DATA As String = "MSE_CatchByGroup_"
@@ -107,8 +113,8 @@ Namespace MSE
         Private m_Ecosim As Ecosim.cEcoSimModel
         Private m_Search As cSearchDatastructures
         Private m_esData As cEcosimDatastructures
-
         Private m_epdata As cEcopathDataStructures
+        Private m_refData As cTimeSeriesDataStructures
 
         Private m_batchManager As MSEBatchManager.cMSEBatchManager
 
@@ -132,6 +138,7 @@ Namespace MSE
 
         Private m_MSYCallBack As MSYProgressDelegate
         Private m_baseEffort(,) As Single 'base value relative effort FishRateGear()
+        Private m_baseFishForced() As Boolean
 
         Private m_DataDir As String
 
@@ -147,6 +154,9 @@ Namespace MSE
         ''' <summary>Current year index computed by Ecosim</summary>
         ''' <remarks>set when Ecosim calls SetTime()</remarks>
         Private m_curYear As Integer
+
+        Private m_StartT As Integer
+        Private m_EndT As Integer
 
 #End Region
 
@@ -183,6 +193,19 @@ Namespace MSE
             End Get
         End Property
 
+
+        Private ReadOnly Property StartT() As Integer
+            Get
+                Return Me.m_StartT
+            End Get
+        End Property
+
+        Private ReadOnly Property EndT() As Integer
+            Get
+                Return Me.m_EndT
+            End Get
+        End Property
+
 #End Region
 
 #Region "Initialization and Connection"
@@ -191,7 +214,7 @@ Namespace MSE
             Me.m_core = theCore
         End Sub
 
-        Public Sub Init(ByVal MSEData As cMSEDataStructures, ByVal Ecosim As Ecosim.cEcoSimModel, ByVal SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal PluginManager As cPluginManager)
+        Public Sub Init(ByVal MSEData As cMSEDataStructures, ByVal Ecosim As Ecosim.cEcoSimModel, ByVal SearchData As cSearchDatastructures, ByVal EcopathData As cEcopathDataStructures, ByVal RefData As cTimeSeriesDataStructures, ByVal PluginManager As cPluginManager)
 
             Me.m_data = MSEData
             Me.m_Ecosim = Ecosim
@@ -199,6 +222,7 @@ Namespace MSE
             Me.m_esData = m_Ecosim.m_Data
             Me.m_epdata = EcopathData
             Me.m_pluginManager = PluginManager
+            Me.m_refData = RefData
 
             Me.m_EconomicData = cEconomicDataSource.getInstance()
             Me.m_data.InitForRun()
@@ -299,14 +323,13 @@ Namespace MSE
 
                 Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
 
-                Me.DisableFTimeSeries()
-
                 'initialize Ecosim
                 m_Ecosim.Init(False)
 
-                ' Me.InitOutputFiles()
-
                 Me.InitResults()
+
+                'sets the start and end timesteps using StartYear and EndYear
+                Me.setStartTEndT()
 
                 Me.setEffortForRun()
 
@@ -318,6 +341,8 @@ Namespace MSE
                     If Me.m_data.Blim(igrp) < 0 Then Me.m_data.Blim(igrp) = 0
                     If Me.m_data.Bbase(igrp) < 0 Then Me.m_data.Bbase(igrp) = 0
                 Next
+
+
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -345,7 +370,7 @@ Namespace MSE
                     End If
                 End If
 
-                Me.SetEffortToBaseValue(True)
+                Me.resetEffort(True)
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".FinalizeRun() Exception: " & ex.Message)
@@ -353,7 +378,7 @@ Namespace MSE
 
         End Sub
 
-       
+
 
         Private Sub InitResults()
             Try
@@ -442,6 +467,10 @@ Namespace MSE
                 Next
             Next
 
+            n = Me.m_esData.FisForced.Length
+            ReDim Me.m_baseFishForced(n - 1)
+            Array.Copy(Me.m_esData.FisForced, Me.m_baseFishForced, n)
+
             If Me.m_Search.DiscountFactor > 0 Then
                 TotValBase = Math.Abs(TotValBase) / Me.m_Search.DiscountFactor
                 EmployBase = Math.Abs(EmployBase) / Me.m_Search.DiscountFactor
@@ -458,44 +487,26 @@ Namespace MSE
         End Sub
 
 
-        ''' <summary>
-        ''' Disable/Unload and F (fishing mortality) timeseries 
-        ''' </summary>
-        ''' <remarks>Fishing mortality timeseries prevent the current effort from being used to set fishing mortality FishTime(group) on a group.</remarks>
-        Private Sub DisableFTimeSeries()
-            Dim bDataUnloaded As Boolean
+        '''' <summary>
+        '''' Disable/Unload and F (fishing mortality) timeseries 
+        '''' </summary>
+        '''' <remarks>Fishing mortality timeseries prevent the current effort from being used to set fishing mortality FishTime(group) on a group.</remarks>
+        'Private Sub DisableFTimeSeries()
 
-            Try
+        '    Try
 
-                If Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
-                    'if not using a quota/effort regulation then no need to unload the F timeseries
-                    'this mode is evaluating the current Ecosim scenario if there is timeseries loaded we need to leave it in place
-                    Exit Sub
-                End If
+        '        If Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
+        '            'if not using a quota/effort regulation then no need to unload the F timeseries
+        '            'this mode is evaluating the current Ecosim scenario if there is timeseries loaded we need to leave it in place
+        '            Exit Sub
+        '        End If
 
-                If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
-                    Dim DS As cTimeSeriesDataset
-                    DS = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
-                    For Each ts As cTimeSeries In DS
-                        If ts.TimeSeriesType = eTimeSeriesType.FishingMortality And ts.Enabled = True Then
-                            'there is an F in time series, so turn it off. 
-                            ts.Enabled = False
-                            bDataUnloaded = True
-                        End If
-                    Next
+        '    Catch ex As Exception
+        '        System.Console.WriteLine(ex.Message)
+        '        cLog.Write(ex)
+        '    End Try
 
-                    If bDataUnloaded Then
-                        m_core.UpdateTimeSeries()
-                    End If
-
-                End If 'If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
-
-            Catch ex As Exception
-                System.Console.WriteLine(ex.Message)
-                cLog.Write(ex)
-            End Try
-
-        End Sub
+        'End Sub
 
         ''' <summary>
         ''' Set the Effort to a max value if running in default mode TrackUseQuota
@@ -508,23 +519,10 @@ Namespace MSE
                 'Only set Effort high if using controls and EffortSource is NoCap
                 If Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.NoCap Then
 
-                    'set regulatory start and end year 
-                    Dim Stime As Integer = (Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear + 1
-                    Dim Endtime As Integer
-                    'is the endYear being used
-                    If Me.m_data.EndYear > 0 Then
-                        'yes set the last year regulations will be used
-                        Endtime = Me.m_data.EndYear * Me.m_esData.NumStepsPerYear
-                    Else
-                        'no let the regulation run to the end of the Ecosim run
-                        Endtime = Me.m_esData.NTimes
-                    End If
-
-
                     For iflt As Integer = 1 To Me.m_data.nFleets
                         'Only if this fleet is regulated
                         If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NoControls Then
-                            For it As Integer = Stime To Endtime
+                            For it As Integer = Me.StartT To Me.EndT
                                 Me.m_esData.FishRateGear(iflt, it) = DEFAULT_EFFORT
                             Next it
                         End If 'Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed
@@ -543,17 +541,19 @@ Namespace MSE
         ''' Set Effort back to its original value after a run
         ''' </summary>
         ''' <remarks>Always set effort base to its original value!</remarks>
-        Private Sub setEffortToOriginal()
+        Private Sub setEffortToBase()
 
             Try
 
-                For iflt As Integer = 1 To Me.m_data.nFleets
-                    If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NoControls Then
-                        For it As Integer = Me.m_data.StartYear To Me.m_data.nTimeSteps
-                            Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
-                        Next it
-                    End If
-                Next iflt
+                Dim n As Integer = Me.m_esData.FishRateGear.GetUpperBound(1)
+                'check the bounds
+                Debug.Assert(Me.m_baseEffort.GetUpperBound(1) >= n, Me.ToString & ".setEffortToOriginal() Effort array out of bounds!")
+
+                For iflt As Integer = 1 To m_core.nFleets
+                    For it As Integer = 1 To n
+                        Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
+                    Next
+                Next
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -565,6 +565,7 @@ Namespace MSE
 
         Private Function OutputWriterFactory() As IMSEOutputWriter
             Dim output As IMSEOutputWriter
+
             If Me.m_data.bInBatch Then
                 output = Me.m_batchManager.OutputWriter
             Else
@@ -643,9 +644,8 @@ Namespace MSE
                     Me.PostPluginData()
 
                     Me.SumValues()
+                    Me.resetEffort()
                     Me.PostMessage(eMSERunStates.IterationCompleted)
-
-                    SetEffortToBaseValue()
 
                     If Me.m_data.StopRun Then Exit For
 
@@ -707,7 +707,7 @@ Namespace MSE
 
         End Sub
 
-        Private Sub SetEffortToBaseValue(Optional ByVal LastCall As Boolean = False)
+        Private Sub resetEffort(Optional ByVal LastCall As Boolean = False)
 
             'only reset effort if we are using the regulations
             If Not Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations Then
@@ -715,35 +715,41 @@ Namespace MSE
             End If
 
             Try
+                'Effort is being regulated
+                'Always set Effort back to it its base value (Effort from the Sceintific Interface)
+                Me.setEffortToBase()
 
-                '   If Me.m_data.EffortSource = eMSEEffortSource.EcosimEffort Or LastCall Then
-                'if we are tracking the Ecosim effort and regulating it via the quota 
-                'then we need to set effort to original input ecosim effort
-                Dim n As Integer = Me.m_esData.FishRateGear.GetUpperBound(1)
-                For iflt As Integer = 1 To m_core.nFleets
-                    For it As Integer = 1 To n
-                        Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
-                    Next
-                Next
+                'Set FisForced() (F timeseries loaded) back to it's base value
+                Me.setFishForcedToBase()
 
-                If Me.m_data.EffortSource = eMSEEffortSource.NoCap Then
-
+                If Not LastCall Then
+                    'Not the last call MSE will do another iteration
+                    'Set effort for the run type
                     Me.setEffortForRun()
 
-                End If
+                Else
+                    'Last Call the MSE is done
+                    'reset F back to its base value based on the effort
+                    Me.m_Ecosim.SetBaseFFromGear()
 
-                If LastCall Then
-                    Dim q() As Single
-                    ReDim q(Me.m_data.nFleets)
-                    For i As Integer = 1 To Me.m_data.nFleets : q(i) = 1 : Next
-                    'set fishing mortality to the base effort
-                    Me.m_Ecosim.SetFFromGear(q)
                 End If
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".SetEffortToBaseValue() Exception: " & ex.Message)
                 cLog.Write(ex)
             End Try
+
+        End Sub
+
+
+        Private Sub setFishForcedToBase()
+
+            'reloads time series forcing data into core arrays and resets FisForced(groups)
+            'F into FishRateNo()
+            Me.m_core.m_TSData.DoDatValCalculations(Me.m_esData)
+
+            'resets F in FishRateNo() based on forced Catches or Effort 
+            Me.m_Ecosim.SetBaseFFromGear()
 
         End Sub
 
@@ -1032,6 +1038,7 @@ Namespace MSE
         End Sub
 
 
+
         ''' <summary>
         ''' Set Fgear() and QYear() for a management strategy evaluation
         ''' </summary>
@@ -1042,11 +1049,23 @@ Namespace MSE
         Friend Sub VaryEffortCatchability(ByRef Fgear() As Single, ByRef QYear() As Single, ByVal iYear As Integer)
 
             Try
+
                 ' increase catchability with the annual growth factor, irrespective of regulation or closed loop type
                 For i As Integer = 1 To Me.m_epdata.NumFleet
                     If iYear > 1 Then
-                        QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * Rnd())
-                    End If
+
+                        If Me.isTStepRegulated(Me.m_curT) Then
+
+                            'Regulated Vary QYear()
+                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * Rnd())
+
+                        Else
+                            'Not Regulated 
+                            'Catchability should not changed over time
+                            QYear(i) = 1
+
+                        End If 'If Me.isTStepRegulated(Me.m_curT) Then
+                    End If 'If iYear > 1 Then
                 Next i
 
                 If Not Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
@@ -1054,6 +1073,7 @@ Namespace MSE
                     Exit Sub
                 End If
 
+                'Vary Effort
                 For i As Integer = 1 To Me.m_epdata.NumFleet
                     If iYear > 1 Then
                         If m_data.Fwc(i, 1) > 0 Then Fgear(i) = Fgear(i) * m_data.Fwc(i, 0) / m_data.Fwc(i, 1)
@@ -1160,12 +1180,12 @@ Namespace MSE
         End Sub
 
 
-        Friend Sub VaryForcing(ByVal tval() As Single)
+        Friend Sub VaryForcing(ByRef ForcingMultTime() As Single)
 
             Try
 
                 If Me.m_data.bInBatch Then
-                    Me.BatchManager.varyForcing(tval)
+                    Me.BatchManager.varyForcing(ForcingMultTime)
                 End If
 
             Catch ex As Exception
@@ -1191,12 +1211,57 @@ Namespace MSE
 
         End Sub
 
-        Public Sub DoRegulations(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+        Public Sub DoRegulations(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal iTimeStep As Integer, ByVal iMonth As Integer, ByVal iYear As Integer)
 
             Try
 
-                Me.RegulateEffort(Biomass, QMult, QYear, t)
-                Me.CalcCatch(Biomass, QMult, QYear, t)
+                Me.setTime(iTimeStep, iYear)
+
+                'Is the effort regulated
+                If Me.Data.UseQuotaRegs Then
+                    'Yes Quota use to regulate effort
+
+                    'First month of the year
+                    If iMonth = 1 Then
+                        'Only do the assessment and update the quotas once at the start of each year
+                        Me.DoAssessment(Biomass)
+                        'update the Quota to the biomass from the assessment
+                        Me.UpdateQuotas(Biomass)
+                    End If
+
+                    'Is this timestep regulated
+                    If Me.isTStepRegulated(iTimeStep) Then
+                        'Yes timestep is regulated
+
+                        'Regulate the effort every month
+                        Me.RegulateEffort(Biomass, QMult, QYear, iTimeStep)
+                        Me.CalcCatch(Biomass, QMult, QYear, iTimeStep)
+
+                        'Yes  
+                        'Ecosim will not set F from Effort if there is F timeseries loaded
+                        'this tell Ecosim that there is NO timeseries loaded, even if there is...
+                        For igrp As Integer = 1 To Me.m_data.NGroups
+                            Me.m_esData.FisForced(igrp) = False
+                        Next
+
+                        Me.m_Ecosim.SetFtimeFromGear(Biomass, iTimeStep, QYear, Me.m_esData.PredictSimEffort)
+
+                    Else 'Me.isTStepRegulated(iTimeStep)
+                        'No Timestep is NOT regulated
+
+                        'set FishTime(group) (F at timestep) using FishYear and load timeseries data
+                        Me.setFishTime(Biomass, Me.m_Search.FishYear, QMult, iTimeStep, iYear)
+
+                    End If 'Me.isTStepRegulated(iTimeStep)
+
+                Else ' If Me.Data.UseQuotaRegs Then
+                    'No quota not used to regulate effort
+
+                    'set FishTime(group) (F at timestep) using FishYear and load timeseries data
+                    Me.setFishTime(Biomass, Me.m_Search.FishYear, QMult, iTimeStep, iYear)
+
+                End If 'Me.Data.UseQuotaRegs
+
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".DoRegulations() Exception: " & ex.Message)
@@ -1207,15 +1272,68 @@ Namespace MSE
         End Sub
 
 
-        Private Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+        Public Sub setFishTime(ByVal Biomass() As Single, ByRef FishYear() As Single, ByVal Qmult() As Single, ByVal iTime As Integer, ByVal iyear As Integer)
+            Dim igrp As Integer
+            'Set FishYear(group) Fishing mortality rate
+            'Use FishYear to set FishRateNo(group,time) fishing mortality rate by group,time
+            'FishTime(group) F * [density dependant catchability] for the current timestep at the current effort
+
+            '1 set FishYear()
+            If Not Me.isTStepRegulated(iTime) Then
+                'NOT in a regulated timestep
+                'Ok to use timeseries data
+
+                For igrp = 1 To Me.m_data.NGroups
+                    'Forced F
+                    If Me.m_esData.FisForced(igrp) Then
+                        'F forcing data was loaded into FishRateNo(group,time) by DoDatValCalculations()
+                        FishYear(igrp) = Me.m_esData.FishRateNo(igrp, iTime)
+                    End If
+
+                    'forced Catches
+                    If iyear <= Me.m_refData.NdatYear And Me.m_refData.PoolForceCatch(igrp, iyear) > 0 Then
+                        FishYear(igrp) = Me.m_refData.PoolForceCatch(igrp, iyear) / Biomass(igrp)
+                        If FishYear(igrp) > 3 Then FishYear(igrp) = 3
+                    End If
+
+                    'Forced Mortality (Z)
+                    'PoolForceZ(iGroup,0) is used in Derivt() to force mortality PoolForceZ(group, 0) = 0 is No forcng
+                    If iyear <= Me.m_refData.NdatYear Then
+                        Me.m_refData.PoolForceZ(igrp, 0) = CSng(IIf(Me.m_refData.PoolForceZ(igrp, iyear) > 0, Me.m_refData.PoolForceZ(igrp, iyear), 0))
+                    End If
+
+                Next igrp
+
+            Else
+                'Time step is Regulated
+                'Turn OFF Forced Mortality PoolForcedZ
+                For igrp = 1 To Me.m_data.NGroups
+                    Me.m_refData.PoolForceZ(igrp, 0) = 0
+                Next
+
+            End If 'If Not Me.isTStepRegulated(iTime) Then
+
+            'NOW
+            '2 set FishRateNo(group,time) to FishYear(group)
+            '3 set FishTime(group) to FishRateNo(group,time) * [density dep catchability]
+            For igrp = 1 To Me.m_data.NGroups
+
+                'set FishRateNo() to computed F from FishYear() and/or loaded timeseries data is not in regulated timestep
+                Me.m_esData.FishRateNo(igrp, iTime) = FishYear(igrp)
+                'FishTime() is F at current t for Ecosim (Derivt)
+                Me.m_esData.FishTime(igrp) = Me.m_esData.FishRateNo(igrp, iTime) * Qmult(igrp)
+
+            Next igrp
+
+        End Sub
+
+        Friend Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
             Dim i As Integer, ig As Integer, Elim As Single, Emax As Single
             Dim ci As Single
 
-
-            If Not Me.CheckStartEndYear(t) Then
+            If Not Me.isTStepRegulated(t) Then
                 Exit Sub
             End If
-
 
             'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
             For ig = 1 To m_esData.nGear
@@ -1301,19 +1419,19 @@ Namespace MSE
         End Sub
 
 
-        Private Function CheckStartEndYear(ByVal t As Single) As Boolean
-            Dim tStart As Integer = (Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear
-            Dim tEnd As Integer
-
-            'EndYear is only set by the BatchManager for all other runs it will be -9999
+        Private Sub setStartTEndT()
+            Me.m_StartT = (Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear + 1
             If Me.m_data.EndYear > 0 Then
-                tEnd = Me.m_data.EndYear * Me.m_esData.NumStepsPerYear
+                Me.m_EndT = Me.m_data.EndYear * Me.m_esData.NumStepsPerYear
             Else
-                tEnd = Me.m_data.nTimeSteps
+                Me.m_EndT = Me.m_esData.NTimes
             End If
+        End Sub
 
-            'is this timestep > start year
-            If t > tStart And t <= tEnd Then
+        Public Function isTStepRegulated(ByVal t As Single) As Boolean
+
+            'is this timestep in bounds
+            If t >= Me.m_StartT And t <= Me.m_EndT Then
                 Return True
             End If
             'don't regulate effort
@@ -1389,7 +1507,7 @@ Namespace MSE
             'this allows the interface and database to remain the same Zero means TAC() and FixedF() are NOT USED.
             'It would be tricky to fix this with a flag and not break existing models.
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-'
+            '
             '1 Set the quota via Fixed Escapement, Fixed Fishing Mortality or Target Fishing Mortality(hockey stick)
             '2 Apply uncertainty to the Quota
             '3 Share the Quota between the fleets
@@ -1509,7 +1627,7 @@ Namespace MSE
 
         End Function
 
-        Function RandNormDist(ByVal mean As Single, ByVal stdev As Single) As Single
+        Function RandNormDist(ByVal stdev As Single, ByVal mean As Single) As Single
             Return Normal() * stdev + mean
         End Function
 
@@ -1748,7 +1866,7 @@ Namespace MSE
                         If Me.m_data.StopRun Then Exit For
 
                         'Finally reset the effort to the original effort (for all fleets)
-                        SetEffortToBaseValue(True)
+                        resetEffort(True)
                         'End If
                         'End If
                         'Next iGroup

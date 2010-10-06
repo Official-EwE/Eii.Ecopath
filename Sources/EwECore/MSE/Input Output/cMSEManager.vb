@@ -98,7 +98,7 @@ Namespace MSE
 
         Public Sub UpdateAssesmentVars()
 
-            Me.m_MSE.InitAssessment()
+            ' Me.m_MSE.InitAssessment()
 
         End Sub
 
@@ -483,7 +483,7 @@ Namespace MSE
             'this may have to change when the input/output object are created
             Me.m_MSEdata.Init(theCore)
 
-            Me.m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, Me.m_core.PluginManager)
+            Me.m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, m_core.m_TSData, Me.m_core.PluginManager)
 
             'Initialize the Batch manager
             Me.m_Batch.Init(Me.m_core, Me.m_MSE)
@@ -851,6 +851,17 @@ Namespace MSE
         Public Sub SetDefaultQuotaShare()
 
             Me.m_MSEdata.setDefaultQuotaShare()
+            Me.Load()
+
+        End Sub
+
+
+        ''' <summary>
+        ''' Reset quota shares to defaults.
+        ''' </summary>
+        Public Sub SetDefaultTFM()
+
+            Me.m_MSEdata.setDefaultTFM()
             Me.Load()
 
         End Sub

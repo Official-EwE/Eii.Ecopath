@@ -729,6 +729,20 @@ Namespace MSE
 
         End Sub
 
+        Public Sub setDefaultTFM()
+
+            For igrp As Integer = 1 To Me.NGroups
+
+                'Ecosim has not initialized at this point so some values are not available
+                Blim(igrp) = Me.m_EPData.B(igrp) * 0.1!
+                Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4!
+                Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
+                Fmin(igrp) = 0
+
+            Next igrp
+
+        End Sub
+
 
         ''' <summary>
         ''' Set default values for the recruitment model

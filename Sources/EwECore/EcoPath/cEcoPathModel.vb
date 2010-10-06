@@ -1820,8 +1820,8 @@ NextPivot:
             Dim j As Integer
             Dim MM2 As Double
             Dim Sum As Single
-            'Estimate EE from
-            For j = 1 To m_Data.NumLiving                              'other parameters
+            'Estimate EE from other parameters
+            For j = 1 To m_Data.NumLiving
                 Pass = 0
                 If m_Data.EE(j) < 0 And m_Data.B(j) > 0 And m_Data.PB(j) > 0 Then
                     MM2 = 0
