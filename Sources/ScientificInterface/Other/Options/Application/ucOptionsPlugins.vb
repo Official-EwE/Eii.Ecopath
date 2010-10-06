@@ -266,6 +266,7 @@ Namespace Other
         Private ReadOnly Property SelectedPluginAssembly() As cPluginAssembly
             Get
                 Dim tn As TreeNode = Me.m_tvPlugins.SelectedNode
+                If (tn Is Nothing) Then Return Nothing ' May have none
                 If (TypeOf tn.Tag Is cPluginAssembly) Then
                     Return DirectCast(tn.Tag, cPluginAssembly)
                 ElseIf (TypeOf tn.Tag Is IPlugin) Then
