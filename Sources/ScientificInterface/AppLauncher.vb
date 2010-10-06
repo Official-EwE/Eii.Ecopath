@@ -2648,7 +2648,14 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnReportBug(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpBugReport.Click
-        BugReporter.InvokeBugReport()
+        Dim strError As String = ""
+        If Not BugReporter.InvokeBugReport() Then
+            Dim msg As New cMessage(My.Resources.PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT, _
+                                    eMessageType.NotSet, _
+                                    eCoreComponentType.External, _
+                                    eMessageImportance.Warning)
+            Me.Core.Messages.SendMessage(msg)
+        End If
     End Sub
 
 #End Region ' Main Menu - Help

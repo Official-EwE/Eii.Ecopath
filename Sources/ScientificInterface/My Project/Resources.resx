@@ -2771,4 +2771,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_SOURCE" xml:space="preserve">
     <value>Source</value>
   </data>
+  <data name="PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT" xml:space="preserve">
+    <value>Ecopath was unable launch your default email program. Please send your bug report to us at ewedevteam@gmail.com, and please state the version of the software that you are using.</value>
+  </data>
 </root>

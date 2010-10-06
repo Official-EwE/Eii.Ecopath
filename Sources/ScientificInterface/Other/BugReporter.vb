@@ -19,7 +19,7 @@ Public Class BugReporter
     ''' Launch an email client with a pre-formatted bug report message.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Shared Sub InvokeBugReport()
+    Public Shared Function InvokeBugReport() As Boolean
 
         Dim ub As New UrlBuilder("mailto:ewedevteam@gmail.com")
         Dim sbBody As New System.Text.StringBuilder
@@ -43,8 +43,10 @@ Public Class BugReporter
             System.Diagnostics.Process.Start(ub.ToString())
         Catch ex As Exception
             ' Wow, no mail client installed? 
+            Return False
         End Try
+        Return True
 
-    End Sub
+    End Function
 
 End Class
