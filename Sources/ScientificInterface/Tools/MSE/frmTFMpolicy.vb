@@ -81,6 +81,14 @@ Namespace Ecosim
             Me.Redraw()
         End Sub
 
+        Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbDefaultTFM.Click
+            Try
+                Me.UIContext.Core.SetDefaultTFM()
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Sub
+
 #End Region ' Events
 
 #Region " Internals "

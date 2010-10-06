@@ -29,9 +29,12 @@
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
             Me.m_grid = New ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy
+            Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
+            Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
+            Me.ToolStrip1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_scMain
@@ -46,6 +49,7 @@
             '
             'm_scMain.Panel2
             '
+            Me.m_scMain.Panel2.Controls.Add(Me.ToolStrip1)
             Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
             '
             'm_graph
@@ -64,6 +68,8 @@
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = True
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -74,7 +80,6 @@
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
-            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
@@ -89,8 +94,19 @@
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
+            '
+            'ToolStrip1
+            '
+            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbDefaultTFM})
+            resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
+            Me.ToolStrip1.Name = "ToolStrip1"
+            '
+            'tsbDefaultTFM
+            '
+            Me.tsbDefaultTFM.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.tsbDefaultTFM, "tsbDefaultTFM")
+            Me.tsbDefaultTFM.Name = "tsbDefaultTFM"
             '
             'frmTargetFishingMortalityPolicy
             '
@@ -100,7 +116,10 @@
             Me.Name = "frmTargetFishingMortalityPolicy"
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
+            Me.m_scMain.Panel2.PerformLayout()
             Me.m_scMain.ResumeLayout(False)
+            Me.ToolStrip1.ResumeLayout(False)
+            Me.ToolStrip1.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -108,6 +127,8 @@
         Private WithEvents m_grid As Ecosim.gridTargetFishingMortalityPolicy
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
+        Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
+        Friend WithEvents tsbDefaultTFM As System.Windows.Forms.ToolStripButton
 
     End Class
 
