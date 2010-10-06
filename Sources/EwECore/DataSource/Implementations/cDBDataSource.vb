@@ -7597,8 +7597,8 @@ Namespace DataSources
 
             Try
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioHabitat WHERE (ScenarioID={0}) AND (HabitatID={1})", iScenarioID, iHabitatID))
-                ' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
-                bSucces = Me.LoadEcospaceScenario(iScenarioID)
+                '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
+                'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace habitatID {1}", ex.Message, iHabitatID))
                 bSucces = False
@@ -7815,8 +7815,8 @@ Namespace DataSources
 
             Try
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioRegion WHERE (ScenarioID={0}) AND (RegionID={1})", iScenarioID, iRegionID))
-                ' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
-                bSucces = Me.LoadEcospaceScenario(iScenarioID)
+                '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
+                'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace regionID {1}", ex.Message, iRegionID))
                 bSucces = False
@@ -8777,8 +8777,8 @@ Namespace DataSources
 
             Try
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioMPA WHERE (ScenarioID={0}) AND (MPAID={1})", iScenarioID, iMPAID))
-                ' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
-                bSucces = Me.LoadEcospaceScenario(iScenarioID)
+                '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
+                'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace MPAID {1}", ex.Message, iMPAID))
                 bSucces = False
@@ -9075,8 +9075,8 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE (LayerID={0})", iLayerID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iLayerID))
-                ' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
-                bSucces = Me.LoadEcospaceScenario(iScenarioID)
+                '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
+                'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace Importance Layer {1}", ex.Message, iLayerID))
                 bSucces = False
