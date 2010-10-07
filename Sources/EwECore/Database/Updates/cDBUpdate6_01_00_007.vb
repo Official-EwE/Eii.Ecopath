@@ -120,7 +120,7 @@ Friend Class cDBUpdate6_01_00_007
             End While
 
         Catch ex As Exception
-            bSucces = False
+            ' bSucces = False 
         End Try
 
         db.ReleaseWriter(writer, True)
