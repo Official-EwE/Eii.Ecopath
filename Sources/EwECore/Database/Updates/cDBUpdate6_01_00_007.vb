@@ -79,6 +79,7 @@ Friend Class cDBUpdate6_01_00_007
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD PRIMARY KEY (GroupID, VarName)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD FOREIGN KEY (GroupID) REFERENCES EcopathGroup(GroupID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupPedigree ADD FOREIGN KEY (LevelID) REFERENCES Pedigree(LevelID)")
+        Me.LogProgress("ChangePedigreeStorage", bSucces)
         Return bSucces
 
     End Function
@@ -97,9 +98,15 @@ Friend Class cDBUpdate6_01_00_007
             While reader.Read()
 
                 Dim strKey As String = CStr(reader("ValueID"))
-                Dim iPedigreeLevelID As Long = CLng(reader("PedigreeLevelID"))
+                Dim iPedigreeLevelID As Long = 0
                 Dim iGroupID As Integer = 0
                 Dim strVarName As String = ""
+
+                Try
+                    iPedigreeLevelID = CLng(reader("PedigreeLevelID"))
+                Catch ex As Exception
+                    iPedigreeLevelID = 0
+                End Try
 
                 If strKey.IndexOf(strGroupID) = 0 And iPedigreeLevelID > 0 Then
 

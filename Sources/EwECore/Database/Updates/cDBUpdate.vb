@@ -41,4 +41,17 @@ Friend MustInherit Class cDBUpdate
     ''' -----------------------------------------------------------------------
     Public MustOverride Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write update progress to the log.
+    ''' </summary>
+    ''' <param name="strProgress">Progress entry to write.</param>
+    ''' -----------------------------------------------------------------------
+    Protected Sub LogProgress(ByVal strProgress As String, ByVal bSucces As Boolean)
+        cLog.Write(String.Format("Update {0}: {1} {2}", _
+                                 Me.UpdateVersion, _
+                                 strProgress, _
+                                 IIf(bSucces, "Succes", "Failed")))
+    End Sub
+
 End Class
