@@ -102,11 +102,13 @@ Friend Class cDBUpdate6_01_00_007
                 Dim iGroupID As Integer = 0
                 Dim strVarName As String = ""
 
-                Try
-                    iPedigreeLevelID = CLng(reader("PedigreeLevelID"))
-                Catch ex As Exception
-                    iPedigreeLevelID = 0
-                End Try
+                If Not Convert.IsDBNull(reader("PedigreeLevelID")) Then
+                    Try
+                        iPedigreeLevelID = CLng(reader("PedigreeLevelID"))
+                    Catch ex As Exception
+                        ' Huh?!
+                    End Try
+                End If
 
                 If strKey.IndexOf(strGroupID) = 0 And iPedigreeLevelID > 0 Then
 
