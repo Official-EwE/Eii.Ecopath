@@ -1089,15 +1089,37 @@ Public Class cCore
     End Function
 
     ''' <summary>
-    ''' Send a Data Changed message
+    ''' Send a Data <see cref="eMessageType.DataAddedOrRemoved">added or removed</see> message.
     ''' </summary>
     ''' <param name="message">Test of the message</param>
     ''' <param name="dataType">eDataTypes enumerator for the type of data</param>
-    ''' <remarks>This is just to wrap the creation and sending of a datachanged message to clean up the code a bit</remarks>
+    ''' <remarks>This is just to wrap the creation and sending of a data added or removed message to clean up the code a bit</remarks>
     Private Sub DataAddedOrRemovedMessage(ByRef message As String, ByVal messageSource As eCoreComponentType, ByVal dataType As eDataTypes, Optional ByVal vars() As cVariableStatus = Nothing)
 
         ' Create msg
         Dim msg As New cMessage(message, eMessageType.DataAddedOrRemoved, messageSource, eMessageImportance.Maintenance, dataType)
+        ' Any variables to attach?
+        If vars IsNot Nothing Then
+            ' #Yes: attach variables
+            For Each v As cVariableStatus In vars
+                msg.AddVariable(v)
+            Next
+        End If
+        ' Send
+        m_publisher.SendMessage(msg)
+
+    End Sub
+
+    ''' <summary>
+    ''' Send a <see cref="eMessageType.DataModified">data modified</see> message.
+    ''' </summary>
+    ''' <param name="message">Test of the message</param>
+    ''' <param name="dataType">eDataTypes enumerator for the type of data</param>
+    ''' <remarks>This is just to wrap the creation and sending of a data modified message to clean up the code a bit</remarks>
+    Private Sub DataModifiedMessage(ByRef message As String, ByVal messageSource As eCoreComponentType, ByVal dataType As eDataTypes, Optional ByVal vars() As cVariableStatus = Nothing)
+
+        ' Create msg
+        Dim msg As New cMessage(message, eMessageType.DataModified, messageSource, eMessageImportance.Maintenance, dataType)
         ' Any variables to attach?
         If vars IsNot Nothing Then
             ' #Yes: attach variables
@@ -1670,11 +1692,16 @@ Public Class cCore
         Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
         Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", eMessageType.DataModified, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
-        If (bChanged And bDirtyDatasource) Then
-            Me.DataAddedOrRemovedMessage("Time Series have been updated", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
+        If (bChanged) Then
+            If (bDirtyDatasource) Then
+                Me.DataAddedOrRemovedMessage("Time Series have been updated", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
+            Else
+                Me.DataModifiedMessage("Time Series have changed", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
+            End If
             DataSource.SetChanged(eCoreComponentType.TimeSeries)
             Me.m_StateMonitor.UpdateDataState(DataSource)
         End If
+
 
         Me.Messages.sendAllMessages()
 
