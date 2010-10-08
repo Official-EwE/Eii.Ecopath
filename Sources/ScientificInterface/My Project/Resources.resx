@@ -2777,4 +2777,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ewe_wiki_url" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ewe_wiki.url.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="ewe_home_url" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ewe_home.url.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

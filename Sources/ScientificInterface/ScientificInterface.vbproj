@@ -1628,6 +1628,7 @@
     <None Include="Resources\CommentHS.png" />
     <None Include="Resources\Editable.png" />
     <None Include="Resources\DisplayGroups.PNG" />
+    <None Include="Resources\ewe_home.url.txt" />
     <Content Include="Resources\EU_50px.jpg" />
     <None Include="Resources\Eye_intermediate.png" />
     <None Include="Resources\EwEPedigree.png" />

@@ -1420,6 +1420,16 @@ Namespace My.Resources
         
         '''<summary>
         '''  Looks up a localized string similar to [InternetShortcut]
+        '''URL=http://www.ecopath.org.
+        '''</summary>
+        Friend ReadOnly Property ewe_home_url() As String
+            Get
+                Return ResourceManager.GetString("ewe_home_url", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to [InternetShortcut]
         '''URL=http://wiki.ecopath.org.
         '''</summary>
         Friend ReadOnly Property ewe_wiki_url() As String
