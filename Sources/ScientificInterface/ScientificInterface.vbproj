@@ -1628,10 +1628,10 @@
     <None Include="Resources\CommentHS.png" />
     <None Include="Resources\Editable.png" />
     <None Include="Resources\DisplayGroups.PNG" />
-    <Content Include="Resources\Ecopath_doc.ico" />
     <Content Include="Resources\EU_50px.jpg" />
     <None Include="Resources\Eye_intermediate.png" />
     <None Include="Resources\EwEPedigree.png" />
+    <None Include="Resources\ewe_wiki.url.txt" />
     <Content Include="Resources\fimr_logo_50px.jpg" />
     <None Include="Resources\glyph_blue10.PNG" />
     <None Include="Resources\glyph_blue1.PNG" />
