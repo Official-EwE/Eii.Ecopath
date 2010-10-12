@@ -15,24 +15,21 @@ Imports SourceGrid2
 ''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class AboutEwEGrid
-    Inherits SourceGrid2.Grid
+    Inherits EwEGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Populate the grid with data.
     ''' </summary>
-    ''' <param name="uic">UI context to use.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Populate(ByVal uic As cUIContext)
-
-        Debug.Assert(uic IsNot Nothing)
+    Protected Overrides Sub FillData()
 
         Dim pm As cPluginManager = Nothing
         Dim aanLoaded As AssemblyName() = Nothing
         Dim aanPlugins As AssemblyName() = Nothing
         Dim iRow As Integer = 0
 
-        pm = uic.Core.PluginManager()
+        pm = Me.UIContext.Core.PluginManager()
         aanPlugins = pm.PluginAssemblyNames()
         aanLoaded = cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
 
@@ -86,6 +83,11 @@ Public Class AboutEwEGrid
         If Me.ColumnsCount > 0 Then
             Me.Columns(0).Width = Me.ClientRectangle.Width - Me.Columns(1).Width - Me.VScrollBar.Width - 1
         End If
+    End Sub
+
+    Protected Overrides Sub FinishStyle()
+        MyBase.FinishStyle()
+        Me.FixedColumnWidths = False
     End Sub
 
 End Class

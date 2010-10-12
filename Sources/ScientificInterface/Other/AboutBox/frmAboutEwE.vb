@@ -23,6 +23,7 @@ Namespace Other
         Public Sub New(ByVal uic As cUIContext)
             Me.InitializeComponent()
             Me.m_uic = uic
+            Me.m_gridTechnical.UIContext = uic
         End Sub
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
@@ -41,7 +42,6 @@ Namespace Other
             Me.m_lbCopyright.Text = String.Format(My.Resources.ABOUT_VALUE_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format technical page
-            Me.m_gridTechnical.Populate(Me.m_uic)
             Me.m_lblNetVersion.Text = String.Format(m_lblNetVersion.Text, System.Environment.Version.ToString())
 
             ' Format credits page
