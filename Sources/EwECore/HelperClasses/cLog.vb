@@ -47,6 +47,11 @@ Public Class cLog
         strModelName = strModelName.Replace("/", "-")
         ' Store new
         m_modelname = strModelName
+
+        ' ToDo_JS 12Oct2010: Under windows 7 apps are officially not allowed to
+        '                    make changes to files in the programs directories 
+        '                    any more. See bug report http://sources.ecopath.org/trac/Ecopath/ticket/794
+
         ' m_logFilename = System.AppDomain.CurrentDomain.BaseDirectory() & "Log_" & ModelName & "_" & Format(Date.Now, "yy-M-d-H-m") & ".xml"
         m_logFilename = System.AppDomain.CurrentDomain.BaseDirectory() & "EwELog_" & m_modelname & ".xml"
         WriteSessionStarted()
