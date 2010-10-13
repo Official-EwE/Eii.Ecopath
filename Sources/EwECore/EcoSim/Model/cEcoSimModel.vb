@@ -4401,48 +4401,55 @@ Namespace Ecosim
             Dim sFiBT, sFiB0 As Single
 
             Try
+                ' Reset running totals for a time step
                 m_Data.CatchSim(TimeStep) = 0
-                If TimeStep = 0 Then
-                    For i = 1 To m_EPData.NumGroups
-                        m_Data.TLSim(i) = m_EPData.TTLX(i)
-                    Next
-                End If
 
-                'vc100522: Calculation of FiB index is wrong. it should be based on the catch for each functional group as follows:
-                'FiB = [Catch(iGrp, iTime) ^ (TL(igrp)-1)] / [Catch(iGrp, 0) ^ (TL(igrp)-1)] assuming first timestep is 0 (or is it 1?, below both are set to fib = 1
-                'I presume that we somewhere later convert to math.log10(FiB) as it has to be scaled this way.
+                'js13oct10: implemented FiB calcs
+                ''vc100522: Calculation of FiB index is wrong. it should be based on the catch for each functional group as follows:
+                ''FiB = [Catch(iGrp, iTime) ^ (TL(igrp)-1)] / [Catch(iGrp, 0) ^ (TL(igrp)-1)] assuming first timestep is 0
+                ''I presume that we somewhere later convert to math.log10(FiB) as it has to be scaled this way.
                 sFiB0 = 0 : sFiBT = 0
 
                 For i = 1 To m_EPData.NumGroups
-                    fCatch = m_Data.FishTime(i) * BB(i)
-                    m_Data.CatchSim(TimeStep) += fCatch
-                    totalTL += m_Data.TLSim(i) * fCatch
+                    ' Determine catch
+                    fCatch = Me.m_Data.FishTime(i) * BB(i)
+                    ' Total sim catch
+                    Me.m_Data.CatchSim(TimeStep) += fCatch
+                    ' Determine running TLC
+                    totalTL += Me.m_Data.TLSim(i) * fCatch
 
+                    ' Is first time step?
                     If TimeStep = 0 Then
+                        ' #Yes: preserve catch for each group
                         fCatch0(i) = fCatch
+                        ' Init TLSim
+                        Me.m_Data.TLSim(i) = m_EPData.TTLX(i)
                     Else
-                        sFiBT += fCatch ^ (m_Data.TLSim(i) - 1)
-                        sFiB0 += fCatch0(i) ^ (m_Data.TLSim(i) - 1)
+                        ' #No: total FiB terms for all groups
+                        sFiBT += fCatch ^ (Me.m_Data.TLSim(i) - 1)
+                        sFiB0 += fCatch0(i) ^ (Me.m_Data.TLSim(i) - 1)
                     End If
                 Next
 
+                ' Calculate FiB
                 If TimeStep = 0 Then
-                    m_Data.FIB(TimeStep) = 1
+                    Me.m_Data.FIB(TimeStep) = 1
                 Else
-                    m_Data.FIB(TimeStep) = CSng(Math.Log10(sFiBT / sFiB0))
+                    Me.m_Data.FIB(TimeStep) = CSng(Math.Log10(sFiBT / sFiB0))
                 End If
 
                 If m_Data.CatchSim(0) > 0 Then
-                    m_Data.TLC(TimeStep) = totalTL / m_Data.CatchSim(TimeStep)
-                    'Calculate FIB-index:
+                    ' Calculate TL of catch
+                    Me.m_Data.TLC(TimeStep) = totalTL / Me.m_Data.CatchSim(TimeStep)
+
+                    ' Calculate keptons Q
                     If TimeStep = 0 Then
-                        'StartTL = TL
-                        'StartCatch = CatchSim
-                        m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
+                        Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
                     Else
-                        m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
+                        Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
                     End If
                 Else
+                    ' ?!
                     m_EPData.TLcatch = totalTL / m_Data.CatchSim(TimeStep)
                 End If
 
