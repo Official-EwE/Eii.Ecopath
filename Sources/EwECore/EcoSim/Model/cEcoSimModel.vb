@@ -245,7 +245,8 @@ Namespace Ecosim
         Private EatenOfAvg() As Single
         Private PredAvg() As Single
 
-        Private RiskRateAvg() As Single
+        'Private RiskRateAvg() As Single
+        Private fCatch0() As Single
 
 #End Region
 
@@ -643,6 +644,7 @@ Namespace Ecosim
             ReDim EatenByAvg(nGroups)
             ReDim EatenOfAvg(nGroups)
             ReDim PredAvg(nGroups)
+            ReDim fCatch0(nGroups)
 
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
@@ -4396,6 +4398,7 @@ Namespace Ecosim
             Dim i As Integer
             Dim fCatch As Single
             Dim totalTL As Single
+            Dim sFiBT, sFiB0 As Single
 
             Try
                 m_Data.CatchSim(TimeStep) = 0
@@ -4405,15 +4408,29 @@ Namespace Ecosim
                     Next
                 End If
 
+                'vc100522: Calculation of FiB index is wrong. it should be based on the catch for each functional group as follows:
+                'FiB = [Catch(iGrp, iTime) ^ (TL(igrp)-1)] / [Catch(iGrp, 0) ^ (TL(igrp)-1)] assuming first timestep is 0 (or is it 1?, below both are set to fib = 1
+                'I presume that we somewhere later convert to math.log10(FiB) as it has to be scaled this way.
+                sFiB0 = 0 : sFiBT = 0
+
                 For i = 1 To m_EPData.NumGroups
                     fCatch = m_Data.FishTime(i) * BB(i)
                     m_Data.CatchSim(TimeStep) += fCatch
                     totalTL += m_Data.TLSim(i) * fCatch
+
+                    If TimeStep = 0 Then
+                        fCatch0(i) = fCatch
+                    Else
+                        sFiBT += fCatch ^ (m_Data.TLSim(i) - 1)
+                        sFiB0 += fCatch0(i) ^ (m_Data.TLSim(i) - 1)
+                    End If
                 Next
 
-                'vc100522: Calculation of FiB index is wrong. it should be based on the catch for each functional group as follows:
-                'FiB = [Catch(iGrp, iTime) ^ (TL(igrp)-1)] / [Catch(iGrp, 0) ^ (TL(igrp)-1)] assuming first timestep is 0 (or is it 1?, below both are set to fib = 1
-                'I presume that we somewhere later convert to math.log10(FiB) as it has to be scaled this way.
+                If TimeStep = 0 Then
+                    m_Data.FIB(TimeStep) = 1
+                Else
+                    m_Data.FIB(TimeStep) = CSng(Math.Log10(sFiBT / sFiB0))
+                End If
 
                 If m_Data.CatchSim(0) > 0 Then
                     m_Data.TLC(TimeStep) = totalTL / m_Data.CatchSim(TimeStep)
@@ -4421,20 +4438,12 @@ Namespace Ecosim
                     If TimeStep = 0 Then
                         'StartTL = TL
                         'StartCatch = CatchSim
-                        m_Data.FIB(0) = 1
                         m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
                     Else
-                        If TimeStep = 1 Then
-                            m_Data.FIB(1) = 1 'CatchSim(1) * 10 ^ (TLC(1) - 1)
-                        Else
-                            m_Data.FIB(TimeStep) = CSng((m_Data.CatchSim(TimeStep) * 10 ^ (m_Data.TLC(TimeStep) - 1)) / (m_Data.CatchSim(1) * 10 ^ (m_Data.TLC(1) - 1)))
-                        End If
                         m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
                     End If
                 Else
-                    ' JS 08Jan10: this looks like a bug; should this not set TLC?
                     m_EPData.TLcatch = totalTL / m_Data.CatchSim(TimeStep)
-                    ' JS 08Jan10: should TLC, FIB, Kemptons receive defaults here?
                 End If
 
             Catch ex As Exception
