@@ -84,6 +84,7 @@
         Me.m_tsmiEcopathEditGroups = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcopathEditMultiStanza = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcopathEditFleets = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcopathEditPedigree = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcopathEditTaxa = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuEcosim = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimNew = New System.Windows.Forms.ToolStripMenuItem
@@ -112,7 +113,6 @@
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar
-        Me.m_tsmiEcopathEditPedigreeLevels = New System.Windows.Forms.ToolStripMenuItem
         m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator
@@ -456,7 +456,7 @@
         '
         'MenuEcopath
         '
-        Me.MenuEcopath.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcopathEditGroups, Me.m_tsmiEcopathEditMultiStanza, Me.m_tsmiEcopathEditFleets, Me.m_tsmiEcopathEditPedigreeLevels, Me.m_tsmiEcopathEditTaxa})
+        Me.MenuEcopath.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcopathEditGroups, Me.m_tsmiEcopathEditMultiStanza, Me.m_tsmiEcopathEditFleets, Me.m_tsmiEcopathEditPedigree, Me.m_tsmiEcopathEditTaxa})
         Me.MenuEcopath.Name = "MenuEcopath"
         resources.ApplyResources(Me.MenuEcopath, "MenuEcopath")
         '
@@ -477,6 +477,11 @@
         Me.m_tsmiEcopathEditFleets.Image = Global.ScientificInterface.My.Resources.Resources.EditFleets
         Me.m_tsmiEcopathEditFleets.Name = "m_tsmiEcopathEditFleets"
         resources.ApplyResources(Me.m_tsmiEcopathEditFleets, "m_tsmiEcopathEditFleets")
+        '
+        'm_tsmiEcopathEditPedigree
+        '
+        Me.m_tsmiEcopathEditPedigree.Name = "m_tsmiEcopathEditPedigree"
+        resources.ApplyResources(Me.m_tsmiEcopathEditPedigree, "m_tsmiEcopathEditPedigree")
         '
         'm_tsmiEcopathEditTaxa
         '
@@ -649,11 +654,6 @@
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
-        'm_tsmiEcopathEditPedigreeLevels
-        '
-        Me.m_tsmiEcopathEditPedigreeLevels.Name = "m_tsmiEcopathEditPedigreeLevels"
-        resources.ApplyResources(Me.m_tsmiEcopathEditPedigreeLevels, "m_tsmiEcopathEditPedigreeLevels")
-        '
         'AppLauncher
         '
         resources.ApplyResources(Me, "$this")
@@ -746,7 +746,7 @@
     Private WithEvents m_tsmiEcotracerDelete As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcopathEditTaxa As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripSplitButton
-    Private WithEvents m_tsmiEcopathEditPedigreeLevels As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcopathEditPedigree As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

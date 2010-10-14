@@ -28,8 +28,9 @@ Namespace Ecopath.Tools
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
+            Me.m_tsbnEditPedigree = New System.Windows.Forms.ToolStripButton
             Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_lblLevels = New System.Windows.Forms.Label
+            Me.m_lblDefinitions = New System.Windows.Forms.Label
             Me.m_cmbViewAs = New System.Windows.Forms.ComboBox
             Me.m_lblViewAs = New System.Windows.Forms.Label
             Me.m_cmbCategory = New System.Windows.Forms.ComboBox
@@ -38,6 +39,7 @@ Namespace Ecopath.Tools
             Me.m_hdrPedigree = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_grid = New ScientificInterface.Ecopath.Tools.gridPedigree
             Me.m_hdrGrid = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_tsMain.SuspendLayout()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -45,11 +47,20 @@ Namespace Ecopath.Tools
             '
             'm_tsMain
             '
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditPedigree})
             Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.Size = New System.Drawing.Size(724, 25)
             Me.m_tsMain.TabIndex = 0
             Me.m_tsMain.Text = "ToolStrip1"
+            '
+            'm_tsbnEditPedigree
+            '
+            Me.m_tsbnEditPedigree.Image = Global.ScientificInterface.My.Resources.Resources.OptionsIconSM
+            Me.m_tsbnEditPedigree.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnEditPedigree.Name = "m_tsbnEditPedigree"
+            Me.m_tsbnEditPedigree.Size = New System.Drawing.Size(102, 22)
+            Me.m_tsbnEditPedigree.Text = "&Edit pedigree..."
             '
             'm_scMain
             '
@@ -60,7 +71,7 @@ Namespace Ecopath.Tools
             '
             'm_scMain.Panel1
             '
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblLevels)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDefinitions)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cmbViewAs)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblViewAs)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cmbCategory)
@@ -77,14 +88,14 @@ Namespace Ecopath.Tools
             Me.m_scMain.SplitterDistance = 173
             Me.m_scMain.TabIndex = 1
             '
-            'm_lblLevels
+            'm_lblDefinitions
             '
-            Me.m_lblLevels.AutoSize = True
-            Me.m_lblLevels.Location = New System.Drawing.Point(3, 78)
-            Me.m_lblLevels.Name = "m_lblLevels"
-            Me.m_lblLevels.Size = New System.Drawing.Size(41, 13)
-            Me.m_lblLevels.TabIndex = 5
-            Me.m_lblLevels.Text = "&Levels:"
+            Me.m_lblDefinitions.AutoSize = True
+            Me.m_lblDefinitions.Location = New System.Drawing.Point(3, 80)
+            Me.m_lblDefinitions.Name = "m_lblDefinitions"
+            Me.m_lblDefinitions.Size = New System.Drawing.Size(76, 13)
+            Me.m_lblDefinitions.TabIndex = 5
+            Me.m_lblDefinitions.Text = "&Classifications:"
             '
             'm_cmbViewAs
             '
@@ -136,10 +147,10 @@ Namespace Ecopath.Tools
             Me.m_lbLevels.FormattingEnabled = True
             Me.m_lbLevels.IntegralHeight = False
             Me.m_lbLevels.ItemHeight = 15
-            Me.m_lbLevels.Location = New System.Drawing.Point(0, 94)
+            Me.m_lbLevels.Location = New System.Drawing.Point(0, 96)
             Me.m_lbLevels.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
             Me.m_lbLevels.Name = "m_lbLevels"
-            Me.m_lbLevels.Size = New System.Drawing.Size(173, 325)
+            Me.m_lbLevels.Size = New System.Drawing.Size(173, 323)
             Me.m_lbLevels.TabIndex = 6
             '
             'm_hdrPedigree
@@ -209,6 +220,8 @@ Namespace Ecopath.Tools
             Me.Name = "frmPedigree"
             Me.ShowInTaskbar = False
             Me.Text = "Pedigree"
+            Me.m_tsMain.ResumeLayout(False)
+            Me.m_tsMain.PerformLayout()
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
@@ -227,7 +240,8 @@ Namespace Ecopath.Tools
         Private WithEvents m_lblViewAs As System.Windows.Forms.Label
         Private WithEvents m_cmbCategory As System.Windows.Forms.ComboBox
         Private WithEvents m_lblCategory As System.Windows.Forms.Label
-        Private WithEvents m_lblLevels As System.Windows.Forms.Label
+        Private WithEvents m_lblDefinitions As System.Windows.Forms.Label
+        Private WithEvents m_tsbnEditPedigree As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace

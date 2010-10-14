@@ -7,6 +7,7 @@ Imports EwECore
 Imports SAUPUtil.Misc.Colours
 Imports EwECore.Auxiliary
 Imports EwEUtils.Utilities
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -78,6 +79,9 @@ Namespace Ecopath.Tools
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             AddHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
 
+            Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditPedigreeLevels")
+            If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditPedigree)
+
             Me.SelectedVariable = eVarNameFlags.Biomass
 
             Me.UpdateControls()
@@ -89,6 +93,9 @@ Namespace Ecopath.Tools
             RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             RemoveHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
+
+            Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditPedigreeLevels")
+            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditPedigree)
 
             ' Clean up
             Me.SelectedVariable = eVarNameFlags.NotSet
@@ -139,10 +146,6 @@ Namespace Ecopath.Tools
         Private Sub OnViewAsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbViewAs.SelectedIndexChanged
 
-            ' ToDo:
-            ' v Store display style somewhere
-            ' v Invalidate listbox to reflect this style
-            ' v Inform grid of new style
             Dim iIndex As Integer = Me.m_cmbViewAs.SelectedIndex
             If (iIndex < 0) Then Return
 

@@ -110,7 +110,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditMultiStanza As cCommand = Nothing
     Private WithEvents m_cmdEditFleets As cCommand = Nothing
     Private WithEvents m_cmdEditTaxa As cCommand = Nothing
-    Private WithEvents m_cmdEditPedigreeLevels As cCommand = Nothing
+    Private WithEvents m_cmdEditPedigree As cCommand = Nothing
     Private WithEvents m_cmdEditBasemap As cCommand = Nothing
     Private WithEvents m_cmdEditHabitats As cCommand = Nothing
     Private WithEvents m_cmdEditRegions As cCommand = Nothing
@@ -383,8 +383,8 @@ Public Class AppLauncher
         Me.m_cmdEditFleets = New cCommand(cmdh, "EditFleets")
         Me.m_cmdEditFleets.AddControl(Me.m_tsmiEcopathEditFleets)
 
-        Me.m_cmdEditPedigreeLevels = New cCommand(cmdh, "EditPedigreeLevels")
-        Me.m_cmdEditPedigreeLevels.AddControl(Me.m_tsmiEcopathEditPedigreeLevels)
+        Me.m_cmdEditPedigree = New cCommand(cmdh, "EditPedigree")
+        Me.m_cmdEditPedigree.AddControl(Me.m_tsmiEcopathEditPedigree)
 
         Me.m_cmdEditTaxa = New cCommand(cmdh, "EditTaxa")
         Me.m_cmdEditTaxa.AddControl(Me.m_tsmiEcopathEditTaxa)
@@ -2735,13 +2735,13 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnEditPedigreeLevels(ByVal cmd As cCommand) _
-        Handles m_cmdEditPedigreeLevels.OnInvoke
+        Handles m_cmdEditPedigree.OnInvoke
         Dim dlg As New dlgEditPedigree(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 
     Private Sub OnUpdateEditPedigreeLevels(ByVal cmd As cCommand) _
-        Handles m_cmdEditPedigreeLevels.OnUpdate
+        Handles m_cmdEditPedigree.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
 
