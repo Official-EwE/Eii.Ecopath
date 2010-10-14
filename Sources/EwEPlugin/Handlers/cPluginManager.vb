@@ -497,6 +497,7 @@ Public Class cPluginManager
 
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
+        Dim bLoadPlugin As Boolean = True
 
         ' Sanity checks - load only once
         If (Me.m_bLoaded) Then Return
@@ -513,7 +514,12 @@ Public Class cPluginManager
 
             For Each fi As FileInfo In afi
                 Try
-                    Me.LoadPluginAssembly(fi.FullName, alDisabledPlugins.IndexOf(fi.FullName) = -1)
+                    If (alDisabledPlugins Is Nothing) Then
+                        bLoadPlugin = True
+                    Else
+                        bLoadPlugin = (alDisabledPlugins.IndexOf(fi.FullName) = -1)
+                    End If
+                    Me.LoadPluginAssembly(fi.FullName, bLoadPlugin)
                 Catch ex As Exception
                     ' Ignore this
                 End Try
