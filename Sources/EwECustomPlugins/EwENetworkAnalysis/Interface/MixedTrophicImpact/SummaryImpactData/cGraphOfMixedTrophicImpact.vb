@@ -13,6 +13,7 @@ Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Win32Api
 
 #End Region ' Imports
 
@@ -111,21 +112,15 @@ Public Class cGraphOfMixedTrophicImpact
         Next i
         FileClose(FileNumber)
 
-        ''Call impacts.exe using the file written above
-        'If IsPlotActive("ECOPATH 3.0 - Impacts") Then
-        '    AppActivate("ECOPATH 3.0 - Impacts")
-        '    System.Windows.Forms.SendKeys.Send("%{F4}")
-        '    'My.Computer.Keyboard.SendKeys("%{F4}", True)
-        'End If
+        ' Convert text file location to a 8.3 file
+        Dim strPath As String = Path.Combine(strOutputFileDir, strOutputFileName)
+        Dim strPath83 As String = Space(255)
+        Dim strError As String = ""
+        Kernel32.GetShortPathName(strPath, strPath83, 255)
 
         'Execute the external application through the general function on EwEUtils
-        If Not cSystemUtils.AppExec("impacts.exe", Path.Combine(strOutputFileDir, strOutputFileName), "", "EwENetworkAnalysis") Then
-            Dim sb As New StringBuilder
-            For Each str As String In cSystemUtils.ApplicationLaunchLocations
-                If sb.Length > 0 Then sb.Append(", ")
-                sb.Append(str)
-            Next
-            Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "impacts.exe", sb.ToString), _
+        If Not cSystemUtils.AppExec("impacts.exe", strPath83, strError) Then
+            Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "impacts.exe", strError), _
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
             Me.NetworkManager.Core.Messages.SendMessage(msg)
         End If
