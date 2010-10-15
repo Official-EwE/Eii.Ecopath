@@ -11969,6 +11969,7 @@ Public Class cCore
     Public Function AddPedigreeLevel(ByVal varName As eVarNameFlags, _
                                      ByVal iPosition As Integer, _
                                      ByVal strName As String, _
+                                     ByVal iColor As Integer, _
                                      ByVal strDescription As String, _
                                      ByVal sIndexValue As Single, _
                                      ByVal sConfidence As Single, _
@@ -11984,7 +11985,7 @@ Public Class cCore
 
         ds = DirectCast(Me.DataSource, IEcopathDataSource)
 
-        Return ds.AddPedigreeLevel(iPosition, strName, strDescription, varName, sIndexValue, sConfidence, iDBID)
+        Return ds.AddPedigreeLevel(iPosition, strName, iColor, strDescription, varName, sIndexValue, sConfidence, iDBID)
 
     End Function
 

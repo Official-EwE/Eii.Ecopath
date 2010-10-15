@@ -208,11 +208,13 @@ Namespace DataSources
         ''' this pedigree level pertains to</param>
         ''' <param name="sIndexValue">Value [0, 1] indicating...</param>
         ''' <param name="sConfidence">Confidence interval for this pedigree level.</param>
+        ''' <param name="iColor">Color (as integer) to use for the new pedigree level.</param>
         ''' <param name="iDBID">Database ID assigned to the new pedigree level.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Function AddPedigreeLevel(ByVal iPosition As Integer, _
                                   ByVal strName As String, _
+                                  ByVal iColor As Integer, _
                                   ByVal strDescription As String, _
                                   ByVal varName As eVarNameFlags, _
                                   ByVal sIndexValue As Single, _

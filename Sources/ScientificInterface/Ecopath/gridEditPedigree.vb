@@ -171,17 +171,18 @@ Imports SourceGrid2.Cells
             ' Handle added and removed items
             If (Me.m_bConfigChanged) Then
 
-                Dim iDBID As Integer = Nothing
+                Dim iDBID As New Integer
 
                 ' Add new Levels
                 For iLevel = 0 To Me.m_lfiLevels.Count - 1
 
                     lvlInfo = DirectCast(Me.m_lfiLevels(iLevel), cPedigreeLevelInfo)
                     If (Object.ReferenceEquals(lvlInfo.Level, Nothing)) Then
-                        bSuccess = bSuccess And Me.m_man.AddLevel(lvlInfo.Name, _
-                                                                  lvlInfo.Description, _
-                                                                  iLevel, _
+                        bSuccess = bSuccess And Me.m_man.AddLevel(iLevel, _
                                                                   Me.m_vn, _
+                                                                  lvlInfo.Name, _
+                                                                  lvlInfo.Color, _
+                                                                  lvlInfo.Description, _
                                                                   lvlInfo.IndexValue, _
                                                                   lvlInfo.ConfidenceInterval, _
                                                                   iDBID)
@@ -196,7 +197,7 @@ Imports SourceGrid2.Cells
                 For iLevel = 0 To Me.m_lfiLevelsRemoved.Count - 1
                     lvlInfo = DirectCast(Me.m_lfiLevelsRemoved(iLevel), cPedigreeLevelInfo)
                     If (Not Object.ReferenceEquals(lvlInfo.Level, Nothing)) Then
-                        bSuccess = bSuccess and  (Me.m_man.RemoveLevel(lvlInfo.Level)) 
+                        bSuccess = bSuccess And (Me.m_man.RemoveLevel(lvlInfo.Level))
                     End If
                 Next
 
@@ -228,7 +229,7 @@ Imports SourceGrid2.Cells
                             If level.DBID = lvlInfo.Level.DBID Then
                                 ' Only commint changes to prevent unnecessary updates
                                 If level.Name <> lvlInfo.Name Then level.Name = lvlInfo.Name
-                                If level.PoolColor <> lvlInfo.PoolColor Then level.PoolColor = lvlInfo.PoolColor
+                                If level.PoolColor <> lvlInfo.Color Then level.PoolColor = lvlInfo.Color
                                 If level.Description <> lvlInfo.Description Then level.Description = lvlInfo.Description
                                 If level.IndexValue <> lvlInfo.IndexValue Then level.IndexValue = lvlInfo.IndexValue
                                 If level.ConfidenceInterval <> lvlInfo.ConfidenceInterval Then level.ConfidenceInterval = lvlInfo.ConfidenceInterval
@@ -341,7 +342,7 @@ Imports SourceGrid2.Cells
         ''' Get/set the Color value of a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property PoolColor() As Integer
+        Public Property [Color]() As Integer
             Get
                 Return Me.m_iColor
             End Get
@@ -711,7 +712,7 @@ Imports SourceGrid2.Cells
         lvlInfo = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cPedigreeLevelInfo)
         ri = Me.Rows(iRow)
 
-        clr = cColorUtils.IntToColor(lvlInfo.PoolColor)
+        clr = cColorUtils.IntToColor(lvlInfo.Color)
         If clr.A = 0 Then clr = Me.StyleGuide.PedigreeColorDefault(iRow - iFIRSTDATAROW, Me.RowsCount - iFIRSTDATAROW - 1)
 
         ri.Tag = lvlInfo
@@ -1086,7 +1087,7 @@ Imports SourceGrid2.Cells
 
     Public Sub SetDefaultFleetColor(Optional ByVal iRow As Integer = -1)
         If iRow = -1 Then iRow = Me.SelectedRow
-        Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW).PoolColor = 0
+        Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW).Color = 0
         Me.UpdateRow(iRow)
     End Sub
 
@@ -1102,9 +1103,9 @@ Imports SourceGrid2.Cells
         lvlInfo = Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW)
 
         dlgColor = New cEwEColorDialog()
-        dlgColor.Color = cColorUtils.IntToColor(lvlInfo.PoolColor)
+        dlgColor.Color = cColorUtils.IntToColor(lvlInfo.Color)
         If dlgColor.ShowDialog() = DialogResult.OK Then
-            lvlInfo.PoolColor = cColorUtils.ColorToInt(dlgColor.Color)
+            lvlInfo.Color = cColorUtils.ColorToInt(dlgColor.Color)
             Me.UpdateRow(iRow)
         End If
 

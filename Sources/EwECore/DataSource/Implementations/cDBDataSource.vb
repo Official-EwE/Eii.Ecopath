@@ -1110,6 +1110,7 @@ Namespace DataSources
                     ecopathDS.PedigreeLevelVarName(iLevel) = cin.GetVarName(CStr(reader("VarName")))
                     ecopathDS.PedigreeLevelIndexValue(iLevel) = CSng(reader("IndexValue"))
                     ecopathDS.PedigreeLevelConfidence(iLevel) = CInt(reader("Confidence"))
+                    ecopathDS.PedigreeLevelColor(iLevel) = CInt(reader("LevelColor"))
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
@@ -1269,22 +1270,11 @@ Namespace DataSources
 #Region " Modify "
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Adds a pedigree level to the datasource.
-        ''' </summary>
-        ''' <param name="iPosition">The position of the new pedigree level in
-        ''' the level sequence.</param>
-        ''' <param name="strName">Name to assign to new pedigree level.</param>
-        ''' <param name="strDescription">Description to assign to new pedigree level.</param>
-        ''' <param name="varName"><see cref="eVarNameFlags">Variable name</see> 
-        ''' this pedigree level pertains to</param>
-        ''' <param name="sIndexValue">Value [0, 1] indicating...</param>
-        ''' <param name="sConfidence">Confidence interval for this pedigree level.</param>
-        ''' <param name="iPedigreeLevelID">Database ID assigned to the new pedigree level.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <inheritdocs cref="IEcopathDataSource.AddPedigreeLevel"/>
         ''' -------------------------------------------------------------------
         Public Function AddPedigreeLevel(ByVal iPosition As Integer, _
                                          ByVal strName As String, _
+                                         ByVal iColor As Integer, _
                                          ByVal strDescription As String, _
                                          ByVal varName As eVarNameFlags, _
                                          ByVal sIndexValue As Single, _
@@ -1298,12 +1288,12 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Try
-                    iPedigreeLevelID = CInt(Me.m_db.GetValue("SELECT MAX(LevelID) FROM Pedigree")) + 1
-                Catch
-                    iPedigreeLevelID = 1
-                End Try
+                iPedigreeLevelID = CInt(Me.m_db.GetValue("SELECT MAX(LevelID) FROM Pedigree")) + 1
+            Catch
+                iPedigreeLevelID = 1
+            End Try
 
+            Try
                 ' Start writing, protect sequence
                 writer = Me.m_db.GetWriter("Pedigree", "Sequence")
 
@@ -1311,6 +1301,7 @@ Namespace DataSources
                 drow = writer.NewRow()
                 drow("LevelID") = iPedigreeLevelID
                 drow("LevelName") = strName
+                drow("LevelColor") = iColor
                 drow("Description") = strDescription
                 drow("VarName") = varName.ToString
                 drow("IndexValue") = sIndexValue
