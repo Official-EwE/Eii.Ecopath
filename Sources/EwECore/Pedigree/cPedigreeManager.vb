@@ -148,6 +148,9 @@ Public Class cPedigreeManager
                     data.PedigreeLevelIndexValue(level.Index) = level.IndexValue
                     data.PedigreeLevelConfidence(level.Index) = level.ConfidenceInterval
 
+                    ' Issue #796: in some daily build databases the description field cannot be empty
+                    If String.IsNullOrEmpty(data.PedigreeLevelDescription(level.Index)) Then data.PedigreeLevelDescription(level.Index) = " "
+
                     Me.m_core.onChanged(level, eMessageType.DataModified)
 
                 Catch ex As Exception
@@ -222,14 +225,17 @@ Public Class cPedigreeManager
     ''' <returns>True if successful.</returns>
     ''' <remarks>This method does NOT instruct the core to reload!</remarks>
     ''' -----------------------------------------------------------------------
-    Public Function AddLevel(ByVal strName As String, _
-                             ByVal strDescription As String, _
-                             ByVal iPosition As Integer, _
+    Public Function AddLevel(ByVal iPosition As Integer, _
                              ByVal varName As eVarNameFlags, _
+                             ByVal strName As String, _
+                             ByVal iColor As Integer, _
+                             ByVal strDescription As String, _
                              ByVal sIndexValue As Single, _
                              ByVal sConfidence As Single, _
                              ByRef iDBID As Integer) As Boolean
-        Return m_core.AddPedigreeLevel(varName, iPosition, strName, strDescription, sIndexValue, sConfidence, iDBID)
+        ' Issue #796: in some daily build databases the description field cannot be empty
+        If String.IsNullOrEmpty(strDescription) Then strDescription = " "
+        Return m_core.AddPedigreeLevel(varName, iPosition, strName, iColor, strDescription, sIndexValue, sConfidence, iDBID)
     End Function
 
     ''' -----------------------------------------------------------------------
