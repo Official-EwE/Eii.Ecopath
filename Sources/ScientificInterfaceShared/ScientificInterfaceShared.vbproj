@@ -341,7 +341,6 @@
     <Compile Include="Properties\Formula expressions\cConditionalOperation.vb" />
     <Compile Include="Properties\cPropertySelectionCommand.vb" />
     <Compile Include="Settings\cFormPositionSetting.vb" />
-    <Compile Include="Settings\cEwESettingsProvider.vb" />
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
     <Compile Include="Style\cVariableDescriptor.vb" />

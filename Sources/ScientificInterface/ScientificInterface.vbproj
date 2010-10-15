@@ -1496,7 +1496,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Panels\StatusPanel\cMessageStateHandler.vb" />
-    <Compile Include="Settings.vb" />
     <Compile Include="Tools\MSE\cMSEEventSource.vb" />
     <Compile Include="Tools\MSE\frmMSEAssessFleets.Designer.vb">
       <DependentUpon>frmMSEAssessFleets.vb</DependentUpon>
