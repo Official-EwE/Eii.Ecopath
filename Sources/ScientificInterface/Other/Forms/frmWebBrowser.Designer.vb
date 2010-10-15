@@ -106,7 +106,7 @@ Partial Class frmWebBrowser
 
     End Sub
     Private WithEvents m_browser As System.Windows.Forms.WebBrowser
-    Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
+    Private WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
     Private WithEvents m_tsbnBack As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_tsbnForward As System.Windows.Forms.ToolStripButton

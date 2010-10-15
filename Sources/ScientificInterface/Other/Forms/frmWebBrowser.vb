@@ -57,13 +57,22 @@ Public Class frmWebBrowser
     ''' -----------------------------------------------------------------------
     Public Property URL() As String
         Get
-            Return Me.m_browser.Url.AbsolutePath
+            Try
+                Return Me.m_browser.Url.AbsolutePath
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+            Return Me.EwEBaseURL()
         End Get
         Set(ByVal strURL As String)
             If String.IsNullOrEmpty(strURL) Then
                 strURL = Me.EwEBaseURL()
             End If
-            Me.m_browser.Navigate(strURL)
+            Try
+                Me.m_browser.Navigate(strURL)
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
         End Set
     End Property
 
@@ -88,7 +97,6 @@ Public Class frmWebBrowser
         RemoveHandler Me.m_browser.CanGoBackChanged, AddressOf OnUpdateNav
         RemoveHandler Me.m_browser.CanGoForwardChanged, AddressOf OnUpdateNav
 
-        Me.m_browser = Nothing
         MyBase.OnFormClosed(e)
 
     End Sub
@@ -99,22 +107,38 @@ Public Class frmWebBrowser
 
     Private Sub OnBrowserNavBack(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnBack.Click
-        Me.m_browser.GoBack()
+        Try
+            Me.m_browser.GoBack()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub OnBrowserNavForward(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnForward.Click
-        Me.m_browser.GoForward()
+        Try
+            Me.m_browser.GoForward()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub OnBrowserRefresh(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnRefresh.Click
-        Me.m_browser.Refresh()
+        Try
+            Me.m_browser.Refresh()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub OnBrowserHome(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnHome.Click
-        Me.m_browser.Navigate(Me.EwEBaseURL)
+        Try
+            Me.m_browser.Navigate(Me.EwEBaseURL)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub OnUpdateNav(ByVal sender As Object, ByVal e As EventArgs)
@@ -124,30 +148,6 @@ Public Class frmWebBrowser
             Me.UpdateControls()
         End If
     End Sub
-
-#Region " Presumed dead "
-#If 0 Then
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Undead method, allows direct opening of models from within the browser. Cool stuff,
-    ''' should definitely be re-activated, but not now...
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub OnNavigating(ByVal sender As Object, ByVal e As System.Windows.Forms.WebBrowserNavigatingEventArgs)
-
-        Dim appl As AppLauncher = AppLauncher.GetInstance()
-
-        If Path.GetExtension(e.Url.AbsolutePath) = ".eii" Then
-            appl.LoadEcopathModel(e.Url.AbsolutePath, AppLauncher.eLoadSourceType.User)
-            ' Navigate to default URL
-            Me.URL = ""
-        End If
-
-    End Sub
-
-#End If
-#End Region
 
 #End Region ' Events
 
