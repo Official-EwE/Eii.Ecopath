@@ -1,7 +1,8 @@
 ﻿Option Explicit On
 Imports System.IO
-Imports System.xml
+Imports System.Xml
 Imports System.Threading
+Imports EwEUtils.SystemUtilities
 
 ''' <summary>
 ''' Class encapsulating writing of messages to a log or the interface
@@ -28,7 +29,8 @@ Public Class cLog
     Private Shared Function getWriter() As cXMLLogWriter
         If m_xmlWriter Is Nothing Then
             If String.IsNullOrEmpty(m_logFilename) Then
-                m_logFilename = System.AppDomain.CurrentDomain.BaseDirectory() + "EwELog.xml"
+                m_logFilename = Path.Combine(cSystemUtils.ApplicationSettingsPath(), "EwELog.xml")
+                'm_logFilename = System.AppDomain.CurrentDomain.BaseDirectory() + "EwELog.xml"
             End If
             m_xmlWriter = New cXMLLogWriter(m_logFilename, m_modelname)
         End If

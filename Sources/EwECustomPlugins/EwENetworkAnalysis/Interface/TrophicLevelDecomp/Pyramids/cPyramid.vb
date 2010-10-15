@@ -60,7 +60,7 @@ Public MustInherit Class cPyramid
 
         Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
 
-        If Not SystemUtilities.AppExec("pyramid.exe", strOutputFile83, strError, "", "EwENetworkAnalysis") Then
+        If Not cSystemUtils.AppExec("pyramid.exe", strOutputFile83, strError, "", "EwENetworkAnalysis") Then
             Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "pyramid.exe", strError), _
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
             Me.NetworkManager.Core.Messages.SendMessage(msg)

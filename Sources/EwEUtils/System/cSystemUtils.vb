@@ -6,12 +6,14 @@ Imports System.Security.Principal
 Imports System.IO
 Imports Microsoft.VisualBasic
 Imports EwEUtils.Win32Api
+Imports EwEUtils.Utilities
+Imports System.Security.AccessControl
 
 #End Region ' Imports
 
 Namespace SystemUtilities
 
-    Public Class SystemUtilities
+    Public Class cSystemUtils
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -121,6 +123,8 @@ Namespace SystemUtilities
         ''' -----------------------------------------------------------------------
         Public Shared Function Is64Bit() As Boolean
 
+            ' ToDo_JS: solve this with .NET calls, does not need Win32 API calls.
+
             Dim hFN As Long = 0L
             Dim bIs64Bit As Boolean = False
 
@@ -137,6 +141,41 @@ Namespace SystemUtilities
             End If
 
             Return bIs64Bit
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the path for storing application settings
+        ''' </summary>
+        ''' <param name="bPerUserSetting">States if this is a per-user setting
+        ''' (True) or a setting for all users (False).</param>
+        ''' <param name="strApplication">Application to obtain the path for.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ApplicationSettingsPath(Optional ByVal bPerUserSetting As Boolean = True, _
+                                                       Optional ByVal strApplication As String = "Ecopath with Ecosim") As String
+
+            Dim strBaseDir As String = ""
+            Dim strPath As String = ""
+
+            If bPerUserSetting Then
+                strBaseDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            Else
+                strBaseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+            End If
+
+            If (Not String.IsNullOrEmpty(strApplication)) Then
+                strPath = Path.Combine(strBaseDir, cFileUtils.ToValidFileName(strApplication, False))
+            End If
+            If Not Directory.Exists(strPath) Then
+                Try
+                    Directory.CreateDirectory(strPath)
+                Catch ex As Exception
+
+                End Try
+            End If
+            Return strPath
 
         End Function
 

@@ -86,7 +86,7 @@ Namespace Database
                         Dim db As New cEwEAccessDatabase()
                         datResult = db.Open(strDatabase, format)
                         If (datResult = eDatasourceAccessType.Opened) Then
-                            db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, SystemUtilities.GetUserName()))
+                            db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, cSystemUtils.GetUserName()))
                             ' Egg - over-easy but slightly obfuscated ;)
                             If strModelName.ToLower().Contains(cStringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then
                                 db.Execute(String.Format("UPDATE EcopathGroup SET GroupName='{0}' WHERE GroupID=1", cStringUtils.Shift("Dijdlfo!tiju")))

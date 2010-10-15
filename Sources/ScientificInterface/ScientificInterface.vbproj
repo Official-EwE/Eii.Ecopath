@@ -1259,6 +1259,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Options\Application\IOptionsPage.vb" />
+    <Compile Include="Settings.vb">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tools\MSE\frmMSERecruitment.Designer.vb">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
     </Compile>

@@ -119,9 +119,9 @@ Public Class cGraphOfMixedTrophicImpact
         'End If
 
         'Execute the external application through the general function on EwEUtils
-        If Not SystemUtilities.AppExec("impacts.exe", Path.Combine(strOutputFileDir, strOutputFileName), "", "EwENetworkAnalysis") Then
+        If Not cSystemUtils.AppExec("impacts.exe", Path.Combine(strOutputFileDir, strOutputFileName), "", "EwENetworkAnalysis") Then
             Dim sb As New StringBuilder
-            For Each str As String In SystemUtilities.ApplicationLaunchLocations
+            For Each str As String In cSystemUtils.ApplicationLaunchLocations
                 If sb.Length > 0 Then sb.Append(", ")
                 sb.Append(str)
             Next
