@@ -48,6 +48,8 @@ Namespace Import
             Debug.Assert(TypeOf (wizard) Is cImportWizard)
 
             Me.m_wizard = DirectCast(wizard, cImportWizard)
+            Me.m_pb.Minimum = 0
+            Me.m_pb.Maximum = 100
 
             ' Make sure we have a sync object
             Me.m_syncobj = SynchronizationContext.Current
@@ -131,8 +133,6 @@ Namespace Import
             Dim pmsg As cProgressMessage = DirectCast(msg, cProgressMessage)
 
             ' Update progress bar
-            Me.m_pb.Maximum = 0
-            Me.m_pb.Maximum = 100
             Me.m_pb.Value = Math.Max(0, Math.Min(100, CInt(100 * pmsg.Progress)))
 
             ' Update progress label
