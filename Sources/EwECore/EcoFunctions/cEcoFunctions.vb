@@ -189,7 +189,6 @@ End Class
 
 Public Class cMatrixCalc
 
-
     'MatSEqnS and matluS variables
     'array dimensions used by MatSEqnS and matluS
     Public Lo As Integer
@@ -197,17 +196,28 @@ Public Class cMatrixCalc
 
     Public rpvt() As Integer, cpvt() As Integer
 
-    '========================MatSEqnS==================================
-    'MatSEqnS solves a system of n linear equations, Ax=b, and puts the
-    'answer in b. A is first put in LU form by matluS, then matbsS is called
-    'to solve the system.  matrices A,b are single precision.
-    '
-    'Parameters: A(n x n) contains coefficient matrix, b(N) contains the right side
-    '
-    'Returns: A in LU form, solution in b
-    '===================================================================
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' MatSEqnS solves a system of n linear equations, Ax=b, and puts the 
+    ''' answer in b. A is first put in LU form by matluS, then matbsS is called
+    ''' to solve the system.  matrices A,b are single precision.
+    ''' </summary>
+    ''' <param name="A">contains coefficient matrix</param>
+    ''' <param name="B">contains the right side</param>
+    ''' <returns>A in LU form, solution in b</returns>
+    ''' -----------------------------------------------------------------------
     Public Function MatSEqnS(ByRef A(,) As Single, ByRef B() As Single) As Integer
-        'MsgBox "MatSeqns"
+
+        '========================MatSEqnS==================================
+        'MatSEqnS solves a system of n linear equations, Ax=b, and puts the
+        'answer in b. A is first put in LU form by matluS, then matbsS is called
+        'to solve the system.  matrices A,b are single precision.
+        '
+        'Parameters: A(n x n) contains coefficient matrix, b(N) contains the right side
+        '
+        'Returns: A in LU form, solution in b
+        '===================================================================
+
         Dim ErrCode As Integer, bserrcode As Integer, row As Integer
         Dim X() As Single
         Dim OkToContinue As Boolean
@@ -265,18 +275,32 @@ Public Class cMatrixCalc
         '        ErrCode = (Err() + 5) Mod 200 - 5
         '        Resume sseqnexit
     End Function
-    '========================matluS====================================
-    'matluS does Gaussian elimination with total pivoting to put a square, single
-    'precision matrix in LU form. The multipliers used in the row operations to
-    'create zeroes below the main diagonal are saved in the zero spaces.
-    '
-    'Parameters: A(n x n) matrix, rpvt(n) and cpvt(n) permutation vectors
-    '            used to index the row and column pivots
-    '
-    'Returns: A in LU form with corresponding pivot vectors; the total number of
-    '         pivots in count, which is used to find the sign of the determinant.
-    '===================================================================
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' matluS does Gaussian elimination with total pivoting to put a square, single
+    ''' precision matrix in LU form. The multipliers used in the row operations to
+    ''' create zeroes below the main diagonal are saved in the zero spaces.
+    ''' </summary>
+    ''' <param name="A">Matrix</param>
+    ''' <param name="OkToContinue"></param>
+    ''' <returns>A in LU form with corresponding pivot vectors; the total number 
+    ''' of pivots in count, which is used to find the sign of the determinant.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
     Public Function matluS(ByRef A(,) As Single, ByRef OkToContinue As Boolean) As Integer
+
+        '========================matluS====================================
+        'matluS does Gaussian elimination with total pivoting to put a square, single
+        'precision matrix in LU form. The multipliers used in the row operations to
+        'create zeroes below the main diagonal are saved in the zero spaces.
+        '
+        'Parameters: A(n x n) matrix, rpvt(n) and cpvt(n) permutation vectors
+        '            used to index the row and column pivots
+        '
+        'Returns: A in LU form with corresponding pivot vectors; the total number of
+        '         pivots in count, which is used to find the sign of the determinant.
+        '===================================================================
 
         Dim ErrCode As Integer, row As Integer, col As Integer, pvt As Integer, max As Single, R As Integer
         Dim CCC As Integer, bestrow As Integer, bestcol As Integer
@@ -378,7 +402,7 @@ Public Class cMatrixCalc
                 'too large, A is singular, send back error
                 OkToContinue = 0
                 'DispError 0, "Last pivot is zero or pivot drop is too large."
-                Debug.Assert(False, "matlus: Last pivot is zero or pivot drop is too large.")
+                'Debug.Assert(False, "matlus: Last pivot is zero or pivot drop is too large.")
                 Return 199
             ElseIf (Math.Abs(A(rpvt(Up), cpvt(Up))) / rownorm(rpvt(Up))) < (seps * oldmax) Then
                 'if pivot is not identically zero then
@@ -410,16 +434,29 @@ Public Class cMatrixCalc
         '        If ErrCode < 199 Then OkToContinue = False
         '        Resume sluexit
     End Function
-    '========================matbsS=====================================
-    'matbsS takes a matrix in LU form, found by matluS, and a vector b
-    'and solves the system Ux=Lb for x. matrices A,b,x are single precision.
-    '
-    'Parameters: LU matrix in A, corresponding pivot vectors in rpvt and cpvt,
-    '            right side in b
-    '
-    'Returns: solution in x, b is modified, rest unchanged
-    '===================================================================
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' matbsS takes a matrix in LU form, found by matluS, and a vector b
+    ''' and solves the system Ux=Lb for x. matrices A,b,x are single precision.
+    ''' </summary>
+    ''' <param name="A">LU matrix</param>
+    ''' <param name="B">right side</param>
+    ''' <param name="X">solution</param>
+    ''' <returns>solution in x, b is modified, rest unchanged</returns>
+    ''' -----------------------------------------------------------------------
     Public Function matbsS(ByRef A(,) As Single, ByRef B() As Single, ByRef X() As Single) As Integer
+
+        '========================matbsS=====================================
+        'matbsS takes a matrix in LU form, found by matluS, and a vector b
+        'and solves the system Ux=Lb for x. matrices A,b,x are single precision.
+        '
+        'Parameters: LU matrix in A, corresponding pivot vectors in rpvt and cpvt,
+        '            right side in b
+        '
+        'Returns: solution in x, b is modified, rest unchanged
+        '===================================================================
+
         Dim pvt As Integer, CCC As Integer, col As Integer, row As Integer, R As Integer
 
         Try
