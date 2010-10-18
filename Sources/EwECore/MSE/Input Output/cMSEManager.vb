@@ -500,7 +500,7 @@ Namespace MSE
 
             'build the Input and Output objects
             Me.m_lstGroupInputs.Clear()
-            For igrp As Integer = 1 To m_core.nGroups
+            For igrp As Integer = 1 To m_core.nLivingGroups
                 Me.m_lstGroupInputs.Add(New cMSEGroupInput(m_core, m_core.m_EcoPathData.GroupDBID(igrp)))
             Next
 
@@ -518,7 +518,7 @@ Namespace MSE
             Me.m_lstBiomassStats.Clear()
             Me.m_lstGroupCatchStats.Clear()
             Me.m_lstBioEstStats.Clear()
-            For igrp As Integer = 1 To m_core.nGroups
+            For igrp As Integer = 1 To m_core.nLivingGroups
                 'BioEst
                 Me.m_lstBioEstStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioEstStats, eDataTypes.MSEBioEstStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
 
@@ -781,7 +781,7 @@ Namespace MSE
 
                     Case eDataTypes.MSEParameters
 
-                        For igrp As Integer = 1 To m_core.nGroups
+                        For igrp As Integer = 1 To m_core.nLivingGroups
                             'KalmanGain and ForcastGain are set as a single value in the interface
                             'this is applied to all the groups for the code
                             Me.m_MSEdata.KalmanGain(igrp) = Me.m_parameters.KalmanGain
