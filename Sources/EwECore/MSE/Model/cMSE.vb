@@ -88,7 +88,8 @@ Namespace MSE
         'ToDo_jb 29-Sept-2010 fix StartT it needs to be 1 when Start Year = 1 
         'ToDo_jb 29-Sept-2010 check setFTimeToGear
 
-
+        'ToDo_jb 18-Oct-2010 F timeseries can sometimes end up with the last year (12 months) at some value other then in the timeseries
+        'Only noticable in Tracking (Ecosim Effort) this seems to happen when changing timeseries and run types 
 
         'Filenames prefixes for output file
         Public Const BIOMASS_DATA As String = "MSE_Biomass_"
@@ -528,7 +529,11 @@ Namespace MSE
                         End If 'Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed
                     Next iflt
 
-                End If 'Me.m_data.EffortMode = eMSEEffortMode.TrackUseQuota
+                ElseIf Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
+
+                    Me.m_Ecosim.SetBaseFFromGear()
+
+                End If
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -676,6 +681,11 @@ Namespace MSE
             'Set MSE data back to initial values for a new run
             m_data.InitForTrial()
 
+            For igrp As Integer = 1 To Me.m_epdata.NumLiving
+                Me.m_Search.CatchYearGroup(igrp) = Me.m_epdata.fCatch(igrp)
+            Next
+
+
         End Sub
 
         Private Sub ComputeStats()
@@ -755,7 +765,7 @@ Namespace MSE
 
         Private Sub dumpStats()
 
-            For i As Integer = 1 To Me.m_esData.nGroups
+            For i As Integer = 1 To Me.m_data.nLiving
                 Dim histo() As Single = Me.m_data.BioStats.Histogram(i)
                 'histogram stuff for debugging
                 System.Console.WriteLine()
@@ -766,7 +776,7 @@ Namespace MSE
             Next
 
             System.Console.WriteLine("----P------")
-            For i As Integer = 1 To Me.m_esData.nGroups
+            For i As Integer = 1 To Me.m_data.nLiving
                 Dim Pless As Single = Me.m_data.BioStats.PercentageBelow(i, Me.m_data.BioBounds(i).Lower)
                 Dim Pgreater As Single = Me.m_data.BioStats.PercentageAbove(i, Me.m_data.BioBounds(i).Upper)
                 ' Debug.Assert(Pless + Pgreater <= 100, "MSE Probability calculation!!!!")
@@ -1050,7 +1060,7 @@ Namespace MSE
 
             Try
 
-                ' increase catchability with the annual growth factor, irrespective of regulation or closed loop type
+                'Increase catchability with the annual growth factor, irrespective of regulation or closed loop type
                 For i As Integer = 1 To Me.m_epdata.NumFleet
                     If iYear > 1 Then
 
@@ -1077,10 +1087,12 @@ Namespace MSE
                 For i As Integer = 1 To Me.m_epdata.NumFleet
                     If iYear > 1 Then
                         If m_data.Fwc(i, 1) > 0 Then Fgear(i) = Fgear(i) * m_data.Fwc(i, 0) / m_data.Fwc(i, 1)
-                        If Fgear(i) < 1.0E-20 Then Fgear(i) = 1.0E-20
+                    Else
+                        'First year
+                        Fgear(i) = CSng(Fgear(i) * (1 + Me.Normal * Math.Sqrt(m_data.VarQest(i))))
                     End If
 
-                    If iYear = 1 Then Fgear(i) = CSng(Fgear(i) * (1 + Me.Normal * Math.Sqrt(m_data.VarQest(i))))
+                    If Fgear(i) < 1.0E-20 Then Fgear(i) = 1.0E-20
 
                 Next i
 
@@ -1127,12 +1139,15 @@ Namespace MSE
                         Next
 
                     Case eAssessmentMethods.CatchEstmBio ' Fs from biomass estimates by pool
+                        ' System.Console.WriteLine()
                         For j = 1 To m_epdata.NumLiving
                             Best(j) = CSng(Math.Exp(Normal2() * m_data.CVbiomEst(j)) * Me.m_esData.StartBiomass(j) * (Bbar(j) / Me.m_esData.StartBiomass(j)) ^ m_data.AssessPower)
 
                             If BestTime(j) > 0 Then  'have previous biomass estimate for this run
-                                Bp = m_data.GstockPred(j) * BestTime(j) + m_data.RStock0(j)
-                                BestTime(j) = Bp + m_data.KalmanGain(j) * (Best(j) - Bp)
+                                'jb 8-Oct-2010 changed to use the same stock recruitment model as MSE regulatory model
+                                BestTime(j) = Me.stockRecruitment(j, Bbar(j), Best(j), BestTime(j))
+                                'Bp = m_data.GstockPred(j) * BestTime(j) + m_data.RStock0(j)
+                                'BestTime(j) = Bp + m_data.KalmanGain(j) * (Best(j) - Bp)
                             Else
                                 BestTime(j) = Best(j)
                             End If
@@ -1196,22 +1211,39 @@ Namespace MSE
 
         End Sub
 
-        Private Sub CalcCatch(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+        'Public Sub CalcCatch(ByVal Biomass() As Single, ByVal Effort() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
 
-            Dim cloc As Single
-            For iFlt As Integer = 1 To Me.m_data.nFleets
-                For iGrp As Integer = 1 To Me.m_epdata.NumLiving
-                    cloc = Me.m_data.PropLandedTime(iFlt, iGrp) * Biomass(iGrp) * QMult(iGrp) * QYear(iFlt) * Me.m_esData.FishRateGear(iFlt, t) * Me.m_esData.FishMGear(iFlt, iGrp) / 12.0F
+        '        For iFlt As Integer = 1 To Me.m_data.nFleets
+        '            For iGrp As Integer = 1 To Me.m_epdata.NumLiving
+        '                '  cloc = Me.m_data.PropLandedTime(iFlt, iGrp) * Biomass(iGrp) * QMult(iGrp) * QYear(iFlt) * Me.m_esData.FishRateGear(iFlt, t) * Me.m_esData.FishMGear(iFlt, iGrp) / 12.0F
 
-                    'CatchYear() is just for this year it is cleared out at the start of each year
-                    Me.m_data.CatchYearGroup(iGrp) += cloc
+        '                'CatchYear() is just for this year it is cleared out at the start of each year
+        '            Me.m_data.CatchYearGroup(iGrp) += Me.m_Ecosim.CalcCatch(iGrp, iFlt, Biomass(iGrp), Effort(iFlt), Me.m_esData.FishMGear(iFlt, iGrp), QYear(iFlt))
 
-                Next iGrp
-            Next iFlt
+        '            Next iGrp
+        '        Next iFlt
 
-        End Sub
 
-        Public Sub DoRegulations(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal iTimeStep As Integer, ByVal iMonth As Integer, ByVal iYear As Integer)
+        'End Sub
+
+
+        'Public Sub CalcCatch(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+
+
+        '    For iFlt As Integer = 1 To Me.m_data.nFleets
+        '        For iGrp As Integer = 1 To Me.m_epdata.NumLiving
+
+        '            'CatchYear() is just for this year it is cleared out at the start of each year
+        '            Me.m_data.CatchYearGroup(iGrp) += Me.m_Ecosim.CalcCatch(iGrp, iFlt, Biomass(iGrp), Me.m_esData.FishRateGear(iFlt, t), Me.m_esData.FishMGear(iFlt, iGrp), QYear(iFlt))
+
+        '        Next iGrp
+        '    Next iFlt
+
+
+        'End Sub
+
+
+        Public Sub DoRegulations(ByVal Biomass() As Single, ByVal Effort() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal iTimeStep As Integer, ByVal iMonth As Integer, ByVal iYear As Integer)
 
             Try
 
@@ -1219,7 +1251,9 @@ Namespace MSE
 
                 'Is the effort regulated
                 If Me.Data.UseQuotaRegs Then
-                    'Yes Quota use to regulate effort
+                    'xxxxxxxxxxxxx
+                    'Quota used
+                    'xxxxxxxxxxxxx
 
                     'First month of the year
                     If iMonth = 1 Then
@@ -1231,23 +1265,27 @@ Namespace MSE
 
                     'Is this timestep regulated
                     If Me.isTStepRegulated(iTimeStep) Then
-                        'Yes timestep is regulated
+                        'xxxxxxxxxxxxxxxx
+                        'Regulated and Quota
+                        'xxxxxxxxxxxxxxxx
 
                         'Regulate the effort every month
                         Me.RegulateEffort(Biomass, QMult, QYear, iTimeStep)
+                        'Catch base on the regulated effort
                         Me.CalcCatch(Biomass, QMult, QYear, iTimeStep)
 
-                        'Yes  
                         'Ecosim will not set F from Effort if there is F timeseries loaded
                         'this tell Ecosim that there is NO timeseries loaded, even if there is...
-                        For igrp As Integer = 1 To Me.m_data.NGroups
+                        For igrp As Integer = 1 To Me.m_data.nLiving
                             Me.m_esData.FisForced(igrp) = False
                         Next
 
                         Me.m_Ecosim.SetFtimeFromGear(Biomass, iTimeStep, QYear, Me.m_esData.PredictSimEffort)
 
                     Else 'Me.isTStepRegulated(iTimeStep)
-                        'No Timestep is NOT regulated
+                        'xxxxxxxxxxxxxxx
+                        'Not Regulated and Quota
+                        'xxxxxxxxxxxxxxx
 
                         'set FishTime(group) (F at timestep) using FishYear and load timeseries data
                         Me.setFishTime(Biomass, Me.m_Search.FishYear, QMult, iTimeStep, iYear)
@@ -1255,13 +1293,14 @@ Namespace MSE
                     End If 'Me.isTStepRegulated(iTimeStep)
 
                 Else ' If Me.Data.UseQuotaRegs Then
-                    'No quota not used to regulate effort
+                    'xxxxxxxxxxxxxxxxxxxxx
+                    'No Quota
+                    'xxxxxxxxxxxxxxxxxxxx
 
                     'set FishTime(group) (F at timestep) using FishYear and load timeseries data
                     Me.setFishTime(Biomass, Me.m_Search.FishYear, QMult, iTimeStep, iYear)
 
                 End If 'Me.Data.UseQuotaRegs
-
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".DoRegulations() Exception: " & ex.Message)
@@ -1318,7 +1357,7 @@ Namespace MSE
             '3 set FishTime(group) to FishRateNo(group,time) * [density dep catchability]
             For igrp = 1 To Me.m_data.NGroups
 
-                'set FishRateNo() to computed F from FishYear() and/or loaded timeseries data is not in regulated timestep
+                'set FishRateNo() to computed F from FishYear() and/or loaded timeseries data if not in regulated timestep
                 Me.m_esData.FishRateNo(igrp, iTime) = FishYear(igrp)
                 'FishTime() is F at current t for Ecosim (Derivt)
                 Me.m_esData.FishTime(igrp) = Me.m_esData.FishRateNo(igrp, iTime) * Qmult(igrp)
@@ -1440,6 +1479,51 @@ Namespace MSE
 
         End Function
 
+        Private Sub CalcCatch(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+
+            Dim cloc As Single
+            For iFlt As Integer = 1 To Me.m_data.nFleets
+                For iGrp As Integer = 1 To Me.m_epdata.NumLiving
+                    cloc = Me.m_data.PropLandedTime(iFlt, iGrp) * Biomass(iGrp) * QMult(iGrp) * QYear(iFlt) * Me.m_esData.FishRateGear(iFlt, t) * Me.m_esData.FishMGear(iFlt, iGrp) / 12.0F
+
+                    'CatchYear() is just for this year it is cleared out at the start of each year
+                    Me.m_data.CatchYearGroup(iGrp) += cloc
+
+                Next iGrp
+            Next iFlt
+
+        End Sub
+
+        Private Function stockRecruitment(ByVal iGroup As Integer, ByVal B As Single, ByVal BioEst As Single, ByVal Blast As Single) As Single
+            'B is the biomass calculated by Ecosim
+            'BioEst is the observed biomass(Ecosim biomass + random variation)
+            'Blast is the biomass predicted for the last timestep ( Blast = stockRecruitment(t-1) )
+
+            Dim RstockPred As Single
+            Dim vPred As Single
+            Dim Best As Single
+
+            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_data.CatchYearGroup(iGroup) / Blast)) ' Me.m_Search.CatchYear(igroup)
+            'Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) ' Me.m_Search.CatchYear(igroup)
+            Me.m_data.CatchYearGroup(iGroup) = 0
+
+            RstockPred = CSng(m_data.Rmax(iGroup) * Me.m_data.BestimateLast(iGroup) / (m_data.BhalfT(iGroup) + Me.m_data.BestimateLast(iGroup)))
+            vPred = CSng((m_data.RstockRatio(iGroup) * Me.m_data.cvRec(iGroup)) ^ 2 / (1 - m_data.GstockPred(iGroup) ^ 2))
+            Me.m_data.KalmanGain(iGroup) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(iGroup) ^ 2))
+
+            'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
+            'VC091107 fixed problem in eq below
+            Best = Me.m_data.KalmanGain(iGroup) * BioEst + (1 - Me.m_data.KalmanGain(iGroup)) * (m_data.GstockPred(iGroup) * Me.m_data.BestimateLast(iGroup) + RstockPred)
+
+            'store the pred/actual
+            Dim val As Single
+            val = Best / (B + 1.0E-20F)
+            Me.m_data.BioEstStats.AddValue(iGroup, Me.m_curYear, val)
+
+            Return Best
+
+        End Function
+
         ''' <summary>
         ''' Populates Bestimate() and KalmanGain() for regulated fisheries
         ''' </summary>
@@ -1448,22 +1532,28 @@ Namespace MSE
 
             Dim Bobs() As Single
             ReDim Bobs(Me.m_epdata.NumGroups)
-            Dim RstockPred As Single
-            Dim vPred As Single
+            'Dim RstockPred As Single
+            'Dim vPred As Single
+            'Dim Best As Single
+            For i As Integer = 1 To Me.m_data.nLiving 'Me.m_epdata.NumGroups
 
-            For i As Integer = 1 To Me.m_epdata.NumGroups
-                Me.m_data.BestimateLast(i) = Me.m_data.Bestimate(i) * CSng(Math.Exp(-Me.m_data.CatchYearGroup(i) / Me.m_data.Bestimate(i))) ' Me.m_Search.CatchYear(i)
-                Me.m_data.CatchYearGroup(i) = 0
-                'Biomass() passed in is the biomass calculated by Ecosim
-                'Bobs is the observed biomass(Ecosim biomass + random variation)
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
+                Me.m_data.Bestimate(i) = Me.stockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i))
 
-                RstockPred = CSng(m_data.Rmax(i) * Me.m_data.BestimateLast(i) / (m_data.BhalfT(i) + Me.m_data.BestimateLast(i)))
-                vPred = CSng((m_data.RstockRatio(i) * Me.m_data.cvRec(i)) ^ 2 / (1 - m_data.GstockPred(i) ^ 2))
-                Me.m_data.KalmanGain(i) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(i) ^ 2))
-                'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
-                'VC091107 fixed problem in eq below
-                Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
+                'Me.m_data.BestimateLast(i) = Me.m_data.Bestimate(i) * CSng(Math.Exp(-Me.m_data.CatchYearGroup(i) / Me.m_data.Bestimate(i))) ' Me.m_Search.CatchYear(i)
+                'Me.m_data.CatchYearGroup(i) = 0
+                ''Biomass() passed in is the biomass calculated by Ecosim
+                ''Bobs is the observed biomass(Ecosim biomass + random variation)
+                'Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
+                ''Best = Me.stockRecruitment(i, Bobs(i))
+                'RstockPred = CSng(m_data.Rmax(i) * Me.m_data.BestimateLast(i) / (m_data.BhalfT(i) + Me.m_data.BestimateLast(i)))
+                'vPred = CSng((m_data.RstockRatio(i) * Me.m_data.cvRec(i)) ^ 2 / (1 - m_data.GstockPred(i) ^ 2))
+                'Me.m_data.KalmanGain(i) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(i) ^ 2))
+                ''and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
+                ''VC091107 fixed problem in eq below
+                'Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
+
+                'Debug.Assert(Me.m_data.Bestimate(i) = Best, "OPPS stockrecruitment failed")
 
             Next i
 
@@ -1474,12 +1564,12 @@ Namespace MSE
                 System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSEDoAssessment Exception: " & ex.Message)
             End Try
 
-            'Store the Biomass estimation difference
-            Dim val As Single
-            For igrp As Integer = 1 To Me.m_esData.nGroups
-                val = Me.m_data.Bestimate(igrp) / (Biomass(igrp) + 1.0E-20F)
-                Me.m_data.BioEstStats.AddValue(igrp, Me.m_curYear, val)
-            Next igrp
+            ''Store the Biomass estimation difference
+            'Dim val As Single
+            'For igrp As Integer = 1 To Me.m_epdata.NumLiving
+            '    val = Me.m_data.Bestimate(igrp) / (Biomass(igrp) + 1.0E-20F)
+            '    Me.m_data.BioEstStats.AddValue(igrp, Me.m_curYear, val)
+            'Next igrp
 
         End Sub
 
@@ -1511,7 +1601,7 @@ Namespace MSE
             '1 Set the quota via Fixed Escapement, Fixed Fishing Mortality or Target Fishing Mortality(hockey stick)
             '2 Apply uncertainty to the Quota
             '3 Share the Quota between the fleets
-            For igrp = 1 To Me.m_epdata.NumGroups
+            For igrp = 1 To Me.m_epdata.NumLiving
 
                 If Me.m_data.TAC(igrp) > 0 Then
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1563,7 +1653,7 @@ Namespace MSE
 
             'Share the Quota across the fleets for this timestep
             For iflt = 1 To Me.m_esData.nGear
-                For igrp = 1 To Me.m_epdata.NumGroups
+                For igrp = 1 To Me.m_data.NGroups
                     Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
                 Next
             Next
@@ -2476,7 +2566,7 @@ Namespace MSE
                     Exit Sub
                 End If
 
-                For igrp As Integer = 1 To Me.m_esData.nGroups
+                For igrp As Integer = 1 To Me.m_data.nLiving
                     Me.m_data.BioStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
                     Me.m_data.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
                 Next igrp
