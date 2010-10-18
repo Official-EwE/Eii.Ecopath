@@ -70,7 +70,9 @@ Namespace Controls.EwEGrid
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
 
-            sg.GetStyleColors(style, clrFore, clrBack)
+            ' Get style colors, but exclude remarks style because remarks are 
+            ' rendered in a different manner
+            sg.GetStyleColors(style And Not cStyleGuide.eStyleFlags.Remarks, clrFore, clrBack)
 
             ' Does cell have focus?
             If (status = DrawCellStatus.Focus) Then
