@@ -335,8 +335,8 @@ Namespace MSE
 
             Try
 
-                Me.BioStats = New cMSESummaryStats(Me, Me.BioBounds, NGroups, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
-                Me.CatchGroupStats = New cMSESummaryStats(Me, Me.CatchGroupBounds, NGroups, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.BioStats = New cMSESummaryStats(Me, Me.BioBounds, nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.CatchGroupStats = New cMSESummaryStats(Me, Me.CatchGroupBounds, nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
                 Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
                 Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
@@ -345,7 +345,7 @@ Namespace MSE
                 Me.CostSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
                 'yearly time steps
-                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioEstBounds, NGroups, 1, eCoreCounterTypes.nEcosimYears, AddressOf theCore.GetCoreCounter)
+                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioEstBounds, nLiving, 1, eCoreCounterTypes.nEcosimYears, AddressOf theCore.GetCoreCounter)
 
                 'default values for MSY 
                 'these values can be overridden by an MSE or MSY plugin
@@ -614,7 +614,7 @@ Namespace MSE
             Array.Clear(Fwc, 0, Fwc.Length)
 
             For iFlt = 1 To Me.nFleets
-                For iGrp = 1 To Me.m_EPData.NumLiving
+                For iGrp = 1 To Me.m_EPData.NumGroups
                     Wftot(iFlt) = Wftot(iFlt) + Fweight(iFlt, iGrp)
                     Fwc(iFlt, 0) = Fwc(iFlt, 0) + Fweight(iFlt, iGrp) * Me.m_ESData.relQ(iFlt, iGrp)
                 Next
@@ -687,6 +687,12 @@ Namespace MSE
         Public ReadOnly Property nFleets() As Integer
             Get
                 Return Me.m_EPData.NumFleet
+            End Get
+        End Property
+
+        Public ReadOnly Property nLiving() As Integer
+            Get
+                Return Me.m_EPData.NumLiving
             End Get
         End Property
 
@@ -1225,6 +1231,7 @@ Namespace MSE
                                     'Debug.Assert(val = max, "MSE histogram caluclation binning problem!")
                                     ibin = m_nBins(GroupingIndex) - 1
                                 End If
+                                If ibin < 0 Then ibin = 0
                                 hist(ibin) += 1
                                 n += 1
                             Next

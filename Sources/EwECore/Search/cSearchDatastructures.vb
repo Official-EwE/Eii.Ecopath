@@ -185,9 +185,13 @@ Public Class cSearchDatastructures
     '''' </remarks>
     'Public Cloc As Single = 0
 
-    ''' <summary>Catch for every year</summary>
+    ''' <summary>Sum of Catch for year by fleet, group</summary>
     ''' <remarks>index = (fleet, living)</remarks>
     Public CatchYear(,) As Single
+
+    ''' <summary>Sum of Catch for year group</summary>
+    ''' <remarks>index = (living)</remarks>
+    Public CatchYearGroup() As Single
 
     ''' <summary>Fishing per year</summary>
     ''' <remarks>index = (numgroups)
@@ -270,19 +274,19 @@ Public Class cSearchDatastructures
         End Get
     End Property
 
-    Public Function bUseForcedCatch() As Boolean
+    'Public Function bUseForcedCatch() As Boolean
 
-        Select Case Me.m_SearchMode
+    '    Select Case Me.m_SearchMode
 
-            Case eSearchModes.FishingPolicy, eSearchModes.MSE
-                'do not force the catches when in the fishing policy search or MSE
-                Return False
-        End Select
+    '        Case eSearchModes.FishingPolicy, eSearchModes.MSE
+    '            'do not force the catches when in the fishing policy search or MSE
+    '            Return False
+    '    End Select
 
-        'all other searches can use forced catches
-        Return True
+    '    'all other searches can use forced catches
+    '    Return True
 
-    End Function
+    'End Function
 
     Public Property bUseFishingMortalityPenality() As Boolean
         Get
@@ -402,6 +406,7 @@ Public Class cSearchDatastructures
             ReDim NetCost(NumFleets)
             ReDim ValCatchGear(NumFleets)
 
+
         Catch ex As Exception
 
         End Try
@@ -411,6 +416,9 @@ Public Class cSearchDatastructures
     Public Sub redimForRun()
         ReDim BaseYearIncome(NumFleets)
         ReDim BaseYearCost(NumFleets)
+
+        ReDim CatchYear(NumFleets, NumGroups)
+        ReDim CatchYearGroup(NumGroups)
     End Sub
 
 #End Region
@@ -590,43 +598,6 @@ Public Class cSearchDatastructures
 
     End Sub
 
-    '''' <summary>
-    '''' Clear the BaseYearCost() array. This will stop the BaseYear from being used for computation of economic values.
-    '''' </summary>
-    '''' <remarks></remarks>
-    'Public Sub clearBaseYear()
-    '    BaseYear = 0
-    '    Array.Clear(Me.BaseYearCost, 0, Me.BaseYearCost.Length)
-    'End Sub
-
-    'Public Sub setFRateToBaseYearEffort()
-    '    'setBaseYearEffort Must be called before this to set BaseYearEffort() to FishRateGear() for the BaseYear
-    '    Dim j As Integer, i As Integer
-
-    '    Try
-
-    '        If BaseYear > 0 Then
-    '            j = 1
-    '            For i = 1 To NumFleets
-    '                For iyr As Integer = 1 To TotalTime 'so that it takes the F in the first year with color coding
-    '                    If ParNumber(FblockCode(i, iyr)) = j Then
-    '                        If BaseYearEffort(i) > 0 Then Frates(j) = Math.Log(BaseYearEffort(i) * 1.001)
-    '                        j = j + 1
-    '                    End If
-    '                Next
-    '            Next
-    '        Else
-    '            For i = 1 To m_NBlocks : Frates(i) = 0.0001 : Next
-    '        End If
-
-    '    Catch ex As Exception
-    '        cLog.Write(ex)
-    '        Throw New ApplicationException("Error setting fishing rate to base year value.", ex)
-    '    End Try
-
-
-    'End Sub
-
     ''' <summary>
     ''' Save the Fishing Rates (Frates(nBlocks)) before they have been changed by the Search Algo 
     ''' so they can be set back to initial values at the start of each Search Run.
@@ -743,6 +714,12 @@ Public Class cSearchDatastructures
         ReDim NetCost(EcoPathData.NumFleet)
         ReDim ValCatchGear(EcoPathData.NumFleet)
 
+        ReDim CatchYear(NumFleets, NumGroups)
+        ReDim CatchYearGroup(NumGroups)
+        ReDim FishYear(NumGroups)
+
+        '   ReDim 
+
         m_ecopathData = EcoPathData
         m_ecosimData = EcosimData
 
@@ -835,9 +812,11 @@ Public Class cSearchDatastructures
     End Sub
 
 
-    Public Sub InitForYear()
-        ReDim FishYear(m_ecopathData.NumGroups)
-        ReDim CatchYear(m_ecopathData.NumFleet, m_ecopathData.NumLiving)
+    Public Sub ClearYearlyData()
+        Array.Clear(FishYear, 0, FishYear.Length)
+        Array.Clear(CatchYear, 0, CatchYear.Length)
+        Array.Clear(CatchYearGroup, 0, CatchYearGroup.Length)
+
     End Sub
 
     ''' <summary>
@@ -850,7 +829,7 @@ Public Class cSearchDatastructures
 
         Try
 
-            Me.InitForYear()
+            Me.ClearYearlyData()
 
             If Me.bInSearch Then
                 'in some search mode so collect the summary data
@@ -932,28 +911,28 @@ Public Class cSearchDatastructures
     End Sub
 
 
-    Public Sub calcMonthlyCatch(ByVal Biomass() As Single, ByRef Fgear() As Single, ByRef Qyear() As Single, ByVal PastBaseYear As Boolean)
+    'Public Sub calcMonthlyCatch(ByVal Biomass() As Single, ByRef Fgear() As Single, ByRef Qyear() As Single, ByVal PastBaseYear As Boolean)
 
-        Dim iFlt As Integer, iGrp As Integer
-        Dim Cloc As Single 'CV As Single, 
+    '    Dim iFlt As Integer, iGrp As Integer
+    '    Dim Cloc As Single 'CV As Single, 
 
-        For iFlt = 1 To m_ecopathData.NumFleet
-            ' CV = 0
-            For iGrp = 1 To m_ecopathData.NumLiving
-                Cloc = m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) * Qyear(iFlt) * Fgear(iFlt) * m_ecosimData.relQ(iFlt, iGrp) / 12.0F
+    '    For iFlt = 1 To m_ecopathData.NumFleet
+    '        ' CV = 0
+    '        For iGrp = 1 To m_ecopathData.NumLiving
+    '            Cloc = m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) * Qyear(iFlt) * Fgear(iFlt) * m_ecosimData.relQ(iFlt, iGrp) / 12.0F
 
-                'CatchYear() is just for this year it is cleared out at the start of each year
-                CatchYear(iFlt, iGrp) += Cloc
+    '            'CatchYear() is just for this year it is cleared out at the start of each year
+    '            CatchYear(iFlt, iGrp) += Cloc
 
-                If PastBaseYear Then
-                    'ValCatch() is summed across all time steps, but only after base year has been reached
-                    ValCatch(iFlt, iGrp) += Cloc * DF * m_ecopathData.Market(iFlt, iGrp)
-                End If
+    '            If PastBaseYear Then
+    '                'ValCatch() is summed across all time steps, but only after base year has been reached
+    '                ValCatch(iFlt, iGrp) += Cloc * DF * m_ecopathData.Market(iFlt, iGrp)
+    '            End If
 
-            Next iGrp
-        Next iFlt
+    '        Next iGrp
+    '    Next iFlt
 
-    End Sub
+    'End Sub
 
 
     ''' <summary>
