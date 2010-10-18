@@ -707,7 +707,7 @@ Namespace Ecosim
             For iyr = 1 To NumberOfYears + ExtraTime
                 iyf = IIf(iyr <= NumberOfYears, iyr, NumberOfYears)
 
-                m_search.InitForYear()
+                Me.m_search.ClearYearlyData()
 
                 'set Fgear() fishing effort at timestep that can be modified by a search routine
                 Me.SetFGear(Fgear, RelFopt, QYear, iyr, NumberOfYears)
@@ -759,7 +759,7 @@ Namespace Ecosim
                     If Me.m_search.SearchMode = eSearchModes.MSE Then
                         'MSE Quota regulations
                         'Overwrites FishTime() set above in setFishTime()
-                        Me.m_MSE.DoRegulations(BB, Qmult, QYear, itime, ipct, iyr)
+                        Me.m_MSE.DoRegulations(BB, Fgear, Qmult, QYear, itime, ipct, iyr)
                     End If
 
                     If m_Data.PredictSimEffort Then
@@ -834,8 +834,8 @@ Namespace Ecosim
 
                     'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
                     '*
-                    If m_search.bInSearch And iyr >= m_search.BaseYear Then
-                        m_search.calcMonthlyCatch(BB, Fgear, QYear, iyr > m_search.BaseYear)
+                    If m_search.bInSearch Then
+                        Me.CalcCatchForSearch(itime, iyr, ipct, BB, Fgear, QYear)
                     End If
                     '*
                     'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
@@ -911,6 +911,55 @@ Namespace Ecosim
             Me.m_Data.onEcosimRunCompleted()
 
         End Sub
+
+
+        Private Sub CalcCatchForSearch(ByVal iTime As Integer, ByVal iYear As Integer, ByVal iMonth As Integer, ByVal biomass() As Single, ByVal Fgear() As Single, ByVal QYear() As Single)
+            Dim iflt As Integer
+
+            'If m_search.bInSearch And iYear >= m_search.BaseYear Then
+            '    m_search.calcMonthlyCatch(BB, Fgear, QYear, iYear > m_search.BaseYear)
+            'End If
+
+            If Me.m_search.bInSearch Then
+
+                If Me.m_search.SearchMode = eSearchModes.MSE Then
+
+                    If Me.m_MSEData.UseQuotaRegs Then
+
+                        For iflt = 1 To Me.m_Data.nGear
+                            Fgear(iflt) = Me.m_Data.FishRateGear(iflt, iTime)
+                        Next
+
+                    End If 'Me.m_MSEData.UseQuotaRegs 
+                End If 'Me.m_search.SearchMode = eSearchModes.MSE 
+
+                Dim Ctemp As Single
+                For igrp As Integer = 1 To Me.m_EPData.NumLiving
+                    For iflt = 1 To Me.m_Data.nGear
+                        'catch calculated by ecosim
+                        Ctemp = Me.CalcCatch(igrp, iflt, biomass(igrp), Fgear(iflt), Me.m_Data.relQ(iflt, igrp), QYear(iflt))
+                        'sum into yearly value for searches
+                        Me.m_search.CatchYear(iflt, igrp) += Ctemp
+                        Me.m_search.CatchYearGroup(igrp) += Ctemp
+                        If iYear > m_search.BaseYear Then
+                            'Value of catch for the search includes discount factor
+                            Me.m_search.ValCatch(iflt, igrp) += Ctemp * Me.m_search.DF * Me.m_EPData.Market(iflt, igrp)
+                        End If
+                    Next
+                Next
+
+            End If 'Me.m_search.bInSearch
+
+        End Sub
+
+
+        Public Function CalcCatch(ByVal iGrp As Integer, ByVal iFlt As Integer, _
+                                    ByVal B As Single, ByVal Effort As Single, ByVal Fmort As Single, _
+                                     ByVal QYear As Single) As Single
+
+            Return Me.m_MSEData.PropLandedTime(iFlt, iGrp) * B * Me.Qmult(iGrp) * QYear * Effort * Fmort / 12.0F
+
+        End Function
 
         '''' <summary>
         '''' Set FishTime() for the Fishing Policy or MSE searches
@@ -1038,7 +1087,6 @@ Namespace Ecosim
         ''' <remarks>At the start of a year Fgear(nFleets)(fishing effort) is set to a user entered value FishRateGear(nFleets,nTime) or effort set by a search. 
         ''' If in a search Fgear() is then used to compute FishYear() which is used to set FishRateNo() and compute FishTime(). FishTime() is what is used by Derivt() Confused yet???? </remarks>
         Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByRef QYear() As Single, ByVal iYear As Integer, ByVal NumberOfYears As Integer)
-
 
             'not in the search so get Fgear() from user-entered fishing rate shape
             Dim iyf As Integer = CInt(IIf(iYear <= NumberOfYears, iYear, NumberOfYears))
