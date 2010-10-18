@@ -92,7 +92,7 @@ Namespace Ecosim
             Dim group As cMSEGroupInput = Nothing
 
             ' For each group
-            For iGroup As Integer = 1 To Core.nGroups
+            For iGroup As Integer = 1 To Core.nLivingGroups
 
                 'Get the group info!!!!
                 group = Core.MSEManager.GroupInputs(iGroup)
