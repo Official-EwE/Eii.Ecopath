@@ -742,7 +742,7 @@ Friend Class cMSEPlotter
 
     Private Function nVisGroups() As Integer
         Dim n As Integer
-        For igrp As Integer = 1 To Me.m_uic.Core.nGroups
+        For igrp As Integer = 1 To Me.m_uic.Core.nLivingGroups
             If Me.m_uic.StyleGuide.GroupVisible(igrp) Then
                 n += 1
             End If

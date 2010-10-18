@@ -83,7 +83,7 @@ Public Class cMSEGroupColorBlockDataSource
             Dim manager As cMSEManager = Me.m_uic.Core.MSEManager
             Dim blks() As Single = Me.m_blockCodes.BlockValues
 
-            For i As Integer = 1 To Me.m_uic.Core.nGroups
+            For i As Integer = 1 To manager.GroupInputs.Count
                 Dim grp As cMSEGroupInput = manager.GroupInputs(i)
                 For it As Integer = 1 To Me.m_uic.Core.nEcosimYears
                     Dim cv As Single = grp.BiomassCV(it)
@@ -161,7 +161,7 @@ Public Class cMSEGroupColorBlockDataSource
     Public ReadOnly Property nRows() As Integer _
         Implements IPolicyColorBlockDataSource.nRows
         Get
-            Return Me.m_uic.Core.nGroups
+            Return Me.m_uic.Core.nLivingGroups
         End Get
     End Property
 

@@ -59,7 +59,7 @@ Namespace Ecosim
             Dim alPropSum As New ArrayList()
 
             ' For each group
-            For iGroup As Integer = 1 To Core.nGroups
+            For iGroup As Integer = 1 To Core.nLivingGroups
 
                 Me.AddRow()
 
