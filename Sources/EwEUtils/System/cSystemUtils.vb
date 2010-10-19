@@ -33,22 +33,18 @@ Namespace SystemUtilities
         ''' <param name="strPath">Application path to use. Provide an empty string
         ''' here to detect the application file in all possible locations.</param>
         ''' <param name="strOutputParameters">Arguments to pass to the executable.</param>
-        ''' <param name="strSecondaryOutputDirectory">Working directory</param>
         ''' -----------------------------------------------------------------------
         Public Shared Function AppExec(ByVal strAppName As String, _
                                        ByVal strOutputParameters As String, _
                                        ByRef strError As String, _
-                                       Optional ByVal strPath As String = "", _
-                                       Optional ByVal strSecondaryOutputDirectory As String = "") As Boolean
+                                       Optional ByVal strPath As String = "") As Boolean
 
             ' Check if Directory is forced 
             If Not String.IsNullOrEmpty(strPath) Then
-                Return ExecuteApplication(strPath, strAppName, strSecondaryOutputDirectory, strOutputParameters)
+                Return ExecuteApplication(strPath, strAppName, strOutputParameters, strError)
             Else
                 ' Loop through all the file locations to find the files
                 For Each strLocation As String In ApplicationLaunchLocations()
-                    ' Execute with directory parameter
-                    If ExecuteApplication(strLocation, strAppName, strOutputParameters, strError, strSecondaryOutputDirectory) Then Return True
                     ' Execute without directory parameter
                     If ExecuteApplication(strLocation, strAppName, strOutputParameters, strError) Then Return True
                 Next
@@ -75,14 +71,12 @@ Namespace SystemUtilities
         ''' <param name="strLocationDir"></param>
         ''' <param name="strAppName"></param>
         ''' <param name="strOutputParameters"></param>
-        ''' <param name="strSecondaryOutputDirectory"></param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Private Shared Function ExecuteApplication(ByVal strLocationDir As String, _
                                                    ByVal strAppName As String, _
                                                    ByVal strOutputParameters As String, _
-                                                   ByRef strError As String, _
-                                                   Optional ByVal strSecondaryOutputDirectory As String = "") As Boolean
+                                                   ByRef strError As String) As Boolean
             Dim proc As New System.Diagnostics.Process()
             Dim bSuccess As Boolean = False
             Dim strFullAppPath As String = ""
@@ -92,14 +86,14 @@ Namespace SystemUtilities
 
             Try
                 Environment.CurrentDirectory = strLocationDir
-                strFullAppPath = Path.Combine(Path.Combine(strLocationDir, strSecondaryOutputDirectory), strAppName)
+                strFullAppPath = Path.Combine(strLocationDir, strAppName)
                 'Check if the application EcoPath install this application or it was deleted
                 If Not File.Exists(strFullAppPath) Then
                     bSuccess = False
                 Else
                     'Execute external application
                     proc.EnableRaisingEvents = False
-                    proc.StartInfo.FileName = strAppName
+                    proc.StartInfo.FileName = strFullAppPath
                     proc.StartInfo.Arguments = strOutputParameters
                     proc.Start()
 
@@ -111,6 +105,10 @@ Namespace SystemUtilities
                 'Throw New Exception(String.Format("Failed to load {0} with parameters {1}.  Please check if the application exist and reinstall the application.  If the issue still persist contact your application vendor.  Error: {2}.", _
                 '                                   strFullAppPath, strOutputFileName, ex.ToString))
                 strError = ex.Message
+                ' Fix faulty Win7 exception text
+                If strError.IndexOf("%1") > -1 Then
+                    strError = strError.Replace("%1", strAppName)
+                End If
                 bSuccess = False
             End Try
 

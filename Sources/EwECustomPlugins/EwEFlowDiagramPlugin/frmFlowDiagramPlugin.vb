@@ -118,7 +118,7 @@ Public Class frmFlowDiagramPlugin
             End If
 
             'Execute the external application through the general function on EwEUtils
-            If Not EwEUtils.SystemUtilities.cSystemUtils.AppExec("fd.exe", flowfile, strError, "", "EwEFlowDiagramPlugin") Then
+            If Not EwEUtils.SystemUtilities.cSystemUtils.AppExec("fd.exe", flowfile, strError, "") Then
                 Dim msg As New cMessage("Unable to run application 'fd.exe': " & strError, _
                                         eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
                 core.Messages.SendMessage(msg)
