@@ -480,6 +480,7 @@
         '
         'm_tsmiEcopathEditPedigree
         '
+        Me.m_tsmiEcopathEditPedigree.Image = Global.ScientificInterface.My.Resources.Resources.certificate
         Me.m_tsmiEcopathEditPedigree.Name = "m_tsmiEcopathEditPedigree"
         resources.ApplyResources(Me.m_tsmiEcopathEditPedigree, "m_tsmiEcopathEditPedigree")
         '

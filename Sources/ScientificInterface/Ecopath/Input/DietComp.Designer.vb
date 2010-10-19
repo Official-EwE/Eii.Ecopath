@@ -40,12 +40,13 @@ Namespace Ecopath.Input
             '
             'tsSumtoOneBtn
             '
-            Me.tsSumtoOneBtn.Image = Global.ScientificInterface.My.Resources.Resources.OptionsIconSM
+            Me.tsSumtoOneBtn.Image = Global.ScientificInterface.My.Resources.Resources.CalculatorHS
             resources.ApplyResources(Me.tsSumtoOneBtn, "tsSumtoOneBtn")
             Me.tsSumtoOneBtn.Name = "tsSumtoOneBtn"
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = True
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -70,7 +71,6 @@ Namespace Ecopath.Input
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
             'DietComp

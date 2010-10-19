@@ -1456,23 +1456,6 @@
   <data name="OPTIONS_COLORDLG_PROMPT_NAMES" xml:space="preserve">
     <value>Names|Colour scheme to use for name cells in grids</value>
   </data>
-  <data name="OptionsIconSM" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        Qk0GAwAAAAAAADYAAAAoAAAAEAAAAA8AAAABABgAAAAAAAAAAAASCwAAEgsAAAAAAAAAAAAA////////
-        ////////////////+fr7/////////////////v//////////////////////////////////////7+zp
-        gmtV6Ofm////29vo3dfZxLW1urKy8fDw////////////////////////////49G/vGgawbmwsrflADHd
-        fHCo0LGono+Qj359wbu7/v7+/////////////////v//5dC7vm0koYp/WmS9A1b/gXu8z6KXpICDqZ2U
-        f3Rq9PPz////////////////////48mvwG8p1by0b33LEmr6hoa91rCnr4GBr4CAi2ho9fX1////////
-        /fz8/fz8+fr72reTvWws0ry4cobMIIT8i4/A16ylvIiJyZSUk21t9fX19/r8uNnogsHehsXjcrfYu5Bg
-        yXMy3dXVeo3GIWjEiYq22aultICAuYWFlm1t9vb27/f6icnlZNL7aNz/X9DwlIFnoW5N3djZv7e+jIqQ
-        taKr1KGgtnh4wIyMlGtr9/f38fn7mNTodc7smsbUeaCvcYmSmpqdzcnJ0tDOvb+7vbm306+v0IKCyHFx
-        lF5e9vf38vr8nN3xfbPI0cK+tqWkgHx8xMHBsKqqv7u7q6Cfw8LDy7294cPDz5eXsouL+/v78/r8o+D1
-        hMTcp7u3rL+8namnrba0rcPBjJ+empGRkZmZxrO07eTk9PLy/Pz8////9Pr8reP1gt3/nuz6l+bzm+n1
-        luDrmu35m+76jtXj0ujp/v39////////////////9Pr8tun1gOv/fef/hOr/leX8muT7mOH5luX8is3h
-        +Pj4/////////////////////f7+3/P5o+v3ou75rOv14O/19/v99vv99fr9+fz9////////////////
-        ////////////////+fz9+fz++/3+////////////////////////////////////////////
-</value>
-  </data>
   <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
     <value>Egg production shape {0}</value>
     <comment>The default name for a new Ecosim Egg production shape. {0}: autonumber</comment>
@@ -2800,5 +2783,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="HEADER_ECOSPACE_YEARS" xml:space="preserve">
     <value>Ecospace years</value>
+  </data>
+  <data name="CalculatorHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CalculatorHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="certificate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\certificate.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -140,12 +140,26 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property CalculatorHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("CalculatorHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to MSE fleet ref. levels.
         '''</summary>
         Friend ReadOnly Property CAPTION_MSEFLEETREF() As String
             Get
                 Return ResourceManager.GetString("CAPTION_MSEFLEETREF", resourceCulture)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property certificate() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("certificate", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -5446,13 +5460,6 @@ Namespace My.Resources
         Friend ReadOnly Property OptionsHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("OptionsHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property OptionsIconSM() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("OptionsIconSM", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
