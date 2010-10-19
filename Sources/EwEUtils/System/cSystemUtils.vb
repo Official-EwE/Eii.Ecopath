@@ -83,6 +83,7 @@ Namespace SystemUtilities
                                                    ByVal strOutputParameters As String, _
                                                    ByRef strError As String, _
                                                    Optional ByVal strSecondaryOutputDirectory As String = "") As Boolean
+            Dim proc As New System.Diagnostics.Process()
             Dim bSuccess As Boolean = False
             Dim strFullAppPath As String = ""
 
@@ -97,7 +98,11 @@ Namespace SystemUtilities
                     bSuccess = False
                 Else
                     'Execute external application
-                    Shell(strFullAppPath & " " & strOutputParameters, AppWinStyle.NormalFocus)
+                    proc.EnableRaisingEvents = False
+                    proc.StartInfo.FileName = strAppName
+                    proc.StartInfo.Arguments = strOutputParameters
+                    proc.Start()
+
                     bSuccess = True
                 End If
 
