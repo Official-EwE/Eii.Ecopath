@@ -1503,8 +1503,7 @@ Namespace MSE
             Dim vPred As Single
             Dim Best As Single
 
-            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_data.CatchYearGroup(iGroup) / Blast)) ' Me.m_Search.CatchYear(igroup)
-            'Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) ' Me.m_Search.CatchYear(igroup)
+            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) ' Me.m_Search.CatchYear(igroup)
             Me.m_data.CatchYearGroup(iGroup) = 0
 
             RstockPred = CSng(m_data.Rmax(iGroup) * Me.m_data.BestimateLast(iGroup) / (m_data.BhalfT(iGroup) + Me.m_data.BestimateLast(iGroup)))
@@ -1532,28 +1531,10 @@ Namespace MSE
 
             Dim Bobs() As Single
             ReDim Bobs(Me.m_epdata.NumGroups)
-            'Dim RstockPred As Single
-            'Dim vPred As Single
-            'Dim Best As Single
-            For i As Integer = 1 To Me.m_data.nLiving 'Me.m_epdata.NumGroups
+            For i As Integer = 1 To Me.m_data.nLiving
 
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
                 Me.m_data.Bestimate(i) = Me.stockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i))
-
-                'Me.m_data.BestimateLast(i) = Me.m_data.Bestimate(i) * CSng(Math.Exp(-Me.m_data.CatchYearGroup(i) / Me.m_data.Bestimate(i))) ' Me.m_Search.CatchYear(i)
-                'Me.m_data.CatchYearGroup(i) = 0
-                ''Biomass() passed in is the biomass calculated by Ecosim
-                ''Bobs is the observed biomass(Ecosim biomass + random variation)
-                'Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
-                ''Best = Me.stockRecruitment(i, Bobs(i))
-                'RstockPred = CSng(m_data.Rmax(i) * Me.m_data.BestimateLast(i) / (m_data.BhalfT(i) + Me.m_data.BestimateLast(i)))
-                'vPred = CSng((m_data.RstockRatio(i) * Me.m_data.cvRec(i)) ^ 2 / (1 - m_data.GstockPred(i) ^ 2))
-                'Me.m_data.KalmanGain(i) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(i) ^ 2))
-                ''and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
-                ''VC091107 fixed problem in eq below
-                'Me.m_data.Bestimate(i) = Me.m_data.KalmanGain(i) * Bobs(i) + (1 - Me.m_data.KalmanGain(i)) * (m_data.GstockPred(i) * Me.m_data.BestimateLast(i) + RstockPred)
-
-                'Debug.Assert(Me.m_data.Bestimate(i) = Best, "OPPS stockrecruitment failed")
 
             Next i
 
@@ -1563,13 +1544,6 @@ Namespace MSE
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSEDoAssessment Exception: " & ex.Message)
             End Try
-
-            ''Store the Biomass estimation difference
-            'Dim val As Single
-            'For igrp As Integer = 1 To Me.m_epdata.NumLiving
-            '    val = Me.m_data.Bestimate(igrp) / (Biomass(igrp) + 1.0E-20F)
-            '    Me.m_data.BioEstStats.AddValue(igrp, Me.m_curYear, val)
-            'Next igrp
 
         End Sub
 
@@ -1646,7 +1620,7 @@ Namespace MSE
 
                 'Add uncertainty to the Quota set above
                 'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
-                'but assume uncertaint is smaller?????? not done here
+                'but assume uncertainty is smaller?????? not done here
                 tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
 
             Next igrp
