@@ -719,6 +719,7 @@ Namespace Ecosim
                     m_search.calcYearlySummaryValues(BB)
 
                     If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
+                        Array.Clear(Me.m_search.FishYear, 0, Me.m_search.FishYear.Length)
                         'calculate fishing mortality if in Fishing policy or MSE
                         'used to overwrite FishRateNo() inside the month time loop
                         For iFlt As Integer = 1 To m_EPData.NumFleet

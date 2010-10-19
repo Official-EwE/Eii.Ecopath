@@ -816,7 +816,6 @@ Public Class cSearchDatastructures
 
 
     Public Sub ClearYearlyData()
-        Array.Clear(FishYear, 0, FishYear.Length)
         Array.Clear(CatchYear, 0, CatchYear.Length)
         Array.Clear(CatchYearGroup, 0, CatchYearGroup.Length)
     End Sub
