@@ -718,7 +718,10 @@ Public Class cSearchDatastructures
         ReDim CatchYearGroup(NumGroups)
         ReDim FishYear(NumGroups)
 
-        '   ReDim 
+        For igrp As Integer = 1 To EcoPathData.NumGroups
+            CatchYearGroup(igrp) = EcoPathData.fCatch(igrp)
+        Next
+
 
         m_ecopathData = EcoPathData
         m_ecosimData = EcosimData
@@ -816,7 +819,6 @@ Public Class cSearchDatastructures
         Array.Clear(FishYear, 0, FishYear.Length)
         Array.Clear(CatchYear, 0, CatchYear.Length)
         Array.Clear(CatchYearGroup, 0, CatchYearGroup.Length)
-
     End Sub
 
     ''' <summary>
