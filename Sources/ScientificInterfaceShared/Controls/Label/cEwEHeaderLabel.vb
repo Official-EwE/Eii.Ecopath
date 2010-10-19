@@ -125,7 +125,7 @@ Namespace Controls
         <Browsable(False)> _
         Public Overrides Property TextAlign() As System.Drawing.ContentAlignment
             Get
-                If Me.RightToLeft = Forms.RightToLeft.Yes Then
+                If Me.RightToLeft = RightToLeft.Yes Then
                     Return ContentAlignment.MiddleRight
                 Else
                     Return ContentAlignment.MiddleLeft
@@ -145,7 +145,7 @@ Namespace Controls
         <Browsable(False)> _
         Public Overrides Property BorderStyle() As System.Windows.Forms.BorderStyle
             Get
-                Return Forms.BorderStyle.None
+                Return BorderStyle.None
             End Get
             Set(ByVal value As System.Windows.Forms.BorderStyle)
                 ' NOP
@@ -179,11 +179,11 @@ Namespace Controls
             Dim fmt As StringFormat = cDrawingUtils.ContentAlignmentToStringFormat(Me.TextAlign)
 
             Select Case Me.RightToLeft
-                Case Forms.RightToLeft.Inherit
+                Case RightToLeft.Inherit
                     bRightToLeft = Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft
-                Case Forms.RightToLeft.Yes
+                Case RightToLeft.Yes
                     bRightToLeft = True
-                Case Forms.RightToLeft.No
+                Case RightToLeft.No
                     bRightToLeft = False
                 Case Else
                     ' Huh?!
