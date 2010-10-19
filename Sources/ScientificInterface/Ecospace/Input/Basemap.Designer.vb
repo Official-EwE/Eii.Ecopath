@@ -1,3 +1,4 @@
+Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI.Docking
 
 Namespace Ecospace.Basemap

@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared.Forms
+
 Namespace Ecospace
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _

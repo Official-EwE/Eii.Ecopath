@@ -19,6 +19,7 @@ Imports ScientificInterface.Ecotracer
 Imports ScientificInterface.Wizard
 Imports ScientificInterface.Other
 Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports WeifenLuo.WinFormsUI.Docking

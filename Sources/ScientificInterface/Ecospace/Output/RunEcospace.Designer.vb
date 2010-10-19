@@ -1,5 +1,6 @@
-Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Forms
 Imports ZedGraph
+Imports WeifenLuo.WinFormsUI.Docking
 
 Namespace Ecospace
 

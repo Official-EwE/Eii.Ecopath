@@ -2,9 +2,10 @@
 
 Option Strict On
 
-Imports ScientificInterface.Ecospace
 Imports System.Drawing.Imaging
 Imports EwECore
+Imports ScientificInterface.Ecospace
+Imports ScientificInterfaceShared.Forms
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 

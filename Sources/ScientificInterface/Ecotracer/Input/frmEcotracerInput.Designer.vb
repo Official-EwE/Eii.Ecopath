@@ -1,3 +1,4 @@
+Imports ScientificInterfaceShared.Forms
 Namespace Ecotracer
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _

@@ -1,3 +1,4 @@
+Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _

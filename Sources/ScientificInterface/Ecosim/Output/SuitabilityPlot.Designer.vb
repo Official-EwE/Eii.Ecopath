@@ -1,4 +1,5 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
+﻿Imports ScientificInterfaceShared.Forms
+Imports WeifenLuo.WinFormsUI.Docking
 
 Namespace Ecosim
 

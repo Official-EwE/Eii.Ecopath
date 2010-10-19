@@ -1,12 +1,13 @@
 #Region " Imports "
 
+Imports System.Text
 Imports EwECore
-Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Forms
+Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
-Imports EwEPlugin
-Imports System.Text
 Imports EwEUtils.Utilities
+Imports WeifenLuo.WinFormsUI.Docking
 
 #End Region ' Imports
 

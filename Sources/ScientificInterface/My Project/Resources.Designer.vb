@@ -1743,6 +1743,51 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecopath.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_ECOPATH() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ECOPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_ECOSIM() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ECOSIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim data not available.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_ECOSIM_NO_DATA_AVAILABLE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ECOSIM_NO_DATA_AVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_ECOSPACE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ECOSPACE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace data not available.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_ECOSPACE_NO_DATA_AVAILABLE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ECOSPACE_NO_DATA_AVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Cannot open file &apos;{0}&apos;.
         '''</summary>
         Friend ReadOnly Property GENERIC_ERROR_FILEOPEN() As String
@@ -2108,6 +2153,15 @@ Namespace My.Resources
         Friend ReadOnly Property GENERIC_VALUE_NAMEANDSEQUENCE() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_NAMEANDSEQUENCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No data available.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_VALUE_NO_DATA_AVAILABLE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_NO_DATA_AVAILABLE", resourceCulture)
             End Get
         End Property
         
@@ -2820,6 +2874,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Concentration.
+        '''</summary>
+        Friend ReadOnly Property HEADER_CONCENTRATION() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CONCENTRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Concentration / Biomass.
+        '''</summary>
+        Friend ReadOnly Property HEADER_CONCENTRATION_B() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CONCENTRATION_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Conf. interv. (+/-%).
         '''</summary>
         Friend ReadOnly Property HEADER_CONFIDENCEINTERVAL() As String
@@ -2955,11 +3027,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecosim years.
+        '''</summary>
+        Friend ReadOnly Property HEADER_ECOSIM_YEARS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOSIM_YEARS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecospace area.
         '''</summary>
         Friend ReadOnly Property HEADER_ECOSPACE_AREA() As String
             Get
                 Return ResourceManager.GetString("HEADER_ECOSPACE_AREA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace years.
+        '''</summary>
+        Friend ReadOnly Property HEADER_ECOSPACE_YEARS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOSPACE_YEARS", resourceCulture)
             End Get
         End Property
         
@@ -6811,33 +6901,6 @@ Namespace My.Resources
         Friend ReadOnly Property STATUSSTRIP_MODIFIED() As String
             Get
                 Return ResourceManager.GetString("STATUSSTRIP_MODIFIED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Set this value to all selected cells.
-        '''</summary>
-        Friend ReadOnly Property TOOLTIP_GRID_APPLYVALUE() As String
-            Get
-                Return ResourceManager.GetString("TOOLTIP_GRID_APPLYVALUE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Load grid content from a CSV file.
-        '''</summary>
-        Friend ReadOnly Property TOOLTIP_GRID_LOADFROMCSV() As String
-            Get
-                Return ResourceManager.GetString("TOOLTIP_GRID_LOADFROMCSV", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Save grid content to a CSV file.
-        '''</summary>
-        Friend ReadOnly Property TOOLTIP_GRID_SAVETOCSV() As String
-            Get
-                Return ResourceManager.GetString("TOOLTIP_GRID_SAVETOCSV", resourceCulture)
             End Get
         End Property
         

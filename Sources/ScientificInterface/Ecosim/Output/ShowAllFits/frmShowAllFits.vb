@@ -3,13 +3,14 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.Commands
 Imports System.Windows.Forms
 Imports System.IO
+Imports EwECore
 Imports ScientificInterface.Other
+Imports ScientificInterfaceShared
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 

@@ -1,3 +1,4 @@
+Imports ScientificInterfaceShared.Forms
 Imports ScientificInterface.Controls
 Imports WeifenLuo.WinFormsUI.Docking
 

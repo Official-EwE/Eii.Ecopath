@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Forms
 
 #End Region
 

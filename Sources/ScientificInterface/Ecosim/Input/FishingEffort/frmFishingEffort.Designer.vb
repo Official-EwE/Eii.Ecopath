@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared.Forms
+
 Namespace Ecosim
 
     <CLSCompliant(False)> _

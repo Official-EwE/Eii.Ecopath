@@ -1,4 +1,6 @@
-﻿Namespace Ecospace.Advection
+﻿Imports ScientificInterfaceShared.Forms
+
+Namespace Ecospace.Advection
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmAdvection

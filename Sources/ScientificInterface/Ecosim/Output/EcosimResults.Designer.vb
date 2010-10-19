@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared.Forms
+
 Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _

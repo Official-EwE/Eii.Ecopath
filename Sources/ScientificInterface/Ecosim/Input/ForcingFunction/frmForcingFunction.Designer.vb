@@ -1,3 +1,4 @@
+Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared
 
 Namespace Ecosim

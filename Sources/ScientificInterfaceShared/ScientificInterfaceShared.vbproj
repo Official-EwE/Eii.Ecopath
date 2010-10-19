@@ -308,6 +308,12 @@
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphKiteHelper.vb" />
     <Compile Include="Controls\cUIContext.vb" />
+    <Compile Include="Forms\frmEwE.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmEwEGrid.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Help\cHelp.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -480,6 +486,8 @@
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
+    <None Include="Resources\ImportXMLHS.png" />
+    <None Include="Resources\ExportXMLHS.PNG" />
     <None Include="Resources\ZoomInHS.png" />
     <None Include="Resources\ZoomOutHS.png" />
   </ItemGroup>

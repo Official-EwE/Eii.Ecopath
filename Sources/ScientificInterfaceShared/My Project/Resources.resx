@@ -420,4 +420,29 @@
   <data name="VARIABLE_EEINPUT" xml:space="preserve">
     <value>EE|||Ecotrophic Efficiency</value>
   </data>
+  <data name="ExportXMLHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExportXMLHS.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GENERIC_LABEL_APPLY" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="ImportXMLHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImportXMLHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LABEL_SET" xml:space="preserve">
+    <value>&amp;Set:</value>
+    <comment>Text label for Quick Edit interface in Grid toolbars</comment>
+  </data>
+  <data name="STATUS_APPLYVALUES" xml:space="preserve">
+    <value>Applying values, please wait</value>
+  </data>
+  <data name="TOOLTIP_GRID_APPLYVALUE" xml:space="preserve">
+    <value>Set this value to all selected cells</value>
+  </data>
+  <data name="TOOLTIP_GRID_LOADFROMCSV" xml:space="preserve">
+    <value>Load grid content from a CSV file</value>
+  </data>
+  <data name="TOOLTIP_GRID_SAVETOCSV" xml:space="preserve">
+    <value>Save grid content to a CSV file</value>
+  </data>
 </root>

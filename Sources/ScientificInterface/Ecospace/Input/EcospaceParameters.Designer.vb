@@ -1,3 +1,4 @@
+Imports ScientificInterfaceShared.Forms
 
 Namespace Ecospace
 

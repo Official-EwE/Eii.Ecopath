@@ -528,12 +528,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\BugReporter.vb" />
-    <Compile Include="Other\Forms\frmEwE.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Other\Forms\frmEwEGrid.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Other\Options\Application\ucOptionsPlugins.Designer.vb">
       <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
     </Compile>
@@ -683,12 +677,6 @@
     <Compile Include="Other\AboutBox\frmAboutEwE.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Other\Forms\frmWebBrowser.Designer.vb">
-      <DependentUpon>frmWebBrowser.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Other\Forms\frmWebBrowser.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Other\dlgScenario.Designer.vb">
       <DependentUpon>dlgScenario.vb</DependentUpon>
     </Compile>
@@ -807,10 +795,6 @@
     <EmbeddedResource Include="Other\AboutBox\frmAboutEwE.resx">
       <DependentUpon>frmAboutEwE.vb</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Other\Forms\frmWebBrowser.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>frmWebBrowser.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -940,6 +924,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Advection\ucWind.resx">
       <DependentUpon>ucWind.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\frmWebBrowser.resx">
+      <DependentUpon>frmWebBrowser.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\frmMSERecruitment.resx">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
@@ -1257,6 +1245,12 @@
     </Compile>
     <Compile Include="Ecospace\Input\Advection\ucWind.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\frmWebBrowser.Designer.vb">
+      <DependentUpon>frmWebBrowser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\frmWebBrowser.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Other\Options\Application\IOptionsPage.vb" />
     <Compile Include="Settings.vb">

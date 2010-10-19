@@ -1152,9 +1152,6 @@
     <value>&amp;Create</value>
     <comment>Generic 'Create' button text</comment>
   </data>
-  <data name="TOOLTIP_GRID_APPLYVALUE" xml:space="preserve">
-    <value>Set this value to all selected cells</value>
-  </data>
   <data name="NavForward" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NavForward.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -1687,9 +1684,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="GENERIC_HEADER_EXPORT" xml:space="preserve">
     <value>Export</value>
   </data>
-  <data name="TOOLTIP_GRID_SAVETOCSV" xml:space="preserve">
-    <value>Save grid content to a CSV file</value>
-  </data>
   <data name="GENERIC_LABEL_HOME" xml:space="preserve">
     <value>Home</value>
     <comment>owner start page.</comment>
@@ -1820,9 +1814,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="HEADER_PP_ABBR" xml:space="preserve">
     <value>PP</value>
-  </data>
-  <data name="TOOLTIP_GRID_LOADFROMCSV" xml:space="preserve">
-    <value>Load grid content from a CSV file</value>
   </data>
   <data name="OPTIONS_FEEDBACK_POPUP_AND_STATUS" xml:space="preserve">
     <value>As popup message and in status panel</value>
@@ -2546,10 +2537,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_FLEET_GROUP" xml:space="preserve">
     <value>Fleet\group</value>
   </data>
-  <data name="LABEL_SET" xml:space="preserve">
-    <value>&amp;Set:</value>
-    <comment>Text label for Quick Edit interface in Grid toolbars</comment>
-  </data>
   <data name="SELECTION_DERIVED" xml:space="preserve">
     <value>(derived value selected)</value>
     <comment>This indicates that the user has selected a value that is defined in the user interface without an underlying core variable, such as (but not limited to) results of user-interface built formulas</comment>
@@ -2779,5 +2766,39 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ewe_home_url" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ewe_home.url.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="LABEL_SET" xml:space="preserve">
+    <value>&amp;Set:</value>
+    <comment>Text label for Quick Edit interface in Grid toolbars</comment>
+  </data>
+  <data name="GENERIC_ECOPATH" xml:space="preserve">
+    <value>Ecopath</value>
+  </data>
+  <data name="GENERIC_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="GENERIC_ECOSIM_NO_DATA_AVAILABLE" xml:space="preserve">
+    <value>Ecosim data not available</value>
+  </data>
+  <data name="GENERIC_ECOSPACE" xml:space="preserve">
+    <value>Ecospace</value>
+  </data>
+  <data name="GENERIC_ECOSPACE_NO_DATA_AVAILABLE" xml:space="preserve">
+    <value>Ecospace data not available</value>
+  </data>
+  <data name="GENERIC_VALUE_NO_DATA_AVAILABLE" xml:space="preserve">
+    <value>No data available</value>
+  </data>
+  <data name="HEADER_CONCENTRATION" xml:space="preserve">
+    <value>Concentration</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_B" xml:space="preserve">
+    <value>Concentration / Biomass</value>
+  </data>
+  <data name="HEADER_ECOSIM_YEARS" xml:space="preserve">
+    <value>Ecosim years</value>
+  </data>
+  <data name="HEADER_ECOSPACE_YEARS" xml:space="preserve">
+    <value>Ecospace years</value>
   </data>
 </root>

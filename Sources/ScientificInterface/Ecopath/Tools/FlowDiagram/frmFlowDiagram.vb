@@ -6,6 +6,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports EwEUtils.Win32Api
+Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports System.Drawing

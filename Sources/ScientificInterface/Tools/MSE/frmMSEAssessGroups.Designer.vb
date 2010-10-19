@@ -1,4 +1,5 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports ScientificInterfaceShared.Forms
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmMSEAssessGroups
     Inherits frmEwE
 

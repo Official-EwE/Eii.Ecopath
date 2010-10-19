@@ -1,6 +1,8 @@
+Imports ScientificInterfaceShared.Forms
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmShapeValue
-    Inherits System.Windows.Forms.Form
+    Inherits frmEwEGrid
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -20,123 +22,124 @@
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShapeValue))
-        Me.lblName = New System.Windows.Forms.Label
-        Me.lblPoolCode = New System.Windows.Forms.Label
-        Me.lblType = New System.Windows.Forms.Label
-        Me.txtName = New System.Windows.Forms.TextBox
-        Me.cmbType = New System.Windows.Forms.ComboBox
-        Me.cmbPoolCode = New System.Windows.Forms.ComboBox
-        Me.lblWeight = New System.Windows.Forms.Label
-        Me.txtWeight = New System.Windows.Forms.TextBox
-        Me.lbValues = New System.Windows.Forms.Label
-        Me.lbNoOfYears = New System.Windows.Forms.Label
+        Me.m_lblName = New System.Windows.Forms.Label
+        Me.m_lblPoolCode = New System.Windows.Forms.Label
+        Me.m_lblType = New System.Windows.Forms.Label
+        Me.m_txtName = New System.Windows.Forms.TextBox
+        Me.m_cmbType = New System.Windows.Forms.ComboBox
+        Me.m_cmbPoolCode = New System.Windows.Forms.ComboBox
+        Me.m_lblWeight = New System.Windows.Forms.Label
+        Me.m_txtWeight = New System.Windows.Forms.TextBox
+        Me.m_lblValues = New System.Windows.Forms.Label
+        Me.m_lblNoOfYears = New System.Windows.Forms.Label
         Me.m_lblNumYears = New System.Windows.Forms.Label
-        Me.tlbAll = New System.Windows.Forms.TableLayoutPanel
+        Me.m_tlpAll = New System.Windows.Forms.TableLayoutPanel
         Me.tlpNoOfYears = New System.Windows.Forms.TableLayoutPanel
-        Me.btnSetNoOfYears = New System.Windows.Forms.Button
+        Me.m_btnSetNoOfYears = New System.Windows.Forms.Button
         Me.pnlValueGrid = New System.Windows.Forms.Panel
         Me.m_grid = New ScientificInterfaceShared.ShapeValueGrid
-        Me.lblViewAs = New System.Windows.Forms.Label
-        Me.cmbViewAs = New System.Windows.Forms.ComboBox
-        Me.lblXBase = New System.Windows.Forms.Label
-        Me.txtXBase = New System.Windows.Forms.TextBox
-        Me.btnOK = New System.Windows.Forms.Button
-        Me.btnCancel = New System.Windows.Forms.Button
-        Me.tlbAll.SuspendLayout()
+        Me.m_lblViewAs = New System.Windows.Forms.Label
+        Me.m_cmbViewAs = New System.Windows.Forms.ComboBox
+        Me.m_lblXBase = New System.Windows.Forms.Label
+        Me.m_txtXBase = New System.Windows.Forms.TextBox
+        Me.m_btnOK = New System.Windows.Forms.Button
+        Me.m_btnCancel = New System.Windows.Forms.Button
+        Me.m_tsGrid = New System.Windows.Forms.ToolStrip
+        Me.m_tlpAll.SuspendLayout()
         Me.tlpNoOfYears.SuspendLayout()
         Me.pnlValueGrid.SuspendLayout()
         Me.SuspendLayout()
         '
-        'lblName
+        'm_lblName
         '
-        resources.ApplyResources(Me.lblName, "lblName")
-        Me.lblName.Name = "lblName"
+        resources.ApplyResources(Me.m_lblName, "m_lblName")
+        Me.m_lblName.Name = "m_lblName"
         '
-        'lblPoolCode
+        'm_lblPoolCode
         '
-        resources.ApplyResources(Me.lblPoolCode, "lblPoolCode")
-        Me.lblPoolCode.Name = "lblPoolCode"
+        resources.ApplyResources(Me.m_lblPoolCode, "m_lblPoolCode")
+        Me.m_lblPoolCode.Name = "m_lblPoolCode"
         '
-        'lblType
+        'm_lblType
         '
-        resources.ApplyResources(Me.lblType, "lblType")
-        Me.lblType.Name = "lblType"
+        resources.ApplyResources(Me.m_lblType, "m_lblType")
+        Me.m_lblType.Name = "m_lblType"
         '
-        'txtName
+        'm_txtName
         '
-        resources.ApplyResources(Me.txtName, "txtName")
-        Me.txtName.Name = "txtName"
+        resources.ApplyResources(Me.m_txtName, "m_txtName")
+        Me.m_txtName.Name = "m_txtName"
         '
-        'cmbType
+        'm_cmbType
         '
-        resources.ApplyResources(Me.cmbType, "cmbType")
-        Me.cmbType.FormattingEnabled = True
-        Me.cmbType.Name = "cmbType"
+        resources.ApplyResources(Me.m_cmbType, "m_cmbType")
+        Me.m_cmbType.FormattingEnabled = True
+        Me.m_cmbType.Name = "m_cmbType"
         '
-        'cmbPoolCode
+        'm_cmbPoolCode
         '
-        resources.ApplyResources(Me.cmbPoolCode, "cmbPoolCode")
-        Me.cmbPoolCode.FormattingEnabled = True
-        Me.cmbPoolCode.Name = "cmbPoolCode"
+        resources.ApplyResources(Me.m_cmbPoolCode, "m_cmbPoolCode")
+        Me.m_cmbPoolCode.FormattingEnabled = True
+        Me.m_cmbPoolCode.Name = "m_cmbPoolCode"
         '
-        'lblWeight
+        'm_lblWeight
         '
-        resources.ApplyResources(Me.lblWeight, "lblWeight")
-        Me.lblWeight.Name = "lblWeight"
+        resources.ApplyResources(Me.m_lblWeight, "m_lblWeight")
+        Me.m_lblWeight.Name = "m_lblWeight"
         '
-        'txtWeight
+        'm_txtWeight
         '
-        resources.ApplyResources(Me.txtWeight, "txtWeight")
-        Me.txtWeight.Name = "txtWeight"
+        resources.ApplyResources(Me.m_txtWeight, "m_txtWeight")
+        Me.m_txtWeight.Name = "m_txtWeight"
         '
-        'lbValues
+        'm_lblValues
         '
-        resources.ApplyResources(Me.lbValues, "lbValues")
-        Me.lbValues.Name = "lbValues"
+        resources.ApplyResources(Me.m_lblValues, "m_lblValues")
+        Me.m_lblValues.Name = "m_lblValues"
         '
-        'lbNoOfYears
+        'm_lblNoOfYears
         '
-        resources.ApplyResources(Me.lbNoOfYears, "lbNoOfYears")
-        Me.lbNoOfYears.Name = "lbNoOfYears"
+        resources.ApplyResources(Me.m_lblNoOfYears, "m_lblNoOfYears")
+        Me.m_lblNoOfYears.Name = "m_lblNoOfYears"
         '
         'm_lblNumYears
         '
         resources.ApplyResources(Me.m_lblNumYears, "m_lblNumYears")
         Me.m_lblNumYears.Name = "m_lblNumYears"
         '
-        'tlbAll
+        'm_tlpAll
         '
-        resources.ApplyResources(Me.tlbAll, "tlbAll")
-        Me.tlbAll.Controls.Add(Me.txtName, 1, 0)
-        Me.tlbAll.Controls.Add(Me.cmbType, 1, 1)
-        Me.tlbAll.Controls.Add(Me.lbValues, 0, 6)
-        Me.tlbAll.Controls.Add(Me.lblType, 0, 1)
-        Me.tlbAll.Controls.Add(Me.lblPoolCode, 0, 2)
-        Me.tlbAll.Controls.Add(Me.cmbPoolCode, 1, 2)
-        Me.tlbAll.Controls.Add(Me.txtWeight, 1, 3)
-        Me.tlbAll.Controls.Add(Me.lblName, 0, 0)
-        Me.tlbAll.Controls.Add(Me.lblWeight, 0, 3)
-        Me.tlbAll.Controls.Add(Me.lbNoOfYears, 0, 7)
-        Me.tlbAll.Controls.Add(Me.tlpNoOfYears, 1, 7)
-        Me.tlbAll.Controls.Add(Me.pnlValueGrid, 1, 6)
-        Me.tlbAll.Controls.Add(Me.lblViewAs, 0, 5)
-        Me.tlbAll.Controls.Add(Me.cmbViewAs, 1, 5)
-        Me.tlbAll.Controls.Add(Me.lblXBase, 0, 4)
-        Me.tlbAll.Controls.Add(Me.txtXBase, 1, 4)
-        Me.tlbAll.Name = "tlbAll"
+        resources.ApplyResources(Me.m_tlpAll, "m_tlpAll")
+        Me.m_tlpAll.Controls.Add(Me.m_txtName, 1, 0)
+        Me.m_tlpAll.Controls.Add(Me.m_cmbType, 1, 1)
+        Me.m_tlpAll.Controls.Add(Me.m_lblValues, 0, 6)
+        Me.m_tlpAll.Controls.Add(Me.m_lblType, 0, 1)
+        Me.m_tlpAll.Controls.Add(Me.m_lblPoolCode, 0, 2)
+        Me.m_tlpAll.Controls.Add(Me.m_cmbPoolCode, 1, 2)
+        Me.m_tlpAll.Controls.Add(Me.m_txtWeight, 1, 3)
+        Me.m_tlpAll.Controls.Add(Me.m_lblName, 0, 0)
+        Me.m_tlpAll.Controls.Add(Me.m_lblWeight, 0, 3)
+        Me.m_tlpAll.Controls.Add(Me.m_lblNoOfYears, 0, 7)
+        Me.m_tlpAll.Controls.Add(Me.tlpNoOfYears, 1, 7)
+        Me.m_tlpAll.Controls.Add(Me.pnlValueGrid, 1, 6)
+        Me.m_tlpAll.Controls.Add(Me.m_lblViewAs, 0, 5)
+        Me.m_tlpAll.Controls.Add(Me.m_cmbViewAs, 1, 5)
+        Me.m_tlpAll.Controls.Add(Me.m_lblXBase, 0, 4)
+        Me.m_tlpAll.Controls.Add(Me.m_txtXBase, 1, 4)
+        Me.m_tlpAll.Name = "m_tlpAll"
         '
         'tlpNoOfYears
         '
         resources.ApplyResources(Me.tlpNoOfYears, "tlpNoOfYears")
         Me.tlpNoOfYears.Controls.Add(Me.m_lblNumYears, 0, 0)
-        Me.tlpNoOfYears.Controls.Add(Me.btnSetNoOfYears, 1, 0)
+        Me.tlpNoOfYears.Controls.Add(Me.m_btnSetNoOfYears, 1, 0)
         Me.tlpNoOfYears.Name = "tlpNoOfYears"
         '
-        'btnSetNoOfYears
+        'm_btnSetNoOfYears
         '
-        resources.ApplyResources(Me.btnSetNoOfYears, "btnSetNoOfYears")
-        Me.btnSetNoOfYears.Name = "btnSetNoOfYears"
-        Me.btnSetNoOfYears.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnSetNoOfYears, "m_btnSetNoOfYears")
+        Me.m_btnSetNoOfYears.Name = "m_btnSetNoOfYears"
+        Me.m_btnSetNoOfYears.UseVisualStyleBackColor = True
         '
         'pnlValueGrid
         '
@@ -147,12 +150,13 @@
         '
         'm_grid
         '
+        Me.m_grid.AllowBlockSelect = False
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
         Me.m_grid.AutoStretchColumnsToFitWidth = False
         Me.m_grid.AutoStretchRowsToFitHeight = False
         Me.m_grid.BackColor = System.Drawing.Color.White
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
                     Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                     Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
@@ -174,86 +178,94 @@
         Me.m_grid.TrackPropertySelection = False
         Me.m_grid.UIContext = Nothing
         '
-        'lblViewAs
+        'm_lblViewAs
         '
-        resources.ApplyResources(Me.lblViewAs, "lblViewAs")
-        Me.lblViewAs.Name = "lblViewAs"
+        resources.ApplyResources(Me.m_lblViewAs, "m_lblViewAs")
+        Me.m_lblViewAs.Name = "m_lblViewAs"
         '
-        'cmbViewAs
+        'm_cmbViewAs
         '
-        resources.ApplyResources(Me.cmbViewAs, "cmbViewAs")
-        Me.cmbViewAs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbViewAs.FormattingEnabled = True
-        Me.cmbViewAs.Items.AddRange(New Object() {resources.GetString("cmbViewAs.Items"), resources.GetString("cmbViewAs.Items1")})
-        Me.cmbViewAs.Name = "cmbViewAs"
+        resources.ApplyResources(Me.m_cmbViewAs, "m_cmbViewAs")
+        Me.m_cmbViewAs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbViewAs.FormattingEnabled = True
+        Me.m_cmbViewAs.Items.AddRange(New Object() {resources.GetString("m_cmbViewAs.Items"), resources.GetString("m_cmbViewAs.Items1")})
+        Me.m_cmbViewAs.Name = "m_cmbViewAs"
         '
-        'lblXBase
+        'm_lblXBase
         '
-        resources.ApplyResources(Me.lblXBase, "lblXBase")
-        Me.lblXBase.Name = "lblXBase"
+        resources.ApplyResources(Me.m_lblXBase, "m_lblXBase")
+        Me.m_lblXBase.Name = "m_lblXBase"
         '
-        'txtXBase
+        'm_txtXBase
         '
-        resources.ApplyResources(Me.txtXBase, "txtXBase")
-        Me.txtXBase.Name = "txtXBase"
+        resources.ApplyResources(Me.m_txtXBase, "m_txtXBase")
+        Me.m_txtXBase.Name = "m_txtXBase"
         '
-        'btnOK
+        'm_btnOK
         '
-        resources.ApplyResources(Me.btnOK, "btnOK")
-        Me.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.btnOK.Name = "btnOK"
-        Me.btnOK.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+        Me.m_btnOK.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.m_btnOK.Name = "m_btnOK"
+        Me.m_btnOK.UseVisualStyleBackColor = True
         '
-        'btnCancel
+        'm_btnCancel
         '
-        resources.ApplyResources(Me.btnCancel, "btnCancel")
-        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
+        '
+        'm_tsGrid
+        '
+        resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
+        Me.m_tsGrid.Name = "m_tsGrid"
         '
         'frmShapeValue
         '
-        Me.AcceptButton = Me.btnOK
+        Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.btnCancel
-        Me.Controls.Add(Me.btnCancel)
-        Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.tlbAll)
+        Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_tsGrid)
+        Me.Controls.Add(Me.m_btnCancel)
+        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_tlpAll)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmShapeValue"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.tlbAll.ResumeLayout(False)
-        Me.tlbAll.PerformLayout()
+        Me.m_tlpAll.ResumeLayout(False)
+        Me.m_tlpAll.PerformLayout()
         Me.tlpNoOfYears.ResumeLayout(False)
         Me.pnlValueGrid.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
-    Private WithEvents lblName As System.Windows.Forms.Label
-    Private WithEvents lblPoolCode As System.Windows.Forms.Label
-    Private WithEvents lblType As System.Windows.Forms.Label
-    Private WithEvents txtName As System.Windows.Forms.TextBox
-    Private WithEvents cmbType As System.Windows.Forms.ComboBox
-    Private WithEvents cmbPoolCode As System.Windows.Forms.ComboBox
-    Private WithEvents lblWeight As System.Windows.Forms.Label
-    Private WithEvents txtWeight As System.Windows.Forms.TextBox
-    Private WithEvents lbValues As System.Windows.Forms.Label
-    Private WithEvents lbNoOfYears As System.Windows.Forms.Label
+    Private WithEvents m_lblName As System.Windows.Forms.Label
+    Private WithEvents m_lblPoolCode As System.Windows.Forms.Label
+    Private WithEvents m_lblType As System.Windows.Forms.Label
+    Private WithEvents m_txtName As System.Windows.Forms.TextBox
+    Private WithEvents m_cmbType As System.Windows.Forms.ComboBox
+    Private WithEvents m_cmbPoolCode As System.Windows.Forms.ComboBox
+    Private WithEvents m_lblWeight As System.Windows.Forms.Label
+    Private WithEvents m_txtWeight As System.Windows.Forms.TextBox
+    Private WithEvents m_lblValues As System.Windows.Forms.Label
+    Private WithEvents m_lblNoOfYears As System.Windows.Forms.Label
     Private WithEvents m_lblNumYears As Label
-    Private WithEvents tlbAll As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_tlpAll As System.Windows.Forms.TableLayoutPanel
     Private WithEvents tlpNoOfYears As System.Windows.Forms.TableLayoutPanel
     Private WithEvents pnlValueGrid As System.Windows.Forms.Panel
-    Private WithEvents btnOK As System.Windows.Forms.Button
-    Private WithEvents btnCancel As System.Windows.Forms.Button
-    Private WithEvents lblViewAs As System.Windows.Forms.Label
-    Private WithEvents cmbViewAs As System.Windows.Forms.ComboBox
-    Private WithEvents lblXBase As System.Windows.Forms.Label
-    Private WithEvents txtXBase As System.Windows.Forms.TextBox
-    Private WithEvents btnSetNoOfYears As System.Windows.Forms.Button
+    Private WithEvents m_btnOK As System.Windows.Forms.Button
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_lblViewAs As System.Windows.Forms.Label
+    Private WithEvents m_cmbViewAs As System.Windows.Forms.ComboBox
+    Private WithEvents m_lblXBase As System.Windows.Forms.Label
+    Private WithEvents m_txtXBase As System.Windows.Forms.TextBox
+    Private WithEvents m_btnSetNoOfYears As System.Windows.Forms.Button
     Private WithEvents m_grid As ScientificInterfaceShared.ShapeValueGrid
+    Private WithEvents m_tsGrid As System.Windows.Forms.ToolStrip
 
 End Class
 

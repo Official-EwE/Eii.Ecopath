@@ -2,14 +2,13 @@
 
 Option Strict On
 Imports EwECore
-Imports ZedGraph
 Imports ScientificInterface.Other
+Imports ScientificInterfaceShared.Forms
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports ZedGraph
 
 #End Region ' Imports
-
-' ToDo_JS: globalize this form!
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -692,7 +691,7 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property Title() As String _
             Implements IDisplayModeHelper.Title
             Get
-                Return "No data available."
+                Return My.Resources.GENERIC_VALUE_NO_DATA_AVAILABLE
             End Get
         End Property
 
@@ -900,9 +899,9 @@ Public Class frmEcotracerOutput
                 Me.Refresh()
 
                 If Enabled Then
-                    Return "Ecosim"
+                    Return My.Resources.GENERIC_ECOSIM
                 Else
-                    Return "Ecosim data not available."
+                    Return My.Resources.GENERIC_ECOSIM_NO_DATA_AVAILABLE
                 End If
 
             End Get
@@ -954,7 +953,7 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property XAxisLabel() As String _
             Implements IDisplayModeHelper.XAxisLabel
             Get
-                Return "Ecosim Years"
+                Return My.Resources.HEADER_ECOSIM_YEARS
             End Get
         End Property
 
@@ -964,9 +963,9 @@ Public Class frmEcotracerOutput
                 Dim lb As String
 
                 If Me.m_plottype = ePlotTypes.CB Then
-                    lb = "Concentration / Biomass"
+                    lb = My.Resources.HEADER_CONCENTRATION_B
                 Else
-                    lb = "Concentration"
+                    lb = My.Resources.HEADER_CONCENTRATION
                 End If
                 Return lb
             End Get
@@ -1150,9 +1149,9 @@ Public Class frmEcotracerOutput
             Get
                 Me.Refresh()
                 If Me.m_bEnabled Then
-                    Return "Ecospace"
+                    Return My.Resources.GENERIC_ECOSPACE
                 Else
-                    Return "Ecospace data not available."
+                    Return My.Resources.GENERIC_ECOSPACE_NO_DATA_AVAILABLE
                 End If
             End Get
         End Property
@@ -1218,7 +1217,7 @@ Public Class frmEcotracerOutput
 
         Public ReadOnly Property XAxisLabel() As String Implements IDisplayModeHelper.XAxisLabel
             Get
-                Return "Ecospace Years"
+                Return My.Resources.HEADER_ECOSPACE_YEARS
             End Get
         End Property
 
@@ -1227,9 +1226,9 @@ Public Class frmEcotracerOutput
             Get
                 Dim lb As String
                 If Me.m_plottype = ePlotTypes.CB Then
-                    lb = "Concentration / Biomass"
+                    lb = My.Resources.HEADER_CONCENTRATION_B
                 Else
-                    lb = "Concentration"
+                    lb = My.Resources.HEADER_CONCENTRATION
                 End If
                 Return lb
             End Get

@@ -1,5 +1,6 @@
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Forms
 
 Namespace Ecosim
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _

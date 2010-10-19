@@ -1,4 +1,5 @@
-﻿Namespace Ecosim
+﻿Imports ScientificInterfaceShared.Forms
+Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmMSERecruitment

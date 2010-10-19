@@ -98,7 +98,6 @@ Public Class frmShapeValue
 
 #Region " Private vars "
 
-    Private m_uic As cUIContext = Nothing
     Private m_shape As cShapeData = Nothing
     Private m_iNumPoints As Integer = 0
     Private m_SketchPad As ucSketchPad = Nothing
@@ -132,8 +131,8 @@ Public Class frmShapeValue
         Me.InitializeComponent()
 
         ' Config
-        Me.m_uic = uic
-        Me.m_grid.UIContext = uic
+        Me.Grid = Me.m_grid
+        Me.UIContext = uic
 
         ' Store shape
         Me.m_shape = shape
@@ -153,6 +152,9 @@ Public Class frmShapeValue
         Else
             Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
         End If
+
+        ' Set core exec state for the benefit of the quick edit handler
+        Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded
 
     End Sub
 
@@ -181,6 +183,10 @@ Public Class frmShapeValue
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+        If Me.UIContext Is Nothing Then Return
+
+        MyBase.OnLoad(e)
+
         Me.CenterToParent()
 
         ' Kick off
@@ -199,8 +205,12 @@ Public Class frmShapeValue
 
     End Sub
 
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        MyBase.OnFormClosed(e)
+    End Sub
+
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles btnOK.Click
+        Handles m_btnOK.Click
 
         Dim bSucces As Boolean = False
 
@@ -224,7 +234,7 @@ Public Class frmShapeValue
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles btnCancel.Click
+        Handles m_btnCancel.Click
 
         ' Done
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -233,7 +243,7 @@ Public Class frmShapeValue
     End Sub
 
     Private Sub cmbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles cmbType.SelectedIndexChanged
+        Handles m_cmbType.SelectedIndexChanged
 
         Me.FillPoolCodeComboBox()
         Me.UpdateControls()
@@ -241,17 +251,17 @@ Public Class frmShapeValue
     End Sub
 
     Private Sub AnyTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles txtWeight.TextChanged, m_lblNumYears.TextChanged, txtName.TextChanged
+        Handles m_txtWeight.TextChanged, m_lblNumYears.TextChanged, m_txtName.TextChanged
         Me.UpdateControls()
     End Sub
 
     Private Sub cmbPoolCode_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles cmbPoolCode.SelectedIndexChanged
+        Handles m_cmbPoolCode.SelectedIndexChanged
         Me.UpdateControls()
     End Sub
 
     Private Sub cmbViewAs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles cmbViewAs.SelectedIndexChanged
+        Handles m_cmbViewAs.SelectedIndexChanged
         Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.XMax))
         If Not Me.m_bInUpdate Then
             Me.m_grid.SetValues(Me.m_shape, Me.NumPoints, Me.m_displayMode)
@@ -306,30 +316,30 @@ Public Class frmShapeValue
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
-        txtName.Text = Me.m_shape.Name
+        m_txtName.Text = Me.m_shape.Name
 
         ' Hide seasonal flag for mediation functions
-        Me.lblViewAs.Visible = Not bIsMediation
-        Me.cmbViewAs.Visible = Not bIsMediation
+        Me.m_lblViewAs.Visible = Not bIsMediation
+        Me.m_cmbViewAs.Visible = Not bIsMediation
 
-        lblWeight.Visible = False
-        txtWeight.Visible = False
+        m_lblWeight.Visible = False
+        m_txtWeight.Visible = False
 
-        lblType.Visible = False
-        cmbType.Visible = False
+        m_lblType.Visible = False
+        m_cmbType.Visible = False
 
-        lblPoolCode.Visible = False
-        cmbPoolCode.Visible = False
+        m_lblPoolCode.Visible = False
+        m_cmbPoolCode.Visible = False
 
-        lbNoOfYears.Visible = False
+        m_lblNoOfYears.Visible = False
         m_lblNumYears.Visible = False
-        btnSetNoOfYears.Visible = False
+        m_btnSetNoOfYears.Visible = False
 
-        lblXBase.Visible = bIsMediation
-        txtXBase.Visible = bIsMediation
+        m_lblXBase.Visible = bIsMediation
+        m_txtXBase.Visible = bIsMediation
 
         If bIsMediation Then
-            Me.txtXBase.Text = CStr(DirectCast(Me.m_shape, cMediationFunction).XBaseIndex)
+            Me.m_txtXBase.Text = CStr(DirectCast(Me.m_shape, cMediationFunction).XBaseIndex)
         End If
 
         Me.IsSeasonal = Me.m_shape.IsSeasonal
@@ -346,30 +356,30 @@ Public Class frmShapeValue
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
-        txtName.Enabled = True
-        txtName.Text = ts.Name
+        m_txtName.Enabled = True
+        m_txtName.Text = ts.Name
 
-        lblWeight.Visible = True
-        txtWeight.Visible = True
-        txtWeight.Text = CStr(ts.WtType)
+        m_lblWeight.Visible = True
+        m_txtWeight.Visible = True
+        m_txtWeight.Text = CStr(ts.WtType)
 
-        lblType.Visible = True
-        cmbType.Visible = True
+        m_lblType.Visible = True
+        m_cmbType.Visible = True
 
-        lblXBase.Visible = False
-        txtXBase.Visible = False
+        m_lblXBase.Visible = False
+        m_txtXBase.Visible = False
 
-        lblViewAs.Visible = False
-        cmbViewAs.Visible = False
+        m_lblViewAs.Visible = False
+        m_cmbViewAs.Visible = False
 
         Me.FillTSTypeCombo(ts)
 
-        lblPoolCode.Visible = True
-        cmbPoolCode.Visible = True
+        m_lblPoolCode.Visible = True
+        m_cmbPoolCode.Visible = True
         Me.FillPoolCodeComboBox()
 
-        btnOK.Visible = True
-        btnCancel.Visible = True
+        m_btnOK.Visible = True
+        m_btnCancel.Visible = True
 
         Me.m_grid.SetValues(Me.m_shape, Me.NumPoints, Me.m_displayMode)
 
@@ -385,36 +395,36 @@ Public Class frmShapeValue
         Dim iNextTS As Integer = -1
 
         ' Get next TS sequential number
-        For i As Integer = 1 To Me.m_uic.Core.nTimeSeries
-            lstrTSNames.Add(Me.m_uic.Core.EcosimTimeSeries(i).Name)
+        For i As Integer = 1 To Me.Core.nTimeSeries
+            lstrTSNames.Add(Me.Core.EcosimTimeSeries(i).Name)
         Next
         iNextTS = EwEUtils.Utilities.cStringUtils.GetNextNumber(lstrTSNames.ToArray(), My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES)
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_ADD
-        txtName.Enabled = True
-        txtName.Text = String.Format(My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES, iNextTS)
+        m_txtName.Enabled = True
+        m_txtName.Text = String.Format(My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES, iNextTS)
 
-        lblWeight.Visible = True
-        txtWeight.Visible = True
-        txtWeight.Text = "1.0"
+        m_lblWeight.Visible = True
+        m_txtWeight.Visible = True
+        m_txtWeight.Text = "1.0"
 
-        lblType.Visible = True
-        cmbType.Visible = True
+        m_lblType.Visible = True
+        m_cmbType.Visible = True
         Me.FillTSTypeCombo(Nothing)
-        cmbType.Text = cmbType.Items(0).ToString
+        m_cmbType.Text = m_cmbType.Items(0).ToString
 
-        lblPoolCode.Visible = True
-        cmbPoolCode.Visible = True
+        m_lblPoolCode.Visible = True
+        m_cmbPoolCode.Visible = True
 
-        lblXBase.Visible = False
-        txtXBase.Visible = False
+        m_lblXBase.Visible = False
+        m_txtXBase.Visible = False
 
-        lblViewAs.Visible = False
-        cmbViewAs.Visible = False
+        m_lblViewAs.Visible = False
+        m_cmbViewAs.Visible = False
 
         Me.FillPoolCodeComboBox()
-        cmbPoolCode.Text = cmbPoolCode.Items(0).ToString
+        m_cmbPoolCode.Text = m_cmbPoolCode.Items(0).ToString
 
         Me.m_grid.Clear(Me.NumPoints, (Me.m_editMode = eDialogEditModeType.AddTimeSeries Or Me.m_editMode = eDialogEditModeType.EditTimeSeries))
 
@@ -436,13 +446,13 @@ Public Class frmShapeValue
         ts = DirectCast(Me.m_shape, cTimeSeries)
 
         'Update the time series
-        ts.Name = txtName.Text
+        ts.Name = m_txtName.Text
         ' Parse value using UI number settings
-        ts.WtType = Single.Parse(txtWeight.Text)
+        ts.WtType = Single.Parse(m_txtWeight.Text)
         ts.TimeSeriesType = Me.SelectedTimeSeriesType()
 
         ' Set the pool code
-        iPoolCode = cmbPoolCode.SelectedIndex + 1
+        iPoolCode = m_cmbPoolCode.SelectedIndex + 1
 
         'Assign the time series pool code to fleet index or group index
         Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
@@ -458,7 +468,7 @@ Public Class frmShapeValue
         Me.m_grid.ApplyValues(ts)
 
         ts.Update()
-        bSucces = Me.m_uic.Core.UpdateTimeSeries()
+        bSucces = Me.Core.UpdateTimeSeries()
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         Return bSucces
@@ -474,12 +484,12 @@ Public Class frmShapeValue
         ff = DirectCast(Me.m_shape, cForcingFunction)
 
         ' Update the forcing function
-        ff.Name = Me.txtName.Text
+        ff.Name = Me.m_txtName.Text
         ff.IsSeasonal = Me.IsSeasonal
 
         If TypeOf (ff) Is cMediationFunction Then
             ' Parse value using UI number settings
-            DirectCast(ff, cMediationFunction).XBaseIndex = Integer.Parse(Me.txtXBase.Text)
+            DirectCast(ff, cMediationFunction).XBaseIndex = Integer.Parse(Me.m_txtXBase.Text)
         End If
 
         ' Update the shape
@@ -502,19 +512,19 @@ Public Class frmShapeValue
         Dim asValues As Single() = Nothing
         Dim bSucces As Boolean = True
 
-        cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_TIMESERIES_ADDING, txtName.Text), TriState.True)
+        cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_TIMESERIES_ADDING, m_txtName.Text), TriState.True)
 
-        strName = txtName.Text
+        strName = m_txtName.Text
         ' Parse value using UI number settings
-        sWeight = Single.Parse(txtWeight.Text)
+        sWeight = Single.Parse(m_txtWeight.Text)
         tsType = Me.SelectedTimeSeriesType()
 
         ' Set the pool code
-        iPoolCode = cmbPoolCode.SelectedIndex + 1
+        iPoolCode = m_cmbPoolCode.SelectedIndex + 1
         iFirstYear = Me.m_grid.ValueStartRef
         asValues = Me.m_grid.Values(Me.m_iNumPoints)
 
-        bSucces = Me.m_uic.Core.AddTimeSeries(strName, iPoolCode, tsType, sWeight, asValues, iDBID)
+        bSucces = Me.Core.AddTimeSeries(strName, iPoolCode, tsType, sWeight, asValues, iDBID)
 
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
@@ -532,11 +542,11 @@ Public Class frmShapeValue
         Dim bEnableOk As Boolean = True
         Try
             ' Need a name to 'OK'
-            bEnableOk = Not String.IsNullOrEmpty(Me.txtName.Text)
+            bEnableOk = Not String.IsNullOrEmpty(Me.m_txtName.Text)
 
             If (TypeOf (Me.m_shape) Is cMediationFunction) Then
                 Dim sDummy As Single = 42.0!
-                bEnableOk = bEnableOk And (Single.TryParse(Me.txtXBase.Text, sDummy) = True)
+                bEnableOk = bEnableOk And (Single.TryParse(Me.m_txtXBase.Text, sDummy) = True)
             End If
 
             ' Time series specific tests:
@@ -544,16 +554,16 @@ Public Class frmShapeValue
                (Me.m_editMode = eDialogEditModeType.AddTimeSeries) Then
                 ' TS need a valid weight factor
                 ' Parse value using UI number settings
-                bEnableOk = bEnableOk And (Single.Parse(Me.txtWeight.Text) >= 0)
+                bEnableOk = bEnableOk And (Single.Parse(Me.m_txtWeight.Text) >= 0)
                 ' TS need a valid poolcode selection
-                bEnableOk = bEnableOk And (Me.cmbPoolCode.SelectedIndex >= 0)
+                bEnableOk = bEnableOk And (Me.m_cmbPoolCode.SelectedIndex >= 0)
             End If
 
         Catch ex As Exception
             bEnableOk = False
         End Try
 
-        Me.btnOK.Enabled = bEnableOk
+        Me.m_btnOK.Enabled = bEnableOk
 
     End Sub
 
@@ -563,8 +573,8 @@ Public Class frmShapeValue
         Dim itemSelected As cTSTComboBoxItem = Nothing
         Dim bAdd As Boolean = True
 
-        cmbType.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbType.Items.Clear()
+        m_cmbType.DropDownStyle = ComboBoxStyle.DropDownList
+        m_cmbType.Items.Clear()
         For Each tst As eTimeSeriesType In [Enum].GetValues(GetType(eTimeSeriesType))
 
             bAdd = True
@@ -583,7 +593,7 @@ Public Class frmShapeValue
 
             If bAdd Then
                 itemNew = New cTSTComboBoxItem(tst)
-                cmbType.Items.Add(itemNew)
+                m_cmbType.Items.Add(itemNew)
                 'Find selection
                 If ts IsNot Nothing Then
                     If ts.TimeSeriesType = tst Then
@@ -593,8 +603,8 @@ Public Class frmShapeValue
             End If
         Next tst
 
-        cmbType.Sorted = True
-        cmbType.SelectedItem = itemSelected
+        m_cmbType.Sorted = True
+        m_cmbType.SelectedItem = itemSelected
     End Sub
 
     Private Sub FillPoolCodeComboBox()
@@ -602,30 +612,30 @@ Public Class frmShapeValue
         Dim fts As cFleetTimeSeries
         Dim gts As cGroupTimeSeries
 
-        cmbPoolCode.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbPoolCode.Items.Clear()
+        m_cmbPoolCode.DropDownStyle = ComboBoxStyle.DropDownList
+        m_cmbPoolCode.Items.Clear()
         'Load pool code combo box based on the selected time series type
         Select Case cTimeSeriesFactory.TimeSeriesCategory(SelectedTimeSeriesType())
             Case eTimeSeriesCategoryType.Fleet
-                lblPoolCode.Text = My.Resources.LABEL_FLEET
-                For i As Integer = 1 To Me.m_uic.Core.nFleets
-                    cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.m_uic.Core.FleetInputs(i).Name))
+                m_lblPoolCode.Text = My.Resources.LABEL_FLEET
+                For i As Integer = 1 To Me.Core.nFleets
+                    m_cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.Core.FleetInputs(i).Name))
                 Next
                 If Me.m_shape IsNot Nothing Then
                     fts = CType(Me.m_shape, cFleetTimeSeries)
-                    If ((fts.FleetIndex > 0 And fts.FleetIndex <= Me.m_uic.Core.nFleets)) Then
-                        cmbPoolCode.SelectedIndex = fts.FleetIndex - 1
+                    If ((fts.FleetIndex > 0 And fts.FleetIndex <= Me.Core.nFleets)) Then
+                        m_cmbPoolCode.SelectedIndex = fts.FleetIndex - 1
                     End If
                 End If
             Case eTimeSeriesCategoryType.Group
-                lblPoolCode.Text = My.Resources.LABEL_GROUP
-                For i As Integer = 1 To Me.m_uic.Core.nGroups
-                    cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.m_uic.Core.EcoPathGroupInputs(i).Name))
+                m_lblPoolCode.Text = My.Resources.LABEL_GROUP
+                For i As Integer = 1 To Me.Core.nGroups
+                    m_cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.Core.EcoPathGroupInputs(i).Name))
                 Next
                 If (Me.m_shape IsNot Nothing) Then
                     gts = CType(Me.m_shape, cGroupTimeSeries)
-                    If ((gts.GroupIndex > 0 And gts.GroupIndex <= Me.m_uic.Core.nGroups)) Then
-                        cmbPoolCode.SelectedIndex = gts.GroupIndex - 1
+                    If ((gts.GroupIndex > 0 And gts.GroupIndex <= Me.Core.nGroups)) Then
+                        m_cmbPoolCode.SelectedIndex = gts.GroupIndex - 1
                     End If
                 End If
             Case eTimeSeriesCategoryType.NotSet
@@ -634,27 +644,31 @@ Public Class frmShapeValue
 
     Private Property SelectedTimeSeriesType() As eTimeSeriesType
         Get
-            Dim item As cTSTComboBoxItem = DirectCast(Me.cmbType.SelectedItem, cTSTComboBoxItem)
+            Dim item As cTSTComboBoxItem = DirectCast(Me.m_cmbType.SelectedItem, cTSTComboBoxItem)
             If item Is Nothing Then Return eTimeSeriesType.NotSet
             Return item.TimeSeriesType()
         End Get
         Set(ByVal t As eTimeSeriesType)
-            For i As Integer = 0 To Me.cmbType.Items.Count - 1
-                Dim item As cTSTComboBoxItem = DirectCast(Me.cmbType.Items(i), cTSTComboBoxItem)
-                If item.TimeSeriesType = eTimeSeriesType.TimeForcing Then Me.cmbType.SelectedItem = item : Return
+            For i As Integer = 0 To Me.m_cmbType.Items.Count - 1
+                Dim item As cTSTComboBoxItem = DirectCast(Me.m_cmbType.Items(i), cTSTComboBoxItem)
+                If item.TimeSeriesType = eTimeSeriesType.TimeForcing Then Me.m_cmbType.SelectedItem = item : Return
             Next
-            Me.cmbType.SelectedItem = Nothing
+            Me.m_cmbType.SelectedItem = Nothing
         End Set
     End Property
 
     Private Property IsSeasonal() As Boolean
         Get
-            Return Me.cmbViewAs.SelectedIndex = 1
+            Return Me.m_cmbViewAs.SelectedIndex = 1
         End Get
         Set(ByVal value As Boolean)
-            Me.cmbViewAs.SelectedIndex = CInt(IIf(value, 1, 0))
+            Me.m_cmbViewAs.SelectedIndex = CInt(IIf(value, 1, 0))
         End Set
     End Property
+
+    Protected Overrides Function GetDataName() As String
+        Return Me.m_txtName.Text
+    End Function
 
 #End Region 'Internal implementation
 
