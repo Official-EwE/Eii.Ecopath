@@ -707,8 +707,6 @@ Namespace Ecosim
             For iyr = 1 To NumberOfYears + ExtraTime
                 iyf = IIf(iyr <= NumberOfYears, iyr, NumberOfYears)
 
-                Me.m_search.ClearYearlyData()
-
                 'set Fgear() fishing effort at timestep that can be modified by a search routine
                 Me.SetFGear(Fgear, RelFopt, QYear, iyr, NumberOfYears)
 
@@ -738,7 +736,6 @@ Namespace Ecosim
                 End If
                 '*
                 'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
-
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxx
                 'START OF MONTHLY TIME LOOP
@@ -916,9 +913,9 @@ Namespace Ecosim
         Private Sub CalcCatchForSearch(ByVal iTime As Integer, ByVal iYear As Integer, ByVal iMonth As Integer, ByVal biomass() As Single, ByVal Fgear() As Single, ByVal QYear() As Single)
             Dim iflt As Integer
 
-            'If m_search.bInSearch And iYear >= m_search.BaseYear Then
-            '    m_search.calcMonthlyCatch(BB, Fgear, QYear, iYear > m_search.BaseYear)
-            'End If
+            If iMonth = 1 Then
+                Me.m_search.ClearYearlyData()
+            End If
 
             If Me.m_search.bInSearch Then
 
