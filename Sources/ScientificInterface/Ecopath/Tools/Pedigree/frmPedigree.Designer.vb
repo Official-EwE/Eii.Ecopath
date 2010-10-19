@@ -62,6 +62,7 @@ Namespace Ecopath.Tools
             Me.m_tsbnEditPedigree.Name = "m_tsbnEditPedigree"
             Me.m_tsbnEditPedigree.Size = New System.Drawing.Size(102, 22)
             Me.m_tsbnEditPedigree.Text = "&Edit pedigree..."
+            Me.m_tsbnEditPedigree.ToolTipText = "Edit pedigree classifications"
             '
             'm_scMain
             '
