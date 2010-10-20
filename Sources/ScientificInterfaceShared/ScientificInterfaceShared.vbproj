@@ -171,6 +171,11 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\Pyramid\cPyramid.vb" />
+    <Compile Include="Controls\Pyramid\ucPyramid.Designer.vb">
+      <DependentUpon>ucPyramid.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Pyramid\ucPyramid.vb">
+    </Compile>
     <Compile Include="Controls\Shapes\cShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cEggProdutionShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cFishingEffortShapeGUIHandler.vb" />
@@ -490,6 +495,9 @@
     <None Include="Resources\ExportXMLHS.PNG" />
     <None Include="Resources\ZoomInHS.png" />
     <None Include="Resources\ZoomOutHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\WebBrowser\" />
