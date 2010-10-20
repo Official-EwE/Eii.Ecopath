@@ -1670,7 +1670,7 @@ Public Class cCore
         Me.StateMonitor.SetEcoSimLoaded(True)
 
         'setEcosimRunLength() will call DoDatValCalculations to re-load forcing data
-        Me.setEcosimRunLength(Me.m_TSData.NdatYear, False)
+        Me.setEcosimRunLength(Me.m_TSData.NdatYear, True)
 
         'reset all efforts that were unloaded/disabled
         Me.m_EcoSimData.setEffortToDefault(lstEffortToReset)
