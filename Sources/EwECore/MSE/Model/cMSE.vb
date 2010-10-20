@@ -719,11 +719,6 @@ Namespace MSE
 
         Private Sub resetEffort(Optional ByVal LastCall As Boolean = False)
 
-            'only reset effort if we are using the regulations
-            If Not Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations Then
-                Exit Sub
-            End If
-
             Try
                 'Effort is being regulated
                 'Always set Effort back to it its base value (Effort from the Sceintific Interface)
