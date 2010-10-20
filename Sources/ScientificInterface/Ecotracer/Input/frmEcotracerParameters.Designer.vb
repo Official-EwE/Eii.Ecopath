@@ -1,4 +1,6 @@
 Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Controls
+
 Namespace Ecotracer
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -26,49 +28,49 @@ Namespace Ecotracer
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcotracerParameters))
-            Me.gbDetails = New System.Windows.Forms.GroupBox
+            Me.m_gbDetails = New System.Windows.Forms.GroupBox
             Me.m_tbContact = New System.Windows.Forms.TextBox
             Me.m_tbAuthor = New System.Windows.Forms.TextBox
             Me.m_lbContact = New System.Windows.Forms.Label
             Me.m_lbAuthor = New System.Windows.Forms.Label
             Me.m_tbName = New System.Windows.Forms.TextBox
             Me.m_tbDescription = New System.Windows.Forms.TextBox
-            Me.lblDescription = New System.Windows.Forms.Label
-            Me.lbScenarioName = New System.Windows.Forms.Label
-            Me.lblScenario = New System.Windows.Forms.Label
-            Me.lblSponsors = New System.Windows.Forms.Label
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.PictureBox1 = New System.Windows.Forms.PictureBox
-            Me.PictureBox2 = New System.Windows.Forms.PictureBox
-            Me.PictureBox3 = New System.Windows.Forms.PictureBox
-            Me.PictureBox4 = New System.Windows.Forms.PictureBox
-            Me.lblInitialization = New System.Windows.Forms.Label
+            Me.m_lblDescription = New System.Windows.Forms.Label
+            Me.m_lbScenario = New System.Windows.Forms.Label
+            Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_tlpSponsors = New System.Windows.Forms.TableLayoutPanel
+            Me.m_pbSponsor1 = New System.Windows.Forms.PictureBox
+            Me.m_pbSponsor2 = New System.Windows.Forms.PictureBox
+            Me.m_pbSponsor3 = New System.Windows.Forms.PictureBox
+            Me.m_pbSponsor4 = New System.Windows.Forms.PictureBox
+            Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_gbInit = New System.Windows.Forms.GroupBox
-            Me.rbSpace = New System.Windows.Forms.RadioButton
-            Me.rbSim = New System.Windows.Forms.RadioButton
-            Me.rbDisabled = New System.Windows.Forms.RadioButton
-            Me.gbDetails.SuspendLayout()
-            Me.TableLayoutPanel1.SuspendLayout()
-            CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_rbSpace = New System.Windows.Forms.RadioButton
+            Me.m_rbSim = New System.Windows.Forms.RadioButton
+            Me.m_rbDisabled = New System.Windows.Forms.RadioButton
+            Me.m_gbDetails.SuspendLayout()
+            Me.m_tlpSponsors.SuspendLayout()
+            CType(Me.m_pbSponsor1, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbSponsor2, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbSponsor3, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbSponsor4, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbInit.SuspendLayout()
             Me.SuspendLayout()
             '
-            'gbDetails
+            'm_gbDetails
             '
-            resources.ApplyResources(Me.gbDetails, "gbDetails")
-            Me.gbDetails.Controls.Add(Me.m_tbContact)
-            Me.gbDetails.Controls.Add(Me.m_tbAuthor)
-            Me.gbDetails.Controls.Add(Me.m_lbContact)
-            Me.gbDetails.Controls.Add(Me.m_lbAuthor)
-            Me.gbDetails.Controls.Add(Me.m_tbName)
-            Me.gbDetails.Controls.Add(Me.m_tbDescription)
-            Me.gbDetails.Controls.Add(Me.lblDescription)
-            Me.gbDetails.Controls.Add(Me.lbScenarioName)
-            Me.gbDetails.Name = "gbDetails"
-            Me.gbDetails.TabStop = False
+            resources.ApplyResources(Me.m_gbDetails, "m_gbDetails")
+            Me.m_gbDetails.Controls.Add(Me.m_tbContact)
+            Me.m_gbDetails.Controls.Add(Me.m_tbAuthor)
+            Me.m_gbDetails.Controls.Add(Me.m_lbContact)
+            Me.m_gbDetails.Controls.Add(Me.m_lbAuthor)
+            Me.m_gbDetails.Controls.Add(Me.m_tbName)
+            Me.m_gbDetails.Controls.Add(Me.m_tbDescription)
+            Me.m_gbDetails.Controls.Add(Me.m_lblDescription)
+            Me.m_gbDetails.Controls.Add(Me.m_lbScenario)
+            Me.m_gbDetails.Name = "m_gbDetails"
+            Me.m_gbDetails.TabStop = False
             '
             'm_tbContact
             '
@@ -100,154 +102,148 @@ Namespace Ecotracer
             resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
             Me.m_tbDescription.Name = "m_tbDescription"
             '
-            'lblDescription
+            'm_lblDescription
             '
-            resources.ApplyResources(Me.lblDescription, "lblDescription")
-            Me.lblDescription.Name = "lblDescription"
+            resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
+            Me.m_lblDescription.Name = "m_lblDescription"
             '
-            'lbScenarioName
+            'm_lbScenario
             '
-            resources.ApplyResources(Me.lbScenarioName, "lbScenarioName")
-            Me.lbScenarioName.Name = "lbScenarioName"
+            resources.ApplyResources(Me.m_lbScenario, "m_lbScenario")
+            Me.m_lbScenario.Name = "m_lbScenario"
             '
-            'lblScenario
+            'm_hdrScenario
             '
-            resources.ApplyResources(Me.lblScenario, "lblScenario")
-            Me.lblScenario.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblScenario.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblScenario.Name = "lblScenario"
+            resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
+            Me.m_hdrScenario.Name = "m_hdrScenario"
             '
-            'lblSponsors
+            'm_hdrSponsors
             '
-            resources.ApplyResources(Me.lblSponsors, "lblSponsors")
-            Me.lblSponsors.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblSponsors.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblSponsors.Name = "lblSponsors"
+            resources.ApplyResources(Me.m_hdrSponsors, "m_hdrSponsors")
+            Me.m_hdrSponsors.Name = "m_hdrSponsors"
             '
-            'TableLayoutPanel1
+            'm_tlpSponsors
             '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.BackColor = System.Drawing.Color.White
-            Me.TableLayoutPanel1.Controls.Add(Me.PictureBox1, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.PictureBox2, 1, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.PictureBox3, 2, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.PictureBox4, 3, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            resources.ApplyResources(Me.m_tlpSponsors, "m_tlpSponsors")
+            Me.m_tlpSponsors.BackColor = System.Drawing.Color.White
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbSponsor1, 0, 0)
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbSponsor2, 1, 0)
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbSponsor3, 2, 0)
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbSponsor4, 3, 0)
+            Me.m_tlpSponsors.Name = "m_tlpSponsors"
             '
-            'PictureBox1
+            'm_pbSponsor1
             '
-            resources.ApplyResources(Me.PictureBox1, "PictureBox1")
-            Me.PictureBox1.Image = Global.ScientificInterface.My.Resources.Resources.fimr_logo_50px
-            Me.PictureBox1.Name = "PictureBox1"
-            Me.PictureBox1.TabStop = False
+            resources.ApplyResources(Me.m_pbSponsor1, "m_pbSponsor1")
+            Me.m_pbSponsor1.Image = Global.ScientificInterface.My.Resources.Resources.fimr_logo_50px
+            Me.m_pbSponsor1.Name = "m_pbSponsor1"
+            Me.m_pbSponsor1.TabStop = False
             '
-            'PictureBox2
+            'm_pbSponsor2
             '
-            resources.ApplyResources(Me.PictureBox2, "PictureBox2")
-            Me.PictureBox2.Image = Global.ScientificInterface.My.Resources.Resources.EU_50px
-            Me.PictureBox2.Name = "PictureBox2"
-            Me.PictureBox2.TabStop = False
+            resources.ApplyResources(Me.m_pbSponsor2, "m_pbSponsor2")
+            Me.m_pbSponsor2.Image = Global.ScientificInterface.My.Resources.Resources.EU_50px
+            Me.m_pbSponsor2.Name = "m_pbSponsor2"
+            Me.m_pbSponsor2.TabStop = False
             '
-            'PictureBox3
+            'm_pbSponsor3
             '
-            resources.ApplyResources(Me.PictureBox3, "PictureBox3")
-            Me.PictureBox3.Image = Global.ScientificInterface.My.Resources.Resources.Lenfest_Logo_50px
-            Me.PictureBox3.Name = "PictureBox3"
-            Me.PictureBox3.TabStop = False
+            resources.ApplyResources(Me.m_pbSponsor3, "m_pbSponsor3")
+            Me.m_pbSponsor3.Image = Global.ScientificInterface.My.Resources.Resources.Lenfest_Logo_50px
+            Me.m_pbSponsor3.Name = "m_pbSponsor3"
+            Me.m_pbSponsor3.TabStop = False
             '
-            'PictureBox4
+            'm_pbSponsor4
             '
-            resources.ApplyResources(Me.PictureBox4, "PictureBox4")
-            Me.PictureBox4.Image = Global.ScientificInterface.My.Resources.Resources.sautxt_50px
-            Me.PictureBox4.Name = "PictureBox4"
-            Me.PictureBox4.TabStop = False
+            resources.ApplyResources(Me.m_pbSponsor4, "m_pbSponsor4")
+            Me.m_pbSponsor4.Image = Global.ScientificInterface.My.Resources.Resources.sautxt_50px
+            Me.m_pbSponsor4.Name = "m_pbSponsor4"
+            Me.m_pbSponsor4.TabStop = False
             '
-            'lblInitialization
+            'm_hdrInitialization
             '
-            resources.ApplyResources(Me.lblInitialization, "lblInitialization")
-            Me.lblInitialization.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.lblInitialization.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.lblInitialization.Name = "lblInitialization"
+            resources.ApplyResources(Me.m_hdrInitialization, "m_hdrInitialization")
+            Me.m_hdrInitialization.Name = "m_hdrInitialization"
             '
             'm_gbInit
             '
             resources.ApplyResources(Me.m_gbInit, "m_gbInit")
-            Me.m_gbInit.Controls.Add(Me.rbSpace)
-            Me.m_gbInit.Controls.Add(Me.rbSim)
-            Me.m_gbInit.Controls.Add(Me.rbDisabled)
+            Me.m_gbInit.Controls.Add(Me.m_rbSpace)
+            Me.m_gbInit.Controls.Add(Me.m_rbSim)
+            Me.m_gbInit.Controls.Add(Me.m_rbDisabled)
             Me.m_gbInit.Name = "m_gbInit"
             Me.m_gbInit.TabStop = False
             '
-            'rbSpace
+            'm_rbSpace
             '
-            resources.ApplyResources(Me.rbSpace, "rbSpace")
-            Me.rbSpace.Name = "rbSpace"
-            Me.rbSpace.TabStop = True
-            Me.rbSpace.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbSpace, "m_rbSpace")
+            Me.m_rbSpace.Name = "m_rbSpace"
+            Me.m_rbSpace.TabStop = True
+            Me.m_rbSpace.UseVisualStyleBackColor = True
             '
-            'rbSim
+            'm_rbSim
             '
-            resources.ApplyResources(Me.rbSim, "rbSim")
-            Me.rbSim.Name = "rbSim"
-            Me.rbSim.TabStop = True
-            Me.rbSim.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbSim, "m_rbSim")
+            Me.m_rbSim.Name = "m_rbSim"
+            Me.m_rbSim.TabStop = True
+            Me.m_rbSim.UseVisualStyleBackColor = True
             '
-            'rbDisabled
+            'm_rbDisabled
             '
-            resources.ApplyResources(Me.rbDisabled, "rbDisabled")
-            Me.rbDisabled.Checked = True
-            Me.rbDisabled.Name = "rbDisabled"
-            Me.rbDisabled.TabStop = True
-            Me.rbDisabled.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbDisabled, "m_rbDisabled")
+            Me.m_rbDisabled.Checked = True
+            Me.m_rbDisabled.Name = "m_rbDisabled"
+            Me.m_rbDisabled.TabStop = True
+            Me.m_rbDisabled.UseVisualStyleBackColor = True
             '
             'frmEcotracerParameters
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ControlBox = False
-            Me.Controls.Add(Me.TableLayoutPanel1)
+            Me.Controls.Add(Me.m_tlpSponsors)
             Me.Controls.Add(Me.m_gbInit)
-            Me.Controls.Add(Me.lblInitialization)
-            Me.Controls.Add(Me.lblSponsors)
-            Me.Controls.Add(Me.gbDetails)
-            Me.Controls.Add(Me.lblScenario)
+            Me.Controls.Add(Me.m_hdrInitialization)
+            Me.Controls.Add(Me.m_hdrSponsors)
+            Me.Controls.Add(Me.m_gbDetails)
+            Me.Controls.Add(Me.m_hdrScenario)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "frmEcotracerParameters"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
-            Me.gbDetails.ResumeLayout(False)
-            Me.gbDetails.PerformLayout()
-            Me.TableLayoutPanel1.ResumeLayout(False)
-            CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_gbDetails.ResumeLayout(False)
+            Me.m_gbDetails.PerformLayout()
+            Me.m_tlpSponsors.ResumeLayout(False)
+            CType(Me.m_pbSponsor1, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbSponsor2, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbSponsor3, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbSponsor4, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gbInit.ResumeLayout(False)
             Me.m_gbInit.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents gbDetails As System.Windows.Forms.GroupBox
-        Friend WithEvents m_tbContact As System.Windows.Forms.TextBox
-        Friend WithEvents m_tbAuthor As System.Windows.Forms.TextBox
-        Friend WithEvents m_lbContact As System.Windows.Forms.Label
-        Friend WithEvents m_lbAuthor As System.Windows.Forms.Label
-        Friend WithEvents m_tbName As System.Windows.Forms.TextBox
-        Friend WithEvents m_tbDescription As System.Windows.Forms.TextBox
-        Friend WithEvents lblDescription As System.Windows.Forms.Label
-        Friend WithEvents lbScenarioName As System.Windows.Forms.Label
-        Friend WithEvents lblScenario As System.Windows.Forms.Label
-        Friend WithEvents lblSponsors As System.Windows.Forms.Label
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-        Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
-        Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
-        Friend WithEvents PictureBox4 As System.Windows.Forms.PictureBox
-        Friend WithEvents lblInitialization As System.Windows.Forms.Label
-        Friend WithEvents rbDisabled As System.Windows.Forms.RadioButton
-        Friend WithEvents rbSpace As System.Windows.Forms.RadioButton
-        Friend WithEvents rbSim As System.Windows.Forms.RadioButton
+        Private WithEvents m_gbDetails As System.Windows.Forms.GroupBox
+        Private WithEvents m_tbContact As System.Windows.Forms.TextBox
+        Private WithEvents m_tbAuthor As System.Windows.Forms.TextBox
+        Private WithEvents m_lbContact As System.Windows.Forms.Label
+        Private WithEvents m_lbAuthor As System.Windows.Forms.Label
+        Private WithEvents m_tbName As System.Windows.Forms.TextBox
+        Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
+        Private WithEvents m_lblDescription As System.Windows.Forms.Label
+        Private WithEvents m_lbScenario As System.Windows.Forms.Label
+        Private WithEvents m_hdrScenario As cEwEHeaderLabel
+        Private WithEvents m_hdrSponsors As cEwEHeaderLabel
+        Private WithEvents m_tlpSponsors As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_pbSponsor1 As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbSponsor2 As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbSponsor3 As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbSponsor4 As System.Windows.Forms.PictureBox
+        Private WithEvents m_hdrInitialization As cEwEHeaderLabel
+        Private WithEvents m_rbDisabled As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbSpace As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbSim As System.Windows.Forms.RadioButton
         Private WithEvents m_gbInit As System.Windows.Forms.GroupBox
     End Class
 

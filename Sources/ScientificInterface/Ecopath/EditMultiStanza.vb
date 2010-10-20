@@ -86,6 +86,7 @@ Namespace Ecopath
                 Me.m_fpFF.Style = cStyleGuide.eStyleFlags.OK
             Else
                 Me.m_fpFF.Style = cStyleGuide.eStyleFlags.NotEditable
+                Me.m_fpFF.Value = 0
             End If
 
             Me.m_grid.RefreshContent()

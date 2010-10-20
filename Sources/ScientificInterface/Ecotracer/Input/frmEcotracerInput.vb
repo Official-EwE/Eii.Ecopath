@@ -45,7 +45,7 @@ Namespace Ecotracer
 
             Dim ecotracerModelParams As cEcotracerModelParameters = Me.UIContext.Core.EcotracerModelParameters()
 
-            Me.m_fpInflowForceNumberEnv = New cPropertyFormatProvider(Me.UIContext, Me.cmbEnvInflowFF, ecotracerModelParams, eVarNameFlags.ConForceNumber)
+            Me.m_fpInflowForceNumberEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbEnvInflowFF, ecotracerModelParams, eVarNameFlags.ConForceNumber)
             Me.m_fpCZeroEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCZeroEnv, ecotracerModelParams, eVarNameFlags.CZero)
             Me.m_fpCDecayEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCDecayRateEnv, ecotracerModelParams, eVarNameFlags.CDecay)
             Me.m_fpCInflowEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCInflowEnv, ecotracerModelParams, eVarNameFlags.CInflow)

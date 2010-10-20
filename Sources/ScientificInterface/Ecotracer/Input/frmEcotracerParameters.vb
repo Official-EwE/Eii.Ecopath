@@ -79,16 +79,16 @@ Namespace Ecotracer
             Me.UpdateControls()
         End Sub
 
-        Private Sub rbDisabled_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbDisabled.Click
+        Private Sub rbDisabled_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbDisabled.Click
             SetTracerRunMode(eTracerRunModeTypes.Disabled)
         End Sub
 
 
-        Private Sub rbSim_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbSim.Click
+        Private Sub rbSim_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbSim.Click
             SetTracerRunMode(eTracerRunModeTypes.RunSim)
         End Sub
 
-        Private Sub rbSpace_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbSpace.Click
+        Private Sub rbSpace_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbSpace.Click
             SetTracerRunMode(eTracerRunModeTypes.RunSpace)
         End Sub
 
@@ -115,19 +115,19 @@ Namespace Ecotracer
 
             If Me.IsConnectedToEcosim Then
                 If CBool(Me.m_propEcosimConTracing.GetValue()) = True Then
-                    Me.rbSim.Checked = True
+                    Me.m_rbSim.Checked = True
                     Exit Sub
                 End If
             End If
 
             If Me.IsConnectedToEcospace Then
                 If CBool(Me.m_propEcospaceConTracing.GetValue()) = True Then
-                    Me.rbSpace.Checked = True
+                    Me.m_rbSpace.Checked = True
                     Exit Sub
                 End If
             End If
 
-            Me.rbDisabled.Checked = True
+            Me.m_rbDisabled.Checked = True
 
         End Sub
 

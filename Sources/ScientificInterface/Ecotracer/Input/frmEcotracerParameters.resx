@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="gbDetails.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_gbDetails.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbContact.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_tbContact.Location" type="System.Drawing.Point, System.Drawing">
-    <value>92, 174</value>
+    <value>92, 177</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tbContact.MaxLength" type="System.Int32, mscorlib">
@@ -148,7 +148,7 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbContact.Parent" xml:space="preserve">
-    <value>gbDetails</value>
+    <value>m_gbDetails</value>
   </data>
   <data name="&gt;&gt;m_tbContact.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -157,7 +157,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbAuthor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>92, 148</value>
+    <value>92, 151</value>
   </data>
   <data name="m_tbAuthor.MaxLength" type="System.Int32, mscorlib">
     <value>60</value>
@@ -175,7 +175,7 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbAuthor.Parent" xml:space="preserve">
-    <value>gbDetails</value>
+    <value>m_gbDetails</value>
   </data>
   <data name="&gt;&gt;m_tbAuthor.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -190,7 +190,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbContact.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 177</value>
+    <value>23, 180</value>
   </data>
   <data name="m_lbContact.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -208,7 +208,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lbContact.Parent" xml:space="preserve">
-    <value>gbDetails</value>
+    <value>m_gbDetails</value>
   </data>
   <data name="&gt;&gt;m_lbContact.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -223,7 +223,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbAuthor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 151</value>
+    <value>23, 154</value>
   </data>
   <data name="m_lbAuthor.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 13</value>
@@ -241,7 +241,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lbAuthor.Parent" xml:space="preserve">
-    <value>gbDetails</value>
+    <value>m_gbDetails</value>
   </data>
   <data name="&gt;&gt;m_lbAuthor.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -250,7 +250,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>92, 13</value>
+    <value>92, 17</value>
   </data>
   <data name="m_tbName.Size" type="System.Drawing.Size, System.Drawing">
     <value>690, 20</value>
@@ -265,7 +265,7 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbName.Parent" xml:space="preserve">
-    <value>gbDetails</value>
+    <value>m_gbDetails</value>
   </data>
   <data name="&gt;&gt;m_tbName.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -274,7 +274,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>92, 40</value>
+    <value>92, 43</value>
   </data>
   <data name="m_tbDescription.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -292,432 +292,423 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbDescription.Parent" xml:space="preserve">
-    <value>gbDetails</value>
+    <value>m_gbDetails</value>
   </data>
   <data name="&gt;&gt;m_tbDescription.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="lblDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lblDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="lblDescription.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblDescription.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lblDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 43</value>
+  <data name="m_lblDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 46</value>
   </data>
-  <data name="lblDescription.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblDescription.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 13</value>
   </data>
-  <data name="lblDescription.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblDescription.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="lblDescription.Text" xml:space="preserve">
+  <data name="m_lblDescription.Text" xml:space="preserve">
     <value>D&amp;escription:</value>
   </data>
-  <data name="&gt;&gt;lblDescription.Name" xml:space="preserve">
-    <value>lblDescription</value>
+  <data name="&gt;&gt;m_lblDescription.Name" xml:space="preserve">
+    <value>m_lblDescription</value>
   </data>
-  <data name="&gt;&gt;lblDescription.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblDescription.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lblDescription.Parent" xml:space="preserve">
-    <value>gbDetails</value>
+  <data name="&gt;&gt;m_lblDescription.Parent" xml:space="preserve">
+    <value>m_gbDetails</value>
   </data>
-  <data name="&gt;&gt;lblDescription.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblDescription.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="lbScenarioName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lbScenario.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="lbScenarioName.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lbScenario.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbScenarioName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lbScenario.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lbScenarioName.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lbScenario.Location" type="System.Drawing.Point, System.Drawing">
     <value>23, 20</value>
   </data>
-  <data name="lbScenarioName.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lbScenario.Size" type="System.Drawing.Size, System.Drawing">
     <value>38, 13</value>
   </data>
-  <data name="lbScenarioName.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lbScenario.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="lbScenarioName.Text" xml:space="preserve">
+  <data name="m_lbScenario.Text" xml:space="preserve">
     <value>Name:</value>
   </data>
-  <data name="&gt;&gt;lbScenarioName.Name" xml:space="preserve">
-    <value>lbScenarioName</value>
+  <data name="&gt;&gt;m_lbScenario.Name" xml:space="preserve">
+    <value>m_lbScenario</value>
   </data>
-  <data name="&gt;&gt;lbScenarioName.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lbScenario.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lbScenarioName.Parent" xml:space="preserve">
-    <value>gbDetails</value>
+  <data name="&gt;&gt;m_lbScenario.Parent" xml:space="preserve">
+    <value>m_gbDetails</value>
   </data>
-  <data name="&gt;&gt;lbScenarioName.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lbScenario.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="gbDetails.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_gbDetails.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 35</value>
   </data>
-  <data name="gbDetails.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_gbDetails.Size" type="System.Drawing.Size, System.Drawing">
     <value>791, 242</value>
   </data>
-  <data name="gbDetails.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_gbDetails.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="gbDetails.Text" xml:space="preserve">
+  <data name="m_gbDetails.Text" xml:space="preserve">
     <value>&amp;Details</value>
   </data>
-  <data name="&gt;&gt;gbDetails.Name" xml:space="preserve">
-    <value>gbDetails</value>
+  <data name="&gt;&gt;m_gbDetails.Name" xml:space="preserve">
+    <value>m_gbDetails</value>
   </data>
-  <data name="&gt;&gt;gbDetails.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_gbDetails.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;gbDetails.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_gbDetails.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;gbDetails.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_gbDetails.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="lblScenario.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrScenario.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="lblScenario.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblScenario.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrScenario.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblScenario.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrScenario.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 9</value>
   </data>
-  <data name="lblScenario.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrScenario.Size" type="System.Drawing.Size, System.Drawing">
     <value>791, 18</value>
   </data>
-  <data name="lblScenario.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrScenario.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="lblScenario.Text" xml:space="preserve">
+  <data name="m_hdrScenario.Text" xml:space="preserve">
     <value>Scenario</value>
   </data>
-  <data name="lblScenario.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrScenario.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;lblScenario.Name" xml:space="preserve">
-    <value>lblScenario</value>
+  <data name="&gt;&gt;m_hdrScenario.Name" xml:space="preserve">
+    <value>m_hdrScenario</value>
   </data>
-  <data name="&gt;&gt;lblScenario.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_hdrScenario.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;lblScenario.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrScenario.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblScenario.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrScenario.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="lblSponsors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrSponsors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="lblSponsors.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblSponsors.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrSponsors.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblSponsors.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrSponsors.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 417</value>
   </data>
-  <data name="lblSponsors.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrSponsors.Size" type="System.Drawing.Size, System.Drawing">
     <value>791, 18</value>
   </data>
-  <data name="lblSponsors.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrSponsors.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="lblSponsors.Text" xml:space="preserve">
+  <data name="m_hdrSponsors.Text" xml:space="preserve">
     <value>Sponsors</value>
   </data>
-  <data name="lblSponsors.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrSponsors.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;lblSponsors.Name" xml:space="preserve">
-    <value>lblSponsors</value>
+  <data name="&gt;&gt;m_hdrSponsors.Name" xml:space="preserve">
+    <value>m_hdrSponsors</value>
   </data>
-  <data name="&gt;&gt;lblSponsors.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_hdrSponsors.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;lblSponsors.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSponsors.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblSponsors.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSponsors.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="TableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tlpSponsors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
+  <data name="m_tlpSponsors.ColumnCount" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="PictureBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbSponsor1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="PictureBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbSponsor1.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="PictureBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbSponsor1.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 56</value>
   </data>
-  <data name="PictureBox1.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+  <data name="m_pbSponsor1.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
   </data>
-  <data name="PictureBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbSponsor1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;PictureBox1.Name" xml:space="preserve">
-    <value>PictureBox1</value>
+  <data name="&gt;&gt;m_pbSponsor1.Name" xml:space="preserve">
+    <value>m_pbSponsor1</value>
   </data>
-  <data name="&gt;&gt;PictureBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSponsor1.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;PictureBox1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_pbSponsor1.Parent" xml:space="preserve">
+    <value>m_tlpSponsors</value>
   </data>
-  <data name="&gt;&gt;PictureBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSponsor1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="PictureBox2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbSponsor2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="PictureBox2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbSponsor2.Location" type="System.Drawing.Point, System.Drawing">
     <value>200, 3</value>
   </data>
-  <data name="PictureBox2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbSponsor2.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 56</value>
   </data>
-  <data name="PictureBox2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+  <data name="m_pbSponsor2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
   </data>
-  <data name="PictureBox2.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbSponsor2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;PictureBox2.Name" xml:space="preserve">
-    <value>PictureBox2</value>
+  <data name="&gt;&gt;m_pbSponsor2.Name" xml:space="preserve">
+    <value>m_pbSponsor2</value>
   </data>
-  <data name="&gt;&gt;PictureBox2.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSponsor2.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;PictureBox2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_pbSponsor2.Parent" xml:space="preserve">
+    <value>m_tlpSponsors</value>
   </data>
-  <data name="&gt;&gt;PictureBox2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSponsor2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="PictureBox3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbSponsor3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="PictureBox3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbSponsor3.Location" type="System.Drawing.Point, System.Drawing">
     <value>397, 3</value>
   </data>
-  <data name="PictureBox3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbSponsor3.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 56</value>
   </data>
-  <data name="PictureBox3.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+  <data name="m_pbSponsor3.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
   </data>
-  <data name="PictureBox3.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbSponsor3.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;PictureBox3.Name" xml:space="preserve">
-    <value>PictureBox3</value>
+  <data name="&gt;&gt;m_pbSponsor3.Name" xml:space="preserve">
+    <value>m_pbSponsor3</value>
   </data>
-  <data name="&gt;&gt;PictureBox3.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSponsor3.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;PictureBox3.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_pbSponsor3.Parent" xml:space="preserve">
+    <value>m_tlpSponsors</value>
   </data>
-  <data name="&gt;&gt;PictureBox3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSponsor3.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="PictureBox4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbSponsor4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="PictureBox4.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbSponsor4.Location" type="System.Drawing.Point, System.Drawing">
     <value>594, 3</value>
   </data>
-  <data name="PictureBox4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbSponsor4.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 56</value>
   </data>
-  <data name="PictureBox4.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+  <data name="m_pbSponsor4.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
   </data>
-  <data name="PictureBox4.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbSponsor4.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;PictureBox4.Name" xml:space="preserve">
-    <value>PictureBox4</value>
+  <data name="&gt;&gt;m_pbSponsor4.Name" xml:space="preserve">
+    <value>m_pbSponsor4</value>
   </data>
-  <data name="&gt;&gt;PictureBox4.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSponsor4.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;PictureBox4.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_pbSponsor4.Parent" xml:space="preserve">
+    <value>m_tlpSponsors</value>
   </data>
-  <data name="&gt;&gt;PictureBox4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSponsor4.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tlpSponsors.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 442</value>
   </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+  <data name="m_tlpSponsors.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tlpSponsors.Size" type="System.Drawing.Size, System.Drawing">
     <value>791, 62</value>
   </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tlpSponsors.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_tlpSponsors.Name" xml:space="preserve">
+    <value>m_tlpSponsors</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpSponsors.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpSponsors.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpSponsors.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="PictureBox1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox3" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="PictureBox4" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="m_tlpSponsors.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbSponsor1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbSponsor2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbSponsor3" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_pbSponsor4" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="lblInitialization.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrInitialization.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="lblInitialization.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="lblInitialization.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrInitialization.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lblInitialization.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrInitialization.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 290</value>
   </data>
-  <data name="lblInitialization.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrInitialization.Size" type="System.Drawing.Size, System.Drawing">
     <value>791, 18</value>
   </data>
-  <data name="lblInitialization.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrInitialization.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="lblInitialization.Text" xml:space="preserve">
+  <data name="m_hdrInitialization.Text" xml:space="preserve">
     <value>Initialization</value>
   </data>
-  <data name="lblInitialization.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrInitialization.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;lblInitialization.Name" xml:space="preserve">
-    <value>lblInitialization</value>
+  <data name="&gt;&gt;m_hdrInitialization.Name" xml:space="preserve">
+    <value>m_hdrInitialization</value>
   </data>
-  <data name="&gt;&gt;lblInitialization.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_hdrInitialization.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;lblInitialization.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrInitialization.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lblInitialization.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrInitialization.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_gbInit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="rbSpace.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbSpace.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="rbSpace.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_rbSpace.Location" type="System.Drawing.Point, System.Drawing">
     <value>26, 65</value>
   </data>
-  <data name="rbSpace.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_rbSpace.Size" type="System.Drawing.Size, System.Drawing">
     <value>220, 17</value>
   </data>
-  <data name="rbSpace.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_rbSpace.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="rbSpace.Text" xml:space="preserve">
-    <value>Enable contaminant tracing for Ecospace</value>
+  <data name="m_rbSpace.Text" xml:space="preserve">
+    <value>Enable contaminant tracing for Ecos&amp;pace</value>
   </data>
-  <data name="&gt;&gt;rbSpace.Name" xml:space="preserve">
-    <value>rbSpace</value>
+  <data name="&gt;&gt;m_rbSpace.Name" xml:space="preserve">
+    <value>m_rbSpace</value>
   </data>
-  <data name="&gt;&gt;rbSpace.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbSpace.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;rbSpace.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbSpace.Parent" xml:space="preserve">
     <value>m_gbInit</value>
   </data>
-  <data name="&gt;&gt;rbSpace.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbSpace.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="rbSim.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbSim.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="rbSim.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_rbSim.Location" type="System.Drawing.Point, System.Drawing">
     <value>26, 42</value>
   </data>
-  <data name="rbSim.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_rbSim.Size" type="System.Drawing.Size, System.Drawing">
     <value>206, 17</value>
   </data>
-  <data name="rbSim.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_rbSim.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="rbSim.Text" xml:space="preserve">
-    <value>Enable contaminant tracing for Ecosim</value>
+  <data name="m_rbSim.Text" xml:space="preserve">
+    <value>Enable contaminant tracing for Ecos&amp;im</value>
   </data>
-  <data name="&gt;&gt;rbSim.Name" xml:space="preserve">
-    <value>rbSim</value>
+  <data name="&gt;&gt;m_rbSim.Name" xml:space="preserve">
+    <value>m_rbSim</value>
   </data>
-  <data name="&gt;&gt;rbSim.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbSim.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;rbSim.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbSim.Parent" xml:space="preserve">
     <value>m_gbInit</value>
   </data>
-  <data name="&gt;&gt;rbSim.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbSim.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="rbDisabled.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbDisabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="rbDisabled.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_rbDisabled.Location" type="System.Drawing.Point, System.Drawing">
     <value>26, 19</value>
   </data>
-  <data name="rbDisabled.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_rbDisabled.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 17</value>
   </data>
-  <data name="rbDisabled.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_rbDisabled.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="rbDisabled.Text" xml:space="preserve">
+  <data name="m_rbDisabled.Text" xml:space="preserve">
     <value>Disable contaminant tracing</value>
   </data>
-  <data name="&gt;&gt;rbDisabled.Name" xml:space="preserve">
-    <value>rbDisabled</value>
+  <data name="&gt;&gt;m_rbDisabled.Name" xml:space="preserve">
+    <value>m_rbDisabled</value>
   </data>
-  <data name="&gt;&gt;rbDisabled.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbDisabled.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;rbDisabled.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbDisabled.Parent" xml:space="preserve">
     <value>m_gbInit</value>
   </data>
-  <data name="&gt;&gt;rbDisabled.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbDisabled.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_gbInit.Location" type="System.Drawing.Point, System.Drawing">
@@ -760,6 +751,6 @@
     <value>frmEcotracerParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.513, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

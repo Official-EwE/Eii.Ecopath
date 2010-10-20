@@ -1,4 +1,6 @@
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmEcotracerOutput
     Inherits frmEwE
@@ -24,12 +26,12 @@ Partial Class frmEcotracerOutput
         Me.m_zgc = New ZedGraph.ZedGraphControl
         Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
         Me.m_scMain = New System.Windows.Forms.SplitContainer
-        Me.m_lblGroups = New System.Windows.Forms.Label
+        Me.m_hdrGroups = New cEwEHeaderLabel
         Me.m_btnShowHideGroups = New System.Windows.Forms.Button
         Me.m_cmbRegions = New System.Windows.Forms.ComboBox
         Me.m_chkSortGroups = New System.Windows.Forms.CheckBox
-        Me.m_lplPlotOptions = New System.Windows.Forms.Label
-        Me.m_lbCommands = New System.Windows.Forms.Label
+        Me.m_hdrPlotOptions = New cEwEHeaderLabel
+        Me.m_hdrCommands = New cEwEHeaderLabel
         Me.m_lblRegion = New System.Windows.Forms.Label
         Me.m_rbCB = New System.Windows.Forms.RadioButton
         Me.m_rbConc = New System.Windows.Forms.RadioButton
@@ -88,12 +90,12 @@ Partial Class frmEcotracerOutput
         '
         'm_scMain.Panel1
         '
-        Me.m_scMain.Panel1.Controls.Add(Me.m_lblGroups)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrGroups)
         Me.m_scMain.Panel1.Controls.Add(Me.m_btnShowHideGroups)
         Me.m_scMain.Panel1.Controls.Add(Me.m_cmbRegions)
         Me.m_scMain.Panel1.Controls.Add(Me.m_chkSortGroups)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_lplPlotOptions)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_lbCommands)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrPlotOptions)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrCommands)
         Me.m_scMain.Panel1.Controls.Add(Me.m_lblRegion)
         Me.m_scMain.Panel1.Controls.Add(Me.m_rbCB)
         Me.m_scMain.Panel1.Controls.Add(Me.m_rbConc)
@@ -108,20 +110,20 @@ Partial Class frmEcotracerOutput
         Me.m_scMain.SplitterDistance = 180
         Me.m_scMain.TabIndex = 2
         '
-        'm_lblGroups
+        'm_hdrGroups
         '
-        Me.m_lblGroups.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_hdrGroups.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lblGroups.BackColor = System.Drawing.SystemColors.ControlDark
-        Me.m_lblGroups.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.m_lblGroups.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.m_lblGroups.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_lblGroups.Location = New System.Drawing.Point(0, 0)
-        Me.m_lblGroups.Name = "m_lblGroups"
-        Me.m_lblGroups.Size = New System.Drawing.Size(180, 18)
-        Me.m_lblGroups.TabIndex = 11
-        Me.m_lblGroups.Text = "Groups"
-        Me.m_lblGroups.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_hdrGroups.BackColor = System.Drawing.SystemColors.ControlDark
+        Me.m_hdrGroups.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.m_hdrGroups.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrGroups.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_hdrGroups.Location = New System.Drawing.Point(0, 0)
+        Me.m_hdrGroups.Name = "m_hdrGroups"
+        Me.m_hdrGroups.Size = New System.Drawing.Size(180, 18)
+        Me.m_hdrGroups.TabIndex = 11
+        Me.m_hdrGroups.Text = "Groups"
+        Me.m_hdrGroups.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_btnShowHideGroups
         '
@@ -160,33 +162,33 @@ Partial Class frmEcotracerOutput
         Me.m_chkSortGroups.Text = "&Sort groups"
         Me.m_chkSortGroups.UseVisualStyleBackColor = True
         '
-        'm_lplPlotOptions
+        'm_hdrPlotOptions
         '
-        Me.m_lplPlotOptions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_hdrPlotOptions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lplPlotOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_lplPlotOptions.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.m_lplPlotOptions.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.m_lplPlotOptions.Location = New System.Drawing.Point(0, 337)
-        Me.m_lplPlotOptions.Name = "m_lplPlotOptions"
-        Me.m_lplPlotOptions.Size = New System.Drawing.Size(180, 20)
-        Me.m_lplPlotOptions.TabIndex = 4
-        Me.m_lplPlotOptions.Text = "Plot Options"
-        Me.m_lplPlotOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_hdrPlotOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
+        Me.m_hdrPlotOptions.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.m_hdrPlotOptions.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrPlotOptions.Location = New System.Drawing.Point(0, 337)
+        Me.m_hdrPlotOptions.Name = "m_hdrPlotOptions"
+        Me.m_hdrPlotOptions.Size = New System.Drawing.Size(180, 20)
+        Me.m_hdrPlotOptions.TabIndex = 4
+        Me.m_hdrPlotOptions.Text = "Plot Options"
+        Me.m_hdrPlotOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'm_lbCommands
+        'm_hdrCommands
         '
-        Me.m_lbCommands.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_hdrCommands.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lbCommands.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_lbCommands.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.m_lbCommands.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.m_lbCommands.Location = New System.Drawing.Point(0, 258)
-        Me.m_lbCommands.Name = "m_lbCommands"
-        Me.m_lbCommands.Size = New System.Drawing.Size(180, 20)
-        Me.m_lbCommands.TabIndex = 1
-        Me.m_lbCommands.Text = "Commands"
-        Me.m_lbCommands.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_hdrCommands.BackColor = System.Drawing.SystemColors.ButtonShadow
+        Me.m_hdrCommands.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.m_hdrCommands.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrCommands.Location = New System.Drawing.Point(0, 258)
+        Me.m_hdrCommands.Name = "m_hdrCommands"
+        Me.m_hdrCommands.Size = New System.Drawing.Size(180, 20)
+        Me.m_hdrCommands.TabIndex = 1
+        Me.m_hdrCommands.Text = "Commands"
+        Me.m_hdrCommands.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_lblRegion
         '
@@ -262,10 +264,10 @@ Partial Class frmEcotracerOutput
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents m_lbCommands As System.Windows.Forms.Label
+    Private WithEvents m_hdrCommands As cEwEHeaderLabel
     Private WithEvents m_btnRunSim As System.Windows.Forms.Button
     Private WithEvents m_btnRunSpace As System.Windows.Forms.Button
-    Private WithEvents m_lplPlotOptions As System.Windows.Forms.Label
+    Private WithEvents m_hdrPlotOptions As cEwEHeaderLabel
     Private WithEvents m_btnShowHideGroups As System.Windows.Forms.Button
     Private WithEvents m_chkSortGroups As System.Windows.Forms.CheckBox
     Private WithEvents m_rbCB As System.Windows.Forms.RadioButton
@@ -275,5 +277,5 @@ Partial Class frmEcotracerOutput
     Private WithEvents m_lbGroups As cGroupListBox
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_lblRegion As System.Windows.Forms.Label
-    Private WithEvents m_lblGroups As System.Windows.Forms.Label
+    Private WithEvents m_hdrGroups As cEwEHeaderLabel
 End Class
