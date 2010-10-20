@@ -2068,7 +2068,6 @@ Namespace Database
             Dim fsd As New cForcingShapeData()
             Dim fsdDuplicate As cForcingShapeData = Nothing
 
-            ' ToDo: find if EXACT shape already exists if so, do NOT import it
             ' 1. Read db, populate cForcingShapeData structure
             Try
                 fsd.ShapeDataType = shapeDataType
@@ -2447,9 +2446,13 @@ Namespace Database
                             For Each iEcosimScenarioID In dtEcosimScenarios.Values : Next
 
                             ' Try to resolve egg prod shape ID for this scenario
-                            If iEggShape > 0 Then iEggShapeID = Me.HashKey(eDataTypes.EggProd, CStr(iEggShape), eDataTypes.EcoSimScenario, iEcosimScenarioID)
+                            If iEggShape > 0 Then
+                                iEggShapeID = Me.HashKey(eDataTypes.EggProd, CStr(iEggShape), eDataTypes.EcoSimScenario, iEcosimScenarioID)
+                            End If
                             ' Try to resolve forcing shape ID for this scenario
-                            If iHatchShape > 0 Then iHatchShapeID = Me.HashKey(eDataTypes.Forcing, CStr(iHatchShape), eDataTypes.EcoSimScenario, iEcosimScenarioID)
+                            If iHatchShape > 0 Then
+                                iHatchShapeID = Me.HashKey(eDataTypes.Forcing, CStr(iHatchShape), eDataTypes.EcoSimScenario, iEcosimScenarioID)
+                            End If
                             ' Found shapes?
                             If (iEggShapeID + iHatchShapeID) > 0 Then
                                 drow = writer.NewRow()
