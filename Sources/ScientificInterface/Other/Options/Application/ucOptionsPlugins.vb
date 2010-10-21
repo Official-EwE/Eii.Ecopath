@@ -25,9 +25,10 @@ Namespace Other
 #Region " Helper classes "
 
         Const cIMAGE_CORE As Integer = 0
-        Const cIMAGE_ENABLED As Integer = 1
-        Const cIMAGE_DISABLED As Integer = 2
-        Const cIMAGE_CONFLICT As Integer = 3
+        Const cIMAGE_ENABLEDPLUGIN As Integer = 1
+        Const cIMAGE_ANYPLUGINPOINT As Integer = 2
+        Const cIMAGE_DISABLED As Integer = 3
+        Const cIMAGE_CONFLICT As Integer = 4
 
         Private Class cPluginAssemblyInfo
 
@@ -168,7 +169,7 @@ Namespace Other
 
                 tnPA = New TreeNode(Path.GetFileNameWithoutExtension(pa.Filename))
                 tnPA.Tag = pa
-                tnPA.ImageIndex = Me.GetImageIndex(info)
+                tnPA.ImageIndex = Me.GetPluginAssemblyImageIndex(info)
                 tnPA.SelectedImageIndex = tnPA.ImageIndex
                 Me.m_dictPluginAssemblyInfo(pa) = info
 
@@ -181,19 +182,8 @@ Namespace Other
                         tnP = New TreeNode(p.Name)
                     End If
                     tnP.Tag = p
-
-                    ' Determine (static) image
-                    If (TypeOf p Is IGUIPlugin) Then
-                        Dim pui As IGUIPlugin = DirectCast(p, IGUIPlugin)
-                        If pui.ControlImage IsNot Nothing Then
-                            tnP.ImageIndex = Me.m_ilPlugins.Images.Count
-                            tnP.SelectedImageIndex = Me.m_ilPlugins.Images.Count
-                            Me.m_ilPlugins.Images.Add(pui.ControlImage)
-                        Else
-                            tnP.ImageIndex = cIMAGE_ENABLED
-                            tnP.SelectedImageIndex = cIMAGE_ENABLED
-                        End If
-                    End If
+                    tnP.ImageIndex = cIMAGE_ANYPLUGINPOINT
+                    tnP.SelectedImageIndex = cIMAGE_ANYPLUGINPOINT
 
                     tnPA.Nodes.Add(tnP)
                 Next
@@ -276,11 +266,18 @@ Namespace Other
             End Get
         End Property
 
-        Private Function GetImageIndex(ByVal info As cPluginAssemblyInfo) As Integer
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the image index to reflect a plug-in assembly.
+        ''' </summary>
+        ''' <param name="info">The plug-in assembly info to return the image for.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetPluginAssemblyImageIndex(ByVal info As cPluginAssemblyInfo) As Integer
             If (info.Enabled = False) Then Return cIMAGE_DISABLED
             If (info.Compatible = False) Then Return cIMAGE_CONFLICT
             If (info.AlwaysEnabled = True) Then Return cIMAGE_CORE
-            Return cIMAGE_ENABLED
+            Return cIMAGE_ENABLEDPLUGIN
         End Function
 
         ''' -------------------------------------------------------------------
@@ -317,7 +314,7 @@ Namespace Other
 
         Private Sub UpdatePluginImage(ByVal info As cPluginAssemblyInfo)
             Dim tn As TreeNode = Me.FindPluginAssemblyNode(info.PluginAssembly)
-            Dim iIndex As Integer = Me.GetImageIndex(info)
+            Dim iIndex As Integer = Me.GetPluginAssemblyImageIndex(info)
 
             If tn IsNot Nothing Then
                 tn.ImageIndex = iIndex

@@ -5644,9 +5644,16 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property pluginicon() As System.Drawing.Bitmap
+        Friend ReadOnly Property plugin() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("pluginicon", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("plugin", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property pluginpoint() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("pluginpoint", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
