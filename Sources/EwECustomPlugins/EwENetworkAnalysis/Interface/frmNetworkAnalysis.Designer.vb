@@ -36,7 +36,7 @@ Partial Class frmNetworkAnalysis
         Me.m_datagrid = New System.Windows.Forms.DataGridView
         Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.m_toolstrip = New cEwEToolstrip
+        Me.m_toolstrip = New ScientificInterfaceShared.Controls.cEwEToolstrip
         Me.tsmiRun = New System.Windows.Forms.ToolStripButton
         Me.tsmiDisplayGroups = New System.Windows.Forms.ToolStripButton
         Me.tslblSelection1 = New System.Windows.Forms.ToolStripLabel
