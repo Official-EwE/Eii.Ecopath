@@ -30,7 +30,7 @@ Partial Class frmNetworkAnalysis
         Dim ts3 As System.Windows.Forms.ToolStripSeparator
         Me.scNetworkAnalysis = New System.Windows.Forms.SplitContainer
         Me.tvNetworkAnalysis = New System.Windows.Forms.TreeView
-        Me.imglstNetworkAnalysis = New System.Windows.Forms.ImageList(Me.components)
+        Me.m_ilNetworkAnalysis = New System.Windows.Forms.ImageList(Me.components)
         Me.m_graph = New ZedGraph.ZedGraphControl
         Me.m_plot = New EwENetworkAnalysis.ucPlot
         Me.m_datagrid = New System.Windows.Forms.DataGridView
@@ -97,25 +97,16 @@ Partial Class frmNetworkAnalysis
         resources.ApplyResources(Me.tvNetworkAnalysis, "tvNetworkAnalysis")
         Me.tvNetworkAnalysis.FullRowSelect = True
         Me.tvNetworkAnalysis.HideSelection = False
-        Me.tvNetworkAnalysis.ImageList = Me.imglstNetworkAnalysis
+        Me.tvNetworkAnalysis.ImageList = Me.m_ilNetworkAnalysis
         Me.tvNetworkAnalysis.Name = "tvNetworkAnalysis"
         Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("tvNetworkAnalysis.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes4"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes5"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes6"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes7"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes8"), System.Windows.Forms.TreeNode)})
         '
-        'imglstNetworkAnalysis
+        'm_ilNetworkAnalysis
         '
-        Me.imglstNetworkAnalysis.ImageStream = CType(resources.GetObject("imglstNetworkAnalysis.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.imglstNetworkAnalysis.TransparentColor = System.Drawing.Color.Transparent
-        Me.imglstNetworkAnalysis.Images.SetKeyName(0, "application_get.png")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(1, "application_put.png")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(2, "run.bmp")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(3, "tools.bmp")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(4, "Ecopath.bmp")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(5, "output_extend.png")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(6, "input_extend.png")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(7, "wi0064-16.ico")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(8, "wi0126-16.ico")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(9, "wi0122-16.ico")
-        Me.imglstNetworkAnalysis.Images.SetKeyName(10, "wi0054-16.ico")
+        Me.m_ilNetworkAnalysis.ImageStream = CType(resources.GetObject("m_ilNetworkAnalysis.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.m_ilNetworkAnalysis.TransparentColor = System.Drawing.Color.Transparent
+        Me.m_ilNetworkAnalysis.Images.SetKeyName(0, "application_put.png")
+        Me.m_ilNetworkAnalysis.Images.SetKeyName(1, "output_extend.png")
         '
         'm_graph
         '
@@ -240,7 +231,7 @@ Partial Class frmNetworkAnalysis
     End Sub
     Private WithEvents scNetworkAnalysis As System.Windows.Forms.SplitContainer
     Private WithEvents tvNetworkAnalysis As System.Windows.Forms.TreeView
-    Private WithEvents imglstNetworkAnalysis As System.Windows.Forms.ImageList
+    Private WithEvents m_ilNetworkAnalysis As System.Windows.Forms.ImageList
     Private WithEvents tscmbSelection1 As System.Windows.Forms.ToolStripComboBox
     Private WithEvents tslblSelection2 As System.Windows.Forms.ToolStripLabel
     Private WithEvents tscmbSelection2 As System.Windows.Forms.ToolStripComboBox
