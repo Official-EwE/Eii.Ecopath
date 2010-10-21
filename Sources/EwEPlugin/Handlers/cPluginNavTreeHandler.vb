@@ -178,7 +178,7 @@ Public Class cPluginNavTreeHandler
                     Else
                         tn.ImageIndex = Me.m_tv.ImageList.Images.Count
                         tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
-                        Me.m_tv.ImageList.Images.Add(My.Resources.pluginicon)
+                        Me.m_tv.ImageList.Images.Add(My.Resources.plugin)
                     End If
                     ' Regular font
                     tn.NodeFont = New System.Drawing.Font(m_tv.Font, Drawing.FontStyle.Regular)
