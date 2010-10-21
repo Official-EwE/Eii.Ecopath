@@ -2650,7 +2650,7 @@ Public Class AppLauncher
 
     Private Sub OnReportBug(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpBugReport.Click
         Dim strError As String = ""
-        If Not BugReporter.InvokeBugReport() Then
+        If Not cBugReporter.InvokeBugReport(My.Resources.GENERIC_CAPTION, "mailto:ewedevteam@gmail.com", Me.m_pluginManager) Then
             Dim msg As New cMessage(My.Resources.PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT, _
                                     eMessageType.NotSet, _
                                     eCoreComponentType.External, _

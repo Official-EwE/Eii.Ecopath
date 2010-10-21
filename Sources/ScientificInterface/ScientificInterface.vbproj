@@ -527,7 +527,6 @@
     <Compile Include="Other\AboutBox\AboutEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Other\BugReporter.vb" />
     <Compile Include="Other\Options\Application\ucOptionsPlugins.Designer.vb">
       <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
     </Compile>
