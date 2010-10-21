@@ -4917,9 +4917,15 @@ Namespace DataSources
                         ' Obtain forcing index
                         iShape = Array.IndexOf(ecosimDS.ForcingDBIDs, iShapeID)
                     End If
-                    ' Update sim fields
-                    ecosimDS.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
-                    ecosimDS.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = CType(reader("FunctionType"), eForcingFunctionApplication)
+
+                    If iShape <> -1 Then
+                        ' Update sim fields
+                        ecosimDS.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
+                        ecosimDS.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = CType(reader("FunctionType"), eForcingFunctionApplication)
+                    Else
+                        Me.LogMessage(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
+                    End If
+
                 End While
 
                 Me.m_db.ReleaseReader(reader)
