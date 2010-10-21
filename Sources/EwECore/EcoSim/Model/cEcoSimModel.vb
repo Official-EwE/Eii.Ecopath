@@ -3895,7 +3895,7 @@ Namespace Ecosim
 
             For K = 1 To m_Data.MaxFunctions
 
-                If m_Data.FunctionNumber(i, j, K) = 0 Then Exit Sub
+                If m_Data.FunctionNumber(i, j, K) <= 0 Then Exit Sub
 
                 If m_Data.IsMedFunction(i, j, K) Then
                     Mult = m_Data.MedVal(m_Data.FunctionNumber(i, j, K))
