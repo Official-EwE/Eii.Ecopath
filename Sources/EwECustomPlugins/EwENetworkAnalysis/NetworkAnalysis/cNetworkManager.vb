@@ -9,8 +9,6 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-' ToDo_JS: localize this class
-
 ''' <summary>
 ''' Manager for the Network Analysis
 ''' </summary>
@@ -134,7 +132,8 @@ Public Class cNetworkManager
 
         If m_econetwork Is Nothing Then
             'message of some sort
-            m_publisher.SendMessage(New cMessage("Network Analysis not initialized properly.", eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Warning))
+            m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_INITIALIZE, _
+                                                 eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Warning))
             bSucces = False
         End If
 
@@ -169,7 +168,8 @@ Public Class cNetworkManager
             End Try
         Else
             ''message of some sort
-            m_publisher.SendMessage(New cMessage("Network Analysis can not be run before Ecopath.", eMessageType.StateNotMet, m_messagesource, eMessageImportance.Warning))
+            m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_ECOPATH, _
+                                                 eMessageType.StateNotMet, m_messagesource, eMessageImportance.Warning))
             bSucces = False
         End If
 
@@ -435,7 +435,7 @@ Public Class cNetworkManager
 
             If Not Core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded the Ecosim network analysis can not be run
-                Core.Messages.SendMessage(New cMessage("Please load an Ecosim scenario before running Network Analysis for Ecosim.", _
+                Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_LOAD_ECOSIM, _
                          eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
 
                 Return False
@@ -449,8 +449,9 @@ Public Class cNetworkManager
 
         Catch ex As Exception
             cLog.Write(ex)
-            Core.Messages.SendMessage(New cMessage("Error while running Network Analysis for Ecosim. " & ex.Message, _
-                                            eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
+            Core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_ERROR_ECOSIM, ex.Message), _
+                                                   eMessageType.ErrorEncountered, _
+                                                   eCoreComponentType.Plugin, eMessageImportance.Critical))
             Return False
         End Try
 
@@ -475,7 +476,7 @@ Public Class cNetworkManager
             'If m_runstate < eRunState.EcosimIsLoaded Then
             If Not Core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded this can not be initialized
-                Core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because an Ecosim scenario has not been loaded.", _
+                Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_LOAD_ECOSIM, _
                          eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
                 Return False
             End If
@@ -485,7 +486,8 @@ Public Class cNetworkManager
                 'implicitly run the network analysis if it has not been run
                 If Not Me.RunMainNetwork() Then
                     'ooopssss........
-                    Core.Messages.SendMessage(New cMessage("Network Analysis for Ecosim could not be initialized because of a problem in Network Analysis.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
+                    Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_ECOSIM_INIT, _
+                                                           eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                     Return False
                 End If
             End If

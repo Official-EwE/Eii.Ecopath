@@ -1272,6 +1272,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Network Analysis can not be run before Ecopath.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_ECOPATH() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_ECOPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Error while running Network Analysis for Ecosim: {0}.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_ECOSIM() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_ECOSIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Network Analysis for Ecosim could not be initialized because of a problem in Network Analysis.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_ECOSIM_INIT() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_ECOSIM_INIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Network Analysis not initialized properly.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_INITIALIZE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_INITIALIZE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Estimate primary production required? This may be very time consuming for larger models..
         '''</summary>
         Friend ReadOnly Property PROMPT_ESTIMATE_PPR() As String
@@ -1286,6 +1322,15 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_FILECREATE_FAILED() As String
             Get
                 Return ResourceManager.GetString("PROMPT_FILECREATE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Please load an Ecosim scenario before running Network Analysis for Ecosim..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_LOAD_ECOSIM() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_LOAD_ECOSIM", resourceCulture)
             End Get
         End Property
         

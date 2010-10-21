@@ -691,4 +691,20 @@
   <data name="PROMPT_FILECREATE_FAILED" xml:space="preserve">
     <value>Failed to create file '{0}': {1}</value>
   </data>
+  <data name="PROMPT_ERROR_ECOPATH" xml:space="preserve">
+    <value>Network Analysis can not be run before Ecopath</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOSIM" xml:space="preserve">
+    <value>Error while running Network Analysis for Ecosim: {0}</value>
+    <comment>{0} = .NET exception error message</comment>
+  </data>
+  <data name="PROMPT_ERROR_ECOSIM_INIT" xml:space="preserve">
+    <value>Network Analysis for Ecosim could not be initialized because of a problem in Network Analysis</value>
+  </data>
+  <data name="PROMPT_ERROR_INITIALIZE" xml:space="preserve">
+    <value>Network Analysis not initialized properly</value>
+  </data>
+  <data name="PROMPT_LOAD_ECOSIM" xml:space="preserve">
+    <value>Please load an Ecosim scenario before running Network Analysis for Ecosim.</value>
+  </data>
 </root>
