@@ -155,7 +155,8 @@ Public Class cResultsHolder
                             'and is treated as a relative index
                             If DataStructure.ResultsOverTime IsNot Nothing Then
                                 Dim iti As Integer = iDyear * 12 - 7
-                                zest = DataStructure.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_core.EcoPathGroupInputs(j).iStanza, iti)
+                                Dim iGroup As Integer = mTimeSeries.DatPool(j)
+                                zest = DataStructure.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_core.EcoPathGroupInputs(iGroup).iStanza, iti)
                                 If zest > 0 Then
                                     ZStat(j, iDyear) = CSng(Math.Log(mTimeSeries.DatVal(iDyear, j) / zest))
                                 End If
