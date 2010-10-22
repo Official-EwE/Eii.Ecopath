@@ -25,6 +25,9 @@ Public Class cBugReporter
                                            ByVal strMailTo As String, _
                                            Optional ByVal pm As cPluginManager = Nothing) As Boolean
 
+        ' Sanity checks
+        Debug.Assert(cStringUtils.IsValidEmail(strMailTo), "Valid email required")
+
         Dim an As AssemblyName = Nothing
         Dim ub As New UrlBuilder(strMailTo)
         Dim sbBody As New System.Text.StringBuilder
