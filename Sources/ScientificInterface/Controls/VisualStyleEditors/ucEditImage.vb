@@ -1,12 +1,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEUtils.Commands
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Reflection
+Imports EwECore
 Imports EwECore.Auxiliary
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -51,7 +52,7 @@ Namespace Controls
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-            cmdFO.Invoke(My.Resources.FILEFILTER_IMAGE)
+            cmdFO.Invoke(SharedResources.FILEFILTER_IMAGE)
 
             If (cmdFO.Result = Windows.Forms.DialogResult.OK) Then
                 Try

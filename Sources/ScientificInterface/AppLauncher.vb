@@ -22,6 +22,7 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
@@ -2929,7 +2930,7 @@ Public Class AppLauncher
         Dim sfd As New SaveFileDialog()
         Dim tsw As New cTimeSeriesCSVWriter(Me.Core)
 
-        sfd.Filter = My.Resources.FILEFILTER_CSV
+        sfd.Filter = SharedResources.FILEFILTER_CSV
         sfd.FileName = tsw.DefaultFileName
         sfd.CheckFileExists = False
         sfd.CheckPathExists = True

@@ -1649,11 +1649,11 @@
     <None Include="Resources\NotEditable.png" />
     <None Include="Resources\ProtectFormHS.png" />
     <None Include="Resources\mgel_logo2.gif" />
-    <None Include="Resources\pluginicon.png" />
     <None Include="Resources\PrintPreviewHS.png" />
     <None Include="Resources\PrintHS.png" />
     <None Include="Resources\NavBack.png" />
     <None Include="Resources\pluginpoint.png" />
+    <Content Include="Resources\plugin.png" />
     <Content Include="Resources\sautxt_50px.jpg" />
     <None Include="Resources\Seed.PNG" />
     <Content Include="Resources\Sponsors.jpg" />

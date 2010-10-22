@@ -26,7 +26,7 @@ Namespace My.Resources
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
-    Friend Module Resources
+    Public Module Resources
         
         Private resourceMan As Global.System.Resources.ResourceManager
         
@@ -36,7 +36,7 @@ Namespace My.Resources
         '''  Returns the cached ResourceManager instance used by this class.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
+        Public ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
                     Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("ScientificInterfaceShared.Resources", GetType(Resources).Assembly)
@@ -51,7 +51,7 @@ Namespace My.Resources
         '''  resource lookups using this strongly typed resource class.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Property Culture() As Global.System.Globalization.CultureInfo
+        Public Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
@@ -60,39 +60,21 @@ Namespace My.Resources
             End Set
         End Property
         
-        Friend ReadOnly Property arrow_left() As System.Drawing.Bitmap
+        Public ReadOnly Property arrow_left() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("arrow_left", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
-        Friend ReadOnly Property arrow_right() As System.Drawing.Bitmap
+        Public ReadOnly Property arrow_right() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("arrow_right", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to &amp;Cancel.
-        '''</summary>
-        Friend ReadOnly Property BUTTON_CANCEL() As String
-            Get
-                Return ResourceManager.GetString("BUTTON_CANCEL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to &amp;Close.
-        '''</summary>
-        Friend ReadOnly Property BUTTON_CLOSE() As String
-            Get
-                Return ResourceManager.GetString("BUTTON_CLOSE", resourceCulture)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property CheckBoxHS() As System.Drawing.Bitmap
+        Public ReadOnly Property CheckBoxHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("CheckBoxHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -102,7 +84,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Mediating group.
         '''</summary>
-        Friend ReadOnly Property ECOSIM_DEF_MED_X_AXIS() As String
+        Public ReadOnly Property ECOSIM_DEF_MED_X_AXIS() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_DEF_MED_X_AXIS", resourceCulture)
             End Get
@@ -111,7 +93,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Egg production shape {0}.
         '''</summary>
-        Friend ReadOnly Property ECOSIM_DEFAULT_NEWEGGPRODSHAPE() As String
+        Public ReadOnly Property ECOSIM_DEFAULT_NEWEGGPRODSHAPE() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWEGGPRODSHAPE", resourceCulture)
             End Get
@@ -120,7 +102,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Forcing shape {0}.
         '''</summary>
-        Friend ReadOnly Property ECOSIM_DEFAULT_NEWFORCINGSHAPE() As String
+        Public ReadOnly Property ECOSIM_DEFAULT_NEWFORCINGSHAPE() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWFORCINGSHAPE", resourceCulture)
             End Get
@@ -129,7 +111,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Mediation shape {0}.
         '''</summary>
-        Friend ReadOnly Property ECOSIM_DEFAULT_NEWMEDIATIONSHAPE() As String
+        Public ReadOnly Property ECOSIM_DEFAULT_NEWMEDIATIONSHAPE() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWMEDIATIONSHAPE", resourceCulture)
             End Get
@@ -138,13 +120,13 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to New time series {0}.
         '''</summary>
-        Friend ReadOnly Property ECOSIM_DEFAULT_NEWTIMESERIES() As String
+        Public ReadOnly Property ECOSIM_DEFAULT_NEWTIMESERIES() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWTIMESERIES", resourceCulture)
             End Get
         End Property
         
-        Friend ReadOnly Property ExportXMLHS() As System.Drawing.Bitmap
+        Public ReadOnly Property ExportXMLHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ExportXMLHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -152,9 +134,18 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to ESRI Asc files|*.asc.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_ASCFILE() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_ASCFILE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Comma-separated text files (*.csv)|*.csv.
         '''</summary>
-        Friend ReadOnly Property FILEFILTER_CSV() As String
+        Public ReadOnly Property FILEFILTER_CSV() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_CSV", resourceCulture)
             End Get
@@ -163,16 +154,43 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff.
         '''</summary>
-        Friend ReadOnly Property FILEFILTER_IMAGE() As String
+        Public ReadOnly Property FILEFILTER_IMAGE() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_IMAGE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Enhanced meta files|*.emf.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_IMAGE_EMF() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_IMAGE_EMF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Bitmap image|*.bmp|JPEG image|*.jpg;*.jpeg|GIF image|*.gif|PNG image|*.png|TIFF image|*.tif;*.tiff.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_IMAGE1() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_IMAGE1", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Text files|*.txt.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_TEXT() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_TEXT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to : (colon).
         '''</summary>
-        Friend ReadOnly Property GENERIC_CHAR_COLON() As String
+        Public ReadOnly Property GENERIC_CHAR_COLON() As String
             Get
                 Return ResourceManager.GetString("GENERIC_CHAR_COLON", resourceCulture)
             End Get
@@ -181,7 +199,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to , (comma).
         '''</summary>
-        Friend ReadOnly Property GENERIC_CHAR_COMMA() As String
+        Public ReadOnly Property GENERIC_CHAR_COMMA() As String
             Get
                 Return ResourceManager.GetString("GENERIC_CHAR_COMMA", resourceCulture)
             End Get
@@ -190,7 +208,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to . (period).
         '''</summary>
-        Friend ReadOnly Property GENERIC_CHAR_PERIOD() As String
+        Public ReadOnly Property GENERIC_CHAR_PERIOD() As String
             Get
                 Return ResourceManager.GetString("GENERIC_CHAR_PERIOD", resourceCulture)
             End Get
@@ -199,7 +217,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to ; (semi-colon).
         '''</summary>
-        Friend ReadOnly Property GENERIC_CHAR_SEMICOLON() As String
+        Public ReadOnly Property GENERIC_CHAR_SEMICOLON() As String
             Get
                 Return ResourceManager.GetString("GENERIC_CHAR_SEMICOLON", resourceCulture)
             End Get
@@ -208,7 +226,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to AED|UAE Dirham|AFN|Afghanistan Afghani|ALL|Albanian Lek|AMD|Armenian Dram|ANG|Antillean Guilder|AOR|Angolan New Kwanza|ARS|Argentinian Peso|AUD|Australian Dollar|AWG|Aruban Florin|AZM|Azerbaijan Manat|BAM|Bosnian Konvertibilna Marka|BBD|Barbadian Dollar|BDT|Bangladesh Taka|BGN|Bulgarian New Lev|BHD|Bahraini Dinar|BIF|Burundian Franc|BMD|Bermudan Dollar|BND|Brunei Dollar|BOB|Bolivian Boliviano|BRL|Brazilian Real|BSD|Bahamas Dollar|BTN|Bhutan Ngultrum|BWP|Botswana Pula|BYB|Belarussian Ruble|BZD|Belizean Dolla [rest of string was truncated]&quot;;.
         '''</summary>
-        Friend ReadOnly Property GENERIC_CURRENCIES() As String
+        Public ReadOnly Property GENERIC_CURRENCIES() As String
             Get
                 Return ResourceManager.GetString("GENERIC_CURRENCIES", resourceCulture)
             End Get
@@ -217,7 +235,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to &apos;{0}&apos; failed to save to file &apos;{1}&apos;: {2}..
         '''</summary>
-        Friend ReadOnly Property GENERIC_FILESAVE_FAILURE() As String
+        Public ReadOnly Property GENERIC_FILESAVE_FAILURE() As String
             Get
                 Return ResourceManager.GetString("GENERIC_FILESAVE_FAILURE", resourceCulture)
             End Get
@@ -226,7 +244,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to &apos;{0}&apos; is succesfully saved to file &apos;{1}&apos;..
         '''</summary>
-        Friend ReadOnly Property GENERIC_FILESAVE_SUCCES() As String
+        Public ReadOnly Property GENERIC_FILESAVE_SUCCES() As String
             Get
                 Return ResourceManager.GetString("GENERIC_FILESAVE_SUCCES", resourceCulture)
             End Get
@@ -235,7 +253,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Apply.
         '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_APPLY() As String
+        Public ReadOnly Property GENERIC_LABEL_APPLY() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_APPLY", resourceCulture)
             End Get
@@ -244,7 +262,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to {0} {1}.
         '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_CURRENCY() As String
+        Public ReadOnly Property GENERIC_LABEL_CURRENCY() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_CURRENCY", resourceCulture)
             End Get
@@ -253,7 +271,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to {0} ({1}).
         '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_DETAIL() As String
+        Public ReadOnly Property GENERIC_LABEL_DETAIL() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_DETAIL", resourceCulture)
             End Get
@@ -262,7 +280,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to {0}: ({1}, {2}).
         '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_GRAPHVALUE() As String
+        Public ReadOnly Property GENERIC_LABEL_GRAPHVALUE() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_GRAPHVALUE", resourceCulture)
             End Get
@@ -271,7 +289,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to {0}: {1}.
         '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_INDEXEDLABEL() As String
+        Public ReadOnly Property GENERIC_LABEL_INDEXEDLABEL() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_INDEXEDLABEL", resourceCulture)
             End Get
@@ -280,7 +298,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Cursor.
         '''</summary>
-        Friend ReadOnly Property GENERIC_TEXT_CURSOR() As String
+        Public ReadOnly Property GENERIC_TEXT_CURSOR() As String
             Get
                 Return ResourceManager.GetString("GENERIC_TEXT_CURSOR", resourceCulture)
             End Get
@@ -289,7 +307,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to (no data).
         '''</summary>
-        Friend ReadOnly Property GENERIC_TEXT_NODATA() As String
+        Public ReadOnly Property GENERIC_TEXT_NODATA() As String
             Get
                 Return ResourceManager.GetString("GENERIC_TEXT_NODATA", resourceCulture)
             End Get
@@ -298,7 +316,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to (All).
         '''</summary>
-        Friend ReadOnly Property GENERIC_VALUE_ALL() As String
+        Public ReadOnly Property GENERIC_VALUE_ALL() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_ALL", resourceCulture)
             End Get
@@ -307,7 +325,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to (N/A).
         '''</summary>
-        Friend ReadOnly Property GENERIC_VALUE_NOTAVAILABLE() As String
+        Public ReadOnly Property GENERIC_VALUE_NOTAVAILABLE() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_NOTAVAILABLE", resourceCulture)
             End Get
@@ -316,7 +334,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Add.
         '''</summary>
-        Friend ReadOnly Property HEADER_ADD() As String
+        Public ReadOnly Property HEADER_ADD() As String
             Get
                 Return ResourceManager.GetString("HEADER_ADD", resourceCulture)
             End Get
@@ -325,7 +343,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Index.
         '''</summary>
-        Friend ReadOnly Property HEADER_INDEX() As String
+        Public ReadOnly Property HEADER_INDEX() As String
             Get
                 Return ResourceManager.GetString("HEADER_INDEX", resourceCulture)
             End Get
@@ -334,7 +352,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Month.
         '''</summary>
-        Friend ReadOnly Property HEADER_MONTH() As String
+        Public ReadOnly Property HEADER_MONTH() As String
             Get
                 Return ResourceManager.GetString("HEADER_MONTH", resourceCulture)
             End Get
@@ -343,7 +361,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Name.
         '''</summary>
-        Friend ReadOnly Property HEADER_NAME() As String
+        Public ReadOnly Property HEADER_NAME() As String
             Get
                 Return ResourceManager.GetString("HEADER_NAME", resourceCulture)
             End Get
@@ -352,7 +370,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Relative weight.
         '''</summary>
-        Friend ReadOnly Property HEADER_RELATIVEWEIGHT() As String
+        Public ReadOnly Property HEADER_RELATIVEWEIGHT() As String
             Get
                 Return ResourceManager.GetString("HEADER_RELATIVEWEIGHT", resourceCulture)
             End Get
@@ -361,7 +379,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Rel. weight.
         '''</summary>
-        Friend ReadOnly Property HEADER_RELATIVEWEIGHT_ABBR() As String
+        Public ReadOnly Property HEADER_RELATIVEWEIGHT_ABBR() As String
             Get
                 Return ResourceManager.GetString("HEADER_RELATIVEWEIGHT_ABBR", resourceCulture)
             End Get
@@ -370,7 +388,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Value.
         '''</summary>
-        Friend ReadOnly Property HEADER_VALUE() As String
+        Public ReadOnly Property HEADER_VALUE() As String
             Get
                 Return ResourceManager.GetString("HEADER_VALUE", resourceCulture)
             End Get
@@ -379,7 +397,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Values.
         '''</summary>
-        Friend ReadOnly Property HEADER_VALUES() As String
+        Public ReadOnly Property HEADER_VALUES() As String
             Get
                 Return ResourceManager.GetString("HEADER_VALUES", resourceCulture)
             End Get
@@ -388,13 +406,13 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Year.
         '''</summary>
-        Friend ReadOnly Property HEADER_YEAR() As String
+        Public ReadOnly Property HEADER_YEAR() As String
             Get
                 Return ResourceManager.GetString("HEADER_YEAR", resourceCulture)
             End Get
         End Property
         
-        Friend ReadOnly Property ImportXMLHS() As System.Drawing.Bitmap
+        Public ReadOnly Property ImportXMLHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ImportXMLHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -404,7 +422,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to &amp;Fleet:.
         '''</summary>
-        Friend ReadOnly Property LABEL_FLEET() As String
+        Public ReadOnly Property LABEL_FLEET() As String
             Get
                 Return ResourceManager.GetString("LABEL_FLEET", resourceCulture)
             End Get
@@ -413,7 +431,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to &amp;Group:.
         '''</summary>
-        Friend ReadOnly Property LABEL_GROUP() As String
+        Public ReadOnly Property LABEL_GROUP() As String
             Get
                 Return ResourceManager.GetString("LABEL_GROUP", resourceCulture)
             End Get
@@ -422,7 +440,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to &amp;Set:.
         '''</summary>
-        Friend ReadOnly Property LABEL_SET() As String
+        Public ReadOnly Property LABEL_SET() As String
             Get
                 Return ResourceManager.GetString("LABEL_SET", resourceCulture)
             End Get
@@ -431,7 +449,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Mediating group (weighted) biomass.
         '''</summary>
-        Friend ReadOnly Property MEDIATION_X_AXIS_LABEL() As String
+        Public ReadOnly Property MEDIATION_X_AXIS_LABEL() As String
             Get
                 Return ResourceManager.GetString("MEDIATION_X_AXIS_LABEL", resourceCulture)
             End Get
@@ -440,7 +458,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to E&amp;xtract to CSV....
         '''</summary>
-        Friend ReadOnly Property MENU_EXTRACT_TO_CSV() As String
+        Public ReadOnly Property MENU_EXTRACT_TO_CSV() As String
             Get
                 Return ResourceManager.GetString("MENU_EXTRACT_TO_CSV", resourceCulture)
             End Get
@@ -449,27 +467,27 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to &amp;Show legend.
         '''</summary>
-        Friend ReadOnly Property MENU_SHOW_LEGEND() As String
+        Public ReadOnly Property MENU_SHOW_LEGEND() As String
             Get
                 Return ResourceManager.GetString("MENU_SHOW_LEGEND", resourceCulture)
             End Get
         End Property
         
-        Friend ReadOnly Property minus() As System.Drawing.Bitmap
+        Public ReadOnly Property minus() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("minus", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
-        Friend ReadOnly Property OptionsHS() As System.Drawing.Bitmap
+        Public ReadOnly Property OptionsHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("OptionsHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
-        Friend ReadOnly Property plus() As System.Drawing.Bitmap
+        Public ReadOnly Property plus() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("plus", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -479,7 +497,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to You are about to delete forcing or mediation function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
-        Friend ReadOnly Property PROMPT_SHAPE_DELETE() As String
+        Public ReadOnly Property PROMPT_SHAPE_DELETE() As String
             Get
                 Return ResourceManager.GetString("PROMPT_SHAPE_DELETE", resourceCulture)
             End Get
@@ -488,7 +506,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to You are about to delete {0} forcing or mediation functions&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
-        Friend ReadOnly Property PROMPT_SHAPE_DELETE_MULTIPLE() As String
+        Public ReadOnly Property PROMPT_SHAPE_DELETE_MULTIPLE() As String
             Get
                 Return ResourceManager.GetString("PROMPT_SHAPE_DELETE_MULTIPLE", resourceCulture)
             End Get
@@ -497,7 +515,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to You are about to delete time series &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
-        Friend ReadOnly Property PROMPT_TIMESERIES_DELETE() As String
+        Public ReadOnly Property PROMPT_TIMESERIES_DELETE() As String
             Get
                 Return ResourceManager.GetString("PROMPT_TIMESERIES_DELETE", resourceCulture)
             End Get
@@ -506,7 +524,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to You are about to delete {0} time series&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
-        Friend ReadOnly Property PROMPT_TIMESERIES_DELETE_MULTIPLE() As String
+        Public ReadOnly Property PROMPT_TIMESERIES_DELETE_MULTIPLE() As String
             Get
                 Return ResourceManager.GetString("PROMPT_TIMESERIES_DELETE_MULTIPLE", resourceCulture)
             End Get
@@ -515,7 +533,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Change F.
         '''</summary>
-        Friend ReadOnly Property RUN_ECOSIM_F_VALUE_CAPTION() As String
+        Public ReadOnly Property RUN_ECOSIM_F_VALUE_CAPTION() As String
             Get
                 Return ResourceManager.GetString("RUN_ECOSIM_F_VALUE_CAPTION", resourceCulture)
             End Get
@@ -524,7 +542,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Enter F~value (or enter a string of comma separated F&apos;s for all fleets).
         '''</summary>
-        Friend ReadOnly Property RUN_ECOSIM_F_VALUE_MSG() As String
+        Public ReadOnly Property RUN_ECOSIM_F_VALUE_MSG() As String
             Get
                 Return ResourceManager.GetString("RUN_ECOSIM_F_VALUE_MSG", resourceCulture)
             End Get
@@ -533,7 +551,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Change shape type.
         '''</summary>
-        Friend ReadOnly Property SHAPE_TYPE_TO_SEASONAL_CAPTION() As String
+        Public ReadOnly Property SHAPE_TYPE_TO_SEASONAL_CAPTION() As String
             Get
                 Return ResourceManager.GetString("SHAPE_TYPE_TO_SEASONAL_CAPTION", resourceCulture)
             End Get
@@ -542,7 +560,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Changing a shape from &apos;Long term&apos; to &apos;Seasonal&apos; will cause your long-term data to be overwritten by a seasonal pattern. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
-        Friend ReadOnly Property SHAPE_TYPE_TO_SEASONAL_MSG() As String
+        Public ReadOnly Property SHAPE_TYPE_TO_SEASONAL_MSG() As String
             Get
                 Return ResourceManager.GetString("SHAPE_TYPE_TO_SEASONAL_MSG", resourceCulture)
             End Get
@@ -551,7 +569,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Applying values, please wait.
         '''</summary>
-        Friend ReadOnly Property STATUS_APPLYVALUES() As String
+        Public ReadOnly Property STATUS_APPLYVALUES() As String
             Get
                 Return ResourceManager.GetString("STATUS_APPLYVALUES", resourceCulture)
             End Get
@@ -560,7 +578,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Adding time series {0} ....
         '''</summary>
-        Friend ReadOnly Property STATUS_TIMESERIES_ADDING() As String
+        Public ReadOnly Property STATUS_TIMESERIES_ADDING() As String
             Get
                 Return ResourceManager.GetString("STATUS_TIMESERIES_ADDING", resourceCulture)
             End Get
@@ -569,7 +587,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Updating time series {0}....
         '''</summary>
-        Friend ReadOnly Property STATUS_TIMESERIES_UPDATING() As String
+        Public ReadOnly Property STATUS_TIMESERIES_UPDATING() As String
             Get
                 Return ResourceManager.GetString("STATUS_TIMESERIES_UPDATING", resourceCulture)
             End Get
@@ -578,7 +596,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Set this value to all selected cells.
         '''</summary>
-        Friend ReadOnly Property TOOLTIP_GRID_APPLYVALUE() As String
+        Public ReadOnly Property TOOLTIP_GRID_APPLYVALUE() As String
             Get
                 Return ResourceManager.GetString("TOOLTIP_GRID_APPLYVALUE", resourceCulture)
             End Get
@@ -587,7 +605,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Load grid content from a CSV file.
         '''</summary>
-        Friend ReadOnly Property TOOLTIP_GRID_LOADFROMCSV() As String
+        Public ReadOnly Property TOOLTIP_GRID_LOADFROMCSV() As String
             Get
                 Return ResourceManager.GetString("TOOLTIP_GRID_LOADFROMCSV", resourceCulture)
             End Get
@@ -596,7 +614,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Save grid content to a CSV file.
         '''</summary>
-        Friend ReadOnly Property TOOLTIP_GRID_SAVETOCSV() As String
+        Public ReadOnly Property TOOLTIP_GRID_SAVETOCSV() As String
             Get
                 Return ResourceManager.GetString("TOOLTIP_GRID_SAVETOCSV", resourceCulture)
             End Get
@@ -605,7 +623,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Average weight.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_AVERAGEWEIGHT() As String
+        Public ReadOnly Property TS_TYPE_AVERAGEWEIGHT() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_AVERAGEWEIGHT", resourceCulture)
             End Get
@@ -614,7 +632,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Absolute biomass.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_BIOMASSABS() As String
+        Public ReadOnly Property TS_TYPE_BIOMASSABS() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_BIOMASSABS", resourceCulture)
             End Get
@@ -623,7 +641,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Biomass forcing.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_BIOMASSFORCING() As String
+        Public ReadOnly Property TS_TYPE_BIOMASSFORCING() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_BIOMASSFORCING", resourceCulture)
             End Get
@@ -632,7 +650,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Relative biomass.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_BIOMASSREL() As String
+        Public ReadOnly Property TS_TYPE_BIOMASSREL() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_BIOMASSREL", resourceCulture)
             End Get
@@ -641,7 +659,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Catches.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_CATCHES() As String
+        Public ReadOnly Property TS_TYPE_CATCHES() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_CATCHES", resourceCulture)
             End Get
@@ -650,7 +668,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Catches forcing.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_CATCHESFORCING() As String
+        Public ReadOnly Property TS_TYPE_CATCHESFORCING() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_CATCHESFORCING", resourceCulture)
             End Get
@@ -659,7 +677,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Constant total mortality.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_CONSTTOTALMORT() As String
+        Public ReadOnly Property TS_TYPE_CONSTTOTALMORT() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_CONSTTOTALMORT", resourceCulture)
             End Get
@@ -668,7 +686,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fishing effort.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_FISHINGEFFORT() As String
+        Public ReadOnly Property TS_TYPE_FISHINGEFFORT() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_FISHINGEFFORT", resourceCulture)
             End Get
@@ -677,7 +695,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fishing mortality.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_FISHINGMORT() As String
+        Public ReadOnly Property TS_TYPE_FISHINGMORT() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_FISHINGMORT", resourceCulture)
             End Get
@@ -686,7 +704,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Time forcing.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_TIMEFORCING() As String
+        Public ReadOnly Property TS_TYPE_TIMEFORCING() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_TIMEFORCING", resourceCulture)
             End Get
@@ -695,7 +713,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Total mortality.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_TOTALMORT() As String
+        Public ReadOnly Property TS_TYPE_TOTALMORT() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_TOTALMORT", resourceCulture)
             End Get
@@ -704,7 +722,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecotracer absolute concentration.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_TRACER_CONCABS() As String
+        Public ReadOnly Property TS_TYPE_TRACER_CONCABS() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_TRACER_CONCABS", resourceCulture)
             End Get
@@ -713,7 +731,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecotracer relative concentration.
         '''</summary>
-        Friend ReadOnly Property TS_TYPE_TRACER_CONCREL() As String
+        Public ReadOnly Property TS_TYPE_TRACER_CONCREL() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_TRACER_CONCREL", resourceCulture)
             End Get
@@ -722,7 +740,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to kcal/m².
         '''</summary>
-        Friend ReadOnly Property UNIT_CURRENCY_CALORIE() As String
+        Public ReadOnly Property UNIT_CURRENCY_CALORIE() As String
             Get
                 Return ResourceManager.GetString("UNIT_CURRENCY_CALORIE", resourceCulture)
             End Get
@@ -731,7 +749,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to g/m².
         '''</summary>
-        Friend ReadOnly Property UNIT_CURRENCY_CARBON() As String
+        Public ReadOnly Property UNIT_CURRENCY_CARBON() As String
             Get
                 Return ResourceManager.GetString("UNIT_CURRENCY_CARBON", resourceCulture)
             End Get
@@ -740,7 +758,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to g/m².
         '''</summary>
-        Friend ReadOnly Property UNIT_CURRENCY_DRYWEIGHT() As String
+        Public ReadOnly Property UNIT_CURRENCY_DRYWEIGHT() As String
             Get
                 Return ResourceManager.GetString("UNIT_CURRENCY_DRYWEIGHT", resourceCulture)
             End Get
@@ -749,7 +767,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to J/m².
         '''</summary>
-        Friend ReadOnly Property UNIT_CURRENCY_JOULES() As String
+        Public ReadOnly Property UNIT_CURRENCY_JOULES() As String
             Get
                 Return ResourceManager.GetString("UNIT_CURRENCY_JOULES", resourceCulture)
             End Get
@@ -758,7 +776,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to mg N/m².
         '''</summary>
-        Friend ReadOnly Property UNIT_CURRENCY_NITROGEN() As String
+        Public ReadOnly Property UNIT_CURRENCY_NITROGEN() As String
             Get
                 Return ResourceManager.GetString("UNIT_CURRENCY_NITROGEN", resourceCulture)
             End Get
@@ -767,7 +785,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to mg P/m².
         '''</summary>
-        Friend ReadOnly Property UNIT_CURRENCY_PHOSPOROUS() As String
+        Public ReadOnly Property UNIT_CURRENCY_PHOSPOROUS() As String
             Get
                 Return ResourceManager.GetString("UNIT_CURRENCY_PHOSPOROUS", resourceCulture)
             End Get
@@ -776,7 +794,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to t/km².
         '''</summary>
-        Friend ReadOnly Property UNIT_CURRENCY_WETWEIGHT() As String
+        Public ReadOnly Property UNIT_CURRENCY_WETWEIGHT() As String
             Get
                 Return ResourceManager.GetString("UNIT_CURRENCY_WETWEIGHT", resourceCulture)
             End Get
@@ -785,7 +803,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to day.
         '''</summary>
-        Friend ReadOnly Property UNIT_TIME_DAY() As String
+        Public ReadOnly Property UNIT_TIME_DAY() As String
             Get
                 Return ResourceManager.GetString("UNIT_TIME_DAY", resourceCulture)
             End Get
@@ -794,7 +812,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to year.
         '''</summary>
-        Friend ReadOnly Property UNIT_TIME_YEAR() As String
+        Public ReadOnly Property UNIT_TIME_YEAR() As String
             Get
                 Return ResourceManager.GetString("UNIT_TIME_YEAR", resourceCulture)
             End Get
@@ -803,7 +821,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to DC|Diet||Diet composition.
         '''</summary>
-        Friend ReadOnly Property VARIABLE_DIETCOMP() As String
+        Public ReadOnly Property VARIABLE_DIETCOMP() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_DIETCOMP", resourceCulture)
             End Get
@@ -812,7 +830,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to EE|||Ecotrophic Efficiency.
         '''</summary>
-        Friend ReadOnly Property VARIABLE_EEINPUT() As String
+        Public ReadOnly Property VARIABLE_EEINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_EEINPUT", resourceCulture)
             End Get
@@ -821,7 +839,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to PB|P/B||Production over biomass.
         '''</summary>
-        Friend ReadOnly Property VARIABLE_PBINPUT() As String
+        Public ReadOnly Property VARIABLE_PBINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_PBINPUT", resourceCulture)
             End Get
@@ -830,7 +848,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to QB|Q/B||Consumption over biomass.
         '''</summary>
-        Friend ReadOnly Property VARIABLE_QBINPUT() As String
+        Public ReadOnly Property VARIABLE_QBINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_QBINPUT", resourceCulture)
             End Get
@@ -839,27 +857,27 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Catches.
         '''</summary>
-        Friend ReadOnly Property VARIABLE_TCATCHINPUT() As String
+        Public ReadOnly Property VARIABLE_TCATCHINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_TCATCHINPUT", resourceCulture)
             End Get
         End Property
         
-        Friend ReadOnly Property WarningHS() As System.Drawing.Bitmap
+        Public ReadOnly Property WarningHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("WarningHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
-        Friend ReadOnly Property ZoomInHS() As System.Drawing.Bitmap
+        Public ReadOnly Property ZoomInHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ZoomInHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
-        Friend ReadOnly Property ZoomOutHS() As System.Drawing.Bitmap
+        Public ReadOnly Property ZoomOutHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ZoomOutHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)

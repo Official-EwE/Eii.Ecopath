@@ -1509,47 +1509,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to ESRI Asc files|*.asc.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_ASCFILE() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_ASCFILE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Comma-separated text files|*.csv.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_CSV() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_CSV", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to FlowDiagram files|*.fd|All files (*.*)|*.*.
         '''</summary>
         Friend ReadOnly Property FILEFILTER_FLOWDIAGRAM() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_FLOWDIAGRAM", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Bitmap image|*.bmp|JPEG image|*.jpg;*.jpeg|GIF image|*.gif|PNG image|*.png|TIFF image|*.tif;*.tiff.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_IMAGE() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_IMAGE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Enhanced meta files|*.emf.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_IMAGE_EMF() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_IMAGE_EMF", resourceCulture)
             End Get
         End Property
         
@@ -1604,15 +1568,6 @@ Namespace My.Resources
         Friend ReadOnly Property FILEFILTER_SAVE_RASTER() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_SAVE_RASTER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Text files|*.txt.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_TEXT() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_TEXT", resourceCulture)
             End Get
         End Property
         

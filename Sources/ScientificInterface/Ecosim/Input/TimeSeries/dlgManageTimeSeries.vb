@@ -1,9 +1,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports System.Windows.Forms
 Imports System.Globalization
+Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 
@@ -214,7 +215,7 @@ Public Class dlgManageTimeSeries
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-        cmdFO.Invoke(Me.m_strImportFileName, "", My.Resources.FILEFILTER_CSV & "|" & My.Resources.FILEFILTER_TEXT)
+        cmdFO.Invoke(Me.m_strImportFileName, "", SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_TEXT)
 
         If (cmdFO.Result = DialogResult.OK) Then
             Me.m_strImportFileName = cmdFO.FileName

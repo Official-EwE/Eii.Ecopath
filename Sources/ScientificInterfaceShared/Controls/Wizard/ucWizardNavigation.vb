@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports System.Windows.Forms
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -88,9 +89,9 @@ Namespace Controls.Wizard
             Me.m_btnNext.Enabled = bCanNavForward
 
             If bCanFinish Then
-                Me.m_btnClose.Text = My.Resources.BUTTON_CLOSE
+                Me.m_btnClose.Text = cResourceUtils.GetButtonText(DialogResult.OK)
             Else
-                Me.m_btnClose.Text = My.Resources.BUTTON_CANCEL
+                Me.m_btnClose.Text = cResourceUtils.GetButtonText(DialogResult.Cancel)
             End If
             Me.m_btnClose.Enabled = bCanClose
 

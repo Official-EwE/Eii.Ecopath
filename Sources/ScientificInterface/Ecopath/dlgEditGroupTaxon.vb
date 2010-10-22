@@ -266,7 +266,7 @@ Public Class dlgEditGroupTaxon
     End Sub
 
     Private Sub OnClassChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cmbClass.TextChanged
+        Handles m_cmbClass.TextChanged, m_cmbPhylum.TextChanged
 
         If (Me.m_bInUpdate) Then Return
         If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
@@ -277,7 +277,7 @@ Public Class dlgEditGroupTaxon
     End Sub
 
     Private Sub OnSearchClass(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSearchClass.Click
+        Handles m_btnSearchClass.Click, m_btnPhylum.Click
         Me.Search(Me.m_cmbClass.Text)
     End Sub
 

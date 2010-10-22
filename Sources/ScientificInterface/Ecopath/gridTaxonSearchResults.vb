@@ -144,20 +144,39 @@ Public Class gridTaxonSearchResults
 
         Dim strValue As String = ""
         Dim cell As EwECell = Nothing
-
+        Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.TaxonReg)
+        
         Select Case col
-            Case eColumnTypes.Index : strValue = CStr(iRow)
-            Case eColumnTypes.Common : strValue = result.Common
-            Case eColumnTypes.Species : strValue = result.Species
-            Case eColumnTypes.Family : strValue = result.Family
-            Case eColumnTypes.Genus : strValue = result.Genus
-            Case eColumnTypes.Order : strValue = result.Order
-            Case eColumnTypes.Class : strValue = result.Class
-            Case eColumnTypes.Code : strValue = result.SourceKey
+            Case eColumnTypes.Index
+                strValue = CStr(iRow)
+
+            Case eColumnTypes.Common
+                strValue = result.Common
+
+            Case eColumnTypes.Species
+                strValue = result.Species
+                style = style Or cStyleGuide.eStyleFlags.TaxonItalics
+
+            Case eColumnTypes.Family
+                strValue = result.Family
+
+            Case eColumnTypes.Genus
+                strValue = result.Genus
+
+            Case eColumnTypes.Order
+                strValue = result.Order
+
+            Case eColumnTypes.Class
+                strValue = result.Class
+
+            Case eColumnTypes.Code
+                strValue = result.SourceKey
+
         End Select
 
-        cell = New EwECell(strValue, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+        cell = New EwECell(strValue, GetType(String), style)
         cell.Behaviors.Add(EwEEditHandler)
+
         If (col = eColumnTypes.Index) Then cell.Tag = result
         Me(iRow, col) = cell
 

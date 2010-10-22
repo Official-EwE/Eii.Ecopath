@@ -135,9 +135,6 @@
   <data name="UNIT_CURRENCY_DRYWEIGHT" xml:space="preserve">
     <value>g/m²</value>
   </data>
-  <data name="BUTTON_CANCEL" xml:space="preserve">
-    <value>&amp;Cancel</value>
-  </data>
   <data name="STATUS_TIMESERIES_ADDING" xml:space="preserve">
     <value>Adding time series {0} ...</value>
     <comment>{0}: time series name</comment>
@@ -285,9 +282,6 @@
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
     <value>'{0}' is succesfully saved to file '{1}'.</value>
     <comment>{0}: item that saved. {1}: file dest</comment>
-  </data>
-  <data name="BUTTON_CLOSE" xml:space="preserve">
-    <value>&amp;Close</value>
   </data>
   <data name="HEADER_YEAR" xml:space="preserve">
     <value>Year</value>
@@ -444,5 +438,18 @@
   </data>
   <data name="TOOLTIP_GRID_SAVETOCSV" xml:space="preserve">
     <value>Save grid content to a CSV file</value>
+  </data>
+  <data name="FILEFILTER_ASCFILE" xml:space="preserve">
+    <value>ESRI Asc files|*.asc</value>
+  </data>
+  <data name="FILEFILTER_IMAGE1" xml:space="preserve">
+    <value>Bitmap image|*.bmp|JPEG image|*.jpg;*.jpeg|GIF image|*.gif|PNG image|*.png|TIFF image|*.tif;*.tiff</value>
+    <comment>| separated list of image filters. Order: bitmap, jpeg, gif, png, tiff</comment>
+  </data>
+  <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
+    <value>Enhanced meta files|*.emf</value>
+  </data>
+  <data name="FILEFILTER_TEXT" xml:space="preserve">
+    <value>Text files|*.txt</value>
   </data>
 </root>

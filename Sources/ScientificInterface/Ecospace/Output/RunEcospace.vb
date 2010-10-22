@@ -7,6 +7,7 @@ Imports EwECore
 Imports System.Threading
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -347,7 +348,7 @@ Namespace Ecospace
             Dim g As Graphics = Nothing
             Dim br As SolidBrush = Nothing
 
-            cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)
+            cmdFS.Invoke(sharedResources.FILEFILTER_IMAGE)
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 

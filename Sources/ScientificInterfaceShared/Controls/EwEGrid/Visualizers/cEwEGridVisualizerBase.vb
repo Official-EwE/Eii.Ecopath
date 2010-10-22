@@ -28,14 +28,14 @@ Namespace Controls.EwEGrid
         Private m_nHighlightBorderWidth As Integer = 4
         ''' <summary>Text indentation level.</summary>
         Private m_iTextIndent As Integer = 0
-
+ 
 #End Region ' Private bits 
 
 #Region " Public configuration bits "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the text indentation
+        ''' Get/set the text indentation.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property Indentation() As Integer
@@ -118,7 +118,6 @@ Namespace Controls.EwEGrid
             If cell Is Nothing Then Return
 
             Dim rcBorder As RectangleBorder = Me.Border
-            Dim fontCell As Font = Me.GetCellFont()
             Dim rcClient As New Rectangle(rc.X, rc.Y, rc.Width, rc.Height)
 
             Dim sg As cStyleGuide = Me.StyleGuide(cell)
@@ -145,11 +144,15 @@ Namespace Controls.EwEGrid
             rcClient.Width -= Me.m_iTextIndent
 
             ' Render Image and Text
-            Utility.PaintImageAndText(e.Graphics, rcClient, _
-                Me.Image, Me.ImageAlignment, Me.ImageStretch, _
-                cell.GetDisplayText(pos), _
-                Me.StringFormat, Me.AlignTextToImage, rcBorder, _
-                clrFore, fontCell)
+            Dim ftCell As Font = Me.GetCellFont()
+            Using ft As New Font(ftCell, _
+                                 ftCell.Style Or DirectCast(IIf((style And cStyleGuide.eStyleFlags.TaxonItalics) > 0, FontStyle.Italic, ftCell.Style), FontStyle))
+                Utility.PaintImageAndText(e.Graphics, rcClient, _
+                    Me.Image, Me.ImageAlignment, Me.ImageStretch, _
+                    cell.GetDisplayText(pos), _
+                    Me.StringFormat, Me.AlignTextToImage, rcBorder, _
+                    clrFore, ft)
+            End Using
 
         End Sub
 

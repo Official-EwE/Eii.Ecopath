@@ -9,6 +9,7 @@ Imports EwEUtils.Win32Api
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Drawing
 Imports System.Reflection
 Imports System.IO
@@ -220,7 +221,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
 
-            cmdFS.Invoke("EwE6-flow_diagram", My.Resources.FILEFILTER_IMAGE & "|" & My.Resources.FILEFILTER_IMAGE_EMF, 6)
+            cmdFS.Invoke("EwE6-flow_diagram", SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
             If cmdFS.Result = DialogResult.OK Then
                 Select Case cmdFS.FilterIndex
                     Case 2

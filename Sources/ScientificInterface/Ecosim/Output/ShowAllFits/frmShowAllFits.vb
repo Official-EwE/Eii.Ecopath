@@ -8,6 +8,7 @@ Imports System.IO
 Imports EwECore
 Imports ScientificInterface.Other
 Imports ScientificInterfaceShared
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
@@ -639,7 +640,7 @@ Namespace Ecosim
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)
+            cmdFS.Invoke(SharedResources.FILEFILTER_IMAGE)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 
                 Select Case cmdFS.FilterIndex

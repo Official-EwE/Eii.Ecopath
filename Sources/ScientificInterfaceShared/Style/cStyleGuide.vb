@@ -228,6 +228,12 @@ Namespace Style
             ''' <summary>Flag indicating that a value is a Name.</summary>
             Names = 524288 ' 2^19
 
+            ''' <summary>Flag indicating that a value is an italic taxon code.</summary>
+            TaxonItalics = 1048576 ' 2^20
+
+            ''' <summary>Flag indicating that a value is a regular taxon code.</summary>
+            TaxonReg = OK
+
         End Enum
 
         Public Enum eLegendPosition As Integer

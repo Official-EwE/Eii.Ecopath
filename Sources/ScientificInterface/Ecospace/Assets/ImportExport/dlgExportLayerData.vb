@@ -9,6 +9,7 @@ Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 Imports SAUPUtil.SAUPData
 Imports SAUPUtil.SAUPFile
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SourceGrid2
 
@@ -254,7 +255,7 @@ Public Class gridExportMappings
             ' Browse via EwE6 open file dialog 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim fsc As cFileSaveCommand = TryCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-            Dim strFileFilter As String = My.Resources.FILEFILTER_CSV
+            Dim strFileFilter As String = SharedResources.FILEFILTER_CSV
 
             ' Sanity check
             If fsc Is Nothing Then Return
