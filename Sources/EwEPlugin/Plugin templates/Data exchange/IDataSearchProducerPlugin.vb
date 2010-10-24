@@ -57,7 +57,7 @@ Namespace Data
         ''' </summary>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Function CreateSearchTerm() As ITaxonData
+        Function CreateSearchTerm() As Object
 
     End Interface
 
