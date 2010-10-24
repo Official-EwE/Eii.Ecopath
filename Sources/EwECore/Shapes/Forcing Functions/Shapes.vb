@@ -48,16 +48,6 @@ Public Class cForcingFunction
 
 #Region " Public fields/properties "
 
-    'Public Property Title() As String
-    '    Get
-    '        Return Me.m_Xdata.Name
-    '    End Get
-    '    Set(ByVal strTitle As String)
-    '        Me.m_Xdata.Name = strTitle
-    '        Update()
-    '    End Set
-    'End Property
-
     Public Property YZero() As Single
         Get
             Return m_YZero
