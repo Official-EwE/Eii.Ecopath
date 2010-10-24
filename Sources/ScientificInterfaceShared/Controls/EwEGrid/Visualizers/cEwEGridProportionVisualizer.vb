@@ -31,7 +31,7 @@ Namespace Controls.EwEGrid
             If Not (TypeOf objVal Is Single) Then Return
 
             Dim sVal As Single = CSng(objVal)
-            Dim rcBox As New Rectangle(rc.Left + 3, rc.Top + 2, rc.Width - 6, rc.Height - 4)
+            Dim rcBox As New Rectangle(rc.Left + 3, rc.Top + 4, Math.Max(0, rc.Width - 6), Math.Max(0, rc.Height - 9))
             Dim rcFill As New Rectangle(rcBox.Left, rcBox.Top, CInt(Math.Min(sVal, 1) * rcBox.Width), rcBox.Height)
 
             e.Graphics.FillRectangle(SystemBrushes.Window, rcBox)
