@@ -265,8 +265,24 @@ Public Class dlgEditGroupTaxon
         Me.Search(Me.m_tbCommon.Text)
     End Sub
 
+    Private Sub OnPhylumChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_cmbPhylum.TextChanged
+
+        If (Me.m_bInUpdate) Then Return
+        If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
+
+        Me.m_gridGroups.SelectedTaxon.Phylum = Me.m_cmbPhylum.Text
+        Me.m_gridGroups.UpdateSelectedTaxonRow()
+
+    End Sub
+
+    Private Sub OnSearchPhylum(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSearchPhylum.Click
+        Me.Search(Me.m_cmbPhylum.Text)
+    End Sub
+
     Private Sub OnClassChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cmbClass.TextChanged, m_cmbPhylum.TextChanged
+        Handles m_cmbClass.TextChanged
 
         If (Me.m_bInUpdate) Then Return
         If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
@@ -277,7 +293,7 @@ Public Class dlgEditGroupTaxon
     End Sub
 
     Private Sub OnSearchClass(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSearchClass.Click, m_btnPhylum.Click
+        Handles m_btnSearchClass.Click
         Me.Search(Me.m_cmbClass.Text)
     End Sub
 
@@ -412,14 +428,16 @@ Public Class dlgEditGroupTaxon
             Me.m_btnSearchCommon.Enabled = False
             Me.m_cmbClass.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
             Me.m_btnSearchClass.Enabled = False
-            Me.m_cmbOrder.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
+            Me.m_cmbOrder.Enabled = False : Me.m_cmbOrder.SelectedIndex = -1
             Me.m_btnSearchOrder.Enabled = False
-            Me.m_cmbFamily.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
+            Me.m_cmbFamily.Enabled = False : Me.m_cmbFamily.SelectedIndex = -1
             Me.m_btnSearchFamily.Enabled = False
-            Me.m_cmbGenus.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
+            Me.m_cmbGenus.Enabled = False : Me.m_cmbGenus.SelectedIndex = -1
             Me.m_btnSearchGenus.Enabled = False
-            Me.m_cmbSpecies.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
+            Me.m_cmbSpecies.Enabled = False : Me.m_cmbSpecies.SelectedIndex = -1
             Me.m_btnSearchSpecies.Enabled = False
+            Me.m_cmbPhylum.Enabled = False : Me.m_cmbPhylum.SelectedIndex = -1
+            Me.m_btnSearchPhylum.Enabled = False
             Me.m_btnAdd.Enabled = (group IsNot Nothing)
             Me.m_btnRemove.Enabled = False
             Me.m_btnKeep.Enabled = False
@@ -440,6 +458,8 @@ Public Class dlgEditGroupTaxon
             Me.m_btnSearchGenus.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbGenus.Text.Trim))
             Me.m_cmbSpecies.Enabled = True : Me.m_cmbSpecies.Text = taxon.Species
             Me.m_btnSearchSpecies.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbSpecies.Text.Trim))
+            Me.m_cmbPhylum.Enabled = True : Me.m_cmbPhylum.Text = taxon.Phylum
+            Me.m_btnSearchPhylum.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbPhylum.Text.Trim))
             Me.m_btnAdd.Enabled = True
             Me.m_btnRemove.Enabled = Not Me.m_gridGroups.IsFlaggedForDeletionRow
             Me.m_btnKeep.Enabled = Me.m_gridGroups.IsFlaggedForDeletionRow
@@ -462,6 +482,7 @@ Public Class dlgEditGroupTaxon
             Me.AddText(Me.m_cmbGenus, taxon.Genus)
             Me.AddText(Me.m_cmbFamily, taxon.Family)
             Me.AddText(Me.m_cmbSpecies, taxon.Species)
+            Me.AddText(Me.m_cmbPhylum, taxon.Phylum)
         Next
 
     End Sub
@@ -545,10 +566,7 @@ Public Class dlgEditGroupTaxon
     End Sub
 
     Private Sub RefreshSearch()
-        Dim strTerm As String = m_tbSearch.Text
-        If strTerm.Length >= 3 Then
-            Me.Search(strTerm)
-        End If
+        Me.Search(Me.m_tbSearch.Text)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -559,8 +577,21 @@ Public Class dlgEditGroupTaxon
     ''' -----------------------------------------------------------------------
     Private Sub Search(ByVal strTerm As String)
 
+        ' Clear grid
+        Me.OnProcessSearchResults(Nothing)
+
+        ' No term? Abort
+        If String.IsNullOrEmpty(strTerm) Then Return
+        ' Term less than 3 chars? Abort
+        If (strTerm.Length < 3) Then Return
+
+        ' Make search term
+        Dim objTerm As Object = Me.SelectedDataProducer.CreateSearchTerm()
+        ' No valid term? Abort
+        If Not (TypeOf objTerm Is ITaxonData) Then Return
+
         ' Create search term
-        Dim searchterm As ITaxonData = Me.SelectedDataProducer.CreateSearchTerm()
+        Dim searchterm As ITaxonData = DirectCast(objTerm, ITaxonData)
         ' Successful?
         If searchterm IsNot Nothing Then
             '#Yes: populate term
