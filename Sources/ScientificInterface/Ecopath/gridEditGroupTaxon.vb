@@ -944,6 +944,9 @@ Public Class gridEditGroupTaxon
                             Me.m_lTaxonInfo.Remove(ti)
 
                     End Select
+
+                    Me.NormalizeProportions()
+
                 End If
             End If
         Next
