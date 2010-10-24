@@ -6,6 +6,7 @@ Imports EwEPlugin.Data
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
 #End Region ' Imports
@@ -24,6 +25,7 @@ Public Class gridTaxonSearchResults
         Family
         Order
         [Class]
+        Phylum
         Code
     End Enum
 
@@ -79,13 +81,14 @@ Public Class gridTaxonSearchResults
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell("Code")
-        Me(0, eColumnTypes.Common) = New EwEColumnHeaderCell("Common name")
-        Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell("Species")
-        Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell("Family")
-        Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell("Order")
-        Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell("Class")
-        Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell("Genus")
+        Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
+        Me(0, eColumnTypes.Common) = New EwEColumnHeaderCell(SharedResources.HEADER_COMMON_NAME)
+        Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
+        Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(SharedResources.HEADER_FAMILY)
+        Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell(SharedResources.HEADER_ORDER)
+        Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(SharedResources.HEADER_CLASS)
+        Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
+        Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
 
     End Sub
 
@@ -157,11 +160,12 @@ Public Class gridTaxonSearchResults
                 strValue = result.Species
                 style = style Or cStyleGuide.eStyleFlags.TaxonItalics
 
-            Case eColumnTypes.Family
-                strValue = result.Family
-
             Case eColumnTypes.Genus
                 strValue = result.Genus
+                style = style Or cStyleGuide.eStyleFlags.TaxonItalics
+
+            Case eColumnTypes.Family
+                strValue = result.Family
 
             Case eColumnTypes.Order
                 strValue = result.Order
@@ -171,6 +175,10 @@ Public Class gridTaxonSearchResults
 
             Case eColumnTypes.Code
                 strValue = result.SourceKey
+
+            Case eColumnTypes.Phylum
+                strValue = ""
+                style = style Or cStyleGuide.eStyleFlags.Null
 
         End Select
 

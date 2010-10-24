@@ -1323,6 +1323,7 @@ Namespace Core
 
         TaxonGroup
         TaxonProp
+        Phylum
         [Class]
         Order
         Family

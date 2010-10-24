@@ -341,6 +341,51 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Class.
+        '''</summary>
+        Public ReadOnly Property HEADER_CLASS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CLASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Code.
+        '''</summary>
+        Public ReadOnly Property HEADER_CODE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CODE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Common name.
+        '''</summary>
+        Public ReadOnly Property HEADER_COMMON_NAME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_COMMON_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Family.
+        '''</summary>
+        Public ReadOnly Property HEADER_FAMILY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FAMILY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Genus.
+        '''</summary>
+        Public ReadOnly Property HEADER_GENUS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_GENUS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Index.
         '''</summary>
         Public ReadOnly Property HEADER_INDEX() As String
@@ -368,6 +413,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Order.
+        '''</summary>
+        Public ReadOnly Property HEADER_ORDER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ORDER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Phylum.
+        '''</summary>
+        Public ReadOnly Property HEADER_PHYLUM() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PHYLUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Relative weight.
         '''</summary>
         Public ReadOnly Property HEADER_RELATIVEWEIGHT() As String
@@ -382,6 +445,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_RELATIVEWEIGHT_ABBR() As String
             Get
                 Return ResourceManager.GetString("HEADER_RELATIVEWEIGHT_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Species.
+        '''</summary>
+        Public ReadOnly Property HEADER_SPECIES() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SPECIES", resourceCulture)
             End Get
         End Property
         

@@ -31,13 +31,14 @@ Public Class gridEditGroupTaxon
     Private m_tiSearchLinked As ITaxonData = Nothing
 
     Private m_vizPropNormalized As New cEwEGridProportionVisualizer()
+    Private m_lUsedKeys As New List(Of String)
 
     ''' <summary>Enumerated type defining the columns in this grid.</summary>
     Private Enum eColumnTypes
         Hierarchy = 0
         Name
-        PropNorm
         Proportion
+        PropNorm
         LastUpdated
         Status
     End Enum
@@ -55,6 +56,7 @@ Public Class gridEditGroupTaxon
         Private m_strCode3A As String = ""
         Private m_strCodeISSCAAP As String = ""
         Private m_strCodeTaxon As String = ""
+        Private m_strPhylum As String = ""
         Private m_strClass As String = ""
         Private m_strOrder As String = ""
         Private m_strGenus As String = ""
@@ -136,6 +138,7 @@ Public Class gridEditGroupTaxon
             Me.m_strCodeISSCAAP = taxon.CodeISSCAAP
             Me.m_strCodeTaxon = taxon.CodeTaxon
             Me.m_strCommon = taxon.Common
+            Me.m_strPhylum = taxon.Phylum
             Me.m_strClass = taxon.Class
             Me.m_strOrder = taxon.Order
             Me.m_strFamily = taxon.Family
@@ -187,6 +190,7 @@ Public Class gridEditGroupTaxon
                 If (Me.m_taxon.Proportion <> Me.m_sProportion) Then Return True
                 If (Me.m_taxon.Group <> Me.m_iGroup) Then Return True
                 If (String.Compare(Me.Taxon.Name, Me.m_strCommon) <> 0) Then Return True
+                If (String.Compare(Me.Taxon.Phylum, Me.m_strPhylum) <> 0) Then Return True
                 If (String.Compare(Me.Taxon.Class, Me.m_strClass) <> 0) Then Return True
                 If (String.Compare(Me.Taxon.Order, Me.m_strOrder) <> 0) Then Return True
                 If (String.Compare(Me.Taxon.Family, Me.m_strFamily) <> 0) Then Return True
@@ -288,6 +292,19 @@ Public Class gridEditGroupTaxon
             End Get
             Set(ByVal value As Single)
                 Me.m_sPropNorm = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="ITaxonData.Phylum"/>
+        ''' -------------------------------------------------------------------
+        Public Property Phylum() As String _
+            Implements ITaxonData.Phylum
+            Get
+                Return Me.m_strPhylum
+            End Get
+            Set(ByVal value As String)
+                Me.m_strPhylum = value
             End Set
         End Property
 
@@ -559,8 +576,8 @@ Public Class gridEditGroupTaxon
         ' Group index cell
         Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
-        Me(0, eColumnTypes.PropNorm) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(My.Resources.HEADER_PROPORTION)
+        Me(0, eColumnTypes.PropNorm) = New EwEColumnHeaderCell(My.Resources.HEADER_PROPORTION)
         Me(0, eColumnTypes.LastUpdated) = New EwEColumnHeaderCell(My.Resources.HEADER_LASTUPDATED)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
 
@@ -651,6 +668,8 @@ Public Class gridEditGroupTaxon
         Dim hgcGroup As EwEHierarchyGridCell = Nothing
         Dim dt As Date = Nothing
 
+        Me.m_lUsedKeys.Clear()
+
         ' Create rows
         Me.RowsCount = 1
         For iGroup As Integer = 1 To Me.Core.nGroups
@@ -686,6 +705,9 @@ Public Class gridEditGroupTaxon
                     Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.LastUpdated) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+
+                    Me.m_lUsedKeys.Add(ti.CodeTaxon)
+
                 End If
             Next
         Next
@@ -852,6 +874,8 @@ Public Class gridEditGroupTaxon
         Dim ti As cTaxonInfo = Nothing
         Dim iRow As Integer = Nothing
 
+        If Me.m_lUsedKeys.Contains(taxon.CodeTaxon) Then Return
+
         If (taxon Is Nothing) Then
             ti = New cTaxonInfo(Me.SelectedGroup)
             Me.m_lTaxonInfo.Add(ti)
@@ -861,8 +885,12 @@ Public Class gridEditGroupTaxon
             Me.m_lTaxonInfo.Add(ti)
             Me.NormalizeProportions()
         End If
+
+        Me.m_lUsedKeys.Add(taxon.CodeTaxon)
+
         Me.UpdateGrid()
         Me.SelectedTaxon = ti
+
     End Sub
 
     ''' -----------------------------------------------------------------------

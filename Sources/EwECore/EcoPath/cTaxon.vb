@@ -35,6 +35,10 @@ Public Class cTaxon
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
+        val = New cValue(New String(cbuf), eVarNameFlags.Phylum, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(250)
         val = New cValue(New String(cbuf), eVarNameFlags.Order, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
 
@@ -129,6 +133,18 @@ Public Class cTaxon
         End Get
         Set(ByVal value As Single)
             Me.SetVariable(eVarNameFlags.TaxonProp, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the phylum of a taxonomy definition.
+    ''' </summary>
+    Public Property Phylum() As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.Phylum))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.Phylum, value)
         End Set
     End Property
 

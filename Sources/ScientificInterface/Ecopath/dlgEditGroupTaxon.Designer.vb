@@ -36,19 +36,15 @@ Partial Class dlgEditGroupTaxon
         Me.m_tbSearch = New System.Windows.Forms.TextBox
         Me.m_cmbEngine = New System.Windows.Forms.ComboBox
         Me.m_btnConfigure = New System.Windows.Forms.Button
-        Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_hdrExternal = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox
         Me.m_scMain = New System.Windows.Forms.SplitContainer
-        Me.m_gridGroups = New ScientificInterface.gridEditGroupTaxon
         Me.m_tcMain = New System.Windows.Forms.TabControl
         Me.m_tpSearch = New System.Windows.Forms.TabPage
-        Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults
         Me.m_lblEngine = New System.Windows.Forms.Label
         Me.m_tpDetails = New System.Windows.Forms.TabPage
         Me.m_lblSelectedGroup = New System.Windows.Forms.Label
         Me.m_lblGroup = New System.Windows.Forms.Label
+        Me.m_btnPhylum = New System.Windows.Forms.Button
         Me.m_btnSearchClass = New System.Windows.Forms.Button
         Me.m_btnSearchOrder = New System.Windows.Forms.Button
         Me.m_btnSearchFamily = New System.Windows.Forms.Button
@@ -59,17 +55,21 @@ Partial Class dlgEditGroupTaxon
         Me.m_cmbGenus = New System.Windows.Forms.ComboBox
         Me.m_cmbFamily = New System.Windows.Forms.ComboBox
         Me.m_cmbOrder = New System.Windows.Forms.ComboBox
+        Me.m_cmbPhylum = New System.Windows.Forms.ComboBox
         Me.m_cmbClass = New System.Windows.Forms.ComboBox
         Me.m_lbSpecies = New System.Windows.Forms.Label
         Me.m_lbGenus = New System.Windows.Forms.Label
         Me.m_lbFamily = New System.Windows.Forms.Label
         Me.m_lbOrder = New System.Windows.Forms.Label
+        Me.m_lblPhylum = New System.Windows.Forms.Label
         Me.m_tbCommon = New System.Windows.Forms.TextBox
         Me.m_lbClass = New System.Windows.Forms.Label
         Me.m_lbCommon = New System.Windows.Forms.Label
-        Me.m_lblPhylum = New System.Windows.Forms.Label
-        Me.m_cmbPhylum = New System.Windows.Forms.ComboBox
-        Me.m_btnPhylum = New System.Windows.Forms.Button
+        Me.m_gridGroups = New ScientificInterface.gridEditGroupTaxon
+        Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults
+        Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrExternal = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
@@ -155,21 +155,6 @@ Partial Class dlgEditGroupTaxon
         Me.m_btnConfigure.Name = "m_btnConfigure"
         Me.m_btnConfigure.UseVisualStyleBackColor = True
         '
-        'm_hdrOrder
-        '
-        resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
-        Me.m_hdrOrder.Name = "m_hdrOrder"
-        '
-        'm_hdrEdit
-        '
-        resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
-        Me.m_hdrEdit.Name = "m_hdrEdit"
-        '
-        'm_hdrExternal
-        '
-        resources.ApplyResources(Me.m_hdrExternal, "m_hdrExternal")
-        Me.m_hdrExternal.Name = "m_hdrExternal"
-        '
         'm_cbIncludeExtent
         '
         resources.ApplyResources(Me.m_cbIncludeExtent, "m_cbIncludeExtent")
@@ -188,37 +173,6 @@ Partial Class dlgEditGroupTaxon
         'm_scMain.Panel2
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_tcMain)
-        '
-        'm_gridGroups
-        '
-        Me.m_gridGroups.AllowBlockSelect = False
-        Me.m_gridGroups.AutoSizeMinHeight = 10
-        Me.m_gridGroups.AutoSizeMinWidth = 10
-        Me.m_gridGroups.AutoStretchColumnsToFitWidth = False
-        Me.m_gridGroups.AutoStretchRowsToFitHeight = False
-        Me.m_gridGroups.BackColor = System.Drawing.Color.White
-        Me.m_gridGroups.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_gridGroups.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_gridGroups.CustomSort = False
-        resources.ApplyResources(Me.m_gridGroups, "m_gridGroups")
-        Me.m_gridGroups.FixedColumnWidths = False
-        Me.m_gridGroups.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_gridGroups.GridToolTipActive = True
-        Me.m_gridGroups.Name = "m_gridGroups"
-        Me.m_gridGroups.SelectedGroup = Nothing
-        Me.m_gridGroups.SelectedTaxon = Nothing
-        Me.m_gridGroups.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_gridGroups.UIContext = Nothing
         '
         'm_tcMain
         '
@@ -239,35 +193,6 @@ Partial Class dlgEditGroupTaxon
         Me.m_tpSearch.Controls.Add(Me.m_btnConfigure)
         resources.ApplyResources(Me.m_tpSearch, "m_tpSearch")
         Me.m_tpSearch.Name = "m_tpSearch"
-        '
-        'm_gridResults
-        '
-        Me.m_gridResults.AllowBlockSelect = True
-        resources.ApplyResources(Me.m_gridResults, "m_gridResults")
-        Me.m_gridResults.AutoSizeMinHeight = 10
-        Me.m_gridResults.AutoSizeMinWidth = 10
-        Me.m_gridResults.AutoStretchColumnsToFitWidth = False
-        Me.m_gridResults.AutoStretchRowsToFitHeight = False
-        Me.m_gridResults.BackColor = System.Drawing.Color.White
-        Me.m_gridResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_gridResults.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_gridResults.CustomSort = False
-        Me.m_gridResults.FixedColumnWidths = False
-        Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_gridResults.GridToolTipActive = True
-        Me.m_gridResults.Name = "m_gridResults"
-        Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_gridResults.UIContext = Nothing
         '
         'm_lblEngine
         '
@@ -312,6 +237,13 @@ Partial Class dlgEditGroupTaxon
         '
         resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
         Me.m_lblGroup.Name = "m_lblGroup"
+        '
+        'm_btnPhylum
+        '
+        resources.ApplyResources(Me.m_btnPhylum, "m_btnPhylum")
+        Me.m_btnPhylum.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+        Me.m_btnPhylum.Name = "m_btnPhylum"
+        Me.m_btnPhylum.UseVisualStyleBackColor = True
         '
         'm_btnSearchClass
         '
@@ -383,6 +315,13 @@ Partial Class dlgEditGroupTaxon
         Me.m_cmbOrder.Name = "m_cmbOrder"
         Me.m_cmbOrder.Sorted = True
         '
+        'm_cmbPhylum
+        '
+        resources.ApplyResources(Me.m_cmbPhylum, "m_cmbPhylum")
+        Me.m_cmbPhylum.FormattingEnabled = True
+        Me.m_cmbPhylum.Name = "m_cmbPhylum"
+        Me.m_cmbPhylum.Sorted = True
+        '
         'm_cmbClass
         '
         resources.ApplyResources(Me.m_cmbClass, "m_cmbClass")
@@ -410,6 +349,11 @@ Partial Class dlgEditGroupTaxon
         resources.ApplyResources(Me.m_lbOrder, "m_lbOrder")
         Me.m_lbOrder.Name = "m_lbOrder"
         '
+        'm_lblPhylum
+        '
+        resources.ApplyResources(Me.m_lblPhylum, "m_lblPhylum")
+        Me.m_lblPhylum.Name = "m_lblPhylum"
+        '
         'm_tbCommon
         '
         resources.ApplyResources(Me.m_tbCommon, "m_tbCommon")
@@ -425,24 +369,80 @@ Partial Class dlgEditGroupTaxon
         resources.ApplyResources(Me.m_lbCommon, "m_lbCommon")
         Me.m_lbCommon.Name = "m_lbCommon"
         '
-        'm_lblPhylum
+        'm_gridGroups
         '
-        resources.ApplyResources(Me.m_lblPhylum, "m_lblPhylum")
-        Me.m_lblPhylum.Name = "m_lblPhylum"
+        Me.m_gridGroups.AllowBlockSelect = False
+        Me.m_gridGroups.AutoSizeMinHeight = 10
+        Me.m_gridGroups.AutoSizeMinWidth = 10
+        Me.m_gridGroups.AutoStretchColumnsToFitWidth = False
+        Me.m_gridGroups.AutoStretchRowsToFitHeight = False
+        Me.m_gridGroups.BackColor = System.Drawing.Color.White
+        Me.m_gridGroups.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_gridGroups.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_gridGroups.CustomSort = False
+        resources.ApplyResources(Me.m_gridGroups, "m_gridGroups")
+        Me.m_gridGroups.FixedColumnWidths = False
+        Me.m_gridGroups.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_gridGroups.GridToolTipActive = True
+        Me.m_gridGroups.Name = "m_gridGroups"
+        Me.m_gridGroups.SelectedGroup = Nothing
+        Me.m_gridGroups.SelectedTaxon = Nothing
+        Me.m_gridGroups.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                    Or SourceGrid2.GridSpecialKeys.Delete) _
+                    Or SourceGrid2.GridSpecialKeys.Arrows) _
+                    Or SourceGrid2.GridSpecialKeys.Tab) _
+                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                    Or SourceGrid2.GridSpecialKeys.Enter) _
+                    Or SourceGrid2.GridSpecialKeys.Escape) _
+                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_gridGroups.UIContext = Nothing
         '
-        'm_cmbPhylum
+        'm_gridResults
         '
-        resources.ApplyResources(Me.m_cmbPhylum, "m_cmbPhylum")
-        Me.m_cmbPhylum.FormattingEnabled = True
-        Me.m_cmbPhylum.Name = "m_cmbPhylum"
-        Me.m_cmbPhylum.Sorted = True
+        Me.m_gridResults.AllowBlockSelect = True
+        resources.ApplyResources(Me.m_gridResults, "m_gridResults")
+        Me.m_gridResults.AutoSizeMinHeight = 10
+        Me.m_gridResults.AutoSizeMinWidth = 10
+        Me.m_gridResults.AutoStretchColumnsToFitWidth = False
+        Me.m_gridResults.AutoStretchRowsToFitHeight = False
+        Me.m_gridResults.BackColor = System.Drawing.Color.White
+        Me.m_gridResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_gridResults.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_gridResults.CustomSort = False
+        Me.m_gridResults.FixedColumnWidths = False
+        Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_gridResults.GridToolTipActive = True
+        Me.m_gridResults.Name = "m_gridResults"
+        Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                    Or SourceGrid2.GridSpecialKeys.Delete) _
+                    Or SourceGrid2.GridSpecialKeys.Arrows) _
+                    Or SourceGrid2.GridSpecialKeys.Tab) _
+                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                    Or SourceGrid2.GridSpecialKeys.Enter) _
+                    Or SourceGrid2.GridSpecialKeys.Escape) _
+                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_gridResults.UIContext = Nothing
         '
-        'm_btnPhylum
+        'm_hdrOrder
         '
-        resources.ApplyResources(Me.m_btnPhylum, "m_btnPhylum")
-        Me.m_btnPhylum.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
-        Me.m_btnPhylum.Name = "m_btnPhylum"
-        Me.m_btnPhylum.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
+        Me.m_hdrOrder.Name = "m_hdrOrder"
+        '
+        'm_hdrEdit
+        '
+        resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+        Me.m_hdrEdit.Name = "m_hdrEdit"
+        '
+        'm_hdrExternal
+        '
+        resources.ApplyResources(Me.m_hdrExternal, "m_hdrExternal")
+        Me.m_hdrExternal.Name = "m_hdrExternal"
         '
         'dlgEditGroupTaxon
         '

@@ -555,108 +555,6 @@
   <data name="&gt;&gt;m_btnConfigure.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="m_hdrOrder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_hdrOrder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>647, 121</value>
-  </data>
-  <data name="m_hdrOrder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 18</value>
-  </data>
-  <data name="m_hdrOrder.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_hdrOrder.Text" xml:space="preserve">
-    <value>Target group</value>
-  </data>
-  <data name="m_hdrOrder.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrOrder.Name" xml:space="preserve">
-    <value>m_hdrOrder</value>
-  </data>
-  <data name="&gt;&gt;m_hdrOrder.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrOrder.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrOrder.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="m_hdrEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_hdrEdit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>647, 12</value>
-  </data>
-  <data name="m_hdrEdit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 18</value>
-  </data>
-  <data name="m_hdrEdit.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_hdrEdit.Text" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="m_hdrEdit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrEdit.Name" xml:space="preserve">
-    <value>m_hdrEdit</value>
-  </data>
-  <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrEdit.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_hdrExternal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_hdrExternal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrExternal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>647, 201</value>
-  </data>
-  <data name="m_hdrExternal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 18</value>
-  </data>
-  <data name="m_hdrExternal.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_hdrExternal.Text" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="m_hdrExternal.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="m_hdrExternal.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;m_hdrExternal.Name" xml:space="preserve">
-    <value>m_hdrExternal</value>
-  </data>
-  <data name="&gt;&gt;m_hdrExternal.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrExternal.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrExternal.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_cbIncludeExtent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -738,6 +636,18 @@
   <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_gridResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_gridResults.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 59</value>
+  </data>
+  <data name="m_gridResults.Size" type="System.Drawing.Size, System.Drawing">
+    <value>612, 131</value>
+  </data>
+  <data name="m_gridResults.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
   <data name="&gt;&gt;m_gridResults.Name" xml:space="preserve">
     <value>m_gridResults</value>
   </data>
@@ -749,6 +659,24 @@
   </data>
   <data name="&gt;&gt;m_gridResults.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_lblEngine.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblEngine.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblEngine.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 35</value>
+  </data>
+  <data name="m_lblEngine.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="m_lblEngine.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_lblEngine.Text" xml:space="preserve">
+    <value>&amp;Engine:</value>
   </data>
   <data name="&gt;&gt;m_lblEngine.Name" xml:space="preserve">
     <value>m_lblEngine</value>
@@ -769,7 +697,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpSearch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>618, 193</value>
+    <value>618, 216</value>
   </data>
   <data name="m_tpSearch.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -851,9 +779,6 @@
   </data>
   <data name="m_btnPhylum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_btnPhylum.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
   </data>
   <data name="m_btnPhylum.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
@@ -1092,6 +1017,9 @@
   <data name="m_cmbGenus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_cmbGenus.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Italic</value>
+  </data>
   <data name="m_cmbGenus.Location" type="System.Drawing.Point, System.Drawing">
     <value>104, 85</value>
   </data>
@@ -1163,9 +1091,6 @@
   </data>
   <data name="m_cmbPhylum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cmbPhylum.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
   </data>
   <data name="m_cmbPhylum.Location" type="System.Drawing.Point, System.Drawing">
     <value>104, 193</value>
@@ -1334,9 +1259,6 @@
   </data>
   <data name="m_lblPhylum.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="m_lblPhylum.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
   </data>
   <data name="m_lblPhylum.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1536,59 +1458,107 @@
   <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_gridResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="m_hdrOrder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="m_gridResults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 59</value>
-  </data>
-  <data name="m_gridResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>612, 131</value>
-  </data>
-  <data name="m_gridResults.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_gridResults.Name" xml:space="preserve">
-    <value>m_gridResults</value>
-  </data>
-  <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
-    <value>m_tpSearch</value>
-  </data>
-  <data name="&gt;&gt;m_gridResults.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_lblEngine.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblEngine.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrOrder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblEngine.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 35</value>
+  <data name="m_hdrOrder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>647, 121</value>
   </data>
-  <data name="m_lblEngine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
+  <data name="m_hdrOrder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 18</value>
   </data>
-  <data name="m_lblEngine.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="m_hdrOrder.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="m_lblEngine.Text" xml:space="preserve">
-    <value>&amp;Engine:</value>
+  <data name="m_hdrOrder.Text" xml:space="preserve">
+    <value>Target group</value>
   </data>
-  <data name="&gt;&gt;m_lblEngine.Name" xml:space="preserve">
-    <value>m_lblEngine</value>
+  <data name="m_hdrOrder.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblEngine.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_hdrOrder.Name" xml:space="preserve">
+    <value>m_hdrOrder</value>
   </data>
-  <data name="&gt;&gt;m_lblEngine.Parent" xml:space="preserve">
-    <value>m_tpSearch</value>
+  <data name="&gt;&gt;m_hdrOrder.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_lblEngine.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrOrder.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrOrder.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_hdrEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_hdrEdit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrEdit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>647, 12</value>
+  </data>
+  <data name="m_hdrEdit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 18</value>
+  </data>
+  <data name="m_hdrEdit.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_hdrEdit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="m_hdrEdit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEdit.Name" xml:space="preserve">
+    <value>m_hdrEdit</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEdit.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="m_hdrExternal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_hdrExternal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrExternal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>647, 201</value>
+  </data>
+  <data name="m_hdrExternal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 18</value>
+  </data>
+  <data name="m_hdrExternal.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_hdrExternal.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="m_hdrExternal.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_hdrExternal.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;m_hdrExternal.Name" xml:space="preserve">
+    <value>m_hdrExternal</value>
+  </data>
+  <data name="&gt;&gt;m_hdrExternal.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrExternal.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrExternal.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1601,6 +1571,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>754, 585</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>500, 563</value>

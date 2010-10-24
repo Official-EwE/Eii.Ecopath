@@ -26,6 +26,8 @@ Namespace Core
         Property Species() As String
         ''' <summary>Common name of a taxon.</summary>
         Property Common() As String
+        ''' <summary>Phylum of a taxon.</summary>
+        Property Phylum() As String
         ''' <summary>ISSCAAP code of a taxon.</summary>
         ''' <remarks>http://www.fao.org/docrep/w7283e/W7283E07.htm</remarks>
         Property CodeISSCAAP() As String

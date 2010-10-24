@@ -452,4 +452,28 @@
   <data name="FILEFILTER_TEXT" xml:space="preserve">
     <value>Text files|*.txt</value>
   </data>
+  <data name="HEADER_CLASS" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="HEADER_CODE" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="HEADER_COMMON_NAME" xml:space="preserve">
+    <value>Common name</value>
+  </data>
+  <data name="HEADER_FAMILY" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="HEADER_GENUS" xml:space="preserve">
+    <value>Genus</value>
+  </data>
+  <data name="HEADER_ORDER" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="HEADER_PHYLUM" xml:space="preserve">
+    <value>Phylum</value>
+  </data>
+  <data name="HEADER_SPECIES" xml:space="preserve">
+    <value>Species</value>
+  </data>
 </root>
