@@ -1,3 +1,4 @@
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
 
 <CLSCompliant(False)> _
@@ -59,19 +60,19 @@ Partial Class frmWebBrowser
         'm_tsbnHome
         '
         Me.m_tsbnHome.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsbnHome.Image = Global.ScientificInterface.My.Resources.Resources.HomeHS
+        Me.m_tsbnHome.Image = SharedResources.HomeHS
         resources.ApplyResources(Me.m_tsbnHome, "m_tsbnHome")
         Me.m_tsbnHome.Name = "m_tsbnHome"
         '
         'm_tsbnBack
         '
-        Me.m_tsbnBack.Image = Global.ScientificInterface.My.Resources.Resources.NavBack
+        Me.m_tsbnBack.Image = SharedResources.NavBack
         resources.ApplyResources(Me.m_tsbnBack, "m_tsbnBack")
         Me.m_tsbnBack.Name = "m_tsbnBack"
         '
         'm_tsbnForward
         '
-        Me.m_tsbnForward.Image = Global.ScientificInterface.My.Resources.Resources.NavForward
+        Me.m_tsbnForward.Image = SharedResources.NavForward
         resources.ApplyResources(Me.m_tsbnForward, "m_tsbnForward")
         Me.m_tsbnForward.Name = "m_tsbnForward"
         '

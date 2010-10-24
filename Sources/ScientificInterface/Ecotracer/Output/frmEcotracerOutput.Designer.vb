@@ -1,5 +1,6 @@
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmEcotracerOutput
@@ -130,7 +131,7 @@ Partial Class frmEcotracerOutput
         Me.m_btnShowHideGroups.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_btnShowHideGroups.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.m_btnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+        Me.m_btnShowHideGroups.Image = SharedResources.Eye_open
         Me.m_btnShowHideGroups.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.m_btnShowHideGroups.Location = New System.Drawing.Point(3, 360)
         Me.m_btnShowHideGroups.Name = "m_btnShowHideGroups"

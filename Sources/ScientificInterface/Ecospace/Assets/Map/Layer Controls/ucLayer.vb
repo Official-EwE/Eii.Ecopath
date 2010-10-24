@@ -6,6 +6,7 @@ Imports EwEUtils.Core
 Imports System.Globalization
 Imports System.Threading
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -27,11 +28,11 @@ Namespace Ecospace
         Private m_bHovering As Boolean = False
 
         ' Images cache for faster rendering
-        Protected Shared g_imgEye0 As Image = My.Resources.Eye_open
-        Protected Shared g_imgEye1 As Image = My.Resources.Eye_closed
-        Protected Shared g_imgPen0 As Image = My.Resources.Editable
-        Protected Shared g_imgPen1 As Image = My.Resources.NotEditable
-        Protected Shared g_imgLock As Image = My.Resources.ProtectFormHS
+        Protected Shared g_imgEye0 As Image = SharedResources.Eye_open
+        Protected Shared g_imgEye1 As Image = SharedResources.Eye_closed
+        Protected Shared g_imgPen0 As Image = SharedResources.Editable
+        Protected Shared g_imgPen1 As Image = SharedResources.NotEditable
+        Protected Shared g_imgLock As Image = SharedResources.ProtectFormHS
 
 #End Region ' Private vars
 

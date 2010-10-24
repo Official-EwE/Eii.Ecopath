@@ -59,14 +59,14 @@ Namespace Controls
             '
             'm_btnAdd
             '
-            Me.m_btnAdd.Image = My.Resources.Resources.arrow_right
+            Me.m_btnAdd.Image = My.Resources.Resources.NavForward
             resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
             Me.m_btnAdd.Name = "m_btnAdd"
             Me.m_btnAdd.UseVisualStyleBackColor = True
             '
             'm_btnRemove
             '
-            Me.m_btnRemove.Image = My.Resources.Resources.arrow_left
+            Me.m_btnRemove.Image = My.Resources.Resources.NavBack
             resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
             Me.m_btnRemove.Name = "m_btnRemove"
             Me.m_btnRemove.UseVisualStyleBackColor = True

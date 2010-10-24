@@ -36,12 +36,11 @@ Partial Class NavigationPanel
         Me.m_ilTreeIcons.Images.SetKeyName(1, "application_put.png")
         Me.m_ilTreeIcons.Images.SetKeyName(2, "run.bmp")
         Me.m_ilTreeIcons.Images.SetKeyName(3, "tools.bmp")
-        Me.m_ilTreeIcons.Images.SetKeyName(4, "Ecopath.bmp")
-        Me.m_ilTreeIcons.Images.SetKeyName(5, "output_extend.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(6, "input_extend.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(7, "Ecospace_32x32.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(8, "Ecosim_32x32.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(9, "Ecopath_32x32.png")
+        Me.m_ilTreeIcons.Images.SetKeyName(4, "output_extend.png")
+        Me.m_ilTreeIcons.Images.SetKeyName(5, "input_extend.png")
+        Me.m_ilTreeIcons.Images.SetKeyName(6, "Ecospace_32x32.png")
+        Me.m_ilTreeIcons.Images.SetKeyName(7, "Ecosim_32x32.png")
+        Me.m_ilTreeIcons.Images.SetKeyName(8, "Ecopath_32x32.png")
         '
         'NavigationPanel
         '

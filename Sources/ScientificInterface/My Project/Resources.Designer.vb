@@ -105,44 +105,9 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property arrow_down() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("arrow_down", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property arrow_left() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("arrow_left", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property arrow_right() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("arrow_right", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property arrow_up() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("arrow_up", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Basemap() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Basemap", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property CalculatorHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CalculatorHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -159,20 +124,6 @@ Namespace My.Resources
         Friend ReadOnly Property certificate() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("certificate", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Collapsed() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Collapsed", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property CommentHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("CommentHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -296,27 +247,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property delete() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("delete", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property DeleteHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("DeleteHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property DisplayGroups() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("DisplayGroups", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Ecopath() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecopath", resourceCulture)
@@ -327,13 +257,6 @@ Namespace My.Resources
         Friend ReadOnly Property ecopath_256x256() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ecopath_256x256", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Ecopath_32x32() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecopath_32x32", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -389,13 +312,6 @@ Namespace My.Resources
         Friend ReadOnly Property ECOPATH_GRAPH_LEGEND_STANZA_SEP() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_GRAPH_LEGEND_STANZA_SEP", resourceCulture)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Ecosim_32x32() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecosim_32x32", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -808,13 +724,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecosim3", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Ecospace_32x32() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecospace_32x32", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -1345,13 +1254,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property Ecotracer_32x32() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecotracer_32x32", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         '''<summary>
         '''  Looks up a localized string similar to Delete Ecotracer scenario - Ecopath model {0}.
         '''</summary>
@@ -1394,13 +1296,6 @@ Namespace My.Resources
         Friend ReadOnly Property EDIT_GROUPS_STANZANO() As String
             Get
                 Return ResourceManager.GetString("EDIT_GROUPS_STANZANO", resourceCulture)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Editable() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Editable", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -1466,48 +1361,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property EwEPedigree() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("EwEPedigree", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Expanded() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Expanded", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property ExportXMLHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ExportXMLHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Eye_closed() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Eye_closed", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Eye_intermediate() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Eye_intermediate", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Eye_open() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Eye_open", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         '''<summary>
         '''  Looks up a localized string similar to FlowDiagram files|*.fd|All files (*.*)|*.*.
         '''</summary>
@@ -1568,13 +1421,6 @@ Namespace My.Resources
         Friend ReadOnly Property FILEFILTER_SAVE_RASTER() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_SAVE_RASTER", resourceCulture)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property FillDownHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("FillDownHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -4867,20 +4713,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property help() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("help", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property HomeHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("HomeHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         '''<summary>
         '''  Looks up a localized string similar to EwE5 database import.
         '''</summary>
@@ -4893,20 +4725,6 @@ Namespace My.Resources
         Friend ReadOnly Property Importance() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Importance", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property ImportXMLHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ImportXMLHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property InsertPictureHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("InsertPictureHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -5035,13 +4853,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property Modified() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Modified", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         '''<summary>
         '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff31507\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
         '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times Ne [rest of string was truncated]&quot;;.
@@ -5067,20 +4878,6 @@ Namespace My.Resources
         Friend ReadOnly Property MORT_NAT() As String
             Get
                 Return ResourceManager.GetString("MORT_NAT", resourceCulture)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property MoveDown() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("MoveDown", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property MoveUp() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("MoveUp", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -5142,48 +4939,6 @@ Namespace My.Resources
         Friend ReadOnly Property MPAOPT_LEGEND_WEIGHTEDTOTAL() As String
             Get
                 Return ResourceManager.GetString("MPAOPT_LEGEND_WEIGHTEDTOTAL", resourceCulture)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property NavBack() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("NavBack", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property NavForward() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("NavForward", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property NewDocumentHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("NewDocumentHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property NotEditable() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("NotEditable", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property OK() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("OK", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property openHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("openHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -5412,13 +5167,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property OptionsHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("OptionsHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         '''<summary>
         '''  Looks up a localized string similar to Approximate or indirect method|May include methods like remote sensing, etc..
         '''</summary>
@@ -5596,34 +5344,6 @@ Namespace My.Resources
         Friend ReadOnly Property PEDIGREE_DEFAULT_SIM_SIM() As String
             Get
                 Return ResourceManager.GetString("PEDIGREE_DEFAULT_SIM_SIM", resourceCulture)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property plugin() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("plugin", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property pluginpoint() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("pluginpoint", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property PrintHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("PrintHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property PrintPreviewHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("PrintPreviewHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -5982,13 +5702,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property ProtectFormHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ProtectFormHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         '''<summary>
         '''  Looks up a localized string similar to Slope = {0} ({1} SE), Y-intercept = {2} ({3} SE), Correlation = {4}Wt. class range (g) = {5} to {6}, N = {7}.
         '''</summary>
@@ -6106,13 +5819,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property PublishPlanHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("PublishPlanHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Raster1() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Raster1", resourceCulture)
@@ -6175,20 +5881,6 @@ Namespace My.Resources
         Friend ReadOnly Property sautxt_50px() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("sautxt_50px", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property SaveAllHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("SaveAllHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property saveHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("saveHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -6897,27 +6589,6 @@ Namespace My.Resources
         Friend ReadOnly Property TS_CONSTANTTOTALMORTALITY_REMARKS() As String
             Get
                 Return ResourceManager.GetString("TS_CONSTANTTOTALMORTALITY_REMARKS", resourceCulture)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property ZoomHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ZoomHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property ZoomInHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ZoomInHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property ZoomOutHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ZoomOutHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
     End Module

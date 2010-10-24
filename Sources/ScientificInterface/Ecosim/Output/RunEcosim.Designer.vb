@@ -1,5 +1,6 @@
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
 
 Namespace Ecosim
@@ -209,7 +210,7 @@ Namespace Ecosim
             '
             'm_tsbtnShowHideGroups
             '
-            Me.m_tsbtnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.DisplayGroups
+            Me.m_tsbtnShowHideGroups.Image = SharedResources.Eye_open
             resources.ApplyResources(Me.m_tsbtnShowHideGroups, "m_tsbtnShowHideGroups")
             Me.m_tsbtnShowHideGroups.Name = "m_tsbtnShowHideGroups"
             '
@@ -270,7 +271,7 @@ Namespace Ecosim
             'm_tssbExplore
             '
             Me.m_tssbExplore.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSortMostChanged, Me.ChangeAmountToolStripMenuItem, Me.m_tstbChangeAmount})
-            Me.m_tssbExplore.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+            Me.m_tssbExplore.Image = SharedResources.ZoomHS
             resources.ApplyResources(Me.m_tssbExplore, "m_tssbExplore")
             Me.m_tssbExplore.Name = "m_tssbExplore"
             '
@@ -300,7 +301,7 @@ Namespace Ecosim
             'm_tsddGraphOptions
             '
             Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, ToolStripSeparator4, Me.m_tsmiShowAnnualOutput, Me.m_tsmShowMultipleRuns, Me.m_tsmiShowLegend})
-            Me.m_tsddGraphOptions.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            Me.m_tsddGraphOptions.Image = SharedResources.OptionsHS
             resources.ApplyResources(Me.m_tsddGraphOptions, "m_tsddGraphOptions")
             Me.m_tsddGraphOptions.Name = "m_tsddGraphOptions"
             '

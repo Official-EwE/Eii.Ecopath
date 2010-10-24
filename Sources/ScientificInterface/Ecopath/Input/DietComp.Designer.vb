@@ -1,6 +1,6 @@
-Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI.Docking
-Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Input
 
@@ -40,7 +40,7 @@ Namespace Ecopath.Input
             '
             'tsSumtoOneBtn
             '
-            Me.tsSumtoOneBtn.Image = Global.ScientificInterface.My.Resources.Resources.CalculatorHS
+            Me.tsSumtoOneBtn.Image = sharedResources.CalculatorHS
             resources.ApplyResources(Me.tsSumtoOneBtn, "tsSumtoOneBtn")
             Me.tsSumtoOneBtn.Name = "tsSumtoOneBtn"
             '

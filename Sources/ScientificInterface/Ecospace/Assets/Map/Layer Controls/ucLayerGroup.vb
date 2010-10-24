@@ -6,6 +6,7 @@ Imports EwECore
 Imports System.Globalization
 Imports System.Threading
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -30,9 +31,9 @@ Namespace Ecospace
         Private m_bHovering As Boolean = False
 
         ' Images cache for faster rendering
-        Protected Shared g_imgEye0 As Image = My.Resources.Eye_open
-        Protected Shared g_imgEye1 As Image = My.Resources.Eye_intermediate
-        Protected Shared g_imgEye2 As Image = My.Resources.Eye_closed
+        Protected Shared g_imgEye0 As Image = SharedResources.Eye_open
+        Protected Shared g_imgEye1 As Image = SharedResources.Eye_intermediate
+        Protected Shared g_imgEye2 As Image = SharedResources.Eye_closed
 
 #Region " Constructor "
 
@@ -223,9 +224,9 @@ Namespace Ecospace
 
             ' Draw collapse indicator
             If Me.m_bCollapsed Then
-                img = My.Resources.Collapsed
+                img = SharedResources.Collapsed
             Else
-                img = My.Resources.Expanded
+                img = SharedResources.Expanded
             End If
             e.Graphics.DrawImage(img, rcCollapse)
 

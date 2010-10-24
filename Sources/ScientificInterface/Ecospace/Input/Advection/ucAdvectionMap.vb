@@ -5,6 +5,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.ComponentModel
 
 #End Region ' Imports
@@ -135,9 +136,9 @@ Namespace Ecospace.Advection
 
             If Me.Enabled Then
                 If Me.DataLayer.Editor.IsEditable Then
-                    img = My.Resources.Editable
+                    img = SharedResources.Editable
                 Else
-                    img = My.Resources.NotEditable
+                    img = SharedResources.NotEditable
                 End If
             End If
 

@@ -58,9 +58,9 @@ Namespace Controls
             End Using
 
             If Me.m_bCollapsed = False Then
-                img = My.Resources.plus
+                img = My.Resources.Expanded
             Else
-                img = My.Resources.minus
+                img = My.Resources.Collapsed
             End If
             e.Graphics.DrawImageUnscaledAndClipped(img, New Rectangle(xImg, yImg, img.Width, Math.Min(Me.Height - Me.Padding.Bottom - yImg, img.Height)))
 

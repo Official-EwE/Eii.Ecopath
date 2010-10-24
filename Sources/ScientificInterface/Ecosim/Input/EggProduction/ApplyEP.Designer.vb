@@ -1,6 +1,7 @@
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -113,7 +114,7 @@ Namespace Ecosim
             '
             Me.m_tsbSet.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tsbSet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbSet.Image = Global.ScientificInterface.My.Resources.Resources.NavForward
+            Me.m_tsbSet.Image = SharedResources.NavForward
             resources.ApplyResources(Me.m_tsbSet, "m_tsbSet")
             Me.m_tsbSet.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tsbSet.Name = "m_tsbSet"

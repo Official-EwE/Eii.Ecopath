@@ -1,3 +1,5 @@
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -140,7 +142,7 @@ Namespace Ecosim
             '
             'm_btnAdd
             '
-            Me.m_btnAdd.Image = Global.ScientificInterface.My.Resources.Resources.arrow_right
+            Me.m_btnAdd.Image = SharedResources.NavForward
             resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
             Me.m_btnAdd.Name = "m_btnAdd"
             Me.m_btnAdd.UseVisualStyleBackColor = True
@@ -177,7 +179,7 @@ Namespace Ecosim
             '
             'm_btnRemove
             '
-            Me.m_btnRemove.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
+            Me.m_btnRemove.Image = SharedResources.DeleteHS
             resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
             Me.m_btnRemove.Name = "m_btnRemove"
             Me.m_btnRemove.UseVisualStyleBackColor = True

@@ -1,4 +1,5 @@
 Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
@@ -254,7 +255,7 @@ Namespace Ecosim
             Me.m_tsmiOptions.Checked = True
             Me.m_tsmiOptions.CheckOnClick = True
             Me.m_tsmiOptions.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_tsmiOptions.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            Me.m_tsmiOptions.Image = SharedResources.OptionsHS
             resources.ApplyResources(Me.m_tsmiOptions, "m_tsmiOptions")
             Me.m_tsmiOptions.Name = "m_tsmiOptions"
             '
@@ -265,7 +266,7 @@ Namespace Ecosim
             '
             'm_tsmiChoosePlots
             '
-            Me.m_tsmiChoosePlots.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+            Me.m_tsmiChoosePlots.Image = SharedResources.Eye_open
             resources.ApplyResources(Me.m_tsmiChoosePlots, "m_tsmiChoosePlots")
             Me.m_tsmiChoosePlots.Name = "m_tsmiChoosePlots"
             '
@@ -283,38 +284,38 @@ Namespace Ecosim
             'm_tsddSave
             '
             Me.m_tsddSave.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSaveAsImage, Me.m_tsmiSaveAsCSV})
-            Me.m_tsddSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
+            Me.m_tsddSave.Image = SharedResources.saveHS
             resources.ApplyResources(Me.m_tsddSave, "m_tsddSave")
             Me.m_tsddSave.Name = "m_tsddSave"
             '
             'm_tsmiSaveAsImage
             '
-            Me.m_tsmiSaveAsImage.Image = Global.ScientificInterface.My.Resources.Resources.InsertPictureHS
+            Me.m_tsmiSaveAsImage.Image = SharedResources.InsertPictureHS
             Me.m_tsmiSaveAsImage.Name = "m_tsmiSaveAsImage"
             resources.ApplyResources(Me.m_tsmiSaveAsImage, "m_tsmiSaveAsImage")
             '
             'm_tsmiSaveAsCSV
             '
-            Me.m_tsmiSaveAsCSV.Image = Global.ScientificInterface.My.Resources.Resources.ExportXMLHS
+            Me.m_tsmiSaveAsCSV.Image = SharedResources.ExportXMLHS
             Me.m_tsmiSaveAsCSV.Name = "m_tsmiSaveAsCSV"
             resources.ApplyResources(Me.m_tsmiSaveAsCSV, "m_tsmiSaveAsCSV")
             '
             'm_tsddPrint
             '
             Me.m_tsddPrint.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiPrint, Me.m_tsmiPrintPreview})
-            Me.m_tsddPrint.Image = Global.ScientificInterface.My.Resources.Resources.PrintHS
+            Me.m_tsddPrint.Image = SharedResources.PrintHS
             resources.ApplyResources(Me.m_tsddPrint, "m_tsddPrint")
             Me.m_tsddPrint.Name = "m_tsddPrint"
             '
             'm_tsmiPrint
             '
-            Me.m_tsmiPrint.Image = Global.ScientificInterface.My.Resources.Resources.PrintHS
+            Me.m_tsmiPrint.Image = SharedResources.PrintHS
             Me.m_tsmiPrint.Name = "m_tsmiPrint"
             resources.ApplyResources(Me.m_tsmiPrint, "m_tsmiPrint")
             '
             'm_tsmiPrintPreview
             '
-            Me.m_tsmiPrintPreview.Image = Global.ScientificInterface.My.Resources.Resources.PrintPreviewHS
+            Me.m_tsmiPrintPreview.Image = SharedResources.PrintPreviewHS
             Me.m_tsmiPrintPreview.Name = "m_tsmiPrintPreview"
             resources.ApplyResources(Me.m_tsmiPrintPreview, "m_tsmiPrintPreview")
             '

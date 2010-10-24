@@ -9,6 +9,7 @@ Imports EwEUtils.Utilities
 Imports SAUPUtil.SAUPData
 Imports SAUPUtil.SAUPFile
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
 #End Region ' Imports
@@ -661,7 +662,7 @@ Public Class gridMapLayerToAttribute
             'm_btnBrowseInput
             '
             resources.ApplyResources(Me.m_btnBrowseInput, "m_btnBrowseInput")
-            Me.m_btnBrowseInput.Image = Global.ScientificInterface.My.Resources.Resources.openHS
+            Me.m_btnBrowseInput.Image = SharedResources.openHS
             Me.m_btnBrowseInput.Name = "m_btnBrowseInput"
             Me.m_btnBrowseInput.UseVisualStyleBackColor = True
             '

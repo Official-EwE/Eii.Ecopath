@@ -60,16 +60,23 @@ Namespace My.Resources
             End Set
         End Property
         
-        Public ReadOnly Property arrow_left() As System.Drawing.Bitmap
+        Public ReadOnly Property BreakpointHS() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("arrow_left", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("BreakpointHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
-        Public ReadOnly Property arrow_right() As System.Drawing.Bitmap
+        Public ReadOnly Property CalculatorHS() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("arrow_right", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("CalculatorHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property certificate() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("certificate", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -77,6 +84,48 @@ Namespace My.Resources
         Public ReadOnly Property CheckBoxHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("CheckBoxHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Collapsed() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Collapsed", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property CommentHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("CommentHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property compareversionsHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("compareversionsHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property DeleteHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("DeleteHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Ecopath_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Ecosim_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecosim_32x32", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -126,9 +175,58 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Ecospace_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecospace_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Ecotracer_32x32() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecotracer_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Editable() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Editable", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Expanded() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Expanded", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property ExportXMLHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ExportXMLHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Eye_closed() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Eye_closed", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Eye_intermediate() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Eye_intermediate", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Eye_open() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Eye_open", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -484,9 +582,23 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property HomeHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("HomeHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property ImportXMLHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ImportXMLHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property InsertPictureHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("InsertPictureHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -545,9 +657,44 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property minus() As System.Drawing.Bitmap
+        Public ReadOnly Property NavBack() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("minus", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("NavBack", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property NavForward() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("NavForward", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property NewDocumentHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("NewDocumentHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property NotEditable() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("NotEditable", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property OK() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("OK", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property openHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("openHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -559,9 +706,30 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property plus() As System.Drawing.Bitmap
+        Public ReadOnly Property plugin() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("plus", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("plugin", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property pluginpoint() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("pluginpoint", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property PrintHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PrintHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property PrintPreviewHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PrintPreviewHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -602,6 +770,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property ProtectFormHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ProtectFormHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to Change F.
         '''</summary>
@@ -617,6 +792,27 @@ Namespace My.Resources
         Public ReadOnly Property RUN_ECOSIM_F_VALUE_MSG() As String
             Get
                 Return ResourceManager.GetString("RUN_ECOSIM_F_VALUE_MSG", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property SaveAllHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("SaveAllHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property saveHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("saveHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property SaveModified() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("SaveModified", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -938,6 +1134,20 @@ Namespace My.Resources
         Public ReadOnly Property WarningHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("WarningHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Web() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Web", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property ZoomHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ZoomHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

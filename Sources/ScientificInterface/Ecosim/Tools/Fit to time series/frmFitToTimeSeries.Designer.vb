@@ -1,4 +1,5 @@
 Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
 
 Namespace Ecosim
@@ -370,7 +371,7 @@ Namespace Ecosim
             '
             'm_tsbSensOfSS2V
             '
-            Me.m_tsbSensOfSS2V.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+            Me.m_tsbSensOfSS2V.Image = SharedResources.ZoomHS
             Me.m_tsbSensOfSS2V.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSensOfSS2V.Name = "m_tsbSensOfSS2V"
             Me.m_tsbSensOfSS2V.Size = New System.Drawing.Size(126, 22)

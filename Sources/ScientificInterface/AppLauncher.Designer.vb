@@ -1,3 +1,5 @@
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Public Class AppLauncher
     Inherits System.Windows.Forms.Form
@@ -228,15 +230,13 @@
         '
         'm_tsmiEcospaceNew
         '
-        Me.m_tsmiEcospaceNew.Image = Global.ScientificInterface.My.Resources.Resources.NewDocumentHS
-        Me.m_tsmiEcospaceNew.Name = "m_tsmiEcospaceNew"
         resources.ApplyResources(Me.m_tsmiEcospaceNew, "m_tsmiEcospaceNew")
+        Me.m_tsmiEcospaceNew.Name = "m_tsmiEcospaceNew"
         '
         'm_tsmiEcospaceLoad
         '
-        Me.m_tsmiEcospaceLoad.Image = Global.ScientificInterface.My.Resources.Resources.openHS
-        Me.m_tsmiEcospaceLoad.Name = "m_tsmiEcospaceLoad"
         resources.ApplyResources(Me.m_tsmiEcospaceLoad, "m_tsmiEcospaceLoad")
+        Me.m_tsmiEcospaceLoad.Name = "m_tsmiEcospaceLoad"
         '
         'm_tsmiEcospaceSave
         '
@@ -245,15 +245,13 @@
         '
         'm_tsmiEcospaceSaveAs
         '
-        Me.m_tsmiEcospaceSaveAs.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
-        Me.m_tsmiEcospaceSaveAs.Name = "m_tsmiEcospaceSaveAs"
         resources.ApplyResources(Me.m_tsmiEcospaceSaveAs, "m_tsmiEcospaceSaveAs")
+        Me.m_tsmiEcospaceSaveAs.Name = "m_tsmiEcospaceSaveAs"
         '
         'm_tsmiEcospaceDelete
         '
-        Me.m_tsmiEcospaceDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
-        Me.m_tsmiEcospaceDelete.Name = "m_tsmiEcospaceDelete"
         resources.ApplyResources(Me.m_tsmiEcospaceDelete, "m_tsmiEcospaceDelete")
+        Me.m_tsmiEcospaceDelete.Name = "m_tsmiEcospaceDelete"
         '
         'm_tsmiEcospaceEditMap
         '
@@ -338,9 +336,8 @@
         '
         'm_tsmiOptions
         '
-        Me.m_tsmiOptions.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
-        Me.m_tsmiOptions.Name = "m_tsmiOptions"
         resources.ApplyResources(Me.m_tsmiOptions, "m_tsmiOptions")
+        Me.m_tsmiOptions.Name = "m_tsmiOptions"
         '
         'm_tsmiFileExit
         '
@@ -355,13 +352,11 @@
         '
         'm_tsmiFileNew
         '
-        Me.m_tsmiFileNew.Image = Global.ScientificInterface.My.Resources.Resources.NewDocumentHS
-        Me.m_tsmiFileNew.Name = "m_tsmiFileNew"
         resources.ApplyResources(Me.m_tsmiFileNew, "m_tsmiFileNew")
+        Me.m_tsmiFileNew.Name = "m_tsmiFileNew"
         '
         'm_tsmiFileOpen
         '
-        Me.m_tsmiFileOpen.Image = Global.ScientificInterface.My.Resources.Resources.openHS
         resources.ApplyResources(Me.m_tsmiFileOpen, "m_tsmiFileOpen")
         Me.m_tsmiFileOpen.Name = "m_tsmiFileOpen"
         '
@@ -372,9 +367,8 @@
         '
         'm_tsmiFileSave
         '
-        Me.m_tsmiFileSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
-        Me.m_tsmiFileSave.Name = "m_tsmiFileSave"
         resources.ApplyResources(Me.m_tsmiFileSave, "m_tsmiFileSave")
+        Me.m_tsmiFileSave.Name = "m_tsmiFileSave"
         '
         'm_tsmiFileSaveAs
         '
@@ -497,15 +491,13 @@
         '
         'm_tsmiEcosimNew
         '
-        Me.m_tsmiEcosimNew.Image = Global.ScientificInterface.My.Resources.Resources.NewDocumentHS
-        Me.m_tsmiEcosimNew.Name = "m_tsmiEcosimNew"
         resources.ApplyResources(Me.m_tsmiEcosimNew, "m_tsmiEcosimNew")
+        Me.m_tsmiEcosimNew.Name = "m_tsmiEcosimNew"
         '
         'm_tsmiEcosimLoad
         '
-        Me.m_tsmiEcosimLoad.Image = Global.ScientificInterface.My.Resources.Resources.openHS
-        Me.m_tsmiEcosimLoad.Name = "m_tsmiEcosimLoad"
         resources.ApplyResources(Me.m_tsmiEcosimLoad, "m_tsmiEcosimLoad")
+        Me.m_tsmiEcosimLoad.Name = "m_tsmiEcosimLoad"
         '
         'm_tsmiEcosimSave
         '
@@ -514,27 +506,23 @@
         '
         'm_tsmiEcosimSaveAs
         '
-        Me.m_tsmiEcosimSaveAs.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
-        Me.m_tsmiEcosimSaveAs.Name = "m_tsmiEcosimSaveAs"
         resources.ApplyResources(Me.m_tsmiEcosimSaveAs, "m_tsmiEcosimSaveAs")
+        Me.m_tsmiEcosimSaveAs.Name = "m_tsmiEcosimSaveAs"
         '
         'm_tsmiEcosimDelete
         '
-        Me.m_tsmiEcosimDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
-        Me.m_tsmiEcosimDelete.Name = "m_tsmiEcosimDelete"
         resources.ApplyResources(Me.m_tsmiEcosimDelete, "m_tsmiEcosimDelete")
+        Me.m_tsmiEcosimDelete.Name = "m_tsmiEcosimDelete"
         '
         'm_tsmiTimeSeriesImport
         '
-        Me.m_tsmiTimeSeriesImport.Image = Global.ScientificInterface.My.Resources.Resources.ImportXMLHS
-        Me.m_tsmiTimeSeriesImport.Name = "m_tsmiTimeSeriesImport"
         resources.ApplyResources(Me.m_tsmiTimeSeriesImport, "m_tsmiTimeSeriesImport")
+        Me.m_tsmiTimeSeriesImport.Name = "m_tsmiTimeSeriesImport"
         '
         'm_tsmiTimeSeriesExport
         '
-        Me.m_tsmiTimeSeriesExport.Image = Global.ScientificInterface.My.Resources.Resources.ExportXMLHS
-        Me.m_tsmiTimeSeriesExport.Name = "m_tsmiTimeSeriesExport"
         resources.ApplyResources(Me.m_tsmiTimeSeriesExport, "m_tsmiTimeSeriesExport")
+        Me.m_tsmiTimeSeriesExport.Name = "m_tsmiTimeSeriesExport"
         '
         'm_tsmiTimeSeriesLoad
         '
@@ -565,21 +553,18 @@
         'MenuEcotracer
         '
         Me.MenuEcotracer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcotracerNew, Me.m_tsmiEcotracerLoad, m_tssEcotracer1, Me.m_tsmiEcotracerSave, Me.m_tsmiEcotracerSaveAs, Me.m_tsmiEcotracerDelete})
-        Me.MenuEcotracer.Image = Global.ScientificInterface.My.Resources.Resources.Ecotracer_32x32
-        Me.MenuEcotracer.Name = "MenuEcotracer"
         resources.ApplyResources(Me.MenuEcotracer, "MenuEcotracer")
+        Me.MenuEcotracer.Name = "MenuEcotracer"
         '
         'm_tsmiEcotracerNew
         '
-        Me.m_tsmiEcotracerNew.Image = Global.ScientificInterface.My.Resources.Resources.NewDocumentHS
-        Me.m_tsmiEcotracerNew.Name = "m_tsmiEcotracerNew"
         resources.ApplyResources(Me.m_tsmiEcotracerNew, "m_tsmiEcotracerNew")
+        Me.m_tsmiEcotracerNew.Name = "m_tsmiEcotracerNew"
         '
         'm_tsmiEcotracerLoad
         '
-        Me.m_tsmiEcotracerLoad.Image = Global.ScientificInterface.My.Resources.Resources.openHS
-        Me.m_tsmiEcotracerLoad.Name = "m_tsmiEcotracerLoad"
         resources.ApplyResources(Me.m_tsmiEcotracerLoad, "m_tsmiEcotracerLoad")
+        Me.m_tsmiEcotracerLoad.Name = "m_tsmiEcotracerLoad"
         '
         'm_tsmiEcotracerSave
         '
@@ -588,15 +573,13 @@
         '
         'm_tsmiEcotracerSaveAs
         '
-        Me.m_tsmiEcotracerSaveAs.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
-        Me.m_tsmiEcotracerSaveAs.Name = "m_tsmiEcotracerSaveAs"
         resources.ApplyResources(Me.m_tsmiEcotracerSaveAs, "m_tsmiEcotracerSaveAs")
+        Me.m_tsmiEcotracerSaveAs.Name = "m_tsmiEcotracerSaveAs"
         '
         'm_tsmiEcotracerDelete
         '
-        Me.m_tsmiEcotracerDelete.Image = Global.ScientificInterface.My.Resources.Resources.DeleteHS
-        Me.m_tsmiEcotracerDelete.Name = "m_tsmiEcotracerDelete"
         resources.ApplyResources(Me.m_tsmiEcotracerDelete, "m_tsmiEcotracerDelete")
+        Me.m_tsmiEcotracerDelete.Name = "m_tsmiEcotracerDelete"
         '
         'm_tsModel
         '
@@ -613,7 +596,6 @@
         'm_tsbSave
         '
         Me.m_tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsbSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
         resources.ApplyResources(Me.m_tsbSave, "m_tsbSave")
         Me.m_tsbSave.Name = "m_tsbSave"
         '
@@ -624,7 +606,6 @@
         '
         'm_tsbEcopath
         '
-        Me.m_tsbEcopath.Image = Global.ScientificInterface.My.Resources.Resources.Ecopath_32x32
         resources.ApplyResources(Me.m_tsbEcopath, "m_tsbEcopath")
         Me.m_tsbEcopath.Name = "m_tsbEcopath"
         '
@@ -632,20 +613,17 @@
         '
         Me.m_tsbEcosim.BackColor = System.Drawing.SystemColors.Control
         Me.m_tsbEcosim.DropDownButtonWidth = 16
-        Me.m_tsbEcosim.Image = Global.ScientificInterface.My.Resources.Resources.Ecosim_32x32
         resources.ApplyResources(Me.m_tsbEcosim, "m_tsbEcosim")
         Me.m_tsbEcosim.Name = "m_tsbEcosim"
         '
         'm_tsbEcospace
         '
         Me.m_tsbEcospace.DropDownButtonWidth = 16
-        Me.m_tsbEcospace.Image = Global.ScientificInterface.My.Resources.Resources.Ecospace_32x32
         resources.ApplyResources(Me.m_tsbEcospace, "m_tsbEcospace")
         Me.m_tsbEcospace.Name = "m_tsbEcospace"
         '
         'm_tsbEcotracer
         '
-        Me.m_tsbEcotracer.Image = Global.ScientificInterface.My.Resources.Resources.Ecotracer_32x32
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
         '

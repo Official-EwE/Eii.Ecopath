@@ -549,7 +549,7 @@ Public Class gridExportMappings
             'm_btnBrowseTarget
             '
             resources.ApplyResources(Me.m_btnBrowseTarget, "m_btnBrowseTarget")
-            Me.m_btnBrowseTarget.Image = Global.ScientificInterface.My.Resources.Resources.openHS
+            Me.m_btnBrowseTarget.Image = SharedResources.openHS
             Me.m_btnBrowseTarget.Name = "m_btnBrowseTarget"
             Me.m_btnBrowseTarget.UseVisualStyleBackColor = True
             '

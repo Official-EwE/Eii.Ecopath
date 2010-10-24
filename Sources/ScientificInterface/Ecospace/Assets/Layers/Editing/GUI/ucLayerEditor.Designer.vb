@@ -1,4 +1,6 @@
-﻿Namespace Ecospace.Basemap.Layers
+﻿Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+Namespace Ecospace.Basemap.Layers
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucLayerEditor
@@ -34,7 +36,7 @@
             Me.m_lbImage.BackColor = System.Drawing.SystemColors.ControlDark
             resources.ApplyResources(Me.m_lbImage, "m_lbImage")
             Me.m_lbImage.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lbImage.Image = Global.ScientificInterface.My.Resources.Resources.Editable
+            Me.m_lbImage.Image = SharedResources.Editable
             Me.m_lbImage.Name = "m_lbImage"
             '
             'm_lbCaption

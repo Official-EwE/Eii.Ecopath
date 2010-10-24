@@ -1,6 +1,6 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
-Imports ScientificInterfaceShared
-Imports ScientificInterfaceShared.Forms
+﻿Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports WeifenLuo.WinFormsUI.Docking
 
 Namespace Ecopath.Output
 
@@ -99,7 +99,7 @@ Namespace Ecopath.Output
             'm_tsddTotalMortality
             '
             Me.m_tsddTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiGroupPB, Me.m_tsmiLorenzen, Me.m_tsmiMeanLat, Me.m_tscbxMeanLat})
-            Me.m_tsddTotalMortality.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            Me.m_tsddTotalMortality.Image = SharedResources.OptionsHS
             resources.ApplyResources(Me.m_tsddTotalMortality, "m_tsddTotalMortality")
             Me.m_tsddTotalMortality.Name = "m_tsddTotalMortality"
             '
@@ -130,7 +130,7 @@ Namespace Ecopath.Output
             '
             'm_tsbnShowHideGroups
             '
-            Me.m_tsbnShowHideGroups.Image = Global.ScientificInterface.My.Resources.Resources.Eye_open
+            Me.m_tsbnShowHideGroups.Image = SharedResources.Eye_open
             resources.ApplyResources(Me.m_tsbnShowHideGroups, "m_tsbnShowHideGroups")
             Me.m_tsbnShowHideGroups.Name = "m_tsbnShowHideGroups"
             '

@@ -330,19 +330,19 @@ Namespace Ecopath.Controls.FlowDiagram
             '
             'm_tsmiLoad
             '
-            Me.m_tsmiLoad.Image = Global.ScientificInterface.My.Resources.Resources.openHS
+            Me.m_tsmiLoad.Image = SharedResources.openHS
             resources.ApplyResources(Me.m_tsmiLoad, "m_tsmiLoad")
             Me.m_tsmiLoad.Name = "m_tsmiLoad"
             '
             'm_tsmiSave
             '
-            Me.m_tsmiSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
+            Me.m_tsmiSave.Image = SharedResources.saveHS
             resources.ApplyResources(Me.m_tsmiSave, "m_tsmiSave")
             Me.m_tsmiSave.Name = "m_tsmiSave"
             '
             'm_tsmiSaveToImage
             '
-            Me.m_tsmiSaveToImage.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
+            Me.m_tsmiSaveToImage.Image = SharedResources.saveHS
             resources.ApplyResources(Me.m_tsmiSaveToImage, "m_tsmiSaveToImage")
             Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
             '
@@ -354,7 +354,7 @@ Namespace Ecopath.Controls.FlowDiagram
             'm_tsmiSettings
             '
             Me.m_tsmiSettings.CheckOnClick = True
-            Me.m_tsmiSettings.Image = Global.ScientificInterface.My.Resources.Resources.OptionsHS
+            Me.m_tsmiSettings.Image = SharedResources.OptionsHS
             resources.ApplyResources(Me.m_tsmiSettings, "m_tsmiSettings")
             Me.m_tsmiSettings.Name = "m_tsmiSettings"
             '

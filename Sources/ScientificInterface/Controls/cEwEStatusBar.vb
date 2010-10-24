@@ -3,6 +3,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports System.Reflection
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
@@ -404,7 +405,7 @@ Public Class cEwEStatusBar
         Me.m_tsEcopathModel.AutoToolTip = True
         Me.m_tsEcopathModel.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.m_tsEcopathModel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcopathModel.Image = Global.ScientificInterface.My.Resources.Resources.Ecopath_32x32
+        Me.m_tsEcopathModel.Image = SharedResources.Ecopath_32x32
         Me.m_tsEcopathModel.Name = "m_tsEcopathModel"
         Me.m_tsEcopathModel.Visible = False
         '
@@ -413,7 +414,7 @@ Public Class cEwEStatusBar
         Me.m_tsEcosimScenario.AutoToolTip = True
         Me.m_tsEcosimScenario.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.m_tsEcosimScenario.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcosimScenario.Image = Global.ScientificInterface.My.Resources.Resources.Ecosim_32x32
+        Me.m_tsEcosimScenario.Image = sharedResources.Ecosim_32x32
         Me.m_tsEcosimScenario.Name = "m_tsEcosimScenario"
         Me.m_tsEcosimScenario.Visible = False
         '
@@ -422,7 +423,7 @@ Public Class cEwEStatusBar
         Me.m_tsEcospaceScenario.AutoToolTip = True
         Me.m_tsEcospaceScenario.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.m_tsEcospaceScenario.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcospaceScenario.Image = Global.ScientificInterface.My.Resources.Resources.Ecospace_32x32
+        Me.m_tsEcospaceScenario.Image = sharedResources.Ecospace_32x32
         Me.m_tsEcospaceScenario.Name = "m_tsEcospaceScenario"
         Me.m_tsEcospaceScenario.Visible = False
         '
@@ -431,14 +432,14 @@ Public Class cEwEStatusBar
         Me.m_tsEcotracerScenario.AutoToolTip = True
         Me.m_tsEcotracerScenario.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
         Me.m_tsEcotracerScenario.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcotracerScenario.Image = Global.ScientificInterface.My.Resources.Resources.Ecotracer_32x32
+        Me.m_tsEcotracerScenario.Image = sharedResources.Ecotracer_32x32
         Me.m_tsEcotracerScenario.Name = "m_tsEcotracerScenario"
         Me.m_tsEcotracerScenario.Visible = False
         '
         'm_tsiModified
         '
         Me.m_tsiModified.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsiModified.Image = Global.ScientificInterface.My.Resources.Resources.Modified
+        Me.m_tsiModified.Image = SharedResources.SaveModified
         Me.m_tsiModified.Name = "m_tsiModified"
         Me.m_tsiModified.Visible = False
         '

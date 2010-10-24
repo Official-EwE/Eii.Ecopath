@@ -1,4 +1,5 @@
 ﻿Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
@@ -49,7 +50,7 @@ Namespace Ecosim
             'm_tsSumtoOneBtn
             '
             Me.m_tsSumtoOneBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsSumtoOneBtn.Image = Global.ScientificInterface.My.Resources.Resources.CalculatorHS
+            Me.m_tsSumtoOneBtn.Image = sharedResources.CalculatorHS
             resources.ApplyResources(Me.m_tsSumtoOneBtn, "m_tsSumtoOneBtn")
             Me.m_tsSumtoOneBtn.Name = "m_tsSumtoOneBtn"
             '

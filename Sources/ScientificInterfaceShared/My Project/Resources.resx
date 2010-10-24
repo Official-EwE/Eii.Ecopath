@@ -139,15 +139,6 @@
     <value>Adding time series {0} ...</value>
     <comment>{0}: time series name</comment>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="minus" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        Qk2+AAAAAAAAAHYAAAAoAAAACQAAAAkAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
-        gP8AgAD/AICA/4AAAP+AAID/gIAA/8DAwP+AgID/AAD//wD/AP8A/////wAA//8A/////wD//////3iI
-        iIhwJ/oEh3d3d4An+gSHd3d3gCf6BI///3eAJ/oEjwAAB4An+gSP////gCf6BI////+AJ/oEj////4An
-        +gR4iIiIcCf6BA==
-</value>
-  </data>
   <data name="GENERIC_CHAR_COMMA" xml:space="preserve">
     <value>, (comma)</value>
     <comment>'Comma' character description</comment>
@@ -163,17 +154,6 @@
   </data>
   <data name="RUN_ECOSIM_F_VALUE_MSG" xml:space="preserve">
     <value>Enter F~value (or enter a string of comma separated F's for all fleets)</value>
-  </data>
-  <data name="arrow_right" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAASBJREFUOE9j/P//
-        PwNFAGQAJZgizWDXU2I7yQb4z3Tf7TnRkQ3ZUpJcANT83anD+jaGASXHM/6DcOHh1P+5+xL/Z+yI/Z+0
-        MeJ/zMrg/2ELff8Dbf4P1Pw/aXHU/5i5of9NK/QvwgwBuwCked2tpf9X31j0f/m1ef8XX5n1f/6laf9n
-        nZ/8f+qZvv8TTnX+7z7e+r/9aOP/pkO1/wMmev3XzFQ9CQ8DkM0rry/4v/TqnP8LL8/4P/fClP8zzk34
-        P/l09/++k+3/O481/W85XPe/4WDV/5p9Zf+9elz/qyQrHoEbgM/ZQD//t24w/e/aYf8/bmHkf89uF5Dm
-        8yheICYq9Qu0LIDO/g7UfJPsWABq3qEQJ0t+NGJzKUnpYHAaAABvYKkCkr/+vQAAAABJRU5ErkJggg==
-</value>
   </data>
   <data name="UNIT_CURRENCY_JOULES" xml:space="preserve">
     <value>J/m²</value>
@@ -293,18 +273,6 @@
   <data name="HEADER_NAME" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="arrow_left" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAASdJREFUOE9j/P//
-        PwNFAGQAJZgizWDXU2I7hgElxzPYgHg3KYaiuACo+Xbh4dTvZBkA1Hyx+2zD//aTNf8zdsT+T9oY8T9m
-        ZfD/sIW+//1nuv/3nOj436nD+r91g+l/0wr9//oFWkB7oGEA1Hyy60z9/9U3Fv1ffm3e/8VXZv2ff2na
-        /1nnJ/+feqbv/4RTnf+7j7f+bz/a+L/pUO3/ugMV/zUzVREGAJ19pO1E9f+lV+f8X3h5xv+5F6b8n3Fu
-        wv/Jp7v/951s/995rOl/y+G6/w0Hq/7X7Cv7X7G36L9KsiLCAJBTgM4+X72v8H8zUFHKqmiczgbZDNKs
-        ECeLagDIEKCfbwL9/B3oZwtiAxIlFoCa2YCadxCrmfoJiRSbYWqpm5TJcQEA6sKr+4jqD4YAAAAASUVO
-        RK5CYII=
-</value>
-  </data>
   <data name="GENERIC_LABEL_CURRENCY" xml:space="preserve">
     <value>{0} {1}</value>
     <comment>{0}: three-letter currency abbreviation, {1}: name of currency unit</comment>
@@ -316,16 +284,6 @@
   <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
     <value>'{0}' failed to save to file '{1}': {2}.</value>
     <comment>{0}: item that saved. {1}: file dest. {2}: error reason</comment>
-  </data>
-  <data name="plus" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        Qk0yAQAAAAAAADYAAAAoAAAACQAAAAkAAAABABgAAAAAAAAAAADEDgAAxA4AAAAAAAAAAAAA08KwtZh4
-        tZh4tZh4tZh4tZh4tZh4tZh408KwTrWYeL/M0q6+xqi4wqe4wae4waa3wKq6w7WYeE61mHjZ4eTP2NzJ
-        09gAAADG0dbAzNK7yM+1mHhOtZh47vLy7PDw5+3tAAAA4+nq2eDjzNbbtZh4TrWYePH19QAAAAAAAAAA
-        AAAAAAAAANLb37WYeE61mHj19/f19/f09/cAAAD09vbr8PHa4eW1mHhOtZh4+/z8+/39+/39AAAA+/z8
-        +vz88/b3tZh4TrWYePf39/f39////////////////////7WYeE7TwrC1mHi1mHi1mHi1mHi1mHi1mHi1
-        mHjTwrBO
-</value>
   </data>
   <data name="GENERIC_CHAR_COLON" xml:space="preserve">
     <value>: (colon)</value>
@@ -475,5 +433,107 @@
   </data>
   <data name="HEADER_SPECIES" xml:space="preserve">
     <value>Species</value>
+  </data>
+  <data name="BreakpointHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BreakpointHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CalculatorHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CalculatorHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="certificate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\certificate.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Collapsed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Collapsed.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CommentHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CommentHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="compareversionsHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\compareversionsHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeleteHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DeleteHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ecopath_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ecopath_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ecosim_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ecosim_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ecospace_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ecospace_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ecotracer_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ecotracer_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Editable" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Editable.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Expanded" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Expanded.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eye_closed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Eye_closed.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eye_intermediate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Eye_intermediate.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eye_open" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Eye_open.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HomeHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HomeHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InsertPictureHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InsertPictureHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveModified" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Modified.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NavBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NavBack.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NavForward" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NavForward.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NewDocumentHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewDocumentHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NotEditable" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NotEditable.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OK" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OK.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="openHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\openHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="plugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plugin.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pluginpoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pluginpoint.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PrintHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrintHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PrintPreviewHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrintPreviewHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProtectFormHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProtectFormHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveAllHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SaveAllHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="saveHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\saveHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Web" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Web.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ZoomHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ZoomHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

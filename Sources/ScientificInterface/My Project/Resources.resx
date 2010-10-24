@@ -198,19 +198,6 @@
   <data name="ECOSPACE_BASEMAP_LAYERS_RANDOMBEST" xml:space="preserve">
     <value>Best count</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="arrow_left" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAASdJREFUOE9j/P//
-        PwNFAGQAJZgizWDXU2I7hgElxzPYgHg3KYaiuACo+Xbh4dTvZBkA1Hyx+2zD//aTNf8zdsT+T9oY8T9m
-        ZfD/sIW+//1nuv/3nOj436nD+r91g+l/0wr9//oFWkB7oGEA1Hyy60z9/9U3Fv1ffm3e/8VXZv2ff2na
-        /1nnJ/+feqbv/4RTnf+7j7f+bz/a+L/pUO3/ugMV/zUzVREGAJ19pO1E9f+lV+f8X3h5xv+5F6b8n3Fu
-        wv/Jp7v/951s/995rOl/y+G6/w0Hq/7X7Cv7X7G36L9KsiLCAJBTgM4+X72v8H8zUFHKqmiczgbZDNKs
-        ECeLagDIEKCfbwL9/B3oZwtiAxIlFoCa2YCadxCrmfoJiRSbYWqpm5TJcQEA6sKr+4jqD4YAAAAASUVO
-        RK5CYII=
-</value>
-  </data>
   <data name="ECOSIM_GROUPINFO_DENDEPCATCHABILITY" xml:space="preserve">
     <value>Density-dep. catchability: Qmax/Qo [&gt;=1]</value>
   </data>
@@ -247,9 +234,6 @@
   <data name="SELECTION_SINGLEVAR" xml:space="preserve">
     <value>{0} ({1})</value>
     <comment>{0}: selected object, {1}: selected variable name</comment>
-  </data>
-  <data name="PrintHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\PrintHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PROMPT_ERROR_IMPORTFAILED" xml:space="preserve">
     <value>Failed to convert Ewe5 database to EwE6.</value>
@@ -300,9 +284,6 @@
   </data>
   <data name="STATUS_SEARCH_STOPPING" xml:space="preserve">
     <value>Stopping search, please wait...</value>
-  </data>
-  <data name="Ecotracer_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Ecotracer_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ECOSIM_RUN_MODEFLEET" xml:space="preserve">
     <value>Fishing rate (Y/B)</value>
@@ -378,12 +359,6 @@
   <data name="HEADER_ENABLE" xml:space="preserve">
     <value>Enable</value>
   </data>
-  <data name="CommentHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CommentHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ImportXMLHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImportXMLHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ECOSIM_APPLYFF_FFTYPE_FORCING" xml:space="preserve">
     <value>F</value>
     <comment>Forcing Function FF type flag used in ECOSIM_APPLYFF_CELLFORMAT</comment>
@@ -431,9 +406,6 @@
   </data>
   <data name="HEADER_NUMBER" xml:space="preserve">
     <value>Number</value>
-  </data>
-  <data name="Expanded" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Expanded.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FILEFILTER_SAVE_MDB" xml:space="preserve">
     <value>EwE database (Access 2003 format)|*.ewemdb</value>
@@ -498,23 +470,8 @@
   <data name="DATASOURCE_DUPLICATE_ERROR_NODATABASE" xml:space="preserve">
     <value>Only models stored in databases can be duplicated.</value>
   </data>
-  <data name="Ecosim_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ecosim_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="glyph_deep_beige" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_deep_beige.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="arrow_down" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAUlJREFUOE9j/P//
-        PwNFAGQANlxyPON/8bH0/wWHUv/n7ksCKsGuDqtmkOKio2n/V99Y9H/l9QX/M3bEkm5A/oHk/8uvzfu/
-        9Mqc/8mbIkk3IGt3/P/FV2b9X3h5xv/YVcGkG5C6Jfr//EvT/s+5MOV/+CI/0g2IXxv2f9b5yf9nnJvw
-        P2CWB+kGRC4L+D/1TN//yae7/3tNciLdgOB5Xv8nnur633ey/b9zlw3pBvhMdf3fc7z1f+expv+2TWak
-        GeA9xdkidJbf//ajjf9bD9f9N6syJN4AoH93uPbYfs9Zm/q/6VDt/4aDVf8DJnn/18lV/66RobIbPUVi
-        pESgf9nsmi1uhs8M/F93oPJ/zf6y/969bv/V05RvKycpsBE0AKbAuFT3vG+/x3+vHtf/aqlKF0nOCyAN
-        mpmqR1RTFE/i0gzOyfgkiZEDAOrmqIGT3/o+AAAAAElFTkSuQmCC
-</value>
   </data>
   <data name="glyph_rubble_sand" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_sand.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -524,20 +481,6 @@
   </data>
   <data name="PSD_PLOTCAPTION_SIZEWT" xml:space="preserve">
     <value>Size/Weight</value>
-  </data>
-  <data name="HomeHS" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEwAA
-        CxMBAJqcGAAAAa9JREFUOE+lk0soRFEYxxF5ZiErKWY10hBZcFGUm2ejhpEkj8SKkh2WdmyGiEZ5ZDQj
-        jAnJPMgVRiPKbJRHGSGRvJKi9OecnNvMdGcip746dc7v933nu98NBBDwr0UEUtHcUMl9B9RKnkQDudOV
-        qQAJ9/t+4XOTAicGGZNwBK5JSvQvYJkfl2PQXl+O1toyuAyxVNKWLkepLM63wBs2W9ZgmFtCo4rH8VgE
-        leTExUoLvOH1dYFcpMtiE1BZmI3DoVD2nFzWB9oDfzCTmK0CinMzsN8f4iFhArA3u2dm8PvHJ55fP7Bi
-        FsBzaTjQBFAJHYGfCvLyM1MgCFti2d7wzf0bzq5eMKU3QS6LJ4JGUUA2FXVtHvD8tAYzE33QaXswNtBN
-        YefpA4yru0hI5sRGinOgrG7xEBD4aTka96Yo+jkJbHfeQr9klxaUqJtEAXkzyXw3H4lLfTia1YUUtjmu
-        MbngQ1CkItMKsIaRsl26MPR1VkHFZ1F4cfMCo7M70hXw5XUU3tjag3XDgZHeDhxpg+EcDEIBl4pxox3a
-        b3jYsC0tKFDW0oPfhscguf9df91/AbzrkXJkvnrCAAAAAElFTkSuQmCC
-</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_NEW" xml:space="preserve">
     <value>This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from http://ecopath.org/</value>
@@ -813,9 +756,6 @@
     <value>L at infinity (cm)</value>
     <comment>{0}: ??? unit</comment>
   </data>
-  <data name="OptionsHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OptionsHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HEADER_EFFORT_LOWER" xml:space="preserve">
     <value>Effort lower</value>
   </data>
@@ -839,9 +779,6 @@
   <data name="GENERIC_LABEL_STEP_SIZE" xml:space="preserve">
     <value>Step size</value>
   </data>
-  <data name="PrintPreviewHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\PrintPreviewHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ECOSIM_GROUPINFO_SALSPREADRIGHT" xml:space="preserve">
     <value>Salinity tolerance above optimum(&gt;0)</value>
   </data>
@@ -850,9 +787,6 @@
   </data>
   <data name="HEADER_NONE" xml:space="preserve">
     <value>None</value>
-  </data>
-  <data name="OK" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OK.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_HEADER_PROP_A_PER_B" xml:space="preserve">
     <value>{0} ({1}/{2})</value>
@@ -871,38 +805,14 @@
   <data name="OPTIONS_FONTDLG_LEGEND" xml:space="preserve">
     <value>Legend|Font to render legends in graphs and figures</value>
   </data>
-  <data name="ZoomInHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ZoomInHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HEADER_SUM_BnonDET" xml:space="preserve">
     <value>Total biomass (excluding detritus)</value>
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_MPASEED_DESCRIPTION" xml:space="preserve">
     <value>Seed cells to start searching for MPAs</value>
   </data>
-  <data name="InsertPictureHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\InsertPictureHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="STATUS_ECOTRACER_RUNNING" xml:space="preserve">
     <value>Running Ecotracer...</value>
-  </data>
-  <data name="help" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAArRJREFUOE+lk+1P
-        kmEUh+tf0T+htZqrVav1rbbGhz70wan5CjS1XC2D5Swd5jRLSs1Mp4KaOqeiwJOACKKJ8iYIPJjIm/Iy
-        EB541Gz7BSxBW2tt3dt1b/d2zrWdc59zFsCZ/zopwUlU5GGu0n7AUVj3SdkGTX0xxymJiSJnDVHOtG4v
-        9/f4U8lyK82YsyR8Dv8hNndp2L1UGsdOAhZPAqNLQd/wop9xUpIREOtxhtgYi28F9qH/FoZw3g3euBUN
-        oxvoJjahsQRh81H4JHPHu4ntjCQtEOmjOVNrEe+mn8aiNYS6ZFIX4YA7RMMVSmB8yYNaoRHSNR/Mrija
-        pkhvy4QtJ92/1DW2HOSuu+NYdUTAHTLjca8eiYOjJD9+cYS6IQNqB3RYMAegXA+gXmjkZgT98z7Slqy1
-        h9hCTa8O1T2rcAcTmF7xQG7aAZ2UyU1eMDtUaJu2wOgM40mPlswIOiVO2u6NgSswoOqjFqwuTTJYjRmt
-        C2HqALthGn1zNpS1K1H1QQ2Law8svprOCFonbLTNE8PTQQOYnWpUvFeh/J0KMfo7tgMU2HwliltluJ+E
-        zVfA7I6goFmeFbwQmkjTdgR8kQ2sDg3K+QsofTuPktfyNEWvCBQ1SVDYJEaDcAVaRwB368XZEpL1cCVa
-        D9SWAKo6NZnEUHQfgT0a+bzZNEU8EYg1FwTJcm7VTmabyOYv5lS8WfAuWwOQrrrBbFegsFmK9gldmlRy
-        QeMkRhR2KAwe3KwZ915/OJb9xlQz8nlzjHuNRFxl3oHc6MVLwTJKW8QobprB8z41pFonZHo3rlZ+jl9+
-        MHx6kI5H8w5XxLj9bMrXT2zgq90PgzOUZsm6i26RCXksoe9iheDPo3wsufFoLPda9SjnSuUIeYk9ROUx
-        hdSF8kHyfNkA51xJ/9+X6fdN+5f3T6xF2MGyA9nXAAAAAElFTkSuQmCC
-</value>
   </data>
   <data name="HEADER_LESSTHAN" xml:space="preserve">
     <value>&lt; {0}</value>
@@ -911,22 +821,6 @@
   <data name="PROMPT_FORCING_DELETE" xml:space="preserve">
     <value>You are about to delete forcing function '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
     <comment>{0} = forcing function name</comment>
-  </data>
-  <data name="FillDownHS" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEwAA
-        CxMBAJqcGAAAAf5JREFUOE+tk+1LU2EUwK9/SN97+RB+KJBKok8lYm8wCsJCXWhFpcGKYvShGcVMRtLM
-        0awWa+VgWjp7ETdpKBaFCoFSMcq1clo6W267266/7n1yo7ERBh34ce5zznl+nHvhlgBSi3sOaSXSGUmS
-        00iJFFJcVvkjR5d+j6UzSCPX1pSIgyYwd83ieAG2QQXrswwWbxpzTwqTW8boSnLWEafRvoT+RkxQqn+j
-        XkPczQk0ickZ4fztCCfbv1LT+gXd5TAVxhDbDSHKmqZzbKwZzRe4+l9rhVXH5oq6/yy491islAvDrRma
-        bn7mxPUgevMk1abxvP6mXbX5G3R6AnkDp63T3A+kaVc/6NUehcrGwb8LbA99JFPLyCrJlEJ96zs6fQrn
-        nAqHLAnK6x6t9BV1RqFgA6vzOfOxNAuxjMiHmydo9ixT3ZZBd+UbW2v7RC/bLxC0OZ4QmpPR3v1MR5hj
-        lvcYH8DBlh/svhhk3T4XZUc87Kj3EpqVCzfQBJOf4oy8jVJlGOa4LcEpe5L9pjA7DRNsOTrA2io7vYGQ
-        mCu6waupGBq9wxE2HPCw91KYygtTlDf4Wb/nDl0DH9X+T0FRgX98kaGxKP6xRdy+GSHZ1jBEqc7B3b6g
-        qGcpKugfnUfwUssLOJ6GhaSj+4M4Z/Gqz0UF3YHvrJaiAq34L2T/xl886wQPSCnMAQAAAABJRU5ErkJg
-        gg==
-</value>
   </data>
   <data name="HEADER_QB_UNIT" xml:space="preserve">
     <value>Consumption / biomass (/{0})</value>
@@ -937,9 +831,6 @@
   </data>
   <data name="PROMPT_STANZA_MISSING_LIFESTAGES" xml:space="preserve">
     <value>One or more stanza configurations do not have life stages assigned. Do you want to do this now?</value>
-  </data>
-  <data name="EwEPedigree" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EwEPedigree.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HEADER_SUM_NET_PP" xml:space="preserve">
     <value>Calculated total net primary production</value>
@@ -961,9 +852,6 @@
   </data>
   <data name="HEADER_NUMCALLS" xml:space="preserve">
     <value># calls</value>
-  </data>
-  <data name="Ecosim3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ecosim3.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HEADER_AREA_CLOSED" xml:space="preserve">
     <value>Area closed (%)</value>
@@ -1041,9 +929,6 @@
   <data name="ECOSIM_HEADER_BIOMASSGRAPH" xml:space="preserve">
     <value>Ecopath biomass values</value>
   </data>
-  <data name="DeleteHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DeleteHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="GENERIC_CAPTION" xml:space="preserve">
     <value>Ecopath with Ecosim 6 BETA Oct 2010</value>
   </data>
@@ -1077,18 +962,6 @@
   </data>
   <data name="HEADER_PBZ" xml:space="preserve">
     <value>Prod/biom or Z</value>
-  </data>
-  <data name="MoveUp" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEwAA
-        CxMBAJqcGAAAASBJREFUOE9j/P//PwNFAGQAJZgizWDX47PdoeisEyHX4TQgoeeJfXDL3f/SPqsD8RmC
-        1QCQ5tDWe/8X7f3/3674NtCQlV64DMEwAKjZNqL9/v+l+///71j3/3/6nN//9VPOgwyxwWYIigFxE15r
-        xHQ9+AXS3ArUnDHn53//rm//TYpe/DdIOvFfymu5K7ohcAPiJ79Viu9+ALY5c9b///6df//b1f38r1P4
-        7r9K1qf/smlf/+unXga6ZI0vsiFgA4DOlglvf/A/uOHaf//qC/+9Sk/ANYMMMI5c9l83eN5/Dd9p/1U8
-        JvyX8l7rBzMEayCCDABphGGQAUQHIkghyADXvAP/7dK2/beIXwd2AUkGEEo8GGFAigacsUCuIRRnJgBq
-        D69L+rk8twAAAABJRU5ErkJggg==
-</value>
   </data>
   <data name="glyph_blue3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_blue3.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1138,9 +1011,6 @@
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION" xml:space="preserve">
     <value>Model validation errors|Values indicating that the model rejected a recent input</value>
   </data>
-  <data name="Editable" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Editable.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HEADER_LAYER_INDEXED" xml:space="preserve">
     <value>Layer {0}</value>
     <comment>{0}: layer number or name</comment>
@@ -1148,9 +1018,6 @@
   <data name="GENERIC_TEXT_CREATE" xml:space="preserve">
     <value>&amp;Create</value>
     <comment>Generic 'Create' button text</comment>
-  </data>
-  <data name="NavForward" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NavForward.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_ITEMSTATUS_CREATEPENDING" xml:space="preserve">
     <value>To create</value>
@@ -1205,9 +1072,6 @@
   </data>
   <data name="IMPORT_ERROR_CAPTION" xml:space="preserve">
     <value>EwE5 database import</value>
-  </data>
-  <data name="saveHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\saveHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HEADER_PREDATION" xml:space="preserve">
     <value>Predation</value>
@@ -1337,9 +1201,6 @@
   <data name="HEADER_MCTRIALS" xml:space="preserve">
     <value>Monte carlo trials</value>
   </data>
-  <data name="SaveAllHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SaveAllHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="GENERIC_PROMPT_SAVEDATATOCSV_CAPTION" xml:space="preserve">
     <value>Save data to .csv</value>
   </data>
@@ -1359,9 +1220,6 @@
   </data>
   <data name="HEADER_COSTEND" xml:space="preserve">
     <value>Cost (end)</value>
-  </data>
-  <data name="ExportXMLHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ExportXMLHS.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HEADER_MANDATED_ABBR" xml:space="preserve">
     <value>Mandat.</value>
@@ -1415,9 +1273,6 @@
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_RANDOMSEARCH" xml:space="preserve">
     <value>Random search</value>
-  </data>
-  <data name="Ecospace_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ecospace_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="glyph_blue6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_blue6.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1490,9 +1345,6 @@
   <data name="HEADER_CV" xml:space="preserve">
     <value>CV</value>
   </data>
-  <data name="ZoomHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ZoomHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_ECOSEED" xml:space="preserve">
     <value>Ecoseed</value>
   </data>
@@ -1540,9 +1392,6 @@
   <data name="PROMPT_FOLDER_SELECTION" xml:space="preserve">
     <value>Please select or create a folder</value>
   </data>
-  <data name="Ecopath_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ecopath_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HEADER_CATCH_UPPER" xml:space="preserve">
     <value>Catch upper</value>
   </data>
@@ -1564,32 +1413,14 @@
   <data name="ECOPATH_EDITGROUPSSTANZA_NEEDDETRITUS" xml:space="preserve">
     <value>There must be at least one detritus group. Please edit your data.</value>
   </data>
-  <data name="NotEditable" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NotEditable.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HEADER_NO" xml:space="preserve">
     <value>No</value>
   </data>
   <data name="SELECTION_MULTIPLE" xml:space="preserve">
     <value>(multiple items selected)</value>
   </data>
-  <data name="DisplayGroups" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DisplayGroups.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HEADER_SAILINGRELATEDCOST" xml:space="preserve">
     <value>Sailing related cost (%)</value>
-  </data>
-  <data name="arrow_up" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAUpJREFUOE9j/P//
-        PwNFAGQALlx8LP1kwaHUI/jU4NRcdDTtYsepuv+tJ6r/Z+yIPY/LEAwDSo5nsBUdSbvdfqrm//Jr8/4v
-        vTLnf+2B4v9xa0JvRi4LYEM3CMOAwsOpu/P2J31vPlb5f/GVWf8XXp7xv+1w7f+IJf7fg+d57SBoAExB
-        6pbo//MvTfs/58KU/6lrYv8HzfG0wOYNnGEQvzbs/6zzk//PODfhf8AsD6Be7IGN0wCgf/9PPdP3f/Lp
-        7v9ek5xINwDo3/8TT3X97zvZ/t+5y4Z0A3ymuv7vOd76v/NY03/bJjPSDXDrtf/ffrTxf+vhuv9mVYak
-        G2Dfavm/6VDt/4aDVf8NirRJN8Cy1vh/3YHK/zX7y/5rZ6uRboBxqe7/qr0l/yv2Fv1XS1Ui3QDdPI3/
-        mpmq/1VTFP8rJciRbgC+HIgsBwC7EKtb+wIWMAAAAABJRU5ErkJggg==
-</value>
   </data>
   <data name="HEADER_PARAMETER" xml:space="preserve">
     <value>Parameter</value>
@@ -1676,17 +1507,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_INDEX_ONMIVORY" xml:space="preserve">
     <value>System Omnivory Index</value>
   </data>
-  <data name="ProtectFormHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProtectFormHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="openHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\openHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HEADER_RECRUITMENT_UNIT" xml:space="preserve">
     <value>Recruitment ({0})</value>
-  </data>
-  <data name="NewDocumentHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NewDocumentHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ECOSIM_DEFAULT_NEWDATASET" xml:space="preserve">
     <value>New dataset</value>
@@ -1731,9 +1553,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR" xml:space="preserve">
     <value>Plots and Graphs background|Background colour to use for plots and graphs</value>
   </data>
-  <data name="Collapsed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Collapsed.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HEADER_RESPIRATION_UNIT" xml:space="preserve">
     <value>Respiration ({0}/{1})</value>
     <comment>{0}: ??? unit, {1}: ??? unit</comment>
@@ -1764,24 +1583,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="HEADER_1_MINUS_SUM" xml:space="preserve">
     <value>(1 - Sum)</value>
-  </data>
-  <data name="Modified" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEwAA
-        CxMBAJqcGAAAAn1JREFUOE+lkmtIk1EYx/OTBZHOLlbYh2CB9S1dH6KLFclKkUJrqUEILQdlFyONtEDp
-        slyXzQvYJrRWlrVcWFoWpUFKFxBKbcnmcjXblrtpuclsr/t3zin22sW+dOD/fji8/9/znOf5RwGY9l+H
-        AlofBEDVfG8UdwxfcLPBh6s6F+o0TtRUf4Ly4geclb9HeZkZpSXvUHSkF4cOdhMrKU4/1NjeBlRXBenl
-        lGcsGEJ6djtyspuYIgBD4wgDKCqG/2l2+caQkvkQyckySLbreUDDDS8DlJc5/gqglal5wD4CUUYzSo5Z
-        kZVZzwO0l4cY4Gix5Q/AZHNPvwuJYgMOF/Zh6xYtD7hUa2eAA/t7fwH8bn7ebUfC+gbIZF3IyNDwgKpK
-        GwPI8rsigMlmY5cHbosCDtNStDXmQLnDiLS0GjL+n1s4p7DiyWOQVQJ5u19BsquTTZsOjL65QvoM/tF1
-        BJ6M4eFVuJ73CGKxkgecOtmPlmaQDAD11ziydz/kZzxsqPJCG5xvzmPcvgSi5SngBhdgoPM0ctfW8oDj
-        pX3Q3wKuaEMkOAGk7yyMqG6vDhOQ4pstAYKZm8BZY+D1roE6X8cDioveEjNQqQqwyhRA4o3UlRJ4jGpM
-        hAvA2eZhftxmcJZojAc34ONLFTAXsSyJNJYaNSJtU4BotRhNJ+5jxJ9LfskircdjUXwqA4TdMxA0TYdD
-        YrrAAAX7XpN3j7I3CzfqsThJjNstHfCYVQj6VwBjCxFyzoLPHIPwkAAgCvVHw21SkUX8AGzbI+1g8aQJ
-        oyGhex58kQi44oghFhOfBUhaRjpwzmYAjgB6WoUcA0ylpzrh17vKKEyhsEE5x/4d46HOHtEmvbIAAAAA
-        SUVORK5CYII=
-</value>
   </data>
   <data name="HEADER_PP_ABBR" xml:space="preserve">
     <value>PP</value>
@@ -1830,12 +1631,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="GENERIC_ITEMSTATUS_DELETEPENDING" xml:space="preserve">
     <value>To delete</value>
     <comment>Used in complex item management dialogs. States that an item will be deleted once the dialog is applied</comment>
-  </data>
-  <data name="NavBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NavBack.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PublishPlanHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\PublishPlanHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LABEL_GROUP" xml:space="preserve">
     <value>&amp;Group:</value>
@@ -1924,29 +1719,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="STATUS_MODEL_ACCESS_OS" xml:space="preserve">
     <value>Your system does not have to proper drivers installed to read the file format of model '{0}'. Install the '2007 Office System Driver: Data Connectivity Components' from the Microsoft website to use Access 2007 (ACCDB) databases.</value>
   </data>
-  <data name="arrow_right" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAASBJREFUOE9j/P//
-        PwNFAGQAJZgizWDXU2I7yQb4z3Tf7TnRkQ3ZUpJcANT83anD+jaGASXHM/6DcOHh1P+5+xL/Z+yI/Z+0
-        MeJ/zMrg/2ELff8Dbf4P1Pw/aXHU/5i5of9NK/QvwgwBuwCked2tpf9X31j0f/m1ef8XX5n1f/6laf9n
-        nZ/8f+qZvv8TTnX+7z7e+r/9aOP/pkO1/wMmev3XzFQ9CQ8DkM0rry/4v/TqnP8LL8/4P/fClP8zzk34
-        P/l09/++k+3/O481/W85XPe/4WDV/5p9Zf+9elz/qyQrHoEbgM/ZQD//t24w/e/aYf8/bmHkf89uF5Dm
-        8yheICYq9Qu0LIDO/g7UfJPsWABq3qEQJ0t+NGJzKUnpYHAaAABvYKkCkr/+vQAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="MoveDown" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEwAA
-        CxMBAJqcGAAAARpJREFUOE9j/P//PwNFAGQAJZgizWDXU2I7TgO8Sk/8d8078N8ubdt/i/h1/40jlwHV
-        YvcqVheADNApfAfHBA1I6HkiE97+4H9ww7X//tUX/oMMsKv7iWKAbvC8/xq+0/6reEz4L+W91g/mIrgL
-        4ie/VYrvfvB/6f7//zNn/f/v3/kXbohK1qf/smlf/+unXv4v7bPGF9k7KF6Im/BaI6brwS+QIa3r/v/P
-        mPPzv3/Xt/8mRS/+GySd+C/ltdwVPSwwwgDoHduI9vtgl3QADUmf8/u/fsp5oM0rbbAFJNZABBpiH9p6
-        7/+ivf//2xXfBmn2IikWQIpBhgS33AVqXh2IL63gTUgORWedCCU02qREQrbijEZSNMLUAgANpa9LnnNK
-        OAAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
     <value>'{0}' failed to save to file '{1}': {2}.</value>
     <comment>{0}: item that saved. {1}: file dest. {2}: error message</comment>
@@ -2005,9 +1777,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_QUOTA_NOTUSED" xml:space="preserve">
     <value>No quota</value>
   </data>
-  <data name="Eye_intermediate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Eye_intermediate.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ECOSIM_PROMPT_APPLY_SHAPES_PREY" xml:space="preserve">
     <value>For all pairs with group {0}: {1} as a prey</value>
     <comment>{0}:prey name, {1}:predator name</comment>
@@ -2033,9 +1802,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="SET_ROW_VUL_MSG" xml:space="preserve">
     <value>Enter new vulnerability setting for {0} as prey</value>
     <comment>{0}: group name</comment>
-  </data>
-  <data name="Eye_closed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Eye_closed.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LABEL_STOP" xml:space="preserve">
     <value>&amp;Stop</value>
@@ -2076,9 +1842,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="HEADER_DESCRIPTION" xml:space="preserve">
     <value>Description</value>
-  </data>
-  <data name="Eye_open" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Eye_open.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_GROUP_ECOSEED" xml:space="preserve">
     <value>Ecoseed</value>
@@ -2131,9 +1894,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_AGE_FIRST_CAPTURE_UNIT" xml:space="preserve">
     <value>Age first capture (year)</value>
     <comment>{0}: ??? unit</comment>
-  </data>
-  <data name="plugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plugin.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HEADER_SHOWALL" xml:space="preserve">
     <value>Show all</value>
@@ -2290,23 +2050,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="MPAOPT_AXISLABEL_OBJECTIVEVALUE" xml:space="preserve">
     <value>Objective value</value>
   </data>
-  <data name="delete" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAnBJREFUOE+lk+1L
-        U1Ecx+tf0RdRgkRPhIRRUJjbdHrX2tzm012m1xmLWJqyO0wzKFmo4YtQS+1Rq73JtGFSahmpPQ4tr5XO
-        dmuj1ua9e0z5tjtomyYSdOB74Rzu53M4v/M7GwFs+K8hCBJjr6hInqfKjR+pUmZWS3Iz2iLuA6lhpkiV
-        0VasSF79/wp4QVdBfKYo9keLGcGRIYTeTSA0Pgr+fg/s+hK8ySfYlxopkSiJCQR4roziF+/2YHn2PcLW
-        ewh3NyHcfgG/brdhacwKZ40eEyox/0KREZNEBfM6XVIEdnA3u7HM2BC+fA6eJhO85moEL5kQaqYRbDyF
-        4INbWDhOYuzIAcdT+b6kaP2ETwSmXXVGLNkmozsGWmi4zxvgr9etCHeaRNByDa+z0zEsS6djgk/UMcZn
-        uY5wbzs8jZX4XiBbM4uVJHhzLZymKjwm0piYgCnT+kMPLQi3mOA5q4+srz2cSgncVD687a0Yyt7ljwlm
-        yAJ/oLcTwQY9/GdK1xW4StTwtrViULotLpguVjPuxloEmmhwJzUQdlozqmx46mpgrzHAKkqNH8FWqKAZ
-        uQj+3i54tHK4S3L/ErAKMdi8XPi6r2BUugMDmVviRXxbIEt6VUQ4FsqL4LvTGS2gSy2NSlhlFlh5BJZL
-        wXd1YKpQJsCOPtHm+DUKxZjMkxDjykP83FE1fDc68bOBhpNU4atGCXe9EfzVDkxrctCfmcJH4JWN9Kc1
-        nysOEs8O72cncvfgW7UB7uaL0XypOoEnku0CzCbCsVtI7O0R2d7kYWmacYjYzTzK2ckNirZyA1mpTL84
-        xdiXsWn9x7T6pf3L/DfyWaHnHqmNrQAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_MPAS" xml:space="preserve">
     <value>MPAs</value>
     <comment>Layer group 'MPAs'</comment>
@@ -2376,9 +2119,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="HEADER_HABITAT" xml:space="preserve">
     <value>Habitat</value>
-  </data>
-  <data name="Ecospace3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ecospace3.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_SUM_DESCRIPTION" xml:space="preserve">
     <value>Cells that contain a summary of row(s) and/or column(s) in a grid</value>
@@ -2479,9 +2219,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Computed {0} of {1} years</value>
     <comment>{0}: computed #years, {1}: total #years</comment>
   </data>
-  <data name="Ecotracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Ecotracer.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="STATUS_ECOPATH_LOADING" xml:space="preserve">
     <value>Loading model...</value>
   </data>
@@ -2541,9 +2278,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="HEADER_QUOTA_WEAKESTSTOCK" xml:space="preserve">
     <value>Weakest stock quota + discards quota</value>
-  </data>
-  <data name="ZoomOutHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ZoomOutHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ECOSPACE_HEADER_FLEETHABUSE" xml:space="preserve">
     <value>Fleet \ habitat use:</value>
@@ -2768,13 +2502,16 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_ECOSPACE_YEARS" xml:space="preserve">
     <value>Ecospace years</value>
   </data>
-  <data name="CalculatorHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CalculatorHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="certificate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\certificate.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pluginpoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pluginpoint.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Ecosim3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ecosim3.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ecospace3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ecospace3.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ecotracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ecotracer.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

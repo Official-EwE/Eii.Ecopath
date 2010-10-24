@@ -1,4 +1,6 @@
-﻿Namespace Ecospace
+﻿Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+Namespace Ecospace
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucMapZoomToolbar
@@ -60,7 +62,7 @@
             'm_tsbSaveImage
             '
             Me.m_tsbSaveImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbSaveImage.Image = Global.ScientificInterface.My.Resources.Resources.InsertPictureHS
+            Me.m_tsbSaveImage.Image = SharedResources.InsertPictureHS
             Me.m_tsbSaveImage.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSaveImage.Name = "m_tsbSaveImage"
             Me.m_tsbSaveImage.Size = New System.Drawing.Size(23, 22)
@@ -101,7 +103,7 @@
             'm_tsbZoomIn
             '
             Me.m_tsbZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbZoomIn.Image = Global.ScientificInterface.My.Resources.Resources.ZoomInHS
+            Me.m_tsbZoomIn.Image = SharedResources.ZoomInHS
             Me.m_tsbZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbZoomIn.Name = "m_tsbZoomIn"
             Me.m_tsbZoomIn.Size = New System.Drawing.Size(23, 22)
@@ -110,7 +112,7 @@
             'm_tsbZoomOut
             '
             Me.m_tsbZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbZoomOut.Image = Global.ScientificInterface.My.Resources.Resources.ZoomOutHS
+            Me.m_tsbZoomOut.Image = SharedResources.ZoomOutHS
             Me.m_tsbZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbZoomOut.Name = "m_tsbZoomOut"
             Me.m_tsbZoomOut.Size = New System.Drawing.Size(23, 22)
@@ -124,7 +126,7 @@
             '
             'm_tsbZoomReset
             '
-            Me.m_tsbZoomReset.Image = Global.ScientificInterface.My.Resources.Resources.ZoomHS
+            Me.m_tsbZoomReset.Image = SharedResources.ZoomHS
             Me.m_tsbZoomReset.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbZoomReset.Name = "m_tsbZoomReset"
             Me.m_tsbZoomReset.Size = New System.Drawing.Size(55, 22)

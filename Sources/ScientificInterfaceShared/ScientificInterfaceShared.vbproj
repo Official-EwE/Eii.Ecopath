@@ -472,9 +472,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CheckBoxHS.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\WarningHS.png" />
   </ItemGroup>
   <ItemGroup>
@@ -487,7 +484,6 @@
     <None Include="Controls\Shapes\_shape handling UI.cd" />
     <None Include="Properties\Formula expressions\_expressions overview_.cd" />
     <None Include="Properties\_properties overview_.cd" />
-    <None Include="Resources\OptionsHS.png" />
     <None Include="ScientificInterfaceShared.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +492,44 @@
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
+    <None Include="Resources\MoveDown.png" />
+    <None Include="Resources\MoveUp.png" />
+    <None Include="Resources\Modified.png" />
+    <None Include="Resources\HomeHS.png" />
+    <None Include="Resources\ZoomHS.png" />
+    <None Include="Resources\Web.png" />
+    <None Include="Resources\saveHS.png" />
+    <None Include="Resources\SaveAllHS.png" />
+    <None Include="Resources\ProtectFormHS.png" />
+    <None Include="Resources\PrintPreviewHS.png" />
+    <None Include="Resources\PrintHS.png" />
+    <None Include="Resources\pluginpoint.png" />
+    <None Include="Resources\plugin.png" />
+    <None Include="Resources\OptionsHS.png" />
+    <None Include="Resources\openHS.png" />
+    <None Include="Resources\OK.bmp" />
+    <None Include="Resources\NotEditable.png" />
+    <None Include="Resources\NewDocumentHS.png" />
+    <None Include="Resources\NavForward.png" />
+    <None Include="Resources\NavBack.png" />
+    <None Include="Resources\InsertPictureHS.png" />
+    <None Include="Resources\Eye_open.PNG" />
+    <None Include="Resources\Eye_intermediate.png" />
+    <None Include="Resources\Eye_closed.PNG" />
+    <None Include="Resources\Expanded.png" />
+    <None Include="Resources\Editable.png" />
+    <None Include="Resources\Ecotracer_32x32.png" />
+    <None Include="Resources\Ecospace_32x32.png" />
+    <None Include="Resources\Ecosim_32x32.png" />
+    <None Include="Resources\Ecopath_32x32.png" />
+    <None Include="Resources\DeleteHS.png" />
+    <None Include="Resources\compareversionsHS.png" />
+    <None Include="Resources\CommentHS.png" />
+    <None Include="Resources\Collapsed.png" />
+    <None Include="Resources\CheckBoxHS.png" />
+    <None Include="Resources\certificate.png" />
+    <None Include="Resources\CalculatorHS.png" />
+    <None Include="Resources\BreakpointHS.png" />
     <None Include="Resources\ImportXMLHS.png" />
     <None Include="Resources\ExportXMLHS.PNG" />
     <None Include="Resources\ZoomInHS.png" />

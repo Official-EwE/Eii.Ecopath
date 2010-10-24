@@ -1026,10 +1026,6 @@
     <EmbeddedResource Include="Other\Update\frmUpdateComponents.resx">
       <DependentUpon>frmUpdateComponents.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Panels\PedigreePanel\PedigreePanel.resx">
-      <DependentUpon>PedigreePanel.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\ecopath_logo.ico" />
     <Compile Include="Controls\cEwEStatusBar.vb">
       <SubType>Component</SubType>
@@ -1485,12 +1481,6 @@
     <Compile Include="Other\Update\frmUpdateComponents.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Panels\PedigreePanel\PedigreePanel.Designer.vb">
-      <DependentUpon>PedigreePanel.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Panels\PedigreePanel\PedigreePanel.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Panels\StatusPanel\cMessageStateHandler.vb" />
     <Compile Include="Tools\MSE\cMSEEventSource.vb" />
     <Compile Include="Tools\MSE\frmMSEAssessFleets.Designer.vb">
@@ -1569,11 +1559,7 @@
     <Compile Include="Tools\MSE\ucCVBlockSelector.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <None Include="Resources\BreakpointHS.png" />
-    <None Include="Resources\compareversionsHS.png" />
     <None Include="Resources\credits.rtf" />
-    <None Include="Resources\HomeHS.png" />
-    <None Include="Resources\OK.bmp" />
     <None Include="Resources\Raster.png" />
     <None Include="Resources\Regions.png" />
     <None Include="Resources\Habitat.png" />
@@ -1582,8 +1568,6 @@
     <None Include="Resources\EditFleets.png" />
     <None Include="Resources\EditGroup.png" />
     <None Include="Resources\ecopath 256x256.bmp" />
-    <None Include="Resources\Expanded.png" />
-    <None Include="Resources\Collapsed.png" />
     <None Include="Resources\glyph_seagrass_light.png" />
     <None Include="Resources\glyph_muddy_brown.png" />
     <None Include="Resources\glyph_muddy_bw.png" />
@@ -1601,10 +1585,7 @@
     <None Include="Resources\glyph_deep_bw.png" />
     <None Include="Resources\glyph_deep_green.png" />
     <None Include="Resources\glyph_rubble_lightblue.png" />
-    <None Include="Resources\Ecotracer_32x32.png" />
     <None Include="Resources\Ecotracer.ico" />
-    <None Include="Resources\Eye_open.PNG" />
-    <None Include="Resources\Eye_closed.PNG" />
     <None Include="Resources\glyph_rubble_green.png" />
     <None Include="Resources\glyph_deep_brown.png" />
     <None Include="Resources\glyph_deep_lightblue.png" />
@@ -1620,14 +1601,9 @@
     <None Include="Resources\glyph_dots_large.png" />
     <None Include="Resources\glyph_dots_small.png" />
     <None Include="Resources\glyph_squares_large.png" />
-    <None Include="Resources\CommentHS.png" />
-    <None Include="Resources\Editable.png" />
-    <None Include="Resources\DisplayGroups.PNG" />
     <None Include="Resources\ewe_home.url.txt" />
-    <None Include="Resources\CalculatorHS.png" />
     <None Include="Resources\certificate.png" />
     <Content Include="Resources\EU_50px.jpg" />
-    <None Include="Resources\Eye_intermediate.png" />
     <None Include="Resources\EwEPedigree.png" />
     <None Include="Resources\ewe_wiki.url.txt" />
     <Content Include="Resources\fimr_logo_50px.jpg" />
@@ -1642,33 +1618,21 @@
     <None Include="Resources\glyph_blue8.PNG" />
     <None Include="Resources\glyph_blue9.PNG" />
     <None Include="Resources\Importance.png" />
-    <None Include="Resources\InsertPictureHS.png" />
     <None Include="Resources\google.ico" />
     <Content Include="Resources\Lenfest Logo_50px.jpg" />
-    <None Include="Resources\NavForward.png" />
-    <None Include="Resources\NotEditable.png" />
-    <None Include="Resources\ProtectFormHS.png" />
     <None Include="Resources\mgel_logo2.gif" />
-    <None Include="Resources\PrintPreviewHS.png" />
-    <None Include="Resources\PrintHS.png" />
-    <None Include="Resources\NavBack.png" />
-    <None Include="Resources\pluginpoint.png" />
-    <Content Include="Resources\plugin.png" />
+    <None Include="Resources\Modified.png" />
+    <None Include="Resources\MoveDown.png" />
+    <None Include="Resources\MoveUp.png" />
     <Content Include="Resources\sautxt_50px.jpg" />
     <None Include="Resources\Seed.PNG" />
     <Content Include="Resources\Sponsors.jpg" />
-    <None Include="Resources\ZoomInHS.png" />
-    <None Include="Resources\ZoomOutHS.png" />
-    <None Include="Resources\WarningHS.png" />
-    <None Include="Resources\ZoomHS.png" />
     <None Include="Resources\modules.rtf" />
     <None Include="Resources\Web.png" />
-    <None Include="Resources\CheckBoxHS.png" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
-    <None Include="Resources\DeleteHS.png" />
     <None Include="ScientificInterface.snk" />
     <None Include="UserGuide\EwE6_userguide.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1795,9 +1759,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ucFormSeparator.ico" />
-    <EmbeddedResource Include="Resources\Ecospace_32x32.png" />
-    <EmbeddedResource Include="Resources\Ecosim_32x32.png" />
-    <EmbeddedResource Include="Resources\Ecopath_32x32.png" />
     <EmbeddedResource Include="Resources\Ecopath.ico" />
     <EmbeddedResource Include="Resources\Ecosim3.ico" />
     <EmbeddedResource Include="Resources\Ecospace3.ico" />
@@ -1824,12 +1785,6 @@
     <EmbeddedResource Include="Resources\EwELogo.gif" />
     <EmbeddedResource Include="Resources\EwELogo_caption.jpg" />
     <EmbeddedResource Include="Resources\PublishPlanHS.png" />
-    <EmbeddedResource Include="Resources\OptionsHS.png" />
-    <EmbeddedResource Include="Resources\ImportXMLHS.png" />
-    <EmbeddedResource Include="Resources\saveHS.png" />
-    <EmbeddedResource Include="Resources\SaveAllHS.png" />
-    <EmbeddedResource Include="Resources\openHS.png" />
-    <EmbeddedResource Include="Resources\NewDocumentHS.png" />
     <EmbeddedResource Include="Tools\MSE\frmMSEAssessFleets.resx">
       <DependentUpon>frmMSEAssessFleets.vb</DependentUpon>
       <SubType>Designer</SubType>

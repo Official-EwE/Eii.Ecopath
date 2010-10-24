@@ -1,3 +1,5 @@
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 Namespace Wizard
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -170,19 +172,19 @@ Namespace Wizard
             '
             'tsmCreate
             '
-            Me.tsmCreate.Image = Global.ScientificInterface.My.Resources.Resources.NewDocumentHS
+            Me.tsmCreate.Image = SharedResources.NewDocumentHS
             Me.tsmCreate.Name = "tsmCreate"
             resources.ApplyResources(Me.tsmCreate, "tsmCreate")
             '
             'tsmLoad
             '
-            Me.tsmLoad.Image = Global.ScientificInterface.My.Resources.Resources.openHS
+            Me.tsmLoad.Image = SharedResources.openHS
             Me.tsmLoad.Name = "tsmLoad"
             resources.ApplyResources(Me.tsmLoad, "tsmLoad")
             '
             'tsmSave
             '
-            Me.tsmSave.Image = Global.ScientificInterface.My.Resources.Resources.saveHS
+            Me.tsmSave.Image = SharedResources.saveHS
             Me.tsmSave.Name = "tsmSave"
             resources.ApplyResources(Me.tsmSave, "tsmSave")
             '
@@ -198,7 +200,7 @@ Namespace Wizard
             '
             'tsmDelete
             '
-            Me.tsmDelete.Image = Global.ScientificInterface.My.Resources.Resources.delete
+            Me.tsmDelete.Image = SharedResources.DeleteHS
             Me.tsmDelete.Name = "tsmDelete"
             resources.ApplyResources(Me.tsmDelete, "tsmDelete")
             '

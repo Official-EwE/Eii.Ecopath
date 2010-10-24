@@ -1,6 +1,7 @@
 ﻿#Region " Imports "
 
 Option Strict On
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -101,19 +102,19 @@ Namespace Ecospace.Basemap.Layers
             Implements ILayerEditorGUI.UpdateContent
 
             Dim strLabel As String = ""
-            Dim img As Image = My.Resources.ProtectFormHS
+            Dim img As Image = SharedResources.ProtectFormHS
 
             If (Me.IsAttached = True) Then
                 ' Get label text (could use diplay text?)
                 strLabel = Me.Editor.Layer.Name
                 ' Get layer image
                 If Me.Editor.IsReadOnly Then
-                    img = My.Resources.ProtectFormHS
+                    img = SharedResources.ProtectFormHS
                 Else
                     If Me.Editor.IsEditable Then
-                        img = My.Resources.Editable
+                        img = SharedResources.Editable
                     Else
-                        img = My.Resources.NotEditable
+                        img = SharedResources.NotEditable
                     End If
                 End If
             End If
