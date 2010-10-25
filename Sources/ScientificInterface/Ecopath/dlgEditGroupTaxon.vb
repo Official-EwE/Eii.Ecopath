@@ -3,10 +3,11 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwECore.ExternalData
 Imports EwEUtils.Core
 Imports EwEPlugin
 Imports EwEPlugin.Data
-Imports EwECore.ExternalData
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -423,7 +424,7 @@ Public Class dlgEditGroupTaxon
 
         ' Config taxon controls
         If (taxon Is Nothing) Then
-            Me.m_lblSelectedGroup.Text = My.Resources.GENERIC_VALUE_NONE
+            Me.m_lblSelectedGroup.Text = SharedResources.GENERIC_VALUE_NONE
             Me.m_tbCommon.Enabled = False : Me.m_tbCommon.Text = ""
             Me.m_btnSearchCommon.Enabled = False
             Me.m_cmbClass.Enabled = False : Me.m_cmbClass.SelectedIndex = -1

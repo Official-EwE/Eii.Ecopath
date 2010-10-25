@@ -293,10 +293,6 @@
   <data name="SHAPE_MULTIPLIER_1" xml:space="preserve">
     <value>Search rate (a)</value>
   </data>
-  <data name="GENERIC_VALUE_NONE" xml:space="preserve">
-    <value>(none)</value>
-    <comment>Generic values representing 'no value'</comment>
-  </data>
   <data name="Ecopath" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ecopath.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -476,10 +472,6 @@
   <data name="PROMPT_INVALIDMODEL_REMOVEMRU" xml:space="preserve">
     <value>'{0}' does not seem to be a valid Ecopath model. Do you wish to remove this from the recent file list?</value>
   </data>
-  <data name="GENERIC_VALUE_NAMEANDSEQUENCE" xml:space="preserve">
-    <value>{0} {1}</value>
-    <comment>{0}: name, {1}: sequence number. Used to name new items in a sequential order</comment>
-  </data>
   <data name="HEADER_SUM_VALUE_MARKET" xml:space="preserve">
     <value>Total market value</value>
   </data>
@@ -569,9 +561,6 @@
   </data>
   <data name="ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME" xml:space="preserve">
     <value>Fraction of other mortality sens. to changes in feeding time</value>
-  </data>
-  <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
-    <value>(N/A)</value>
   </data>
   <data name="INVALID_VUL_NUM_ENTERED" xml:space="preserve">
     <value>Value should be &gt;=1. A low (~1) value makes the interactions donor-controlled, while a large (&gt;&gt;1) value leads to top-down control and Lotka-Volterra cyclic dynamics. Intermediate values (~2) leads to mixed control. </value>
@@ -1320,9 +1309,6 @@
   <data name="ECOSPACE_BASEMAP_LAYERS_ECOSEED" xml:space="preserve">
     <value>Ecoseed</value>
   </data>
-  <data name="GENERIC_VALUE_ALLGROUPS" xml:space="preserve">
-    <value>(All groups)</value>
-  </data>
   <data name="PSD_XAXISLABEL_BODYWEIGHT" xml:space="preserve">
     <value>Body weight (log g)</value>
   </data>
@@ -1563,9 +1549,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="PROMPT_STATUS_FURTHERDETAILS" xml:space="preserve">
     <value>(for further details refer to the status panel)</value>
   </data>
-  <data name="GENERIC_VALUE_CUSTOM" xml:space="preserve">
-    <value>(Custom)</value>
-  </data>
   <data name="MPAOPT_LEGEND_WEIGHTEDTOTAL" xml:space="preserve">
     <value>Weighted total</value>
   </data>
@@ -1616,9 +1599,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOSIM_GROUPINFO_MAXRELFEEDINGTIME" xml:space="preserve">
     <value>Max rel. feeding time</value>
-  </data>
-  <data name="GENERIC_VALUE_ALL" xml:space="preserve">
-    <value>(All)</value>
   </data>
   <data name="HEADER_A_IN_LW" xml:space="preserve">
     <value>a in LW</value>
@@ -2211,10 +2191,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="SELECT_DEFAULT_LAYOUT_DIRECTORY_MSG" xml:space="preserve">
     <value>Select the directory that you want to save your layout files as the default</value>
   </data>
-  <data name="GENERIC_VALUE_DATASET_INFORMATION" xml:space="preserve">
-    <value>{0} ({1} time series)</value>
-    <comment>{0}: dataset name. {1}: time series count</comment>
-  </data>
   <data name="ECOSPACE_BASEMAP_SHRINK_PROMPT" xml:space="preserve">
     <value>You are about to reduce the size of the map, values outside the new map area will be lost. This operation cannot be undone. Are you sure you want to proceed?</value>
   </data>
@@ -2433,9 +2409,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="GENERIC_ECOSPACE_NO_DATA_AVAILABLE" xml:space="preserve">
     <value>Ecospace data not available</value>
-  </data>
-  <data name="GENERIC_VALUE_NO_DATA_AVAILABLE" xml:space="preserve">
-    <value>No data available</value>
   </data>
   <data name="HEADER_CONCENTRATION" xml:space="preserve">
     <value>Concentration</value>

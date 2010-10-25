@@ -643,7 +643,7 @@ Namespace Ecosim
             Me.m_lbRuns.SuspendLayout()
 
             Me.m_lbRuns.Items.Clear()
-            Me.m_lbRuns.Items.Add(My.Resources.GENERIC_VALUE_ALL)
+            Me.m_lbRuns.Items.Add(SharedResources.GENERIC_VALUE_ALL)
             For iRun As Integer = 1 To Me.m_zgp.NumRuns
                 Me.m_lbRuns.Items.Add(Me.m_zgp.RunLabel(iRun - 1))
             Next

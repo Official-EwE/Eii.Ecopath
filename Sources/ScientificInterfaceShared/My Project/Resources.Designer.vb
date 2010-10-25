@@ -277,15 +277,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Bitmap image|*.bmp|JPEG image|*.jpg;*.jpeg|GIF image|*.gif|PNG image|*.png|TIFF image|*.tif;*.tiff.
-        '''</summary>
-        Public ReadOnly Property FILEFILTER_IMAGE1() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_IMAGE1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp.
         '''</summary>
         Public ReadOnly Property FILEFILTER_LOAD_RASTER() As String
@@ -421,15 +412,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Apply.
-        '''</summary>
-        Public ReadOnly Property GENERIC_LABEL_APPLY1() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_APPLY1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to {0} {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_CURRENCY() As String
@@ -480,15 +462,6 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_LABEL_INDEXEDLABEL() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_INDEXEDLABEL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0}: {1}.
-        '''</summary>
-        Public ReadOnly Property GENERIC_LABEL_INDEXEDLABEL1() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_INDEXEDLABEL1", resourceCulture)
             End Get
         End Property
         
@@ -552,6 +525,60 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VALUE_ALL() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_ALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (All groups).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_ALLGROUPS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_ALLGROUPS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (Custom).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_CUSTOM() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_CUSTOM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} ({1} time series).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_DATASET_INFORMATION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_DATASET_INFORMATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} {1}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_NAMEANDSEQUENCE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_NAMEANDSEQUENCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No data available.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_NO_DATA_AVAILABLE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_NO_DATA_AVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (none).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_NONE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_NONE", resourceCulture)
             End Get
         End Property
         

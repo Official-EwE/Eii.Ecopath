@@ -2,17 +2,22 @@
 
 Option Strict On
 
-Imports EwEUtils.Core
 Imports EwECore
-Imports SAUPUtil.Misc.Colours
 Imports EwECore.Auxiliary
-Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 Imports EwEUtils.Commands
+Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SAUPUtil.Misc.Colours
 
 #End Region ' Imports
 
 Namespace Ecopath.Tools
 
+    ''' <summary>
+    ''' Form implementing the pedigree assignment interface.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Class frmPedigree
 
 #Region " Helper classes "
@@ -38,7 +43,7 @@ Namespace Ecopath.Tools
 
             Public Overrides Function ToString() As String
                 If (Me.m_level Is Nothing) Then
-                    Return My.Resources.GENERIC_VALUE_NONE
+                    Return SharedResources.GENERIC_VALUE_NONE
                 End If
                 Return Me.m_level.Name
             End Function

@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwECore
 Imports ScientificInterface.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -11,7 +12,7 @@ Namespace Ecotracer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Form implementing the main input interface for contaminant tracing.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class frmEcotracerInput
@@ -85,7 +86,7 @@ Namespace Ecotracer
             Dim ffm As cForcingFunctionManager = Me.UIContext.Core.ForcingShapeManager()
             Dim aItems(ffm.Count) As Object
 
-            aItems(0) = My.Resources.GENERIC_VALUE_NONE
+            aItems(0) = SHaredResources.GENERIC_VALUE_NONE
             For iFF As Integer = 0 To ffm.Count - 1
                 aItems(iFF + 1) = ffm(iFF)
             Next

@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -26,7 +27,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_cmbFleet.Items.Clear()
 
             ' ToDo: this control will not respond to dynamic fleet name changes
-            Me.m_cmbFleet.Items.Add(My.Resources.GENERIC_VALUE_ALL)
+            Me.m_cmbFleet.Items.Add(SharedResources.GENERIC_VALUE_ALL)
             For iGroup As Integer = 1 To core.nFleets
                 fleet = core.FleetInputs(iGroup)
                 Me.m_cmbFleet.Items.Add(fleet.Name)

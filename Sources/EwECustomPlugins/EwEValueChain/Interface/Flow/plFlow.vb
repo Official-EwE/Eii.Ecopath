@@ -276,9 +276,6 @@ Public Class plFlow
     ''' -----------------------------------------------------------------------
     Public Sub RebuildFlow()
 
-        ' ToDo: use either unit filter or fleet/group filter
-
-        Dim bInclude As Boolean = False
         Dim lUnits As New List(Of cUnit)
 
         ' Has unit filter?
@@ -293,22 +290,9 @@ Public Class plFlow
 
         Me.ClearFlow()
 
-        ' Generate unit elements for all allowed units
+        ' Generate unit elements for all units
         For Each unit As cUnit In lUnits
-            ' Must filter by diagram?
-            If (Me.m_diagram IsNot Nothing) Then
-                ' #Yes: only include when a flow position is available for this unit/diagram
-                bInclude = (Me.m_data.FlowPosition(unit, Me.m_diagram) IsNot Nothing)
-            Else
-                ' #No: always include
-                bInclude = True
-            End If
-
-            ' Include in diagram?
-            If bInclude Then
-                ' #Yes: whoohoo
-                Me.AddUnit(unit)
-            End If
+            Me.AddUnit(unit)
         Next
 
         ' Generate link elements for unit in the flow

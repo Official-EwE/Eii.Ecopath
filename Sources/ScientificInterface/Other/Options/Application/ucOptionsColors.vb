@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -249,7 +250,7 @@ Namespace Other
             cb.Items.Clear()
 
             ' Add intial 'custom' item
-            cb.Items.Add(New cKnownColorItem(My.Resources.GENERIC_VALUE_CUSTOM, Color.Black))
+            cb.Items.Add(New cKnownColorItem(SharedResources.GENERIC_VALUE_CUSTOM, Color.Black))
 
             ' Add all known colours
             For i As Integer = 0 To lColors.Count - 1

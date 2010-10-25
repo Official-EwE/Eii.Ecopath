@@ -511,8 +511,8 @@ Public Class gridMapLayerToAttribute
                 Next
             Next
 
-            Me.m_cmbRow.Items.Add(My.Resources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
-            Me.m_cmbCol.Items.Add(My.Resources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
+            Me.m_cmbRow.Items.Add(SharedResources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
+            Me.m_cmbCol.Items.Add(SharedResources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
             Me.m_grid.Attributes = New String() {cImportExportData.cMAPPING_IMPLICIT}
 
             Return eSpatialFileCompatibility.Compatible

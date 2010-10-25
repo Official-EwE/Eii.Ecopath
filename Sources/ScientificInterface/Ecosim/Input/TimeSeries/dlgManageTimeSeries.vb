@@ -380,7 +380,7 @@ Public Class dlgManageTimeSeries
 
         cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
 
-        Me.m_lvLoadDatasets.Items.Add(My.Resources.GENERIC_VALUE_NONE)
+        Me.m_lvLoadDatasets.Items.Add(SharedResources.GENERIC_VALUE_NONE)
         For iDS As Integer = 1 To Me.m_uic.Core.nTimeSeriesDatasets
             ' Get dataset
             ds = Me.m_uic.Core.TimeSeriesDataset(iDS)

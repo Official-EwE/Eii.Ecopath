@@ -692,7 +692,7 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property Title() As String _
             Implements IDisplayModeHelper.Title
             Get
-                Return My.Resources.GENERIC_VALUE_NO_DATA_AVAILABLE
+                Return SharedResources.GENERIC_VALUE_NO_DATA_AVAILABLE
             End Get
         End Property
 

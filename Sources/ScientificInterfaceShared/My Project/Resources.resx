@@ -400,10 +400,6 @@
   <data name="FILEFILTER_ASCFILE" xml:space="preserve">
     <value>ESRI Asc files|*.asc</value>
   </data>
-  <data name="FILEFILTER_IMAGE1" xml:space="preserve">
-    <value>Bitmap image|*.bmp|JPEG image|*.jpg;*.jpeg|GIF image|*.gif|PNG image|*.png|TIFF image|*.tif;*.tiff</value>
-    <comment>| separated list of image filters. Order: bitmap, jpeg, gif, png, tiff</comment>
-  </data>
   <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
     <value>Enhanced meta files|*.emf</value>
   </data>
@@ -557,9 +553,6 @@
   <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
     <value>Comma-separated text files|*.csv|ESRI Asc files|Spatial raster files|*.asc;*.csv</value>
   </data>
-  <data name="GENERIC_LABEL_APPLY1" xml:space="preserve">
-    <value>Apply</value>
-  </data>
   <data name="GENERIC_LABEL_DETAILEDLABEL" xml:space="preserve">
     <value>{0} ({1})</value>
     <comment>{0}: name, {1}: additional details that apply to {0}</comment>
@@ -567,10 +560,6 @@
   <data name="GENERIC_LABEL_HOME" xml:space="preserve">
     <value>Home</value>
     <comment>owner start page.</comment>
-  </data>
-  <data name="GENERIC_LABEL_INDEXEDLABEL1" xml:space="preserve">
-    <value>{0}: {1}</value>
-    <comment>{0}:index, {1}:name</comment>
   </data>
   <data name="GENERIC_LABEL_REMOVE" xml:space="preserve">
     <value>Remove</value>
@@ -585,5 +574,26 @@
   </data>
   <data name="GENERIC_LABEL_STEP_SIZE" xml:space="preserve">
     <value>Step size</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLGROUPS" xml:space="preserve">
+    <value>(All groups)</value>
+  </data>
+  <data name="GENERIC_VALUE_CUSTOM" xml:space="preserve">
+    <value>(Custom)</value>
+  </data>
+  <data name="GENERIC_VALUE_DATASET_INFORMATION" xml:space="preserve">
+    <value>{0} ({1} time series)</value>
+    <comment>{0}: dataset name. {1}: time series count</comment>
+  </data>
+  <data name="GENERIC_VALUE_NAMEANDSEQUENCE" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>{0}: name, {1}: sequence number. Used to name new items in a sequential order</comment>
+  </data>
+  <data name="GENERIC_VALUE_NONE" xml:space="preserve">
+    <value>(none)</value>
+    <comment>Generic values representing 'no value'</comment>
+  </data>
+  <data name="GENERIC_VALUE_NO_DATA_AVAILABLE" xml:space="preserve">
+    <value>No data available</value>
   </data>
 </root>

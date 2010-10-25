@@ -31,8 +31,6 @@ Partial Class ucEditFlow
         Me.m_tsddDiagram = New System.Windows.Forms.ToolStripDropDownButton
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsbAdd = New System.Windows.Forms.ToolStripDropDownButton
-        Me.m_tsbAddExisting = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsbCreateProducersByFleets = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsbCreateProducersByLandings = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
@@ -116,7 +114,7 @@ Partial Class ucEditFlow
         '
         'm_tsbAdd
         '
-        Me.m_tsbAdd.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbAddExisting, Me.ToolStripSeparator2, Me.m_tsbCreateProducersByFleets, Me.m_tsbCreateProducersByLandings, Me.ToolStripSeparator4, Me.m_tsbCreateProducer, Me.m_tsbCreateProcessing, Me.m_tsbCreateDistribution, Me.m_tsbCreateMarket, Me.m_tsbCreateConsumer})
+        Me.m_tsbAdd.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbCreateProducersByFleets, Me.m_tsbCreateProducersByLandings, Me.ToolStripSeparator4, Me.m_tsbCreateProducer, Me.m_tsbCreateProcessing, Me.m_tsbCreateDistribution, Me.m_tsbCreateMarket, Me.m_tsbCreateConsumer})
         Me.m_tsbAdd.Image = CType(resources.GetObject("m_tsbAdd.Image"), System.Drawing.Image)
         Me.m_tsbAdd.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbAdd.Name = "m_tsbAdd"
@@ -124,18 +122,6 @@ Partial Class ucEditFlow
         Me.m_tsbAdd.Text = "&Add"
         Me.m_tsbAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.m_tsbAdd.ToolTipText = "Add or create units"
-        '
-        'm_tsbAddExisting
-        '
-        Me.m_tsbAddExisting.Name = "m_tsbAddExisting"
-        Me.m_tsbAddExisting.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D0), System.Windows.Forms.Keys)
-        Me.m_tsbAddExisting.Size = New System.Drawing.Size(229, 22)
-        Me.m_tsbAddExisting.Text = "Add &existing units..."
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(226, 6)
         '
         'm_tsbCreateProducersByFleets
         '
@@ -380,8 +366,6 @@ Partial Class ucEditFlow
     Private WithEvents m_tsSeparator As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbArrange As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbShowGrid As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_tsbAddExisting As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsddDiagram As System.Windows.Forms.ToolStripDropDownButton
     Private WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator

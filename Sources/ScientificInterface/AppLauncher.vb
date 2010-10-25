@@ -1284,7 +1284,7 @@ Public Class AppLauncher
         If (bHasMRU = False) Then
             ' Always have 'None' item
             item = New ToolStripMenuItem()
-            item.Text = My.Resources.GENERIC_VALUE_NONE
+            item.Text = SharedResources.GENERIC_VALUE_NONE
             item.Enabled = False
             Me.m_tsmiFileRecent.DropDownItems.Add(item)
             Return

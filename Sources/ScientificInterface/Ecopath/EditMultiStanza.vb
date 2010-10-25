@@ -1,14 +1,16 @@
 #Region " Imports "
+
 Option Explicit On
 Option Strict On
 
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Windows.Forms
 Imports EwEUtils.Commands
 Imports ZedGraph
 
-#End Region
+#End Region ' Imports
 
 Namespace Ecopath
 
@@ -74,7 +76,7 @@ Namespace Ecopath
             ' Gather forcing functions
             lItems.Clear()
             If bEcosimLoaded Then
-                lItems.Add(My.Resources.GENERIC_VALUE_NONE)
+                lItems.Add(SharedResources.GENERIC_VALUE_NONE)
                 For iIndex As Integer = 0 To mgr.Count - 1
                     lItems.Add(mgr(iIndex))
                 Next

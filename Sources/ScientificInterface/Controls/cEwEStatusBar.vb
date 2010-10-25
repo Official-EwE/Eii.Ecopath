@@ -218,7 +218,7 @@ Public Class cEwEStatusBar
     End Sub
 
     Private Function ToTooltipLabel(ByVal str As String) As String
-        If String.IsNullOrEmpty(str) Then Return My.Resources.GENERIC_VALUE_NONE
+        If String.IsNullOrEmpty(str) Then Return SharedResources.GENERIC_VALUE_NONE
         Return str
     End Function
 

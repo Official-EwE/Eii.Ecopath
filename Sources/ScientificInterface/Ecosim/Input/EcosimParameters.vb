@@ -6,6 +6,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -182,7 +183,7 @@ Namespace Ecosim
             Dim ffm As cForcingFunctionManager = Me.Core.ForcingShapeManager()
             Dim aItems(ffm.Count) As Object
 
-            aItems(0) = My.Resources.GENERIC_VALUE_NONE
+            aItems(0) = SharedResources.GENERIC_VALUE_NONE
             For iFF As Integer = 0 To ffm.Count - 1
                 aItems(iFF + 1) = ffm(iFF)
             Next
