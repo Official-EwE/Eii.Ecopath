@@ -43,7 +43,7 @@ Namespace Ecopath.Input
                 source = core.FleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, _
                                                                      source, eVarNameFlags.Name, Nothing, _
-                                                                     My.Resources.GENERIC_HEADER_PROP_A_PER_B, _
+                                                                     My.Resources.HEADER_VALUE_A_PER_B, _
                                                                      New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary, cStyleGuide.eUnitType.Currency})
             Next
 

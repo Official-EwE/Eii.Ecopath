@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -37,7 +38,7 @@ Namespace Ecosim
             For i As Integer = 0 To Me.m_lplots.Count - 1
                 plot = Me.m_lplots(i)
                 ts = plot.TimeSeries
-                m_lbAllPlots.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, ts.Index, ts.Name))
+                m_lbAllPlots.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, ts.Index, ts.Name))
             Next
 
             If m_lbAllPlots.Items.Count > 0 Then

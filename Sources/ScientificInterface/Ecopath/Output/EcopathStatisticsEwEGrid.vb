@@ -50,7 +50,7 @@ Namespace Ecopath.Output
             Dim source As cEcoPathStats = Core.EcopathStats
 
             Dim aunitCurrOverTime As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
-            Dim strMask2 As String = My.Resources.GENERIC_HEADER_UNITUNIT
+            Dim strMask2 As String = My.Resources.HEADER_A_PER_B
 
             Me.AddRow(My.Resources.HEADER_SUM_CONSUMPTION, source, eVarNameFlags.EcopathStatsTotalConsumption, aunitCurrOverTime, strMask2)
             Me.AddRow(My.Resources.HEADER_SUM_EXPORTS, source, eVarNameFlags.EcopathStatsTotalExports, aunitCurrOverTime, strMask2)

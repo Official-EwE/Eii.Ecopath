@@ -3,9 +3,10 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
 Imports System.Drawing.Drawing2D
+Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -163,7 +164,7 @@ Namespace Ecosim
                         End Using
 
                         ' Create label
-                        item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, (shapeFunc.ID + 1), shapeFunc.Name))
+                        item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, (shapeFunc.ID + 1), shapeFunc.Name))
                         item.ImageIndex = iItemIndex
                         m_lvShapes.Items.Add(item)
 

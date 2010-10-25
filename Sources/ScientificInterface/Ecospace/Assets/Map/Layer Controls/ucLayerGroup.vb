@@ -247,7 +247,7 @@ Namespace Ecospace
             fmt.LineAlignment = StringAlignment.Center
             fmt.Alignment = StringAlignment.Near
             Using ft As New Font(Me.Font, FontStyle.Bold)
-                e.Graphics.DrawString(String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, Me.Text, Me.fpItems.Controls.Count), _
+                e.Graphics.DrawString(String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, Me.Text, Me.fpItems.Controls.Count), _
                     ft, SystemBrushes.ControlText, rcLabel, fmt)
             End Using
 

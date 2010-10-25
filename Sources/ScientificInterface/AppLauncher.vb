@@ -1295,7 +1295,7 @@ Public Class AppLauncher
             Dim str As String() = CStr(alMRU.Item(i)).Split(New Char() {";"c})
 
             item = New ToolStripMenuItem()
-            item.Text = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i + 1, str(0))
+            item.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, i + 1, str(0))
             item.Tag = str(0)
 
             'Add event handler to invoke the model
@@ -2337,7 +2337,7 @@ Public Class AppLauncher
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-        cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", My.Resources.FILEFILTER_MODEL_SAVE, 1)
+        cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", SharedResources.FILEFILTER_MODEL_SAVE, 1)
 
         If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
             ' #Yes: able to create model at selected location?
@@ -2364,7 +2364,7 @@ Public Class AppLauncher
 
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-        Dim strFilter As String = My.Resources.FILEFILTER_MODEL_OPEN
+        Dim strFilter As String = SharedResources.FILEFILTER_MODEL_OPEN
 
         If cmd.Tag IsNot Nothing Then
             cmdFO.Invoke(Path.GetFileName(CStr(cmd.Tag)), Path.GetDirectoryName(CStr(cmd.Tag)), strFilter, 1)
@@ -2414,10 +2414,10 @@ Public Class AppLauncher
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
             Case eDataSourceTypes.MDB
                 ' Only allow saving as MDB
-                strFileFilter = My.Resources.FILEFILTER_SAVE_MDB
+                strFileFilter = SharedResources.FILEFILTER_SAVE_MDB
             Case eDataSourceTypes.ACCDB
                 ' Only allow saving as ACCDB
-                strFileFilter = My.Resources.FILEFILTER_SAVE_ACCDB
+                strFileFilter = SharedResources.FILEFILTER_SAVE_ACCDB
             Case Else
                 ' Not supported
                 Debug.Assert(False, "Option should not have been available")

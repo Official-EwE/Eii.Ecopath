@@ -536,4 +536,54 @@
   <data name="ZoomHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ZoomHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="FILEFILTER_FLOWDIAGRAM" xml:space="preserve">
+    <value>FlowDiagram files|*.fd|All files (*.*)|*.*</value>
+  </data>
+  <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
+    <value>Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp</value>
+  </data>
+  <data name="FILEFILTER_MODEL_OPEN" xml:space="preserve">
+    <value>Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb|Ecopath 5 text files|*.eii</value>
+  </data>
+  <data name="FILEFILTER_MODEL_SAVE" xml:space="preserve">
+    <value>EwE database (Access 2003 format)|*.EwEmdb|EwE database (Access 2007 format)|*.EwEaccdb</value>
+  </data>
+  <data name="FILEFILTER_SAVE_ACCDB" xml:space="preserve">
+    <value>EwE database (Access 2007 format)|*.eweaccdb</value>
+  </data>
+  <data name="FILEFILTER_SAVE_MDB" xml:space="preserve">
+    <value>EwE database (Access 2003 format)|*.ewemdb</value>
+  </data>
+  <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
+    <value>Comma-separated text files|*.csv|ESRI Asc files|Spatial raster files|*.asc;*.csv</value>
+  </data>
+  <data name="GENERIC_LABEL_APPLY1" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="GENERIC_LABEL_DETAILEDLABEL" xml:space="preserve">
+    <value>{0} ({1})</value>
+    <comment>{0}: name, {1}: additional details that apply to {0}</comment>
+  </data>
+  <data name="GENERIC_LABEL_HOME" xml:space="preserve">
+    <value>Home</value>
+    <comment>owner start page.</comment>
+  </data>
+  <data name="GENERIC_LABEL_INDEXEDLABEL1" xml:space="preserve">
+    <value>{0}: {1}</value>
+    <comment>{0}:index, {1}:name</comment>
+  </data>
+  <data name="GENERIC_LABEL_REMOVE" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="GENERIC_LABEL_SAVE" xml:space="preserve">
+    <value>Save</value>
+    <comment>Generic 'Save' button text</comment>
+  </data>
+  <data name="GENERIC_LABEL_SCENARIODETAILS" xml:space="preserve">
+    <value>{0} ({1} {2})</value>
+    <comment>{0}: scenario name, {1}: scenario save date, {2}: scenario save time</comment>
+  </data>
+  <data name="GENERIC_LABEL_STEP_SIZE" xml:space="preserve">
+    <value>Step size</value>
+  </data>
 </root>

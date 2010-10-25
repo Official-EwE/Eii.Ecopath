@@ -7,6 +7,7 @@ Imports EwECore
 Imports SourceGrid2.Cells.Real
 Imports EwEUtils.Core
 Imports EwECore.MSE
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -34,7 +35,7 @@ Public Class gridFishingWeights
             src = Me.Core.FleetInputs(iFleet)
             Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
                                                              src, eVarNameFlags.Name, Nothing, _
-                                                             My.Resources.GENERIC_LABEL_DETAILEDLABEL, cStyleGuide.eUnitType.Currency)
+                                                             SharedResources.GENERIC_LABEL_DETAILEDLABEL, cStyleGuide.eUnitType.Currency)
         Next
 
         Me.FixedColumns = 2

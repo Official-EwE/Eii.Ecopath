@@ -1,7 +1,12 @@
+#Region " Imports "
+
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Commands
 Imports System.Text
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -227,7 +232,7 @@ Public Class RemarkPanel
                         If Not Object.ReferenceEquals(m_aprop(0).SourceSec, Nothing) Then
                             strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR, m_aprop(0).Source.Name, ValueExplorer.GetName(m_aprop(0).VarName), m_aprop(0).SourceSec.Name)
                         Else
-                            strSelection = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, m_aprop(0).Source.Name, ValueExplorer.GetName(m_aprop(0).VarName))
+                            strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, m_aprop(0).Source.Name, ValueExplorer.GetName(m_aprop(0).VarName))
                         End If
                     Else
                         strSelection = My.Resources.SELECTION_DERIVED

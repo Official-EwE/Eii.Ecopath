@@ -123,7 +123,7 @@ Namespace Ecospace
             'Load group combo box
             Me.m_cmbDisplayGroup.Items.Clear()
             For i As Integer = 1 To Me.Core.nGroups
-                Me.m_cmbDisplayGroup.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                Me.m_cmbDisplayGroup.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, _
                                                              i, _
                                                              Me.Core.EcospaceGroups(i).Name))
             Next i

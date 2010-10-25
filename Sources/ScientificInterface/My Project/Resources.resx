@@ -210,9 +210,6 @@
   <data name="SHAPE_MULTIPLIER_2" xml:space="preserve">
     <value>Vulnerability (v)</value>
   </data>
-  <data name="FILEFILTER_MODEL_OPEN" xml:space="preserve">
-    <value>Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb|Ecopath 5 text files|*.eii</value>
-  </data>
   <data name="PROMPT_INVALIDFILE" xml:space="preserve">
     <value>This type of file is not supported by EwE6</value>
   </data>
@@ -261,9 +258,6 @@
   </data>
   <data name="HEADER_BIOMASS_DIVERSITY_ABBR" xml:space="preserve">
     <value>Divers.</value>
-  </data>
-  <data name="GENERIC_LABEL_APPLY" xml:space="preserve">
-    <value>Apply</value>
   </data>
   <data name="INVALID_VALUE_ENTERED" xml:space="preserve">
     <value>Please enter a value greater than {0}</value>
@@ -407,9 +401,6 @@
   <data name="HEADER_NUMBER" xml:space="preserve">
     <value>Number</value>
   </data>
-  <data name="FILEFILTER_SAVE_MDB" xml:space="preserve">
-    <value>EwE database (Access 2003 format)|*.ewemdb</value>
-  </data>
   <data name="MPA_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete MPA from {0} to {1}? This action cannot be undone.</value>
   </data>
@@ -434,9 +425,6 @@
   <data name="ECOPATH_EDITGROUPSSTANZA_AGECONFLICT" xml:space="preserve">
     <value>Groups '{0}' and '{1}' in stanza '{2}' have the same start age. Please correct this.</value>
     <comment>{0}: first conflicting group. {1}: second conflicting group. {2}: stanza name</comment>
-  </data>
-  <data name="GENERIC_LABEL_REMOVE" xml:space="preserve">
-    <value>Remove</value>
   </data>
   <data name="HEADER_NETMIGRATE" xml:space="preserve">
     <value>+ Net migration rate</value>
@@ -596,10 +584,6 @@
   </data>
   <data name="glyph_rubble_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_rubble_blue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="GENERIC_LABEL_SCENARIODETAILS" xml:space="preserve">
-    <value>{0} ({1} {2})</value>
-    <comment>{0}: scenario name, {1}: scenario save date, {2}: scenario save time</comment>
   </data>
   <data name="ECOSIM_PROMPT_SAVEDESTINATION" xml:space="preserve">
     <value>Please select the destination to save Ecosim results.</value>
@@ -776,9 +760,6 @@
     <value>New Ecotracer scenario - Ecopath model {0}</value>
     <comment>{0} = Ecotracer scenario name</comment>
   </data>
-  <data name="GENERIC_LABEL_STEP_SIZE" xml:space="preserve">
-    <value>Step size</value>
-  </data>
   <data name="ECOSIM_GROUPINFO_SALSPREADRIGHT" xml:space="preserve">
     <value>Salinity tolerance above optimum(&gt;0)</value>
   </data>
@@ -788,7 +769,7 @@
   <data name="HEADER_NONE" xml:space="preserve">
     <value>None</value>
   </data>
-  <data name="GENERIC_HEADER_PROP_A_PER_B" xml:space="preserve">
+  <data name="HEADER_VALUE_A_PER_B" xml:space="preserve">
     <value>{0} ({1}/{2})</value>
     <comment>{0}: value, {1}: unit 1, {2}: unit 2</comment>
   </data>
@@ -898,9 +879,6 @@
   <data name="FIT2TS_PROGRESS_RUNCOMPLETED" xml:space="preserve">
     <value>Run completed at {0}</value>
     <comment>{0}: time run completed</comment>
-  </data>
-  <data name="FILEFILTER_FLOWDIAGRAM" xml:space="preserve">
-    <value>FlowDiagram files|*.fd|All files (*.*)|*.*</value>
   </data>
   <data name="Habitat1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Habitat.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1067,16 +1045,13 @@
   <data name="HEADER_MAXWEIGHT" xml:space="preserve">
     <value>Max. weight</value>
   </data>
-  <data name="FILEFILTER_SAVE_ACCDB" xml:space="preserve">
-    <value>EwE database (Access 2007 format)|*.eweaccdb</value>
-  </data>
   <data name="IMPORT_ERROR_CAPTION" xml:space="preserve">
     <value>EwE5 database import</value>
   </data>
   <data name="HEADER_PREDATION" xml:space="preserve">
     <value>Predation</value>
   </data>
-  <data name="MCRUN_HEADER_OUTPUT_BA" xml:space="preserve">
+  <data name="HEADER_BIOMACCUM_ABBR" xml:space="preserve">
     <value>Biom.acc.</value>
   </data>
   <data name="glyph_deep_lightblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -1167,9 +1142,6 @@
   <data name="PROMPT_PLUGIN_INCOMPATIBLE" xml:space="preserve">
     <value>The plug-in '{0}' uses outdated EwE components, and is likely to be incompatible with this version of EwE6. Do you wish to disable this plug-in?</value>
     <comment>{0}: plug-in name</comment>
-  </data>
-  <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
-    <value>Comma-separated text files|*.csv|ESRI Asc files|Spatial raster files|*.asc;*.csv</value>
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_MIGRATION" xml:space="preserve">
     <value>Migration</value>
@@ -1455,7 +1427,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_CONSUMPTIONBIOMASS" xml:space="preserve">
     <value>Consumption/biomass</value>
   </data>
-  <data name="MORT_NAT" xml:space="preserve">
+  <data name="HEADER_PROP_NAT_MORT" xml:space="preserve">
     <value>Proportion natural mort.</value>
   </data>
   <data name="PROMPT_MPA_DELETE_CONFIRMATION" xml:space="preserve">
@@ -1483,16 +1455,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ECOSPACE_DISPERSAL_RELDISP" xml:space="preserve">
     <value>Rel. dispersal in bad habitat</value>
   </data>
-  <data name="GENERIC_HEADER_EXPORT" xml:space="preserve">
+  <data name="HEADER_EXPORT" xml:space="preserve">
     <value>Export</value>
-  </data>
-  <data name="GENERIC_LABEL_HOME" xml:space="preserve">
-    <value>Home</value>
-    <comment>owner start page.</comment>
-  </data>
-  <data name="GENERIC_LABEL_SAVE" xml:space="preserve">
-    <value>Save</value>
-    <comment>Generic 'Save' button text</comment>
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_IMPORTANCE" xml:space="preserve">
     <value>Importance</value>
@@ -1758,9 +1722,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="glyph_blue2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_blue2.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="FILEFILTER_MODEL_SAVE" xml:space="preserve">
-    <value>EwE database (Access 2003 format)|*.EwEmdb|EwE database (Access 2007 format)|*.EwEaccdb</value>
-  </data>
   <data name="PROMPT_ERROR_IMPORT_INVALIDDB" xml:space="preserve">
     <value>The selected database does not appear to be a valid EwE5 or EwE6 database.</value>
   </data>
@@ -1876,10 +1837,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_FLOWTODETR_UNIT" xml:space="preserve">
     <value>Flow to detr. ({0}/{1})</value>
     <comment>{0}: ??? unit, {1}: ??? unit</comment>
-  </data>
-  <data name="GENERIC_LABEL_DETAILEDLABEL" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>{0}: name, {1}: additional details that apply to {0}</comment>
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_SAILINGCOST" xml:space="preserve">
     <value>Sailing cost</value>
@@ -2133,9 +2090,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_SCALEDVALUES" xml:space="preserve">
     <value>Scaled values</value>
   </data>
-  <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
-    <value>Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp</value>
-  </data>
   <data name="CAPTION_MSEFLEETREF" xml:space="preserve">
     <value>MSE fleet ref. levels</value>
   </data>
@@ -2161,7 +2115,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>W at infinity (g)</value>
     <comment>{0}: ??? unit</comment>
   </data>
-  <data name="MORT_FISH_TOT" xml:space="preserve">
+  <data name="HEADER_FISHMORT_OVER_TOTMORT" xml:space="preserve">
     <value>Fishing mort. / total mort.</value>
   </data>
   <data name="ECOSIM_CAPTION_APPLYFF" xml:space="preserve">
@@ -2254,10 +2208,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="STATUS_MODEL_COMPACT_SUCCESS" xml:space="preserve">
     <value>Your database was compacted succesfully.</value>
   </data>
-  <data name="GENERIC_LABEL_INDEXEDLABEL" xml:space="preserve">
-    <value>{0}: {1}</value>
-    <comment>{0}:index, {1}:name</comment>
-  </data>
   <data name="SELECT_DEFAULT_LAYOUT_DIRECTORY_MSG" xml:space="preserve">
     <value>Select the directory that you want to save your layout files as the default</value>
   </data>
@@ -2302,12 +2252,9 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_SUM_PROFIT" xml:space="preserve">
     <value>Profit</value>
   </data>
-  <data name="GENERIC_HEADER_UNITUNIT" xml:space="preserve">
+  <data name="HEADER_A_PER_B" xml:space="preserve">
     <value>{0}/{1}</value>
     <comment>{0}: unit 1, {1}: unit 2</comment>
-  </data>
-  <data name="MCRUN_HEADER_CV" xml:space="preserve">
-    <value>c.v.</value>
   </data>
   <data name="HEADER_SUM_CONSUMPTION" xml:space="preserve">
     <value>Sum of all consumption</value>

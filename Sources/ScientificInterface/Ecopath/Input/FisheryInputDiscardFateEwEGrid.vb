@@ -47,7 +47,7 @@ Namespace Ecopath.Input
             Next
 
             ' Export header cell
-            Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(My.Resources.GENERIC_HEADER_EXPORT)
+            Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(My.Resources.HEADER_EXPORT)
 
             ' Sum header cell
             Me(0, Me.ColumnsCount - 1) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)

@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwECore.Database
 Imports ScientificInterfaceShared.Controls.Wizard
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore.DataSources
 Imports EwEUtils.Core
 
@@ -44,9 +45,9 @@ Namespace Import
                 Dim strFileFilter As String = ""
                 Select Case Me.m_dst
                     Case eDataSourceTypes.ACCDB
-                        strFileFilter = My.Resources.FILEFILTER_SAVE_ACCDB
+                        strFileFilter = SharedResources.FILEFILTER_SAVE_ACCDB
                     Case eDataSourceTypes.MDB
-                        strFileFilter = My.Resources.FILEFILTER_SAVE_MDB
+                        strFileFilter = SharedResources.FILEFILTER_SAVE_MDB
                     Case Else
                         Debug.Assert(False)
                 End Select

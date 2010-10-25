@@ -4,13 +4,14 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports SAUPUtil.SAUPData.Mapping
 Imports EwEUtils.Core
-Imports ScientificInterface.Other
-Imports Microsoft.VisualBasic
-Imports ScientificInterfaceShared
-Imports ZedGraph
 Imports EwEUtils.Commands
+Imports ScientificInterfaceShared
+Imports ScientificInterface.Other
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SAUPUtil.SAUPData.Mapping
+Imports ZedGraph
+Imports Microsoft.VisualBasic
 
 #End Region
 
@@ -825,7 +826,7 @@ Namespace Ecosim
                     Next
 
                     ' Add line to graph.
-                    lLines.Add(Me.m_zgp.CreateLine(gts, ppl, String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name)))
+                    lLines.Add(Me.m_zgp.CreateLine(gts, ppl, String.Format(sharedresources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name)))
                 End If
             Next iTS
 

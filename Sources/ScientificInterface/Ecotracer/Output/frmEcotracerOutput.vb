@@ -4,6 +4,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterface.Other
 Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports ZedGraph
@@ -1090,7 +1091,7 @@ Public Class frmEcotracerOutput
 
             If iRegion > 0 Then
                 strRegionName = Me.Core.EcospaceRegions(iRegion).Name
-                strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, strFilter, strRegionName)
+                strLabel = String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, strFilter, strRegionName)
             Else
                 strLabel = strFilter
             End If

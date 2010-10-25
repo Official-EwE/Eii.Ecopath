@@ -5,8 +5,9 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
+#End Region ' Imports
 
 Namespace Ecospace
 
@@ -83,7 +84,7 @@ Namespace Ecospace
             Dim fleet As cEcospaceFleetOutput = Nothing
             For i As Integer = 0 To Me.Core.nFleets
                 fleet = Me.Core.EcospaceFleetOutput(i)
-                Me.m_cmbGears.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, fleet.Name))
+                Me.m_cmbGears.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, i, fleet.Name))
             Next
             Me.m_cmbGears.SelectedIndex = 0
 
@@ -91,7 +92,7 @@ Namespace Ecospace
             Dim region As cEcospaceRegionOutput = Nothing
             For i As Integer = 0 To Me.Core.nRegions
                 region = Me.Core.EcospaceRegionOutput(i)
-                m_cmbRegions.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, region.Name))
+                m_cmbRegions.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, i, region.Name))
             Next
             m_cmbRegions.SelectedIndex = 0
 

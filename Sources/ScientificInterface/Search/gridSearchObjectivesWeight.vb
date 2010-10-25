@@ -6,6 +6,7 @@ Option Explicit On
 Imports EwECore
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -95,7 +96,7 @@ Namespace Ecosim
             If Me.m_bIsBatchRun Then
                 Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_MINWEIGHT) : iCol += 1
                 Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXWEIGHT) : iCol += 1
-                Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_STEP_SIZE) : iCol += 1
+                Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.GENERIC_LABEL_STEP_SIZE) : iCol += 1
             Else
                 Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT_ABBR) : iCol += 1
             End If

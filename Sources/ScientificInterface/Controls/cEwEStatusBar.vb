@@ -161,7 +161,7 @@ Public Class cEwEStatusBar
                                                simScenario.Name, _
                                                tsds.Name, _
                                                Me.ToTooltipLabel(simScenario.Description))
-                    strName = String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, simScenario.Name, tsds.Name)
+                    strName = String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, simScenario.Name, tsds.Name)
                 Else
                     strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
                                                vbNewLine, _
@@ -223,7 +223,7 @@ Public Class cEwEStatusBar
     End Function
 
     Private Function ToTooltipNameLabel(ByVal strName As String, ByVal bModified As Boolean) As String
-        If bModified Then Return String.Format(My.Resources.GENERIC_LABEL_DETAILEDLABEL, strName, My.Resources.STATUSSTRIP_MODIFIED)
+        If bModified Then Return String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, strName, My.Resources.STATUSSTRIP_MODIFIED)
         Return strName
     End Function
 

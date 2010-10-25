@@ -164,7 +164,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-            cmdFO.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 1)
+            cmdFO.Invoke(SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
 
             If (cmdFO.Result = DialogResult.OK) Then
                 Try
@@ -187,7 +187,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(My.Resources.FILEFILTER_FLOWDIAGRAM, 1)
+            cmdFS.Invoke(SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
                 Try

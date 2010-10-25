@@ -47,8 +47,8 @@ Namespace Ecopath.Output
             Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(My.Resources.HEADER_NETMIGRATE)
             Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(My.Resources.HEADER_OTHERMORTRATE)
             Me(0, eColumnTypes.Spacer) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.MortTot) = New EwEColumnHeaderCell(My.Resources.MORT_FISH_TOT)
-            Me(0, eColumnTypes.MortNat) = New EwEColumnHeaderCell(My.Resources.MORT_NAT)
+            Me(0, eColumnTypes.MortTot) = New EwEColumnHeaderCell(My.Resources.HEADER_FISHMORT_OVER_TOTMORT)
+            Me(0, eColumnTypes.MortNat) = New EwEColumnHeaderCell(My.Resources.HEADER_PROP_NAT_MORT)
 
             Me.FixedColumns = 2
 

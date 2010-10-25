@@ -56,7 +56,7 @@ Namespace Ecosim
             Me.Redim(Me.Core.nLivingGroups + 1, 6)
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.MCRUN_HEADER_CV)
+            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CV)
             Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_LOWERLIMIT)
             Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_MEAN)
             Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_UPPERLIMIT)

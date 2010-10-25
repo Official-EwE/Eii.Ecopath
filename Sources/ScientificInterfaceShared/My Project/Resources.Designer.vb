@@ -250,6 +250,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to FlowDiagram files|*.fd|All files (*.*)|*.*.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_FLOWDIAGRAM() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_FLOWDIAGRAM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff.
         '''</summary>
         Public ReadOnly Property FILEFILTER_IMAGE() As String
@@ -273,6 +282,60 @@ Namespace My.Resources
         Public ReadOnly Property FILEFILTER_IMAGE1() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_IMAGE1", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_LOAD_RASTER() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_LOAD_RASTER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb|Ecopath 5 text files|*.eii.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_MODEL_OPEN() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_MODEL_OPEN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE database (Access 2003 format)|*.EwEmdb|EwE database (Access 2007 format)|*.EwEaccdb.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_MODEL_SAVE() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_MODEL_SAVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE database (Access 2007 format)|*.eweaccdb.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_SAVE_ACCDB() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_SAVE_ACCDB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE database (Access 2003 format)|*.ewemdb.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_SAVE_MDB() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_SAVE_MDB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Comma-separated text files|*.csv|ESRI Asc files|Spatial raster files|*.asc;*.csv.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_SAVE_RASTER() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_SAVE_RASTER", resourceCulture)
             End Get
         End Property
         
@@ -358,6 +421,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Apply.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_APPLY1() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_APPLY1", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_CURRENCY() As String
@@ -376,6 +448,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}).
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_DETAILEDLABEL() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_DETAILEDLABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0}: ({1}, {2}).
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_GRAPHVALUE() As String
@@ -385,11 +466,65 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Home.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_HOME() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_HOME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0}: {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_INDEXEDLABEL() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_INDEXEDLABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0}: {1}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_INDEXEDLABEL1() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_INDEXEDLABEL1", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Remove.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_REMOVE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_REMOVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Save.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_SAVE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_SAVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} ({1} {2}).
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_SCENARIODETAILS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_SCENARIODETAILS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Step size.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_STEP_SIZE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_STEP_SIZE", resourceCulture)
             End Get
         End Property
         

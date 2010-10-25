@@ -2,11 +2,12 @@
 
 Option Strict On
 
-Imports EwECore
 Imports System.IO
 Imports System.Reflection
+Imports EwECore
 Imports EwEUtils.Utilities
 Imports EwEPlugin
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -38,8 +39,8 @@ Public Class frmWebBrowser
 
         Me.m_uic = uic
 
-        Me.Text = My.Resources.GENERIC_LABEL_HOME
-        Me.TabText = My.Resources.GENERIC_LABEL_HOME
+        Me.Text = SharedResources.GENERIC_LABEL_HOME
+        Me.TabText = SharedResources.GENERIC_LABEL_HOME
 
     End Sub
 

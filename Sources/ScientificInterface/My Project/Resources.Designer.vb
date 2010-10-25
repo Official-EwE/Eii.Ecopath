@@ -1361,69 +1361,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to FlowDiagram files|*.fd|All files (*.*)|*.*.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_FLOWDIAGRAM() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_FLOWDIAGRAM", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_LOAD_RASTER() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_LOAD_RASTER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb|Ecopath 5 text files|*.eii.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_MODEL_OPEN() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_MODEL_OPEN", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to EwE database (Access 2003 format)|*.EwEmdb|EwE database (Access 2007 format)|*.EwEaccdb.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_MODEL_SAVE() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_MODEL_SAVE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to EwE database (Access 2007 format)|*.eweaccdb.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_SAVE_ACCDB() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_SAVE_ACCDB", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to EwE database (Access 2003 format)|*.ewemdb.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_SAVE_MDB() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_SAVE_MDB", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Comma-separated text files|*.csv|ESRI Asc files|Spatial raster files|*.asc;*.csv.
-        '''</summary>
-        Friend ReadOnly Property FILEFILTER_SAVE_RASTER() As String
-            Get
-                Return ResourceManager.GetString("FILEFILTER_SAVE_RASTER", resourceCulture)
-            End Get
-        End Property
-        
         Friend ReadOnly Property fimr_logo_50px() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("fimr_logo_50px", resourceCulture)
@@ -1639,33 +1576,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Export.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_HEADER_EXPORT() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_HEADER_EXPORT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0} ({1}/{2}).
-        '''</summary>
-        Friend ReadOnly Property GENERIC_HEADER_PROP_A_PER_B() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_HEADER_PROP_A_PER_B", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0}/{1}.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_HEADER_UNITUNIT() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_HEADER_UNITUNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to To create.
         '''</summary>
         Friend ReadOnly Property GENERIC_ITEMSTATUS_CREATEPENDING() As String
@@ -1680,78 +1590,6 @@ Namespace My.Resources
         Friend ReadOnly Property GENERIC_ITEMSTATUS_DELETEPENDING() As String
             Get
                 Return ResourceManager.GetString("GENERIC_ITEMSTATUS_DELETEPENDING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Apply.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_APPLY() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_APPLY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0} ({1}).
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_DETAILEDLABEL() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_DETAILEDLABEL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Home.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_HOME() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_HOME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0}: {1}.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_INDEXEDLABEL() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_INDEXEDLABEL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Remove.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_REMOVE() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_REMOVE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Save.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_SAVE() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_SAVE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0} ({1} {2}).
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_SCENARIODETAILS() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_SCENARIODETAILS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Step size.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_LABEL_STEP_SIZE() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_STEP_SIZE", resourceCulture)
             End Get
         End Property
         
@@ -2347,6 +2185,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0}/{1}.
+        '''</summary>
+        Friend ReadOnly Property HEADER_A_PER_B() As String
+            Get
+                Return ResourceManager.GetString("HEADER_A_PER_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Absolute biomass.
         '''</summary>
         Friend ReadOnly Property HEADER_ABSOLUTEBIOMASS() As String
@@ -2451,6 +2298,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_BIOMACCU_UNIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_BIOMACCU_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biom.acc..
+        '''</summary>
+        Friend ReadOnly Property HEADER_BIOMACCUM_ABBR() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMACCUM_ABBR", resourceCulture)
             End Get
         End Property
         
@@ -3013,6 +2869,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Export.
+        '''</summary>
+        Friend ReadOnly Property HEADER_EXPORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_EXPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Feeding time.
         '''</summary>
         Friend ReadOnly Property HEADER_FEEDINGTIME() As String
@@ -3054,6 +2919,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_FISHINGMORTRATE() As String
             Get
                 Return ResourceManager.GetString("HEADER_FISHINGMORTRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing mort. / total mort..
+        '''</summary>
+        Friend ReadOnly Property HEADER_FISHMORT_OVER_TOTMORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FISHMORT_OVER_TOTMORT", resourceCulture)
             End Get
         End Property
         
@@ -3895,6 +3769,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Proportion natural mort..
+        '''</summary>
+        Friend ReadOnly Property HEADER_PROP_NAT_MORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PROP_NAT_MORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Proportion.
         '''</summary>
         Friend ReadOnly Property HEADER_PROPORTION() As String
@@ -4597,6 +4480,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}/{2}).
+        '''</summary>
+        Friend ReadOnly Property HEADER_VALUE_A_PER_B() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VALUE_A_PER_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Value component.
         '''</summary>
         Friend ReadOnly Property HEADER_VALUE_COMPONENT() As String
@@ -4836,48 +4728,12 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to c.v..
-        '''</summary>
-        Friend ReadOnly Property MCRUN_HEADER_CV() As String
-            Get
-                Return ResourceManager.GetString("MCRUN_HEADER_CV", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Biom.acc..
-        '''</summary>
-        Friend ReadOnly Property MCRUN_HEADER_OUTPUT_BA() As String
-            Get
-                Return ResourceManager.GetString("MCRUN_HEADER_OUTPUT_BA", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff31507\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
         '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times Ne [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property modules() As String
             Get
                 Return ResourceManager.GetString("modules", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Fishing mort. / total mort..
-        '''</summary>
-        Friend ReadOnly Property MORT_FISH_TOT() As String
-            Get
-                Return ResourceManager.GetString("MORT_FISH_TOT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Proportion natural mort..
-        '''</summary>
-        Friend ReadOnly Property MORT_NAT() As String
-            Get
-                Return ResourceManager.GetString("MORT_NAT", resourceCulture)
             End Get
         End Property
         

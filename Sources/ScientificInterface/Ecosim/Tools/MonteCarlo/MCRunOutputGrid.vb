@@ -47,7 +47,7 @@ Namespace Ecosim
             Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_ABBR)
             Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_CB)
             Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.MCRUN_HEADER_OUTPUT_BA)
+            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCUM_ABBR)
 
             Me.FixedColumnWidths = False
 
