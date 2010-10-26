@@ -71,7 +71,7 @@ Namespace Ecosim
             Me.m_zgh.IsTrackVisiblity = False
 
             Me.ConfigurePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
-            Me.ConfigurePane(ePaneTypes.ConsumptionBiomass, My.Resources.HEADER_CONSUMPTIONBIOMASS)
+            Me.ConfigurePane(ePaneTypes.ConsumptionBiomass, My.Resources.HEADER_CONSUMPTION_OVER_BIOMASS)
             Me.ConfigurePane(ePaneTypes.PredationMortality, My.Resources.HEADER_PREDMORT)
             ' JS: EwE5 distinguishes between P/B (PP=1) and TotalMort (PP=0) for 
             Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS)

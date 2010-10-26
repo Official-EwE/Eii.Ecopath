@@ -40,7 +40,7 @@ Namespace Ecopath.Output
             'Dim str As String = ""
             'Dim msg As cMessage = Nothing
 
-            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_SIZEWT, My.Resources.PSD_XAXISLABEL_SIZECLASS, ""))
+            AddCurves(CreatePane(My.Resources.CAPTION_SIZEWT, My.Resources.HEADER_SIZECLASS, ""))
 
             UpdatePlot()
 
@@ -115,8 +115,8 @@ Namespace Ecopath.Output
             ' Clear pane
             pane.CurveList.Clear()
 
-            AddCurveToGraphPane(pane, My.Resources.PSD_LINELEGEND_BYNUM, resultLists(0), Color.Blue)
-            AddCurveToGraphPane(pane, My.Resources.PSD_LINELEGEND_BYBIOMASS, resultLists(1), Color.Brown)
+            AddCurveToGraphPane(pane, My.Resources.LEGEND_BYNUM, resultLists(0), Color.Blue)
+            AddCurveToGraphPane(pane, My.Resources.LEGEND_BYBIOMASS, resultLists(1), Color.Brown)
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)

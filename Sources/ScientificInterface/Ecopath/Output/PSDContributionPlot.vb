@@ -43,8 +43,8 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_lbGroups.SelectedIndexChanged
-            AddCurves(CreatePane(My.Resources.PSD_PLOTCAPTION_PSDCONTRIB, My.Resources.PSD_XAXISLABEL_BODYWEIGHT, _
-                     My.Resources.PSD_YAXISLABEL_BIOMASS))
+            AddCurves(CreatePane(My.Resources.CAPTION_PSD_GROUP_CONTRIB, My.Resources.HEADER_BODYWEIGHT_LOGg, _
+                     My.Resources.HEADER_BIOMASS_LOGg))
 
             'highlight group contribution in the histogram
             UpdatePlot()

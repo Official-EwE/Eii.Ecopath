@@ -964,7 +964,7 @@ Public Class frmEcotracerOutput
                 Dim lb As String
 
                 If Me.m_plottype = ePlotTypes.CB Then
-                    lb = My.Resources.HEADER_CONCENTRATION_B
+                    lb = My.Resources.HEADER_CONCENTRATION_OVER_B
                 Else
                     lb = My.Resources.HEADER_CONCENTRATION
                 End If
@@ -1227,7 +1227,7 @@ Public Class frmEcotracerOutput
             Get
                 Dim lb As String
                 If Me.m_plottype = ePlotTypes.CB Then
-                    lb = My.Resources.HEADER_CONCENTRATION_B
+                    lb = My.Resources.HEADER_CONCENTRATION_OVER_B
                 Else
                     lb = My.Resources.HEADER_CONCENTRATION
                 End If

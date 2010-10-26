@@ -37,8 +37,8 @@ Public Class AboutEwEGrid
         Me.Redim(aanLoaded.Length + aanPlugins.Length + 2, 2)
 
         ' Create header cells
-        Me(iRow, 0) = New EwEColumnHeaderCell(My.Resources.ABOUT_HEADER_SYSTEMCOMPONENTS)
-        Me(iRow, 1) = New EwEColumnHeaderCell(My.Resources.ABOUT_HEADER_VERSION)
+        Me(iRow, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_SYSTEMCOMPONENTS)
+        Me(iRow, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_VERSION)
 
         ' Add assembly cells
         iRow += 1
@@ -51,7 +51,7 @@ Public Class AboutEwEGrid
 
         ' Plug-ins section
         Me(iRow, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_PLUGINS)
-        Me(iRow, 1) = New EwEColumnHeaderCell(My.Resources.ABOUT_HEADER_VERSION)
+        Me(iRow, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_VERSION)
 
         ' Add plugin cells
         iRow += 1

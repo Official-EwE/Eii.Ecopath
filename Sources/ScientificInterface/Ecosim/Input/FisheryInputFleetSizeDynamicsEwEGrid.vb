@@ -29,7 +29,7 @@ Namespace Ecosim
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
             Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_EFFORTRESPPOWER)
             Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_INITEFFORT)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_CAPITALDEPRECIATION)
+            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_CAPITALDEPRECIATION_RATE)
             Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_INITCAPTIALGROWTHRATE)
 
         End Sub

@@ -38,8 +38,8 @@ Namespace Other
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
-            Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VALUE_VERSION, an.Version.ToString())
-            Me.m_lbCopyright.Text = String.Format(My.Resources.ABOUT_VALUE_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
+            Me.m_lbVersion.Text = String.Format(My.Resources.GENERIC_VERSION, an.Version.ToString())
+            Me.m_lbCopyright.Text = String.Format(My.Resources.GENERIC_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format technical page
             Me.m_lblNetVersion.Text = String.Format(m_lblNetVersion.Text, System.Environment.Version.ToString())

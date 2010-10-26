@@ -69,42 +69,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to System components.
-        '''</summary>
-        Friend ReadOnly Property ABOUT_HEADER_SYSTEMCOMPONENTS() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_HEADER_SYSTEMCOMPONENTS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Version.
-        '''</summary>
-        Friend ReadOnly Property ABOUT_HEADER_VERSION() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_HEADER_VERSION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0} {1}.
-        '''</summary>
-        Friend ReadOnly Property ABOUT_VALUE_COPYRIGHT() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_VALUE_COPYRIGHT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Version {0}.
-        '''</summary>
-        Friend ReadOnly Property ABOUT_VALUE_VERSION() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_VALUE_VERSION", resourceCulture)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Basemap() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Basemap", resourceCulture)
@@ -118,6 +82,33 @@ Namespace My.Resources
         Friend ReadOnly Property CAPTION_MSEFLEETREF() As String
             Get
                 Return ResourceManager.GetString("CAPTION_MSEFLEETREF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Particle size distribution.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_PSD() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_PSD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Particle size distribution (group contribution).
+        '''</summary>
+        Friend ReadOnly Property CAPTION_PSD_GROUP_CONTRIB() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_PSD_GROUP_CONTRIB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Size/Weight.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_SIZEWT() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_SIZEWT", resourceCulture)
             End Get
         End Property
         
@@ -1396,6 +1387,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} {1}.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_COPYRIGHT() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_COPYRIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Created: {0} {1}.
         '''</summary>
         Friend ReadOnly Property GENERIC_DEFAULT_DESCRIPTION() As String
@@ -1671,6 +1671,15 @@ Namespace My.Resources
         Friend ReadOnly Property GENERIC_TOOLTIP_PREY() As String
             Get
                 Return ResourceManager.GetString("GENERIC_TOOLTIP_PREY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Version {0}.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_VERSION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VERSION", resourceCulture)
             End Get
         End Property
         
@@ -2032,15 +2041,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Absolute biomass.
-        '''</summary>
-        Friend ReadOnly Property HEADER_ABSOLUTEBIOMASS() As String
-            Get
-                Return ResourceManager.GetString("HEADER_ABSOLUTEBIOMASS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Add.
         '''</summary>
         Friend ReadOnly Property HEADER_ADD() As String
@@ -2064,6 +2064,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_AGE_FIRST_CAPTURE_UNIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_AGE_FIRST_CAPTURE_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Age ({0}).
+        '''</summary>
+        Friend ReadOnly Property HEADER_AGE_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_AGE_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -2131,16 +2140,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biom. accumul. ({0}/{1}).
-        '''</summary>
-        Friend ReadOnly Property HEADER_BIOMACCU_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_BIOMACCU_UNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Biom.acc..
+        '''  Looks up a localized string similar to Biom. acc..
         '''</summary>
         Friend ReadOnly Property HEADER_BIOMACCUM_ABBR() As String
             Get
@@ -2151,9 +2151,18 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Biom. acc. rate (/{0}).
         '''</summary>
-        Friend ReadOnly Property HEADER_BIOMACCURATE_UNIT() As String
+        Friend ReadOnly Property HEADER_BIOMACCUM_RATE_ABBR_UNIT() As String
             Get
-                Return ResourceManager.GetString("HEADER_BIOMACCURATE_UNIT", resourceCulture)
+                Return ResourceManager.GetString("HEADER_BIOMACCUM_RATE_ABBR_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biom. accumul. ({0}/{1}).
+        '''</summary>
+        Friend ReadOnly Property HEADER_BIOMACCUM_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMACCUM_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -2172,6 +2181,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_BIOMASS() As String
             Get
                 Return ResourceManager.GetString("HEADER_BIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Absolute biomass.
+        '''</summary>
+        Friend ReadOnly Property HEADER_BIOMASS_ABSOLUTE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMASS_ABSOLUTE", resourceCulture)
             End Get
         End Property
         
@@ -2221,11 +2239,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biomass (log g).
+        '''</summary>
+        Friend ReadOnly Property HEADER_BIOMASS_LOGg() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMASS_LOGg", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass lower.
         '''</summary>
         Friend ReadOnly Property HEADER_BIOMASS_LOWER() As String
             Get
                 Return ResourceManager.GetString("HEADER_BIOMASS_LOWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biomass (start).
+        '''</summary>
+        Friend ReadOnly Property HEADER_BIOMASS_START() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMASS_START", resourceCulture)
             End Get
         End Property
         
@@ -2275,11 +2311,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass (start).
+        '''  Looks up a localized string similar to Body weight (log g).
         '''</summary>
-        Friend ReadOnly Property HEADER_BIOMASSSTART() As String
+        Friend ReadOnly Property HEADER_BODYWEIGHT_LOGg() As String
             Get
-                Return ResourceManager.GetString("HEADER_BIOMASSSTART", resourceCulture)
+                Return ResourceManager.GetString("HEADER_BODYWEIGHT_LOGg", resourceCulture)
             End Get
         End Property
         
@@ -2295,9 +2331,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Capital depreciation rate.
         '''</summary>
-        Friend ReadOnly Property HEADER_CAPITALDEPRECIATION() As String
+        Friend ReadOnly Property HEADER_CAPITALDEPRECIATION_RATE() As String
             Get
-                Return ResourceManager.GetString("HEADER_CAPITALDEPRECIATION", resourceCulture)
+                Return ResourceManager.GetString("HEADER_CAPITALDEPRECIATION_RATE", resourceCulture)
             End Get
         End Property
         
@@ -2311,11 +2347,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Catch (E/S).
+        '''</summary>
+        Friend ReadOnly Property HEADER_CATCH_E_OVER_S() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATCH_E_OVER_S", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catch (end).
+        '''</summary>
+        Friend ReadOnly Property HEADER_CATCH_END() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATCH_END", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Catch lower.
         '''</summary>
         Friend ReadOnly Property HEADER_CATCH_LOWER() As String
             Get
                 Return ResourceManager.GetString("HEADER_CATCH_LOWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catch (start).
+        '''</summary>
+        Friend ReadOnly Property HEADER_CATCH_START() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATCH_START", resourceCulture)
             End Get
         End Property
         
@@ -2329,38 +2392,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catch (end).
-        '''</summary>
-        Friend ReadOnly Property HEADER_CATCHEND() As String
-            Get
-                Return ResourceManager.GetString("HEADER_CATCHEND", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Catch (E/S).
-        '''</summary>
-        Friend ReadOnly Property HEADER_CATCHES() As String
-            Get
-                Return ResourceManager.GetString("HEADER_CATCHES", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Catch (start).
-        '''</summary>
-        Friend ReadOnly Property HEADER_CATCHSTART() As String
-            Get
-                Return ResourceManager.GetString("HEADER_CATCHSTART", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Catch value.
         '''</summary>
-        Friend ReadOnly Property HEADER_CATCHVALUE() As String
+        Friend ReadOnly Property HEADER_CATCH_VALUE() As String
             Get
-                Return ResourceManager.GetString("HEADER_CATCHVALUE", resourceCulture)
+                Return ResourceManager.GetString("HEADER_CATCH_VALUE", resourceCulture)
             End Get
         End Property
         
@@ -2394,9 +2430,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Concentration / Biomass.
         '''</summary>
-        Friend ReadOnly Property HEADER_CONCENTRATION_B() As String
+        Friend ReadOnly Property HEADER_CONCENTRATION_OVER_B() As String
             Get
-                Return ResourceManager.GetString("HEADER_CONCENTRATION_B", resourceCulture)
+                Return ResourceManager.GetString("HEADER_CONCENTRATION_OVER_B", resourceCulture)
             End Get
         End Property
         
@@ -2421,45 +2457,45 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Consumption/biomass.
         '''</summary>
-        Friend ReadOnly Property HEADER_CONSUMPTIONBIOMASS() As String
+        Friend ReadOnly Property HEADER_CONSUMPTION_OVER_BIOMASS() As String
             Get
-                Return ResourceManager.GetString("HEADER_CONSUMPTIONBIOMASS", resourceCulture)
+                Return ResourceManager.GetString("HEADER_CONSUMPTION_OVER_BIOMASS", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Contribution to PSD.
         '''</summary>
-        Friend ReadOnly Property HEADER_CONTRIBPSD() As String
+        Friend ReadOnly Property HEADER_CONTRIBUTION_TO_PSD() As String
             Get
-                Return ResourceManager.GetString("HEADER_CONTRIBPSD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Cost (end).
-        '''</summary>
-        Friend ReadOnly Property HEADER_COSTEND() As String
-            Get
-                Return ResourceManager.GetString("HEADER_COSTEND", resourceCulture)
+                Return ResourceManager.GetString("HEADER_CONTRIBUTION_TO_PSD", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Cost (E/S).
         '''</summary>
-        Friend ReadOnly Property HEADER_COSTES() As String
+        Friend ReadOnly Property HEADER_COST_E_OVER_S() As String
             Get
-                Return ResourceManager.GetString("HEADER_COSTES", resourceCulture)
+                Return ResourceManager.GetString("HEADER_COST_E_OVER_S", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cost (end).
+        '''</summary>
+        Friend ReadOnly Property HEADER_COST_END() As String
+            Get
+                Return ResourceManager.GetString("HEADER_COST_END", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Cost (start).
         '''</summary>
-        Friend ReadOnly Property HEADER_COSTSTART() As String
+        Friend ReadOnly Property HEADER_COST_START() As String
             Get
-                Return ResourceManager.GetString("HEADER_COSTSTART", resourceCulture)
+                Return ResourceManager.GetString("HEADER_COST_START", resourceCulture)
             End Get
         End Property
         
@@ -2856,6 +2892,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_FORCASTGAIN() As String
             Get
                 Return ResourceManager.GetString("HEADER_FORCASTGAIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to g.
+        '''</summary>
+        Friend ReadOnly Property HEADER_G() As String
+            Get
+                Return ResourceManager.GetString("HEADER_G", resourceCulture)
             End Get
         End Property
         
@@ -3472,6 +3517,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to /{0}.
+        '''</summary>
+        Friend ReadOnly Property HEADER_PER_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PER_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Plug-ins.
         '''</summary>
         Friend ReadOnly Property HEADER_PLUGINS() As String
@@ -3850,6 +3904,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Size class.
+        '''</summary>
+        Friend ReadOnly Property HEADER_SIZECLASS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SIZECLASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Social.
         '''</summary>
         Friend ReadOnly Property HEADER_SOCIAL() As String
@@ -4129,6 +4192,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to System components.
+        '''</summary>
+        Friend ReadOnly Property HEADER_SYSTEMCOMPONENTS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SYSTEMCOMPONENTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Total allowable catch.
         '''</summary>
         Friend ReadOnly Property HEADER_TAC() As String
@@ -4390,6 +4462,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Version.
+        '''</summary>
+        Friend ReadOnly Property HEADER_VERSION() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VERSION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Weight.
         '''</summary>
         Friend ReadOnly Property HEADER_WEIGHT() As String
@@ -4549,19 +4630,28 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property Lenfest_Logo_50px() As System.Drawing.Bitmap
+        '''<summary>
+        '''  Looks up a localized string similar to By biomass.
+        '''</summary>
+        Friend ReadOnly Property LEGEND_BYBIOMASS() As String
             Get
-                Dim obj As Object = ResourceManager.GetObject("Lenfest_Logo_50px", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
+                Return ResourceManager.GetString("LEGEND_BYBIOMASS", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Iteration {0}.
+        '''  Looks up a localized string similar to By number.
         '''</summary>
-        Friend ReadOnly Property MC_LABEL_RUN() As String
+        Friend ReadOnly Property LEGEND_BYNUM() As String
             Get
-                Return ResourceManager.GetString("MC_LABEL_RUN", resourceCulture)
+                Return ResourceManager.GetString("LEGEND_BYNUM", resourceCulture)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Lenfest_Logo_50px() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Lenfest_Logo_50px", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -5414,105 +5504,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to By biomass.
-        '''</summary>
-        Friend ReadOnly Property PSD_LINELEGEND_BYBIOMASS() As String
-            Get
-                Return ResourceManager.GetString("PSD_LINELEGEND_BYBIOMASS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to By number.
-        '''</summary>
-        Friend ReadOnly Property PSD_LINELEGEND_BYNUM() As String
-            Get
-                Return ResourceManager.GetString("PSD_LINELEGEND_BYNUM", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Particle size distribution.
-        '''</summary>
-        Friend ReadOnly Property PSD_PLOTCAPTION_PSD() As String
-            Get
-                Return ResourceManager.GetString("PSD_PLOTCAPTION_PSD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Particle size distribution (group contribution).
-        '''</summary>
-        Friend ReadOnly Property PSD_PLOTCAPTION_PSDCONTRIB() As String
-            Get
-                Return ResourceManager.GetString("PSD_PLOTCAPTION_PSDCONTRIB", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Size/Weight.
-        '''</summary>
-        Friend ReadOnly Property PSD_PLOTCAPTION_SIZEWT() As String
-            Get
-                Return ResourceManager.GetString("PSD_PLOTCAPTION_SIZEWT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Age (year).
-        '''</summary>
-        Friend ReadOnly Property PSD_XAXISLABEL_AGE() As String
-            Get
-                Return ResourceManager.GetString("PSD_XAXISLABEL_AGE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Body weight (log g).
-        '''</summary>
-        Friend ReadOnly Property PSD_XAXISLABEL_BODYWEIGHT() As String
-            Get
-                Return ResourceManager.GetString("PSD_XAXISLABEL_BODYWEIGHT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Size class.
-        '''</summary>
-        Friend ReadOnly Property PSD_XAXISLABEL_SIZECLASS() As String
-            Get
-                Return ResourceManager.GetString("PSD_XAXISLABEL_SIZECLASS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Biomass (log g).
-        '''</summary>
-        Friend ReadOnly Property PSD_YAXISLABEL_BIOMASS() As String
-            Get
-                Return ResourceManager.GetString("PSD_YAXISLABEL_BIOMASS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to g.
-        '''</summary>
-        Friend ReadOnly Property PSD_YAXISLABEL_G() As String
-            Get
-                Return ResourceManager.GetString("PSD_YAXISLABEL_G", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to /year.
-        '''</summary>
-        Friend ReadOnly Property PSD_YAXISLABEL_PERYEAR() As String
-            Get
-                Return ResourceManager.GetString("PSD_YAXISLABEL_PERYEAR", resourceCulture)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Raster1() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Raster1", resourceCulture)
@@ -6283,6 +6274,15 @@ Namespace My.Resources
         Friend ReadOnly Property TS_CONSTANTTOTALMORTALITY_REMARKS() As String
             Get
                 Return ResourceManager.GetString("TS_CONSTANTTOTALMORTALITY_REMARKS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Iteration {0}.
+        '''</summary>
+        Friend ReadOnly Property VALUE_ITERATION() As String
+            Get
+                Return ResourceManager.GetString("VALUE_ITERATION", resourceCulture)
             End Get
         End Property
     End Module

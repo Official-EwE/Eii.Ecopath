@@ -35,17 +35,17 @@ Namespace Ecospace
             'Group name
             Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
             'Biomass (Start)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSSTART)
+            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_START)
             'Biomass (End)
             Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSEND)
             'Biomass (E/S)
             Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSES)
             'Catch (Start)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCHSTART)
+            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_START)
             'Catch (End)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCHEND)
+            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_END)
             'Catch (E/S)
-            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCHES)
+            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_E_OVER_S)
 
 
         End Sub

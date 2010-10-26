@@ -222,9 +222,9 @@ Namespace Ecopath.Output
             pane.CurveList.Clear()
 
             'JS 23Mar09: Zedgraph helper performs standardized label, axis styling
-            Me.m_zgh.ConfigurePane(My.Resources.PSD_PLOTCAPTION_PSD, _
-                                   My.Resources.PSD_XAXISLABEL_BODYWEIGHT, _
-                                   My.Resources.PSD_YAXISLABEL_BIOMASS, _
+            Me.m_zgh.ConfigurePane(My.Resources.CAPTION_PSD, _
+                                   My.Resources.HEADER_BODYWEIGHT_LOGg, _
+                                   My.Resources.HEADER_BIOMASS_LOGg, _
                                    True)
 
             'JS 15Oct09: Fonts are set via StyleGuide

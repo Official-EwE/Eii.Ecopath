@@ -43,7 +43,7 @@ Namespace Ecopath.Output
             Next
 
             ' Catch value column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCHVALUE)
+            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_VALUE)
             Me(0, Core.nFleets + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_NONMARKET_VALUE, cStyleGuide.eUnitType.Monetary)
             Me(0, Core.nFleets + 4) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALVALUE, cStyleGuide.eUnitType.Monetary)
 

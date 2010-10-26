@@ -125,7 +125,7 @@
     <value>Iteration {0},  SS =  {1}</value>
     <comment>{0}: iteration #, {1}: SS value at iteration</comment>
   </data>
-  <data name="HEADER_CAPITALDEPRECIATION" xml:space="preserve">
+  <data name="HEADER_CAPITALDEPRECIATION_RATE" xml:space="preserve">
     <value>Capital depreciation rate</value>
   </data>
   <data name="HEADER_BIOMASS_UNIT" xml:space="preserve">
@@ -172,7 +172,7 @@
   <data name="HEADER_BIOMASSES" xml:space="preserve">
     <value>Biomass (E/S)</value>
   </data>
-  <data name="PSD_PLOTCAPTION_PSDCONTRIB" xml:space="preserve">
+  <data name="CAPTION_PSD_GROUP_CONTRIB" xml:space="preserve">
     <value>Particle size distribution (group contribution)</value>
   </data>
   <data name="HEADER_YES" xml:space="preserve">
@@ -238,7 +238,7 @@
   <data name="fimr_logo_50px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\fimr_logo_50px.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="HEADER_BIOMASSSTART" xml:space="preserve">
+  <data name="HEADER_BIOMASS_START" xml:space="preserve">
     <value>Biomass (start)</value>
   </data>
   <data name="ECOSIM_SUITABILITY_PLOT_ELECTIVITY" xml:space="preserve">
@@ -339,7 +339,7 @@
     <value>New Ecospace scenario - Ecopath model {0}</value>
     <comment>{0} = Ecospace scenario name</comment>
   </data>
-  <data name="HEADER_COSTES" xml:space="preserve">
+  <data name="HEADER_COST_E_OVER_S" xml:space="preserve">
     <value>Cost (E/S)</value>
   </data>
   <data name="HEADER_ENABLE" xml:space="preserve">
@@ -451,7 +451,7 @@
   <data name="HEADER_YIELD" xml:space="preserve">
     <value>Yield</value>
   </data>
-  <data name="PSD_PLOTCAPTION_SIZEWT" xml:space="preserve">
+  <data name="CAPTION_SIZEWT" xml:space="preserve">
     <value>Size/Weight</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_NEW" xml:space="preserve">
@@ -466,7 +466,7 @@
   <data name="HEADER_KALWT" xml:space="preserve">
     <value>Kalman weight</value>
   </data>
-  <data name="HEADER_ABSOLUTEBIOMASS" xml:space="preserve">
+  <data name="HEADER_BIOMASS_ABSOLUTE" xml:space="preserve">
     <value>Absolute biomass</value>
   </data>
   <data name="ABOUT_CAPTION" xml:space="preserve">
@@ -504,16 +504,16 @@
     <value>Failed to backup model '{0}': {1}</value>
     <comment>{0}: model path, {1}: error text</comment>
   </data>
-  <data name="HEADER_CATCHES" xml:space="preserve">
+  <data name="HEADER_CATCH_E_OVER_S" xml:space="preserve">
     <value>Catch (E/S)</value>
   </data>
-  <data name="PSD_XAXISLABEL_SIZECLASS" xml:space="preserve">
+  <data name="HEADER_SIZECLASS" xml:space="preserve">
     <value>Size class</value>
   </data>
   <data name="HEADER_TOTALMORTALITY" xml:space="preserve">
     <value>Z (Total mortality)</value>
   </data>
-  <data name="HEADER_CONTRIBPSD" xml:space="preserve">
+  <data name="HEADER_CONTRIBUTION_TO_PSD" xml:space="preserve">
     <value>Contribution to PSD</value>
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_RELCIN" xml:space="preserve">
@@ -526,7 +526,7 @@
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDRESULT" xml:space="preserve">
     <value>Model execution errors|Values that the model was unable to compute correctly due to a model failure</value>
   </data>
-  <data name="ABOUT_VALUE_COPYRIGHT" xml:space="preserve">
+  <data name="GENERIC_COPYRIGHT" xml:space="preserve">
     <value>{0} {1}</value>
     <comment>{0}: copyright, {1}: company name</comment>
   </data>
@@ -586,7 +586,7 @@
   <data name="HEADER_GROUPNAME" xml:space="preserve">
     <value>Group name</value>
   </data>
-  <data name="HEADER_CATCHEND" xml:space="preserve">
+  <data name="HEADER_CATCH_END" xml:space="preserve">
     <value>Catch (end)</value>
   </data>
   <data name="HEADER_TOTALCOST" xml:space="preserve">
@@ -599,7 +599,7 @@
   <data name="ECOSPACE_DISPERSAL_BASEDISPRATE" xml:space="preserve">
     <value>Base dispersal rate (km/year)</value>
   </data>
-  <data name="HEADER_BIOMACCU_UNIT" xml:space="preserve">
+  <data name="HEADER_BIOMACCUM_UNIT" xml:space="preserve">
     <value>Biom. accumul. ({0}/{1})</value>
     <comment>{0}: ??? unit, {1}: ??? unit</comment>
   </data>
@@ -697,7 +697,7 @@
   <data name="HEADER_TIMEFORCING" xml:space="preserve">
     <value>Time forcing</value>
   </data>
-  <data name="PSD_YAXISLABEL_G" xml:space="preserve">
+  <data name="HEADER_G" xml:space="preserve">
     <value>g</value>
   </data>
   <data name="HEADER_NET_ECONOMIC_VALUE" xml:space="preserve">
@@ -840,7 +840,7 @@
   <data name="STATUS_PLEASE_WAIT" xml:space="preserve">
     <value>Please wait a moment...</value>
   </data>
-  <data name="HEADER_CATCHSTART" xml:space="preserve">
+  <data name="HEADER_CATCH_START" xml:space="preserve">
     <value>Catch (start)</value>
   </data>
   <data name="PROMPT_FILETYPEDEPRECATED" xml:space="preserve">
@@ -931,7 +931,7 @@
   <data name="modules" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Modules.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="MC_LABEL_RUN" xml:space="preserve">
+  <data name="VALUE_ITERATION" xml:space="preserve">
     <value>Iteration {0}</value>
     <comment>{0}: iteration number</comment>
   </data>
@@ -1025,7 +1025,7 @@
     <value>Predation</value>
   </data>
   <data name="HEADER_BIOMACCUM_ABBR" xml:space="preserve">
-    <value>Biom.acc.</value>
+    <value>Biom. acc.</value>
   </data>
   <data name="glyph_deep_lightblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_deep_lightblue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1109,7 +1109,7 @@
   <data name="PROMPT_MESSAGE_HIDE" xml:space="preserve">
     <value>Hide this type of message until a model is reloaded</value>
   </data>
-  <data name="PSD_LINELEGEND_BYBIOMASS" xml:space="preserve">
+  <data name="LEGEND_BYBIOMASS" xml:space="preserve">
     <value>By biomass</value>
   </data>
   <data name="PROMPT_PLUGIN_INCOMPATIBLE" xml:space="preserve">
@@ -1163,7 +1163,7 @@
   <data name="HEADER_LOWERLIMIT" xml:space="preserve">
     <value>Lower limit</value>
   </data>
-  <data name="HEADER_COSTEND" xml:space="preserve">
+  <data name="HEADER_COST_END" xml:space="preserve">
     <value>Cost (end)</value>
   </data>
   <data name="HEADER_MANDATED_ABBR" xml:space="preserve">
@@ -1289,7 +1289,7 @@
   <data name="ECOSPACE_BASEMAP_LAYERS_ECOSEED" xml:space="preserve">
     <value>Ecoseed</value>
   </data>
-  <data name="PSD_XAXISLABEL_BODYWEIGHT" xml:space="preserve">
+  <data name="HEADER_BODYWEIGHT_LOGg" xml:space="preserve">
     <value>Body weight (log g)</value>
   </data>
   <data name="FIT2TS_PROGRESS_RUNSTARTED" xml:space="preserve">
@@ -1390,7 +1390,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_UNASSIMILCONSUMPTION" xml:space="preserve">
     <value>Unassimil. / consumption</value>
   </data>
-  <data name="HEADER_CONSUMPTIONBIOMASS" xml:space="preserve">
+  <data name="HEADER_CONSUMPTION_OVER_BIOMASS" xml:space="preserve">
     <value>Consumption/biomass</value>
   </data>
   <data name="HEADER_PROP_NAT_MORT" xml:space="preserve">
@@ -1541,7 +1541,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_PROFIT" xml:space="preserve">
     <value>Profit</value>
   </data>
-  <data name="HEADER_BIOMACCURATE_UNIT" xml:space="preserve">
+  <data name="HEADER_BIOMACCUM_RATE_ABBR_UNIT" xml:space="preserve">
     <value>Biom. acc. rate (/{0})</value>
     <comment>{0}: ??? unit</comment>
   </data>
@@ -1571,7 +1571,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_PP" xml:space="preserve">
     <value>Part of production from primary productivity</value>
   </data>
-  <data name="HEADER_COSTSTART" xml:space="preserve">
+  <data name="HEADER_COST_START" xml:space="preserve">
     <value>Cost (start)</value>
   </data>
   <data name="HEADER_SUM_CATCH" xml:space="preserve">
@@ -1748,7 +1748,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>'{0}' does not seem to be a valid Ecopath model.</value>
     <comment>{0}: model path</comment>
   </data>
-  <data name="HEADER_CATCHVALUE" xml:space="preserve">
+  <data name="HEADER_CATCH_VALUE" xml:space="preserve">
     <value>Catch value</value>
   </data>
   <data name="HEADER_PRODCONS" xml:space="preserve">
@@ -1829,7 +1829,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_MANDATED_REBUILDING" xml:space="preserve">
     <value>Mandated rebuilding</value>
   </data>
-  <data name="PSD_YAXISLABEL_BIOMASS" xml:space="preserve">
+  <data name="HEADER_BIOMASS_LOGg" xml:space="preserve">
     <value>Biomass (log g)</value>
   </data>
   <data name="HEADER_GROUPS" xml:space="preserve">
@@ -1903,7 +1903,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_BIOMASS_LIMIT" xml:space="preserve">
     <value>Biomass limit</value>
   </data>
-  <data name="ABOUT_HEADER_VERSION" xml:space="preserve">
+  <data name="HEADER_VERSION" xml:space="preserve">
     <value>Version</value>
   </data>
   <data name="STATUS_MODEL_COMPACTING_FAILED" xml:space="preserve">
@@ -1915,7 +1915,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_SOCIAL_VALUE_EMPLOYMENT" xml:space="preserve">
     <value>Social value (employment)</value>
   </data>
-  <data name="PSD_LINELEGEND_BYNUM" xml:space="preserve">
+  <data name="LEGEND_BYNUM" xml:space="preserve">
     <value>By number</value>
   </data>
   <data name="STATUS_UPDATE_CHECKING" xml:space="preserve">
@@ -2018,7 +2018,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_FEEDINGTIME" xml:space="preserve">
     <value>Feeding time</value>
   </data>
-  <data name="ABOUT_VALUE_VERSION" xml:space="preserve">
+  <data name="GENERIC_VERSION" xml:space="preserve">
     <value>Version {0}</value>
     <comment>{0}: version number</comment>
   </data>
@@ -2047,13 +2047,14 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ECOSIM_GROUPINFO_OPTTEMP" xml:space="preserve">
     <value>Optimum temperature(&gt;0)</value>
   </data>
-  <data name="PSD_YAXISLABEL_PERYEAR" xml:space="preserve">
-    <value>/year</value>
+  <data name="HEADER_PER_UNIT" xml:space="preserve">
+    <value>/{0}</value>
+    <comment>{0}:unit</comment>
   </data>
   <data name="HEADER_MAXRELPB" xml:space="preserve">
     <value>Max rel. P/B</value>
   </data>
-  <data name="ABOUT_HEADER_SYSTEMCOMPONENTS" xml:space="preserve">
+  <data name="HEADER_SYSTEMCOMPONENTS" xml:space="preserve">
     <value>System components</value>
   </data>
   <data name="Seed" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -2079,8 +2080,9 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Saving Ecospace scenario '{0}'...</value>
     <comment>{0}: scenario name</comment>
   </data>
-  <data name="PSD_XAXISLABEL_AGE" xml:space="preserve">
-    <value>Age (year)</value>
+  <data name="HEADER_AGE_UNIT" xml:space="preserve">
+    <value>Age ({0})</value>
+    <comment>{0}: time unit</comment>
   </data>
   <data name="HEADER_AVGERAGEWEIGHT" xml:space="preserve">
     <value>Average weight</value>
@@ -2173,7 +2175,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ECOSPACE_HEADER_FLEETHABUSE" xml:space="preserve">
     <value>Fleet \ habitat use:</value>
   </data>
-  <data name="PSD_PLOTCAPTION_PSD" xml:space="preserve">
+  <data name="CAPTION_PSD" xml:space="preserve">
     <value>Particle size distribution</value>
   </data>
   <data name="STATUS_IMPORTING_MODEL_FAILED" xml:space="preserve">
@@ -2374,7 +2376,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HEADER_CONCENTRATION" xml:space="preserve">
     <value>Concentration</value>
   </data>
-  <data name="HEADER_CONCENTRATION_B" xml:space="preserve">
+  <data name="HEADER_CONCENTRATION_OVER_B" xml:space="preserve">
     <value>Concentration / Biomass</value>
   </data>
   <data name="HEADER_ECOSIM_YEARS" xml:space="preserve">
