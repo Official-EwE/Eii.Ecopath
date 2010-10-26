@@ -958,20 +958,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property plugin() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("plugin", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Public ReadOnly Property pluginpoint() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("pluginpoint", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Public ReadOnly Property PrintHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("PrintHS", resourceCulture)

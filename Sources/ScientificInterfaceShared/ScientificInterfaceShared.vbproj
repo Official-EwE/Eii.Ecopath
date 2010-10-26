@@ -504,8 +504,6 @@
     <None Include="Resources\ProtectFormHS.png" />
     <None Include="Resources\PrintPreviewHS.png" />
     <None Include="Resources\PrintHS.png" />
-    <None Include="Resources\pluginpoint.png" />
-    <None Include="Resources\plugin.png" />
     <None Include="Resources\OptionsHS.png" />
     <None Include="Resources\openHS.png" />
     <None Include="Resources\OK.bmp" />

@@ -26,7 +26,7 @@ Namespace My.Resources
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
-    Friend Module Resources
+    Public Module Resources
         
         Private resourceMan As Global.System.Resources.ResourceManager
         
@@ -36,7 +36,7 @@ Namespace My.Resources
         '''  Returns the cached ResourceManager instance used by this class.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
+        Public ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
                     Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("EwEPlugin.Resources", GetType(Resources).Assembly)
@@ -51,7 +51,7 @@ Namespace My.Resources
         '''  resource lookups using this strongly typed resource class.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Property Culture() As Global.System.Globalization.CultureInfo
+        Public Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
@@ -60,7 +60,7 @@ Namespace My.Resources
             End Set
         End Property
         
-        Friend ReadOnly Property plugin() As System.Drawing.Bitmap
+        Public ReadOnly Property plugin() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("plugin", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -70,7 +70,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Plug-in assembly &apos;{0}&apos; has caused error &apos;{1}&apos;.
         '''</summary>
-        Friend ReadOnly Property PLUGIN_ERROR_GENERIC() As String
+        Public ReadOnly Property PLUGIN_ERROR_GENERIC() As String
             Get
                 Return ResourceManager.GetString("PLUGIN_ERROR_GENERIC", resourceCulture)
             End Get
@@ -79,7 +79,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Plug-in &apos;{0}&apos;, module &apos;{1}&apos;, method &apos;{2}&apos; reports the following error: &apos;{3}&apos;.
         '''</summary>
-        Friend ReadOnly Property PLUGIN_ERROR_POINT() As String
+        Public ReadOnly Property PLUGIN_ERROR_POINT() As String
             Get
                 Return ResourceManager.GetString("PLUGIN_ERROR_POINT", resourceCulture)
             End Get
@@ -88,9 +88,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Duplicate plug-in name &apos;{1}&apos; encountered in &apos;{0}&apos;; this plug-in should not be used..
         '''</summary>
-        Friend ReadOnly Property PLUGIN_EXCEPTION_DUPLICATE() As String
+        Public ReadOnly Property PLUGIN_EXCEPTION_DUPLICATE() As String
             Get
                 Return ResourceManager.GetString("PLUGIN_EXCEPTION_DUPLICATE", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property pluginpoint() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("pluginpoint", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
     End Module
