@@ -5,6 +5,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
 #End Region
@@ -599,8 +600,8 @@ Namespace Ecospace
             Next
 
             ' Format new layer with an autonumber value based on existing names
-            Dim iNextNum As Integer = cStringUtils.GetNextNumber(lstrLayers.ToArray(), My.Resources.DEFAULT_NEWLAYER_NUM)
-            Dim strName As String = String.Format(My.Resources.DEFAULT_NEWLAYER_NUM, iNextNum)
+            Dim iNextNum As Integer = cStringUtils.GetNextNumber(lstrLayers.ToArray(), SharedResources.DEFAULT_NEWLAYER_NUM)
+            Dim strName As String = String.Format(SharedResources.DEFAULT_NEWLAYER_NUM, iNextNum)
 
             li = New LayerInfo(strName, "", 1.0!)
             Me.m_alLayers.Insert(iLayer, li)

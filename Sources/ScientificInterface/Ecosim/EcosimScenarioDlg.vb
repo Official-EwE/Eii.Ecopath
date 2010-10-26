@@ -6,6 +6,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterface.Wizard
 Imports ScientificInterface.Ecosim
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -48,7 +49,7 @@ Namespace Ecosim
         End Function
 
         Protected Overrides Function GetNewScenarioName() As String
-            Return My.Resources.DEFAULT_NEWECOSIMSCENARIO
+            Return SharedResources.DEFAULT_NEWECOSIMSCENARIO
         End Function
 
         Protected Overrides Function GetDialogCaption(ByVal mode As Wizard.EwEScenarioDlg.eDialogModeType, ByVal strEwEModelName As String) As String

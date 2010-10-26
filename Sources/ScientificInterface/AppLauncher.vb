@@ -2337,7 +2337,7 @@ Public Class AppLauncher
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-        cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", SharedResources.FILEFILTER_MODEL_SAVE, 1)
+        cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, "", SharedResources.FILEFILTER_MODEL_SAVE, 1)
 
         If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
             ' #Yes: able to create model at selected location?
@@ -2424,7 +2424,7 @@ Public Class AppLauncher
                 Return
         End Select
 
-        cmdFS.Invoke(My.Resources.DEFAULT_NEWMODELNAME, "", strFileFilter)
+        cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, "", strFileFilter)
 
         If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
 

@@ -3,8 +3,9 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Utilities
-Imports SourceGrid2
 Imports ScientificInterface.Other
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2
 Imports SourceGrid2.VisualModels
 
 #End Region ' Imports
@@ -599,8 +600,8 @@ Imports SourceGrid2.VisualModels
             lstrFleetNames.Add(Me.m_lfiFleets(i).Name)
         Next i
 
-        fi = New cFleetInfo(String.Format(My.Resources.DEFAULT_NEWFLEET_NUM, _
-                cStringUtils.GetNextNumber(lstrFleetNames.ToArray, My.Resources.DEFAULT_NEWFLEET_NUM)))
+        fi = New cFleetInfo(String.Format(SharedResources.DEFAULT_NEWFLEET_NUM, _
+                cStringUtils.GetNextNumber(lstrFleetNames.ToArray, SharedResources.DEFAULT_NEWFLEET_NUM)))
         Me.m_lfiFleets.Insert(iFleet, fi)
 
         Me.UpdateGrid()

@@ -6,6 +6,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -640,8 +641,8 @@ Namespace Ecospace
                 lstrMPAs.Add(mi.Name)
             Next
 
-            mi = New MPAInfo(String.Format(My.Resources.DEFAULT_NEWMPA_NUM, _
-                    cStringUtils.GetNextNumber(lstrMPAs.ToArray(), My.Resources.DEFAULT_NEWMPA_NUM)))
+            mi = New MPAInfo(String.Format(SharedResources.DEFAULT_NEWMPA_NUM, _
+                    cStringUtils.GetNextNumber(lstrMPAs.ToArray(), SharedResources.DEFAULT_NEWMPA_NUM)))
             Me.m_alMPAs.Insert(iMPA, mi)
 
             Me.UpdateGrid()

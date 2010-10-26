@@ -596,4 +596,43 @@
   <data name="GENERIC_VALUE_NO_DATA_AVAILABLE" xml:space="preserve">
     <value>No data available</value>
   </data>
+  <data name="DEFAULT_NEWECOSIMSCENARIO" xml:space="preserve">
+    <value>New Ecosim scenario</value>
+    <comment>The default name for a new Ecosim scenario</comment>
+  </data>
+  <data name="DEFAULT_NEWECOSPACESCENARIO" xml:space="preserve">
+    <value>New Ecospace scenario</value>
+    <comment>The default name for a new Ecospace scenario</comment>
+  </data>
+  <data name="DEFAULT_NEWECOTRACERSCENARIO" xml:space="preserve">
+    <value>New Ecotracer scenario</value>
+  </data>
+  <data name="DEFAULT_NEWFLEET_NUM" xml:space="preserve">
+    <value>Fleet {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="DEFAULT_NEWGROUP_NUM" xml:space="preserve">
+    <value>Group {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="DEFAULT_NEWHABITAT_NUM" xml:space="preserve">
+    <value>Habitat {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="DEFAULT_NEWLAYER_NUM" xml:space="preserve">
+    <value>Layer {0}</value>
+    <comment>{0}: layer number</comment>
+  </data>
+  <data name="DEFAULT_NEWMODELNAME" xml:space="preserve">
+    <value>New model</value>
+    <comment>The default name for a new Ecopath model</comment>
+  </data>
+  <data name="DEFAULT_NEWMPA_NUM" xml:space="preserve">
+    <value>MPA {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="DEFAULT_NEWREGION_NUM" xml:space="preserve">
+    <value>Region {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
 </root>

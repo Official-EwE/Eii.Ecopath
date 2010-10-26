@@ -6,6 +6,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterface.Wizard
 Imports ScientificInterface.Ecospace
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -47,7 +48,7 @@ Namespace Ecospace
         End Function
 
         Protected Overrides Function GetNewScenarioName() As String
-            Return My.Resources.DEFAULT_NEWECOSPACESCENARIO
+            Return SharedResources.DEFAULT_NEWECOSPACESCENARIO
         End Function
 
         Protected Overrides Function GetDialogCaption(ByVal mode As Wizard.EwEScenarioDlg.eDialogModeType, ByVal strEwEModelName As String) As String

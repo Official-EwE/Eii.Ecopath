@@ -7,6 +7,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -623,8 +624,8 @@ Namespace Ecospace
                 lstrRegions.Add(ri.Name)
             Next
 
-            Me.CreateRegion(String.Format(My.Resources.DEFAULT_NEWREGION_NUM, _
-                    cStringUtils.GetNextNumber(lstrRegions.ToArray(), My.Resources.DEFAULT_NEWREGION_NUM)))
+            Me.CreateRegion(String.Format(SharedResources.DEFAULT_NEWREGION_NUM, _
+                    cStringUtils.GetNextNumber(lstrRegions.ToArray(), SharedResources.DEFAULT_NEWREGION_NUM)))
         End Sub
 
         ''' -------------------------------------------------------------------

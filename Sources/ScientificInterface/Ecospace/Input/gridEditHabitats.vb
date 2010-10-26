@@ -6,11 +6,15 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
 Namespace Ecospace
 
+    ''' <summary>
+    ''' Grid catered to defining <see cref="cEcospaceHabitat">habitats</see>.
+    ''' </summary>
     <CLSCompliant(False)> _
     Public Class gridEditHabitats
         : Inherits EwEGrid
@@ -530,8 +534,8 @@ Namespace Ecospace
             Next
 
             ' Format new hab with an autonumber value based on existing names
-            hi = New HabitatInfo(String.Format(My.Resources.DEFAULT_NEWHABITAT_NUM, _
-                    cStringUtils.GetNextNumber(lstrHabitats.ToArray(), My.Resources.DEFAULT_NEWHABITAT_NUM)))
+            hi = New HabitatInfo(String.Format(SharedResources.DEFAULT_NEWHABITAT_NUM, _
+                    cStringUtils.GetNextNumber(lstrHabitats.ToArray(), SharedResources.DEFAULT_NEWHABITAT_NUM)))
             Me.m_alHabitats.Insert(iHabitat, hi)
 
             Me.UpdateGrid()

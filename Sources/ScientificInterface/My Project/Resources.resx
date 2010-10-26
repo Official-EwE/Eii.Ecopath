@@ -268,10 +268,6 @@
   <data name="glyph_rubble_lightblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_rubble_lightblue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DEFAULT_NEWECOSPACESCENARIO" xml:space="preserve">
-    <value>New Ecospace scenario</value>
-    <comment>The default name for a new Ecospace scenario</comment>
-  </data>
   <data name="STATUS_ADDTIMESERIES" xml:space="preserve">
     <value>Adding time series {0} ...</value>
     <comment>{0}: time series name</comment>
@@ -360,10 +356,6 @@
     <value>Are you sure you want to delete {0} habitat(s)? This action cannot be undone.</value>
     <comment>{0}: habitat count</comment>
   </data>
-  <data name="DEFAULT_NEWGROUP_NUM" xml:space="preserve">
-    <value>Group {0}</value>
-    <comment>{0}: sequential number</comment>
-  </data>
   <data name="HEADER_INDIVIDUAL_WEIGHT" xml:space="preserve">
     <value>Individual weight</value>
   </data>
@@ -424,10 +416,6 @@
   </data>
   <data name="HEADER_NETMIGRATE" xml:space="preserve">
     <value>+ Net migration rate</value>
-  </data>
-  <data name="DEFAULT_NEWHABITAT_NUM" xml:space="preserve">
-    <value>Habitat {0}</value>
-    <comment>{0}: sequential number</comment>
   </data>
   <data name="ECOSPACE_HEADER_HABITAT_AREA" xml:space="preserve">
     <value>Habitat area</value>
@@ -624,10 +612,6 @@
   <data name="ECOSIM_LABEL_RUN" xml:space="preserve">
     <value>Run {0}</value>
     <comment>{0}: run number</comment>
-  </data>
-  <data name="DEFAULT_NEWLAYER_NUM" xml:space="preserve">
-    <value>Layer {0}</value>
-    <comment>{0}: layer number</comment>
   </data>
   <data name="SEARCH_STATUS_COMPLETED" xml:space="preserve">
     <value>Search completed</value>
@@ -1290,10 +1274,6 @@
   <data name="HEADER_PRODRESP" xml:space="preserve">
     <value>Production / respiration</value>
   </data>
-  <data name="DEFAULT_NEWMPA_NUM" xml:space="preserve">
-    <value>MPA {0}</value>
-    <comment>{0}: sequential number</comment>
-  </data>
   <data name="ECOSIM_VALUE_ALL_RUNS" xml:space="preserve">
     <value>(All runs)</value>
   </data>
@@ -1641,10 +1621,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Emigration rate (/{0})</value>
     <comment>{0}: ??? unit</comment>
   </data>
-  <data name="DEFAULT_NEWECOSIMSCENARIO" xml:space="preserve">
-    <value>New Ecosim scenario</value>
-    <comment>The default name for a new Ecosim scenario</comment>
-  </data>
   <data name="SR_PLOT_TITLE" xml:space="preserve">
     <value>S/R plot</value>
   </data>
@@ -1802,10 +1778,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="GENERIC_PROMPT_USEANSWERAGAIN" xml:space="preserve">
     <value>Use this answer automatically until the model has been reloaded</value>
-  </data>
-  <data name="DEFAULT_NEWFLEET_NUM" xml:space="preserve">
-    <value>Fleet {0}</value>
-    <comment>{0}: sequential number</comment>
   </data>
   <data name="HEADER_FLEETS" xml:space="preserve">
     <value>Fleets</value>
@@ -2012,10 +1984,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Are you sure you want to delete habitat '{0}'? This action cannot be undone.</value>
     <comment>{0}: habitat name</comment>
   </data>
-  <data name="DEFAULT_NEWREGION_NUM" xml:space="preserve">
-    <value>Region {0}</value>
-    <comment>{0}: sequential number</comment>
-  </data>
   <data name="HEADER_UPPERLIMIT" xml:space="preserve">
     <value>Upper limit</value>
   </data>
@@ -2156,9 +2124,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="STATUS_ECOPATH_LOADING" xml:space="preserve">
     <value>Loading model...</value>
   </data>
-  <data name="DEFAULT_NEWECOTRACERSCENARIO" xml:space="preserve">
-    <value>New Ecotracer scenario</value>
-  </data>
   <data name="HEADER_MAXEFFORT" xml:space="preserve">
     <value>Max effort</value>
   </data>
@@ -2240,10 +2205,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="HEADER_ECOSYSTEM_STRUCTURE" xml:space="preserve">
     <value>Ecosystem structure</value>
-  </data>
-  <data name="DEFAULT_NEWMODELNAME" xml:space="preserve">
-    <value>New model</value>
-    <comment>The default name for a new Ecopath model</comment>
   </data>
   <data name="HEADER_BIOMASS_UPPER" xml:space="preserve">
     <value>Biomass upper</value>

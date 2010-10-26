@@ -7,6 +7,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports EwEUtils.Drawing
 Imports ScientificInterface.Other
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
 #End Region ' Imports
@@ -1292,7 +1293,8 @@ Public Class gridEditGroups
             lstrGroupNames.Add(Me.m_lgiGroups(i).Name)
         Next i
         gi = New cGroupInfo( _
-            String.Format(My.Resources.DEFAULT_NEWGROUP_NUM, cStringUtils.GetNextNumber(lstrGroupNames.ToArray, My.Resources.DEFAULT_NEWGROUP_NUM)))
+            String.Format(SharedResources.DEFAULT_NEWGROUP_NUM, _
+                          cStringUtils.GetNextNumber(lstrGroupNames.ToArray, SharedResources.DEFAULT_NEWGROUP_NUM)))
         Me.m_lgiGroups.Insert(iGroup, gi)
 
         Me.UpdateGrid()

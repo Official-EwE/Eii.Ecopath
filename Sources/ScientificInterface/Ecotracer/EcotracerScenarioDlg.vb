@@ -6,6 +6,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterface.Wizard
 Imports ScientificInterface.Ecotracer
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -47,7 +48,7 @@ Namespace Ecotracer
         End Function
 
         Protected Overrides Function GetNewScenarioName() As String
-            Return My.Resources.DEFAULT_NEWECOTRACERSCENARIO
+            Return SharedResources.DEFAULT_NEWECOTRACERSCENARIO
         End Function
 
         Protected Overrides Function GetDialogCaption(ByVal mode As Wizard.EwEScenarioDlg.eDialogModeType, ByVal strEwEModelName As String) As String

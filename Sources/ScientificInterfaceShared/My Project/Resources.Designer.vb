@@ -109,6 +109,96 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to New Ecosim scenario.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWECOSIMSCENARIO() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWECOSIMSCENARIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to New Ecospace scenario.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWECOSPACESCENARIO() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWECOSPACESCENARIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to New Ecotracer scenario.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWECOTRACERSCENARIO() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWECOTRACERSCENARIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fleet {0}.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWFLEET_NUM() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWFLEET_NUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Group {0}.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWGROUP_NUM() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWGROUP_NUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Habitat {0}.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWHABITAT_NUM() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWHABITAT_NUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Layer {0}.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWLAYER_NUM() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWLAYER_NUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to New model.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWMODELNAME() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWMODELNAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MPA {0}.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWMPA_NUM() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWMPA_NUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Region {0}.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_NEWREGION_NUM() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_NEWREGION_NUM", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property DeleteHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("DeleteHS", resourceCulture)
