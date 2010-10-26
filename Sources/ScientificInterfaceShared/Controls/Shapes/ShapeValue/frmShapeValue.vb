@@ -619,7 +619,7 @@ Public Class frmShapeValue
             Case eTimeSeriesCategoryType.Fleet
                 m_lblPoolCode.Text = My.Resources.LABEL_FLEET
                 For i As Integer = 1 To Me.Core.nFleets
-                    m_cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.Core.FleetInputs(i).Name))
+                    m_cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXED, i, Me.Core.FleetInputs(i).Name))
                 Next
                 If Me.m_shape IsNot Nothing Then
                     fts = CType(Me.m_shape, cFleetTimeSeries)
@@ -630,7 +630,7 @@ Public Class frmShapeValue
             Case eTimeSeriesCategoryType.Group
                 m_lblPoolCode.Text = My.Resources.LABEL_GROUP
                 For i As Integer = 1 To Me.Core.nGroups
-                    m_cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, i, Me.Core.EcoPathGroupInputs(i).Name))
+                    m_cmbPoolCode.Items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXED, i, Me.Core.EcoPathGroupInputs(i).Name))
                 Next
                 If (Me.m_shape IsNot Nothing) Then
                     gts = CType(Me.m_shape, cGroupTimeSeries)

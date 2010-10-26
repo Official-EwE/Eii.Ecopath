@@ -1295,7 +1295,7 @@ Public Class AppLauncher
             Dim str As String() = CStr(alMRU.Item(i)).Split(New Char() {";"c})
 
             item = New ToolStripMenuItem()
-            item.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, i + 1, str(0))
+            item.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXED, i + 1, str(0))
             item.Tag = str(0)
 
             'Add event handler to invoke the model

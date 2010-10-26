@@ -92,10 +92,10 @@ Namespace Controls
                 If (TypeOf Me.m_objItem Is ICoreInterface) Then
                     If (TypeOf Me.m_objItem Is cForcingFunction) Then
                         Dim obj As cForcingFunction = DirectCast(Me.m_objItem, cForcingFunction)
-                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, (obj.ID + 1), obj.Name)
+                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, (obj.ID + 1), obj.Name)
                     Else
                         Dim obj As ICoreInterface = DirectCast(Me.m_objItem, ICoreInterface)
-                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, obj.Index, obj.Name)
+                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
                     End If
                 End If
                 Return Me.m_objItem.ToString()

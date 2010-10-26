@@ -64,7 +64,7 @@ Namespace Controls
             If (Me.m_source Is Nothing) Then
                 Return Me.m_strLabel
             End If
-            Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, _
                                  Me.m_source.Index, _
                                  Me.m_source.Name)
         End Function

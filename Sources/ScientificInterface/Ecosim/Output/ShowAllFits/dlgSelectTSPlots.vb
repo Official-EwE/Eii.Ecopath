@@ -37,7 +37,7 @@ Namespace Ecosim
             For i As Integer = 0 To Me.m_lplots.Count - 1
                 plot = Me.m_lplots(i)
                 ts = plot.TimeSeries
-                clbAllPlots.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, ts.Index, ts.Name), _
+                clbAllPlots.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, ts.Index, ts.Name), _
                     plot.Selected)
             Next
 

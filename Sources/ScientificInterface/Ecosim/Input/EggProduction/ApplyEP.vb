@@ -164,7 +164,7 @@ Namespace Ecosim
                         End Using
 
                         ' Create label
-                        item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, (shapeFunc.ID + 1), shapeFunc.Name))
+                        item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, (shapeFunc.ID + 1), shapeFunc.Name))
                         item.ImageIndex = iItemIndex
                         m_lvShapes.Items.Add(item)
 

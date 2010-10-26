@@ -314,7 +314,7 @@ Namespace Ecosim
                         iGroup = stanza.iGroups(j)
                         groupStart = Me.Core.EcoPathGroupInputs(iGroup)
 
-                        strTitle = String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, groupStart.Name, groupEnd.Name)
+                        strTitle = String.Format(SharedResources.GENERIC_LABEL_DETAILED, groupStart.Name, groupEnd.Name)
                         srl = New SRLine()
                         srl.Title = strTitle
                         srl.StanzaGroup = stanza

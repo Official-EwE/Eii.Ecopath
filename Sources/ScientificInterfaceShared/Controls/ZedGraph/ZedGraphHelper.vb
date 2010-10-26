@@ -145,7 +145,7 @@ Namespace Controls
                     If Not String.IsNullOrEmpty(Me.m_strLabel) Then Return Me.m_strLabel
                     ' Deduct from source
                     If Me.m_source IsNot Nothing Then
-                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                        Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, _
                                              Me.m_source.Index, Me.m_source.Name)
                     End If
                     ' Hmm...

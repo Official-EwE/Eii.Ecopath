@@ -35,7 +35,7 @@ Public Class gridFishingWeights
             src = Me.Core.FleetInputs(iFleet)
             Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
                                                              src, eVarNameFlags.Name, Nothing, _
-                                                             SharedResources.GENERIC_LABEL_DETAILEDLABEL, cStyleGuide.eUnitType.Currency)
+                                                             SharedResources.GENERIC_LABEL_DETAILED, cStyleGuide.eUnitType.Currency)
         Next
 
         Me.FixedColumns = 2

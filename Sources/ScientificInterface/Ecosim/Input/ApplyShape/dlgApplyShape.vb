@@ -151,8 +151,8 @@ Namespace Ecosim
             ' Load Prey and predator pair name
             Select Case m_editMode
                 Case eEditMode.PredPrey
-                    m_txbPreyName.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPrey, m_strSelPreyName)
-                    m_txbPredName.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, m_iSelPredIndex, m_strSelPredName)
+                    m_txbPreyName.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXED, m_iSelPrey, m_strSelPreyName)
+                    m_txbPredName.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXED, m_iSelPredIndex, m_strSelPredName)
                 Case eEditMode.Prey
                     m_lblTitle.Text = String.Format(My.Resources.ECOSIM_PROMPT_APPLY_SHAPES_PREY, m_iSelPrey, m_strSelPreyName)
                 Case eEditMode.Predator
@@ -511,7 +511,7 @@ Namespace Ecosim
 
                     If Me.IsAllowedShape(ff) Then
                         ' JS 30nov09: add ff index to label
-                        item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, ff.Index, ff.Name))
+                        item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name))
                         item.ImageIndex = FindImageIndex(ff)
                         item.Tag = ff
                         m_lvAllShapes.Items.Add(item)
@@ -545,7 +545,7 @@ Namespace Ecosim
 
                     ppi.getShape(i, shape, ffappl)
                     ' JS 30nov09: add index to label
-                    item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, shape.Index, shape.Name))
+                    item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
                     item.ImageIndex = FindImageIndex(shape)
                     item.SubItems.Add(GetMultiplierFromType(ffappl))
                     item.SubItems.Add(FindAppliedShapeIndex(shape).ToString)

@@ -359,7 +359,7 @@ Namespace Controls
 
                     largeImageList.Images.Add(ShapeImage.IconImage(Me.UIContext, shape, Me.m_clr, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning))
 
-                    item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, shape.Index, shape.Name))
+                    item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
                     item.ImageIndex = i
                     item.Tag = shape
                     ' Set enabled flag

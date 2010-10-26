@@ -116,7 +116,7 @@ Namespace Ecosim
                     ' Draw title
                     ' ===============
                     If Me.m_chkShowWeight.Checked Then
-                        strTitle = String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, plot.TimeSeries.Name, _
+                        strTitle = String.Format(SharedResources.GENERIC_LABEL_DETAILED, plot.TimeSeries.Name, _
                             Me.StyleGuide.FormatNumber(plot.TimeSeries.WtType))
                     Else
                         strTitle = plot.TimeSeries.Name

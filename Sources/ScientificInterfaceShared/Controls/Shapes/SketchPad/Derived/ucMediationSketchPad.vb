@@ -65,7 +65,7 @@ Namespace Controls
             sfmt.Alignment = StringAlignment.Center
             sfmt.LineAlignment = StringAlignment.Center
 
-            strCaption = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+            strCaption = String.Format(My.Resources.GENERIC_LABEL_INDEXED, _
                                        (DirectCast(Me.Shape, cMediationFunction).ID + 1), _
                                        Me.Shape.Name)
 

@@ -64,7 +64,7 @@ Namespace Ecosim
             If Me.m_bShowGroups Then
                 For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
                     group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
-                    Me.m_clbGroups.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, iGroup, group.Name), _
+                    Me.m_clbGroups.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name), _
                                              Me.m_uic.StyleGuide.GroupVisible(iGroup))
                 Next
             End If
@@ -77,7 +77,7 @@ Namespace Ecosim
             Me.m_clbFleets.Items.Clear()
             For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
                 fleet = Me.m_uic.Core.FleetInputs(iFleet)
-                Me.m_clbFleets.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, iFleet, fleet.Name), _
+                Me.m_clbFleets.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, iFleet, fleet.Name), _
                                          Me.m_uic.StyleGuide.FleetVisible(iFleet))
             Next
 

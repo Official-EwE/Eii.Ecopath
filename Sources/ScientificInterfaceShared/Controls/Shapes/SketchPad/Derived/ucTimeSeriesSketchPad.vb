@@ -136,7 +136,7 @@ Namespace Controls
                 End If
 
                 ' Draw time series name
-                strLabel = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, Me.Shape.Index, Me.Shape.Name)
+                strLabel = String.Format(My.Resources.GENERIC_LABEL_INDEXED, Me.Shape.Index, Me.Shape.Name)
                 g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, fmt)
 
                 ' Draw time series type
@@ -166,7 +166,7 @@ Namespace Controls
 
                 End If
 
-                strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAIL, strType, strName)
+                strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAILED, strType, strName)
                 g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 33, fmt)
 
                 ' Dispose the pen, brush and font we created and let the system garbage collect them.

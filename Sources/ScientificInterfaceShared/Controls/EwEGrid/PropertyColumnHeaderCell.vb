@@ -301,7 +301,7 @@ Namespace Controls.EwEGrid
             Dim strText As String = ""
             If (Me.m_propTooltip IsNot Nothing) Then
                 If (Me.m_propTooltip.Source IsNot Nothing) Then
-                    strText = String.Format(My.Resources.GENERIC_LABEL_INDEXEDLABEL, _
+                    strText = String.Format(My.Resources.GENERIC_LABEL_INDEXED, _
                                             Me.m_propTooltip.Source.Index, _
                                             Me.m_propTooltip.Source().Name)
                 End If

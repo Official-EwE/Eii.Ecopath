@@ -161,7 +161,7 @@ Public Class cEwEStatusBar
                                                simScenario.Name, _
                                                tsds.Name, _
                                                Me.ToTooltipLabel(simScenario.Description))
-                    strName = String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, simScenario.Name, tsds.Name)
+                    strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, simScenario.Name, tsds.Name)
                 Else
                     strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
                                                vbNewLine, _
@@ -223,7 +223,7 @@ Public Class cEwEStatusBar
     End Function
 
     Private Function ToTooltipNameLabel(ByVal strName As String, ByVal bModified As Boolean) As String
-        If bModified Then Return String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, strName, My.Resources.STATUSSTRIP_MODIFIED)
+        If bModified Then Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, strName, My.Resources.STATUSSTRIP_MODIFIED)
         Return strName
     End Function
 
@@ -296,6 +296,9 @@ Public Class cEwEStatusBar
         Dim srcSec As cCoreInputOutputBase = Nothing
         Dim bSecMixed As Boolean = False
         Dim strSec As String = ""
+        Dim bVarMixed As Boolean = False
+        Dim vn As eVarNameFlags = eVarNameFlags.NotSet
+        Dim vdesc As cVariableDescriptor = Nothing
 
         If Not Me.m_csm.HasEcopathLoaded() Then
             ' Clear selection
@@ -315,7 +318,13 @@ Public Class cEwEStatusBar
                     If (Not Object.ReferenceEquals(srcPrim, Nothing)) Then
                         bPrimMixed = bPrimMixed Or (Not Object.ReferenceEquals(prop.Source, srcPrim))
                     End If
+
+                    If (vn <> eVarNameFlags.NotSet) Then
+                        bVarMixed = bVarMixed Or (vn <> prop.VarName)
+                    End If
+
                     srcPrim = prop.Source
+                    vn = prop.VarName
                 End If
 
                 If (Not Object.ReferenceEquals(prop.SourceSec, Nothing)) Then
@@ -336,6 +345,7 @@ Public Class cEwEStatusBar
                     strSelection = My.Resources.SELECTION_DERIVED
                 End If
             Else
+
                 ' #No: format prim string 
                 If (bPrimMixed = False) Then
                     strPrim = srcPrim.Name
@@ -355,9 +365,14 @@ Public Class cEwEStatusBar
                     End If
 
                     ' Format as multiple
-                    strSelection = String.Format("{0} - {1}", strPrim, strSec)
+                    strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, strPrim, strSec)
                 End If
             End If
+        End If
+
+        If Not bVarMixed Then
+            vdesc = cVariableDescriptor.FromVarname(vn)
+            strSelection = String.Format(SharedResources.GENERIC_LABEL_INDEXED, vdesc.Name, strSelection)
         End If
 
         Me.UpdateToolstripItem(Me.m_tsSelection, strSelection)

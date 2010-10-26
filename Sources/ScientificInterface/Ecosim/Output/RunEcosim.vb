@@ -826,7 +826,7 @@ Namespace Ecosim
                     Next
 
                     ' Add line to graph.
-                    lLines.Add(Me.m_zgp.CreateLine(gts, ppl, String.Format(sharedresources.GENERIC_LABEL_DETAILEDLABEL, ts.Name, group.Name)))
+                    lLines.Add(Me.m_zgp.CreateLine(gts, ppl, String.Format(SharedResources.GENERIC_LABEL_DETAILED, ts.Name, group.Name)))
                 End If
             Next iTS
 

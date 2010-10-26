@@ -103,7 +103,7 @@ Namespace Style
         ''' </summary>
         ''' <param name="part"></param>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property GetDescription(ByVal part As eDescriptorTypes) As String
+        Public ReadOnly Property Description(ByVal part As eDescriptorTypes) As String
             Get
                 Return Me.m_astrBits(part)
             End Get
@@ -116,7 +116,7 @@ Namespace Style
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Name() As String
             Get
-                Return Me.GetDescription(eDescriptorTypes.Name)
+                Return Me.Description(eDescriptorTypes.Name)
             End Get
         End Property
 
@@ -127,7 +127,7 @@ Namespace Style
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Symbol() As String
             Get
-                Return Me.GetDescription(eDescriptorTypes.Symbol)
+                Return Me.Description(eDescriptorTypes.Symbol)
             End Get
         End Property
 
@@ -138,7 +138,7 @@ Namespace Style
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Abbreviation() As String
             Get
-                Return Me.GetDescription(eDescriptorTypes.Abbreviation)
+                Return Me.Description(eDescriptorTypes.Abbreviation)
             End Get
         End Property
 
@@ -149,7 +149,7 @@ Namespace Style
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Description() As String
             Get
-                Return Me.GetDescription(eDescriptorTypes.Description)
+                Return Me.Description(eDescriptorTypes.Description)
             End Get
         End Property
 

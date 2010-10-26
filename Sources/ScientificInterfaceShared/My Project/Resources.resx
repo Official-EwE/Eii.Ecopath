@@ -171,7 +171,7 @@
   <data name="LABEL_GROUP" xml:space="preserve">
     <value>&amp;Group:</value>
   </data>
-  <data name="GENERIC_LABEL_INDEXEDLABEL" xml:space="preserve">
+  <data name="GENERIC_LABEL_INDEXED" xml:space="preserve">
     <value>{0}: {1}</value>
     <comment>{0}:index, {1}:name</comment>
   </data>
@@ -203,10 +203,6 @@
   </data>
   <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
     <value>Ecotracer relative concentration</value>
-  </data>
-  <data name="GENERIC_LABEL_DETAIL" xml:space="preserve">
-    <value>{0} ({1})</value>
-    <comment>{0}: main value, {1}: detail for {0}</comment>
   </data>
   <data name="GENERIC_LABEL_GRAPHVALUE" xml:space="preserve">
     <value>{0}: ({1}, {2})</value>
@@ -547,9 +543,9 @@
   <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
     <value>Comma-separated text files|*.csv|ESRI Asc files|Spatial raster files|*.asc;*.csv</value>
   </data>
-  <data name="GENERIC_LABEL_DETAILEDLABEL" xml:space="preserve">
+  <data name="GENERIC_LABEL_DETAILED" xml:space="preserve">
     <value>{0} ({1})</value>
-    <comment>{0}: name, {1}: additional details that apply to {0}</comment>
+    <comment>{0}: value, {1}: additional details that apply to {0}</comment>
   </data>
   <data name="GENERIC_LABEL_HOME" xml:space="preserve">
     <value>Home</value>

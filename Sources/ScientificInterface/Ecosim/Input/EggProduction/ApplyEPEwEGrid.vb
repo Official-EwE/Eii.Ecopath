@@ -79,7 +79,7 @@ Namespace Ecosim
                 If m_EPManager.Count > 0 Then
 
                     For Each shapeFunc As cForcingFunction In m_EPManager
-                        Dim tmpStr As String = String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, (shapeFunc.ID + 1), shapeFunc.Name)
+                        Dim tmpStr As String = String.Format(SharedResources.GENERIC_LABEL_INDEXED, (shapeFunc.ID + 1), shapeFunc.Name)
                         astrShapeNames.Add(tmpStr)
                     Next
 
@@ -224,7 +224,7 @@ Namespace Ecosim
             If Not String.IsNullOrEmpty(strValue) Then
                 ' #Yes: find shape
                 For Each shapeFunc As cForcingFunction In m_EPManager
-                    Dim tmpStr As String = String.Format(SharedResources.GENERIC_LABEL_INDEXEDLABEL, (shapeFunc.ID + 1), shapeFunc.Name)
+                    Dim tmpStr As String = String.Format(SharedResources.GENERIC_LABEL_INDEXED, (shapeFunc.ID + 1), shapeFunc.Name)
                     If tmpStr = strValue Then
                         ' Shape manager needs position in list, not shape index!
                         iID = shapeFunc.ID

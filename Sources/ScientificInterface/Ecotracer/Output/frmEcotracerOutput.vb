@@ -1091,7 +1091,7 @@ Public Class frmEcotracerOutput
 
             If iRegion > 0 Then
                 strRegionName = Me.Core.EcospaceRegions(iRegion).Name
-                strLabel = String.Format(SharedResources.GENERIC_LABEL_DETAILEDLABEL, strFilter, strRegionName)
+                strLabel = String.Format(SharedResources.GENERIC_LABEL_DETAILED, strFilter, strRegionName)
             Else
                 strLabel = strFilter
             End If
