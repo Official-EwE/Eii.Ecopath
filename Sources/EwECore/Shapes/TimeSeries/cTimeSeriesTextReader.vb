@@ -26,9 +26,9 @@ Public MustInherit Class cTimeSeriesTextReader
     Private m_core As cCore = Nothing
 
     ''' <summary>Start year of the time series.</summary>
-    Private m_iFirstYear As Integer = cCore.NULL_VALUE
+    Private m_iFirstYear As Integer = 0
     ''' <summary>Number of years in the time series.</summary>
-    Private m_iNumYears As Integer = cCore.NULL_VALUE
+    Private m_iNumYears As Integer = 0
 
     ''' <summary>Internal list of read time series objects.</summary>
     Private m_ts As New List(Of cTimeSeriesImport)
@@ -80,6 +80,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <param name="astrValues">The line of text, as split by the requested delimiter.</param>
         ''' -----------------------------------------------------------------------
         Friend Sub AddRow(ByVal strLine As String, ByVal astrValues() As String)
+            If String.IsNullOrEmpty(strLine) Then Return
             Me.m_alRows.Add(strLine)
             Me.m_alRowValues.Add(astrValues)
             Me.m_alRowErrors.Add(New Text.StringBuilder)
@@ -168,7 +169,7 @@ Public MustInherit Class cTimeSeriesTextReader
         Public Function HasErrors() As Boolean
 
             Dim sb As StringBuilder = Nothing
-            Dim bHasErrors As Boolean = False
+            Dim bHasErrors As Boolean = (Me.RowCount <= 3) Or (Me.m_iColumnCount <= 1)
 
             For iRow As Integer = 1 To Me.RowCount
                 sb = Me.RowError(iRow)
@@ -270,8 +271,8 @@ Public MustInherit Class cTimeSeriesTextReader
         Me.m_ts.Clear()
         ' Clear preview
         Me.m_tsPreview = Nothing
-        Me.m_iFirstYear = cCore.NULL_VALUE
-        Me.m_iNumYears = cCore.NULL_VALUE
+        Me.m_iFirstYear = 0
+        Me.m_iNumYears = 0
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -376,7 +377,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 End Try
 
                 ' Fix Start year if not set
-                If (Me.m_iFirstYear = cCore.NULL_VALUE) Then Me.m_iFirstYear = iYear
+                If (Me.m_iFirstYear = 0) Then Me.m_iFirstYear = iYear
 
                 ' Check year increment
                 If iPrevYear <> 0 Then
@@ -441,7 +442,6 @@ Public MustInherit Class cTimeSeriesTextReader
 
         ' Sanity checks
         If (tr Is Nothing) Then Return False
-        If (iNumSeries = 0) Then Return True
 
         ' Init all weights to 1 by default
         For i As Integer = 0 To iNumSeries : asWtType(i) = 1.0! : Next i
@@ -602,7 +602,7 @@ Public MustInherit Class cTimeSeriesTextReader
         If bAllowMissing Then
             Return iNumCols >= astrCols.Length
         Else
-            Return iNumCols = astrCols.Length
+            Return iNumCols = astrCols.Length And (iNumCols > 0)
         End If
     End Function
 

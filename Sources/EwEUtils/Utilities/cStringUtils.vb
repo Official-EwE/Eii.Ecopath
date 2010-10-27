@@ -41,12 +41,10 @@ Namespace Utilities
 
             Dim rxExpression As Regex = Nothing
             Dim strPattern As String = ""
-            Dim rxo As RegexOptions = RegexOptions.None
+            Dim rxo As RegexOptions = RegexOptions.Compiled Or RegexOptions.Multiline
 
             ' Build reg ex pattern
             strPattern = String.Format("[{0}](?=(?:[^{1}]*[{1}][^{1}]*[{1}])*(?![^{1}]*[{1}]))", Regex.Escape(strDelimiter), Regex.Escape(strQualifier))
-            ' Define reg ex options
-            rxo = RegexOptions.Compiled Or RegexOptions.Multiline
             If bIgnoreCase Then rxo = rxo Or RegexOptions.IgnoreCase
             ' Build reg expression
             rxExpression = New Regex(strPattern, rxo)
