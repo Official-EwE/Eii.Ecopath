@@ -370,7 +370,7 @@ Public Class cEwEStatusBar
             End If
         End If
 
-        If Not bVarMixed Then
+        If (vn <> eVarNameFlags.NotSet) And (Not bVarMixed) Then
             vdesc = cVariableDescriptor.FromVarname(vn)
             strSelection = String.Format(SharedResources.GENERIC_LABEL_INDEXED, vdesc.Name, strSelection)
         End If
