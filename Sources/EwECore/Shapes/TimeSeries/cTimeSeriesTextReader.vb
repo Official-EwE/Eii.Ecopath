@@ -56,11 +56,11 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <remarks>Note that this number does not per definition denote the number of time series in the external text!</remarks>
         Private m_iColumnCount As Integer
         ''' <summary>Original lines of text encountered in the time series text.</summary>
-        Private m_alRows As New ArrayList
+        Private m_alRows As New List(Of String)
         ''' <summary>Lines of text from the time series text, split by delimiter.</summary>
-        Private m_alRowValues As New ArrayList
+        Private m_alRowValues As New List(Of String())
         ''' <summary>Errors encountered for each line of text.</summary>
-        Private m_alRowErrors As New ArrayList
+        Private m_alRowErrors As New List(Of StringBuilder)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -114,7 +114,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <returns>An original row of text, as read from the time series text.</returns>
         ''' -----------------------------------------------------------------------
         Public Function Row(ByVal iRow As Integer) As String
-            If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then Return CStr(Me.m_alRows(iRow - 1))
+            If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then Return Me.m_alRows(iRow - 1)
             Return ""
         End Function
 
@@ -129,7 +129,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property RowError(ByVal iRow As Integer) As StringBuilder
             Get
-                If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then Return DirectCast(Me.m_alRowErrors(iRow - 1), StringBuilder)
+                If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then Return Me.m_alRowErrors(iRow - 1)
                 Return Nothing
             End Get
         End Property
@@ -147,7 +147,7 @@ Public MustInherit Class cTimeSeriesTextReader
         Public Property Value(ByVal iColumn As Integer, ByVal iRow As Integer) As String
             Get
                 If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then
-                    Dim astrValues As String() = CType(Me.m_alRowValues(iRow - 1), String())
+                    Dim astrValues As String() = Me.m_alRowValues(iRow - 1)
                     If (iColumn > 0 And iColumn <= astrValues.Length) Then
                         Return astrValues(iColumn - 1)
                     End If
@@ -156,7 +156,7 @@ Public MustInherit Class cTimeSeriesTextReader
             End Get
             Friend Set(ByVal value As String)
                 If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then
-                    Dim astrValues As String() = CType(Me.m_alRowValues(iRow - 1), String())
+                    Dim astrValues As String() = Me.m_alRowValues(iRow - 1)
                     If (iColumn > 0 And iColumn <= astrValues.Length) Then
                         astrValues(iColumn - 1) = value
                         Me.m_alRowValues(iRow - 1) = astrValues
@@ -294,12 +294,20 @@ Public MustInherit Class cTimeSeriesTextReader
         If (reader Is Nothing) Then Return False
 
         Try
+
             ' Count number of captions from header line
             strLine = Me.ReadLine(reader, iLineNumber)
-            astrCols = Me.SplitLine(strLine)
+
+            If String.IsNullOrEmpty(strLine) Then
+                ' Init preview
+                Me.m_tsPreview = New cPreview(0)
+                Return True
+            End If
 
             ' Init preview
+            astrCols = Me.SplitLine(strLine)
             Me.m_tsPreview = New cPreview(astrCols.Length)
+
             ' Add header to preview
             Me.m_tsPreview.AddRow(strLine, astrCols)
 
@@ -429,8 +437,11 @@ Public MustInherit Class cTimeSeriesTextReader
         Dim aiDatPool(iNumSeries) As Integer
         Dim aiType(iNumSeries) As eTimeSeriesType
 
+        Me.m_ts.Clear()
+
         ' Sanity checks
         If (tr Is Nothing) Then Return False
+        If (iNumSeries = 0) Then Return True
 
         ' Init all weights to 1 by default
         For i As Integer = 0 To iNumSeries : asWtType(i) = 1.0! : Next i

@@ -59,7 +59,10 @@ Public Class dlgManageTimeSeries
 
     Private m_tr As cTimeSeriesTextReader = Nothing
     Private m_strImportFileName As String = ""
-    Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
+    Private m_bLimitPreview As Boolean = True
+
+    ' Disabled sketch pad to preview TS
+    'Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
 
     Public Sub New(ByVal uic As cUIContext, ByVal mode As eModeType)
 
@@ -81,9 +84,10 @@ Public Class dlgManageTimeSeries
         Me.m_tbImportAuthor.Text = Me.m_uic.Core.EwEModel.Author
         Me.m_tbImportContact.Text = Me.m_uic.Core.EwEModel.Contact
 
-        Me.m_spTimeSeriesPreview.UIContext = Me.m_uic
-        Me.m_tsh = New cTimeSeriesShapeGUIHandler()
-        Me.m_tsh.Attach(Me.m_uic, Nothing, Nothing, Me.m_spTimeSeriesPreview, Nothing)
+        ' Disabled sketch pad to preview TS
+        'Me.m_spTimeSeriesPreview.UIContext = Me.m_uic
+        'Me.m_tsh = New cTimeSeriesShapeGUIHandler()
+        'Me.m_tsh.Attach(Me.m_uic, Nothing, Nothing, Me.m_spTimeSeriesPreview, Nothing)
 
         Me.FillImportDatasetCombo()
         Me.ReloadTimeSeries()
@@ -105,8 +109,10 @@ Public Class dlgManageTimeSeries
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        Me.m_tsh.Detach()
-        Me.m_tsh = Nothing
+        ' Disabled sketch pad to preview TS
+        'Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
+        'Me.m_tsh.Detach()
+        'Me.m_tsh = Nothing
         MyBase.OnFormClosed(e)
     End Sub
 
@@ -264,17 +270,20 @@ Public Class dlgManageTimeSeries
 
     ' -- Preview --
 
-    Private Sub OnSelectPreviewTS(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_cmbTimeSeriesPreview.SelectedIndexChanged
+    ' Disabled code: handler a combo box that shows the number of preview TS
+    'Private Sub OnSelectPreviewTS(ByVal sender As Object, ByVal e As System.EventArgs)
+    '    Dim iShape As Integer = Me.m_cmbTimeSeriesPreview.SelectedIndex
+    '    If (iShape = -1) Then
+    '        Me.m_tsh.SelectedShape = Nothing
+    '    Else
+    '        Me.m_tsh.SelectedShape = Me.m_tr(iShape)
+    '    End If
+    'End Sub
 
-        Dim iShape As Integer = Me.m_cmbTimeSeriesPreview.SelectedIndex
-
-        If (iShape = -1) Then
-            Me.m_tsh.SelectedShape = Nothing
-        Else
-            Me.m_tsh.SelectedShape = Me.m_tr(iShape)
-        End If
-
+    Private Sub m_cbShowFirst50_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_cbShowFirst50.CheckedChanged
+        Me.m_bLimitPreview = Me.m_cbShowFirst50.Checked
+        Me.UpdatePreview()
     End Sub
 
 #End Region ' Import
@@ -343,6 +352,8 @@ Public Class dlgManageTimeSeries
 
         ' Update file name control
         Me.m_tbImportFileName.Text = Me.m_strImportFileName
+        ' Update checkerdicheck
+        Me.m_cbShowFirst50.Checked = Me.m_bLimitPreview
 
         ' Update source radio buttons
         If TypeOf Me.m_tr Is cTimeSeriesCSVReader Then
@@ -353,7 +364,6 @@ Public Class dlgManageTimeSeries
 
         ' Update preview controls
         Me.m_dgvImportPreview.Enabled = bHasPreview
-        Me.m_lblImportPreview.Enabled = bHasPreview
 
         Select Case Me.Mode
             Case eModeType.Load : bCanPerformAction = (Me.m_lvLoadDatasets.SelectedItems.Count > 0)
@@ -571,18 +581,13 @@ Public Class dlgManageTimeSeries
         End If
 
         ' Populate preview grid
-        Dim iCt As Integer
-        If tsrPreview.RowCount < 50 Then
-            iCt = tsrPreview.RowCount
-        Else
-            iCt = 50
-        End If
-
         Me.m_dgvImportPreview.SuspendLayout()
-        Me.m_dgvImportPreview.RowCount = iCt 'tsrPreview.RowCount
-        Me.m_dgvImportPreview.ColumnCount = tsrPreview.ColumnCount
+
         'vc had a model with 3000 years run & time series; takes forever to make the preview, so truncating it
-        For iRow As Integer = 1 To iCt ' tsrPreview.RowCount
+        Me.m_dgvImportPreview.RowCount = Math.Min(CInt(IIf(Me.m_bLimitPreview, 50, tsrPreview.RowCount)), tsrPreview.RowCount)
+        Me.m_dgvImportPreview.ColumnCount = tsrPreview.ColumnCount
+
+        For iRow As Integer = 1 To Me.m_dgvImportPreview.RowCount
             drow = Me.m_dgvImportPreview.Rows(iRow - 1)
             drow.ErrorText = tsrPreview.RowError(iRow).ToString()
             For iCol As Integer = 1 To tsrPreview.ColumnCount
@@ -591,12 +596,14 @@ Public Class dlgManageTimeSeries
         Next
         Me.m_dgvImportPreview.ResumeLayout()
 
-        ' Populate TS combo box
-        Me.m_cmbTimeSeriesPreview.Items.Clear()
-        For iTS As Integer = 0 To Me.m_tr.Count - 1
-            Me.m_cmbTimeSeriesPreview.Items.Add(Me.m_tr(iTS).Name)
-        Next
-        Me.m_cmbTimeSeriesPreview.SelectedIndex = Me.m_tr.Count - 1
+        ' Disabled preview TS functionality
+        'Private m_tsh As cTimeSeriesShapeGUIHandler = Nothing
+        '' Populate TS combo box
+        'Me.m_cmbTimeSeriesPreview.Items.Clear()
+        'For iTS As Integer = 0 To Me.m_tr.Count - 1
+        '    Me.m_cmbTimeSeriesPreview.Items.Add(Me.m_tr(iTS).Name)
+        'Next
+        'Me.m_cmbTimeSeriesPreview.SelectedIndex = Me.m_tr.Count - 1
 
     End Sub
 

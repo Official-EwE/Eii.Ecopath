@@ -87,7 +87,7 @@ Public Class frmWebBrowser
         AddHandler Me.m_browser.CanGoBackChanged, AddressOf OnUpdateNav
         AddHandler Me.m_browser.CanGoForwardChanged, AddressOf OnUpdateNav
 
-        ' Start navigating
+        ' Navigate to default URL
         Me.URL = ""
         Me.UpdateControls()
 
@@ -182,10 +182,6 @@ Public Class frmWebBrowser
     ''' -----------------------------------------------------------------------
     Private Function EwEBaseURL() As String
 
-#If DEBUG Then
-        Console.WriteLine("Home page not showing content in DEBUG mode")
-        Return ""
-#Else
         Dim aAssemblyNames As AssemblyName() = cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
         Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
         Dim ub As New UrlBuilder(cBASEURL)
@@ -202,7 +198,6 @@ Public Class frmWebBrowser
         End If
 
         Return ub.ToString()
-#End If
 
     End Function
 

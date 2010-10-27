@@ -672,8 +672,11 @@ Public Class AppLauncher
         Me.InitEventHandlers()
 
         Me.InitDockPanelPositions()
-        'Show start page
+
+#If Not Debug Then
+        ' Show start page (but not in DEBUG mode)
         Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
+#End If
 
         ' Start controlling the status strip
         Me.m_ssMain.Attach(Me.UIContext)
