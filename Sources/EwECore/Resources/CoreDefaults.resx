@@ -158,6 +158,6 @@
     <comment>{0}= date and time, converted to string in current Locale</comment>
   </data>
   <data name="TIMESERIES_SOURCE_CLIPBOARD" xml:space="preserve">
-    <value>Clipboard</value>
+    <value>From clipboard</value>
   </data>
 </root>
