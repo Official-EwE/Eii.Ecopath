@@ -618,21 +618,27 @@ Public Class dlgManageTimeSeries
 
         If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
 
-        ' Determine if need to create a new dataset
-        For Each ts As cTimeSeriesImport In Me.m_tr
-            ' Create new dataset if it will contain one of more TS
-            bCreateNewSet = bCreateNewSet Or (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) <> eTimeSeriesCategoryType.Forcing)
-        Next
+        Try
 
-        ' Need to create a new dataset?
-        If (bCreateNewSet) Then
-            ' #Yes: do it
-            bSucces = Me.m_uic.Core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
-                        Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, Me.m_tr.FirstYear, Me.m_tr.NumYears, iDataset)
-        Else
-            ' #No: append to current
-            iDataset = Me.m_uic.Core.ActiveTimeSeriesDatasetIndex
-        End If
+            ' Determine if need to create a new dataset
+            For Each ts As cTimeSeriesImport In Me.m_tr
+                ' Create new dataset if it will contain one of more TS
+                bCreateNewSet = bCreateNewSet Or (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) <> eTimeSeriesCategoryType.Forcing)
+            Next
+
+            ' Need to create a new dataset?
+            If (bCreateNewSet) Then
+                ' #Yes: do it
+                bSucces = Me.m_uic.Core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
+                            Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, Me.m_tr.FirstYear, Me.m_tr.NumYears, iDataset)
+            Else
+                ' #No: append to current
+                iDataset = Me.m_uic.Core.ActiveTimeSeriesDatasetIndex
+            End If
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
 
         ' So far so good?
         If (bSucces = True) Then
