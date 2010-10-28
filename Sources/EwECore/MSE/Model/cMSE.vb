@@ -290,8 +290,6 @@ Namespace MSE
                     Next
                     Me.m_data.EndYear = cCore.NULL_VALUE
                 End If
-                Debug.Assert(False, "Not Random seed!!!")
-                rndSeed = 42
 
                 'create a new random number generator for each run
                 'the seed will decide if the sequence is unique or not
@@ -1483,10 +1481,8 @@ Namespace MSE
         ''' <remarks></remarks>
         Friend Sub DoAssessment(ByVal Biomass() As Single)
 
-
             Dim Bobs() As Single
             ReDim Bobs(Me.m_epdata.NumGroups)
-            System.Console.WriteLine()
             For i As Integer = 1 To Me.m_data.nLiving
 
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
@@ -2743,7 +2739,6 @@ Namespace MSE
             For i As Integer = 1 To 12
                 X = X + rndGen.NextDouble
             Next
-            System.Console.Write(X.ToString & ", ")
             Return CSng(X)
         End Function
 
