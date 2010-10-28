@@ -14,10 +14,10 @@ Public Class cPredPreyInteraction
 #Region "Private class"
 
     'ToDo_jb cPredPreyInteraction needs to set the needs update
+
     ''' <summary>
     ''' Private class to hold the shape and function type for each possible modifier.
     ''' </summary>
-    ''' <remarks></remarks>
     Private Class cShapeFunctionTypePair
         Public Shape As cForcingFunction = Nothing
         Public FunctionType As eForcingFunctionApplication
@@ -27,7 +27,7 @@ Public Class cPredPreyInteraction
 
     Private m_pred As Integer
     Private m_prey As Integer
-    Private m_isProd As Boolean
+    Private m_bIsProd As Boolean
     Private m_manager As cPPIManager
     Private m_SFPairs As New List(Of cShapeFunctionTypePair)
 
@@ -37,23 +37,29 @@ Public Class cPredPreyInteraction
 
 #Region "Construction and Initialization"
 
-    Sub New(ByVal PredIndex As Integer, ByVal PreyIndex As Integer, ByRef PPIManager As cPPIManager)
+    ''' <summary>
+    ''' Create a new interaction.
+    ''' </summary>
+    ''' <param name="PredIndex"><see cref="cCoreGroupBase.Index">Predator index</see>.</param>
+    ''' <param name="PreyIndex"><see cref="cCoreGroupBase.Index">Prey index</see>.</param>
+    ''' <param name="PPIManager"><see cref="cPPIManager">Predator/prey interaction manager</see>.</param>
+    Sub New(ByVal PredIndex As Integer, ByVal PreyIndex As Integer, ByVal PPIManager As cPPIManager)
 
-        m_dbid = cCore.NULL_VALUE '???
+        Me.m_dbid = cCore.NULL_VALUE '???
 
-        m_pred = PredIndex
-        m_prey = PreyIndex
-        m_manager = PPIManager
+        Me.m_pred = PredIndex
+        Me.m_prey = PreyIndex
+        Me.m_manager = PPIManager
 
         'this logic comes from EwE5 frmAddFunction.Form_Load()
-        If m_pred = m_prey And m_manager.getEcoPathData.PP(m_prey) = 1 Then
-            m_isProd = True
+        If (Me.m_pred = Me.m_prey) And (Me.m_manager.getEcoPathData.PP(Me.m_prey) = 1) Then
+            Me.m_bIsProd = True
         End If
 
         'initialize the list of shape/functiontype pairs with the number of function modifiers from Ecosim
         'Modifiers that are not used will have a NULL shape in the cShapeFunctionTypePair object
-        For i As Integer = 1 To m_manager.getEcoSimData.MaxFunctions
-            m_SFPairs.Add(New cShapeFunctionTypePair)
+        For i As Integer = 1 To Me.m_manager.getEcoSimData.MaxFunctions
+            Me.m_SFPairs.Add(New cShapeFunctionTypePair())
         Next
 
     End Sub
@@ -61,29 +67,31 @@ Public Class cPredPreyInteraction
     ''' <summary>
     ''' Build the list of shapes used by this interaction from the underlying Ecosim data.
     ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>True if succesful.</returns>
     Friend Function Load() As Boolean
+
         Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
         Dim SFPair As cShapeFunctionTypePair
+        Dim bSucces As Boolean = True
 
         For i As Integer = 1 To esdata.MaxFunctions
 
             If esdata.FunctionNumber(m_prey, m_pred, i) = 0 Then Exit For
 
             'get the cShapeFunctionTypePair object for this index
-            SFPair = m_SFPairs.Item(i - 1) 'Ecosim indexes are one based m_SFPairs is zero based
+            SFPair = m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
 
             SFPair.FunctionType = DirectCast(esdata.FunctionType(m_prey, m_pred, i), eForcingFunctionApplication)
 
-            'the other way to do this would be to search the PPImanager it has a list of ALL shapes
+            'the other way to do this would be to search the PPImanager; it has a list of ALL shapes
             If esdata.IsMedFunction(m_prey, m_pred, i) Then
-                SFPair.Shape = Me.getShapeFromEcosimIndex(m_manager.getCore.MediationShapeManager, esdata.FunctionNumber(m_prey, m_pred, i))
+                SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.MediationShapeManager, esdata.FunctionNumber(Me.m_prey, Me.m_pred, i))
             Else
-                SFPair.Shape = Me.getShapeFromEcosimIndex(m_manager.getCore.ForcingShapeManager, esdata.FunctionNumber(m_prey, m_pred, i))
+                SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.ForcingShapeManager, esdata.FunctionNumber(Me.m_prey, Me.m_pred, i))
             End If
 
         Next i
+        Return bSucces
 
     End Function
 
@@ -91,26 +99,30 @@ Public Class cPredPreyInteraction
 
 #Region "Public Properties"
 
-
     ''' <summary>
-    ''' Maximum number of shapes for this Pred Prey interaction
+    ''' Get the maximum number of shapes that can be assigned to a 
+    ''' pred/prey interaction.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property MaxNumShapes() As Integer
         Get
             Return m_manager.getEcoSimData.MaxFunctions
         End Get
     End Property
 
-
+    ''' <summary>
+    ''' Get the <see cref="cCoreGroupBase.Index">index</see> of the predator
+    ''' for this interaction.
+    ''' </summary>
     Public ReadOnly Property PredIndex() As Integer
         Get
             Return m_pred
         End Get
     End Property
 
+    ''' <summary>
+    ''' Get the <see cref="cCoreGroupBase.Index">index</see> of the prey for
+    ''' this interaction.
+    ''' </summary>
     Public ReadOnly Property PreyIndex() As Integer
         Get
             Return m_prey
@@ -118,11 +130,10 @@ Public Class cPredPreyInteraction
     End Property
 
     ''' <summary>
-    ''' Number of shapes that are used by this pred prey interaction.
+    ''' Get the number of shapes that are used by this predator/prey interaction.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks>The first shape that is Nothing marks the end of the series. No shapes after that will be used</remarks>
+    ''' <remarks>The first shape that is Nothing marks the end of the series. 
+    ''' No shapes after that will be used.</remarks>
     Public ReadOnly Property NAppliedShapes() As Integer
 
         Get
@@ -143,9 +154,12 @@ Public Class cPredPreyInteraction
 
     End Property
 
+    ''' <summary>
+    ''' Get whether this interaction denotes a production rate interaction.
+    ''' </summary>
     Public ReadOnly Property isProdRate() As Boolean
         Get
-            Return m_isProd
+            Return m_bIsProd
         End Get
     End Property
 
@@ -154,18 +168,26 @@ Public Class cPredPreyInteraction
 #Region "Editing and Updating"
 
     ''' <summary>
-    ''' Get the shape and FunctionType at ItemIndex
+    ''' Get a shape modifier, consisting of a <see cref="cForcingFunction">forcing funtion</see> and 
+    ''' a <see cref="eForcingFunctionApplication">Type of variable</see>, defined at a given index.
     ''' </summary>
-    ''' <param name="ItemIndex">Index of the shape to set. There can be up to MaxNumShapes for a pred prey interaction</param>
-    ''' <param name="Shape">A reference to the shape that is use for this pred prey. If shape in Nothing (Null) then no modifier will be used for this pred prey at this index</param>
-    ''' <param name="FunctionType"></param>
-    ''' <returns>True if there is a shape modifier defined at this index</returns>
-    ''' <remarks></remarks>
-    Public Function getShape(ByVal ItemIndex As Integer, ByRef Shape As cForcingFunction, ByRef FunctionType As eForcingFunctionApplication) As Boolean
+    ''' <param name="ItemIndex">One-based index of the <see cref="cForcingFunction">shape</see> and 
+    ''' <see cref="eForcingFunctionApplication">FunctionType</see> to retreive. There can 
+    ''' be up to <see cref="MaxNumShapes">MaxNumShapes</see> for a pred prey interaction.</param>
+    ''' <param name="Shape">A reference to the shape that is used for this pred/prey 
+    ''' interaction.</param>
+    ''' <param name="FunctionType"><see cref="eForcingFunctionApplication">Type of variable</see>
+    ''' that this modifier applies to.</param>
+    ''' <returns>True if there is a shape modifier defined at this index.</returns>
+    Public Function getShape(ByVal ItemIndex As Integer, _
+                             ByRef Shape As cForcingFunction, _
+                             ByRef FunctionType As eForcingFunctionApplication) As Boolean
+
         Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
 
         Try
 
+            ' Sanity checks
             Debug.Assert(ItemIndex > 0 And ItemIndex <= esdata.MaxFunctions, Me.ToString & ".getShape() ItemIndex out of bounds.")
 
             If ItemIndex > esdata.MaxFunctions Or ItemIndex < 1 Then
@@ -188,7 +210,6 @@ Public Class cPredPreyInteraction
                 Return False
             End If
 
-
         Catch ex As Exception
             Debug.Assert(False, "Error: " & Me.ToString & ".getShape() " & ex.Message)
             Shape = Nothing
@@ -199,22 +220,28 @@ Public Class cPredPreyInteraction
 
 
     ''' <summary>
-    ''' Set the shape and functiontype for this index
+    ''' Set a shape modifier, consisting of a <see cref="cForcingFunction">forcing function</see> and 
+    ''' <see cref="eForcingFunctionApplication">function type</see>, for a given index.
     ''' </summary>
-    ''' <param name="ItemIndex">Index of the shape to set. There can be up to MaxNumShapes for a pred prey interaction </param>
-    ''' <param name="Shape">new Shape to use for this pred prey. If shape in Nothing (Null) then no modifier will be used for the pred prey</param>
-    ''' <param name="FunctionType">Type of varaible to apply this modifier to</param>
+    ''' <param name="ItemIndex">One-base index of the shape to set. There can be 
+    ''' up to <see cref="MaxNumShapes">MaxNumShapes</see> for a pred/prey interaction.</param>
+    ''' <param name="Shape"><see cref="cForcingFunction">Shape</see> to use for this 
+    ''' pred/prey interaction index. If the shape is Nothing/Null then no modifier will be 
+    ''' used for this pred/prey interaction index.</param>
+    ''' <param name="FunctionType"><see cref="eForcingFunctionApplication">Type of variable</see>
+    ''' to apply this modifier to.</param>
     ''' <returns>True is the index was in bounds and the shape was set</returns>
     ''' <remarks>To clear an index set the shape to Nothing</remarks>
-    Public Function setShape(ByVal ItemIndex As Integer, ByRef Shape As cForcingFunction, _
-            Optional ByVal FunctionType As eForcingFunctionApplication = eForcingFunctionApplication.SearchRate) As Boolean
+    Public Function setShape(ByVal ItemIndex As Integer, _
+                             ByVal shape As cForcingFunction, _
+                             Optional ByVal FunctionType As eForcingFunctionApplication = eForcingFunctionApplication.SearchRate) As Boolean
 
         Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
 
         Try
 
-            If ItemIndex > esdata.MaxFunctions Or ItemIndex < 1 Then
-                Shape = Nothing
+            If (ItemIndex > esdata.MaxFunctions) Or (ItemIndex < 1) Then
+                shape = Nothing
                 Debug.Assert(False, Me.ToString & ".setShape() ShapeIndex out of bounds.")
                 Return False
             End If
@@ -227,7 +254,7 @@ Public Class cPredPreyInteraction
             'in the already existing cShapeFunctionTypePair object from the m_SFPairs list
             'the cShapeFunctionTypePair objects were created when this interaction object was constructed
             Dim sfPair As cShapeFunctionTypePair = m_SFPairs.Item(iList)
-            sfPair.Shape = Shape
+            sfPair.Shape = shape
             sfPair.FunctionType = FunctionType
 
             'update the ecosim data
@@ -237,19 +264,18 @@ Public Class cPredPreyInteraction
 
         Catch ex As Exception
             Debug.Assert(False, "Error: " & Me.ToString & ".setShape() " & ex.Message)
-            Shape = Nothing
+            shape = Nothing
             Return False
         End Try
 
     End Function
 
-    'jb Jan-18-2008 removed m_bPendingUpdates 
-    'm_bPendingUpdates had to be True for Update() to work
-    'if a shape is added when no lock is in place m_bPendingUpdates will be always be false
-    'this blocks the Update() and the data can never be updated
-    'Dim m_bPendingUpdates As Boolean = False
     Dim m_bLockUpdates As Boolean = False
 
+    ''' <summary>
+    ''' Get/set whether updates should not be sent to the core. This functionality 
+    ''' is particularly useful when making a series of changes to pred/prey interactions.
+    ''' </summary>
     Public Property LockUpdates() As Boolean
         Get
             Return m_bLockUpdates
@@ -269,12 +295,7 @@ Public Class cPredPreyInteraction
         Dim ishp As Integer
         Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
 
-        If LockUpdates Then
-            '  m_bPendingUpdates = True
-            Return
-        End If
-
-        '  If (m_bPendingUpdates = True) Then
+        If LockUpdates Then Return
 
         Try
 
@@ -298,8 +319,7 @@ Public Class cPredPreyInteraction
 
             Next
 
-            m_manager.getCore.onChanged(Me)
-            'm_bPendingUpdates = False
+            Me.m_manager.getCore.onChanged(Me)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Update() " & ex.Message)
