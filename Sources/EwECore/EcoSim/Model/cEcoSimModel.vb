@@ -454,8 +454,6 @@ Namespace Ecosim
                 'to make sure any edits made in Ecosim are used for the initialization
                 m_Results = New cEcoSimResults(Me.nGroups, m_stanza.Nsplit, m_stanza.MaxAgeSplit, Me.m_EPData.NumFleet)
 
-                'Init PropLandedTime() and Propdiscardtime() to Ecopath values so they can be used during the initialization of Ecosim
-
                 RedimEcoSimVars()
 
                 SetInlinks()
@@ -467,6 +465,9 @@ Namespace Ecosim
                 'Me.m_RefData.LoadForcingData(Me.m_Data, Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
 
                 DefaultDF()
+
+                'Init Propdiscardtime() and Proplandedtime() to Ecopath values
+                InitPropLanded()
 
                 ReDim m_Data.StartBiomass(nGroups)
                 SetStartBiomass()     'Startbiomass must be set before SimFile is opened
@@ -528,6 +529,24 @@ Namespace Ecosim
                 If m_EPData.vbK(i) > 0 Then m_Data.AssimEff(i) = m_EPData.GE(i) / m_EPData.PB(i) * (m_EPData.PB(i) + 3 * m_EPData.vbK(i))
             Next
         End Sub
+
+
+        ''' <summary>
+        ''' Init Propdiscardtime(fleets,groups) and PropLandedTime(fleets, groups) to Ecopath landing and discards
+        ''' </summary>
+        ''' <remarks>This must be call before <see cref="EwECore.Ecosim.cEcoSimModel.Init">Ecosim.Init(Boolean)</see> 
+        ''' so Propdiscardtime() and PropLandedTime() can be used to init <see cref="cEcosimDatastructures.FishRateNo">FishRateNo()</see> (fishing mortality)</remarks>
+        Private Sub InitPropLanded()
+            For iflt As Integer = 1 To Me.m_Data.nGear
+                For igrp As Integer = 1 To nGroups
+                    'jb 7-Jan-2010 addded PropDiscardMort() so the default for discards contain only the mort
+                    Me.m_Data.Propdiscardtime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp) * Me.m_EPData.PropDiscardMort(iflt, igrp)
+                    Me.m_Data.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
+                Next
+            Next
+
+        End Sub
+
         Friend Sub SetRelativeCatchabilities()
             Dim i As Integer
             Dim j As Integer
@@ -910,43 +929,57 @@ Namespace Ecosim
 
         End Sub
 
-
+        ''' <summary>
+        ''' Calculates Ecosim yearly catch, sum of catch for year, for search data.
+        ''' </summary>
+        ''' <param name="iTime">Current time step</param>
+        ''' <param name="iYear">Current year</param>
+        ''' <param name="iMonth">Current month in year (12)</param>
+        ''' <param name="biomass">Biomass of current time step</param>
+        ''' <param name="Fgear">Effort set by searches</param>
+        ''' <param name="QYear">Catchability increase for year</param>
+        ''' <remarks>Uses <see cref="cEcoSimModel.CalcCatch"> CalcCatch to compute catch.</see></remarks>
         Private Sub CalcCatchForSearch(ByVal iTime As Integer, ByVal iYear As Integer, ByVal iMonth As Integer, ByVal biomass() As Single, ByVal Fgear() As Single, ByVal QYear() As Single)
             Dim iflt As Integer
 
+            If Not Me.m_search.bInSearch Then
+                'Not in a search so just bump out
+                Exit Sub
+            End If
+
             If iMonth = 1 Then
+                'start of a year clear out yearly data
                 Me.m_search.ClearYearlyData()
             End If
 
-            If Me.m_search.bInSearch Then
+            'MSE stores effort in FishRateGear(fleet,time) when applying harvest rule (TFM, TAC...)
+            'all other searches store effort in Fgear()
+            If Me.m_search.SearchMode = eSearchModes.MSE Then
 
-                If Me.m_search.SearchMode = eSearchModes.MSE Then
-
-                    If Me.m_MSEData.UseQuotaRegs Then
-
-                        For iflt = 1 To Me.m_Data.nGear
-                            Fgear(iflt) = Me.m_Data.FishRateGear(iflt, iTime)
-                        Next
-
-                    End If 'Me.m_MSEData.UseQuotaRegs 
-                End If 'Me.m_search.SearchMode = eSearchModes.MSE 
-
-                Dim Ctemp As Single
-                For igrp As Integer = 1 To Me.m_EPData.NumLiving
+                If Me.m_MSEData.UseQuotaRegs Then
+                    'Populate Fgear(fleet) with effort set by MSE for the harvest rule
                     For iflt = 1 To Me.m_Data.nGear
-                        'catch calculated by ecosim
-                        Ctemp = Me.CalcCatch(igrp, iflt, biomass(igrp), Fgear(iflt), Me.m_Data.relQ(iflt, igrp), QYear(iflt))
-                        'sum into yearly value for searches
-                        Me.m_search.CatchYear(iflt, igrp) += Ctemp
-                        Me.m_search.CatchYearGroup(igrp) += Ctemp
-                        If iYear > m_search.BaseYear Then
-                            'Value of catch for the search includes discount factor
-                            Me.m_search.ValCatch(iflt, igrp) += Ctemp * Me.m_search.DF * Me.m_EPData.Market(iflt, igrp)
-                        End If
+                        Fgear(iflt) = Me.m_Data.FishRateGear(iflt, iTime)
                     Next
-                Next
 
-            End If 'Me.m_search.bInSearch
+                End If 'Me.m_MSEData.UseQuotaRegs 
+            End If 'Me.m_search.SearchMode = eSearchModes.MSE 
+
+            'Calculate the catch
+            Dim Ctemp As Single
+            For igrp As Integer = 1 To Me.m_EPData.NumLiving
+                For iflt = 1 To Me.m_Data.nGear
+                    'catch calculated by ecosim
+                    Ctemp = Me.CalcCatch(igrp, iflt, biomass(igrp), Fgear(iflt), Me.m_Data.relQ(iflt, igrp), QYear(iflt)) / 12
+                    'sum into yearly value for searches
+                    Me.m_search.CatchYear(iflt, igrp) += Ctemp
+                    Me.m_search.CatchYearGroup(igrp) += Ctemp
+                    If iYear > m_search.BaseYear Then
+                        'Value of catch for the search includes discount factor
+                        Me.m_search.ValCatch(iflt, igrp) += Ctemp * Me.m_search.DF * Me.m_EPData.Market(iflt, igrp)
+                    End If
+                Next
+            Next
 
         End Sub
 
@@ -965,7 +998,7 @@ Namespace Ecosim
                                     ByVal B As Single, ByVal Effort As Single, ByVal Fmort As Single, _
                                      ByVal QYear As Single) As Single
 
-            Return Me.m_MSEData.PropLandedTime(iFlt, iGrp) * B * Me.Qmult(iGrp) * QYear * Effort * Fmort / 12.0F
+            Return Me.m_Data.PropLandedTime(iFlt, iGrp) * B * Me.Qmult(iGrp) * QYear * Effort * Fmort
 
         End Function
 
@@ -1712,15 +1745,23 @@ Namespace Ecosim
                     For iflt = 1 To m_Data.nGear    'Discarded fish has no value
                         SumEf = SumEf + m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp)
                     Next
-
+                    If SumEf = 0 Then SumEf = 1
 
                     If SumEf > 0 Then
                         Dim bioCatch As Single
+                        Dim bioCatch2 As Single
                         Dim valueCatch As Single
+                        'If Me.m_Data.FisForced(igrp) Then
+
+
+                        'Else
                         For iflt = 1 To m_Data.nGear
                             If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
 
                                 bioCatch = BB(igrp) * m_Data.FishTime(igrp) * m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
+                                bioCatch2 = Me.CalcCatch(igrp, iflt, BB(igrp), m_Data.FishRateGear(iflt, iTime), m_Data.FishMGear(iflt, igrp), 1)
+                                'System.Console.WriteLine(
+                                'Debug.Assert(bioCatch2 = bioCatch)
                                 m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = bioCatch
                                 m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime) = bioCatch / BB(igrp)
                                 'sum all fleets into zero index
@@ -1741,6 +1782,8 @@ Namespace Ecosim
                                 m_Results.BCatch(igrp, iflt) = bioCatch
                             End If
                         Next
+
+                        '   End If
 
                     Else
 
@@ -2337,7 +2380,7 @@ Namespace Ecosim
                             Else
                                 'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
                                 'discard mort is included in Propdiscardtime() by initialization and MSE 
-                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_Data.FishMGear(K, i) * Me.m_MSEData.Propdiscardtime(K, i)
+                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_Data.FishMGear(K, i) * Me.m_Data.Propdiscardtime(K, i)
                                 'DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) + Me.m_Quota.RegDiscard(K, i)
                             End If
                             ToDet = ToDet + DetFlowN
@@ -3969,10 +4012,10 @@ Namespace Ecosim
 
                     Ft = 0
                     For ig = 1 To m_Data.nGear
-                        Debug.Assert(Math.Round(Me.m_MSEData.PropLandedTime(ig, i) + Me.m_MSEData.Propdiscardtime(ig, i), 3) <= 1.0!, _
+                        Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i), 3) <= 1.0!, _
                                     Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
 
-                        Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_MSEData.PropLandedTime(ig, i) + Me.m_MSEData.Propdiscardtime(ig, i))
+                        Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                     Next
 
                     'multiply the catchability multiplyer (density-dependent)
@@ -4178,8 +4221,7 @@ Namespace Ecosim
                 For i = 1 To m_Data.nGroups
                     Fg = Qmult(i) * m_Data.FishMGear(ig, i) * (m_Data.FishRateGear(ig, t) + 1.0E-20)
                     'jb use time varing proportion of landings
-                    ' TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * m_EPData.PropLanded(ig, i)
-                    TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * Me.m_MSEData.PropLandedTime(ig, i)
+                    TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * Me.m_Data.PropLandedTime(ig, i)
                 Next
                 TotCost = m_Data.FishRateGear(ig, t) * (m_EPData.cost(ig, eCostIndex.CUPE) + m_EPData.cost(ig, eCostIndex.Sail))
                 CurrentProfit(ig) = TotIncome - TotCost

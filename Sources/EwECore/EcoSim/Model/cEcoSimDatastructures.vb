@@ -486,6 +486,13 @@ Public Class cEcosimDatastructures
     ''' </remarks>
     Public StepsPerMonth As Integer
 
+    ''' <summary>Proportion of regulated landings (by gear group) for the current time step</summary>
+    Public PropLandedTime(,) As Single
+
+    ''' <summary>Proportion of regulated discards (by gear group) for the current time step</summary>
+    Public Propdiscardtime(,) As Single
+
+
     Public Sub RedimVars()
 
         'jb I don't know why these where split up there may be some kind of a reason
@@ -613,6 +620,9 @@ Public Class cEcosimDatastructures
         ReDim PcapBase(nGear)
         ReDim CapDepreciate(nGear)
         ReDim CapBaseGrowth(nGear)
+
+        ReDim PropLandedTime(nGear, nGroups)
+        ReDim Propdiscardtime(nGear, nGroups)
 
     End Sub
 
