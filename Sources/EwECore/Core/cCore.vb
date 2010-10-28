@@ -5382,8 +5382,6 @@ Public Class cCore
             'set the default summary time periods
             m_EcoSimData.DefaultSummaryPeriods()
 
-            'Init PropLandedTime() and Propdiscardtime() to Ecopath values so they can be used during the initialization of Ecosim
-            Me.m_MSEData.InitToEcopath()
             m_EcoSim.Init(True)
 
             InitEcosimGroups()
@@ -11026,6 +11024,7 @@ Public Class cCore
                 Select Case value.varName
                     Case eVarNameFlags.Landings, eVarNameFlags.OffVesselPrice
                         Set_MarketPrice_Flags(flt, True)
+                        Set_DiscardMort_Flags(flt, True)
 
                         If Me.m_StateMonitor.HasEcosimLoaded Then
                             Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
@@ -11034,7 +11033,7 @@ Public Class cCore
                             Me.m_publisher.AddMessage(qsMsg)
                         End If
 
-                    Case eVarNameFlags.Discards
+                    Case eVarNameFlags.Discards, eVarNameFlags.Landings
                         Set_DiscardMort_Flags(flt, True)
 
                         Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
