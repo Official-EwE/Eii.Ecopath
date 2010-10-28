@@ -126,8 +126,7 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSEFmin, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFmin))
             m_values.Add(val.varName, val)
 
-
-
+            Me.ResetStatusFlags()
             Me.AllowValidation = True
 
         End Sub
@@ -157,7 +156,7 @@ Namespace MSE
 
         Public Property BiomassCV(ByVal TimeIndex As Integer) As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSEBioCV, TimeIndex), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSEBioCV, TimeIndex))
             End Get
 
             Set(ByVal value As Single)
@@ -167,7 +166,7 @@ Namespace MSE
 
         Public Property LowerRisk() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSELowerRisk), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSELowerRisk))
             End Get
 
             Set(ByVal value As Single)
@@ -178,7 +177,7 @@ Namespace MSE
 
         Public Property UpperRisk() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSEUpperRisk), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSEUpperRisk))
             End Get
 
             Set(ByVal value As Single)
@@ -188,7 +187,7 @@ Namespace MSE
 
         Public Property BiomassRefLower() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSERefBioLower), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSERefBioLower))
             End Get
 
             Set(ByVal value As Single)
@@ -198,7 +197,7 @@ Namespace MSE
 
         Public Property BiomassRefUpper() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSERefBioUpper), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSERefBioUpper))
             End Get
 
             Set(ByVal value As Single)
@@ -208,7 +207,7 @@ Namespace MSE
 
         Public Property BiomassEstRefUpper() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSERefBioEstUpper), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSERefBioEstUpper))
             End Get
 
             Set(ByVal value As Single)
@@ -219,7 +218,7 @@ Namespace MSE
 
         Public Property BiomassEstRefLower() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSERefBioEstLower), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSERefBioEstLower))
             End Get
 
             Set(ByVal value As Single)
@@ -229,7 +228,7 @@ Namespace MSE
 
         Public Property CatchRefLower() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSERefGroupCatchLower), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSERefGroupCatchLower))
             End Get
 
             Set(ByVal value As Single)
@@ -239,7 +238,7 @@ Namespace MSE
 
         Public Property CatchRefUpper() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSERefGroupCatchUpper), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSERefGroupCatchUpper))
             End Get
 
             Set(ByVal value As Single)
@@ -249,7 +248,7 @@ Namespace MSE
 
         Public Property FixedEscapement() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSEFixedEscapement), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSEFixedEscapement))
             End Get
 
             Set(ByVal value As Single)
@@ -259,7 +258,7 @@ Namespace MSE
 
         Public Property ForcastGain() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSEForcastGain), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSEForcastGain))
             End Get
 
             Set(ByVal value As Single)
@@ -270,7 +269,7 @@ Namespace MSE
 
         Public Property RHalfB0Ratio() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.RHalfB0Ratio), Single)
+                Return CSng(GetVariable(eVarNameFlags.RHalfB0Ratio))
             End Get
 
             Set(ByVal value As Single)
@@ -280,7 +279,7 @@ Namespace MSE
 
         Public Property FixedF() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSEFixedF), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSEFixedF))
             End Get
 
             Set(ByVal value As Single)
@@ -291,7 +290,7 @@ Namespace MSE
 
         Public Property RecruitmentCV() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.MSERecruitmentCV), Single)
+                Return CSng(GetVariable(eVarNameFlags.MSERecruitmentCV))
             End Get
 
             Set(ByVal value As Single)
@@ -422,7 +421,7 @@ Namespace MSE
 
         Public Property ForcastGainStatus() As eStatusFlags
             Get
-                Return CType(GetStatus(eVarNameFlags.MSEForcastGain), eStatusFlags)
+                Return DirectCast(GetStatus(eVarNameFlags.MSEForcastGain), eStatusFlags)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -432,7 +431,7 @@ Namespace MSE
 
         Public Property RHalfB0RatioStatus() As eStatusFlags
             Get
-                Return CType(GetStatus(eVarNameFlags.RHalfB0Ratio), eStatusFlags)
+                Return DirectCast(GetStatus(eVarNameFlags.RHalfB0Ratio), eStatusFlags)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -472,17 +471,20 @@ Namespace MSE
                 Me.SetStatusFlags(eVarNameFlags.MSEFmin, eStatusFlags.Null Or eStatusFlags.NotEditable)
 
             Else
-                Me.ClearStatusFlags(eVarNameFlags.MSEFixedEscapement, eStatusFlags.Null Or eStatusFlags.NotEditable)
-                Me.ClearStatusFlags(eVarNameFlags.MSEFixedF, eStatusFlags.Null Or eStatusFlags.NotEditable)
-                Me.ClearStatusFlags(eVarNameFlags.MSETAC, eStatusFlags.Null Or eStatusFlags.NotEditable)
-                Me.ClearStatusFlags(eVarNameFlags.MSEBioCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
 
-                Me.ClearStatusFlags(eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null Or eStatusFlags.NotEditable)
-                Me.ClearStatusFlags(eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                ' JS 28Oct2010: Do NOT clear the NULL flag, because values may hold cCore.NULL_VALUEs.
+                '               This status is set by the baseclass ResetStatusFlags call and should not be altered.
+                Me.ClearStatusFlags(eVarNameFlags.MSEFixedEscapement, eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSEFixedF, eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSETAC, eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSEBioCV, eStatusFlags.NotEditable)
 
-                Me.ClearStatusFlags(eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null Or eStatusFlags.NotEditable)
-                Me.ClearStatusFlags(eVarNameFlags.MSEForcastGain, eStatusFlags.Null Or eStatusFlags.NotEditable)
-                Me.ClearStatusFlags(eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.NotEditable)
+
+                Me.ClearStatusFlags(eVarNameFlags.RHalfB0Ratio, eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSEForcastGain, eStatusFlags.NotEditable)
+                Me.ClearStatusFlags(eVarNameFlags.MSERecruitmentCV, eStatusFlags.NotEditable)
 
                 Me.ClearStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.NotEditable)
                 Me.ClearStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.NotEditable)
