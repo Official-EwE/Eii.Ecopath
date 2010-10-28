@@ -68,7 +68,6 @@ Namespace MSE
         'ToDo_jb 6-May-2010 cMSE Plugin data is used for value when selected
 
         'ToDo_jb 13-May-2010 cMSE Plugin points need xml comments
-        'ToDo_jb 13-May-2010 cMSE No reg options should ask...
 
         'ToDo_jb 28-May-2010 check that changes to run order of plugin and interface calls did not messup the results
 
@@ -86,10 +85,11 @@ Namespace MSE
 
         'ToDo_jb 29-Sept-2010 why is there no variation when running Fixed F policy
         'ToDo_jb 29-Sept-2010 fix StartT it needs to be 1 when Start Year = 1 
-        'ToDo_jb 29-Sept-2010 check setFTimeToGear
 
         'ToDo_jb 18-Oct-2010 F timeseries can sometimes end up with the last year (12 months) at some value other then in the timeseries
         'Only noticable in Tracking (Ecosim Effort) this seems to happen when changing timeseries and run types 
+
+        'ToDo_jb 27-Oct-2010 Moved PropdiscardTime and PropLandedTime() to Ecosim make sure this works.
 
         'Filenames prefixes for output file
         Public Const BIOMASS_DATA As String = "MSE_Biomass_"
@@ -290,6 +290,8 @@ Namespace MSE
                     Next
                     Me.m_data.EndYear = cCore.NULL_VALUE
                 End If
+                Debug.Assert(False, "Not Random seed!!!")
+                rndSeed = 42
 
                 'create a new random number generator for each run
                 'the seed will decide if the sequence is unique or not
@@ -1062,7 +1064,7 @@ Namespace MSE
                         If Me.isTStepRegulated(Me.m_curT) Then
 
                             'Regulated Vary QYear()
-                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * Rnd())
+                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * CSng(Me.rndGen.NextDouble))
 
                         Else
                             'Not Regulated 
@@ -1206,36 +1208,7 @@ Namespace MSE
 
         End Sub
 
-        'Public Sub CalcCatch(ByVal Biomass() As Single, ByVal Effort() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
-
-        '        For iFlt As Integer = 1 To Me.m_data.nFleets
-        '            For iGrp As Integer = 1 To Me.m_epdata.NumLiving
-        '                '  cloc = Me.m_data.PropLandedTime(iFlt, iGrp) * Biomass(iGrp) * QMult(iGrp) * QYear(iFlt) * Me.m_esData.FishRateGear(iFlt, t) * Me.m_esData.FishMGear(iFlt, iGrp) / 12.0F
-
-        '                'CatchYear() is just for this year it is cleared out at the start of each year
-        '            Me.m_data.CatchYearGroup(iGrp) += Me.m_Ecosim.CalcCatch(iGrp, iFlt, Biomass(iGrp), Effort(iFlt), Me.m_esData.FishMGear(iFlt, iGrp), QYear(iFlt))
-
-        '            Next iGrp
-        '        Next iFlt
-
-
-        'End Sub
-
-
-        'Public Sub CalcCatch(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
-
-
-        '    For iFlt As Integer = 1 To Me.m_data.nFleets
-        '        For iGrp As Integer = 1 To Me.m_epdata.NumLiving
-
-        '            'CatchYear() is just for this year it is cleared out at the start of each year
-        '            Me.m_data.CatchYearGroup(iGrp) += Me.m_Ecosim.CalcCatch(iGrp, iFlt, Biomass(iGrp), Me.m_esData.FishRateGear(iFlt, t), Me.m_esData.FishMGear(iFlt, iGrp), QYear(iFlt))
-
-        '        Next iGrp
-        '    Next iFlt
-
-
-        'End Sub
+      
 
 
         Public Sub DoRegulations(ByVal Biomass() As Single, ByVal Effort() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal iTimeStep As Integer, ByVal iMonth As Integer, ByVal iYear As Integer)
@@ -1267,7 +1240,7 @@ Namespace MSE
                         'Regulate the effort every month
                         Me.RegulateEffort(Biomass, QMult, QYear, iTimeStep)
                         'Catch base on the regulated effort
-                        Me.CalcCatch(Biomass, QMult, QYear, iTimeStep)
+                        'Me.CalcCatch(Biomass, QMult, QYear, iTimeStep)
 
                         'Ecosim will not set F from Effort if there is F timeseries loaded
                         'this tell Ecosim that there is NO timeseries loaded, even if there is...
@@ -1421,21 +1394,21 @@ Namespace MSE
 
                                 If ci > Me.m_data.QuotaTime(ig, i) Then
                                     'fishing mortality exceeds quota
-                                    Me.m_data.PropLandedTime(ig, i) = CSng(Me.m_data.QuotaTime(ig, i) / (ci + 1.0E-20))
+                                    Me.m_esData.PropLandedTime(ig, i) = CSng(Me.m_data.QuotaTime(ig, i) / (ci + 1.0E-20))
                                     If Me.m_data.QuotaType(ig) = eQuotaTypes.HighestValue Then
                                         'QuotaType = Strongest 
                                         'excess catch discarded and included in the fishing mortailtiy
-                                        Me.m_data.Propdiscardtime(ig, i) = (1 - Me.m_data.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
+                                        Me.m_esData.Propdiscardtime(ig, i) = (1 - Me.m_esData.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
                                     Else
                                         'QuotaType = Selective 
                                         'excess catch is NOT included in fishing mortaility all discards survive
-                                        Me.m_data.Propdiscardtime(ig, i) = 0
+                                        Me.m_esData.Propdiscardtime(ig, i) = 0
                                     End If
 
                                 Else
                                     'ci < QuotaTime
-                                    Me.m_data.PropLandedTime(ig, i) = m_epdata.PropLanded(ig, i)
-                                    Me.m_data.Propdiscardtime(ig, i) = m_epdata.PropDiscard(ig, i)
+                                    Me.m_esData.PropLandedTime(ig, i) = m_epdata.PropLanded(ig, i)
+                                    Me.m_esData.Propdiscardtime(ig, i) = m_epdata.PropDiscard(ig, i)
                                 End If
 
                             End If
@@ -1474,20 +1447,6 @@ Namespace MSE
 
         End Function
 
-        Private Sub CalcCatch(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
-
-            Dim cloc As Single
-            For iFlt As Integer = 1 To Me.m_data.nFleets
-                For iGrp As Integer = 1 To Me.m_epdata.NumLiving
-                    cloc = Me.m_data.PropLandedTime(iFlt, iGrp) * Biomass(iGrp) * QMult(iGrp) * QYear(iFlt) * Me.m_esData.FishRateGear(iFlt, t) * Me.m_esData.FishMGear(iFlt, iGrp) / 12.0F
-
-                    'CatchYear() is just for this year it is cleared out at the start of each year
-                    Me.m_data.CatchYearGroup(iGrp) += cloc
-
-                Next iGrp
-            Next iFlt
-
-        End Sub
 
         Private Function stockRecruitment(ByVal iGroup As Integer, ByVal B As Single, ByVal BioEst As Single, ByVal Blast As Single) As Single
             'B is the biomass calculated by Ecosim
@@ -1524,8 +1483,10 @@ Namespace MSE
         ''' <remarks></remarks>
         Friend Sub DoAssessment(ByVal Biomass() As Single)
 
+
             Dim Bobs() As Single
             ReDim Bobs(Me.m_epdata.NumGroups)
+            System.Console.WriteLine()
             For i As Integer = 1 To Me.m_data.nLiving
 
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
@@ -2760,7 +2721,6 @@ Namespace MSE
 
                         buff = Nothing
                     Catch ex As Exception
-                        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
                         System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename("FleetTradeOff", Me.m_epdata.FleetName(iFrom)) & " Exception: " & ex.Message)
                     End Try
                 Next
@@ -2772,7 +2732,7 @@ Namespace MSE
         End Sub
 
         ''' <summary>
-        ''' Normally distrubute random number between -1 and 1 
+        ''' Normally distrubute random number where mean = 0 std = 1
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
@@ -2783,6 +2743,7 @@ Namespace MSE
             For i As Integer = 1 To 12
                 X = X + rndGen.NextDouble
             Next
+            System.Console.Write(X.ToString & ", ")
             Return CSng(X)
         End Function
 

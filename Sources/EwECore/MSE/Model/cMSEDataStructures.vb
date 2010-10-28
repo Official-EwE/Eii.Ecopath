@@ -254,12 +254,6 @@ Namespace MSE
         ''' <summary>Biomass discarded because of regulation  (by gear group)</summary>
         Public RegDiscard(,) As Single ' gear group
 
-        ''' <summary>Proportion of regulated landings (by gear group) for the current time step</summary>
-        Public PropLandedTime(,) As Single
-
-        ''' <summary>Proportion of regulated discards (by gear group) for the current time step</summary>
-        Public Propdiscardtime(,) As Single
-
         ''' <summary>Percentage of total catch by at fleet on a group (by fleet, group)</summary>
         ''' <remarks>Sums to one across all fleets for a group</remarks>
         Public Quotashare(,) As Single
@@ -367,22 +361,6 @@ Namespace MSE
         End Sub
 
         ''' <summary>
-        ''' Init Propdiscardtime(fleets,groups) and PropLandedTime(fleets, groups) to Ecopath landing and discards
-        ''' </summary>
-        ''' <remarks>This must be call before <see cref="EwECore.Ecosim.cEcoSimModel.Init">Ecosim.Init(Boolean)</see> 
-        ''' so Propdiscardtime() and PropLandedTime() can be used to init <see cref="cEcosimDatastructures.FishRateNo">FishRateNo()</see> (fishing mortality)</remarks>
-        Public Sub InitToEcopath()
-            For iflt As Integer = 1 To nFleets
-                For igrp As Integer = 1 To NGroups
-                    'jb 7-Jan-2010 addded PropDiscardMort() so the default for discards contain only the mort
-                    Me.Propdiscardtime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp) * Me.m_EPData.PropDiscardMort(iflt, igrp)
-                    Me.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
-                Next
-            Next
-
-        End Sub
-
-        ''' <summary>
         ''' Redimension variables and set default variable values.
         ''' </summary>
         Public Sub RedimVars()
@@ -458,8 +436,6 @@ Namespace MSE
             ReDim RegDiscard(nFleets, NGroups)
             ReDim MaxEffort(nFleets)
             ReDim Quota(nFleets, NGroups)
-            ReDim PropLandedTime(nFleets, NGroups)
-            ReDim Propdiscardtime(nFleets, NGroups)
 
             ReDim Quotashare(nFleets, NGroups)
             ReDim QuotaTime(nFleets, NGroups)
