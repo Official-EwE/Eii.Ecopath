@@ -1745,23 +1745,18 @@ Namespace Ecosim
                     For iflt = 1 To m_Data.nGear    'Discarded fish has no value
                         SumEf = SumEf + m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp)
                     Next
-                    If SumEf = 0 Then SumEf = 1
 
                     If SumEf > 0 Then
                         Dim bioCatch As Single
-                        Dim bioCatch2 As Single
                         Dim valueCatch As Single
-                        'If Me.m_Data.FisForced(igrp) Then
 
-
-                        'Else
                         For iflt = 1 To m_Data.nGear
                             If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
-
+                                'Bug #817 When F time series is loaded the F is loaded directly into FishRateNo() and FishTime()
+                                'FishRateGear() and FishMGear() are never affected by the time series
+                                'so the catch calculation is wrong!!!
                                 bioCatch = BB(igrp) * m_Data.FishTime(igrp) * m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
-                                bioCatch2 = Me.CalcCatch(igrp, iflt, BB(igrp), m_Data.FishRateGear(iflt, iTime), m_Data.FishMGear(iflt, igrp), 1)
-                                'System.Console.WriteLine(
-                                'Debug.Assert(bioCatch2 = bioCatch)
+
                                 m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = bioCatch
                                 m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime) = bioCatch / BB(igrp)
                                 'sum all fleets into zero index
