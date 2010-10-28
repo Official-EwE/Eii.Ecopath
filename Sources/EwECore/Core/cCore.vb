@@ -744,7 +744,7 @@ Public Class cCore
         Me.m_batchChangeLevel = DirectCast(Math.Min(CInt(batchChangeLevel), CInt(Me.m_batchChangeLevel)), eBatchChangeLevelFlags)
 
         ' Last batch lock released?
-        If (Me.m_iBatchLock = 0) Then
+        If (Not Me.IsBatchLocked()) Then
 
             Me.m_DataSource.EndTransaction(bCommit)
 
@@ -799,6 +799,16 @@ Public Class cCore
 
         Return True
 
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether a <see cref="SetBatchLock">batch lock</see> is active.
+    ''' </summary>
+    ''' <returns>True if a <see cref="SetBatchLock">batch lock</see> is active.</returns>
+    ''' -----------------------------------------------------------------------
+    Friend Function IsBatchLocked() As Boolean
+        Return (Me.m_iBatchLock > 0)
     End Function
 
 #End Region ' Batch operations
@@ -1695,13 +1705,12 @@ Public Class cCore
         If (bChanged) Then
             If (bDirtyDatasource) Then
                 Me.DataAddedOrRemovedMessage("Time Series have been updated", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
+                DataSource.SetChanged(eCoreComponentType.TimeSeries)
+                Me.m_StateMonitor.UpdateDataState(DataSource)
             Else
                 Me.DataModifiedMessage("Time Series have changed", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
             End If
-            DataSource.SetChanged(eCoreComponentType.TimeSeries)
-            Me.m_StateMonitor.UpdateDataState(DataSource)
         End If
-
 
         Me.Messages.sendAllMessages()
 
