@@ -1745,17 +1745,28 @@ Namespace Ecosim
                     For iflt = 1 To m_Data.nGear    'Discarded fish has no value
                         SumEf = SumEf + m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp)
                     Next
+                    If SumEf = 0 Then SumEf = 1
 
-                    If SumEf > 0 Then
+                    If m_Data.FishTime(igrp) > 0 Then
                         Dim bioCatch As Single
                         Dim valueCatch As Single
+                        Dim FleetProp As Single
+
+                        'Bug #817 When F time series is loaded the F is loaded directly into FishRateNo() and FishTime()
+                        'FishRateGear() and FishMGear() are never affected by the time series so catch calculation using them will be wrong
+
+                        'If F time series is loaded then only F from the time series makes up the catch.
+                        'Not the sum across all the fleets. This ignores the catch from the fleets and puts all the catch into the first fleet.
+                        'This is still sort of wrong but at least the Catch value is correct just not the fleet that caught it, which we cannot know from the time series data.
 
                         For iflt = 1 To m_Data.nGear
                             If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
-                                'Bug #817 When F time series is loaded the F is loaded directly into FishRateNo() and FishTime()
-                                'FishRateGear() and FishMGear() are never affected by the time series
-                                'so the catch calculation is wrong!!!
-                                bioCatch = BB(igrp) * m_Data.FishTime(igrp) * m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
+
+                                FleetProp = m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
+                                'F is forced so assume (wrongly?) that all catch is from one fleet
+                                If Me.m_Data.FisForced(igrp) Then FleetProp = 1
+
+                                bioCatch = BB(igrp) * m_Data.FishTime(igrp) * FleetProp
 
                                 m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = bioCatch
                                 m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime) = bioCatch / BB(igrp)
@@ -1775,10 +1786,12 @@ Namespace Ecosim
 
                                 ' Catch by group, by fleet
                                 m_Results.BCatch(igrp, iflt) = bioCatch
+
+                                'F is forced so just do the first fleet
+                                If Me.m_Data.FisForced(igrp) Then Exit For
                             End If
                         Next
 
-                        '   End If
 
                     Else
 
@@ -1787,7 +1800,7 @@ Namespace Ecosim
                             m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) = 0
                         Next
 
-                    End If ' If SumEf Then
+                    End If '  m_Data.FishTime(igrp) > 0
 
                     'Average weight is only for multi stanza groups it will be -9999 for all other groups
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, igrp, iTime) = cCore.NULL_VALUE
