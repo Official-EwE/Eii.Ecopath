@@ -11019,29 +11019,35 @@ Public Class cCore
                 End Select
 
             Case eDataTypes.FleetInput
-                Dim flt As cFleetInput = DirectCast(obj, cFleetInput)
+                'Dim flt As cFleetInput = DirectCast(obj, cFleetInput)
+                ''has the MSE Quota share changed
+                'Dim bShareChanged As Boolean = False
 
-                Select Case value.varName
-                    Case eVarNameFlags.Landings, eVarNameFlags.OffVesselPrice
-                        Set_MarketPrice_Flags(flt, True)
-                        Set_DiscardMort_Flags(flt, True)
+                'Select Case value.varName
+                '    Case eVarNameFlags.Landings
+                '        Me.Set_DiscardMort_Flags(flt, True)
+                '        bShareChanged = True
 
-                        If Me.m_StateMonitor.HasEcosimLoaded Then
-                            Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
-                            Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
-                                                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
-                            Me.m_publisher.AddMessage(qsMsg)
-                        End If
+                '    Case eVarNameFlags.Discards
+                '        Me.Set_DiscardMort_Flags(flt, True)
+                '        bShareChanged = True
 
-                    Case eVarNameFlags.Discards, eVarNameFlags.Landings
-                        Set_DiscardMort_Flags(flt, True)
+                '    Case eVarNameFlags.OffVesselPrice
+                '        Me.Set_MarketPrice_Flags(flt, True)
 
-                        Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
-                            eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
-                        Me.m_publisher.AddMessage(qsMsg)
+                'End Select
 
-
-                End Select
+                'If bShareChanged Then
+                '    'Landing and/or discards has changed so Quota share has changed
+                '    If Me.m_StateMonitor.HasEcosimLoaded Then
+                '        'Ecosim is loaded so update the MSE Quota share
+                '        Me.SetDefaultQuotaShare()
+                '        Me.Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
+                '        Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
+                '                                    eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
+                '        Me.m_publisher.AddMessage(qsMsg)
+                '    End If
+                'End If
 
             Case eDataTypes.EcoSimModelParameter
                 Debug.Assert(TypeOf obj Is cEcoSimModelParameters)
@@ -11372,11 +11378,27 @@ Public Class cCore
                 Dim flt As cFleetInput = DirectCast(obj, cFleetInput)
 
                 Select Case value.varName
-                    ' For landings and discards, check the effect on stanza configurations
+
                     Case eVarNameFlags.Landings, eVarNameFlags.Discards
-                        Update_Stanza_Catches()
+                        Me.Update_Stanza_Catches()
+                        Me.Set_DiscardMort_Flags(flt, True)
+                        Me.Set_MarketPrice_Flags(flt, True)
+
+                        'Landing and/or discards has changed so Quota share has changed
+                        If Me.m_StateMonitor.HasEcosimLoaded Then
+                            'Ecosim is loaded so update the MSE Quota share
+                            Me.SetDefaultQuotaShare()
+                            Me.Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
+                            Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified, _
+                                                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
+                            Me.m_publisher.AddMessage(qsMsg)
+                        End If
+
+                    Case eVarNameFlags.OffVesselPrice
+                        Me.Set_MarketPrice_Flags(flt, True)
 
                 End Select
+
 
             Case eDataTypes.EcoSimModelParameter
                 Select Case value.varName
