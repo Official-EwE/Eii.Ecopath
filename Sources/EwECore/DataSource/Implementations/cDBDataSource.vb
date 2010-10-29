@@ -326,8 +326,32 @@ Namespace DataSources
                 Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
             End Try
 
-            If (Object.ReferenceEquals(objResult, Nothing)) Or (Object.ReferenceEquals(objResult, objValueIgnore)) Then
+            If (Object.ReferenceEquals(objResult, Nothing)) Then
                 objResult = objValueDefault
+            ElseIf (Not Object.ReferenceEquals(objValueIgnore, Nothing)) Then
+                ' Compare ignore values
+                If TypeOf objResult Is String Then
+                    Try
+                        If (String.Compare(CStr(objResult), Convert.ToString(objValueIgnore), True) = 0) Then
+                            objResult = objValueDefault
+                        End If
+                    Catch ex As Exception
+                    End Try
+                ElseIf TypeOf objResult Is Boolean Then
+                    Try
+                        If (CBool(objResult) = Convert.ToBoolean(objValueIgnore)) Then
+                            objResult = objValueDefault
+                        End If
+                    Catch ex As Exception
+                    End Try
+                Else
+                    Try
+                        If (CSng(objResult) = Convert.ToSingle(objValueIgnore)) Then
+                            objResult = objValueDefault
+                        End If
+                    Catch ex As Exception
+                    End Try
+                End If
             End If
 
             If (Convert.IsDBNull(objResult)) Then
@@ -3939,27 +3963,27 @@ Namespace DataSources
                     ecosimDS.TempLeft(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempLeft", 1000.0!))
                     ecosimDS.TempRight(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempRight", 1000.0!))
 
-                    mseDS.Blim(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Blim", mseDS.Blim(iEcopathGroup)))
-                    mseDS.Bbase(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup)))
-                    mseDS.Fopt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Fopt", mseDS.Fopt(iEcopathGroup)))
-                    mseDS.FixedEscapement(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedEscapement", 0.0!))
-                    mseDS.FixedF(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedF", 0.0!))
+                    mseDS.Blim(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Blim", mseDS.Blim(iEcopathGroup), cCore.NULL_VALUE))
+                    mseDS.Bbase(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup), cCore.NULL_VALUE))
+                    mseDS.Fopt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Fopt", mseDS.Fopt(iEcopathGroup), cCore.NULL_VALUE))
+                    mseDS.FixedEscapement(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedEscapement", 0.0!, cCore.NULL_VALUE))
+                    mseDS.FixedF(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedF", 0.0!, cCore.NULL_VALUE))
 
-                    mseDS.CVbiomEst(iEcopathGroup) = CSng(Me.ReadSafe(reader, "BiomassCV", mseDS.CVbiomEst(iEcopathGroup)))
-                    mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", mseDS.BioRiskValue(iEcopathGroup, 0)))
-                    mseDS.BioRiskValue(iEcopathGroup, 1) = CSng(Me.ReadSafe(reader, "UpperRisk", mseDS.BioRiskValue(iEcopathGroup, 1)))
+                    mseDS.CVbiomEst(iEcopathGroup) = CSng(Me.ReadSafe(reader, "BiomassCV", mseDS.CVbiomEst(iEcopathGroup), cCore.NULL_VALUE))
+                    mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", mseDS.BioRiskValue(iEcopathGroup, 0), cCore.NULL_VALUE))
+                    mseDS.BioRiskValue(iEcopathGroup, 1) = CSng(Me.ReadSafe(reader, "UpperRisk", mseDS.BioRiskValue(iEcopathGroup, 1), cCore.NULL_VALUE))
 
                     mseDS.DefaultBioBounds(iEcopathGroup)
-                    mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower))
-                    mseDS.BioBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper))
+                    mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower, cCore.NULL_VALUE))
+                    mseDS.BioBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper, cCore.NULL_VALUE))
 
                     mseDS.DefaultCatchBoundsGroup(iEcopathGroup)
-                    mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower))
-                    mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper))
+                    mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower, cCore.NULL_VALUE))
+                    mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper, cCore.NULL_VALUE))
 
-                    mseDS.RstockRatio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RStockRatio", mseDS.RstockRatio(igroup)))
-                    mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup)))
-                    mseDS.cvRec(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup)))
+                    mseDS.RstockRatio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RStockRatio", mseDS.RstockRatio(igroup), cCore.NULL_VALUE))
+                    mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup), cCore.NULL_VALUE))
+                    mseDS.cvRec(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup), cCore.NULL_VALUE))
 
                     ' bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
