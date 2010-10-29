@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -26,13 +27,13 @@ Namespace Ecopath.Output
 
             Me.Redim(1, 8)
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCUM_UNIT, aUnitType)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_NETMIGRATION_UNIT, aUnitType)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_FLOWTODETR_UNIT, aUnitType)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_NETEFFICIENCY)
-            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_OMNIVORYINDEX)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_UNIT, aUnitType)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_NETMIGRATION_UNIT, aUnitType)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_FLOWTODETR_UNIT, aUnitType)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_NETEFFICIENCY)
+            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_OMNIVORYINDEX)
 
             Me.FixedColumns = 2
 

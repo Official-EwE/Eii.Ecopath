@@ -270,12 +270,12 @@ Namespace Ecospace
             ' Layer index cell
             Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
             ' Layer name cell, editable this time
-            Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
-            Me(0, eColumnTypes.LayerWeight) = New EwEColumnHeaderCell(My.Resources.HEADER_WEIGHT)
-            Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(My.Resources.HEADER_DESCRIPTION)
+            Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+            Me(0, eColumnTypes.LayerWeight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
+            Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
 
             ' Layer index cell
-            Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
+            Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             ' Fix index column only; Layer name column cannot be fixed because it must be editable
             Me.FixedColumns = 1

@@ -8,13 +8,16 @@ Imports EwECore.FishingPolicy
 Imports EwECore.SearchObjectives
 Imports ScientificInterface.Controls
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
 Namespace Ecosim
 
-#Region "Form class for Fishing Policy Search form (frmFishingPolicySearch) "
-
+    ''' <summary>
+    ''' Form class for Fishing Policy Search form
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Class frmFishingPolicySearch
 
         Private m_manager As cFishingPolicyManager = Nothing
@@ -539,19 +542,19 @@ Namespace Ecosim
             ReDim m_lptsResults(6) ' + nSearchBlocks) Will not plot blocks yet
 
             Me.m_lptsResults(1) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_NET_ECONOMIC_VALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_NET_ECONOMIC_VALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(2) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(3) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(4) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(5) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(My.Resources.HEADER_BIOMASS_DIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_BIOMASS_DIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             ' Will not plot blocks for now
             'For i As Integer = 1 To nSearchBlocks
@@ -677,8 +680,6 @@ Namespace Ecosim
 #End Region ' Helper classes
 
     End Class ' frmFishingPolicySearch
-
-#End Region
 
 #Region "DataSource implementation for ucPolicyColorBlocks"
 

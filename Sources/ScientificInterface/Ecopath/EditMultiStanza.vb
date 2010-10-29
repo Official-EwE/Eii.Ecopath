@@ -171,8 +171,8 @@ Namespace Ecopath
             If (sg Is Nothing) Then Return
 
             Dim pane As GraphPane = Me.m_zgh.ConfigurePane("", _
-                My.Resources.HEADER_AGE, 0, sg.MaxAge - 1, _
-                My.Resources.HEADER_NORMALIZED_VALUE, 0, 1, True)
+                SharedResources.HEADER_AGE, 0, sg.MaxAge - 1, _
+                SharedResources.HEADER_NORMALIZED_VALUE, 0, 1, True)
 
             Dim pplNumber As New PointPairList()
             Dim pplWeight As New PointPairList()
@@ -204,9 +204,9 @@ Namespace Ecopath
             Next i
 
             ' Generate curves
-            pane.AddCurve(My.Resources.HEADER_NUMBER, pplNumber, Color.Red, SymbolType.None)
-            pane.AddCurve(My.Resources.HEADER_INDIVIDUAL_WEIGHT, pplWeight, Color.Blue, SymbolType.None)
-            pane.AddCurve(My.Resources.HEADER_POPULATIONBIOMASS, pplB, Color.Black, SymbolType.None)
+            pane.AddCurve(SharedResources.HEADER_NUMBER, pplNumber, Color.Red, SymbolType.None)
+            pane.AddCurve(SharedResources.HEADER_INDIVIDUAL_WEIGHT, pplWeight, Color.Blue, SymbolType.None)
+            pane.AddCurve(SharedResources.HEADER_POPULATIONBIOMASS, pplB, Color.Black, SymbolType.None)
 
             ' Generate vertical separator curves
             For i As Integer = 2 To sg.NStanzas

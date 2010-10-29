@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -29,15 +30,15 @@ Namespace Ecopath.Input
             Me.Redim(1, 10) '9)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_A_IN_LW)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_B_IN_LW)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_LENGTH_INFINITY_UNIT) ', StyleGuide.eUnitType.None)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_WEIGHT_INFINITY_UNIT) ', StyleGuide.eUnitType.Monetary)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_K_VBGF_UNIT) ', StyleGuide.eUnitType.None)
-            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_TZERO_VBGF_UNIT) ', StyleGuide.eUnitType.Time)
-            Me(0, 8) = New EwEColumnHeaderCell(My.Resources.HEADER_AGE_FIRST_CAPTURE_UNIT) ', StyleGuide.eUnitType.Currency)
-            Me(0, 9) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXAGE_UNIT) ', StyleGuide.eUnitType.Currency)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_A_IN_LW)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_B_IN_LW)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_LENGTH_INFINITY_UNIT) ', StyleGuide.eUnitType.None)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT_INFINITY_UNIT) ', StyleGuide.eUnitType.Monetary)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_K_VBGF_UNIT) ', StyleGuide.eUnitType.None)
+            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_TZERO_VBGF_UNIT) ', StyleGuide.eUnitType.Time)
+            Me(0, 8) = New EwEColumnHeaderCell(SharedResources.HEADER_AGE_FIRST_CAPTURE_UNIT) ', StyleGuide.eUnitType.Currency)
+            Me(0, 9) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXAGE_UNIT) ', StyleGuide.eUnitType.Currency)
 
             Me.FixedColumns = 2
 

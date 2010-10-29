@@ -234,10 +234,10 @@ Namespace Ecospace
             ' Habitat index cell
             Me(0, eColumnTypes.HabitatIndex) = New EwEColumnHeaderCell()
             ' Habitat name cell, editable this time
-            Me(0, eColumnTypes.HabitatName) = New EwEColumnHeaderCell(My.Resources.HEADER_HABITAT)
+            Me(0, eColumnTypes.HabitatName) = New EwEColumnHeaderCell(SharedResources.HEADER_HABITAT)
 
             ' Habitat index cell
-            Me(0, eColumnTypes.HabitatStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
+            Me(0, eColumnTypes.HabitatStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             ' Fix index column only; Habitat name column cannot be fixed because it must be editable
             Me.FixedColumns = 1

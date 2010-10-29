@@ -4,9 +4,10 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SourceGrid2.Cells.Real
-Imports EwEUtils.Core
 Imports EwECore.MSE
+Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -22,9 +23,9 @@ Public Class gridFishingCV
         MyBase.InitStyle()
         Me.Redim(1, 3)
         Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
-        Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_INCREASEQ)
-        'Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CV)
+        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_INCREASEQ)
+        'Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False

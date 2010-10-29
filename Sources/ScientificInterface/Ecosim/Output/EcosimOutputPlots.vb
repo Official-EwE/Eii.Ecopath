@@ -3,15 +3,16 @@
 Option Explicit On
 Option Strict On
 
+Imports System.IO
+Imports System.Text
 Imports EwECore
 Imports ScientificInterface.Controls
 Imports ScientificInterface.Other
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
-Imports ZedGraph
-Imports System.IO
-Imports System.Text
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region
 
@@ -70,18 +71,18 @@ Namespace Ecosim
             Me.m_zgh.ShowPointValue = True
             Me.m_zgh.IsTrackVisiblity = False
 
-            Me.ConfigurePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS)
-            Me.ConfigurePane(ePaneTypes.ConsumptionBiomass, My.Resources.HEADER_CONSUMPTION_OVER_BIOMASS)
-            Me.ConfigurePane(ePaneTypes.PredationMortality, My.Resources.HEADER_PREDMORT)
+            Me.ConfigurePane(ePaneTypes.Biomass, SharedResources.HEADER_BIOMASS)
+            Me.ConfigurePane(ePaneTypes.ConsumptionBiomass, SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS)
+            Me.ConfigurePane(ePaneTypes.PredationMortality, SharedResources.HEADER_PREDMORT)
             ' JS: EwE5 distinguishes between P/B (PP=1) and TotalMort (PP=0) for 
             Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS)
-            Me.ConfigurePane(ePaneTypes.FeedingTime, My.Resources.HEADER_FEEDINGTIME)
-            Me.ConfigurePane(ePaneTypes.Prey, My.Resources.HEADER_PREY_PERCENTAGE)
-            Me.ConfigurePane(ePaneTypes.Yield, My.Resources.HEADER_YIELD)
-            Me.ConfigurePane(ePaneTypes.FleetFishingMortality, My.Resources.HEADER_FISHINGMORTALITY)
+            Me.ConfigurePane(ePaneTypes.FeedingTime, SharedResources.HEADER_FEEDINGTIME)
+            Me.ConfigurePane(ePaneTypes.Prey, SharedResources.HEADER_PREY_PERCENTAGE)
+            Me.ConfigurePane(ePaneTypes.Yield, SharedResources.HEADER_YIELD)
+            Me.ConfigurePane(ePaneTypes.FleetFishingMortality, SharedResources.HEADER_FISHINGMORTALITY)
             ' Need to test StanZaGroup..Sometimes displayed as Average weight
             ' update it in the actual rendering.
-            Me.ConfigurePane(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_PRODCONS)
+            Me.ConfigurePane(ePaneTypes.AvgWeightOrProdCons, SharedResources.HEADER_PRODCONS)
 
             Me.m_lbGroups.Attach(Me.UIContext)
             Me.m_lbPredators.Attach(Me.UIContext)
@@ -293,7 +294,7 @@ Namespace Ecosim
 
             If groupSimOut.isMultiStanza() Then
 
-                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_AVGERAGEWEIGHT)
+                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, SharedResources.HEADER_AVGERAGEWEIGHT)
 
                 Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
                 For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.AverageWeight, iGroup, Color.Blue)
@@ -302,14 +303,14 @@ Namespace Ecosim
 
             Else
 
-                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, My.Resources.HEADER_PRODCONS)
+                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, SharedResources.HEADER_PRODCONS)
                 Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
 
             End If
 
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_TOTAL, eLineType.ModelData, Color.Black, pplMortTotal))
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_PREDATION, eLineType.ModelData, Color.Red, pplMortPredation))
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(My.Resources.HEADER_FISHING, eLineType.ModelData, Color.Blue, pplMortFishing))
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_TOTAL, eLineType.ModelData, Color.Black, pplMortTotal))
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_PREDATION, eLineType.ModelData, Color.Red, pplMortPredation))
+            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_FISHING, eLineType.ModelData, Color.Blue, pplMortFishing))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroup, Color.Green)
                 Me.AddCurveToGraphPane(ePaneTypes.Mortality, li)
             Next li

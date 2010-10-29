@@ -245,12 +245,12 @@ Imports SourceGrid2.VisualModels
         ' Fleet index cell
         Me(0, eColumnTypes.FleetIndex) = New EwEColumnHeaderCell()
         ' Fleet name cell, editable this time
-        Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
+        Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
         ' Color
-        Me(0, eColumnTypes.FleetColor) = New EwEColumnHeaderCell(My.Resources.HEADER_COLOR)
+        Me(0, eColumnTypes.FleetColor) = New EwEColumnHeaderCell(SharedResources.HEADER_COLOR)
 
         ' Fleet index cell
-        Me(0, eColumnTypes.FleetStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
+        Me(0, eColumnTypes.FleetStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         ' Fix index column only; Fleet name column cannot be fixed because it must be editable
         Me.FixedColumns = 1

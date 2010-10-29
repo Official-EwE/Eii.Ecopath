@@ -5,6 +5,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
 #End Region
@@ -65,9 +66,9 @@ Namespace Ecospace
             Next
 
             'Column header cell - Effective power
-            Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(My.Resources.HEADER_EFFPOWER)
+            Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFPOWER)
             'Column header cell - Tot.Eff.Multip.
-            Me(0, Me.ColumnsCount - 1) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTEFFMULTI)
+            Me(0, Me.ColumnsCount - 1) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTEFFMULTI)
 
         End Sub
 

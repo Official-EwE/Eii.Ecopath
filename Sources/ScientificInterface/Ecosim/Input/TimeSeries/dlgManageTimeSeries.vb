@@ -395,7 +395,7 @@ Public Class dlgManageTimeSeries
             ' Get dataset
             ds = Me.m_uic.Core.TimeSeriesDataset(iDS)
             If ds.IsLoaded Then
-                strLoaded = My.Resources.HEADER_YES
+                strLoaded = SharedResources.HEADER_YES
             Else
                 strLoaded = ""
             End If
@@ -730,7 +730,7 @@ Public Class dlgManageTimeSeries
             ' Get dataset
             ds = Me.m_uic.Core.TimeSeriesDataset(iDS)
             If ds.IsLoaded Then
-                strLoaded = My.Resources.HEADER_YES
+                strLoaded = SharedResources.HEADER_YES
             Else
                 strLoaded = ""
             End If

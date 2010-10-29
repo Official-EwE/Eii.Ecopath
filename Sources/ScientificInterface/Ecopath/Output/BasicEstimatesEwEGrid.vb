@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
 #End Region
@@ -38,16 +39,16 @@ Namespace Ecopath.Output
             MyBase.InitStyle()
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(My.Resources.HEADER_TROPHICLEVEL)
-            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(My.Resources.HEADER_AREA)
-            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSAREA_UNIT, cStyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UNIT, cStyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
-            Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(My.Resources.HEADER_GE)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(SharedResources.HEADER_TROPHICLEVEL)
+            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(SharedResources.HEADER_AREA)
+            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASSAREA_UNIT, cStyleGuide.eUnitType.Currency)
+            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_UNIT, cStyleGuide.eUnitType.Currency)
+            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(SharedResources.HEADER_PB_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(SharedResources.HEADER_EE)
+            Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(SharedResources.HEADER_GE)
 
             Me.FixedColumns = 2
 

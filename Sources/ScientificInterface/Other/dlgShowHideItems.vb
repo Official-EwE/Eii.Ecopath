@@ -70,8 +70,8 @@ Namespace Ecosim
             End If
 
             If Me.m_bShowTotals Then
-                Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALCATCH, Me.m_uic.StyleGuide.TotalCatchVisible)
-                Me.m_clbGroups.Items.Add(My.Resources.HEADER_TOTALLENGTH, Me.m_uic.StyleGuide.TotalValueVisible)
+                Me.m_clbGroups.Items.Add(SharedResources.HEADER_TOTALCATCH, Me.m_uic.StyleGuide.TotalCatchVisible)
+                Me.m_clbGroups.Items.Add(SharedResources.HEADER_TOTALLENGTH, Me.m_uic.StyleGuide.TotalValueVisible)
             End If
 
             Me.m_clbFleets.Items.Clear()

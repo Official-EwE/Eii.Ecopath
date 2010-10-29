@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -29,12 +30,12 @@ Namespace Ecopath.Input
             Me.Redim(1, 7)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_FIXEDCOST)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_EFFORTRELATEDCOST)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_SAILINGRELATEDCOST)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_PROFIT_PERC)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALVALUE_PERC)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_FIXEDCOST)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORTRELATEDCOST)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_SAILINGRELATEDCOST)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_PROFIT_PERC)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE_PERC)
 
         End Sub
 

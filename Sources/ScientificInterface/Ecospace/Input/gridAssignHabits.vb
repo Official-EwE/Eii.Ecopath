@@ -4,8 +4,9 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports SourceGrid2
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2
 Imports SourceGrid2.BehaviorModels
 
 #End Region
@@ -96,10 +97,10 @@ Namespace Ecospace
             Next
 
             'Column header cell - Ecospace area
-            Me(0, Me.Core.nHabitats + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOSPACE_AREA)
+            Me(0, Me.Core.nHabitats + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOSPACE_AREA)
 
             'Column header cell - Ecopath area
-            Me(0, Me.Core.nHabitats + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOPATH_AREA)
+            Me(0, Me.Core.nHabitats + 3) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOPATH_AREA)
             Me(0, Me.Core.nHabitats + 3).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
 
             Me.FixedColumns = 2

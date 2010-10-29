@@ -667,23 +667,23 @@ Public Class gridEditGroups
         ' Group index cell
         Me(0, eColumnTypes.GroupIndex) = New EwEColumnHeaderCell()
         ' Group name cell, editable this time
-        Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
         ' PP cells
-        Me(0, eColumnTypes.GroupPPConsumer) = New EwEColumnHeaderCell(My.Resources.HEADER_CONSUMER)
-        Me(0, eColumnTypes.GroupPPProducer) = New EwEColumnHeaderCell(My.Resources.HEADER_PRODUCER)
-        Me(0, eColumnTypes.GroupPPDetritus) = New EwEColumnHeaderCell(My.Resources.HEADER_DETRITUS)
-        Me(0, eColumnTypes.GroupPP) = New EwEColumnHeaderCell(My.Resources.HEADER_PP)
+        Me(0, eColumnTypes.GroupPPConsumer) = New EwEColumnHeaderCell(SharedResources.HEADER_CONSUMER)
+        Me(0, eColumnTypes.GroupPPProducer) = New EwEColumnHeaderCell(SharedResources.HEADER_PRODUCER)
+        Me(0, eColumnTypes.GroupPPDetritus) = New EwEColumnHeaderCell(SharedResources.HEADER_DETRITUS)
+        Me(0, eColumnTypes.GroupPP) = New EwEColumnHeaderCell(SharedResources.HEADER_PP)
 
         ' Color
-        Me(0, eColumnTypes.GroupColor) = New EwEColumnHeaderCell(My.Resources.HEADER_COLOR)
+        Me(0, eColumnTypes.GroupColor) = New EwEColumnHeaderCell(SharedResources.HEADER_COLOR)
 
         ' Stanza cells
-        Me(0, eColumnTypes.StanzaName) = New EwEColumnHeaderCell(My.Resources.HEADER_STANZAGROUP_NAME)
-        Me(0, eColumnTypes.StanzaAge) = New EwEColumnHeaderCell(My.Resources.HEADER_STANZA_AGE)
+        Me(0, eColumnTypes.StanzaName) = New EwEColumnHeaderCell(SharedResources.HEADER_STANZAGROUP_NAME)
+        Me(0, eColumnTypes.StanzaAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STANZA_AGE)
 
         ' Group index cell
-        Me(0, eColumnTypes.GroupStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
+        Me(0, eColumnTypes.GroupStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         ' Fix index column only; group name column cannot be fixed because it must be editable
         Me.FixedColumns = 1

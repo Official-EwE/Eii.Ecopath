@@ -4,9 +4,10 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -55,11 +56,11 @@ Namespace Ecosim
 
             Me.Redim(Me.Core.nLivingGroups + 1, 6)
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CV)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_LOWERLIMIT)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_MEAN)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_UPPERLIMIT)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_LOWERLIMIT)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_UPPERLIMIT)
 
             Me.FixedColumnWidths = False
         End Sub

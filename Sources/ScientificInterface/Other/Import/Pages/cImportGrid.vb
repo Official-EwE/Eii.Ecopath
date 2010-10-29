@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwECore.Database
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 
@@ -88,9 +89,9 @@ Namespace Import
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
             ' Create columns
-            Me(0, eColumnTypes.EwE5Model) = New EwEColumnHeaderCell(My.Resources.HEADER_MODEL_EWE5)
-            Me(0, eColumnTypes.Import) = New EwEColumnHeaderCell(My.Resources.HEADER_IMPORT)
-            Me(0, eColumnTypes.EwE6Model) = New EwEColumnHeaderCell(My.Resources.HEADER_MODEL_EWE6)
+            Me(0, eColumnTypes.EwE5Model) = New EwEColumnHeaderCell(SharedResources.HEADER_MODEL_EWE5)
+            Me(0, eColumnTypes.Import) = New EwEColumnHeaderCell(SharedResources.HEADER_IMPORT)
+            Me(0, eColumnTypes.EwE6Model) = New EwEColumnHeaderCell(SharedResources.HEADER_MODEL_EWE6)
 
             ' Configure columns
             Me.FixedColumns = 1

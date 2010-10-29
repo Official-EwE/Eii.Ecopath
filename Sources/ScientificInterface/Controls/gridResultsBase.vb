@@ -7,6 +7,7 @@ Imports EwECore
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -64,7 +65,7 @@ Namespace Controls
             'The row for total value
             Me.Rows.Insert(cnt + iRow)
             Me(Me.RowsCount - 1, 0) = New EwERowHeaderCell("")
-            Me(Me.RowsCount - 1, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTAL)
+            Me(Me.RowsCount - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTAL)
 
             For columnIndex As Integer = 2 To Me.ColumnsCount - 1
 

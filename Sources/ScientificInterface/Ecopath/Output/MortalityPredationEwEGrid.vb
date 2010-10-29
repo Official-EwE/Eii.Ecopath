@@ -6,6 +6,7 @@ Option Explicit On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -129,7 +130,7 @@ Namespace Ecopath.Output
             Dim rowCnt As Integer = Me.RowsCount
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_PREYPREDATOR)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 

@@ -6,6 +6,7 @@ Option Explicit On
 Imports EwECore
 Imports SourceGrid2.Cells.Real
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -39,7 +40,7 @@ Namespace Ecopath.Input
 
             'Header cell (0,0) Source \ fate
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCEFATE)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_SOURCEFATE)
 
             ' Detritus column header cells
             For i As Integer = 1 To Core.nDetritusGroups
@@ -48,9 +49,9 @@ Namespace Ecopath.Input
             Next
 
             ' The export header cell
-            Me(0, Core.nDetritusGroups + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_EXPORT)
+            Me(0, Core.nDetritusGroups + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
             ' The sum header cell
-            Me(0, Core.nDetritusGroups + 3) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
+            Me(0, Core.nDetritusGroups + 3) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
 

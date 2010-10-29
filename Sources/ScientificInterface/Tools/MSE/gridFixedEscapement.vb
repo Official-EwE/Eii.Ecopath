@@ -6,6 +6,7 @@ Imports EwECore.MSE
 Imports EwEUtils.Core
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -22,10 +23,10 @@ Public Class gridFixedEscapement
 
         Me.Redim(1, 5)
         Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-        Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_FIXEDESCAPE)
-        Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_FIXEDF)
-        Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_TAC)
+        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_FIXEDESCAPE)
+        Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_FIXEDF)
+        Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_TAC)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False

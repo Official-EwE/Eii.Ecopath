@@ -1,9 +1,11 @@
 ﻿#Region " Imports "
+
 Option Explicit On
 Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 
 #End Region ' Imports
@@ -43,8 +45,8 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_lbGroups.SelectedIndexChanged
-            AddCurves(CreatePane(My.Resources.CAPTION_PSD_GROUP_CONTRIB, My.Resources.HEADER_BODYWEIGHT_LOGg, _
-                     My.Resources.HEADER_BIOMASS_LOGg))
+            AddCurves(CreatePane(My.Resources.CAPTION_PSD_GROUP_CONTRIB, SharedResources.HEADER_BODYWEIGHT_LOGg, _
+                     SharedResources.HEADER_BIOMASS_LOGg))
 
             'highlight group contribution in the histogram
             UpdatePlot()

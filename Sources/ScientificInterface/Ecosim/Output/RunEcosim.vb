@@ -98,7 +98,7 @@ Namespace Ecosim
             Me.m_zgp = New cEcosimOutputPlotHelper()
             Me.m_zgp.Attach(Me.UIContext, Me.m_graph)
 
-            Me.m_zgp.ConfigurePane(My.Resources.HEADER_RELATIVEBIOMASS, My.Resources.HEADER_YEAR, My.Resources.HEADER_RELATIVEBIOMASS, False)
+            Me.m_zgp.ConfigurePane(SharedResources.HEADER_RELATIVEBIOMASS, SharedResources.HEADER_YEAR, SharedResources.HEADER_RELATIVEBIOMASS, False)
             Me.m_zgp.ShowMultipleRuns = Me.m_tsmShowMultipleRuns.Selected
 
             Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly
@@ -705,15 +705,15 @@ Namespace Ecosim
             Select Case Me.PlotDataType
                 Case ePlotData.Biomass
                     If Me.m_bIsCumulative Then
-                        m_zgp.DataName = My.Resources.HEADER_BIOMASS_CUMULATIVE
+                        m_zgp.DataName = SharedResources.HEADER_BIOMASS_CUMULATIVE
                     Else
-                        m_zgp.DataName = My.Resources.HEADER_RELATIVEBIOMASS
+                        m_zgp.DataName = SharedResources.HEADER_RELATIVEBIOMASS
                     End If
                 Case ePlotData.GroupCatch
                     If Me.m_bIsCumulative Then
-                        m_zgp.DataName = My.Resources.HEADER_CATCH_CUMULATIVE
+                        m_zgp.DataName = SharedResources.HEADER_CATCH_CUMULATIVE
                     Else
-                        m_zgp.DataName = My.Resources.HEADER_RELATIVE_CATCH
+                        m_zgp.DataName = SharedResources.HEADER_RELATIVE_CATCH
                     End If
                 Case Else
                     Debug.Assert(False, "Data " & Me.PlotDataType.ToString & " not supported by this graph")

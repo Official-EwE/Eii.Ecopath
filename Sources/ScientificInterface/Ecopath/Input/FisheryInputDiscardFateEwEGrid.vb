@@ -4,8 +4,9 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SourceGrid2.Cells.Real
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -38,7 +39,7 @@ Namespace Ecopath.Input
 
             ' Grid Cell (0, 0) - Fleet name
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
 
             ' Dynamic column header - Detritus groups
             For columnIndex As Integer = 1 To Core.nDetritusGroups
@@ -47,10 +48,10 @@ Namespace Ecopath.Input
             Next
 
             ' Export header cell
-            Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(My.Resources.HEADER_EXPORT)
+            Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
 
             ' Sum header cell
-            Me(0, Me.ColumnsCount - 1) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
+            Me(0, Me.ColumnsCount - 1) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
         End Sub
 

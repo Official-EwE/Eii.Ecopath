@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -39,16 +40,16 @@ Namespace Ecopath.Output
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.PBZ) = New EwEColumnHeaderCell(My.Resources.HEADER_PBZ)
-            Me(0, eColumnTypes.FishMort) = New EwEColumnHeaderCell(My.Resources.HEADER_FISHINGMORTRATE)
-            Me(0, eColumnTypes.PredMort) = New EwEColumnHeaderCell(My.Resources.HEADER_PREDMORTRATE)
-            Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCURATE2)
-            Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(My.Resources.HEADER_NETMIGRATE)
-            Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(My.Resources.HEADER_OTHERMORTRATE)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.PBZ) = New EwEColumnHeaderCell(SharedResources.HEADER_PBZ)
+            Me(0, eColumnTypes.FishMort) = New EwEColumnHeaderCell(SharedResources.HEADER_FISHINGMORTRATE)
+            Me(0, eColumnTypes.PredMort) = New EwEColumnHeaderCell(SharedResources.HEADER_PREDMORTRATE)
+            Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCURATE2)
+            Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(SharedResources.HEADER_NETMIGRATE)
+            Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(SharedResources.HEADER_OTHERMORTRATE)
             Me(0, eColumnTypes.Spacer) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.MortTot) = New EwEColumnHeaderCell(My.Resources.HEADER_FISHMORT_OVER_TOTMORT)
-            Me(0, eColumnTypes.MortNat) = New EwEColumnHeaderCell(My.Resources.HEADER_PROP_NAT_MORT)
+            Me(0, eColumnTypes.MortTot) = New EwEColumnHeaderCell(SharedResources.HEADER_FISHMORT_OVER_TOTMORT)
+            Me(0, eColumnTypes.MortNat) = New EwEColumnHeaderCell(SharedResources.HEADER_PROP_NAT_MORT)
 
             Me.FixedColumns = 2
 

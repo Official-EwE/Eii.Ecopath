@@ -4,8 +4,9 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports ZedGraph
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region 'Imports
 
@@ -40,7 +41,7 @@ Namespace Ecopath.Output
             'Dim str As String = ""
             'Dim msg As cMessage = Nothing
 
-            AddCurves(CreatePane(My.Resources.CAPTION_SIZEWT, My.Resources.HEADER_SIZECLASS, ""))
+            AddCurves(CreatePane(My.Resources.CAPTION_SIZEWT, SharedResources.HEADER_SIZECLASS, ""))
 
             UpdatePlot()
 

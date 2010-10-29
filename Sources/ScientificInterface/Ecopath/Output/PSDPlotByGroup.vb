@@ -4,8 +4,9 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports ZedGraph
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region 'Imports
 
@@ -56,20 +57,20 @@ Namespace Ecopath.Output
 
             Me.m_graph.MasterPane.PaneList.Clear()
 
-            Me.CreatePane(ePaneTypes.Weight, My.Resources.HEADER_WEIGHT, _
-                          My.Resources.HEADER_AGE_UNIT, unitTime, My.Resources.HEADER_G, Nothing)
-            Me.CreatePane(ePaneTypes.Number, My.Resources.HEADER_SURVIVAL, _
-                          My.Resources.HEADER_AGE_UNIT, unitTime, "", Nothing)
-            Me.CreatePane(ePaneTypes.Biomass, My.Resources.HEADER_BIOMASS, _
-                          My.Resources.HEADER_AGE_UNIT, unitTime, _
-                          My.Resources.HEADER_G, Nothing)
-            Me.CreatePane(ePaneTypes.PSD, My.Resources.HEADER_CONTRIBUTION_TO_PSD, _
-                          My.Resources.HEADER_BODYWEIGHT_LOGg, My.Resources.HEADER_BIOMASS_LOGg)
+            Me.CreatePane(ePaneTypes.Weight, SharedResources.HEADER_WEIGHT, _
+                          SharedResources.HEADER_AGE_UNIT, unitTime, SharedResources.HEADER_G, Nothing)
+            Me.CreatePane(ePaneTypes.Number, SharedResources.HEADER_SURVIVAL, _
+                          SharedResources.HEADER_AGE_UNIT, unitTime, "", Nothing)
+            Me.CreatePane(ePaneTypes.Biomass, SharedResources.HEADER_BIOMASS, _
+                          SharedResources.HEADER_AGE_UNIT, unitTime, _
+                          SharedResources.HEADER_G, Nothing)
+            Me.CreatePane(ePaneTypes.PSD, SharedResources.HEADER_CONTRIBUTION_TO_PSD, _
+                          SharedResources.HEADER_BODYWEIGHT_LOGg, SharedResources.HEADER_BIOMASS_LOGg)
 
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                Me.CreatePane(ePaneTypes.LorenzenMortality, My.Resources.HEADER_MORTALITY, _
-                              My.Resources.HEADER_AGE_UNIT, unitTime, _
-                              My.Resources.HEADER_PER_UNIT, unitTime)
+                Me.CreatePane(ePaneTypes.LorenzenMortality, SharedResources.HEADER_MORTALITY, _
+                              SharedResources.HEADER_AGE_UNIT, unitTime, _
+                              SharedResources.HEADER_PER_UNIT, unitTime)
             End If
 
             Me.m_lbGroups.SelectedIndex = 0

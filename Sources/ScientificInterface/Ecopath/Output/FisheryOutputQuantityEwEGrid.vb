@@ -4,8 +4,9 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SourceGrid2.Cells.Real
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -32,7 +33,7 @@ Namespace Ecopath.Output
             Me.Redim(1, Core.nFleets + 3)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
@@ -41,7 +42,7 @@ Namespace Ecopath.Output
             Next
 
             ' Total catch column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALCATCH)
+            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH)
 
             Me.FixedColumns = 2
         End Sub
@@ -146,7 +147,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TOTALCATCH)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCATCH)
 
             alSumAll.Clear()
             For fleetIndex As Integer = 1 To core.nFleets
@@ -225,7 +226,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_TROPHICLEVEL)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TROPHICLEVEL)
 
             alSumQuantityAll.Clear()
             alSumQuantityTTLXAll.Clear()

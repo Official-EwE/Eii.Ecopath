@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -28,12 +29,12 @@ Namespace Ecopath.Output
 
             ' Define column Headers
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_RESPIRATION_UNIT, aUnitType)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_ASSIMILATION_UNIT, aUnitType)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_RESPIRATIONASSIMILATION)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_PRODRESP)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_RESPBIOM_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_RESPIRATION_UNIT, aUnitType)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_ASSIMILATION_UNIT, aUnitType)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_RESPIRATIONASSIMILATION)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_PRODRESP)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_RESPBIOM_UNIT, cStyleGuide.eUnitType.Time)
 
             Me.FixedColumns = 2
 

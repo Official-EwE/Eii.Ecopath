@@ -4,6 +4,7 @@ Option Strict On
 Imports EwECore
 Imports EwECore.MSE
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 
@@ -77,10 +78,10 @@ Namespace Ecosim
             Me.Redim(1, iNumCols)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.RHalfB) = New EwEColumnHeaderCell(My.Resources.HEADER_RHALFB0RATIO)
-            Me(0, eColumnTypes.ForcastGain) = New EwEColumnHeaderCell(My.Resources.HEADER_FORCASTGAIN)
-            Me(0, eColumnTypes.RecruitmentCV) = New EwEColumnHeaderCell("Recruitment CV")
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.RHalfB) = New EwEColumnHeaderCell(SharedResources.HEADER_RHALFB0RATIO)
+            Me(0, eColumnTypes.ForcastGain) = New EwEColumnHeaderCell(SharedResources.HEADER_FORCASTGAIN)
+            Me(0, eColumnTypes.RecruitmentCV) = New EwEColumnHeaderCell(SharedResources.HEADER_RECRUITMENT_CV)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False

@@ -80,7 +80,7 @@ Namespace Ecosim
             Me.m_zgh.Attach(Me.UIContext, Me.m_plot)
             Me.m_zgh.ConfigurePane(My.Resources.SR_PLOT_TITLE, _
                                    String.Format(My.Resources.SR_PLOT_X_AXIS, String.Empty), _
-                                   String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, String.Empty), _
+                                   String.Format(SharedResources.HEADER_RECRUITMENT_UNIT, String.Empty), _
                                    False)
 
             Dim m_SyncObj As System.Threading.SynchronizationContext = System.Threading.SynchronizationContext.Current
@@ -294,7 +294,7 @@ Namespace Ecosim
             m_SRResults.Clear()
 
             If Me.Core.nStanzas > 0 Then
-                m_tvGroups.Nodes.Add(My.Resources.HEADER_SHOWALL)
+                m_tvGroups.Nodes.Add(SharedResources.HEADER_SHOWALL)
 
                 'Stanza group index is Zero-based.
                 For i As Integer = 0 To Me.Core.nStanzas - 1
@@ -409,7 +409,7 @@ Namespace Ecosim
             Next
 
             Me.m_graphpane.XAxis.Title.Text = String.Format(My.Resources.SR_PLOT_X_AXIS, strTitleX)
-            Me.m_graphpane.YAxis.Title.Text = String.Format(My.Resources.HEADER_RECRUITMENT_UNIT, strTitleY)
+            Me.m_graphpane.YAxis.Title.Text = String.Format(SharedResources.HEADER_RECRUITMENT_UNIT, strTitleY)
 
             Me.m_plot.AxisChange()
             Me.m_plot.Refresh()

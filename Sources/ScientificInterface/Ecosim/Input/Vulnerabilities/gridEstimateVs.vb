@@ -6,6 +6,7 @@ Imports EwEUtils.Core
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Style.cStyleGuide
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -147,13 +148,13 @@ Namespace Ecosim
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.PotGrowth) = New EwEColumnHeaderCell("Poten. growth (Bunf/Bo)")
-            Me(0, eColumnTypes.FMax) = New EwEColumnHeaderCell("FMax")
-            Me(0, eColumnTypes.PG_VwoFT) = New EwEColumnHeaderCell("Vulnerability w/o FT")
-            Me(0, eColumnTypes.FMax_VwoFT) = New EwEColumnHeaderCell("Vulnerability w/o FT")
-            Me(0, eColumnTypes.PG_VwithFT) = New EwEColumnHeaderCell("Vulnerability w. FT")
-            Me(0, eColumnTypes.FMax_VwithFT) = New EwEColumnHeaderCell("Vulnerability w. FT")
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.PotGrowth) = New EwEColumnHeaderCell(SharedResources.HEADER_POTENTIAL_GROWTH)
+            Me(0, eColumnTypes.FMax) = New EwEColumnHeaderCell(SharedResources.HEADER_FMAX)
+            Me(0, eColumnTypes.PG_VwoFT) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WO_FT)
+            Me(0, eColumnTypes.FMax_VwoFT) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WO_FT)
+            Me(0, eColumnTypes.PG_VwithFT) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WITH_FT)
+            Me(0, eColumnTypes.FMax_VwithFT) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WITH_FT)
 
             Me.FixedColumnWidths = True ' To accomodate long header labels
             Me.Selection.SelectionMode = GridSelectionMode.Cell

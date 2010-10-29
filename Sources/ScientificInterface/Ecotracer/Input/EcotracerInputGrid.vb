@@ -1,6 +1,11 @@
+#Region " Imports "
+
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+#End Region
 
 Namespace Ecotracer
 
@@ -25,8 +30,6 @@ Namespace Ecotracer
 
         Protected Overrides Sub InitStyle()
 
-            ' ToDo_JS: globalize this method
-
             MyBase.InitStyle()
 
             ' Test for UI context to prevent core from being accessed
@@ -42,12 +45,12 @@ Namespace Ecotracer
             ' Set header cells
             ' # (0,0)
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.ConcEnv) = New EwEColumnHeaderCell("Initial conc. (t/t)")
-            Me(0, eColumnTypes.ConcImmBiomass) = New EwEColumnHeaderCell("Conc. in immigrating biomass (t/t)")
-            Me(0, eColumnTypes.DirectAbsorptionRate) = New EwEColumnHeaderCell("Direct absorption rate (t/t/t/year)")
-            Me(0, eColumnTypes.DecayRate) = New EwEColumnHeaderCell("Decay rate (t/year)")
-            Me(0, eColumnTypes.ExcretionRate) = New EwEColumnHeaderCell("Prop. 1-GS excreted (0-1)")
+            Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.ConcEnv) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_INITIAL)
+            Me(0, eColumnTypes.ConcImmBiomass) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_IN_IMM_B)
+            Me(0, eColumnTypes.DirectAbsorptionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DIRECT_ABSORPTION_RATE_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.DecayRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DECAY_RATE_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.ExcretionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_EXCRETION_RATE)
 
             Me.FixedColumns = 2
 

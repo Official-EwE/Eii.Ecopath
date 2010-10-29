@@ -4,6 +4,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 
@@ -305,7 +306,7 @@ Namespace Ecopath.Tools
             Me.Redim(Me.Core.nGroups + 1, Me.Core.nPedigreeVariables + 2)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
                 ' Get variable

@@ -4,8 +4,9 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SourceGrid2.Cells.Real
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
+Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -41,7 +42,7 @@ Namespace Ecopath.Input
             ' Set header cells
             ' # (0,0)
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_PREYPREDATOR)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
@@ -61,15 +62,15 @@ Namespace Ecopath.Input
 
             ' # DietImport header cell
             Me(rowCnt - 3, 0) = New EwERowHeaderCell(rowCnt - 3)
-            Me(rowCnt - 3, 1) = New EwERowHeaderCell(My.Resources.HEADER_IMPORT)
+            Me(rowCnt - 3, 1) = New EwERowHeaderCell(SharedResources.HEADER_IMPORT)
 
             ' # Sum header cell
             Me(rowCnt - 2, 0) = New EwERowHeaderCell(rowCnt - 2)
-            Me(rowCnt - 2, 1) = New EwERowHeaderCell(My.Resources.HEADER_SUM)
+            Me(rowCnt - 2, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
 
             ' # Sum - 1 header cell
             Me(rowCnt - 1, 0) = New EwERowHeaderCell(rowCnt - 1)
-            Me(rowCnt - 1, 1) = New EwERowHeaderCell(My.Resources.HEADER_1_MINUS_SUM)
+            Me(rowCnt - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_1_MINUS_SUM)
 
             Me.FixedColumns = 2
 

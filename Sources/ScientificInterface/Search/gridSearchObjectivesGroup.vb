@@ -6,6 +6,7 @@ Option Explicit On
 Imports EwECore
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.ComponentModel
 
 #End Region
@@ -52,10 +53,10 @@ Namespace Ecosim
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Group) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
-            Me(0, eColumnTypes.ManRB) = New EwEColumnHeaderCell(My.Resources.HEADER_MANDATED_BIOMASS_RELATIVE)
-            Me(0, eColumnTypes.StructureW) = New EwEColumnHeaderCell(My.Resources.HEADER_STRUCTURERELATIVEWEIGHT)
-            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXFISHINGMORTAILITY)
+            Me(0, eColumnTypes.Group) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUP)
+            Me(0, eColumnTypes.ManRB) = New EwEColumnHeaderCell(SharedResources.HEADER_MANDATED_BIOMASS_RELATIVE)
+            Me(0, eColumnTypes.StructureW) = New EwEColumnHeaderCell(SharedResources.HEADER_STRUCTURERELATIVEWEIGHT)
+            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXFISHINGMORTAILITY)
 
         End Sub
 

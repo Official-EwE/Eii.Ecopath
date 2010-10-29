@@ -3,8 +3,9 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
+Imports SourceGrid2
 
 #End Region
 
@@ -59,11 +60,11 @@ Public Class gridEditMultiStanza
 
         Me.Redim(1, 6)
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(My.Resources.HEADER_STARTAGE)
-        Me(0, eColumnTypes.BiomassAreaInput) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UNIT, cStyleGuide.eUnitType.Currency)
-        Me(0, eColumnTypes.PBInput) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
-        Me(0, eColumnTypes.QBInput) = New EwEColumnHeaderCell(My.Resources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STARTAGE)
+        Me(0, eColumnTypes.BiomassAreaInput) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_UNIT, cStyleGuide.eUnitType.Currency)
+        Me(0, eColumnTypes.PBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.QBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
 
         Me.FixedColumnWidths = False
     End Sub

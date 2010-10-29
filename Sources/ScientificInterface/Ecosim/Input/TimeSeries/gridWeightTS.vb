@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -60,9 +61,9 @@ Public Class gridWeightTS
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
-        Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(My.Resources.HEADER_ENABLE)
-        Me(0, eColumnTypes.Weight) = New EwEColumnHeaderCell(My.Resources.HEADER_WEIGHT)
+        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLE)
+        Me(0, eColumnTypes.Weight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
 
     End Sub
 

@@ -5,8 +5,9 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.FishingPolicy
-Imports SourceGrid2.Cells.Real
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -48,8 +49,8 @@ Namespace Ecosim
 
             Me.Redim(Core.nFleets + 1, Core.nFleets + 3)
             Me(0, 0) = New EwEColumnHeaderCell(My.Resources.FPS_FV_RESULT_COL0)
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_INCOME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_PROFIT)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_INCOME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_PROFIT)
 
             For i As Integer = 1 To Core.nFleets
                 Me(i, 0) = New PropertyRowHeaderCell(Me.PropertyManager, Core.FleetInputs(i), eVarNameFlags.Name)

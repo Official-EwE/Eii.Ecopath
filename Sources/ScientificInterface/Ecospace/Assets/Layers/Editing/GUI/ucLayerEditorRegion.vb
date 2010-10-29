@@ -1,8 +1,9 @@
 ﻿#Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Style
 Imports EwECore
+Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -49,7 +50,7 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_cmbRegion.Items.Clear()
             ' Add 'None' item to allow users to clear regions
-            Me.m_cmbRegion.Items.Add(New cCoreInputOutputControlItem(My.Resources.HEADER_NONE))
+            Me.m_cmbRegion.Items.Add(New cCoreInputOutputControlItem(SharedResources.HEADER_NONE))
             ' Add region items
             For iReg As Integer = 1 To core.nRegions
                 reg = core.EcospaceRegions(iReg)

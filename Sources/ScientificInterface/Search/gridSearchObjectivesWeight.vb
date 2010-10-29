@@ -91,14 +91,14 @@ Namespace Ecosim
             ' == Add columns (for details refer to NumCols) ==
 
             ' Standard cols
-            Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUE_COMPONENT) : iCol += 1
+            Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUE_COMPONENT) : iCol += 1
             ' Batch run specific cols
             If Me.m_bIsBatchRun Then
-                Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_MINWEIGHT) : iCol += 1
-                Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXWEIGHT) : iCol += 1
+                Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_MINWEIGHT) : iCol += 1
+                Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXWEIGHT) : iCol += 1
                 Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.GENERIC_LABEL_STEP_SIZE) : iCol += 1
             Else
-                Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT_ABBR) : iCol += 1
+                Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_RELATIVEWEIGHT_ABBR) : iCol += 1
             End If
 
         End Sub
@@ -116,41 +116,41 @@ Namespace Ecosim
 
             ' Standard rows
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_NET_ECONOMIC_VALUE)
+            Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE)
             Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSEconomicWeight)
 
             ' MaxPortUtil rows
             If m_bShowMaxPortUtil Then
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_PREDICTIONVARIANCE)
+                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_PREDICTIONVARIANCE)
                 Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSPredictionVariance)
 
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_EXISTENCE_VALUE)
+                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_EXISTENCE_VALUE)
                 Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSExistenceValue)
 
             Else
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_SOCIAL_VALUE_EMPLOYMENT)
+                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT)
                 Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSSocialWeight)
 
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_MANDATED_REBUILDING)
+                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_MANDATED_REBUILDING)
                 Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSMandatedRebuildingWeight)
 
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_ECOSYSTEM_STRUCTURE)
+                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE)
                 Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSEcoSystemWeight)
             End If
 
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_BIOMASS_DIVERSITY)
+            Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_BIOMASS_DIVERSITY)
             Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSBiomassDiversityWeight)
 
             If Me.m_bShowMPAOptParams Then
                 ' HACK
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_BOUNDARYWEIGHT)
+                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_BOUNDARYWEIGHT)
                 Me(iRow, 1) = New PropertyCell(Me.PropertyManager, _
                                                Me.Core.MPAOptimizationManager.MPAOptimizationParamters, _
                                                eVarNameFlags.MPAOptBoundaryWeight)

@@ -625,4 +625,965 @@
     <value>Region {0}</value>
     <comment>{0}: sequential number</comment>
   </data>
+  <data name="HEADER_1_MINUS_SUM" xml:space="preserve">
+    <value>(1 - Sum)</value>
+  </data>
+  <data name="HEADER_ADD1" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="HEADER_AGE" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="HEADER_AGE_FIRST_CAPTURE_UNIT" xml:space="preserve">
+    <value>Age first capture (year)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_AGE_UNIT" xml:space="preserve">
+    <value>Age ({0})</value>
+    <comment>{0}: time unit</comment>
+  </data>
+  <data name="HEADER_AREA" xml:space="preserve">
+    <value>Habitat area (fraction)</value>
+  </data>
+  <data name="HEADER_AREA_CLOSED" xml:space="preserve">
+    <value>Area closed (%)</value>
+  </data>
+  <data name="HEADER_ASSIMILATION_UNIT" xml:space="preserve">
+    <value>Assimilation ({0}/{1})</value>
+    <comment>{0}: ??? unit, {1}: ??? unit</comment>
+  </data>
+  <data name="HEADER_AVERAGEWEIGHT" xml:space="preserve">
+    <value>Average weight</value>
+  </data>
+  <data name="HEADER_AVGERAGEWEIGHT" xml:space="preserve">
+    <value>Average weight</value>
+  </data>
+  <data name="HEADER_A_IN_LW" xml:space="preserve">
+    <value>a in LW</value>
+  </data>
+  <data name="HEADER_A_PER_B" xml:space="preserve">
+    <value>{0}/{1}</value>
+    <comment>{0}: unit 1, {1}: unit 2</comment>
+  </data>
+  <data name="HEADER_BIOMACCUM_ABBR" xml:space="preserve">
+    <value>Biom. acc.</value>
+  </data>
+  <data name="HEADER_BIOMACCUM_RATE_ABBR_UNIT" xml:space="preserve">
+    <value>Biom. acc. rate (/{0})</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_BIOMACCUM_UNIT" xml:space="preserve">
+    <value>Biom. accumul. ({0}/{1})</value>
+    <comment>{0}: ??? unit, {1}: ??? unit</comment>
+  </data>
+  <data name="HEADER_BIOMACCURATE2" xml:space="preserve">
+    <value>+ Biomass accum. rate</value>
+  </data>
+  <data name="HEADER_BIOMASS" xml:space="preserve">
+    <value>Biomass</value>
+  </data>
+  <data name="HEADER_BIOMASSAREA_UNIT" xml:space="preserve">
+    <value>Biomass in habitat area ({0})</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_BIOMASSEND" xml:space="preserve">
+    <value>Biomass (end)</value>
+  </data>
+  <data name="HEADER_BIOMASSES" xml:space="preserve">
+    <value>Biomass (E/S)</value>
+  </data>
+  <data name="HEADER_BIOMASS_ABSOLUTE" xml:space="preserve">
+    <value>Absolute biomass</value>
+  </data>
+  <data name="HEADER_BIOMASS_BASE" xml:space="preserve">
+    <value>Biomass base</value>
+  </data>
+  <data name="HEADER_BIOMASS_CUMULATIVE" xml:space="preserve">
+    <value>Cumulative biomass</value>
+  </data>
+  <data name="HEADER_BIOMASS_DIVERSITY" xml:space="preserve">
+    <value>Biomass diversity</value>
+  </data>
+  <data name="HEADER_BIOMASS_DIVERSITY_ABBR" xml:space="preserve">
+    <value>Divers.</value>
+  </data>
+  <data name="HEADER_BIOMASS_LIMIT" xml:space="preserve">
+    <value>Biomass limit</value>
+  </data>
+  <data name="HEADER_BIOMASS_LOGg" xml:space="preserve">
+    <value>Biomass (log g)</value>
+  </data>
+  <data name="HEADER_BIOMASS_LOWER" xml:space="preserve">
+    <value>Biomass lower</value>
+  </data>
+  <data name="HEADER_BIOMASS_START" xml:space="preserve">
+    <value>Biomass (start)</value>
+  </data>
+  <data name="HEADER_BIOMASS_UNIT" xml:space="preserve">
+    <value>Biomass ({0})</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_BIOMASS_UPPER" xml:space="preserve">
+    <value>Biomass upper</value>
+  </data>
+  <data name="HEADER_BODYWEIGHT_LOGg" xml:space="preserve">
+    <value>Body weight (log g)</value>
+  </data>
+  <data name="HEADER_BOUNDARYWEIGHT" xml:space="preserve">
+    <value>Boundary weight</value>
+  </data>
+  <data name="HEADER_B_IN_LW" xml:space="preserve">
+    <value>b in LW</value>
+  </data>
+  <data name="HEADER_B_IS_FOR_BIOMASS" xml:space="preserve">
+    <value>B = Biomass</value>
+  </data>
+  <data name="HEADER_CAPITALDEPRECIATION_RATE" xml:space="preserve">
+    <value>Capital depreciation rate</value>
+  </data>
+  <data name="HEADER_CATCH_CUMULATIVE" xml:space="preserve">
+    <value>Cumulative catch</value>
+  </data>
+  <data name="HEADER_CATCH_END" xml:space="preserve">
+    <value>Catch (end)</value>
+  </data>
+  <data name="HEADER_CATCH_E_OVER_S" xml:space="preserve">
+    <value>Catch (E/S)</value>
+  </data>
+  <data name="HEADER_CATCH_LOWER" xml:space="preserve">
+    <value>Catch lower</value>
+  </data>
+  <data name="HEADER_CATCH_START" xml:space="preserve">
+    <value>Catch (start)</value>
+  </data>
+  <data name="HEADER_CATCH_UPPER" xml:space="preserve">
+    <value>Catch upper</value>
+  </data>
+  <data name="HEADER_CATCH_VALUE" xml:space="preserve">
+    <value>Catch value</value>
+  </data>
+  <data name="HEADER_CB" xml:space="preserve">
+    <value>Cons/biom</value>
+  </data>
+  <data name="HEADER_COLOR" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="HEADER_CONCENTRATION" xml:space="preserve">
+    <value>Concentration</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_OVER_B" xml:space="preserve">
+    <value>Concentration / Biomass</value>
+  </data>
+  <data name="HEADER_CONFIDENCEINTERVAL" xml:space="preserve">
+    <value>Conf. interv. (+/-%)</value>
+  </data>
+  <data name="HEADER_CONSUMER" xml:space="preserve">
+    <value>Consumer</value>
+  </data>
+  <data name="HEADER_CONSUMPTION_OVER_BIOMASS" xml:space="preserve">
+    <value>Consumption/biomass</value>
+  </data>
+  <data name="HEADER_CONTRIBUTION_TO_PSD" xml:space="preserve">
+    <value>Contribution to PSD</value>
+  </data>
+  <data name="HEADER_COST_END" xml:space="preserve">
+    <value>Cost (end)</value>
+  </data>
+  <data name="HEADER_COST_E_OVER_S" xml:space="preserve">
+    <value>Cost (E/S)</value>
+  </data>
+  <data name="HEADER_COST_START" xml:space="preserve">
+    <value>Cost (start)</value>
+  </data>
+  <data name="HEADER_CV" xml:space="preserve">
+    <value>CV</value>
+  </data>
+  <data name="HEADER_CVBEST" xml:space="preserve">
+    <value>Biomass CV</value>
+  </data>
+  <data name="HEADER_DESCRIPTION" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="HEADER_DETIMP_UNIT" xml:space="preserve">
+    <value>Detritus import ({0}/{1})</value>
+    <comment>{0}: ??? unit, {1}: ??? unit</comment>
+  </data>
+  <data name="HEADER_DETRITUS" xml:space="preserve">
+    <value>Detritus</value>
+  </data>
+  <data name="HEADER_DIET" xml:space="preserve">
+    <value>Diet</value>
+  </data>
+  <data name="HEADER_ECOPATH_AREA" xml:space="preserve">
+    <value>Ecopath area</value>
+  </data>
+  <data name="HEADER_ECOPATH_PEDIGREE" xml:space="preserve">
+    <value>Ecopath pedigree index</value>
+  </data>
+  <data name="HEADER_ECOSIM_YEARS" xml:space="preserve">
+    <value>Ecosim years</value>
+  </data>
+  <data name="HEADER_ECOSPACE_AREA" xml:space="preserve">
+    <value>Ecospace area</value>
+  </data>
+  <data name="HEADER_ECOSPACE_YEARS" xml:space="preserve">
+    <value>Ecospace years</value>
+  </data>
+  <data name="HEADER_ECOSYSTEM_STRUCTURE" xml:space="preserve">
+    <value>Ecosystem structure</value>
+  </data>
+  <data name="HEADER_ECOSYSTEM_STRUCTURE_ABBR" xml:space="preserve">
+    <value>Ecosys.</value>
+  </data>
+  <data name="HEADER_EE" xml:space="preserve">
+    <value>Ecotrophic efficiency</value>
+  </data>
+  <data name="HEADER_EE_ABBR" xml:space="preserve">
+    <value>EE</value>
+  </data>
+  <data name="HEADER_EFFORTES" xml:space="preserve">
+    <value>Effort (E/S)</value>
+  </data>
+  <data name="HEADER_EFFORTRELATEDCOST" xml:space="preserve">
+    <value>Effort related cost (%)</value>
+  </data>
+  <data name="HEADER_EFFORTRESPPOWER" xml:space="preserve">
+    <value>Effort response power</value>
+  </data>
+  <data name="HEADER_EFFORT_LOWER" xml:space="preserve">
+    <value>Effort lower</value>
+  </data>
+  <data name="HEADER_EFFORT_UPPER" xml:space="preserve">
+    <value>Effort upper</value>
+  </data>
+  <data name="HEADER_EFFPOWER" xml:space="preserve">
+    <value>Effective power</value>
+  </data>
+  <data name="HEADER_EMIGRATIONRATE_UNIT" xml:space="preserve">
+    <value>Emigration rate (/{0})</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_EMIGRATION_UNIT" xml:space="preserve">
+    <value>Emigration ({0}/{1})</value>
+    <comment>{0}: ??? unit, {1}: ??? unit</comment>
+  </data>
+  <data name="HEADER_EMPTY_PANEL" xml:space="preserve">
+    <value>Empty panel</value>
+  </data>
+  <data name="HEADER_ENABLE" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="HEADER_ENVIRONMENT" xml:space="preserve">
+    <value>Environment</value>
+  </data>
+  <data name="HEADER_EXISTENCE_VALUE" xml:space="preserve">
+    <value>Existence value</value>
+  </data>
+  <data name="HEADER_EXPORT" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="HEADER_FEEDINGTIME" xml:space="preserve">
+    <value>Feeding time</value>
+  </data>
+  <data name="HEADER_FISHING" xml:space="preserve">
+    <value>Fishing</value>
+  </data>
+  <data name="HEADER_FISHINGEFFORT" xml:space="preserve">
+    <value>Fishing effort</value>
+  </data>
+  <data name="HEADER_FISHINGMORTALITY" xml:space="preserve">
+    <value>F (fishing mortality)</value>
+  </data>
+  <data name="HEADER_FISHINGMORTRATE" xml:space="preserve">
+    <value>= Fishing mort. rate</value>
+  </data>
+  <data name="HEADER_FISHMORT_OVER_TOTMORT" xml:space="preserve">
+    <value>Fishing mort. / total mort.</value>
+  </data>
+  <data name="HEADER_FIXEDCOST" xml:space="preserve">
+    <value>Fixed cost (%)</value>
+  </data>
+  <data name="HEADER_FIXEDESCAPE" xml:space="preserve">
+    <value>Fixed escapement (t/km2)</value>
+  </data>
+  <data name="HEADER_FIXEDF" xml:space="preserve">
+    <value>Fixed fishing mortality</value>
+  </data>
+  <data name="HEADER_FLEETNAME" xml:space="preserve">
+    <value>Fleet name</value>
+  </data>
+  <data name="HEADER_FLEETS" xml:space="preserve">
+    <value>Fleets</value>
+  </data>
+  <data name="HEADER_FLEET_GEAR" xml:space="preserve">
+    <value>Fleet/gear</value>
+  </data>
+  <data name="HEADER_FLEET_GROUP" xml:space="preserve">
+    <value>Fleet\group</value>
+  </data>
+  <data name="HEADER_FLOWTODETR_UNIT" xml:space="preserve">
+    <value>Flow to detr. ({0}/{1})</value>
+    <comment>{0}: ??? unit, {1}: ??? unit</comment>
+  </data>
+  <data name="HEADER_FOPT" xml:space="preserve">
+    <value>F max.</value>
+  </data>
+  <data name="HEADER_FORCASTGAIN" xml:space="preserve">
+    <value>Recruitment/total population</value>
+  </data>
+  <data name="HEADER_G" xml:space="preserve">
+    <value>g</value>
+  </data>
+  <data name="HEADER_GE" xml:space="preserve">
+    <value>Production / consumption</value>
+  </data>
+  <data name="HEADER_GROSS_EFFICIENCY" xml:space="preserve">
+    <value>Gross efficiency (catch/net p.p.)</value>
+  </data>
+  <data name="HEADER_GROUP" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="HEADER_GROUPNAME" xml:space="preserve">
+    <value>Group name</value>
+  </data>
+  <data name="HEADER_GROUPNAMEWEIGHT_UNIT" xml:space="preserve">
+    <value>Group name \ weight (g)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_GROUPNUM" xml:space="preserve">
+    <value>Group number</value>
+  </data>
+  <data name="HEADER_GROUPS" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="HEADER_HABITAT" xml:space="preserve">
+    <value>Habitat</value>
+  </data>
+  <data name="HEADER_HABITAT_ABBR" xml:space="preserve">
+    <value>Hab</value>
+    <comment>'Habitat', abbreviated to &lt;= 4 chars</comment>
+  </data>
+  <data name="HEADER_ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="HEADER_IMMIGRATION_UNIT" xml:space="preserve">
+    <value>Immigration ({0}/{1})</value>
+    <comment>{0}: ??? unit, {1}: ??? unit</comment>
+  </data>
+  <data name="HEADER_IMPORT" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="HEADER_INCOME" xml:space="preserve">
+    <value>Income</value>
+  </data>
+  <data name="HEADER_INCREASEQ" xml:space="preserve">
+    <value>Annual increase in catchability</value>
+  </data>
+  <data name="HEADER_INDEXVALUE" xml:space="preserve">
+    <value>Index value</value>
+  </data>
+  <data name="HEADER_INDEX_CONNECTANCE" xml:space="preserve">
+    <value>Connectance Index</value>
+  </data>
+  <data name="HEADER_INDEX_ONMIVORY" xml:space="preserve">
+    <value>System Omnivory Index</value>
+  </data>
+  <data name="HEADER_INDICATOR" xml:space="preserve">
+    <value>Indicator</value>
+  </data>
+  <data name="HEADER_INDIVIDUAL_WEIGHT" xml:space="preserve">
+    <value>Individual weight</value>
+  </data>
+  <data name="HEADER_INITCAPTIALGROWTHRATE" xml:space="preserve">
+    <value>Initial capital growth rate (prop., annual)</value>
+  </data>
+  <data name="HEADER_INITEFFORT" xml:space="preserve">
+    <value>Initial effort / capital capacity</value>
+  </data>
+  <data name="HEADER_KALWT" xml:space="preserve">
+    <value>Kalman weight</value>
+  </data>
+  <data name="HEADER_K_VBGF_UNIT" xml:space="preserve">
+    <value>K in VBGF (/year)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_LASTUPDATED" xml:space="preserve">
+    <value>Last updated</value>
+  </data>
+  <data name="HEADER_LAYER_INDEXED" xml:space="preserve">
+    <value>Layer {0}</value>
+    <comment>{0}: layer number or name</comment>
+  </data>
+  <data name="HEADER_LEADING_BIOMASS" xml:space="preserve">
+    <value>Leading biomass</value>
+    <comment>Indicates which group determines biomass for a stanza configuration</comment>
+  </data>
+  <data name="HEADER_LEADING_CB" xml:space="preserve">
+    <value>Leading Q/B</value>
+    <comment>Indicates which group determines CB for a stanza configuration</comment>
+  </data>
+  <data name="HEADER_LENGTH_INFINITY_UNIT" xml:space="preserve">
+    <value>L at infinity (cm)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_LESS" xml:space="preserve">
+    <value>Less</value>
+  </data>
+  <data name="HEADER_LESSTHAN" xml:space="preserve">
+    <value>&lt; {0}</value>
+    <comment>{0}: a value</comment>
+  </data>
+  <data name="HEADER_LOWERLIMIT" xml:space="preserve">
+    <value>Lower limit</value>
+  </data>
+  <data name="HEADER_MANDATED_ABBR" xml:space="preserve">
+    <value>Mandat.</value>
+  </data>
+  <data name="HEADER_MANDATED_BIOMASS_RELATIVE" xml:space="preserve">
+    <value>Mandated rel. biom</value>
+  </data>
+  <data name="HEADER_MANDATED_REBUILDING" xml:space="preserve">
+    <value>Mandated rebuilding</value>
+  </data>
+  <data name="HEADER_MAXAGE_UNIT" xml:space="preserve">
+    <value>Max. age (year)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_MAXEFFORT" xml:space="preserve">
+    <value>Max effort</value>
+  </data>
+  <data name="HEADER_MAXFISHINGMORTAILITY" xml:space="preserve">
+    <value>Max fishing mortality</value>
+  </data>
+  <data name="HEADER_MAXRELPB" xml:space="preserve">
+    <value>Max rel. P/B</value>
+  </data>
+  <data name="HEADER_MAXWEIGHT" xml:space="preserve">
+    <value>Max. weight</value>
+  </data>
+  <data name="HEADER_MCTRIALS" xml:space="preserve">
+    <value>Monte carlo trials</value>
+  </data>
+  <data name="HEADER_MEAN" xml:space="preserve">
+    <value>Mean</value>
+  </data>
+  <data name="HEADER_MEAN_CATCH_TL" xml:space="preserve">
+    <value>Mean trophic level of the catch</value>
+  </data>
+  <data name="HEADER_MEASUREOFFIT" xml:space="preserve">
+    <value>Measure of fit, t*</value>
+  </data>
+  <data name="HEADER_MINWEIGHT" xml:space="preserve">
+    <value>Min. weight</value>
+  </data>
+  <data name="HEADER_MODEL_EWE5" xml:space="preserve">
+    <value>EwE5 model</value>
+  </data>
+  <data name="HEADER_MODEL_EWE6" xml:space="preserve">
+    <value>EwE6 model name</value>
+  </data>
+  <data name="HEADER_MORTALITY" xml:space="preserve">
+    <value>Mortality</value>
+  </data>
+  <data name="HEADER_MPA" xml:space="preserve">
+    <value>MPA</value>
+  </data>
+  <data name="HEADER_NETEFFICIENCY" xml:space="preserve">
+    <value>Net efficiency</value>
+  </data>
+  <data name="HEADER_NETMIGRATE" xml:space="preserve">
+    <value>+ Net migration rate</value>
+  </data>
+  <data name="HEADER_NETMIGRATION_UNIT" xml:space="preserve">
+    <value>Net migration ({0}/{1})</value>
+    <comment>{0}: ??? unit, {1}: ??? unit</comment>
+  </data>
+  <data name="HEADER_NET_ECONOMIC_VALUE" xml:space="preserve">
+    <value>Net economic value</value>
+  </data>
+  <data name="HEADER_NET_ECONOMIC_VALUE_ABBR" xml:space="preserve">
+    <value>Econ.</value>
+  </data>
+  <data name="HEADER_NET_PROD" xml:space="preserve">
+    <value>Net system production</value>
+  </data>
+  <data name="HEADER_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="HEADER_NONE" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="HEADER_NONMARKET_VALUE" xml:space="preserve">
+    <value>Non-market value ({0})</value>
+    <comment>{0}: monetary unit</comment>
+  </data>
+  <data name="HEADER_NORMALIZED_VALUE" xml:space="preserve">
+    <value>Normalized value</value>
+  </data>
+  <data name="HEADER_NUMBER" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="HEADER_NUMCALLS" xml:space="preserve">
+    <value># calls</value>
+  </data>
+  <data name="HEADER_NUMCELLS" xml:space="preserve">
+    <value># cells</value>
+  </data>
+  <data name="HEADER_OMNIVORYINDEX" xml:space="preserve">
+    <value>Omnivory index</value>
+  </data>
+  <data name="HEADER_OTHERMORTRATE" xml:space="preserve">
+    <value>+ Other mort. rate</value>
+  </data>
+  <data name="HEADER_PARAMETER" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="HEADER_PBZ" xml:space="preserve">
+    <value>Prod/biom or Z</value>
+  </data>
+  <data name="HEADER_PB_ABBR" xml:space="preserve">
+    <value>Prod/biom</value>
+  </data>
+  <data name="HEADER_PB_UNIT" xml:space="preserve">
+    <value>Production / biomass (/{0})</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_PER_UNIT" xml:space="preserve">
+    <value>/{0}</value>
+    <comment>{0}:unit</comment>
+  </data>
+  <data name="HEADER_PLUGINS" xml:space="preserve">
+    <value>Plug-ins</value>
+  </data>
+  <data name="HEADER_POPULATIONBIOMASS" xml:space="preserve">
+    <value>Population biomass</value>
+  </data>
+  <data name="HEADER_PP" xml:space="preserve">
+    <value>Part of production from primary productivity</value>
+  </data>
+  <data name="HEADER_PP_ABBR" xml:space="preserve">
+    <value>PP</value>
+  </data>
+  <data name="HEADER_PREDATION" xml:space="preserve">
+    <value>Predation</value>
+  </data>
+  <data name="HEADER_PREDICTIONVARIANCE" xml:space="preserve">
+    <value>Prediction variance</value>
+  </data>
+  <data name="HEADER_PREDMORT" xml:space="preserve">
+    <value>Predation mortality</value>
+  </data>
+  <data name="HEADER_PREDMORTRATE" xml:space="preserve">
+    <value>+ Predatation mort. rate</value>
+  </data>
+  <data name="HEADER_PREYPREDATOR" xml:space="preserve">
+    <value>Prey \ predator</value>
+  </data>
+  <data name="HEADER_PREY_PERCENTAGE" xml:space="preserve">
+    <value>Prey (%)</value>
+  </data>
+  <data name="HEADER_PRODCONS" xml:space="preserve">
+    <value>Production / consumption</value>
+  </data>
+  <data name="HEADER_PRODRESP" xml:space="preserve">
+    <value>Production / respiration</value>
+  </data>
+  <data name="HEADER_PRODUCER" xml:space="preserve">
+    <value>Producer</value>
+  </data>
+  <data name="HEADER_PROFIT" xml:space="preserve">
+    <value>Profit</value>
+  </data>
+  <data name="HEADER_PROFIT_PERC" xml:space="preserve">
+    <value>Profit (%)</value>
+  </data>
+  <data name="HEADER_PROPORTION" xml:space="preserve">
+    <value>Proportion</value>
+  </data>
+  <data name="HEADER_PROP_NAT_MORT" xml:space="preserve">
+    <value>Proportion natural mort.</value>
+  </data>
+  <data name="HEADER_QB_UNIT" xml:space="preserve">
+    <value>Consumption / biomass (/{0})</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_QUOTA_EFFORT" xml:space="preserve">
+    <value>Effort</value>
+  </data>
+  <data name="HEADER_QUOTA_NOTUSED" xml:space="preserve">
+    <value>No quota</value>
+  </data>
+  <data name="HEADER_QUOTA_SELECTIVEFISHING" xml:space="preserve">
+    <value>Selective fishing quota</value>
+  </data>
+  <data name="HEADER_QUOTA_STRONGESTSTOCK" xml:space="preserve">
+    <value>Highest value stock quota</value>
+  </data>
+  <data name="HEADER_QUOTA_WEAKESTSTOCK" xml:space="preserve">
+    <value>Weakest stock quota + discards quota</value>
+  </data>
+  <data name="HEADER_RECRUITMENT" xml:space="preserve">
+    <value>Recruitment</value>
+  </data>
+  <data name="HEADER_RECRUITMENT_UNIT" xml:space="preserve">
+    <value>Recruitment ({0})</value>
+  </data>
+  <data name="HEADER_REGION" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="HEADER_REGIONS_ALL" xml:space="preserve">
+    <value>All regions</value>
+  </data>
+  <data name="HEADER_REGIONS_UNDEFINED" xml:space="preserve">
+    <value>Undefined regions</value>
+  </data>
+  <data name="HEADER_RELATIVEBIOMASS" xml:space="preserve">
+    <value>Relative biomass</value>
+  </data>
+  <data name="HEADER_RELATIVE_CATCH" xml:space="preserve">
+    <value>Relative catch</value>
+  </data>
+  <data name="HEADER_RELATIVE_VALUE" xml:space="preserve">
+    <value>Realtive value</value>
+  </data>
+  <data name="HEADER_REMARK" xml:space="preserve">
+    <value>Remark</value>
+  </data>
+  <data name="HEADER_RESPBIOM_UNIT" xml:space="preserve">
+    <value>Respiration / biomass (/{0})</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_RESPIRATIONASSIMILATION" xml:space="preserve">
+    <value>Respiration / assimilation</value>
+  </data>
+  <data name="HEADER_RESPIRATION_UNIT" xml:space="preserve">
+    <value>Respiration ({0}/{1})</value>
+    <comment>{0}: ??? unit, {1}: ??? unit</comment>
+  </data>
+  <data name="HEADER_RHALFB0RATIO" xml:space="preserve">
+    <value>Ratio Bt/Ecopath B for 50% recruitment</value>
+  </data>
+  <data name="HEADER_SAILINGRELATEDCOST" xml:space="preserve">
+    <value>Sailing related cost (%)</value>
+  </data>
+  <data name="HEADER_SCALEDVALUES" xml:space="preserve">
+    <value>Scaled values</value>
+  </data>
+  <data name="HEADER_SHAPE" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="HEADER_SHOWALL" xml:space="preserve">
+    <value>Show all</value>
+  </data>
+  <data name="HEADER_SIZECLASS" xml:space="preserve">
+    <value>Size class</value>
+  </data>
+  <data name="HEADER_SOCIAL" xml:space="preserve">
+    <value>Social</value>
+  </data>
+  <data name="HEADER_SOCIAL_VALUE_EMPLOYMENT" xml:space="preserve">
+    <value>Social value (employment)</value>
+  </data>
+  <data name="HEADER_SOURCE" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="HEADER_SOURCEFATE" xml:space="preserve">
+    <value>Source / fate</value>
+  </data>
+  <data name="HEADER_STANZAGROUP_NAME" xml:space="preserve">
+    <value>Multi-stanza group name</value>
+  </data>
+  <data name="HEADER_STANZA_AGE" xml:space="preserve">
+    <value>Stanza age (in months)</value>
+  </data>
+  <data name="HEADER_STARTAGE" xml:space="preserve">
+    <value>Age, start (months)</value>
+  </data>
+  <data name="HEADER_STATUS" xml:space="preserve">
+    <value>Status</value>
+    <comment>Header for status columns</comment>
+  </data>
+  <data name="HEADER_STRUCTURERELATIVEWEIGHT" xml:space="preserve">
+    <value>Structure rel. weight</value>
+  </data>
+  <data name="HEADER_SUM" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="HEADER_SUM_BnonDET" xml:space="preserve">
+    <value>Total biomass (excluding detritus)</value>
+  </data>
+  <data name="HEADER_SUM_BT" xml:space="preserve">
+    <value>Total biomass/total throughput</value>
+  </data>
+  <data name="HEADER_SUM_CATCH" xml:space="preserve">
+    <value>Total catches</value>
+  </data>
+  <data name="HEADER_SUM_CONSUMPTION" xml:space="preserve">
+    <value>Sum of all consumption</value>
+  </data>
+  <data name="HEADER_SUM_COST" xml:space="preserve">
+    <value>Total cost</value>
+  </data>
+  <data name="HEADER_SUM_COST_FIXED" xml:space="preserve">
+    <value>Total fixed cost</value>
+  </data>
+  <data name="HEADER_SUM_COST_VARIABLE" xml:space="preserve">
+    <value>Total variable cost</value>
+  </data>
+  <data name="HEADER_SUM_EXPORTS" xml:space="preserve">
+    <value>Sum of all exports</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_DET" xml:space="preserve">
+    <value>Sum of all flows into detritus</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_RESP" xml:space="preserve">
+    <value>Sum of all respiratory flows</value>
+  </data>
+  <data name="HEADER_SUM_NET_PP" xml:space="preserve">
+    <value>Calculated total net primary production</value>
+  </data>
+  <data name="HEADER_SUM_PPB" xml:space="preserve">
+    <value>Total primary production/total biomass</value>
+  </data>
+  <data name="HEADER_SUM_PP_RESP" xml:space="preserve">
+    <value>Total primary production/total respiration</value>
+  </data>
+  <data name="HEADER_SUM_PROD" xml:space="preserve">
+    <value>Sum of all production</value>
+  </data>
+  <data name="HEADER_SUM_PROFIT" xml:space="preserve">
+    <value>Profit</value>
+  </data>
+  <data name="HEADER_SUM_THROUGHPUT" xml:space="preserve">
+    <value>Total system throughput</value>
+  </data>
+  <data name="HEADER_SUM_VALUE" xml:space="preserve">
+    <value>Total value</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_MARKET" xml:space="preserve">
+    <value>Total market value</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_SHADOW" xml:space="preserve">
+    <value>Total shadow value</value>
+  </data>
+  <data name="HEADER_SURVIVAL" xml:space="preserve">
+    <value>Survival</value>
+  </data>
+  <data name="HEADER_SWITCHINGPOWER_VALRANGE" xml:space="preserve">
+    <value>Switching power parameter [0,2]</value>
+  </data>
+  <data name="HEADER_SYSTEMCOMPONENTS" xml:space="preserve">
+    <value>System components</value>
+  </data>
+  <data name="HEADER_TAC" xml:space="preserve">
+    <value>Total allowable catch</value>
+  </data>
+  <data name="HEADER_TFM" xml:space="preserve">
+    <value>Target fishing mortality</value>
+    <comment>Target fishing mortality</comment>
+  </data>
+  <data name="HEADER_TIME" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="HEADER_TIMEFORCING" xml:space="preserve">
+    <value>Time forcing</value>
+  </data>
+  <data name="HEADER_TIMESERIES" xml:space="preserve">
+    <value>Time series</value>
+  </data>
+  <data name="HEADER_TOTAL" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="HEADER_TOTALCATCH" xml:space="preserve">
+    <value>Total catch</value>
+  </data>
+  <data name="HEADER_TOTALCOST" xml:space="preserve">
+    <value>Total cost ({0})</value>
+    <comment>{0}: Monetary unit</comment>
+  </data>
+  <data name="HEADER_TOTALLENGTH" xml:space="preserve">
+    <value>Total length</value>
+  </data>
+  <data name="HEADER_TOTALMORTALITY" xml:space="preserve">
+    <value>Z (Total mortality)</value>
+  </data>
+  <data name="HEADER_TOTALMORTALITY_UNIT" xml:space="preserve">
+    <value>Z (/{0})</value>
+    <comment>{0}: ? unit</comment>
+  </data>
+  <data name="HEADER_TOTALPROFIT" xml:space="preserve">
+    <value>Total profit ({0})</value>
+    <comment>{0}: Monetary unit</comment>
+  </data>
+  <data name="HEADER_TOTALVALUE" xml:space="preserve">
+    <value>Total value ({0})</value>
+    <comment>{0}: Monetary unit</comment>
+  </data>
+  <data name="HEADER_TOTALVALUE_PERC" xml:space="preserve">
+    <value>Total value (%)</value>
+  </data>
+  <data name="HEADER_TOTEFFMULTI" xml:space="preserve">
+    <value>Tot. eff. multip.</value>
+  </data>
+  <data name="HEADER_TROPHICLEVEL" xml:space="preserve">
+    <value>Trophic level</value>
+  </data>
+  <data name="HEADER_TZERO_VBGF_UNIT" xml:space="preserve">
+    <value>to in VBGF (year)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_UNASSIMILCONSUMPTION" xml:space="preserve">
+    <value>Unassimil. / consumption</value>
+  </data>
+  <data name="HEADER_UNITS" xml:space="preserve">
+    <value>Units</value>
+  </data>
+  <data name="HEADER_UPPERLIMIT" xml:space="preserve">
+    <value>Upper limit</value>
+  </data>
+  <data name="HEADER_VALUE1" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="HEADER_VALUEBIOMASS" xml:space="preserve">
+    <value>Value/unit biomass</value>
+  </data>
+  <data name="HEADER_VALUEEND" xml:space="preserve">
+    <value>Value (end)</value>
+  </data>
+  <data name="HEADER_VALUEES" xml:space="preserve">
+    <value>Value (E/S)</value>
+  </data>
+  <data name="HEADER_VALUESTART" xml:space="preserve">
+    <value>Value (start)</value>
+  </data>
+  <data name="HEADER_VALUE_A_PER_B" xml:space="preserve">
+    <value>{0} ({1}/{2})</value>
+    <comment>{0}: value, {1}: unit 1, {2}: unit 2</comment>
+  </data>
+  <data name="HEADER_VALUE_COMPONENT" xml:space="preserve">
+    <value>Value component</value>
+  </data>
+  <data name="HEADER_VALUE_CUMULATIVE" xml:space="preserve">
+    <value>Cumulative value</value>
+  </data>
+  <data name="HEADER_VERSION" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="HEADER_WEIGHT" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="HEADER_WEIGHT_INFINITY_UNIT" xml:space="preserve">
+    <value>W at infinity (g)</value>
+    <comment>{0}: ??? unit</comment>
+  </data>
+  <data name="HEADER_YES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="HEADER_YIELD" xml:space="preserve">
+    <value>Yield</value>
+  </data>
+  <data name="HEADER_COUNT" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="HEADER_RECRUITMENT_CV" xml:space="preserve">
+    <value>Recruitment CV</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_INITIAL" xml:space="preserve">
+    <value>Initial conc. (t/t)</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_IN_IMM_B" xml:space="preserve">
+    <value>Conc. in immigrating biomass (t/t)</value>
+  </data>
+  <data name="HEADER_DECAY_RATE_UNIT" xml:space="preserve">
+    <value>Decay rate (t/{0})</value>
+    <comment>{0}: time unit</comment>
+  </data>
+  <data name="HEADER_DIRECT_ABSORPTION_RATE_UNIT" xml:space="preserve">
+    <value>Direct absorption rate (t/t/t/{0})</value>
+    <comment>{0}: time unit</comment>
+  </data>
+  <data name="HEADER_EXCRETION_RATE" xml:space="preserve">
+    <value>Prop. 1-GS excreted [0-1]</value>
+  </data>
+  <data name="HEADER_FMAX" xml:space="preserve">
+    <value>FMax</value>
+  </data>
+  <data name="HEADER_POTENTIAL_GROWTH" xml:space="preserve">
+    <value>Poten. growth (Bunf/Bo)</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_WITH_FT" xml:space="preserve">
+    <value>Vulnerability w. FT</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_WO_FT" xml:space="preserve">
+    <value>Vulnerability w/o FT</value>
+  </data>
+  <data name="HEADER_BIOMASS_CV" xml:space="preserve">
+    <value>Biomass c.v.</value>
+  </data>
+  <data name="HEADER_BIOMASS_MAX" xml:space="preserve">
+    <value>Biomass max.</value>
+  </data>
+  <data name="HEADER_BIOMASS_MEAN" xml:space="preserve">
+    <value>Biomass mean</value>
+  </data>
+  <data name="HEADER_BIOMASS_MIN" xml:space="preserve">
+    <value>Biomass min.</value>
+  </data>
+  <data name="HEADER_BIOMASS_PERC_ABOVE_REF" xml:space="preserve">
+    <value>Biomass % above reference</value>
+  </data>
+  <data name="HEADER_BIOMASS_PERC_BELOW_REF" xml:space="preserve">
+    <value>Biomass % below reference</value>
+  </data>
+  <data name="HEADER_BIOMASS_STDDEV" xml:space="preserve">
+    <value>Biomass std.</value>
+  </data>
+  <data name="HEADER_CATCH_CV" xml:space="preserve">
+    <value>Catch c.v.</value>
+  </data>
+  <data name="HEADER_CATCH_MAX" xml:space="preserve">
+    <value>Catch max.</value>
+  </data>
+  <data name="HEADER_CATCH_MEAN" xml:space="preserve">
+    <value>Catch mean</value>
+  </data>
+  <data name="HEADER_CATCH_MIN" xml:space="preserve">
+    <value>Catch min.</value>
+  </data>
+  <data name="HEADER_CATCH_PERC_ABOVE_REF" xml:space="preserve">
+    <value>Catch % above reference</value>
+  </data>
+  <data name="HEADER_CATCH_PERC_BELOW_REF" xml:space="preserve">
+    <value>Catch % below reference</value>
+  </data>
+  <data name="HEADER_CATCH_STDDEV" xml:space="preserve">
+    <value>Catch std.</value>
+  </data>
+  <data name="HEADER_EFFORT_CV" xml:space="preserve">
+    <value>Effort c.v.</value>
+  </data>
+  <data name="HEADER_EFFORT_MAX" xml:space="preserve">
+    <value>Effort max.</value>
+  </data>
+  <data name="HEADER_EFFORT_MEAN" xml:space="preserve">
+    <value>Effort mean</value>
+  </data>
+  <data name="HEADER_EFFORT_MIN" xml:space="preserve">
+    <value>Effort min.</value>
+  </data>
+  <data name="HEADER_EFFORT_PERC_ABOVE_REF" xml:space="preserve">
+    <value>Effort % above reference</value>
+  </data>
+  <data name="HEADER_EFFORT_PERC_BELOW_REF" xml:space="preserve">
+    <value>Effort % below reference</value>
+  </data>
+  <data name="HEADER_EFFORT_STDDEV" xml:space="preserve">
+    <value>Effort std.</value>
+  </data>
+  <data name="HEADER_MSE_LOWERRISK" xml:space="preserve">
+    <value>Min. biomass/org. biomass</value>
+  </data>
+  <data name="HEADER_MSE_UPPERRISK" xml:space="preserve">
+    <value>Max. biomass/org. biomass</value>
+  </data>
 </root>

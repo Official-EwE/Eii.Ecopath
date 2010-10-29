@@ -330,12 +330,12 @@ Namespace Ecospace
             ' Region index cell
             Me(0, eColumnTypes.RegionIndex) = New EwEColumnHeaderCell()
             ' Region name cell, editable this time
-            Me(0, eColumnTypes.RegionName) = New EwEColumnHeaderCell(My.Resources.HEADER_REGION)
+            Me(0, eColumnTypes.RegionName) = New EwEColumnHeaderCell(SharedResources.HEADER_REGION)
             ' Region name cell, editable this time
-            Me(0, eColumnTypes.RegionCellCount) = New EwEColumnHeaderCell("Count") 'My.Resources.HEADER_NUMCELLS
+            Me(0, eColumnTypes.RegionCellCount) = New EwEColumnHeaderCell(SharedResources.HEADER_COUNT)
 
             ' Region index cell
-            Me(0, eColumnTypes.RegionStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
+            Me(0, eColumnTypes.RegionStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             ' Fix index column only; Region name column cannot be fixed because it must be editable
             Me.FixedColumns = 1

@@ -4,9 +4,10 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwECore.MSE
 Imports SourceGrid2.Cells.Real
 Imports EwEUtils.Core
-Imports EwECore.MSE
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -23,11 +24,11 @@ Public Class gridGroupRefLevels
 
         Me.Redim(1, 6)
         Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-        Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_LOWER)
-        Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_UPPER)
-        Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_LOWER)
-        Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_UPPER)
+        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_LOWER)
+        Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_UPPER)
+        Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_LOWER)
+        Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_UPPER)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False

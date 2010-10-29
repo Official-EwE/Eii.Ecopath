@@ -476,11 +476,11 @@ Public Class frmEcotracerOutput
 
         If Me.m_DisplayHelper.EnabledForSpace Then
             'only populate the region list if space is enabled
-            Me.m_cmbRegions.Items.Add(My.Resources.HEADER_REGIONS_UNDEFINED)
+            Me.m_cmbRegions.Items.Add(SharedResources.HEADER_REGIONS_UNDEFINED)
             For irgn As Integer = 1 To Me.Core.nRegions
                 Me.m_cmbRegions.Items.Add(New cCoreInputOutputControlItem(Me.Core.EcospaceRegions(irgn)))
             Next
-            Me.m_cmbRegions.Items.Add(My.Resources.HEADER_REGIONS_ALL)
+            Me.m_cmbRegions.Items.Add(SharedResources.HEADER_REGIONS_ALL)
 
             Me.m_cmbRegions.SelectedIndex = Me.Core.nRegions + 1
         End If
@@ -809,7 +809,7 @@ Public Class frmEcotracerOutput
             Dim td As cEcotracerGroupOutput = Me.Core.EcotracerGroupResults
             Dim SimBio As cEcosimGroupOutput
             Dim vList As New PointPairList()
-            Dim strLabel As String = My.Resources.HEADER_ENVIRONMENT
+            Dim strLabel As String = SharedResources.HEADER_ENVIRONMENT
             Dim clrLine As Color = Color.Black
             Dim yVal As Double
             Dim dx As Double
@@ -954,7 +954,7 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property XAxisLabel() As String _
             Implements IDisplayModeHelper.XAxisLabel
             Get
-                Return My.Resources.HEADER_ECOSIM_YEARS
+                Return SharedResources.HEADER_ECOSIM_YEARS
             End Get
         End Property
 
@@ -964,9 +964,9 @@ Public Class frmEcotracerOutput
                 Dim lb As String
 
                 If Me.m_plottype = ePlotTypes.CB Then
-                    lb = My.Resources.HEADER_CONCENTRATION_OVER_B
+                    lb = SharedResources.HEADER_CONCENTRATION_OVER_B
                 Else
-                    lb = My.Resources.HEADER_CONCENTRATION
+                    lb = SharedResources.HEADER_CONCENTRATION
                 End If
                 Return lb
             End Get
@@ -1086,7 +1086,7 @@ Public Class frmEcotracerOutput
                 strFilter = Me.Core.EcoPathGroupInputs(iGroup).Name
                 clrLine = Me.StyleGuide.GroupColor(Me.Core, iGroup)
             Else
-                strFilter = My.Resources.HEADER_ENVIRONMENT
+                strFilter = SharedResources.HEADER_ENVIRONMENT
             End If
 
             If iRegion > 0 Then
@@ -1218,7 +1218,7 @@ Public Class frmEcotracerOutput
 
         Public ReadOnly Property XAxisLabel() As String Implements IDisplayModeHelper.XAxisLabel
             Get
-                Return My.Resources.HEADER_ECOSPACE_YEARS
+                Return SharedResources.HEADER_ECOSPACE_YEARS
             End Get
         End Property
 
@@ -1227,9 +1227,9 @@ Public Class frmEcotracerOutput
             Get
                 Dim lb As String
                 If Me.m_plottype = ePlotTypes.CB Then
-                    lb = My.Resources.HEADER_CONCENTRATION_OVER_B
+                    lb = SharedResources.HEADER_CONCENTRATION_OVER_B
                 Else
-                    lb = My.Resources.HEADER_CONCENTRATION
+                    lb = SharedResources.HEADER_CONCENTRATION
                 End If
                 Return lb
             End Get

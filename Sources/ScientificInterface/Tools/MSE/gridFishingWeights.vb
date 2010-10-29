@@ -29,7 +29,7 @@ Public Class gridFishingWeights
         Me.Redim(1, 2 + Me.Core.nFleets)
 
         Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
         For iFleet As Integer = 1 To Me.Core.nFleets
             src = Me.Core.FleetInputs(iFleet)

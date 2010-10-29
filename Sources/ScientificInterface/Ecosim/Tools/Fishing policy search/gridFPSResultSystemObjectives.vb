@@ -5,8 +5,9 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.FishingPolicy
-Imports SourceGrid2.Cells.Real
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -36,14 +37,14 @@ Namespace Ecosim
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length + _
                         [Enum].GetValues(GetType(eSearchCriteriaResultTypes)).Length)
 
-            Me(0, eColumnTypes.Iteration) = New EwEColumnHeaderCell(My.Resources.HEADER_NUMCALLS)
-            Me(0, eColumnTypes.Total) = New EwEColumnHeaderCell(My.Resources.HEADER_TOTAL)
+            Me(0, eColumnTypes.Iteration) = New EwEColumnHeaderCell(SharedResources.HEADER_NUMCALLS)
+            Me(0, eColumnTypes.Total) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
 
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.TotalValue) = New EwEColumnHeaderCell(My.Resources.HEADER_NET_ECONOMIC_VALUE_ABBR)
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Employment) = New EwEColumnHeaderCell(My.Resources.HEADER_SOCIAL)
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.MandateReb) = New EwEColumnHeaderCell(My.Resources.HEADER_MANDATED_ABBR)
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Ecological) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOSYSTEM_STRUCTURE_ABBR)
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.BioDiversity) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_DIVERSITY_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.TotalValue) = New EwEColumnHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Employment) = New EwEColumnHeaderCell(SharedResources.HEADER_SOCIAL)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.MandateReb) = New EwEColumnHeaderCell(SharedResources.HEADER_MANDATED_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Ecological) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.BioDiversity) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_DIVERSITY_ABBR)
 
         End Sub
 

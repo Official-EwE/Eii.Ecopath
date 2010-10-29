@@ -1,11 +1,12 @@
 ﻿#Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
 Imports System.Windows.Forms
-Imports ZedGraph
+Imports EwECore
 Imports EwECore.MSE
+Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 Imports SourceGrid2
 
 #End Region ' Imports
@@ -56,7 +57,7 @@ Namespace Ecosim
 
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
-            Me.m_zgh.ConfigurePane("", My.Resources.HEADER_BIOMASS, My.Resources.HEADER_RECRUITMENT, True)
+            Me.m_zgh.ConfigurePane("", SharedResources.HEADER_BIOMASS, SharedResources.HEADER_RECRUITMENT, True)
 
             Me.m_zgh.AllowZoom = False
             Me.m_zgh.AllowPan = False

@@ -6,9 +6,10 @@ Imports System.IO
 Imports System.Math
 Imports System.Threading
 Imports System.ComponentModel
+Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SAUPUtil.Misc.Colours
 Imports SAUPUtil.SAUPData.Mapping
-Imports EwECore
 
 #End Region ' Imports
 
@@ -269,9 +270,9 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Select Case Me.m_colorusagetype
                 Case eColorUsageTypes.Biomass
-                    Me.DrawLegend(g, Me.m_data.BiomassMax, New Point(5, 5), My.Resources.HEADER_BIOMASS)
+                    Me.DrawLegend(g, Me.m_data.BiomassMax, New Point(5, 5), SharedResources.HEADER_BIOMASS)
                 Case eColorUsageTypes.Flow
-                    Me.DrawLegend(g, Me.m_data.DietMax, New Point(5, 5), My.Resources.HEADER_DIET)
+                    Me.DrawLegend(g, Me.m_data.DietMax, New Point(5, 5), SharedResources.HEADER_DIET)
             End Select
 
         End Sub
@@ -375,7 +376,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 g.FillRectangle(brLegend, New Rectangle(ptIconTL, New Size(CInt(iXSize * 0.2), iIconHeight)))
                 brLegend.Dispose()
 
-                g.DrawString(String.Format(My.Resources.HEADER_LESSTHAN, Me.m_data.UIContext.StyleGuide.FormatNumber(Me.GetNiceNumber(sValInc))), _
+                g.DrawString(String.Format(SharedResources.HEADER_LESSTHAN, Me.m_data.UIContext.StyleGuide.FormatNumber(Me.GetNiceNumber(sValInc))), _
                              font, brush, _
                              New Point(CInt(ptIconTL.X + iXSize * 0.3), ptIconTL.Y))
                 ptIconTL.Y += iIconHeight

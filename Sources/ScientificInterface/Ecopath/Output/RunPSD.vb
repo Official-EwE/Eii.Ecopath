@@ -6,9 +6,10 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
-Imports ScientificInterfaceShared.Properties
-Imports ZedGraph
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Properties
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region 'Imports
 
@@ -223,8 +224,8 @@ Namespace Ecopath.Output
 
             'JS 23Mar09: Zedgraph helper performs standardized label, axis styling
             Me.m_zgh.ConfigurePane(My.Resources.CAPTION_PSD, _
-                                   My.Resources.HEADER_BODYWEIGHT_LOGg, _
-                                   My.Resources.HEADER_BIOMASS_LOGg, _
+                                   SharedResources.HEADER_BODYWEIGHT_LOGg, _
+                                   SharedResources.HEADER_BIOMASS_LOGg, _
                                    True)
 
             'JS 15Oct09: Fonts are set via StyleGuide

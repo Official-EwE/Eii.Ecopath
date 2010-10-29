@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -29,8 +30,8 @@ Namespace Ecopath.Input
             Me.Redim(1, 3)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUEBIOMASS)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUEBIOMASS)
 
             Me.FixedColumns = 2
 

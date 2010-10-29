@@ -142,8 +142,8 @@ Namespace Ecosim
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.Shape) = New EwEColumnHeaderCell(My.Resources.HEADER_SHAPE)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.Shape) = New EwEColumnHeaderCell(SharedResources.HEADER_SHAPE)
 
         End Sub
 

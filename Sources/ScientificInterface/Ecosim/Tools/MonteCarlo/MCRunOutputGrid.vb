@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -42,12 +43,12 @@ Namespace Ecosim
 
             Me.Redim(Me.Core.nLivingGroups + 1, 7)
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_PB_ABBR)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_CB)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_EE)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMACCUM_ABBR)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_PB_ABBR)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CB)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_EE)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_ABBR)
 
             Me.FixedColumnWidths = False
 

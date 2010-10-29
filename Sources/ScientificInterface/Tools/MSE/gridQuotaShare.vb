@@ -36,7 +36,7 @@ Namespace Ecosim
             Me.Redim(1, 2 + Core.nFleets + 1) ' Include sum column
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Core.nFleets
                 src = Core.FleetInputs(iFleet)
@@ -44,7 +44,7 @@ Namespace Ecosim
                                                                  src, eVarNameFlags.Name, Nothing, _
                                                                  SharedResources.GENERIC_LABEL_DETAILED, cStyleGuide.eUnitType.Currency)
             Next
-            Me(0, 1 + Core.nFleets + 1) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
+            Me(0, 1 + Core.nFleets + 1) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True

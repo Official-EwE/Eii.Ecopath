@@ -6,6 +6,7 @@ Option Explicit On
 Imports EwECore
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -57,12 +58,12 @@ Namespace Ecosim
             If Not m_bIsMaxByFleetValue Then
                 Me.Redim(1, 3)
                 Me(0, 0) = New EwEColumnHeaderCell("")
-                Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEET_GEAR)
+                Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEET_GEAR)
                 Me(0, 2) = New EwEColumnHeaderCell(My.Resources.FPS_FG_JOBS)
             Else
                 Me.Redim(1, 4)
                 Me(0, 0) = New EwEColumnHeaderCell("")
-                Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEET_GEAR)
+                Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEET_GEAR)
                 Me(0, 2) = New EwEColumnHeaderCell(My.Resources.FPS_FG_JOBS)
                 Me(0, 3) = New EwEColumnHeaderCell(My.Resources.FPS_FG_TP)
             End If

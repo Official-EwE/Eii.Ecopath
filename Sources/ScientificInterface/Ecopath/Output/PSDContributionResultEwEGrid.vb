@@ -4,10 +4,11 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Properties
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2.Cells.Real
-Imports EwEUtils.Core
 
 #End Region
 
@@ -35,7 +36,7 @@ Namespace Ecopath.Output
             Me.Redim(1, Core.nWeightClasses + 3)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAMEWEIGHT_UNIT)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAMEWEIGHT_UNIT)
 
             ' Dynamic column header - weight class
             For wtClassIndex As Integer = 1 To Core.nWeightClasses
@@ -43,7 +44,7 @@ Namespace Ecopath.Output
             Next
 
             ' Sum value column
-            Me(0, Core.nWeightClasses + 2) = New EwEColumnHeaderCell(My.Resources.HEADER_SUM)
+            Me(0, Core.nWeightClasses + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
 
@@ -117,7 +118,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(My.Resources.HEADER_SUM)
+            Me(iRow, 1) = New EwERowHeaderCell(sharedResources.HEADER_SUM)
             For iGroup As Integer = 1 To Core.nLivingGroups
                 If IsGroupSelected(iGroup) Then
                     source = Core.EcoPathGroupOutputs(iGroup)

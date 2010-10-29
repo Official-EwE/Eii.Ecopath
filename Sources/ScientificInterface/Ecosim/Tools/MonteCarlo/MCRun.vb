@@ -7,6 +7,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 
 #End Region
@@ -106,7 +107,7 @@ Namespace Ecosim
             Me.m_plothelper.Attach(Me.UIContext, Me.m_graph)
             Me.m_plothelper.ShowMultipleRuns = True
 
-            Me.m_plothelper.ConfigurePane(My.Resources.HEADER_MCTRIALS, My.Resources.HEADER_TIME, My.Resources.HEADER_BIOMASS, False)
+            Me.m_plothelper.ConfigurePane(SharedResources.HEADER_MCTRIALS, SharedResources.HEADER_TIME, SharedResources.HEADER_BIOMASS, False)
             Me.m_plothelper.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.Both
 
             ' Configure grids

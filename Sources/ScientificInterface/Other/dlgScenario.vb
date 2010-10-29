@@ -6,6 +6,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterface.Ecopath.Input
 Imports ScientificInterface.Ecopath.Output
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -334,7 +335,7 @@ Namespace Wizard
             astrColumns(eColumnTypes.Name) = scenario.Name
             ' - Loaded
             If scenario.IsLoaded Then
-                astrColumns(eColumnTypes.Loaded) = My.Resources.HEADER_YES
+                astrColumns(eColumnTypes.Loaded) = SharedResources.HEADER_YES
             Else
                 astrColumns(eColumnTypes.Loaded) = ""
             End If

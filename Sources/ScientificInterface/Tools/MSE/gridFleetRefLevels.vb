@@ -4,9 +4,10 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SourceGrid2.Cells.Real
-Imports EwEUtils.Core
 Imports EwECore.MSE
+Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -25,11 +26,11 @@ Public Class gridFleetRefLevels
 
         Me.Redim(1, 6)
         Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
-        Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_LOWER)
-        Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_UPPER)
-        Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_EFFORT_LOWER)
-        Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_EFFORT_UPPER)
+        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_LOWER)
+        Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_UPPER)
+        Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_LOWER)
+        Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_UPPER)
 
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False

@@ -5,6 +5,7 @@ Option Strict On
 
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -46,8 +47,8 @@ Namespace Ecosim
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.MaxRelPB) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXRELPB)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.MaxRelPB) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXRELPB)
             Me(0, eColumnTypes.MaxRelFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_MAXRELFEEDINGTIME)
             Me(0, eColumnTypes.FeedingTimeAdjustRate) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_FEEDINGTIMEADJUSTRATE)
             Me(0, eColumnTypes.OtherMortFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME)
@@ -55,7 +56,7 @@ Namespace Ecosim
             Me(0, eColumnTypes.DenDepCatchability) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_DENDEPCATCHABILITY)
             'Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
             Me(0, eColumnTypes.QBMaxQBO) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
-            Me(0, eColumnTypes.SwitchPower) = New EwEColumnHeaderCell(My.Resources.HEADER_SWITCHINGPOWER_VALRANGE)
+            Me(0, eColumnTypes.SwitchPower) = New EwEColumnHeaderCell(SharedResources.HEADER_SWITCHINGPOWER_VALRANGE)
             Me(0, eColumnTypes.SalinityOpt) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OPTSALINITY)
             Me(0, eColumnTypes.SalinitySpreadLeft) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_SALSPREADLEFT)
             Me(0, eColumnTypes.SalinitySpreadRight) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_SALSPREADRIGHT)

@@ -4,9 +4,10 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SourceGrid2.Cells.Real
-Imports EwEUtils.Core
 Imports EwECore.MSE
+Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -19,21 +20,17 @@ Public Class gridRiskBounds
 
     Protected Overrides Sub InitStyle()
 
-        ' ToDo: localize this method
-
         MyBase.InitStyle()
         Me.Redim(1, 4)
         Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
-        Me(0, 2) = New EwEColumnHeaderCell("Min. biomass/org. biomass")
-        Me(0, 3) = New EwEColumnHeaderCell("Max. biomass/org. biomass")
+        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUP)
+        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_MSE_LOWERRISK)
+        Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_MSE_UPPERRISK)
 
     End Sub
 
     Protected Overrides Sub FillData()
         Try
-
-            ' ToDo: localize this method
 
             Dim mse As cMSEManager = Me.Core.MSEManager
             If mse Is Nothing Then Exit Sub

@@ -3,6 +3,7 @@
 Option Strict On
 
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -71,7 +72,7 @@ Public Class cCustomComboBoxFleetGroupTree
         Me.Nodes.Clear()
 
         'Load the fleet drop down list
-        tnParent = Me.Nodes.Add(My.Resources.HEADER_FISHINGEFFORT)
+        tnParent = Me.Nodes.Add(SharedResources.HEADER_FISHINGEFFORT)
         For Each shp As cFishingRateShape In m_core.FishingEffortShapeManager
             tnChild = New TreeNode(shp.Name)
             tnChild.Tag = shp
@@ -79,7 +80,7 @@ Public Class cCustomComboBoxFleetGroupTree
         Next
 
         'Load the group drop down list
-        tnParent = Me.Nodes.Add(My.Resources.HEADER_FISHINGMORTALITY)
+        tnParent = Me.Nodes.Add(SharedResources.HEADER_FISHINGMORTALITY)
         For i As Integer = 1 To m_core.nGroups
             Dim group As cEcoPathGroupInput = m_core.EcoPathGroupInputs(i)
             tnChild = New TreeNode(group.Name)

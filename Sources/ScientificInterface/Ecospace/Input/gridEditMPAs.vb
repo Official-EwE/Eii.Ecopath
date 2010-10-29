@@ -257,7 +257,7 @@ Namespace Ecospace
             ' MPA index cell
             Me(0, eColumnTypes.MPAIndex) = New EwEColumnHeaderCell()
             ' MPA name cell, editable this time
-            Me(0, eColumnTypes.MPAName) = New EwEColumnHeaderCell(My.Resources.HEADER_MPA)
+            Me(0, eColumnTypes.MPAName) = New EwEColumnHeaderCell(SharedResources.HEADER_MPA)
             Me(0, eColumnTypes.MPAAll) = New EwEColumnHeaderCell("Closed")
             'Define column header Jan - Dec
             For iCol As Integer = eColumnTypes.MPAJan To eColumnTypes.MPADec
@@ -266,7 +266,7 @@ Namespace Ecospace
             Next
 
             ' MPA index cell
-            Me(0, eColumnTypes.MPAStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
+            Me(0, eColumnTypes.MPAStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             ' Fix index column only; MPA name column cannot be fixed because it must be editable
             Me.FixedColumns = 1

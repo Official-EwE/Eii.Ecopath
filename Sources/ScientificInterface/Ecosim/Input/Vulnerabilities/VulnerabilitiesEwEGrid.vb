@@ -4,8 +4,9 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports SourceGrid2
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2
 
 #End Region
 
@@ -39,7 +40,7 @@ Namespace Ecosim
             ' Set header cells
             ' # (0,0)
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_PREYPREDATOR)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 

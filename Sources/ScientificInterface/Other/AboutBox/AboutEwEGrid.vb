@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwEPlugin
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Reflection
 Imports SourceGrid2
 
@@ -37,8 +38,8 @@ Public Class AboutEwEGrid
         Me.Redim(aanLoaded.Length + aanPlugins.Length + 2, 2)
 
         ' Create header cells
-        Me(iRow, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_SYSTEMCOMPONENTS)
-        Me(iRow, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_VERSION)
+        Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_SYSTEMCOMPONENTS)
+        Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
 
         ' Add assembly cells
         iRow += 1
@@ -50,8 +51,8 @@ Public Class AboutEwEGrid
         Next
 
         ' Plug-ins section
-        Me(iRow, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_PLUGINS)
-        Me(iRow, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_VERSION)
+        Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_PLUGINS)
+        Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
 
         ' Add plugin cells
         iRow += 1

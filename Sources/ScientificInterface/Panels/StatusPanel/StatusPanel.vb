@@ -7,6 +7,7 @@ Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
 
 #End Region ' Imports
@@ -35,7 +36,7 @@ Public Class StatusPanel
         Me.InitializeComponent()
 
         Me.UIContext = uic
-        Me.TabText = My.Resources.HEADER_STATUS
+        Me.TabText = SharedResources.HEADER_STATUS
 
     End Sub
 

@@ -4,7 +4,9 @@ Option Explicit On
 
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+
 #End Region
 
 <CLSCompliant(False)> _
@@ -24,8 +26,8 @@ Public Class gridFitToTimeSeries
 
         Me.Redim(1, 2)
 
-        Me(0, eColumnTypes.TimeSeriesName) = New EwEColumnHeaderCell(My.Resources.HEADER_TIMESERIES)
-        Me(0, eColumnTypes.TimeSeriesWeight) = New EwEColumnHeaderCell(My.Resources.HEADER_WEIGHT)
+        Me(0, eColumnTypes.TimeSeriesName) = New EwEColumnHeaderCell(SharedResources.HEADER_TIMESERIES)
+        Me(0, eColumnTypes.TimeSeriesWeight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
 
         ' Fixed "Editor not attached to the grid" crash: cannot edit a fixed column, duh!
         Me.FixedColumns = 1

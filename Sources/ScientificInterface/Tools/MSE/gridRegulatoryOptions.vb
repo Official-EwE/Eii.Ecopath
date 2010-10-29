@@ -2,10 +2,11 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.MSE
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
-Imports EwECore.MSE
 
 #End Region ' Imports
 
@@ -52,13 +53,13 @@ Namespace Ecosim
             Me.Redim(1, iNumCols)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
-            ' Me(0, eColumnTypes.MaxEffort) = New EwEColumnHeaderCell(My.Resources.HEADER_MAXEFFORT, cStyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.OptionNotUsed) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_NOTUSED)
-            '  Me(0, eColumnTypes.OptionEffort) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_EFFORT)
-            Me(0, eColumnTypes.OptionWeakest) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_WEAKESTSTOCK)
-            Me(0, eColumnTypes.OptionStrongest) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_STRONGESTSTOCK)
-            Me(0, eColumnTypes.OptionSelective) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTA_SELECTIVEFISHING)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            ' Me(0, eColumnTypes.MaxEffort) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXEFFORT, cStyleGuide.eUnitType.Currency)
+            Me(0, eColumnTypes.OptionNotUsed) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_NOTUSED)
+            '  Me(0, eColumnTypes.OptionEffort) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_EFFORT)
+            Me(0, eColumnTypes.OptionWeakest) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_WEAKESTSTOCK)
+            Me(0, eColumnTypes.OptionStrongest) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_STRONGESTSTOCK)
+            Me(0, eColumnTypes.OptionSelective) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_SELECTIVEFISHING)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True

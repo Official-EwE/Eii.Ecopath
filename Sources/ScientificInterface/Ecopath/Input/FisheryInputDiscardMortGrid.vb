@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2.Cells
 
 #End Region ' Imports
@@ -34,7 +35,7 @@ Namespace Ecopath.Input
             Me.Redim(1, 2 + Core.nFleets)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Me.Core.nFleets
                 src = Core.FleetInputs(iFleet)

@@ -2,10 +2,11 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.MSE
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
-Imports EwECore.MSE
 
 #End Region ' Imports
 
@@ -70,10 +71,10 @@ Namespace Ecosim
             Me.Redim(1, iNumCols)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_BASE)
-            Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_LIMIT)
-            Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell(My.Resources.HEADER_FOPT)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_BASE)
+            Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_LIMIT)
+            Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell(SharedResources.HEADER_FOPT)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False

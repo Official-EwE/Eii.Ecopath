@@ -5,9 +5,10 @@ Option Strict On
 
 Imports System.Text
 Imports EwECore
+Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceLibrary
-Imports EwEUtils.Core
 
 #End Region
 
@@ -166,7 +167,7 @@ Namespace Ecosim
 
             ' Set header cells  'Prey \Predator '
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_PREYPREDATOR)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 

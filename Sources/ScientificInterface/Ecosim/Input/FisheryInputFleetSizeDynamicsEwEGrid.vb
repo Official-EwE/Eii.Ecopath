@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -26,11 +27,11 @@ Namespace Ecosim
 
             ' Define column header
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_EFFORTRESPPOWER)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_INITEFFORT)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_CAPITALDEPRECIATION_RATE)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_INITCAPTIALGROWTHRATE)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORTRESPPOWER)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_INITEFFORT)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CAPITALDEPRECIATION_RATE)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_INITCAPTIALGROWTHRATE)
 
         End Sub
 

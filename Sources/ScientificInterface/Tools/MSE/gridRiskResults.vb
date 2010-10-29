@@ -1,16 +1,15 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SourceGrid2.Cells.Real
-Imports EwEUtils.Core
 Imports EwECore.MSE
+Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2.Cells.Real
 
 #End Region
-
 
 <CLSCompliant(False)> _
 Public Class gridRiskResults
@@ -57,43 +56,42 @@ Public Class gridRiskResults
 
         If Me.m_type = eGridType.Group Then
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
-            Me(0, 2) = New EwEColumnHeaderCell("Biomass Mean.")
-            Me(0, 3) = New EwEColumnHeaderCell("Biomass Min.")
-            Me(0, 4) = New EwEColumnHeaderCell("Biomass Max.")
-            Me(0, 5) = New EwEColumnHeaderCell("Biomass CV")
-            Me(0, 6) = New EwEColumnHeaderCell("Biomass Std.")
-            Me(0, 7) = New EwEColumnHeaderCell("Biomass % below reference")
-            Me(0, 8) = New EwEColumnHeaderCell("Biomass % above reference")
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUP)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_MEAN)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_MIN)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_MAX)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_CV)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_STDDEV)
+            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_PERC_BELOW_REF)
+            Me(0, 8) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_PERC_ABOVE_REF)
 
-            Me(0, 9) = New EwEColumnHeaderCell("Catch Mean.")
-            Me(0, 10) = New EwEColumnHeaderCell("Catch Min.")
-            Me(0, 11) = New EwEColumnHeaderCell("Catch Max.")
-            Me(0, 12) = New EwEColumnHeaderCell("Catch CV")
-            Me(0, 13) = New EwEColumnHeaderCell("Catch Std.")
-
-            Me(0, 14) = New EwEColumnHeaderCell("Catch % below reference")
-            Me(0, 15) = New EwEColumnHeaderCell("Catch % above reference")
+            Me(0, 9) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MEAN)
+            Me(0, 10) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MIN)
+            Me(0, 11) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MAX)
+            Me(0, 12) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_CV)
+            Me(0, 13) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_STDDEV)
+            Me(0, 14) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_BELOW_REF)
+            Me(0, 15) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_ABOVE_REF)
 
         ElseIf Me.m_type = eGridType.Fleet Then
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
-            Me(0, 2) = New EwEColumnHeaderCell("Catch Mean.")
-            Me(0, 3) = New EwEColumnHeaderCell("Catch Min.")
-            Me(0, 4) = New EwEColumnHeaderCell("Catch Max.")
-            Me(0, 5) = New EwEColumnHeaderCell("Catch CV")
-            Me(0, 6) = New EwEColumnHeaderCell("Catch Std.")
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MEAN)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MIN)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MAX)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_CV)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_STDDEV)
 
-            Me(0, 7) = New EwEColumnHeaderCell("Catch % below reference")
-            Me(0, 8) = New EwEColumnHeaderCell("Catch % above reference")
+            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_BELOW_REF)
+            Me(0, 8) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_ABOVE_REF)
 
-            Me(0, 9) = New EwEColumnHeaderCell("Effort Mean.")
-            Me(0, 10) = New EwEColumnHeaderCell("Effort Min.")
-            Me(0, 11) = New EwEColumnHeaderCell("Effort Max.")
-            Me(0, 12) = New EwEColumnHeaderCell("Effort CV")
-            Me(0, 13) = New EwEColumnHeaderCell("Catch Std.")
-            Me(0, 14) = New EwEColumnHeaderCell("Effort % below reference")
-            Me(0, 15) = New EwEColumnHeaderCell("Effort % above reference")
+            Me(0, 9) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_MEAN)
+            Me(0, 10) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_MIN)
+            Me(0, 11) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_MAX)
+            Me(0, 12) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_CV)
+            Me(0, 13) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_STDDEV)
+            Me(0, 14) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_PERC_BELOW_REF)
+            Me(0, 15) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_PERC_ABOVE_REF)
 
         End If
 
@@ -101,8 +99,6 @@ Public Class gridRiskResults
 
     Protected Overrides Sub FillData()
         Try
-            ' ToDo: localize this method
-
             'Why no property cells?????
             'PropertyCell() requires a ValueDescriptor property which cMSEStats objects can not populate
             'so we can not use PropertyCells with a cMSEStat object.

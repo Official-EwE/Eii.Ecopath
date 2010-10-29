@@ -4,15 +4,14 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SourceGrid2.Cells.Real
-Imports EwEUtils.Core
 Imports EwECore.MSE
+Imports EwEUtils.Core
 Imports ScientificInterface.Other
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
-
+Imports SourceGrid2.Cells.Real
 
 #End Region
-
 
 ''' <summary>
 ''' EwEGrid that handles selection of color blocks for a ucCVBlockSelector
@@ -177,8 +176,8 @@ Public Class gridSelectColorBlock
         MyBase.InitStyle()
 
         Me.Redim(2, Me.m_parentSelector.NumBlocks + 1)
-        Me(0, 0) = New EwERowHeaderCell(My.Resources.HEADER_CV)
-        Me(1, 0) = New EwERowHeaderCell(My.Resources.HEADER_COLOR)
+        Me(0, 0) = New EwERowHeaderCell(SharedResources.HEADER_CV)
+        Me(1, 0) = New EwERowHeaderCell(SharedResources.HEADER_COLOR)
 
         'hide the first row
         ' JB: sourcegrid will explode if you try to edit the first row so hide it and put the cv values in the second row

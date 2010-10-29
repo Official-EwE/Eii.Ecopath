@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2.Cells.Real
 
 #End Region
@@ -24,27 +25,27 @@ Namespace Ecospace
             'Define column header
             Me(0, 0) = New EwEColumnHeaderCell("")
             'Gear name
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNAME)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
             ' Catch (Start)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_START)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_START)
             ' Catch (End)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_END)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_END)
             ' Catch (E/S)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_E_OVER_S)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_E_OVER_S)
             ' Value (Start)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUESTART)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUESTART)
             ' Value (End)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUEEND)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUEEND)
             ' Value (E/S)
-            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUEES)
+            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUEES)
             ' Cost (Start)
-            Me(0, 8) = New EwEColumnHeaderCell(My.Resources.HEADER_COST_START)
+            Me(0, 8) = New EwEColumnHeaderCell(SharedResources.HEADER_COST_START)
             ' Cost (End)
-            Me(0, 9) = New EwEColumnHeaderCell(My.Resources.HEADER_COST_END)
+            Me(0, 9) = New EwEColumnHeaderCell(SharedResources.HEADER_COST_END)
             ' Cost (E/S)
-            Me(0, 10) = New EwEColumnHeaderCell(My.Resources.HEADER_COST_E_OVER_S)
+            Me(0, 10) = New EwEColumnHeaderCell(SharedResources.HEADER_COST_E_OVER_S)
             ' Effort (E/S)
-            Me(0, 11) = New EwEColumnHeaderCell(My.Resources.HEADER_EFFORTES)
+            Me(0, 11) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORTES)
 
         End Sub
 

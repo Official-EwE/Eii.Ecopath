@@ -3,9 +3,10 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Utilities
-Imports SourceGrid2
-Imports ScientificInterface.Other
 Imports EwEUtils.Core
+Imports ScientificInterface.Other
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2
 Imports SourceGrid2.Cells
 
 #End Region ' Imports
@@ -568,15 +569,15 @@ Imports SourceGrid2.Cells
         ' Level index cell
         Me(0, eColumnTypes.LevelIndex) = New EwEColumnHeaderCell()
         ' Level name cell, editable this time
-        Me(0, eColumnTypes.LevelName) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
+        Me(0, eColumnTypes.LevelName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
         ' Color
-        Me(0, eColumnTypes.LevelColor) = New EwEColumnHeaderCell(My.Resources.HEADER_COLOR)
+        Me(0, eColumnTypes.LevelColor) = New EwEColumnHeaderCell(SharedResources.HEADER_COLOR)
         ' Index value
-        Me(0, eColumnTypes.LevelIndexValue) = New EwEColumnHeaderCell(My.Resources.HEADER_INDEXVALUE)
+        Me(0, eColumnTypes.LevelIndexValue) = New EwEColumnHeaderCell(SharedResources.HEADER_INDEXVALUE)
         ' Confidence interval
-        Me(0, eColumnTypes.LevelConfidenceInterval) = New EwEColumnHeaderCell(My.Resources.HEADER_CONFIDENCEINTERVAL)
+        Me(0, eColumnTypes.LevelConfidenceInterval) = New EwEColumnHeaderCell(SharedResources.HEADER_CONFIDENCEINTERVAL)
         ' Status
-        Me(0, eColumnTypes.LevelStatus) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
+        Me(0, eColumnTypes.LevelStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
         ' Fix index column only; Level name column cannot be fixed because it must be editable
         Me.FixedColumns = 1
 

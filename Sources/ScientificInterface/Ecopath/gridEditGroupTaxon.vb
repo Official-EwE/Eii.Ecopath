@@ -5,6 +5,7 @@ Imports EwECore
 Imports EwEPlugin.Data
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
 #End Region ' Imports
@@ -575,11 +576,11 @@ Public Class gridEditGroupTaxon
 
         ' Group index cell
         Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
-        Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(My.Resources.HEADER_PROPORTION)
-        Me(0, eColumnTypes.PropNorm) = New EwEColumnHeaderCell(My.Resources.HEADER_PROPORTION)
-        Me(0, eColumnTypes.LastUpdated) = New EwEColumnHeaderCell(My.Resources.HEADER_LASTUPDATED)
-        Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(My.Resources.HEADER_STATUS)
+        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION)
+        Me(0, eColumnTypes.PropNorm) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION)
+        Me(0, eColumnTypes.LastUpdated) = New EwEColumnHeaderCell(SharedResources.HEADER_LASTUPDATED)
+        Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False

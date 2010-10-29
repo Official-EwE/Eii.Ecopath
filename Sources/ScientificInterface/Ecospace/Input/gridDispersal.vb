@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.BehaviorModels
 
@@ -62,7 +63,7 @@ Namespace Ecospace
 
             'Add column headers
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.DispersalRate) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_BASEDISPRATE)
             Me(0, eColumnTypes.RelDisp) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_RELDISP)
             Me(0, eColumnTypes.RelVul) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_RELVUL)

@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -33,19 +34,19 @@ Namespace Ecospace
             Me.Redim(1, 8)
             Me(0, 0) = New EwEColumnHeaderCell("")
             'Group name
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUPNAME)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             'Biomass (Start)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASS_START)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_START)
             'Biomass (End)
-            Me(0, 3) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSEND)
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASSEND)
             'Biomass (E/S)
-            Me(0, 4) = New EwEColumnHeaderCell(My.Resources.HEADER_BIOMASSES)
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASSES)
             'Catch (Start)
-            Me(0, 5) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_START)
+            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_START)
             'Catch (End)
-            Me(0, 6) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_END)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_END)
             'Catch (E/S)
-            Me(0, 7) = New EwEColumnHeaderCell(My.Resources.HEADER_CATCH_E_OVER_S)
+            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_E_OVER_S)
 
 
         End Sub
