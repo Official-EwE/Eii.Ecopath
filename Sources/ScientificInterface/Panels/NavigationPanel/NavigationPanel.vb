@@ -165,7 +165,8 @@ Public Class NavigationPanel
             .Add("ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimOutputPlots), "Ecosim plot.htm")
             .Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimResults), "Ecosim results.htm")
             .Add("ndEcosimAllFits", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmShowAllFits), "Ecosim results.htm")
-            .Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.SRplot), "Stock recruitment S R plot.htm")
+            .Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmStockRecruitmentPlot), "Stock recruitment S R plot.htm")
+            '.Add("ndFunctionResponse", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFunctionalResponsePlot)) ' ToDo: connect to help
             .Add("ndSuitabilityPlot", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
             .Add("ndFishingMortality", eCoreExecutionState.EcosimCompleted, GetType(frmFishingMortality)) ' ToDo: connect to help
 
