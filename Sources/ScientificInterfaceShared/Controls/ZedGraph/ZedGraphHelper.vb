@@ -1150,7 +1150,7 @@ Namespace Controls
 
         Private Function OnPointValueEvent(ByVal sender As Object, ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
             Dim pp As PointPair = curve(iPoint)
-            Return String.Format(My.Resources.GENERIC_LABEL_GRAPHVALUE, _
+            Return String.Format(My.Resources.GENERIC_LABEL_POINT, _
                                  curve.Label.Text, _
                                  Me.StyleGuide.FormatNumber(pp.X), _
                                  Me.StyleGuide.FormatNumber(pp.Y))

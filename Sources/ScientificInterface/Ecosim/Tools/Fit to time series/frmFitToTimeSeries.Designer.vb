@@ -1,6 +1,5 @@
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports WeifenLuo.WinFormsUI.Docking
 
 Namespace Ecosim
 

@@ -204,9 +204,9 @@
   <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
     <value>Ecotracer relative concentration</value>
   </data>
-  <data name="GENERIC_LABEL_GRAPHVALUE" xml:space="preserve">
+  <data name="GENERIC_LABEL_POINT" xml:space="preserve">
     <value>{0}: ({1}, {2})</value>
-    <comment>{0}: graph curve name, {1}: X point value, {2}: Y point value</comment>
+    <comment>{0}: point name, {1}: X point value, {2}: Y point value</comment>
   </data>
   <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
     <value>mg N/m²</value>
@@ -269,9 +269,9 @@
   <data name="HEADER_NAME" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="GENERIC_LABEL_CURRENCY" xml:space="preserve">
+  <data name="GENERIC_LABEL_DOUBLE" xml:space="preserve">
     <value>{0} {1}</value>
-    <comment>{0}: three-letter currency abbreviation, {1}: name of currency unit</comment>
+    <comment>{0}: value part 1, {1}: value part 2</comment>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="WarningHS" type="System.Resources.ResXFileRef, System.Windows.Forms">

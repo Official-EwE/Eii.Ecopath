@@ -71,6 +71,10 @@ Namespace Ecosim
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+
             Me.m_coreStateMonitor = Me.Core.StateMonitor
             Me.m_graphpane = Me.m_plot.GraphPane
             Me.m_SRResults = New List(Of SRLine)
@@ -330,7 +334,7 @@ Namespace Ecosim
                         'srl.GroupEndName = strName
 
                         node = New TreeNode(strTitle)
-                        node.Tag = String.Format("{0} {1}", iGroup, iGroupLast)
+                        node.Tag = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, iGroup, iGroupLast)
                         m_tvGroups.Nodes(0).Nodes(i).Nodes.Add(node) ' Wow, here's to having some good faith....
 
                         srl.SRDataList = New List(Of SRData)

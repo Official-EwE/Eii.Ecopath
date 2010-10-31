@@ -1,5 +1,4 @@
-﻿Imports WeifenLuo.WinFormsUI.Docking
-Imports ScientificInterfaceShared.Controls
+﻿Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _

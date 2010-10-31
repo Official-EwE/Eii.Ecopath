@@ -502,15 +502,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} {1}.
-        '''</summary>
-        Public ReadOnly Property GENERIC_LABEL_CURRENCY() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_CURRENCY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to {0} ({1}).
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_DETAILED() As String
@@ -520,11 +511,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}: ({1}, {2}).
+        '''  Looks up a localized string similar to {0} {1}.
         '''</summary>
-        Public ReadOnly Property GENERIC_LABEL_GRAPHVALUE() As String
+        Public ReadOnly Property GENERIC_LABEL_DOUBLE() As String
             Get
-                Return ResourceManager.GetString("GENERIC_LABEL_GRAPHVALUE", resourceCulture)
+                Return ResourceManager.GetString("GENERIC_LABEL_DOUBLE", resourceCulture)
             End Get
         End Property
         
@@ -543,6 +534,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_LABEL_INDEXED() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_INDEXED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0}: ({1}, {2}).
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_POINT() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_POINT", resourceCulture)
             End Get
         End Property
         

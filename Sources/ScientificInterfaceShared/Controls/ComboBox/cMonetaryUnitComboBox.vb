@@ -75,7 +75,7 @@ Namespace Controls
             Me.SuspendLayout()
             For Each unit As eUnitMonetaryType In [Enum].GetValues(GetType(eUnitMonetaryType))
                 If (unit <> eUnitMonetaryType.NotSet) Then
-                    strLabel = String.Format(My.Resources.GENERIC_LABEL_CURRENCY, _
+                    strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
                         sg.MonetaryUnitText(unit), _
                         sg.MonetaryUnitDescription(unit))
                     Me.Items.Add(New MonetaryUnitItem(unit, strLabel))

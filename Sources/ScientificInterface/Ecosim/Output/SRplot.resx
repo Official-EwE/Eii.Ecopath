@@ -139,7 +139,7 @@
     <value>m_plot</value>
   </data>
   <data name="&gt;&gt;m_plot.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.31904, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.17508, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
   </data>
   <data name="&gt;&gt;m_plot.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
@@ -292,6 +292,6 @@
     <value>SRplot</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.409, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

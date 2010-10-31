@@ -1,4 +1,3 @@
-Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

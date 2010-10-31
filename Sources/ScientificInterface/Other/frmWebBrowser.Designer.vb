@@ -1,10 +1,10 @@
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Forms
 
 <CLSCompliant(False)> _
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmWebBrowser
-    Inherits DockContent
+    Inherits frmEwE
 
     'UserControl overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _

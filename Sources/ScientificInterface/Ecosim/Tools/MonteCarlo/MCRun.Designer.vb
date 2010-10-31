@@ -1,4 +1,3 @@
-Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Forms
 Imports ZedGraph
 

@@ -1,5 +1,4 @@
 ﻿Imports ScientificInterfaceShared.Forms
-Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared
 
 Namespace Ecopath.Output
