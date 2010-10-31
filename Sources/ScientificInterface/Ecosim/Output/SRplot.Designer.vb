@@ -3,7 +3,7 @@ Imports ScientificInterfaceShared.Forms
 Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated(), CLSCompliant(False)> _
-    Partial Class SRplot
+    Partial Class frmStockRecruitmentPlot
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
@@ -24,7 +24,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SRplot))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStockRecruitmentPlot))
             Me.m_plot = New ZedGraph.ZedGraphControl
             Me.m_tvGroups = New System.Windows.Forms.TreeView
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
