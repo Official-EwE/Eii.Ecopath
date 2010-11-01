@@ -24,9 +24,10 @@
     <HtmlHelp1xCompilerPath>..\..\..\..\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\EwECore\bin\x86\Release\EwECore.dll" />
-<DocumentationSource sourceFile="..\EwEPlugin\bin\x86\Release\EwEPlugin.dll" />
-<DocumentationSource sourceFile="..\EwEUtils\bin\x86\Release\EwEUtils.dll" />
-<DocumentationSource sourceFile="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\EwEPlugin\bin\x86\Release\EwEPlugin.dll" />
+      <DocumentationSource sourceFile="..\EwEUtils\bin\x86\Release\EwEUtils.dll" />
+      <DocumentationSource sourceFile="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
+    </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True">EwE API Code Documentation</NamespaceSummaryItem>
       <NamespaceSummaryItem name="EwECore" isDocumented="True">Namespace containing all elements essential to the functioning of the EwE computing engine.</NamespaceSummaryItem>
