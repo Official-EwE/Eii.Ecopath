@@ -2814,6 +2814,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Found entry &apos;{0}&apos; with bounding box N {1}, W {2}, S {3}, E {4}. Do you want to use this value?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_GOOGLELOCATION_SEARCH() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_GOOGLELOCATION_SEARCH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Selected database: {0}{1}{0}{0}Selected Ecopath model:{0}{2}{0}{0}Save model as:{0}{3}.
         '''</summary>
         Friend ReadOnly Property PROMPT_IMPORT_SUMMARY() As String
@@ -2999,15 +3008,6 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_UPDATE_MIGRATION_SUPPRESS() As String
             Get
                 Return ResourceManager.GetString("PROMPT_UPDATE_MIGRATION_SUPPRESS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Found match &apos;{0}&apos;, do you want to use this value?.
-        '''</summary>
-        Friend ReadOnly Property PROMPT_VALIDATE_SEARCH() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_VALIDATE_SEARCH", resourceCulture)
             End Get
         End Property
         

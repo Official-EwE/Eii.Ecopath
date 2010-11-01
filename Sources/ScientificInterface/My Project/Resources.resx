@@ -1402,9 +1402,9 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="google" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\google.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="PROMPT_VALIDATE_SEARCH" xml:space="preserve">
-    <value>Found match '{0}', do you want to use this value?</value>
-    <comment>{0}: match text</comment>
+  <data name="PROMPT_GOOGLELOCATION_SEARCH" xml:space="preserve">
+    <value>Found entry '{0}' with bounding box N {1}, W {2}, S {3}, E {4}. Do you want to use this value?</value>
+    <comment>{0}: term, {1} to {4} extent N,W,S,E</comment>
   </data>
   <data name="PROMPT_CHANGES_RESTART" xml:space="preserve">
     <value>Some of the changes that you made will only be effective after Ecopath with Ecosim has restarted.</value>

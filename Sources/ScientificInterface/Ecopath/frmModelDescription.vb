@@ -298,7 +298,9 @@ Public Class frmModelDescription
 
         If lookup.FindLocation(Me.m_tbModelAreaName.Text) Then
             ' No need to use feedback messages here
-            If MsgBox(String.Format(My.Resources.PROMPT_VALIDATE_SEARCH, lookup.Term), MsgBoxStyle.YesNo Or MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+            If MsgBox(String.Format(My.Resources.PROMPT_GOOGLELOCATION_SEARCH, _
+                                    lookup.Term, lookup.North, lookup.West, lookup.South, lookup.East), _
+                                    MsgBoxStyle.YesNo Or MsgBoxStyle.Question) = MsgBoxResult.Yes Then
                 eweModel.AreaName = lookup.Term
                 eweModel.South = lookup.South
                 eweModel.North = lookup.North
