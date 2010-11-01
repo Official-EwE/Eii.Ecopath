@@ -875,7 +875,9 @@ Public Class gridEditGroupTaxon
         Dim ti As cTaxonInfo = Nothing
         Dim iRow As Integer = Nothing
 
-        If Me.m_lUsedKeys.Contains(taxon.CodeTaxon) Then Return
+        If (taxon IsNot Nothing) Then
+            If Me.m_lUsedKeys.Contains(taxon.CodeTaxon) Then Return
+        End If
 
         If (taxon Is Nothing) Then
             ti = New cTaxonInfo(Me.SelectedGroup)
