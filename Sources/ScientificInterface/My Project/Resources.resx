@@ -1525,4 +1525,14 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="Ecotracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ecotracer.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="FR_PLOT_CAPTION" xml:space="preserve">
+    <value>Consumer '{0}'</value>
+    <comment>{0}: group name</comment>
+  </data>
+  <data name="FR_PLOT_X_AXIS" xml:space="preserve">
+    <value>Prey biomass relative to Ecopath biomass</value>
+  </data>
+  <data name="FR_PLOT_Y_AXS" xml:space="preserve">
+    <value>Q prey / B pred</value>
+  </data>
 </root>

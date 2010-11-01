@@ -1360,6 +1360,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Consumer &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property FR_PLOT_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("FR_PLOT_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prey biomass relative to Ecopath biomass.
+        '''</summary>
+        Friend ReadOnly Property FR_PLOT_X_AXIS() As String
+            Get
+                Return ResourceManager.GetString("FR_PLOT_X_AXIS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Q prey / B pred.
+        '''</summary>
+        Friend ReadOnly Property FR_PLOT_Y_AXS() As String
+            Get
+                Return ResourceManager.GetString("FR_PLOT_Y_AXS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath with Ecosim 6 BETA Oct 2010.
         '''</summary>
         Friend ReadOnly Property GENERIC_CAPTION() As String
