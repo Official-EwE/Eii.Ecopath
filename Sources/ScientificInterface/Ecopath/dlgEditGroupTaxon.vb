@@ -180,10 +180,14 @@ Public Class dlgEditGroupTaxon
 
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles OK_Button.Click
-        If Me.m_gridGroups.Apply Then
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-        End If
+        Try
+            If Me.m_gridGroups.Apply Then
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
+            End If
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -194,27 +198,47 @@ Public Class dlgEditGroupTaxon
 
     Private Sub m_btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnAdd.Click
-        Me.m_gridGroups.AddTaxon()
+        Try
+            Me.m_gridGroups.AddTaxon()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub m_btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnRemove.Click
-        Me.m_gridGroups.ToggleDeleteRow()
+        Try
+            Me.m_gridGroups.ToggleDeleteRow()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub m_btnKeep_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnKeep.Click
-        Me.m_gridGroups.ToggleDeleteRow()
+        Try
+            Me.m_gridGroups.ToggleDeleteRow()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub m_btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnMoveUp.Click
-        Me.m_gridGroups.MoveTaxon(-1)
+        Try
+            Me.m_gridGroups.MoveTaxon(-1)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub m_btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnMoveDown.Click
-        Me.m_gridGroups.MoveTaxon(1)
+        Try
+            Me.m_gridGroups.MoveTaxon(1)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     'Private Sub OnUpdateCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -229,17 +253,29 @@ Public Class dlgEditGroupTaxon
 
     Private Sub OnSearchTextChanged(ByVal sender As System.Object, ByVal e As EventArgs) _
         Handles m_tbSearch.TextChanged
-        Me.RefreshSearch()
+        Try
+            Me.RefreshSearch()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub m_cbIncludeExtent_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_cbIncludeExtent.CheckedChanged
-        Me.RefreshSearch()
+        Try
+            Me.RefreshSearch()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub OnConfigure(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnConfigure.Click
-        Me.ConfigureSelectedDataProducer()
+        Try
+            Me.ConfigureSelectedDataProducer()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Private Sub OnSourceChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
