@@ -46,6 +46,7 @@ Public Class gridEcopathResult
         Me.Selection.AutoClear = False
         Me.Selection.ProtectReadOnly = True
         Me.Dock = DockStyle.Fill
+        Me.FixedColumnWidths = False
 
         Me.Redim(22, 7)
 
