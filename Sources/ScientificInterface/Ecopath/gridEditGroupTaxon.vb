@@ -886,10 +886,9 @@ Public Class gridEditGroupTaxon
             ti = New cTaxonInfo(taxon)
             ti.Group = Me.SelectedGroup.Index
             Me.m_lTaxonInfo.Add(ti)
+            Me.m_lUsedKeys.Add(taxon.CodeTaxon)
             Me.NormalizeProportions()
         End If
-
-        Me.m_lUsedKeys.Add(taxon.CodeTaxon)
 
         Me.UpdateGrid()
         Me.SelectedTaxon = ti
