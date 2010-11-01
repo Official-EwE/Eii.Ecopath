@@ -875,19 +875,18 @@ Public Class gridEditGroupTaxon
         Dim ti As cTaxonInfo = Nothing
         Dim iRow As Integer = Nothing
 
-        If (taxon IsNot Nothing) Then
-            If Me.m_lUsedKeys.Contains(taxon.CodeTaxon) Then Return
-        End If
-
         If (taxon Is Nothing) Then
             ti = New cTaxonInfo(Me.SelectedGroup)
             Me.m_lTaxonInfo.Add(ti)
         Else
+            If Me.m_lUsedKeys.Contains(taxon.CodeTaxon) Then Return
+
             ti = New cTaxonInfo(taxon)
             ti.Group = Me.SelectedGroup.Index
             Me.m_lTaxonInfo.Add(ti)
-            Me.m_lUsedKeys.Add(taxon.CodeTaxon)
             Me.NormalizeProportions()
+
+            Me.m_lUsedKeys.Add(taxon.CodeTaxon)
         End If
 
         Me.UpdateGrid()
