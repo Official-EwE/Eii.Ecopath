@@ -15,7 +15,10 @@ Partial Class ucResults
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucResults))
         Me.m_btnRunEcopath = New System.Windows.Forms.Button
-        Me.m_tsResults = New cEwEToolstrip
+        Me.m_tsResults = New ScientificInterfaceShared.Controls.cEwEToolstrip
+        Me.m_tslblData = New System.Windows.Forms.ToolStripLabel
+        Me.m_tscmbGraphData = New System.Windows.Forms.ToolStripComboBox
+        Me.m_tssSep3 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tslFleets = New System.Windows.Forms.ToolStripLabel
         Me.m_tscmbFleets = New System.Windows.Forms.ToolStripComboBox
         Me.m_tssep1 = New System.Windows.Forms.ToolStripSeparator
@@ -28,9 +31,6 @@ Partial Class ucResults
         Me.m_scResults = New System.Windows.Forms.SplitContainer
         Me.m_plFlow = New EwEValueChainPlugin.plFlow
         Me.m_btnRunEquilibrium = New System.Windows.Forms.Button
-        Me.m_tscmbGraphData = New System.Windows.Forms.ToolStripComboBox
-        Me.m_tslblData = New System.Windows.Forms.ToolStripLabel
-        Me.m_tssSep3 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsResults.SuspendLayout()
         Me.m_scResults.Panel1.SuspendLayout()
         Me.m_scResults.SuspendLayout()
@@ -50,11 +50,29 @@ Partial Class ucResults
         '
         'm_tsResults
         '
+        Me.m_tsResults.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblData, Me.m_tscmbGraphData, Me.m_tssSep3, Me.m_tslFleets, Me.m_tscmbFleets, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium})
         Me.m_tsResults.Location = New System.Drawing.Point(0, 0)
         Me.m_tsResults.Name = "m_tsResults"
         Me.m_tsResults.Size = New System.Drawing.Size(751, 25)
         Me.m_tsResults.TabIndex = 2
+        '
+        'm_tslblData
+        '
+        Me.m_tslblData.Name = "m_tslblData"
+        Me.m_tslblData.Size = New System.Drawing.Size(34, 22)
+        Me.m_tslblData.Text = "&Data:"
+        '
+        'm_tscmbGraphData
+        '
+        Me.m_tscmbGraphData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscmbGraphData.Name = "m_tscmbGraphData"
+        Me.m_tscmbGraphData.Size = New System.Drawing.Size(121, 25)
+        '
+        'm_tssSep3
+        '
+        Me.m_tssSep3.Name = "m_tssSep3"
+        Me.m_tssSep3.Size = New System.Drawing.Size(6, 25)
         '
         'm_tslFleets
         '
@@ -172,23 +190,6 @@ Partial Class ucResults
         Me.m_btnRunEquilibrium.TabIndex = 0
         Me.m_btnRunEquilibrium.Text = "Run E&quilibrium"
         Me.m_btnRunEquilibrium.UseVisualStyleBackColor = True
-        '
-        'm_tscmbGraphData
-        '
-        Me.m_tscmbGraphData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_tscmbGraphData.Name = "m_tscmbGraphData"
-        Me.m_tscmbGraphData.Size = New System.Drawing.Size(121, 25)
-        '
-        'm_tslblData
-        '
-        Me.m_tslblData.Name = "m_tslblData"
-        Me.m_tslblData.Size = New System.Drawing.Size(34, 22)
-        Me.m_tslblData.Text = "&Data:"
-        '
-        'm_tssSep3
-        '
-        Me.m_tssSep3.Name = "m_tssSep3"
-        Me.m_tssSep3.Size = New System.Drawing.Size(6, 25)
         '
         'ucResults
         '
