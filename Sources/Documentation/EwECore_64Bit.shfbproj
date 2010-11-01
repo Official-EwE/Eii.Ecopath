@@ -21,7 +21,7 @@
     <HelpFileVersion>6.0.7.0310</HelpFileVersion>
     <SandcastlePath>C:\Program Files (x86)\Sandcastle\</SandcastlePath>
     <WorkingPath>Temp\</WorkingPath>
-    <HtmlHelp1xCompilerPath>..\..\..\..\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
+    <HtmlHelp1xCompilerPath>..\..\..\..\..\..\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\EwECore\bin\x86\Release\EwECore.dll" />
       <DocumentationSource sourceFile="..\EwEPlugin\bin\x86\Release\EwEPlugin.dll" />
