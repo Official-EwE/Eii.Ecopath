@@ -50,10 +50,10 @@ Public Class StatusPanel
         If (Me.UIContext Is Nothing) Then Return
 
         ' Prepare image list
-        Me.m_il.Images.Add(New Icon(SystemIcons.Information, 40, 40))
-        Me.m_il.Images.Add(New Icon(SystemIcons.Warning, 40, 40))
-        Me.m_il.Images.Add(New Icon(SystemIcons.Error, 40, 40))
-        Me.m_il.Images.Add(New Icon(SystemIcons.Question, 40, 40))
+        Me.m_il.Images.Add(New Icon(SystemIcons.Information, 16, 16))
+        Me.m_il.Images.Add(New Icon(SystemIcons.Warning, 16, 16))
+        Me.m_il.Images.Add(New Icon(SystemIcons.Error, 16, 16))
+        Me.m_il.Images.Add(New Icon(SystemIcons.Question, 16, 16))
 
         ' Set image list
         Me.m_tvStatus.ImageList = Me.m_il
@@ -66,10 +66,10 @@ Public Class StatusPanel
 
     End Sub
 
-    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
         ' Stop listening to core messages
         Me.ConfigMessageHandlers(False)
-        MyBase.OnFormClosing(e)
+        MyBase.OnFormClosed(e)
     End Sub
 
 #End Region ' Form overrides
