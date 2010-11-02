@@ -171,7 +171,7 @@ Namespace Ecosim
             End Get
             Set(ByVal value As Boolean)
                 Me.m_pnlControls.Visible = value
-                Me.m_lblControls.Visible = value
+                Me.m_hdrControls.Visible = value
             End Set
         End Property
 #End Region
