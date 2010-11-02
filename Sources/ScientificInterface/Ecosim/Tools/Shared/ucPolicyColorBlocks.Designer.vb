@@ -24,9 +24,9 @@ Namespace Ecosim
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
             Me.m_hdrControls = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_pnlControls = New System.Windows.Forms.Panel
+            Me.m_lblYear = New System.Windows.Forms.Label
             Me.m_plBlocks = New System.Windows.Forms.Panel
             Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel
-            Me.m_lblYear = New System.Windows.Forms.Label
             CType(Me.m_pbFishingBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqEndYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -63,7 +63,7 @@ Namespace Ecosim
             '
             'm_nudSeqEndYear
             '
-            Me.m_nudSeqEndYear.Location = New System.Drawing.Point(128, 32)
+            Me.m_nudSeqEndYear.Location = New System.Drawing.Point(128, 29)
             Me.m_nudSeqEndYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudSeqEndYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudSeqEndYear.Name = "m_nudSeqEndYear"
@@ -74,7 +74,7 @@ Namespace Ecosim
             'm_lblEndYear
             '
             Me.m_lblEndYear.AutoSize = True
-            Me.m_lblEndYear.Location = New System.Drawing.Point(93, 34)
+            Me.m_lblEndYear.Location = New System.Drawing.Point(93, 31)
             Me.m_lblEndYear.Name = "m_lblEndYear"
             Me.m_lblEndYear.Size = New System.Drawing.Size(29, 13)
             Me.m_lblEndYear.TabIndex = 5
@@ -82,7 +82,7 @@ Namespace Ecosim
             '
             'm_nudSeqStartYear
             '
-            Me.m_nudSeqStartYear.Location = New System.Drawing.Point(38, 32)
+            Me.m_nudSeqStartYear.Location = New System.Drawing.Point(38, 29)
             Me.m_nudSeqStartYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudSeqStartYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudSeqStartYear.Name = "m_nudSeqStartYear"
@@ -93,7 +93,7 @@ Namespace Ecosim
             'm_lblStartYear
             '
             Me.m_lblStartYear.AutoSize = True
-            Me.m_lblStartYear.Location = New System.Drawing.Point(0, 34)
+            Me.m_lblStartYear.Location = New System.Drawing.Point(0, 31)
             Me.m_lblStartYear.Name = "m_lblStartYear"
             Me.m_lblStartYear.Size = New System.Drawing.Size(32, 13)
             Me.m_lblStartYear.TabIndex = 3
@@ -101,7 +101,7 @@ Namespace Ecosim
             '
             'm_nudNumYearsPerBlock
             '
-            Me.m_nudNumYearsPerBlock.Location = New System.Drawing.Point(38, 6)
+            Me.m_nudNumYearsPerBlock.Location = New System.Drawing.Point(38, 3)
             Me.m_nudNumYearsPerBlock.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudNumYearsPerBlock.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudNumYearsPerBlock.Name = "m_nudNumYearsPerBlock"
@@ -112,7 +112,7 @@ Namespace Ecosim
             'm_btnSetGear
             '
             Me.m_btnSetGear.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnSetGear.Location = New System.Drawing.Point(96, 6)
+            Me.m_btnSetGear.Location = New System.Drawing.Point(96, 3)
             Me.m_btnSetGear.Name = "m_btnSetGear"
             Me.m_btnSetGear.Size = New System.Drawing.Size(82, 20)
             Me.m_btnSetGear.TabIndex = 2
@@ -170,6 +170,15 @@ Namespace Ecosim
             Me.m_pnlControls.Size = New System.Drawing.Size(181, 75)
             Me.m_pnlControls.TabIndex = 3
             '
+            'm_lblYear
+            '
+            Me.m_lblYear.AutoSize = True
+            Me.m_lblYear.Location = New System.Drawing.Point(0, 5)
+            Me.m_lblYear.Name = "m_lblYear"
+            Me.m_lblYear.Size = New System.Drawing.Size(32, 13)
+            Me.m_lblYear.TabIndex = 0
+            Me.m_lblYear.Text = "&Year:"
+            '
             'm_plBlocks
             '
             Me.m_plBlocks.Dock = System.Windows.Forms.DockStyle.Fill
@@ -193,15 +202,6 @@ Namespace Ecosim
             Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
             Me.TableLayoutPanel3.Size = New System.Drawing.Size(200, 100)
             Me.TableLayoutPanel3.TabIndex = 0
-            '
-            'm_lblYear
-            '
-            Me.m_lblYear.AutoSize = True
-            Me.m_lblYear.Location = New System.Drawing.Point(0, 8)
-            Me.m_lblYear.Name = "m_lblYear"
-            Me.m_lblYear.Size = New System.Drawing.Size(32, 13)
-            Me.m_lblYear.TabIndex = 0
-            Me.m_lblYear.Text = "&Year:"
             '
             'ucPolicyColorBlocks
             '
