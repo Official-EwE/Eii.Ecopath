@@ -285,7 +285,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnBlockSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_slSelectedBlockCode.ValueChanged
+            Handles m_slSelectedBlockCode.ValueChanged, m_pbxBlockCodes.MouseDown
 
             If (Me.m_uic Is Nothing) Then Return
             If (Me.m_bInUpdate = True) Then Return

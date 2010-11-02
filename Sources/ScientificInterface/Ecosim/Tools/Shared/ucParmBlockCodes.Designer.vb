@@ -37,15 +37,16 @@ Namespace Ecosim
             Me.m_pbxBlockCodes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_pbxBlockCodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_pbxBlockCodes.Location = New System.Drawing.Point(139, 3)
+            Me.m_pbxBlockCodes.Location = New System.Drawing.Point(133, 3)
+            Me.m_pbxBlockCodes.Margin = New System.Windows.Forms.Padding(0)
             Me.m_pbxBlockCodes.Name = "m_pbxBlockCodes"
-            Me.m_pbxBlockCodes.Size = New System.Drawing.Size(371, 20)
+            Me.m_pbxBlockCodes.Size = New System.Drawing.Size(380, 20)
             Me.m_pbxBlockCodes.TabIndex = 0
             Me.m_pbxBlockCodes.TabStop = False
             '
             'm_nudNumBlockCodes
             '
-            Me.m_nudNumBlockCodes.Location = New System.Drawing.Point(82, 3)
+            Me.m_nudNumBlockCodes.Location = New System.Drawing.Point(76, 3)
             Me.m_nudNumBlockCodes.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
             Me.m_nudNumBlockCodes.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudNumBlockCodes.Name = "m_nudNumBlockCodes"
@@ -55,7 +56,7 @@ Namespace Ecosim
             '
             'm_nudSelectedBlockCode
             '
-            Me.m_nudSelectedBlockCode.Location = New System.Drawing.Point(82, 29)
+            Me.m_nudSelectedBlockCode.Location = New System.Drawing.Point(76, 29)
             Me.m_nudSelectedBlockCode.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
             Me.m_nudSelectedBlockCode.Name = "m_nudSelectedBlockCode"
             Me.m_nudSelectedBlockCode.Size = New System.Drawing.Size(51, 20)
@@ -65,7 +66,8 @@ Namespace Ecosim
             'm_lblNumBlocks
             '
             Me.m_lblNumBlocks.AutoSize = True
-            Me.m_lblNumBlocks.Location = New System.Drawing.Point(3, 5)
+            Me.m_lblNumBlocks.Location = New System.Drawing.Point(0, 5)
+            Me.m_lblNumBlocks.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblNumBlocks.Name = "m_lblNumBlocks"
             Me.m_lblNumBlocks.Size = New System.Drawing.Size(73, 13)
             Me.m_lblNumBlocks.TabIndex = 0
@@ -74,7 +76,8 @@ Namespace Ecosim
             'm_lblSelectedBlock
             '
             Me.m_lblSelectedBlock.AutoSize = True
-            Me.m_lblSelectedBlock.Location = New System.Drawing.Point(3, 31)
+            Me.m_lblSelectedBlock.Location = New System.Drawing.Point(0, 31)
+            Me.m_lblSelectedBlock.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblSelectedBlock.Name = "m_lblSelectedBlock"
             Me.m_lblSelectedBlock.Size = New System.Drawing.Size(52, 13)
             Me.m_lblSelectedBlock.TabIndex = 2
@@ -84,11 +87,12 @@ Namespace Ecosim
             '
             Me.m_slSelectedBlockCode.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_slSelectedBlockCode.Location = New System.Drawing.Point(139, 27)
+            Me.m_slSelectedBlockCode.Location = New System.Drawing.Point(136, 27)
+            Me.m_slSelectedBlockCode.Margin = New System.Windows.Forms.Padding(0)
             Me.m_slSelectedBlockCode.Maximum = 100
             Me.m_slSelectedBlockCode.Minimum = 0
             Me.m_slSelectedBlockCode.Name = "m_slSelectedBlockCode"
-            Me.m_slSelectedBlockCode.Size = New System.Drawing.Size(371, 23)
+            Me.m_slSelectedBlockCode.Size = New System.Drawing.Size(377, 23)
             Me.m_slSelectedBlockCode.TabIndex = 4
             Me.m_slSelectedBlockCode.Value = 0
             '
