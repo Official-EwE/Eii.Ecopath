@@ -50,15 +50,16 @@ Public Class StatusPanel
         If (Me.UIContext Is Nothing) Then Return
 
         ' Prepare image list
-        m_il.Images.Add(New Icon(SystemIcons.Information, 40, 40))
-        m_il.Images.Add(New Icon(SystemIcons.Warning, 40, 40))
-        m_il.Images.Add(New Icon(SystemIcons.Error, 40, 40))
+        Me.m_il.Images.Add(New Icon(SystemIcons.Information, 40, 40))
+        Me.m_il.Images.Add(New Icon(SystemIcons.Warning, 40, 40))
+        Me.m_il.Images.Add(New Icon(SystemIcons.Error, 40, 40))
+        Me.m_il.Images.Add(New Icon(SystemIcons.Question, 40, 40))
 
         ' Set image list
-        Me.tvStatus.ImageList = Me.m_il
-        Me.tvStatus.ImageIndex = -1
-        Me.tvStatus.SelectedImageIndex = -1
-        Me.tvStatus.SelectedImageKey = ""
+        Me.m_tvStatus.ImageList = Me.m_il
+        Me.m_tvStatus.ImageIndex = -1
+        Me.m_tvStatus.SelectedImageIndex = -1
+        Me.m_tvStatus.SelectedImageKey = ""
 
         ' Start listening to core messages
         Me.ConfigMessageHandlers(True)
@@ -83,7 +84,7 @@ Public Class StatusPanel
     ''' -------------------------------------------------------------------
     Public Sub Reset()
         Me.SetHighlights(Nothing)
-        Me.tvStatus.Nodes.Clear()
+        Me.m_tvStatus.Nodes.Clear()
         Me.m_msh.Clear(eCoreComponentType.Core)
     End Sub
 
@@ -153,6 +154,7 @@ Public Class StatusPanel
         Dim bPopup As Boolean = False
         Dim strMessage As String = msg.Message
         Dim bSuppressVarMessage As Boolean = False
+        Dim bIsFeedback As Boolean = False
 
         If String.IsNullOrEmpty(msg.Message) Then Return
 
@@ -163,6 +165,7 @@ Public Class StatusPanel
             Me.HandleFeedbackMessage(DirectCast(msg, cFeedbackMessage))
             ' Disable popup
             bPopup = False
+            bIsFeedback = True
         Else
             ' Check settings
             Select Case msg.Importance
@@ -192,7 +195,11 @@ Public Class StatusPanel
         ' Prepare treenode
         Dim tnMessage As TreeNode = New TreeNode(Me.ToTreeNodeText(strMessage))
         ' Set image index
-        tnMessage.ImageIndex = CInt(msg.Importance) - 1
+        If bIsFeedback And (msg.Importance <> eMessageImportance.Critical And msg.Importance <> eMessageImportance.Warning) Then
+            tnMessage.ImageIndex = 3 ' Question mark. Enums, anyone?
+        Else
+            tnMessage.ImageIndex = CInt(msg.Importance) - 1
+        End If
         ' Set selected image to equal image index
         tnMessage.SelectedImageIndex = tnMessage.ImageIndex
         ' Add original message text to tooltip
@@ -283,16 +290,16 @@ Public Class StatusPanel
 
         Try
             ' Add node(s) to the TOP of the list
-            Me.tvStatus.Nodes.Insert(0, tnMessage)
+            Me.m_tvStatus.Nodes.Insert(0, tnMessage)
             ' Truncate log size
-            While (Me.tvStatus.Nodes.Count = iMaxMessages)
+            While (Me.m_tvStatus.Nodes.Count = iMaxMessages)
                 ' Remove old messages from the bottom of the list
-                Me.tvStatus.Nodes.RemoveAt(iMaxMessages - 1)
+                Me.m_tvStatus.Nodes.RemoveAt(iMaxMessages - 1)
             End While
 
             ' JS 10feb2010: ensure visible not always seem to do reveal the newest item
             'tnMessage.EnsureVisible()
-            Me.tvStatus.TopNode = tnMessage
+            Me.m_tvStatus.TopNode = tnMessage
 
         Catch ex As Exception
             ' Hmm
@@ -624,9 +631,9 @@ Public Class StatusPanel
     ''' Event handler; traps the mouse down event to initiate property highlighting for a given index
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub lbStatus_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tvStatus.MouseDown
+    Private Sub lbStatus_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles m_tvStatus.MouseDown
         ' Get node that the user clicked on, if any
-        Dim tn As TreeNode = Me.tvStatus.GetNodeAt(e.Location)
+        Dim tn As TreeNode = Me.m_tvStatus.GetNodeAt(e.Location)
         ' Extract list op properties for this node and its child nodes
         Dim lp As List(Of cProperty) = Me.GetPropertylistFromNode(tn)
         ' Highlight these properties
@@ -638,32 +645,12 @@ Public Class StatusPanel
     ''' Event handler; traps the mouse up event to end property highlighting for a given index
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub lbStatus_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tvStatus.MouseUp
+    Private Sub lbStatus_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles m_tvStatus.MouseUp
         ' Clear any highlights
         SetHighlights(Nothing)
     End Sub
 
 #End Region ' Message highlighting
-
-#Region " Context Menu "
-
-    Private Sub Item_Remove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Item_Remove.Click
-        If Not Object.ReferenceEquals(Me.tvStatus.SelectedNode, Nothing) Then
-            Me.tvStatus.Nodes.Remove(Me.tvStatus.SelectedNode)
-        End If
-    End Sub
-
-    Private Sub Item_RemoveAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Item_RemoveAll.Click
-        Me.Reset()
-    End Sub
-
-    Private Sub cmenuListBox_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmenuListBox.Opening
-        ' Update menu items state
-        Me.Item_Remove.Enabled = Not Object.ReferenceEquals(Me.tvStatus.SelectedNode, Nothing)
-        Me.Item_RemoveAll.Enabled = (Me.tvStatus.Nodes.Count > 0)
-    End Sub
-
-#End Region ' Context menu
 
 End Class
 

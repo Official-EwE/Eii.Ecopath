@@ -117,62 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="cmenuListBox.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Item_Remove.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Del</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Item_Remove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 22</value>
-  </data>
-  <data name="Item_Remove.Text" xml:space="preserve">
-    <value>Remove item</value>
-  </data>
-  <data name="Item_RemoveAll.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Shift+Del</value>
-  </data>
-  <data name="Item_RemoveAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 22</value>
-  </data>
-  <data name="Item_RemoveAll.Text" xml:space="preserve">
-    <value>Remove all items</value>
-  </data>
-  <data name="cmenuListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 48</value>
-  </data>
-  <data name="&gt;&gt;cmenuListBox.Name" xml:space="preserve">
-    <value>cmenuListBox</value>
-  </data>
-  <data name="&gt;&gt;cmenuListBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tvStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_tvStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="tvStatus.Location" type="System.Drawing.Point, System.Drawing">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_tvStatus.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tvStatus.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tvStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>542, 156</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tvStatus.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tvStatus.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;tvStatus.Name" xml:space="preserve">
-    <value>tvStatus</value>
+  <data name="&gt;&gt;m_tvStatus.Name" xml:space="preserve">
+    <value>m_tvStatus</value>
   </data>
-  <data name="&gt;&gt;tvStatus.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tvStatus.Type" xml:space="preserve">
     <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tvStatus.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tvStatus.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;tvStatus.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_tvStatus.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -182,6 +152,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>542, 156</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -235,28 +208,13 @@
         Xl6AAV5ewAH1/YABWq+AAa/UwAFegoABDf2AAaQ2wAHUr8AB9AnAAQr9
 </value>
   </data>
-  <data name="$this.TabText" xml:space="preserve">
-    <value>Status</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Status</value>
-  </data>
-  <data name="&gt;&gt;Item_Remove.Name" xml:space="preserve">
-    <value>Item_Remove</value>
-  </data>
-  <data name="&gt;&gt;Item_Remove.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Item_RemoveAll.Name" xml:space="preserve">
-    <value>Item_RemoveAll</value>
-  </data>
-  <data name="&gt;&gt;Item_RemoveAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>StatusPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.2.3139.38170, Culture=neutral, PublicKeyToken=null</value>
+    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.3.3729.14004, Culture=neutral, PublicKeyToken=de94e906589de6fe</value>
   </data>
 </root>

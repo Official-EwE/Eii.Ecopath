@@ -21,56 +21,31 @@ Imports WeifenLuo.WinFormsUI.Docking
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(StatusPanel))
-        Me.cmenuListBox = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.Item_Remove = New System.Windows.Forms.ToolStripMenuItem
-        Me.Item_RemoveAll = New System.Windows.Forms.ToolStripMenuItem
-        Me.tvStatus = New System.Windows.Forms.TreeView
-        Me.cmenuListBox.SuspendLayout()
+        Me.m_tvStatus = New System.Windows.Forms.TreeView
         Me.SuspendLayout()
         '
-        'cmenuListBox
+        'm_tvStatus
         '
-        Me.cmenuListBox.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Item_Remove, Me.Item_RemoveAll})
-        Me.cmenuListBox.Name = "cmenuListBox"
-        resources.ApplyResources(Me.cmenuListBox, "cmenuListBox")
-        '
-        'Item_Remove
-        '
-        Me.Item_Remove.Name = "Item_Remove"
-        resources.ApplyResources(Me.Item_Remove, "Item_Remove")
-        '
-        'Item_RemoveAll
-        '
-        Me.Item_RemoveAll.Name = "Item_RemoveAll"
-        resources.ApplyResources(Me.Item_RemoveAll, "Item_RemoveAll")
-        '
-        'tvStatus
-        '
-        resources.ApplyResources(Me.tvStatus, "tvStatus")
-        Me.tvStatus.Name = "tvStatus"
-        Me.tvStatus.ShowLines = False
+        resources.ApplyResources(Me.m_tvStatus, "m_tvStatus")
+        Me.m_tvStatus.Name = "m_tvStatus"
+        Me.m_tvStatus.ShowLines = False
         '
         'StatusPanel
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CloseButton = False
-        Me.ContextMenuStrip = Me.cmenuListBox
-        Me.Controls.Add(Me.tvStatus)
+        Me.Controls.Add(Me.m_tvStatus)
         Me.DoubleBuffered = True
         Me.HideOnClose = True
         Me.Name = "StatusPanel"
-        Me.cmenuListBox.ResumeLayout(False)
+        Me.TabText = "Status"
         Me.ResumeLayout(False)
 
     End Sub
 
-    Private WithEvents cmenuListBox As System.Windows.Forms.ContextMenuStrip
-    Private WithEvents Item_Remove As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents Item_RemoveAll As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents tvStatus As System.Windows.Forms.TreeView
+    Private WithEvents m_tvStatus As System.Windows.Forms.TreeView
 
 End Class
 
