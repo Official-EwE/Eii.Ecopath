@@ -3,20 +3,18 @@
 Option Strict On
 Option Explicit On
 
+Imports System.IO
+Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
-Imports System.Globalization
-Imports System.Threading
-Imports System.Windows.Forms
 Imports EwEUtils.Commands
-Imports System.IO
-Imports SourceGrid2.Cells
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
+Imports SourceGrid2.Cells
 
 #End Region
 
@@ -46,6 +44,8 @@ Namespace Forms
             Private m_form As frmEwEGrid = Nothing
             ''' <summary>The grid whose selection is monitored.</summary>
             Private m_grid As EwEGrid = Nothing
+            ''' <summary>UI context to use.</summary>
+            Private m_uic As cUIContext = Nothing
 
             ''' <summary>The toolstrip that is managed by this handler.</summary>
             Private m_ts As ToolStrip = Nothing
@@ -82,12 +82,13 @@ Namespace Forms
             ''' <param name="ts">The ToolStrip to connect to, if any.</param>
             ''' -------------------------------------------------------------------
             Public Sub Attach(ByVal frm As frmEwEGrid, _
+                              ByVal uic As cUIContext, _
                               Optional ByVal ts As ToolStrip = Nothing)
 
-                Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
 
-                ' Sanity check
+                ' Sanity checks
                 Debug.Assert(frm IsNot Nothing)
+                Debug.Assert(uic IsNot Nothing)
 
                 If Me.m_bAttached Then Me.Detach()
 
@@ -96,6 +97,8 @@ Namespace Forms
                 ' Store ref to grid
                 Me.m_grid = frm.Grid
                 AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectioChanged
+                ' Store ref to UIC
+                Me.m_uic = uic
 
                 ' Init
                 Me.m_bToolStripCreated = False
@@ -152,7 +155,7 @@ Namespace Forms
                 AddHandler Me.m_btnExport.Click, AddressOf OnBtnExportClick
 
                 ' Add items to the toolstrip
-                If (ci.TextInfo.IsRightToLeft) Then
+                If (Me.m_uic.StyleGuide.IsRightToLeft) Then
                     If (Me.m_btnImport IsNot Nothing) Then
                         Me.m_btnImport.Alignment = ToolStripItemAlignment.Left
                         Me.m_ts.Items.Add(Me.m_btnImport)
@@ -724,7 +727,7 @@ Namespace Forms
             If bSet Then
                 If (Me.m_qeHandler Is Nothing) Then
                     Me.m_qeHandler = New cQuickEditHandler()
-                    Me.m_qeHandler.Attach(Me, Me.ToolStrip)
+                    Me.m_qeHandler.Attach(Me, Me.UIContext, Me.ToolStrip)
                 End If
             Else
                 If (Me.m_qeHandler IsNot Nothing) Then

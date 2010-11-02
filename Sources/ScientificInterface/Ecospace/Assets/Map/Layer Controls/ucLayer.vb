@@ -142,10 +142,9 @@ Namespace Ecospace
 
         Private Sub GetRectangles(ByVal rcControl As Rectangle, ByRef rcEditable As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle, ByRef rcPreview As Rectangle)
 
-            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
             Dim iAvgPad As Integer = 3
 
-            If (ci.TextInfo.IsRightToLeft) Then
+            If (Me.m_uic.StyleGuide.IsRightToLeft) Then
                 ' [ [prev][label    ][vis][edt] ]
                 rcEditable.X = rcControl.Width - iAvgPad - 16
                 rcEditable.Y = CInt((rcControl.Height - 16) / 2)

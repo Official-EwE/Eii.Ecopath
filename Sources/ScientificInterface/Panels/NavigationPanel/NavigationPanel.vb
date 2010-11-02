@@ -166,7 +166,7 @@ Public Class NavigationPanel
             .Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimResults), "Ecosim results.htm")
             .Add("ndEcosimAllFits", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmShowAllFits), "Ecosim results.htm")
             .Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmStockRecruitmentPlot), "Stock recruitment S R plot.htm")
-            '.Add("ndFunctionResponse", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFunctionalResponsePlot)) ' ToDo: connect to help
+            .Add("ndFunctionResponse", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFunctionalResponsePlot)) ' ToDo: connect to help
             .Add("ndSuitabilityPlot", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
             .Add("ndFishingMortality", eCoreExecutionState.EcosimCompleted, GetType(frmFishingMortality)) ' ToDo: connect to help
 
@@ -218,7 +218,7 @@ Public Class NavigationPanel
 
         ' JS 19Mar2010: now why was this necessary?
         If (Me.m_tvNavigation.SelectedNode IsNot Nothing) Then
-            If CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft Then
+            If Me.m_uic.StyleGuide.IsRightToLeft Then
                 Me.ShowHint = DockState.DockRight
             Else
                 Me.ShowHint = DockState.DockLeft

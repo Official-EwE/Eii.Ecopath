@@ -19,39 +19,6 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the remarks indicator corner points for a given cell boundary. The current UI culture
-        ''' reading order is evaluated to determine the position and layout of the remarks indicator.
-        ''' </summary>
-        ''' <param name="rcClip">Clip boundary to calculate the remarks indicator for</param>
-        ''' <returns>A series of <see cref="Point">points</see></returns>
-        ''' -----------------------------------------------------------------------
-        Private Shared Function GetPoints(ByVal rcClip As Rectangle) As Point()
-            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
-            Dim nSize As Integer = CInt(Math.Floor(rcClip.Height / 2.5))
-            Dim pt(2) As Point
-
-            If (ci.TextInfo.IsRightToLeft) Then
-                ' 0--1---
-                ' | /       
-                ' 2
-                ' |
-                pt(0) = New Point(rcClip.X + 1, rcClip.Y)
-                pt(1) = New Point(rcClip.X + 1 + nSize, rcClip.Y)
-                pt(2) = New Point(rcClip.X + 1, rcClip.Y + nSize)
-            Else
-                ' ---1--0
-                '     \ |
-                '       2
-                '       |
-                pt(0) = New Point(rcClip.X + rcClip.Width - 1, rcClip.Y)
-                pt(1) = New Point(rcClip.X + rcClip.Width - 1 - nSize, rcClip.Y)
-                pt(2) = New Point(rcClip.X + rcClip.Width - 1, rcClip.Y + nSize)
-            End If
-            Return pt
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Renders a remarks indicator onto a given canvas
         ''' </summary>
         ''' <param name="sg">Style guide to paint with.</param>
@@ -65,7 +32,7 @@ Namespace Controls
                                 ByVal g As Graphics, _
                                 ByVal bHasRemarks As Boolean)
 
-            Dim pt() As Point = GetPoints(rcClip)
+            Dim pt() As Point = GetPoints(sg, rcClip)
             Dim clrFill As Color = Nothing
 
             If (bHasRemarks) Then
@@ -86,9 +53,42 @@ Namespace Controls
         ''' <param name="rcClip">Coordinates of the area to get the remarks indicator bounding box for.</param>
         ''' <returns>The bounding box that fully encapsulates the Remarks indicator.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetBounds(ByVal rcClip As Rectangle) As Rectangle
-            Dim pt As Point() = GetPoints(rcClip)
+        Private Shared Function GetBounds(ByVal sg As cStyleGuide, ByVal rcClip As Rectangle) As Rectangle
+            Dim pt As Point() = cRemarksIndicator.GetPoints(sg, rcClip)
             Return New Rectangle(Math.Min(pt(0).X, pt(1).X), pt(0).Y, Math.Abs(pt(1).X - pt(0).X), pt(2).Y - pt(0).Y)
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the remarks indicator corner points for a given cell boundary. The current UI culture
+        ''' reading order is evaluated to determine the position and layout of the remarks indicator.
+        ''' </summary>
+        ''' <param name="rcClip">Clip boundary to calculate the remarks indicator for</param>
+        ''' <returns>A series of <see cref="Point">points</see></returns>
+        ''' -----------------------------------------------------------------------
+        Private Shared Function GetPoints(ByVal sg As cStyleGuide, _
+                                          ByVal rcClip As Rectangle) As Point()
+            Dim nSize As Integer = CInt(Math.Floor(rcClip.Height / 2.5))
+            Dim pt(2) As Point
+
+            If (sg.IsRightToLeft) Then
+                ' 0--1---
+                ' | /       
+                ' 2
+                ' |
+                pt(0) = New Point(rcClip.X + 1, rcClip.Y)
+                pt(1) = New Point(rcClip.X + 1 + nSize, rcClip.Y)
+                pt(2) = New Point(rcClip.X + 1, rcClip.Y + nSize)
+            Else
+                ' ---1--0
+                '     \ |
+                '       2
+                '       |
+                pt(0) = New Point(rcClip.X + rcClip.Width - 1, rcClip.Y)
+                pt(1) = New Point(rcClip.X + rcClip.Width - 1 - nSize, rcClip.Y)
+                pt(2) = New Point(rcClip.X + rcClip.Width - 1, rcClip.Y + nSize)
+            End If
+            Return pt
         End Function
 
     End Class

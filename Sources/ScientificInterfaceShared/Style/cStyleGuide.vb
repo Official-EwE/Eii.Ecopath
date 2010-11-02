@@ -10,6 +10,8 @@ Imports EwEUtils.Core
 Imports EwEUtils.Drawing
 Imports VB = Microsoft.VisualBasic
 Imports EwEUtils.Utilities
+Imports System.Globalization
+Imports System.Threading
 
 #End Region ' Imports
 
@@ -316,6 +318,21 @@ Namespace Style
         End Sub
 
 #End Region ' Enums and events
+
+#Region " System settings "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the current UI culture is right-to-left ordered.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function IsRightToLeft() As Boolean
+            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
+            Return ci.TextInfo.IsRightToLeft
+        End Function
+
+#End Region ' System settings
 
 #Region " Number formatting "
 

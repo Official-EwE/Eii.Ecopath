@@ -337,10 +337,9 @@ Namespace Ecospace
 
         Private Sub GetRectangles(ByVal rcControl As Rectangle, ByRef rcCollapse As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle)
 
-            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
             Dim iAvgPad As Integer = 3
 
-            If (ci.TextInfo.IsRightToLeft) Then
+            If (Me.m_uic.StyleGuide.IsRightToLeft) Then
                 ' [ [prev][label    ][vis][edt] ]
                 rcCollapse.X = rcControl.Width - iAvgPad - 16
                 rcCollapse.Y = 2

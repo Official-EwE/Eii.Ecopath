@@ -311,11 +311,9 @@ Namespace Controls
                 Optional ByVal bShowWarning As Boolean = False) As System.Drawing.Image
 
             Dim sg As cStyleGuide = uic.StyleGuide
-            Dim ci As CultureInfo = Nothing
             Dim dm As eSketchDrawModeTypes = eSketchDrawModeTypes.Line
             Dim bmp As New Bitmap(sg.ThumbnailSize, sg.ThumbnailSize)
             Dim g As Graphics = Graphics.FromImage(bmp)
-            Dim img As Image = Nothing
 
             ' JS 06sep07: pragmatic hack, this belongs elsewhere
             If TypeOf shape Is cTimeSeries Then dm = eSketchDrawModeTypes.LineSelective : sYMax = shape.YMax
@@ -331,19 +329,26 @@ Namespace Controls
 
             ' Draw warning icon, if neccessary
             If bShowWarning Then
-                ' Try to get image from resources
-                img = My.Resources.WarningHS
-                If img IsNot Nothing Then
-                    ' Get current locale info to see whether image should be drawn on left or right lower corner
-                    ci = Thread.CurrentThread.CurrentUICulture
-                    If ci.TextInfo.IsRightToLeft Then
-                        ' RtoL reading order: draw image in lower right corner
-                        g.DrawImage(img, bmp.Width - img.Width - 2, bmp.Height - img.Height - 2)
-                    Else
-                        ' LtoR reading order: draw image in lower left corner
-                        g.DrawImage(img, 1, bmp.Height - img.Height - 2)
+                ' Try to get system icon
+                Using icoOverlay As New Icon(SystemIcons.Information, 16, 16)
+                    ' Did it work?
+                    If (icoOverlay IsNot Nothing) Then
+                        ' Calc rectangle to render icon
+                        If sg.IsRightToLeft Then
+                            ' RtoL reading order: draw image in lower right corner
+                            Dim rc As New Rectangle(Math.Max(0, bmp.Width - icoOverlay.Width - 2), _
+                                                    Math.Max(0, bmp.Height - icoOverlay.Height - 2), _
+                                                    icoOverlay.Width, icoOverlay.Height)
+                            g.DrawIconUnstretched(icoOverlay, rc)
+                        Else
+                            ' LtoR reading order: draw image in lower left corner
+                            Dim rc As New Rectangle(1, _
+                                                    Math.Max(0, bmp.Height - icoOverlay.Height - 2), _
+                                                    icoOverlay.Width, icoOverlay.Height)
+                            g.DrawIconUnstretched(icoOverlay, rc)
+                        End If
                     End If
-                End If
+                End Using
             End If
 
             g.Dispose()
