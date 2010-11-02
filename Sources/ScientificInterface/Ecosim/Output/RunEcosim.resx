@@ -304,7 +304,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.1.0.801, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_spContainer.Panel2</value>
@@ -327,6 +327,15 @@
   <metadata name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
+  <data name="m_tsbtnShowHideGroups.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAJxJREFUOE9jYBi2
+        4ALQZ+iYKM+CNV2/dhuMr0ExmmG4DYJpRLf92nWgYUCMJI7TELCiuLSoC0lQDGLDNO7eeeACCOPSfeHj
+        x49gxSDNyGyQGIyP04DnT57BFYEUL1k5B24YzACQGqhrMB2BbAA2L4AMffLk+YVVq7bi9AIDSBHMqcgB
+        iSaONzrBToRpwGIgUWkBpIisRES06YNLIQAtBKqls0MSRgAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="m_tsbtnShowHideGroups.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -384,19 +393,19 @@
   <data name="m_tsddPlotType.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAphJREFUOE+dk2tI
-        02EUxhckFSIhEVpKBEGamaRmgrMv6+Yly8QUitRcSovK2LpA5Tb1P+9J5BwaUiQlm4SggxaSaM7rmiMs
-        r5masWVjrk2XrbX5tHc17W99qQMPL+fD8+NwzvMyGL9K3NAtTjkvGnP3//SKpd01lET6ISKWDbexuCz5
-        jFP4XX+FVkm7JIKKBmNL9zBWAOBwmGC3z+CbtR8CQcwSnAYS3K5VNSuGbaoh3R+A6nscyOUUNL0yF0Am
-        uJz8kMfGI6fK0xN/AvMq7qN/dAYD43oaoKj4OGxzKthM7VArJaD4RyDj52BxagRQypHmv3YZMDhpwNi0
-        kQYopGJhNTTB+ukxXrbmoiItAdJr2Rgo5EHDv4BTmzyWARNaExQ9OlwU68C5Mw126ThEwv1Y0Fbiy3sR
-        VAo2SlMOwlZTgK+VN9HHS6MDPhrmwcx8Cr3JgUn9IjqGHKBuRcHyjof50bPoaTyMksR9sJRxYS44B2VW
-        Ah1gnLNiZ1I9WNlNSBd2gntXg4LrYTC/SYL51QF0SXehKC4CszdOQ89NQmtKFB2wYP2OgKN1KGy0Ile6
-        gAyqB/ncHTCpw/G5LwCddT4QsYKh5RzCdAYTz2IC6QC7YxF+LAlyas3IqjIi/soLCC9thbHLF7PK9VA+
-        8ADF3IaJ1FC8PbYdzUwfOgDO8o4sx4mSGcTn6bCX3QIBxxeG9tUwtDHQUctA/p7NGInxxyBrIxrDPFdM
-        YHdg3W4Roq9OIeikAluC48DP8l4yh4UGIS9kA15He+FJyBqXyBldySVBMpotLgAxErUp1eBneiI+chWY
-        4X6orpNDGOjlMrklU/QuA+rlHS6I3TkJKbITslhyHXJikhMSNpLY531jWDKTKJMx/kfuD/UDbBIbaVk1
-        20EAAAAASUVORK5CYII=
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAplJREFUOE+dk2tI
+        02EUxhckFSIhEVpKBEGamaRmgrMv66Yuy8QMitRcSovK2LpA5Tb1P+9J5BwaUiQlm4SgAxeSaM45XSph
+        eVumZrhszLWp2VqbT3tX0/7Wlzrw8HI+PD8O5zwvg/GrJHWdkuQLYp27/6dXIuusoqSyDxGxHLiNhSVJ
+        Z53C7/ortEKmlgrL6kzNnUNYAYDDYYbdPo1v1l4IhTFLcBpIeKda29g0ZNMO6v8AVN7nQqGg0NcldwHk
+        witJj/gcPHaqNDXhJzCn7AF6R6bRP2qgAQoKj8M2q4XN3IYelRSU4AjkgiwsTgwDKgVS/NcuAwbGjdBN
+        mmiAfCoWVmMDrJ+e4GVLNspS4iG7non+fD76BBdxepPHMmBsygylRo9LEj24dyfBKR6FWLQfC1Pl+PJe
+        DK2Sg+Lkg7BV5eFr+S1081PogI/GOTDTm2AwOzBuWET7oAPU7SjMv+NjbuQcNPWHUZSwD/MlPFjyzkOV
+        EU8HmGat2JlYC1ZmA1JFHeDd60PejTBY3iTC8uoA1LJdKIiLwMzNMzDwEtGSHEUHLFi/I+BoDfLrrciW
+        LSCN0iCXtwPmnnB87g5AR40PxKxgTHEPYTKNiWcxgXSA3bEIP5YUWdUWZFSYwL76AqLLW2FS+2JGtR6q
+        hx6gmNswdjIUb49tRyPThw6As7wjS3GiaBrsHD32cpoh5PrC2LYaxlYG2qsZyN2zGcMx/hhgbUR9mOeK
+        CewOrNstRvS1CQSdUmJLcBwEGd5L5rDQIOSEbMDraC88DVnjEjmjK7kkSCbLvAtAjEStqh4I0j3BjlwF
+        ZrgfKmsUEAV6uUxuyZVdy4BaRbsLYndOQorshCyWXIecmOSEhI0k9nm3DktmEmUyxv/I/aF+AGjLG2iK
+        Spb3AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_tsddPlotType.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -425,6 +434,22 @@
   </data>
   <data name="m_tstbChangeAmount.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 21</value>
+  </data>
+  <data name="m_tssbExplore.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAjpJREFUOE+l019I
+        U1EcB3CNHgx6jB56Xg9RPSRBYEExYUI271zaTIr+kMswSmfLHqq7GTUqLE2HRThsuqI/xrpmUJutoZY5
+        28w/uUbObLXZ/rrdu7u2Gd+uPfVwp1EHzss55/c553vgl53FDZK0LC/fLyiY+jpLfPb418Xo+OpAOLIy
+        J2fFx7WC3MaDkg3UwrmM47nVodK2PxkxmgcTJtsHmMbduEn14XSjAdKjF4KlxzX7MhaXVV1e06Qzvu0d
+        GPnpZ1h42STcMRZ2PwNq/BtUuh6IyutSopIaAS9i7rPrOoy9tCcwByaVRjSZhj+ewmQoDst0FJ02Lyov
+        6rBNerKeF2hppyae9Tu4oiTo1DyY9DzCbBquEAurew73HUGc07/C1uLqCC9Qo25Fv8sDdzSBAJtC+Eca
+        XjqJse8MXn6KwDDkQ/3dYWwvUYAXUF3vnOo0v8PwLIPJMAtXJIFRLv/Alxi6J4Jo6/NA0dKDLYVVdl6A
+        bOjQn9V2JV5Mx2CdobkZg4l7OuUMocPmg6ZrDLLaGyg9IGd4ATl5a5W0oj569aEVD94H8Xg0jHtcbt0b
+        H65QThxW34FwjwKG5iP8ERbU3ccuicSH1PEKdRvO6y3crSOo1T7FXmUzdpScQJOKQMSpWQKp1Gw60/Do
+        tlCmHMwjqun8sjrIqq7N7NxVoBRu3ojXreuXRngyZi+siSViKSER/zPy2/0vhCSzlv2JdDfk4pQ8P/On
+        LtZ4BEHkEYR4qKiosHjRDv3bzV8IP3J+FGxOuQAAAABJRU5ErkJggg==
+</value>
   </data>
   <data name="m_tssbExplore.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -494,6 +519,19 @@
   </data>
   <data name="m_tsmiShowLegend.Text" xml:space="preserve">
     <value>Show &amp;legend</value>
+  </data>
+  <data name="m_tsddGraphOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAYNJREFUOE+t00tL
+        AlEUB3A/S1j0BYqidq2KWgWtgyLxW7QLqkUSNhkqkUb5SMNHpuGjh5jZWKJC+MQgwyzTytTS/jk3pkXN
+        WAsPHC6Xy/ndc88wAkG7wnR0hZ9pcEWgsV9AbfZDZfYvtLyLKeYLuc6D3pHp1ojRHeUFpGo7HN7IF2I6
+        XeTsRHcQ4gWWN2ykmE1OYGvvnABKtR7Czm7od63fYL3RgMVNQ2fzEYQTaLZGCjqEXaBpGuMTk2QvVWxD
+        IlOBWtdCY/WiZ3iKG1AajkmB1mjBwOAQbA4P2ceS17iMJBAIxSHXOvmBNY3r1wzqjQ88lWvI5l8QyxTA
+        zoLzCSubDgIEg0GIxWKkUilUqu/IP74ifVNEOJ6HotlB3+gM9xMYnQmRSERWiqJQfK5iaVWFOYkCs/MU
+        dvb96B/7A0gkEpDJZMjd5ZF7KIOOpHESiMHpi0FlPOSfAdsBc3vtrY5CqYLMbQnR5D384SycZxkyA96v
+        wALM2ipbAszhf7JdPzBxPgHiXtlUStkSJgAAAABJRU5ErkJggg==
+</value>
   </data>
   <data name="m_tsddGraphOptions.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -715,7 +753,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.801, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_scOptions.Panel2</value>
@@ -904,7 +942,7 @@
     <value>tscbTarget</value>
   </data>
   <data name="&gt;&gt;tscbTarget.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cCustomToolstripComboBox, ScientificInterfaceShared, Version=6.1.0.801, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cCustomToolstripComboBox, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
     <value>ToolStripSeparator1</value>
@@ -1078,6 +1116,6 @@
     <value>RunEcosim</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.801, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
