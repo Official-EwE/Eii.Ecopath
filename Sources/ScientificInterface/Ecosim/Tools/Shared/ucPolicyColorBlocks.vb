@@ -471,6 +471,13 @@ Namespace Ecosim
 
 #End Region
 
+        Private Sub m_pnlControls_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles m_pnlControls.Paint
+
+        End Sub
+
+        Private Sub m_hdrControls_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_hdrControls.Click
+
+        End Sub
     End Class
 
 #End Region

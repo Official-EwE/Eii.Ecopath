@@ -26,6 +26,7 @@ Namespace Ecosim
             Me.m_pnlControls = New System.Windows.Forms.Panel
             Me.m_plBlocks = New System.Windows.Forms.Panel
             Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel
+            Me.m_lblYear = New System.Windows.Forms.Label
             CType(Me.m_pbFishingBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqEndYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -55,66 +56,66 @@ Namespace Ecosim
             Me.m_lblBlockHeader.Location = New System.Drawing.Point(0, 0)
             Me.m_lblBlockHeader.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblBlockHeader.Name = "m_lblBlockHeader"
-            Me.m_lblBlockHeader.Size = New System.Drawing.Size(586, 17)
+            Me.m_lblBlockHeader.Size = New System.Drawing.Size(686, 17)
             Me.m_lblBlockHeader.TabIndex = 0
             Me.m_lblBlockHeader.Text = "Blocks"
             Me.m_lblBlockHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_nudSeqEndYear
             '
-            Me.m_nudSeqEndYear.Location = New System.Drawing.Point(238, 6)
+            Me.m_nudSeqEndYear.Location = New System.Drawing.Point(128, 32)
             Me.m_nudSeqEndYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudSeqEndYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudSeqEndYear.Name = "m_nudSeqEndYear"
-            Me.m_nudSeqEndYear.Size = New System.Drawing.Size(36, 20)
-            Me.m_nudSeqEndYear.TabIndex = 8
+            Me.m_nudSeqEndYear.Size = New System.Drawing.Size(50, 20)
+            Me.m_nudSeqEndYear.TabIndex = 6
             Me.m_nudSeqEndYear.Value = New Decimal(New Integer() {2, 0, 0, 0})
             '
             'm_lblEndYear
             '
             Me.m_lblEndYear.AutoSize = True
-            Me.m_lblEndYear.Location = New System.Drawing.Point(203, 10)
+            Me.m_lblEndYear.Location = New System.Drawing.Point(93, 34)
             Me.m_lblEndYear.Name = "m_lblEndYear"
             Me.m_lblEndYear.Size = New System.Drawing.Size(29, 13)
-            Me.m_lblEndYear.TabIndex = 7
+            Me.m_lblEndYear.TabIndex = 5
             Me.m_lblEndYear.Text = "End:"
             '
             'm_nudSeqStartYear
             '
-            Me.m_nudSeqStartYear.Location = New System.Drawing.Point(158, 6)
+            Me.m_nudSeqStartYear.Location = New System.Drawing.Point(38, 32)
             Me.m_nudSeqStartYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudSeqStartYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudSeqStartYear.Name = "m_nudSeqStartYear"
-            Me.m_nudSeqStartYear.Size = New System.Drawing.Size(36, 20)
-            Me.m_nudSeqStartYear.TabIndex = 6
+            Me.m_nudSeqStartYear.Size = New System.Drawing.Size(50, 20)
+            Me.m_nudSeqStartYear.TabIndex = 4
             Me.m_nudSeqStartYear.Value = New Decimal(New Integer() {2, 0, 0, 0})
             '
             'm_lblStartYear
             '
             Me.m_lblStartYear.AutoSize = True
-            Me.m_lblStartYear.Location = New System.Drawing.Point(127, 10)
+            Me.m_lblStartYear.Location = New System.Drawing.Point(0, 34)
             Me.m_lblStartYear.Name = "m_lblStartYear"
             Me.m_lblStartYear.Size = New System.Drawing.Size(32, 13)
-            Me.m_lblStartYear.TabIndex = 5
+            Me.m_lblStartYear.TabIndex = 3
             Me.m_lblStartYear.Text = "Start:"
             '
             'm_nudNumYearsPerBlock
             '
-            Me.m_nudNumYearsPerBlock.Location = New System.Drawing.Point(7, 6)
+            Me.m_nudNumYearsPerBlock.Location = New System.Drawing.Point(38, 6)
             Me.m_nudNumYearsPerBlock.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudNumYearsPerBlock.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudNumYearsPerBlock.Name = "m_nudNumYearsPerBlock"
-            Me.m_nudNumYearsPerBlock.Size = New System.Drawing.Size(36, 20)
-            Me.m_nudNumYearsPerBlock.TabIndex = 2
+            Me.m_nudNumYearsPerBlock.Size = New System.Drawing.Size(50, 20)
+            Me.m_nudNumYearsPerBlock.TabIndex = 1
             Me.m_nudNumYearsPerBlock.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
             'm_btnSetGear
             '
             Me.m_btnSetGear.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnSetGear.Location = New System.Drawing.Point(46, 5)
+            Me.m_btnSetGear.Location = New System.Drawing.Point(96, 6)
             Me.m_btnSetGear.Name = "m_btnSetGear"
-            Me.m_btnSetGear.Size = New System.Drawing.Size(75, 22)
-            Me.m_btnSetGear.TabIndex = 3
+            Me.m_btnSetGear.Size = New System.Drawing.Size(82, 20)
+            Me.m_btnSetGear.TabIndex = 2
             Me.m_btnSetGear.Text = "&Set"
             Me.m_btnSetGear.UseVisualStyleBackColor = True
             '
@@ -142,15 +143,12 @@ Namespace Ecosim
             '
             Me.m_hdrControls.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_hdrControls.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_hdrControls.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-            Me.m_hdrControls.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
             Me.m_hdrControls.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_hdrControls.Location = New System.Drawing.Point(589, 0)
+            Me.m_hdrControls.Location = New System.Drawing.Point(689, 0)
             Me.m_hdrControls.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_hdrControls.Name = "m_hdrControls"
-            Me.m_hdrControls.Size = New System.Drawing.Size(281, 17)
-            Me.m_hdrControls.TabIndex = 14
+            Me.m_hdrControls.Size = New System.Drawing.Size(181, 17)
+            Me.m_hdrControls.TabIndex = 2
             Me.m_hdrControls.Text = "Set block years and sequence"
             Me.m_hdrControls.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
@@ -163,13 +161,14 @@ Namespace Ecosim
             Me.m_pnlControls.Controls.Add(Me.m_lblEndYear)
             Me.m_pnlControls.Controls.Add(Me.m_nudSeqStartYear)
             Me.m_pnlControls.Controls.Add(Me.m_btnSetGear)
+            Me.m_pnlControls.Controls.Add(Me.m_lblYear)
             Me.m_pnlControls.Controls.Add(Me.m_lblStartYear)
             Me.m_pnlControls.Controls.Add(Me.m_nudNumYearsPerBlock)
-            Me.m_pnlControls.Location = New System.Drawing.Point(589, 17)
+            Me.m_pnlControls.Location = New System.Drawing.Point(689, 17)
             Me.m_pnlControls.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_pnlControls.Name = "m_pnlControls"
-            Me.m_pnlControls.Size = New System.Drawing.Size(281, 75)
-            Me.m_pnlControls.TabIndex = 14
+            Me.m_pnlControls.Size = New System.Drawing.Size(181, 75)
+            Me.m_pnlControls.TabIndex = 3
             '
             'm_plBlocks
             '
@@ -177,7 +176,7 @@ Namespace Ecosim
             Me.m_plBlocks.Location = New System.Drawing.Point(0, 17)
             Me.m_plBlocks.Margin = New System.Windows.Forms.Padding(0)
             Me.m_plBlocks.Name = "m_plBlocks"
-            Me.m_plBlocks.Size = New System.Drawing.Size(586, 75)
+            Me.m_plBlocks.Size = New System.Drawing.Size(686, 75)
             Me.m_plBlocks.TabIndex = 1
             '
             'TableLayoutPanel3
@@ -194,6 +193,15 @@ Namespace Ecosim
             Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
             Me.TableLayoutPanel3.Size = New System.Drawing.Size(200, 100)
             Me.TableLayoutPanel3.TabIndex = 0
+            '
+            'm_lblYear
+            '
+            Me.m_lblYear.AutoSize = True
+            Me.m_lblYear.Location = New System.Drawing.Point(0, 8)
+            Me.m_lblYear.Name = "m_lblYear"
+            Me.m_lblYear.Size = New System.Drawing.Size(32, 13)
+            Me.m_lblYear.TabIndex = 0
+            Me.m_lblYear.Text = "&Year:"
             '
             'ucPolicyColorBlocks
             '
@@ -226,6 +234,7 @@ Namespace Ecosim
         Private WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_pnlControls As System.Windows.Forms.Panel
         Private WithEvents m_plBlocks As System.Windows.Forms.Panel
+        Private WithEvents m_lblYear As System.Windows.Forms.Label
 
     End Class
 
