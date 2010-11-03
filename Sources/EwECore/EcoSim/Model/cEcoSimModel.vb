@@ -492,16 +492,7 @@ Namespace Ecosim
 
                 SetRelativeCatchabilities()
 
-                ''default values for regulated fisheries before calling SetFFromGear() 
-                ''SetFFromGear() uses default regulatory fisheries values
-                'setDefaultRegValues()
-
-                'InitAssessment()
-
                 If bFullInitialization Then
-                    'Dim qyear() As Single
-                    'ReDim qyear(Me.nGroups)
-                    'For i As Integer = 1 To Me.m_Data.nGear : qyear(i) = 1 : Next
 
                     SetBaseFFromGear()
 
