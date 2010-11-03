@@ -67,13 +67,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property consumer_mono() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("consumer_mono", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property distribution() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("distribution", resourceCulture)
@@ -81,51 +74,9 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property distribution_mono() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("distribution_mono", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Ecopath_32x32() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecopath_32x32", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Ecosim_32x32() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecosim_32x32", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property Ecospace_32x32() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecospace_32x32", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property eqgraphhs() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("eqgraphhs", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property EU_50px() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("EU_50px", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property FormulaEvaluatorHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("FormulaEvaluatorHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -158,13 +109,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property processing_mono() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("processing_mono", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property producer() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("producer", resourceCulture)
@@ -172,37 +116,9 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property producer_mono() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("producer_mono", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property RelationshipsHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("RelationshipsHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property ResizeHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ResizeHS", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property sautxt_50px() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("sautxt_50px", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property ThumbnailLoadingHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ThumbnailLoadingHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

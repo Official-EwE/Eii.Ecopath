@@ -298,9 +298,6 @@
     <None Include="Resources\consumer.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\producer.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\distribution.png" />
   </ItemGroup>
   <ItemGroup>
@@ -314,21 +311,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\eqgraphhs.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\factory_gray.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\distribution_mono.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\processing_mono.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\producer_mono.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\consumer_mono.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\market_mono.png" />
@@ -352,9 +334,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ResizeHS.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\saveHS.png" />
   </ItemGroup>
   <ItemGroup>
@@ -366,6 +345,9 @@
     <None Include="UserGuide\ChristensenValueChainMS.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\producer.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\" />
