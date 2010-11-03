@@ -29,7 +29,7 @@ Namespace Ecopath.Input
         Private Sub InitializeComponent()
             Me.m_ts = New System.Windows.Forms.ToolStrip
             Me.m_tsbnEditFleets = New System.Windows.Forms.ToolStripButton
-            Me.FisheryInputFleetDefinitionEwEGrid1 = New ScientificInterface.Ecopath.Input.FisheryInputFleetDefinitionEwEGrid
+            Me.m_grid = New ScientificInterface.Ecopath.Input.FisheryInputFleetDefinitionEwEGrid
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -51,27 +51,27 @@ Namespace Ecopath.Input
             Me.m_tsbnEditFleets.Text = "&Edit fleets..."
             Me.m_tsbnEditFleets.ToolTipText = "Create or delete fleet definitions..."
             '
-            'FisheryInputFleetDefinitionEwEGrid1
+            'm_grid
             '
-            Me.FisheryInputFleetDefinitionEwEGrid1.AllowBlockSelect = True
-            Me.FisheryInputFleetDefinitionEwEGrid1.AutoSizeMinHeight = 10
-            Me.FisheryInputFleetDefinitionEwEGrid1.AutoSizeMinWidth = 10
-            Me.FisheryInputFleetDefinitionEwEGrid1.AutoStretchColumnsToFitWidth = False
-            Me.FisheryInputFleetDefinitionEwEGrid1.AutoStretchRowsToFitHeight = False
-            Me.FisheryInputFleetDefinitionEwEGrid1.BackColor = System.Drawing.Color.White
-            Me.FisheryInputFleetDefinitionEwEGrid1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.FisheryInputFleetDefinitionEwEGrid1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Me.m_grid.AllowBlockSelect = True
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.FisheryInputFleetDefinitionEwEGrid1.CustomSort = False
-            Me.FisheryInputFleetDefinitionEwEGrid1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.FisheryInputFleetDefinitionEwEGrid1.FixedColumnWidths = True
-            Me.FisheryInputFleetDefinitionEwEGrid1.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.FisheryInputFleetDefinitionEwEGrid1.GridToolTipActive = True
-            Me.FisheryInputFleetDefinitionEwEGrid1.Location = New System.Drawing.Point(0, 25)
-            Me.FisheryInputFleetDefinitionEwEGrid1.Name = "FisheryInputFleetDefinitionEwEGrid1"
-            Me.FisheryInputFleetDefinitionEwEGrid1.Size = New System.Drawing.Size(292, 248)
-            Me.FisheryInputFleetDefinitionEwEGrid1.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Me.m_grid.CustomSort = False
+            Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_grid.FixedColumnWidths = True
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Location = New System.Drawing.Point(0, 25)
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.Size = New System.Drawing.Size(292, 248)
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
                         Or SourceGrid2.GridSpecialKeys.Arrows) _
@@ -80,15 +80,15 @@ Namespace Ecopath.Input
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.FisheryInputFleetDefinitionEwEGrid1.TabIndex = 1
-            Me.FisheryInputFleetDefinitionEwEGrid1.UIContext = Nothing
+            Me.m_grid.TabIndex = 1
+            Me.m_grid.UIContext = Nothing
             '
             'frmFisheryBasicInput
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(292, 273)
-            Me.Controls.Add(Me.FisheryInputFleetDefinitionEwEGrid1)
+            Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_ts)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmFisheryBasicInput"
@@ -101,7 +101,7 @@ Namespace Ecopath.Input
         End Sub
         Private WithEvents m_ts As System.Windows.Forms.ToolStrip
         Private WithEvents m_tsbnEditFleets As System.Windows.Forms.ToolStripButton
-        Friend WithEvents FisheryInputFleetDefinitionEwEGrid1 As ScientificInterface.Ecopath.Input.FisheryInputFleetDefinitionEwEGrid
+        Private WithEvents m_grid As ScientificInterface.Ecopath.Input.FisheryInputFleetDefinitionEwEGrid
     End Class
 
 End Namespace
