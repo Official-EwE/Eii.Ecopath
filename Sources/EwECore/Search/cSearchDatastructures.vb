@@ -893,6 +893,8 @@ Public Class cSearchDatastructures
 
         Next i
 
+        'System.Console.WriteLine(ecovalue.ToString)
+
         kemptonQ = KemptonQ + Me.m_EcoFunctions.KemptonsQ(Biomass, 0.25)
 
         EcoDistTime = CSng(Math.Sqrt(EcoDistTime))
@@ -1208,6 +1210,8 @@ Public Class cSearchDatastructures
 
 
     ''' <summary>
+    ''' JB 3-Nov-201 GenDiscountFactor removed from interface until we get this sorted out
+    ''' 
     ''' Calculates discount factor based on either generational (if GenDiscountFactor>0) or standard discounting. 
     ''' For some reason carl has made this a calculation of future value not of present. 
     '''     ''' if Dgenfactor = 0 then uses Traditional discount factor calculating present value of future cost and revenue
@@ -1217,15 +1221,29 @@ Public Class cSearchDatastructures
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function calcDiscountFactor(ByVal iYear As Integer) As Single
-        If GenDiscountFactor > 0 Then
-            If Dgen = Din Then
-                Return CSng(Din ^ (iYear - 1) + (Dgen * (Din ^ (iYear - 2)) / 20) * (iYear - 1))
-            Else
-                Return CSng((1 + Dalpha) * Din ^ (iYear - 1) - Dalpha * (Din * Dratio) ^ (iYear - 1))
-            End If
-        Else    'traditional discounting
-            Return CSng(1 ^ -(iYear - 1))
-        End If
+        'jb 3-Nov-2010 Change this to traditional present value of future cash flow
+        'Present Value = [Value at t] / (1 + [Interest rate]) ^ t
+        Dim df As Single
+        df = CSng(1.0F / (1 + DiscountFactor) ^ iYear)
+        Return df
+        'Carls original generational discount returns an increasing DF (from EwE5)
+        'DF in Year 1 = 1.0 , year 2 = 1.009...
+        'Return 1-(DF-1)'would return the DF multiplier decreasing over time
+
+        ' dim DF as single
+        'If GenDiscountFactor > 0 Then
+        '    If Dgen = Din Then
+        '        DF = CSng(Din ^ (iYear - 1) + (Dgen * (Din ^ (iYear - 2)) / 20) * (iYear - 1))
+        '    Else
+        '        DF = CSng((1 + Dalpha) * Din ^ (iYear - 1) - Dalpha * (Din * Dratio) ^ (iYear - 1))
+        '    End If
+        '  df = 1-(df-1)
+        '   
+        'Else    'traditional discounting
+        'Villy's discount factor always returns 1
+        '    df = CSng(1 ^ -(iYear - 1))
+        'End If
+        Return df
     End Function
 
 
