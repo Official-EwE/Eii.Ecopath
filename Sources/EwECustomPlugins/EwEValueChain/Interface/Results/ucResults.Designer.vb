@@ -1,5 +1,6 @@
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class ucResults
@@ -94,7 +95,6 @@ Partial Class ucResults
         'm_tsbShowFlow
         '
         Me.m_tsbShowFlow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.m_tsbShowFlow.Image = CType(resources.GetObject("m_tsbShowFlow.Image"), System.Drawing.Image)
         Me.m_tsbShowFlow.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbShowFlow.Name = "m_tsbShowFlow"
         Me.m_tsbShowFlow.Size = New System.Drawing.Size(60, 22)
@@ -108,7 +108,7 @@ Partial Class ucResults
         'm_tsbEcopath
         '
         Me.m_tsbEcopath.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsbEcopath.Image = CType(resources.GetObject("m_tsbEcopath.Image"), System.Drawing.Image)
+        Me.m_tsbEcopath.Image = SharedResources.TableHS
         Me.m_tsbEcopath.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbEcopath.Name = "m_tsbEcopath"
         Me.m_tsbEcopath.Size = New System.Drawing.Size(23, 22)
@@ -118,7 +118,7 @@ Partial Class ucResults
         'm_tsbEcosim
         '
         Me.m_tsbEcosim.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsbEcosim.Image = CType(resources.GetObject("m_tsbEcosim.Image"), System.Drawing.Image)
+        Me.m_tsbEcosim.Image = SharedResources.graphhs
         Me.m_tsbEcosim.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbEcosim.Name = "m_tsbEcosim"
         Me.m_tsbEcosim.Size = New System.Drawing.Size(23, 22)
@@ -128,7 +128,7 @@ Partial Class ucResults
         'm_tsbEquilibrium
         '
         Me.m_tsbEquilibrium.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsbEquilibrium.Image = Global.EwEValueChainPlugin.My.Resources.Resources.eqgraphhs
+        Me.m_tsbEquilibrium.Image = SharedResources.eqgraphhs
         Me.m_tsbEquilibrium.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbEquilibrium.Name = "m_tsbEquilibrium"
         Me.m_tsbEquilibrium.Size = New System.Drawing.Size(23, 22)
