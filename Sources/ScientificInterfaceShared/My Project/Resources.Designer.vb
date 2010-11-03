@@ -60,6 +60,20 @@ Namespace My.Resources
             End Set
         End Property
         
+        Public ReadOnly Property AddTableHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("AddTableHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property AlignToGridHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("AlignToGridHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property BreakpointHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("BreakpointHS", resourceCulture)
@@ -91,6 +105,13 @@ Namespace My.Resources
         Public ReadOnly Property Collapsed() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Collapsed", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property ColorHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ColorHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -286,6 +307,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property eqgraphhs() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("eqgraphhs", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property Expanded() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Expanded", resourceCulture)
@@ -426,6 +454,20 @@ Namespace My.Resources
         Public ReadOnly Property FILEFILTER_TEXT() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_TEXT", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property FormulaEvaluatorHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("FormulaEvaluatorHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property FunctionHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("FunctionHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -669,6 +711,13 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VALUE_NOTAVAILABLE() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_NOTAVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property graphhs() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("graphhs", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -3775,6 +3824,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property PointerHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PointerHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property PrintHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("PrintHS", resourceCulture)
@@ -3828,6 +3884,13 @@ Namespace My.Resources
         Public ReadOnly Property ProtectFormHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ProtectFormHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property RelationshipsHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("RelationshipsHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -3913,6 +3976,20 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_TIMESERIES_UPDATING() As String
             Get
                 Return ResourceManager.GetString("STATUS_TIMESERIES_UPDATING", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property TableHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("TableHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property ThumbnailLoadingHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ThumbnailLoadingHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
