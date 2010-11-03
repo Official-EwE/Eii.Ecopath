@@ -100,11 +100,11 @@ Public Class NavigationPanel
 
             'Basic Parameters
             .Add("ndModelDescription", eCoreExecutionState.EcopathLoaded, GetType(frmModelDescription), "Model description.htm")
-            .Add("ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(BasicInputEwEGrid), "Basic input.htm", True)
+            .Add("ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(frmBasicInput), "Basic input.htm", True)
             .Add("ndDietComposition", eCoreExecutionState.EcopathLoaded, GetType(DietComp), "Diet composition.htm")
             .Add("ndDetritusFate", eCoreExecutionState.EcopathLoaded, GetType(DetritusFateEwEGrid), "Detritus fate.htm")
             .Add("ndOtherProduction", eCoreExecutionState.EcopathLoaded, GetType(OtherProductionEwEGrid), "Other production.htm")
-            .Add("ndDefFleets", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputFleetDefinitionEwEGrid), "Definition of fleets.htm")
+            .Add("ndDefFleets", eCoreExecutionState.EcopathLoaded, GetType(frmFisheryBasicInput), "Definition of fleets.htm")
             .Add("ndLandings", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputLandingsEwEGrid), "Landings.htm")
             .Add("ndDiscards", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardsEwEGrid), "Discards.htm")
             .Add("ndDiscardFate", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardFateEwEGrid), "Discard fate.htm")

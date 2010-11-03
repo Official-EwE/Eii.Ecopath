@@ -852,6 +852,12 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmModelDescription.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\Input\frmFisheryBasicInput.resx">
+      <DependentUpon>frmFisheryBasicInput.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\Input\frmBasicInput.resx">
+      <DependentUpon>frmBasicInput.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Tools\Pedigree\frmPedigree.resx">
       <DependentUpon>frmPedigree.vb</DependentUpon>
     </EmbeddedResource>
@@ -1088,8 +1094,20 @@
     <Compile Include="Ecopath\gridTaxonSearchResults.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecopath\Input\frmFisheryBasicInput.Designer.vb">
+      <DependentUpon>frmFisheryBasicInput.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\Input\frmFisheryBasicInput.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Input\FisheryInputDiscardMortGrid.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Input\frmBasicInput.Designer.vb">
+      <DependentUpon>frmBasicInput.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\Input\frmBasicInput.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\Tools\Pedigree\cPedigreeStyleGuide.vb" />
     <Compile Include="Ecopath\Tools\Pedigree\frmPedigree.Designer.vb">
