@@ -183,8 +183,15 @@ Public Class cPluginNavTreeHandler
                     ' Regular font
                     tn.NodeFont = New System.Drawing.Font(m_tv.Font, Drawing.FontStyle.Regular)
 
-                    ' Add the node
-                    tnc.Add(tn)
+                    ' Insert the node alphabetically sorted by name
+                    iItem = -1
+                    For i As Integer = 0 To tnc.Count - 1
+                        If String.Compare(tn.Name, tnc(i).Name, True) < 0 Then
+                            iItem = i
+                            tnc.Insert(i, tn)
+                        End If
+                    Next
+                    If (iItem = -1) Then tnc.Add(tn)
                 Else
                     ' #Removing: try to remove the node
                     tn = tnc.Item(ipNavTree.Name)
