@@ -1,3 +1,5 @@
+Imports ScientificInterfaceShared.Controls
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class ucParameters
     Inherits System.Windows.Forms.UserControl
@@ -14,20 +16,20 @@ Partial Class ucParameters
         Me.m_pbLenfest = New System.Windows.Forms.PictureBox
         Me.m_pbSAUP = New System.Windows.Forms.PictureBox
         Me.m_pbEU = New System.Windows.Forms.PictureBox
-        Me.m_lblSponsors = New System.Windows.Forms.Label
+        Me.m_lblSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_lblBaseYear = New System.Windows.Forms.Label
         Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown
-        Me.m_lbEcosimSettings = New System.Windows.Forms.Label
-        Me.m_lblIntegration = New System.Windows.Forms.Label
+        Me.m_hdrEcosimSettings = New cEwEHeaderLabel
+        Me.m_hdrIntegration = New cEwEHeaderLabel
         Me.m_chkRunWithEcopath = New System.Windows.Forms.CheckBox
         Me.m_chkRunWithEcosim = New System.Windows.Forms.CheckBox
         Me.m_chkRunWithSearches = New System.Windows.Forms.CheckBox
-        Me.m_lblEQ = New System.Windows.Forms.Label
+        Me.m_hdrEQ = New cEwEHeaderLabel
         Me.m_clbFleets = New System.Windows.Forms.CheckedListBox
         Me.m_lblFleets = New System.Windows.Forms.Label
         Me.m_lblEffortMin = New System.Windows.Forms.Label
         Me.m_lblEffortMax = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
+        Me.m_lbEffortIncr = New System.Windows.Forms.Label
         Me.m_nudEffortMin = New System.Windows.Forms.NumericUpDown
         Me.m_nudEffortMax = New System.Windows.Forms.NumericUpDown
         Me.m_nudEffortIncr = New System.Windows.Forms.NumericUpDown
@@ -102,9 +104,6 @@ Partial Class ucParameters
         '
         Me.m_lblSponsors.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lblSponsors.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_lblSponsors.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.m_lblSponsors.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.m_lblSponsors.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.m_lblSponsors.Location = New System.Drawing.Point(0, 374)
         Me.m_lblSponsors.Name = "m_lblSponsors"
@@ -129,35 +128,35 @@ Partial Class ucParameters
         Me.m_nudBaseYear.Size = New System.Drawing.Size(106, 20)
         Me.m_nudBaseYear.TabIndex = 7
         '
-        'm_lbEcosimSettings
+        'm_hdrEcosimSettings
         '
-        Me.m_lbEcosimSettings.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_hdrEcosimSettings.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lbEcosimSettings.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_lbEcosimSettings.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.m_lbEcosimSettings.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.m_lbEcosimSettings.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_lbEcosimSettings.Location = New System.Drawing.Point(0, 97)
-        Me.m_lbEcosimSettings.Name = "m_lbEcosimSettings"
-        Me.m_lbEcosimSettings.Size = New System.Drawing.Size(703, 18)
-        Me.m_lbEcosimSettings.TabIndex = 5
-        Me.m_lbEcosimSettings.Text = "Ecosim-dependent settings"
-        Me.m_lbEcosimSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_hdrEcosimSettings.BackColor = System.Drawing.SystemColors.ButtonShadow
+        Me.m_hdrEcosimSettings.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.m_hdrEcosimSettings.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrEcosimSettings.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_hdrEcosimSettings.Location = New System.Drawing.Point(0, 97)
+        Me.m_hdrEcosimSettings.Name = "m_hdrEcosimSettings"
+        Me.m_hdrEcosimSettings.Size = New System.Drawing.Size(703, 18)
+        Me.m_hdrEcosimSettings.TabIndex = 5
+        Me.m_hdrEcosimSettings.Text = "Ecosim-dependent settings"
+        Me.m_hdrEcosimSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'm_lblIntegration
+        'm_hdrIntegration
         '
-        Me.m_lblIntegration.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_hdrIntegration.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lblIntegration.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_lblIntegration.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.m_lblIntegration.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.m_lblIntegration.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_lblIntegration.Location = New System.Drawing.Point(0, 0)
-        Me.m_lblIntegration.Name = "m_lblIntegration"
-        Me.m_lblIntegration.Size = New System.Drawing.Size(703, 18)
-        Me.m_lblIntegration.TabIndex = 0
-        Me.m_lblIntegration.Text = "Integration"
-        Me.m_lblIntegration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_hdrIntegration.BackColor = System.Drawing.SystemColors.ButtonShadow
+        Me.m_hdrIntegration.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.m_hdrIntegration.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrIntegration.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_hdrIntegration.Location = New System.Drawing.Point(0, 0)
+        Me.m_hdrIntegration.Name = "m_hdrIntegration"
+        Me.m_hdrIntegration.Size = New System.Drawing.Size(703, 18)
+        Me.m_hdrIntegration.TabIndex = 0
+        Me.m_hdrIntegration.Text = "Integration"
+        Me.m_hdrIntegration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_chkRunWithEcopath
         '
@@ -189,20 +188,20 @@ Partial Class ucParameters
         Me.m_chkRunWithSearches.Text = "Run with &searches"
         Me.m_chkRunWithSearches.UseVisualStyleBackColor = True
         '
-        'm_lblEQ
+        'm_hdrEQ
         '
-        Me.m_lblEQ.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_hdrEQ.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lblEQ.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_lblEQ.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.m_lblEQ.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.m_lblEQ.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_lblEQ.Location = New System.Drawing.Point(0, 156)
-        Me.m_lblEQ.Name = "m_lblEQ"
-        Me.m_lblEQ.Size = New System.Drawing.Size(703, 18)
-        Me.m_lblEQ.TabIndex = 8
-        Me.m_lblEQ.Text = "Equilibrium search"
-        Me.m_lblEQ.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_hdrEQ.BackColor = System.Drawing.SystemColors.ButtonShadow
+        Me.m_hdrEQ.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.m_hdrEQ.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrEQ.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_hdrEQ.Location = New System.Drawing.Point(0, 156)
+        Me.m_hdrEQ.Name = "m_hdrEQ"
+        Me.m_hdrEQ.Size = New System.Drawing.Size(703, 18)
+        Me.m_hdrEQ.TabIndex = 8
+        Me.m_hdrEQ.Text = "Equilibrium search"
+        Me.m_hdrEQ.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_clbFleets
         '
@@ -241,14 +240,14 @@ Partial Class ucParameters
         Me.m_lblEffortMax.TabIndex = 11
         Me.m_lblEffortMax.Text = "M&aximum effort"
         '
-        'Label4
+        'm_lbEffortIncr
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(3, 236)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(84, 13)
-        Me.Label4.TabIndex = 13
-        Me.Label4.Text = "Effort i&ncrement:"
+        Me.m_lbEffortIncr.AutoSize = True
+        Me.m_lbEffortIncr.Location = New System.Drawing.Point(3, 236)
+        Me.m_lbEffortIncr.Name = "m_lbEffortIncr"
+        Me.m_lbEffortIncr.Size = New System.Drawing.Size(84, 13)
+        Me.m_lbEffortIncr.TabIndex = 13
+        Me.m_lbEffortIncr.Text = "Effort i&ncrement:"
         '
         'm_nudEffortMin
         '
@@ -293,7 +292,7 @@ Partial Class ucParameters
         Me.Controls.Add(Me.m_nudEffortIncr)
         Me.Controls.Add(Me.m_nudEffortMax)
         Me.Controls.Add(Me.m_nudEffortMin)
-        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.m_lbEffortIncr)
         Me.Controls.Add(Me.m_lblEffortMax)
         Me.Controls.Add(Me.m_lblEffortMin)
         Me.Controls.Add(Me.m_lblFleets)
@@ -305,9 +304,9 @@ Partial Class ucParameters
         Me.Controls.Add(Me.m_tlpSponsors)
         Me.Controls.Add(Me.m_nudBaseYear)
         Me.Controls.Add(Me.m_lblBaseYear)
-        Me.Controls.Add(Me.m_lblEQ)
-        Me.Controls.Add(Me.m_lblIntegration)
-        Me.Controls.Add(Me.m_lbEcosimSettings)
+        Me.Controls.Add(Me.m_hdrEQ)
+        Me.Controls.Add(Me.m_hdrIntegration)
+        Me.Controls.Add(Me.m_hdrEcosimSettings)
         Me.Controls.Add(Me.m_lblSponsors)
         Me.MinimumSize = New System.Drawing.Size(400, 400)
         Me.Name = "ucParameters"
@@ -329,18 +328,18 @@ Partial Class ucParameters
     Friend WithEvents m_pbEU As System.Windows.Forms.PictureBox
     Private WithEvents m_lblBaseYear As System.Windows.Forms.Label
     Private WithEvents m_nudBaseYear As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_lbEcosimSettings As System.Windows.Forms.Label
-    Private WithEvents m_lblIntegration As System.Windows.Forms.Label
+    Private WithEvents m_hdrEcosimSettings As cEwEHeaderLabel
+    Private WithEvents m_hdrIntegration As cEwEHeaderLabel
     Private WithEvents m_chkRunWithEcopath As System.Windows.Forms.CheckBox
     Private WithEvents m_chkRunWithEcosim As System.Windows.Forms.CheckBox
     Private WithEvents m_chkRunWithSearches As System.Windows.Forms.CheckBox
     Private WithEvents m_tlpSponsors As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_lblSponsors As System.Windows.Forms.Label
-    Private WithEvents m_lblEQ As System.Windows.Forms.Label
+    Private WithEvents m_lblSponsors As cEwEHeaderLabel
+    Private WithEvents m_hdrEQ As cEwEHeaderLabel
     Private WithEvents m_clbFleets As System.Windows.Forms.CheckedListBox
     Private WithEvents m_lblFleets As System.Windows.Forms.Label
-    Friend WithEvents m_lblEffortMin As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Private WithEvents m_lblEffortMin As System.Windows.Forms.Label
+    Private WithEvents m_lbEffortIncr As System.Windows.Forms.Label
     Private WithEvents m_lblEffortMax As System.Windows.Forms.Label
     Private WithEvents m_nudEffortMin As System.Windows.Forms.NumericUpDown
     Private WithEvents m_nudEffortMax As System.Windows.Forms.NumericUpDown
