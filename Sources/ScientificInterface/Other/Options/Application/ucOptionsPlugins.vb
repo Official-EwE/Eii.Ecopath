@@ -86,7 +86,9 @@ Namespace Other
 
         Public Sub New(ByVal uic As cUIContext)
             Me.InitializeComponent()
-            Me.m_pm = uic.Core.PluginManager
+            Debug.Assert(uic IsNot Nothing)
+            Me.m_uic = uic
+            Me.m_pm = Me.m_uic.Core.PluginManager
         End Sub
 
 #End Region ' Constructor
@@ -176,7 +178,7 @@ Namespace Other
                 For Each p In pa.Plugins(Nothing, True)
 
                     ' Name plug-ins by rich text if possible
-                    If TypeOf p Is IGUIPlugin Then
+                    If (TypeOf p Is IGUIPlugin) Then
                         tnP = New TreeNode(DirectCast(p, IGUIPlugin).ControlText)
                     Else
                         tnP = New TreeNode(p.Name)

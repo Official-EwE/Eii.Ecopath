@@ -28,9 +28,17 @@ Public Class ucOptionsPluginDetails
 
         Me.InitializeComponent()
 
+        ' Sanity checks
+        Debug.Assert(uic IsNot Nothing)
+
         Me.UIContext = uic
 
-        Me.m_tbName.Text = pi.Name
+        ' Name plug-ins by rich text if possible
+        If (TypeOf pi Is IGUIPlugin) Then
+            Me.m_tbName.Text = DirectCast(pi, IGUIPlugin).ControlText
+        Else
+            Me.m_tbName.Text = pi.Name
+        End If
         Me.m_tbAuthor.Text = pi.Author
         Me.m_llContact.Text = pi.Contact
         Me.m_llContact.Links(0).LinkData = pi.Contact
