@@ -1542,6 +1542,9 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
 
+            ' Do not do this if not yet initialized
+            If (Me.m_zgc.GraphPane Is Nothing) Then Return
+
             If ((changeType And cStyleGuide.eChangeType.Fonts) > 0) Then
                 Me.UpdateStyle()
             End If
