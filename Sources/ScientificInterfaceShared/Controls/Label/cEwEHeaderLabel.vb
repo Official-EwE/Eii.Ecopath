@@ -89,7 +89,7 @@ Namespace Controls
         <Browsable(False)> _
         Public Overrides Property Font() As System.Drawing.Font
             Get
-                Return New Font(MyBase.Font, FontStyle.Bold)
+                Return MyBase.Font
             End Get
             Set(ByVal value As System.Drawing.Font)
                 ' NOP
