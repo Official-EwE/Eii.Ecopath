@@ -8,11 +8,13 @@ Imports System.Reflection
 Imports System.Threading
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEPlugin.Data
 
 #End Region ' Imports
 
 Public Class cPluginPoint
+    Inherits cNavTreeControlPlugin
     Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
@@ -20,8 +22,6 @@ Public Class cPluginPoint
     Implements EwEPlugin.IEcosimRunCompletedPlugin
     Implements EwEPlugin.Data.IDatabasePlugin
     Implements EwEPlugin.Data.IDataProducerPlugin
-    Implements EwEPlugin.IMenuItemPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.ISearchPlugin
     Implements EwEPlugin.IUIContextPlugin
 
@@ -45,14 +45,90 @@ Public Class cPluginPoint
 
 #End Region ' Privates
 
+#Region " Singleton "
+
+    Private Shared _inst_ As cPluginPoint = Nothing
+
+    Public Sub New()
+        If _inst_ Is Nothing Then
+            _inst_ = Me
+        End If
+    End Sub
+
+    Public Shared Function SwitchForm(ByVal strFormName As String) As frmMain
+
+        ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
+        Dim bIsFormReady As Boolean = False
+        Dim frm As frmMain = Nothing
+
+        'Interface item has been clicked
+        'Show the Ecotroph interface
+        If cPluginPoint._inst_.m_bInitOK Then
+
+            ' Does form still exist?
+            If Not cPluginPoint._inst_.HasInterface() Then
+                ' #No: create it
+                frm = New frmMain(cPluginPoint._inst_, "Value chain")
+                cPluginPoint._inst_.m_form = frm
+            Else
+                frm = cPluginPoint._inst_.m_form
+            End If
+            frm.ShowForm(strFormName)
+        Else
+            Debug.Assert(False, "Plugin was not initialized properly.")
+        End If
+        Return frm
+
+    End Function
+
+#End Region ' Singleton
+
 #Region " IPlugin point implementation "
 
-#Region " IPlugin "
+    Public Overrides ReadOnly Property Name() As String
+        Get
+            Return "ndValueChain"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property ControlText() As String
+        Get
+            Return "Value chain"
+        End Get
+    End Property
+
+    Public Overrides Function FormPage() As String
+        Return ""
+    End Function
+
+    Public Overrides ReadOnly Property NavigationTreeItemLocation() As String
+        Get
+            Return "ndParameterization|ndEcopathOutputTools"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property ControlImage() As System.Drawing.Image
+        Get
+            Return SharedResources.nav4_output_extend
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property Description() As String
+        Get
+            Dim sb As New StringBuilder()
+            sb.AppendLine("ValueChain - an economic fisheries model for EwE6")
+            sb.AppendLine("")
+            sb.AppendLine("This plug-in calculates a range of economic and social-economic indicators based on Ecopath and Ecosim data, where users can define economic systems as value chains of desired complexity.")
+            sb.AppendLine("")
+            sb.AppendLine("This plug-in was developed in conjunction with the ECOST project (http://www.ird.fr/ecostproject), and was partially funded by the North Sea Centre in Hirtshals, Denmark.")
+            Return sb.ToString()
+        End Get
+    End Property
 
     ''' <summary>
     ''' Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
     ''' </summary>
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Overrides Sub Initialize(ByVal core As Object)
 
         ' Sanity checks
         Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
@@ -98,174 +174,12 @@ Public Class cPluginPoint
 
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Internal name of the plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Name() As String _
-        Implements EwEPlugin.IPlugin.Name
-        Get
-            Return "ValueChain"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Plug-in description.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Description() As String _
-        Implements EwEPlugin.IPlugin.Description
-        Get
-            Dim sb As New StringBuilder()
-            sb.AppendLine("ValueChain - an economic fisheries model for EwE6")
-            sb.AppendLine("")
-            sb.AppendLine("This plug-in calculates a range of economic and social-economic indicators based on Ecopath and Ecosim data, where users can define economic systems as value chains of desired complexity.")
-            sb.AppendLine("")
-            sb.AppendLine("This plug-in was developed in conjunction with the ECOST project (http://www.ird.fr/ecostproject), and was partially funded by the North Sea Centre in Hirtshals, Denmark.")
-            Return sb.ToString()
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String _
-        Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "UBC Fisheries Centre, ECOST project, North Sea Centre"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String _
-        Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "mailto:v.christensen@fisheries.ubc.ca,j.steenbeek@fisheries.ubc.ca"
-        End Get
-    End Property
-
-#End Region ' IPlugin
-
 #Region " GUI "
 
     Public Sub UIContext(ByVal uic As Object) _
         Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Image to display for controls activating the Value Chain plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage() As System.Drawing.Image _
-        Implements EwEPlugin.IGUIPlugin.ControlImage
-        Get
-            Return Nothing ' My.Resources.ValueChain_32x32
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Text to be displayed for the controls activating the plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return "Value chain"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Text to be displayed on tooltips for controls activating the plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlTooltipText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
-        Get
-            Return Me.ControlText()
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Handler of event, invoked by controls activating the plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
-
-        ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
-        Dim bIsFormReady As Boolean = False
-
-        'Interface item has been clicked
-        'Show the Ecotroph interface
-        If m_bInitOK Then
-
-            ' Does form still exist?
-            If Not Me.HasInterface() Then
-                ' #No: create it
-                Me.m_form = New frmMain(Me, Me.ControlText)
-            End If
-
-            ' JS 04may09: do not show form; the loading framework is responsible for this
-            '' Activate the form
-            ' Me.m_form.Show()
-
-            ' Pass form reference back to calling app
-            f = Me.m_form
-        Else
-            Debug.Assert(False, "Plugin was not initialized properly.")
-        End If
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' The core state that must be met for this plug-in to be enabled.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EnabledState() As eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
-        Get
-            Return eCoreExecutionState.EcopathCompleted
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Scientific Interface menu item location for the menu item to activate
-    ''' the plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property MenuItemLocation() As String _
-        Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
-        Get
-            Return ""
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Scientific Interface navigation tree location for the tree node that 
-    ''' will activate the plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property NavigationTreeItemLocation() As String _
-        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
-        Get
-            Return "ndParameterization|ndEcopathOutputTools"
-        End Get
-    End Property
 
 #End Region ' GUI
 
@@ -721,23 +635,6 @@ Public Class cPluginPoint
         Return True
     End Function
 
-    'Private Function SupportsRunType(ByVal runType As IRunType) As Boolean
-
-    '    Dim parms As cParameters = Me.m_data.Parameters
-
-    '    If parms IsNot Nothing Then
-    '        If TypeOf (runType) Is cEcopathRunType Then
-    '            Return parms.RunWithEcopath
-    '        ElseIf TypeOf (runType) Is cEcosimRunType Then
-    '            Return parms.RunWithEcosim
-    '        ElseIf TypeOf (runType) Is cFishingPolicySearchRunType Then
-    '            Return parms.RunWithSearches
-    '        End If
-    '    End If
-    '    Return False
-
-    'End Function
-
-#End Region
+#End Region ' Helpers
 
 End Class

@@ -200,8 +200,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Plugin\cNavTreeControlPlugin.vb" />
     <Compile Include="Plugin\cPluginData.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginDefaults.vb" />
     <Compile Include="Plugin\cPluginPoint.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginFlow.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginParameters.vb" />
+    <Compile Include="Plugin\Output\cNTCPluginRun.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTables.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabProd.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabProc.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabDistr.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabMarket.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabCons.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

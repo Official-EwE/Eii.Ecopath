@@ -1,3 +1,5 @@
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class ucEditFlow
     Inherits System.Windows.Forms.UserControl
@@ -75,7 +77,7 @@ Partial Class ucEditFlow
         'm_tsbSave
         '
         Me.m_tsbSave.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSave, Me.m_tsmiExportToImage})
-        Me.m_tsbSave.Image = Global.EwEValueChainPlugin.My.Resources.Resources.saveHS
+        Me.m_tsbSave.Image = SharedResources.saveHS
         Me.m_tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbSave.Name = "m_tsbSave"
         Me.m_tsbSave.Size = New System.Drawing.Size(47, 33)
@@ -85,7 +87,7 @@ Partial Class ucEditFlow
         '
         'm_tsmiSave
         '
-        Me.m_tsmiSave.Image = Global.EwEValueChainPlugin.My.Resources.Resources.saveHS
+        Me.m_tsmiSave.Image = SharedResources.saveHS
         Me.m_tsmiSave.Name = "m_tsmiSave"
         Me.m_tsmiSave.Size = New System.Drawing.Size(173, 22)
         Me.m_tsmiSave.Text = "Save to database"
@@ -246,7 +248,7 @@ Partial Class ucEditFlow
         'm_tsddZoom
         '
         Me.m_tsddZoom.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiZoom50, Me.m_tsmiZoom75, Me.m_tsmiZoom100, Me.m_tsmiZoom125, Me.m_tsmiZoom150, Me.m_tsmiZoom200})
-        Me.m_tsddZoom.Image = Global.EwEValueChainPlugin.My.Resources.Resources.ZoomHS
+        Me.m_tsddZoom.Image = SharedResources.ZoomHS
         Me.m_tsddZoom.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsddZoom.Name = "m_tsddZoom"
         Me.m_tsddZoom.Size = New System.Drawing.Size(46, 33)

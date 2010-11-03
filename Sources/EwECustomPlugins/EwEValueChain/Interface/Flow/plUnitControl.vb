@@ -142,20 +142,20 @@ Public Class plUnitControl
     ''' this control has been repositioned.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub HandleLocationChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.LocationChanged
+    Protected Overrides Sub OnLocationChanged(ByVal e As System.EventArgs)
+        MyBase.OnLocationChanged(e)
         Me.m_fp.Xpos = CInt(Me.Location.X / Me.m_sScale)
         Me.m_fp.Ypos = CInt(Me.Location.Y / Me.m_sScale)
     End Sub
 
-    Private Sub HandleSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.SizeChanged
+    Protected Overrides Sub OnSizeChanged(ByVal e As System.EventArgs)
+        MyBase.OnSizeChanged(e)
         Me.m_fp.Width = CInt(Me.Width / Me.m_sScale)
         Me.m_fp.Height = CInt(Me.Height / Me.m_sScale)
     End Sub
 
-    Private Sub UnitControl_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-        Handles Me.Paint
+    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        MyBase.OnPaint(e)
 
         Dim rc As Rectangle = Me.ClientRectangle
         Dim clrBackground As Color = Color.Black
@@ -190,21 +190,21 @@ Public Class plUnitControl
         ' Paint unit type image
         Select Case Me.Unit.UnitType
             Case cUnitFactory.eUnitType.Producer
-                img = My.Resources.producer_mono
+                img = My.Resources.producer
             Case cUnitFactory.eUnitType.Processing
-                img = My.Resources.processing_mono
+                img = My.Resources.processing
             Case cUnitFactory.eUnitType.Distribution
-                img = My.Resources.distribution_mono
+                img = My.Resources.distribution
             Case cUnitFactory.eUnitType.Market
-                img = My.Resources.market_mono
+                img = My.Resources.market
             Case cUnitFactory.eUnitType.Consumer
-                img = My.Resources.consumer_mono
+                img = My.Resources.consumer
         End Select
 
         If img IsNot Nothing Then
             Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(16 * Me.ZoomFactor), CInt(16 * Me.ZoomFactor))
             rcImage.Offset(Me.Width - rcImage.Width - 2, Me.Height - rcImage.Height - 2)
-            e.Graphics.DrawImage(img, rcImage, 0, 0, 32, 32, GraphicsUnit.Pixel)
+            e.Graphics.DrawImage(img, rcImage, 0, 0, rcImage.Width, rcImage.Height, GraphicsUnit.Pixel)
         End If
 
         ' Paint text
