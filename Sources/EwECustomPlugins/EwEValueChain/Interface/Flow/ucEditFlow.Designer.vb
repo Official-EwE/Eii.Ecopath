@@ -30,7 +30,6 @@ Partial Class ucEditFlow
         Me.m_tsbSave = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsmiSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiExportToImage = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsddDiagram = New System.Windows.Forms.ToolStripDropDownButton
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsbAdd = New System.Windows.Forms.ToolStripDropDownButton
         Me.m_tsbCreateProducersByFleets = New System.Windows.Forms.ToolStripMenuItem
@@ -67,10 +66,10 @@ Partial Class ucEditFlow
         '
         'tsMain
         '
-        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.m_tsddDiagram, Me.ToolStripSeparator3, Me.m_tsbAdd, Me.ToolStripSeparator1, Me.m_tsbMove, Me.m_tsbLink, Me.m_tsbDelete, Me.m_tsSeparator, Me.m_tsbShowGrid, Me.m_tsbArrange, Me.ToolStripSeparator5, Me.m_tsddZoom})
+        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator3, Me.m_tsbAdd, Me.ToolStripSeparator1, Me.m_tsbMove, Me.m_tsbLink, Me.m_tsbDelete, Me.m_tsSeparator, Me.m_tsbShowGrid, Me.m_tsbArrange, Me.ToolStripSeparator5, Me.m_tsddZoom})
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
-        Me.tsMain.Size = New System.Drawing.Size(756, 36)
+        Me.tsMain.Size = New System.Drawing.Size(756, 38)
         Me.tsMain.TabIndex = 1
         Me.tsMain.Text = "ToolStrip1"
         '
@@ -80,7 +79,7 @@ Partial Class ucEditFlow
         Me.m_tsbSave.Image = SharedResources.saveHS
         Me.m_tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbSave.Name = "m_tsbSave"
-        Me.m_tsbSave.Size = New System.Drawing.Size(47, 33)
+        Me.m_tsbSave.Size = New System.Drawing.Size(47, 35)
         Me.m_tsbSave.Text = "&Save"
         Me.m_tsbSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.m_tsbSave.Visible = False
@@ -89,38 +88,28 @@ Partial Class ucEditFlow
         '
         Me.m_tsmiSave.Image = SharedResources.saveHS
         Me.m_tsmiSave.Name = "m_tsmiSave"
-        Me.m_tsmiSave.Size = New System.Drawing.Size(173, 22)
+        Me.m_tsmiSave.Size = New System.Drawing.Size(166, 22)
         Me.m_tsmiSave.Text = "Save to database"
         '
         'm_tsmiExportToImage
         '
         Me.m_tsmiExportToImage.Image = Global.EwEValueChainPlugin.My.Resources.Resources.ThumbnailLoadingHS
         Me.m_tsmiExportToImage.Name = "m_tsmiExportToImage"
-        Me.m_tsmiExportToImage.Size = New System.Drawing.Size(173, 22)
+        Me.m_tsmiExportToImage.Size = New System.Drawing.Size(166, 22)
         Me.m_tsmiExportToImage.Text = "E&xport to image..."
-        '
-        'm_tsddDiagram
-        '
-        Me.m_tsddDiagram.Image = Global.EwEValueChainPlugin.My.Resources.Resources.RelationshipsHS
-        Me.m_tsddDiagram.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.m_tsddDiagram.Name = "m_tsddDiagram"
-        Me.m_tsddDiagram.Size = New System.Drawing.Size(71, 33)
-        Me.m_tsddDiagram.Text = "&Diagram..."
-        Me.m_tsddDiagram.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.m_tsddDiagram.Visible = False
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 36)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 38)
         '
         'm_tsbAdd
         '
         Me.m_tsbAdd.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbCreateProducersByFleets, Me.m_tsbCreateProducersByLandings, Me.ToolStripSeparator4, Me.m_tsbCreateProducer, Me.m_tsbCreateProcessing, Me.m_tsbCreateDistribution, Me.m_tsbCreateMarket, Me.m_tsbCreateConsumer})
-        Me.m_tsbAdd.Image = CType(resources.GetObject("m_tsbAdd.Image"), System.Drawing.Image)
+        Me.m_tsbAdd.Image = SharedResources.AddTableHS
         Me.m_tsbAdd.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbAdd.Name = "m_tsbAdd"
-        Me.m_tsbAdd.Size = New System.Drawing.Size(39, 33)
+        Me.m_tsbAdd.Size = New System.Drawing.Size(42, 35)
         Me.m_tsbAdd.Text = "&Add"
         Me.m_tsbAdd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.m_tsbAdd.ToolTipText = "Add or create units"
@@ -128,90 +117,90 @@ Partial Class ucEditFlow
         'm_tsbCreateProducersByFleets
         '
         Me.m_tsbCreateProducersByFleets.Name = "m_tsbCreateProducersByFleets"
-        Me.m_tsbCreateProducersByFleets.Size = New System.Drawing.Size(229, 22)
+        Me.m_tsbCreateProducersByFleets.Size = New System.Drawing.Size(231, 22)
         Me.m_tsbCreateProducersByFleets.Text = "Create producers by &Fleets"
         Me.m_tsbCreateProducersByFleets.ToolTipText = "Create a producer unit for every fleet defined in Ecopath"
         '
         'm_tsbCreateProducersByLandings
         '
         Me.m_tsbCreateProducersByLandings.Name = "m_tsbCreateProducersByLandings"
-        Me.m_tsbCreateProducersByLandings.Size = New System.Drawing.Size(229, 22)
+        Me.m_tsbCreateProducersByLandings.Size = New System.Drawing.Size(231, 22)
         Me.m_tsbCreateProducersByLandings.Text = "Create producers by &Landings"
         Me.m_tsbCreateProducersByLandings.ToolTipText = "Create a producer unit for every landing defined in Ecopath"
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(226, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(228, 6)
         '
         'm_tsbCreateProducer
         '
         Me.m_tsbCreateProducer.Name = "m_tsbCreateProducer"
         Me.m_tsbCreateProducer.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D1), System.Windows.Forms.Keys)
-        Me.m_tsbCreateProducer.Size = New System.Drawing.Size(229, 22)
+        Me.m_tsbCreateProducer.Size = New System.Drawing.Size(231, 22)
         Me.m_tsbCreateProducer.Text = "New &producer"
         '
         'm_tsbCreateProcessing
         '
         Me.m_tsbCreateProcessing.Name = "m_tsbCreateProcessing"
         Me.m_tsbCreateProcessing.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D2), System.Windows.Forms.Keys)
-        Me.m_tsbCreateProcessing.Size = New System.Drawing.Size(229, 22)
+        Me.m_tsbCreateProcessing.Size = New System.Drawing.Size(231, 22)
         Me.m_tsbCreateProcessing.Text = "New p&rocessing"
         '
         'm_tsbCreateDistribution
         '
         Me.m_tsbCreateDistribution.Name = "m_tsbCreateDistribution"
         Me.m_tsbCreateDistribution.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D3), System.Windows.Forms.Keys)
-        Me.m_tsbCreateDistribution.Size = New System.Drawing.Size(229, 22)
+        Me.m_tsbCreateDistribution.Size = New System.Drawing.Size(231, 22)
         Me.m_tsbCreateDistribution.Text = "New d&istribution"
         '
         'm_tsbCreateMarket
         '
         Me.m_tsbCreateMarket.Name = "m_tsbCreateMarket"
         Me.m_tsbCreateMarket.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D4), System.Windows.Forms.Keys)
-        Me.m_tsbCreateMarket.Size = New System.Drawing.Size(229, 22)
+        Me.m_tsbCreateMarket.Size = New System.Drawing.Size(231, 22)
         Me.m_tsbCreateMarket.Text = "New m&arket"
         '
         'm_tsbCreateConsumer
         '
         Me.m_tsbCreateConsumer.Name = "m_tsbCreateConsumer"
         Me.m_tsbCreateConsumer.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D5), System.Windows.Forms.Keys)
-        Me.m_tsbCreateConsumer.Size = New System.Drawing.Size(229, 22)
+        Me.m_tsbCreateConsumer.Size = New System.Drawing.Size(231, 22)
         Me.m_tsbCreateConsumer.Text = "New c&onsumer"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 36)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 38)
         '
         'm_tsbMove
         '
+        Me.m_tsbMove.Image = SharedResources.PointerHS
         Me.m_tsbMove.Checked = True
         Me.m_tsbMove.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.m_tsbMove.Image = CType(resources.GetObject("m_tsbMove.Image"), System.Drawing.Image)
         Me.m_tsbMove.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbMove.Name = "m_tsbMove"
-        Me.m_tsbMove.Size = New System.Drawing.Size(37, 33)
+        Me.m_tsbMove.Size = New System.Drawing.Size(41, 35)
         Me.m_tsbMove.Text = "&Move"
         Me.m_tsbMove.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.m_tsbMove.ToolTipText = "Reposition units in this diagram"
         '
         'm_tsbLink
         '
-        Me.m_tsbLink.Image = CType(resources.GetObject("m_tsbLink.Image"), System.Drawing.Image)
+        Me.m_tsbLink.Image = SharedResources.RelationshipsHS
         Me.m_tsbLink.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbLink.Name = "m_tsbLink"
-        Me.m_tsbLink.Size = New System.Drawing.Size(29, 33)
+        Me.m_tsbLink.Size = New System.Drawing.Size(33, 35)
         Me.m_tsbLink.Text = "&Link"
         Me.m_tsbLink.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.m_tsbLink.ToolTipText = "Create links between units in this diagram"
         '
         'm_tsbDelete
         '
-        Me.m_tsbDelete.Image = CType(resources.GetObject("m_tsbDelete.Image"), System.Drawing.Image)
+        Me.m_tsbDelete.Image = SharedResources.DeleteHS
         Me.m_tsbDelete.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbDelete.Name = "m_tsbDelete"
-        Me.m_tsbDelete.Size = New System.Drawing.Size(42, 33)
+        Me.m_tsbDelete.Size = New System.Drawing.Size(44, 35)
         Me.m_tsbDelete.Text = "&Delete"
         Me.m_tsbDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.m_tsbDelete.ToolTipText = "Delete links and units"
@@ -219,23 +208,23 @@ Partial Class ucEditFlow
         'm_tsSeparator
         '
         Me.m_tsSeparator.Name = "m_tsSeparator"
-        Me.m_tsSeparator.Size = New System.Drawing.Size(6, 36)
+        Me.m_tsSeparator.Size = New System.Drawing.Size(6, 38)
         '
         'm_tsbShowGrid
         '
-        Me.m_tsbShowGrid.Image = CType(resources.GetObject("m_tsbShowGrid.Image"), System.Drawing.Image)
+        Me.m_tsbShowGrid.Image = SharedResources.AlignToGridHS
         Me.m_tsbShowGrid.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbShowGrid.Name = "m_tsbShowGrid"
-        Me.m_tsbShowGrid.Size = New System.Drawing.Size(58, 33)
+        Me.m_tsbShowGrid.Size = New System.Drawing.Size(64, 35)
         Me.m_tsbShowGrid.Text = "Show grid"
         Me.m_tsbShowGrid.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
         'm_tsbArrange
         '
-        Me.m_tsbArrange.Image = CType(resources.GetObject("m_tsbArrange.Image"), System.Drawing.Image)
+        Me.m_tsbArrange.Image = SharedResources.AlignToGridHS
         Me.m_tsbArrange.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbArrange.Name = "m_tsbArrange"
-        Me.m_tsbArrange.Size = New System.Drawing.Size(50, 33)
+        Me.m_tsbArrange.Size = New System.Drawing.Size(53, 35)
         Me.m_tsbArrange.Text = "A&rrange"
         Me.m_tsbArrange.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.m_tsbArrange.ToolTipText = "Arrange units"
@@ -243,7 +232,7 @@ Partial Class ucEditFlow
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 36)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 38)
         '
         'm_tsddZoom
         '
@@ -251,50 +240,50 @@ Partial Class ucEditFlow
         Me.m_tsddZoom.Image = SharedResources.ZoomHS
         Me.m_tsddZoom.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsddZoom.Name = "m_tsddZoom"
-        Me.m_tsddZoom.Size = New System.Drawing.Size(46, 33)
+        Me.m_tsddZoom.Size = New System.Drawing.Size(52, 35)
         Me.m_tsddZoom.Text = "Zoom"
         Me.m_tsddZoom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
         'm_tsmiZoom50
         '
         Me.m_tsmiZoom50.Name = "m_tsmiZoom50"
-        Me.m_tsmiZoom50.Size = New System.Drawing.Size(114, 22)
+        Me.m_tsmiZoom50.Size = New System.Drawing.Size(102, 22)
         Me.m_tsmiZoom50.Text = "50%"
         '
         'm_tsmiZoom75
         '
         Me.m_tsmiZoom75.Name = "m_tsmiZoom75"
-        Me.m_tsmiZoom75.Size = New System.Drawing.Size(114, 22)
+        Me.m_tsmiZoom75.Size = New System.Drawing.Size(102, 22)
         Me.m_tsmiZoom75.Text = "75%"
         '
         'm_tsmiZoom100
         '
         Me.m_tsmiZoom100.Name = "m_tsmiZoom100"
-        Me.m_tsmiZoom100.Size = New System.Drawing.Size(114, 22)
+        Me.m_tsmiZoom100.Size = New System.Drawing.Size(102, 22)
         Me.m_tsmiZoom100.Text = "100%"
         '
         'm_tsmiZoom125
         '
         Me.m_tsmiZoom125.Name = "m_tsmiZoom125"
-        Me.m_tsmiZoom125.Size = New System.Drawing.Size(114, 22)
+        Me.m_tsmiZoom125.Size = New System.Drawing.Size(102, 22)
         Me.m_tsmiZoom125.Text = "125%"
         '
         'm_tsmiZoom150
         '
         Me.m_tsmiZoom150.Name = "m_tsmiZoom150"
-        Me.m_tsmiZoom150.Size = New System.Drawing.Size(114, 22)
+        Me.m_tsmiZoom150.Size = New System.Drawing.Size(102, 22)
         Me.m_tsmiZoom150.Text = "150%"
         '
         'm_tsmiZoom200
         '
         Me.m_tsmiZoom200.Name = "m_tsmiZoom200"
-        Me.m_tsmiZoom200.Size = New System.Drawing.Size(114, 22)
+        Me.m_tsmiZoom200.Size = New System.Drawing.Size(102, 22)
         Me.m_tsmiZoom200.Text = "200%"
         '
         'm_split
         '
         Me.m_split.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_split.Location = New System.Drawing.Point(0, 36)
+        Me.m_split.Location = New System.Drawing.Point(0, 38)
         Me.m_split.Name = "m_split"
         '
         'm_split.Panel1
@@ -304,13 +293,14 @@ Partial Class ucEditFlow
         'm_split.Panel2
         '
         Me.m_split.Panel2.Controls.Add(Me.m_pgDetails)
-        Me.m_split.Size = New System.Drawing.Size(756, 427)
+        Me.m_split.Size = New System.Drawing.Size(756, 425)
         Me.m_split.SplitterDistance = 571
         Me.m_split.TabIndex = 2
         '
         'm_plFlow
         '
         Me.m_plFlow.AutoScroll = True
+        Me.m_plFlow.BackColor = System.Drawing.SystemColors.Window
         Me.m_plFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.Move
@@ -318,7 +308,7 @@ Partial Class ucEditFlow
         Me.m_plFlow.Location = New System.Drawing.Point(0, 0)
         Me.m_plFlow.Name = "m_plFlow"
         Me.m_plFlow.ShowGrid = False
-        Me.m_plFlow.Size = New System.Drawing.Size(571, 427)
+        Me.m_plFlow.Size = New System.Drawing.Size(571, 425)
         Me.m_plFlow.TabIndex = 0
         Me.m_plFlow.ZoomFactor = 1.0!
         '
@@ -327,7 +317,7 @@ Partial Class ucEditFlow
         Me.m_pgDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_pgDetails.Location = New System.Drawing.Point(0, 0)
         Me.m_pgDetails.Name = "m_pgDetails"
-        Me.m_pgDetails.Size = New System.Drawing.Size(181, 427)
+        Me.m_pgDetails.Size = New System.Drawing.Size(181, 425)
         Me.m_pgDetails.TabIndex = 0
         '
         'ucEditFlow
@@ -369,7 +359,6 @@ Partial Class ucEditFlow
     Private WithEvents m_tsbArrange As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbShowGrid As System.Windows.Forms.ToolStripButton
     Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents m_tsddDiagram As System.Windows.Forms.ToolStripDropDownButton
     Private WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsddZoom As System.Windows.Forms.ToolStripDropDownButton
     Private WithEvents m_tsmiZoom50 As System.Windows.Forms.ToolStripMenuItem
