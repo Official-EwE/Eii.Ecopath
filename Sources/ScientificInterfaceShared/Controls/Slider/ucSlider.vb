@@ -11,8 +11,10 @@ Namespace Controls
     Public Class ucSlider
 
         Public Sub New()
-            InitializeComponent()
-            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+            Me.InitializeComponent()
+            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer Or _
+                        ControlStyles.AllPaintingInWmPaint Or _
+                        ControlStyles.ResizeRedraw, True)
         End Sub
 
 #Region " Public interfaces "
