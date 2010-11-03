@@ -1,3 +1,7 @@
+
+'Option Explicit On
+'Option Strict On
+
 Imports EwECore.Ecosim
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
@@ -237,6 +241,7 @@ Namespace FishingPolicy
                     m_searchData.Frates(i) = baseFrate
                 Next
 
+                m_searchData.setMaxEffort(nBlocksUsed)
                 'get the base values for the objective function by running ecosim 
                 getBaseValues(nBlocksUsed)
 
@@ -367,14 +372,6 @@ Namespace FishingPolicy
                 Next
 
                 Dim WeightCorrection As Single
-
-                '' JS 02apr09: should this be made dynamic? Now, ValWeight(5) is ignored
-                'Dim sWeight = 0
-                'For iWeight As Integer = 1 To cSearchDatastructures.N_CRIT_RESULTS
-                '    sWeight += m_searchData.ValWeight(iWeight)
-                'Next
-                'If (sWeight > 0) Then WeightCorrection = sWeight
-
                 If m_searchData.ValWeight(1) + m_searchData.ValWeight(2) + m_searchData.ValWeight(3) + m_searchData.ValWeight(4) > 0 Then
                     WeightCorrection = m_searchData.ValWeight(1) + m_searchData.ValWeight(2) + m_searchData.ValWeight(3) + m_searchData.ValWeight(4)
                 End If
@@ -391,16 +388,16 @@ Namespace FishingPolicy
                 End If
 
 #If DEBUG Then
-                'debuging output
-                System.Console.WriteLine("FPS iterations: " & Results.nCalls.ToString)
-                For icr As Integer = 1 To cSearchDatastructures.N_CRIT_RESULTS
-                    System.Console.Write(Results.CriteriaValues(icr).ToString & ", ")
-                Next
+                ''debuging output
+                'System.Console.WriteLine("FPS iterations: " & Results.nCalls.ToString)
+                'For icr As Integer = 1 To cSearchDatastructures.N_CRIT_RESULTS
+                '    System.Console.Write(Results.CriteriaValues(icr).ToString & ", ")
+                'Next
 
-                For iblk As Integer = 1 To n
-                    System.Console.Write(Math.Exp(X(iblk)).ToString & ", ")
-                Next
-                System.Console.WriteLine()
+                'For iblk As Integer = 1 To n
+                '    System.Console.Write(Math.Exp(X(iblk)).ToString & ", ")
+                'Next
+                'System.Console.WriteLine()
 #End If
 
 
@@ -556,7 +553,7 @@ Namespace FishingPolicy
                 ReDim G(n), Xm(n) ', Nam$(Nmax)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Dimensioning strangeness
-                'In flet H() dimensions are access in two ways 
+                'In flet H() dimensions are accessed in two ways 
                 'Via NN which =             
                 'Np = n + 1
                 'NN = n * Np / 2
@@ -588,6 +585,7 @@ Namespace FishingPolicy
                 'do not mess with the following parameters-used by Fletch
                 StepSize = 0.001
                 eps = 0.000001
+                'eps = 0.1
                 Gtol = 0.0000000001
                 mode = 1
                 maxfn = MaxNoOfIterations    '200
@@ -1005,6 +1003,7 @@ pte:        ' continue
             'End If
 
             printstats(Xtime, itn, ifn, F, n, X, G)
+            Me.addMessage("Optimization done")
             ' MsgBox("Optimization done", vbOKOnly, "EwE: optimum fishing strategy")
             GoTo endline
 
