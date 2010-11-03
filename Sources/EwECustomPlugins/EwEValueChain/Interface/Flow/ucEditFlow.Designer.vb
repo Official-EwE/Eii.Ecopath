@@ -93,7 +93,7 @@ Partial Class ucEditFlow
         '
         'm_tsmiExportToImage
         '
-        Me.m_tsmiExportToImage.Image = Global.EwEValueChainPlugin.My.Resources.Resources.ThumbnailLoadingHS
+        Me.m_tsmiExportToImage.Image = SharedResources.ThumbnailLoadingHS
         Me.m_tsmiExportToImage.Name = "m_tsmiExportToImage"
         Me.m_tsmiExportToImage.Size = New System.Drawing.Size(166, 22)
         Me.m_tsmiExportToImage.Text = "E&xport to image..."
