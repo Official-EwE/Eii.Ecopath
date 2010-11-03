@@ -372,7 +372,11 @@ Public Class cEwEStatusBar
 
         If (vn <> eVarNameFlags.NotSet) And (Not bVarMixed) Then
             vdesc = cVariableDescriptor.FromVarname(vn)
-            strSelection = String.Format(SharedResources.GENERIC_LABEL_INDEXED, vdesc.Name, strSelection)
+            If String.IsNullOrEmpty(strSelection) Then
+                strSelection = vdesc.Name
+            Else
+                strSelection = String.Format(SharedResources.GENERIC_LABEL_INDEXED, vdesc.Name, strSelection)
+            End If
         End If
 
         Me.UpdateToolstripItem(Me.m_tsSelection, strSelection)
