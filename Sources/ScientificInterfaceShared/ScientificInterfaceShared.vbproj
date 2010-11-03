@@ -489,6 +489,15 @@
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
+    <None Include="Resources\nav8_ecospace.png" />
+    <None Include="Resources\nav7_ecosim.png" />
+    <None Include="Resources\nav6_ecopath.png" />
+    <None Include="Resources\nav5_input_extend.png" />
+    <None Include="Resources\nav4_output_extend.png" />
+    <None Include="Resources\nav3_tools.png" />
+    <None Include="Resources\nav2_run.png" />
+    <None Include="Resources\nav1_application_put.png" />
+    <None Include="Resources\nav0_application_get.png" />
     <None Include="Resources\MoveDown.png" />
     <None Include="Resources\MoveUp.png" />
     <None Include="Resources\Modified.png" />
