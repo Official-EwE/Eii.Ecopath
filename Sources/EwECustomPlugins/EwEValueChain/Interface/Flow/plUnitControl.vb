@@ -201,10 +201,14 @@ Public Class plUnitControl
                 img = My.Resources.consumer
         End Select
 
-        If img IsNot Nothing Then
+        If (img IsNot Nothing) Then
             Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(16 * Me.ZoomFactor), CInt(16 * Me.ZoomFactor))
-            rcImage.Offset(Me.Width - rcImage.Width - 2, Me.Height - rcImage.Height - 2)
-            e.Graphics.DrawImage(img, rcImage, 0, 0, rcImage.Width, rcImage.Height, GraphicsUnit.Pixel)
+            If Me.m_uic.StyleGuide.IsRightToLeft Then
+                rcImage.Offset(2, Me.Height - rcImage.Height - 2)
+            Else
+                rcImage.Offset(Me.Width - rcImage.Width - 2, Me.Height - rcImage.Height - 2)
+            End If
+            e.Graphics.DrawImage(img, rcImage, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel)
         End If
 
         ' Paint text
