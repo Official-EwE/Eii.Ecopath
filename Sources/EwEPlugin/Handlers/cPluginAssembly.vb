@@ -12,6 +12,25 @@ Imports EwEUtils.Utilities
 ''' ---------------------------------------------------------------------------
 Public Class cPluginAssembly
 
+#Region " Private helper classes "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' IComparer that sorts plug-ins by name, ascending.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Class cPluginComparer
+        Implements IComparer(Of IPlugin)
+
+        Public Function Compare(ByVal x As IPlugin, ByVal y As IPlugin) As Integer _
+        Implements System.Collections.Generic.IComparer(Of IPlugin).Compare
+            Return String.Compare(x.Name, y.Name)
+        End Function
+
+    End Class
+
+#End Region ' Private helper classes
+
 #Region " Private parts "
 
     Private m_an As AssemblyName = Nothing
@@ -97,7 +116,7 @@ Public Class cPluginAssembly
 
             If (Me.CanRun Or bAllowDisabled) Then
                 If t Is Nothing Then
-                    Return Me.m_dictPlugins.Values
+                    collPlugins.AddRange(Me.m_dictPlugins.Values)
                 Else
                     For Each ip As IPlugin In Me.m_dictPlugins.Values
                         If t.IsInstanceOfType(ip) Then
@@ -106,6 +125,10 @@ Public Class cPluginAssembly
                     Next
                 End If
             End If
+
+            ' Sort plug-ins
+            collPlugins.Sort(New cPluginComparer())
+            ' Done
             Return collPlugins
 
         End Get
