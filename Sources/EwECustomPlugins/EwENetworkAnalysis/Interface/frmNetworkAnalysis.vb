@@ -7,12 +7,53 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
 Imports EwECore
 
 #End Region ' Imports
 
 Public Class frmNetworkAnalysis
+
+    Public Enum eNetworkAnalysisPageTypes As Integer
+        NotSet = 0
+        Credits
+        RelativeFlows
+        AbsoluteFlows
+        TransferEfficiency
+        FlowPyramid
+        BiomassByTrophicLevel
+        BiomassPyramid
+        CatchByTrophicLevel
+        CatchPyramid
+        FromPrimaryProducers
+        FromDetritus
+        FromAllCombined
+        ForHarvestOfAllGroups
+        ForConsumptionOfAllGroups
+        ImpactData
+        GraphOfMixedTrophicImpact
+        GraphOfMixedTrophicImpactEwE5
+        KeystonenessTable
+        KeystonenessGraph
+        Total
+        ByGroup
+        FlowFromDetritus
+        Pathway_cons_tl1
+        SummaryOfPathways_cons_tl1
+        Pathway_cons_prey_tl1
+        SummaryOfPathways_cons_prey_tl1
+        Pathway_pred_prey
+        SummaryOfPathways_pred_prey
+        Pathway_living
+        SummaryOfPathways_living
+        Pathway_all
+        SummaryOfPathways_all
+        CyclingAndPathLength
+        LindemanSpine
+        WithoutPrimaryProductionRequiredEstimate
+        WithPrimaryProductionRequiredEstimate
+    End Enum
 
     Private m_networkmanager As cNetworkManager = Nothing
     ''' <summary>Control manager in charge of UI elements.</summary>
@@ -28,7 +69,7 @@ Public Class frmNetworkAnalysis
     ''' <summary>UI context for UI to use.</summary>
     Private m_uic As cUIContext = Nothing
 
-    Public Sub New(ByVal strText As String, ByVal networkmanager As cNetworkManager, ByVal uic As cUIContext)
+    Public Sub New(ByVal networkmanager As cNetworkManager, ByVal uic As cUIContext)
 
         Me.m_networkmanager = networkmanager
         Me.m_uic = uic
@@ -36,8 +77,8 @@ Public Class frmNetworkAnalysis
         Debug.Assert(uic IsNot Nothing, "Essential data missing")
 
         Me.InitializeComponent()
-        Me.Text = strText
-        Me.TabText = strText
+        Me.Text = My.Resources.CAPTION
+        Me.TabText = My.Resources.CAPTION
 
     End Sub
 
@@ -157,8 +198,6 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputGraphEMF.Click
 
-        ' ToDo: localize this
-
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
         Dim bAnnual As Boolean = False
@@ -269,7 +308,11 @@ Public Class frmNetworkAnalysis
                              ((Me.m_networkmanager.IsEcosimNetworkRun = False) And (Me.m_contentmanager.UsesEcosim = True))
     End Sub
 
-    Private Sub UpdateContent()
+    Public Sub ShowForm(ByVal page As eNetworkAnalysisPageTypes)
+        Me.UpdateContent()
+    End Sub
+
+    Public Sub UpdateContent()
 
         Dim node As TreeNode = Me.tvNetworkAnalysis.SelectedNode
         Dim strNodeName As String = ""
@@ -289,6 +332,9 @@ Public Class frmNetworkAnalysis
         Me.m_networkmanager.RunMainNetwork()
 
         Select Case strNodeName
+
+            Case "ndCredits"
+                Me.m_contentmanager = Nothing
 
             Case "ndRelativeFlows"
                 Me.m_contentmanager = New cRelativeFlows()

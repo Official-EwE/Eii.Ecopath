@@ -707,4 +707,10 @@
   <data name="PROMPT_LOAD_ECOSIM" xml:space="preserve">
     <value>Please load an Ecosim scenario before running Network Analysis for Ecosim.</value>
   </data>
+  <data name="GENERIC_TOOLTIP" xml:space="preserve">
+    <value>Network Analysis plug-in</value>
+  </data>
+  <data name="NAVITEM_ROOT" xml:space="preserve">
+    <value>Network Analysis</value>
+  </data>
 </root>

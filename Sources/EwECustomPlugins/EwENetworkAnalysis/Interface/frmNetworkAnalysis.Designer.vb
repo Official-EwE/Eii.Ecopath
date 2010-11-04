@@ -45,7 +45,7 @@ Partial Class frmNetworkAnalysis
         Me.tscmbSelection2 = New System.Windows.Forms.ToolStripComboBox
         Me.tsbtnOutputIndicesCSV = New System.Windows.Forms.ToolStripButton
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton
-        Me.lblNetworkAnalysis = New System.Windows.Forms.Label
+        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
         ts1 = New System.Windows.Forms.ToolStripSeparator
         ts2 = New System.Windows.Forms.ToolStripSeparator
         ts3 = New System.Windows.Forms.ToolStripSeparator
@@ -93,7 +93,6 @@ Partial Class frmNetworkAnalysis
         '
         'tvNetworkAnalysis
         '
-        Me.tvNetworkAnalysis.BackColor = System.Drawing.Color.MintCream
         resources.ApplyResources(Me.tvNetworkAnalysis, "tvNetworkAnalysis")
         Me.tvNetworkAnalysis.FullRowSelect = True
         Me.tvNetworkAnalysis.HideSelection = False
@@ -150,7 +149,8 @@ Partial Class frmNetworkAnalysis
         '
         'm_toolstrip
         '
-        Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiRun, ts3, Me.tsmiDisplayGroups, ts1, Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, ts2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF})
+        Me.m_toolstrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiRun, ts3, Me.tsmiDisplayGroups, ts1, Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, ts2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.ToolStripButton1})
         resources.ApplyResources(Me.m_toolstrip, "m_toolstrip")
         Me.m_toolstrip.Name = "m_toolstrip"
         '
@@ -201,17 +201,17 @@ Partial Class frmNetworkAnalysis
         resources.ApplyResources(Me.tsbtnOutputGraphEMF, "tsbtnOutputGraphEMF")
         Me.tsbtnOutputGraphEMF.Name = "tsbtnOutputGraphEMF"
         '
-        'lblNetworkAnalysis
+        'ToolStripButton1
         '
-        resources.ApplyResources(Me.lblNetworkAnalysis, "lblNetworkAnalysis")
-        Me.lblNetworkAnalysis.Name = "lblNetworkAnalysis"
+        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.ToolStripButton1, "ToolStripButton1")
+        Me.ToolStripButton1.Name = "ToolStripButton1"
         '
         'frmNetworkAnalysis
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.Controls.Add(Me.lblNetworkAnalysis)
         Me.Controls.Add(Me.scNetworkAnalysis)
         Me.Name = "frmNetworkAnalysis"
         Me.ShowInTaskbar = False
@@ -226,7 +226,6 @@ Partial Class frmNetworkAnalysis
         Me.m_toolstrip.ResumeLayout(False)
         Me.m_toolstrip.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Private WithEvents scNetworkAnalysis As System.Windows.Forms.SplitContainer
@@ -245,6 +244,6 @@ Partial Class frmNetworkAnalysis
     Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_plot As ucPlot
     Private WithEvents tsmiDisplayGroups As System.Windows.Forms.ToolStripButton
-    Private WithEvents lblNetworkAnalysis As System.Windows.Forms.Label
     Private WithEvents tsmiRun As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
 End Class

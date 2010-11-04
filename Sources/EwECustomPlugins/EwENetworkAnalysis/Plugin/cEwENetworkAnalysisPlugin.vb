@@ -10,13 +10,14 @@ Imports EwEUtils.Commands
 Imports EwEUtils.SystemUtilities
 Imports System.Reflection
 Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
 Public Class cEwENetworkAnalysisPlugin
+    Inherits cNavTreeControlPlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
     Implements EwEPlugin.IMenuItemPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimRunCompletedPlugin
@@ -48,43 +49,73 @@ Public Class cEwENetworkAnalysisPlugin
 
 #End Region ' Private vars
 
+#Region " Singleton "
+
+    Private Shared _inst_ As cEwENetworkAnalysisPlugin = Nothing
+
+    Public Sub New()
+        If _inst_ Is Nothing Then
+            _inst_ = Me
+        End If
+    End Sub
+
+    Public Shared Function SwitchForm(ByVal page As frmNetworkAnalysis.eNetworkAnalysisPageTypes) As frmNetworkAnalysis
+
+        ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
+        Dim bIsFormReady As Boolean = False
+        Dim frm As frmNetworkAnalysis = Nothing
+
+        'Interface item has been clicked
+        'Show the Ecotroph interface
+        If cEwENetworkAnalysisPlugin._inst_.m_bInitOK Then
+
+            ' Does form still exist?
+            If Not cEwENetworkAnalysisPlugin._inst_.HasUI() Then
+                ' #No: create it
+                frm = New frmNetworkAnalysis(cEwENetworkAnalysisPlugin._inst_.m_manager, cEwENetworkAnalysisPlugin._inst_.m_uic)
+                cEwENetworkAnalysisPlugin._inst_.m_frmNA = frm
+            Else
+                frm = cEwENetworkAnalysisPlugin._inst_.m_frmNA
+            End If
+            frm.ShowForm(page)
+        Else
+            Debug.Assert(False, "Plugin was not initialized properly.")
+        End If
+        Return frm
+
+    End Function
+
+#End Region ' Singleton
+
 #Region " Generic "
 
-    Public ReadOnly Property Name() As String _
-        Implements EwEPlugin.IPlugin.Name
+    Public Overrides ReadOnly Property Name() As String 
         Get
-            Return "NetworkAnalysis"
+            Return "nwa00Main"
         End Get
     End Property
 
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public Overrides ReadOnly Property ControlImage() As System.Drawing.Image
         Get
-            Dim ai As New cAssemblyInfo(Assembly.GetAssembly(GetType(cEwENetworkAnalysisPlugin)))
-            Return ai.Description
+            Return SharedResources.nav4_output_extend
         End Get
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+    Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "UBC Fisheries Centre"
+            Return My.Resources.NAVITEM_ROOT
         End Get
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+    Public Overrides ReadOnly Property NavigationTreeItemLocation() As String
         Get
-            Return "mailto:support@ecopath.org"
+            Return Me.NavTreeNodeRoot
         End Get
     End Property
+
+    Public Overrides Function FormPage() As frmNetworkAnalysis.eNetworkAnalysisPageTypes
+        Return frmNetworkAnalysis.eNetworkAnalysisPageTypes.Credits
+    End Function
 
 #End Region ' Generic
 
@@ -94,9 +125,7 @@ Public Class cEwENetworkAnalysisPlugin
     ''' Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
     ''' </summary>
     ''' <param name="core"></param>
-    ''' <remarks></remarks>
-    Public Sub Initialize(ByVal core As Object) _
-        Implements EwEPlugin.IPlugin.Initialize
+    Public Overrides Sub Initialize(ByVal core As Object)
 
         Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
         m_bInitOK = False
@@ -196,85 +225,10 @@ Public Class cEwENetworkAnalysisPlugin
 
 #Region " GUI "
 
-    Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
-        Get
-            Return Nothing
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return "Network analysis"
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Menu Item or Tree node clicked
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks>This will handle click events from all interface controls</remarks>
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
-
-        'Interface item has been clicked
-        'Show the Main Network interface
-        If m_bInitOK Then
-
-            ' Create form when not ready
-            If Not Me.HasUI() Then
-                Me.m_frmNA = New frmNetworkAnalysis(Me.ControlText, Me.m_manager, Me.m_uic)
-            End If
-
-            ' JS 05may09: do not show form; the loading framework should take care of this
-            '' Activate the form
-            'Me.m_frmNA.Show()
-
-            ' Pass form reference back to calling app
-            f = Me.m_frmNA
-
-            If TypeOf sender Is System.Windows.Forms.TreeView Then
-                'from the navigation panel
-                'NOP
-            ElseIf TypeOf sender Is System.Windows.Forms.ToolStripMenuItem Then
-                'from the menu
-                'NOP
-            End If
-
-        Else
-            Debug.Assert(False, "Network Analysis plugin was not initialized properly.")
-        End If
-
-    End Sub
-
     Public ReadOnly Property MenuItemLocation() As String _
         Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlTooltipText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
-        Get
-            Return ""
-        End Get
-    End Property
-
-    Public ReadOnly Property EnabledState() As eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
-        Get
-            Return eCoreExecutionState.EcopathCompleted
-        End Get
-    End Property
-
-    Public ReadOnly Property NavigationTreeItemLocation() As String _
-        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
-        Get
-            'this will put the navigation item at the end of the tree as top level node 
-            'Not the best place there should be a Plugins node and all plugins should go under it
-            Return "ndParameterization|ndEcopathOutputTools"
         End Get
     End Property
 

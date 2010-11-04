@@ -158,6 +158,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Plugin\cEwENetworkAnalysisData.vb" />
+    <Compile Include="Plugin\cNavTreePlugin.vb" />
     <Compile Include="Remote control\cNetworkAnalysisRemote.vb" />
   </ItemGroup>
   <ItemGroup>
