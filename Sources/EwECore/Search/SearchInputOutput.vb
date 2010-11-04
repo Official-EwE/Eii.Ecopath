@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: SearchInputOutput.vb,v $
-' Revision 1.4  2009/01/16 18:30:44  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.3  2008/11/27 18:22:47  joeb
-' Moved Flimit() back to Search data
-'
-' Revision 1.2  2008/11/12 18:02:34  jeroens
-' Added Biomass Diversity search weight input + output
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On

@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: cSearchDatastructures.vb,v $
-' Revision 1.21  2009/05/26 16:45:25  joeb
-' Added useEconomicPlugin and isEconomicAvailable to FPS and MSE
-'
-' Revision 1.20  2009/04/02 20:54:39  jeroens
-' Uses eSearchResultCriteriaTypes
-'
-'==============================================================================
-
 Option Strict On
 Imports EwEUtils.Core
 Imports EwECore.Ecosim
