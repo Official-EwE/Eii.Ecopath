@@ -1,4 +1,6 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports ScientificInterfaceShared.Controls
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class ucSuitabilityPlot
     Inherits System.Windows.Forms.UserControl
 
@@ -16,8 +18,8 @@ Partial Class ucSuitabilityPlot
         Me.m_rbSuitability = New System.Windows.Forms.RadioButton
         Me.m_rbFunctionalResponse = New System.Windows.Forms.RadioButton
         Me.m_rbElectivity = New System.Windows.Forms.RadioButton
-        Me.m_lblPredator = New System.Windows.Forms.Label
-        Me.m_lblPlotType = New System.Windows.Forms.Label
+        Me.m_hdrPredator = New cEwEHeaderLabel
+        Me.m_hdrPlotType = New cEwEHeaderLabel
         Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
         Me.m_scContent.Panel1.SuspendLayout()
         Me.m_scContent.Panel2.SuspendLayout()
@@ -55,8 +57,8 @@ Partial Class ucSuitabilityPlot
         Me.m_scContent.Panel2.Controls.Add(Me.m_rbSuitability)
         Me.m_scContent.Panel2.Controls.Add(Me.m_rbFunctionalResponse)
         Me.m_scContent.Panel2.Controls.Add(Me.m_rbElectivity)
-        Me.m_scContent.Panel2.Controls.Add(Me.m_lblPredator)
-        Me.m_scContent.Panel2.Controls.Add(Me.m_lblPlotType)
+        Me.m_scContent.Panel2.Controls.Add(Me.m_hdrPredator)
+        Me.m_scContent.Panel2.Controls.Add(Me.m_hdrPlotType)
         Me.m_scContent.Panel2.Controls.Add(Me.m_lbGroups)
         Me.m_scContent.Size = New System.Drawing.Size(700, 532)
         Me.m_scContent.SplitterDistance = 504
@@ -65,7 +67,7 @@ Partial Class ucSuitabilityPlot
         'm_rbSuitability
         '
         Me.m_rbSuitability.AutoSize = True
-        Me.m_rbSuitability.Location = New System.Drawing.Point(2, 69)
+        Me.m_rbSuitability.Location = New System.Drawing.Point(4, 69)
         Me.m_rbSuitability.Name = "m_rbSuitability"
         Me.m_rbSuitability.Size = New System.Drawing.Size(69, 17)
         Me.m_rbSuitability.TabIndex = 2
@@ -77,7 +79,7 @@ Partial Class ucSuitabilityPlot
         'm_rbFunctionalResponse
         '
         Me.m_rbFunctionalResponse.AutoSize = True
-        Me.m_rbFunctionalResponse.Location = New System.Drawing.Point(2, 46)
+        Me.m_rbFunctionalResponse.Location = New System.Drawing.Point(4, 46)
         Me.m_rbFunctionalResponse.Name = "m_rbFunctionalResponse"
         Me.m_rbFunctionalResponse.Size = New System.Drawing.Size(120, 17)
         Me.m_rbFunctionalResponse.TabIndex = 2
@@ -89,7 +91,7 @@ Partial Class ucSuitabilityPlot
         'm_rbElectivity
         '
         Me.m_rbElectivity.AutoSize = True
-        Me.m_rbElectivity.Location = New System.Drawing.Point(3, 23)
+        Me.m_rbElectivity.Location = New System.Drawing.Point(4, 23)
         Me.m_rbElectivity.Name = "m_rbElectivity"
         Me.m_rbElectivity.Size = New System.Drawing.Size(67, 17)
         Me.m_rbElectivity.TabIndex = 2
@@ -98,38 +100,40 @@ Partial Class ucSuitabilityPlot
         Me.m_rbElectivity.Text = "Electivity"
         Me.m_rbElectivity.UseVisualStyleBackColor = True
         '
-        'm_lblPredator
+        'm_hdrPredator
         '
-        Me.m_lblPredator.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_hdrPredator.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lblPredator.BackColor = System.Drawing.SystemColors.ControlDark
-        Me.m_lblPredator.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.m_lblPredator.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.m_lblPredator.Location = New System.Drawing.Point(0, 105)
-        Me.m_lblPredator.Margin = New System.Windows.Forms.Padding(0)
-        Me.m_lblPredator.Name = "m_lblPredator"
-        Me.m_lblPredator.Size = New System.Drawing.Size(196, 18)
-        Me.m_lblPredator.TabIndex = 1
-        Me.m_lblPredator.Text = "Predator"
-        Me.m_lblPredator.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_hdrPredator.BackColor = System.Drawing.SystemColors.ControlDark
+        Me.m_hdrPredator.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.m_hdrPredator.ForeColor = System.Drawing.SystemColors.ControlLightLight
+        Me.m_hdrPredator.Location = New System.Drawing.Point(0, 105)
+        Me.m_hdrPredator.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_hdrPredator.Name = "m_hdrPredator"
+        Me.m_hdrPredator.Size = New System.Drawing.Size(196, 18)
+        Me.m_hdrPredator.TabIndex = 1
+        Me.m_hdrPredator.Text = "Predator"
+        Me.m_hdrPredator.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'm_lblPlotType
+        'm_hdrPlotType
         '
-        Me.m_lblPlotType.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_hdrPlotType.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_lblPlotType.BackColor = System.Drawing.SystemColors.ControlDark
-        Me.m_lblPlotType.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.m_lblPlotType.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.m_lblPlotType.Location = New System.Drawing.Point(0, 0)
-        Me.m_lblPlotType.Margin = New System.Windows.Forms.Padding(0)
-        Me.m_lblPlotType.Name = "m_lblPlotType"
-        Me.m_lblPlotType.Size = New System.Drawing.Size(196, 18)
-        Me.m_lblPlotType.TabIndex = 1
-        Me.m_lblPlotType.Text = "Plot type"
-        Me.m_lblPlotType.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.m_hdrPlotType.BackColor = System.Drawing.SystemColors.ControlDark
+        Me.m_hdrPlotType.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.m_hdrPlotType.ForeColor = System.Drawing.SystemColors.ControlLightLight
+        Me.m_hdrPlotType.Location = New System.Drawing.Point(0, 0)
+        Me.m_hdrPlotType.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_hdrPlotType.Name = "m_hdrPlotType"
+        Me.m_hdrPlotType.Size = New System.Drawing.Size(196, 18)
+        Me.m_hdrPlotType.TabIndex = 1
+        Me.m_hdrPlotType.Text = "Plot type"
+        Me.m_hdrPlotType.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_lbGroups
         '
+        Me.m_lbGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
+        Me.m_lbGroups.AllGroupsItemText = "(All)"
         Me.m_lbGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -164,8 +168,8 @@ Partial Class ucSuitabilityPlot
 
     End Sub
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
-    Private WithEvents m_lblPredator As System.Windows.Forms.Label
-    Private WithEvents m_lblPlotType As System.Windows.Forms.Label
+    Private WithEvents m_hdrPredator As cEwEHeaderLabel
+    Private WithEvents m_hdrPlotType As cEwEHeaderLabel
     Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
     Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
     Private WithEvents m_rbElectivity As System.Windows.Forms.RadioButton

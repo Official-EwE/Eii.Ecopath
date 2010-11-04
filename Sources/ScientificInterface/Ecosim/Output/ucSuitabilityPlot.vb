@@ -64,9 +64,9 @@ Public Class ucSuitabilityPlot
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-        Debug.Assert(Me.m_uic IsNot Nothing)
-
         MyBase.OnLoad(e)
+
+        If (Me.m_uic Is Nothing) Then Return
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
@@ -74,7 +74,6 @@ Public Class ucSuitabilityPlot
         Me.m_lbGroups.Attach(Me.m_uic)
 
         Me.m_rbElectivity.Checked = True
-
 
         Me.UpdatePredatorList()
         Me.UpdateGraph()
@@ -88,7 +87,6 @@ Public Class ucSuitabilityPlot
             If Me.m_zgh IsNot Nothing Then
                 Me.m_zgh.Detach()
                 Me.m_zgh = Nothing
-
             End If
 
             If disposing AndAlso components IsNot Nothing Then
@@ -101,31 +99,45 @@ Public Class ucSuitabilityPlot
     End Sub
 
     Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
-        ' Blunt!
-        Me.UpdateGraph()
+        Try
+            Me.UpdateGraph()
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub OnPlotSuitability(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_rbSuitability.CheckedChanged
-        Me.PlotType = ePlotTypes.Suitability
-        Me.UpdateGraph()
+        Try
+            Me.PlotType = ePlotTypes.Suitability
+            Me.UpdateGraph()
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub OnPlotFunctionalResponse(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_rbFunctionalResponse.CheckedChanged
-        Me.PlotType = ePlotTypes.FunctionalResponse
-        Me.UpdateGraph()
+        Try
+            Me.PlotType = ePlotTypes.FunctionalResponse
+            Me.UpdateGraph()
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub OnPlotElectivity(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_rbElectivity.CheckedChanged
-        Me.PlotType = ePlotTypes.Electivity
-        Me.UpdateGraph()
+        Try
+            Me.PlotType = ePlotTypes.Electivity
+            Me.UpdateGraph()
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub OnSelectPredator(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_lbGroups.SelectedIndexChanged
-        Me.UpdateGraph()
+        Try
+            Me.UpdateGraph()
+        Catch ex As Exception
+        End Try
     End Sub
 
 #End Region ' Events
