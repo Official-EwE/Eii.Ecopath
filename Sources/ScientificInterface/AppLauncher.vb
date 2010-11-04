@@ -762,35 +762,49 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnKeyDown(ByVal e As KeyEventArgs)
 
-        Select Case e.KeyCode
-            Case Keys.F12
-                MsgBox("Bite me", MsgBoxStyle.Information)
-                Return
-        End Select
-
-        If e.Alt And e.Control And e.Shift Then
-            ' Egg!
-            Dim strURL As String = ""
-            Select Case e.KeyCode
-                Case Keys.Oemtilde : strURL = "http://farm1.static.flickr.com/160/374820104_5ec655655c.jpg"
-                Case Keys.D1 : strURL = "http://farm1.static.flickr.com/82/261884734_01ad1712a6.jpg"
-                Case Keys.D2 : strURL = "http://farm2.static.flickr.com/1218/536646225_09f93a0b8c.jpg"
-                Case Keys.D3 : strURL = "http://farm1.static.flickr.com/112/261883295_1cab2a9714.jpg"
-                Case Keys.D4 : strURL = "http://farm1.static.flickr.com/87/261883288_06e5599f56.jpg"
-                Case Keys.D5 : strURL = "http://farm1.static.flickr.com/89/261883279_6c8b139ed9.jpg"
-                Case Keys.D6 : strURL = "http://farm1.static.flickr.com/121/261883269_cf6fd5f287.jpg"
-                Case Keys.D7 : strURL = "http://farm2.static.flickr.com/1312/1400452382_47306892c0.jpg"
-                Case Keys.D8 : strURL = "http://farm2.static.flickr.com/1012/1400449350_7dfad8dd60.jpg"
-                Case Keys.D9 : strURL = "http://farm3.static.flickr.com/2344/1536185215_fe4d413654.jpg"
-                Case Keys.D0 : strURL = "http://farm1.static.flickr.com/143/377851455_28924928b1.jpg"
-            End Select
-
-            If Not String.IsNullOrEmpty(strURL) Then
-                Me.m_StartPage.URL = strURL
-                Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
+        Try
+            ' Restore menu and full screen mode on 'Escape'
+            If (e.KeyCode = Keys.Escape) Then
+                If (Me.m_cmdViewFullScreen.Checked) Then
+                    Me.m_cmdViewFullScreen.Invoke()
+                End If
+                If (Me.m_cmdViewMenu.Checked = False) Then
+                    Me.m_cmdViewMenu.Invoke()
+                End If
             End If
 
-        End If
+
+            ' Egg!
+            If (e.KeyCode = Keys.F12) Then
+                MsgBox("Bite me", MsgBoxStyle.Exclamation)
+            End If
+
+            ' Egg!
+            If e.Alt And e.Control And e.Shift Then
+                Dim strURL As String = ""
+                Select Case e.KeyCode
+                    Case Keys.Oemtilde : strURL = "http://farm1.static.flickr.com/160/374820104_5ec655655c.jpg"
+                    Case Keys.D1 : strURL = "http://farm1.static.flickr.com/82/261884734_01ad1712a6.jpg"
+                    Case Keys.D2 : strURL = "http://farm2.static.flickr.com/1218/536646225_09f93a0b8c.jpg"
+                    Case Keys.D3 : strURL = "http://farm1.static.flickr.com/112/261883295_1cab2a9714.jpg"
+                    Case Keys.D4 : strURL = "http://farm1.static.flickr.com/87/261883288_06e5599f56.jpg"
+                    Case Keys.D5 : strURL = "http://farm1.static.flickr.com/89/261883279_6c8b139ed9.jpg"
+                    Case Keys.D6 : strURL = "http://farm1.static.flickr.com/121/261883269_cf6fd5f287.jpg"
+                    Case Keys.D7 : strURL = "http://farm2.static.flickr.com/1312/1400452382_47306892c0.jpg"
+                    Case Keys.D8 : strURL = "http://farm2.static.flickr.com/1012/1400449350_7dfad8dd60.jpg"
+                    Case Keys.D9 : strURL = "http://farm3.static.flickr.com/2344/1536185215_fe4d413654.jpg"
+                    Case Keys.D0 : strURL = "http://farm1.static.flickr.com/143/377851455_28924928b1.jpg"
+                End Select
+
+                If Not String.IsNullOrEmpty(strURL) Then
+                    Me.m_StartPage.URL = strURL
+                    Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
+                End If
+
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 #End Region ' Form overrides
