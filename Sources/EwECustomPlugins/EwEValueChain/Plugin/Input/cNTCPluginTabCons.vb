@@ -5,7 +5,7 @@ Public Class cNTCPluginTabCons
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "nd04Consumers"
+            Return "vcNode24Consumers"
         End Get
     End Property
 
@@ -27,7 +27,7 @@ Public Class cNTCPluginTabCons
 
     Public Overrides ReadOnly Property NavigationTreeItemLocation() As String
         Get
-            Return "ndParameterization|ndEcopathOutputTools|ndValueChain|nd10Tables"
+            Return Me.NavTreeNodeRoot() & "|vcNode00|vcNode10Tables"
         End Get
     End Property
 

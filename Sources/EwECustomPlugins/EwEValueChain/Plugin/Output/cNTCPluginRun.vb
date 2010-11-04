@@ -5,7 +5,7 @@ Public Class cNTCPluginRun
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "nd42Run"
+            Return "vcNode50Run"
         End Get
     End Property
 
@@ -27,7 +27,7 @@ Public Class cNTCPluginRun
 
     Public Overrides ReadOnly Property NavigationTreeItemLocation() As String
         Get
-            Return "ndParameterization|ndEcopathOutputTools|ndValueChain"
+            Return Me.NavTreeNodeRoot() & "|vcNode00"
         End Get
     End Property
 

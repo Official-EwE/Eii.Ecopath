@@ -87,7 +87,7 @@ Public Class cPluginPoint
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "ndValueChain"
+            Return "vcNode00"
         End Get
     End Property
 
@@ -103,7 +103,7 @@ Public Class cPluginPoint
 
     Public Overrides ReadOnly Property NavigationTreeItemLocation() As String
         Get
-            Return "ndParameterization|ndEcopathOutputTools"
+            Return Me.NavTreeNodeRoot()
         End Get
     End Property
 
