@@ -59,6 +59,9 @@ Public Class AppLauncher
     Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
 
     Private m_strLastSelectedPath As String = ""
+    Private m_formStatePrev As FormWindowState = FormWindowState.Normal
+
+    ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
 
 #Region " Panels "
@@ -2528,13 +2531,14 @@ Public Class AppLauncher
             Me.MinimizeBox = False
             Me.TopMost = True
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+            Me.m_formStatePrev = Me.WindowState
             Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Else
             Me.MaximizeBox = True
             Me.MinimizeBox = True
             Me.TopMost = False
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable
-            Me.WindowState = System.Windows.Forms.FormWindowState.Normal
+            Me.WindowState = Me.m_formStatePrev
         End If
     End Sub
 
