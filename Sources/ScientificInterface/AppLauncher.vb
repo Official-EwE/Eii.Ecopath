@@ -106,8 +106,10 @@ Public Class AppLauncher
     Private WithEvents m_cmdViewStatusPane As cCommand = Nothing
     Private WithEvents m_cmdViewStartPanel As cCommand = Nothing
     Private WithEvents m_cmdViewRemarkPane As cCommand = Nothing
+    Private WithEvents m_cmdViewMenu As cCommand = Nothing
     Private WithEvents m_cmdViewModelBar As cCommand = Nothing
     Private WithEvents m_cmdViewStatusbar As cCommand = Nothing
+    Private WithEvents m_cmdViewFullScreen As cCommand = Nothing
     Private WithEvents m_cmdEditGroups As cCommand = Nothing
     Private WithEvents m_cmdEditMultiStanza As cCommand = Nothing
     Private WithEvents m_cmdEditFleets As cCommand = Nothing
@@ -365,13 +367,21 @@ Public Class AppLauncher
         Me.m_cmdViewRemarkPane = New cCommand(cmdh, "ViewPropertiesPane")
         Me.m_cmdViewRemarkPane.AddControl(Me.m_tsmiViewRemarks)
 
+        'Create and configure 'view menu' command
+        Me.m_cmdViewMenu = New cCommand(cmdh, "ViewMenu")
+        Me.m_cmdViewMenu.AddControl(Me.m_tsmiViewMenu)
+
         'Create and configure 'view Buttonbar' command
-        Me.m_cmdViewModelBar = New cCommand(cmdh, "ViewButtonBar")
+        Me.m_cmdViewModelBar = New cCommand(cmdh, "ViewModelBar")
         Me.m_cmdViewModelBar.AddControl(Me.m_tsmiViewModelBar)
 
         'Create and configure 'view statusbar' command
         Me.m_cmdViewStatusbar = New cCommand(cmdh, "ViewStatusbar")
         Me.m_cmdViewStatusbar.AddControl(Me.m_tsmiViewStatusBar)
+
+        'Create and configure 'presentation mode' command
+        Me.m_cmdViewFullScreen = New cCommand(cmdh, "ViewPresentationMode")
+        Me.m_cmdViewFullScreen.AddControl(Me.m_tsmiFullScreen)
 
         'Create and configure EditGroups command
         Me.m_cmdEditGroups = New cCommand(cmdh, "EditGroups")
@@ -2504,6 +2514,40 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; toggles main statusbar visibility
     ''' </summary>
+    Private Sub OnViewFullScreen(ByVal cmd As cCommand) Handles m_cmdViewFullScreen.OnInvoke
+
+        cmd.Checked = Not cmd.Checked
+
+        ' Affect UI elements
+        Me.m_ssMain.Visible = Not cmd.Checked
+        Me.m_tsModel.Visible = Not cmd.Checked
+        ' Me.m_menuMain.Visible = Not cmd.Checked
+
+        If cmd.Checked Then
+            Me.MaximizeBox = False
+            Me.MinimizeBox = False
+            Me.TopMost = True
+            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+            Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
+        Else
+            Me.MaximizeBox = True
+            Me.MinimizeBox = True
+            Me.TopMost = False
+            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable
+            Me.WindowState = System.Windows.Forms.FormWindowState.Normal
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdViewFullScreen">View FullScreen command</see>.
+    ''' </summary>
+    Private Sub OnUpdateViewFullScreen(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewFullScreen.OnUpdate
+        ' NOP
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; toggles main statusbar visibility
+    ''' </summary>
     Private Sub OnViewMainStatusbar(ByVal cmd As cCommand) Handles m_cmdViewStatusbar.OnInvoke
         Me.m_ssMain.Visible = Not cmd.Checked
     End Sub
@@ -2513,6 +2557,20 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateViewMainStatusbar(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewStatusbar.OnUpdate
         cmd.Checked = Me.m_ssMain.Visible
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; toggles main menu visibility
+    ''' </summary>
+    Private Sub OnViewMenu(ByVal cmd As cCommand) Handles m_cmdViewMenu.OnInvoke
+        Me.m_menuMain.Visible = Not cmd.Checked
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdViewMenu">View menu command</see>.
+    ''' </summary>
+    Private Sub OnUpdateViewMenu(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewMenu.OnUpdate
+        cmd.Checked = Me.m_menuMain.Visible
     End Sub
 
     ''' <summary>

@@ -22,9 +22,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim m_tssModel1 As System.Windows.Forms.ToolStripSeparator
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AppLauncher))
         Dim m_tssHelp2 As System.Windows.Forms.ToolStripSeparator
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AppLauncher))
         Dim m_tssFile1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssFile2 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssFile3 As System.Windows.Forms.ToolStripSeparator
@@ -41,6 +40,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Dim m_tssHelp1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcotracer1 As System.Windows.Forms.ToolStripSeparator
         Dim MenuEcospace As System.Windows.Forms.ToolStripMenuItem
+        Dim m_tssModel1 As System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceNew = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceLoad = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceSave = New System.Windows.Forms.ToolStripMenuItem
@@ -78,8 +78,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiViewNavigation = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewStatus = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewRemarks = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiViewMenu = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewModelBar = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewStatusBar = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
+        Me.m_tsmiFullScreen = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiViewItems = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuEcopath = New System.Windows.Forms.ToolStripMenuItem
@@ -107,6 +110,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiEcotracerSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_ssMain = New ScientificInterface.cEwEStatusBar
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
@@ -114,8 +118,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton
-        Me.m_ssMain = New ScientificInterface.cEwEStatusBar
-        m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator
@@ -133,14 +135,10 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         m_tssHelp1 = New System.Windows.Forms.ToolStripSeparator
         m_tssEcotracer1 = New System.Windows.Forms.ToolStripSeparator
         MenuEcospace = New System.Windows.Forms.ToolStripMenuItem
+        m_tssModel1 = New System.Windows.Forms.ToolStripSeparator
         Me.m_menuMain.SuspendLayout()
         Me.m_tsModel.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'm_tssModel1
-        '
-        m_tssModel1.Name = "m_tssModel1"
-        resources.ApplyResources(m_tssModel1, "m_tssModel1")
         '
         'm_tssHelp2
         '
@@ -287,6 +285,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiEcospaceImportLayers.Name = "m_tsmiEcospaceImportLayers"
         resources.ApplyResources(Me.m_tsmiEcospaceImportLayers, "m_tsmiEcospaceImportLayers")
         '
+        'm_tssModel1
+        '
+        m_tssModel1.Name = "m_tssModel1"
+        resources.ApplyResources(m_tssModel1, "m_tssModel1")
+        '
         'm_tsmiHelpContents
         '
         Me.m_tsmiHelpContents.Name = "m_tsmiHelpContents"
@@ -401,7 +404,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'MenuView
         '
-        Me.MenuView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewStartPage, Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, m_tssView1, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar, Me.ToolStripSeparator1, Me.m_tsmiViewItems})
+        Me.MenuView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewStartPage, Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, m_tssView1, Me.m_tsmiViewMenu, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar, Me.ToolStripSeparator3, Me.m_tsmiFullScreen, Me.ToolStripSeparator1, Me.m_tsmiViewItems})
         Me.MenuView.Name = "MenuView"
         resources.ApplyResources(Me.MenuView, "MenuView")
         '
@@ -425,6 +428,12 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiViewRemarks.Name = "m_tsmiViewRemarks"
         resources.ApplyResources(Me.m_tsmiViewRemarks, "m_tsmiViewRemarks")
         '
+        'm_tsmiViewMenu
+        '
+        Me.m_tsmiViewMenu.CheckOnClick = True
+        Me.m_tsmiViewMenu.Name = "m_tsmiViewMenu"
+        resources.ApplyResources(Me.m_tsmiViewMenu, "m_tsmiViewMenu")
+        '
         'm_tsmiViewModelBar
         '
         Me.m_tsmiViewModelBar.Name = "m_tsmiViewModelBar"
@@ -432,11 +441,19 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'm_tsmiViewStatusBar
         '
-        Me.m_tsmiViewStatusBar.Checked = True
         Me.m_tsmiViewStatusBar.CheckOnClick = True
-        Me.m_tsmiViewStatusBar.CheckState = System.Windows.Forms.CheckState.Checked
         Me.m_tsmiViewStatusBar.Name = "m_tsmiViewStatusBar"
         resources.ApplyResources(Me.m_tsmiViewStatusBar, "m_tsmiViewStatusBar")
+        '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        resources.ApplyResources(Me.ToolStripSeparator3, "ToolStripSeparator3")
+        '
+        'm_tsmiFullScreen
+        '
+        Me.m_tsmiFullScreen.Name = "m_tsmiFullScreen"
+        resources.ApplyResources(Me.m_tsmiFullScreen, "m_tsmiFullScreen")
         '
         'ToolStripSeparator1
         '
@@ -581,6 +598,12 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         resources.ApplyResources(Me.m_tsmiEcotracerDelete, "m_tsmiEcotracerDelete")
         Me.m_tsmiEcotracerDelete.Name = "m_tsmiEcotracerDelete"
         '
+        'm_ssMain
+        '
+        resources.ApplyResources(Me.m_ssMain, "m_ssMain")
+        Me.m_ssMain.Name = "m_ssMain"
+        Me.m_ssMain.ShowItemToolTips = True
+        '
         'm_tsModel
         '
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
@@ -626,12 +649,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
-        '
-        'm_ssMain
-        '
-        resources.ApplyResources(Me.m_ssMain, "m_ssMain")
-        Me.m_ssMain.Name = "m_ssMain"
-        Me.m_ssMain.ShowItemToolTips = True
         '
         'AppLauncher
         '
@@ -726,6 +743,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents m_tsmiEcopathEditTaxa As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiEcopathEditPedigree As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiFullScreen As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsmiViewMenu As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 
