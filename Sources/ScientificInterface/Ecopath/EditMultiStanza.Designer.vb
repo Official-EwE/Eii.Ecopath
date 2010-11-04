@@ -184,6 +184,7 @@ Namespace Ecopath
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel
+            Me.ControlBox = False
             Me.Controls.Add(Me.m_cmbFF)
             Me.Controls.Add(Me.m_cmbStanzaGroups)
             Me.Controls.Add(Me.m_cbFFecun)
@@ -202,11 +203,10 @@ Namespace Ecopath
             Me.Controls.Add(Me.m_btnCancel)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_btnCalculate)
-            Me.MaximizeBox = False
-            Me.MinimizeBox = False
             Me.Name = "EditMultiStanza"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
             Me.ResumeLayout(False)
             Me.PerformLayout()
 

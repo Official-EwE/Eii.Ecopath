@@ -203,6 +203,7 @@ Namespace Ecopath
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.ControlBox = False
             Me.Controls.Add(Me.m_hdrColors)
             Me.Controls.Add(Me.m_btnColorCustom)
             Me.Controls.Add(Me.m_btnColorDefaultCurrent)

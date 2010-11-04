@@ -35,10 +35,10 @@ Namespace Ecopath
             Me.m_btnDefaultAll = New System.Windows.Forms.Button
             Me.m_btnDefaultCurrent = New System.Windows.Forms.Button
             Me.m_btnCustom = New System.Windows.Forms.Button
-            Me.m_hdrColors = New cEwEHeaderLabel
-            Me.m_hdrOrder = New cEwEHeaderLabel
-            Me.m_hdrEdit = New cEwEHeaderLabel
-            Me.m_grid = New gridEditFleets
+            Me.m_hdrColors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_grid = New ScientificInterface.gridEditFleets
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -125,6 +125,7 @@ Namespace Ecopath
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = True
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
@@ -147,7 +148,6 @@ Namespace Ecopath
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
             'EditFleets
@@ -156,6 +156,7 @@ Namespace Ecopath
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.ControlBox = False
             Me.Controls.Add(Me.m_hdrColors)
             Me.Controls.Add(Me.m_hdrOrder)
             Me.Controls.Add(Me.m_hdrEdit)

@@ -303,49 +303,42 @@ Partial Class dlgEditGroupTaxon
         'm_btnSearchPhylum
         '
         resources.ApplyResources(Me.m_btnSearchPhylum, "m_btnSearchPhylum")
-        Me.m_btnSearchPhylum.Image = SharedResources.ZoomHS
         Me.m_btnSearchPhylum.Name = "m_btnSearchPhylum"
         Me.m_btnSearchPhylum.UseVisualStyleBackColor = True
         '
         'm_btnSearchClass
         '
         resources.ApplyResources(Me.m_btnSearchClass, "m_btnSearchClass")
-        Me.m_btnSearchClass.Image = SharedResources.ZoomHS
         Me.m_btnSearchClass.Name = "m_btnSearchClass"
         Me.m_btnSearchClass.UseVisualStyleBackColor = True
         '
         'm_btnSearchOrder
         '
         resources.ApplyResources(Me.m_btnSearchOrder, "m_btnSearchOrder")
-        Me.m_btnSearchOrder.Image = SharedResources.ZoomHS
         Me.m_btnSearchOrder.Name = "m_btnSearchOrder"
         Me.m_btnSearchOrder.UseVisualStyleBackColor = True
         '
         'm_btnSearchFamily
         '
         resources.ApplyResources(Me.m_btnSearchFamily, "m_btnSearchFamily")
-        Me.m_btnSearchFamily.Image = SharedResources.ZoomHS
         Me.m_btnSearchFamily.Name = "m_btnSearchFamily"
         Me.m_btnSearchFamily.UseVisualStyleBackColor = True
         '
         'm_btnSearchGenus
         '
         resources.ApplyResources(Me.m_btnSearchGenus, "m_btnSearchGenus")
-        Me.m_btnSearchGenus.Image = SharedResources.ZoomHS
         Me.m_btnSearchGenus.Name = "m_btnSearchGenus"
         Me.m_btnSearchGenus.UseVisualStyleBackColor = True
         '
         'm_btnSearchSpecies
         '
         resources.ApplyResources(Me.m_btnSearchSpecies, "m_btnSearchSpecies")
-        Me.m_btnSearchSpecies.Image = SharedResources.ZoomHS
         Me.m_btnSearchSpecies.Name = "m_btnSearchSpecies"
         Me.m_btnSearchSpecies.UseVisualStyleBackColor = True
         '
         'm_btnSearchCommon
         '
         resources.ApplyResources(Me.m_btnSearchCommon, "m_btnSearchCommon")
-        Me.m_btnSearchCommon.Image = SharedResources.ZoomHS
         Me.m_btnSearchCommon.Name = "m_btnSearchCommon"
         Me.m_btnSearchCommon.UseVisualStyleBackColor = True
         '
@@ -464,8 +457,6 @@ Partial Class dlgEditGroupTaxon
         Me.Controls.Add(Me.m_btnUpdate)
         Me.Controls.Add(Me.m_btnRemove)
         Me.Controls.Add(Me.m_btnAdd)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
         Me.Name = "dlgEditGroupTaxon"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False

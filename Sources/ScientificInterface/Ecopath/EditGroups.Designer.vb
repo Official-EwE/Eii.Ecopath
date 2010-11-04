@@ -34,15 +34,16 @@ Namespace Ecopath
             Me.Cancel_Button = New System.Windows.Forms.Button
             Me.m_bntColorDefaultAll = New System.Windows.Forms.Button
             Me.m_btnColorAlternateAll = New System.Windows.Forms.Button
-            Me.m_hdrColours = New cEwEHeaderLabel
-            Me.m_hdrEdit = New cEwEHeaderLabel
-            Me.m_hdrOrder = New cEwEHeaderLabel
+            Me.m_hdrColours = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_btnColourCustomCurrent = New System.Windows.Forms.Button
             Me.m_btnColourDefaultCurrent = New System.Windows.Forms.Button
             Me.SuspendLayout()
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = True
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
@@ -67,7 +68,6 @@ Namespace Ecopath
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
             'm_btnInsert
@@ -156,6 +156,7 @@ Namespace Ecopath
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.ControlBox = False
             Me.Controls.Add(Me.Cancel_Button)
             Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.m_btnColourDefaultCurrent)
