@@ -76,7 +76,7 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "mailto:v.christensen@fisheries.ubc.ca,j.steenbeek@fisheries.ubc.ca"
+            Return "mailto:ewedevteam@gmail.com"
         End Get
     End Property
 
