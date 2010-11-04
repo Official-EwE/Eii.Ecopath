@@ -48,6 +48,11 @@ Namespace Ecopath
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+            ' Need to center myself, no?
+            MyBase.OnLoad(e)
+
+            If (Me.m_uic Is Nothing) Then Return
+
             Dim bEcosimLoaded As Boolean = (Me.m_uic.Core.ActiveEcosimScenarioIndex > -1)
             Dim mgr As cForcingFunctionManager = Me.m_uic.Core.ForcingShapeManager
             Dim lItems As New List(Of Object)
