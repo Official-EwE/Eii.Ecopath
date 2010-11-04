@@ -11,12 +11,12 @@ Public Class cNTCPluginTabMarket
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Market"
+            Return My.Resources.NAVTREE_INPUT_TABLE_MARKET
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return "ndMarket"
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.TableMarket
     End Function
 
     Public Overrides ReadOnly Property Description() As String

@@ -11,12 +11,12 @@ Public Class cNTCPluginDefaults
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Defaults"
+            Return My.Resources.NAVTREE_INPUT_DEFAULTS
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return "ndDefaults"
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.Defaults
     End Function
 
     Public Overrides ReadOnly Property Description() As String

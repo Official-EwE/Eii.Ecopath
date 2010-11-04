@@ -11,12 +11,12 @@ Public Class cNTCPluginRun
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Run value chain"
+            Return My.Resources.NAVTREE_OUTPUT_RUN
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return "ndRun"
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.Run
     End Function
 
     Public Overrides ReadOnly Property Description() As String

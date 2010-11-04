@@ -11,12 +11,12 @@ Public Class cNTCPluginParameters
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Parameters"
+            Return My.Resources.NAVTREE_INPUT_PARAMETERS
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return ""
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.Parameters
     End Function
 
     Public Overrides ReadOnly Property Description() As String

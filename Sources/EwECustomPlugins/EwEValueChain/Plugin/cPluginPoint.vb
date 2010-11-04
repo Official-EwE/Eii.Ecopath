@@ -55,7 +55,7 @@ Public Class cPluginPoint
         End If
     End Sub
 
-    Public Shared Function SwitchForm(ByVal strFormName As String) As frmMain
+    Public Shared Function SwitchForm(ByVal page As frmMain.eValueChainPageTypes) As frmMain
 
         ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
         Dim bIsFormReady As Boolean = False
@@ -68,12 +68,12 @@ Public Class cPluginPoint
             ' Does form still exist?
             If Not cPluginPoint._inst_.HasInterface() Then
                 ' #No: create it
-                frm = New frmMain(cPluginPoint._inst_, "Value chain")
+                frm = New frmMain(cPluginPoint._inst_)
                 cPluginPoint._inst_.m_form = frm
             Else
                 frm = cPluginPoint._inst_.m_form
             End If
-            frm.ShowForm(strFormName)
+            frm.ShowForm(page)
         Else
             Debug.Assert(False, "Plugin was not initialized properly.")
         End If
@@ -93,12 +93,12 @@ Public Class cPluginPoint
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Value chain"
+            Return My.Resources.GENERIC_CAPTION
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return ""
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.Parameters
     End Function
 
     Public Overrides ReadOnly Property NavigationTreeItemLocation() As String

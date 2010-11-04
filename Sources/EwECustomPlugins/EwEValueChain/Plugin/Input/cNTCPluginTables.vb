@@ -11,12 +11,12 @@ Public Class cNTCPluginTables
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Tables"
+            Return My.Resources.NAVTREE_INPUT_TABLES
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return "ndTables"
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.TableProducers
     End Function
 
     Public Overrides ReadOnly Property Description() As String

@@ -14,20 +14,38 @@ Public Class frmMain
 
 #Region " Vars "
 
+    ''' <summary>
+    ''' The pages supported by the value chain.
+    ''' </summary>
+    Public Enum eValueChainPageTypes As Integer
+        NotSet = 0
+        Parameters
+        Flow
+        Defaults
+        TableProducers
+        TableProcessors
+        TableMarket
+        TableDistributors
+        TableConsumers
+        Run
+    End Enum
+
     Private m_plugin As cPluginPoint = Nothing
-    Private m_strForm As String = "N/A"
+    Private m_pageCurrent As eValueChainPageTypes = eValueChainPageTypes.NotSet
+    Private m_bInUpdate As Boolean = False
 
 #End Region ' Vars
 
 #Region " Constructor "
 
-    Public Sub New(ByVal plugin As cPluginPoint, ByVal strTitle As String)
+    Public Sub New(ByVal plugin As cPluginPoint)
+
         InitializeComponent()
 
         Me.m_plugin = plugin
 
-        Me.Text = strTitle
-        Me.TabText = strTitle
+        Me.Text = My.Resources.GENERIC_CAPTION
+        Me.TabText = My.Resources.GENERIC_CAPTION
 
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
@@ -35,58 +53,52 @@ Public Class frmMain
 
 #End Region ' Constructor
 
-    Public Overrides ReadOnly Property IsRunForm() As Boolean
-        Get
-            Return True
-        End Get
-    End Property
+#Region " Public interfaces "
 
-#Region " Event handlers "
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Switch to a form within the value chain plug-in with a given name.
+    ''' </summary>
+    ''' <param name="page">Indicator of the page to show.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub ShowForm(ByVal page As eValueChainPageTypes)
 
-    Private Sub ExpandNodes(ByVal tn As TreeNode)
-        tn.ExpandAll()
-        For Each tnChild As TreeNode In tn.Nodes
-            Me.ExpandNodes(tnChild)
-        Next
-    End Sub
+        If Me.m_pageCurrent = page Then Return
+        If Me.m_bInUpdate Then Return
 
-    Private Sub tvECost_AfterSelect(ByVal sender As System.Object, ByVal e As TreeViewEventArgs)
+        Me.m_bInUpdate = True
+        Me.m_pageCurrent = page
 
-        Me.ShowForm(e.Node.Name)
-    End Sub
-
-    Public Sub ShowForm(ByVal strFormName As String)
-
-        strFormName = Me.ResolveFormName(strFormName)
-
-        If Me.m_strForm = strFormName Then Return
-
-        Select Case strFormName
-            Case "ndParameters"
+        Select Case Me.m_pageCurrent
+            Case eValueChainPageTypes.Parameters
                 Me.ShowForm(New ucParameters(Me.m_plugin.Data, Me.m_plugin.Context))
-            Case "ndProducer"
+            Case eValueChainPageTypes.TableProducers
                 Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Producer))
-            Case "ndProcessing"
+            Case eValueChainPageTypes.TableProcessors
                 Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Processing))
-            Case "ndDistribution"
+            Case eValueChainPageTypes.TableDistributors
                 Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Distribution))
-            Case "ndMarket"
+            Case eValueChainPageTypes.TableMarket
                 Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Market))
-            Case "ndConsumer"
+            Case eValueChainPageTypes.TableConsumers
                 Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Consumer))
-            Case "ndFlow"
+            Case eValueChainPageTypes.Flow
                 Me.ShowForm(New ucEditFlow(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Data.FlowDiagram(0)))
-            Case "ndDefaults"
+            Case eValueChainPageTypes.Defaults
                 Me.ShowForm(New ucDefaults(Me.m_plugin.Context, Me.m_plugin.Data))
-            Case "ndRun"
+            Case eValueChainPageTypes.Run
                 Me.ShowForm(New ucResults(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results))
             Case Else
                 Debug.Assert(False)
         End Select
 
-        Me.m_strForm = strFormName
+        Me.m_bInUpdate = False
 
     End Sub
+
+#End Region
+
+#Region " Internals "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

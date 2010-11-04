@@ -151,4 +151,40 @@
   <data name="ValueChain_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ValueChain_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="GENERIC_CAPTION" xml:space="preserve">
+    <value>Value chain</value>
+  </data>
+  <data name="GENERIC_TOOLTIP" xml:space="preserve">
+    <value>Value chain plug-in</value>
+  </data>
+  <data name="NAVTREE_INPUT_DEFAULTS" xml:space="preserve">
+    <value>Defaults</value>
+  </data>
+  <data name="NAVTREE_INPUT_FLOW" xml:space="preserve">
+    <value>Flow</value>
+  </data>
+  <data name="NAVTREE_INPUT_PARAMETERS" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLES" xml:space="preserve">
+    <value>Components</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_CONSUMERS" xml:space="preserve">
+    <value>Consumers</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_DISTRIBUTORS" xml:space="preserve">
+    <value>Distributors</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_MARKET" xml:space="preserve">
+    <value>Market</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_PROCESSORS" xml:space="preserve">
+    <value>Processors</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_PRODUCERS" xml:space="preserve">
+    <value>Producers</value>
+  </data>
+  <data name="NAVTREE_OUTPUT_RUN" xml:space="preserve">
+    <value>Run value chain</value>
+  </data>
 </root>

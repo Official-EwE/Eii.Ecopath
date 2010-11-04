@@ -11,12 +11,12 @@ Public Class cNTCPluginTabProd
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Producers"
+            Return My.Resources.NAVTREE_INPUT_TABLE_PRODUCERS
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return "ndProducer"
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.TableProducers
     End Function
 
     Public Overrides ReadOnly Property Description() As String

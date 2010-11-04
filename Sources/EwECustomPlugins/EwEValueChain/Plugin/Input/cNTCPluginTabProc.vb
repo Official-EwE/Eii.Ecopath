@@ -11,12 +11,12 @@ Public Class cNTCPluginTabProc
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Processing"
+            Return My.Resources.NAVTREE_INPUT_TABLE_PROCESSORS
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return "ndProcessing"
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.TableProcessors
     End Function
 
     Public Overrides ReadOnly Property Description() As String

@@ -11,12 +11,12 @@ Public Class cNTCPluginTabCons
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Consumers"
+            Return My.Resources.NAVTREE_INPUT_TABLE_CONSUMERS
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return "ndConsumer"
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.TableConsumers
     End Function
 
     Public Overrides ReadOnly Property Description() As String

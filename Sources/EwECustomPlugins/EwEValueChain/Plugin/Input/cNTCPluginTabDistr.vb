@@ -11,12 +11,12 @@ Public Class cNTCPluginTabDistr
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Distributors"
+            Return My.Resources.NAVTREE_INPUT_TABLE_DISTRIBUTORS
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return "ndDistribution"
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.TableDistributors
     End Function
 
     Public Overrides ReadOnly Property Description() As String

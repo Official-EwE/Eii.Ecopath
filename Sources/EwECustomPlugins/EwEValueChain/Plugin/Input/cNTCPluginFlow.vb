@@ -11,12 +11,12 @@ Public Class cNTCPluginFlow
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return "Flow"
+            Return My.Resources.NAVTREE_INPUT_FLOW
         End Get
     End Property
 
-    Public Overrides Function FormPage() As String
-        Return "ndFlow"
+    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
+        Return frmMain.eValueChainPageTypes.Flow
     End Function
 
     Public Overrides ReadOnly Property Description() As String

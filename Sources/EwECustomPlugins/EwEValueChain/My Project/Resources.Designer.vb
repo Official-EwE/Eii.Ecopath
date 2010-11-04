@@ -81,6 +81,24 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Value chain.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Value chain plug-in.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_TOOLTIP() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_TOOLTIP", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property Lenfest_Logo_50px() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Lenfest_Logo_50px", resourceCulture)
@@ -99,6 +117,96 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("market_mono", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Defaults.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_INPUT_DEFAULTS() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_INPUT_DEFAULTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Flow.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_INPUT_FLOW() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_INPUT_FLOW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Parameters.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_INPUT_PARAMETERS() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_INPUT_PARAMETERS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Consumers.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_INPUT_TABLE_CONSUMERS() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_INPUT_TABLE_CONSUMERS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Distributors.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_INPUT_TABLE_DISTRIBUTORS() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_INPUT_TABLE_DISTRIBUTORS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Market.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_INPUT_TABLE_MARKET() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_INPUT_TABLE_MARKET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Processors.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_INPUT_TABLE_PROCESSORS() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_INPUT_TABLE_PROCESSORS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Producers.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_INPUT_TABLE_PRODUCERS() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_INPUT_TABLE_PRODUCERS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Components.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_INPUT_TABLES() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_INPUT_TABLES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run value chain.
+        '''</summary>
+        Friend ReadOnly Property NAVTREE_OUTPUT_RUN() As String
+            Get
+                Return ResourceManager.GetString("NAVTREE_OUTPUT_RUN", resourceCulture)
             End Get
         End Property
         
