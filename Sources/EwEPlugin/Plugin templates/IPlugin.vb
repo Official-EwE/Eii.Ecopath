@@ -20,6 +20,11 @@ Public Interface IPlugin
     ''' <summary>
     ''' Uniquely identifies a plugin.
     ''' </summary>
+    ''' <remarks>
+    ''' The name field will be used to determine the order of appearance of 
+    ''' user interface plug-in elements; user interface elements originating
+    ''' from plug-ins will be sorted by this property in ascending order.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     ReadOnly Property Name() As String
 
