@@ -328,7 +328,10 @@ Namespace DataSources
 
             If (Object.ReferenceEquals(objResult, Nothing)) Then
                 objResult = objValueDefault
-            ElseIf (Not Object.ReferenceEquals(objValueIgnore, Nothing)) Then
+            ElseIf (Not Object.ReferenceEquals(objValueIgnore, Nothing)) _
+                And Not (IsDBNull(objResult)) _
+                And Not (IsDBNull(objValueIgnore)) Then
+
                 ' Compare ignore values
                 If TypeOf objResult Is String Then
                     Try
@@ -352,6 +355,7 @@ Namespace DataSources
                     Catch ex As Exception
                     End Try
                 End If
+
             End If
 
             If (Convert.IsDBNull(objResult)) Then
