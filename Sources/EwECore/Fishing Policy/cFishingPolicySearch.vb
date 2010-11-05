@@ -1,6 +1,6 @@
 
 'Option Explicit On
-'Option Strict On
+Option Strict On
 
 Imports EwECore.Ecosim
 Imports EwECore.SearchObjectives
@@ -57,7 +57,7 @@ Namespace FishingPolicy
 
         Public MaxRuns As Integer
         Public PrintOn As Boolean
-        Public TotalTime As Single
+        Public TotalTime As Integer
         Public TotValBase As Double
         Public EmployBase As Double
         Public ManValueBase As Double
@@ -84,7 +84,7 @@ Namespace FishingPolicy
         Private CritValue(cSearchDatastructures.N_CRIT_RESULTS) As Single
         'Dim X() As Double
         Private G() As Double, Xm() As Double ', Nam$(Nmax)
-        Private H() As Single, W() As Double    'was 1000 when nmax was 100
+        Private H() As Double, W() As Double    'was 1000 when nmax was 100
         'Dim X(Nmax) As Double, G(Nmax) As Double, Xm(Nmax) As Double, Nam$(Nmax)
         'Dim H(10000) As Double, W(10000) As Double    'was 1000 when nmax was 100
         Private ColrNo() As Long
@@ -365,7 +365,7 @@ Namespace FishingPolicy
 
                 For iblk As Integer = 1 To n
                     If X(iblk) < Math.Log(Me.m_searchData.MaxEffort) Then
-                        Results.BlockResults(iblk) = Math.Exp(X(iblk))
+                        Results.BlockResults(iblk) = CSng(Math.Exp(X(iblk)))
                     Else
                         Results.BlockResults(iblk) = 60
                     End If
@@ -377,7 +377,7 @@ Namespace FishingPolicy
                 End If
                 If WeightCorrection <= 0 Then WeightCorrection = 1
 
-                Results.Totals = (-F + VlocalPenalty) / WeightCorrection
+                Results.Totals = CSng((-F + VlocalPenalty) / WeightCorrection)
 
                 For icrit As Integer = 1 To cSearchDatastructures.N_CRIT_RESULTS
                     Results.CriteriaValues(icrit) = CritValue(icrit)
@@ -566,7 +566,7 @@ Namespace FishingPolicy
                 'Next i
 
                 Dim ndims As Integer
-                ndims = n * (n + 1) / 2
+                ndims = n * (n + 1) \ 2
                 If ndims < n * 4 Then
                     ndims = n * 4
                 End If
@@ -584,8 +584,8 @@ Namespace FishingPolicy
 
                 'do not mess with the following parameters-used by Fletch
                 StepSize = 0.001
-                eps = 0.000001
-                'eps = 0.1
+                'eps = 0.000001
+                eps = 0.1
                 Gtol = 0.0000000001
                 mode = 1
                 maxfn = MaxNoOfIterations    '200
@@ -612,14 +612,14 @@ Namespace FishingPolicy
 
         End Sub
 
-        Sub flet(ByVal F As Double, ByVal X() As Double, ByVal n As Integer, ByVal G() As Double, ByVal H() As Single, ByVal dfn As Double, ByVal Xm() As Double, _
+        Sub flet(ByVal F As Double, ByVal X() As Double, ByVal n As Integer, ByVal G() As Double, ByVal H() As Double, ByVal dfn As Double, ByVal Xm() As Double, _
                      ByVal hh As Double, ByVal eps As Double, ByVal mode As Integer, ByVal maxfn As Integer, ByVal iprint As Integer, ByVal W() As Double, ByVal iexit As Integer)
             '      subroutine flet(f,x,n,g,h,dfn,xm,hh,eps,
             '     *                 mode,maxfn,iprint,w,iexit,func,*)
             '      implicit real*8 (a-h,o-z)
             '      dimension x(20),g(20),h(100),w(100),xm(20)
 
-            Dim NN As Double
+            Dim NN As Integer
             Dim llog As Integer
             Dim Np As Integer
             Dim N1 As Integer
@@ -662,7 +662,7 @@ Namespace FishingPolicy
             llog = 1
             Np = n + 1
             N1 = n - 1
-            NN = n * Np / 2
+            NN = n * Np \ 2
             iss = n
             iu = n
             iv = n + n
@@ -671,7 +671,7 @@ Namespace FishingPolicy
             iexit = 0
             If mode = 3 Then GoTo pta
             If mode = 2 Then GoTo ptb
-            ij = NN + 1
+            ij = CInt(NN + 1)
 
             For i = 1 To n
                 For j = 1 To i
@@ -987,6 +987,7 @@ pte:        ' continue
             End If
             If (iprint = 0) Then
                 Debug.Assert(False, "Exiting flet().")
+                Me.addMessage("Exiting optimization.")
                 Return
             End If
 
@@ -1003,7 +1004,7 @@ pte:        ' continue
             'End If
 
             printstats(Xtime, itn, ifn, F, n, X, G)
-            Me.addMessage("Optimization done")
+            Me.addMessage("Optimization done", eMessageType.Progress, eMessageImportance.Information)
             ' MsgBox("Optimization done", vbOKOnly, "EwE: optimum fishing strategy")
             GoTo endline
 
@@ -1083,11 +1084,11 @@ endline:    ' '
                     VlocalPenalty = VlocalPenalty + 0.001 * X(i) ^ 2
                 Next
 
-                If TotValBase <> 0 Then CritValue(eSearchCriteriaResultTypes.TotalValue) = m_searchData.totval / TotValBase
-                If EmployBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Employment) = m_searchData.Employ / EmployBase
-                If ManValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.MandateReb) = m_searchData.manvalue / ManValueBase
-                If EcoValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Ecological) = m_searchData.ecovalue / EcoValueBase
-                If BioDivBase <> 0 Then CritValue(eSearchCriteriaResultTypes.BioDiversity) = m_searchData.KemptonQ / BioDivBase
+                If TotValBase <> 0 Then CritValue(eSearchCriteriaResultTypes.TotalValue) = CSng(m_searchData.totval / TotValBase)
+                If EmployBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Employment) = CSng(m_searchData.Employ / EmployBase)
+                If ManValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.MandateReb) = CSng(m_searchData.manvalue / ManValueBase)
+                If EcoValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Ecological) = CSng(m_searchData.ecovalue / EcoValueBase)
+                If BioDivBase <> 0 Then CritValue(eSearchCriteriaResultTypes.BioDiversity) = CSng(m_searchData.KemptonQ / BioDivBase)
 
                 returnvalue = VlocalPenalty - m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_searchData.totval / TotValBase - _
                         m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * m_searchData.Employ / EmployBase - _
@@ -1265,7 +1266,7 @@ endline:    ' '
 
         Sub MNBRAK(ByRef Ax As Double, ByRef Bx As Double, ByRef cx As Double, ByRef Fa As Double, ByRef Fb As Double, ByRef FC As Double, ByRef Dum As Double)
             Dim Q As Double, R As Double, Gold As Double, Glimit As Double, Tiny As Double
-            Dim U As Double, Ulim As Double, Fu As Double, done%
+            Dim U As Double, Ulim As Double, Fu As Double, done As Boolean
             Gold = 1.618034
             Glimit = 100.0!
             Tiny = 1.0E-20
@@ -1283,7 +1284,7 @@ endline:    ' '
             FC = FUNC(cx)
             Do
                 If Fb < FC Then Exit Do
-                done% = -1
+                done = True '-1
                 R = (Bx - Ax) * (Fb - FC)
                 Q = (Bx - cx) * (Fb - Fa)
                 Dum = Q - R
@@ -1322,7 +1323,7 @@ endline:    ' '
                     U = cx + Gold * (cx - Bx)
                     Fu = FUNC(U)
                 End If
-                If done% Then
+                If done Then
                     Ax = Bx
                     Bx = cx
                     cx = U
@@ -1330,15 +1331,15 @@ endline:    ' '
                     Fb = FC
                     FC = Fu
                 Else
-                    done% = 0
+                    done = False '0
                 End If
-            Loop While Not done%
+            Loop While Not done
         End Sub
 
         Function BRENT(ByRef Ax As Double, ByRef Bx As Double, ByRef cx As Double, ByRef Dum As Double, ByRef Tol As Double, ByRef Xmin As Double) As Double
             Dim Itmax As Integer, Cgold As Double, Zeps As Double, A As Double, B As Double
             Dim v As Double, W As Double, X As Double, E As Double, Fx As Double
-            Dim Fval As Double, Fw As Double, iter As Integer, done%
+            Dim Fval As Double, Fw As Double, iter As Integer, done As Boolean
             Dim Xm As Double, Tol1 As Double, Tol2 As Double, R As Double, P As Double, Q As Double
             Dim d As Double, Etemp As Double, U As Double, Fu As Double
             Itmax = 100
@@ -1360,7 +1361,7 @@ endline:    ' '
                 Tol1 = Tol * Math.Abs(X) + Zeps
                 Tol2 = 2.0! * Tol1
                 If Math.Abs(X - Xm) <= Tol2 - 0.5 * (B - A) Then Exit For
-                done% = -1
+                done = True '-1
                 If Math.Abs(E) > Tol1 Then
                     R = (X - W) * (Fx - Fval)
                     Q = (X - v) * (Fx - Fw)
@@ -1375,10 +1376,10 @@ endline:    ' '
                         d = P / Q
                         U = X + d
                         If U - A < Tol2 Or B - U < Tol2 Then d = Math.Abs(Tol1) * Math.Sign(Xm - X)
-                        done% = 0
+                        done = False '0
                     End If
                 End If
-                If done% Then
+                If done Then
                     If X >= Xm Then
                         E = A - X
                     Else
@@ -1444,16 +1445,16 @@ endline:    ' '
 
         Sub SearchForBaseProfitability(ByVal X() As Double, ByVal n As Integer)
             ' Dim totval As Double, Employ As Double, manvalue As Double, ecovalue As Double
-            Dim BaseIncome() As Single, Temp As Single
+            Dim BaseIncome() As Single, Temp As Double
             Dim CostToI() As Single, GainToJ(,) As Single, iter As Integer
             Dim PaidToJ() As Single
             Dim tcost As Single
             Dim Xtime As Double
             Dim RelaxWt As Single
             Dim GroMax As Single
-            Dim Delp() As Single, LastX As Single, DelX() As Single, LastP() As Single, DpDx() As Single
-            Dim i As Integer, j As Integer, K As Integer, SpGaintoJ
-            Dim gro As Single, SumGro As Double
+            Dim Delp() As Single, LastX As Double, DelX() As Double, LastP() As Single, DpDx() As Double
+            Dim i As Integer, j As Integer, K As Integer, SpGaintoJ As Single
+            Dim gro As Double, SumGro As Double
 
             Dim epdata As cEcopathDataStructures = m_core.m_EcoPathData
 
@@ -1539,8 +1540,8 @@ endline:    ' '
                 SumGro = 0
                 nch = 0
                 For i = 1 To m_searchData.NumFleets
-                    tcost = (epdata.cost(i, eCostIndex.CUPE) + epdata.cost(i, eCostIndex.Sail)) * Math.Exp(X(i)) + CostToI(i) + 0.0000000001
-                    tincome = BaseIncome(i) + PropToPlaintiff * PaidToJ(i) + 0.0000000001
+                    tcost = CSng((epdata.cost(i, eCostIndex.CUPE) + epdata.cost(i, eCostIndex.Sail)) * Math.Exp(X(i)) + CostToI(i) + 0.0000000001)
+                    tincome = CSng(BaseIncome(i) + PropToPlaintiff * PaidToJ(i) + 0.0000000001)
 
                     Profitability(i) = (tincome - tcost) / tincome - m_searchData.TargetProfitability(i)
                     LastX = X(i)
@@ -1592,7 +1593,7 @@ endline:    ' '
                     Results.Profitability(iflt) = Profitability(iflt)
 
                     For iflt2 As Integer = 1 To Results.nFleets
-                        Results.CompensationMatrix(iflt, iflt2) = PaidToJbyI(iflt, iflt2) / (m_searchData.LastYearIncome(iflt) + 1.0E-20)
+                        Results.CompensationMatrix(iflt, iflt2) = CSng(PaidToJbyI(iflt, iflt2) / (m_searchData.LastYearIncome(iflt) + 1.0E-20))
                     Next iflt2
 
                 Next iflt
@@ -1689,7 +1690,7 @@ Next
                             End If
                         End If
                     Next
-                    If maxF > 0 Then LimitFPenalty = LimitFPenalty * (m_searchData.FLimit(Grp) / maxF) ^ 2 ': Stop
+                    If maxF > 0 Then LimitFPenalty = CSng(LimitFPenalty * (m_searchData.FLimit(Grp) / maxF) ^ 2) ': Stop
                 End If
             Next
 
