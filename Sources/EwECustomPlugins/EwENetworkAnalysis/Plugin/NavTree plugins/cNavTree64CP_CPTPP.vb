@@ -21,7 +21,7 @@ Public Class cNavTree64CP_CPTPP
     End Property
 
     Public Overrides Function FormPage() As frmNetworkAnalysis.eNetworkAnalysisPageTypes
-        Return frmNetworkAnalysis.eNetworkAnalysisPageTypes.Credits
+        Return frmNetworkAnalysis.eNetworkAnalysisPageTypes.Pathway_pred_prey
     End Function
 
     Public Overrides ReadOnly Property Name() As String

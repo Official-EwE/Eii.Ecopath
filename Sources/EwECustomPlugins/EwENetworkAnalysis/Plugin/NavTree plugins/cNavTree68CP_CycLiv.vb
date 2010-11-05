@@ -21,7 +21,7 @@ Public Class cNavTree68CP_CycLiv
     End Property
 
     Public Overrides Function FormPage() As frmNetworkAnalysis.eNetworkAnalysisPageTypes
-        Return frmNetworkAnalysis.eNetworkAnalysisPageTypes.Credits
+        Return frmNetworkAnalysis.eNetworkAnalysisPageTypes.Pathway_living
     End Function
 
     Public Overrides ReadOnly Property Name() As String

@@ -21,7 +21,7 @@ Public Class cNavTree01TLD
     End Property
 
     Public Overrides Function FormPage() As frmNetworkAnalysis.eNetworkAnalysisPageTypes
-        Return frmNetworkAnalysis.eNetworkAnalysisPageTypes.Credits
+        Return frmNetworkAnalysis.eNetworkAnalysisPageTypes.RelativeFlows
     End Function
 
     Public Overrides ReadOnly Property Name() As String
