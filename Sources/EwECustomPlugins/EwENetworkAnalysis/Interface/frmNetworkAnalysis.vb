@@ -55,6 +55,8 @@ Public Class frmNetworkAnalysis
         WithPrimaryProductionRequiredEstimate
     End Enum
 
+    Private m_pageCurrent As eNetworkAnalysisPageTypes = eNetworkAnalysisPageTypes.NotSet
+
     Private m_networkmanager As cNetworkManager = Nothing
     ''' <summary>Control manager in charge of UI elements.</summary>
     Private m_contentmanager As cContentManager = Nothing
@@ -127,7 +129,7 @@ Public Class frmNetworkAnalysis
     End Sub
 
     Private Sub tvNetworkAnalysis_AfterSelect(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
-        Handles tvNetworkAnalysis.AfterSelect
+        Handles m_tvNetworkAnalysis.AfterSelect
 
         Me.UpdateContent()
 
@@ -309,12 +311,220 @@ Public Class frmNetworkAnalysis
     End Sub
 
     Public Sub ShowForm(ByVal page As eNetworkAnalysisPageTypes)
-        Me.UpdateContent()
+
+        Me.m_pageCurrent = page
+
+        Me.SuspendLayout()
+
+        If (Me.m_contentmanager IsNot Nothing) Then
+            Me.m_contentmanager.Detach()
+            Me.m_contentmanager = Nothing
+        End If
+
+        ' Make sure main network has ran
+        Me.m_networkmanager.RunMainNetwork()
+
+        Select Case page
+
+            Case eNetworkAnalysisPageTypes.Credits
+                Me.m_contentmanager = Nothing
+
+            Case eNetworkAnalysisPageTypes.RelativeFlows
+                Me.m_contentmanager = New cRelativeFlows()
+
+            Case eNetworkAnalysisPageTypes.AbsoluteFlows
+                Me.m_contentmanager = New cAbsoluteFlows()
+
+            Case eNetworkAnalysisPageTypes.TransferEfficiency
+                Me.m_contentmanager = New cTransferEfficiency()
+
+            Case eNetworkAnalysisPageTypes.FlowPyramid
+                Me.m_contentmanager = New cFlowPyramid()
+
+            Case eNetworkAnalysisPageTypes.BiomassByTrophicLevel
+                Me.m_contentmanager = New cBiomassByTrophicLevel()
+
+            Case eNetworkAnalysisPageTypes.BiomassPyramid
+                Me.m_contentmanager = New cBiomassPyramid()
+
+            Case eNetworkAnalysisPageTypes.CatchByTrophicLevel
+                Me.m_contentmanager = New cCatchByTrophicLevel()
+
+            Case eNetworkAnalysisPageTypes.CatchPyramid
+                Me.m_contentmanager = New cCatchPyramid()
+
+            Case eNetworkAnalysisPageTypes.FromPrimaryProducers
+                Me.m_contentmanager = New cFromPrimaryProd()
+
+            Case eNetworkAnalysisPageTypes.FromDetritus
+                Me.m_contentmanager = New cFromDetritus()
+
+            Case eNetworkAnalysisPageTypes.FromAllCombined
+                Me.m_contentmanager = New cFromAllCombined()
+
+            Case eNetworkAnalysisPageTypes.ForHarvestOfAllGroups
+                Me.m_contentmanager = New cForHarvestOfAllGp()
+
+            Case eNetworkAnalysisPageTypes.ForConsumptionOfAllGroups
+                Me.m_contentmanager = New cForConsumpOfAllGp()
+
+            Case eNetworkAnalysisPageTypes.ImpactData
+                Me.m_contentmanager = New cImpactData()
+
+            Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpact
+                Me.m_contentmanager = New cPlotOfMixedTrophicImpact()
+
+            Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpactEwE5
+                Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
+
+            Case eNetworkAnalysisPageTypes.KeystonenessTable
+                Me.m_contentmanager = New cKeystonenessTable()
+
+            Case eNetworkAnalysisPageTypes.KeystonenessGraph
+                Me.m_contentmanager = New cKeystonenessGraph()
+
+            Case eNetworkAnalysisPageTypes.Total
+                Me.m_contentmanager = New cTotal()
+
+            Case eNetworkAnalysisPageTypes.ByGroup
+                Me.m_contentmanager = New cByGroup()
+
+            Case eNetworkAnalysisPageTypes.FlowFromDetritus
+                Me.m_contentmanager = New cFlowFromDetritus()
+
+            Case eNetworkAnalysisPageTypes.Pathway_cons_tl1
+                Me.m_contentmanager = New TL1ToConsumer.cPathways()
+
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_tl1
+                Me.m_contentmanager = New TL1ToConsumer.cSummaryPathways()
+
+            Case eNetworkAnalysisPageTypes.Pathway_cons_prey_tl1
+                Me.m_contentmanager = New TL1ToPreyToConsumer.cPathways()
+
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_prey_tl1
+                Me.m_contentmanager = New TL1ToConsumer.cSummaryPathways()
+
+            Case eNetworkAnalysisPageTypes.Pathway_pred_prey
+                Me.m_contentmanager = New PreyToPredator.cPathways()
+
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_pred_prey
+                Me.m_contentmanager = New PreyToPredator.cSummaryPathways()
+
+            Case eNetworkAnalysisPageTypes.Pathway_living
+                Me.m_contentmanager = New CyclesLiving.cPathways()
+
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_living
+                Me.m_contentmanager = New CyclesLiving.cSummaryPathways()
+
+            Case eNetworkAnalysisPageTypes.Pathway_all
+                Me.m_contentmanager = New CyclesAll.cPathways()
+
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_all
+                Me.m_contentmanager = New CyclesAll.cSummaryPathways()
+
+            Case eNetworkAnalysisPageTypes.CyclingAndPathLength
+                Me.m_contentmanager = New cCyclingAndPathLen()
+
+            Case eNetworkAnalysisPageTypes.LindemanSpine
+                Me.m_contentmanager = New cLindemanSpine()
+
+            Case eNetworkAnalysisPageTypes.WithoutPrimaryProductionRequiredEstimate
+                Me.m_contentmanager = New cIndicesWithoutPPREst()
+
+            Case eNetworkAnalysisPageTypes.WithPrimaryProductionRequiredEstimate
+                Me.m_contentmanager = New cIndicesWithPPREst()
+
+                ' JS 27apr09: discontinued, StyleGuide group/fleet visible flags should be used for this (if ever)
+                ' JS 01may09: besides, the interface will be triggered from a toolbar btn instead of a tree node.
+                '             Changing viz items will need to cause toolbars to refresh, grid population code to 
+                '             change, etc... It's not straight-forward at all!
+
+                'Case My.Resources.TREE_NODE_SHOW_HIDE_GRP
+                '    m_HideGroupsClass = cHideGroups.GetInstance(scNetworkAnalysis.Panel2)
+                '    m_HideGroupsClass.SetUpPanel()
+                '    m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
+                '    m_HideGroupsForm.ShowDialog()
+
+            Case Else
+        End Select
+
+        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+
+        ' Put content manager to work
+        If (Me.m_contentmanager IsNot Nothing) Then
+
+            ' Try to attach content manager
+            If Me.m_contentmanager.Attach(Me.m_networkmanager, _
+                                          Me.m_datagrid, Me.m_graph, Me.m_plot, Me.m_toolstrip, _
+                                          Me.m_uic) Then
+
+                Try
+                    ' Display data if succesful
+                    Me.m_contentmanager.DisplayData()
+                Catch ex As Exception
+
+                End Try
+
+                ' Need to populate group combos?
+                If Me.m_toolstrip.Visible Then
+
+                    Me.m_bInUpdate = True
+
+                    Me.tscmbSelection1.Items.Clear()
+                    Me.tscmbSelection2.Items.Clear()
+                    For iGroup As Integer = 1 To Me.m_networkmanager.nGroups
+                        If (Me.m_contentmanager.GroupFilter1 = eGroupFilterTypes.Living) Or _
+                           (iGroup < Me.m_networkmanager.nLivingGroups) Then
+                            Me.tscmbSelection1.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                        End If
+                        If (Me.m_contentmanager.GroupFilter2 = eGroupFilterTypes.Living) Or _
+                           (iGroup < Me.m_networkmanager.nLivingGroups) Then
+                            Me.tscmbSelection2.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                        End If
+                    Next
+                    Me.m_toolstrip.Refresh()
+
+                    Me.tscmbSelection1.SelectedIndex = 0
+                    Me.tscmbSelection2.SelectedIndex = 0
+
+                    Me.m_bInUpdate = False
+
+                    Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+
+                End If
+
+            End If
+
+            ' Hide info panel
+            Me.m_tlpInfo.Visible = False
+        Else
+            ' Hide toolbar
+            Me.m_toolstrip.Visible = False
+            ' Show logo
+            Me.m_tlpInfo.Visible = True
+        End If
+
+        ' Position content
+        If Me.m_toolstrip.Visible Then
+            Me.m_graph.Top = Me.m_toolstrip.Height
+            Me.m_tlpInfo.Top = Me.m_toolstrip.Height
+            Me.m_datagrid.Top = Me.m_toolstrip.Height
+            Me.m_plot.Top = Me.m_toolstrip.Height
+        Else
+            Me.m_graph.Top = 0
+            Me.m_tlpInfo.Top = 0
+            Me.m_datagrid.Top = 0
+            Me.m_plot.Top = 0
+        End If
+
+        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        Me.ResumeLayout()
+
     End Sub
 
     Public Sub UpdateContent()
 
-        Dim node As TreeNode = Me.tvNetworkAnalysis.SelectedNode
+        Dim node As TreeNode = Me.m_tvNetworkAnalysis.SelectedNode
         Dim strNodeName As String = ""
 
         If (node IsNot Nothing) Then

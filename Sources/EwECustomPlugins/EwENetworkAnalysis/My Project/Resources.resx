@@ -244,7 +244,7 @@
     <value>Total (t/km²/year)</value>
   </data>
   <data name="CAPTION" xml:space="preserve">
-    <value>EwE Network Analysis Plugin</value>
+    <value>Network analysis</value>
   </data>
   <data name="LBL_KEMPTONS_Q" xml:space="preserve">
     <value>Kemptons Q</value>
@@ -712,5 +712,128 @@
   </data>
   <data name="NAVITEM_ROOT" xml:space="preserve">
     <value>Network Analysis</value>
+  </data>
+  <data name="PAGE_ASC" xml:space="preserve">
+    <value>Ascendency</value>
+  </data>
+  <data name="PAGE_ASC_GROUP" xml:space="preserve">
+    <value>By group</value>
+  </data>
+  <data name="PAGE_ASC_TOTAL" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="PAGE_CP_CTL1" xml:space="preserve">
+    <value>Consumer &lt;- TL1</value>
+  </data>
+  <data name="PAGE_CP_CYCLES" xml:space="preserve">
+    <value>Cycles</value>
+  </data>
+  <data name="PAGE_CP_PATHWAYS" xml:space="preserve">
+    <value>Pathways</value>
+  </data>
+  <data name="PAGE_CYCLES_PATHWAYS" xml:space="preserve">
+    <value>Cycles and pathways</value>
+  </data>
+  <data name="PAGE_FB" xml:space="preserve">
+    <value>Flows and biomasses</value>
+  </data>
+  <data name="PAGE_FB_BIOMPMD" xml:space="preserve">
+    <value>Biomass pyramid</value>
+  </data>
+  <data name="PAGE_FB_BIOMTL" xml:space="preserve">
+    <value>Biomass by tropic level</value>
+  </data>
+  <data name="PAGE_FB_CATCHPMD" xml:space="preserve">
+    <value>Catch pyramid</value>
+  </data>
+  <data name="PAGE_FB_CATCHTL" xml:space="preserve">
+    <value>Catch by tropic level</value>
+  </data>
+  <data name="PAGE_FB_FLOWPMD" xml:space="preserve">
+    <value>Flow pyramid</value>
+  </data>
+  <data name="PAGE_FB_FROMCOMBINED" xml:space="preserve">
+    <value>From all combined</value>
+  </data>
+  <data name="PAGE_FB_FROMDET" xml:space="preserve">
+    <value>From detritus</value>
+  </data>
+  <data name="PAGE_FB_FROMPP" xml:space="preserve">
+    <value>From primary producers</value>
+  </data>
+  <data name="PAGE_FB_LINDEMAN" xml:space="preserve">
+    <value>Lindeman spine</value>
+  </data>
+  <data name="PAGE_FB_TRANSEFF" xml:space="preserve">
+    <value>Transfer efficiency</value>
+  </data>
+  <data name="PAGE_FLOWDET" xml:space="preserve">
+    <value>Flow from detritus</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS" xml:space="preserve">
+    <value>Keystoneness</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS_GRAPH" xml:space="preserve">
+    <value>Keystoneness graph</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS_TABLE" xml:space="preserve">
+    <value>Keystoneness table</value>
+  </data>
+  <data name="PAGE_MTI" xml:space="preserve">
+    <value>Mixed tropic impact</value>
+  </data>
+  <data name="PAGE_MTI_IMPACT" xml:space="preserve">
+    <value>Impact data</value>
+  </data>
+  <data name="PAGE_MTI_PLOT" xml:space="preserve">
+    <value>Mixed tropic impact plot</value>
+  </data>
+  <data name="PAGE_MTI_PLOTEWE5" xml:space="preserve">
+    <value>Mixed tropic impact plot (EwE5)</value>
+  </data>
+  <data name="PAGE_PPR" xml:space="preserve">
+    <value>Primary production required</value>
+  </data>
+  <data name="PAGE_PPR_CONS" xml:space="preserve">
+    <value>For consumption of all groups</value>
+  </data>
+  <data name="PAGE_PPR_HARV" xml:space="preserve">
+    <value>For harvest of all groups</value>
+  </data>
+  <data name="PAGE_TLDECOMP" xml:space="preserve">
+    <value>Tropic level decomposition</value>
+  </data>
+  <data name="PAGE_TL_ABSFLOWS" xml:space="preserve">
+    <value>Absolute flows</value>
+  </data>
+  <data name="PAGE_TL_RELFLOWS" xml:space="preserve">
+    <value>Relative flows</value>
+  </data>
+  <data name="PAGE_CP_CPTL11" xml:space="preserve">
+    <value>Consumer &lt;- prey &lt;- TL1</value>
+  </data>
+  <data name="PAGE_CP_TOPPRED" xml:space="preserve">
+    <value>Top predation &lt;- prey</value>
+  </data>
+  <data name="PAGE_CREDITS" xml:space="preserve">
+    <value>Credits</value>
+  </data>
+  <data name="PAGE_CYCPATH_LEN" xml:space="preserve">
+    <value>Cycles and path length</value>
+  </data>
+  <data name="PAGE_CYC_ALL" xml:space="preserve">
+    <value>Cycles (all)</value>
+  </data>
+  <data name="PAGE_CYC_LIVING" xml:space="preserve">
+    <value>Cycles (living)</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA" xml:space="preserve">
+    <value>Ecosim network analysis</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA_WITH_PPR" xml:space="preserve">
+    <value>Indexes with primary production required</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA_WO_PPR" xml:space="preserve">
+    <value>Indexes without primary production required</value>
   </data>
 </root>

@@ -17,7 +17,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class cEwENetworkAnalysisPlugin
     Inherits cNavTreeControlPlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
-    Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimRunCompletedPlugin
@@ -91,7 +90,7 @@ Public Class cEwENetworkAnalysisPlugin
 
     Public Overrides ReadOnly Property Name() As String 
         Get
-            Return "nwa00Main"
+            Return "nwa00"
         End Get
     End Property
 
@@ -224,13 +223,6 @@ Public Class cEwENetworkAnalysisPlugin
 #End Region ' Ecopath
 
 #Region " GUI "
-
-    Public ReadOnly Property MenuItemLocation() As String _
-        Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
-        Get
-            Return "MenuTools"
-        End Get
-    End Property
 
     Public Sub UIContext(ByVal uic As Object) _
         Implements EwEPlugin.IUIContextPlugin.UIContext

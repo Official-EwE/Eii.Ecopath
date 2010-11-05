@@ -28,8 +28,8 @@ Partial Class frmNetworkAnalysis
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNetworkAnalysis))
         Dim ts2 As System.Windows.Forms.ToolStripSeparator
         Dim ts3 As System.Windows.Forms.ToolStripSeparator
-        Me.scNetworkAnalysis = New System.Windows.Forms.SplitContainer
-        Me.tvNetworkAnalysis = New System.Windows.Forms.TreeView
+        Me.m_scNetworkAnalysis = New System.Windows.Forms.SplitContainer
+        Me.m_tvNetworkAnalysis = New System.Windows.Forms.TreeView
         Me.m_ilNetworkAnalysis = New System.Windows.Forms.ImageList(Me.components)
         Me.m_graph = New ZedGraph.ZedGraphControl
         Me.m_plot = New EwENetworkAnalysis.ucPlot
@@ -46,12 +46,13 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOutputIndicesCSV = New System.Windows.Forms.ToolStripButton
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
+        Me.m_hdrPage = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         ts1 = New System.Windows.Forms.ToolStripSeparator
         ts2 = New System.Windows.Forms.ToolStripSeparator
         ts3 = New System.Windows.Forms.ToolStripSeparator
-        Me.scNetworkAnalysis.Panel1.SuspendLayout()
-        Me.scNetworkAnalysis.Panel2.SuspendLayout()
-        Me.scNetworkAnalysis.SuspendLayout()
+        Me.m_scNetworkAnalysis.Panel1.SuspendLayout()
+        Me.m_scNetworkAnalysis.Panel2.SuspendLayout()
+        Me.m_scNetworkAnalysis.SuspendLayout()
         CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpInfo.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -73,32 +74,33 @@ Partial Class frmNetworkAnalysis
         ts3.Name = "ts3"
         resources.ApplyResources(ts3, "ts3")
         '
-        'scNetworkAnalysis
+        'm_scNetworkAnalysis
         '
-        resources.ApplyResources(Me.scNetworkAnalysis, "scNetworkAnalysis")
-        Me.scNetworkAnalysis.Name = "scNetworkAnalysis"
+        resources.ApplyResources(Me.m_scNetworkAnalysis, "m_scNetworkAnalysis")
+        Me.m_scNetworkAnalysis.Name = "m_scNetworkAnalysis"
         '
-        'scNetworkAnalysis.Panel1
+        'm_scNetworkAnalysis.Panel1
         '
-        Me.scNetworkAnalysis.Panel1.Controls.Add(Me.tvNetworkAnalysis)
+        Me.m_scNetworkAnalysis.Panel1.Controls.Add(Me.m_tvNetworkAnalysis)
+        Me.m_scNetworkAnalysis.Panel1Collapsed = True
         '
-        'scNetworkAnalysis.Panel2
+        'm_scNetworkAnalysis.Panel2
         '
-        Me.scNetworkAnalysis.Panel2.BackColor = System.Drawing.Color.White
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_graph)
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_plot)
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_datagrid)
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_tlpInfo)
-        Me.scNetworkAnalysis.Panel2.Controls.Add(Me.m_toolstrip)
+        Me.m_scNetworkAnalysis.Panel2.BackColor = System.Drawing.Color.White
+        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_graph)
+        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_plot)
+        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_datagrid)
+        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_tlpInfo)
+        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_toolstrip)
         '
-        'tvNetworkAnalysis
+        'm_tvNetworkAnalysis
         '
-        resources.ApplyResources(Me.tvNetworkAnalysis, "tvNetworkAnalysis")
-        Me.tvNetworkAnalysis.FullRowSelect = True
-        Me.tvNetworkAnalysis.HideSelection = False
-        Me.tvNetworkAnalysis.ImageList = Me.m_ilNetworkAnalysis
-        Me.tvNetworkAnalysis.Name = "tvNetworkAnalysis"
-        Me.tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("tvNetworkAnalysis.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes4"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes5"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes6"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes7"), System.Windows.Forms.TreeNode), CType(resources.GetObject("tvNetworkAnalysis.Nodes8"), System.Windows.Forms.TreeNode)})
+        resources.ApplyResources(Me.m_tvNetworkAnalysis, "m_tvNetworkAnalysis")
+        Me.m_tvNetworkAnalysis.FullRowSelect = True
+        Me.m_tvNetworkAnalysis.HideSelection = False
+        Me.m_tvNetworkAnalysis.ImageList = Me.m_ilNetworkAnalysis
+        Me.m_tvNetworkAnalysis.Name = "m_tvNetworkAnalysis"
+        Me.m_tvNetworkAnalysis.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvNetworkAnalysis.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNetworkAnalysis.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNetworkAnalysis.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNetworkAnalysis.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNetworkAnalysis.Nodes4"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNetworkAnalysis.Nodes5"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNetworkAnalysis.Nodes6"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNetworkAnalysis.Nodes7"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNetworkAnalysis.Nodes8"), System.Windows.Forms.TreeNode)})
         '
         'm_ilNetworkAnalysis
         '
@@ -207,19 +209,25 @@ Partial Class frmNetworkAnalysis
         resources.ApplyResources(Me.ToolStripButton1, "ToolStripButton1")
         Me.ToolStripButton1.Name = "ToolStripButton1"
         '
+        'm_hdrPage
+        '
+        resources.ApplyResources(Me.m_hdrPage, "m_hdrPage")
+        Me.m_hdrPage.Name = "m_hdrPage"
+        '
         'frmNetworkAnalysis
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.Controls.Add(Me.scNetworkAnalysis)
+        Me.Controls.Add(Me.m_hdrPage)
+        Me.Controls.Add(Me.m_scNetworkAnalysis)
         Me.Name = "frmNetworkAnalysis"
         Me.ShowInTaskbar = False
         Me.TabText = "Network analysis plug-in"
-        Me.scNetworkAnalysis.Panel1.ResumeLayout(False)
-        Me.scNetworkAnalysis.Panel2.ResumeLayout(False)
-        Me.scNetworkAnalysis.Panel2.PerformLayout()
-        Me.scNetworkAnalysis.ResumeLayout(False)
+        Me.m_scNetworkAnalysis.Panel1.ResumeLayout(False)
+        Me.m_scNetworkAnalysis.Panel2.ResumeLayout(False)
+        Me.m_scNetworkAnalysis.Panel2.PerformLayout()
+        Me.m_scNetworkAnalysis.ResumeLayout(False)
         CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpInfo.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -228,8 +236,8 @@ Partial Class frmNetworkAnalysis
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents scNetworkAnalysis As System.Windows.Forms.SplitContainer
-    Private WithEvents tvNetworkAnalysis As System.Windows.Forms.TreeView
+    Private WithEvents m_scNetworkAnalysis As System.Windows.Forms.SplitContainer
+    Private WithEvents m_tvNetworkAnalysis As System.Windows.Forms.TreeView
     Private WithEvents m_ilNetworkAnalysis As System.Windows.Forms.ImageList
     Private WithEvents tscmbSelection1 As System.Windows.Forms.ToolStripComboBox
     Private WithEvents tslblSelection2 As System.Windows.Forms.ToolStripLabel
@@ -246,4 +254,5 @@ Partial Class frmNetworkAnalysis
     Private WithEvents tsmiDisplayGroups As System.Windows.Forms.ToolStripButton
     Private WithEvents tsmiRun As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_hdrPage As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 End Class
