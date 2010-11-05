@@ -19,6 +19,10 @@ Namespace CyclesLiving
             '
         End Sub
 
+        Public Overrides Function PageTitle() As String
+            Return "Summary of cycles and pathways of all living groups"
+        End Function
+
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                         ByVal datagrid As DataGridView, _
                                         ByVal graph As ZedGraphControl, _
@@ -66,10 +70,6 @@ Namespace CyclesLiving
             Grid.ClearSelection()
 
         End Sub
-
-        Public Overrides Function PageTitle() As String
-            Return "Summary of all living groups"
-        End Function
 
         Private Sub SetUpGridColumn()
 

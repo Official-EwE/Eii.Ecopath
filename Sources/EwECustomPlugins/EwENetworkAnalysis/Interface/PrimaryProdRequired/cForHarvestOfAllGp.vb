@@ -29,7 +29,7 @@ Public Class cForHarvestOfAllGp
     End Function
 
     Public Overrides Function PageTitle() As String
-        Return "Primary production required for harvested groups"
+        Return "Primary production required for harvest of all groups"
     End Function
 
     Public Overrides Sub DisplayData()

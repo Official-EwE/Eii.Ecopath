@@ -12,7 +12,7 @@ Imports ScientificInterfaceShared.Controls
 Namespace PreyToPredator
 
     <CLSCompliant(False)> _
-    Public Class cSummaryPathways
+    Public Class cSummaryCyclesPathways
         Inherits cContentManager
 
         Public Sub New()
@@ -20,7 +20,7 @@ Namespace PreyToPredator
         End Sub
 
         Public Overrides Function PageTitle() As String
-            Return "Summaries Prey to Predator"
+            Return "Summary of cycles and pathways prey to predator"
         End Function
 
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _

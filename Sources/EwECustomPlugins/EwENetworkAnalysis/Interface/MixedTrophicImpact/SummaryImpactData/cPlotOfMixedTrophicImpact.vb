@@ -32,7 +32,7 @@ Public Class cPlotOfMixedTrophicImpact
     End Sub
 
     Public Overrides Function PageTitle() As String
-        Return "Mixed tropic level impacts (external)"
+        Return "Mixed tropic level impacts"
     End Function
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _

@@ -19,7 +19,7 @@ Public Class cFromDetritus
     End Sub
 
     Public Overrides Function PageTitle() As String
-        Return "Flows from detritus"
+        Return "Flows and biomasses from detritus"
     End Function
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _

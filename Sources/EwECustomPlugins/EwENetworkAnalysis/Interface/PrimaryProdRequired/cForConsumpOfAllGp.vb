@@ -30,7 +30,7 @@ Public Class cForConsumpOfAllGp
     End Function
 
     Public Overrides Function PageTitle() As String
-        Return "Primary production required for all groups"
+        Return "Primary production required for comsumption of all groups"
     End Function
 
     Public Overrides Sub DisplayData()

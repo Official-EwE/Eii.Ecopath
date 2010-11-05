@@ -12,7 +12,7 @@ Imports ScientificInterfaceShared.Controls
 Namespace TL1ToConsumer
 
     <CLSCompliant(False)> _
-    Public Class cSummaryPathways
+    Public Class cCyclesPathwaysSummary
         Inherits cContentManager
 
         Public Sub New()
@@ -20,7 +20,7 @@ Namespace TL1ToConsumer
         End Sub
 
         Public Overrides Function PageTitle() As String
-            Return "Summaries TL1 to consumer"
+            Return "Summary cycles and pathways TL1 to consumer"
         End Function
 
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _

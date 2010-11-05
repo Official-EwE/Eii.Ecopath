@@ -9,37 +9,33 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports 
 
-Namespace CyclesAll
+Namespace TL1ToPreyToConsumer
 
     <CLSCompliant(False)> _
-    Public Class cSummaryPathways
+    Public Class cCyclesPathwaysSummary
         Inherits cContentManager
 
         Public Sub New()
             '
         End Sub
 
+        Public Overrides Function PageTitle() As String
+            Return "Summary to TL1 of prey to consumer"
+        End Function
+
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                         ByVal datagrid As DataGridView, _
-                                         ByVal graph As ZedGraphControl, _
-                                         ByVal plot As ucPlot, _
-                                         ByVal toolstrip As ToolStrip, _
-                                         ByVal uic As cUIContext) As Boolean
-
+                                        ByVal datagrid As DataGridView, _
+                                        ByVal graph As ZedGraphControl, _
+                                        ByVal plot As ucPlot, _
+                                        ByVal toolstrip As ToolStrip, _
+                                        ByVal uic As cUIContext) As Boolean
             Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
-
-            If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
-                bSucces = Me.NetworkManager.FindPathwaysCyclesAll()
-            Else
-                bSucces = False
-            End If
-
             Me.Grid.Visible = bSucces
             Return bSucces
-
         End Function
 
         Public Overrides Sub DisplayData()
+
             Dim strRowContent() As String
 
             SetUpGridColumn()
@@ -76,14 +72,9 @@ Namespace CyclesAll
 
         End Sub
 
-        Public Overrides Function PageTitle() As String
-            Return "Pathway summary of all cycles"
-        End Function
-
         Private Sub SetUpGridColumn()
 
             Grid.ReadOnly = True
-            Grid.Visible = True
             Grid.ColumnCount = 2
 
             SetGridColumnPropertyDefault(Grid)
@@ -97,3 +88,4 @@ Namespace CyclesAll
     End Class
 
 End Namespace
+

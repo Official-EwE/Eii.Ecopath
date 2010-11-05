@@ -9,33 +9,35 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports 
 
-Namespace PreyToPredator
+Namespace TL1ToConsumer
 
     <CLSCompliant(False)> _
-    Public Class cPathways
+    Public Class cCyclesPathways
         Inherits cContentManager
 
         Public Sub New()
         End Sub
 
+        Public Overrides Function PageTitle() As String
+            Return "Cycles and pathways TL1 to consumer"
+        End Function
+
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                         ByVal datagrid As DataGridView, _
-                                         ByVal graph As ZedGraphControl, _
-                                         ByVal plot As ucPlot, _
-                                         ByVal toolstrip As ToolStrip, _
-                                         ByVal uic As cUIContext) As Boolean
+                                        ByVal datagrid As DataGridView, _
+                                        ByVal graph As ZedGraphControl, _
+                                        ByVal plot As ucPlot, _
+                                        ByVal toolstrip As ToolStrip, _
+                                        ByVal uic As cUIContext) As Boolean
             Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
-
             Me.Grid.Visible = bSucces
-
             Me.Toolstrip.Visible = bSucces
-            Me.ToolstripShowGroupSelections(My.Resources.LBL_PATH_FROM, eGroupFilterTypes.All)
-
+            Me.ToolstripShowGroupSelections(My.Resources.LBL_PATH_TO, eGroupFilterTypes.Living)
             Return bSucces
         End Function
 
         Public Overrides Sub DisplayData()
 
+            Grid.ReadOnly = True
             Grid.ColumnCount = 2
 
             SetGridColumnPropertyDefault(Grid)
@@ -48,34 +50,30 @@ Namespace PreyToPredator
 
         End Sub
 
-        Public Overrides Function PageTitle() As String
-            Return "Pathways Prey to Predator"
-        End Function
-
         Public Overrides Sub UpdateData(ByVal iSel1 As Integer, ByVal iSel2 As Integer)
 
-            Dim astrRowContent() As String
+            Dim strRowContent() As String
 
             Grid.RowHeadersVisible = False
 
-            ReDim astrRowContent(Grid.Columns.Count)
-            Me.NetworkManager.FindPathwaysFromPrey(iSel1)
-            If Me.NetworkManager.PathWays.Count > 0 Then
-                Grid.RowCount = Me.NetworkManager.PathWays.Count + 1
+            ReDim strRowContent(Grid.Columns.Count)
+            NetworkManager.FindPathwaysToConsumer(iSel1)
+            If NetworkManager.PathWays.Count > 0 Then
+                Grid.RowCount = NetworkManager.PathWays.Count + 1
                 Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
                 Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
                 Grid.Rows(0).Frozen = True
                 Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-                astrRowContent(0) = My.Resources.COL_HDR_PATH_NUM
-                astrRowContent(1) = My.Resources.COL_HDR_PATH
-                Grid.Rows(0).SetValues(astrRowContent)
+                strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
+                strRowContent(1) = My.Resources.COL_HDR_PATH_CONSUM
+                Grid.Rows(0).SetValues(strRowContent)
                 Grid.Rows(0).Visible = True
 
-                For intPathwayIndex As Integer = 0 To Me.NetworkManager.PathWays.Count - 1
-                    astrRowContent(0) = CStr(intPathwayIndex + 1)
-                    astrRowContent(1) = CStr(Me.NetworkManager.PathWays.Item(intPathwayIndex))
-                    Grid.Rows(intPathwayIndex + 1).SetValues(astrRowContent)
+                For intPathwayIndex As Integer = 0 To NetworkManager.PathWays.Count - 1
+                    strRowContent(0) = CStr(intPathwayIndex + 1)
+                    strRowContent(1) = CStr(NetworkManager.PathWays.Item(intPathwayIndex))
+                    Grid.Rows(intPathwayIndex + 1).SetValues(strRowContent)
                     Grid.Rows(intPathwayIndex + 1).Visible = True
                 Next
             Else
@@ -85,14 +83,14 @@ Namespace PreyToPredator
                 Grid.Rows(0).Frozen = True
                 Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-                astrRowContent(0) = My.Resources.COL_HDR_PATH_NUM
-                astrRowContent(1) = My.Resources.COL_HDR_PATH
-                Grid.Rows(0).SetValues(astrRowContent)
+                strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
+                strRowContent(1) = My.Resources.COL_HDR_PATH_CONSUM
+                Grid.Rows(0).SetValues(strRowContent)
                 Grid.Rows(0).Visible = True
 
-                astrRowContent(0) = My.Resources.ROW_HDR_NO_PATH_FOUND
-                astrRowContent(1) = ""
-                Grid.Rows(1).SetValues(astrRowContent)
+                strRowContent(0) = My.Resources.ROW_HDR_NO_PATH_FOUND
+                strRowContent(1) = ""
+                Grid.Rows(1).SetValues(strRowContent)
                 Grid.Rows(1).Visible = True
             End If
             Grid.ClearSelection()
@@ -101,3 +99,4 @@ Namespace PreyToPredator
     End Class
 
 End Namespace
+

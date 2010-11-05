@@ -12,7 +12,7 @@ Imports ScientificInterfaceShared.Controls
 Namespace TL1ToPreyToConsumer
 
     <CLSCompliant(False)> _
-    Public Class cPathways
+    Public Class cCyclesPathways
         Inherits cContentManager
 
         Private m_bInUpdate As Boolean = False
@@ -21,7 +21,7 @@ Namespace TL1ToPreyToConsumer
         End Sub
 
         Public Overrides Function PageTitle() As String
-            Return "Pathways of prey to TL1 to consumer"
+            Return "Cycles and pathways TL1 to prey to consumer"
         End Function
 
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _

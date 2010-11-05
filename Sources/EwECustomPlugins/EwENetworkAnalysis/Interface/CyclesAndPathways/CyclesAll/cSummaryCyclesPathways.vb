@@ -9,10 +9,10 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports 
 
-Namespace TL1ToPreyToConsumer
+Namespace CyclesAll
 
     <CLSCompliant(False)> _
-    Public Class cSummaryPathways
+    Public Class cSummaryCyclesPathways
         Inherits cContentManager
 
         Public Sub New()
@@ -20,22 +20,30 @@ Namespace TL1ToPreyToConsumer
         End Sub
 
         Public Overrides Function PageTitle() As String
-            Return "Summaries of prey to TL1 to consumer"
+            Return "Summary of all cycles and pathways"
         End Function
 
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                        ByVal datagrid As DataGridView, _
-                                        ByVal graph As ZedGraphControl, _
-                                        ByVal plot As ucPlot, _
-                                        ByVal toolstrip As ToolStrip, _
-                                        ByVal uic As cUIContext) As Boolean
+                                         ByVal datagrid As DataGridView, _
+                                         ByVal graph As ZedGraphControl, _
+                                         ByVal plot As ucPlot, _
+                                         ByVal toolstrip As ToolStrip, _
+                                         ByVal uic As cUIContext) As Boolean
+
             Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
+
+            If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
+                bSucces = Me.NetworkManager.FindPathwaysCyclesAll()
+            Else
+                bSucces = False
+            End If
+
             Me.Grid.Visible = bSucces
             Return bSucces
+
         End Function
 
         Public Overrides Sub DisplayData()
-
             Dim strRowContent() As String
 
             SetUpGridColumn()
@@ -75,6 +83,7 @@ Namespace TL1ToPreyToConsumer
         Private Sub SetUpGridColumn()
 
             Grid.ReadOnly = True
+            Grid.Visible = True
             Grid.ColumnCount = 2
 
             SetGridColumnPropertyDefault(Grid)
@@ -88,4 +97,3 @@ Namespace TL1ToPreyToConsumer
     End Class
 
 End Namespace
-

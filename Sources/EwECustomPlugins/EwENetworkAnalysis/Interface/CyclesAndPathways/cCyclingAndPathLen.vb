@@ -18,7 +18,7 @@ Public Class cCyclingAndPathLen
     End Sub
 
     Public Overrides Function PageTitle() As String
-        Return "All cycles and pathways"
+        Return "Cycles and pathways length"
     End Function
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _

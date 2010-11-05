@@ -7,31 +7,30 @@ Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+#End Region ' Imports 
 
-Namespace CyclesAll
+Namespace CyclesLiving
 
     <CLSCompliant(False)> _
-    Public Class cPathways
+    Public Class cCyclesPathways
         Inherits cContentManager
 
         Public Sub New()
         End Sub
 
+        Public Overrides Function PageTitle() As String
+            Return "Cycles and pathways of all living groups"
+        End Function
+
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                         ByVal datagrid As DataGridView, _
-                                         ByVal graph As ZedGraphControl, _
-                                         ByVal plot As ucPlot, _
-                                         ByVal toolstrip As ToolStrip, _
-                                         ByVal uic As cUIContext) As Boolean
-
+                                        ByVal datagrid As DataGridView, _
+                                        ByVal graph As ZedGraphControl, _
+                                        ByVal plot As ucPlot, _
+                                        ByVal toolstrip As ToolStrip, _
+                                        ByVal uic As cUIContext) As Boolean
             Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
-
-            If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
-                Me.Grid.Visible = bSucces And Me.NetworkManager.FindPathwaysCyclesAll()
-            End If
-            Return Me.Grid.Visible
-
+            Me.Grid.Visible = bSucces
+            Return bSucces
         End Function
 
         Public Overrides Sub DisplayData()
@@ -43,7 +42,7 @@ Namespace CyclesAll
             Grid.RowHeadersVisible = False
 
             ReDim strRowContent(Grid.Columns.Count)
-            'm_NetworkManager.FindPathwaysCyclesAll()
+            NetworkManager.FindPathwaysCycles()
             If NetworkManager.PathWays.Count > 0 Then
                 Grid.RowCount = NetworkManager.PathWays.Count + 1
                 Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
@@ -80,11 +79,8 @@ Namespace CyclesAll
                 Grid.Rows(1).Visible = True
             End If
             Grid.ClearSelection()
+            Cursor.Current = Cursors.Default
         End Sub
-
-        Public Overrides Function PageTitle() As String
-            Return "Pathways of all cycles"
-        End Function
 
         Private Sub SetUpGridColumn()
 
@@ -98,9 +94,9 @@ Namespace CyclesAll
 
             Grid.Columns(1).Width = 660
             Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+
         End Sub
 
     End Class
 
 End Namespace
-

@@ -425,34 +425,34 @@ Public Class frmNetworkAnalysis
                 Me.m_contentmanager = New cFlowFromDetritus()
 
             Case eNetworkAnalysisPageTypes.Pathway_cons_tl1
-                Me.m_contentmanager = New TL1ToConsumer.cPathways()
+                Me.m_contentmanager = New TL1ToConsumer.cCyclesPathways()
 
             Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_tl1
-                Me.m_contentmanager = New TL1ToConsumer.cSummaryPathways()
+                Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
 
             Case eNetworkAnalysisPageTypes.Pathway_cons_prey_tl1
-                Me.m_contentmanager = New TL1ToPreyToConsumer.cPathways()
+                Me.m_contentmanager = New TL1ToPreyToConsumer.cCyclesPathways()
 
             Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_prey_tl1
-                Me.m_contentmanager = New TL1ToConsumer.cSummaryPathways()
+                Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
 
             Case eNetworkAnalysisPageTypes.Pathway_pred_prey
-                Me.m_contentmanager = New PreyToPredator.cPathways()
+                Me.m_contentmanager = New PreyToPredator.cCyclesPathways()
 
             Case eNetworkAnalysisPageTypes.SummaryOfPathways_pred_prey
-                Me.m_contentmanager = New PreyToPredator.cSummaryPathways()
+                Me.m_contentmanager = New PreyToPredator.cSummaryCyclesPathways()
 
             Case eNetworkAnalysisPageTypes.Pathway_living
-                Me.m_contentmanager = New CyclesLiving.cPathways()
+                Me.m_contentmanager = New CyclesLiving.cCyclesPathways()
 
             Case eNetworkAnalysisPageTypes.SummaryOfPathways_living
                 Me.m_contentmanager = New CyclesLiving.cSummaryPathways()
 
             Case eNetworkAnalysisPageTypes.Pathway_all
-                Me.m_contentmanager = New CyclesAll.cPathways()
+                Me.m_contentmanager = New CyclesAll.cCyclesPathways()
 
             Case eNetworkAnalysisPageTypes.SummaryOfPathways_all
-                Me.m_contentmanager = New CyclesAll.cSummaryPathways()
+                Me.m_contentmanager = New CyclesAll.cSummaryCyclesPathways()
 
             Case eNetworkAnalysisPageTypes.CyclingAndPathLength
                 Me.m_contentmanager = New cCyclingAndPathLen()

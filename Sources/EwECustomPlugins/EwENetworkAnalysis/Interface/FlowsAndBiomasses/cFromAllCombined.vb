@@ -18,7 +18,7 @@ Public Class cFromAllCombined
     End Sub
 
     Public Overrides Function PageTitle() As String
-        Return "Flows from all, combined"
+        Return "Flows and biomasses from all, combined"
     End Function
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _

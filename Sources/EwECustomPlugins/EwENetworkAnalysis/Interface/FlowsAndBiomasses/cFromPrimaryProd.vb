@@ -18,7 +18,7 @@ Public Class cFromPrimaryProd
     End Sub
 
     Public Overrides Function PageTitle() As String
-        Return "Flows from primary producers"
+        Return "Flows and biomasses from primary producers"
     End Function
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
