@@ -27,6 +27,10 @@ Public Class cBiomassPyramid
         Return ePyramidTypes.Biomass
     End Function
 
+    Public Overrides Function PageTitle() As String
+        Return "Biomass pyramid (external)"
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="cPyramid.WritePyramidFile"/>
     ''' -----------------------------------------------------------------------

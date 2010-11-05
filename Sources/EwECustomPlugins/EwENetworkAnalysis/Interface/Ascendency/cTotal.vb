@@ -37,7 +37,7 @@ Public Class cTotal
         Grid.RowHeadersVisible = False
         Grid.RowCount = 6
         Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
         Grid.Rows(0).Frozen = True
         Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
@@ -106,6 +106,10 @@ Public Class cTotal
 
     End Sub
 
+    Public Overrides Function PageTitle() As String
+        Return "Total ascendency"
+    End Function
+
     Private Sub SetUpGridColumn()
 
         Grid.ReadOnly = True
@@ -114,7 +118,7 @@ Public Class cTotal
 
         SetGridColumnPropertyDefault(Grid)
 
-        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
         Grid.Columns(0).Frozen = True
 
     End Sub

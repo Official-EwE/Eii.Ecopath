@@ -30,6 +30,10 @@ Public Class cGraphOfMixedTrophicImpact
         ' NOP
     End Sub
 
+    Public Overrides Function PageTitle() As String
+        Return "Mixed tropic level impacts (external)"
+    End Function
+
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _

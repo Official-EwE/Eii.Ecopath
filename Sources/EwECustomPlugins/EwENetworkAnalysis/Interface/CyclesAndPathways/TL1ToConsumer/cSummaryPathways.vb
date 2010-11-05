@@ -19,6 +19,10 @@ Namespace TL1ToConsumer
             '
         End Sub
 
+        Public Overrides Function PageTitle() As String
+            Return "Summaries TL1 to consumer"
+        End Function
+
         Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                         ByVal datagrid As DataGridView, _
                                         ByVal graph As ZedGraphControl, _
@@ -39,7 +43,7 @@ Namespace TL1ToConsumer
             Grid.RowHeadersVisible = False
             Grid.RowCount = 3
             Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-            Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+            Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
             Grid.Rows(0).Frozen = True
             Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
@@ -74,7 +78,7 @@ Namespace TL1ToConsumer
             SetGridColumnPropertyDefault(Grid)
 
             Grid.Columns(0).Frozen = True
-            Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+            Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
             Grid.Columns(0).Width = 400
 
         End Sub

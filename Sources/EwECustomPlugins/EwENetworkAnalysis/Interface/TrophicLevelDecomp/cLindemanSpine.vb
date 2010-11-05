@@ -47,6 +47,10 @@ Public Class cLindemanSpine
         '
     End Sub
 
+    Public Overrides Function PageTitle() As String
+        Return "Lindeman spine"
+    End Function
+
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _

@@ -108,12 +108,9 @@ Public MustInherit Class cContentManager
 
 #Region " Overrides "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
     Public MustOverride Sub DisplayData()
+
+    Public MustOverride Function PageTitle() As String
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

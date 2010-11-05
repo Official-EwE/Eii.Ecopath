@@ -128,13 +128,6 @@ Public Class frmNetworkAnalysis
         MyBase.OnFormClosing(e)
     End Sub
 
-    Private Sub tvNetworkAnalysis_AfterSelect(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
-        Handles m_tvNetworkAnalysis.AfterSelect
-
-        Me.UpdateContent()
-
-    End Sub
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Re-run Network Analysis bit.
@@ -143,7 +136,7 @@ Public Class frmNetworkAnalysis
     Private Sub m_tsbnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles tsmiRun.Click
         ' Shazaam
-        Me.UpdateContent()
+        Me.ShowForm(Me.m_pageCurrent)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -155,39 +148,45 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputIndicesCSV.Click
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
-        Dim strFileName As String = ""
-        Dim bAnnual As Boolean = False
+        Try
 
-        If (Me.m_contentmanager Is Nothing) Then Return
-        If (cmdDOC Is Nothing) Then Return
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+            Dim strFileName As String = ""
+            Dim bAnnual As Boolean = False
 
-        If (Me.m_contentmanager.IsDataOverTime) Then
-            Select Case MsgBox(My.Resources.PROMPT_SAVE_ANNUAL_AVERAGES, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
+            If (Me.m_contentmanager Is Nothing) Then Return
+            If (cmdDOC Is Nothing) Then Return
 
-                Case MsgBoxResult.Yes
-                    bAnnual = True
+            If (Me.m_contentmanager.IsDataOverTime) Then
+                Select Case MsgBox(My.Resources.PROMPT_SAVE_ANNUAL_AVERAGES, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
 
-                Case MsgBoxResult.No
-                    bAnnual = False
+                    Case MsgBoxResult.Yes
+                        bAnnual = True
 
-                Case Else
-                    Return
+                    Case MsgBoxResult.No
+                        bAnnual = False
 
-            End Select
-        End If
+                    Case Else
+                        Return
 
-        cmdDOC.Invoke("", My.Resources.PROMPT_SAVE_DESTINATION)
+                End Select
+            End If
 
-        If (cmdDOC.Result = DialogResult.OK) Then
-            Try
-                Dim writer As New cResultWriter(Me.m_networkmanager)
-                writer.WriteCurrentResults(cmdDOC.Directory, bAnnual)
-            Catch ex As Exception
-                ' Woops
-            End Try
-        End If
+            cmdDOC.Invoke("", My.Resources.PROMPT_SAVE_DESTINATION)
+
+            If (cmdDOC.Result = DialogResult.OK) Then
+                Try
+                    Dim writer As New cResultWriter(Me.m_networkmanager)
+                    writer.WriteCurrentResults(cmdDOC.Directory, bAnnual)
+                Catch ex As Exception
+                    ' Woops
+                End Try
+            End If
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -200,83 +199,109 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tsbtnOutputGraphEMF.Click
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-        Dim bAnnual As Boolean = False
+        Try
 
-        If (Me.m_contentmanager Is Nothing) Then Return
-        If (cmdFS Is Nothing) Then Return
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            Dim bAnnual As Boolean = False
 
-        cmdFS.Invoke(Me.m_contentmanager.Filename(bAnnual), _
-                     My.Resources.FILEFILTER_EMF, _
-                     1)
+            If (Me.m_contentmanager Is Nothing) Then Return
+            If (cmdFS Is Nothing) Then Return
 
-        If (cmdFS.Result = DialogResult.OK) Then
-            Try
-                Me.m_contentmanager.SaveToEMF(cmdFS.FileName)
-            Catch ex As Exception
-                ' Woops
-            End Try
-        End If
+            cmdFS.Invoke(Me.m_contentmanager.Filename(bAnnual), _
+                         My.Resources.FILEFILTER_EMF, _
+                         1)
+
+            If (cmdFS.Result = DialogResult.OK) Then
+                Try
+                    Me.m_contentmanager.SaveToEMF(cmdFS.FileName)
+                Catch ex As Exception
+                    ' Woops
+                End Try
+            End If
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
     Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tscmbSelection1.SelectedIndexChanged
 
-        Me.m_iSelectedGroup1 = tscmbSelection1.SelectedIndex + 1
+        Try
 
-        If Me.m_bInUpdate Then Return
+            Me.m_iSelectedGroup1 = tscmbSelection1.SelectedIndex + 1
 
-        If Me.m_contentmanager IsNot Nothing Then
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
-            Try
-                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
-            Catch ex As Exception
-                ' Woops
-            End Try
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
-        End If
+            If Me.m_bInUpdate Then Return
+
+            If Me.m_contentmanager IsNot Nothing Then
+                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+                Try
+                    Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+                Catch ex As Exception
+                    ' Woops
+                End Try
+                cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            End If
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
     Private Sub tscmbSelection2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles tscmbSelection2.SelectedIndexChanged
 
-        Me.m_iSelectedGroup2 = tscmbSelection2.SelectedIndex + 1
+        Try
 
-        If Me.m_bInUpdate Then Return
+            Me.m_iSelectedGroup2 = tscmbSelection2.SelectedIndex + 1
 
-        If Me.m_contentmanager IsNot Nothing Then
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
-            Try
-                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
-            Catch ex As Exception
-                ' Woops
-            End Try
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
-        End If
+            If Me.m_bInUpdate Then Return
+
+            If Me.m_contentmanager IsNot Nothing Then
+                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+                Try
+                    Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+                Catch ex As Exception
+                    ' Woops
+                End Try
+                cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            End If
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
     Private Sub dgvNetworkAnalysis_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles m_datagrid.CellClick
-        If e.RowIndex > 0 And e.ColumnIndex > 0 Then
-            'highlight the cell
-            m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
-            m_datagrid.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
-        ElseIf e.RowIndex > 0 And e.ColumnIndex = 0 Then
-            'highlight the row
-            m_datagrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-            m_datagrid.Rows(e.RowIndex).Selected = True
-        ElseIf e.RowIndex = 0 And e.ColumnIndex > 0 Then
-            'highlight the column
-            m_datagrid.SelectionMode = DataGridViewSelectionMode.FullColumnSelect
-            m_datagrid.Columns(e.ColumnIndex).Selected = True
-        ElseIf e.RowIndex = 0 And e.ColumnIndex = 0 Then
-            'highlight the whole grid
-            m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
-            m_datagrid.SelectAll()
-        End If
+
+        Try
+
+            If e.RowIndex > 0 And e.ColumnIndex > 0 Then
+                'highlight the cell
+                m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
+                m_datagrid.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
+            ElseIf e.RowIndex > 0 And e.ColumnIndex = 0 Then
+                'highlight the row
+                m_datagrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+                m_datagrid.Rows(e.RowIndex).Selected = True
+            ElseIf e.RowIndex = 0 And e.ColumnIndex > 0 Then
+                'highlight the column
+                m_datagrid.SelectionMode = DataGridViewSelectionMode.FullColumnSelect
+                m_datagrid.Columns(e.ColumnIndex).Selected = True
+            ElseIf e.RowIndex = 0 And e.ColumnIndex = 0 Then
+                'highlight the whole grid
+                m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
+                m_datagrid.SelectAll()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -285,8 +310,12 @@ Public Class frmNetworkAnalysis
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overridable Sub OnPreInvokeDisplayGroups(ByVal cmd As cCommand)
-        Me.m_cmdDisplayGroups.ShowGroups = True
-        Me.m_cmdDisplayGroups.ShowTotals = False
+        Try
+            Me.m_cmdDisplayGroups.ShowGroups = True
+            Me.m_cmdDisplayGroups.ShowTotals = False
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -295,8 +324,11 @@ Public Class frmNetworkAnalysis
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overridable Sub OnPostInvokeDisplayGroups(ByVal cmd As cCommand)
-        If Me.m_contentmanager IsNot Nothing Then
-            Me.m_contentmanager.DisplayData()
+        If (Me.m_contentmanager IsNot Nothing) Then
+            Try
+                Me.m_contentmanager.DisplayData()
+            Catch ex As Exception
+            End Try
         End If
     End Sub
 
@@ -493,6 +525,7 @@ Public Class frmNetworkAnalysis
 
                 End If
 
+                Me.m_hdrPage.Text = Me.m_contentmanager.PageTitle
             End If
 
             ' Hide info panel
@@ -500,8 +533,9 @@ Public Class frmNetworkAnalysis
         Else
             ' Hide toolbar
             Me.m_toolstrip.Visible = False
-            ' Show logo
+            ' Show credits
             Me.m_tlpInfo.Visible = True
+            Me.m_hdrPage.Text = My.Resources.PAGE_CREDITS
         End If
 
         ' Position content
@@ -520,222 +554,6 @@ Public Class frmNetworkAnalysis
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
         Me.ResumeLayout()
 
-    End Sub
-
-    Public Sub UpdateContent()
-
-        Dim node As TreeNode = Me.m_tvNetworkAnalysis.SelectedNode
-        Dim strNodeName As String = ""
-
-        If (node IsNot Nothing) Then
-            strNodeName = node.Name
-        End If
-
-        Me.SuspendLayout()
-
-        If (Me.m_contentmanager IsNot Nothing) Then
-            Me.m_contentmanager.Detach()
-            Me.m_contentmanager = Nothing
-        End If
-
-        ' Make sure main network has ran
-        Me.m_networkmanager.RunMainNetwork()
-
-        Select Case strNodeName
-
-            Case "ndCredits"
-                Me.m_contentmanager = Nothing
-
-            Case "ndRelativeFlows"
-                Me.m_contentmanager = New cRelativeFlows()
-
-            Case "ndAbsoluteFlows"
-                Me.m_contentmanager = New cAbsoluteFlows()
-
-            Case "ndTransferEfficiency"
-                Me.m_contentmanager = New cTransferEfficiency()
-
-            Case "ndFlowPyramid"
-                Me.m_contentmanager = New cFlowPyramid()
-
-            Case "ndBiomassByTrophicLevel"
-                Me.m_contentmanager = New cBiomassByTrophicLevel()
-
-            Case "ndBiomassPyramid"
-                Me.m_contentmanager = New cBiomassPyramid()
-
-            Case "ndCatchByTrophicLevel"
-                Me.m_contentmanager = New cCatchByTrophicLevel()
-
-            Case "ndCatchPyramid"
-                Me.m_contentmanager = New cCatchPyramid()
-
-            Case "ndFromPrimaryProducers"
-                Me.m_contentmanager = New cFromPrimaryProd()
-
-            Case "ndFromDetritus"
-                Me.m_contentmanager = New cFromDetritus()
-
-            Case "ndFromAllCombined"
-                Me.m_contentmanager = New cFromAllCombined()
-
-            Case "ndForHarvestOfAllGroups"
-                Me.m_contentmanager = New cForHarvestOfAllGp()
-
-            Case "ndForConsumptionOfAllGroups"
-                Me.m_contentmanager = New cForConsumpOfAllGp()
-
-            Case "ndImpactData"
-                Me.m_contentmanager = New cImpactData()
-
-            Case "ndGraphOfMixedTrophicImpact"
-                Me.m_contentmanager = New cPlotOfMixedTrophicImpact()
-
-            Case "ndGraphOfMixedTrophicImpactEwE5"
-                Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
-
-            Case "ndKeystonenessTable"
-                Me.m_contentmanager = New cKeystonenessTable()
-
-            Case "ndKeystonenessGraph"
-                Me.m_contentmanager = New cKeystonenessGraph()
-
-            Case "ndTotal"
-                Me.m_contentmanager = New cTotal()
-
-            Case "ndByGroup"
-                Me.m_contentmanager = New cByGroup()
-
-            Case "ndFlowFromDetritus"
-                Me.m_contentmanager = New cFlowFromDetritus()
-
-            Case "ndPathway_cons_tl1"
-                Me.m_contentmanager = New TL1ToConsumer.cPathways()
-
-            Case "ndSummaryOfPathways_cons_tl1"
-                Me.m_contentmanager = New TL1ToConsumer.cSummaryPathways()
-
-            Case "ndPathway_cons_prey_tl1"
-                Me.m_contentmanager = New TL1ToPreyToConsumer.cPathways()
-
-            Case "ndSummaryOfPathways_cons_prey_tl1"
-                Me.m_contentmanager = New TL1ToConsumer.cSummaryPathways()
-
-            Case "ndPathway_pred_prey"
-                Me.m_contentmanager = New PreyToPredator.cPathways()
-
-            Case "ndSummaryOfPathways_pred_prey"
-                Me.m_contentmanager = New PreyToPredator.cSummaryPathways()
-
-            Case "ndPathway_living"
-                Me.m_contentmanager = New CyclesLiving.cPathways()
-
-            Case "ndSummaryOfPathways_living"
-                Me.m_contentmanager = New CyclesLiving.cSummaryPathways()
-
-            Case "ndPathway_all"
-                Me.m_contentmanager = New CyclesAll.cPathways()
-
-            Case "ndSummaryOfPathways_all"
-                Me.m_contentmanager = New CyclesAll.cSummaryPathways()
-
-            Case "ndCyclingAndPathLength"
-                Me.m_contentmanager = New cCyclingAndPathLen()
-
-            Case "ndLindemanSpine"
-                Me.m_contentmanager = New cLindemanSpine()
-
-            Case "ndWithoutPrimaryProductionRequiredEstimate"
-                Me.m_contentmanager = New cIndicesWithoutPPREst()
-
-            Case "ndWithPrimaryProductionRequiredEstimate"
-                Me.m_contentmanager = New cIndicesWithPPREst()
-
-                ' JS 27apr09: discontinued, StyleGuide group/fleet visible flags should be used for this (if ever)
-                ' JS 01may09: besides, the interface will be triggered from a toolbar btn instead of a tree node.
-                '             Changing viz items will need to cause toolbars to refresh, grid population code to 
-                '             change, etc... It's not straight-forward at all!
-
-                'Case My.Resources.TREE_NODE_SHOW_HIDE_GRP
-                '    m_HideGroupsClass = cHideGroups.GetInstance(scNetworkAnalysis.Panel2)
-                '    m_HideGroupsClass.SetUpPanel()
-                '    m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                '    m_HideGroupsForm.ShowDialog()
-
-            Case Else
-        End Select
-
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
-
-        ' Put content manager to work
-        If (Me.m_contentmanager IsNot Nothing) Then
-
-            ' Try to attach content manager
-            If Me.m_contentmanager.Attach(Me.m_networkmanager, _
-                                          Me.m_datagrid, Me.m_graph, Me.m_plot, Me.m_toolstrip, _
-                                          Me.m_uic) Then
-
-                Try
-                    ' Display data if succesful
-                    Me.m_contentmanager.DisplayData()
-                Catch ex As Exception
-
-                End Try
-
-                ' Need to populate group combos?
-                If Me.m_toolstrip.Visible Then
-
-                    Me.m_bInUpdate = True
-
-                    Me.tscmbSelection1.Items.Clear()
-                    Me.tscmbSelection2.Items.Clear()
-                    For iGroup As Integer = 1 To Me.m_networkmanager.nGroups
-                        If (Me.m_contentmanager.GroupFilter1 = eGroupFilterTypes.Living) Or _
-                           (iGroup < Me.m_networkmanager.nLivingGroups) Then
-                            Me.tscmbSelection1.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
-                        End If
-                        If (Me.m_contentmanager.GroupFilter2 = eGroupFilterTypes.Living) Or _
-                           (iGroup < Me.m_networkmanager.nLivingGroups) Then
-                            Me.tscmbSelection2.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
-                        End If
-                    Next
-                    Me.m_toolstrip.Refresh()
-
-                    Me.tscmbSelection1.SelectedIndex = 0
-                    Me.tscmbSelection2.SelectedIndex = 0
-
-                    Me.m_bInUpdate = False
-
-                    Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
-
-                End If
-
-            End If
-
-            ' Hide info panel
-            Me.m_tlpInfo.Visible = False
-        Else
-            ' Hide toolbar
-            Me.m_toolstrip.Visible = False
-            ' Show logo
-            Me.m_tlpInfo.Visible = True
-        End If
-
-        ' Position content
-        If Me.m_toolstrip.Visible Then
-            Me.m_graph.Top = Me.m_toolstrip.Height
-            Me.m_tlpInfo.Top = Me.m_toolstrip.Height
-            Me.m_datagrid.Top = Me.m_toolstrip.Height
-            Me.m_plot.Top = Me.m_toolstrip.Height
-        Else
-            Me.m_graph.Top = 0
-            Me.m_tlpInfo.Top = 0
-            Me.m_datagrid.Top = 0
-            Me.m_plot.Top = 0
-        End If
-
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
-        Me.ResumeLayout()
     End Sub
 
 End Class

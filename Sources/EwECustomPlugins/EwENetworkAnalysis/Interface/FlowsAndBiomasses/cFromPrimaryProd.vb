@@ -17,6 +17,10 @@ Public Class cFromPrimaryProd
     Public Sub New()
     End Sub
 
+    Public Overrides Function PageTitle() As String
+        Return "Flows from primary producers"
+    End Function
+
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _
@@ -39,7 +43,7 @@ Public Class cFromPrimaryProd
         Grid.RowHeadersVisible = False
         Grid.RowCount = NetworkManager.nTrophicLevels + 2
         Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
         Grid.Rows(0).Frozen = True
         Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
@@ -96,7 +100,7 @@ Public Class cFromPrimaryProd
         SetGridColumnPropertyDefault(Grid)
 
         Grid.Columns(0).Frozen = True
-        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
 
     End Sub
 

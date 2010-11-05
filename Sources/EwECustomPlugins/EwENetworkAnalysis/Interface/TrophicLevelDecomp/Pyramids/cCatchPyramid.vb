@@ -27,6 +27,10 @@ Public Class cCatchPyramid
         Return ePyramidTypes.Catch
     End Function
 
+    Public Overrides Function PageTitle() As String
+        Return "Catch pyramid (external)"
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="cPyramid.WritePyramidFile"/>
     ''' -----------------------------------------------------------------------

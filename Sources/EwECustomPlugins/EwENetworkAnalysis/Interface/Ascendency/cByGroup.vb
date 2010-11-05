@@ -33,7 +33,7 @@ Public Class cByGroup
         Me.Grid.RowHeadersVisible = False
         Me.Grid.RowCount = Me.NetworkManager.nGroups + 4
         Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
         Me.Grid.Rows(0).Frozen = True
         Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
@@ -97,6 +97,10 @@ Public Class cByGroup
         Me.Grid.ClearSelection()
     End Sub
 
+    Public Overrides Function PageTitle() As String
+        Return "Ascendency by group"
+    End Function
+
     Private Sub SetUpGridColumn()
 
         Me.Graph.Visible = False
@@ -106,12 +110,12 @@ Public Class cByGroup
 
         SetGridColumnPropertyDefault(Me.Grid)
 
-        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
         Me.Grid.Columns(0).Frozen = True
         Me.Grid.Columns(0).Width = ID_COL_WIDTH
 
         Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
         Grid.Columns(1).Frozen = True
         Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
 

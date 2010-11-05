@@ -27,6 +27,10 @@ Public Class cFlowPyramid
         Return ePyramidTypes.Flow
     End Function
 
+    Public Overrides Function PageTitle() As String
+        Return "Flow pyramid (external)"
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="cPyramid.WritePyramidFile"/>
     ''' -----------------------------------------------------------------------

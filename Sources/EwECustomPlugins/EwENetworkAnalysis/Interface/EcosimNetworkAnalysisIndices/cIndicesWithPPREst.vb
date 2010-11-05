@@ -20,6 +20,10 @@ Public Class cIndicesWithPPREst
 
     Private m_zgh As cZedGraphHelper = Nothing
 
+    Public Overrides Function PageTitle() As String
+        Return "Ecosim indices with PPR estimated"
+    End Function
+
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
                                      ByVal datagrid As DataGridView, _
                                      ByVal graph As ZedGraphControl, _

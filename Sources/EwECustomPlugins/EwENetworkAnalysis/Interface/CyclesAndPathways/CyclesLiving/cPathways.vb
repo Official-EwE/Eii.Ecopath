@@ -42,7 +42,7 @@ Namespace CyclesLiving
             If NetworkManager.PathWays.Count > 0 Then
                 Grid.RowCount = NetworkManager.PathWays.Count + 1
                 Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
                 Grid.Rows(0).Frozen = True
                 Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
@@ -60,7 +60,7 @@ Namespace CyclesLiving
             Else
                 Grid.RowCount = 2
                 Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
                 Grid.Rows(0).Frozen = True
                 Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
@@ -78,6 +78,10 @@ Namespace CyclesLiving
             Cursor.Current = Cursors.Default
         End Sub
 
+        Public Overrides Function PageTitle() As String
+            Return "Pathways of all living groups"
+        End Function
+
         Private Sub SetUpGridColumn()
 
             Grid.ReadOnly = True
@@ -86,7 +90,7 @@ Namespace CyclesLiving
             SetGridColumnPropertyDefault(Grid)
 
             Grid.Columns(0).Frozen = True
-            Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.Color.MintCream
+            Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
 
             Grid.Columns(1).Width = 660
             Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
