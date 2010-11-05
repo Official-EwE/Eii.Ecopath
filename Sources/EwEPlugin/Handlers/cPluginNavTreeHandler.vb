@@ -112,6 +112,7 @@ Public Class cPluginNavTreeHandler
         Dim aLocations() As String = Nothing
         Dim iLocation As Integer = 0
         Dim iItem As Integer = 0
+        Dim bAdded As Boolean = False
         Dim bError As Boolean = False
         Dim bFound As Boolean = False
 
@@ -184,14 +185,16 @@ Public Class cPluginNavTreeHandler
                     tn.NodeFont = New System.Drawing.Font(m_tv.Font, Drawing.FontStyle.Regular)
 
                     ' Insert the node alphabetically sorted by name
-                    iItem = -1
-                    For i As Integer = 0 To tnc.Count - 1
-                        If String.Compare(tn.Name, tnc(i).Name, True) < 0 Then
-                            iItem = i
-                            tnc.Insert(i, tn)
+                    bAdded = False
+                    iItem = 0
+                    While (bAdded = False) And (iItem < tnc.Count)
+                        If (String.Compare(tn.Name, tnc(iItem).Name, True) < 0) Then
+                            tnc.Insert(iItem, tn)
+                            bAdded = True
                         End If
-                    Next
-                    If (iItem = -1) Then tnc.Add(tn)
+                        iItem += 1
+                    End While
+                    If (Not bAdded) Then tnc.Add(tn)
                 Else
                     ' #Removing: try to remove the node
                     tn = tnc.Item(ipNavTree.Name)
