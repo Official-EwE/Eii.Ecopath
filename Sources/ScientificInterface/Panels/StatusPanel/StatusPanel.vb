@@ -40,9 +40,25 @@ Public Class StatusPanel
 
     End Sub
 
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        ' Stop listening to core messages
+        Me.ConfigMessageHandlers(False)
+
+        Me.m_tvStatus.ImageList = Nothing
+        While (Me.m_il.Images.Count > 0)
+            Dim img As Image = Me.m_il.Images(0)
+            Me.m_il.Images.RemoveAt(0)
+            img.Dispose()
+        End While
+        If disposing AndAlso components IsNot Nothing Then
+            components.Dispose()
+        End If
+        MyBase.Dispose(disposing)
+    End Sub
+
 #End Region ' Constructor
 
-#Region " Form overrides " '
+#Region " Form overrides "
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
@@ -64,12 +80,6 @@ Public Class StatusPanel
         ' Start listening to core messages
         Me.ConfigMessageHandlers(True)
 
-    End Sub
-
-    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
-        ' Stop listening to core messages
-        Me.ConfigMessageHandlers(False)
-        MyBase.OnFormClosed(e)
     End Sub
 
 #End Region ' Form overrides

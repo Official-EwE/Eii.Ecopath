@@ -49,7 +49,6 @@ Public Class RemarkPanel
 
     End Sub
 
-    'Form overrides dispose to clean up the component list.
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing Then
             ' Clean up
