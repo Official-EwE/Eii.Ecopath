@@ -34,6 +34,13 @@ Public Class cCustomComboBoxFleetGroupTree
 
     End Sub
 
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Me.Clear()
+        Me.m_core = Nothing
+        Me.m_tscb = Nothing
+        MyBase.Dispose(disposing)
+    End Sub
+
     Private Sub CustomComboBoxDropDownTree_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) _
         Handles Me.AfterSelect
 
@@ -69,7 +76,7 @@ Public Class cCustomComboBoxFleetGroupTree
         Dim tnParent As TreeNode = Nothing
         Dim tnChild As TreeNode = Nothing
 
-        Me.Nodes.Clear()
+        Me.Clear()
 
         'Load the fleet drop down list
         tnParent = Me.Nodes.Add(SharedResources.HEADER_FISHINGEFFORT)
@@ -90,6 +97,21 @@ Public Class cCustomComboBoxFleetGroupTree
 
         Me.SelectedNode = Me.Nodes(0)
         Me.UpdateParentCombo()
+
+    End Sub
+
+    Public Sub Clear()
+
+        Dim tnParent As TreeNode = Nothing
+        Dim tnChild As TreeNode = Nothing
+
+        ' Clear
+        For Each tnParent In Me.Nodes
+            For Each tnChild In tnParent.Nodes
+                tnChild.Tag = Nothing
+            Next
+        Next
+        Me.Nodes.Clear()
 
     End Sub
 
