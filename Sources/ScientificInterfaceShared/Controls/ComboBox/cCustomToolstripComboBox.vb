@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: cCustomToolstripComboBox.vb,v $
-' Revision 1.1  2009/02/24 03:47:36  jeroens
-' Renamed
-'
-' Revision 1.2  2008/12/15 15:37:27  jeroens
-' no message
-'
-' Revision 1.1  2008/06/01 23:45:06  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.1  2007/12/14 15:49:19  jeroens
-' Initial version
-'
-' Revision 1.1  2007/09/07 13:33:08  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
