@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: EwEHierarchyGridVisualizers.vb,v $
-' Revision 1.1  2008/09/26 07:31:16  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/06/01 23:45:08  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.1  2006/10/18 15:51:28  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Namespace Controls.EwEGrid

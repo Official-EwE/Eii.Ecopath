@@ -73,9 +73,8 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' Clean up!
         ''' </summary>
-        ''' <param name="bDisposing">Yeah, we're really doing this.</param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Public Overrides Sub Dispose()
 
             ' Unregister property
             If (Me.m_property IsNot Nothing) Then
@@ -83,7 +82,7 @@ Namespace Controls.EwEGrid
                 Me.m_property = Nothing
             End If
 
-            MyBase.Dispose(bDisposing)
+            MyBase.Dispose()
 
         End Sub
 

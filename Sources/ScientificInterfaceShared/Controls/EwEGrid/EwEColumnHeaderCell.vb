@@ -26,7 +26,7 @@ Namespace Controls.EwEGrid
         ''' <summary>One visualizer for all cells</summary>
         Private Shared g_visualizer As New cEwEGridColumnHeaderVisualizer()
 
-#Region " Construction "
+#Region " Construction / destruction "
 
         Public Sub New(Optional ByVal objValue As Object = Nothing)
             MyBase.New(objValue)
@@ -43,7 +43,12 @@ Namespace Controls.EwEGrid
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
 
-#End Region ' Construction 
+        Public Overrides Sub Dispose()
+            Me.VisualModel = Nothing
+            MyBase.Dispose()
+        End Sub
+
+#End Region ' Construction / destruction
 
     End Class
 

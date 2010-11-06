@@ -72,34 +72,24 @@ Namespace Controls.EwEGrid
 
         End Sub
 
-        Private m_bIsThrashed As Boolean = False
+        Public Overridable Sub Dispose() Implements IDisposable.Dispose
+            If UIContext IsNot Nothing Then
 
-        ' IDisposable
-        Protected Overridable Sub Dispose(ByVal bThrashing As Boolean)
-            If Not Me.m_bIsThrashed Then
-                If bThrashing Then
+                Me.UIContext = Nothing
 
-                    Me.UIContext = Nothing
+                ' Remove all bahaviour models
+                Me.Behaviors.Remove(Me.m_bmCatchEnter)
+                Me.m_bmCatchEnter = Nothing
 
-                    ' Remove all bahaviour models
-                    Me.Behaviors.Remove(Me.m_bmCatchEnter)
-                    Me.m_bmCatchEnter = Nothing
+                Me.Behaviors.Remove(Me.m_bmResize)
+                Me.m_bmResize = Nothing
 
-                    Me.Behaviors.Remove(Me.m_bmResize)
-                    Me.m_bmResize = Nothing
+                ' Release any editors
+                Me.DataModel.EnableEdit = False
+                Me.DataModel.EditableMode = SourceGrid2.EditableMode.None
+                Me.DataModel = Nothing
 
-                    ' Release any editors
-                    Me.DataModel.EnableEdit = False
-                    Me.DataModel.EditableMode = SourceGrid2.EditableMode.None
-                    Me.DataModel = Nothing
-
-                End If
             End If
-            Me.m_bIsThrashed = True
-        End Sub
-
-        Public Sub Dispose() Implements IDisposable.Dispose
-            Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
 

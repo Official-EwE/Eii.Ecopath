@@ -251,9 +251,8 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' Clean up!
         ''' </summary>
-        ''' <param name="bDisposing">.NET likes this flag a lot.</param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Public Overrides Sub Dispose()
 
             ' Unregister property
             If (Me.m_propTooltip IsNot Nothing) Then
@@ -261,7 +260,7 @@ Namespace Controls.EwEGrid
                 Me.m_propTooltip = Nothing
             End If
 
-            MyBase.Dispose(bDisposing)
+            MyBase.Dispose()
 
         End Sub
 
