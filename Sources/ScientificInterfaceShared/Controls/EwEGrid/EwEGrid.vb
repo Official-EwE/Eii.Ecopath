@@ -359,9 +359,7 @@ Namespace Controls.EwEGrid
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             MyBase.Dispose(disposing)
 
-            Me.UIContext = Nothing
-
-            If Me.m_pehTLCell IsNot Nothing Then
+            If (Me.m_pehTLCell IsNot Nothing) Then
 
                 RemoveHandler m_ceCellClick.Click, Me.m_pehTLCell
                 Me.m_pehTLCell = Nothing
@@ -379,6 +377,8 @@ Namespace Controls.EwEGrid
                 Me.TrackPropertySelection = False
 
             End If
+
+            Me.UIContext = Nothing
 
         End Sub
 
