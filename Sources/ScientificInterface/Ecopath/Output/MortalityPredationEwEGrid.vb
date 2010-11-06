@@ -51,7 +51,7 @@ Namespace Ecopath.Output
                 Me.PB = DirectCast(pm.GetProperty(source, eVarNameFlags.PBOutput, sourceSec), cSingleProperty)
             End Sub
 
-            Protected Overrides Sub Dispose()
+            Public Overrides Sub Dispose()
                 Me.PB = Nothing
                 MyBase.Dispose()
             End Sub
