@@ -82,11 +82,16 @@ Namespace Controls.EwEGrid
                     Me.UIContext = Nothing
 
                     ' Remove all bahaviour models
-                    Me.Behaviors.Remove(m_bmCatchEnter)
+                    Me.Behaviors.Remove(Me.m_bmCatchEnter)
                     Me.m_bmCatchEnter = Nothing
 
-                    Me.Behaviors.Remove(m_bmResize)
+                    Me.Behaviors.Remove(Me.m_bmResize)
                     Me.m_bmResize = Nothing
+
+                    ' Release any editors
+                    Me.DataModel.EnableEdit = False
+                    Me.DataModel.EditableMode = SourceGrid2.EditableMode.None
+                    Me.DataModel = Nothing
 
                 End If
             End If
