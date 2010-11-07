@@ -725,31 +725,32 @@ Public Class AppLauncher
     Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
 
         ' Cancel application shut down if the core does not terminate succesfully.
-        e.Cancel = Not Me.Core.CloseModel()
+        e.Cancel = Not Me.CloseEcopathModel()
 
-        ' The core does not terminate sucessfully
-        If e.Cancel = True Then Return
+        ' Abort if Ecopath model did not close sucessfully
+        If e.Cancel Then Return
 
-        ' Save form settings
-        Me.SaveMainFormSettings()
+        Try
 
-        ' Cleanup: disconnect command handler from idle event
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
+            ' Cleanup: disconnect command handler from idle event
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
 
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
+            Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+            Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+            Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
+            Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
 
-        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
 
-        ' Terminate forms
-        Me.CloseAllContents()
+            ' Terminate all model-independent UI components
+            Me.CloseAllContents()
+            Me.ClearMRUDropdown()
 
-        ' Clean up
-        Me.ClearMRUDropdown()
-        Me.ClearScenarioDropdowns()
+        Catch ex As Exception
+
+        End Try
 
         MyBase.OnFormClosing(e)
 
@@ -1536,12 +1537,12 @@ Public Class AppLauncher
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub CloseAllContents()
-        m_NavPanel.DockPanel = Nothing
-        m_RemarkPanel.DockPanel = Nothing
-        m_StatusPanel.DockPanel = Nothing
-
-        'Close all other documents
-        CloseAllDocuments()
+        ' Forget panels
+        Me.m_NavPanel.DockPanel = Nothing
+        Me.m_RemarkPanel.DockPanel = Nothing
+        Me.m_StatusPanel.DockPanel = Nothing
+        ' Close all other documents
+        Me.CloseAllDocuments()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1823,8 +1824,12 @@ Public Class AppLauncher
 
             ' Store last directory
             My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
+            ' Save form settings
+            Me.SaveMainFormSettings()
             ' Close all open documents
             Me.CloseAllDocuments()
+            Me.ClearScenarioDropdowns()
+            Me.m_uic.Help.Clear()
 
             ' Reset components
             Me.m_NavPanel.Reset()
