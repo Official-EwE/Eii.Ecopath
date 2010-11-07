@@ -22,13 +22,8 @@ Public Class gridWeightTS
     End Sub
 
     Public Sub ResetData()
-
-        Dim cnt As Integer = Me.RowsCount
-        If cnt > 1 Then
-            Me.Rows.RemoveRange(1, cnt - 1)
-        End If
+        Me.ClearData()
         Me.FillData()
-
     End Sub
 
     Public Sub CheckAll(ByVal bCheck As Boolean)
