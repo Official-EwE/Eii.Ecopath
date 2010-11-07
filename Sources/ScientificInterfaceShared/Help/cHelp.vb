@@ -164,6 +164,16 @@ Public Class cHelp
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Detach help from UI components.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub Clear()
+        Me.m_dtHelpTopics.Clear()
+        Me.m_ctlContext = Nothing
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' 
     ''' </summary>
     ''' <param name="message"></param>
