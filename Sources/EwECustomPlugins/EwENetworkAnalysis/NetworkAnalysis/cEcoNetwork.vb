@@ -2749,8 +2749,6 @@ NextPivot:
                 '                Since Math.Log implements LN, the calculations below should 
                 '                use the Math.Log10 operator
                 ' VC response: log10 OK
-                'Me.KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
-                'Me.TotalImpactOverBiomass(i) = Math.Log(TotalImpact(i) / RelBi(i))
                 Me.KeystoneIndex(i) = Math.Log10(TotalImpact(i) * (1 - RelBi(i)))
                 Me.TotalImpactOverBiomass(i) = Math.Log10(TotalImpact(i) / RelBi(i))
                 Me.RelTotalImpact(i) = TotalImpact(i) / dMaxImpact
