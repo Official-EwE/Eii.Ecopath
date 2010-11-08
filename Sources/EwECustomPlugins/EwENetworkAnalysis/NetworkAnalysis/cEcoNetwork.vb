@@ -2747,7 +2747,7 @@ NextPivot:
             For i As Integer = 1 To m_epdata.NumLiving
                 ' JS note to VC: The publication states Log, not LN, for the calculations below. 
                 '                Since Math.Log implements LN, the calculations below should 
-                '                probably use the Math.Log10 operator
+                '                use the Math.Log10 operator
                 ' VC response: log10 OK
                 'Me.KeystoneIndex(i) = Math.Log(TotalImpact(i) * (1 - RelBi(i)))
                 'Me.TotalImpactOverBiomass(i) = Math.Log(TotalImpact(i) / RelBi(i))
