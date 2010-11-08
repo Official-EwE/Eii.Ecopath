@@ -73,7 +73,9 @@ Public Class NavigationPanel
             Me.m_nodeController.Detach()
             Me.m_nodeController = Nothing
 
+            Me.m_ntPluginHandler.Dispose()
             Me.m_ntPluginHandler = Nothing
+
             Me.m_pluginManager = Nothing
             Me.m_uic = Nothing
 
