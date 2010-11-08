@@ -1387,7 +1387,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath with Ecosim 6 BETA Oct 2010.
+        '''  Looks up a localized string similar to Ecopath with Ecosim 6.
         '''</summary>
         Friend ReadOnly Property GENERIC_CAPTION() As String
             Get
@@ -1396,7 +1396,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath with Ecosim 6 BETA Oct 2010- {0}.
+        '''  Looks up a localized string similar to Ecopath with Ecosim 6 - {0}.
         '''</summary>
         Friend ReadOnly Property GENERIC_CAPTION_OPENMODEL() As String
             Get

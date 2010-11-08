@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Ecopath with Ecosim 6 BETA 2010 - Scientific Interface")> 
+<Assembly: AssemblyTitle("Ecopath with Ecosim 6 - Scientific Interface")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwE6SFGUI")> 
 <Assembly: AssemblyCopyright("Copyright 1991-2010")> 
