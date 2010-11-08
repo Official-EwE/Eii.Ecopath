@@ -2550,14 +2550,14 @@ Public Class AppLauncher
         If cmd.Checked Then
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.TopMost = True
+            'Me.TopMost = True
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             Me.m_formStatePrev = Me.WindowState
             Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Else
             Me.MaximizeBox = True
             Me.MinimizeBox = True
-            Me.TopMost = False
+            'Me.TopMost = False
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable
             Me.WindowState = Me.m_formStatePrev
         End If
