@@ -150,6 +150,111 @@
   <data name="Panel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;rbBioEst.Name" xml:space="preserve">
+    <value>rbBioEst</value>
+  </data>
+  <data name="&gt;&gt;rbBioEst.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbBioEst.Parent" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;rbBioEst.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btShowHide.Name" xml:space="preserve">
+    <value>btShowHide</value>
+  </data>
+  <data name="&gt;&gt;btShowHide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btShowHide.Parent" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;btShowHide.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPlots.Name" xml:space="preserve">
+    <value>m_hdrPlots</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPlots.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPlots.Parent" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPlots.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;rbEffort.Name" xml:space="preserve">
+    <value>rbEffort</value>
+  </data>
+  <data name="&gt;&gt;rbEffort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbEffort.Parent" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;rbEffort.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;rbFleetValue.Name" xml:space="preserve">
+    <value>rbFleetValue</value>
+  </data>
+  <data name="&gt;&gt;rbFleetValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbFleetValue.Parent" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;rbFleetValue.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;rbGroupCatch.Name" xml:space="preserve">
+    <value>rbGroupCatch</value>
+  </data>
+  <data name="&gt;&gt;rbGroupCatch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbGroupCatch.Parent" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;rbGroupCatch.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;rbGroupBiomass.Name" xml:space="preserve">
+    <value>rbGroupBiomass</value>
+  </data>
+  <data name="&gt;&gt;rbGroupBiomass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbGroupBiomass.Parent" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;rbGroupBiomass.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="Panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>123, 4</value>
+  </data>
+  <data name="Panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>657, 65</value>
+  </data>
+  <data name="Panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;Panel1.Name" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Panel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Panel1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="rbBioEst.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -204,40 +309,40 @@
   <data name="&gt;&gt;btShowHide.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="Label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrPlots.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="Label1.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrPlots.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrPlots.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="Label1.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="m_hdrPlots.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrPlots.Size" type="System.Drawing.Size, System.Drawing">
     <value>657, 18</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrPlots.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="m_hdrPlots.Text" xml:space="preserve">
     <value>Plots</value>
   </data>
-  <data name="Label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrPlots.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;m_hdrPlots.Name" xml:space="preserve">
+    <value>m_hdrPlots</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrPlots.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrPlots.Parent" xml:space="preserve">
     <value>Panel1</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrPlots.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="rbEffort.AutoSize" type="System.Boolean, mscorlib">
@@ -348,58 +453,37 @@
   <data name="&gt;&gt;rbGroupBiomass.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="Panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>123, 4</value>
-  </data>
-  <data name="Panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>657, 65</value>
-  </data>
-  <data name="Panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;Panel1.Name" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Panel1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="lbType.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrType.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="lbType.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrType.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="lbType.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="m_hdrType.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="lbType.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrType.Size" type="System.Drawing.Size, System.Drawing">
     <value>118, 18</value>
   </data>
-  <data name="lbType.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrType.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="lbType.Text" xml:space="preserve">
+  <data name="m_hdrType.Text" xml:space="preserve">
     <value>Plot type</value>
   </data>
-  <data name="lbType.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrType.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;lbType.Name" xml:space="preserve">
-    <value>lbType</value>
+  <data name="&gt;&gt;m_hdrType.Name" xml:space="preserve">
+    <value>m_hdrType</value>
   </data>
-  <data name="&gt;&gt;lbType.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrType.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lbType.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrType.Parent" xml:space="preserve">
     <value>Panel2</value>
   </data>
-  <data name="&gt;&gt;lbType.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrType.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="rbValues.AutoSize" type="System.Boolean, mscorlib">
@@ -496,6 +580,6 @@
     <value>frmMSEPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.914, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.1108, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

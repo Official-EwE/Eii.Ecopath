@@ -1,4 +1,5 @@
 ﻿Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Controls
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmOptions
@@ -25,7 +26,7 @@ Partial Class frmOptions
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOptions))
-        Me.pnlRegOpt = New System.Windows.Forms.Panel
+        Me.m_pnlRegOpt = New System.Windows.Forms.Panel
         Me.pnlUseReg = New System.Windows.Forms.Panel
         Me.rbEffortEcosim = New System.Windows.Forms.RadioButton
         Me.rbEffortNoCap = New System.Windows.Forms.RadioButton
@@ -38,27 +39,27 @@ Partial Class frmOptions
         Me.rbCatchEstBio = New System.Windows.Forms.RadioButton
         Me.rbUseRegs = New System.Windows.Forms.RadioButton
         Me.rbNoRegs = New System.Windows.Forms.RadioButton
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.pnlRunOpt = New System.Windows.Forms.Panel
+        Me.m_hdrEffortRegOptions = New cEwEHeaderLabel
+        Me.m_pnlRunOpt = New System.Windows.Forms.Panel
         Me.txKalmanGain = New System.Windows.Forms.TextBox
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.ckPlugin = New System.Windows.Forms.CheckBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.pnlRegOpt.SuspendLayout()
+        Me.m_lblKalmanGain = New System.Windows.Forms.Label
+        Me.m_ckPlugin = New System.Windows.Forms.CheckBox
+        Me.m_hdrRunOptions = New cEwEHeaderLabel
+        Me.m_pnlRegOpt.SuspendLayout()
         Me.pnlUseReg.SuspendLayout()
         Me.pnlFTracking.SuspendLayout()
-        Me.pnlRunOpt.SuspendLayout()
+        Me.m_pnlRunOpt.SuspendLayout()
         Me.SuspendLayout()
         '
-        'pnlRegOpt
+        'm_pnlRegOpt
         '
-        resources.ApplyResources(Me.pnlRegOpt, "pnlRegOpt")
-        Me.pnlRegOpt.Controls.Add(Me.pnlUseReg)
-        Me.pnlRegOpt.Controls.Add(Me.pnlFTracking)
-        Me.pnlRegOpt.Controls.Add(Me.rbUseRegs)
-        Me.pnlRegOpt.Controls.Add(Me.rbNoRegs)
-        Me.pnlRegOpt.Controls.Add(Me.Label7)
-        Me.pnlRegOpt.Name = "pnlRegOpt"
+        resources.ApplyResources(Me.m_pnlRegOpt, "m_pnlRegOpt")
+        Me.m_pnlRegOpt.Controls.Add(Me.pnlUseReg)
+        Me.m_pnlRegOpt.Controls.Add(Me.pnlFTracking)
+        Me.m_pnlRegOpt.Controls.Add(Me.rbUseRegs)
+        Me.m_pnlRegOpt.Controls.Add(Me.rbNoRegs)
+        Me.m_pnlRegOpt.Controls.Add(Me.m_hdrEffortRegOptions)
+        Me.m_pnlRegOpt.Name = "m_pnlRegOpt"
         '
         'pnlUseReg
         '
@@ -143,80 +144,80 @@ Partial Class frmOptions
         Me.rbNoRegs.Name = "rbNoRegs"
         Me.rbNoRegs.UseVisualStyleBackColor = True
         '
-        'Label7
+        'm_hdrEffortRegOptions
         '
-        Me.Label7.BackColor = System.Drawing.SystemColors.ButtonShadow
-        resources.ApplyResources(Me.Label7, "Label7")
-        Me.Label7.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label7.Name = "Label7"
+        Me.m_hdrEffortRegOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
+        resources.ApplyResources(Me.m_hdrEffortRegOptions, "m_hdrEffortRegOptions")
+        Me.m_hdrEffortRegOptions.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrEffortRegOptions.Name = "m_hdrEffortRegOptions"
         '
-        'pnlRunOpt
+        'm_pnlRunOpt
         '
-        resources.ApplyResources(Me.pnlRunOpt, "pnlRunOpt")
-        Me.pnlRunOpt.Controls.Add(Me.txKalmanGain)
-        Me.pnlRunOpt.Controls.Add(Me.Label8)
-        Me.pnlRunOpt.Controls.Add(Me.ckPlugin)
-        Me.pnlRunOpt.Controls.Add(Me.Label2)
-        Me.pnlRunOpt.Name = "pnlRunOpt"
+        resources.ApplyResources(Me.m_pnlRunOpt, "m_pnlRunOpt")
+        Me.m_pnlRunOpt.Controls.Add(Me.txKalmanGain)
+        Me.m_pnlRunOpt.Controls.Add(Me.m_lblKalmanGain)
+        Me.m_pnlRunOpt.Controls.Add(Me.m_ckPlugin)
+        Me.m_pnlRunOpt.Controls.Add(Me.m_hdrRunOptions)
+        Me.m_pnlRunOpt.Name = "m_pnlRunOpt"
         '
         'txKalmanGain
         '
         resources.ApplyResources(Me.txKalmanGain, "txKalmanGain")
         Me.txKalmanGain.Name = "txKalmanGain"
         '
-        'Label8
+        'm_lblKalmanGain
         '
-        resources.ApplyResources(Me.Label8, "Label8")
-        Me.Label8.Name = "Label8"
+        resources.ApplyResources(Me.m_lblKalmanGain, "m_lblKalmanGain")
+        Me.m_lblKalmanGain.Name = "m_lblKalmanGain"
         '
-        'ckPlugin
+        'm_ckPlugin
         '
-        resources.ApplyResources(Me.ckPlugin, "ckPlugin")
-        Me.ckPlugin.Name = "ckPlugin"
-        Me.ckPlugin.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_ckPlugin, "m_ckPlugin")
+        Me.m_ckPlugin.Name = "m_ckPlugin"
+        Me.m_ckPlugin.UseVisualStyleBackColor = True
         '
-        'Label2
+        'm_hdrRunOptions
         '
-        Me.Label2.BackColor = System.Drawing.SystemColors.ButtonShadow
-        resources.ApplyResources(Me.Label2, "Label2")
-        Me.Label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label2.Name = "Label2"
+        Me.m_hdrRunOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
+        resources.ApplyResources(Me.m_hdrRunOptions, "m_hdrRunOptions")
+        Me.m_hdrRunOptions.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrRunOptions.Name = "m_hdrRunOptions"
         '
         'frmOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.pnlRunOpt)
-        Me.Controls.Add(Me.pnlRegOpt)
+        Me.Controls.Add(Me.m_pnlRunOpt)
+        Me.Controls.Add(Me.m_pnlRegOpt)
         Me.Name = "frmOptions"
-        Me.pnlRegOpt.ResumeLayout(False)
-        Me.pnlRegOpt.PerformLayout()
+        Me.m_pnlRegOpt.ResumeLayout(False)
+        Me.m_pnlRegOpt.PerformLayout()
         Me.pnlUseReg.ResumeLayout(False)
         Me.pnlUseReg.PerformLayout()
         Me.pnlFTracking.ResumeLayout(False)
         Me.pnlFTracking.PerformLayout()
-        Me.pnlRunOpt.ResumeLayout(False)
-        Me.pnlRunOpt.PerformLayout()
+        Me.m_pnlRunOpt.ResumeLayout(False)
+        Me.m_pnlRunOpt.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents rbUseRegs As System.Windows.Forms.RadioButton
-    Friend WithEvents rbEffortPredicted As System.Windows.Forms.RadioButton
-    Friend WithEvents rbNoRegs As System.Windows.Forms.RadioButton
-    Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents pnlUseReg As System.Windows.Forms.Panel
-    Friend WithEvents pnlFTracking As System.Windows.Forms.Panel
+    Private WithEvents rbUseRegs As System.Windows.Forms.RadioButton
+    Private WithEvents rbEffortPredicted As System.Windows.Forms.RadioButton
+    Private WithEvents rbNoRegs As System.Windows.Forms.RadioButton
+    Private WithEvents m_hdrEffortRegOptions As cEwEHeaderLabel
+    Private WithEvents pnlUseReg As System.Windows.Forms.Panel
+    Private WithEvents pnlFTracking As System.Windows.Forms.Panel
     Private WithEvents txSBPower As System.Windows.Forms.TextBox
     Private WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents rbExact As System.Windows.Forms.RadioButton
+    Private WithEvents rbExact As System.Windows.Forms.RadioButton
     Private WithEvents rbDirectExp As System.Windows.Forms.RadioButton
     Private WithEvents rbCatchEstBio As System.Windows.Forms.RadioButton
-    Friend WithEvents rbEffortEcosim As System.Windows.Forms.RadioButton
-    Friend WithEvents rbEffortNoCap As System.Windows.Forms.RadioButton
-    Friend WithEvents txKalmanGain As System.Windows.Forms.TextBox
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Private WithEvents ckPlugin As System.Windows.Forms.CheckBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Private WithEvents pnlRegOpt As System.Windows.Forms.Panel
-    Private WithEvents pnlRunOpt As System.Windows.Forms.Panel
+    Private WithEvents rbEffortEcosim As System.Windows.Forms.RadioButton
+    Private WithEvents rbEffortNoCap As System.Windows.Forms.RadioButton
+    Private WithEvents txKalmanGain As System.Windows.Forms.TextBox
+    Private WithEvents m_lblKalmanGain As System.Windows.Forms.Label
+    Private WithEvents m_ckPlugin As System.Windows.Forms.CheckBox
+    Private WithEvents m_hdrRunOptions As cEwEHeaderLabel
+    Private WithEvents m_pnlRegOpt As System.Windows.Forms.Panel
+    Private WithEvents m_pnlRunOpt As System.Windows.Forms.Panel
 End Class

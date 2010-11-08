@@ -1,4 +1,5 @@
 ﻿Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Controls
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmMSEPlots
@@ -30,13 +31,13 @@ Partial Class frmMSEPlots
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.rbBioEst = New System.Windows.Forms.RadioButton
         Me.btShowHide = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.m_hdrPlots = New cEwEHeaderLabel
         Me.rbEffort = New System.Windows.Forms.RadioButton
         Me.rbFleetValue = New System.Windows.Forms.RadioButton
         Me.rbGroupCatch = New System.Windows.Forms.RadioButton
         Me.rbGroupBiomass = New System.Windows.Forms.RadioButton
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.lbType = New System.Windows.Forms.Label
+        Me.m_hdrType = New cEwEHeaderLabel
         Me.rbValues = New System.Windows.Forms.RadioButton
         Me.rbHisto = New System.Windows.Forms.RadioButton
         Me.Panel1.SuspendLayout()
@@ -61,7 +62,7 @@ Partial Class frmMSEPlots
         resources.ApplyResources(Me.Panel1, "Panel1")
         Me.Panel1.Controls.Add(Me.rbBioEst)
         Me.Panel1.Controls.Add(Me.btShowHide)
-        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.m_hdrPlots)
         Me.Panel1.Controls.Add(Me.rbEffort)
         Me.Panel1.Controls.Add(Me.rbFleetValue)
         Me.Panel1.Controls.Add(Me.rbGroupCatch)
@@ -81,12 +82,12 @@ Partial Class frmMSEPlots
         Me.btShowHide.Name = "btShowHide"
         Me.btShowHide.UseVisualStyleBackColor = True
         '
-        'Label1
+        'm_hdrPlots
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_hdrPlots, "m_hdrPlots")
+        Me.m_hdrPlots.BackColor = System.Drawing.SystemColors.ButtonShadow
+        Me.m_hdrPlots.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrPlots.Name = "m_hdrPlots"
         '
         'rbEffort
         '
@@ -116,18 +117,18 @@ Partial Class frmMSEPlots
         '
         'Panel2
         '
-        Me.Panel2.Controls.Add(Me.lbType)
+        Me.Panel2.Controls.Add(Me.m_hdrType)
         Me.Panel2.Controls.Add(Me.rbValues)
         Me.Panel2.Controls.Add(Me.rbHisto)
         resources.ApplyResources(Me.Panel2, "Panel2")
         Me.Panel2.Name = "Panel2"
         '
-        'lbType
+        'm_hdrType
         '
-        Me.lbType.BackColor = System.Drawing.SystemColors.ButtonShadow
-        resources.ApplyResources(Me.lbType, "lbType")
-        Me.lbType.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.lbType.Name = "lbType"
+        Me.m_hdrType.BackColor = System.Drawing.SystemColors.ButtonShadow
+        resources.ApplyResources(Me.m_hdrType, "m_hdrType")
+        Me.m_hdrType.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.m_hdrType.Name = "m_hdrType"
         '
         'rbValues
         '
@@ -160,17 +161,17 @@ Partial Class frmMSEPlots
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents ZedGraph As ZedGraph.ZedGraphControl
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents rbEffort As System.Windows.Forms.RadioButton
-    Friend WithEvents rbFleetValue As System.Windows.Forms.RadioButton
-    Friend WithEvents rbGroupCatch As System.Windows.Forms.RadioButton
-    Friend WithEvents rbGroupBiomass As System.Windows.Forms.RadioButton
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
-    Friend WithEvents rbValues As System.Windows.Forms.RadioButton
-    Friend WithEvents rbHisto As System.Windows.Forms.RadioButton
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents lbType As System.Windows.Forms.Label
+    Private WithEvents ZedGraph As ZedGraph.ZedGraphControl
+    Private WithEvents Panel1 As System.Windows.Forms.Panel
+    Private WithEvents rbEffort As System.Windows.Forms.RadioButton
+    Private WithEvents rbFleetValue As System.Windows.Forms.RadioButton
+    Private WithEvents rbGroupCatch As System.Windows.Forms.RadioButton
+    Private WithEvents rbGroupBiomass As System.Windows.Forms.RadioButton
+    Private WithEvents Panel2 As System.Windows.Forms.Panel
+    Private WithEvents rbValues As System.Windows.Forms.RadioButton
+    Private WithEvents rbHisto As System.Windows.Forms.RadioButton
+    Private WithEvents m_hdrType As cEwEHeaderLabel
     Private WithEvents btShowHide As System.Windows.Forms.Button
-    Friend WithEvents rbBioEst As System.Windows.Forms.RadioButton
+    Private WithEvents rbBioEst As System.Windows.Forms.RadioButton
+    Private WithEvents m_hdrPlots As cEwEHeaderLabel
 End Class
