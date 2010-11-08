@@ -898,7 +898,9 @@ Public Class AppLauncher
 #Region " Plug-ins "
 
     Private Sub AutolaunchPlugins()
-        Dim pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHandler)
+        Using pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHandler)
+            ' Hah! The 'using' construction here will deal with proper disposal
+        End Using
     End Sub
 
     Private Sub LoadPlugins()
