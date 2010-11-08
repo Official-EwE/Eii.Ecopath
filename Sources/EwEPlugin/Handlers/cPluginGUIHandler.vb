@@ -17,6 +17,7 @@ Imports System.Collections.Generic
 ''' </summary>
 ''' -----------------------------------------------------------------------
 Public MustInherit Class cPluginGUIHandler
+    Implements IDisposable
 
 #Region " Private parts "
 
@@ -40,6 +41,22 @@ Public MustInherit Class cPluginGUIHandler
         Me.CommandHandler = cmdh
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Detach from live objects.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Sub Dispose() _
+        Implements IDisposable.Dispose
+
+        If (Me.m_pm IsNot Nothing) Then
+            Me.CommandHandler = Nothing
+            Me.PluginManager = Nothing
+        End If
+
+        GC.SuppressFinalize(Me)
+    End Sub
+
 #Region " Plugin assembly handling "
 
     ''' -----------------------------------------------------------------------
@@ -55,11 +72,11 @@ Public MustInherit Class cPluginGUIHandler
             If (pm Is Me.m_pm) Then Return
 
             If (Me.m_pm IsNot Nothing) Then
-                '' Stop observing events originating from current plugin manager:
-                '' - Assemblies added event
-                'RemoveHandler m_pm.AssemblyAdded, AddressOf OnAssemblyAdded
-                '' - Assemblies removed event
-                'RemoveHandler m_pm.AssemblyRemoved, AddressOf OnAssemblyRemoved
+                ' Stop observing events originating from current plugin manager:
+                ' - Assemblies added event
+                RemoveHandler m_pm.AssemblyAdded, AddressOf OnAssemblyAdded
+                ' - Assemblies removed event
+                RemoveHandler m_pm.AssemblyRemoved, AddressOf OnAssemblyRemoved
                 ' - Plugin enabled state event
                 RemoveHandler m_pm.PluginEnabled, AddressOf EnablePlugin
                 ' Manually remove existing assemblies
