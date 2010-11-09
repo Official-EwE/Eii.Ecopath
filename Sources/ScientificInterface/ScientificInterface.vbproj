@@ -527,10 +527,10 @@
     <Compile Include="Other\AboutBox\AboutEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsPlugins.Designer.vb">
+    <Compile Include="Other\Options\ucOptionsPlugins.Designer.vb">
       <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsPlugins.vb">
+    <Compile Include="Other\Options\ucOptionsPlugins.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Options\dlgOptions.Designer.vb">
@@ -539,16 +539,16 @@
     <Compile Include="Other\Options\dlgOptions.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsColors.Designer.vb">
+    <Compile Include="Other\Options\ucOptionsColors.Designer.vb">
       <DependentUpon>ucOptionsColors.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsColors.vb">
+    <Compile Include="Other\Options\ucOptionsColors.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsGeneral.Designer.vb">
+    <Compile Include="Other\Options\ucOptionsGeneral.Designer.vb">
       <DependentUpon>ucOptionsGeneral.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsGeneral.vb">
+    <Compile Include="Other\Options\ucOptionsGeneral.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\DetritusFateEwEGrid.vb">
@@ -760,7 +760,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>RunEcospace.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\Application\ucOptionsColors.resx">
+    <EmbeddedResource Include="Other\Options\ucOptionsColors.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ucOptionsColors.vb</DependentUpon>
     </EmbeddedResource>
@@ -768,7 +768,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>dlgOptions.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\Application\ucOptionsGeneral.resx">
+    <EmbeddedResource Include="Other\Options\ucOptionsGeneral.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ucOptionsGeneral.vb</DependentUpon>
     </EmbeddedResource>
@@ -931,6 +931,10 @@
       <DependentUpon>frmWebBrowser.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\ucOptionsPresentation.resx">
+      <DependentUpon>ucOptionsPresentation.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\frmMSERecruitment.resx">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1022,7 +1026,7 @@
       <DependentUpon>ucImportHeader.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\Application\ucOptionsGraphs.resx">
+    <EmbeddedResource Include="Other\Options\ucOptionsGraphs.resx">
       <DependentUpon>ucOptionsGraphs.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1262,7 +1266,13 @@
     <Compile Include="Other\frmWebBrowser.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Other\Options\Application\IOptionsPage.vb" />
+    <Compile Include="Other\Options\ucOptionsPresentation.Designer.vb">
+      <DependentUpon>ucOptionsPresentation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\ucOptionsPresentation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\Options\IOptionsPage.vb" />
     <Compile Include="Settings.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -1472,22 +1482,22 @@
     <Compile Include="Other\Import\Pages\ucImportHeader.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsPluginAssemblyDetails.Designer.vb">
+    <Compile Include="Other\Options\ucOptionsPluginAssemblyDetails.Designer.vb">
       <DependentUpon>ucOptionsPluginAssemblyDetails.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsPluginAssemblyDetails.vb">
+    <Compile Include="Other\Options\ucOptionsPluginAssemblyDetails.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsPluginDetails.Designer.vb">
+    <Compile Include="Other\Options\ucOptionsPluginDetails.Designer.vb">
       <DependentUpon>ucOptionsPluginDetails.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsPluginDetails.vb">
+    <Compile Include="Other\Options\ucOptionsPluginDetails.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsGraphs.Designer.vb">
+    <Compile Include="Other\Options\ucOptionsGraphs.Designer.vb">
       <DependentUpon>ucOptionsGraphs.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\Application\ucOptionsGraphs.vb">
+    <Compile Include="Other\Options\ucOptionsGraphs.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Update\frmUpdateComponents.Designer.vb">
@@ -1752,15 +1762,15 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmEcotracerOutput.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\Application\ucOptionsPluginAssemblyDetails.resx">
+    <EmbeddedResource Include="Other\Options\ucOptionsPluginAssemblyDetails.resx">
       <DependentUpon>ucOptionsPluginAssemblyDetails.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\Application\ucOptionsPluginDetails.resx">
+    <EmbeddedResource Include="Other\Options\ucOptionsPluginDetails.resx">
       <DependentUpon>ucOptionsPluginDetails.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\Application\ucOptionsPlugins.resx">
+    <EmbeddedResource Include="Other\Options\ucOptionsPlugins.resx">
       <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
