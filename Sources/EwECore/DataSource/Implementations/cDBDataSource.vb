@@ -420,6 +420,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Public Sub SetChanged(ByVal cc As eCoreComponentType) _
                 Implements IEwEDataSource.SetChanged
+            If cc = eCoreComponentType.External Then Return
             Me.m_dictChangedComponents.Item(cc) = True
         End Sub
 
