@@ -472,7 +472,7 @@ Namespace Ecospace.Advection
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "frmAdvection"
+            Me.Name = "Advection"
             Me.Padding = New System.Windows.Forms.Padding(3)
             Me.ShowInTaskbar = False
             Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
