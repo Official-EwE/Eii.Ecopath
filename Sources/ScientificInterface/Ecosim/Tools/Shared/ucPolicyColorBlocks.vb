@@ -480,9 +480,9 @@ Namespace Ecosim
             Dim ts As cToolTipShared = cToolTipShared.GetInstance()
 
             If Me.ShowTooltip Then
-                ts.Show(strToolTip, Me, ptCursor)
+                ts.Show(strToolTip, Me.m_plBlocks, ptCursor)
             Else
-                ts.Hide(Me)
+                ts.Hide(Me.m_plBlocks)
             End If
         End Sub
 
