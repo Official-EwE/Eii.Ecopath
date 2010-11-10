@@ -82,7 +82,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiViewModelBar = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiViewStatusBar = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsmiFullScreen = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiPresentation = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiViewItems = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuEcopath = New System.Windows.Forms.ToolStripMenuItem
@@ -404,7 +404,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'MenuView
         '
-        Me.MenuView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewStartPage, Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, m_tssView1, Me.m_tsmiViewMenu, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar, Me.ToolStripSeparator3, Me.m_tsmiFullScreen, Me.ToolStripSeparator1, Me.m_tsmiViewItems})
+        Me.MenuView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewStartPage, Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, m_tssView1, Me.m_tsmiViewMenu, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar, Me.ToolStripSeparator3, Me.m_tsmiPresentation, Me.ToolStripSeparator1, Me.m_tsmiViewItems})
         Me.MenuView.Name = "MenuView"
         resources.ApplyResources(Me.MenuView, "MenuView")
         '
@@ -450,10 +450,10 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
         resources.ApplyResources(Me.ToolStripSeparator3, "ToolStripSeparator3")
         '
-        'm_tsmiFullScreen
+        'm_tsmiPresentation
         '
-        Me.m_tsmiFullScreen.Name = "m_tsmiFullScreen"
-        resources.ApplyResources(Me.m_tsmiFullScreen, "m_tsmiFullScreen")
+        Me.m_tsmiPresentation.Name = "m_tsmiPresentation"
+        resources.ApplyResources(Me.m_tsmiPresentation, "m_tsmiPresentation")
         '
         'ToolStripSeparator1
         '
@@ -743,7 +743,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents m_tsmiEcopathEditTaxa As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiEcopathEditPedigree As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiFullScreen As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiPresentation As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewMenu As System.Windows.Forms.ToolStripMenuItem
 

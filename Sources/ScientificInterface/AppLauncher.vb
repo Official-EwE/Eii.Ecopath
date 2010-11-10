@@ -59,7 +59,6 @@ Public Class AppLauncher
     Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
 
     Private m_strLastSelectedPath As String = ""
-    Private m_formStatePrev As FormWindowState = FormWindowState.Normal
 
     ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
@@ -74,6 +73,23 @@ Public Class AppLauncher
     Private m_lstrProtectedPanelNames As New List(Of String)
 
 #End Region ' Panels
+
+#Region " Presentation mode "
+
+    Private Structure sFormStatePrevious
+        Public ShowMenu As Boolean
+        Public ShowModelBar As Boolean
+        Public ShowStatusBar As Boolean
+        Public ShowNavPanel As Boolean
+        Public ShowStatusPanel As Boolean
+        Public ShowRemarkPanel As Boolean
+        Public FormState As FormWindowState
+        Public BorderStyle As FormBorderStyle
+    End Structure
+
+    Private m_fspPresentationMode As New sFormStatePrevious()
+
+#End Region ' Presentation mode
 
 #Region " Commands "
 
@@ -112,7 +128,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdViewMenu As cCommand = Nothing
     Private WithEvents m_cmdViewModelBar As cCommand = Nothing
     Private WithEvents m_cmdViewStatusbar As cCommand = Nothing
-    Private WithEvents m_cmdViewFullScreen As cCommand = Nothing
+    Private WithEvents m_cmdViewPresentationMode As cCommand = Nothing
     Private WithEvents m_cmdEditGroups As cCommand = Nothing
     Private WithEvents m_cmdEditMultiStanza As cCommand = Nothing
     Private WithEvents m_cmdEditFleets As cCommand = Nothing
@@ -383,8 +399,8 @@ Public Class AppLauncher
         Me.m_cmdViewStatusbar.AddControl(Me.m_tsmiViewStatusBar)
 
         'Create and configure 'presentation mode' command
-        Me.m_cmdViewFullScreen = New cCommand(cmdh, "ViewPresentationMode")
-        Me.m_cmdViewFullScreen.AddControl(Me.m_tsmiFullScreen)
+        Me.m_cmdViewPresentationMode = New cCommand(cmdh, "ViewPresentationMode")
+        Me.m_cmdViewPresentationMode.AddControl(Me.m_tsmiPresentation)
 
         'Create and configure EditGroups command
         Me.m_cmdEditGroups = New cCommand(cmdh, "EditGroups")
@@ -766,8 +782,8 @@ Public Class AppLauncher
         Try
             ' Restore menu and full screen mode on 'Escape'
             If (e.KeyCode = Keys.Escape) Then
-                If (Me.m_cmdViewFullScreen.Checked) Then
-                    Me.m_cmdViewFullScreen.Invoke()
+                If (Me.m_cmdViewPresentationMode.Checked) Then
+                    Me.m_cmdViewPresentationMode.Invoke()
                 End If
                 If (Me.m_cmdViewMenu.Checked = False) Then
                     Me.m_cmdViewMenu.Invoke()
@@ -2536,37 +2552,52 @@ Public Class AppLauncher
 #Region " View commands "
 
     ''' <summary>
-    ''' Command handler; toggles main statusbar visibility
+    ''' Command handler; toggles presentation mode
     ''' </summary>
-    Private Sub OnViewFullScreen(ByVal cmd As cCommand) Handles m_cmdViewFullScreen.OnInvoke
+    Private Sub OnViewPresentationMode(ByVal cmd As cCommand) Handles m_cmdViewPresentationMode.OnInvoke
 
         cmd.Checked = Not cmd.Checked
 
-        ' Affect UI elements
-        Me.m_ssMain.Visible = Not cmd.Checked
-        Me.m_tsModel.Visible = Not cmd.Checked
-        ' Me.m_menuMain.Visible = Not cmd.Checked
+        Dim bPresMode As Boolean = cmd.Checked
 
-        If cmd.Checked Then
+        Me.SuspendLayout()
+
+        If (bPresMode) Then
+            With Me.m_fspPresentationMode
+                .FormState = Me.WindowState : Me.WindowState = FormWindowState.Maximized
+                .BorderStyle = Me.FormBorderStyle : Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
+                .ShowMenu = Me.m_menuMain.Visible : Me.m_menuMain.Visible = Not My.Settings.PresentationModeHideMainMenu
+                .ShowModelBar = Me.m_tsModel.Visible : Me.m_tsModel.Visible = Not My.Settings.PresentationModeHideModelBar
+                .ShowStatusBar = Me.m_ssMain.Visible : Me.m_ssMain.Visible = Not My.Settings.PresentationModeHideStatusBar
+                .ShowNavPanel = Me.m_NavPanel.IsHiding : Me.m_NavPanel.AutoHide = My.Settings.PresentationModeCollapseNavPanel
+            End With
+
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             'Me.TopMost = True
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-            Me.m_formStatePrev = Me.WindowState
-            Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Else
+            With Me.m_fspPresentationMode
+                Me.WindowState = .FormState
+                Me.FormBorderStyle = .BorderStyle
+                Me.m_menuMain.Visible = .ShowMenu
+                Me.m_tsModel.Visible = .ShowModelBar
+                Me.m_ssMain.Visible = .ShowStatusBar
+                Me.m_NavPanel.AutoHide = .ShowNavPanel
+            End With
             Me.MaximizeBox = True
             Me.MinimizeBox = True
             'Me.TopMost = False
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable
-            Me.WindowState = Me.m_formStatePrev
         End If
+
+        Me.ResumeLayout()
+
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdViewFullScreen">View FullScreen command</see>.
+    ''' Command update handler; enables and disables the 
+    ''' <see cref="m_cmdViewPresentationMode">View Presentation Mode command</see>.
     ''' </summary>
-    Private Sub OnUpdateViewFullScreen(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewFullScreen.OnUpdate
+    Private Sub OnUpdateViewPresentationMode(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewPresentationMode.OnUpdate
         ' NOP
     End Sub
 
