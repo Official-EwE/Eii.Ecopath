@@ -20,12 +20,10 @@ Namespace Other
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgOptions))
             Me.m_btnOk = New System.Windows.Forms.Button
             Me.m_btnCancel = New System.Windows.Forms.Button
             Me.m_tvOptions = New System.Windows.Forms.TreeView
-            Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
             Me.m_btnApply = New System.Windows.Forms.Button
             Me.m_scContent = New System.Windows.Forms.SplitContainer
             Me.m_scContent.Panel1.SuspendLayout()
@@ -51,13 +49,6 @@ Namespace Other
             Me.m_tvOptions.LineColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
             Me.m_tvOptions.Name = "m_tvOptions"
             Me.m_tvOptions.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvOptions.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes2"), System.Windows.Forms.TreeNode)})
-            '
-            'ImageList1
-            '
-            Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
-            Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-            Me.ImageList1.Images.SetKeyName(0, "application.png")
-            Me.ImageList1.Images.SetKeyName(1, "color_wheel.png")
             '
             'm_btnApply
             '
@@ -96,9 +87,7 @@ Namespace Other
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents m_btnCancel As System.Windows.Forms.Button
-        Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
-        Friend WithEvents tnModel As System.Windows.Forms.TreeNode
+        Private WithEvents m_btnCancel As System.Windows.Forms.Button
         Private WithEvents m_btnOk As System.Windows.Forms.Button
         Private WithEvents m_btnApply As System.Windows.Forms.Button
         Private WithEvents m_tvOptions As System.Windows.Forms.TreeView

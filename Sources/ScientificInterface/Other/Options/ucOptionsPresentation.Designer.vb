@@ -30,9 +30,9 @@ Partial Class ucOptionsPresentation
             Me.m_cbHideStatusBar = New System.Windows.Forms.CheckBox
             Me.m_cbHideMainMenu = New System.Windows.Forms.CheckBox
             Me.m_cbCollapseNavPanel = New System.Windows.Forms.CheckBox
-            Me.m_cbCollapseRemarks = New System.Windows.Forms.CheckBox
+            Me.m_cbCollapseRemarkPanel = New System.Windows.Forms.CheckBox
             Me.m_cbCollapseStatusPanel = New System.Windows.Forms.CheckBox
-            Me.CheckBox1 = New System.Windows.Forms.CheckBox
+            Me.m_cbRestoreItems = New System.Windows.Forms.CheckBox
             Me.m_lblExiting = New System.Windows.Forms.Label
             Me.SuspendLayout()
             '
@@ -70,11 +70,11 @@ Partial Class ucOptionsPresentation
             Me.m_cbCollapseNavPanel.Name = "m_cbCollapseNavPanel"
             Me.m_cbCollapseNavPanel.UseVisualStyleBackColor = True
             '
-            'm_cbCollapseRemarks
+            'm_cbCollapseRemarkPanel
             '
-            resources.ApplyResources(Me.m_cbCollapseRemarks, "m_cbCollapseRemarks")
-            Me.m_cbCollapseRemarks.Name = "m_cbCollapseRemarks"
-            Me.m_cbCollapseRemarks.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbCollapseRemarkPanel, "m_cbCollapseRemarkPanel")
+            Me.m_cbCollapseRemarkPanel.Name = "m_cbCollapseRemarkPanel"
+            Me.m_cbCollapseRemarkPanel.UseVisualStyleBackColor = True
             '
             'm_cbCollapseStatusPanel
             '
@@ -82,11 +82,11 @@ Partial Class ucOptionsPresentation
             Me.m_cbCollapseStatusPanel.Name = "m_cbCollapseStatusPanel"
             Me.m_cbCollapseStatusPanel.UseVisualStyleBackColor = True
             '
-            'CheckBox1
+            'm_cbRestoreItems
             '
-            resources.ApplyResources(Me.CheckBox1, "CheckBox1")
-            Me.CheckBox1.Name = "CheckBox1"
-            Me.CheckBox1.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbRestoreItems, "m_cbRestoreItems")
+            Me.m_cbRestoreItems.Name = "m_cbRestoreItems"
+            Me.m_cbRestoreItems.UseVisualStyleBackColor = True
             '
             'm_lblExiting
             '
@@ -98,9 +98,9 @@ Partial Class ucOptionsPresentation
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_lblExiting)
-            Me.Controls.Add(Me.CheckBox1)
+            Me.Controls.Add(Me.m_cbRestoreItems)
             Me.Controls.Add(Me.m_cbCollapseStatusPanel)
-            Me.Controls.Add(Me.m_cbCollapseRemarks)
+            Me.Controls.Add(Me.m_cbCollapseRemarkPanel)
             Me.Controls.Add(Me.m_cbCollapseNavPanel)
             Me.Controls.Add(Me.m_cbHideMainMenu)
             Me.Controls.Add(Me.m_cbHideStatusBar)
@@ -118,10 +118,10 @@ Partial Class ucOptionsPresentation
         Private WithEvents m_cbHideStatusBar As System.Windows.Forms.CheckBox
         Private WithEvents m_cbHideMainMenu As System.Windows.Forms.CheckBox
         Private WithEvents m_cbCollapseNavPanel As System.Windows.Forms.CheckBox
-        Private WithEvents m_cbCollapseRemarks As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbCollapseRemarkPanel As System.Windows.Forms.CheckBox
         Private WithEvents m_cbCollapseStatusPanel As System.Windows.Forms.CheckBox
-        Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
         Private WithEvents m_lblExiting As System.Windows.Forms.Label
+        Private WithEvents m_cbRestoreItems As System.Windows.Forms.CheckBox
 
     End Class
 

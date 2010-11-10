@@ -136,7 +136,7 @@
     <value>0</value>
   </data>
   <data name="m_hdrCaption.Text" xml:space="preserve">
-    <value>Presentation options</value>
+    <value>Presentation mode options</value>
   </data>
   <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -297,34 +297,34 @@
   <data name="&gt;&gt;m_cbCollapseNavPanel.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_cbCollapseRemarks.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_cbCollapseRemarkPanel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_cbCollapseRemarks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_cbCollapseRemarkPanel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_cbCollapseRemarks.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cbCollapseRemarkPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 138</value>
   </data>
-  <data name="m_cbCollapseRemarks.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_cbCollapseRemarkPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 17</value>
   </data>
-  <data name="m_cbCollapseRemarks.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cbCollapseRemarkPanel.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="m_cbCollapseRemarks.Text" xml:space="preserve">
+  <data name="m_cbCollapseRemarkPanel.Text" xml:space="preserve">
     <value>Collapse the &amp;remark panel</value>
   </data>
-  <data name="&gt;&gt;m_cbCollapseRemarks.Name" xml:space="preserve">
-    <value>m_cbCollapseRemarks</value>
+  <data name="&gt;&gt;m_cbCollapseRemarkPanel.Name" xml:space="preserve">
+    <value>m_cbCollapseRemarkPanel</value>
   </data>
-  <data name="&gt;&gt;m_cbCollapseRemarks.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cbCollapseRemarkPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_cbCollapseRemarks.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cbCollapseRemarkPanel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_cbCollapseRemarks.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cbCollapseRemarkPanel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_cbCollapseStatusPanel.AutoSize" type="System.Boolean, mscorlib">
@@ -357,31 +357,31 @@
   <data name="&gt;&gt;m_cbCollapseStatusPanel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="CheckBox1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_cbRestoreItems.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="CheckBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cbRestoreItems.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 215</value>
   </data>
-  <data name="CheckBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_cbRestoreItems.Size" type="System.Drawing.Size, System.Drawing">
     <value>175, 17</value>
   </data>
-  <data name="CheckBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cbRestoreItems.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="CheckBox1.Text" xml:space="preserve">
+  <data name="m_cbRestoreItems.Text" xml:space="preserve">
     <value>&amp;Restore hidden/collapsed items</value>
   </data>
-  <data name="&gt;&gt;CheckBox1.Name" xml:space="preserve">
-    <value>CheckBox1</value>
+  <data name="&gt;&gt;m_cbRestoreItems.Name" xml:space="preserve">
+    <value>m_cbRestoreItems</value>
   </data>
-  <data name="&gt;&gt;CheckBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cbRestoreItems.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;CheckBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cbRestoreItems.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;CheckBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cbRestoreItems.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_lblExiting.AutoSize" type="System.Boolean, mscorlib">
