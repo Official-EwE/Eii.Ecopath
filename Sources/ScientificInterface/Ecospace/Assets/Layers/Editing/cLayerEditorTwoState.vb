@@ -42,7 +42,7 @@ Namespace Ecospace.Basemap.Layers
         Public Overrides Sub StartEdit(ByVal ptClick As Point, ByVal buttons As MouseEventArgs)
 
             ' Clicked on data cell?
-            If Object.Equals(Layer.Value(ptClick.Y, ptClick.X), Layer.ValueSet) Then
+            If Decimal.Equals(CDec(Layer.Value(ptClick.Y, ptClick.X)), CDec(Layer.ValueSet)) Then
                 ' #Yes: start clearing values
                 Me.CellValue = CDec(Layer.ValueClear)
             Else
