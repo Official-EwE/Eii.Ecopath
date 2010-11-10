@@ -5,7 +5,9 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.FishingPolicy
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
+Imports System.ComponentModel
 
 #End Region
 
@@ -26,6 +28,7 @@ Namespace Ecosim
         Private m_uic As cUIContext = Nothing
         Private m_clrCurrent As Color
         Private m_bIsSketching As Boolean
+        Private m_bShowTooltip As Boolean = True
 
         Private m_iRows As Integer
         Private m_iCols As Integer
@@ -51,6 +54,7 @@ Namespace Ecosim
 
         Public Sub New()
             Me.InitializeComponent()
+            Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer, True)
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -86,7 +90,7 @@ Namespace Ecosim
                 ' datasource decides if the control panel is visible
                 ' JS 22Apr2010: Now panel auto-sizes there is no need for tinkering with column widths.
                 '               Added ControlPanelVisible to provide user with design-time control.
-                me.ControlPanelVisible = Me.m_DataSource.isControlPanelVisible
+                Me.ControlPanelVisible = Me.m_DataSource.isControlPanelVisible
 
                 AddHandler BlockCodes.onValueChanged, AddressOf onCVValuesChanged
 
@@ -174,6 +178,21 @@ Namespace Ecosim
                 Me.m_hdrControls.Visible = value
             End Set
         End Property
+
+        ''' <summary>
+        ''' Get/set whether the block editor should show tooltips.
+        ''' </summary>
+        <Browsable(True)> _
+        Public Property ShowTooltip() As Boolean
+            Get
+                Return Me.m_bShowTooltip
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowTooltip = value
+                Me.ProcessMouseHover(Cursor.Position)
+            End Set
+        End Property
+
 #End Region
 
 #Region " Events handlers "
@@ -247,6 +266,7 @@ Namespace Ecosim
             If Me.m_bIsSketching Then
                 Me.ProcessMouseSketch(e.Location)
             End If
+            Me.ProcessMouseHover(e.Location)
 
         End Sub
 
@@ -318,7 +338,6 @@ Namespace Ecosim
 
         End Sub
 
-
         Private Sub DrawRowCols(ByRef g As Graphics)
 
             If Not Me.m_bInit Then Return
@@ -361,9 +380,22 @@ Namespace Ecosim
                 Throw New ApplicationException(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
             End Try
 
-
-
         End Sub
+
+        ''' <summary>
+        ''' Concoct a tooltip for a cursor position
+        ''' </summary>
+        ''' <param name="ptCursor"></param>
+        ''' <returns></returns>
+        Private Function GetBlockTooltip(ByVal ptCursor As Point) As String
+            Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
+            If ptBlock.Y < 1 Or ptBlock.Y >= m_iRows Then Return ""
+            If ptBlock.X < 1 Or ptBlock.X >= m_iCols Then Return ""
+            Return String.Format(SharedResources.GENERIC_LABEL_POINT, _
+                                 Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X), _
+                                 Me.m_DataSource.RowLabel(ptBlock.Y), _
+                                 ptBlock.X)
+        End Function
 
         Private Sub CalcParams(ByRef g As Graphics)
 
@@ -443,6 +475,17 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub ProcessMouseHover(ByVal ptCursor As Point)
+            Dim strToolTip As String = Me.GetBlockTooltip(ptCursor)
+            Dim ts As cToolTipShared = cToolTipShared.GetInstance()
+
+            If Me.ShowTooltip Then
+                ts.Show(strToolTip, Me, ptCursor)
+            Else
+                ts.Hide(Me)
+            End If
+        End Sub
+
         Private Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer)
 
             If Not Me.m_bInit Then Return
@@ -461,23 +504,21 @@ Namespace Ecosim
         End Sub
 
         Private Function CursorToBlock(ByVal ptCursor As Point) As Point
+            Try
+                If Me.m_sRowHeight > 0 And Me.m_sColWidth > 0 Then
+                    Dim iRow As Integer = CInt(Math.Floor(ptCursor.Y / Me.m_sRowHeight))
+                    Dim iCol As Integer = CInt(Math.Floor((ptCursor.X - Me.m_sFirstColWidth) / Me.m_sColWidth) + 1)
 
-            Dim iRow As Integer = CInt(Math.Floor(ptCursor.Y / Me.m_sRowHeight))
-            Dim iCol As Integer = CInt(Math.Floor((ptCursor.X - Me.m_sFirstColWidth) / Me.m_sColWidth) + 1)
+                    Return New Point(iCol, iRow)
+                End If
+            Catch ex As Exception
 
-            Return New Point(iCol, iRow)
-
+            End Try
+            Return New Point(-1, -1)
         End Function
 
 #End Region
 
-        Private Sub m_pnlControls_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles m_pnlControls.Paint
-
-        End Sub
-
-        Private Sub m_hdrControls_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_hdrControls.Click
-
-        End Sub
     End Class
 
 #End Region
