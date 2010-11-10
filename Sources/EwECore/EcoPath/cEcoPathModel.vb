@@ -916,7 +916,9 @@ Namespace Ecopath
                     If m_Data.QB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_QB, i), eVarNameFlags.QBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                     If m_Data.EE(i) < 0 Then
                         msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE, i), eVarNameFlags.EEInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
-                        If m_Data.BA(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccum, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                        If m_Data.BA(i) < 0 Then
+                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccum, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                        End If
                     End If
                 Next
 
@@ -1938,7 +1940,6 @@ nextJ:
                         End If
 
                         If m_Data.B(j) < 0 Then
-                            ' ToDo_JS: Change message box behaviour to run via Core messages (as above)
                             If Only < 0 Then
                                 ' Prepare message text
                                 strMessage = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PRODxEE, j, m_Data.GroupName(j), Only.ToString("0.000"))
@@ -2032,7 +2033,8 @@ exitSub:
             Dim iPrey As Integer
             Dim sSum As Single
             Dim sTolerance As Single
-            Dim msg As cFeedbackMessage = Nothing
+            Dim msgFeedback As cFeedbackMessage = Nothing
+            Dim msgMaintenance As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
             Dim reply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES
             Dim bSumToOne As Boolean = True
@@ -2054,21 +2056,23 @@ exitSub:
                         bSumToOne = False
 
                         ' No message ready?
-                        If (msg Is Nothing) Then
+                        If (msgFeedback Is Nothing) Then
 
                             ' #Yes: prepare message
-                            msg = New cFeedbackMessage( _
+                            msgFeedback = New cFeedbackMessage( _
                                     My.Resources.CoreMessages.DIETCOMP_PROMPT_SUMTOONE, _
                                     eCoreComponentType.EcoPath, eMessageType.DietComp, eMessageImportance.Warning, _
                                     cFeedbackMessage.eReplyStyle.YES_NO)
-
+                            msgMaintenance = New cMessage("Ecopath diets have changed", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
                         End If
 
                         ' Attach variable status
                         vs = New cVariableStatus(eStatusFlags.MissingParameter, _
                                 String.Format(My.Resources.CoreMessages.DIETCOMP_SUMTOONE_PRED, Me.m_Data.GroupName(iPred)), _
                                 eVarNameFlags.DietComp, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, iPred)
-                        msg.AddVariable(vs)
+
+                        msgFeedback.AddVariable(vs)
+                        msgMaintenance.AddVariable(vs)
 
                     End If
                 End If
@@ -2077,10 +2081,10 @@ exitSub:
             ' Found any diets that did not sum to 1?
             If (bSumToOne = False) Then
                 ' #Yes: has message to send?
-                If (msg IsNot Nothing) Then
+                If (msgFeedback IsNot Nothing) Then
                     ' #Yes: send message and grab reply
-                    Me.NotifyCore(msg)
-                    reply = msg.Reply
+                    Me.NotifyCore(msgFeedback)
+                    reply = msgFeedback.Reply
                 End If
             End If
 
@@ -2102,6 +2106,8 @@ exitSub:
                     End If
                 Next
                 bSumToOne = True
+                ' Notify the core that data has changed
+                Me.NotifyCore(msgMaintenance)
             End If
 
             Return bSumToOne
