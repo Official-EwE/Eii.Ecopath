@@ -37,8 +37,8 @@ Namespace Ecospace
             Me.m_lbNumThreads = New System.Windows.Forms.Label
             Me.m_nudNumThreads = New System.Windows.Forms.NumericUpDown
             Me.lbPacketsMultiplier = New System.Windows.Forms.Label
-            Me.m_hdrInitialization = New cEwEHeaderLabel
-            Me.m_hdrModel = New cEwEHeaderLabel
+            Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel
             Me.m_gbThreading = New System.Windows.Forms.GroupBox
             Me.m_tbNumPackets = New System.Windows.Forms.TextBox
@@ -63,7 +63,7 @@ Namespace Ecospace
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.m_lblDescription = New System.Windows.Forms.Label
             Me.m_lbScenarioName = New System.Windows.Forms.Label
-            Me.m_hdrScenario = New cEwEHeaderLabel
+            Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_plBiomass = New System.Windows.Forms.Panel
             m_gbModel = New System.Windows.Forms.GroupBox
             m_gbModel.SuspendLayout()
