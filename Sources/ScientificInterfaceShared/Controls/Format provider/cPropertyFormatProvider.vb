@@ -169,7 +169,7 @@ Namespace Controls
             ' Update tooltip
             If ((changeFlags And cProperty.eChangeFlags.Remarks) > 0) Then
                 If (TypeOf (Me.m_ctrl) Is Control) Then
-                    cToolTipShared.GetInstance().SetToolTip(DirectCast(Me.m_ctrl, Control), prop.GetRemark())
+                    cToolTipShared.GetInstance().SetToolTip(Me.m_ctrl, prop.GetRemark())
                 End If
             End If
 
