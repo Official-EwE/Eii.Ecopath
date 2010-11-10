@@ -41,7 +41,7 @@ Namespace Forms
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class frmEwE
-        Inherits DockContent
+        Inherits frmEwEDockContent
         Implements IUIElement
 
 #Region " Private helper classes "

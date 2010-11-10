@@ -312,6 +312,9 @@
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphKiteHelper.vb" />
     <Compile Include="Controls\cUIContext.vb" />
+    <Compile Include="Forms\frmEwEDockContent.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmEwE.vb">
       <SubType>Form</SubType>
     </Compile>
