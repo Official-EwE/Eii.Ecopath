@@ -35,10 +35,6 @@ Namespace Other
             Me.m_cbHideMainMenu.Checked = My.Settings.PresentationModeHideMainMenu
             Me.m_cbHideStatusBar.Checked = My.Settings.PresentationModeHideStatusBar
             Me.m_cbCollapseNavPanel.Checked = My.Settings.PresentationModeCollapseNavPanel
-            Me.m_cbCollapseRemarkPanel.Checked = My.Settings.PresentationModeCollapseRemarkPanel
-            Me.m_cbCollapseStatusPanel.Checked = My.Settings.PresentationModeCollapseStatusPanel
-
-            Me.m_cbRestoreItems.Checked = My.Settings.PresentationModeRestoreSettings
 
             Me.UpdateControls()
 
@@ -55,10 +51,6 @@ Namespace Other
             My.Settings.PresentationModeHideMainMenu = Me.m_cbHideMainMenu.Checked
             My.Settings.PresentationModeHideStatusBar = Me.m_cbHideStatusBar.Checked
             My.Settings.PresentationModeCollapseNavPanel = Me.m_cbCollapseNavPanel.Checked
-            My.Settings.PresentationModeCollapseRemarkPanel = Me.m_cbCollapseRemarkPanel.Checked
-            My.Settings.PresentationModeCollapseStatusPanel = Me.m_cbCollapseStatusPanel.Checked
-
-            My.Settings.PresentationModeRestoreSettings = Me.m_cbRestoreItems.Checked
 
             Return IOptionsPage.eApplyResultType.Success
 

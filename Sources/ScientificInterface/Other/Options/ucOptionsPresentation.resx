@@ -151,7 +151,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>5</value>
   </data>
   <data name="m_lblEntering.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -178,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblEntering.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>4</value>
   </data>
   <data name="m_cbHideModelBar.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -205,7 +205,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbHideModelBar.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>3</value>
   </data>
   <data name="m_cbHideStatusBar.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -235,7 +235,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbHideStatusBar.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>2</value>
   </data>
   <data name="m_cbHideMainMenu.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -265,7 +265,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbHideMainMenu.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>1</value>
   </data>
   <data name="m_cbCollapseNavPanel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -277,13 +277,13 @@
     <value>16, 115</value>
   </data>
   <data name="m_cbCollapseNavPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 17</value>
+    <value>147, 17</value>
   </data>
   <data name="m_cbCollapseNavPanel.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="m_cbCollapseNavPanel.Text" xml:space="preserve">
-    <value>Collapse the &amp;navigation panel</value>
+    <value>Hide the &amp;navigation panel</value>
   </data>
   <data name="&gt;&gt;m_cbCollapseNavPanel.Name" xml:space="preserve">
     <value>m_cbCollapseNavPanel</value>
@@ -295,120 +295,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbCollapseNavPanel.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_cbCollapseRemarkPanel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbCollapseRemarkPanel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbCollapseRemarkPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 138</value>
-  </data>
-  <data name="m_cbCollapseRemarkPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 17</value>
-  </data>
-  <data name="m_cbCollapseRemarkPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_cbCollapseRemarkPanel.Text" xml:space="preserve">
-    <value>Collapse the &amp;remark panel</value>
-  </data>
-  <data name="&gt;&gt;m_cbCollapseRemarkPanel.Name" xml:space="preserve">
-    <value>m_cbCollapseRemarkPanel</value>
-  </data>
-  <data name="&gt;&gt;m_cbCollapseRemarkPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbCollapseRemarkPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbCollapseRemarkPanel.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_cbCollapseStatusPanel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbCollapseStatusPanel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbCollapseStatusPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 161</value>
-  </data>
-  <data name="m_cbCollapseStatusPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 17</value>
-  </data>
-  <data name="m_cbCollapseStatusPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_cbCollapseStatusPanel.Text" xml:space="preserve">
-    <value>Collapse the &amp;status panel</value>
-  </data>
-  <data name="&gt;&gt;m_cbCollapseStatusPanel.Name" xml:space="preserve">
-    <value>m_cbCollapseStatusPanel</value>
-  </data>
-  <data name="&gt;&gt;m_cbCollapseStatusPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbCollapseStatusPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbCollapseStatusPanel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_cbRestoreItems.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbRestoreItems.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 215</value>
-  </data>
-  <data name="m_cbRestoreItems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 17</value>
-  </data>
-  <data name="m_cbRestoreItems.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_cbRestoreItems.Text" xml:space="preserve">
-    <value>&amp;Restore hidden/collapsed items</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestoreItems.Name" xml:space="preserve">
-    <value>m_cbRestoreItems</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestoreItems.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestoreItems.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbRestoreItems.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_lblExiting.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblExiting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 195</value>
-  </data>
-  <data name="m_lblExiting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 13</value>
-  </data>
-  <data name="m_lblExiting.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_lblExiting.Text" xml:space="preserve">
-    <value>When exiting presentation mode:</value>
-  </data>
-  <data name="&gt;&gt;m_lblExiting.Name" xml:space="preserve">
-    <value>m_lblExiting</value>
-  </data>
-  <data name="&gt;&gt;m_lblExiting.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblExiting.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblExiting.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
