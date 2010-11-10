@@ -1,8 +1,8 @@
-Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class NavigationPanel
-    Inherits DockContent
+    Inherits frmEwEDockContent
 
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer

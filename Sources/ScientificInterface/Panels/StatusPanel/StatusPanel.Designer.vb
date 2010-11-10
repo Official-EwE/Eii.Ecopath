@@ -1,8 +1,8 @@
-Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class StatusPanel
-    Inherits DockContent
+    Inherits frmEwEDockContent
 
     Private components As System.ComponentModel.IContainer
 
