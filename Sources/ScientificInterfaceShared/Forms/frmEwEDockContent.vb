@@ -9,7 +9,7 @@ Namespace Forms
 
     ''' =======================================================================
     ''' <summary>
-    ''' <see cref="WeifenLuo.WinFormsUI.Docking.DockContent">DockContent</see>-derived
+    ''' <see cref="DockContent">DockContent</see>-derived
     ''' foundation class for EwE forms and panels, extending the Docking library by
     ''' adding a simple AutoHide toggle.
     ''' </summary>
@@ -17,49 +17,51 @@ Namespace Forms
     Public Class frmEwEDockContent
         Inherits DockContent
 
-        Private m_bAutoHide As Boolean = False
-
         Public Property AutoHide() As Boolean
             Get
-                Return Me.m_bAutoHide
+                Return Me.IsHiding()
             End Get
             Set(ByVal value As Boolean)
-                If (value <> Me.m_bAutoHide) Then
-                    Me.m_bAutoHide = value
-                    MyBase.DockState = Me.TranslateDockState(MyBase.DockState)
-                End If
+                MyBase.DockState = Me.TranslateDockState(MyBase.DockState, value)
             End Set
         End Property
 
-        Public Shadows Property DockState() As WeifenLuo.WinFormsUI.Docking.DockState
+        Public Shadows Property DockState() As DockState
             Get
                 Return MyBase.DockState
             End Get
-            Set(ByVal value As WeifenLuo.WinFormsUI.Docking.DockState)
-                MyBase.DockState = Me.TranslateDockState(value)
+            Set(ByVal value As DockState)
+                MyBase.DockState = Me.TranslateDockState(value, Me.IsHiding)
             End Set
         End Property
 
-        Private Function TranslateDockState(ByVal state As WeifenLuo.WinFormsUI.Docking.DockState) As WeifenLuo.WinFormsUI.Docking.DockState
+        Private Function TranslateDockState(ByVal state As DockState, ByVal bHide As Boolean) As DockState
             Select Case state
-                Case WeifenLuo.WinFormsUI.Docking.DockState.DockBottom
-                    If Me.m_bAutoHide Then state = WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide
-                Case WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide
-                    If Me.m_bAutoHide Then state = WeifenLuo.WinFormsUI.Docking.DockState.DockBottom
-                Case WeifenLuo.WinFormsUI.Docking.DockState.DockLeft
-                    If Me.m_bAutoHide Then state = WeifenLuo.WinFormsUI.Docking.DockState.DockLeftAutoHide
-                Case WeifenLuo.WinFormsUI.Docking.DockState.DockLeftAutoHide
-                    If Me.m_bAutoHide Then state = WeifenLuo.WinFormsUI.Docking.DockState.DockLeft
-                Case WeifenLuo.WinFormsUI.Docking.DockState.DockRight
-                    If Me.m_bAutoHide Then state = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide
-                Case WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide
-                    If Me.m_bAutoHide Then state = WeifenLuo.WinFormsUI.Docking.DockState.DockRight
-                Case WeifenLuo.WinFormsUI.Docking.DockState.DockTop
-                    If Me.m_bAutoHide Then state = WeifenLuo.WinFormsUI.Docking.DockState.DockTopAutoHide
-                Case WeifenLuo.WinFormsUI.Docking.DockState.DockTopAutoHide
-                    If Me.m_bAutoHide Then state = WeifenLuo.WinFormsUI.Docking.DockState.DockTop
+                Case DockState.DockBottom
+                    If bHide Then state = DockState.DockBottomAutoHide
+                Case DockState.DockBottomAutoHide
+                    If bHide Then state = DockState.DockBottom
+                Case DockState.DockLeft
+                    If bHide Then state = DockState.DockLeftAutoHide
+                Case DockState.DockLeftAutoHide
+                    If bHide Then state = DockState.DockLeft
+                Case DockState.DockRight
+                    If bHide Then state = DockState.DockRightAutoHide
+                Case DockState.DockRightAutoHide
+                    If bHide Then state = DockState.DockRight
+                Case DockState.DockTop
+                    If bHide Then state = DockState.DockTopAutoHide
+                Case DockState.DockTopAutoHide
+                    If bHide Then state = DockState.DockTop
             End Select
             Return state
+        End Function
+
+        Public Function IsHiding() As Boolean
+            Return (Me.DockState = DockState.DockTopAutoHide) Or _
+                   (Me.DockState = DockState.DockBottomAutoHide) Or _
+                   (Me.DockState = DockState.DockLeftAutoHide) Or _
+                   (Me.DockState = DockState.DockRightAutoHide)
         End Function
     End Class
 
