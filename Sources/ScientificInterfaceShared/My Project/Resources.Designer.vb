@@ -74,15 +74,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to Not used.
-        '''</summary>
-        Public ReadOnly Property BLOCKSKETCH_NOT_USED() As String
-            Get
-                Return ResourceManager.GetString("BLOCKSKETCH_NOT_USED", resourceCulture)
-            End Get
-        End Property
-        
         Public ReadOnly Property BreakpointHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("BreakpointHS", resourceCulture)
@@ -720,6 +711,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VALUE_NOTAVAILABLE() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_NOTAVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (Not used).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_NOTUSED() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_NOTUSED", resourceCulture)
             End Get
         End Property
         
