@@ -119,18 +119,21 @@
   </resheader>
   <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
     <value>Absolute biomass</value>
+    <comment>Time series type</comment>
   </data>
   <data name="MENU_SHOW_LEGEND" xml:space="preserve">
     <value>&amp;Show legend</value>
   </data>
   <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
     <value>Relative biomass</value>
+    <comment>Time series type</comment>
   </data>
   <data name="UNIT_CURRENCY_CALORIE" xml:space="preserve">
     <value>kcal/m²</value>
   </data>
   <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
     <value>Total mortality</value>
+    <comment>Time series type</comment>
   </data>
   <data name="UNIT_CURRENCY_DRYWEIGHT" xml:space="preserve">
     <value>g/m²</value>
@@ -177,6 +180,7 @@
   </data>
   <data name="TS_TYPE_FISHINGEFFORT" xml:space="preserve">
     <value>Fishing effort</value>
+    <comment>Time series type</comment>
   </data>
   <data name="GENERIC_CHAR_PERIOD" xml:space="preserve">
     <value>. (period)</value>
@@ -203,10 +207,11 @@
   </data>
   <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
     <value>Ecotracer relative concentration</value>
+    <comment>Time series type</comment>
   </data>
   <data name="GENERIC_LABEL_POINT" xml:space="preserve">
-    <value>{0}: ({1}, {2})</value>
-    <comment>{0}: point name, {1}: X point value, {2}: Y point value</comment>
+    <value>{0} ({1}, {2})</value>
+    <comment>{0}: point value, {1}: X label, {2}: Y label</comment>
   </data>
   <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
     <value>mg N/m²</value>
@@ -221,9 +226,11 @@
   </data>
   <data name="TS_TYPE_CONSTTOTALMORT" xml:space="preserve">
     <value>Constant total mortality</value>
+    <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_FISHINGMORT" xml:space="preserve">
     <value>Fishing mortality</value>
+    <comment>Time series type</comment>
   </data>
   <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
     <value>(N/A)</value>
@@ -254,6 +261,7 @@
   </data>
   <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
     <value>Catches forcing</value>
+    <comment>Time series type</comment>
   </data>
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
     <value>'{0}' is succesfully saved to file '{1}'.</value>
@@ -283,9 +291,11 @@
   </data>
   <data name="TS_TYPE_TRACER_CONCABS" xml:space="preserve">
     <value>Ecotracer absolute concentration</value>
+    <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_BIOMASSFORCING" xml:space="preserve">
     <value>Biomass forcing</value>
+    <comment>Time series type</comment>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CheckBoxHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -299,6 +309,7 @@
   </data>
   <data name="TS_TYPE_AVERAGEWEIGHT" xml:space="preserve">
     <value>Average weight</value>
+    <comment>Time series type</comment>
   </data>
   <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
     <value>Changing a shape from 'Long term' to 'Seasonal' will cause your long-term data to be overwritten by a seasonal pattern. This action cannot be undone. Are you sure you want to do this?</value>
@@ -321,6 +332,7 @@
   </data>
   <data name="TS_TYPE_CATCHES" xml:space="preserve">
     <value>Catches</value>
+    <comment>Time series type</comment>
   </data>
   <data name="ECOSIM_DEF_MED_X_AXIS" xml:space="preserve">
     <value>Mediating group</value>
@@ -343,6 +355,7 @@
   </data>
   <data name="TS_TYPE_TIMEFORCING" xml:space="preserve">
     <value>Time forcing</value>
+    <comment>Time series type</comment>
   </data>
   <data name="ZoomOutHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ZoomOutHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -379,7 +392,7 @@
     <comment>Text label for Quick Edit interface in Grid toolbars</comment>
   </data>
   <data name="STATUS_APPLYVALUES" xml:space="preserve">
-    <value>Applying values, please wait</value>
+    <value>Applying values, please wait...</value>
   </data>
   <data name="TOOLTIP_GRID_APPLYVALUE" xml:space="preserve">
     <value>Set this value to all selected cells</value>

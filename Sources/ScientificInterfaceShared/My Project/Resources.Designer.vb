@@ -580,7 +580,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}: ({1}, {2}).
+        '''  Looks up a localized string similar to {0} ({1}, {2}).
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_POINT() As String
             Get
@@ -3962,7 +3962,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Applying values, please wait.
+        '''  Looks up a localized string similar to Applying values, please wait....
         '''</summary>
         Public ReadOnly Property STATUS_APPLYVALUES() As String
             Get
