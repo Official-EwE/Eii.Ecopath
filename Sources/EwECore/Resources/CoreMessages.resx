@@ -910,4 +910,23 @@ System Error: {0}</value>
     <value>An error occurred running the advection computations: {0}</value>
     <comment>{0}=error message</comment>
   </data>
+  <data name="ECOPATH_ESTIMATED_BA" xml:space="preserve">
+    <value>Biomass Accumulation for group '{0}'</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_ESTIMATED_EE" xml:space="preserve">
+    <value>EE for group '{0}'</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_ESTIMATED_EMIGRATION" xml:space="preserve">
+    <value>Emigration for group '{0}'</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_ESTIMATED_IMMIGRATION" xml:space="preserve">
+    <value>Immigration for group '{0}'</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="GENERIC_PROMPT_ESTIMATED" xml:space="preserve">
+    <value>The following variables were estimated:</value>
+  </data>
 </root>

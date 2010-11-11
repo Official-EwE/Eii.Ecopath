@@ -7,8 +7,20 @@ Namespace Ecopath
     ''' <summary>
     ''' Class that Encapsulates the EcoPath Model
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class cEcoPathModel
+
+        ''' <summary>Enumerator indicating which variables to estimate.</summary>
+        Private Enum eEstimateTypes As Byte
+            ''' <summary>Default value for the <see cref="EstimateWhat">estimation flag</see>, 
+            ''' it seems that type EE and 0 are used interchangably.</summary>
+            NotSet = 0
+            ''' <summary>Estimate EE.</summary>
+            EE = NotSet
+            ''' <summary>Estimate Biomass Accumulation.</summary>
+            BA
+            ''' <summary>Estimate migration.</summary>
+            Migration
+        End Enum
 
         Private m_Data As cEcopathDataStructures
         Private m_pluginManager As cPluginManager = Nothing
@@ -22,7 +34,7 @@ Namespace Ecopath
         Private Cons() As Single
         Friend missing(,) As Boolean
         ' Private CheckedMissing As Boolean
-        Private EstimateWhat() As Integer
+        Private EstimateWhat() As eEstimateTypes
 
         Private m_messages As New List(Of cVariableStatus)
 
@@ -321,7 +333,7 @@ Namespace Ecopath
             For igrp As Integer = 1 To m_Data.NumGroups
                 If m_Data.B(igrp) > 0 And m_Data.PB(igrp) >= 0 And m_Data.EE(igrp) >= 0 Then
                     If m_Data.PP(igrp) = 1 Or m_Data.QB(igrp) >= 0 Then
-                        If EstimateWhat(igrp) = 0 Then
+                        If EstimateWhat(igrp) = eEstimateTypes.EE Then
 
                             If m_Data.PP(igrp) < 1 Then
                                 strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE, m_Data.GroupName(igrp))
@@ -334,7 +346,7 @@ Namespace Ecopath
                             NotifyCore(fbMsg)
 
                             If fbMsg.Reply = cFeedbackMessage.eReply.YES Then
-                                EstimateWhat(igrp) = 1
+                                EstimateWhat(igrp) = eEstimateTypes.BA
                             ElseIf fbMsg.Reply = cFeedbackMessage.eReply.NO Then
 
                                 strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_NETMIGRATION, m_Data.GroupName(igrp))
@@ -343,11 +355,10 @@ Namespace Ecopath
                                 NotifyCore(fbMsg)
 
                                 If fbMsg.Reply = cFeedbackMessage.eReply.YES Then
-                                    EstimateWhat(igrp) = 2
+                                    EstimateWhat(igrp) = eEstimateTypes.Migration
                                 End If
 
                             End If 'If fbMsg.Reply = cFeedbackMessage.eReply.YES Then
-
 
                         End If 'If EstimateWhat(igrp) = 0 Then
                     End If ' If m_Data.PP(igrp) = 1 Or m_Data.QB(igrp) >= 0 Then
@@ -374,6 +385,8 @@ Namespace Ecopath
             Dim j As Integer
             Dim Sum As Single
             Dim MM2 As Single
+            Dim msg As New cMessage("The following variables were estimated:", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Information)
+            Dim vs As cVariableStatus = Nothing
 
             For i = 1 To m_Data.NumLiving
                 Sum = CSng(IIf(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.BaBi(i), 0))
@@ -389,7 +402,10 @@ Namespace Ecopath
 
                 'ToDo_jb EstimEEAgain EstimateWhat(i) Is never getting set to anything I need to check this with the EwE5 code
                 Select Case EstimateWhat(i)
-                    Case 0  'Estimate EE
+
+                    Case eEstimateTypes.EE, _
+                         eEstimateTypes.NotSet
+
                         If m_Data.B(i) > 0 And m_Data.PB(i) > 0 Then
                             '031220VC: modified to incorporate that BioAcc and emigration can be rates
                             If m_Data.StanzaGroup(i) = False Then
@@ -397,20 +413,50 @@ Namespace Ecopath
                             Else
                                 m_Data.EE(i) = (m_Data.fCatch(i) + Sum + m_Data.Emigration(i) - m_Data.Immig(i) + MM2) / (m_Data.B(i) * m_Data.PB(i))
                             End If
-
                         End If
-                    Case 1  'Estimate BA
-                        m_Data.BA(i) = m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i) - m_Data.fCatch(i) - Sum - m_Data.Emigration(i) + m_Data.Immig(i) - MM2
-                    Case 2  'Estimate migration
+
+                    Case eEstimateTypes.BA    ' Estimate BA
+
+                        Dim sBA As Single = m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i) - m_Data.fCatch(i) - Sum - m_Data.Emigration(i) + m_Data.Immig(i) - MM2
+                        ' Is a change?
+                        If (sBA <> Me.m_Data.BA(i)) Then
+                            ' #Yes: update BA
+                            m_Data.BA(i) = sBA
+                            ' Send out notification
+                            msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight, _
+                                                String.Format(My.Resources.CoreMessages.ECOPATH_ESTIMATED_BA, Me.m_Data.GroupName(i)), _
+                                                eVarNameFlags.BioAccum, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                        End If
+
+                    Case eEstimateTypes.Migration
+
                         Sum = CSng(IIf(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.B(i) * m_Data.BaBi(i), 0))
                         Sum = CSng(m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i) - Sum - m_Data.BA(i) - m_Data.fCatch(i) - MM2)
                         If Sum < 0 Then
-                            m_Data.Immig(i) = -Sum
+                            If (m_Data.Immig(i) <> -Sum) Then
+                                m_Data.Immig(i) = -Sum
+                                msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight, _
+                                                    String.Format(My.Resources.CoreMessages.ECOPATH_ESTIMATED_IMMIGRATION, Me.m_Data.GroupName(i)), _
+                                                    eVarNameFlags.Immig, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                            End If
                         Else
-                            m_Data.Emigration(i) = Sum
+                            If (m_Data.Emigration(i) <> Sum) Then
+                                m_Data.Emigration(i) = Sum
+                                msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight, _
+                                                    String.Format(My.Resources.CoreMessages.ECOPATH_ESTIMATED_EMIGRATION, Me.m_Data.GroupName(i)), _
+                                                    eVarNameFlags.Emig, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                            End If
                         End If
+
                 End Select
             Next i
+
+            ' Were any variables changed?
+            If (msg.Variables.Count > 0) Then
+                ' Send
+                Me.NotifyCore(msg)
+            End If
+
         End Sub
 
         Friend Sub DetritusCalculations()

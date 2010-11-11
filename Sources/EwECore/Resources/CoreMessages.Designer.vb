@@ -317,6 +317,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biomass Accumulation for group &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_ESTIMATED_BA() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_ESTIMATED_BA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EE for group &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_ESTIMATED_EE() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_ESTIMATED_EE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Emigration for group &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_ESTIMATED_EMIGRATION() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_ESTIMATED_EMIGRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Immigration for group &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_ESTIMATED_IMMIGRATION() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_ESTIMATED_IMMIGRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Your model has {0} group(s) for which the Detritus fate (DF) sum to more than 1.You should go back to your input data, and make sure the DF&apos;s sum to max 1 only..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_DFLARGERTHANONE() As String
@@ -1037,6 +1073,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property GE_RANGE() As String
             Get
                 Return ResourceManager.GetString("GE_RANGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The following variables were estimated:.
+        '''</summary>
+        Friend Shared ReadOnly Property GENERIC_PROMPT_ESTIMATED() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_PROMPT_ESTIMATED", resourceCulture)
             End Get
         End Property
         
