@@ -44,11 +44,11 @@ Namespace Other
             ' Format technical page
             Me.m_lblNetVersion.Text = String.Format(m_lblNetVersion.Text, System.Environment.Version.ToString())
 
-            ' Format credits page
-            Me.m_rtbCredits.Rtf = My.Resources.credits
+            ' Format team page
+            Me.m_rtbTeam.Rtf = My.Resources.team
 
-            ' Format modules page
-            Me.m_rtbModules.Rtf = My.Resources.modules
+            ' Format acknowledgements page
+            Me.m_rtbAcknowledgements.Rtf = My.Resources.acknowledgements
 
         End Sub
 

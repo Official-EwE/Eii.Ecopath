@@ -132,13 +132,10 @@
     <value>Load Ecospace scenario - Ecopath model {0}</value>
     <comment>{0} = Ecospace scenario name</comment>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="credits" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\credits.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;iso-8859-1</value>
-  </data>
   <data name="STATUS_PREVIEW_LOADING" xml:space="preserve">
     <value>Loading preview...</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="glyph_blocks_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_blocks_small.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -636,9 +633,6 @@
   <data name="PROMPT_INVALIDTARGETPATH" xml:space="preserve">
     <value>Unable to create EwE6 model at '{0}'. Please check if you have access rights to write to this location, or whether a file at this location is still in use</value>
     <comment>{0}: model path</comment>
-  </data>
-  <data name="modules" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Modules.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="VALUE_ITERATION" xml:space="preserve">
     <value>Iteration {0}</value>
@@ -1534,5 +1528,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="FR_PLOT_Y_AXS" xml:space="preserve">
     <value>Q prey / B pred</value>
+  </data>
+  <data name="acknowledgements" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\acknowledgements.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="team" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\team.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

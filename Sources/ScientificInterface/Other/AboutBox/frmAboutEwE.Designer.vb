@@ -34,13 +34,13 @@ Namespace Other
             Me.m_pbSponsors = New System.Windows.Forms.PictureBox
             Me.m_tcMain = New System.Windows.Forms.TabControl
             Me.m_tpGeneral = New System.Windows.Forms.TabPage
-            Me.m_tpCredits = New System.Windows.Forms.TabPage
+            Me.m_tpTeam = New System.Windows.Forms.TabPage
             Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel
-            Me.m_rtbCredits = New System.Windows.Forms.RichTextBox
+            Me.m_rtbTeam = New System.Windows.Forms.RichTextBox
             Me.m_pbFish1 = New System.Windows.Forms.PictureBox
-            Me.m_tpModules = New System.Windows.Forms.TabPage
+            Me.m_tpacknowledgements = New System.Windows.Forms.TabPage
             Me.m_tlpModules = New System.Windows.Forms.TableLayoutPanel
-            Me.m_rtbModules = New System.Windows.Forms.RichTextBox
+            Me.m_rtbAcknowledgements = New System.Windows.Forms.RichTextBox
             Me.m_pbFish2 = New System.Windows.Forms.PictureBox
             Me.m_tpTechnical = New System.Windows.Forms.TabPage
             Me.m_tlpTechnical = New System.Windows.Forms.TableLayoutPanel
@@ -55,10 +55,10 @@ Namespace Other
             CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tcMain.SuspendLayout()
             Me.m_tpGeneral.SuspendLayout()
-            Me.m_tpCredits.SuspendLayout()
+            Me.m_tpTeam.SuspendLayout()
             Me.m_tlpCredits.SuspendLayout()
             CType(Me.m_pbFish1, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_tpModules.SuspendLayout()
+            Me.m_tpacknowledgements.SuspendLayout()
             Me.m_tlpModules.SuspendLayout()
             CType(Me.m_pbFish2, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tpTechnical.SuspendLayout()
@@ -140,8 +140,8 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_tcMain, "m_tcMain")
             Me.m_tcMain.Controls.Add(Me.m_tpGeneral)
-            Me.m_tcMain.Controls.Add(Me.m_tpCredits)
-            Me.m_tcMain.Controls.Add(Me.m_tpModules)
+            Me.m_tcMain.Controls.Add(Me.m_tpTeam)
+            Me.m_tcMain.Controls.Add(Me.m_tpacknowledgements)
             Me.m_tcMain.Controls.Add(Me.m_tpTechnical)
             Me.m_tcMain.Name = "m_tcMain"
             Me.m_tcMain.SelectedIndex = 0
@@ -153,26 +153,26 @@ Namespace Other
             Me.m_tpGeneral.Name = "m_tpGeneral"
             Me.m_tpGeneral.UseVisualStyleBackColor = True
             '
-            'm_tpCredits
+            'm_tpTeam
             '
-            Me.m_tpCredits.Controls.Add(Me.m_tlpCredits)
-            resources.ApplyResources(Me.m_tpCredits, "m_tpCredits")
-            Me.m_tpCredits.Name = "m_tpCredits"
-            Me.m_tpCredits.UseVisualStyleBackColor = True
+            Me.m_tpTeam.Controls.Add(Me.m_tlpCredits)
+            resources.ApplyResources(Me.m_tpTeam, "m_tpTeam")
+            Me.m_tpTeam.Name = "m_tpTeam"
+            Me.m_tpTeam.UseVisualStyleBackColor = True
             '
             'm_tlpCredits
             '
             resources.ApplyResources(Me.m_tlpCredits, "m_tlpCredits")
-            Me.m_tlpCredits.Controls.Add(Me.m_rtbCredits, 1, 0)
+            Me.m_tlpCredits.Controls.Add(Me.m_rtbTeam, 1, 0)
             Me.m_tlpCredits.Controls.Add(Me.m_pbFish1, 0, 0)
             Me.m_tlpCredits.Name = "m_tlpCredits"
             '
-            'm_rtbCredits
+            'm_rtbTeam
             '
-            Me.m_rtbCredits.BackColor = System.Drawing.SystemColors.Control
-            Me.m_rtbCredits.Cursor = System.Windows.Forms.Cursors.Default
-            resources.ApplyResources(Me.m_rtbCredits, "m_rtbCredits")
-            Me.m_rtbCredits.Name = "m_rtbCredits"
+            Me.m_rtbTeam.BackColor = System.Drawing.SystemColors.Control
+            Me.m_rtbTeam.Cursor = System.Windows.Forms.Cursors.Default
+            resources.ApplyResources(Me.m_rtbTeam, "m_rtbTeam")
+            Me.m_rtbTeam.Name = "m_rtbTeam"
             '
             'm_pbFish1
             '
@@ -182,26 +182,26 @@ Namespace Other
             Me.m_pbFish1.Name = "m_pbFish1"
             Me.m_pbFish1.TabStop = False
             '
-            'm_tpModules
+            'm_tpacknowledgements
             '
-            Me.m_tpModules.Controls.Add(Me.m_tlpModules)
-            resources.ApplyResources(Me.m_tpModules, "m_tpModules")
-            Me.m_tpModules.Name = "m_tpModules"
-            Me.m_tpModules.UseVisualStyleBackColor = True
+            Me.m_tpacknowledgements.Controls.Add(Me.m_tlpModules)
+            resources.ApplyResources(Me.m_tpacknowledgements, "m_tpacknowledgements")
+            Me.m_tpacknowledgements.Name = "m_tpacknowledgements"
+            Me.m_tpacknowledgements.UseVisualStyleBackColor = True
             '
             'm_tlpModules
             '
             resources.ApplyResources(Me.m_tlpModules, "m_tlpModules")
-            Me.m_tlpModules.Controls.Add(Me.m_rtbModules, 1, 0)
+            Me.m_tlpModules.Controls.Add(Me.m_rtbAcknowledgements, 1, 0)
             Me.m_tlpModules.Controls.Add(Me.m_pbFish2, 0, 0)
             Me.m_tlpModules.Name = "m_tlpModules"
             '
-            'm_rtbModules
+            'm_rtbAcknowledgements
             '
-            Me.m_rtbModules.BackColor = System.Drawing.SystemColors.Control
-            Me.m_rtbModules.Cursor = System.Windows.Forms.Cursors.Default
-            resources.ApplyResources(Me.m_rtbModules, "m_rtbModules")
-            Me.m_rtbModules.Name = "m_rtbModules"
+            Me.m_rtbAcknowledgements.BackColor = System.Drawing.SystemColors.Control
+            Me.m_rtbAcknowledgements.Cursor = System.Windows.Forms.Cursors.Default
+            resources.ApplyResources(Me.m_rtbAcknowledgements, "m_rtbAcknowledgements")
+            Me.m_rtbAcknowledgements.Name = "m_rtbAcknowledgements"
             '
             'm_pbFish2
             '
@@ -253,14 +253,19 @@ Namespace Other
             '
             'm_gridTechnical
             '
+            Me.m_gridTechnical.AllowBlockSelect = True
             resources.ApplyResources(Me.m_gridTechnical, "m_gridTechnical")
             Me.m_gridTechnical.AutoSizeMinHeight = 10
             Me.m_gridTechnical.AutoSizeMinWidth = 10
             Me.m_gridTechnical.AutoStretchColumnsToFitWidth = False
             Me.m_gridTechnical.AutoStretchRowsToFitHeight = False
-            Me.m_gridTechnical.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_gridTechnical.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_gridTechnical.BackColor = System.Drawing.Color.White
+            Me.m_gridTechnical.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridTechnical.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridTechnical.CustomSort = False
+            Me.m_gridTechnical.FixedColumnWidths = False
             Me.m_gridTechnical.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridTechnical.GridToolTipActive = True
             Me.m_gridTechnical.Name = "m_gridTechnical"
@@ -273,6 +278,7 @@ Namespace Other
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridTechnical.UIContext = Nothing
             '
             'frmAboutEwE
             '
@@ -296,11 +302,11 @@ Namespace Other
             CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tcMain.ResumeLayout(False)
             Me.m_tpGeneral.ResumeLayout(False)
-            Me.m_tpCredits.ResumeLayout(False)
+            Me.m_tpTeam.ResumeLayout(False)
             Me.m_tlpCredits.ResumeLayout(False)
             Me.m_tlpCredits.PerformLayout()
             CType(Me.m_pbFish1, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_tpModules.ResumeLayout(False)
+            Me.m_tpacknowledgements.ResumeLayout(False)
             Me.m_tlpModules.ResumeLayout(False)
             Me.m_tlpModules.PerformLayout()
             CType(Me.m_pbFish2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -317,7 +323,7 @@ Namespace Other
         Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         'Private WithEvents m_gridTechnical As AboutEwEGrid
-        Private WithEvents m_rtbModules As System.Windows.Forms.RichTextBox
+        Private WithEvents m_rtbAcknowledgements As System.Windows.Forms.RichTextBox
         Private WithEvents m_pbFish2 As System.Windows.Forms.PictureBox
         Private WithEvents m_pbFish1 As System.Windows.Forms.PictureBox
         Private WithEvents m_pbFish0 As System.Windows.Forms.PictureBox
@@ -330,14 +336,14 @@ Namespace Other
         Private WithEvents m_tcMain As System.Windows.Forms.TabControl
         Private WithEvents m_tlpDetails As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tlpTechnicalDetails As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_rtbCredits As System.Windows.Forms.RichTextBox
+        Private WithEvents m_rtbTeam As System.Windows.Forms.RichTextBox
         Private WithEvents m_tlpGeneral As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tlpCredits As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tlpModules As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tlpTechnical As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tpGeneral As System.Windows.Forms.TabPage
-        Private WithEvents m_tpCredits As System.Windows.Forms.TabPage
-        Private WithEvents m_tpModules As System.Windows.Forms.TabPage
+        Private WithEvents m_tpTeam As System.Windows.Forms.TabPage
+        Private WithEvents m_tpacknowledgements As System.Windows.Forms.TabPage
         Private WithEvents m_tpTechnical As System.Windows.Forms.TabPage
         Private WithEvents m_gridTechnical As ScientificInterface.AboutEwEGrid
 

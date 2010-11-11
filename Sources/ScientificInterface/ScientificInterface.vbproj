@@ -655,11 +655,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -1260,6 +1255,11 @@
     <Compile Include="Ecospace\Input\Advection\ucWind.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Other\frmWebBrowser.Designer.vb">
       <DependentUpon>frmWebBrowser.vb</DependentUpon>
     </Compile>
@@ -1584,7 +1584,7 @@
     <Compile Include="Tools\MSE\ucCVBlockSelector.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <None Include="Resources\credits.rtf" />
+    <None Include="Resources\team.rtf" />
     <None Include="Resources\Raster.png" />
     <None Include="Resources\Regions.png" />
     <None Include="Resources\Habitat.png" />
@@ -1647,7 +1647,7 @@
     <Content Include="Resources\sautxt_50px.jpg" />
     <None Include="Resources\Seed.PNG" />
     <Content Include="Resources\Sponsors.jpg" />
-    <None Include="Resources\modules.rtf" />
+    <None Include="Resources\acknowledgements.rtf" />
     <None Include="Resources\Web.png" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
