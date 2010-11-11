@@ -8,6 +8,7 @@ Imports EwECore.FishingPolicy
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
 Imports System.ComponentModel
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -349,33 +350,34 @@ Namespace Ecosim
                     For j As Integer = 1 To m_iCols - 1
                         Dim yPos As Single = i * m_sRowHeight
                         Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
-                        Dim tmpBrush As New SolidBrush(m_BlockSelector.BlockColor(Me.m_DataSource.BlockCells(i, j)))
-                        g.FillRectangle(tmpBrush, New RectangleF(xPos, yPos, m_sColWidth, m_sRowHeight))
-                        'draw the value in the cell
-                        'g.DrawString(Me.m_DataSource.BlockCells(i, j).ToString, m_pbFishingBlocks.Font, Brushes.Black, xPos, yPos)
+                        ' Ensure proper disposal
+                        Using tmpBrush As New SolidBrush(m_BlockSelector.BlockColor(Me.m_DataSource.BlockCells(i, j)))
+                            g.FillRectangle(tmpBrush, New RectangleF(xPos, yPos, m_sColWidth, m_sRowHeight))
+                        End Using
                     Next
 
                 Next
 
-                'Now draw the grid lines on top of the blocks, so they showup
+                'Now draw the grid lines on top of the blocks, so they show up
                 'Rows
-                Dim tSize As SizeF = g.MeasureString("T", m_pbFishingBlocks.Font)
-                Dim gridPen As New Pen(System.Drawing.SystemColors.ButtonShadow)
+                Dim tSize As SizeF = g.MeasureString("T", Me.m_pbFishingBlocks.Font)
+                Dim gridPen As Pen = SystemPens.ControlDark
+
                 For i As Integer = 1 To m_iRows - 1
                     Dim yPos As Single = i * m_sRowHeight
-                    g.DrawLine(Pens.Black, 0, yPos, m_pbFishingBlocks.Width, yPos)
+                    g.DrawLine(gridPen, 0, yPos, m_pbFishingBlocks.Width, yPos)
                     g.DrawLine(gridPen, m_sFirstColWidth, yPos, m_pbFishingBlocks.Width, yPos)
                     'draw the label in the middle
                     g.DrawString(Me.m_DataSource.RowLabel(i), m_pbFishingBlocks.Font, Brushes.Black, 1, yPos + m_sRowHeight * 0.5F - tSize.Height * 0.5F)
                 Next
 
-                'redraw the first row grid line Black
+                ' Redraw the first row grid line Black
                 g.DrawLine(Pens.Black, 0, m_sRowHeight, m_pbFishingBlocks.Width, m_sRowHeight)
 
                 'Cols
                 For j As Integer = 1 To m_iCols
                     Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
-                    g.DrawLine(Pens.Black, xPos, 0, xPos, m_sRowHeight)
+                    g.DrawLine(gridPen, xPos, 0, xPos, m_sRowHeight)
                     g.DrawLine(gridPen, xPos, m_sRowHeight, xPos, m_pbFishingBlocks.Height)
                     Dim txt As String = j.ToString
                     g.DrawString(txt, m_pbFishingBlocks.Font, Brushes.Black, xPos + 1, 1)
@@ -384,7 +386,6 @@ Namespace Ecosim
                 'Redraw the first col line in Black
                 g.DrawLine(Pens.Black, m_sFirstColWidth, 0, m_sFirstColWidth, m_pbFishingBlocks.Height)
 
-
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
                 Throw New ApplicationException(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
@@ -392,26 +393,35 @@ Namespace Ecosim
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Concoct a tooltip for a cursor position
+        ''' Returns a tooltip text for the block at a given position.
         ''' </summary>
-        ''' <param name="ptCursor"></param>
-        ''' <returns></returns>
-        Private Function GetBlockTooltip(ByVal ptCursor As Point) As String
-            Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
-            If ptBlock.Y < 1 Or ptBlock.Y >= m_iRows Then Return ""
-            If ptBlock.X < 1 Or ptBlock.X >= m_iCols Then Return ""
+        ''' <param name="ptCursor">The position to retrieve the tooltip text for.</param>
+        ''' <returns>A tooltip text for the block at a given position.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetBlockTooltipText(ByVal ptCursor As Point) As String
 
-            Dim blk As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
-            Dim blkVal As String
-            If blk > 0 Then
-                blkVal = Me.m_DataSource.BlockToValue(blk).ToString
+            Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
+
+            If (ptBlock.Y < 1 Or ptBlock.Y >= Me.m_iRows) Then Return ""
+            If (ptBlock.X < 1 Or ptBlock.X >= Me.m_iCols) Then Return ""
+
+            Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
+            Dim strValue As String = ""
+
+            ' Is a block defined for this position?
+            If (iBlock > 0) Then
+                ' #Yes: get block value
+                strValue = cStringUtils.FormatSingle(Me.m_DataSource.BlockToValue(iBlock))
             Else
-                'This fleet is not exploited
-                blkVal = SharedResources.BLOCKSKETCH_NOT_USED
+                ' #No: get 'not used' value
+                strValue = SharedResources.GENERIC_VALUE_NOTUSED
             End If
-            Return String.Format(SharedResources.GENERIC_LABEL_POINT, blk, _
-                                 Me.m_DataSource.RowLabel(ptBlock.Y), blkVal)
+
+            ' Format tooltip as as "value (x, y)"
+            Return String.Format(SharedResources.GENERIC_LABEL_POINT, strValue, _
+                                 Me.m_DataSource.RowLabel(ptBlock.Y), ptBlock.X)
 
         End Function
 
@@ -494,11 +504,12 @@ Namespace Ecosim
         End Sub
 
         Private Sub ProcessMouseHover(ByVal ptCursor As Point)
-            Dim strToolTip As String = Me.GetBlockTooltip(ptCursor)
+            Dim strToolTip As String = Me.GetBlockTooltipText(ptCursor)
             Dim ts As cToolTipShared = cToolTipShared.GetInstance()
 
             If Me.ShowTooltip Then
-                ts.Show(strToolTip, Me.m_pbFishingBlocks, ptCursor)
+                ' Show tooltip above the cursor
+                ts.Show(strToolTip, Me.m_pbFishingBlocks, New Point(ptCursor.X, ptCursor.Y - CInt(Me.Font.Height * 1.5)))
             Else
                 ts.Hide(Me.m_pbFishingBlocks)
             End If
