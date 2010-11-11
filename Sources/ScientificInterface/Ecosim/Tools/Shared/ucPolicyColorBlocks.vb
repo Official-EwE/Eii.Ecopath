@@ -46,7 +46,7 @@ Namespace Ecosim
         Private m_DataSource As IPolicyColorBlockDataSource
         Private m_bInit As Boolean
 
-        Private m_blockCodes As IBlockSelector
+        Private m_BlockSelector As IBlockSelector
 
 #End Region ' Private vars
 
@@ -69,19 +69,19 @@ Namespace Ecosim
         ''' Attach a data source <see cref="IPolicyColorBlockDataSource">IPolicyColorBlockDataSource</see> and a block selector control <see cref="IBlockSelector">IBlockSelector</see> to the main PolicyColorBlock control 
         ''' </summary>
         ''' <param name="DataSource">Implementation of IPolicyColorBlockDataSource</param>
-        ''' <param name="BlockCodes">Implementation of IBlockSelector</param>
+        ''' <param name="BlockSelector">Implementation of IBlockSelector</param>
         ''' <remarks>PolicyColorBlocks can be attached to different data sources and block selectors</remarks>
-        Public Sub Attach(ByVal DataSource As IPolicyColorBlockDataSource, ByVal BlockCodes As IBlockSelector)
+        Public Sub Attach(ByVal DataSource As IPolicyColorBlockDataSource, ByVal BlockSelector As IBlockSelector)
 
             If Me.m_bInit Then Me.Detach()
 
             Me.m_DataSource = DataSource
-            Me.m_blockCodes = BlockCodes
-            Me.m_blockCodes.UIContext = Me.UIContext
+            Me.m_BlockSelector = BlockSelector
+            Me.m_BlockSelector.UIContext = Me.UIContext
 
             Try
 
-                Dim selector As Control = DirectCast(Me.m_blockCodes, Control)
+                Dim selector As Control = DirectCast(Me.m_BlockSelector, Control)
                 selector.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Top
                 selector.Size = Me.m_plBlocks.ClientSize ' Ugh
                 Me.m_plBlocks.Controls.Clear()
@@ -92,13 +92,13 @@ Namespace Ecosim
                 '               Added ControlPanelVisible to provide user with design-time control.
                 Me.ControlPanelVisible = Me.m_DataSource.isControlPanelVisible
 
-                AddHandler BlockCodes.onValueChanged, AddressOf onCVValuesChanged
+                AddHandler BlockSelector.onValueChanged, AddressOf onCVValuesChanged
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".Attach() Exception: " & ex.Message)
             End Try
 
-            Me.m_DataSource.Attach(Me.m_blockCodes)
+            Me.m_DataSource.Attach(Me.m_BlockSelector)
 
             Me.m_PropBaseYear = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear), cIntegerProperty)
             AddHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
@@ -115,7 +115,7 @@ Namespace Ecosim
 
             If (Me.m_bInit) Then
 
-                RemoveHandler Me.m_blockCodes.onValueChanged, AddressOf Me.onCVValuesChanged
+                RemoveHandler Me.m_BlockSelector.onValueChanged, AddressOf Me.onCVValuesChanged
 
                 If (Me.m_PropBaseYear IsNot Nothing) Then
                     RemoveHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
@@ -126,7 +126,7 @@ Namespace Ecosim
 
                 End If
                 Me.m_DataSource = Nothing
-                Me.m_blockCodes = Nothing
+                Me.m_BlockSelector = Nothing
             End If
             Me.UIContext = Nothing
 
@@ -159,10 +159,10 @@ Namespace Ecosim
         ''' </summary>
         Public Property ParmBlockCodes() As IBlockSelector
             Get
-                Return m_blockCodes
+                Return m_BlockSelector
             End Get
             Set(ByVal value As IBlockSelector)
-                Me.m_blockCodes = value
+                Me.m_BlockSelector = value
             End Set
         End Property
 
@@ -344,36 +344,46 @@ Namespace Ecosim
 
             Try
 
-                'Draw row lines
-                For i As Integer = 1 To m_iRows - 1
-                    Dim yPos As Single = 0 + i * m_sRowHeight
-                    g.DrawLine(Pens.Gray, 0, yPos, m_pbFishingBlocks.Width, yPos)
-                    g.DrawString(Me.m_DataSource.RowLabel(i), m_pbFishingBlocks.Font, Brushes.Black, 1, yPos + 1)
-                Next
-
-                g.DrawLine(Pens.Gray, m_sFirstColWidth, m_pbFishingBlocks.Top, m_sFirstColWidth, m_pbFishingBlocks.Bottom)
-
-                For j As Integer = 1 To m_iCols
-                    Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
-                    g.DrawLine(Pens.Gray, xPos, 0, xPos, m_pbFishingBlocks.Height)
-                    'jb why are we just printing the single digit numbers???
-                    'Dim txt As String = (j Mod 10).ToString
-                    Dim txt As String = j.ToString
-                    g.DrawString(txt, m_pbFishingBlocks.Font, Brushes.Black, xPos + 1, 1)
-                    'If j < 3 Then Console.WriteLine("Col {0} xPos = {1}", j, xPos)
-                Next
-
+                'Draw the blocks first
                 For i As Integer = 1 To m_iRows - 1
                     For j As Integer = 1 To m_iCols - 1
                         Dim yPos As Single = i * m_sRowHeight
                         Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
-                        Dim tmpBrush As New SolidBrush(m_blockCodes.BlockColor(Me.m_DataSource.BlockCells(i, j)))
+                        Dim tmpBrush As New SolidBrush(m_BlockSelector.BlockColor(Me.m_DataSource.BlockCells(i, j)))
                         g.FillRectangle(tmpBrush, New RectangleF(xPos, yPos, m_sColWidth, m_sRowHeight))
                         'draw the value in the cell
                         'g.DrawString(Me.m_DataSource.BlockCells(i, j).ToString, m_pbFishingBlocks.Font, Brushes.Black, xPos, yPos)
                     Next
 
                 Next
+
+                'Now draw the grid lines on top of the blocks, so they showup
+                'Rows
+                Dim tSize As SizeF = g.MeasureString("T", m_pbFishingBlocks.Font)
+                Dim gridPen As New Pen(System.Drawing.SystemColors.ButtonShadow)
+                For i As Integer = 1 To m_iRows - 1
+                    Dim yPos As Single = i * m_sRowHeight
+                    g.DrawLine(Pens.Black, 0, yPos, m_pbFishingBlocks.Width, yPos)
+                    g.DrawLine(gridPen, m_sFirstColWidth, yPos, m_pbFishingBlocks.Width, yPos)
+                    'draw the label in the middle
+                    g.DrawString(Me.m_DataSource.RowLabel(i), m_pbFishingBlocks.Font, Brushes.Black, 1, yPos + m_sRowHeight * 0.5F - tSize.Height * 0.5F)
+                Next
+
+                'redraw the first row grid line Black
+                g.DrawLine(Pens.Black, 0, m_sRowHeight, m_pbFishingBlocks.Width, m_sRowHeight)
+
+                'Cols
+                For j As Integer = 1 To m_iCols
+                    Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
+                    g.DrawLine(Pens.Black, xPos, 0, xPos, m_sRowHeight)
+                    g.DrawLine(gridPen, xPos, m_sRowHeight, xPos, m_pbFishingBlocks.Height)
+                    Dim txt As String = j.ToString
+                    g.DrawString(txt, m_pbFishingBlocks.Font, Brushes.Black, xPos + 1, 1)
+                Next
+
+                'Redraw the first col line in Black
+                g.DrawLine(Pens.Black, m_sFirstColWidth, 0, m_sFirstColWidth, m_pbFishingBlocks.Height)
+
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
@@ -391,10 +401,18 @@ Namespace Ecosim
             Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
             If ptBlock.Y < 1 Or ptBlock.Y >= m_iRows Then Return ""
             If ptBlock.X < 1 Or ptBlock.X >= m_iCols Then Return ""
-            Return String.Format(SharedResources.GENERIC_LABEL_POINT, _
-                                 Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X), _
-                                 Me.m_DataSource.RowLabel(ptBlock.Y), _
-                                 ptBlock.X)
+
+            Dim blk As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
+            Dim blkVal As String
+            If blk > 0 Then
+                blkVal = Me.m_DataSource.BlockToValue(blk).ToString
+            Else
+                'This fleet is not exploited
+                blkVal = SharedResources.BLOCKSKETCH_NOT_USED
+            End If
+            Return String.Format(SharedResources.GENERIC_LABEL_POINT, blk, _
+                                 Me.m_DataSource.RowLabel(ptBlock.Y), blkVal)
+
         End Function
 
         Private Sub CalcParams(ByRef g As Graphics)
@@ -435,7 +453,7 @@ Namespace Ecosim
             If ptBlock.X > m_iCols - 1 Then Return
 
             Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
-            Me.m_blockCodes.SelectedBlock = iBlock
+            Me.m_BlockSelector.SelectedBlock = iBlock
 
         End Sub
 
@@ -480,9 +498,9 @@ Namespace Ecosim
             Dim ts As cToolTipShared = cToolTipShared.GetInstance()
 
             If Me.ShowTooltip Then
-                ts.Show(strToolTip, Me.m_plBlocks, ptCursor)
+                ts.Show(strToolTip, Me.m_pbFishingBlocks, ptCursor)
             Else
-                ts.Hide(Me.m_plBlocks)
+                ts.Hide(Me.m_pbFishingBlocks)
             End If
         End Sub
 
@@ -600,6 +618,14 @@ Namespace Ecosim
         ''' </summary>
         ''' <remarks>Use when the BlockSelector has change values of the blocks </remarks>
         Sub Update()
+
+        ''' <summary>
+        ''' Return the value of a Block
+        ''' </summary>
+        ''' <param name="iBlock">Block index/value</param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Function BlockToValue(ByVal iBlock As Integer) As Single
     End Interface
 
 #End Region

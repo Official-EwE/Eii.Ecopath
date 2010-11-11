@@ -13,6 +13,9 @@ Imports EwECore.MSE
 ''' ===========================================================================
 Public Class frmMSEAssessGroups
 
+    Private m_fpStartYear As cIntegerProperty
+    Private m_MSEDataSource As cMSEGroupColorBlockDataSource
+
     Public Sub New()
         Me.InitializeComponent()
     End Sub
@@ -30,11 +33,57 @@ Public Class frmMSEAssessGroups
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
         ' Attach the datasource and the block selector to the ucPolicyColorBlocks control
-        Dim ds As New cMSEGroupColorBlockDataSource(Me.UIContext)
-        Me.m_blocks.Attach(ds, New ucCVBlockSelector)
+        m_MSEDataSource = New cMSEGroupColorBlockDataSource(Me.UIContext)
+        Me.m_blocks.Attach(m_MSEDataSource, New ucCVBlockSelector)
+
+        Dim pm As cPropertyManager = Me.PropertyManager
+
+        Me.m_fpStartYear = DirectCast(pm.GetProperty(Me.UIContext.Core.MSEManager.ModelParameters, EwEUtils.Core.eVarNameFlags.MSEStartYear), cIntegerProperty)
+
+        ' Track styleguide changes
+        AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+        '     AddHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
+
     End Sub
 
+
+
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Try
+
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            '  RemoveHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
+        End Try
+        MyBase.OnFormClosed(e)
+    End Sub
+
+    Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+
+        If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
+            Me.m_blocks.Invalidate()
+        End If
+
+    End Sub
+
+    Private Sub OnLastYearChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+
+        Try
+            Me.m_MSEDataSource.Init()
+            Me.m_blocks.Invalidate()
+        Catch ex As Exception
+            EwECore.cLog.Write(ex)
+        End Try
+
+    End Sub
+
+
+
+
 End Class
+
 
 
 #Region "IPolicyColorBlockDataSource implementation for MSE"
@@ -45,9 +94,14 @@ Public Class cMSEGroupColorBlockDataSource
 
     Private m_uic As cUIContext
     Private m_BlockCells(,) As Integer
-    Private m_blockCodes As ucCVBlockSelector
+    Private m_BlockSelector As ucCVBlockSelector
     Private m_iTotalBlocks As Integer
     Private m_batchEdit As Boolean
+    ''' <summary>Is this group exploited (fished) </summary>
+    ''' <remarks>True if there is either catch or discards for this group, False otherwise.</remarks>
+    Private m_isExploited() As Boolean
+
+    Private m_fpStartYear As cIntegerProperty
 
     Public Sub New(ByVal UIContext As cUIContext)
         Me.m_uic = UIContext
@@ -75,13 +129,14 @@ Public Class cMSEGroupColorBlockDataSource
 
         Debug.Assert(TypeOf Blocks Is ucCVBlockSelector, Me.ToString & ".Atatch() Blocks must be a ucCVBlockSelector!")
         Try
-            m_blockCodes = DirectCast(Blocks, ucCVBlockSelector)
+
+            m_BlockSelector = DirectCast(Blocks, ucCVBlockSelector)
 
             'populate the blocks with values from the data!!!!
             Dim cvs As New List(Of Single)
             cvs.Add(0) 'if adding values the first value should be zero
             Dim manager As cMSEManager = Me.m_uic.Core.MSEManager
-            Dim blks() As Single = Me.m_blockCodes.BlockValues
+            Dim blks() As Single = Me.m_BlockSelector.BlockValues
 
             For i As Integer = 1 To manager.GroupInputs.Count
                 Dim grp As cMSEGroupInput = manager.GroupInputs(i)
@@ -100,31 +155,42 @@ Public Class cMSEGroupColorBlockDataSource
             'cvs in the datasource that are not in the control
             If cvs.Count > 1 Then
 
-                For iblk As Integer = 1 To Me.m_blockCodes.NumBlocks
+                For iblk As Integer = 1 To Me.m_BlockSelector.NumBlocks
                     cvs.Insert(iblk, blks(iblk))
                 Next ' For iblk As Integer = 1 To Me.m_blockCodes.NumBlocks
                 cvs.Sort()
-                m_blockCodes.BlockValues = cvs.ToArray
+                m_BlockSelector.BlockValues = cvs.ToArray
             End If
+
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
     End Sub
 
+
+
     ''' <inheritdoc cref="IPolicyColorBlockDataSource.Init"/>
     Public Sub Init() _
         Implements IPolicyColorBlockDataSource.Init
+
+        'Populate the m_isExploited(ngroups) array
+        Me.PopIsExploited()
 
         m_iTotalBlocks = Me.m_uic.Core.EcoSimModelParameters.NumberYears
 
         ReDim m_BlockCells(Me.nRows, Me.TotalBlocks)
         Dim mseData As cMSEGroupInput
+        Dim sYear As Integer = Me.m_uic.Core.MSEManager.ModelParameters.MSEStartYear
 
         For igrp As Integer = 1 To m_BlockCells.GetLength(0) - 1
             mseData = Me.m_uic.Core.MSEManager.GroupInputs(igrp)
             For iTime As Integer = 1 To m_BlockCells.GetLength(1) - 1
-                m_BlockCells(igrp, iTime) = Me.m_blockCodes.ValuetoBlock(mseData.BiomassCV(iTime))
+                If Me.m_isExploited(igrp) And iTime >= sYear Then
+                    m_BlockCells(igrp, iTime) = Me.m_BlockSelector.ValuetoBlock(mseData.BiomassCV(iTime))
+                Else
+                    m_BlockCells(igrp, iTime) = -1
+                End If
             Next
         Next
 
@@ -140,10 +206,16 @@ Public Class cMSEGroupColorBlockDataSource
         If (iRow < 1) Then Return
         If (iRow > m_BlockCells.GetLength(0) - 1) Then Return
 
+        If Not Me.m_isExploited(iRow) Or iCol < Me.m_uic.Core.MSEManager.ModelParameters.MSEStartYear Then
+            'Not in bounds 
+            'Don't set the value
+            Return
+        End If
+
         ' Fill single block
 
-        Me.m_BlockCells(iRow, iCol) = Me.m_blockCodes.SelectedBlock
-        Me.m_uic.Core.MSEManager.GroupInputs(iRow).BiomassCV(iCol) = Me.m_blockCodes.BlocktoValue(Me.m_blockCodes.SelectedBlock)
+        Me.m_BlockCells(iRow, iCol) = Me.m_BlockSelector.SelectedBlock
+        Me.m_uic.Core.MSEManager.GroupInputs(iRow).BiomassCV(iCol) = Me.m_BlockSelector.BlocktoValue(Me.m_BlockSelector.SelectedBlock)
 
     End Sub
 
@@ -206,7 +278,7 @@ Public Class cMSEGroupColorBlockDataSource
             For igrp As Integer = 1 To Me.m_uic.Core.nGroups
                 Me.m_uic.Core.MSEManager.GroupInputs(igrp).BatchEdit = True
                 For iyr As Integer = 1 To Me.TotalBlocks
-                    Me.m_uic.Core.MSEManager.GroupInputs(igrp).BiomassCV(iyr) = Me.m_blockCodes.BlocktoValue(m_BlockCells(igrp, iyr))
+                    Me.m_uic.Core.MSEManager.GroupInputs(igrp).BiomassCV(iyr) = Me.m_BlockSelector.BlocktoValue(m_BlockCells(igrp, iyr))
                 Next
                 Me.m_uic.Core.MSEManager.GroupInputs(igrp).BatchEdit = False
             Next igrp
@@ -222,6 +294,38 @@ Public Class cMSEGroupColorBlockDataSource
             Return False
         End Get
     End Property
+
+
+    Private Sub PopIsExploited()
+        Dim core As EwECore.cCore = Me.m_uic.Core
+        Dim nGrps As Integer = core.nGroups
+        Dim nFlts As Integer = core.nFleets
+        Dim epFlt As EwECore.cFleetInput
+
+        ReDim m_isExploited(nGrps)
+
+        For igrp As Integer = 1 To nGrps
+            m_isExploited(igrp) = False
+            For iflt As Integer = 1 To nFlts
+
+                epFlt = core.FleetInputs(iflt)
+                If epFlt.Landings(igrp) > 0 Or epFlt.Discards(igrp) > 0 Then
+                    m_isExploited(igrp) = True
+                    Exit For
+                End If
+
+            Next iflt
+        Next igrp
+
+    End Sub
+
+    Public Function BlockToValue(ByVal iBlock As Integer) As Single Implements Ecosim.IPolicyColorBlockDataSource.BlockToValue
+        Try
+            Return Me.m_BlockSelector.BlocktoValue(iBlock)
+        Catch ex As Exception
+
+        End Try
+    End Function
 End Class
 
 #End Region

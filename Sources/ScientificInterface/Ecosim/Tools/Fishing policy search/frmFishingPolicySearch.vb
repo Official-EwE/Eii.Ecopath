@@ -687,7 +687,7 @@ Namespace Ecosim
 
         Private m_BlockCells(,) As Integer
 
-        Private m_blockCodes As IBlockSelector
+        Private m_BlockSelector As IBlockSelector
         Private m_iTotalBlocks As Integer
 
         Public ReadOnly Property BlockCells() As Integer(,) Implements IPolicyColorBlockDataSource.BlockCells
@@ -708,7 +708,7 @@ Namespace Ecosim
         End Sub
 
         Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Attach
-            m_blockCodes = Blocks
+            m_BlockSelector = Blocks
         End Sub
 
         Public Sub Init() Implements IPolicyColorBlockDataSource.Init
@@ -736,7 +736,7 @@ Namespace Ecosim
             If (iRow > m_BlockCells.GetLength(0) - 1) Then Return
 
             ' Fill single block
-            Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iRow).SearchBlocks(iCol) = Me.m_blockCodes.SelectedBlock
+            Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iRow).SearchBlocks(iCol) = Me.m_BlockSelector.SelectedBlock
             Me.m_BlockCells(iRow, iCol) = Me.m_uic.Core.FishingPolicyManager.SearchBlocks(iRow).SearchBlocks(iCol)
 
         End Sub
@@ -748,16 +748,16 @@ Namespace Ecosim
             If m_BlockCells Is Nothing Then Return
             If endYear > m_BlockCells.GetLength(1) - 1 Then endYear = m_BlockCells.GetLength(1) - 1
 
-            Dim nColors As Integer = m_blockCodes.NumBlocks - 1
+            Dim nColors As Integer = m_BlockSelector.NumBlocks - 1
             Dim yearSegment As Integer = CInt(Math.Ceiling(m_iTotalBlocks / yearPerBlock))
             Dim totalClr As Integer = yearSegment * Me.m_uic.Core.nFleets
 
             If totalClr > nColors Then
-                m_blockCodes.NumBlocks = totalClr + 1
+                m_BlockSelector.NumBlocks = totalClr + 1
             End If
 
             Dim cnt As Integer = 1
-            Dim stepSize As Integer = CInt(Math.Floor(m_blockCodes.NumBlocks / totalClr))
+            Dim stepSize As Integer = CInt(Math.Floor(m_BlockSelector.NumBlocks / totalClr))
 
             For i As Integer = 1 To m_BlockCells.GetLength(0) - 1
                 'Console.WriteLine("iColor = {0} selClr = {1}", cnt, selClr)
@@ -850,7 +850,19 @@ Namespace Ecosim
                 Return True
             End Get
         End Property
+
+
+        Public Function BlockToValue(ByVal iBlock As Integer) As Single Implements Ecosim.IPolicyColorBlockDataSource.BlockToValue
+            Try
+                'For the fishing policy block selector the iBlock is the value
+                Return iBlock
+            Catch ex As Exception
+
+            End Try
+        End Function
     End Class
+
+
 
 #End Region
 

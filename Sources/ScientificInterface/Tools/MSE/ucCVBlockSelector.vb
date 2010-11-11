@@ -75,7 +75,10 @@ Public Class ucCVBlockSelector
     Public ReadOnly Property BlockColor(ByVal iBlock As Integer) As System.Drawing.Color _
         Implements IBlockSelector.BlockColor
         Get
-            Return Me.BlockColors(iBlock)
+            If iBlock >= 0 And iBlock <= Me.NumBlocks Then
+                Return Me.BlockColors(iBlock)
+            End If
+            Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
         End Get
     End Property
 
@@ -133,6 +136,7 @@ Public Class ucCVBlockSelector
     Public Function BlocktoValue(ByVal iBlock As Integer) As Single _
         Implements IBlockSelector.BlocktoValue
         Try
+            If iBlock < 1 Then Return EwECore.cCore.NULL_VALUE
             Return Me.m_cvs(iBlock)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".BlocktoValue() iBlock out of bounds!")
@@ -238,24 +242,6 @@ Public Class ucCVBlockSelector
         End Try
     End Sub
 
-    'Private Sub ucCVBlockSelector_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
-
-    '    Try
-    '        'for some reason that I can not figure out 
-    '        'the grid will not automatically resize with the user control
-    '        'so do it manually
-
-    '        ' JS: this is because the grid somehow clears its own dock style attribute in InitStyle
-
-    '        Dim control As Control = Me.Controls.Item(0)
-    '        control.Left = 0
-    '        control.Top = 0
-    '        control.Size = Me.Size
-    '    Catch ex As Exception
-    '        Debug.Assert(False, "Manual resize of MSE Block Selector Grid Exception: " & ex.Message)
-    '    End Try
-
-    'End Sub
 
 #End Region ' Events
 

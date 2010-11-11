@@ -59,7 +59,7 @@ Public Class cMSEFishingColorBlockDataSource
 
     Private m_BlockCells(,) As Integer
 
-    Private m_blockCodes As ucCVBlockSelector
+    Private m_BlockSelector As ucCVBlockSelector
     Private m_iTotalBlocks As Integer
     Private m_batchEdit As Boolean
 
@@ -84,19 +84,19 @@ Public Class cMSEFishingColorBlockDataSource
     ''' <summary>
     ''' Attach an IBlockSelector to the data source
     ''' </summary>
-    ''' <param name="Blocks">ucCVBlockSelector implementation of IBlockSelector</param>
+    ''' <param name="BlockSelector">ucCVBlockSelector implementation of IBlockSelector</param>
     ''' <remarks>When an IBlockSelector is attached the datasource will add CV's that missing from the IBlockSelector.  </remarks>
-    Public Sub Atatch(ByVal Blocks As IBlockSelector) Implements IPolicyColorBlockDataSource.Attach
+    Public Sub Atatch(ByVal BlockSelector As IBlockSelector) Implements IPolicyColorBlockDataSource.Attach
 
-        Debug.Assert(TypeOf Blocks Is ucCVBlockSelector, Me.ToString & ".Atatch() Blocks must be a ucCVBlockSelector!")
+        Debug.Assert(TypeOf BlockSelector Is ucCVBlockSelector, Me.ToString & ".Atatch() Blocks must be a ucCVBlockSelector!")
         Try
-            m_blockCodes = DirectCast(Blocks, ucCVBlockSelector)
+            m_BlockSelector = DirectCast(BlockSelector, ucCVBlockSelector)
 
             'populate the blocks with values from the data!!!!
             Dim cvs As New List(Of Single)
             cvs.Add(0) 'if adding values the first value should be zero
             Dim manager As cMSEManager = Me.m_uic.Core.MSEManager
-            Dim blks() As Single = Me.m_blockCodes.BlockValues
+            Dim blks() As Single = Me.m_BlockSelector.BlockValues
 
             For i As Integer = 1 To Me.m_uic.Core.nFleets
                 Dim flt As cMSEFleetInput = manager.FleetInputs(i)
@@ -116,11 +116,11 @@ Public Class cMSEFishingColorBlockDataSource
             If cvs.Count > 1 Then
 
                 'skip the fist default value it will be zero
-                For iblk As Integer = 1 To Me.m_blockCodes.NumBlocks
+                For iblk As Integer = 1 To Me.m_BlockSelector.NumBlocks
                     cvs.Insert(iblk, blks(iblk))
                 Next ' For iblk As Integer = 1 To Me.m_blockCodes.NumBlocks
                 cvs.Sort()
-                m_blockCodes.BlockValues = cvs.ToArray
+                m_BlockSelector.BlockValues = cvs.ToArray
                 '   m_blockCodes.Invalidate()
             End If
 
@@ -140,7 +140,7 @@ Public Class cMSEFishingColorBlockDataSource
         For iflt As Integer = 1 To Me.nRows
             mseData = Me.m_uic.Core.MSEManager.FleetInputs(iflt)
             For iTime As Integer = 1 To Me.TotalBlocks
-                m_BlockCells(iflt, iTime) = Me.m_blockCodes.ValuetoBlock(mseData.FleetCV(iTime))
+                m_BlockCells(iflt, iTime) = Me.m_BlockSelector.ValuetoBlock(mseData.FleetCV(iTime))
             Next
         Next
 
@@ -156,8 +156,8 @@ Public Class cMSEFishingColorBlockDataSource
 
         ' Fill single block
 
-        Me.m_BlockCells(iRow, iCol) = Me.m_blockCodes.SelectedBlock
-        Me.m_uic.Core.MSEManager.FleetInputs(iRow).FleetCV(iCol) = Me.m_blockCodes.BlocktoValue(Me.m_blockCodes.SelectedBlock)
+        Me.m_BlockCells(iRow, iCol) = Me.m_BlockSelector.SelectedBlock
+        Me.m_uic.Core.MSEManager.FleetInputs(iRow).FleetCV(iCol) = Me.m_BlockSelector.BlocktoValue(Me.m_BlockSelector.SelectedBlock)
 
     End Sub
 
@@ -208,7 +208,7 @@ Public Class cMSEFishingColorBlockDataSource
             For iflt As Integer = 1 To Me.nRows
                 mse.FleetInputs(iflt).BatchEdit = True
                 For iyr As Integer = 1 To Me.TotalBlocks
-                    mse.FleetInputs(iflt).FleetCV(iyr) = Me.m_blockCodes.BlocktoValue(m_BlockCells(iflt, iyr))
+                    mse.FleetInputs(iflt).FleetCV(iyr) = Me.m_BlockSelector.BlocktoValue(m_BlockCells(iflt, iyr))
                 Next
                 mse.FleetInputs(iflt).BatchEdit = False
             Next iflt
@@ -224,6 +224,15 @@ Public Class cMSEFishingColorBlockDataSource
             Return False
         End Get
     End Property
+
+    Public Function BlockToValue(ByVal iBlock As Integer) As Single Implements Ecosim.IPolicyColorBlockDataSource.BlockToValue
+        Try
+            Return Me.m_BlockSelector.BlocktoValue(iBlock)
+        Catch ex As Exception
+
+        End Try
+
+    End Function
 
 End Class
 
