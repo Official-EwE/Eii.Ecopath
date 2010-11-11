@@ -164,6 +164,10 @@ Public Class cEcosimDatastructures
     ''' <summary>Fration of other mortality.</summary>
     Public MoPred() As Single
 
+    ''' <summary>
+    ''' Mortality other computed as (1-ee)*pb
+    ''' </summary>
+    ''' <remarks></remarks>
     Public mo() As Single
 
     ''' <summary>Predation effect on feeding time (0-1).</summary>
