@@ -39,7 +39,6 @@ Namespace Ecopath.Input
             '
             'tsSumtoOneBtn
             '
-            Me.tsSumtoOneBtn.Image = sharedResources.CalculatorHS
             resources.ApplyResources(Me.tsSumtoOneBtn, "tsSumtoOneBtn")
             Me.tsSumtoOneBtn.Name = "tsSumtoOneBtn"
             '

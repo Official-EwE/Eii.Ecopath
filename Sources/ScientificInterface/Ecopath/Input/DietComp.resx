@@ -121,14 +121,33 @@
     <value>0, 0</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tsSumtoOneBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAtFJREFUOE9lkvtP
+        klEcxvEvqlZbbdpmq1YrTW2WzZll2tCYl0REm5iJDec9LW+JKHlFvCCpiCBeAEW5qTnFvKVTS6tXmxd4
+        RZ5e3vSH9p7t2XnOD5/Pvmfn+LBOl2Z4nLO98/si6fGJ8rg9LBd5zHIekyxQy+UiWU4nySJJN2tjbeGh
+        r68f2JEh7Wcsvbd2DZRJGmSWuoF9JBbPIlo0hdCMKfgnWnEpxoQLj3V4IrQjPVeMZEFB8n+w99Ag79l1
+        u924nrqKibldWB176NZvo1qxhgzxCh4Iv+F8qBhFUguSXpfsMgWyXuLkxIOYCjei64CoGipigE31596z
+        BLjDkaOiyYgkQSnBENQ2KQjy+AS2NQ9arKBTrnWiqPcPMmsm6VR12aAbmwM7rZApqKyXEwfOE2zpjLBl
+        l2BheQubgwZY3hTDZF/CBtXNWUVQjczgGTeXKSj72ELsHbhhzSqE9Nw1zDjWYc4soPvIhAOTgny6d2ts
+        iIjPYQoKKhqJn3sk5pc2MT2/DsvMCsatizSsNc6ib2iahuV9kwhjZzEFotJ64vsvF+QGJ168VcNIwXLD
+        EThU76XgNqrH5fSjuXsc92MymAKBqJJY++EEv1CDoEQlhk3zeFWsQShXCYXaCn6BGiFJCkjb9bj7NI0p
+        4Oe8J5Y3j2C0fMWQaQ4Do1/QM2hHp9oCWY8JjYox1FNwTesQbkfwmQKuoIRwrB/RV/CO+pmC2/T/xm7o
+        MkKmP0SsUIWKRi1uhfOYgvi0fGJ29RC8PDUC4hXoUJmRmt+PYGpsiXwU3FwVAuM7UVrXj5uPUpgCdoqI
+        sC/uQ6m1oaPPjFblOBo6DZC0jaC6RYfyTwN4J+lHUU0ProclMwVRCcKds2dqpmBphwG1XrhZhw80rEIh
+        BedVKXEj7OUO4yvH8vL54Zxs972odOqOXPiHJsAvKM4bz5UAtufyaa4Gc1yBkTz+meAv9FYuAM/dJ4wA
+        AAAASUVORK5CYII=
+</value>
+  </data>
   <data name="tsSumtoOneBtn.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="tsSumtoOneBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>81, 22</value>
+    <value>107, 22</value>
   </data>
   <data name="tsSumtoOneBtn.Text" xml:space="preserve">
-    <value>Sum to &amp;one</value>
+    <value>Sum diets to &amp;one</value>
   </data>
   <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -147,7 +166,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.1.0.1018, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.1.0.1111, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
@@ -172,7 +191,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecopath.Input.DietCompositionEwEGrid, EwE6, Version=6.1.0.1018, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecopath.Input.DietCompositionEwEGrid, EwE6, Version=6.1.0.1111, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -205,6 +224,6 @@
     <value>DietComp</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.1.0.1018, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.1.0.1111, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
