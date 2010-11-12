@@ -131,8 +131,8 @@ Public Class frmShapeValue
         Me.InitializeComponent()
 
         ' Config
-        Me.Grid = Me.m_grid
         Me.UIContext = uic
+        Me.m_grid.UIContext = uic
 
         ' Store shape
         Me.m_shape = shape
@@ -152,9 +152,6 @@ Public Class frmShapeValue
         Else
             Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
         End If
-
-        ' Set core exec state for the benefit of the quick edit handler
-        Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded
 
     End Sub
 
@@ -186,8 +183,6 @@ Public Class frmShapeValue
         If Me.UIContext Is Nothing Then Return
 
         MyBase.OnLoad(e)
-
-        Me.CenterToParent()
 
         ' Kick off
         If Me.m_shape Is Nothing Then
@@ -665,10 +660,6 @@ Public Class frmShapeValue
             Me.m_cmbViewAs.SelectedIndex = CInt(IIf(value, 1, 0))
         End Set
     End Property
-
-    Protected Overrides Function GetDataName() As String
-        Return Me.m_txtName.Text
-    End Function
 
 #End Region 'Internal implementation
 

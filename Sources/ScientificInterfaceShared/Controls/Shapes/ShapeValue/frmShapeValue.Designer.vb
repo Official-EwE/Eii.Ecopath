@@ -2,7 +2,7 @@ Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmShapeValue
-    Inherits frmEwEGrid
+    Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -44,7 +44,6 @@ Imports ScientificInterfaceShared.Forms
         Me.m_txtXBase = New System.Windows.Forms.TextBox
         Me.m_btnOK = New System.Windows.Forms.Button
         Me.m_btnCancel = New System.Windows.Forms.Button
-        Me.m_tsGrid = New System.Windows.Forms.ToolStrip
         Me.m_tlpAll.SuspendLayout()
         Me.tlpNoOfYears.SuspendLayout()
         Me.pnlValueGrid.SuspendLayout()
@@ -215,18 +214,12 @@ Imports ScientificInterfaceShared.Forms
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
-        'm_tsGrid
-        '
-        resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
-        Me.m_tsGrid.Name = "m_tsGrid"
-        '
         'frmShapeValue
         '
         Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
-        Me.Controls.Add(Me.m_tsGrid)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_tlpAll)
@@ -240,7 +233,6 @@ Imports ScientificInterfaceShared.Forms
         Me.tlpNoOfYears.ResumeLayout(False)
         Me.pnlValueGrid.ResumeLayout(False)
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_lblName As System.Windows.Forms.Label
@@ -265,7 +257,6 @@ Imports ScientificInterfaceShared.Forms
     Private WithEvents m_txtXBase As System.Windows.Forms.TextBox
     Private WithEvents m_btnSetNoOfYears As System.Windows.Forms.Button
     Private WithEvents m_grid As ScientificInterfaceShared.ShapeValueGrid
-    Private WithEvents m_tsGrid As System.Windows.Forms.ToolStrip
 
 End Class
 
