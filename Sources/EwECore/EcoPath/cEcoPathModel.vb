@@ -2152,8 +2152,11 @@ exitSub:
                     End If
                 Next
                 bSumToOne = True
-                ' Notify the core that data has changed
-                Me.NotifyCore(msgMaintenance)
+
+                If m_Data.DietsModified Then
+                    ' Notify the core that data has changed
+                    Me.NotifyCore(msgMaintenance)
+                End If
             End If
 
             Return bSumToOne
