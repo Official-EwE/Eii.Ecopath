@@ -337,6 +337,12 @@ Namespace Ecosim
             m_nudSeqEndYear.Value = CDec(Me.m_DataSource.TotalBlocks)
             m_bIsFirstTimeLoaded = False
 
+            If Me.Enabled Then
+                Me.m_pbFishingBlocks.Cursor = Cursors.Hand
+            Else
+                Me.m_pbFishingBlocks.Cursor = Cursors.Default
+            End If
+
         End Sub
 
         Private Sub DrawRowCols(ByRef g As Graphics)
@@ -513,6 +519,7 @@ Namespace Ecosim
             Else
                 ts.Hide(Me.m_pbFishingBlocks)
             End If
+
         End Sub
 
         Private Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer)
