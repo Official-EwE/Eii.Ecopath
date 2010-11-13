@@ -351,7 +351,7 @@ Namespace MSE
 
         Public Property FixedFStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSEFixedF), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSEFixedF)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -361,7 +361,7 @@ Namespace MSE
 
         Public Property FixedEscapementStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSEFixedEscapement), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSEFixedEscapement)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -371,7 +371,7 @@ Namespace MSE
 
         Public Property BiomassCVStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSEBioCV), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSEBioCV)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -381,7 +381,7 @@ Namespace MSE
 
         Public Property LowerRiskStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSELowerRisk), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSELowerRisk)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -391,7 +391,7 @@ Namespace MSE
 
         Public Property UpperRiskStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSEUpperRisk), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSEUpperRisk)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -401,7 +401,7 @@ Namespace MSE
 
         Public Property BiomassRefLowerStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSERefBioLower), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSERefBioLower)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -411,7 +411,7 @@ Namespace MSE
 
         Public Property BiomassRefUpperStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSERefBioLower), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSERefBioLower)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -421,7 +421,7 @@ Namespace MSE
 
         Public Property ForcastGainStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSEForcastGain), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSEForcastGain)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -431,7 +431,7 @@ Namespace MSE
 
         Public Property RHalfB0RatioStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.RHalfB0Ratio), eStatusFlags)
+                Return GetStatus(eVarNameFlags.RHalfB0Ratio)
             End Get
 
             Set(ByVal value As eStatusFlags)

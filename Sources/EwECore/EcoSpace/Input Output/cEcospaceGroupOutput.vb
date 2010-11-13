@@ -245,7 +245,7 @@ Public Class cEcospaceGroupOutput
 
     Public Property BiomassStartStatus() As eStatusFlags
         Get
-            Return DirectCast(GetStatus(eVarNameFlags.EcospaceGroupBiomassStart), eStatusFlags)
+            Return GetStatus(eVarNameFlags.EcospaceGroupBiomassStart)
         End Get
 
         Set(ByVal value As eStatusFlags)
@@ -255,7 +255,7 @@ Public Class cEcospaceGroupOutput
 
     Public Property BiomassEndStatus() As eStatusFlags
         Get
-            Return DirectCast(GetStatus(eVarNameFlags.EcospaceGroupBiomassEnd), eStatusFlags)
+            Return GetStatus(eVarNameFlags.EcospaceGroupBiomassEnd)
         End Get
 
         Set(ByVal value As eStatusFlags)
@@ -266,7 +266,7 @@ Public Class cEcospaceGroupOutput
 
     Public Property CatchStartBiomassStatus(ByVal IFleet As Integer) As eStatusFlags
         Get
-            Return DirectCast(GetStatus(eVarNameFlags.EcospaceGroupCatchStart, IFleet), eStatusFlags)
+            Return GetStatus(eVarNameFlags.EcospaceGroupCatchStart, IFleet)
         End Get
 
         Set(ByVal value As eStatusFlags)
@@ -277,7 +277,7 @@ Public Class cEcospaceGroupOutput
 
     Public Property CatchEndBiomassStatus(ByVal IFleet As Integer) As eStatusFlags
         Get
-            Return DirectCast(GetStatus(eVarNameFlags.EcospaceGroupCatchEnd, IFleet), eStatusFlags)
+            Return GetStatus(eVarNameFlags.EcospaceGroupCatchEnd, IFleet)
         End Get
 
         Set(ByVal value As eStatusFlags)
@@ -288,7 +288,7 @@ Public Class cEcospaceGroupOutput
 
     Public Property ValueStartStatus(ByVal IFleet As Integer) As eStatusFlags
         Get
-            Return DirectCast(GetStatus(eVarNameFlags.EcospaceGroupValueStart, IFleet), eStatusFlags)
+            Return GetStatus(eVarNameFlags.EcospaceGroupValueStart, IFleet)
         End Get
 
         Set(ByVal value As eStatusFlags)
@@ -298,7 +298,7 @@ Public Class cEcospaceGroupOutput
 
     Public Property ValueEndStatus(ByVal IFleet As Integer) As eStatusFlags
         Get
-            Return DirectCast(GetStatus(eVarNameFlags.EcospaceGroupValueEnd, IFleet), eStatusFlags)
+            Return GetStatus(eVarNameFlags.EcospaceGroupValueEnd, IFleet)
         End Get
 
         Set(ByVal value As eStatusFlags)

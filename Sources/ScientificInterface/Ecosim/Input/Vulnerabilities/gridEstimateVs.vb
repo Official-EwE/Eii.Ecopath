@@ -294,7 +294,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Function UpdateVulSelection(ByVal iRow As Integer, ByVal col As eColumnTypes) As Boolean
 
-            If Array.IndexOf(gridEstimateVs.c_vulcols, DirectCast(col, eColumnTypes)) = -1 Then Return False
+            If Array.IndexOf(gridEstimateVs.c_vulcols, col) = -1 Then Return False
 
             ' Validate incoming column
             Dim cell As EwECell = DirectCast(Me(iRow, col), EwECell)

@@ -1269,7 +1269,7 @@ Public Class cCore
 
         ' Create time series
         For iSeries As Integer = 1 To Me.nTimeSeries
-            ts = cTimeSeriesFactory.CreateTimeSeries(DirectCast(Me.m_TSData.TimeSeriesType(iSeries), eTimeSeriesType), Me, Me.m_TSData.iTimeSeriesDBID(iSeries))
+            ts = cTimeSeriesFactory.CreateTimeSeries(Me.m_TSData.TimeSeriesType(iSeries), Me, Me.m_TSData.iTimeSeriesDBID(iSeries))
             ts.Index = iSeries
             Select Case ts.DataType
                 Case eDataTypes.GroupTimeSeries
@@ -1314,7 +1314,7 @@ Public Class cCore
                 ts.Name = Me.m_TSData.strName(ts.Index)
                 ts.Index = ts.Index
                 ts.DBID = Me.m_TSData.iTimeSeriesDBID(ts.Index)
-                ts.TimeSeriesType = DirectCast(Me.m_TSData.TimeSeriesType(ts.Index), eTimeSeriesType)
+                ts.TimeSeriesType = Me.m_TSData.TimeSeriesType(ts.Index)
                 ts.DatPool = Me.m_TSData.iPool(ts.Index)
                 ts.WtType = Me.m_TSData.sWeight(ts.Index)
 
@@ -1341,7 +1341,7 @@ Public Class cCore
                 ts.Name = Me.m_TSData.strName(ts.Index)
                 ts.Index = ts.Index
                 ts.DBID = Me.m_TSData.iTimeSeriesDBID(ts.Index)
-                ts.TimeSeriesType = DirectCast(Me.m_TSData.TimeSeriesType(ts.Index), eTimeSeriesType)
+                ts.TimeSeriesType = Me.m_TSData.TimeSeriesType(ts.Index)
                 ts.DatPool = Me.m_TSData.iPool(ts.Index)
                 ts.WtType = Me.m_TSData.sWeight(ts.Index)
 

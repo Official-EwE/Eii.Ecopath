@@ -214,7 +214,7 @@ Public Class cMPAOptParameters
 
     Public Property bUseCellWeightStatus() As eStatusFlags
         Get
-            Return DirectCast(GetStatus(eVarNameFlags.MPAbUseCellWeight), eStatusFlags)
+            Return GetStatus(eVarNameFlags.MPAbUseCellWeight)
         End Get
 
         Set(ByVal newValue As eStatusFlags)
@@ -230,7 +230,7 @@ Public Class cMPAOptParameters
 
     Public Property SearchTypeStatus() As eStatusFlags
         Get
-            Return DirectCast(GetStatus(eVarNameFlags.MPAOptSearchType), eStatusFlags)
+            Return GetStatus(eVarNameFlags.MPAOptSearchType)
         End Get
 
         Set(ByVal newValue As eStatusFlags)

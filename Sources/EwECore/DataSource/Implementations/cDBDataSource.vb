@@ -6426,7 +6426,7 @@ Namespace DataSources
 
                     drow.EndEdit()
 
-                    Select Case cTimeSeriesFactory.TimeSeriesCategory(DirectCast(tsDS.TimeSeriesType(iTS), eTimeSeriesType))
+                    Select Case cTimeSeriesFactory.TimeSeriesCategory(tsDS.TimeSeriesType(iTS))
 
                         Case eTimeSeriesCategoryType.Fleet
 

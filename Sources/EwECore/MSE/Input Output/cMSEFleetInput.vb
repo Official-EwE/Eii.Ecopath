@@ -290,7 +290,7 @@ Namespace MSE
 
         Public Property QIncreaseStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSEQIncrease), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSEQIncrease)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -301,7 +301,7 @@ Namespace MSE
 
         Public Property CatchRefUpperStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSERefFleetCatchUpper), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSERefFleetCatchUpper)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -311,7 +311,7 @@ Namespace MSE
 
         Public Property CatchRefLowerStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSERefGroupCatchLower), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSERefGroupCatchLower)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -321,7 +321,7 @@ Namespace MSE
 
         Public Property FleetCVStatus() As eStatusFlags
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSEFleetCV), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSEFleetCV)
             End Get
 
             Set(ByVal value As eStatusFlags)
@@ -332,7 +332,7 @@ Namespace MSE
         Public Property FleetWeightStatus(ByVal iGroup As Integer) As eStatusFlags
 
             Get
-                Return DirectCast(GetStatus(eVarNameFlags.MSEFleetWeight, iGroup), eStatusFlags)
+                Return GetStatus(eVarNameFlags.MSEFleetWeight, iGroup)
             End Get
 
             Set(ByVal value As eStatusFlags)

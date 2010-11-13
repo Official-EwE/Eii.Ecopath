@@ -352,7 +352,7 @@ Namespace Controls
                 Next
 
                 bSucces = bSucces And (Me.Core.AddTimeSeries(strNewTSName, _
-                        ts.DataType, DirectCast(ts.TimeSeriesType, eTimeSeriesType), _
+                        ts.DataType, ts.TimeSeriesType, _
                         ts.WtType, asValues, intDBID))
             Next
 
