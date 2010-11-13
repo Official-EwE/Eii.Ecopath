@@ -102,14 +102,11 @@ Friend Class cMSEPlotter
 
 
     ''' <summary>
-    ''' How the current data is to be plotted
+    ''' Get/set how the current data is to be plotted.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Property PlotType() As ePlotTypes
         Get
-            Return PlotType
+            Return Me.m_type
         End Get
         Set(ByVal value As ePlotTypes)
             m_type = value
