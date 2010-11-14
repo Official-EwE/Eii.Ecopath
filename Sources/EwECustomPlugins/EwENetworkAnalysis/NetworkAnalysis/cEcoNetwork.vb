@@ -2728,7 +2728,7 @@ NextPivot:
 
             'next we need the total impact for each LIVING group,
             For i As Integer = 1 To m_epdata.NumLiving
-                ' JS note to VC: iterate predators to NumLiving, NOT to NumGroups? Detritus does not predate well ;)
+                ' JS note to VC: iterate groups to NumLiving, NOT to NumGroups? Detritus does not predate well ;)
                 ' VC response: only include living groups in the calculations (as consumers and as prey)
                 'For j As Integer = 1 To m_epdata.NumGroups
                 For j As Integer = 1 To m_epdata.NumLiving
