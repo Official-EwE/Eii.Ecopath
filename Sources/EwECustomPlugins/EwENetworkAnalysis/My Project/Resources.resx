@@ -558,11 +558,11 @@
   <data name="COL_HDR_RELTOTALIMPACT" xml:space="preserve">
     <value>Relative total impact</value>
   </data>
-  <data name="LBL_KEYSTONENESS" xml:space="preserve">
-    <value>Keystoneness</value>
+  <data name="LBL_KEYSTONE1" xml:space="preserve">
+    <value>Keystone index #1 (Libralato et al, 2006)</value>
   </data>
   <data name="LBL_KEYSTONE2" xml:space="preserve">
-    <value>Keystone index #2</value>
+    <value>Keystone index #2 (Power et al, 1996) </value>
   </data>
   <data name="LBL_RELTOTALIMPACT" xml:space="preserve">
     <value>Relative total impact</value>
@@ -572,7 +572,7 @@
     <comment>Beware of shortcut conflict with pre-defined toolstip accelerators in dialog template</comment>
   </data>
   <data name="MNU_CONTENT_KEYSTONE" xml:space="preserve">
-    <value>&amp;Keystoneness</value>
+    <value>Keystone index #&amp;1</value>
   </data>
   <data name="MNU_CONTENT_KEYSTONE2" xml:space="preserve">
     <value>Keystone index #&amp;2</value>

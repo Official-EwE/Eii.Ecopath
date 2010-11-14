@@ -194,8 +194,8 @@ Public Class cEcoNetwork
 
 #Region " Keystoneness "
 
-    Public KeystoneIndex() As Double
-    Public TotalImpactOverBiomass() As Double
+    Public KeystoneIndex1() As Double
+    Public KeystoneIndex2() As Double
     Public RelTotalImpact() As Double
 
 #End Region
@@ -2715,8 +2715,8 @@ NextPivot:
         Dim sSumB As Single = 0
         Dim dMaxImpact As Double = cCore.NULL_VALUE
 
-        ReDim Me.KeystoneIndex(m_epdata.NumLiving)
-        ReDim Me.TotalImpactOverBiomass(m_epdata.NumLiving)
+        ReDim Me.KeystoneIndex1(m_epdata.NumLiving)
+        ReDim Me.KeystoneIndex2(m_epdata.NumLiving)
         ReDim Me.RelTotalImpact(m_epdata.NumLiving)
 
         ' Calc max sSumB
@@ -2749,8 +2749,11 @@ NextPivot:
                 '                Since Math.Log implements LN, the calculations below should 
                 '                use the Math.Log10 operator
                 ' VC response: log10 OK
-                Me.KeystoneIndex(i) = Math.Log10(TotalImpact(i) * (1 - RelBi(i)))
-                Me.TotalImpactOverBiomass(i) = Math.Log10(TotalImpact(i) / RelBi(i))
+
+                ' Keystone index 1 is described in Libralato et al (2006)
+                Me.KeystoneIndex1(i) = Math.Log10(TotalImpact(i) * (1 - RelBi(i)))
+                ' Keystone index 2 is described in Power et al (1996)
+                Me.KeystoneIndex2(i) = Math.Log10(TotalImpact(i) / RelBi(i))
                 Me.RelTotalImpact(i) = TotalImpact(i) / dMaxImpact
             Next
 

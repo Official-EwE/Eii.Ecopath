@@ -941,20 +941,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Keystone index #2.
+        '''  Looks up a localized string similar to Keystone index #1 (Libralato et al, 2006).
         '''</summary>
-        Friend ReadOnly Property LBL_KEYSTONE2() As String
+        Friend ReadOnly Property LBL_KEYSTONE1() As String
             Get
-                Return ResourceManager.GetString("LBL_KEYSTONE2", resourceCulture)
+                Return ResourceManager.GetString("LBL_KEYSTONE1", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Keystoneness.
+        '''  Looks up a localized string similar to Keystone index #2 (Power et al, 1996) .
         '''</summary>
-        Friend ReadOnly Property LBL_KEYSTONENESS() As String
+        Friend ReadOnly Property LBL_KEYSTONE2() As String
             Get
-                Return ResourceManager.GetString("LBL_KEYSTONENESS", resourceCulture)
+                Return ResourceManager.GetString("LBL_KEYSTONE2", resourceCulture)
             End Get
         End Property
         
@@ -1121,7 +1121,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &amp;Keystoneness.
+        '''  Looks up a localized string similar to Keystone index #&amp;1.
         '''</summary>
         Friend ReadOnly Property MNU_CONTENT_KEYSTONE() As String
             Get

@@ -37,9 +37,12 @@ Public Class cKeystonenessGraph
 
     ''' <summary>Graph content styles.</summary>
     Private Enum eContentType As Byte
-        Keystoneness
-        TotalEffectOverB
+        ''' <summary>Keystone index 1 is described in Libralato et al (2006)</summary>
+        KeystoneIndex1
+        ''' <summary>Keystone index 2 is described in Power et al (1996)</summary>
         KeystoneIndex2
+        ''' <summary>Our home-grown concoction</summary>
+        TotalEffectOverB
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -70,7 +73,7 @@ Public Class cKeystonenessGraph
     ''' <summary>Helper class molesting the graph.</summary>
     Private m_zgh As cZedGraphHelper = Nothing
     ''' <summary>Flag stating what data to plot.</summary>
-    Private m_content As eContentType = eContentType.Keystoneness
+    Private m_content As eContentType = eContentType.KeystoneIndex1
     ''' <summary>Flag stating how data should be plot.</summary>
     Private m_representation As eRepresentationType = eRepresentationType.Circle
 
@@ -167,7 +170,7 @@ Public Class cKeystonenessGraph
             ppl = New PointPairList()
             Select Case Me.Content
 
-                Case eContentType.Keystoneness
+                Case eContentType.KeystoneIndex1
                     ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex(iGroup))
 
                 Case eContentType.TotalEffectOverB
@@ -275,18 +278,18 @@ Public Class cKeystonenessGraph
         Me.Toolstrip.Items.Add(Me.m_tsStyle)
 
         Me.m_tsmiKeyst = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE)
-        AddHandler Me.m_tsmiKeyst.Click, AddressOf OnContentK
+        AddHandler Me.m_tsmiKeyst.Click, AddressOf OnContentKeystoneIndex1
 
         Me.m_tsmiKeyst2 = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE2)
-        AddHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentTIoverB
+        AddHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentKeystoneIndex2
 
         Me.m_tsmiTotImpactOverB = New ToolStripMenuItem(My.Resources.MNU_CONTENT_TOTIMPACT_OVER_B)
         AddHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTI
 
         Me.m_tsContent = New ToolStripDropDownButton(My.Resources.MNU_CONTENT)
         Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst)
-        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiTotImpactOverB)
         Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst2)
+        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiTotImpactOverB)
         Me.Toolstrip.Items.Add(Me.m_tsContent)
 
     End Sub
@@ -307,11 +310,11 @@ Public Class cKeystonenessGraph
         Me.Toolstrip.Items.Remove(Me.m_tsContent)
 
         Me.m_tsContent.DropDownItems.Clear()
-        RemoveHandler Me.m_tsmiKeyst.Click, AddressOf OnContentK
+        RemoveHandler Me.m_tsmiKeyst.Click, AddressOf OnContentKeystoneIndex1
         Me.m_tsmiKeyst = Nothing
         RemoveHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTI
         Me.m_tsmiTotImpactOverB = Nothing
-        RemoveHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentTIoverB
+        RemoveHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentKeystoneIndex2
         Me.m_tsmiKeyst2 = Nothing
         Me.m_tsContent = Nothing
 
@@ -329,15 +332,15 @@ Public Class cKeystonenessGraph
         Me.Representation = eRepresentationType.Number
     End Sub
 
-    Private Sub OnContentK(ByVal sender As Object, ByVal arg As EventArgs)
-        Me.Content = eContentType.Keystoneness
+    Private Sub OnContentKeystoneIndex1(ByVal sender As Object, ByVal arg As EventArgs)
+        Me.Content = eContentType.KeystoneIndex1
     End Sub
 
     Private Sub OnContentTI(ByVal sender As Object, ByVal arg As EventArgs)
         Me.Content = eContentType.TotalEffectOverB
     End Sub
 
-    Private Sub OnContentTIoverB(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnContentKeystoneIndex2(ByVal sender As Object, ByVal arg As EventArgs)
         Me.Content = eContentType.KeystoneIndex2
     End Sub
 
@@ -347,14 +350,14 @@ Public Class cKeystonenessGraph
         Me.m_tsmiCirclesScaled.Checked = (Me.Representation = eRepresentationType.CircleScaled)
         Me.m_tsmiNumbers.Checked = (Me.Representation = eRepresentationType.Number)
 
-        Me.m_tsmiKeyst.Checked = (Me.Content = eContentType.Keystoneness)
+        Me.m_tsmiKeyst.Checked = (Me.Content = eContentType.KeystoneIndex1)
         Me.m_tsmiTotImpactOverB.Checked = (Me.Content = eContentType.TotalEffectOverB)
         Me.m_tsmiKeyst2.Checked = (Me.Content = eContentType.KeystoneIndex2)
 
         Select Case Me.Content
 
-            Case eContentType.Keystoneness
-                Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONENESS, False)
+            Case eContentType.KeystoneIndex1
+                Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONE1, False)
 
             Case eContentType.TotalEffectOverB
                 Me.m_zgh.ConfigurePane("", "Relative biomass", My.Resources.LBL_RELTOTALIMPACT, False)

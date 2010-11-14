@@ -2007,13 +2007,13 @@ Public Class cNetworkManager
 
     Public ReadOnly Property KeystoneIndex(ByVal iGroup As Integer) As Double
         Get
-            Return Me.m_econetwork.KeystoneIndex(iGroup)
+            Return Me.m_econetwork.KeystoneIndex1(iGroup)
         End Get
     End Property
 
     Public ReadOnly Property TotalImpactOverBiomass(ByVal iGroup As Integer) As Double
         Get
-            Return Me.m_econetwork.TotalImpactOverBiomass(iGroup)
+            Return Me.m_econetwork.KeystoneIndex2(iGroup)
         End Get
     End Property
 
