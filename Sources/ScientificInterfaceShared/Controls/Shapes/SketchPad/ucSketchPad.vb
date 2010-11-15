@@ -15,6 +15,7 @@ Imports EwEUtils.Win32Api
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -677,6 +678,25 @@ Namespace Controls
 
         End Sub
 
+        Private Sub UpdateTooltip(ByVal ptCur As Point)
+
+            Dim sYMax As Single = Me.YAxisMaxValue
+            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
+            Dim ptfCur As PointF = ShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
+            Dim sValue As Single = 0.0!
+            Dim strTooltip As String = ""
+
+            If Me.IsNearValue(ptCur) Then
+                sValue = Me.Shape.ShapeData(CInt(ptfCur.X))
+                strTooltip = cStringUtils.FormatSingle(sValue)
+            Else
+                ' No tip, sorry.
+            End If
+
+            cToolTipShared.GetInstance().Show(strTooltip, Me, New Point(ptCur.X, ptCur.Y - CInt(Me.Font.Height * 2)))
+
+        End Sub
+
         Public Sub RepeatSeasonalPattern()
 
             If Not Me.m_shape.IsSeasonal Then Return
@@ -712,9 +732,22 @@ Namespace Controls
         End Function
 
         Private Sub PositionYMark()
-            If Me.Shape Is Nothing Then Return
+            If (Me.Shape Is Nothing) Then Return
             Me.YMarkValue = Me.Shape.ShapeData(CInt(Math.Max(0, Math.Min(Me.Shape.ShapeData.Length - 1, Me.XMarkValue))))
         End Sub
+
+        Private Function IsNearValue(ByVal ptCur As Point) As Boolean
+            If (Me.Shape Is Nothing) Then Return False
+            If (Me.UIContext Is Nothing) Then Return False
+
+            Dim sYMax As Single = Me.YAxisMaxValue
+            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
+            Dim ptfMouseT As PointF = ShapeImage.ToModelPoint(New PointF(ptCur.X, ptCur.Y - 2 * cCLICK_TOLERANCE), Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfMouseB As PointF = ShapeImage.ToModelPoint(New PointF(ptCur.X, ptCur.Y + 2 * cCLICK_TOLERANCE), Me.ClientRectangle, iXMax, sYMax)
+            Dim sValue As Single = Me.Shape.ShapeData(CInt(ptfMouseT.X))
+
+            Return (ptfMouseB.Y <= sValue) And (sValue <= ptfMouseT.Y)
+        End Function
 
 #End Region ' Private Methods
 
@@ -754,20 +787,21 @@ Namespace Controls
 
         Private Sub ProcessMouseInput(ByVal e As System.Windows.Forms.MouseEventArgs)
 
-            If Not Me.Editable Then Return
-            If Not Me.Capture Then Return
+            ' Nothing to do here?
             If Me.UIContext Is Nothing Then Return
 
-            Dim bLeftBtnDown As Boolean = (e.Button = MouseButtons.Left)
-            'Dim bRightButtonDown As Boolean = (e.Button = MouseButtons.Right)
             Dim ptPosCurrent As Point = New Point(e.X, e.Y)
-            Dim sYPrev As Single = Me.m_shape.YMax
-            Dim sYNew As Single = 0.0
-            Dim rcImage As Rectangle = Me.ClientRectangle
 
-            If (Me.m_ptPosPrevious = Nothing) Then m_ptPosPrevious = ptPosCurrent
+            If (e.Button = MouseButtons.Left) Then
 
-            If bLeftBtnDown Then
+                If Not Me.Editable Then Return
+                If Not Me.Capture Then Return
+
+                Dim sYPrev As Single = Me.m_shape.YMax
+                Dim sYNew As Single = 0.0
+                Dim rcImage As Rectangle = Me.ClientRectangle
+
+                If (Me.m_ptPosPrevious = Nothing) Then m_ptPosPrevious = ptPosCurrent
 
                 Select Case Me.m_editMode
                     Case eMouseInteractionMode.DrawShape
@@ -781,21 +815,14 @@ Namespace Controls
 
                 End Select
 
-                'ElseIf bRightButtonDown Then
+                Me.m_ptPosPrevious = ptPosCurrent
+                Me.Refresh()
+                Me.OnShapeChanged()
+            Else
 
-                '    If m_RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Auto Then
-                '        If PointInRegion(Me.m_ptPosPrevious, rcImage) And PointInRegion(ptPosCurrent, rcImage) Then
-                '            Dim sYMaxDrag As Single = Me.m_sYMaxLock + (Me.m_ptPosPrevious.Y - ptPosCurrent.Y) * Me.YAxisMaxValue / rcImage.Height
-                '            Me.m_sYMaxLock = Math.Max(sYMaxDrag, Me.m_sYMaxLock)
-                '        End If
-                '    End If
+                Me.UpdateTooltip(ptPosCurrent)
+
             End If
-
-            Me.m_ptPosPrevious = ptPosCurrent
-
-            Me.Refresh()
-
-            Me.OnShapeChanged()
 
         End Sub
 
@@ -810,10 +837,8 @@ Namespace Controls
         ''' </summary>
         Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
 
-            If Not Me.Editable Then Return
-
             ' Determine interaction mode only when not capturing input
-            If Not Me.Capture Then
+            If (Me.Editable = True) And (Me.Capture = False) Then
 
                 If Me.IsNearXMark(e.X) Then
                     Me.m_editMode = eMouseInteractionMode.DragXMark
@@ -824,8 +849,6 @@ Namespace Controls
                 ' Update cursor to provide feedback
                 Me.UpdateCursor()
 
-                ' Not capturing: OUT
-                Return
             End If
 
             Me.ProcessMouseInput(e)
