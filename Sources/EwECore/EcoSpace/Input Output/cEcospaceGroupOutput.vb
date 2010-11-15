@@ -55,6 +55,10 @@ Public Class cEcospaceGroupOutput
     Public Sub Init()
 
         m_CoreData.Clear()
+
+        'jb 15-Nov-2010 Force the garbage collection on the memory that was released above
+        GC.Collect()
+
         m_CoreData.Add(eVarNameFlags.EcospaceBiomassOverTime, New c3DResultsWrapper2Fixed(m_spaceData.ResultsByGroup, eSpaceResultsGroups.Biomass, Me.Index))
         m_CoreData.Add(eVarNameFlags.EcospaceRelativeBiomassOverTime, New c3DResultsWrapper2Fixed(m_spaceData.ResultsByGroup, eSpaceResultsGroups.RelativeBiomass, Me.Index))
         m_CoreData.Add(eVarNameFlags.EcospaceGroupValueOverTime, New c3DResultsWrapper2Fixed(m_spaceData.ResultsByGroup, eSpaceResultsGroups.CatchBio, Me.Index))
