@@ -1154,6 +1154,13 @@ Friend Class c4DResultsWrapper
             m_data(m_iVarFixed, m_iGroupFixed, GroupIndex, TimeIndex) = value
         End Set
     End Property
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+        m_data = Nothing
+        ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
+    End Sub
+
 End Class
 
 
@@ -1181,6 +1188,13 @@ Friend Class c4DResultsWrapperFirstFixed
             m_data(m_FixedIndex, FirstIndex, SecondIndex, ThirdIndex) = value
         End Set
     End Property
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+        m_data = Nothing
+        ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
+    End Sub
+
 End Class
 
 
@@ -1208,6 +1222,13 @@ Friend Class c2DResultsWrapper
             m_data(m_FixedGroupIndex, TimeIndex) = value
         End Set
     End Property
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+        m_data = Nothing
+        ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
+    End Sub
+
 End Class
 
 ''' <summary>
@@ -1236,6 +1257,13 @@ Friend Class c2DResultsWrapper2Fixed
             m_data(m_Fixed1, m_Fixed2) = value
         End Set
     End Property
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+        m_data = Nothing
+        ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
+    End Sub
+
 End Class
 
 
@@ -1264,6 +1292,12 @@ Friend Class c3DResultsWrapper
             m_data(m_FixedGroupIndex, GroupIndex, Timeindex) = value
         End Set
     End Property
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+        m_data = Nothing
+        ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
+    End Sub
 End Class
 
 ''' <summary>
@@ -1278,11 +1312,11 @@ Friend Class c3DResultsWrapper2Fixed
     Private m_FixedGroupIndex As Integer
     Private m_FixedVarIndex As Integer
 
-
     Public Sub New(ByVal TheBuffer(,,) As Single, ByVal FixedVarIndex As Integer, ByVal FixedGroupIndex As Integer)
         m_data = TheBuffer
         m_FixedGroupIndex = FixedGroupIndex
         m_FixedVarIndex = FixedVarIndex
+        'System.Console.WriteLine("New Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
     End Sub
 
     Public Property Value(ByVal TimeIndex As Integer, Optional ByVal index2 As Integer = cCore.NULL_VALUE, Optional ByVal index3 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
@@ -1293,6 +1327,13 @@ Friend Class c3DResultsWrapper2Fixed
             m_data(m_FixedVarIndex, m_FixedGroupIndex, TimeIndex) = value
         End Set
     End Property
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+        m_data = Nothing
+        ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
+    End Sub
+
 End Class
 
 #End Region
