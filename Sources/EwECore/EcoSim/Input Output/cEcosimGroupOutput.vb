@@ -81,6 +81,10 @@ Public Class cEcosimGroupOutput
         'so reset the reference
         m_coreData.Clear()
 
+        'jb 15-Nov-2010 Force the garbage collection on the memory that was released above
+        GC.Collect()
+
+
         'cEcosimDataStrucures.ResultsOverTime(var,group,time) Var and Group are fixed
         m_coreData.Add(eVarNameFlags.EcosimBiomass, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
         m_coreData.Add(eVarNameFlags.EcosimBiomassRel, New c3DResultsWrapper2Fixed(m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.BiomassRel, Me.Index))
