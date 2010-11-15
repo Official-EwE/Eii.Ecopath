@@ -105,7 +105,7 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' MPASeed
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -114,12 +114,12 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' LayerPort
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerPort, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' LayerSail
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerSail, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
