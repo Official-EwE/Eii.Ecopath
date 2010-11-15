@@ -1062,6 +1062,18 @@ Public Class cEcosimDatastructures
 
         Dim nt As Integer = NumberOfYears * NumStepsPerYear
 
+        'jb 15-Nov-2010 force garbage collection on large blocks of memory
+        Erase ResultsOverTime
+        Erase PredPreyResultsOverTime
+        Erase ResultsAvgByPreyPred
+        Erase ResultsSumCatchByGroupGear
+        Erase ResultsSumFMortByGroupGear
+        Erase ResultsSumValueByGroupGear
+        Erase ResultsEffort
+        Erase Elect
+
+        GC.Collect()
+
         ReDim ResultsOverTime([Enum].GetValues(GetType(eEcosimResults)).Length - 1, nGroups, nt)
         ReDim PredPreyResultsOverTime(2, nGroups, nGroups, nt)
         ReDim ResultsAvgByPreyPred(1, nGroups, nGroups)
@@ -1073,7 +1085,6 @@ Public Class cEcosimDatastructures
         ReDim ResultsSumValueByGroupGear(nGroups, nGear, nt)
         ReDim ResultsSumValueByGear(nGear, nt)
         ReDim ResultsEffort(nGear, nt)
-
         ReDim Elect(nGroups, nGroups, nt)
 
         ReDim ProfitByFleet(Me.nGear)
