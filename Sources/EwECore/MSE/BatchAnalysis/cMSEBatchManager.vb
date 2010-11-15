@@ -378,6 +378,8 @@ Namespace MSEBatchManager
 
                             If Me.BatchData.StopRun Then Exit For
 
+                            GC.Collect()
+
                         Next iPar
 
                         If Me.BatchData.StopRun Then Exit For
