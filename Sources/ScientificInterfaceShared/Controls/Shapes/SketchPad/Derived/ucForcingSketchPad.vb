@@ -20,23 +20,21 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     Public Class ucForcingSketchPad
 
-        Private m_AxisYMarks As eAxisTickmarkDisplayModeTypes
-
-        Public WriteOnly Property AxisTickMarkDisplayMode() As eAxisTickmarkDisplayModeTypes
-            Set(ByVal value As eAxisTickmarkDisplayModeTypes)
-                m_AxisYMarks = value
-            End Set
-        End Property
+        'Default display as Absolute value
+        Private m_AxisYMarks As eAxisTickmarkDisplayModeTypes = eAxisTickmarkDisplayModeTypes.Absolute
 
         Public Sub New()
-
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
-
-            'Default display as Absolute value
-            m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Absolute
-
+            Me.InitializeComponent()
         End Sub
+
+        Public Property AxisTickMarkDisplayMode() As eAxisTickmarkDisplayModeTypes
+            Get
+                Return Me.m_AxisYMarks
+            End Get
+            Set(ByVal value As eAxisTickmarkDisplayModeTypes)
+                Me.m_AxisYMarks = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' This method returns the marks displayed on the Axis X

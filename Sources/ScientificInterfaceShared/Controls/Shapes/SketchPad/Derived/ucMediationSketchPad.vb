@@ -21,10 +21,9 @@ Namespace Controls
     Public Class ucMediationSketchPad
 
         Public Sub New()
-
             Me.InitializeComponent()
             'No axis info in the mediation sketchpad right now. 
-            m_tsmiShowMarks.Visible = False
+            Me.m_tsmiShowMarks.Visible = False
         End Sub
 
         Private Sub MediationSketchPad_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _

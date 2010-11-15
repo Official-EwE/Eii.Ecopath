@@ -80,14 +80,16 @@ Namespace Controls
 
         ''' <summary>Horizontal mark line.</summary>
         Private m_sYMarkValue As Single = cCore.NULL_VALUE
+        ''' <summary>Flag stating if horizontal Y mark line should be shown.</summary>
+        Private m_bShowYMark As Boolean = False
         ''' <summary>Horizontal mark line.</summary>
         Private m_strYMarkLabel As String = ""
+        ''' <summary>Flag stating if the vertical X mark line should be shown.</summary>
+        Private m_bShowXMark As Boolean = False
         ''' <summary>Vertical mark line.</summary>
         Private m_sXMarkValue As Single = cCore.NULL_VALUE
         ''' <summary>Vertical mark line label.</summary>
         Private m_strXMarkLabel As String = ""
-        ''' <summary></summary>
-        Private m_bShowXMark As Boolean = False
         ''' <summary></summary>
         Private m_editMode As eMouseInteractionMode = eMouseInteractionMode.None
         ''' <summary>Style of the control.</summary>
@@ -317,6 +319,23 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether the horizontal (Y mark) line should be shown.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("Flag stating whether the horizontal (Y mark) line should be shown.")> _
+        Public Property ShowYMark() As Boolean
+            Get
+                Return Me.m_bShowYMark
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowYMark = value
+                Me.Invalidate()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Value for horizontal (Y mark) line.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -324,6 +343,7 @@ Namespace Controls
          Description("The value for a horizontal (Y mark) line.")> _
         Public Property YMarkValue() As Single
             Get
+                If Not Me.ShowYMark Then Return cCore.NULL_VALUE
                 Return Me.m_sYMarkValue
             End Get
             Set(ByVal value As Single)
