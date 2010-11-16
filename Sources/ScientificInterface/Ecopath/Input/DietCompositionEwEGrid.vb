@@ -22,7 +22,7 @@ Namespace Ecopath.Input
         : Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
             Me.FixedColumnWidths = False
         End Sub
 
@@ -116,7 +116,8 @@ Namespace Ecopath.Input
                         ' Add property to destined cell
                         cell = New PropertyCell(prop)
 
-                        If rowIndex = columnIndex - 1 Then
+                        ' Fixes issue #845
+                        If rowIndex = source.Index Then
                             cell.VisualModel = visDiagonal
                         End If
 
@@ -164,6 +165,17 @@ Namespace Ecopath.Input
                 Return eCoreComponentType.EcoPath
             End Get
         End Property
+
+        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+            ' Repopulate grid when ecopath group PP values have changed
+            If (msg.Source = eCoreComponentType.EcoPath) And _
+               (msg.DataType = eDataTypes.EcoPathGroupInput) And _
+               (msg.Type = eMessageType.DataValidation) Then
+                If msg.HasVariable(eVarNameFlags.PP) Then
+                    Me.FillData()
+                End If
+            End If
+        End Sub
 
     End Class
 
