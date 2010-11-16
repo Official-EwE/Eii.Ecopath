@@ -81,8 +81,6 @@ Public Class AppLauncher
         Public ShowModelBar As Boolean
         Public ShowStatusBar As Boolean
         Public ShowNavPanel As Boolean
-        Public ShowStatusPanel As Boolean
-        Public ShowRemarkPanel As Boolean
         Public FormState As FormWindowState
         Public BorderStyle As FormBorderStyle
     End Structure
@@ -2564,17 +2562,15 @@ Public Class AppLauncher
 
         If (bPresMode) Then
             With Me.m_fspPresentationMode
-                .FormState = Me.WindowState : Me.WindowState = FormWindowState.Maximized
-                .BorderStyle = Me.FormBorderStyle : Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
                 .ShowMenu = Me.m_menuMain.Visible : Me.m_menuMain.Visible = Not My.Settings.PresentationModeHideMainMenu
                 .ShowModelBar = Me.m_tsModel.Visible : Me.m_tsModel.Visible = Not My.Settings.PresentationModeHideModelBar
                 .ShowStatusBar = Me.m_ssMain.Visible : Me.m_ssMain.Visible = Not My.Settings.PresentationModeHideStatusBar
                 .ShowNavPanel = Me.m_NavPanel.IsHiding : Me.m_NavPanel.AutoHide = My.Settings.PresentationModeCollapseNavPanel
+                .FormState = Me.WindowState : Me.WindowState = FormWindowState.Maximized
+                .BorderStyle = Me.FormBorderStyle : Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
             End With
-
-            Me.MaximizeBox = False
-            Me.MinimizeBox = False
             'Me.TopMost = True
+            Me.ControlBox = False
         Else
             With Me.m_fspPresentationMode
                 Me.WindowState = .FormState
@@ -2584,10 +2580,11 @@ Public Class AppLauncher
                 Me.m_ssMain.Visible = .ShowStatusBar
                 Me.m_NavPanel.AutoHide = .ShowNavPanel
             End With
-            Me.MaximizeBox = True
-            Me.MinimizeBox = True
             'Me.TopMost = False
+            Me.ControlBox = True
         End If
+
+        ' BorderStyle screws up dockpanel when there it contains panels.
 
         Me.ResumeLayout()
 
