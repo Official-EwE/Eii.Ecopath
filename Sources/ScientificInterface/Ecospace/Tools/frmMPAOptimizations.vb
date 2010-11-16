@@ -320,22 +320,20 @@ Namespace Ecospace
 
         Private Sub OnResetMPAs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_btnResetMPAs.Click
+
+            Me.m_ucZoom.SuspendLayout()
             Try
-
-                Me.m_ucZoom.SuspendLayout()
-
                 ' Set the layer
                 Me.SetLayer(Me.m_manager.OrgMPA, Me.m_basemap.LayerMPA)
                 ' Update MPAs
                 For Each l As cLayer In Me.m_alayerMPA
                     l.Update(cLayer.eChangeFlags.Map)
                 Next
-                ' Yo
-                Me.m_ucZoom.ResumeLayout()
-
             Catch ex As Exception
 
             End Try
+            Me.m_ucZoom.ResumeLayout()
+
         End Sub
 
         Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -1224,7 +1222,7 @@ Namespace Ecospace
 
             iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
 
-            If iIteration < lResults.Count Then Return
+            If iIteration >= lResults.Count Then Return
 
             res = lResults(iIteration)
             For iCell As Integer = 0 To res.Cells.Count - 1
