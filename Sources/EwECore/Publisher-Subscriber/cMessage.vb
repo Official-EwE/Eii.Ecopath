@@ -120,6 +120,19 @@ Public Class cMessage
         Return False
     End Function
 
+    ''' <summary>
+    ''' Returns whether a message has a given variable attached.
+    ''' </summary>
+    ''' <param name="varname"></param>
+    ''' <returns></returns>
+    Public Function HasVariable(ByVal varname As eVarNameFlags) As Boolean
+        For Each vs As cVariableStatus In Me.Variables
+            If (vs.VarName = varname) Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
 
     ''' <summary>
     ''' Get or set message Text.
