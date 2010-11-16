@@ -8,7 +8,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 ''' ===========================================================================
 ''' <summary>
-''' 
+''' Grid class for showing MPA optimizations progress information.
 ''' </summary>
 ''' ===========================================================================
 <CLSCompliant(False)> _
@@ -22,6 +22,8 @@ Public Class gridMPAOptimizations
 
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
+
+        If Me.UIContext Is Nothing Then Return
 
         Dim c As EwECell = Nothing
 
@@ -67,7 +69,6 @@ Public Class gridMPAOptimizations
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(7, eColumnTypes.Value) = c
 
-        ' ToDo: globalize this
         Me(8, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_AREA_CLOSED)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
