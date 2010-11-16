@@ -247,9 +247,9 @@ Namespace Ecospace
             '
             'm_tcResults
             '
+            resources.ApplyResources(Me.m_tcResults, "m_tcResults")
             Me.m_tcResults.Controls.Add(Me.m_tpProgress)
             Me.m_tcResults.Controls.Add(Me.m_tpResults)
-            resources.ApplyResources(Me.m_tcResults, "m_tcResults")
             Me.m_tcResults.Name = "m_tcResults"
             Me.m_tcResults.SelectedIndex = 0
             '
