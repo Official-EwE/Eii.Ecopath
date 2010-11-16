@@ -1604,10 +1604,6 @@ Namespace Controls
                 ' Get the clicked pane
                 Dim pane As GraphPane = Nothing
 
-                'If (pane.FindNearestPoint(args.Location, ciNearest, iNearest)) Then
-                '    Me.m_zgc.
-                'End If
-
                 ' Cursor?
                 If Me.m_abShowCursor(iPane) Then
                     Me.CursorPos = GraphToScale(New PointF(args.Location.X, args.Location.Y)).X
