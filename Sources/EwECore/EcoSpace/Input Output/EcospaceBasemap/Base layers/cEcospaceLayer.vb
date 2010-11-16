@@ -70,8 +70,6 @@ Public MustInherit Class cEcospaceLayer
         Me.m_vnData = vnData
         Me.m_iData = iIndex
 
-        ' Complete layer
-        Me.m_data = Me.m_manager.GetLayerData(Me.m_vnData, Me.m_iData)
         Me.m_metadata = Me.m_manager.GetVariableMetadata(Me.m_vnData)
 
     End Sub
@@ -145,7 +143,9 @@ Public MustInherit Class cEcospaceLayer
 
     Protected ReadOnly Property Data() As Object
         Get
-            ' Return data
+            If (Me.m_data Is Nothing) Then
+                Return Me.m_manager.GetLayerData(Me.m_vnData, Me.m_iData)
+            End If
             Return Me.m_data
         End Get
     End Property
