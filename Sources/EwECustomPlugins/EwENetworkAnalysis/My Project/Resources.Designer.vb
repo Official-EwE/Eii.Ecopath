@@ -2055,7 +2055,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to      From detritus: .
+        '''  Looks up a localized string similar to      From detritus: {0}%.
         '''</summary>
         Friend ReadOnly Property STR_FROM_DET() As String
             Get
@@ -2064,7 +2064,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to      From primary producers: .
+        '''  Looks up a localized string similar to      From primary producers: {0}%.
         '''</summary>
         Friend ReadOnly Property STR_FROM_PRIM_PRODUCER() As String
             Get
@@ -2118,7 +2118,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to      Total: .
+        '''  Looks up a localized string similar to      Total: {0}%.
         '''</summary>
         Friend ReadOnly Property STR_TOTAL() As String
             Get

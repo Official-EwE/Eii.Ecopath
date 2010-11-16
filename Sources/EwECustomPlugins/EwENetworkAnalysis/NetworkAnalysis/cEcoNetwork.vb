@@ -266,20 +266,7 @@ Public Class cEcoNetwork
 
 #Region "Public Ecosim Variables"
 
-    'Private Kemptons() As Single
-    'Private TLSim() As Single
-
-    'Public TLC() As Single 'TL of catch in Ecosim
-    'Public FIB() As Single  'FIB-index in ecosim
-    '  Public CostSim() As Single
-    ' Public ValueSim() As Single
-    'Private CatchSim() As Single
-    'Public Elect(,,) As Single
     Private ByTL(,,) As Single
-
-    'Private BiomassFish As Single
-    'Private BiomassInvert As Single
-
 
     Public RelativeSumOfCatchPlot() As Single
     Public RelativeKemptonsPlot() As Single

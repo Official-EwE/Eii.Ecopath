@@ -340,7 +340,8 @@
     <value>PPR/consumption</value>
   </data>
   <data name="STR_FROM_PRIM_PRODUCER" xml:space="preserve">
-    <value>     From primary producers: </value>
+    <value>     From primary producers: {0}%</value>
+    <comment>{0}: value</comment>
   </data>
   <data name="STR_TRANSFER_EFF" xml:space="preserve">
     <value>Transfer efficiencies (calculated as geometric mean for TL II-IV)</value>
@@ -403,13 +404,15 @@
     <value>Export</value>
   </data>
   <data name="STR_TOTAL" xml:space="preserve">
-    <value>     Total: </value>
+    <value>     Total: {0}%</value>
+    <comment>{0}: value</comment>
   </data>
   <data name="COL_HDR_PPR" xml:space="preserve">
     <value>PPR</value>
   </data>
   <data name="STR_FROM_DET" xml:space="preserve">
-    <value>     From detritus: </value>
+    <value>     From detritus: {0}%</value>
+    <comment>{0}: value</comment>
   </data>
   <data name="COL_HDR_CAPACITY" xml:space="preserve">
     <value>Capacity (t/km²/year * bits)</value>
