@@ -43,7 +43,7 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.EnabledState"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState _
+    Public Overridable ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState _
         Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcopathCompleted

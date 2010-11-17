@@ -35,4 +35,11 @@ Public Class cNavTree88Sim_with_PPR
             Return MyBase.NavigationTreeItemLocation & "|" & MyBase.Name
         End Get
     End Property
+
+    Public Overrides ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState
+        Get
+            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+        End Get
+    End Property
+
 End Class
