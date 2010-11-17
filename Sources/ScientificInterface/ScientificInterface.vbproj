@@ -1190,6 +1190,8 @@
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedPrimaryProducer.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecosim\Tools\Shared\IBlockSelector.vb" />
+    <Compile Include="Ecosim\Tools\Shared\IPolicyColorBlockDataSource.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorVector.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorMLD.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ILayerEditorGUI.vb" />
@@ -1276,6 +1278,8 @@
     <Compile Include="Settings.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\MSE\cMSEFishingColorBlockDataSource.vb" />
+    <Compile Include="Tools\MSE\cMSEGroupColorBlockDataSource.vb" />
     <Compile Include="Tools\MSE\frmMSERecruitment.Designer.vb">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
     </Compile>
