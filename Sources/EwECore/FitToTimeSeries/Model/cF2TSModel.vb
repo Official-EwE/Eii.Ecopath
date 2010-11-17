@@ -1186,7 +1186,9 @@ Namespace FitToTimeSeries
         End Sub
 
         Private Sub sub550()
-            '550:    REM routine to solves (X'X)(st)=X'(er) by Cholesky decompostion, using X=SE sensitivity matrix augmented by prior variances and er=fitting error vector; output is newton parameter correction step vector st(1...n)
+            '550:    REM routine to solves (X'X)(st)=X'(er) by Cholesky decompostion, 
+            'using X=SE sensitivity matrix augmented by prior variances and er=fitting error vector; 
+            'output is newton parameter correction step vector st(1...n)
             For i = 1 To n
                 Sold(i) = St(i)
                 ip = Ipn(i)
@@ -1391,6 +1393,7 @@ Namespace FitToTimeSeries
                 Dim PBar As Single
                 If AnomalySearch = True Then
                     If Numspline < 2 Then
+                        ' No Spline points
                         PBar = 0
                         For i = 1 To TotalTime : PBar = PBar + Par(i) : Next
                         PBar = PBar / TotalTime
@@ -1401,6 +1404,7 @@ Namespace FitToTimeSeries
                             Next
                         Next
                     Else
+                        ' Spline the new parameters into the anomaly shape
                         ReDim Yspline(Numspline), y2(Numspline)
                         PBar = 0
                         For i = 1 To Numspline : PBar = PBar + Par(i) : Next
