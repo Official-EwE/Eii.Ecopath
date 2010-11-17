@@ -49,6 +49,8 @@ Namespace Ecosim
 
         Private m_BlockSelector As IBlockSelector
 
+        Private m_toolTip As ToolTip
+
 #End Region ' Private vars
 
 #Region "Public Methods and Properties"
@@ -56,14 +58,22 @@ Namespace Ecosim
         Public Sub New()
             Me.InitializeComponent()
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer, True)
+            Me.m_toolTip = New ToolTip()
+
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            Me.Detach()
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-            MyBase.Dispose(disposing)
+            Try
+
+                Me.Detach()
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                End If
+                MyBase.Dispose(disposing)
+            Catch ex As Exception
+                Debug.Assert(True, ex.Message)
+            End Try
+
         End Sub
 
         ''' <summary>
@@ -130,6 +140,32 @@ Namespace Ecosim
                 Me.m_BlockSelector = Nothing
             End If
             Me.UIContext = Nothing
+
+        End Sub
+
+        Public Sub UpdateControls()
+
+            Me.m_DataSource.Init()
+
+            m_nudSeqEndYear.Maximum = Me.m_DataSource.TotalBlocks
+            m_nudNumYearsPerBlock.Maximum = Me.m_DataSource.TotalBlocks
+
+            m_bIsSketching = False
+
+            If m_clrCurrent = Nothing Then
+                m_clrCurrent = Color.Green
+            End If
+
+            m_nudNumYearsPerBlock.Value = CDec(Me.m_DataSource.TotalBlocks)
+            m_nudSeqStartYear.Value = CDec(Math.Min(2, Me.m_DataSource.TotalBlocks))
+            m_nudSeqEndYear.Value = CDec(Me.m_DataSource.TotalBlocks)
+            m_bIsFirstTimeLoaded = False
+
+            If Me.Enabled Then
+                Me.m_pbFishingBlocks.Cursor = Cursors.Hand
+            Else
+                Me.m_pbFishingBlocks.Cursor = Cursors.Default
+            End If
 
         End Sub
 
@@ -319,31 +355,6 @@ Namespace Ecosim
 
 #Region "Private methods"
 
-        Private Sub UpdateControls()
-
-            Me.m_DataSource.Init()
-
-            m_nudSeqEndYear.Maximum = Me.m_DataSource.TotalBlocks
-            m_nudNumYearsPerBlock.Maximum = Me.m_DataSource.TotalBlocks
-
-            m_bIsSketching = False
-
-            If m_clrCurrent = Nothing Then
-                m_clrCurrent = Color.Green
-            End If
-
-            m_nudNumYearsPerBlock.Value = CDec(Me.m_DataSource.TotalBlocks)
-            m_nudSeqStartYear.Value = CDec(Math.Min(2, Me.m_DataSource.TotalBlocks))
-            m_nudSeqEndYear.Value = CDec(Me.m_DataSource.TotalBlocks)
-            m_bIsFirstTimeLoaded = False
-
-            If Me.Enabled Then
-                Me.m_pbFishingBlocks.Cursor = Cursors.Hand
-            Else
-                Me.m_pbFishingBlocks.Cursor = Cursors.Default
-            End If
-
-        End Sub
 
         Private Sub DrawRowCols(ByRef g As Graphics)
 
@@ -511,13 +522,11 @@ Namespace Ecosim
 
         Private Sub ProcessMouseHover(ByVal ptCursor As Point)
             Dim strToolTip As String = Me.GetBlockTooltipText(ptCursor)
-            Dim ts As cToolTipShared = cToolTipShared.GetInstance()
-
             If Me.ShowTooltip Then
-                ' Show tooltip above the cursor
-                ts.Show(strToolTip, Me.m_pbFishingBlocks, New Point(ptCursor.X, ptCursor.Y - CInt(Me.Font.Height * 1.5)))
+                ' Show tooltip above the cursor Me.m_pbFishingBlocks.
+                Me.m_toolTip.Show(strToolTip, Me.m_pbFishingBlocks, New Point(ptCursor.X, ptCursor.Y - CInt(Me.Font.Height * 1.5)))
             Else
-                ts.Hide(Me.m_pbFishingBlocks)
+                Me.m_toolTip.Hide(Me.m_pbFishingBlocks)
             End If
 
         End Sub
