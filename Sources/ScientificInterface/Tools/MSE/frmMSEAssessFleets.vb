@@ -11,6 +11,8 @@ Imports EwECore.MSE
 
 Public Class frmMSEAssessFleets
 
+    Private m_fpStartYear As cIntegerProperty
+
     Public Sub New()
         MyBase.New()
         Me.InitializeComponent()
@@ -39,6 +41,60 @@ Public Class frmMSEAssessFleets
         Dim ds As New cMSEFishingColorBlockDataSource(Me.UIContext)
         'load the datasource and the block selector into the ucPolicyColorBlocks
         Me.m_blocks.Attach(ds, New ucCVBlockSelector)
+
+        Try
+            Dim pm As cPropertyManager = Me.PropertyManager
+            Me.m_fpStartYear = DirectCast(pm.GetProperty(Me.UIContext.Core.MSEManager.ModelParameters, EwEUtils.Core.eVarNameFlags.MSEStartYear), cIntegerProperty)
+
+            ' Track styleguide changes
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+            AddHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".OnLoad() Failed to add handlers!")
+        End Try
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Try
+
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            RemoveHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
+        End Try
+
+        Try
+            MyBase.OnFormClosed(e)
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
+        End Try
+
+
+
+    End Sub
+
+    Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+
+        If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
+            Me.m_blocks.Refresh()
+        End If
+
+    End Sub
+
+    Private Sub OnLastYearChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+
+        Try
+            'update the controls
+            Me.m_blocks.UpdateControls()
+            'redraw the updated data
+            Me.m_blocks.Refresh()
+        Catch ex As Exception
+            EwECore.cLog.Write(ex)
+        End Try
+
     End Sub
 
 End Class
@@ -136,11 +192,16 @@ Public Class cMSEFishingColorBlockDataSource
 
         ReDim m_BlockCells(Me.nRows, Me.TotalBlocks)
         Dim mseData As cMSEFleetInput
+        Dim sYear As Integer = Me.m_uic.Core.MSEManager.ModelParameters.MSEStartYear
 
         For iflt As Integer = 1 To Me.nRows
             mseData = Me.m_uic.Core.MSEManager.FleetInputs(iflt)
             For iTime As Integer = 1 To Me.TotalBlocks
-                m_BlockCells(iflt, iTime) = Me.m_BlockSelector.ValuetoBlock(mseData.FleetCV(iTime))
+                If iTime >= sYear Then
+                    m_BlockCells(iflt, iTime) = Me.m_BlockSelector.ValuetoBlock(mseData.FleetCV(iTime))
+                Else
+                    m_BlockCells(iflt, iTime) = -1
+                End If
             Next
         Next
 
@@ -153,6 +214,13 @@ Public Class cMSEFishingColorBlockDataSource
 
         If (iRow < 1) Then Return
         If (iRow > m_BlockCells.GetLength(0) - 1) Then Return
+
+        If iCol < Me.m_uic.Core.MSEManager.ModelParameters.MSEStartYear Then
+            'Not in bounds 
+            'Don't set the value
+            Return
+        End If
+
 
         ' Fill single block
 
@@ -234,6 +302,9 @@ Public Class cMSEFishingColorBlockDataSource
 
     End Function
 
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
 End Class
 
 #End Region

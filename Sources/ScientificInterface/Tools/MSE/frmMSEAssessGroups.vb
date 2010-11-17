@@ -14,7 +14,7 @@ Imports EwECore.MSE
 Public Class frmMSEAssessGroups
 
     Private m_fpStartYear As cIntegerProperty
-    Private m_MSEDataSource As cMSEGroupColorBlockDataSource
+    'Private m_MSEDataSource As cMSEGroupColorBlockDataSource
 
     Public Sub New()
         Me.InitializeComponent()
@@ -33,8 +33,9 @@ Public Class frmMSEAssessGroups
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
         ' Attach the datasource and the block selector to the ucPolicyColorBlocks control
-        m_MSEDataSource = New cMSEGroupColorBlockDataSource(Me.UIContext)
-        Me.m_blocks.Attach(m_MSEDataSource, New ucCVBlockSelector)
+        Dim ds As New cMSEGroupColorBlockDataSource(Me.UIContext)
+        '  m_MSEDataSource = New cMSEGroupColorBlockDataSource(Me.UIContext)
+        Me.m_blocks.Attach(ds, New ucCVBlockSelector)
 
         Dim pm As cPropertyManager = Me.PropertyManager
 
@@ -43,7 +44,7 @@ Public Class frmMSEAssessGroups
         ' Track styleguide changes
         AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-        '     AddHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
+        AddHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
 
     End Sub
 
@@ -51,19 +52,25 @@ Public Class frmMSEAssessGroups
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
         Try
-
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            '  RemoveHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
+            RemoveHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
         End Try
-        MyBase.OnFormClosed(e)
+
+        Try
+            MyBase.OnFormClosed(e)
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
+        End Try
+
+
     End Sub
 
     Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
 
         If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
-            Me.m_blocks.Invalidate()
+            Me.m_blocks.Refresh()
         End If
 
     End Sub
@@ -71,19 +78,17 @@ Public Class frmMSEAssessGroups
     Private Sub OnLastYearChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
 
         Try
-            Me.m_MSEDataSource.Init()
-            Me.m_blocks.Invalidate()
+            'update the controls
+            Me.m_blocks.UpdateControls()
+            'redraw the updated data
+            Me.m_blocks.Refresh()
         Catch ex As Exception
             EwECore.cLog.Write(ex)
         End Try
 
     End Sub
 
-
-
-
 End Class
-
 
 
 #Region "IPolicyColorBlockDataSource implementation for MSE"
@@ -213,7 +218,6 @@ Public Class cMSEGroupColorBlockDataSource
         End If
 
         ' Fill single block
-
         Me.m_BlockCells(iRow, iCol) = Me.m_BlockSelector.SelectedBlock
         Me.m_uic.Core.MSEManager.GroupInputs(iRow).BiomassCV(iCol) = Me.m_BlockSelector.BlocktoValue(Me.m_BlockSelector.SelectedBlock)
 
@@ -326,6 +330,10 @@ Public Class cMSEGroupColorBlockDataSource
 
         End Try
     End Function
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
 End Class
 
 #End Region
