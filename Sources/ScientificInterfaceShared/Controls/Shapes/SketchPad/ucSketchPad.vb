@@ -608,7 +608,7 @@ Namespace Controls
 
                     Case eMouseInteractionMode.DrawShape, _
                          eMouseInteractionMode.None
-                        Me.Cursor = Cursors.Hand
+                        Me.Cursor = Cursors.Default
 
                 End Select
             Else
@@ -693,7 +693,7 @@ Namespace Controls
                 ' No tip, sorry.
             End If
 
-            cToolTipShared.GetInstance().Show(strTooltip, Me, New Point(ptCur.X, ptCur.Y - CInt(Me.Font.Height * 2)))
+            cToolTipShared.GetInstance().SetToolTip(Me, strTooltip)
 
         End Sub
 

@@ -410,38 +410,6 @@ Namespace Ecosim
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns a tooltip text for the block at a given position.
-        ''' </summary>
-        ''' <param name="ptCursor">The position to retrieve the tooltip text for.</param>
-        ''' <returns>A tooltip text for the block at a given position.</returns>
-        ''' -------------------------------------------------------------------
-        Private Function GetBlockTooltipText(ByVal ptCursor As Point) As String
-
-            Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
-
-            If (ptBlock.Y < 1 Or ptBlock.Y >= Me.m_iRows) Then Return ""
-            If (ptBlock.X < 1 Or ptBlock.X >= Me.m_iCols) Then Return ""
-
-            Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
-            Dim strValue As String = ""
-
-            ' Is a block defined for this position?
-            If (iBlock > 0) Then
-                ' #Yes: get block value
-                strValue = cStringUtils.FormatSingle(Me.m_DataSource.BlockToValue(iBlock))
-            Else
-                ' #No: get 'not used' value
-                strValue = SharedResources.GENERIC_VALUE_NOTUSED
-            End If
-
-            ' Format tooltip as as "value (x, y)"
-            Return String.Format(SharedResources.GENERIC_LABEL_POINT, strValue, _
-                                 Me.m_DataSource.RowLabel(ptBlock.Y), ptBlock.X)
-
-        End Function
-
         Private Sub CalcParams(ByRef g As Graphics)
 
             If Not Me.m_bInit Then Return
@@ -521,14 +489,29 @@ Namespace Ecosim
         End Sub
 
         Private Sub ProcessMouseHover(ByVal ptCursor As Point)
-            Dim strToolTip As String = Me.GetBlockTooltipText(ptCursor)
-            If Me.ShowTooltip Then
-                ' Show tooltip above the cursor Me.m_pbFishingBlocks.
-                Me.m_toolTip.Show(strToolTip, Me.m_pbFishingBlocks, New Point(ptCursor.X, ptCursor.Y - CInt(Me.Font.Height * 1.5)))
+
+            Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
+
+            If (ptBlock.Y < 1 Or ptBlock.Y >= Me.m_iRows) Then Return
+            If (ptBlock.X < 1 Or ptBlock.X >= Me.m_iCols) Then Return
+
+            Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
+            Dim strValue As String = ""
+
+            ' Is a block defined for this position?
+            If (iBlock > 0) Then
+                ' #Yes: get block value
+                strValue = cStringUtils.FormatSingle(Me.m_DataSource.BlockToValue(iBlock))
             Else
-                Me.m_toolTip.Hide(Me.m_pbFishingBlocks)
+                ' #No: get 'not used' value
+                strValue = SharedResources.GENERIC_VALUE_NOTUSED
             End If
 
+            ' Format tooltip as as "value (x, y)"
+            strValue = String.Format(SharedResources.GENERIC_LABEL_POINT, strValue, _
+                                     Me.m_DataSource.RowLabel(ptBlock.Y), ptBlock.X)
+
+            cToolTipShared.GetInstance().SetToolTip(Me.m_pbFishingBlocks, strValue)
         End Sub
 
         Private Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer)

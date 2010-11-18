@@ -49,6 +49,40 @@ Namespace Controls
 
 #End Region ' Public interfaces
 
+#Region " Doomed interfaces "
+
+        <Obsolete("Please use ToolTip.SetToolTip instead")> _
+        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window)
+            Debug.Assert(False)
+        End Sub
+
+        <Obsolete("Please use ToolTip.SetToolTip instead")> _
+        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal iTimeout As Integer)
+            Debug.Assert(False)
+        End Sub
+
+        <Obsolete("Please use ToolTip.SetToolTip instead")> _
+        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal pt As Point)
+            Debug.Assert(False)
+        End Sub
+
+        <Obsolete("Please use ToolTip.SetToolTip instead")> _
+        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal pt As Point, ByVal iTimeout As Integer)
+            Debug.Assert(False)
+        End Sub
+
+        <Obsolete("Please use ToolTip.SetToolTip instead")> _
+        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal x As Integer, ByVal y As Integer)
+            Debug.Assert(False)
+        End Sub
+
+        <Obsolete("Please use ToolTip.SetToolTip instead")> _
+        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal x As Integer, ByVal y As Integer, ByVal iTimeout As Integer)
+            Debug.Assert(False)
+        End Sub
+
+#End Region ' Doomed interfaces
+
     End Class
 
 End Namespace ' Controls
