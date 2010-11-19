@@ -389,13 +389,17 @@ Public Class cEcosimDatastructures
     Public nSumTimeSteps As Integer
 
     ''' <summary>
-    ''' Model results over time
+    ''' Model results over time (number of variables x groups x time)
     ''' </summary>
-    Public ResultsOverTime(,,) As Single ' dim by number of variables, groups, time
-    Public PredPreyResultsOverTime(,,,) As Single ' dim by number of pred/prey(2), groups, groups, time
-    Public ResultsAvgByPreyPred(,,) As Single ' dim by  pred/prey(2), groups, groups
-    Public ResultsSumCatchByGroupGear(,,) As Single ' groups,fleets,time
-    Public ResultsSumCatchByGear(,) As Single ' fleets,time
+    Public ResultsOverTime(,,) As Single
+    ''' <summary>pred/prey(2) x groups x groups x time</summary>
+    Public PredPreyResultsOverTime(,,,) As Single
+    ''' <summary>pred/prey(2) x groups x groups</summary>
+    Public ResultsAvgByPreyPred(,,) As Single
+    ''' <summary>Group x fleets x time.</summary>
+    Public ResultsSumCatchByGroupGear(,,) As Single
+    ''' <summary>fleets x time</summary>
+    Public ResultsSumCatchByGear(,) As Single
 
     ''' <summary>
     ''' Fishing mortality by time
