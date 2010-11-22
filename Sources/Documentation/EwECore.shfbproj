@@ -18,7 +18,7 @@
     <HtmlHelpName>EwE6_API</HtmlHelpName>
     <CopyrightText>Copyright %28c%29 UBC Fisheries Centre 2007 - 2010</CopyrightText>
     <HelpTitle>EwE6 API documentation</HelpTitle>
-    <HelpFileVersion>6.0.7.0310</HelpFileVersion>
+    <HelpFileVersion>6.1.1</HelpFileVersion>
     <SandcastlePath>C:\Program Files\Sandcastle\</SandcastlePath>
     <WorkingPath>Temp\</WorkingPath>
     <HtmlHelp1xCompilerPath>..\..\..\..\..\Program Files\HTML Help Workshop\</HtmlHelp1xCompilerPath>
