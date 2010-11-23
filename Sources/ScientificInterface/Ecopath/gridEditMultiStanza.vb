@@ -19,11 +19,12 @@ Public Class gridEditMultiStanza
 
     Private Enum eColumnTypes
         Index = 0
-        Name = 1
-        StartAge = 2
-        BiomassAreaInput = 3
-        PBInput = 4
-        QBInput = 5
+        Name
+        StartAge
+        Leading
+        BiomassAreaInput
+        PBInput
+        QBInput
     End Enum
 
 #End Region
@@ -58,10 +59,11 @@ Public Class gridEditMultiStanza
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        Me.Redim(1, 6)
+        Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STARTAGE)
+        Me(0, eColumnTypes.Leading) = New EwEColumnHeaderCell("Leading")
         Me(0, eColumnTypes.BiomassAreaInput) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_UNIT, cStyleGuide.eUnitType.Currency)
         Me(0, eColumnTypes.PBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
         Me(0, eColumnTypes.QBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
@@ -101,17 +103,14 @@ Public Class gridEditMultiStanza
             ewec.Style = cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.StartAge) = ewec
 
+            ' Leading
+            Me(iRow, eColumnTypes.Leading) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingB = iStanza)
+            Me(iRow, eColumnTypes.Leading).Behaviors.Add(Me.EwEEditHandler)
+
             'Biomass
             ewec = New EwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.Biomass(iStanza)
-            'Ignore core read-only status; only leading group can edit
-            bReadOnly = (Me.m_stanzagroup.LeadingB <> iStanza)
-            If bReadOnly Then
-                ewec.Style = cStyleGuide.eStyleFlags.NotEditable
-            Else
-                ewec.Style = cStyleGuide.eStyleFlags.OK
-            End If
             Me(iRow, eColumnTypes.BiomassAreaInput) = ewec
             Me(iRow, eColumnTypes.BiomassAreaInput).Behaviors.Add(Me.EwEEditHandler)
 
@@ -126,18 +125,24 @@ Public Class gridEditMultiStanza
             ewec = New EwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.CB(iStanza)
-            bReadOnly = (Me.m_stanzagroup.LeadingCB <> iStanza)
-            If bReadOnly Then
-                ewec.Style = cStyleGuide.eStyleFlags.NotEditable
-            Else
-                ewec.Style = cStyleGuide.eStyleFlags.OK
-            End If
             Me(iRow, eColumnTypes.QBInput) = ewec
             Me(iRow, eColumnTypes.QBInput).Behaviors.Add(Me.EwEEditHandler)
         Next
+
+        Me.SetLeadingGroup(Me.m_stanzagroup.LeadingB)
+
     End Sub
 
     Public Sub SetStanzaGroupValues(ByVal bApplyToCore As Boolean)
+
+        Dim iLeading As Integer = Me.m_stanzagroup.LeadingB
+        For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
+            If CBool(Me(iStanza, eColumnTypes.Leading).Value) Then
+                iLeading = iStanza
+            End If
+        Next
+        Me.m_stanzagroup.LeadingB = iLeading
+        Me.m_stanzagroup.LeadingCB = iLeading
 
         For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
 
@@ -150,13 +155,12 @@ Public Class gridEditMultiStanza
             Me.m_stanzagroup.Mortality(iStanza) = CSng(Me(iStanza, eColumnTypes.PBInput).Value)
             'Consumption/Biomass
             Me.m_stanzagroup.CB(iStanza) = CSng(Me(iStanza, eColumnTypes.QBInput).Value)
-
         Next
 
         If bApplyToCore Then
             ' JS 090826: apply changes for all stanza groups, not only the last used stanza group
-            For iIndex As Integer = 0 To core.nStanzas - 1
-                core.StanzaGroups(iIndex).Apply()
+            For iIndex As Integer = 0 To Core.nStanzas - 1
+                Core.StanzaGroups(iIndex).Apply()
             Next
         End If
 
@@ -165,5 +169,40 @@ Public Class gridEditMultiStanza
     Public Sub ResetStanzaGroupValues()
         Me.m_stanzagroup.Cancel()
     End Sub
+
+    Private m_bInUpdate As Boolean = False
+
+    Private Sub SetLeadingGroup(ByVal iRow As Integer)
+
+        Me.m_bInUpdate = True
+
+        Dim ewec As EwECell = Nothing
+        Dim bLeading As Boolean = False
+        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+
+        For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
+            bLeading = (iRow = iStanza)
+            If bLeading Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable
+            Me(iStanza, eColumnTypes.Leading).Value = (iRow = iStanza)
+            DirectCast(Me(iStanza, eColumnTypes.BiomassAreaInput), EwECell).Style = style
+            DirectCast(Me(iStanza, eColumnTypes.QBInput), EwECell).Style = style
+        Next
+
+        Me.InvalidateCells()
+        Me.m_bInUpdate = False
+
+    End Sub
+
+    Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+        If Me.m_bInUpdate Then Return True
+
+        Select Case DirectCast(p.Column, eColumnTypes)
+            Case eColumnTypes.Leading
+                Me.SetLeadingGroup(p.Row)
+        End Select
+        Return MyBase.OnCellValueChanged(p, cell)
+
+    End Function
 
 End Class
