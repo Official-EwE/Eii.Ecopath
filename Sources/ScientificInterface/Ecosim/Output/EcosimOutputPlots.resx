@@ -166,7 +166,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.428, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_plGroups</value>
@@ -229,7 +229,7 @@
     <value>m_lbPredators</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.428, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Parent" xml:space="preserve">
     <value>m_plPredators</value>
@@ -259,7 +259,7 @@
     <value>m_lbPrey</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.428, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Parent" xml:space="preserve">
     <value>m_plPrey</value>
@@ -291,43 +291,43 @@
   <data name="m_tlpMain.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_lblGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblGroup.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrGroup.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblGroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrGroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblGroup.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_lblGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_hdrGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_lblGroup.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrGroup.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 18</value>
   </data>
-  <data name="m_lblGroup.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrGroup.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="m_lblGroup.Text" xml:space="preserve">
+  <data name="m_hdrGroup.Text" xml:space="preserve">
     <value>&amp;Group</value>
   </data>
-  <data name="m_lblGroup.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrGroup.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblGroup.Name" xml:space="preserve">
-    <value>m_lblGroup</value>
+  <data name="&gt;&gt;m_hdrGroup.Name" xml:space="preserve">
+    <value>m_hdrGroup</value>
   </data>
-  <data name="&gt;&gt;m_lblGroup.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrGroup.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblGroup.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrGroup.Parent" xml:space="preserve">
     <value>m_plGroups</value>
   </data>
-  <data name="&gt;&gt;m_lblGroup.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrGroup.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_plGroups.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -379,7 +379,7 @@
     <value>m_lbFleets</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.1.0.428, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>
@@ -387,43 +387,43 @@
   <data name="&gt;&gt;m_lbFleets.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_lblFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblFleets.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrFleets.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblFleets.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrFleets.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblFleets.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrFleets.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_lblFleets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_hdrFleets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_lblFleets.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrFleets.Size" type="System.Drawing.Size, System.Drawing">
     <value>193, 18</value>
   </data>
-  <data name="m_lblFleets.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrFleets.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="m_lblFleets.Text" xml:space="preserve">
+  <data name="m_hdrFleets.Text" xml:space="preserve">
     <value>&amp;Fleets:</value>
   </data>
-  <data name="m_lblFleets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrFleets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblFleets.Name" xml:space="preserve">
-    <value>m_lblFleets</value>
+  <data name="&gt;&gt;m_hdrFleets.Name" xml:space="preserve">
+    <value>m_hdrFleets</value>
   </data>
-  <data name="&gt;&gt;m_lblFleets.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrFleets.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblFleets.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>
   </data>
-  <data name="&gt;&gt;m_lblFleets.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrFleets.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_plFleets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -453,43 +453,43 @@
   <data name="&gt;&gt;m_plFleets.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_lblPredators.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrPredators.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblPredators.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrPredators.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblPredators.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrPredators.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblPredators.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrPredators.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_lblPredators.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_hdrPredators.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_lblPredators.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrPredators.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 18</value>
   </data>
-  <data name="m_lblPredators.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrPredators.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="m_lblPredators.Text" xml:space="preserve">
+  <data name="m_hdrPredators.Text" xml:space="preserve">
     <value>Pre&amp;dators ranked:</value>
   </data>
-  <data name="m_lblPredators.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrPredators.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblPredators.Name" xml:space="preserve">
-    <value>m_lblPredators</value>
+  <data name="&gt;&gt;m_hdrPredators.Name" xml:space="preserve">
+    <value>m_hdrPredators</value>
   </data>
-  <data name="&gt;&gt;m_lblPredators.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrPredators.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblPredators.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrPredators.Parent" xml:space="preserve">
     <value>m_plPredators</value>
   </data>
-  <data name="&gt;&gt;m_lblPredators.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrPredators.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_plPredators.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -519,43 +519,43 @@
   <data name="&gt;&gt;m_plPredators.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_lblPrey.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrPrey.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblPrey.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="m_hdrPrey.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
-  <data name="m_lblPrey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrPrey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblPrey.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrPrey.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_lblPrey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_hdrPrey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_lblPrey.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrPrey.Size" type="System.Drawing.Size, System.Drawing">
     <value>193, 18</value>
   </data>
-  <data name="m_lblPrey.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrPrey.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="m_lblPrey.Text" xml:space="preserve">
+  <data name="m_hdrPrey.Text" xml:space="preserve">
     <value>Pre&amp;y ranked:</value>
   </data>
-  <data name="m_lblPrey.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrPrey.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblPrey.Name" xml:space="preserve">
-    <value>m_lblPrey</value>
+  <data name="&gt;&gt;m_hdrPrey.Name" xml:space="preserve">
+    <value>m_hdrPrey</value>
   </data>
-  <data name="&gt;&gt;m_lblPrey.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrPrey.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblPrey.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrPrey.Parent" xml:space="preserve">
     <value>m_plPrey</value>
   </data>
-  <data name="&gt;&gt;m_lblPrey.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrPrey.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_plPrey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -676,6 +676,6 @@
     <value>EcosimOutputPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.428, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

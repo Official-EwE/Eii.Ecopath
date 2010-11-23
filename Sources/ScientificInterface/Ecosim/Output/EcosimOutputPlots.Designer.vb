@@ -34,14 +34,14 @@ Namespace Ecosim
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
             Me.m_plGroups = New System.Windows.Forms.Panel
-            Me.m_lblGroup = New System.Windows.Forms.Label
+            Me.m_hdrGroup = New cEwEHeaderLabel
             Me.m_plFleets = New System.Windows.Forms.Panel
             Me.m_lbFleets = New ScientificInterfaceShared.Controls.cFleetListBox
-            Me.m_lblFleets = New System.Windows.Forms.Label
+            Me.m_hdrFleets = New cEwEHeaderLabel
             Me.m_plPredators = New System.Windows.Forms.Panel
-            Me.m_lblPredators = New System.Windows.Forms.Label
+            Me.m_hdrPredators = New cEwEHeaderLabel
             Me.m_plPrey = New System.Windows.Forms.Panel
-            Me.m_lblPrey = New System.Windows.Forms.Label
+            Me.m_hdrPrey = New cEwEHeaderLabel
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -147,22 +147,20 @@ Namespace Ecosim
             '
             'm_plGroups
             '
-            Me.m_plGroups.Controls.Add(Me.m_lblGroup)
+            Me.m_plGroups.Controls.Add(Me.m_hdrGroup)
             Me.m_plGroups.Controls.Add(Me.m_lbGroups)
             resources.ApplyResources(Me.m_plGroups, "m_plGroups")
             Me.m_plGroups.Name = "m_plGroups"
             '
-            'm_lblGroup
+            'm_hdrGroup
             '
-            resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
-            Me.m_lblGroup.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblGroup.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblGroup.Name = "m_lblGroup"
+            resources.ApplyResources(Me.m_hdrGroup, "m_hdrGroup")
+            Me.m_hdrGroup.Name = "m_hdrGroup"
             '
             'm_plFleets
             '
             Me.m_plFleets.Controls.Add(Me.m_lbFleets)
-            Me.m_plFleets.Controls.Add(Me.m_lblFleets)
+            Me.m_plFleets.Controls.Add(Me.m_hdrFleets)
             resources.ApplyResources(Me.m_plFleets, "m_plFleets")
             Me.m_plFleets.Name = "m_plFleets"
             '
@@ -178,40 +176,34 @@ Namespace Ecosim
             Me.m_lbFleets.SortThreshold = -9999.0!
             Me.m_lbFleets.SortType = ScientificInterfaceShared.Controls.cFleetListBox.eSortType.FleetIndexAsc
             '
-            'm_lblFleets
+            'm_hdrFleets
             '
-            resources.ApplyResources(Me.m_lblFleets, "m_lblFleets")
-            Me.m_lblFleets.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblFleets.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblFleets.Name = "m_lblFleets"
+            resources.ApplyResources(Me.m_hdrFleets, "m_hdrFleets")
+            Me.m_hdrFleets.Name = "m_hdrFleets"
             '
             'm_plPredators
             '
-            Me.m_plPredators.Controls.Add(Me.m_lblPredators)
+            Me.m_plPredators.Controls.Add(Me.m_hdrPredators)
             Me.m_plPredators.Controls.Add(Me.m_lbPredators)
             resources.ApplyResources(Me.m_plPredators, "m_plPredators")
             Me.m_plPredators.Name = "m_plPredators"
             '
-            'm_lblPredators
+            'm_hdrPredators
             '
-            resources.ApplyResources(Me.m_lblPredators, "m_lblPredators")
-            Me.m_lblPredators.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblPredators.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblPredators.Name = "m_lblPredators"
+            resources.ApplyResources(Me.m_hdrPredators, "m_hdrPredators")
+            Me.m_hdrPredators.Name = "m_hdrPredators"
             '
             'm_plPrey
             '
-            Me.m_plPrey.Controls.Add(Me.m_lblPrey)
+            Me.m_plPrey.Controls.Add(Me.m_hdrPrey)
             Me.m_plPrey.Controls.Add(Me.m_lbPrey)
             resources.ApplyResources(Me.m_plPrey, "m_plPrey")
             Me.m_plPrey.Name = "m_plPrey"
             '
-            'm_lblPrey
+            'm_hdrPrey
             '
-            resources.ApplyResources(Me.m_lblPrey, "m_lblPrey")
-            Me.m_lblPrey.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblPrey.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblPrey.Name = "m_lblPrey"
+            resources.ApplyResources(Me.m_hdrPrey, "m_hdrPrey")
+            Me.m_hdrPrey.Name = "m_hdrPrey"
             '
             'EcosimOutputPlots
             '
@@ -242,11 +234,11 @@ Namespace Ecosim
         Private WithEvents m_plFleets As System.Windows.Forms.Panel
         Private WithEvents m_plPredators As System.Windows.Forms.Panel
         Private WithEvents m_plPrey As System.Windows.Forms.Panel
-        Private WithEvents m_lblGroup As System.Windows.Forms.Label
-        Private WithEvents m_lblPredators As System.Windows.Forms.Label
-        Private WithEvents m_lblPrey As System.Windows.Forms.Label
+        Private WithEvents m_hdrGroup As cEwEHeaderLabel
+        Private WithEvents m_hdrPredators As cEwEHeaderLabel
+        Private WithEvents m_hdrPrey As cEwEHeaderLabel
         Private WithEvents m_lbFleets As cFleetListBox
-        Private WithEvents m_lblFleets As System.Windows.Forms.Label
+        Private WithEvents m_hdrFleets As cEwEHeaderLabel
     End Class
 
 End Namespace
