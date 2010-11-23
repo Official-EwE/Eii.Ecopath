@@ -34,14 +34,14 @@ Namespace Ecosim
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
             Me.m_plGroups = New System.Windows.Forms.Panel
-            Me.m_hdrGroup = New cEwEHeaderLabel
+            Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_plFleets = New System.Windows.Forms.Panel
             Me.m_lbFleets = New ScientificInterfaceShared.Controls.cFleetListBox
-            Me.m_hdrFleets = New cEwEHeaderLabel
+            Me.m_hdrFleets = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_plPredators = New System.Windows.Forms.Panel
-            Me.m_hdrPredators = New cEwEHeaderLabel
+            Me.m_hdrPredators = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_plPrey = New System.Windows.Forms.Panel
-            Me.m_hdrPrey = New cEwEHeaderLabel
+            Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()

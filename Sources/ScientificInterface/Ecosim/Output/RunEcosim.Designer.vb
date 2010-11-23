@@ -40,7 +40,7 @@ Namespace Ecosim
             Me.tsbResetFs = New System.Windows.Forms.ToolStripButton
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad
             Me.m_spContainer = New System.Windows.Forms.SplitContainer
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
+            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
             Me.m_ts = New System.Windows.Forms.ToolStrip
             Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton
             Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel
@@ -69,9 +69,9 @@ Namespace Ecosim
             Me.m_scGraph = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
             Me.m_scOptions = New System.Windows.Forms.SplitContainer
-            Me.m_lblRuns = New System.Windows.Forms.Label
+            Me.m_hdrRuns = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lbRuns = New System.Windows.Forms.ListBox
-            Me.m_lblGroups = New System.Windows.Forms.Label
+            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
             ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
             ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
@@ -80,7 +80,7 @@ Namespace Ecosim
             Me.m_spContainer.Panel1.SuspendLayout()
             Me.m_spContainer.Panel2.SuspendLayout()
             Me.m_spContainer.SuspendLayout()
-            Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_tlpMain.SuspendLayout()
             Me.m_ts.SuspendLayout()
             Me.m_scGraph.Panel1.SuspendLayout()
             Me.m_scGraph.Panel2.SuspendLayout()
@@ -157,6 +157,7 @@ Namespace Ecosim
             'm_sketchPad
             '
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
+            Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
             Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
@@ -168,7 +169,9 @@ Namespace Ecosim
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
             Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.ShowYMark = False
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.OK
             Me.m_sketchPad.UIContext = Nothing
             Me.m_sketchPad.XMarkLabel = ""
             Me.m_sketchPad.XMarkValue = -9999.0!
@@ -186,7 +189,7 @@ Namespace Ecosim
             '
             'm_spContainer.Panel1
             '
-            Me.m_spContainer.Panel1.Controls.Add(Me.TableLayoutPanel1)
+            Me.m_spContainer.Panel1.Controls.Add(Me.m_tlpMain)
             '
             'm_spContainer.Panel2
             '
@@ -194,12 +197,12 @@ Namespace Ecosim
             Me.m_spContainer.Panel2.Controls.Add(Me.btnRunOrStop)
             Me.m_spContainer.Panel2.Controls.Add(Me.m_sketchPad)
             '
-            'TableLayoutPanel1
+            'm_tlpMain
             '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.m_ts, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_scGraph, 0, 1)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
+            Me.m_tlpMain.Controls.Add(Me.m_ts, 0, 0)
+            Me.m_tlpMain.Controls.Add(Me.m_scGraph, 0, 1)
+            Me.m_tlpMain.Name = "m_tlpMain"
             '
             'm_ts
             '
@@ -390,20 +393,18 @@ Namespace Ecosim
             '
             'm_scOptions.Panel1
             '
-            Me.m_scOptions.Panel1.Controls.Add(Me.m_lblRuns)
+            Me.m_scOptions.Panel1.Controls.Add(Me.m_hdrRuns)
             Me.m_scOptions.Panel1.Controls.Add(Me.m_lbRuns)
             '
             'm_scOptions.Panel2
             '
-            Me.m_scOptions.Panel2.Controls.Add(Me.m_lblGroups)
+            Me.m_scOptions.Panel2.Controls.Add(Me.m_hdrGroups)
             Me.m_scOptions.Panel2.Controls.Add(Me.m_lbGroups)
             '
-            'm_lblRuns
+            'm_hdrRuns
             '
-            resources.ApplyResources(Me.m_lblRuns, "m_lblRuns")
-            Me.m_lblRuns.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lblRuns.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblRuns.Name = "m_lblRuns"
+            resources.ApplyResources(Me.m_hdrRuns, "m_hdrRuns")
+            Me.m_hdrRuns.Name = "m_hdrRuns"
             '
             'm_lbRuns
             '
@@ -413,12 +414,10 @@ Namespace Ecosim
             Me.m_lbRuns.Name = "m_lbRuns"
             Me.m_lbRuns.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
             '
-            'm_lblGroups
+            'm_hdrGroups
             '
-            resources.ApplyResources(Me.m_lblGroups, "m_lblGroups")
-            Me.m_lblGroups.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lblGroups.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblGroups.Name = "m_lblGroups"
+            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
+            Me.m_hdrGroups.Name = "m_hdrGroups"
             '
             'm_lbGroups
             '
@@ -448,8 +447,8 @@ Namespace Ecosim
             Me.m_spContainer.Panel2.ResumeLayout(False)
             Me.m_spContainer.Panel2.PerformLayout()
             Me.m_spContainer.ResumeLayout(False)
-            Me.TableLayoutPanel1.ResumeLayout(False)
-            Me.TableLayoutPanel1.PerformLayout()
+            Me.m_tlpMain.ResumeLayout(False)
+            Me.m_tlpMain.PerformLayout()
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.m_scGraph.Panel1.ResumeLayout(False)
@@ -472,7 +471,7 @@ Namespace Ecosim
         Private WithEvents tsbSetTo0 As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbSetToValue As System.Windows.Forms.ToolStripButton
         Private WithEvents m_spContainer As System.Windows.Forms.SplitContainer
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_ts As System.Windows.Forms.ToolStrip
         Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
         Private WithEvents tslblSSValue As System.Windows.Forms.ToolStripLabel
@@ -495,12 +494,12 @@ Namespace Ecosim
         Private WithEvents m_lbRuns As System.Windows.Forms.ListBox
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents m_scGraph As System.Windows.Forms.SplitContainer
-        Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents m_lblGroups As System.Windows.Forms.Label
-        Private WithEvents m_lblRuns As System.Windows.Forms.Label
+        Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_hdrGroups As cEwEHeaderLabel
+        Private WithEvents m_hdrRuns As cEwEHeaderLabel
         Private WithEvents m_tssbExplore As System.Windows.Forms.ToolStripSplitButton
         Private WithEvents m_tsmiSortMostChanged As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ChangeAmountToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents ChangeAmountToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tstbChangeAmount As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tsdrpdnbtnContent As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents m_tsmiBiomass As System.Windows.Forms.ToolStripMenuItem
