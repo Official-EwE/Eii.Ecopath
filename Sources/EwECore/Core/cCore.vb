@@ -9364,7 +9364,7 @@ Public Class cCore
             Dim wmatwinf As Single
             Dim rp As Single
             Dim ba As Single
-
+            Dim leading As Integer
 
             ReDim Bio(nStanzas)
             ReDim Bat(nStanzas) 'in this case the Bat() is ignored so no need to populate it
@@ -9393,6 +9393,7 @@ Public Class cCore
                 cb(i) = stanza.CB(i)
                 FirstAge(i) = stanza.StartAge(i)
             Next
+            leading = stanza.LeadingB
 
             If SecondAge(nStanzas) = 0 Then
                 For i = 2 To nStanzas
@@ -9437,6 +9438,8 @@ Public Class cCore
             stanza.BiomassAccumulationRate = ba
             stanza.HatchCode = iHatchCode
             stanza.FixedFecundity = bFixedFecundity
+            stanza.LeadingB = leading
+            stanza.LeadingCB = leading
 
             'stanza.AllowValidation = True
 
@@ -11658,7 +11661,10 @@ Public Class cCore
 
                     'Tell the datasource that both Ecopath and Stanza data need saving. May not need to do this it may be good enough that the stanza data is dirty
                     DataSource.SetChanged(eCoreComponentType.EcoPath)
-                    DataSource.SetChanged(eCoreComponentType.EcoSim)
+                    ' JS 23Nov10: only flag sim as dirty when sim is loaded, hm?
+                    If Me.m_StateMonitor.HasEcosimLoaded Then
+                        DataSource.SetChanged(eCoreComponentType.EcoSim)
+                    End If
                     ' Ecopath needs to run again
                     Me.StateMonitor.SetEcopathLoaded(True)
 

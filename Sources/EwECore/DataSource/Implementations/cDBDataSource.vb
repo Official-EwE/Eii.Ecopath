@@ -1585,6 +1585,8 @@ Namespace DataSources
                         stanzaDS.FixedFecundity(iStanza) = CBool(rdStanza("FixedFecundity"))
 
                         ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
+                        ' JS 23nov10: Hah, three and a half years later these values are stored again
+                        stanzaDS.BaseStanza(iStanza) = CInt(Me.ReadSafe(rdStanza, "LeadingLifeStage", cCore.NULL_VALUE))
 
                     Catch ex As Exception
                         Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
@@ -1688,6 +1690,8 @@ Namespace DataSources
                         drow("FixedFecundity") = stanzaDS.FixedFecundity(iStanza)
 
                         ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
+                        ' JS 23nov10: Leading B and QB stored again
+                        drow("LeadingLifeStage") = stanzaDS.BaseStanza(iStanza)
 
                         If bNewRow Then
                             writer.AddRow(drow)

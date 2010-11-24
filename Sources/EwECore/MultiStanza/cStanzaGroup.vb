@@ -267,15 +267,6 @@ Public Class cStanzaGroup
 
 #Region "Variables by dot (.) operator"
 
-    'Public Property VBGF() As Single
-    '    Get
-    '        Return CSng(Me.GetVariable(eVarNameFlags.StanzaVBGF))
-    '    End Get
-    '    Set(ByVal value As Single)
-    '        Me.SetVariable(eVarNameFlags.StanzaVBGF, value)
-    '    End Set
-    'End Property
-
     Public Property LeadingB() As Integer
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.LeadingBiomass))
