@@ -171,7 +171,6 @@ Namespace Ecosim
             Me.m_sketchPad.ShowXMark = False
             Me.m_sketchPad.ShowYMark = False
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
-            Me.m_sketchPad.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.OK
             Me.m_sketchPad.UIContext = Nothing
             Me.m_sketchPad.XMarkLabel = ""
             Me.m_sketchPad.XMarkValue = -9999.0!
