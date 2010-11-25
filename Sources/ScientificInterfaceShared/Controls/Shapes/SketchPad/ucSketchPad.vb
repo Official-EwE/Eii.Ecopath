@@ -150,22 +150,6 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the style of the control to override data styles.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Obsolete("Use Editable instead"), _
-         Browsable(False)> _
-        Public Property Style() As cStyleGuide.eStyleFlags
-            Get
-                If Me.Editable Then Return cStyleGuide.eStyleFlags.OK Else Return cStyleGuide.eStyleFlags.NotEditable
-            End Get
-            Set(ByVal value As cStyleGuide.eStyleFlags)
-                Me.Editable = ((value And cStyleGuide.eStyleFlags.NotEditable) > 0)
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Get/set the shape to display in the sketch pad.
         ''' </summary>
         ''' -------------------------------------------------------------------
