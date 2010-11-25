@@ -75,7 +75,6 @@ Public Class gridEditMultiStanza
 
         Dim source As cEcoPathGroupInput = Nothing
         Dim ewec As EwECell = Nothing
-        Dim bReadOnly As Boolean
         Dim iRow As Integer
         Dim bIsEcosimLoaded As Boolean = (core.ActiveEcosimScenarioIndex > -1)
 
