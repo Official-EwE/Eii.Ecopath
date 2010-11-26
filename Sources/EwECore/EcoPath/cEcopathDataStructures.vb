@@ -11,6 +11,29 @@ Public Class cEcopathDataStructures
 
     Public bInitialized As Boolean = False
 
+    Public ModelDBID As Integer = 0
+    Public ModelName As String = ""
+    Public ModelDescription As String = ""
+    Public ModelArea As Single = 0
+    Public ModelNumDigits As Integer = 0
+    Public ModelGroupDigits As Boolean = False
+    Public ModelUnitTime As eUnitTimeType = 0
+    Public ModelUnitTimeCustom As String = ""
+    Public ModelUnitCurrency As eUnitCurrencyType = eUnitCurrencyType.NotSet
+    Public ModelUnitCurrencyCustom As String = ""
+    Public ModelUnitMonetary As eUnitMonetaryType = 0
+    Public ModelUnitMonetaryCustom As String = ""
+    Public ModelAuthor As String = ""
+    Public ModelContact As String = ""
+    Public ModelLastSaved As Double = 0
+    Public ModelAreaName As String = ""
+    Public ModelSouth As Single = 0
+    Public ModelNorth As Single = 0
+    Public ModelWest As Single = 0
+    Public ModelEast As Single = 0
+    Public FirstYear As Integer = Date.Now.Year
+    Public NumYears As Integer = 1
+
     ''' <summary>Group names.</summary>
     ''' <remarks>In EwE5, group names were used to identify groups. In EwE6 this 
     ''' is done via <see cref="GroupDBID">unique IDs</see></remarks>
@@ -1140,7 +1163,7 @@ Public Class cEcopathDataStructures
 
 #End Region
 
-    Friend Sub copyTo(ByRef dest As cEcopathDataStructures)
+    Friend Sub copyTo(ByRef dest As cEcopathDataStructures, Optional ByVal bRedim As Boolean = True)
         Try
             'variables needed to redim
             dest.NumGroups = NumGroups
@@ -1148,13 +1171,15 @@ Public Class cEcopathDataStructures
             dest.NumDetrit = NumDetrit
             dest.NumLiving = NumLiving
 
-            dest.redimGroups()
+            If bRedim Then
+                dest.redimGroups()
+            End If
 
             dest.bInitialized = bInitialized
 
 
             GroupName.CopyTo(dest.GroupName, 0)    'was Specie()
-            GroupDBID.CopyTo(dest.GroupDBID, 0)        'Database ID - uniquely identifies the group. Access restricted to the Core only.
+            'GroupDBID.CopyTo(dest.GroupDBID, 0)        'Do not copy IDs!
 
             dest.NumEcosimScenarios = NumEcosimScenarios
             'EcosimScenarioName.CopyTo(dest.EcosimScenarioName, 0)
@@ -1187,7 +1212,8 @@ Public Class cEcopathDataStructures
             BHinput.CopyTo(dest.BHinput, 0)
 
             'min_B_QB = dest.min_B_QB 'minimum B*QB
-
+            dest.DCInput = DCInput.Clone
+            dest.DC = DC.Clone
 
             'dest.currUnitName = currUnitName
             dest.currUnitIndex = currUnitIndex
@@ -1248,7 +1274,7 @@ Public Class cEcopathDataStructures
             dest.Discard = Discard.Clone
             dest.DiscardFate = DiscardFate.Clone
             FleetName.CopyTo(dest.FleetName, 0)
-            FleetDBID.CopyTo(dest.FleetDBID, 0)
+            'FleetDBID.CopyTo(dest.FleetDBID, 0) ' Do NOT copy DBIDs
             dest.Landing = Landing.Clone
             dest.Market = Market.Clone
             dest.PropDiscard = PropDiscard.Clone
@@ -1273,6 +1299,28 @@ Public Class cEcopathDataStructures
             FleetColor.CopyTo(dest.FleetColor, 0)
             dest.Host = Host.Clone
             mis.CopyTo(dest.mis, 0)
+
+            ' Copy model data
+            dest.ModelArea = Me.ModelArea
+            dest.ModelAreaName = Me.ModelAreaName
+            dest.ModelAuthor = Me.ModelAuthor
+            dest.ModelContact = Me.ModelContact
+            dest.ModelDescription = Me.ModelDescription
+            dest.ModelEast = Me.ModelEast
+            dest.ModelGroupDigits = Me.ModelGroupDigits
+            dest.ModelName = ModelName
+            dest.ModelNorth = ModelNorth
+            dest.ModelNumDigits = Me.ModelNumDigits
+            dest.ModelSouth = Me.ModelSouth
+            dest.ModelUnitCurrency = Me.ModelUnitCurrency
+            dest.ModelUnitCurrencyCustom = Me.ModelUnitCurrencyCustom
+            dest.ModelUnitMonetary = Me.ModelUnitMonetary
+            dest.ModelUnitMonetaryCustom = Me.ModelUnitMonetaryCustom
+            dest.ModelUnitTime = Me.ModelUnitTime
+            dest.ModelUnitTimeCustom = Me.ModelUnitTimeCustom
+            dest.ModelWest = Me.ModelWest
+            dest.FirstYear = Me.FirstYear
+            dest.NumYears = Me.NumYears
 
         Catch ex2 As Exception
             Debug.Assert(False, ex2.Message)

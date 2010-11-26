@@ -2270,29 +2270,6 @@ Public Class cCore
         End Get
     End Property
 
-    Friend m_EwEModelDBID As Integer = 0
-    Friend m_EwEModelName As String = ""
-    Friend m_EwEModelDescription As String = ""
-    Friend m_EwEModelArea As Single = 0
-    Friend m_EwEModelNumDigits As Integer = 0
-    Friend m_EwEModelGroupDigits As Boolean = False
-    Friend m_EwEModelUnitTime As eUnitTimeType = 0
-    Friend m_EwEModelUnitTimeCustom As String = ""
-    Friend m_EwEModelUnitCurrency As eUnitCurrencyType = eUnitCurrencyType.NotSet
-    Friend m_EwEModelUnitCurrencyCustom As String = ""
-    Friend m_EwEModelUnitMonetary As eUnitMonetaryType = 0
-    Friend m_EwEModelUnitMonetaryCustom As String = ""
-    Friend m_EwEModelAuthor As String = ""
-    Friend m_EwEModelContact As String = ""
-    Friend m_EwEModelLastSaved As Double = 0
-    Friend m_EwEModelAreaName As String = ""
-    Friend m_EwEModelSouth As Single = 0
-    Friend m_EwEModelNorth As Single = 0
-    Friend m_EwEModelWest As Single = 0
-    Friend m_EwEModelEast As Single = 0
-    Friend m_EwEModelFirstYear As Integer = Date.Now.Year
-    Friend m_EwEModelNumYears As Integer = 1
-
     Private Function InitEwEModel() As Boolean
         Me.m_EwEModel = New cEwEModel(Me)
         Return LoadEwEModel()
@@ -2302,62 +2279,62 @@ Public Class cCore
         'Pre
         Debug.Assert(Me.m_EwEModel IsNot Nothing)
         Me.m_EwEModel.AllowValidation = False
-        Me.m_EwEModel.DBID = Me.m_EwEModelDBID
-        Me.m_EwEModel.Name = Me.m_EwEModelName
-        Me.m_EwEModel.Description = Me.m_EwEModelDescription
-        Me.m_EwEModel.Area = Me.m_EwEModelArea
-        Me.m_EwEModel.Author = Me.m_EwEModelAuthor
-        Me.m_EwEModel.Contact = Me.m_EwEModelContact
-        Me.m_EwEModel.NumDigits = Me.m_EwEModelNumDigits
-        Me.m_EwEModel.GroupDigits = Me.m_EwEModelGroupDigits
-        Me.m_EwEModel.UnitCurrency = Me.m_EwEModelUnitCurrency
-        Me.m_EwEModel.UnitCurrencyCustomText = Me.m_EwEModelUnitCurrencyCustom
-        Me.m_EwEModel.UnitTime = Me.m_EwEModelUnitTime
-        Me.m_EwEModel.UnitTimeCustomText = Me.m_EwEModelUnitTimeCustom
-        Me.m_EwEModel.UnitMonetary = Me.m_EwEModelUnitMonetary
-        Me.m_EwEModel.UnitMonetaryCustomText = Me.m_EwEModelUnitMonetaryCustom
-        Me.m_EwEModel.FirstYear = Me.m_EwEModelFirstYear
-        Me.m_EwEModel.NumYears = Me.m_EwEModelNumYears
-        Me.m_EwEModel.AreaName = Me.m_EwEModelAreaName
-        Me.m_EwEModel.South = Me.m_EwEModelSouth
-        Me.m_EwEModel.North = Me.m_EwEModelNorth
-        Me.m_EwEModel.West = Me.m_EwEModelWest
-        Me.m_EwEModel.East = Me.m_EwEModelEast
-        Me.m_EwEModel.LastSaved = Me.m_EwEModelLastSaved
+        Me.m_EwEModel.DBID = Me.m_EcoPathData.ModelDBID
+        Me.m_EwEModel.Name = Me.m_EcoPathData.ModelName
+        Me.m_EwEModel.Description = Me.m_EcoPathData.ModelDescription
+        Me.m_EwEModel.Area = Me.m_EcoPathData.ModelArea
+        Me.m_EwEModel.Author = Me.m_EcoPathData.ModelAuthor
+        Me.m_EwEModel.Contact = Me.m_EcoPathData.ModelContact
+        Me.m_EwEModel.NumDigits = Me.m_EcoPathData.ModelNumDigits
+        Me.m_EwEModel.GroupDigits = Me.m_EcoPathData.ModelGroupDigits
+        Me.m_EwEModel.UnitCurrency = Me.m_EcoPathData.ModelUnitCurrency
+        Me.m_EwEModel.UnitCurrencyCustomText = Me.m_EcoPathData.ModelUnitCurrencyCustom
+        Me.m_EwEModel.UnitTime = Me.m_EcoPathData.ModelUnitTime
+        Me.m_EwEModel.UnitTimeCustomText = Me.m_EcoPathData.ModelUnitTimeCustom
+        Me.m_EwEModel.UnitMonetary = Me.m_EcoPathData.ModelUnitMonetary
+        Me.m_EwEModel.UnitMonetaryCustomText = Me.m_EcoPathData.ModelUnitMonetaryCustom
+        Me.m_EwEModel.FirstYear = Me.m_EcoPathData.FirstYear
+        Me.m_EwEModel.NumYears = Me.m_EcoPathData.NumYears
+        Me.m_EwEModel.AreaName = Me.m_EcoPathData.ModelAreaName
+        Me.m_EwEModel.South = Me.m_EcoPathData.ModelSouth
+        Me.m_EwEModel.North = Me.m_EcoPathData.ModelNorth
+        Me.m_EwEModel.West = Me.m_EcoPathData.ModelWest
+        Me.m_EwEModel.East = Me.m_EcoPathData.ModelEast
+        Me.m_EwEModel.LastSaved = Me.m_EcoPathData.ModelLastSaved
         Me.m_EwEModel.AllowValidation = True
 
         ' Update relevant unit(s) in Ecopath
-        Me.m_EcoPathData.currUnitIndex = Me.m_EwEModelUnitCurrency
+        Me.m_EcoPathData.ModelUnitCurrency = DirectCast(Me.m_EcoPathData.currUnitIndex, eUnitCurrencyType)
 
         Me.m_EwEModel.ResetStatusFlags()
         Return True
     End Function
 
     Friend Function UpdateEwEModel() As Boolean
-        Me.m_EwEModelName = Me.m_EwEModel.Name
-        Me.m_EwEModelDescription = Me.m_EwEModel.Description
-        Me.m_EwEModelAuthor = Me.m_EwEModel.Author
-        Me.m_EwEModelContact = Me.m_EwEModel.Contact
-        Me.m_EwEModelArea = Me.m_EwEModel.Area
-        Me.m_EwEModelNumDigits = Me.m_EwEModel.NumDigits
-        Me.m_EwEModelGroupDigits = Me.m_EwEModel.GroupDigits
-        Me.m_EwEModelUnitCurrency = Me.m_EwEModel.UnitCurrency
-        Me.m_EwEModelUnitCurrencyCustom = Me.m_EwEModel.UnitCurrencyCustomText
-        Me.m_EwEModelUnitTime = Me.m_EwEModel.UnitTime
-        Me.m_EwEModelUnitTimeCustom = Me.m_EwEModel.UnitTimeCustomText
-        Me.m_EwEModelUnitMonetary = Me.m_EwEModel.UnitMonetary
-        Me.m_EwEModelUnitMonetaryCustom = Me.m_EwEModel.UnitMonetaryCustomText
-        Me.m_EwEModelFirstYear = Me.m_EwEModel.FirstYear
-        Me.m_EwEModelNumYears = Me.m_EwEModel.NumYears
-        Me.m_EwEModelAreaName = Me.m_EwEModel.AreaName
-        Me.m_EwEModelSouth = Me.m_EwEModel.South
-        Me.m_EwEModelNorth = Me.m_EwEModel.North
-        Me.m_EwEModelWest = Me.m_EwEModel.West
-        Me.m_EwEModelEast = Me.m_EwEModel.East
+        Me.m_EcoPathData.ModelName = Me.m_EwEModel.Name
+        Me.m_EcoPathData.ModelDescription = Me.m_EwEModel.Description
+        Me.m_EcoPathData.ModelAuthor = Me.m_EwEModel.Author
+        Me.m_EcoPathData.ModelContact = Me.m_EwEModel.Contact
+        Me.m_EcoPathData.ModelArea = Me.m_EwEModel.Area
+        Me.m_EcoPathData.ModelNumDigits = Me.m_EwEModel.NumDigits
+        Me.m_EcoPathData.ModelGroupDigits = Me.m_EwEModel.GroupDigits
+        Me.m_EcoPathData.ModelUnitCurrency = Me.m_EwEModel.UnitCurrency
+        Me.m_EcoPathData.ModelUnitCurrencyCustom = Me.m_EwEModel.UnitCurrencyCustomText
+        Me.m_EcoPathData.ModelUnitTime = Me.m_EwEModel.UnitTime
+        Me.m_EcoPathData.ModelUnitTimeCustom = Me.m_EwEModel.UnitTimeCustomText
+        Me.m_EcoPathData.ModelUnitMonetary = Me.m_EwEModel.UnitMonetary
+        Me.m_EcoPathData.ModelUnitMonetaryCustom = Me.m_EwEModel.UnitMonetaryCustomText
+        Me.m_EcoPathData.FirstYear = Me.m_EwEModel.FirstYear
+        Me.m_EcoPathData.NumYears = Me.m_EwEModel.NumYears
+        Me.m_EcoPathData.ModelAreaName = Me.m_EwEModel.AreaName
+        Me.m_EcoPathData.ModelSouth = Me.m_EwEModel.South
+        Me.m_EcoPathData.ModelNorth = Me.m_EwEModel.North
+        Me.m_EcoPathData.ModelWest = Me.m_EwEModel.West
+        Me.m_EcoPathData.ModelEast = Me.m_EwEModel.East
         ' Do not update LastSaved; exclusively set by core
 
         ' Update relevant unit(s) in Ecopath
-        Me.m_EcoPathData.currUnitIndex = Me.m_EwEModelUnitCurrency
+        Me.m_EcoPathData.currUnitIndex = Me.m_EwEModel.UnitCurrency
 
         Return True
     End Function
@@ -2598,7 +2575,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Private Function SaveModel() As Boolean
 
-        Me.m_EwEModelLastSaved = CInt(Date.Now().ToOADate())
+        Me.m_EcoPathData.ModelLastSaved = CInt(Date.Now().ToOADate())
 
         If (DirectCast(Me.DataSource, IEcopathDataSource).SaveModel()) Then
             ' #Yes: invoke plugin point

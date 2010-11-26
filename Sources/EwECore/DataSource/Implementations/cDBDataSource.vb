@@ -713,6 +713,7 @@ Namespace DataSources
         Private Function LoadModelInfo() As Boolean
 
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathModel")
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim sVal1 As Single = 0.0!
             Dim sVal2 As Single = 0.0!
             Dim bSucces As Boolean = True
@@ -727,34 +728,34 @@ Namespace DataSources
                 ' There is only one model in an EwE6 database
                 reader.Read()
 
-                Me.m_core.m_EwEModelDBID = CInt(reader("ModelID"))
-                Me.m_core.m_EwEModelName = CStr(reader("Name"))
-                Me.m_core.m_EwEModelDescription = CStr(reader("Description"))
-                Me.m_core.m_EwEModelAuthor = CStr(Me.ReadSafe(reader, "Author", ""))
-                Me.m_core.m_EwEModelContact = CStr(Me.ReadSafe(reader, "Contact", ""))
-                Me.m_core.m_EwEModelArea = CSng(Me.ReadSafe(reader, "Area", 1.0))
-                Me.m_core.m_EwEModelNumDigits = CInt(reader("NumDigits"))
-                Me.m_core.m_EwEModelGroupDigits = CBool(Me.ReadSafe(reader, "GroupDigits", False))
-                Me.m_core.m_EwEModelUnitCurrency = DirectCast(Me.ReadSafe(reader, "UnitCurrency", eUnitCurrencyType.WetWeight), eUnitCurrencyType)
-                Me.m_core.m_EwEModelUnitCurrencyCustom = CStr(Me.ReadSafe(reader, "UnitCurrencyCustom", ""))
-                Me.m_core.m_EwEModelUnitTime = DirectCast(Me.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
-                Me.m_core.m_EwEModelUnitTimeCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
-                Me.m_core.m_EwEModelUnitMonetary = DirectCast(Me.ReadSafe(reader, "UnitMonetary", eUnitMonetaryType.EUR), eUnitMonetaryType)
-                'Me.m_core.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
-                Me.m_core.m_EwEModelFirstYear = CInt(Me.ReadSafe(reader, "FirstYear", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelNumYears = Math.Max(1, CInt(Me.ReadSafe(reader, "NumYears", 1)))
+                ecopathDS.ModelDBID = CInt(reader("ModelID"))
+                ecopathDS.ModelName = CStr(reader("Name"))
+                ecopathDS.ModelDescription = CStr(reader("Description"))
+                ecopathDS.ModelAuthor = CStr(Me.ReadSafe(reader, "Author", ""))
+                ecopathDS.ModelContact = CStr(Me.ReadSafe(reader, "Contact", ""))
+                ecopathDS.ModelArea = CSng(Me.ReadSafe(reader, "Area", 1.0))
+                ecopathDS.ModelNumDigits = CInt(reader("NumDigits"))
+                ecopathDS.ModelGroupDigits = CBool(Me.ReadSafe(reader, "GroupDigits", False))
+                ecopathDS.ModelUnitCurrency = DirectCast(Me.ReadSafe(reader, "UnitCurrency", eUnitCurrencyType.WetWeight), eUnitCurrencyType)
+                ecopathDS.ModelUnitCurrencyCustom = CStr(Me.ReadSafe(reader, "UnitCurrencyCustom", ""))
+                ecopathDS.ModelUnitTime = DirectCast(Me.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
+                ecopathDS.ModelUnitTimeCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
+                ecopathDS.ModelUnitMonetary = DirectCast(Me.ReadSafe(reader, "UnitMonetary", eUnitMonetaryType.EUR), eUnitMonetaryType)
+                'ecopathDS.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
+                ecopathDS.FirstYear = CInt(Me.ReadSafe(reader, "FirstYear", cCore.NULL_VALUE))
+                ecopathDS.NumYears = Math.Max(1, CInt(Me.ReadSafe(reader, "NumYears", 1)))
 
                 sVal1 = CSng(Me.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
                 sVal2 = CSng(Me.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelSouth = Math.Min(sVal1, sVal2)
-                Me.m_core.m_EwEModelNorth = Math.Max(sVal1, sVal2)
+                ecopathDS.ModelSouth = Math.Min(sVal1, sVal2)
+                ecopathDS.ModelNorth = Math.Max(sVal1, sVal2)
 
                 sVal1 = CSng(Me.ReadSafe(reader, "MinLon", cCore.NULL_VALUE))
                 sVal2 = CSng(Me.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
-                Me.m_core.m_EwEModelWest = Math.Min(sVal1, sVal2)
-                Me.m_core.m_EwEModelEast = Math.Max(sVal1, sVal2)
-                Me.m_core.m_EwEModelAreaName = CStr(Me.ReadSafe(reader, "AreaName", ""))
-                Me.m_core.m_EwEModelLastSaved = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
+                ecopathDS.ModelWest = Math.Min(sVal1, sVal2)
+                ecopathDS.ModelEast = Math.Max(sVal1, sVal2)
+                ecopathDS.ModelAreaName = CStr(Me.ReadSafe(reader, "AreaName", ""))
+                ecopathDS.ModelLastSaved = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading EcopathModel", ex.Message))
@@ -776,6 +777,7 @@ Namespace DataSources
         Private Function SaveModelInfo() As Boolean
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim bNewRow As Boolean = False
@@ -787,7 +789,7 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcopathModel")
                 dt = writer.GetDataTable()
 
-                drow = dt.Rows.Find(Me.m_core.m_EwEModelDBID)
+                drow = dt.Rows.Find(ecopathDS.ModelDBID)
 
                 bNewRow = (drow Is Nothing)
                 If bNewRow Then
@@ -796,25 +798,25 @@ Namespace DataSources
                     drow.BeginEdit()
                 End If
 
-                drow("Name") = Me.m_core.m_EwEModelName
-                drow("Description") = Me.m_core.m_EwEModelDescription
-                drow("Author") = Me.m_core.m_EwEModelAuthor
-                drow("Contact") = Me.m_core.m_EwEModelContact
-                drow("Area") = Me.m_core.m_EwEModelArea
-                drow("NumDigits") = Me.m_core.m_EwEModelNumDigits
-                drow("GroupDigits") = Me.m_core.m_EwEModelGroupDigits
-                drow("UnitCurrency") = Me.m_core.m_EwEModelUnitCurrency
-                drow("UnitCurrencyCustom") = Me.m_core.m_EwEModelUnitCurrencyCustom
-                drow("UnitTime") = Me.m_core.m_EwEModelUnitTime
-                drow("UnitTimeCustom") = Me.m_core.m_EwEModelUnitTimeCustom
-                drow("UnitMonetary") = Me.m_core.m_EwEModelUnitMonetary
-                drow("FirstYear") = Me.m_core.m_EwEModelFirstYear
-                drow("NumYears") = Me.m_core.m_EwEModelNumYears
-                drow("MinLat") = Me.m_core.m_EwEModelSouth
-                drow("MaxLat") = Me.m_core.m_EwEModelNorth
-                drow("MinLon") = Me.m_core.m_EwEModelWest
-                drow("MaxLon") = Me.m_core.m_EwEModelEast
-                drow("AreaName") = Me.m_core.m_EwEModelAreaName
+                drow("Name") = ecopathDS.ModelName
+                drow("Description") = ecopathDS.ModelDescription
+                drow("Author") = ecopathDS.ModelAuthor
+                drow("Contact") = ecopathDS.ModelContact
+                drow("Area") = ecopathDS.ModelArea
+                drow("NumDigits") = ecopathDS.ModelNumDigits
+                drow("GroupDigits") = ecopathDS.ModelGroupDigits
+                drow("UnitCurrency") = ecopathDS.ModelUnitCurrency
+                drow("UnitCurrencyCustom") = ecopathDS.ModelUnitCurrencyCustom
+                drow("UnitTime") = ecopathDS.ModelUnitTime
+                drow("UnitTimeCustom") = ecopathDS.ModelUnitTimeCustom
+                drow("UnitMonetary") = ecopathDS.ModelUnitMonetary
+                drow("FirstYear") = ecopathDS.FirstYear
+                drow("NumYears") = ecopathDS.NumYears
+                drow("MinLat") = ecopathDS.ModelSouth
+                drow("MaxLat") = ecopathDS.ModelNorth
+                drow("MinLon") = ecopathDS.ModelWest
+                drow("MaxLon") = ecopathDS.ModelEast
+                drow("AreaName") = ecopathDS.ModelAreaName
                 drow("LastSaved") = cDateUtils.DateToJulian()
 
                 If bNewRow Then
@@ -1465,12 +1467,12 @@ Namespace DataSources
                 dt = writer.GetDataTable()
 
                 ' Find existing row
-                drow = dt.Rows.Find(Me.m_core.m_EwEModelDBID)
+                drow = dt.Rows.Find(ecopathDS.ModelDBID)
                 bNewRow = (drow Is Nothing)
 
                 If bNewRow Then
                     drow = dt.NewRow()
-                    drow("ModelID") = Me.m_core.m_EwEModelDBID
+                    drow("ModelID") = ecopathDS.ModelDBID
                 Else
                     drow.BeginEdit()
                 End If

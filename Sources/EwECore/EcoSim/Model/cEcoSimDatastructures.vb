@@ -148,6 +148,7 @@ Public Class cEcosimDatastructures
 
     Public Eatenof() As Single
     Public Eatenby() As Single
+    Public DCMean(,) As Single
 
     ''' <summary>Nutrient loading forcing function number. This is an index in the tval() array.</summary>
     Public NutForceNumber As Integer
@@ -518,6 +519,9 @@ Public Class cEcosimDatastructures
         ReDim Eatenby(nGroups)
         ReDim Eatenof(nGroups)
         ReDim pred(nGroups)
+        ReDim DCMean(nGroups, nGroups)
+        ReDim DCPct(nGroups, 3) 'used for B1Round, B2Round, QB, derivt (BA)
+
         'ReDim rzero(nGroups)
         'ReDim wzero(nGroups)  'weight at recruitment to juvenile stage
 

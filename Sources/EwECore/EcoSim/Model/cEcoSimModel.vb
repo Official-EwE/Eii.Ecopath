@@ -1178,7 +1178,7 @@ Namespace Ecosim
                 m_ConTracer.Cupdate(B)
             End If
 
-            'SaveEiiDataFromEcosim(B)
+            SaveEiiDataFromEcosim(B)
 
             For i = 1 To nGroups
                 EatenbySt(i) = m_Data.Eatenby(i)
@@ -1517,32 +1517,25 @@ Namespace Ecosim
         Private Sub SaveEiiDataFromEcosim(ByVal BB() As Single)
             Dim i As Integer, j As Integer, ii As Integer
 
-            If DoingEiiSaving1Round Then
+            For i = 1 To nGroups
+                m_Data.DCPct(i, 0) = BB(i)
+            Next i 'save the biomass
 
-                For i = 1 To nGroups
-                    m_Data.DCPct(i, 0) = BB(i)
-                Next i 'save the biomass
+            For ii = 1 To m_Data.inlinks
+                i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
+                If m_Data.Eatenby(j) > 0 Then
+                    m_Data.DCMean(j, i) = m_Data.DCMean(j, i) / m_Data.Eatenby(j) 'DCmean just used for convenience to store the sim diets
+                End If
+            Next ii
 
-            ElseIf DoingEiiSaving2Round Then
+            For j = 1 To nGroups
+                m_Data.DCPct(j, 1) = BB(j)
+            Next j
 
-                For ii = 1 To m_Data.inlinks
-                    i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
-                    Debug.Assert(False, "Sort out DCMean")
-                    'ToDo_jb DCmean figure out if this is needed
-                    If m_Data.Eatenby(j) > 0 Then
-                        ' m_Data.DCMean(j, i) = m_Data.DCMean(j, i) / m_Data.Eatenby(j) 'DCmean just used for convenience to store the sim diets                 
-                    End If
-                Next ii
+            For j = 1 To m_EPData.NumLiving
+                m_Data.DCPct(j, 2) = m_Data.Eatenby(j) / BB(j)
+            Next j
 
-                For j = 1 To nGroups
-                    m_Data.DCPct(j, 1) = BB(j)
-                Next j
-
-                For j = 1 To m_EPData.NumLiving
-                    m_Data.DCPct(j, 2) = m_Data.Eatenby(j) / BB(j)
-                Next j
-
-            End If
         End Sub
 
         ''' <summary>
@@ -2275,6 +2268,7 @@ Namespace Ecosim
                     m_Data.Eatenof(i) = m_Data.Eatenof(i) + eat
                     m_Data.Eatenby(j) = m_Data.Eatenby(j) + eat
                     m_Data.Consumpt(i, j) = eat   'VILLY WHAT IS THIS USED FOR?  WRONG FOR COMPLEX ARENA CASES!
+                    m_Data.DCMean(j, i) = eat 'DCmean just used for convenience to store the sim diets
 
                     'ADDED CODE FOR CONTAMINANT ACCOUNTING
                     If m_TracerData.EcoSimConSimOn = True Then

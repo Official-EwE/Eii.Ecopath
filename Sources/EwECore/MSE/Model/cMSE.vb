@@ -2689,7 +2689,7 @@ Namespace MSE
 
                 'get the directory to dump the data to
                 Me.m_DataDir = AppDomain.CurrentDomain.BaseDirectory & "Tradeoff\"
-                Dim mName As String = m_core.m_EwEModelName
+                Dim mName As String = Me.m_core.m_EcoPathData.ModelName
 
                 strm = New StreamWriter(BuildCSVFilename("FleetTradeOff_", mName), False)
                 buff = New StringBuilder()
