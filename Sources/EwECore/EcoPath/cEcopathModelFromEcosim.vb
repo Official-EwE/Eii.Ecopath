@@ -30,9 +30,9 @@ Public Class cEcopathModelFromEcosim
     ''' <param name="results"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function Create(ByVal strFileName As String, _
-                           ByVal strModelName As String, _
-                           ByVal results As cEcoSimResults) As eDatasourceAccessType
+    Public Function SaveModel(ByVal strFileName As String, _
+                              ByVal strModelName As String, _
+                              ByVal results As cEcoSimResults) As eDatasourceAccessType
 
         Dim coreDest As New cCore()
         Dim db As cEwEDatabase = New cEwEAccessDatabase()
@@ -129,7 +129,7 @@ Public Class cEcopathModelFromEcosim
         coreDest.DataSource.SetChanged(eCoreComponentType.EcoPath)
         coreDest.StateMonitor.UpdateDataState(coreDest.DataSource)
 
-        ' Copy Ecopath data
+        ' Copy Ecopath data but do not redim - preserve original data such as DBIDs
         pathSrc.copyTo(pathDest, False)
 
         ' Clear data that is not going to be copied
