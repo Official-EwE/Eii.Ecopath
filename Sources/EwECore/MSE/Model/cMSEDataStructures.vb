@@ -692,13 +692,7 @@ Namespace MSE
                 Me.MaxEffort(iflt) = 10 '10 times the ecopath base effort
                 For igrp = 1 To Me.NGroups
                     Me.Quota(iflt, igrp) = Me.m_EPData.B(igrp) * 10 '10 time the ecopath biomass
-
-                    'Ecosim has not initialized at this point so some values are not available
-                    Blim(igrp) = Me.m_EPData.B(igrp) * 0.1!
-                    Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4!
-                    Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
                     Me.RHalfB0Ratio(igrp) = 0.2
-
                     Me.FixedF(igrp) = 0
                     Me.FixedEscapement(igrp) = 0
                     Me.TAC(igrp) = 0
@@ -709,17 +703,32 @@ Namespace MSE
             'set Quota share to Ecopath landings and discards
             Me.setDefaultQuotaShare()
 
+            'Default Target Fishing Mortalities
+            Me.setDefaultTFM()
+
+            'Default recruitment RstockRatio() = 1-Exp(-PB)
+            Me.setDefaultRecruitment()
+
         End Sub
 
+        ''' <summary>
+        ''' Set default target fishing mortalities
+        ''' </summary>
+        ''' <remarks>10%, 40% and Ecopath F</remarks>
         Public Sub setDefaultTFM()
 
             For igrp As Integer = 1 To Me.NGroups
-
-                'Ecosim has not initialized at this point so some values are not available
-                Blim(igrp) = Me.m_EPData.B(igrp) * 0.1!
-                Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4!
-                Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
-                Fmin(igrp) = 0
+                If Me.m_EPData.fCatch(igrp) > 0 Then
+                    Blim(igrp) = Me.m_EPData.B(igrp) * 0.1F
+                    Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4F
+                    Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
+                    Fmin(igrp) = 0.0F
+                Else
+                    Blim(igrp) = 0.0F
+                    Bbase(igrp) = 0.0F
+                    Fopt(igrp) = 0.0F
+                    Fmin(igrp) = 0.0F
+                End If
 
             Next igrp
 
