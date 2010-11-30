@@ -111,7 +111,6 @@ Namespace MSECommandFile
                             Me.addParameter(ParamReader)
                         End If
                         Debug.Assert(bInit, "Failed to read data from command file.")
-
                     End If
 
                 Loop Until line Is Nothing
@@ -196,11 +195,11 @@ Namespace MSECommandFile
 
         End Function
 
-
-
         Private Sub addParameter(ByVal parameter As IMSEParameter)
 
+            'Does the dictionary of control parameters contain this Tag
             If Not m_dicControls.ContainsKey(parameter.Tag) Then
+                'No then add it
                 m_dicControls.Add(parameter.Tag, New List(Of IMSEParameter))
             End If
             'set the index of this parameter object 
@@ -382,6 +381,12 @@ Namespace MSECommandFile
 
         End Function
 
+        ''' <summary>
+        ''' Is this Tag an Index Tag
+        ''' </summary>
+        ''' <param name="tag">Tag to check</param>
+        ''' <returns>True if this Tag is for an Index parameter</returns>
+        ''' <remarks></remarks>
         Private Function isIndexTag(ByVal tag As String) As Boolean
             If isTag(tag, TFM_INDEX_TAG) Then
                 Return True
@@ -397,6 +402,14 @@ Namespace MSECommandFile
             End If
         End Function
 
+
+        ''' <summary>
+        ''' Is this string a Tag from the control file
+        ''' </summary>
+        ''' <param name="InputTag">String to check</param>
+        ''' <param name="TagConstant"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Private Function isTag(ByVal InputTag As String, ByVal TagConstant As String) As Boolean
             If String.Compare(InputTag, TagConstant) = 0 Then
                 Return True
@@ -416,7 +429,7 @@ Namespace MSECommandFile
 
                 values = ControlString.Split(",")
 
-                'is the correct type of control string
+                'Does the first value in the ControlString match the tag 
                 If (String.Compare(values(0), Tag) = 0) Then
                     'Yes...
                     Return True
@@ -432,21 +445,24 @@ Namespace MSECommandFile
 
         End Function
 
-
-
         Public ReadOnly Property BatchData() As cMSEBatchDataStructures
             Get
                 Return Me.m_BatchData
             End Get
         End Property
 
-
-
         Public ReadOnly Property Manager() As cMSEBatchManager
             Get
                 Return Me.m_Manager
             End Get
         End Property
+
+        ''' <summary>
+        ''' Returns a list of parameters read from the control file for this Tag 
+        ''' </summary>
+        ''' <param name="tag"></param>
+        ''' <returns>Returns List(Of IMSEParameter) </returns>
+        ''' <remarks></remarks>
         Friend Function getTagData(ByVal tag As String) As List(Of IMSEParameter)
 
             Dim list As List(Of IMSEParameter)
