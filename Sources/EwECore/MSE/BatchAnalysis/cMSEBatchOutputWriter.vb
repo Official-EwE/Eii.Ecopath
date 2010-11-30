@@ -166,7 +166,7 @@ Namespace MSEBatchManager
                                 buff = New StringBuilder()
                                 buff.Append(quote & epData.GroupName(igrp) & quote & ", ")
                                 buff.Append(igrp.ToString & ", ")
-                                buff.Append(Me.getRunTypeValue(igrp) & ", ")
+                                buff.Append(Me.getHarvestRuleValues(igrp) & ", ")
                                 buff.Append(Me.m_nSim)
 
                                 Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
@@ -307,21 +307,41 @@ Namespace MSEBatchManager
 
         End Function
 
-        Private Function getRunTypeValue(ByVal iGroup As Integer) As String
+        Private Function getHarvestRuleValues(ByVal iGroup As Integer) As String
             Dim ouputStr As String
 
             Select Case Me.m_BatchData.RunType
                 Case eMSEBatchRunTypes.Constant_F
                     ouputStr = Math.Round(Me.m_MSEdata.FixedF(iGroup), 5).ToString
+                    If Not Me.isGroupControlled(iGroup) Then
+                        ouputStr = "0"
+                    End If
                 Case eMSEBatchRunTypes.Constant_Y
                     ouputStr = Math.Round(Me.m_MSEdata.TAC(iGroup), 5).ToString
+                    If Not Me.isGroupControlled(iGroup) Then
+                        ouputStr = "0"
+                    End If
                 Case eMSEBatchRunTypes.TFM
                     ouputStr = Me.m_MSEdata.Blim(iGroup).ToString & ", " & Me.m_MSEdata.Bbase(iGroup).ToString & ", " & Me.m_MSEdata.Fmin(iGroup).ToString & ", " & Me.m_MSEdata.Fopt(iGroup).ToString
+                    If Not Me.isGroupControlled(iGroup) Then
+                        ouputStr = "0, 0, 0, 0"
+                    End If
             End Select
 
             Debug.Assert(ouputStr IsNot String.Empty, Me.ToString & " Invalid run type.")
             Return ouputStr
 
+        End Function
+
+        Private Function isGroupControlled(ByVal iGroup As Integer) As Boolean
+            Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            For iflt As Integer = 1 To Me.m_MSEdata.nFleets
+                If epData.Landing(iflt, iGroup) > 0 And Me.m_MSEdata.QuotaType(iflt) <> eQuotaTypes.NoControls Then
+                    'Landing and Controlled
+                    Return True
+                End If
+            Next
+            Return False
         End Function
 
 
