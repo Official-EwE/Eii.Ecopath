@@ -7,6 +7,12 @@ Namespace Ecopath.Controls.FlowDiagram
         Implements IUIElement
 
         Private m_uic As cUIContext = Nothing
+        Private m_sDietMin As Single = 0
+        Private m_sDietMax As Single = 0
+        Private m_sBiomassMin As Single = 0
+        Private m_sBiomassMax As Single = 0
+
+        Private m_bInvalid As Boolean = True
 
 #Region " Constructor "
 
@@ -27,6 +33,10 @@ Namespace Ecopath.Controls.FlowDiagram
                 Me.m_uic = value
             End Set
         End Property
+
+        Public Sub Refresh()
+            Me.m_bInvalid = True
+        End Sub
 
         Public ReadOnly Property RenderFont() As Font
             Get
@@ -91,49 +101,62 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Public ReadOnly Property BiomassMax() As Single
             Get
-                Dim sMax As Single = 0
-                For i As Integer = 1 To Me.NumGroups
-                    sMax = Math.Max(sMax, Me.Biomass(i))
-                Next i
-                Return sMax
+                If Me.m_bInvalid Then Me.Recalc()
+                Return Me.m_sBiomassMax
             End Get
         End Property
 
         Public ReadOnly Property MinBiomass() As Single
             Get
-                Dim sMin As Single = Me.BiomassMax()
-                For i As Integer = 1 To Me.NumGroups
-                    sMin = Math.Min(sMin, Me.Biomass(i))
-                Next i
-                Return Math.Max(0, sMin)
+                If Me.m_bInvalid Then Me.Recalc()
+                Return Me.m_sBiomassMin
             End Get
         End Property
 
         Public ReadOnly Property MinDiet() As Single
             Get
-                Dim sMin As Single = Me.DietMax
-                For i As Integer = 1 To Me.NumGroups
-                    For j As Integer = 1 To Me.NumGroups
-                        sMin = Math.Min(sMin, Me.Diet(i, j))
-                    Next j
-                Next i
-                Return Math.Max(sMin, 0)
+                If Me.m_bInvalid Then Me.Recalc()
+                Return Me.m_sDietMin
             End Get
         End Property
 
         Public ReadOnly Property DietMax() As Single
             Get
-                Dim sMax As Single = 0
-                For i As Integer = 1 To Me.NumGroups
-                    For j As Integer = 1 To Me.NumGroups
-                        sMax = Math.Max(sMax, Me.Diet(i, j))
-                    Next j
-                Next i
-                Return sMax
+                If Me.m_bInvalid Then Me.Recalc()
+                Return Me.m_sDietMax
             End Get
         End Property
 
 #End Region ' Properties
+
+#Region " Internals "
+
+        Private Sub Recalc()
+
+            If Not Me.m_bInvalid Then Return
+
+            Me.m_sBiomassMax = 0
+            Me.m_sBiomassMin = Single.MaxValue
+            Me.m_sDietMax = 0
+            Me.m_sDietMin = Single.MaxValue
+
+            For i As Integer = 1 To Me.NumGroups
+                For j As Integer = 1 To Me.NumGroups
+                    Dim sDiet As Single = Me.Diet(i, j)
+                    Me.m_sDietMax = Math.Max(Me.m_sDietMax, sDiet)
+                    Me.m_sDietMin = Math.Min(Me.m_sDietMin, sDiet)
+
+                    Dim sB As Single = Me.Biomass(i)
+                    Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sDiet)
+                    Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sDiet)
+                Next j
+            Next i
+
+            Me.m_bInvalid = False
+
+        End Sub
+
+#End Region ' Interals
 
     End Class
 

@@ -94,6 +94,19 @@ Namespace Ecopath.Controls.FlowDiagram
             MyBase.OnFormClosed(e)
         End Sub
 
+        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+            MyBase.OnCoreMessage(msg)
+
+            ' Refresh the diagram data when ecopath data has changed
+            If (msg.Source = eCoreComponentType.EcoPath) And _
+               (msg.Type = eMessageType.DataModified) Then
+                Me.m_data.Refresh()
+                Me.m_pbFlowDiagram.Invalidate()
+            End If
+
+        End Sub
+
+
 #End Region ' Overrides
 
 #Region " Events "
