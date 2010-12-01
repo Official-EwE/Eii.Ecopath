@@ -58,16 +58,16 @@ Public Class frmMSEAssessFleets
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
         Try
-            MyBase.OnFormClosed(e)
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            RemoveHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
         End Try
 
         Try
-
-            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            RemoveHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
+            MyBase.OnFormClosed(e)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
         End Try
