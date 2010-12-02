@@ -50,7 +50,8 @@ Public Class frmMSEAssessGroups
 
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-
+        'Calling MyBase.OnFormClosed(e) before removing the handlers is setting Me.StyleGuide to nothing
+        'then the handler can not be removed
         ' Remove all refs before calling base OnFormClosed which will release the UI context
         Try
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged

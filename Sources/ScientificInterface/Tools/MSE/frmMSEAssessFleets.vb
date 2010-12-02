@@ -58,7 +58,8 @@ Public Class frmMSEAssessFleets
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-
+        'Calling MyBase.OnFormClosed(e) before removing the handlers is setting Me.StyleGuide to nothing
+        'then the handler can not be removed
         Try
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             RemoveHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
@@ -71,7 +72,6 @@ Public Class frmMSEAssessFleets
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
         End Try
-
     End Sub
 
     Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
