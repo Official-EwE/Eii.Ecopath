@@ -4388,18 +4388,16 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcosimScenarioGroupYear")
                 For iGroup As Integer = 1 To ecopathDS.NumGroups
                     For iYear As Integer = 1 To mseDS.nYears
-                        If mseDS.CVBiomT(iGroup, iYear) > 0 Then
-                            ' Conjure row
-                            drow = writer.NewRow()
-                            ' Populate key
-                            drow("ScenarioID") = iScenarioID
-                            drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
-                            drow("TimeYear") = iYear
-                            ' Write dynamic bit
-                            drow("CVBiom") = mseDS.CVBiomT(iGroup, iYear)
-                            ' Add new row to the writer
-                            writer.AddRow(drow)
-                        End If
+                        ' Conjure row
+                        drow = writer.NewRow()
+                        ' Populate key
+                        drow("ScenarioID") = iScenarioID
+                        drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
+                        drow("TimeYear") = iYear
+                        ' Write dynamic bit
+                        drow("CVBiom") = mseDS.CVBiomT(iGroup, iYear)
+                        ' Add new row to the writer
+                        writer.AddRow(drow)
                     Next iYear
                 Next iGroup
                 ' Done
