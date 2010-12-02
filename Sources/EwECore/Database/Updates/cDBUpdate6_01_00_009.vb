@@ -54,8 +54,9 @@ Friend Class cDBUpdate6_01_00_009
         End If
 
         If db.Execute("ALTER TABLE EcosimScenarioFleetYear DROP CONSTRAINT SimSFTFleet") Then
-            bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioFleetYear ADD CONSTRAINT SimSFTFleet FOREIGN KEY (FleetID) REFERENCES EcopathFleet (FleetID)")
+            bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioFleetYear ADD CONSTRAINT SimSFTFleet FOREIGN KEY (FleetID) REFERENCES EcosimScenarioFleet (FleetID)")
         End If
+
         Return bSucces
 
     End Function
