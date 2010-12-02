@@ -1,15 +1,13 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
-Imports ScientificInterface.Ecosim
 Imports EwECore.MSE
+Imports ScientificInterface.Ecosim
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
-
 #Region "IPolicyColorBlockDataSource implementation for MSE"
-
 
 Public Class cMSEGroupColorBlockDataSource
     Implements IPolicyColorBlockDataSource
@@ -163,7 +161,9 @@ Public Class cMSEGroupColorBlockDataSource
         Implements IPolicyColorBlockDataSource.RowLabel
         Get
             Try
-                Return Me.m_uic.Core.MSEManager.GroupInputs(iRow).Name
+                Return String.Format(SharedResources.GENERIC_LABEL_INDEXED, _
+                                     iRow, _
+                                     Me.m_uic.Core.MSEManager.GroupInputs(iRow).Name)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".RowLabel() Exception: " & ex.Message)
             End Try

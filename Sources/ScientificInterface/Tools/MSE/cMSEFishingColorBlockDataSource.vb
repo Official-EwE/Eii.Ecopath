@@ -1,15 +1,11 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
-Imports ScientificInterface.Ecosim
 Imports EwECore.MSE
+Imports ScientificInterface.Ecosim
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
-
-
-#Region "MSE Fleet data source for ucPolicyColorBlock"
-
 
 ''' <summary>
 ''' Implementation of IPolicyColorBlockDataSource for MSE Fleets
@@ -151,7 +147,9 @@ Public Class cMSEFishingColorBlockDataSource
     Public ReadOnly Property RowLabel(ByVal iRow As Integer) As String Implements IPolicyColorBlockDataSource.RowLabel
         Get
             Try
-                Return Me.m_uic.Core.MSEManager.FleetInputs(iRow).Name
+                Return String.Format(SharedResources.GENERIC_LABEL_INDEXED, _
+                                     iRow, _
+                                     Me.m_uic.Core.MSEManager.FleetInputs(iRow).Name)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".RowLabel() Exception: " & ex.Message)
             End Try
@@ -213,5 +211,3 @@ Public Class cMSEFishingColorBlockDataSource
         MyBase.Finalize()
     End Sub
 End Class
-
-#End Region
