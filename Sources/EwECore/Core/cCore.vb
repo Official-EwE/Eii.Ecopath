@@ -1917,6 +1917,7 @@ Public Class cCore
                                 Optional ByVal savelevel As eBatchChangeLevelFlags = eBatchChangeLevelFlags.Ecopath) As Boolean
 
         Dim fm As cFeedbackMessage = Nothing
+        Dim msg As cMessage = Nothing
         Dim strPrompt As String = ""
 
         ' For later use
@@ -2018,7 +2019,6 @@ Public Class cCore
                 If (savelevel <= eBatchChangeLevelFlags.Ecopath) Then
                     If Me.m_StateMonitor.IsEcopathModified Or Me.m_StateMonitor.IsDatasourceModified Then
                         If Not Me.SaveModel() Then
-                            ' VERIFY_JS: Discuss what to do here. Prompt user how to proceed?
                             Return False
                         Else
                             Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
@@ -2442,7 +2442,6 @@ Public Class cCore
 
                 'I'm not sure about this there 
                 'there needs to be a Maintenance message sent SendEcopathLoadMessage() does not really seem like it would work for this
-                ' VERIFY_JS: Discuss what to do here
                 m_publisher.AddMessage(New cMessage("Loaded model '" & m_EwEModel.Name & "'", eMessageType.DataModified, _
                                         eCoreComponentType.Core, eMessageImportance.Maintenance))
 
@@ -2456,7 +2455,6 @@ Public Class cCore
                 'InitStanza can modify the ecopath value: b, pb and qb
                 m_EcoSim.InitStanza()
 
-                ' ToDo_JS: wrap this more neatly one day
                 Me.m_tracerData.RedimByNGroups(Me.nGroups)
 
                 'build input and output objects
@@ -2999,7 +2997,6 @@ Public Class cCore
                 output.Biomass = CSng(m_EcoPathData.B(iGroup))
                 output.BiomassArea = CSng(m_EcoPathData.BH(iGroup))
                 Try
-                    ' ToDo_JS: Test for Null? Core_null?
                     output.BioAccumRatePerYear = CSng(m_EcoPathData.BA(iGroup) / m_EcoPathData.B(iGroup))
                 Catch ex As Exception
                     output.BioAccumRatePerYear = 0.0!
@@ -9342,7 +9339,9 @@ Public Class cCore
             Dim rp As Single
             Dim ba As Single
             Dim leading As Integer
-
+            'maybe not the correct messagetype but it seems to work
+            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, stanza.Name), _
+                                            eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.Stanza)
             ReDim Bio(nStanzas)
             ReDim Bat(nStanzas) 'in this case the Bat() is ignored so no need to populate it
             ReDim Z(nStanzas)
@@ -9350,13 +9349,10 @@ Public Class cCore
             ReDim FirstAge(nStanzas)
             ReDim SecondAge(nStanzas) 'last month of age by spp, stanza (set in ecopath)
 
-            If Not stanza.OkToCalculate Then
+            If Not stanza.OkToCalculate(msg) Then
                 'this stanza group has not had it parameters set B CB and Mort
                 'Stanza parameters can not be calculated until this has been done by the interface
-                ' ToDo_JS: Add cVariableStatuses for missing vars
-                Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, stanza.Name), _
-                                            eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.Stanza))
-                'maybe not the correct messagetype but it seems to work
+                Me.m_publisher.SendMessage(msg)
                 Return False
             End If
 
@@ -10614,13 +10610,12 @@ Public Class cCore
                 Case eDataTypes.EcoSpaceScenario
                     If bValidatedOk Then Me.UpdateEcospaceScenario(idAffected)
 
-                Case eDataTypes.Forcing, _
-                     eDataTypes.EggProd, _
-                     eDataTypes.Mediation, _
-                     eDataTypes.FishingEffort, _
-                     eDataTypes.FishMort
-                    ' VERIFY_JS: This line of code is never hit?
-                    msAffected = eCoreComponentType.ShapesManager
+                    'Case eDataTypes.Forcing, _
+                    '     eDataTypes.EggProd, _
+                    '     eDataTypes.Mediation, _
+                    '     eDataTypes.FishingEffort, _
+                    '     eDataTypes.FishMort
+                    '    msAffected = eCoreComponentType.ShapesManager
 
                 Case eDataTypes.EcospaceBasemap
                     If bValidatedOk Then Me.UpdateEcospaceBasemap()

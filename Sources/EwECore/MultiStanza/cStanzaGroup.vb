@@ -4,7 +4,7 @@ Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 ''' <summary>
-''' Mulit stanza group
+''' Multi-stanza group
 ''' </summary>
 ''' <remarks>This class acts as a buffer for the data. The core data is updated expilcitly by a user not implicitly by the core.
 '''  The user of this class is responsible for calculating the stanza parameters and saving any changes.
@@ -217,25 +217,45 @@ Public Class cStanzaGroup
     ''' <summary>
     ''' Is it ok to run stanza calculation, cEcosim.CalculateStanzaParameters(), on this object.  Have the leading stanza parameters been set.
     ''' </summary>
+    ''' <param name="msg">Message to decorate with missing variable statuses, if provided</param>
     ''' <returns>True if it is Ok to calculate the stanza parameters on the Stanza Group</returns>
     ''' <remarks>When a new stanza group is first created its leading parameters (oldest group) and z will be NULL_VALUE (-9999). 
     ''' The leading B and CB and Mortality need to be set by the user before calculateParameter can be called. </remarks>
-    Public ReadOnly Property OkToCalculate() As Boolean
+    Public ReadOnly Property OkToCalculate(Optional ByVal msg As cMessage = Nothing) As Boolean
 
         Get
+            Dim bOk As Boolean = True
+            Dim vs As cVariableStatus = Nothing
+            Dim grp As cEcoPathGroupInput = Nothing
+
             'first Z mortality
             For ist As Integer = 1 To Me.NStanzas
                 If Me.Mortality(ist) < 0 Then
-                    Return False
+                    If (msg Is Nothing) Then Return False
+
+                    bOk = False
+                    grp = Me.m_core.EcoPathGroupInputs(Me.iGroups(ist))
+                    vs = New cVariableStatus(grp, eStatusFlags.MissingParameter, _
+                                             String.Format(My.Resources.CoreMessages.STANZA_MORT_MISSING, grp.Name), _
+                                             eVarNameFlags.StanzaMortaility, _
+                                             Me.m_dataType, Me.m_coreComponent, grp.Index, cCore.NULL_VALUE)
+                    msg.AddVariable(vs)
                 End If
             Next
 
             'leading b and cb
             If Me.Biomass(Me.LeadingB) < 0 Or Me.CB(Me.LeadingCB) < 0 Then
-                Return False
+                If (msg Is Nothing) Then Return bOk
+
+                bOk = False
+                vs = New cVariableStatus(Me, eStatusFlags.MissingParameter, _
+                                         String.Format(My.Resources.CoreMessages.STANZA_LEADING_MISSING, Me.Name), _
+                                         eVarNameFlags.LeadingBiomass, _
+                                         Me.m_dataType, Me.m_coreComponent, Me.Index, cCore.NULL_VALUE)
+                msg.AddVariable(vs)
             End If
 
-            Return True
+            Return bOk
         End Get
 
     End Property

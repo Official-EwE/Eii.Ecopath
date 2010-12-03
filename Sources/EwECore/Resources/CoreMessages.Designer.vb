@@ -518,6 +518,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Loaded model &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_LOADED() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_LOADED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Catch information (Landing + Discard) is missing for one of more fleets..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_MISSINGPARAM_CATCH_GENERIC() As String
@@ -1829,6 +1838,24 @@ Namespace My.Resources
         Friend Shared ReadOnly Property STANZA_KinVGBF_MISSING() As String
             Get
                 Return ResourceManager.GetString("STANZA_KinVGBF_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Leading group not specified for &apos;(0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property STANZA_LEADING_MISSING() As String
+            Get
+                Return ResourceManager.GetString("STANZA_LEADING_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Missing mortality (Z) for &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property STANZA_MORT_MISSING() As String
+            Get
+                Return ResourceManager.GetString("STANZA_MORT_MISSING", resourceCulture)
             End Get
         End Property
         

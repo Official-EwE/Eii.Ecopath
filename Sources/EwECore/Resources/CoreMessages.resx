@@ -929,4 +929,16 @@ System Error: {0}</value>
   <data name="GENERIC_PROMPT_ESTIMATED" xml:space="preserve">
     <value>The following variables were estimated:</value>
   </data>
+  <data name="ECOPATH_LOADED" xml:space="preserve">
+    <value>Loaded model '{0}'</value>
+    <comment>{0}=model name</comment>
+  </data>
+  <data name="STANZA_LEADING_MISSING" xml:space="preserve">
+    <value>Leading group not specified for '(0}'</value>
+    <comment>{0}=stanza group name</comment>
+  </data>
+  <data name="STANZA_MORT_MISSING" xml:space="preserve">
+    <value>Missing mortality (Z) for '{0}'</value>
+    <comment>{0}=stanza group name</comment>
+  </data>
 </root>

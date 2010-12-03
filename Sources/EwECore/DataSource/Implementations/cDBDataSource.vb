@@ -4162,7 +4162,7 @@ Namespace DataSources
             Try
                 While reader.Read()
                     iFleetID = CInt(reader("FleetID"))
-                    iFleet = Array.IndexOf(ecopathDS.FleetDBID, iFleetID)
+                    iFleet = Array.IndexOf(ecosimDS.FleetDBID, iFleetID)
                     iYear = CInt(reader("TimeYear"))
                     If (iFleet > 0) And (iFleet <= ecosimDS.nGear) And _
                        (iYear > 0) And (iYear <= mseDS.nYears) Then
@@ -4549,16 +4549,19 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcosimScenarioFleetYear")
                 For iFleet As Integer = 1 To ecopathDS.NumFleet
                     For iYear As Integer = 1 To mseDS.nYears
-                        ' Conjure row
-                        drow = writer.NewRow()
-                        ' Populate key
-                        drow("ScenarioID") = iScenarioID
-                        drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
-                        drow("TimeYear") = iYear
-                        ' Write dynamic bit
-                        drow("CV") = mseDS.CVFT(iFleet, iYear)
-                        ' Add new row to the writer
-                        writer.AddRow(drow)
+                        If (mseDS.CVFT(iFleet, iYear) >= 0) Then
+
+                            ' Conjure row
+                            drow = writer.NewRow()
+                            ' Populate key
+                            drow("ScenarioID") = iScenarioID
+                            drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
+                            drow("TimeYear") = iYear
+                            ' Write dynamic bit
+                            drow("CV") = mseDS.CVFT(iFleet, iYear)
+                            ' Add new row to the writer
+                            writer.AddRow(drow)
+                        End If
                     Next iYear
                 Next iFleet
                 ' Done
