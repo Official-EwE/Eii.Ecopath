@@ -116,6 +116,9 @@ Namespace Ecosim
             Me.m_PropEcosimNYears = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
             AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
 
+            Me.CalcParams()
+            Me.m_pbFishingBlocks.Width = CInt(Math.Ceiling(Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth))
+            Me.m_pbFishingBlocks.Height = CInt(Math.Ceiling(Me.m_iRows * Me.m_sRowHeight))
             Me.m_bInit = True
             Me.UpdateControls()
 
@@ -267,7 +270,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub pbFishingBlocks_Paint(ByVal sender As System.Object, ByVal e As PaintEventArgs) _
+        Private Sub OnPaintBlocks(ByVal sender As System.Object, ByVal e As PaintEventArgs) _
             Handles m_pbFishingBlocks.Paint
 
             If (Me.UIContext Is Nothing) Then Return
@@ -315,15 +318,6 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnBlocksSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_pbFishingBlocks.SizeChanged
-
-            Using g As Graphics = Me.m_pbFishingBlocks.CreateGraphics
-                Me.CalcParams(g)
-            End Using
-
-        End Sub
-
 #End Region ' Events handlers
 
 #Region " Callbacks "
@@ -356,33 +350,32 @@ Namespace Ecosim
 
 #Region "Private methods"
 
-
-        Private Sub DrawRowCols(ByRef g As Graphics)
+        Private Sub DrawRowCols(ByVal g As Graphics)
 
             If Not Me.m_bInit Then Return
 
             Try
 
                 'Draw the blocks first
-                For i As Integer = 1 To m_iRows - 1
-                    For j As Integer = 1 To m_iCols - 1
-                        Dim yPos As Single = i * m_sRowHeight
-                        Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
+                For i As Integer = 1 To Me.m_iRows - 1
+                    For j As Integer = 1 To Me.m_iCols - 1
+                        Dim yPos As Single = i * Me.m_sRowHeight
+                        Dim xPos As Single = Me.m_sFirstColWidth + (j - 1) * Me.m_sColWidth
                         ' Ensure proper disposal
-                        Using tmpBrush As New SolidBrush(m_BlockSelector.BlockColor(Me.m_DataSource.BlockCells(i, j)))
-                            g.FillRectangle(tmpBrush, New RectangleF(xPos, yPos, m_sColWidth, m_sRowHeight))
+                        Using tmpBrush As New SolidBrush(Me.m_BlockSelector.BlockColor(Me.m_DataSource.BlockCells(i, j)))
+                            g.FillRectangle(tmpBrush, New RectangleF(xPos, yPos, Me.m_sColWidth, Me.m_sRowHeight))
                         End Using
                     Next
-
                 Next
 
+                ' Draw names area in correct style guide colour
                 Using br As New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND))
                     g.FillRectangle(br, 0, m_sRowHeight, Me.m_sFirstColWidth, Me.m_pbFishingBlocks.Height - m_sRowHeight)
                 End Using
 
                 'Now draw the grid lines on top of the blocks, so they show up
                 'Rows
-                Dim tSize As SizeF = g.MeasureString("T", Me.m_pbFishingBlocks.Font)
+                Dim tSize As SizeF = g.MeasureString("T", Me.Font)
                 Dim gridPen As Pen = SystemPens.ControlDark
 
                 For i As Integer = 1 To m_iRows - 1
@@ -394,7 +387,7 @@ Namespace Ecosim
                 Next
 
                 ' Redraw the first row grid line Black
-                g.DrawLine(Pens.Black, 0, m_sRowHeight, m_pbFishingBlocks.Width, m_sRowHeight)
+                g.DrawLine(gridPen, 0, m_sRowHeight, m_pbFishingBlocks.Width, m_sRowHeight)
 
                 'Cols
                 For j As Integer = 1 To m_iCols
@@ -406,7 +399,7 @@ Namespace Ecosim
                 Next
 
                 'Redraw the first col line in Black
-                g.DrawLine(Pens.Black, m_sFirstColWidth, 0, m_sFirstColWidth, m_pbFishingBlocks.Height)
+                g.DrawLine(gridPen, m_sFirstColWidth, 0, m_sFirstColWidth, m_pbFishingBlocks.Height)
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
@@ -415,12 +408,16 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub CalcParams(ByRef g As Graphics)
+        Private Sub CalcParams()
 
-            If Not Me.m_bInit Then Return
+            ' If Not Me.m_bInit Then Return
+
+            Dim g As Graphics = Me.m_pbFishingBlocks.CreateGraphics
+            Dim szf As SizeF = g.MeasureString("66", Me.Font)
+
             Try
                 Me.m_iRows = Me.m_DataSource.nRows + 1
-                Me.m_sRowHeight = CSng(m_pbFishingBlocks.Height / Me.m_iRows)
+                Me.m_sRowHeight = szf.Height + 2 ' CSng(m_pbFishingBlocks.Height / Me.m_iRows)
 
                 Dim sLenMax As Single = -1
                 For i As Integer = 0 To Me.m_DataSource.nRows - 1
@@ -431,12 +428,15 @@ Namespace Ecosim
                 'First column line 
                 Me.m_sFirstColWidth = sLenMax + 10
                 Me.m_iCols = Me.m_DataSource.TotalBlocks + 1
-                Me.m_sColWidth = CSng((m_pbFishingBlocks.Width - Me.m_sFirstColWidth) / Me.m_DataSource.TotalBlocks)
+                Me.m_sColWidth = szf.Width + 2 ' CSng((m_pbFishingBlocks.Width - Me.m_sFirstColWidth) / Me.m_DataSource.TotalBlocks)
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
                 Throw New ApplicationException(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
             End Try
+
+            g.Dispose()
+            g = Nothing
 
         End Sub
 

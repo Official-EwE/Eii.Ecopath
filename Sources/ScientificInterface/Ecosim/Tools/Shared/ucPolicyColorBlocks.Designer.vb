@@ -27,24 +27,22 @@ Namespace Ecosim
             Me.m_lblYear = New System.Windows.Forms.Label
             Me.m_plBlocks = New System.Windows.Forms.Panel
             Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel
+            Me.m_plScroll = New System.Windows.Forms.Panel
             CType(Me.m_pbFishingBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqEndYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumYearsPerBlock, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpMain.SuspendLayout()
             Me.m_pnlControls.SuspendLayout()
+            Me.m_plScroll.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_pbFishingBlocks
             '
-            Me.m_pbFishingBlocks.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_pbFishingBlocks.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_pbFishingBlocks.Location = New System.Drawing.Point(0, 72)
+            Me.m_pbFishingBlocks.Location = New System.Drawing.Point(0, 0)
             Me.m_pbFishingBlocks.Margin = New System.Windows.Forms.Padding(0)
             Me.m_pbFishingBlocks.Name = "m_pbFishingBlocks"
-            Me.m_pbFishingBlocks.Size = New System.Drawing.Size(870, 516)
+            Me.m_pbFishingBlocks.Size = New System.Drawing.Size(818, 420)
             Me.m_pbFishingBlocks.TabIndex = 1
             Me.m_pbFishingBlocks.TabStop = False
             '
@@ -203,12 +201,26 @@ Namespace Ecosim
             Me.TableLayoutPanel3.Size = New System.Drawing.Size(200, 100)
             Me.TableLayoutPanel3.TabIndex = 0
             '
+            'm_plScroll
+            '
+            Me.m_plScroll.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_plScroll.AutoScroll = True
+            Me.m_plScroll.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_plScroll.Controls.Add(Me.m_pbFishingBlocks)
+            Me.m_plScroll.Location = New System.Drawing.Point(0, 72)
+            Me.m_plScroll.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_plScroll.Name = "m_plScroll"
+            Me.m_plScroll.Size = New System.Drawing.Size(870, 516)
+            Me.m_plScroll.TabIndex = 2
+            '
             'ucPolicyColorBlocks
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_plScroll)
             Me.Controls.Add(Me.m_tlpMain)
-            Me.Controls.Add(Me.m_pbFishingBlocks)
             Me.Name = "ucPolicyColorBlocks"
             Me.Size = New System.Drawing.Size(870, 588)
             CType(Me.m_pbFishingBlocks, System.ComponentModel.ISupportInitialize).EndInit()
@@ -218,6 +230,7 @@ Namespace Ecosim
             Me.m_tlpMain.ResumeLayout(False)
             Me.m_pnlControls.ResumeLayout(False)
             Me.m_pnlControls.PerformLayout()
+            Me.m_plScroll.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -235,6 +248,7 @@ Namespace Ecosim
         Private WithEvents m_pnlControls As System.Windows.Forms.Panel
         Private WithEvents m_plBlocks As System.Windows.Forms.Panel
         Private WithEvents m_lblYear As System.Windows.Forms.Label
+        Private WithEvents m_plScroll As System.Windows.Forms.Panel
 
     End Class
 
