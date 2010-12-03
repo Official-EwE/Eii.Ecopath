@@ -358,7 +358,7 @@ Namespace Ecosim
 
                 'Draw the blocks first
                 For i As Integer = 1 To Me.m_iRows - 1
-                    For j As Integer = 1 To Me.m_iCols - 1
+                    For j As Integer = 1 To Me.m_iCols
                         Dim yPos As Single = i * Me.m_sRowHeight
                         Dim xPos As Single = Me.m_sFirstColWidth + (j - 1) * Me.m_sColWidth
                         ' Ensure proper disposal
@@ -378,19 +378,17 @@ Namespace Ecosim
                 Dim tSize As SizeF = g.MeasureString("T", Me.Font)
                 Dim gridPen As Pen = SystemPens.ControlDark
 
-                For i As Integer = 1 To m_iRows - 1
+                For i As Integer = 1 To Me.m_iRows - 1
                     Dim yPos As Single = i * m_sRowHeight
                     g.DrawLine(gridPen, 0, yPos, m_pbFishingBlocks.Width, yPos)
                     g.DrawLine(gridPen, m_sFirstColWidth, yPos, m_pbFishingBlocks.Width, yPos)
                     'draw the label in the middle
                     g.DrawString(Me.m_DataSource.RowLabel(i), m_pbFishingBlocks.Font, Brushes.Black, 1, yPos + m_sRowHeight * 0.5F - tSize.Height * 0.5F)
                 Next
-
-                ' Redraw the first row grid line Black
-                g.DrawLine(gridPen, 0, m_sRowHeight, m_pbFishingBlocks.Width, m_sRowHeight)
+                g.DrawLine(gridPen, 0, Me.m_iRows * Me.m_sRowHeight, Me.m_pbFishingBlocks.Width, Me.m_iRows * Me.m_sRowHeight)
 
                 'Cols
-                For j As Integer = 1 To m_iCols
+                For j As Integer = 1 To m_iCols 
                     Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
                     g.DrawLine(gridPen, xPos, 0, xPos, m_sRowHeight)
                     g.DrawLine(gridPen, xPos, m_sRowHeight, xPos, m_pbFishingBlocks.Height)
@@ -427,7 +425,7 @@ Namespace Ecosim
 
                 'First column line 
                 Me.m_sFirstColWidth = sLenMax + 10
-                Me.m_iCols = Me.m_DataSource.TotalBlocks + 1
+                Me.m_iCols = Me.m_DataSource.TotalBlocks
                 Me.m_sColWidth = szf.Width + 2 ' CSng((m_pbFishingBlocks.Width - Me.m_sFirstColWidth) / Me.m_DataSource.TotalBlocks)
 
             Catch ex As Exception
@@ -450,7 +448,7 @@ Namespace Ecosim
 
             Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
             If ptBlock.Y < 0 Or ptBlock.Y > m_iRows - 1 Then Return
-            If ptBlock.X > m_iCols - 1 Then Return
+            If ptBlock.X > m_iCols Then Return
 
             Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
             Me.m_BlockSelector.SelectedBlock = iBlock
@@ -473,8 +471,8 @@ Namespace Ecosim
 
                 Dim ptBlock As New Point(CInt(ptFrom.X + (hmm * dx) / dCLick), CInt(ptFrom.Y + (hmm * dy) / dCLick))
 
-                If ptBlock.Y >= 0 And ptBlock.Y <= m_iRows - 1 Then
-                    If ptBlock.X <= m_iCols - 1 Then
+                If ptBlock.Y >= 0 And ptBlock.Y <= Me.m_iRows - 1 Then
+                    If ptBlock.X <= Me.m_iCols Then
 
                         ' Is row header clicked?
                         If (ptBlock.X < 1) Then
@@ -511,7 +509,7 @@ Namespace Ecosim
             Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
 
             If (ptBlock.Y < 1 Or ptBlock.Y >= Me.m_iRows) Then Return
-            If (ptBlock.X < 1 Or ptBlock.X >= Me.m_iCols) Then Return
+            If (ptBlock.X < 1 Or ptBlock.X > Me.m_iCols) Then Return
 
             Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
             Dim strValue As String = ""
