@@ -14,8 +14,6 @@ Imports EwEUtils.Utilities
 
 Namespace Ecosim
 
-#Region "Color Blocks User control"
-
     ''' =======================================================================
     ''' <summary>
     ''' Control implementing the policy blocks sketch user interface.
@@ -459,40 +457,45 @@ Namespace Ecosim
 
             If Not Me.m_bInit Then Return
 
-            'Dim sDX As Single = (Me.m_ptLast.X - ptCursor.X)
-            'Dim sDY As Single = (Me.m_ptLast.Y - ptCursor.Y)
+            Dim ptFrom As Point = Me.CursorToBlock(Me.m_ptLast)
+            Dim ptTo As Point = Me.CursorToBlock(ptCursor)
+            Dim dx As Integer = ptTo.X - ptFrom.X
+            Dim dy As Integer = ptTo.Y - ptFrom.Y
+            Dim dCLick As Integer = CInt(Math.Sqrt(dx * dx + dy * dy))
 
-            'For x As Single = Math.Min(Me.m_ptLast.X, ptCursor.X) To Math.Max(Me.m_ptLast.X, ptCursor.X) Step Me.m_sColWidth
+            If dCLick = 0 Then dCLick = 1
 
+            For hmm As Integer = 0 To dCLick
 
-            Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
-            If ptBlock.Y < 0 Or ptBlock.Y > m_iRows - 1 Then Return
-            If ptBlock.X > m_iCols - 1 Then Return
+                Dim ptBlock As New Point(CInt(ptFrom.X + (hmm * dx) / dCLick), CInt(ptFrom.Y + (hmm * dy) / dCLick))
 
-            'BatchEdits have been set before this is called
+                If ptBlock.Y >= 0 And ptBlock.Y <= m_iRows - 1 Then
+                    If ptBlock.X <= m_iCols - 1 Then
 
-            ' Is row header clicked?
-            If (ptBlock.X < 1) Then
+                        ' Is row header clicked?
+                        If (ptBlock.X < 1) Then
 
-                ' #Yes: is column header clicked? If so: cannot fill block row
-                If ptBlock.Y < 1 Then Return
+                            ' #Yes: is column header clicked? If so: cannot fill block row
+                            If ptBlock.Y < 1 Then Return
 
-                For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(1) - 1
-                    Me.FillBlock(ptBlock.Y, i)
-                Next
-            Else
-                ' Is column header clicked?
-                If (ptBlock.Y < 1) Then
-                    ' #Yes: is row header clicked? If so: cannot fill block column
-                    If (ptBlock.X < 1) Then Return
-                    For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(0) - 1
-                        Me.FillBlock(i, ptBlock.X)
-                    Next
-                Else
-                    Me.FillBlock(ptBlock.Y, ptBlock.X)
+                            For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(1) - 1
+                                Me.FillBlock(ptBlock.Y, i)
+                            Next
+                        Else
+                            ' Is column header clicked?
+                            If (ptBlock.Y < 1) Then
+                                ' #Yes: is row header clicked? If so: cannot fill block column
+                                If (ptBlock.X < 1) Then Return
+                                For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(0) - 1
+                                    Me.FillBlock(i, ptBlock.X)
+                                Next
+                            Else
+                                Me.FillBlock(ptBlock.Y, ptBlock.X)
+                            End If
+                        End If
+                    End If
                 End If
-            End If
-            'Next x
+            Next
 
             Me.m_ptLast = ptCursor
             Me.m_pbFishingBlocks.Invalidate()
@@ -559,8 +562,6 @@ Namespace Ecosim
 #End Region
 
     End Class
-
-#End Region
 
 End Namespace
 
