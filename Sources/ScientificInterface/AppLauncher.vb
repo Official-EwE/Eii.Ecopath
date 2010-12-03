@@ -1416,8 +1416,6 @@ Public Class AppLauncher
 
         If Object.ReferenceEquals(t, Nothing) Then Return Nothing
 
-        ' Test the instance if it loads properly
-        Me.SetStatusText(My.Resources.GENERIC_STATUS_LOADINGFORM, TriState.True)
         Try
             classObject = Activator.CreateInstance(t)
 
@@ -1478,7 +1476,6 @@ Public Class AppLauncher
         Catch ex As Exception
             Debug.Assert(False, "Creation of Form was not successful.  Please contact help: '" & strNavLink & "' threw exception " & ex.ToString)
         End Try
-        Me.SetStatusText("", TriState.False)
 
         Return frmNew
     End Function
@@ -2283,27 +2280,37 @@ Public Class AppLauncher
         If Me.CoreController.LoadState(iNavCoreState) Then
             ' Is form already loaded?
             If Not ActivateForm(strNavPageName) Then
-                ' Load instance of form for selected node
-                frm = Me.LoadFormFromType(strNavPageName, tNavClassType, iNavCoreState)
-                ' Was a form created?
-                If frm IsNot Nothing Then
-                    ' #Yes
-                    If frm.WindowState = FormWindowState.Minimized Then frm.WindowState = FormWindowState.Normal
-                    ' Is this a dockable form? 
-                    If (TypeOf frm Is DockContent) And (m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
+
+                Me.SetStatusText(My.Resources.GENERIC_STATUS_LOADINGFORM, TriState.True)
+
+                Try
+                    ' Load instance of form for selected node
+                    frm = Me.LoadFormFromType(strNavPageName, tNavClassType, iNavCoreState)
+                    ' Was a form created?
+                    If frm IsNot Nothing Then
                         ' #Yes
-                        ' Show the form in the dock panel
-                        DirectCast(frm, DockContent).Show(Me.m_DockPanel, DockState.Document)
-                        ' Switch help
-                        Me.Help.HelpTopic(frm) = strNavHelpURL
-                    Else
-                        ' Show form
-                        frm.MdiParent = Me
-                        frm.Show()
-                        ' Switch help
-                        Me.Help.HelpTopic(frm) = strNavHelpURL
+                        If frm.WindowState = FormWindowState.Minimized Then frm.WindowState = FormWindowState.Normal
+                        ' Is this a dockable form? 
+                        If (TypeOf frm Is DockContent) And (m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
+                            ' #Yes
+                            ' Show the form in the dock panel
+                            DirectCast(frm, DockContent).Show(Me.m_DockPanel, DockState.Document)
+                            ' Switch help
+                            Me.Help.HelpTopic(frm) = strNavHelpURL
+                        Else
+                            ' Show form
+                            frm.MdiParent = Me
+                            frm.Show()
+                            ' Switch help
+                            Me.Help.HelpTopic(frm) = strNavHelpURL
+                        End If
                     End If
-                End If
+                Catch ex As Exception
+                    ' Whoah!
+                End Try
+
+                Me.SetStatusText("", TriState.False)
+
             End If
         End If
 
