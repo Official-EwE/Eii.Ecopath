@@ -459,40 +459,40 @@ Namespace Ecosim
 
             If Not Me.m_bInit Then Return
 
-            Dim sDX As Single = (Me.m_ptLast.X - ptCursor.X)
-            Dim sDY As Single = (Me.m_ptLast.Y - ptCursor.Y)
+            'Dim sDX As Single = (Me.m_ptLast.X - ptCursor.X)
+            'Dim sDY As Single = (Me.m_ptLast.Y - ptCursor.Y)
 
-            For x As Single = Math.Min(Me.m_ptLast.X, ptCursor.X) To Math.Max(Me.m_ptLast.X, ptCursor.X) Step Me.m_sColWidth
+            'For x As Single = Math.Min(Me.m_ptLast.X, ptCursor.X) To Math.Max(Me.m_ptLast.X, ptCursor.X) Step Me.m_sColWidth
 
 
-                Dim ptBlock As Point = Me.CursorToBlock(ptSketch)
-                If ptBlock.Y < 0 Or ptBlock.Y > m_iRows - 1 Then Return
-                If ptBlock.X > m_iCols - 1 Then Return
+            Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
+            If ptBlock.Y < 0 Or ptBlock.Y > m_iRows - 1 Then Return
+            If ptBlock.X > m_iCols - 1 Then Return
 
-                'BatchEdits have been set before this is called
+            'BatchEdits have been set before this is called
 
-                ' Is row header clicked?
-                If (ptBlock.X < 1) Then
+            ' Is row header clicked?
+            If (ptBlock.X < 1) Then
 
-                    ' #Yes: is column header clicked? If so: cannot fill block row
-                    If ptBlock.Y < 1 Then Return
+                ' #Yes: is column header clicked? If so: cannot fill block row
+                If ptBlock.Y < 1 Then Return
 
-                    For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(1) - 1
-                        Me.FillBlock(ptBlock.Y, i)
+                For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(1) - 1
+                    Me.FillBlock(ptBlock.Y, i)
+                Next
+            Else
+                ' Is column header clicked?
+                If (ptBlock.Y < 1) Then
+                    ' #Yes: is row header clicked? If so: cannot fill block column
+                    If (ptBlock.X < 1) Then Return
+                    For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(0) - 1
+                        Me.FillBlock(i, ptBlock.X)
                     Next
                 Else
-                    ' Is column header clicked?
-                    If (ptBlock.Y < 1) Then
-                        ' #Yes: is row header clicked? If so: cannot fill block column
-                        If (ptBlock.X < 1) Then Return
-                        For i As Integer = 1 To Me.m_DataSource.BlockCells.GetLength(0) - 1
-                            Me.FillBlock(i, ptBlock.X)
-                        Next
-                    Else
-                        Me.FillBlock(ptBlock.Y, ptBlock.X)
-                    End If
+                    Me.FillBlock(ptBlock.Y, ptBlock.X)
                 End If
-            Next x
+            End If
+            'Next x
 
             Me.m_ptLast = ptCursor
             Me.m_pbFishingBlocks.Invalidate()
