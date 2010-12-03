@@ -35,7 +35,7 @@ Namespace Controls
             Dim frm As frmCustomMessageBox = Nothing
 
             ' Provide defaults
-            If String.IsNullOrEmpty(strCaption) Then strCaption = "Message"
+            If String.IsNullOrEmpty(strCaption) Then strCaption = My.Resources.HEADER_MESSAGE
 
             frm = New frmCustomMessageBox(strText, strCaption, mbb, mbi)
             frm.ShowDialog()
@@ -69,7 +69,7 @@ Namespace Controls
             Dim frm As frmCustomMessageBox = Nothing
 
             ' Provide defaults
-            If String.IsNullOrEmpty(strCaption) Then strCaption = "Message"
+            If String.IsNullOrEmpty(strCaption) Then strCaption = My.Resources.HEADER_MESSAGE
 
             frm = New frmCustomMessageBox(strText, strCaption, mbb, mbi, strCheckPrompt)
             frm.ShowDialog()

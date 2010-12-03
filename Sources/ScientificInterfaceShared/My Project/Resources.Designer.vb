@@ -2324,6 +2324,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Message.
+        '''</summary>
+        Public ReadOnly Property HEADER_MESSAGE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MESSAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Min. weight.
         '''</summary>
         Public ReadOnly Property HEADER_MINWEIGHT() As String

@@ -1659,4 +1659,7 @@
   <data name="GENERIC_VALUE_NOTUSED" xml:space="preserve">
     <value>(Not used)</value>
   </data>
+  <data name="HEADER_MESSAGE" xml:space="preserve">
+    <value>Message</value>
+  </data>
 </root>
