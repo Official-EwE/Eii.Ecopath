@@ -3,6 +3,7 @@
 Option Strict On
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Other
+Imports EwECore
 
 #End Region ' Imports
 
@@ -151,7 +152,13 @@ Public Class ucCVBlockSelector
     ''' <remarks>Finds the closest matching. </remarks>
     Public Function ValuetoBlock(ByVal cv As Single) As Integer _
         Implements IBlockSelector.ValuetoBlock
+
         Try
+
+            ' Speed up
+            If cv < Me.m_cvs(1) Then Return 1
+            If cv > Me.m_cvs(Me.NumBlocks) Then Return Me.NumBlocks
+
             'This could probable find an exact match and still work 
             'even if the user has edited the value of the currently selected block/cell
             Dim i As Integer
