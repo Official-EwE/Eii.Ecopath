@@ -40,11 +40,11 @@ Namespace Ecosim
             Me.m_pbFishingBlocks.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_pbFishingBlocks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_pbFishingBlocks.Location = New System.Drawing.Point(0, 95)
+            Me.m_pbFishingBlocks.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_pbFishingBlocks.Location = New System.Drawing.Point(0, 72)
             Me.m_pbFishingBlocks.Margin = New System.Windows.Forms.Padding(0)
             Me.m_pbFishingBlocks.Name = "m_pbFishingBlocks"
-            Me.m_pbFishingBlocks.Size = New System.Drawing.Size(870, 493)
+            Me.m_pbFishingBlocks.Size = New System.Drawing.Size(870, 516)
             Me.m_pbFishingBlocks.TabIndex = 1
             Me.m_pbFishingBlocks.TabStop = False
             '
@@ -134,9 +134,9 @@ Namespace Ecosim
             Me.m_tlpMain.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tlpMain.Name = "m_tlpMain"
             Me.m_tlpMain.RowCount = 2
-            Me.m_tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.94737!))
-            Me.m_tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 81.05263!))
-            Me.m_tlpMain.Size = New System.Drawing.Size(870, 92)
+            Me.m_tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            Me.m_tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpMain.Size = New System.Drawing.Size(870, 69)
             Me.m_tlpMain.TabIndex = 0
             '
             'm_hdrControls
@@ -167,7 +167,7 @@ Namespace Ecosim
             Me.m_pnlControls.Location = New System.Drawing.Point(689, 17)
             Me.m_pnlControls.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_pnlControls.Name = "m_pnlControls"
-            Me.m_pnlControls.Size = New System.Drawing.Size(181, 75)
+            Me.m_pnlControls.Size = New System.Drawing.Size(181, 52)
             Me.m_pnlControls.TabIndex = 3
             '
             'm_lblYear
@@ -185,7 +185,7 @@ Namespace Ecosim
             Me.m_plBlocks.Location = New System.Drawing.Point(0, 17)
             Me.m_plBlocks.Margin = New System.Windows.Forms.Padding(0)
             Me.m_plBlocks.Name = "m_plBlocks"
-            Me.m_plBlocks.Size = New System.Drawing.Size(686, 75)
+            Me.m_plBlocks.Size = New System.Drawing.Size(686, 52)
             Me.m_plBlocks.TabIndex = 1
             '
             'TableLayoutPanel3

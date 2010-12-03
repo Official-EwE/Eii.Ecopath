@@ -273,7 +273,6 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Try
-                Me.CalcParams(e.Graphics)
                 Me.DrawRowCols(e.Graphics)
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".Paint() Exception: " & ex.Message)
@@ -316,11 +315,12 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnSizeChanged(ByVal e As System.EventArgs)
-            MyBase.OnSizeChanged(e)
+        Private Sub OnBlocksSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_pbFishingBlocks.SizeChanged
 
-            ' Redraw the blocks
-            Me.m_pbFishingBlocks.Invalidate()
+            Using g As Graphics = Me.m_pbFishingBlocks.CreateGraphics
+                Me.CalcParams(g)
+            End Using
 
         End Sub
 
@@ -375,6 +375,10 @@ Namespace Ecosim
                     Next
 
                 Next
+
+                Using br As New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND))
+                    g.FillRectangle(br, 0, m_sRowHeight, Me.m_sFirstColWidth, Me.m_pbFishingBlocks.Height - m_sRowHeight)
+                End Using
 
                 'Now draw the grid lines on top of the blocks, so they show up
                 'Rows
