@@ -148,6 +148,7 @@ Namespace Ecosim
         Public Sub UpdateControls()
 
             Me.m_DataSource.Init()
+            Me.CalcParams()
 
             m_nudSeqEndYear.Maximum = Me.m_DataSource.TotalBlocks
             m_nudNumYearsPerBlock.Maximum = Me.m_DataSource.TotalBlocks
