@@ -7,8 +7,11 @@ Imports EwECore.MSE
 
 #End Region ' Imports
 
-#Region "Windows form class frmMSEAssessFleets"
-
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Form class for assessing MSE Fleet CV values.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class frmMSEAssessFleets
 
     Private m_fpStartYear As cIntegerProperty
@@ -38,6 +41,7 @@ Public Class frmMSEAssessFleets
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
+
         Dim ds As New cMSEFishingColorBlockDataSource(Me.UIContext)
         'load the datasource and the block selector into the ucPolicyColorBlocks
         Me.m_blocks.Attach(ds, New ucCVBlockSelector)
@@ -97,4 +101,3 @@ Public Class frmMSEAssessFleets
 
 End Class
 
-#End Region
