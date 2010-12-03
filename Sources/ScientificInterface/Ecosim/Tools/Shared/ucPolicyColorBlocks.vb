@@ -318,6 +318,14 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnScrollAreaChanged(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_plScroll.SizeChanged
+
+            If Not Me.m_bInit Then Return
+            Me.CalcParams()
+
+        End Sub
+
 #End Region ' Events handlers
 
 #Region " Callbacks "
@@ -393,7 +401,7 @@ Namespace Ecosim
                     g.DrawLine(gridPen, xPos, 0, xPos, m_sRowHeight)
                     g.DrawLine(gridPen, xPos, m_sRowHeight, xPos, m_pbFishingBlocks.Height)
                     Dim txt As String = j.ToString
-                    g.DrawString(txt, m_pbFishingBlocks.Font, Brushes.Black, xPos + 1, 1)
+                    g.DrawString(txt, m_pbFishingBlocks.Font, Brushes.Black, New Rectangle(CInt(xPos), 0, CInt(xPos + Me.m_sColWidth), CInt(Me.m_sRowHeight)))
                 Next
 
                 'Redraw the first col line in Black
@@ -411,11 +419,11 @@ Namespace Ecosim
             ' If Not Me.m_bInit Then Return
 
             Dim g As Graphics = Me.m_pbFishingBlocks.CreateGraphics
-            Dim szf As SizeF = g.MeasureString("66", Me.Font)
+            Dim szf As SizeF = g.MeasureString("1", Me.Font)
 
             Try
                 Me.m_iRows = Me.m_DataSource.nRows + 1
-                Me.m_sRowHeight = szf.Height + 2 ' CSng(m_pbFishingBlocks.Height / Me.m_iRows)
+                Me.m_sRowHeight = szf.Height + 2 ' CSng(Me.m_plScroll.Height / Me.m_iRows)
 
                 Dim sLenMax As Single = -1
                 For i As Integer = 0 To Me.m_DataSource.nRows - 1
@@ -426,7 +434,7 @@ Namespace Ecosim
                 'First column line 
                 Me.m_sFirstColWidth = sLenMax + 10
                 Me.m_iCols = Me.m_DataSource.TotalBlocks
-                Me.m_sColWidth = szf.Width + 2 ' CSng((m_pbFishingBlocks.Width - Me.m_sFirstColWidth) / Me.m_DataSource.TotalBlocks)
+                Me.m_sColWidth = Math.Max(CSng((Me.m_plScroll.Width - Me.m_sFirstColWidth) / Me.m_DataSource.TotalBlocks), szf.Width)
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
