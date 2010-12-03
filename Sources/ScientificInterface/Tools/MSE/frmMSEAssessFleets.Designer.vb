@@ -89,6 +89,7 @@ Partial Class frmMSEAssessFleets
         '
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
+        Me.m_tsMain.GripStyle = ToolStripGripStyle.Hidden
         '
         'frmMSEAssessFleets
         '
