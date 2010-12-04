@@ -22,6 +22,8 @@ Namespace Ecosim
     Public Class ucPolicyColorBlocks
         Implements IUIElement
 
+        Private Const cNUM_ZOOMLEVELS As Integer = 5
+
 #Region " Private vars "
 
         Private m_uic As cUIContext = Nothing
@@ -37,18 +39,25 @@ Namespace Ecosim
 
         Private m_bIsFirstTimeLoaded As Boolean = True
 
-        Private m_EcosimMsgHandler As cMessageHandler
+        Private m_EcosimMsgHandler As cMessageHandler = Nothing
 
-        Private m_PropBaseYear As cProperty
-        Private m_PropEcosimNYears As cProperty
+        Private m_PropBaseYear As cProperty = Nothing
+        Private m_PropEcosimNYears As cProperty = Nothing
 
-        Private m_DataSource As IPolicyColorBlockDataSource
+        Private m_DataSource As IPolicyColorBlockDataSource = Nothing
         Private m_bInit As Boolean
 
-        Private m_BlockSelector As IBlockSelector
+        Private m_BlockSelector As IBlockSelector = Nothing
 
         Private m_toolTip As ToolTip
         Private m_ptLast As Point = Nothing
+
+        ''' <summary>States whether a floating hover menu should be displayed on the blocks.</summary>
+        Private m_bShowHoverMenu As Boolean = True
+        ''' <summary>The hover menu to display on top of blocks.</summary>
+        Private m_hoverMenu As ucHoverMenu = Nothing
+
+        Private m_iZoomState As Integer = 2 ' [0, 4]
 
 #End Region ' Private vars
 
@@ -126,6 +135,12 @@ Namespace Ecosim
             Me.m_PropEcosimNYears = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
             AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
 
+            Me.m_hoverMenu = New ucHoverMenu()
+            Me.Controls.Add(Me.m_hoverMenu)
+            Me.m_hoverMenu.BringToFront()
+            Me.ShowHover(False)
+            AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
+
             Me.m_bInit = True
 
             Me.ReloadData()
@@ -143,18 +158,22 @@ Namespace Ecosim
             If (Me.m_bInit) Then
 
                 RemoveHandler Me.m_BlockSelector.onValueChanged, AddressOf Me.onCVValuesChanged
+                RemoveHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
+                Me.m_PropBaseYear = Nothing
 
-                If (Me.m_PropBaseYear IsNot Nothing) Then
-                    RemoveHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
-                    Me.m_PropBaseYear = Nothing
+                RemoveHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
+                Me.m_PropEcosimNYears = Nothing
 
-                    RemoveHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
-                    Me.m_PropEcosimNYears = Nothing
+                RemoveHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
+                Me.Controls.Remove(Me.m_hoverMenu)
+                Me.m_hoverMenu.Dispose()
+                Me.m_hoverMenu = Nothing
 
-                End If
                 Me.m_DataSource = Nothing
                 Me.m_BlockSelector = Nothing
+
             End If
+
             Me.UIContext = Nothing
 
         End Sub
@@ -234,6 +253,23 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether a hovering menu should be displayed on the graph.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowHoverMenu() As Boolean
+            Get
+                Return Me.m_bShowHoverMenu
+            End Get
+            Set(ByVal value As Boolean)
+                If value <> Me.m_bShowHoverMenu Then
+                    Me.m_bShowHoverMenu = value
+                    Me.UpdateHoverMenuState()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Refresh the content of the control. This will also trigger blocks control
         ''' to reload its datasource and colour scheme.
         ''' </summary>
@@ -295,6 +331,16 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnMouseEnterScrollArea(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_plScroll.MouseEnter
+            Me.ShowHover(True)
+        End Sub
+
+        Private Sub OnMouseLeaveScollArea(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_plScroll.MouseLeave
+            Me.ShowHover(False)
+        End Sub
+
         Private Sub OnMouseDownBlocks(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
             Handles m_pbFishingBlocks.MouseDown
 
@@ -342,6 +388,30 @@ Namespace Ecosim
 
 #Region " Callbacks "
 
+        ''' <summary>Cross-threading delegate.</summary>
+        ''' <param name="cmd"></param>
+        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As ucHoverMenu.eCommandTypes)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Callback for hover menu events.
+        ''' </summary>
+        ''' <param name="cmd"></param>
+        ''' -------------------------------------------------------------------
+        Private Sub OnHoverMenuCommand(ByVal cmd As ucHoverMenu.eCommandTypes)
+
+            If Me.InvokeRequired Then
+                Me.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
+                Return
+            End If
+
+            Dim dZoom As Integer = CInt(IIf(cmd = ucHoverMenu.eCommandTypes.ZoomIn, 1, -1))
+            Me.m_iZoomState = Math.Max(0, Math.Min(cNUM_ZOOMLEVELS, Me.m_iZoomState + dZoom))
+
+            Me.ResizeBlocks()
+
+        End Sub
+
         Private Sub OnPropChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
             Me.Refresh()
         End Sub
@@ -372,11 +442,19 @@ Namespace Ecosim
             If Not Me.m_bInit Then Return
 
             Me.m_DataSource.Init()
+            Me.ResizeBlocks()
+
+        End Sub
+
+        Private Sub ResizeBlocks()
+
+            If Not Me.m_bInit Then Return
 
             Dim g As Graphics = Me.m_pbFishingBlocks.CreateGraphics
             Dim szf As SizeF = g.MeasureString("1", Me.Font)
 
             Try
+                ' Determine row height
                 Me.m_iRows = Me.m_DataSource.nRows + 1
                 Me.m_sRowHeight = szf.Height + 2 ' CSng(Me.m_plScroll.Height / Me.m_iRows)
 
@@ -386,10 +464,15 @@ Namespace Ecosim
                     If sLenMax < tmpWidth Then sLenMax = tmpWidth
                 Next
 
-                'First column line 
+                ' Determine column widths
                 Me.m_sFirstColWidth = sLenMax + 10
                 Me.m_iCols = Me.m_DataSource.TotalBlocks
-                Me.m_sColWidth = Math.Max(CSng((Me.m_plScroll.Width - Me.m_sFirstColWidth) / Me.m_DataSource.TotalBlocks), szf.Width)
+
+                ' -6 to make this look good when zoomed out all the way. Not sure which padding/margin props to subtract for real
+                Dim sMinColWidth As Single = CSng((Me.m_plScroll.ClientRectangle.Width - Me.m_sFirstColWidth - 6) / Me.m_DataSource.TotalBlocks)
+                Dim sMaxColWidth As Single = g.MeasureString(CStr(Math.Pow(10, CInt(Math.Log10(Me.m_iCols)) + 1) - 1), Me.Font).Width
+
+                Me.m_sColWidth = sMinColWidth + (Me.m_iZoomState * (sMaxColWidth - sMinColWidth) / cNUM_ZOOMLEVELS)
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
@@ -401,6 +484,7 @@ Namespace Ecosim
 
             Me.m_pbFishingBlocks.Width = CInt(Math.Ceiling(Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth))
             Me.m_pbFishingBlocks.Height = CInt(Math.Ceiling(Me.m_iRows * Me.m_sRowHeight))
+            Me.m_plScroll.Invalidate(True)
 
             Me.UpdateControls()
 
@@ -472,9 +556,7 @@ Namespace Ecosim
                     Dim txt As String = j.ToString
                     g.DrawString(txt, m_pbFishingBlocks.Font, Brushes.Black, New Rectangle(CInt(xPos), 0, CInt(xPos + Me.m_sColWidth), CInt(Me.m_sRowHeight)))
                 Next
-
-                'Redraw the first col line in Black
-                g.DrawLine(gridPen, m_sFirstColWidth, 0, m_sFirstColWidth, m_pbFishingBlocks.Height)
+                g.DrawLine(gridPen, Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth, 0, Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth, m_pbFishingBlocks.Height)
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
@@ -607,6 +689,54 @@ Namespace Ecosim
         End Function
 
 #End Region
+
+#Region " Hover menu "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Evaluate the hover menu state anew.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdateHoverMenuState()
+            Me.ShowHover(Me.IsMouseOverGraph() Or Me.IsMouseOverBlocks())
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Show or hide the hover menu.
+        ''' </summary>
+        ''' <param name="bShow">Flag stating whether the hover menu should be 
+        ''' shown (True) or hidden (False).</param>
+        ''' -------------------------------------------------------------------
+        Private Sub ShowHover(ByVal bShow As Boolean)
+            Me.m_hoverMenu.Visible = (bShow Or IsMouseOverBlocks()) And Me.m_bShowHoverMenu
+            Dim ptHover As New Point(4, Me.Height - Me.m_hoverMenu.Height - 4)
+            Me.m_hovermenu.Location = ptHover
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, returns whether the mouse is over the hover menu.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function IsMouseOverBlocks() As Boolean
+            Dim pt As Point = Me.m_hoverMenu.PointToClient(Form.MousePosition)
+            Return Me.m_hoverMenu.ClientRectangle.Contains(pt)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, returns whether the mouse is over the zed graph.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function IsMouseOverGraph() As Boolean
+            Dim pt As Point = Me.PointToClient(Form.MousePosition)
+            Return Me.ClientRectangle.Contains(pt)
+        End Function
+
+#End Region ' Hover menu
 
     End Class
 

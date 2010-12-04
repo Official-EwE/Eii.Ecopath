@@ -303,8 +303,11 @@
     <Compile Include="Controls\Wizard\ucWizardNavigation.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ZedGraph\ucZedGraphHoverMenu.Designer.vb">
-      <DependentUpon>ucZedGraphHoverMenu.vb</DependentUpon>
+    <Compile Include="Controls\HoverMenu\ucHoverMenu.Designer.vb">
+      <DependentUpon>ucHoverMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HoverMenu\ucHoverMenu.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ZedGraph\ucZedGraphHoverMenu.vb">
       <SubType>UserControl</SubType>
@@ -438,8 +441,8 @@
       <DependentUpon>ucWizardNavigation.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ZedGraph\ucZedGraphHoverMenu.resx">
-      <DependentUpon>ucZedGraphHoverMenu.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\HoverMenu\ucHoverMenu.resx">
+      <DependentUpon>ucHoverMenu.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>

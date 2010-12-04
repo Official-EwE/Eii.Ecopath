@@ -303,7 +303,7 @@ Namespace Controls
         ''' <summary>States whether a floating hover menu should be displayed on the graph.</summary>
         Private m_bShowHoverMenu As Boolean = True
         ''' <summary>The hover menu to display on top of graph areas.</summary>
-        Private m_hovermenu As ucZedGraphHoverMenu = Nothing
+        Private m_hovermenu As ucHoverMenu = Nothing
 
 #End Region ' Private vars
 
@@ -352,7 +352,7 @@ Namespace Controls
             Me.m_zgc = zgc
             Me.m_nPanels = iNumPanels
 
-            Me.m_hovermenu = New ucZedGraphHoverMenu()
+            Me.m_hovermenu = New ucHoverMenu()
             Me.m_zgc.Controls.Add(Me.m_hovermenu)
             Me.m_hovermenu.BringToFront()
             Me.ShowHover(False)
@@ -2170,7 +2170,7 @@ Namespace Controls
 
         ''' <summary>Cross-threading delegate.</summary>
         ''' <param name="cmd"></param>
-        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As ucZedGraphHoverMenu.eCommandTypes)
+        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As ucHoverMenu.eCommandTypes)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -2178,7 +2178,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnHoverMenuCommand(ByVal cmd As ucZedGraphHoverMenu.eCommandTypes)
+        Private Sub OnHoverMenuCommand(ByVal cmd As ucHoverMenu.eCommandTypes)
 
             Dim gp As GraphPane = Nothing
             Dim zs As ZoomState = Nothing
@@ -2197,12 +2197,12 @@ Namespace Controls
 
                 ' Manually zoom in, place zoom in zoom stack. Zoom out means recalling zoom positions
                 Select Case cmd
-                    Case ucZedGraphHoverMenu.eCommandTypes.ZoomIn
+                    Case ucHoverMenu.eCommandTypes.ZoomIn
                         zs = New ZoomState(gp, ZoomState.StateType.Zoom)
                         gp.ZoomStack.Add(zs)
                         gp.YAxis.Scale.Max -= (gp.YAxis.Scale.Max - sValueAvg) / 4
                         gp.YAxis.Scale.Min += (sValueAvg - gp.YAxis.Scale.Min) / 4
-                    Case ucZedGraphHoverMenu.eCommandTypes.ZoomOut
+                    Case ucHoverMenu.eCommandTypes.ZoomOut
                         zs = gp.ZoomStack.Pop(gp)
                         If zs IsNot Nothing Then zs.ApplyState(gp)
                 End Select
