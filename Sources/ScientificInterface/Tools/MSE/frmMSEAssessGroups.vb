@@ -3,6 +3,7 @@
 Option Strict On
 Imports ScientificInterface.Ecosim
 Imports EwECore.MSE
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -13,8 +14,7 @@ Imports EwECore.MSE
 ''' ===========================================================================
 Public Class frmMSEAssessGroups
 
-    Private m_fpStartYear As cIntegerProperty
-    'Private m_MSEDataSource As cMSEGroupColorBlockDataSource
+    Private m_propStartYear As cProperty = Nothing
 
     Public Sub New()
         Me.InitializeComponent()
@@ -31,46 +31,58 @@ Public Class frmMSEAssessGroups
     End Property
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+        Try
+
+            ' Create and attach datasource
+            Dim ds As New cMSEGroupColorBlockDataSource(Me.UIContext)
+            Me.m_blocks.Attach(ds, New ucCVBlockSelector)
+
+            ' Track styleguide changes
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+            ' Track MSE start year changes
+            Me.m_propStartYear = Me.PropertyManager.GetProperty(Me.UIContext.Core.MSEManager.ModelParameters, eVarNameFlags.MSEStartYear)
+            AddHandler Me.m_propStartYear.PropertyChanged, AddressOf OnLastYearChanged
+
+        Catch ex As Exception
+
+        End Try
+
+        ' Show form
         MyBase.OnLoad(e)
-        ' Attach the datasource and the block selector to the ucPolicyColorBlocks control
-        Dim ds As New cMSEGroupColorBlockDataSource(Me.UIContext)
-        '  m_MSEDataSource = New cMSEGroupColorBlockDataSource(Me.UIContext)
-        Me.m_blocks.Attach(ds, New ucCVBlockSelector)
-
-        Dim pm As cPropertyManager = Me.PropertyManager
-
-        Me.m_fpStartYear = DirectCast(pm.GetProperty(Me.UIContext.Core.MSEManager.ModelParameters, EwEUtils.Core.eVarNameFlags.MSEStartYear), cIntegerProperty)
-
-        ' Track styleguide changes
-        AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
-        AddHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
 
     End Sub
 
+    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        'Calling MyBase.OnFormClosed(e) before removing the handlers is setting Me.StyleGuide to nothing
-        'then the handler can not be removed
-        ' Remove all refs before calling base OnFormClosed which will release the UI context
         Try
+
+            ' No longer track styleguide changes
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            RemoveHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
+            ' No longer track MSE start year changes
+            RemoveHandler Me.m_propStartYear.PropertyChanged, AddressOf OnLastYearChanged
+            ' Release blocks
+            Me.m_blocks.Detach()
+
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
         End Try
 
-        Try
-            MyBase.OnFormClosed(e)
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
-        End Try
+        MyBase.OnFormClosed(e)
 
     End Sub
 
+    ''' <summary>
+    ''' Style guide changed event handler.
+    ''' </summary>
+    ''' <param name="ct"></param>
+    ''' <remarks></remarks>
     Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
 
+        ' If colours have changed?
         If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
+            ' #Yes: totally refresh the blocks (Invalidate won't cut it; the block needs to update its colour dictionary)
             Me.m_blocks.Refresh()
         End If
 
@@ -79,10 +91,9 @@ Public Class frmMSEAssessGroups
     Private Sub OnLastYearChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
 
         Try
-            'update the controls
-            Me.m_blocks.UpdateControls()
-            'redraw the updated data
-            Me.m_blocks.Refresh()
+            If (changeFlags And cProperty.eChangeFlags.Value) > 0 Then
+                Me.m_blocks.Refresh()
+            End If
         Catch ex As Exception
             EwECore.cLog.Write(ex)
         End Try

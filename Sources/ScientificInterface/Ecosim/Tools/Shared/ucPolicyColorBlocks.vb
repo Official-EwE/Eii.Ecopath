@@ -52,7 +52,7 @@ Namespace Ecosim
 
 #End Region ' Private vars
 
-#Region "Public Methods and Properties"
+#Region " Contruction and destruction "
 
         Public Sub New()
             Me.InitializeComponent()
@@ -75,12 +75,22 @@ Namespace Ecosim
 
         End Sub
 
+#End Region ' Contruction and destruction
+
+#Region " Public interfaces "
+
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Attach a data source <see cref="IPolicyColorBlockDataSource">IPolicyColorBlockDataSource</see> and a block selector control <see cref="IBlockSelector">IBlockSelector</see> to the main PolicyColorBlock control 
+        ''' Attach a data source <see cref="IPolicyColorBlockDataSource">IPolicyColorBlockDataSource</see> 
+        ''' and a block selector control <see cref="IBlockSelector">IBlockSelector</see> to a PolicyColorBlock control.
         ''' </summary>
         ''' <param name="DataSource">Implementation of IPolicyColorBlockDataSource</param>
         ''' <param name="BlockSelector">Implementation of IBlockSelector</param>
-        ''' <remarks>PolicyColorBlocks can be attached to different data sources and block selectors</remarks>
+        ''' <remarks>
+        ''' <para>PolicyColorBlocks can be attached to different data sources and block selectors.</para>
+        ''' <para>Remember to correctly <see cref="Detach">detach</see> the control when no longer needed.</para>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Sub Attach(ByVal DataSource As IPolicyColorBlockDataSource, ByVal BlockSelector As IBlockSelector)
 
             If Me.m_bInit Then Me.Detach()
@@ -116,14 +126,18 @@ Namespace Ecosim
             Me.m_PropEcosimNYears = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
             AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
 
-            Me.CalcParams()
-            Me.m_pbFishingBlocks.Width = CInt(Math.Ceiling(Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth))
-            Me.m_pbFishingBlocks.Height = CInt(Math.Ceiling(Me.m_iRows * Me.m_sRowHeight))
             Me.m_bInit = True
-            Me.UpdateControls()
+
+            Me.ReloadData()
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Detaches the datasource from the control that was previously
+        ''' <see cref="Attach">attached</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub Detach()
 
             If (Me.m_bInit) Then
@@ -145,33 +159,9 @@ Namespace Ecosim
 
         End Sub
 
-        Public Sub UpdateControls()
-
-            Me.m_DataSource.Init()
-            Me.CalcParams()
-
-            m_nudSeqEndYear.Maximum = Me.m_DataSource.TotalBlocks
-            m_nudNumYearsPerBlock.Maximum = Me.m_DataSource.TotalBlocks
-
-            m_bIsSketching = False
-
-            If m_clrCurrent = Nothing Then
-                m_clrCurrent = Color.Green
-            End If
-
-            m_nudNumYearsPerBlock.Value = CDec(Me.m_DataSource.TotalBlocks)
-            m_nudSeqStartYear.Value = CDec(Math.Min(2, Me.m_DataSource.TotalBlocks))
-            m_nudSeqEndYear.Value = CDec(Me.m_DataSource.TotalBlocks)
-            m_bIsFirstTimeLoaded = False
-
-            If Me.Enabled Then
-                Me.m_pbFishingBlocks.Cursor = Cursors.Hand
-            Else
-                Me.m_pbFishingBlocks.Cursor = Cursors.Default
-            End If
-
-        End Sub
-
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -182,9 +172,11 @@ Namespace Ecosim
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Color of the currently selected block
+        ''' Get/set the color of the currently selected block.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property CurColor() As Color
             Get
                 Return m_clrCurrent
@@ -194,9 +186,12 @@ Namespace Ecosim
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Implementation of IBlockSelector
+        ''' Get/set the <see cref="IBlockSelector">colour block selector</see>
+        ''' to collaborate with this control.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property ParmBlockCodes() As IBlockSelector
             Get
                 Return m_BlockSelector
@@ -206,9 +201,11 @@ Namespace Ecosim
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether the policy block selector should show the controls panel.
+        ''' Get/set whether this control should show its controls panel.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property ControlPanelVisible() As Boolean
             Get
                 Return Me.m_pnlControls.Visible
@@ -219,9 +216,11 @@ Namespace Ecosim
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set whether the block editor should show tooltips.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         <Browsable(True)> _
         Public Property ShowTooltip() As Boolean
             Get
@@ -233,7 +232,19 @@ Namespace Ecosim
             End Set
         End Property
 
-#End Region
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Refresh the content of the control. This will also trigger blocks control
+        ''' to reload its datasource and colour scheme.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub Refresh()
+            Me.ReloadData()
+            Me.UpdateControls()
+            MyBase.Refresh()
+        End Sub
+
+#End Region ' Public interfaces
 
 #Region " Events handlers "
 
@@ -277,14 +288,14 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Try
-                Me.DrawRowCols(e.Graphics)
+                Me.DrawBlocks(e.Graphics)
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".Paint() Exception: " & ex.Message)
             End Try
 
         End Sub
 
-        Private Sub pbFishingBlocks_MouseDown(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
+        Private Sub OnMouseDownBlocks(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
             Handles m_pbFishingBlocks.MouseDown
 
             If (e.Button And Windows.Forms.MouseButtons.Right) > 0 Then
@@ -300,7 +311,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub pbFishingBlocks_MouseMove(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
+        Private Sub OnMouseMoveBlocks(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
             Handles m_pbFishingBlocks.MouseMove
 
             If Me.m_bIsSketching Then
@@ -310,7 +321,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub pbFishingBlocks_MouseUp(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
+        Private Sub OnMouseUpBlocks(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
             Handles m_pbFishingBlocks.MouseUp
 
             Me.m_bIsSketching = False
@@ -319,11 +330,11 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnScrollAreaChanged(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnScrollAreaResized(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_plScroll.SizeChanged
 
             If Not Me.m_bInit Then Return
-            Me.CalcParams()
+            Me.ReloadData()
 
         End Sub
 
@@ -332,34 +343,91 @@ Namespace Ecosim
 #Region " Callbacks "
 
         Private Sub OnPropChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
-
-            'right now if anything changed just reload
-            Me.UpdateControls()
-            Me.m_pbFishingBlocks.Invalidate()
-
+            Me.Refresh()
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Values in the grid selector have changed update the datasource
+        ''' Callback, invoked when values in the grid selector have changed.
         ''' </summary>
         ''' <param name="newValue"></param>
         ''' <param name="Index"></param>
-        ''' <remarks>Only the CV grid selector sends out this event</remarks>
+        ''' <remarks>Only the CV grid selector sends out this event.</remarks>
+        ''' -------------------------------------------------------------------
         Private Sub onCVValuesChanged(ByVal newValue As Single, ByVal Index As Integer)
             Try
+                ' Update the datasource
                 Me.m_DataSource.Update()
             Catch ex As Exception
 
             End Try
         End Sub
 
-
-
 #End Region ' Callbacks
 
 #Region "Private methods"
 
-        Private Sub DrawRowCols(ByVal g As Graphics)
+        Private Sub ReloadData()
+
+            If Not Me.m_bInit Then Return
+
+            Me.m_DataSource.Init()
+
+            Dim g As Graphics = Me.m_pbFishingBlocks.CreateGraphics
+            Dim szf As SizeF = g.MeasureString("1", Me.Font)
+
+            Try
+                Me.m_iRows = Me.m_DataSource.nRows + 1
+                Me.m_sRowHeight = szf.Height + 2 ' CSng(Me.m_plScroll.Height / Me.m_iRows)
+
+                Dim sLenMax As Single = -1
+                For i As Integer = 0 To Me.m_DataSource.nRows - 1
+                    Dim tmpWidth As Single = g.MeasureString(Me.m_DataSource.RowLabel(i + 1), m_pbFishingBlocks.Font).Width
+                    If sLenMax < tmpWidth Then sLenMax = tmpWidth
+                Next
+
+                'First column line 
+                Me.m_sFirstColWidth = sLenMax + 10
+                Me.m_iCols = Me.m_DataSource.TotalBlocks
+                Me.m_sColWidth = Math.Max(CSng((Me.m_plScroll.Width - Me.m_sFirstColWidth) / Me.m_DataSource.TotalBlocks), szf.Width)
+
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
+                Throw New ApplicationException(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
+            End Try
+
+            g.Dispose()
+            g = Nothing
+
+            Me.m_pbFishingBlocks.Width = CInt(Math.Ceiling(Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth))
+            Me.m_pbFishingBlocks.Height = CInt(Math.Ceiling(Me.m_iRows * Me.m_sRowHeight))
+
+            Me.UpdateControls()
+
+        End Sub
+
+        ''' <summary>
+        ''' Update the enabled state of controls
+        ''' </summary>
+        Private Sub UpdateControls()
+
+            Me.m_bIsSketching = False
+
+            Me.m_nudSeqEndYear.Maximum = Me.m_DataSource.TotalBlocks
+            Me.m_nudNumYearsPerBlock.Maximum = Me.m_DataSource.TotalBlocks
+
+            If Me.m_clrCurrent = Nothing Then
+                Me.m_clrCurrent = Color.Green
+            End If
+
+            Me.m_nudNumYearsPerBlock.Value = CDec(Me.m_DataSource.TotalBlocks)
+            Me.m_nudSeqStartYear.Value = CDec(Math.Min(2, Me.m_DataSource.TotalBlocks))
+            Me.m_nudSeqEndYear.Value = CDec(Me.m_DataSource.TotalBlocks)
+            Me.m_bIsFirstTimeLoaded = False
+
+        End Sub
+
+        Private Sub DrawBlocks(ByVal g As Graphics)
 
             If Not Me.m_bInit Then Return
 
@@ -397,7 +465,7 @@ Namespace Ecosim
                 g.DrawLine(gridPen, 0, Me.m_iRows * Me.m_sRowHeight, Me.m_pbFishingBlocks.Width, Me.m_iRows * Me.m_sRowHeight)
 
                 'Cols
-                For j As Integer = 1 To m_iCols 
+                For j As Integer = 1 To m_iCols
                     Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
                     g.DrawLine(gridPen, xPos, 0, xPos, m_sRowHeight)
                     g.DrawLine(gridPen, xPos, m_sRowHeight, xPos, m_pbFishingBlocks.Height)
@@ -412,38 +480,6 @@ Namespace Ecosim
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
                 Throw New ApplicationException(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
             End Try
-
-        End Sub
-
-        Private Sub CalcParams()
-
-            ' If Not Me.m_bInit Then Return
-
-            Dim g As Graphics = Me.m_pbFishingBlocks.CreateGraphics
-            Dim szf As SizeF = g.MeasureString("1", Me.Font)
-
-            Try
-                Me.m_iRows = Me.m_DataSource.nRows + 1
-                Me.m_sRowHeight = szf.Height + 2 ' CSng(Me.m_plScroll.Height / Me.m_iRows)
-
-                Dim sLenMax As Single = -1
-                For i As Integer = 0 To Me.m_DataSource.nRows - 1
-                    Dim tmpWidth As Single = g.MeasureString(Me.m_DataSource.RowLabel(i + 1), m_pbFishingBlocks.Font).Width
-                    If sLenMax < tmpWidth Then sLenMax = tmpWidth
-                Next
-
-                'First column line 
-                Me.m_sFirstColWidth = sLenMax + 10
-                Me.m_iCols = Me.m_DataSource.TotalBlocks
-                Me.m_sColWidth = Math.Max(CSng((Me.m_plScroll.Width - Me.m_sFirstColWidth) / Me.m_DataSource.TotalBlocks), szf.Width)
-
-            Catch ex As Exception
-                System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
-                Throw New ApplicationException(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
-            End Try
-
-            g.Dispose()
-            g = Nothing
 
         End Sub
 

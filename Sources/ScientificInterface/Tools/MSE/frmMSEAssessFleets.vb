@@ -1,9 +1,9 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports ScientificInterface.Ecosim
 Imports EwECore.MSE
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -14,7 +14,7 @@ Imports EwECore.MSE
 ''' ---------------------------------------------------------------------------
 Public Class frmMSEAssessFleets
 
-    Private m_fpStartYear As cIntegerProperty
+    Private m_propStartYear As cProperty = Nothing
 
     Public Sub New()
         MyBase.New()
@@ -33,49 +33,51 @@ Public Class frmMSEAssessFleets
         End Set
     End Property
 
-    Protected Overrides ReadOnly Property ToolStrip() As System.Windows.Forms.ToolStrip
+    Protected Overrides ReadOnly Property ToolStrip() As ToolStrip
         Get
             Return Me.m_tsMain
         End Get
     End Property
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-        MyBase.OnLoad(e)
-
-        Dim ds As New cMSEFishingColorBlockDataSource(Me.UIContext)
-        'load the datasource and the block selector into the ucPolicyColorBlocks
-        Me.m_blocks.Attach(ds, New ucCVBlockSelector)
 
         Try
-            Dim pm As cPropertyManager = Me.PropertyManager
-            Me.m_fpStartYear = DirectCast(pm.GetProperty(Me.UIContext.Core.MSEManager.ModelParameters, EwEUtils.Core.eVarNameFlags.MSEStartYear), cIntegerProperty)
+
+            ' Create and attach datasource
+            Dim ds As New cMSEGroupColorBlockDataSource(Me.UIContext)
+            Me.m_blocks.Attach(ds, New ucCVBlockSelector)
 
             ' Track styleguide changes
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-            AddHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
+            ' Track MSE start year changes
+            Me.m_propStartYear = Me.PropertyManager.GetProperty(Me.UIContext.Core.MSEManager.ModelParameters, eVarNameFlags.MSEStartYear)
+            AddHandler Me.m_propStartYear.PropertyChanged, AddressOf OnLastYearChanged
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".OnLoad() Failed to add handlers!")
+
         End Try
+
+        ' Show form
+        MyBase.OnLoad(e)
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        'Calling MyBase.OnFormClosed(e) before removing the handlers is setting Me.StyleGuide to nothing
-        'then the handler can not be removed
-        Try
-            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            RemoveHandler Me.m_fpStartYear.PropertyChanged, AddressOf OnLastYearChanged
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
-        End Try
+    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
         Try
-            MyBase.OnFormClosed(e)
+            ' No longer track styleguide changes
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            ' No longer track MSE start year changes
+            RemoveHandler Me.m_propStartYear.PropertyChanged, AddressOf OnLastYearChanged
+            ' Release blocks
+            Me.m_blocks.Detach()
+
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
         End Try
+        MyBase.OnFormClosed(e)
+
     End Sub
 
     Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
@@ -87,16 +89,13 @@ Public Class frmMSEAssessFleets
     End Sub
 
     Private Sub OnLastYearChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
-
         Try
-            'update the controls
-            Me.m_blocks.UpdateControls()
-            'redraw the updated data
-            Me.m_blocks.Refresh()
+            If (changeFlags And cProperty.eChangeFlags.Value) > 0 Then
+                Me.m_blocks.Refresh()
+            End If
         Catch ex As Exception
             EwECore.cLog.Write(ex)
         End Try
-
     End Sub
 
 End Class

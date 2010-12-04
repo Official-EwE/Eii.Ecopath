@@ -58,7 +58,7 @@ Public Class cMSEGroupColorBlockDataSource
             Dim manager As cMSEManager = Me.m_uic.Core.MSEManager
             Dim blks() As Single = Me.m_BlockSelector.BlockValues
 
-            For i As Integer = 1 To manager.GroupInputs.Count
+            For i As Integer = 1 To manager.NumGroups
                 Dim grp As cMSEGroupInput = manager.GroupInputs(i)
                 For it As Integer = 1 To Me.m_uic.Core.nEcosimYears
                     Dim cv As Single = grp.BiomassCV(it)
@@ -87,7 +87,6 @@ Public Class cMSEGroupColorBlockDataSource
             Debug.Assert(False, ex.Message)
         End Try
     End Sub
-
 
 
     ''' <inheritdoc cref="IPolicyColorBlockDataSource.Init"/>
@@ -195,13 +194,14 @@ Public Class cMSEGroupColorBlockDataSource
     Public Sub Update() _
         Implements Ecosim.IPolicyColorBlockDataSource.Update
 
+        Dim man As cMSEManager = Me.m_uic.Core.MSEManager
         Try
-            For igrp As Integer = 1 To Me.m_uic.Core.nGroups
-                Me.m_uic.Core.MSEManager.GroupInputs(igrp).BatchEdit = True
+            For igrp As Integer = 1 To man.NumGroups
+                man.GroupInputs(igrp).BatchEdit = True
                 For iyr As Integer = 1 To Me.TotalBlocks
-                    Me.m_uic.Core.MSEManager.GroupInputs(igrp).BiomassCV(iyr) = Me.m_BlockSelector.BlocktoValue(m_BlockCells(igrp, iyr))
+                    man.GroupInputs(igrp).BiomassCV(iyr) = Me.m_BlockSelector.BlocktoValue(m_BlockCells(igrp, iyr))
                 Next
-                Me.m_uic.Core.MSEManager.GroupInputs(igrp).BatchEdit = False
+                man.GroupInputs(igrp).BatchEdit = False
             Next igrp
         Catch ex As Exception
             System.Console.WriteLine(ex.Message)
@@ -215,7 +215,6 @@ Public Class cMSEGroupColorBlockDataSource
             Return False
         End Get
     End Property
-
 
     Private Sub PopIsExploited()
         Dim core As EwECore.cCore = Me.m_uic.Core

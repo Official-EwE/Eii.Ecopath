@@ -120,22 +120,33 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property GroupInputs(ByVal iGroup As Integer) As cMSEGroupInput
             Get
                 Return DirectCast(Me.m_lstGroupInputs(iGroup), cMSEGroupInput)
             End Get
         End Property
 
-        Public ReadOnly Property FleetInputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
+        Friend ReadOnly Property GroupInputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
+            Get
+                Return Me.m_lstGroupInputs
+            End Get
+        End Property
+
+        Public ReadOnly Property NumGroups() As Integer
+            Get
+                Return Me.m_lstGroupInputs.Count
+            End Get
+        End Property
+
+        Friend ReadOnly Property FleetInputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
             Get
                 Return Me.m_lstFleetInputs
             End Get
         End Property
 
-        Public ReadOnly Property GroupInputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
+        Public ReadOnly Property NumFleets() As Integer
             Get
-                Return Me.m_lstGroupInputs
+                Return Me.m_lstFleetInputs.Count
             End Get
         End Property
 

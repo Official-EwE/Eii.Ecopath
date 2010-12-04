@@ -357,7 +357,9 @@ Friend Class cMSEPlotter
 
             Case ePlotData.Biomass, ePlotData.GroupCatch, ePlotData.BioEst
                 'By group
-                For Each grp As cCoreGroupBase In Me.m_manager.GroupInputs
+                Dim grp As cCoreGroupBase = Nothing
+                For i As Integer = 1 To Me.m_manager.NumGroups
+                    grp = Me.m_manager.GroupInputs(i)
                     If Me.m_uic.StyleGuide.GroupVisible(grp.Index) Then
                         ipane += 1
                         Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart, _
