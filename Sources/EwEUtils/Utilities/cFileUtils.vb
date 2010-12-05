@@ -68,6 +68,8 @@ Namespace Utilities
 
             If bProtectPath Then
                 strText = Path.Combine(strPath, strFile)
+            Else
+                strText = strFile
             End If
 
             Return strText
