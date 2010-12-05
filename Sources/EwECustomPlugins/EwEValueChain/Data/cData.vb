@@ -19,6 +19,9 @@ Imports ScientificInterfaceShared.Controls
 Public Class cData
     Inherits cCoreInputOutputBase
 
+#Region " Private vars "
+
+    Private m_strDatabase As String = ""
     Private m_parameters As cParameters = New cParameters()
 
     Private m_lUnits As New List(Of cUnit)
@@ -36,7 +39,9 @@ Public Class cData
     Private m_bChanged As Boolean = False
     Private m_bInitializing As Boolean = False
 
-    Private Shared s_inst As cData
+    Private Shared s_inst As cData = Nothing
+
+#End Region ' Private vars 
 
     Public Sub New(ByVal core As cCore)
         MyBase.New(core)
@@ -80,34 +85,54 @@ Public Class cData
 
 #Region " Database access "
 
-    Public Function Load() As Boolean
+    Public Function Load(ByVal strModelName As String) As Boolean
 
-        Dim strModelName As String = Me.m_core.DataSource.ToString()
-        Dim bNewDB As Boolean = False
+        Dim msg As cMessage = Nothing
+        Dim strOldDBName As String = cData.GetDatabaseFileName(strModelName)
+        Dim strDBName As String = ""
+        Dim bMigrate As Boolean = False
         Dim bSucces As Boolean = True
-        Dim strNewDBName As String = cData.GetDatabaseFileName(strModelName)
 
         If Me.m_db.IsConnected Then Me.m_db.Close()
 
-        Me.m_strDBName = strNewDBName
         cApplicationStatusNotifier.SetStatusText("Loading Value Chain model, please wait...", TriState.True)
 
-        ' Create DB if not already there
-        If Not File.Exists(Me.m_strDBName) Then
-            bSucces = (Me.m_db.Create(Me.m_strDBName, strModelName, True) = eDatasourceAccessType.Success)
-            bNewDB = True
+        ' Open for migration
+        If File.Exists(strOldDBName) Then
+            strDBName = strOldDBName
+            bMigrate = True
+        Else
+            strDBName = strModelName
         End If
 
-        If Me.m_db.Open(Me.m_strDBName, eDataSourceTypes.MDB) = eDatasourceAccessType.Success Then
-            If bNewDB Then
-                'bSucces = Me.m_db.InitModel(Me)
-            Else
-            End If
+        If Me.m_db.Open(strDBName, eDataSourceTypes.MDB) = eDatasourceAccessType.Success Then
 
             Me.m_bInitializing = True
             bSucces = Me.m_db.LoadModel(Me)
+
+            If bMigrate Then
+
+                Me.m_db.Close()
+                Me.m_db.Open(strModelName)
+                Me.IsChanged = True
+                Me.Save()
+
+                Try
+                    File.Delete(strOldDBName)
+                Catch ex As Exception
+
+                End Try
+                msg = New cMessage(String.Format("Value chain data file '{0}' merged into Ecopath model '{1}'", _
+                                                 Path.GetFileName(strOldDBName), Path.GetFileName(strModelName)), _
+                                   eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Information)
+                Me.m_core.Messages.SendMessage(msg)
+
+            End If
             Me.m_bInitializing = False
         End If
+
+        Me.m_strDBName = strModelName
+
         cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
         ' Start clean

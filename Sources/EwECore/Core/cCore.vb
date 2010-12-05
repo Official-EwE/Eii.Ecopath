@@ -2118,7 +2118,7 @@ Public Class cCore
                                 msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
                                                         eMessageType.DataImport, _
                                                         eCoreComponentType.DataSource, _
-                                                        eMessageImportance.Information)
+                                                        eMessageImportance.Warning)
                             End If
                             ' Send backup result message
                             Me.m_publisher.SendMessage(msg)

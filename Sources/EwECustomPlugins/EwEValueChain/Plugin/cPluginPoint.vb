@@ -185,40 +185,6 @@ Public Class cPluginPoint
 
 #Region " Database integration "
 
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Plug-in point implementation, called when an EwE6 model is loaded. 
-    ''' Handled toload the Value Chain model corresponding to an EwE model.
-    ''' </summary>
-    ''' <param name="dataSource">The loaded datasource.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function LoadModel(ByVal dataSource As Object) As Boolean _
-        Implements EwEPlugin.IEcopathPlugin.LoadModel
-
-        Dim ds As EwECore.DataSources.IEcopathDataSource = DirectCast(dataSource, EwECore.DataSources.IEcopathDataSource)
-
-        ' Sanity checks
-        Debug.Assert(Me.m_data.IsChanged() = False)
-
-        Return Me.m_data.Load()
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Plug-in point implementation, called when an EwE6 model is saved. 
-    ''' Handled to save the Value Chain model corresponding to an EwE model.
-    ''' </summary>
-    ''' <param name="dataSource">The loaded datasource.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function SaveModel(ByVal dataSource As Object) As Boolean _
-        Implements EwEPlugin.IEcopathPlugin.SaveModel
-        Return Me.m_data.Save()
-    End Function
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Plug-in point implementation, no longer called but kept for compliancy.
@@ -257,6 +223,37 @@ Public Class cPluginPoint
     Public Function IsModified() As Boolean _
         Implements EwEPlugin.Data.IDatabasePlugin.IsModified
         Return Me.m_data.IsChanged()
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Plug-in point implementation, called when an EwE6 model is loaded. 
+    ''' Handled toload the Value Chain model corresponding to an EwE model.
+    ''' </summary>
+    ''' <param name="dataSource">The loaded datasource.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function LoadModel(ByVal dataSource As Object) As Boolean _
+        Implements EwEPlugin.IEcopathPlugin.LoadModel
+
+        ' Sanity checks
+        Debug.Assert(Me.m_data.IsChanged() = False)
+
+        Return Me.m_data.Load(Me.m_core.DataSource.ToString)
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Plug-in point implementation, called when an EwE6 model is saved. 
+    ''' Handled to save the Value Chain model corresponding to an EwE model.
+    ''' </summary>
+    ''' <param name="dataSource">The loaded datasource.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function SaveModel(ByVal dataSource As Object) As Boolean _
+        Implements EwEPlugin.IEcopathPlugin.SaveModel
+        Return Me.m_data.Save()
     End Function
 
 #End Region ' Database integration

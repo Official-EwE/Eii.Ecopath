@@ -223,7 +223,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Database\template.ewevcmdb" />
     <EmbeddedResource Include="Interface\Controls\ucDefaults.resx">
       <DependentUpon>ucDefaults.vb</DependentUpon>
       <SubType>Designer</SubType>

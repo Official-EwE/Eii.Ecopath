@@ -224,31 +224,6 @@ Public Class cDatabase
 
 #End Region ' Save
 
-#Region " Modify "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Create a new Value Chain database
-    ''' </summary>
-    ''' <param name="strDatabase">Name of the database to create.</param>
-    ''' <param name="strModelName">Name of the model the database is created for.</param>
-    ''' <param name="bOverwrite">Flag to indicate whether the file on disk should be overwritten.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Function Create(ByVal strDatabase As String, ByVal strModelName As String, _
-                                     Optional ByVal bOverwrite As Boolean = False, _
-                                     Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
-        ' Databasetype ignored
-        If cDatabase.SaveDatabaseToFile(strDatabase, bOverwrite) Then
-            Return eDatasourceAccessType.Success
-        Else
-            Return eDatasourceAccessType.Failed_Unknown
-        End If
-
-    End Function
-
-#End Region ' Modify
-
 #Region " Updates "
 
     ''' -----------------------------------------------------------------------
@@ -273,64 +248,5 @@ Public Class cDatabase
     End Function
 
 #End Region ' Updates
-
-#Region " Helpers "
-
-    ''' <summary>Name of the current namespace. Cached to provide quick access</summary>
-    Private Shared CurrentNamespace As String = Assembly.GetExecutingAssembly().GetName().Name.ToString()
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Saves an embedded resource to a file
-    ''' </summary>
-    ''' <param name="strFileName">The name of the file to save the resource to</param>
-    ''' <param name="bOverwrite">States whether an existing file is allowed to be overwritten</param>
-    ''' <returns>True if succesful</returns>
-    ''' -----------------------------------------------------------------------
-    Private Shared Function SaveDatabaseToFile(ByVal strFileName As String, _
-            Optional ByVal bOverwrite As Boolean = False) As Boolean
-
-        Dim strResourceName As String = "template.ewevcmdb"
-        Dim sResource As Stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(CurrentNamespace & "." & strResourceName)
-        Dim sFile As FileStream = Nothing
-        Dim nBufLen As Integer = 256
-        Dim byBuffer(nBufLen) As Byte
-        Dim nBytesRead As Integer = 0
-
-        ' Pre
-        Debug.Assert(Not String.IsNullOrEmpty(strFileName), "Required target file name missing")
-        Debug.Assert(sResource IsNot Nothing, String.Format("Resource {0} not found in {1}", strResourceName, CurrentNamespace))
-
-        ' Work with full path
-        strFileName = Path.GetFullPath(strFileName)
-
-        Try
-            If (bOverwrite) Then
-                ' Create the file, overwriting any existing file with the same path
-                sFile = New FileStream(strFileName, FileMode.Create, FileAccess.Write)
-            Else
-                ' Create the file but do not overwrite
-                sFile = New FileStream(strFileName, FileMode.CreateNew, FileAccess.Write)
-            End If
-        Catch ex As Exception
-            ' Just so you know
-            Debug.Print("Unable to create or overwrite file {0}", strFileName)
-            ' Report failure
-            Return False
-        End Try
-
-        ' Copy embedded resource to file
-        nBytesRead = sResource.Read(byBuffer, 0, nBufLen)
-        While (nBytesRead > 0)
-            sFile.Write(byBuffer, 0, nBytesRead)
-            nBytesRead = sResource.Read(byBuffer, 0, nBufLen)
-        End While
-        ' Done
-        sFile.Close()
-        Return True
-
-    End Function
-
-#End Region ' Helpers
 
 End Class

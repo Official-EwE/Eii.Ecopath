@@ -365,10 +365,6 @@
   <data name="glyph_deep_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_deep_blue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="PROMPT_BACKUPFAILED" xml:space="preserve">
-    <value>Failed to backup model '{0}': {1}</value>
-    <comment>{0}: model path, {1}: error text</comment>
-  </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_RELCIN" xml:space="preserve">
     <value>Relative contaminant</value>
   </data>
