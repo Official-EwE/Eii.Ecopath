@@ -387,6 +387,9 @@ Namespace Ecosim
             End Select
             Me.m_iZoomLevel = Math.Max(0, Math.Min(cNUM_ZOOMLEVELS, Me.m_iZoomLevel))
 
+            Me.m_hoverMenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomIn) = (Me.m_iZoomLevel < cNUM_ZOOMLEVELS)
+            Me.m_hoverMenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomOut) = (Me.m_iZoomLevel > 0)
+
             ' Update
             Me.ResizeBlocks()
 

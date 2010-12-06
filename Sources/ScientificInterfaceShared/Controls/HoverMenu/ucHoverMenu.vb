@@ -100,10 +100,10 @@ Namespace Controls
             Me.BringToFront()
             Me.ShowHover(False)
 
-            ' Show/hide buttons
-            Me.m_tsbnZoomIn.Visible = ((style And eCommandTypes.ZoomIn) > 0)
-            Me.m_tsbnZoomOut.Visible = ((style And eCommandTypes.ZoomOut) > 0)
-            Me.m_tsbnZoomReset.Visible = ((style And eCommandTypes.ZoomReset) > 0)
+            ' Set initial visibility state of tool strip items
+            For Each cmd As eCommandTypes In [Enum].GetValues(GetType(eCommandTypes))
+                Me.GetToolStripItem(cmd).Visible = ((style And cmd) = cmd)
+            Next
 
             ' Fit entire control to the preferred size of the toolstrip.
             Me.Size = Me.m_ts.PreferredSize
@@ -142,6 +142,22 @@ Namespace Controls
             Get
                 Return (Me.m_ctrlTarget IsNot Nothing)
             End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the enabled stated of a hover menu <see cref="eCommandTypes">command</see>.
+        ''' </summary>
+        ''' <param name="cmd">The <see cref="eCommandTypes">command</see> to
+        ''' access the enabled state for.</param>
+        ''' -------------------------------------------------------------------
+        Public Property IsEnabled(ByVal cmd As eCommandTypes) As Boolean
+            Get
+                Return Me.GetToolStripItem(cmd).Enabled
+            End Get
+            Set(ByVal value As Boolean)
+                Me.GetToolStripItem(cmd).Enabled = value
+            End Set
         End Property
 
 #End Region ' Public interfaces
@@ -269,6 +285,19 @@ Namespace Controls
         Private Sub InvokeCallback(ByVal cmd As eCommandTypes)
             RaiseEvent OnUserCommand(cmd)
         End Sub
+
+        Private ReadOnly Property GetToolStripItem(ByVal cmd As eCommandTypes) As ToolStripItem
+            Get
+                Select Case cmd
+                    Case eCommandTypes.ZoomIn : Return Me.m_tsbnZoomIn
+                    Case eCommandTypes.ZoomOut : Return Me.m_tsbnZoomOut
+                    Case eCommandTypes.ZoomReset : Return Me.m_tsbnZoomReset
+                End Select
+                Debug.Assert(False)
+                Return Nothing
+            End Get
+
+        End Property
 
 #End Region ' Internals
 

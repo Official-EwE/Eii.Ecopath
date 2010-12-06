@@ -381,6 +381,9 @@ Namespace Controls
             Me.AllowZoom = True
             Me.AllowPan = False
 
+            ' Initialize zoom menu state
+            Me.OnHoverMenuCommand(ucHoverMenu.eCommandTypes.ZoomReset)
+
             ' Configure graph control
             Me.UpdateStyle()
             Me.UpdateColours()
@@ -2092,6 +2095,7 @@ Namespace Controls
             Dim gp As GraphPane = Nothing
             Dim zs As ZoomState = Nothing
             Dim sValueAvg As Single = 0.0
+            Dim bCanZoomOut As Boolean = False
 
             If Me.m_zgc.InvokeRequired Then
                 Me.m_zgc.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
@@ -2120,7 +2124,12 @@ Namespace Controls
                             If zs IsNot Nothing Then zs.ApplyState(gp)
                         End While
                 End Select
+
+                bCanZoomOut = bCanZoomOut Or (gp.ZoomStack.Count > 0)
             Next
+
+            Me.m_hovermenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomIn) = True
+            Me.m_hovermenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomOut) = bCanZoomOut
 
             Me.m_zgc.Refresh()
 
