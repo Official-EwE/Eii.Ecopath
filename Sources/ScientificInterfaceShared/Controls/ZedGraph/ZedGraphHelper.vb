@@ -352,10 +352,8 @@ Namespace Controls
             Me.m_zgc = zgc
             Me.m_nPanels = iNumPanels
 
-            Me.m_hovermenu = New ucHoverMenu()
-            Me.m_zgc.Controls.Add(Me.m_hovermenu)
-            Me.m_hovermenu.BringToFront()
-            Me.ShowHover(False)
+            Me.m_hovermenu = New ucHoverMenu(Me.m_uic)
+            Me.m_hovermenu.Attach(Me.m_zgc)
 
             AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
@@ -375,8 +373,6 @@ Namespace Controls
             AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             AddHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             AddHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
-            AddHandler Me.m_zgc.MouseEnter, AddressOf OnMouseEnter
-            AddHandler Me.m_zgc.MouseLeave, AddressOf OnMouseLeave
             AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             AddHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
@@ -407,8 +403,6 @@ Namespace Controls
             RemoveHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             RemoveHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             RemoveHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
-            RemoveHandler Me.m_zgc.MouseEnter, AddressOf OnMouseEnter
-            RemoveHandler Me.m_zgc.MouseLeave, AddressOf OnMouseLeave
             RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             RemoveHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
@@ -417,7 +411,7 @@ Namespace Controls
 
             Me.m_dtAxisLabels.Clear()
 
-            Me.m_zgc.Controls.Remove(Me.m_hovermenu)
+            Me.m_hovermenu.Detach()
             Me.m_hovermenu.Dispose()
             Me.m_hovermenu = Nothing
 
@@ -1472,27 +1466,6 @@ Namespace Controls
 
 #End Region ' Context Menu
 
-#Region " Hover menu "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set whether a hovering menu should be displayed on the graph.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property ShowHoverMenu() As Boolean
-            Get
-                Return Me.m_bShowHoverMenu
-            End Get
-            Set(ByVal value As Boolean)
-                If value <> Me.m_bShowHoverMenu Then
-                    Me.m_bShowHoverMenu = value
-                    Me.UpdateHoverMenuState()
-                End If
-            End Set
-        End Property
-
-#End Region ' Hover menu
-
 #Region " Pane value querying "
 
         ''' -------------------------------------------------------------------
@@ -2104,70 +2077,6 @@ Namespace Controls
 
 #Region " Hover menu handling "
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler, trapped to show the hover menu when the mouse enters
-        ''' the zed graph area.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnMouseEnter(ByVal sender As Object, ByVal e As System.EventArgs)
-            Me.ShowHover(True)
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler, trapped to hide the hover menu when the mouse enters
-        ''' the zed graph area.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnMouseLeave(ByVal sender As Object, ByVal e As System.EventArgs)
-            Me.ShowHover(False)
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Evaluate the hover menu state anew.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub UpdateHoverMenuState()
-            Me.ShowHover(Me.IsMouseOverGraph() Or Me.IsMouseOverPanel())
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Show or hide the hover menu.
-        ''' </summary>
-        ''' <param name="bShow">Flag stating whether the hover menu should be 
-        ''' shown (True) or hidden (False).</param>
-        ''' -------------------------------------------------------------------
-        Private Sub ShowHover(ByVal bShow As Boolean)
-            Me.m_hovermenu.Visible = (bShow Or IsMouseOverPanel()) And Me.m_bShowHoverMenu
-            Dim ptHover As New Point(4, Me.m_zgc.Height - Me.m_hovermenu.Height - 4)
-            Me.m_hovermenu.Location = ptHover
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method, returns whether the mouse is over the hover menu.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Private Function IsMouseOverPanel() As Boolean
-            Dim pt As Point = Me.m_hovermenu.PointToClient(Form.MousePosition)
-            Return Me.m_hovermenu.ClientRectangle.Contains(pt)
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method, returns whether the mouse is over the zed graph.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Private Function IsMouseOverGraph() As Boolean
-            Dim pt As Point = Me.m_zgc.PointToClient(Form.MousePosition)
-            Return Me.m_zgc.ClientRectangle.Contains(pt)
-        End Function
-
         ''' <summary>Cross-threading delegate.</summary>
         ''' <param name="cmd"></param>
         Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As ucHoverMenu.eCommandTypes)
@@ -2205,11 +2114,15 @@ Namespace Controls
                     Case ucHoverMenu.eCommandTypes.ZoomOut
                         zs = gp.ZoomStack.Pop(gp)
                         If zs IsNot Nothing Then zs.ApplyState(gp)
+                    Case ucHoverMenu.eCommandTypes.ZoomReset
+                        While gp.ZoomStack.Count > 0
+                            zs = gp.ZoomStack.Pop(gp)
+                            If zs IsNot Nothing Then zs.ApplyState(gp)
+                        End While
                 End Select
             Next
 
             Me.m_zgc.Refresh()
-            Me.UpdateHoverMenuState()
 
         End Sub
 

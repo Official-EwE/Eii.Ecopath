@@ -309,9 +309,6 @@
     <Compile Include="Controls\HoverMenu\ucHoverMenu.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ZedGraph\ucZedGraphHoverMenu.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphKiteHelper.vb" />
     <Compile Include="Controls\cUIContext.vb" />

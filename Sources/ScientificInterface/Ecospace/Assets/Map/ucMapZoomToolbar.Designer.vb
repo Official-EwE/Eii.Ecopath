@@ -52,6 +52,7 @@ Namespace Ecospace
             '
             'm_tsZoom
             '
+            Me.m_tsZoom.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSaveImage, Me.m_ts1, Me.m_tsddbPosition, Me.m_ts2, Me.m_tsbZoomIn, Me.m_tsbZoomOut, Me.m_tscbZoomPercent, Me.m_tsbZoomReset})
             Me.m_tsZoom.Location = New System.Drawing.Point(0, 0)
             Me.m_tsZoom.Name = "m_tsZoom"
@@ -62,7 +63,7 @@ Namespace Ecospace
             'm_tsbSaveImage
             '
             Me.m_tsbSaveImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbSaveImage.Image = SharedResources.InsertPictureHS
+            Me.m_tsbSaveImage.Image = CType(resources.GetObject("m_tsbSaveImage.Image"), System.Drawing.Image)
             Me.m_tsbSaveImage.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSaveImage.Name = "m_tsbSaveImage"
             Me.m_tsbSaveImage.Size = New System.Drawing.Size(23, 22)
@@ -103,7 +104,7 @@ Namespace Ecospace
             'm_tsbZoomIn
             '
             Me.m_tsbZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbZoomIn.Image = SharedResources.ZoomInHS
+            Me.m_tsbZoomIn.Image = CType(resources.GetObject("m_tsbZoomIn.Image"), System.Drawing.Image)
             Me.m_tsbZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbZoomIn.Name = "m_tsbZoomIn"
             Me.m_tsbZoomIn.Size = New System.Drawing.Size(23, 22)
@@ -112,7 +113,7 @@ Namespace Ecospace
             'm_tsbZoomOut
             '
             Me.m_tsbZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbZoomOut.Image = SharedResources.ZoomOutHS
+            Me.m_tsbZoomOut.Image = CType(resources.GetObject("m_tsbZoomOut.Image"), System.Drawing.Image)
             Me.m_tsbZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbZoomOut.Name = "m_tsbZoomOut"
             Me.m_tsbZoomOut.Size = New System.Drawing.Size(23, 22)
@@ -126,7 +127,7 @@ Namespace Ecospace
             '
             'm_tsbZoomReset
             '
-            Me.m_tsbZoomReset.Image = SharedResources.ZoomHS
+            Me.m_tsbZoomReset.Image = CType(resources.GetObject("m_tsbZoomReset.Image"), System.Drawing.Image)
             Me.m_tsbZoomReset.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbZoomReset.Name = "m_tsbZoomReset"
             Me.m_tsbZoomReset.Size = New System.Drawing.Size(55, 22)
