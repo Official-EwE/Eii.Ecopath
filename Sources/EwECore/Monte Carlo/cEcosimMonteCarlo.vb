@@ -1,5 +1,4 @@
-'Option Strict On
-
+Option Strict On
 Imports EwECore.Ecopath
 Imports EwECore.EcoSim
 Imports System.Threading
@@ -189,22 +188,25 @@ Public Class cEcosimMonteCarlo
                         Par = Me.PedigreeVarToMCIndex(varname)
 
                         Select Case varname
-                            Case eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput
+                            Case eVarNameFlags.Biomass, _
+                                 eVarNameFlags.PBInput, _
+                                 eVarNameFlags.QBInput
+
                                 'BPct(GrpNo) = value   'not missing
-                                CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100 / 2
+                                CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
                                 ParLimit(0, Par, i) = 0
                                 ParLimit(1, Par, i) = 0
 
-                            Case 4  'DC
+                            Case eVarNameFlags.DietComp  'DC
                                 'If PP(GrpNo) < 1 Then
                                 '    For Grp2 = 0 To NumGroups
                                 '        DCPct(GrpNo, Grp2) = value
                                 '    Next
                                 'End If
 
-                            Case 5  'in pedigree this is BA, but here it is EE
+                            Case eVarNameFlags.TCatchInput
                                 '040114VC: Now want to use BA in Ecosim Monte Carlo, so trying this
-                                CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100 / 2
+                                CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
                                 'BAPct(GrpNo) = value
                         End Select
                     Catch ex As Exception
@@ -412,7 +414,7 @@ Public Class cEcosimMonteCarlo
                         If bRetainBiomass Then
                             Array.Copy(BestFit, Pmean, BestFit.Length)
                             'VC 2008 don't want it to stop just as it found a better fit so:
-                            If iTrial > 0.9 * Ntrials Then iTrial = 0.9 * Ntrials
+                            iTrial = Math.Min(iTrial, CInt(0.9 * Ntrials))
 
                             'we also need to change the upper and lower limits, and will do this based on new parameters 
                             'CheckWhoIsCrashed()
@@ -774,7 +776,7 @@ Public Class cEcosimMonteCarlo
         Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
 
         Do
-            X = xbar * (1 + 0.02 * CV * RandomNormal())
+            X = xbar * (1 + 0.02! * CV * RandomNormal())
             'X = xbar * (1 + CV * RandomNormal())
             If X >= ParMin And X <= ParMax Then
                 ChooseFeasiblePar = X
