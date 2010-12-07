@@ -185,14 +185,17 @@ Public Class cEcosimMonteCarlo
                 opt = Me.m_epdata.Pedigree(i, iVar)
                 If opt > 0 Then ' Non-estimated level
                     Try
-                        Par = Me.PedigreeVarToMCIndex(varname)
 
+                        Par = Me.PedigreeVarToMCIndex(varname)
+                        'ToDo 7-Dec-2010 MonteCarlo.LoadFromPedigree see ticket #855
+                        'TCatchInput pedigree level is being applied to BA
+                        'DietComp and TCatchInput should be removed
+                        'BA should be added???
                         Select Case varname
                             Case eVarNameFlags.Biomass, _
                                  eVarNameFlags.PBInput, _
                                  eVarNameFlags.QBInput
 
-                                'BPct(GrpNo) = value   'not missing
                                 CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
                                 ParLimit(0, Par, i) = 0
                                 ParLimit(1, Par, i) = 0
@@ -205,9 +208,10 @@ Public Class cEcosimMonteCarlo
                                 'End If
 
                             Case eVarNameFlags.TCatchInput
+                                Debug.Assert(False, Me.ToString & ".LoadFromPedigree() Pedigree for Catch is being applied to BA()")
                                 '040114VC: Now want to use BA in Ecosim Monte Carlo, so trying this
                                 CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
-                                'BAPct(GrpNo) = value
+
                         End Select
                     Catch ex As Exception
 
@@ -773,11 +777,12 @@ Public Class cEcosimMonteCarlo
         'Dim cvFactor As Double = 0.02 ' 0.01 + 0.5 * Math.Log10(RunsSinceLastWithLowerSS) ' IIf(isCrashed, 2, 1)
 
 
-        Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
+        'Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
 
         Do
-            X = xbar * (1 + 0.02! * CV * RandomNormal())
-            'X = xbar * (1 + CV * RandomNormal())
+            ' X = xbar * (1 + 0.02 * CV * RandomNormal())
+            X = xbar * (1 + CV * RandomNormal())
+
             If X >= ParMin And X <= ParMax Then
                 ChooseFeasiblePar = X
                 Exit Function
