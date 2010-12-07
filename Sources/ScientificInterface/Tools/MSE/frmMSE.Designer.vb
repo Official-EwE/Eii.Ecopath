@@ -36,12 +36,17 @@ Partial Class frmMSE
         Me.m_btnShowHide = New System.Windows.Forms.Button
         Me.m_ckSave = New System.Windows.Forms.CheckBox
         Me.m_lblStartYear = New System.Windows.Forms.Label
-        Me.m_tlpTop = New System.Windows.Forms.TableLayoutPanel
         Me.m_nudStartYear = New System.Windows.Forms.NumericUpDown
         Me.m_nudNumTrials = New System.Windows.Forms.NumericUpDown
-        Me.m_tlpTop.SuspendLayout()
+        Me.m_scMain = New System.Windows.Forms.SplitContainer
+        Me.m_hdrParms = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_tlpRuns = New System.Windows.Forms.TableLayoutPanel
         CType(Me.m_nudStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudNumTrials, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_scMain.Panel1.SuspendLayout()
+        Me.m_scMain.Panel2.SuspendLayout()
+        Me.m_scMain.SuspendLayout()
+        Me.m_tlpRuns.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_btRun
@@ -62,6 +67,7 @@ Partial Class frmMSE
         '
         'm_btnStop
         '
+        Me.m_btnStop.DialogResult = System.Windows.Forms.DialogResult.Cancel
         resources.ApplyResources(Me.m_btnStop, "m_btnStop")
         Me.m_btnStop.Name = "m_btnStop"
         Me.m_btnStop.UseVisualStyleBackColor = True
@@ -96,19 +102,6 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_lblStartYear, "m_lblStartYear")
         Me.m_lblStartYear.Name = "m_lblStartYear"
         '
-        'm_tlpTop
-        '
-        resources.ApplyResources(Me.m_tlpTop, "m_tlpTop")
-        Me.m_tlpTop.Controls.Add(Me.m_lblStartYear, 9, 0)
-        Me.m_tlpTop.Controls.Add(Me.m_btnStop, 1, 0)
-        Me.m_tlpTop.Controls.Add(Me.m_btnShowHide, 2, 0)
-        Me.m_tlpTop.Controls.Add(Me.m_btRun, 0, 0)
-        Me.m_tlpTop.Controls.Add(Me.m_nudStartYear, 10, 0)
-        Me.m_tlpTop.Controls.Add(Me.m_lblNumTrials, 6, 0)
-        Me.m_tlpTop.Controls.Add(Me.m_ckSave, 4, 0)
-        Me.m_tlpTop.Controls.Add(Me.m_nudNumTrials, 7, 0)
-        Me.m_tlpTop.Name = "m_tlpTop"
-        '
         'm_nudStartYear
         '
         resources.ApplyResources(Me.m_nudStartYear, "m_nudStartYear")
@@ -119,18 +112,58 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_nudNumTrials, "m_nudNumTrials")
         Me.m_nudNumTrials.Name = "m_nudNumTrials"
         '
+        'm_scMain
+        '
+        resources.ApplyResources(Me.m_scMain, "m_scMain")
+        Me.m_scMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel1
+        Me.m_scMain.Name = "m_scMain"
+        '
+        'm_scMain.Panel1
+        '
+        Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRuns)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrParms)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnShowHide)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_lblStartYear)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_ckSave)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_nudStartYear)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_lblNumTrials)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_nudNumTrials)
+        '
+        'm_scMain.Panel2
+        '
+        Me.m_scMain.Panel2.Controls.Add(Me.m_hdrOutputs)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_zgc)
+        '
+        'm_hdrParms
+        '
+        resources.ApplyResources(Me.m_hdrParms, "m_hdrParms")
+        Me.m_hdrParms.Name = "m_hdrParms"
+        '
+        'm_tlpRuns
+        '
+        resources.ApplyResources(Me.m_tlpRuns, "m_tlpRuns")
+        Me.m_tlpRuns.Controls.Add(Me.m_btRun, 0, 0)
+        Me.m_tlpRuns.Controls.Add(Me.m_btnStop, 1, 0)
+        Me.m_tlpRuns.Name = "m_tlpRuns"
+        '
         'frmMSE
         '
+        Me.AcceptButton = Me.m_btRun
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.m_tlpTop)
-        Me.Controls.Add(Me.m_zgc)
-        Me.Controls.Add(Me.m_hdrOutputs)
+        Me.CancelButton = Me.m_btnStop
+        Me.Controls.Add(Me.m_scMain)
         Me.Name = "frmMSE"
-        Me.m_tlpTop.ResumeLayout(False)
-        Me.m_tlpTop.PerformLayout()
+        Me.ShowIcon = False
+        Me.ShowInTaskbar = False
+        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         CType(Me.m_nudStartYear, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudNumTrials, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_scMain.Panel1.ResumeLayout(False)
+        Me.m_scMain.Panel1.PerformLayout()
+        Me.m_scMain.Panel2.ResumeLayout(False)
+        Me.m_scMain.ResumeLayout(False)
+        Me.m_tlpRuns.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -141,8 +174,10 @@ Partial Class frmMSE
     Private WithEvents m_zgc As ZedGraph.ZedGraphControl
     Private WithEvents m_btnShowHide As System.Windows.Forms.Button
     Private WithEvents m_lblStartYear As System.Windows.Forms.Label
-    Private WithEvents m_tlpTop As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_ckSave As System.Windows.Forms.CheckBox
     Private WithEvents m_nudNumTrials As System.Windows.Forms.NumericUpDown
     Private WithEvents m_nudStartYear As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_hdrParms As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+    Private WithEvents m_tlpRuns As System.Windows.Forms.TableLayoutPanel
 End Class
