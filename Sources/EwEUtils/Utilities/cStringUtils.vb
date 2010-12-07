@@ -9,6 +9,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Globalization
 Imports Microsoft.VisualBasic
+Imports System.Security.Cryptography
 
 #End Region ' Imports
 
@@ -482,6 +483,26 @@ Namespace Utilities
                 Next
             End If
             Return sbHex.ToString
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a string into a base64 MD5 hash.
+        ''' </summary>
+        ''' <param name="strSrc"></param>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function GenerateHash(ByVal strSrc As String) As String
+            ' Create an encoding object to ensure the encoding standard for the source text
+            Dim enc As New UnicodeEncoding
+            ' Retrieve a byte array based on the source text
+            Dim abData() As Byte = enc.GetBytes(strSrc)
+            ' Instantiate an MD5 Provider object
+            Dim Md5 As New MD5CryptoServiceProvider
+            ' Compute the hash value from the source
+            Dim abHash() As Byte = Md5.ComputeHash(abData)
+            ' Return string representation
+            Return Convert.ToBase64String(abHash)
         End Function
 
     End Class
