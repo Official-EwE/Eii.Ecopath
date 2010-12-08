@@ -84,7 +84,7 @@ Namespace Ecopath.Tools
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             AddHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
 
-            Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditPedigreeLevels")
+            Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditPedigree")
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditPedigree)
 
             Me.SelectedVariable = eVarNameFlags.Biomass
@@ -99,7 +99,7 @@ Namespace Ecopath.Tools
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             RemoveHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
 
-            Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditPedigreeLevels")
+            Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditPedigree")
             If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditPedigree)
 
             ' Clean up
