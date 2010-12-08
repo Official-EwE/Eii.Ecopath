@@ -4628,7 +4628,8 @@ Public Class cCore
         group.AllowValidation = True
 
         ' Update pedigree accordingly
-        Me.GetPedigreeManager(eVarNameFlags.TCatchInput).Set_Pedigree_Flags(group)
+        Dim man As cPedigreeManager = Me.GetPedigreeManager(eVarNameFlags.TCatchInput)
+        If (man IsNot Nothing) Then man.Set_Pedigree_Flags(group)
 
     End Function
 
