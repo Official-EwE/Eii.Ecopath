@@ -227,11 +227,9 @@ Public Class cEcoPathGroupInput
         Me.m_core.Set_EE_Flags(Me, False)
         Me.m_core.Set_DetImp_Flags(Me, False)
 
-        'Joeh
         Me.m_core.Set_VBK_Flags(Me, False)
         Me.m_core.Set_Tcatch_Flags(Me, False)
         Me.m_core.Set_Tmax_Flags(Me, False)
-        'End Joeh
 
     End Function
 
