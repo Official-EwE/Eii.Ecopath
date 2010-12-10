@@ -88,7 +88,7 @@ Namespace Ecosim
             'Dim mcGroup As cMonteCarloGroup = Nothing
 
             For i As Integer = 1 To Me.Core.nLivingGroups
-                mcGrp = m_mcmanager.Groups(i)
+                mcGrp = Me.m_mcmanager.Groups(i)
                 Me(i, 0) = New EwERowHeaderCell(mcGrp.Index)
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
                 Me(i, 2) = New PropertyCell(Me.PropertyManager, mcGrp, flags(0))

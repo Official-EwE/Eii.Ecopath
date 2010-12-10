@@ -147,7 +147,7 @@ Public Class NavigationPanel
             ' Ecosim Input
             .Add("ndEcosimParameters", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.EcosimParameters), "Ecosim parameters.htm")
             .Add("ndGroupInfo", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.GroupInfoEwEGrid), "Group info.htm")
-            .Add("ndVulnerabilities", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.Vulnerabilities), "Vulnerabilities flow control.htm")
+            .Add("ndVulnerabilities", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmVulnerabilities), "Vulnerabilities flow control.htm")
             .Add("ndTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTimeSeries), "Time series.htm")
             .Add("ndMediation", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMediationFunction), "Mediation.htm")
             .Add("ndApplyMediation", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyMedConsumer), "Apply mediation.htm")

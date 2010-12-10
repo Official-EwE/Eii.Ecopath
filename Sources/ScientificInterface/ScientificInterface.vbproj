@@ -245,10 +245,10 @@
     <Compile Include="Ecosim\Input\TimeSeries\frmTimeSeries.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\Vulnerabilities\Vulnerabilities.Designer.vb">
-      <DependentUpon>Vulnerabilities.vb</DependentUpon>
+    <Compile Include="Ecosim\Input\Vulnerabilities\frmVulnerabilities.Designer.vb">
+      <DependentUpon>frmVulnerabilities.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\Vulnerabilities\Vulnerabilities.vb">
+    <Compile Include="Ecosim\Input\Vulnerabilities\frmVulnerabilities.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\dlgChangeYScale.Designer.vb">
@@ -260,10 +260,10 @@
     <Compile Include="Ecosim\Output\CustomComboBoxFleetGroupTree.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\MonteCarlo\MCRun.Designer.vb">
-      <DependentUpon>MCRun.vb</DependentUpon>
+    <Compile Include="Ecosim\Tools\MonteCarlo\frmMCRun.Designer.vb">
+      <DependentUpon>frmMCRun.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\MonteCarlo\MCRun.vb">
+    <Compile Include="Ecosim\Tools\MonteCarlo\frmMCRun.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\MonteCarlo\MCRunInputGrid.vb">
@@ -1690,8 +1690,8 @@
       <DependentUpon>frmTimeSeries.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\Vulnerabilities\Vulnerabilities.resx">
-      <DependentUpon>Vulnerabilities.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Input\Vulnerabilities\frmVulnerabilities.resx">
+      <DependentUpon>frmVulnerabilities.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\Fit to time series\dlgSensitivityOfSStoV.resx">
@@ -1790,9 +1790,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>dlgChangeYScale.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\MonteCarlo\MCRun.resx">
+    <EmbeddedResource Include="Ecosim\Tools\MonteCarlo\frmMCRun.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>MCRun.vb</DependentUpon>
+      <DependentUpon>frmMCRun.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Output\ShowAllFits\dlgSelectTSPlots.resx">
       <DependentUpon>dlgSelectTSPlots.vb</DependentUpon>
@@ -1845,6 +1845,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEFishBasePlugin\EwEFishBasePlugin.vbproj">
+      <Project>{C79DDF56-00B7-4C13-A262-DFB4B7D56E53}</Project>
+      <Name>EwEFishBasePlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
