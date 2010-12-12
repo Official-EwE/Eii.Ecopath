@@ -16,13 +16,12 @@ Public MustInherit Class cEwEScenario
 
         Try
 
-            m_dataType = eDataTypes.NotSet
+            Me.m_dataType = eDataTypes.NotSet
             ' Scenario definition changes do not affect the running state of the model
-            m_coreComponent = eCoreComponentType.DataSource
-
+            Me.m_coreComponent = eCoreComponentType.DataSource
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimScenario, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Description
             meta = New cVariableMetaData(60000)

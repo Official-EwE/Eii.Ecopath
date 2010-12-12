@@ -16,7 +16,7 @@ Public Class cEcospaceRegion
             Me.m_coreComponent = eCoreComponentType.EcoSpace
             Me.DBID = iDBID
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcospaceHabitat, eCoreComponentType.EcoSpace, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ResetStatusFlags()
 

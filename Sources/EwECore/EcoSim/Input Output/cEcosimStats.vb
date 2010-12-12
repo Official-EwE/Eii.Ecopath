@@ -16,7 +16,7 @@ Public Class cEcosimStats
 
         Try
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimStatistics, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'SS
             val = New cValue(New Single, eVarNameFlags.EcosimSS, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)

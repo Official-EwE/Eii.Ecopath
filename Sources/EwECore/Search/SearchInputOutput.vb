@@ -41,8 +41,7 @@ Namespace SearchObjectives
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
-                                                        Me.m_coreComponent, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
 
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
@@ -105,8 +104,7 @@ Namespace SearchObjectives
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
-                                                        Me.m_coreComponent, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'FPSEcoSystemWeight()
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
@@ -239,10 +237,7 @@ Namespace SearchObjectives
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
-                                                        Me.m_coreComponent, Index, cCore.NULL_VALUE)
-
-
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             Dim val As cValue
             Dim meta As cVariableMetaData
@@ -320,8 +315,7 @@ Namespace SearchObjectives
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, m_dataType, _
-                                                         Me.m_coreComponent, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             Dim val As cValue
             Dim meta As cVariableMetaData

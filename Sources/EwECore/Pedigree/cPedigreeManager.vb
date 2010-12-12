@@ -38,7 +38,7 @@ Public Class cPedigreeManager
         Me.m_dataType = eDataTypes.PedigreeManager
         Me.m_coreComponent = eCoreComponentType.EcoPath
         Me.m_varName = varName
-        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, Me.m_coreComponent, Me.Index, cCore.NULL_VALUE)
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Me.AllowValidation = False
 

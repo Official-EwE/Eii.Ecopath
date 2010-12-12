@@ -20,7 +20,7 @@ Public Class cFleetInput
         m_coreComponent = eCoreComponentType.EcoPath
         m_dataType = eDataTypes.FleetInput
 
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FleetInput, eCoreComponentType.EcoPath, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Me.DBID = DBID
 

@@ -27,8 +27,7 @@ Namespace Ecospace.Advection
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FishingPolicyParameters, _
-                                                        eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             Dim val As cValue
             Dim meta As cVariableMetaData

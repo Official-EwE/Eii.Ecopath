@@ -23,8 +23,7 @@ Public Class cMPAOptOutput
         m_coreComponent = eCoreComponentType.MPAOptimization
         'default OK status used for SetVariable
         'see comment SetVariable(...)
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
-                                        m_coreComponent, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK Or eStatusFlags.NotEditable, "", eVarNameFlags.NotSet)
 
         val = New cValue(New Integer, eVarNameFlags.MPAOptBestCol, eStatusFlags.NotEditable, eValueTypes.Int)
         m_values.Add(val.varName, val)

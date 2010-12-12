@@ -17,7 +17,7 @@ Public Class cMPAOptParameters
             Dim val As cValue
             Dim meta As cVariableMetaData
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimModelParameter, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'MPAOptSearchType stored as an integer
             meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eMPAOptimizationModels)).Length - 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))

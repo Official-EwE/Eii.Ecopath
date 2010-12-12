@@ -22,7 +22,7 @@ Public Class cEcospaceModelParameters
             m_coreComponent = eCoreComponentType.EcoSpace
             Me.AllowValidation = False
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcospaceModelParameter, eCoreComponentType.EcoSpace, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Number of time steps per year
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))

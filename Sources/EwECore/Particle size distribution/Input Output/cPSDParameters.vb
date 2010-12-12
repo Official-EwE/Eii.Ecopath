@@ -22,7 +22,7 @@ Public Class cPSDParameters
             Dim val As cValue
             Dim meta As cVariableMetaData
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, m_dataType, m_coreComponent, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'no data validation at this time
             Me.AllowValidation = False

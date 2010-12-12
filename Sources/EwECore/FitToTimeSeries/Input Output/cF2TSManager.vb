@@ -115,7 +115,7 @@ Public Class cF2TSManager
         m_searchObjective = theCore.SearchObjective
 
         'default OK status used for setVariable
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.FitToTimeSeries, eCoreComponentType.EcoSimFitToTimeSeries, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         'boolean
         ' F2TSVulnerabilitySearch

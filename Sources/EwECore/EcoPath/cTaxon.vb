@@ -23,7 +23,7 @@ Public Class cTaxon
         Me.m_coreComponent = eCoreComponentType.EcoPath
         Me.m_dataType = eDataTypes.Taxon
         Me.DBID = DBID
-        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, Me.m_coreComponent, Index, cCore.NULL_VALUE)
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         ' Taxon group
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))

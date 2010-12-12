@@ -1,65 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcospaceGroup.vb,v $
-' Revision 1.2  2009/01/16 18:30:23  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:21  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.6  2008/05/29 22:22:44  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.5  2007/12/20 02:47:40  jeroens
-' * Fixed EatEffBad metadata
-'
-' Revision 1.4  2007/08/09 16:12:20  jeroens
-' * PP cascaded across cCoreGroupBase instances
-'
-' Revision 1.3  2007/07/26 18:39:43  jeroens
-' + Exposes BarrierAvoidanceWeight
-'
-' Revision 1.2  2007/05/22 13:24:35  jeroens
-' * Nitty-gritty
-'
-' Revision 1.1  2007/05/01 17:12:33  joeb
-' Changed directory structure
-'
-' Revision 1.11  2007/03/28 01:16:33  jeroens
-' * Changed all status modification access from Public to Friend
-'
-' Revision 1.10  2007/02/20 21:28:27  joeb
-' Added Comments
-'
-' Revision 1.9  2007/01/26 16:32:31  jeroens
-' * Cleaned up
-'
-' Revision 1.8  2007/01/20 00:28:38  joeb
-' Added Variables
-'
-' Revision 1.7  2007/01/19 18:31:54  joeb
-' More variables exposed
-'
-' Revision 1.6  2007/01/19 04:13:44  jeroens
-' * Applied some cosmetics
-'
-' Revision 1.5  2007/01/19 01:14:39  joeb
-' Initialization of EcospaceGroups
-'
-' Revision 1.4  2007/01/18 18:27:07  joeb
-' Initialization
-'
-' Revision 1.3  2007/01/18 17:49:34  jeroens
-' * in progress
-'
-' Revision 1.2  2007/01/17 20:14:27  joeb
-' Fixed bugs in construction of value objects
-'
-' Revision 1.1  2007/01/14 21:18:24  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
@@ -84,7 +22,7 @@ Public Class cEcospaceGroup
             m_dataType = eDataTypes.EcospaceGroup
             m_coreComponent = eCoreComponentType.EcoSpace
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Mvel
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
@@ -109,7 +47,6 @@ Public Class cEcospaceGroup
             val = New cValue(New Single, eVarNameFlags.EatEffBad, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
-
 
             ' IsAdvected
             meta = New cVariableMetaData(False)

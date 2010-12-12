@@ -26,8 +26,7 @@ Namespace MSE
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, _
-                                                         Me.m_coreComponent, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'fishing assesment methods
             'Catch estimated biomass

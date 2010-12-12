@@ -38,7 +38,7 @@ Public Class cStanzaGroup
         m_dataType = eDataTypes.Stanza
         m_coreComponent = eCoreComponentType.EcoPath
 
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, Me.m_dataType, Me.m_coreComponent, Me.Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         'get the core counter interface for the MaxAge (max age) and NStanza (number of stanza) counters
         m_CoreCounter = AddressOf m_core.GetCoreCounter

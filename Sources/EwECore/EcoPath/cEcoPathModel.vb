@@ -385,7 +385,9 @@ Namespace Ecopath
             Dim j As Integer
             Dim Sum As Single
             Dim MM2 As Single
-            Dim msg As New cMessage("The following variables were estimated:", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Information)
+            Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_ESTIMATED, _
+                                    eMessageType.DataModified, eCoreComponentType.EcoPath, _
+                                    eMessageImportance.Information)
             Dim vs As cVariableStatus = Nothing
 
             For i = 1 To m_Data.NumLiving

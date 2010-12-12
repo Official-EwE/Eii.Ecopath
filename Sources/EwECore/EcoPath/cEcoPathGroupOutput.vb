@@ -256,8 +256,7 @@ Public Class cEcoPathGroupOutput
 
         'default OK status used for SetVariable
         'see comment SetVariable(...)
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoPathGroupOutput, _
-                                        eCoreComponentType.EcoPath, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Me.DBID = DBID
 

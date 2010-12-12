@@ -35,7 +35,7 @@ Namespace MSE
             'the default validator will throw a threading error
             Me.AllowValidation = False
 
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'Risk
 
@@ -226,7 +226,7 @@ Public Class cMSEFleetOutput
         'the default validator will throw a threading error
         Me.AllowValidation = False
 
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         'val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSECatchByFleet, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eCoreCounterTypes.nEcosimTimeSteps, AddressOf m_core.GetCoreCounter)
         'm_values.Add(val.varName, val)
@@ -574,8 +574,7 @@ Public Class cMSEStats
         'the default validator will throw a threading error
         Me.AllowValidation = False
 
-        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", _
-                                                 eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
     End Sub
 
@@ -765,7 +764,7 @@ Public Class cMSEOutput
         Me.AllowValidation = False
         Me.DBID = cCore.NULL_VALUE
 
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.MSEGroupInput, eCoreComponentType.MSE, Index, cCore.NULL_VALUE)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.NotEditable Or eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         'Trial Number 
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))

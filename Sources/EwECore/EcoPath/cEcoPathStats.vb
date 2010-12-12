@@ -5,7 +5,7 @@ Imports EwEUtils.Core
 Public Class cEcoPathStats
     Inherits cCoreInputOutputBase
 
-    Sub New(ByRef theCore As cCore, ByVal iDBID As Integer)
+    Sub New(ByVal theCore As cCore, ByVal iDBID As Integer)
         MyBase.New(theCore)
 
         Dim val As cValue = Nothing
@@ -16,7 +16,7 @@ Public Class cEcoPathStats
 
         Try
 
-            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimStatistics, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'TotalConsumption
             val = New cValue(New Single, eVarNameFlags.EcopathStatsTotalConsumption, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)

@@ -18,7 +18,7 @@ Public Class cMonteCarloGroup
 
         'default OK status used for setVariable
         'see comment setVariable(...)
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet, eDataTypes.EcoSimGroupInput, eCoreComponentType.EcoSim, Index, cCore.NULL_VALUE)
+        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Dim val As cValue
         Dim meta As cVariableMetaData
