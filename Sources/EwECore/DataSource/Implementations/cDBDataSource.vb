@@ -6754,7 +6754,7 @@ Namespace DataSources
                 ecospaceDS.PredictEffort = CBool(reader("PredictEffort"))
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
-                If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = CSng(1 / 12)
+                If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
 
                 ecospaceDS.TotalTime = CSng(reader("TotalTime"))
                 ecospaceDS.IFDPower = CSng(reader("IFDPower"))
@@ -6988,7 +6988,7 @@ Namespace DataSources
                 drow.EndEdit()
 
                 ' Save changes
-                Me.m_db.ReleaseWriter(writer)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while saving ecospace scenario {1}", ex.Message, iScenarioID))
@@ -7009,8 +7009,8 @@ Namespace DataSources
             If bSucces Then
                 ' Clear changed admin
                 Me.ClearChanged(s_EcospaceComponents)
-                ' Reload ecospace scenario definitions 
-                Me.LoadEcospaceScenarioDefinitions()
+                '' JS 12Dec2010: do NOT reload ecospace scenario definitions; this should happen outside transactions
+                'Me.LoadEcospaceScenarioDefinitions()
             End If
 
             Return bSucces
