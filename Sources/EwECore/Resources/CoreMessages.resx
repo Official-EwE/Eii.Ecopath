@@ -941,4 +941,17 @@ System Error: {0}</value>
     <value>Missing mortality (Z) for '{0}'</value>
     <comment>{0}=stanza group name</comment>
   </data>
+  <data name="ECOSPACE_NOHABITAT_AREA" xml:space="preserve">
+    <value>One or more groups do not have an area defined for their habitat. Ecospace cannot run.</value>
+  </data>
+  <data name="ECOSPACE_NOHABITAT_AREA_GROUP" xml:space="preserve">
+    <value>Group '{0}' is missing habitat area.</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="ECOPATH_ESTIMATED" xml:space="preserve">
+    <value>The following variables were estimated:</value>
+  </data>
+  <data name="SCENARIO_DELETE_LOADED" xml:space="preserve">
+    <value>You cannot delete a loaded scenario.</value>
+  </data>
 </root>

@@ -317,6 +317,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The following variables were estimated:.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_ESTIMATED() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_ESTIMATED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass Accumulation for group &apos;{0}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_ESTIMATED_BA() As String
@@ -875,6 +884,24 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOSPACE_NO_SPACE_SCENARIO() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_NO_SPACE_SCENARIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to One or more groups do not have an area defined for their habitat. Ecospace cannot run..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_NOHABITAT_AREA() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_NOHABITAT_AREA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Group &apos;{0}&apos; is missing habitat area..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_NOHABITAT_AREA_GROUP() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_NOHABITAT_AREA_GROUP", resourceCulture)
             End Get
         End Property
         
@@ -1793,6 +1820,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property QB_RANGE() As String
             Get
                 Return ResourceManager.GetString("QB_RANGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You cannot delete a loaded scenario..
+        '''</summary>
+        Friend Shared ReadOnly Property SCENARIO_DELETE_LOADED() As String
+            Get
+                Return ResourceManager.GetString("SCENARIO_DELETE_LOADED", resourceCulture)
             End Get
         End Property
         
