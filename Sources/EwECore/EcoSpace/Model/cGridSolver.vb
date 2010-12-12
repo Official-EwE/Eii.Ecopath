@@ -1,26 +1,4 @@
-'==============================================================================
-'
-' $Log: cGridSolver.vb,v $
-' Revision 1.2  2008/11/28 16:54:11  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.1  2008/09/26 07:30:23  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.19  2007/12/26 19:14:55  joeb
-' removed dead code
-'
-' Revision 1.18  2007/07/06 20:27:02  willw
-' added comments
-'
-' Revision 1.17  2007/07/03 19:19:43  willw
-' useExact is now set from the interface
-'
-' Revision 1.16  2007/06/29 00:26:19  jeroens
-' + Added UseExact to Init
-'
-'==============================================================================
-
+Option Strict On
 Imports System
 Imports System.Threading
 
@@ -79,7 +57,7 @@ Public Class cGridSolver
 
     Private isMigratory() As Boolean
 
-    Public threadTime As Single
+    Public threadTime As Double
 
     Private threadGroups(,) As Integer
 
@@ -160,7 +138,7 @@ Public Class cGridSolver
     Public Sub Solve(ByVal obParam As Object)
         'For our purposes here we are ignoring the obParam argument 
         'this sub signature is required by the ThreadPool.QueueUserWorkItem(...)
-        Dim timeTemp As Single = Microsoft.VisualBasic.Timer
+        Dim timeTemp As Double = Microsoft.VisualBasic.Timer
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
         isOkToRunning = False
@@ -281,7 +259,7 @@ Public Class cGridSolver
         'jord(k) is which column j to do as k=1, k=2,...,k=n (iteration order)
         'w is SOR overrelaxation parameter-found 1.25 to be good for typical problems
         Dim iter As Integer, j As Integer, i As Integer, jj As Integer, ic As Integer
-        Dim xx As Single = Microsoft.VisualBasic.Timer
+        Dim xx As Double = Microsoft.VisualBasic.Timer
 
         Dim alfa(,) As Single
         Dim gam(,) As Single
@@ -799,16 +777,16 @@ exitline:
             End If
             If l < totCells Then l += 1
             For i = k + 1 To l
-                b(i) -= al(k, i - k) * b(k)
+                b(i) -= CSng(al(k, i - k) * b(k))
             Next
         Next
         l = 1
         For i = totCells To 1 Step -1
             dum = b(i)
             For k = 2 To l
-                dum -= a(i, k) * b(k + i - 1)
+                dum -= CSng(a(i, k) * b(k + i - 1))
             Next
-            b(i) = dum / (a(i, 1) + 1.0E-20)
+            b(i) = CSng(dum / (a(i, 1) + 1.0E-20))
             If l < mm Then l += 1
         Next
     End Sub
