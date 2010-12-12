@@ -69,8 +69,7 @@ Public Class cVariableStatus
     ''' Copy constructor
     ''' </summary>
     ''' <param name="SourceStatusObject">cVariableStatus instance to copy</param>
-    ''' <remarks></remarks>
-    Sub New(ByRef SourceStatusObject As cVariableStatus)
+    Sub New(ByVal SourceStatusObject As cVariableStatus)
 
         Debug.Assert(Not SourceStatusObject Is Nothing, Me.ToString & ".New(cVariableStatus) Null cVariableStatus passed in.")
 
@@ -91,13 +90,18 @@ Public Class cVariableStatus
     ''' </summary>
     ''' <param name="StatusFlag">Status to set.</param>
     ''' <param name="MessageStr">Message to accompany this variable status.</param>
-    ''' <param name="VarName"><see cref="eVarNameFlags">Variable ID</see> that this status applies to.</param>
-    ''' <param name="TypeOfData"><see cref="eDataTypes">Datatype ID</see> of the variable.</param>
-    ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component ID</see> that sent this variable belongs to.</param>
-    ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component instance</paramref> that this variable belongs to.</param>
-    ''' <param name="iArrayIndex">Secundary ID, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
-    Sub New(ByVal StatusFlag As eStatusFlags, ByVal MessageStr As String, ByVal VarName As eVarNameFlags, _
-            ByVal TypeOfData As eDataTypes, ByVal MessageSource As eCoreComponentType, ByVal iIndex As Integer, Optional ByVal iArrayIndex As Integer = cCore.NULL_VALUE)
+    ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> that this status applies to.</param>
+    ''' <param name="TypeOfData"><see cref="eDataTypes">Datatype</see> of the variable.</param>
+    ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component</see> that sent this variable belongs to.</param>
+    ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component </paramref> that this variable belongs to.</param>
+    ''' <param name="iArrayIndex">Secundary index within <paramref name="VarName"/>, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
+    Sub New(ByVal StatusFlag As eStatusFlags, _
+            ByVal MessageStr As String, _
+            ByVal VarName As eVarNameFlags, _
+            ByVal TypeOfData As eDataTypes, _
+            ByVal MessageSource As eCoreComponentType, _
+            ByVal iIndex As Integer, _
+            Optional ByVal iArrayIndex As Integer = cCore.NULL_VALUE)
 
         Me.VarName = VarName
         Me.Status = StatusFlag
@@ -112,25 +116,54 @@ Public Class cVariableStatus
     End Sub
 
     ''' <summary>
-    ''' Create and Initialize a new instance
+    ''' Create and Initialize a new instance.
     ''' </summary>
     ''' <param name="ParentCoreDataObject"></param>
     ''' <param name="StatusFlag">Status to set.</param>
     ''' <param name="MessageStr">Message to accompany this variable status.</param>
-    ''' <param name="VarName"><see cref="eVarNameFlags">Variable ID</see> that this status applies to.</param>
-    ''' <param name="TypeOfData"><see cref="eDataTypes">Datatype ID</see> of the variable.</param>
-    ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component ID</see> that sent this variable belongs to.</param>
-    ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component instance</paramref> that this variable belongs to.</param>
-    ''' <param name="iArrayIndex">Secundary ID, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
-    Sub New(ByVal ParentCoreDataObject As ICoreInterface, ByVal StatusFlag As eStatusFlags, ByVal MessageStr As String, ByVal VarName As eVarNameFlags, _
-            ByVal TypeOfData As eDataTypes, ByVal MessageSource As eCoreComponentType, ByVal iIndex As Integer, ByVal iArrayIndex As Integer)
+    ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> that this status applies to.</param>
+    ''' <param name="TypeOfData"><see cref="eDataTypes">Datatype</see> of the variable.</param>
+    ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component</see> that sent this variable belongs to.</param>
+    ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component </paramref> that this variable belongs to.</param>
+    ''' <param name="iArrayIndex">Secundary index within <paramref name="VarName"/>, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
+    Sub New(ByVal ParentCoreDataObject As ICoreInterface, _
+            ByVal StatusFlag As eStatusFlags, _
+            ByVal MessageStr As String, _
+            ByVal VarName As eVarNameFlags, _
+            ByVal TypeOfData As eDataTypes, _
+            ByVal MessageSource As eCoreComponentType, _
+            ByVal iIndex As Integer, _
+            Optional ByVal iArrayIndex As Integer = cCore.NULL_VALUE)
 
         Me.VarName = VarName
         Me.Status = StatusFlag
         Me.Message = MessageStr
-        Me.Source = MessageSource
-        Me.DataType = TypeOfData
-        Me.Index = iIndex
+        Me.Source = ParentCoreDataObject.CoreComponent
+        Me.DataType = ParentCoreDataObject.DataType
+        Me.Index = ParentCoreDataObject.Index
+        Me.CoreDataObject = ParentCoreDataObject
+        Me.iArrayIndex = iArrayIndex
+
+    End Sub
+
+    ''' <summary>
+    ''' Create and Initialize a new instance.
+    ''' </summary>
+    ''' <param name="ParentCoreDataObject"></param>
+    ''' <param name="StatusFlag">Status to set.</param>
+    ''' <param name="MessageStr">Message to accompany this variable status.</param>
+    ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> that this status applies to.</param>
+    ''' <param name="iArrayIndex">Secundary index within <paramref name="VarName"/>, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
+    Sub New(ByVal ParentCoreDataObject As ICoreInterface, _
+            ByVal StatusFlag As eStatusFlags, ByVal MessageStr As String, ByVal VarName As eVarNameFlags, _
+            Optional ByVal iArrayIndex As Integer = cCore.NULL_VALUE)
+
+        Me.VarName = VarName
+        Me.Status = StatusFlag
+        Me.Message = MessageStr
+        Me.Source = ParentCoreDataObject.CoreComponent
+        Me.DataType = ParentCoreDataObject.DataType
+        Me.Index = ParentCoreDataObject.Index
         Me.CoreDataObject = ParentCoreDataObject
         Me.iArrayIndex = iArrayIndex
 
