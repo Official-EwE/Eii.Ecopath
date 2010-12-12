@@ -277,6 +277,7 @@ Namespace Forms
         ''' settings.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
+        <Browsable(False)> _
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -293,6 +294,7 @@ Namespace Forms
         ''' Get the <see cref="cCore">core</see> that this grid connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property Core() As cCore
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -306,6 +308,7 @@ Namespace Forms
         ''' connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property StyleGuide() As cStyleGuide
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -319,6 +322,7 @@ Namespace Forms
         ''' this grid can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property PropertyManager() As cPropertyManager
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -332,6 +336,7 @@ Namespace Forms
         ''' this grid can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property CommandHandler() As cCommandHandler
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -379,6 +384,7 @@ Namespace Forms
         ''' how these flags are being used.
         ''' </summary>
         ''' -----------------------------------------------------------------------
+        <Browsable(False)> _
         Public Property CoreComponents() As eCoreComponentType()
             Get
                 Return m_aMessageSources
@@ -442,6 +448,7 @@ Namespace Forms
         ''' Flag stating whether a form is used to trigger model runs from.
         ''' </summary>
         ''' -----------------------------------------------------------------------
+        <Browsable(False)> _
         Public Overridable ReadOnly Property IsRunForm() As Boolean
             Get
                 Return False
