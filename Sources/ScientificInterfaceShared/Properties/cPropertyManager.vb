@@ -252,6 +252,8 @@ Namespace Properties
 
                 ' Try to figure out the type of the secundary index via Me.m_core counters
                 Dim io As cCoreInputOutputBase = DirectCast(source, cCoreInputOutputBase)
+                ' Do not attempt to be smart
+                If (io Is Nothing) Then Return Nothing
                 Dim va As ValueWrapper.cValueArray = DirectCast(io.ValueDescriptor(vs.VarName), ValueWrapper.cValueArray)
 
                 If va IsNot Nothing Then
