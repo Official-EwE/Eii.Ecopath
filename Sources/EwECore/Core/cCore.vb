@@ -5575,7 +5575,9 @@ Public Class cCore
         Debug.Assert(iScenario > 0 And iScenario < Me.m_EcoPathData.EcosimScenarioDBID.Length)
 
         If (iScenario = Me.m_EcoPathData.ActiveEcosimScenario) Then
-            Me.m_publisher.SendMessage(New cMessage("Cannot delete a loaded scenario", eMessageType.NotSet, eCoreComponentType.DataSource, eMessageImportance.Warning))
+            Me.m_publisher.SendMessage(New cMessage(My.Resources.CoreMessages.SCENARIO_DELETE_LOADED, _
+                                                    eMessageType.NotSet, eCoreComponentType.DataSource, _
+                                                    eMessageImportance.Warning))
             Return False
         End If
 
@@ -7119,10 +7121,12 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Private Function checkHabitats() As Boolean
 
-        Dim bHasArea As Boolean
-        Dim groups As New List(Of Integer)
-        Dim grpNames As String
+        Dim group As cEcospaceGroup = Nothing
         Dim igrp As Integer
+        Dim bHasArea As Boolean
+        Dim bAllArea As Boolean = True
+        Dim msg As cMessage = Nothing
+        Dim vs As cVariableStatus = Nothing
 
         If Not Me.m_EcoSpaceData.NewMultiStanza Then
             'this only matters for the New Multi Stanza code
@@ -7133,40 +7137,39 @@ Public Class cCore
             For ist As Integer = 1 To m_Stanza.Nstanza(isp)
 
                 igrp = m_Stanza.EcopathCode(isp, ist)
+                group = Me.EcospaceGroups(igrp)
+
+                'Determine area
                 bHasArea = False
-
                 For ihab As Integer = 0 To Me.nHabitats
-
                     If Me.m_EcoSpaceData.PrefHab(igrp, ihab) Then
-
                         If Me.m_EcoSpaceData.HabAreaProportion(ihab) > 0 Then
                             bHasArea = True
                             Exit For
                         End If
                     End If
-
                 Next ihab
+
+                ' Keep track record of assessment
+                bAllArea = bAllArea And bHasArea
 
                 If Not bHasArea Then
                     'no area for this group
-                    groups.Add(igrp)
+                    If (msg Is Nothing) Then msg = New cMessage(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA, _
+                                                                eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
+                                                                eMessageImportance.Warning, eDataTypes.EcospaceGroup)
+                    ' Connect variable status to group preferred habitat
+                    vs = New cVariableStatus(group, eStatusFlags.MissingParameter, _
+                                             String.Format(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA_GROUP, group.Name), _
+                                             eVarNameFlags.PreferredHabitat, 1)
+                    msg.AddVariable(vs)
                 End If
 
             Next ist
         Next isp
 
-        If groups.Count > 0 Then
-            grpNames = "Group(s) "
-            For Each grp As Integer In groups
-                grpNames += Me.m_EcoPathData.GroupName(grp) & ", "
-            Next grp
-            'strip the last ',' of the end of the string
-            grpNames = grpNames.Remove(grpNames.LastIndexOf(","), 2)
-            grpNames += " do not have a map area defined for there habitat(s)."
-            grpNames += " Ecospace cannot be run."
-            grpNames += " Please edit either your Habitat Assignments or Basemap data."
-
-            Me.Messages.AddMessage(New cMessage(grpNames, eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
+        If Not bAllArea Then
+            Me.Messages.AddMessage(msg)
             Return False
         End If
 
@@ -7690,8 +7693,10 @@ Public Class cCore
                 Return False
             End If
 
+            ' JS 12dec10: This seems wrong; Ecosim and Ecospace can run with different numbers of years.
+            '             The commetned-out line below caused any changed number of years to be lost.
             'set the time steps is Ecospace to be the same as ecosim
-            If m_EcoSpaceData.TotalTime <> m_EcoSimData.NumYears Then m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
+            'If m_EcoSpaceData.TotalTime <> m_EcoSimData.NumYears Then m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
 
             m_Ecospace.SearchData = m_SearchData
 
@@ -7891,7 +7896,9 @@ Public Class cCore
 
         ' Cannot delete a loaded scenario
         If (iScenario = Me.ActiveEcospaceScenarioIndex) Then
-            Me.m_publisher.SendMessage(New cMessage("Cannot delete a loaded scenario", eMessageType.NotSet, eCoreComponentType.DataSource, eMessageImportance.Warning))
+            Me.m_publisher.SendMessage(New cMessage(My.Resources.CoreMessages.SCENARIO_DELETE_LOADED, _
+                                                    eMessageType.NotSet, eCoreComponentType.DataSource, _
+                                                    eMessageImportance.Warning))
             Return False
         End If
 
@@ -9957,7 +9964,9 @@ Public Class cCore
 
         ' Cannot delete a loaded scenario
         If (iScenario = Me.m_EcoPathData.ActiveEcotracerScenario) Then
-            Me.m_publisher.SendMessage(New cMessage("Cannot delete a loaded scenario", eMessageType.NotSet, eCoreComponentType.DataSource, eMessageImportance.Warning))
+            Me.m_publisher.SendMessage(New cMessage(My.Resources.CoreMessages.SCENARIO_DELETE_LOADED, _
+                                                    eMessageType.NotSet, eCoreComponentType.DataSource, _
+                                                    eMessageImportance.Warning))
             Return False
         End If
 
@@ -10960,8 +10969,8 @@ Public Class cCore
     Private Function GetAffectedVariableStatus(ByVal obj As cCoreInputOutputBase, ByVal varName As eVarNameFlags, Optional ByVal iSecIndex As Integer = cCore.NULL_VALUE) As cVariableStatus
         Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Return New cVariableStatus(obj, eStatusFlags.OK, _
-                String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_ADJUSTED, cni.GetVarName(varName)), _
-                varName, obj.DataType, obj.CoreComponent, obj.Index, iSecIndex)
+                                   String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_ADJUSTED, cni.GetVarName(varName)), _
+                                   varName, iSecIndex)
     End Function
 
     ''' <summary>
