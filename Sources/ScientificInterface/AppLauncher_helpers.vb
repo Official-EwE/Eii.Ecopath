@@ -315,7 +315,6 @@ Partial Public Class AppLauncher
             With Me.StyleGuide
 
                 .SuspendEvents()
-                .LoadDefaultApplicationColors()
 
                 .ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT) = My.Settings.ColorDefaultText
                 .ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_BACKGROUND) = My.Settings.ColorDefaultBackground
