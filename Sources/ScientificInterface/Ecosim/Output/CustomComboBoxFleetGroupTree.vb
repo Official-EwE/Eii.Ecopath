@@ -35,9 +35,11 @@ Public Class cCustomComboBoxFleetGroupTree
     End Sub
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Me.Clear()
-        Me.m_core = Nothing
-        Me.m_tscb = Nothing
+        If Me.m_core IsNot Nothing Then
+            Me.Clear()
+            Me.m_core = Nothing
+            Me.m_tscb = Nothing
+        End If
         MyBase.Dispose(disposing)
     End Sub
 

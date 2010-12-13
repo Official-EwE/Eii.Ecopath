@@ -110,7 +110,7 @@ Namespace Style
             Me.m_colorrampGroups.ColorOffsetEnd = c_sRampOffsetEnd
 
             ' Load up
-            Me.LoadDefaultApplicationColors()
+            Me.ResetApplicationColors()
             Me.LoadMonetaryUnitNames()
 
         End Sub
@@ -124,9 +124,9 @@ Namespace Style
         ''' Resets application colors to default values.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub LoadDefaultApplicationColors()
+        Public Sub ResetApplicationColors()
             'Default colors
-            m_dtApplicationColors.Clear()
+            Me.m_dtApplicationColors.Clear()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -134,7 +134,7 @@ Namespace Style
         ''' Resets application fonts to default values.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub LoadDefaultApplicationFonts()
+        Public Sub ResetApplicationFonts()
             Me.m_dtFontFamilyName.Clear()
             Me.m_dtFontSize.Clear()
             Me.m_dtFontStye.Clear()

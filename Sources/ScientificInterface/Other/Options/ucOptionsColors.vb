@@ -566,8 +566,10 @@ Namespace Other
         Private Sub btnUseDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnResetAll.Click
 
-            Me.m_uic.StyleGuide.LoadDefaultApplicationColors()
+            Dim iIndex As Integer = Me.m_lbItems.SelectedIndex
+            Me.m_uic.StyleGuide.ResetApplicationColors()
             Me.FillColorItemsList()
+            Me.m_lbItems.SelectedIndex = iIndex
 
         End Sub
 

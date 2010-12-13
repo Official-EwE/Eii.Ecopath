@@ -200,7 +200,7 @@ Namespace Other
         Private Sub OnResetFonts(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnResetFonts.Click
 
-            Me.m_uic.StyleGuide.LoadDefaultApplicationFonts()
+            Me.m_uic.StyleGuide.ResetApplicationFonts()
             Me.FillFontTypesListBox()
             Me.m_uic.StyleGuide.FontsChanged()
 
