@@ -113,6 +113,11 @@ Namespace Ecopath
             Me.m_grid.SetAlternatingGroupColors()
         End Sub
 
+        Private Sub OnColourRandomAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnRandomAll.Click
+            Me.m_grid.SetRandomGroupColors()
+        End Sub
+
         Private Sub OnColourDefaultCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnColourDefaultCurrent.Click
             Me.m_grid.SetDefaultGroupColor(Me.m_grid.SelectedRow)

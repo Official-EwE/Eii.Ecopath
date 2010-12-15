@@ -2,16 +2,16 @@
 
 Option Strict On
 
-Imports EwECore
-Imports System.Drawing
-Imports System.Text
-Imports SAUPUtil.Misc.Colours
-Imports EwEUtils.Core
-Imports EwEUtils.Drawing
-Imports VB = Microsoft.VisualBasic
-Imports EwEUtils.Utilities
 Imports System.Globalization
 Imports System.Threading
+Imports System.Drawing
+Imports System.Text
+Imports VB = Microsoft.VisualBasic
+Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Drawing
+Imports EwEUtils.Utilities
+Imports SAUPUtil.Misc.Colours
 
 #End Region ' Imports
 
@@ -1232,6 +1232,29 @@ Namespace Style
         Public Sub ColorsChanged()
             Me.FireChangeEvent(eChangeType.Colours)
         End Sub
+
+        Private m_iAngle As Integer = cCore.NULL_VALUE
+        Private Const sFactor As Single = 180.0! / Math.PI
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a random color.
+        ''' </summary>
+        ''' <returns>A random color.</returns>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property NextRandomColor() As Color
+            Get
+                If Me.m_iAngle < 0 Then
+                    Dim r As New Random()
+                    Me.m_iAngle = r.Next(0, 4200)
+                Else
+                    Me.m_iAngle += 42
+                End If
+                Return Color.FromArgb(CInt(Math.Sin(Me.m_iAngle / sFactor) * 127 + 128), _
+                                      CInt(Math.Sin((70 - Me.m_iAngle) * 1.841 / sFactor) * 100 + 128), _
+                                      CInt(Math.Cos(Me.m_iAngle * 3.75 / sFactor) * 127 + 128))
+            End Get
+        End Property
 
 #End Region ' Generics
 

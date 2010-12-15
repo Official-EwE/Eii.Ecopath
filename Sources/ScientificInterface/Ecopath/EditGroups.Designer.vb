@@ -39,6 +39,7 @@ Namespace Ecopath
             Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_btnColourCustomCurrent = New System.Windows.Forms.Button
             Me.m_btnColourDefaultCurrent = New System.Windows.Forms.Button
+            Me.m_btnRandomAll = New System.Windows.Forms.Button
             Me.SuspendLayout()
             '
             'm_grid
@@ -150,6 +151,12 @@ Namespace Ecopath
             Me.m_btnColourDefaultCurrent.Name = "m_btnColourDefaultCurrent"
             Me.m_btnColourDefaultCurrent.UseVisualStyleBackColor = True
             '
+            'm_btnRandomAll
+            '
+            resources.ApplyResources(Me.m_btnRandomAll, "m_btnRandomAll")
+            Me.m_btnRandomAll.Name = "m_btnRandomAll"
+            Me.m_btnRandomAll.UseVisualStyleBackColor = True
+            '
             'EditGroups
             '
             Me.AcceptButton = Me.OK_Button
@@ -161,6 +168,7 @@ Namespace Ecopath
             Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.m_btnColourDefaultCurrent)
             Me.Controls.Add(Me.m_btnColourCustomCurrent)
+            Me.Controls.Add(Me.m_btnRandomAll)
             Me.Controls.Add(Me.m_btnColorAlternateAll)
             Me.Controls.Add(Me.m_bntColorDefaultAll)
             Me.Controls.Add(Me.m_hdrOrder)
@@ -195,6 +203,7 @@ Namespace Ecopath
         Private m_hdrOrder As cEwEHeaderLabel
         Private WithEvents m_btnColourCustomCurrent As System.Windows.Forms.Button
         Private WithEvents m_btnColourDefaultCurrent As System.Windows.Forms.Button
+        Private WithEvents m_btnRandomAll As System.Windows.Forms.Button
 
     End Class
 

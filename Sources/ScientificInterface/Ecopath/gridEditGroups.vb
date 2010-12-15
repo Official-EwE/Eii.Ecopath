@@ -1421,6 +1421,17 @@ Public Class gridEditGroups
         Me.UpdateColorColumn()
     End Sub
 
+    Public Sub SetRandomGroupColors()
+        For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
+            Me.SetRandomGroupColor(iRow)
+        Next
+    End Sub
+
+    Public Sub SetRandomGroupColor(ByVal iRow As Integer)
+        Me.m_lgiGroups(iRow - iFIRSTGROUPROW).PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.NextRandomColor())
+        Me.UpdateRow(iRow)
+    End Sub
+
     Public Sub SetDefaultGroupColors()
         For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
             Me.SetDefaultGroupColor(iRow)
