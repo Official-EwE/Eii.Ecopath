@@ -3687,6 +3687,11 @@ Namespace Database
                                 drow("RelCin") = sCellValue
                             End If
 
+                            ' ToDo: import advection
+                            drow("XVel") = 0.0!
+                            drow("YVel") = 0.0!
+                            drow("DepthA") = iDepth
+
                             ' Add the row
                             writer.AddRow(drow)
 
