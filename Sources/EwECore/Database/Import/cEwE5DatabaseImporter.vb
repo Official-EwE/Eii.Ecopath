@@ -3709,7 +3709,6 @@ Namespace Database
             End While
 
             If Not writer.Commit() Then
-Me.LogMessage("Failed to 
             End If
 
             Me.m_dbEwE5.ReleaseReader(reader)
