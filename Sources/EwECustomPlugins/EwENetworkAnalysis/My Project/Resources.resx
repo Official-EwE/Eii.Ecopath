@@ -839,4 +839,7 @@
   <data name="PAGE_ECOSIM_NA_WO_PPR" xml:space="preserve">
     <value>Indexes without primary production required</value>
   </data>
+  <data name="COL_HDR_KEMPTONS" xml:space="preserve">
+    <value>Kemptons Q (relative)</value>
+  </data>
 </root>
