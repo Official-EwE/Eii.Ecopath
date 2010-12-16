@@ -794,7 +794,10 @@ Namespace Database
             drow("MonetaryUnit") = Me.FixValue(reader, "monetaryUnit", eUnitMonetaryType.EUR.ToString())
             drow("EcoSimVulMultAll") = Me.FixValue(reader, "EcoSim vulMultAll")
             writer.AddRow(drow)
-            writer.Commit()
+            If Not writer.Commit() Then
+                Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_ERROR_COMMIT, "model"), _
+                              eMessageType.DataImport, eMessageImportance.Critical, True)
+            End If
 
             Try
                 Me.AddRemark(reader("remarksCyclePath"), eDataTypes.EwEModel, CInt(drow("ModelID")), eVarNameFlags.CyclePath)
@@ -3705,7 +3708,9 @@ Namespace Database
 
             End While
 
-            writer.Commit()
+            If Not writer.Commit() Then
+Me.LogMessage("Failed to 
+            End If
 
             Me.m_dbEwE5.ReleaseReader(reader)
             Me.m_dbEwE6.ReleaseWriter(writer)

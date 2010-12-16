@@ -1176,6 +1176,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Unable to store data for &apos;{0}&apos;, the database rejected imported values. This indicates a programming error. Please notify the EwE development team.
+        '''</summary>
+        Friend Shared ReadOnly Property IMPORT_ERROR_COMMIT() As String
+            Get
+                Return ResourceManager.GetString("IMPORT_ERROR_COMMIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Database {0} has version {1}, which is incompatible with this version. Use the latest version of Ecopath 5 to update the database first..
         '''</summary>
         Friend Shared ReadOnly Property IMPORT_ERROR_INCOMPATIBLE() As String

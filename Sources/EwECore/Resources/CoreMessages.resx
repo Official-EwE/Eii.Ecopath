@@ -954,4 +954,8 @@ System Error: {0}</value>
   <data name="SCENARIO_DELETE_LOADED" xml:space="preserve">
     <value>You cannot delete a loaded scenario.</value>
   </data>
+  <data name="IMPORT_ERROR_COMMIT" xml:space="preserve">
+    <value>Unable to store data for '{0}', the database rejected imported values. This indicates a programming error. Please notify the EwE development team</value>
+    <comment>{0}=table name</comment>
+  </data>
 </root>
