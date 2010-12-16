@@ -107,7 +107,7 @@ Public Class cResultWriter
 
     Private Function GetIndicesWithoutPPRData(ByVal bAnnualAverage As Boolean) As String
 
-        Const cNUMCOLS As Integer = 24
+        Const cNUMCOLS As Integer = 25
 
         Dim sb As New StringBuilder()
         Dim asValues(cNUMCOLS) As Single
@@ -115,56 +115,57 @@ Public Class cResultWriter
         Dim iYear As Integer = 0
         Dim bLineAdded As Boolean = False
 
-        sb.Append(My.Resources.COL_HDR_YEAR)
+        sb.Append(My.Resources.COL_HDR_YEAR)            ' 0
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_THROUGHPUT)
+        sb.Append(My.Resources.COL_HDR_THROUGHPUT)      ' 1
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CAPACITY_ECOSIM)
+        sb.Append(My.Resources.COL_HDR_CAPACITY_ECOSIM) ' 2
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_IMPORT)
+        sb.Append(My.Resources.COL_HDR_ASCEND_IMPORT)   ' 3
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_FLOW)
+        sb.Append(My.Resources.COL_HDR_ASCEND_FLOW)     ' 4
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_EXPORT)
+        sb.Append(My.Resources.COL_HDR_ASCEND_EXPORT)   ' 5
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_RESP)
+        sb.Append(My.Resources.COL_HDR_ASCEND_RESP)     ' 6
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_IMPORT)
+        sb.Append(My.Resources.COL_HDR_OVERHEAD_IMPORT) ' 7
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_FLOW)
+        sb.Append(My.Resources.COL_HDR_OVERHEAD_FLOW)   ' 8
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_EXPORT)
+        sb.Append(My.Resources.COL_HDR_OVERHEAD_EXPORT) ' 9
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_RESP)
+        sb.Append(My.Resources.COL_HDR_OVERHEAD_RESP)   ' 10
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PCI)
+        sb.Append(My.Resources.COL_HDR_PCI)             ' 11
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_FCI)
+        sb.Append(My.Resources.COL_HDR_FCI)             ' 12
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PATH_LEN)
+        sb.Append(My.Resources.COL_HDR_PATH_LEN)        ' 13
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_EXPORT)
+        sb.Append(My.Resources.COL_HDR_EXPORT)          ' 14
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_RESP_ECOSIM)
+        sb.Append(My.Resources.COL_HDR_RESP_ECOSIM)     ' 15
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PRIM_PROD)
+        sb.Append(My.Resources.COL_HDR_PRIM_PROD)       ' 16
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PROD)
+        sb.Append(My.Resources.COL_HDR_PROD)            ' 17
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_BIOMASS)
+        sb.Append(My.Resources.COL_HDR_BIOMASS)         ' 18
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CATCH)
+        sb.Append(My.Resources.COL_HDR_CATCH)           ' 19
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PROP_FLOW_DET)
+        sb.Append(My.Resources.COL_HDR_PROP_FLOW_DET)   ' 20
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_TOTAL)
+        sb.Append(My.Resources.COL_HDR_ASCEND_TOTAL)    ' 21
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_AMI)
+        sb.Append(My.Resources.COL_HDR_AMI)             ' 22
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ENTROPY)
+        sb.Append(My.Resources.COL_HDR_ENTROPY)         ' 23
         sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_TLc)
+        sb.Append(My.Resources.COL_HDR_TLc)             ' 24
         sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_KEMPTONS)        ' 25
         sb.AppendLine("")
 
         For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
@@ -209,6 +210,7 @@ Public Class cResultWriter
                     Case 22 : asValues(j) += Me.NetworkManager.AMIEcosim(i)
                     Case 23 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
                     Case 24 : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
+                    Case 25 : asValues(j) += Me.NetworkManager.RelativeKemptonsPlot(i)
 
                 End Select
 
@@ -252,7 +254,7 @@ Public Class cResultWriter
 
     Private Function GetIndicesWithPPRData(ByVal bAnnualAverage As Boolean) As String
 
-        Const cNUMCOLS As Integer = 26
+        Const cNUMCOLS As Integer = 27
 
         Dim sb As New StringBuilder()
         Dim asValues(cNUMCOLS) As Single
@@ -313,6 +315,8 @@ Public Class cResultWriter
         sb.Append(My.Resources.COL_HDR_ENTROPY)
         sb.Append(", ")
         sb.Append(My.Resources.COL_HDR_TLc)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_KEMPTONS)
         sb.AppendLine("")
 
         For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
@@ -359,6 +363,7 @@ Public Class cResultWriter
                     Case 24 : asValues(j) += Me.NetworkManager.AMIEcosim(i)
                     Case 25 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
                     Case 26 : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
+                    Case 27 : asValues(j) += Me.NetworkManager.RelativeKemptonsPlot(i)
 
                 End Select
 
