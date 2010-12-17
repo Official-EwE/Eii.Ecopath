@@ -29,8 +29,7 @@ Namespace Ecospace.Basemap
     ''' -----------------------------------------------------------------------
     Public Class cImportExportData
 
-        ' ToDo_JS: globalize this
-        Public Shared cMAPPING_IMPLICIT As String = "(file content)"
+        Public Shared cMAPPING_IMPLICIT As String = My.Resources.VALUE_FILE_CONTENT
 
         Private m_nRows As Integer = 0
         Private m_nCols As Integer = 0

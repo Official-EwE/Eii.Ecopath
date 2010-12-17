@@ -299,6 +299,7 @@ Public Class gridMapLayerToAttribute
             Dim foc As cFileOpenCommand = TryCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
             Dim strFileFilter As String = SharedResources.FILEFILTER_LOAD_RASTER
             Dim sfc As eSpatialFileCompatibility = eSpatialFileCompatibility.Unreadable
+            Dim strMsg As String = ""
 
             ' Sanity check
             If foc Is Nothing Then Return
@@ -332,18 +333,20 @@ Public Class gridMapLayerToAttribute
                         ' NOP
 
                     Case eSpatialFileCompatibility.Unreadable
-                        ' ToDo_JS: Globalize this
-                        MsgBox("The selected file could not be read.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
+                        strMsg = String.Format(SharedResources.FILE_ERROR_READ, foc.FileName)
 
                     Case eSpatialFileCompatibility.IncompatibleEmpty
-                        ' ToDo_JS: Globalize this
-                        MsgBox("The selected file did not contain any data.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
+                        strMsg = String.Format(SharedResources.FILE_ERROR_DATA, foc.FileName)
 
                     Case eSpatialFileCompatibility.IncompatibleDimensions
-                        ' ToDo_JS: Globalize this
-                        MsgBox("The content in the selected file is not compatible with the cell size of the current map.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
+                        strMsg = String.Format(SharedResources.FILE_ERROR_INCOMPATIBLE_MAP, foc.FileName)
 
                 End Select
+
+                If Not String.IsNullOrEmpty(strMsg) Then
+                    Dim msg As New cMessage(strMsg, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
+                    Me.m_uic.Core.Messages.SendMessage(msg)
+                End If
 
             End If
 
@@ -368,9 +371,12 @@ Public Class gridMapLayerToAttribute
                     Me.m_bDataValid = True
 
                 Case eSpatialFileCompatibility.IncompatibleDimensions
-                    ' ToDo_JS: Globalize this
-                    Me.m_bDataValid = (MsgBox("The selected shape file is not compatible with the current Ecospace basemap dimensions." & _
-                              "Use shape file anyway?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes)
+                    Dim msg As New cFeedbackMessage(My.Resources.ECOSPACE_BASEMAP_SHAPECOMPATIBLE, _
+                                                    EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Information, _
+                                                    cFeedbackMessage.eReplyStyle.YES_NO, EwEUtils.Core.eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+                    Me.m_uic.Core.Messages.SendMessage(msg)
+                    Me.m_bDataValid = (msg.Reply = cFeedbackMessage.eReply.YES)
+
             End Select
 
             Me.UpdateControls()

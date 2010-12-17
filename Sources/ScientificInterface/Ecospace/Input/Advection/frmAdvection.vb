@@ -251,8 +251,12 @@ Namespace Ecospace.Advection
             Me.m_ucMap.Invalidate()
 
             If bBadFlow Then
-                ' ToDo_JS: globalize this
-                If MsgBox("Inflows and outflows do not balance; it is recommend not using this velocity field for simulations if ecospace shows strange behavior. Do you wish to revert the advection data to the previous state?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_ADVECTION_INBALANCED, _
+                                                 eCoreComponentType.EcoSpace, eMessageType.Any, _
+                                                 eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+                fmsg.Suppressable = True
+                Me.Core.Messages.SendMessage(fmsg)
+                If fmsg.Reply = cFeedbackMessage.eReply.YES Then
                     Me.Revert()
                 End If
             End If

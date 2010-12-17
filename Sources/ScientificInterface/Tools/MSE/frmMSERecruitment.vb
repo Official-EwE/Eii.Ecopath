@@ -219,8 +219,6 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub Redraw()
 
-            ' ToDo_JS: globalize this method
-
             If Me.m_zgh Is Nothing Then Return
 
             Dim lpts As New PointPairList
@@ -250,27 +248,31 @@ Namespace Ecosim
                 '  - place a horizontal, stippled?, grey line at: maxRecruitment 
                 lpts = New PointPairList()
                 lpts.Add(0.0!, data.MaxRecruitment) : lpts.Add(Me.m_zgh.XScaleMax, data.MaxRecruitment)
-                Dim li As LineItem = Me.m_zgh.CreateLineItem("Max. recruitment", eLineType.NotSet, Color.DarkGray, lpts)
+                Dim li As LineItem = Me.m_zgh.CreateLineItem(SharedResources.HEADER_MAX_RECRUITMENT, _
+                                                             eLineType.NotSet, Color.DarkGray, lpts)
                 li.Line.Style = Drawing2D.DashStyle.DashDot
                 lLines.Add(li)
 
                 '  - place a horizontal, stippled?, grey line at: maxRecruitment / 2
                 lpts = New PointPairList()
                 lpts.Add(0.0!, data.MaxRecruitment / 2) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
-                li = Me.m_zgh.CreateLineItem("Half max. recruitment", eLineType.NotSet, Color.DarkGray, lpts)
+                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_MAX_RECRUITMENT, _
+                                             eLineType.NotSet, Color.DarkGray, lpts)
                 li.Line.Style = Drawing2D.DashStyle.Dot
                 lLines.Add(li)
 
                 '  - place a vertical,   stippled?, grey line at: HalfRecruitment biomass
                 lpts = New PointPairList()
                 lpts.Add(data.HalfRecruitmentBiomass, 0.0) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
-                li = Me.m_zgh.CreateLineItem("Half recruitment biomass", eLineType.NotSet, Color.LightSalmon, lpts)
+                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_RECRUITMENT_B, _
+                                             eLineType.NotSet, Color.LightSalmon, lpts)
                 lLines.Add(li)
 
                 '  - place a vertical,   full, red line at: EcopathBiomass
                 lpts = New PointPairList()
                 lpts.Add(data.EcopathBiomass, 0.0!) : lpts.Add(data.EcopathBiomass, Me.m_zgh.YScaleMax)
-                li = Me.m_zgh.CreateLineItem("Ecopath biomass", eLineType.NotSet, Color.LightSalmon, lpts)
+                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_BIOMASS_ECOPATH, _
+                                             eLineType.NotSet, Color.LightSalmon, lpts)
                 li.Line.Style = Drawing2D.DashStyle.Dash
                 lLines.Add(li)
 

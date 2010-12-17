@@ -350,6 +350,51 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The file &apos;{0}&apos; did not contain any data..
+        '''</summary>
+        Public ReadOnly Property FILE_LOAD_ERROR_DATA() As String
+            Get
+                Return ResourceManager.GetString("FILE_LOAD_ERROR_DATA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unable to load from file &apos;{0}&apos;: {1}.
+        '''</summary>
+        Public ReadOnly Property FILE_LOAD_ERROR_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("FILE_LOAD_ERROR_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The content of file &apos;{0}&apos; is not compatible with the cell size of the current map..
+        '''</summary>
+        Public ReadOnly Property FILE_LOAD_ERROR_INCOMPATIBLE_MAP() As String
+            Get
+                Return ResourceManager.GetString("FILE_LOAD_ERROR_INCOMPATIBLE_MAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The file &apos;{0}&apos; could not be read..
+        '''</summary>
+        Public ReadOnly Property FILE_LOAD_ERROR_READ() As String
+            Get
+                Return ResourceManager.GetString("FILE_LOAD_ERROR_READ", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unable to save to file &apos;{0}&apos;: {1}.
+        '''</summary>
+        Public ReadOnly Property FILE_SAVE_ERROR_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("FILE_SAVE_ERROR_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to ESRI Asc files|*.asc.
         '''</summary>
         Public ReadOnly Property FILEFILTER_ASCFILE() As String
@@ -562,6 +607,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Finished.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_FINISHED() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_FINISHED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Home.
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_HOME() As String
@@ -688,6 +742,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fleet {0} of {1}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_FLEET_OF_N() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_FLEET_OF_N", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Iteration {0}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_ITERATION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_ITERATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_NAMEANDSEQUENCE() As String
@@ -729,6 +801,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VALUE_NOTUSED() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_NOTUSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to x{0}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_TIMES() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_TIMES", resourceCulture)
             End Get
         End Property
         
@@ -893,6 +974,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecopath biomass / carrying capacity.
+        '''</summary>
+        Public ReadOnly Property HEADER_B_OVER_CC() As String
+            Get
+                Return ResourceManager.GetString("HEADER_B_OVER_CC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biom. acc..
         '''</summary>
         Public ReadOnly Property HEADER_BIOMACCUM_ABBR() As String
@@ -988,6 +1078,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_BIOMASS_DIVERSITY_ABBR() As String
             Get
                 Return ResourceManager.GetString("HEADER_BIOMASS_DIVERSITY_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecopath biomass.
+        '''</summary>
+        Public ReadOnly Property HEADER_BIOMASS_ECOPATH() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIOMASS_ECOPATH", resourceCulture)
             End Get
         End Property
         
@@ -1285,6 +1384,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_CB() As String
             Get
                 Return ResourceManager.GetString("HEADER_CB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Carrying capacity / Ecopath biomass.
+        '''</summary>
+        Public ReadOnly Property HEADER_CC_OVER_B() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CC_OVER_B", resourceCulture)
             End Get
         End Property
         
@@ -2036,6 +2144,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Half max. recruitment.
+        '''</summary>
+        Public ReadOnly Property HEADER_HALF_MAX_RECRUITMENT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_HALF_MAX_RECRUITMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Half recruitment biomass.
+        '''</summary>
+        Public ReadOnly Property HEADER_HALF_RECRUITMENT_B() As String
+            Get
+                Return ResourceManager.GetString("HEADER_HALF_RECRUITMENT_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to ID.
         '''</summary>
         Public ReadOnly Property HEADER_ID() As String
@@ -2279,6 +2405,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Max. recruitment.
+        '''</summary>
+        Public ReadOnly Property HEADER_MAX_RECRUITMENT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAX_RECRUITMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Max. age (year).
         '''</summary>
         Public ReadOnly Property HEADER_MAXAGE_UNIT() As String
@@ -2293,6 +2428,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_MAXEFFORT() As String
             Get
                 Return ResourceManager.GetString("HEADER_MAXEFFORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Max F / M.
+        '''</summary>
+        Public ReadOnly Property HEADER_MAXF_OVER_M() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAXF_OVER_M", resourceCulture)
             End Get
         End Property
         
@@ -2716,6 +2860,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_PREDMORT() As String
             Get
                 Return ResourceManager.GetString("HEADER_PREDMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Predation mort (rel).
+        '''</summary>
+        Public ReadOnly Property HEADER_PREDMORT_REL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PREDMORT_REL", resourceCulture)
             End Get
         End Property
         
@@ -3629,6 +3782,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Vulnerability.
+        '''</summary>
+        Public ReadOnly Property HEADER_VULNERABILITY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VULNERABILITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Vulnerability w. FT.
         '''</summary>
         Public ReadOnly Property HEADER_VULNERABILITY_WITH_FT() As String
@@ -3661,6 +3823,24 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_WEIGHT_INFINITY_UNIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_WEIGHT_INFINITY_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to With foraging time adjust.
+        '''</summary>
+        Public ReadOnly Property HEADER_WITH_FORAGING_TIME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_WITH_FORAGING_TIME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Without foraging time adjust (FT).
+        '''</summary>
+        Public ReadOnly Property HEADER_WITHOUT_FORAGING_TIME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_WITHOUT_FORAGING_TIME", resourceCulture)
             End Get
         End Property
         
@@ -4044,6 +4224,24 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("ThumbnailLoadingHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Not linked to a valid fleet.
+        '''</summary>
+        Public ReadOnly Property TIMESERIES_WARNING_NOFLEET() As String
+            Get
+                Return ResourceManager.GetString("TIMESERIES_WARNING_NOFLEET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Not linked to a valid group.
+        '''</summary>
+        Public ReadOnly Property TIMESERIES_WARNING_NOGROUP() As String
+            Get
+                Return ResourceManager.GetString("TIMESERIES_WARNING_NOGROUP", resourceCulture)
             End Get
         End Property
         

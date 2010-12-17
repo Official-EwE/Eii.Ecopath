@@ -704,8 +704,6 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Public Sub CreateCellRegions()
 
-            ' ToDo_JS: globalize this method
-
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
@@ -715,11 +713,11 @@ Namespace Ecospace
             ' Throw warning that this may cause Ecospace to run out of memory.
             Dim lTotal As Long = Me.Core.EcospaceBasemap.InCol * Me.Core.EcospaceBasemap.InRow
             If lTotal > 500 Then ' yeah, that is an arbitrary number alright
-                ' Throw warning
-                If MsgBox("Based on the number of cells in your map this operation may cause Ecospace to run out of memory when gathering statistics. Are you sure you want to convert all cells to individual regions?", _
-                          MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel) <> MsgBoxResult.Yes Then
-                    Return
-                End If
+                Dim fmsg As New cFeedbackMessage(My.Resources.ECOSPACE_WARNING_MEMOVERFLOW, _
+                                                 eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Warning, _
+                                                 cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+                Me.Core.Messages.SendMessage(fmsg)
+                If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return
             End If
 
             ' Delete all existing regions
@@ -732,7 +730,7 @@ Namespace Ecospace
             For iCol = 1 To bm.InCol
                 For iRow = 1 To bm.InRow
                     If layerDepth.IsWaterCell(iRow, iCol) Then
-                        ri = Me.CreateRegion(String.Format("({0}, {1})", iCol, iRow), False)
+                        ri = Me.CreateRegion(String.Format(SharedResources.GENERIC_LABEL_INDEXED, iCol, iRow), False)
                         ri.Cell = New Point(iCol, iRow)
                     End If
                 Next iRow

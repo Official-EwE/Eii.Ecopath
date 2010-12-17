@@ -9,6 +9,8 @@ Imports System.Drawing.Drawing2D
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -111,10 +113,9 @@ Namespace Controls
                 For j As Double = 0 To sYMax Step yStep * 0.5
                     Dim yPos As Integer = CInt(rcImage.Bottom - rcImage.Height * j / sYMax)
                     If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
-                        ' ToDo_JS: Localize this
-                        strLabel = String.Format("x{0}", j)
+                        strLabel = String.Format(SharedResources.GENERIC_VALUE_TIMES, cStringUtils.FormatDouble(j))
                     Else
-                        strLabel = String.Format("{0}", j)
+                        strLabel = cStringUtils.FormatDouble(j)
                     End If
                     g.DrawString(strLabel, Me.Font, brTmp, rcImage.Left + 5, yPos)
                     g.DrawLine(penTmp, rcImage.Left, yPos, rcImage.Left + 3, yPos)
@@ -127,7 +128,7 @@ Namespace Controls
 
                         strLabel = sg.FormatNumber(sYMax * (3 - j) / 3)
                         If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
-                            strLabel = String.Format("x{0}", strLabel)
+                            strLabel = String.Format(SharedResources.GENERIC_VALUE_TIMES, strLabel)
                         End If
 
                         g.DrawString(strLabel, Me.Font, brTmp, rcImage.Left + 5, yPos)
@@ -148,7 +149,7 @@ Namespace Controls
                     If (igroup > 0) Then
                         strName = core.EcoPathGroupInputs(igroup).Name
                     Else
-                        strName = "Not linked to any group!"
+                        strName = My.Resources.TIMESERIES_WARNING_NOGROUP
                     End If
                     strType = cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(gts.TimeSeriesType)
 
@@ -160,7 +161,7 @@ Namespace Controls
                     If (ifleet > 0) Then
                         strName = core.FleetInputs(fts.FleetIndex).Name
                     Else
-                        strName = "Not linked to any fleet!"
+                        strName = My.Resources.TIMESERIES_WARNING_NOFLEET
                     End If
                     strType = cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(fts.TimeSeriesType)
 

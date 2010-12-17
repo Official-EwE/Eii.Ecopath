@@ -1247,7 +1247,7 @@ Namespace Ecospace
         End Sub
 
         Private Function FilteredResults(ByVal lIn As List(Of cObjectiveResult), _
-                                Optional ByVal iPercAreaClosed As Integer = -1) As List(Of cObjectiveResult)
+                                         Optional ByVal iPercAreaClosed As Integer = -1) As List(Of cObjectiveResult)
 
             If iPercAreaClosed = -1 Then Return lIn
             Dim lOut As New List(Of cObjectiveResult)
@@ -1571,8 +1571,9 @@ Namespace Ecospace
 
             ' Check MPA selection
             If Me.m_cmbMPA.SelectedIndex = -1 Then
-                ' ToDo_JS: Globalize this
-                Me.UIContext.Core.Messages.SendMessage(New cMessage("MPA selection required", eMessageType.Any, eCoreComponentType.MPAOptimization, eMessageImportance.Warning))
+                Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_SELECTION, _
+                                                                    eMessageType.Any, eCoreComponentType.MPAOptimization, _
+                                                                    eMessageImportance.Warning))
                 Return False
             End If
 
@@ -1584,8 +1585,9 @@ Namespace Ecospace
                     bOk = bOk Or (CSng(source.GetVariable(eVarNameFlags.FPSGroupMandRelBiom)) > 0.0)
                 Next
                 If bOk = False Then
-                    ' ToDo_JS: Globalize this
-                    Me.UIContext.Core.Messages.SendMessage(New cMessage("No mandated biomasses specified", eMessageType.Any, eCoreComponentType.MPAOptimization, eMessageImportance.Warning))
+                    Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_MANDATEDB, _
+                                                                        eMessageType.Any, eCoreComponentType.MPAOptimization, _
+                                                                        eMessageImportance.Warning))
                     Return False
                 End If
             End If

@@ -826,6 +826,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The selected shape file is not compatible with the current Ecospace basemap dimensions. Do you want to use this file anyway?.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_BASEMAP_SHAPECOMPATIBLE() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_BASEMAP_SHAPECOMPATIBLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You are about to reduce the size of the map, values outside the new map area will be lost. This operation cannot be undone. Are you sure you want to proceed?.
         '''</summary>
         Friend ReadOnly Property ECOSPACE_BASEMAP_SHRINK_PROMPT() As String
@@ -1140,6 +1149,15 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Based on the number of cells in your map this operation may cause Ecospace to run out of memory when gathering statistics. Are you sure you want to convert all cells to individual regions?.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_WARNING_MEMOVERFLOW() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_WARNING_MEMOVERFLOW", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property Ecospace3() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecospace3", resourceCulture)
@@ -1296,7 +1314,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to b: {0}.
+        '''  Looks up a localized string similar to B: {0}.
         '''</summary>
         Friend ReadOnly Property FLOWDIAGRAM_LABEL_BIOMASS() As String
             Get
@@ -2241,6 +2259,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Effort {0}.
+        '''</summary>
+        Friend ReadOnly Property MSE_EFFORT_VALUE() As String
+            Get
+                Return ResourceManager.GetString("MSE_EFFORT_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fleet{0}MSY effort.
+        '''</summary>
+        Friend ReadOnly Property MSE_ITERATION_HEADER() As String
+            Get
+                Return ResourceManager.GetString("MSE_ITERATION_HEADER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {1}{0}{2}.
+        '''</summary>
+        Friend ReadOnly Property MSE_ITERATION_LINE() As String
+            Get
+                Return ResourceManager.GetString("MSE_ITERATION_LINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Plots and Graphs background|Background colour to use for plots and graphs.
         '''</summary>
         Friend ReadOnly Property OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR() As String
@@ -2646,6 +2691,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Inflows and outflows do not balance; it is recommend not using this velocity field for simulations if ecospace shows strange behavior. Do you wish to revert the advection data to the previous state?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ADVECTION_INBALANCED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ADVECTION_INBALANCED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Some of the changes that you made will only be effective after Ecopath with Ecosim has restarted..
         '''</summary>
         Friend ReadOnly Property PROMPT_CHANGES_RESTART() As String
@@ -2898,6 +2952,24 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_MPA_DELETE_CONFIRMATION() As String
             Get
                 Return ResourceManager.GetString("PROMPT_MPA_DELETE_CONFIRMATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No mandated biomasses specified. Optimization cannot continue..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_MPAOPT_MANDATEDB() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_MPAOPT_MANDATEDB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to A MPA must be selected. Optimization cannot continue..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_MPAOPT_SELECTION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_MPAOPT_SELECTION", resourceCulture)
             End Get
         End Property
         
@@ -3794,11 +3866,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Iteration {0}.
+        '''  Looks up a localized string similar to (file content).
         '''</summary>
-        Friend ReadOnly Property VALUE_ITERATION() As String
+        Friend ReadOnly Property VALUE_FILE_CONTENT() As String
             Get
-                Return ResourceManager.GetString("VALUE_ITERATION", resourceCulture)
+                Return ResourceManager.GetString("VALUE_FILE_CONTENT", resourceCulture)
             End Get
         End Property
     End Module

@@ -443,7 +443,7 @@ Namespace Ecosim
             Dim lLines As New List(Of LineItem)
 
             Me.m_nTrials += 1
-            Me.m_plothelper.CreateRun(String.Format(My.Resources.VALUE_ITERATION, Me.m_nTrials))
+            Me.m_plothelper.CreateRun(String.Format(SharedResources.GENERIC_VALUE_ITERATION, Me.m_nTrials))
             Me.m_lpplIteration.Clear()
 
             If (Me.m_mcmanager.bShowPlot = True) Then

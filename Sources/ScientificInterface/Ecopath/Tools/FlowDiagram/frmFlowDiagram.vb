@@ -184,10 +184,9 @@ Namespace Ecopath.Controls.FlowDiagram
                     ifData = New cINIFile(cmdFO.FileName)
                     m_doodler.LoadFromFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
                 Catch ex As Exception
-                    ' ToDo: provide error feedback via cCore message
-                    ' ToDo: globalize this
-                    MsgBox(String.Format("Unable to load from file '{0}': {1}", cmdFO.FileName, ex.Message), _
-                        MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
+                    Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
+                                            eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                    Me.Core.Messages.SendMessage(msg)
                 End Try
             End If
 
@@ -207,10 +206,9 @@ Namespace Ecopath.Controls.FlowDiagram
                     ifData = New cINIFile(cmdFS.FileName)
                     m_doodler.SaveToFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
                 Catch ex As Exception
-                    ' ToDo: provide error feedback via cCore message
-                    ' ToDo: globalize this
-                    MsgBox(String.Format("Unable to save to file {0}: {1}", cmdFS.FileName, ex.Message), _
-                        MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
+                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
+                                            eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                    Me.Core.Messages.SendMessage(msg)
                 End Try
             End If
         End Sub
@@ -270,10 +268,9 @@ Namespace Ecopath.Controls.FlowDiagram
                 Try
                     bmp.Save(cmdFS.FileName, fmt)
                 Catch ex As Exception
-                    ' ToDo: provide error feedback via cCore message
-                    ' ToDo: globalize this
-                    MsgBox(String.Format("Unable to save to file {0}: {1}", cmdFS.FileName, ex.Message), _
-                        MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
+                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
+                                eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                    Me.Core.Messages.SendMessage(msg)
                 End Try
                 bmp.Dispose()
 

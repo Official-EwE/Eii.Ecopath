@@ -130,7 +130,7 @@
   </data>
   <data name="ECOSPACE_SCENARIO_LOAD_CAPTION" xml:space="preserve">
     <value>Load Ecospace scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecospace scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="STATUS_PREVIEW_LOADING" xml:space="preserve">
     <value>Loading preview...</value>
@@ -246,7 +246,7 @@
     <value>..\Resources\glyph_blue4.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FLOWDIAGRAM_LABEL_BIOMASS" xml:space="preserve">
-    <value>b: {0}</value>
+    <value>B: {0}</value>
     <comment>{0}: biomass value</comment>
   </data>
   <data name="glyph_muddy_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -270,7 +270,7 @@
   </data>
   <data name="ECOSPACE_SCENARIO_NEW_CAPTION" xml:space="preserve">
     <value>New Ecospace scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecospace scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="ECOSIM_APPLYFF_FFTYPE_FORCING" xml:space="preserve">
     <value>F</value>
@@ -329,7 +329,7 @@
   </data>
   <data name="ECOSIM_SCENARIO_LOAD_CAPTION" xml:space="preserve">
     <value>Load Ecosim scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecosim scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="DATASOURCE_DUPLICATE_ERROR_NODATABASE" xml:space="preserve">
     <value>Only models stored in databases can be duplicated.</value>
@@ -496,11 +496,11 @@
   </data>
   <data name="ECOSPACE_BASEMAP_SUMMARY_POSITION" xml:space="preserve">
     <value>{0} lat, {1} lon</value>
-    <comment>{0}:lat of TL position of map, {1}:lon of TL position of map</comment>
+    <comment>{0}: lat of TL position of map, {1}:lon of TL position of map</comment>
   </data>
   <data name="ECOTRACER_SCENARIO_NEW_CAPTION" xml:space="preserve">
     <value>New Ecotracer scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecotracer scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="ECOSIM_GROUPINFO_SALSPREADRIGHT" xml:space="preserve">
     <value>Salinity tolerance above optimum(&gt;0)</value>
@@ -520,7 +520,7 @@
   </data>
   <data name="PROMPT_FORCING_DELETE" xml:space="preserve">
     <value>You are about to delete forcing function '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
-    <comment>{0} = forcing function name</comment>
+    <comment>{0}: forcing function name</comment>
   </data>
   <data name="PROMPT_STANZA_MISSING_LIFESTAGES" xml:space="preserve">
     <value>One or more stanza configurations do not have life stages assigned. Do you want to do this now?</value>
@@ -576,7 +576,7 @@
   </data>
   <data name="ECOSPACE_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecospace scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecospace scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_RELVUL" xml:space="preserve">
     <value>Rel. vul. to pred. in bad habitat (prop for PP)</value>
@@ -586,7 +586,7 @@
   </data>
   <data name="ECOSPACE_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
     <value>Save Ecospace scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecospace scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="STATUS_MODEL_COMPACTING" xml:space="preserve">
     <value>Compacting model...</value>
@@ -626,10 +626,6 @@
     <value>Unable to create EwE6 model at '{0}'. Please check if you have access rights to write to this location, or whether a file at this location is still in use</value>
     <comment>{0}: model path</comment>
   </data>
-  <data name="VALUE_ITERATION" xml:space="preserve">
-    <value>Iteration {0}</value>
-    <comment>{0}: iteration number</comment>
-  </data>
   <data name="ECOSIM_PLOT_CAPTION_MORT_PROD" xml:space="preserve">
     <value>P/B(black), pred.mort.(red), fish.mort.(blue)</value>
   </data>
@@ -643,7 +639,7 @@
   </data>
   <data name="GENERIC_ERROR_FILEOPEN" xml:space="preserve">
     <value>Cannot open file '{0}'</value>
-    <comment>{0}= file name, either relative or absolute</comment>
+    <comment>{0}: file name, either relative or absolute</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION" xml:space="preserve">
     <value>Model validation errors|Values indicating that the model rejected a recent input</value>
@@ -658,7 +654,7 @@
   </data>
   <data name="ECOSIM_SCENARIO_NEW_CAPTION" xml:space="preserve">
     <value>New Ecosim scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecosim scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete group '{0}? This action cannot be undone.</value>
@@ -693,7 +689,7 @@
   </data>
   <data name="ECOSIM_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
     <value>Save Ecosim scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecosim scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="ECOSIM_PROMPT_SAVEANNUAL" xml:space="preserve">
     <value>Save averaged annual values?</value>
@@ -735,7 +731,7 @@
   </data>
   <data name="ECOSPACE_BASEMAP_SUMMARY_SIZE" xml:space="preserve">
     <value>{0} rows x {1} cols</value>
-    <comment>{0}:# of rows, {1}:# of cols</comment>
+    <comment>{0}: # of rows, {1}: # of cols</comment>
   </data>
   <data name="PROMPT_MESSAGE_HIDE" xml:space="preserve">
     <value>Hide this type of message until a model is reloaded</value>
@@ -770,7 +766,7 @@
   </data>
   <data name="ECOSPACE_BASEMAP_SUMMARY_CELLLENGTH" xml:space="preserve">
     <value>{0} km</value>
-    <comment>{0}:cell length</comment>
+    <comment>{0}: cell length &amp; width</comment>
   </data>
   <data name="REGION_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete region from {0} to {1}?</value>
@@ -1129,7 +1125,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOSIM_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecosim scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecosim scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="GENERIC_STATUS_LOADINGPLUGIN" xml:space="preserve">
     <value>Loading plugin, please wait...</value>
@@ -1139,7 +1135,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOTRACER_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
     <value>Save Ecotracer scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecotracer scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_CHECKED" xml:space="preserve">
     <value>Potential problem values|Computed values that may require extra attention</value>
@@ -1207,7 +1203,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOSPACE_RUN_PROGRESS" xml:space="preserve">
     <value>{0} of {1} years</value>
-    <comment>{0} = current year, {1} = total years in an ecospace run</comment>
+    <comment>{0}: current year, {1}: total years in an ecospace run</comment>
   </data>
   <data name="STATUS_ECOSIM_LOADING" xml:space="preserve">
     <value>Loading Ecosim scenario '{0}'...</value>
@@ -1259,7 +1255,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="STATUS_DATASET_REMOVING" xml:space="preserve">
     <value>Removing existing Time Series dataset {0}</value>
-    <comment>{0} dataset name</comment>
+    <comment>{0}: dataset name</comment>
   </data>
   <data name="CAPTION_MSEFLEETREF" xml:space="preserve">
     <value>MSE fleet ref. levels</value>
@@ -1288,7 +1284,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOTRACER_SCENARIO_LOAD_CAPTION" xml:space="preserve">
     <value>Load Ecotracer scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecotracer scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="ECOSPACE_BASEMAP_LAYERS_MPASEED" xml:space="preserve">
     <value>Seed cells</value>
@@ -1315,7 +1311,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOTRACER_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecotracer scenario - Ecopath model {0}</value>
-    <comment>{0} = Ecotracer scenario name</comment>
+    <comment>{0}: scenario name</comment>
   </data>
   <data name="SELECTION_DERIVED" xml:space="preserve">
     <value>(derived value selected)</value>
@@ -1529,5 +1525,35 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOSPACE_HEADER_LOGBREL" xml:space="preserve">
     <value>Biomass (log, relative)</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SHAPECOMPATIBLE" xml:space="preserve">
+    <value>The selected shape file is not compatible with the current Ecospace basemap dimensions. Do you want to use this file anyway?</value>
+  </data>
+  <data name="ECOSPACE_WARNING_MEMOVERFLOW" xml:space="preserve">
+    <value>Based on the number of cells in your map this operation may cause Ecospace to run out of memory when gathering statistics. Are you sure you want to convert all cells to individual regions?</value>
+  </data>
+  <data name="MSE_EFFORT_VALUE" xml:space="preserve">
+    <value>Effort {0}</value>
+    <comment>{0}: effort value</comment>
+  </data>
+  <data name="MSE_ITERATION_HEADER" xml:space="preserve">
+    <value>Fleet{0}MSY effort</value>
+    <comment>{0}: tab</comment>
+  </data>
+  <data name="MSE_ITERATION_LINE" xml:space="preserve">
+    <value>{1}{0}{2}</value>
+    <comment>{0}: tab, {1}: fleet index, {2}: effort value</comment>
+  </data>
+  <data name="PROMPT_ADVECTION_INBALANCED" xml:space="preserve">
+    <value>Inflows and outflows do not balance; it is recommend not using this velocity field for simulations if ecospace shows strange behavior. Do you wish to revert the advection data to the previous state?</value>
+  </data>
+  <data name="PROMPT_MPAOPT_MANDATEDB" xml:space="preserve">
+    <value>No mandated biomasses specified. Optimization cannot continue.</value>
+  </data>
+  <data name="PROMPT_MPAOPT_SELECTION" xml:space="preserve">
+    <value>A MPA must be selected. Optimization cannot continue.</value>
+  </data>
+  <data name="VALUE_FILE_CONTENT" xml:space="preserve">
+    <value>(file content)</value>
   </data>
 </root>

@@ -2,6 +2,9 @@
 
 Option Strict On
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
+Imports System.Text
 
 #End Region ' Imports
 
@@ -55,34 +58,31 @@ Public Class frmMSY
 
     End Sub
 
-    Private Sub updateControls(ByVal running As Boolean)
+    Private Sub updateControls(ByVal bRunning As Boolean)
 
-        ' ToDo_JS: globalize this
-
-        If running Then
+        If bRunning Then
             Me.btRunMSY.Enabled = False
             Me.btStop.Enabled = True
         Else
             Me.btRunMSY.Enabled = True
             Me.btStop.Enabled = False
-            Dim iStr As String = "Fleet" & vbTab & "MSY Effort" & vbCrLf
 
+            Dim sb As New StringBuilder()
+            sb.AppendLine(String.Format(My.Resources.MSE_ITERATION_HEADER, vbTab))
             For i As Integer = 1 To Me.UIContext.Core.nFleets
-                iStr = iStr & i.ToString & vbTab & MSY(i).ToString & vbCrLf
+                sb.AppendLine(String.Format(My.Resources.MSE_ITERATION_LINE, vbTab, i, Me.StyleGuide.FormatNumber(MSY(i))))
             Next
-            Me.txtMSYresults.Text = iStr
+            Me.txtMSYresults.Text = sb.ToString
         End If
-    End Sub
 
+    End Sub
 
     Private Sub onMSYProgress(ByVal MSYProgress As MSE.cMSYProgressArgs)
 
-        ' ToDo_JS: globalize this
-
         Try
-            Me.lbFleet.Text = "Fleet " & MSYProgress.FleetIndex.ToString & " of " & m_nFleets.ToString
-            Me.lbiter.Text = "Iteration " & MSYProgress.Iteration.ToString
-            Me.lbEffort.Text = "Effort " & MSYProgress.CurrentEffort.ToString
+            Me.lbFleet.Text = String.Format(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, m_nFleets)
+            Me.lbiter.Text = String.Format(SharedResources.GENERIC_VALUE_ITERATION, MSYProgress.Iteration)
+            Me.lbEffort.Text = String.Format(My.Resources.MSE_EFFORT_VALUE, Me.StyleGuide.FormatNumber(MSYProgress.CurrentEffort))
             If MSYProgress.CurrentEffort > 0 Then MSY(MSYProgress.FleetIndex) = MSYProgress.CurrentEffort
 
             'the DoEvents can be removed once the MSY is running on a thread 
@@ -101,8 +101,6 @@ Public Class frmMSY
     Private Sub btFleetTradeoffs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles btFleetTradeoffs.Click
 
-        ' ToDo_JS: globalize this
-
         Try
             'get the number of fleets for the progress updates
             m_nFleets = Me.UIContext.Core.nFleets
@@ -112,7 +110,7 @@ Public Class frmMSY
             Me.m_mse.FleetTradeoffs()
             Me.m_mse.Disconnect()
 
-            MsgBox("Done")
+            MsgBox(SharedResources.GENERIC_LABEL_FINISHED)
 
         Catch ex As Exception
 

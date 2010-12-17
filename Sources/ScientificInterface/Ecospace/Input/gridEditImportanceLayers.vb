@@ -701,7 +701,6 @@ Namespace Ecospace
 
             If Me.m_alLayersRemoved.Count > 5 Then
 
-                ' ToDo_JS: Globalize this
                 strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT, Me.m_alLayersRemoved.Count)
 
                 Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)

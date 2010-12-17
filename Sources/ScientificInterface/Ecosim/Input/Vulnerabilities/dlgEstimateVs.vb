@@ -4,6 +4,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -188,20 +189,20 @@ Namespace Ecosim
 
             Select Case Me.EstimationMethod
                 Case eEstimationTypes.BoBu
-                    strXAxis = "Carrying capacity / Ecopath biomass"
-                    strYAxis = "Vulnerability"
+                    strXAxis = SharedResources.HEADER_CC_OVER_B
+                    strYAxis = SharedResources.HEADER_VULNERABILITY
 
                 Case eEstimationTypes.BuBo
-                    strXAxis = "Ecopath biomass / carrying capacity"
-                    strYAxis = "Vulnerability"
+                    strXAxis = SharedResources.HEADER_B_OVER_CC
+                    strYAxis = SharedResources.HEADER_VULNERABILITY
 
                 Case eEstimationTypes.FMaxM
-                    strXAxis = "Max F / M"
-                    strYAxis = "Vulnerability"
+                    strXAxis = SharedResources.HEADER_MAXF_OVER_M
+                    strYAxis = SharedResources.HEADER_VULNERABILITY
 
                 Case eEstimationTypes.FMaxBoBu
-                    strXAxis = "Ecopath biomass / carrying capacity"
-                    strYAxis = "Predation mort. (rel.)"
+                    strXAxis = SharedResources.HEADER_B_OVER_CC
+                    strYAxis = SharedResources.HEADER_PREDMORT_REL
 
             End Select
             Me.m_zgh.ConfigurePane(strTitle, strXAxis, strYAxis, True)
@@ -310,11 +311,11 @@ Namespace Ecosim
             Dim iIndex As Integer = 0
 
             If bFTimeOn = False Then
-                li = New LineItem("Without foraging time adjust (FT)")
+                li = New LineItem(SharedResources.HEADER_WITHOUT_FORAGING_TIME)
                 li.Line.Color = Color.Blue
                 iIndex = 0
             Else
-                li = New LineItem("With foraging time adjust")
+                li = New LineItem(SharedResources.HEADER_WITH_FORAGING_TIME)
                 li.Line.Color = Color.Red
                 iIndex = 1
             End If
@@ -340,11 +341,6 @@ Namespace Ecosim
         End Function
 
 #End Region ' Plot
-
-#Region " Sim calc helpers "
-
-
-#End Region ' Sim calc helpers
 
 #End Region ' Internals
 

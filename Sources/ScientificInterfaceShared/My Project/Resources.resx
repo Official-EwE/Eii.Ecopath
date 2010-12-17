@@ -1160,7 +1160,7 @@
   </data>
   <data name="HEADER_PER_UNIT" xml:space="preserve">
     <value>/{0}</value>
-    <comment>{0}:unit</comment>
+    <comment>{0}: unit</comment>
   </data>
   <data name="HEADER_PLUGINS" xml:space="preserve">
     <value>Plug-ins</value>
@@ -1674,5 +1674,78 @@
   </data>
   <data name="HEADER_LAYER" xml:space="preserve">
     <value>Layer</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_DATA" xml:space="preserve">
+    <value>The file '{0}' did not contain any data.</value>
+    <comment>{0}: file name</comment>
+  </data>
+  <data name="FILE_LOAD_ERROR_DETAIL" xml:space="preserve">
+    <value>Unable to load from file '{0}': {1}</value>
+    <comment>{0}: file name, {1}: detail</comment>
+  </data>
+  <data name="FILE_LOAD_ERROR_INCOMPATIBLE_MAP" xml:space="preserve">
+    <value>The content of file '{0}' is not compatible with the cell size of the current map.</value>
+    <comment>{0}: file name</comment>
+  </data>
+  <data name="FILE_LOAD_ERROR_READ" xml:space="preserve">
+    <value>The file '{0}' could not be read.</value>
+    <comment>{0}: file name</comment>
+  </data>
+  <data name="FILE_SAVE_ERROR_DETAIL" xml:space="preserve">
+    <value>Unable to save to file '{0}': {1}</value>
+    <comment>{0}: file name, {1}: detail</comment>
+  </data>
+  <data name="GENERIC_LABEL_FINISHED" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="GENERIC_VALUE_FLEET_OF_N" xml:space="preserve">
+    <value>Fleet {0} of {1}</value>
+  </data>
+  <data name="GENERIC_VALUE_ITERATION" xml:space="preserve">
+    <value>Iteration {0}</value>
+    <comment>{0}: iteration number</comment>
+  </data>
+  <data name="GENERIC_VALUE_TIMES" xml:space="preserve">
+    <value>x{0}</value>
+    <comment>{0}: value</comment>
+  </data>
+  <data name="HEADER_BIOMASS_ECOPATH" xml:space="preserve">
+    <value>Ecopath biomass</value>
+  </data>
+  <data name="HEADER_B_OVER_CC" xml:space="preserve">
+    <value>Ecopath biomass / carrying capacity</value>
+  </data>
+  <data name="HEADER_CC_OVER_B" xml:space="preserve">
+    <value>Carrying capacity / Ecopath biomass</value>
+  </data>
+  <data name="HEADER_HALF_MAX_RECRUITMENT" xml:space="preserve">
+    <value>Half max. recruitment</value>
+  </data>
+  <data name="HEADER_HALF_RECRUITMENT_B" xml:space="preserve">
+    <value>Half recruitment biomass</value>
+  </data>
+  <data name="HEADER_MAXF_OVER_M" xml:space="preserve">
+    <value>Max F / M</value>
+  </data>
+  <data name="HEADER_MAX_RECRUITMENT" xml:space="preserve">
+    <value>Max. recruitment</value>
+  </data>
+  <data name="HEADER_PREDMORT_REL" xml:space="preserve">
+    <value>Predation mort (rel)</value>
+  </data>
+  <data name="HEADER_VULNERABILITY" xml:space="preserve">
+    <value>Vulnerability</value>
+  </data>
+  <data name="HEADER_WITHOUT_FORAGING_TIME" xml:space="preserve">
+    <value>Without foraging time adjust (FT)</value>
+  </data>
+  <data name="HEADER_WITH_FORAGING_TIME" xml:space="preserve">
+    <value>With foraging time adjust</value>
+  </data>
+  <data name="TIMESERIES_WARNING_NOFLEET" xml:space="preserve">
+    <value>Not linked to a valid fleet</value>
+  </data>
+  <data name="TIMESERIES_WARNING_NOGROUP" xml:space="preserve">
+    <value>Not linked to a valid group</value>
   </data>
 </root>
