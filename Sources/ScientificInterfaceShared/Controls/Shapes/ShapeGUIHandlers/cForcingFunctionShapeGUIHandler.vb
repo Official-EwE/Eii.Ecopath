@@ -473,9 +473,6 @@ Namespace Controls
 
 #Region " Helper methods "
 
-        ' ToDo_JS: Obtain this constant from Core or Ecosim model?
-        Private Const SIMU_YEAR_DEFAULT As Integer = 100
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Init the forcing shape params like newly added shape names, reset sketchpad, etc.
