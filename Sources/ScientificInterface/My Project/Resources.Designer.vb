@@ -405,15 +405,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Run {0}.
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_LABEL_RUN() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_LABEL_RUN", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Mortality: total, fish.(blue), pred.(red).
         '''</summary>
         Friend ReadOnly Property ECOSIM_PLOT_CAPTION_MORT_CONS() As String
@@ -608,15 +599,6 @@ Namespace My.Resources
         Friend ReadOnly Property ECOSIM_SUITABILITY_PLOT_SUITABILITY() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_SUITABILITY_PLOT_SUITABILITY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to (All runs).
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_VALUE_ALL_RUNS() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_VALUE_ALL_RUNS", resourceCulture)
             End Get
         End Property
         
@@ -1083,6 +1065,24 @@ Namespace My.Resources
         Friend ReadOnly Property ECOSPACE_HEADER_HABITAT_AREA() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_HEADER_HABITAT_AREA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biomass (log, relative).
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_HEADER_LOGBREL() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_HEADER_LOGBREL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace relative biomass.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_HEADER_RELB() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_HEADER_RELB", resourceCulture)
             End Get
         End Property
         

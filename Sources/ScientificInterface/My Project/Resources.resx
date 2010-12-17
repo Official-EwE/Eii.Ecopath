@@ -432,10 +432,6 @@
   <data name="glyph_blue7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_blue7.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ECOSIM_LABEL_RUN" xml:space="preserve">
-    <value>Run {0}</value>
-    <comment>{0}: run number</comment>
-  </data>
   <data name="SEARCH_STATUS_COMPLETED" xml:space="preserve">
     <value>Search completed</value>
   </data>
@@ -845,9 +841,6 @@
   </data>
   <data name="ECOSIM_GROUPINFO_FEEDINGTIMEADJUSTRATE" xml:space="preserve">
     <value>Feeding time adjust rate [0,1]</value>
-  </data>
-  <data name="ECOSIM_VALUE_ALL_RUNS" xml:space="preserve">
-    <value>(All runs)</value>
   </data>
   <data name="ECOSPACE_DISPERSAL_RELFEEDRATE" xml:space="preserve">
     <value>Rel. feed. rate in bad habitat</value>
@@ -1530,5 +1523,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="team" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\team.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="ECOSPACE_HEADER_RELB" xml:space="preserve">
+    <value>Ecospace relative biomass</value>
+  </data>
+  <data name="ECOSPACE_HEADER_LOGBREL" xml:space="preserve">
+    <value>Biomass (log, relative)</value>
   </data>
 </root>

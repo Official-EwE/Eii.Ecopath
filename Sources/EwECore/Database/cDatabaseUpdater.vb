@@ -170,8 +170,6 @@ Namespace Database
         ''' -----------------------------------------------------------------------
         Public Function UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
 
-            ' ToDo_JS: Globalize this method
-
             Dim sDBVersion As Single = 0.0!
             Dim iUpdate As Integer = 0
             Dim update As cDBUpdate = Nothing
@@ -205,12 +203,12 @@ Namespace Database
                                 db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
                             Else
                                 ' #No: report a generic error
-                                Me.ReportUpdateError("Database update " & update.UpdateVersion & " failed")
+                                Me.ReportUpdateError(String.Format(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED, update.UpdateVersion))
                             End If
 
                         Catch ex As Exception
                             ' Woops!
-                            Me.ReportUpdateError("Database update " & update.UpdateVersion & " failed: " & ex.Message)
+                            Me.ReportUpdateError(String.Format(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED_DETAIL, update.UpdateVersion, ex.Message))
                             bSucces = False
                         End Try
 
@@ -225,7 +223,7 @@ Namespace Database
 
                     Else
                         ' #No: failed to start transaction - an update did not clean up well
-                        Me.ReportUpdateError("Database version " & sDBVersion & " update sequence failed for update " & update.UpdateVersion)
+                        Debug.Assert(False, "Database version " & sDBVersion & " update sequence failed for update " & update.UpdateVersion)
                         bSucces = False
                     End If
 

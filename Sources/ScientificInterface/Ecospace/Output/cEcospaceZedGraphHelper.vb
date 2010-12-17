@@ -34,8 +34,8 @@ Namespace Ecospace
 
             Dim li As LineItem = Nothing
 
-            ' ToDo_JS: localize this
-            Me.m_pane = Me.ConfigurePane("Ecospace relative biomass", "Time steps", 0, nTotalSteps, "Biomass (log, relative)", -1, 1, True)
+            Me.m_pane = Me.ConfigurePane(My.Resources.ECOSPACE_HEADER_RELB, ScientificInterfaceShared.My.Resources.HEADER_TIME, _
+                                         0, nTotalSteps, My.Resources.ECOSPACE_HEADER_LOGBREL, -1, 1, True)
             Me.m_nGroups = nGroups
             Me.m_nTotalSteps = nTotalSteps
 

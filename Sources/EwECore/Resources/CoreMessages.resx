@@ -958,4 +958,22 @@ System Error: {0}</value>
     <value>Unable to store data for '{0}', the database rejected imported values. This indicates a programming error. Please notify the EwE development team</value>
     <comment>{0}=table name</comment>
   </data>
+  <data name="DATABASE_UPDATE_FAILED" xml:space="preserve">
+    <value>Database update {0} failed</value>
+    <comment>{0}=database update number</comment>
+  </data>
+  <data name="DATABASE_UPDATE_FAILED_DETAIL" xml:space="preserve">
+    <value>Database update {0} failed: {1}</value>
+    <comment>{0}=database update number, {1}=reason</comment>
+  </data>
+  <data name="MPAOPT_ERROR" xml:space="preserve">
+    <value>Optimization error: {0}</value>
+    <comment>{0}=error</comment>
+  </data>
+  <data name="MPAOPT_NODATA_RESUME" xml:space="preserve">
+    <value>No seed cells selected nor MPAs set. Optimzation may yield unknown results. Would you like to continue?</value>
+  </data>
+  <data name="MPAOPT_RUNNING" xml:space="preserve">
+    <value>Optimization is already running. Only one evaluation can be run at a time.</value>
+  </data>
 </root>

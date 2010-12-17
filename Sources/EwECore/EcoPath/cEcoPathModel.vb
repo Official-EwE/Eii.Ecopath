@@ -2056,8 +2056,7 @@ nextJ:
                 'Now make the diets sum to 1 again:
                 Abort4 = checkDietsSumToOne(True)
             Else
-                ' ToDo_JS: Remove this message box, and figure out what text to display. The current message text is not overly informative.
-                ' VC Sep 2008 updated this, but done is alway true? sure!!!! SL
+                ' VC Sep 2008 updated this, but done is alway true? 
                 ' MsgBox(str & vbNewLine & vbNewLine & "Please edit your data.")
                 Debug.Assert(False, str & vbNewLine & vbNewLine & "Please edit your data.")
             End If

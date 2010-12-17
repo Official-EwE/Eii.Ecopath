@@ -10,6 +10,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEPlugin.Data
+Imports EwEUtils
 
 #End Region ' Imports
 

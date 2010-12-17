@@ -200,6 +200,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Database update {0} failed.
+        '''</summary>
+        Friend Shared ReadOnly Property DATABASE_UPDATE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("DATABASE_UPDATE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Database update {0} failed: {1}.
+        '''</summary>
+        Friend Shared ReadOnly Property DATABASE_UPDATE_FAILED_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("DATABASE_UPDATE_FAILED_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Imported Detritus must be greater than or equal to zero..
         '''</summary>
         Friend Shared ReadOnly Property DETIMP_RANGE() As String
@@ -1658,6 +1676,33 @@ Namespace My.Resources
         Friend Shared ReadOnly Property MONTECARLO_RESTORE_FAILED() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_RESTORE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Optimization error: {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property MPAOPT_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MPAOPT_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No seed cells selected nor MPAs set. Optimzation may yield unknown results. Would you like to continue?.
+        '''</summary>
+        Friend Shared ReadOnly Property MPAOPT_NODATA_RESUME() As String
+            Get
+                Return ResourceManager.GetString("MPAOPT_NODATA_RESUME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Optimization is already running. Only one evaluation can be run at a time..
+        '''</summary>
+        Friend Shared ReadOnly Property MPAOPT_RUNNING() As String
+            Get
+                Return ResourceManager.GetString("MPAOPT_RUNNING", resourceCulture)
             End Get
         End Property
         

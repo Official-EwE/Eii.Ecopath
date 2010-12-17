@@ -177,14 +177,14 @@ Public Class cEwEFlowDiagramPlugin
             Else
 
                 'some kind of a message
-                m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() argument EcopathDataStructure is not a cEcopathDataStructures object." _
-                                            , EwECore.eMessageType.ErrorEncountered, eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
+                m_core.Messages.AddMessage(New cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() argument EcopathDataStructure is not a cEcopathDataStructures object." _
+                                            , eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
 
-            m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() Error: " & ex.Message _
-                            , EwECore.eMessageType.ErrorEncountered, eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
+            m_core.Messages.AddMessage(New cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() Error: " & ex.Message _
+                            , eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
 
         End Try
 

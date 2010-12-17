@@ -90,9 +90,8 @@ Public Class gridExportMappings
 
                 Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
-                ' ToDo_JS: Globalize this
-                Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell("Layer")
-                Me(0, eColumnTypes.ColumnAttribute) = New EwEColumnHeaderCell("Attribute")
+                Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell(SharedResources.HEADER_LAYER)
+                Me(0, eColumnTypes.ColumnAttribute) = New EwEColumnHeaderCell(SharedResources.HEADER_ATTRIBUTE)
 
                 Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
                 Me.Columns(eColumnTypes.ColumnAttribute).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch

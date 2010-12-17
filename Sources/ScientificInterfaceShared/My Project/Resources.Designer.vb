@@ -661,6 +661,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (All runs).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_ALLRUNS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_ALLRUNS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (Custom).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_CUSTOM() As String
@@ -720,6 +729,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VALUE_NOTUSED() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_NOTUSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run {0}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VAUE_RUN_X() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VAUE_RUN_X", resourceCulture)
             End Get
         End Property
         
@@ -826,6 +844,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_ASSIMILATION_UNIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_ASSIMILATION_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Attribute.
+        '''</summary>
+        Public ReadOnly Property HEADER_ATTRIBUTE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ATTRIBUTE", resourceCulture)
             End Get
         End Property
         
@@ -2149,6 +2176,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_LASTUPDATED() As String
             Get
                 Return ResourceManager.GetString("HEADER_LASTUPDATED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Layer.
+        '''</summary>
+        Public ReadOnly Property HEADER_LAYER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LAYER", resourceCulture)
             End Get
         End Property
         

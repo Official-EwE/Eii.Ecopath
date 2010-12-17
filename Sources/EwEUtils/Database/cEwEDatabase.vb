@@ -873,75 +873,6 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Obtains a <see cref="DataSet">DataSet</see> for modifying records.
-        ''' </summary>
-        ''' <param name="adapter">The <see cref="IDataAdapter">IDataAdapter</see> to fill the <see cref="DataSet">DataSet</see> from.</param>
-        ''' <param name="strTable">The name of the table to fill the <see cref="DataSet">DataSet</see> from.</param>
-        ''' <returns>The <see cref="DataSet">DataSet</see> if succesful, or Nothing if an error occurred.</returns>
-        ''' <remarks>The obtained <see cref="DataSet">DataSet</see> should be released via <see cref="ReleaseDataSet">ReleaseWriter</see>.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Overridable Function GetDataSet(ByVal adapter As IDataAdapter, ByVal strTable As String) As DataSet
-            Dim ds As New DataSet()
-            Try
-                adapter.Fill(ds)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-                ds = Nothing
-            End Try
-            Return ds
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Commits all the pending changes in the <see cref="DataSet">DataSet</see>. This will
-        ''' leave the DataSet open for further operations.
-        ''' </summary>
-        ''' <param name="dset">The <see cref="DataSet">DataSet</see> to commit</param>
-        ''' <param name="adapter">The <see cref="IDataAdapter">OleDbDataAdapter</see> to write to the database</param>
-        ''' <param name="strTable">The table to update</param>
-        ''' <returns>True if succesful</returns>
-        ''' -------------------------------------------------------------------
-        Public Overridable Function CommitDataSet(ByVal dset As DataSet, ByVal adapter As IDataAdapter, ByVal strTable As String) As Boolean
-            Dim bSucces As Boolean = True
-
-            ' Is adapter specified?
-            If (adapter Is Nothing) Then
-                ' #No adapter = no need to update database. Done
-                Return True
-            End If
-
-            ' Table name optional, no need to Assert
-            Try
-                adapter.Update(dset)
-            Catch ex As Exception
-                ' Woops
-                Console.WriteLine("Error {0} updating {1}", ex.Message, strTable)
-                bSucces = False
-            End Try
-            ' Report result
-            Return bSucces
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Releases a <see cref="DataSet">DataSet</see> previously obtained via 
-        ''' <see cref="GetDataSet">GetDataSet</see>.
-        ''' </summary>
-        ''' <param name="dset">The writer to release.</param>
-        ''' <param name="adapter">The <see cref="IDataAdapter">IDataAdapter</see>
-        ''' to commit any changes to. If this parameter is left blank, any changes made to
-        ''' the dataset and its data are discarded.</param>
-        ''' <param name="strTable">The name of the table to update.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' -------------------------------------------------------------------
-        Public Overridable Function ReleaseDataSet(ByVal dset As DataSet, Optional ByVal adapter As IDataAdapter = Nothing, Optional ByVal strTable As String = "") As Boolean
-            Return Me.CommitDataSet(dset, adapter, strTable)
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Executes a SQL command that does not return any information.
         ''' </summary>
         ''' <param name="strSQL">The query to execute.</param>
@@ -1002,6 +933,78 @@ Namespace Database
         End Function
 
 #End Region ' DB helper methods
+
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Obtains a <see cref="DataSet">DataSet</see> for modifying records.
+        ''' </summary>
+        ''' <param name="adapter">The <see cref="IDataAdapter">IDataAdapter</see> to fill the <see cref="DataSet">DataSet</see> from.</param>
+        ''' <param name="strTable">The name of the table to fill the <see cref="DataSet">DataSet</see> from.</param>
+        ''' <returns>The <see cref="DataSet">DataSet</see> if succesful, or Nothing if an error occurred.</returns>
+        ''' <remarks>The obtained <see cref="DataSet">DataSet</see> should be released via <see cref="ReleaseDataSet">ReleaseWriter</see>.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function GetDataSet(ByVal adapter As IDataAdapter, ByVal strTable As String) As DataSet
+            Dim ds As New DataSet()
+            Try
+                adapter.Fill(ds)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                ds = Nothing
+            End Try
+            Return ds
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Commits all the pending changes in the <see cref="DataSet">DataSet</see>. This will
+        ''' leave the DataSet open for further operations.
+        ''' </summary>
+        ''' <param name="dset">The <see cref="DataSet">DataSet</see> to commit</param>
+        ''' <param name="adapter">The <see cref="IDataAdapter">OleDbDataAdapter</see> to write to the database</param>
+        ''' <param name="strTable">The table to update</param>
+        ''' <returns>True if succesful</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function CommitDataSet(ByVal dset As DataSet, ByVal adapter As IDataAdapter, ByVal strTable As String) As Boolean
+            Dim bSucces As Boolean = True
+
+            ' Is adapter specified?
+            If (adapter Is Nothing) Then
+                ' #No adapter = no need to update database. Done
+                Return True
+            End If
+
+            ' Table name optional, no need to Assert
+            Try
+                adapter.Update(dset)
+            Catch ex As Exception
+                ' Woops
+                bSucces = False
+            End Try
+            ' Report result
+            Return bSucces
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Releases a <see cref="DataSet">DataSet</see> previously obtained via 
+        ''' <see cref="GetDataSet">GetDataSet</see>.
+        ''' </summary>
+        ''' <param name="dset">The writer to release.</param>
+        ''' <param name="adapter">The <see cref="IDataAdapter">IDataAdapter</see>
+        ''' to commit any changes to. If this parameter is left blank, any changes made to
+        ''' the dataset and its data are discarded.</param>
+        ''' <param name="strTable">The name of the table to update.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function ReleaseDataSet(ByVal dset As DataSet, Optional ByVal adapter As IDataAdapter = Nothing, Optional ByVal strTable As String = "") As Boolean
+            Return Me.CommitDataSet(dset, adapter, strTable)
+        End Function
+
+#End Region ' Internals
 
 #Region " OOP "
 

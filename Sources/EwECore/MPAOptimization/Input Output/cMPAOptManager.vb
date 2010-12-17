@@ -266,18 +266,21 @@ Public Class cMPAOptManager
     Public Function Run() As Boolean
 
         Try
-            ' ToDo: globalize this message
-
-            m_MPASearch.Connect(AddressOf OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
+            Me.m_MPASearch.Connect(AddressOf OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
 
             If Me.IsRunning Then
-                Me.m_core.Messages.SendMessage(New cMessage("Optimization is already running. Only one evaluation can be run at a time.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MPAOPT_RUNNING, _
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
+                                                            eMessageImportance.Critical))
                 Return False
             End If
 
             ' Test if no seed cells nor MPA
             If Not Me.m_MPASearch.OKtoRun Then
-                Dim msg As New cFeedbackMessage("No Seed selected nor MPA's set, optimzation may yield unknown results. Would you like to continue?", eCoreComponentType.MPAOptimization, eMessageType.Any, eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.MPAOptParameters, cFeedbackMessage.eReply.NO)
+                Dim msg As New cFeedbackMessage(My.Resources.CoreMessages.MPAOPT_NODATA_RESUME, _
+                                                eCoreComponentType.MPAOptimization, eMessageType.Any, _
+                                                eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO, _
+                                                eDataTypes.MPAOptParameters, cFeedbackMessage.eReply.NO)
                 Me.m_core.Messages.SendMessage(msg)
                 If msg.Reply = cFeedbackMessage.eReply.NO Then Return False
             End If
@@ -286,17 +289,19 @@ Public Class cMPAOptManager
 
             'keep a copy of the original MPA configuration
             ReDim m_orgMPAConfig(Me.m_core.m_EcoSpaceData.InRow + 1, Me.m_core.m_EcoSpaceData.InCol + 1)
-            Array.Copy(Me.m_core.m_EcoSpaceData.MPA, m_orgMPAConfig, Me.m_core.m_EcoSpaceData.MPA.Length)
+            Array.Copy(Me.m_core.m_EcoSpaceData.MPA, Me.m_orgMPAConfig, Me.m_core.m_EcoSpaceData.MPA.Length)
 
             Me.m_core.m_SearchData.SearchMode = eSearchModes.SpatialOpt
 
-            m_thrSeed = New Threading.Thread(AddressOf m_MPASearch.Run)
-            m_thrSeed.Start()
+            Me.m_thrSeed = New Threading.Thread(AddressOf Me.m_MPASearch.Run)
+            Me.m_thrSeed.Start()
 
         Catch ex As Exception
             cLog.Write(ex)
             Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
-            Me.m_core.Messages.SendMessage(New cMessage("Ecoseed Error: " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
+            Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MPAOPT_ERROR, ex.Message), _
+                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
+                                                        eMessageImportance.Critical))
             Me.ReleaseWait()
             Return False
         End Try
