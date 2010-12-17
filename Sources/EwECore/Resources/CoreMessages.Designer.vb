@@ -435,7 +435,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Insufficient Data, please re-edit your model..
+        '''  Looks up a localized string similar to Insufficient data, please edit your model..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_INSUFFICIENTDATA() As String
             Get
@@ -444,7 +444,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Aborting, missing B and QB for group &apos;{0}&apos;. Please re-edit data..
+        '''  Looks up a localized string similar to Aborting, missing B and QB for group &apos;{0}&apos;. Please edit your data..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_MISSING_B_QB() As String
             Get
@@ -480,7 +480,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The program has estimated the production / biomass (P/B) ratio for one or more groups to be 0. Please re-edit your data.
+        '''  Looks up a localized string similar to The program has estimated the production / biomass (P/B) ratio for one or more groups to be 0. Please edit your data.
         '''
         '''Note that for unexploited top-predators it may not be possible to estimate P/B (no mortality, no production needed)..
         '''</summary>
@@ -500,7 +500,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The program has estimated the consumption / biomass (Q/B) ratio for one or more groups to be 0. Please re-edit your data..
+        '''  Looks up a localized string similar to The program has estimated the consumption / biomass (Q/B) ratio for one or more groups to be 0. Please edit your data..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_QB0_GENERIC() As String
             Get
@@ -694,6 +694,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_QB() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_QB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Your data are not consistent. In algorithm 4 your estimate of: P/Bi * EEi - Q/Bi * DCii is negative for group &apos;{0}&apos;, i.e. &apos;cannibalism&apos; exceeds the predation mortality. Do you want to have cannibalism reduced (to 20 of used production) for all groups where this problem occurs? Note: your input data will not be changed..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_PREDMORT_CANN() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_PREDMORT_CANN", resourceCulture)
             End Get
         End Property
         
@@ -1127,6 +1136,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property GE_RANGE() As String
             Get
                 Return ResourceManager.GetString("GE_RANGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Aborting, please edit your data..
+        '''</summary>
+        Friend Shared ReadOnly Property GENERIC_ABORTING_EDIT_DATA() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ABORTING_EDIT_DATA", resourceCulture)
             End Get
         End Property
         
@@ -1743,7 +1761,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Sorry output variables are not editable..
+        '''  Looks up a localized string similar to Output data are not editable..
         '''</summary>
         Friend Shared ReadOnly Property OUTPUT_NOT_EDITABLE() As String
             Get

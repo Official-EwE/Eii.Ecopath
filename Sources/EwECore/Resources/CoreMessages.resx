@@ -193,7 +193,7 @@ Computed Ecotrophic Efficiencies (EE) invalid for one or more group(s).</value>
     <comment>{0}= group name; Ecopath estimated PB = 0 for group #</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_PB0_GENERIC" xml:space="preserve">
-    <value>The program has estimated the production / biomass (P/B) ratio for one or more groups to be 0. Please re-edit your data.
+    <value>The program has estimated the production / biomass (P/B) ratio for one or more groups to be 0. Please edit your data.
 
 Note that for unexploited top-predators it may not be possible to estimate P/B (no mortality, no production needed).</value>
     <comment>Ecopath estimated PB = 0</comment>
@@ -203,7 +203,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>Ecopath estimated QB = 0 for group #</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_QB0_GENERIC" xml:space="preserve">
-    <value>The program has estimated the consumption / biomass (Q/B) ratio for one or more groups to be 0. Please re-edit your data.</value>
+    <value>The program has estimated the consumption / biomass (Q/B) ratio for one or more groups to be 0. Please edit your data.</value>
     <comment>Ecopath estimated QB = 0</comment>
   </data>
   <data name="ECOPATH_LOAD_FAILED" xml:space="preserve">
@@ -523,7 +523,7 @@ System Error: {0}</value>
     <value>Error '{0}' has occurred while loading Model</value>
   </data>
   <data name="OUTPUT_NOT_EDITABLE" xml:space="preserve">
-    <value>Sorry output variables are not editable.</value>
+    <value>Output data are not editable.</value>
     <comment>All outputs are not editable</comment>
   </data>
   <data name="PB_CLEARED" xml:space="preserve">
@@ -660,11 +660,11 @@ System Error: {0}</value>
     <comment>{0} = group name, {1} = pecentage</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_MISSING_B_QB" xml:space="preserve">
-    <value>Aborting, missing B and QB for group '{0}'. Please re-edit data.</value>
+    <value>Aborting, missing B and QB for group '{0}'. Please edit your data.</value>
     <comment>{0}= group name</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_INSUFFICIENTDATA" xml:space="preserve">
-    <value>Insufficient Data, please re-edit your model.</value>
+    <value>Insufficient data, please edit your model.</value>
   </data>
   <data name="ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE" xml:space="preserve">
     <value>Biomass, PB, QB and EE for '{0}' are entered. Do you want to estimate biomass accumulation?</value>
@@ -975,5 +975,11 @@ System Error: {0}</value>
   </data>
   <data name="MPAOPT_RUNNING" xml:space="preserve">
     <value>Optimization is already running. Only one evaluation can be run at a time.</value>
+  </data>
+  <data name="ECOPATH_PREDMORT_CANN" xml:space="preserve">
+    <value>Your data are not consistent. In algorithm 4 your estimate of: P/Bi * EEi - Q/Bi * DCii is negative for group '{0}', i.e. 'cannibalism' exceeds the predation mortality. Do you want to have cannibalism reduced (to 20 of used production) for all groups where this problem occurs? Note: your input data will not be changed.</value>
+  </data>
+  <data name="GENERIC_ABORTING_EDIT_DATA" xml:space="preserve">
+    <value>Aborting, please edit your data.</value>
   </data>
 </root>

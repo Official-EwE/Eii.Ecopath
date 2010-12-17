@@ -2019,49 +2019,43 @@ nextJ:
         End Sub
 
         Private Function Abort4(ByVal j As Integer) As Boolean
+
+            Dim bSucces As Boolean = False
             Dim str As String
-            Dim str2 As String
-            Dim RetVal As cFeedbackMessage.eReply
             Dim Answer As Single
-            Dim msg As cFeedbackMessage = Nothing
-            Static done As Boolean
+            Dim fmsg As cFeedbackMessage = Nothing
+            Dim msg As cMessage = Nothing
 
-            ' ToDo_JS: Localize this
-            str = "Your data are not consistent. In algorithm 4 your estimate of: P/Bi * EEi - Q/Bi * DCii is negative "
-            str = str & "for group " & j & ", i.e. 'cannibalism' exceeds the predation mortality."
-            str = str & vbNewLine + vbNewLine
-            str = str & "See the description of Algorithm 4 in Appendix 4."
-            str2 = str & vbNewLine + vbNewLine
-            str2 = str2 & "Do you want to have cannibalism reduced (to 20 of used production) for all groups where this problem occurs. (Note: your input data will not be changed)"
-            If done = False Then
-                msg = New cFeedbackMessage(str, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
-                NotifyCore(msg)
+            str = String.Format(My.Resources.CoreMessages.ECOPATH_PREDMORT_CANN, Me.m_Data.GroupName(j))
+            fmsg = New cFeedbackMessage(str, _
+                                       eCoreComponentType.EcoPath, eMessageType.Any, _
+                                       eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+            fmsg.Suppressable = True
+            Me.NotifyCore(fmsg)
 
-                RetVal = msg.Reply
-
-            End If
-            If RetVal = cFeedbackMessage.eReply.CANCEL Then done = True
-            Abort4 = False
-
-            If RetVal = cFeedbackMessage.eReply.YES Then
-                m_Data.DietsModified = True
-                For j = 1 To m_Data.NumLiving
-                    If m_Data.EE(j) > 0 Then
-                        Answer = m_Data.PB(j) * m_Data.EE(j) - m_Data.QB(j) * m_Data.DC(j, j)
-                        If Answer < 0 Then  'cannibalism exceeds utilized production
-                            m_Data.DC(j, j) = m_Data.PB(j) * m_Data.EE(j) / m_Data.QB(j) / 5
+            Select Case fmsg.Reply
+                Case cFeedbackMessage.eReply.YES
+                    Me.m_Data.DietsModified = True
+                    For j = 1 To Me.m_Data.NumLiving
+                        If Me.m_Data.EE(j) > 0 Then
+                            Answer = Me.m_Data.PB(j) * Me.m_Data.EE(j) - Me.m_Data.QB(j) * Me.m_Data.DC(j, j)
+                            If Answer < 0 Then  'cannibalism exceeds utilized production
+                                Me.m_Data.DC(j, j) = Me.m_Data.PB(j) * Me.m_Data.EE(j) / Me.m_Data.QB(j) / 5
+                            End If
                         End If
-                    End If
-                Next
-                'Now make the diets sum to 1 again:
-                Abort4 = checkDietsSumToOne(True)
-            Else
-                ' VC Sep 2008 updated this, but done is alway true? 
-                ' MsgBox(str & vbNewLine & vbNewLine & "Please edit your data.")
-                Debug.Assert(False, str & vbNewLine & vbNewLine & "Please edit your data.")
-            End If
+                    Next
+                    'Now make the diets sum to 1 again:
+                    bSucces = checkDietsSumToOne(True)
 
-exitSub:
+                Case Else
+                    msg = New cMessage(My.Resources.CoreMessages.GENERIC_ABORTING_EDIT_DATA, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                    Me.NotifyCore(msg)
+                    bSucces = False
+
+            End Select
+
+            Return bSucces
+
         End Function
 
         ''' -------------------------------------------------------------------
