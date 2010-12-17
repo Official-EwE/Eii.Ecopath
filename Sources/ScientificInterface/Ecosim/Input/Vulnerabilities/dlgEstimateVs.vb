@@ -178,8 +178,6 @@ Namespace Ecosim
 
         Private Sub UpdatePlot()
 
-            ' ToDo: localize this method
-
             If (Me.SelectedGroupIndex <= 0) Then Return
 
             Dim pred As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(Me.SelectedGroupIndex)

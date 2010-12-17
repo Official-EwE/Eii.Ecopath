@@ -119,8 +119,7 @@ Namespace Ecospace
             ' Populate zoom combo
             Me.m_tscbZoomPercent.Items.Clear()
             For iZoomPercent As Integer = 0 To Me.m_aiZoomLevels.Length - 1
-                ' ToDo: localize this
-                Me.m_tscbZoomPercent.Items.Add(String.Format("{0}%", Me.m_aiZoomLevels(iZoomPercent)))
+                Me.m_tscbZoomPercent.Items.Add(String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, Me.m_aiZoomLevels(iZoomPercent)))
             Next
             Me.m_tscbZoomPercent.SelectedIndex = Me.m_iZoomLevelIndex
 

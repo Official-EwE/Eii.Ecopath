@@ -162,6 +162,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to add stanza configuration &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property ECOPATH_ADDSTANZA_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_ADDSTANZA_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to delete group &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property ECOPATH_DELETEGROUP_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_DELETEGROUP_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to delete stanza configuration &apos;{0}&apos;..
+        '''</summary>
+        Friend ReadOnly Property ECOPATH_DELETESTANZA_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_DELETESTANZA_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Are you sure that you want to delete fleet &apos;{0}&apos;? This action cannot be undone..
         '''</summary>
         Friend ReadOnly Property ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT() As String
@@ -212,6 +239,24 @@ Namespace My.Resources
         Friend ReadOnly Property ECOPATH_GRAPH_LEGEND_STANZA_SEP() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_GRAPH_LEGEND_STANZA_SEP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to move group &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property ECOPATH_MOVEGROUP_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_MOVEGROUP_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to update life stages for stanza &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property ECOPATH_UPDATESTANZA_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_UPDATESTANZA_ERROR", resourceCulture)
             End Get
         End Property
         

@@ -668,9 +668,8 @@ Namespace Ecosim
             Dim dlgPrint As New PrintDialog()
             dlgPrint.UseEXDialog = True
 
-            dlgPrint.Document = m_printdocAllFits
+            dlgPrint.Document = Me.m_printdocAllFits
             If dlgPrint.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                ' ToDo: globalize this
                 m_printdocAllFits.DocumentName = "Show all fits"
                 m_printdocAllFits.Print()
             End If

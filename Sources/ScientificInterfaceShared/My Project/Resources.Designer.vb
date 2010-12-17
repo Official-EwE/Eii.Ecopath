@@ -805,6 +805,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0}%.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_PERCENTAGE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_PERCENTAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to x{0}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_TIMES() As String
@@ -1379,6 +1388,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Catch weight.
+        '''</summary>
+        Public ReadOnly Property HEADER_CATCH_WEIGHT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATCH_WEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Cons/biom.
         '''</summary>
         Public ReadOnly Property HEADER_CB() As String
@@ -1690,6 +1708,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_EE_ABBR() As String
             Get
                 Return ResourceManager.GetString("HEADER_EE_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Effort.
+        '''</summary>
+        Public ReadOnly Property HEADER_EFFORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_EFFORT", resourceCulture)
             End Get
         End Property
         
@@ -2896,6 +2923,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_PREYPREDATOR() As String
             Get
                 Return ResourceManager.GetString("HEADER_PREYPREDATOR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Probability.
+        '''</summary>
+        Public ReadOnly Property HEADER_PROBABILITY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PROBABILITY", resourceCulture)
             End Get
         End Property
         

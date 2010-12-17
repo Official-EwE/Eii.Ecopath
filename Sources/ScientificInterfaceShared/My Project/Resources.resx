@@ -1748,4 +1748,17 @@
   <data name="TIMESERIES_WARNING_NOGROUP" xml:space="preserve">
     <value>Not linked to a valid group</value>
   </data>
+  <data name="GENERIC_VALUE_PERCENTAGE" xml:space="preserve">
+    <value>{0}%</value>
+    <comment>{0}: value</comment>
+  </data>
+  <data name="HEADER_CATCH_WEIGHT" xml:space="preserve">
+    <value>Catch weight</value>
+  </data>
+  <data name="HEADER_EFFORT" xml:space="preserve">
+    <value>Effort</value>
+  </data>
+  <data name="HEADER_PROBABILITY" xml:space="preserve">
+    <value>Probability</value>
+  </data>
 </root>

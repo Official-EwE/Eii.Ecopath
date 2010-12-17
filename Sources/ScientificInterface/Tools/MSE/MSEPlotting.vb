@@ -1,5 +1,4 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Option Explicit On
@@ -8,8 +7,9 @@ Imports EwECore
 Imports EwECore.MSE
 Imports EwECore.SearchObjectives
 Imports ScientificInterface.Controls
-Imports EwEUtils.Core
 Imports ScientificInterface.Ecosim
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Core
 
 Imports ZedGraph
 
@@ -393,25 +393,21 @@ Friend Class cMSEPlotter
 
     Private ReadOnly Property YLabel() As String
         Get
-            ' ToDo: globalize this
-
             Select Case Me.m_type
 
                 Case ePlotTypes.Histogram
-
-                    Return "Probability"
+                    Return SharedResources.HEADER_PROBABILITY
 
                 Case ePlotTypes.Line, ePlotTypes.Values
-
                     Select Case Me.m_dataType
                         Case ePlotData.Biomass
-                            Return "Biomass"
+                            Return SharedResources.HEADER_BIOMASS
                         Case ePlotData.Effort
-                            Return "Effort"
+                            Return SharedResources.HEADER_EFFORT
                         Case ePlotData.FleetValue
-                            Return "Catch (value)"
+                            Return SharedResources.HEADER_CATCH_VALUE
                         Case ePlotData.GroupCatch
-                            Return "Catch (weight)"
+                            Return SharedResources.HEADER_CATCH_WEIGHT
                     End Select
 
             End Select
@@ -425,21 +421,23 @@ Friend Class cMSEPlotter
 
     Private ReadOnly Property XLabel() As String
         Get
-            ' ToDo: globalize this
-
             Select Case Me.m_type
 
                 Case ePlotTypes.Histogram
 
                     Select Case Me.m_dataType
                         Case ePlotData.Biomass
-                            Return "Biomass t/km2"
+                            ' ToDo: add unit
+                            Return SharedResources.HEADER_BIOMASS
                         Case ePlotData.Effort
-                            Return "Effort"
+                            ' ToDo: add unit
+                            Return SharedResources.HEADER_EFFORT
                         Case ePlotData.FleetValue
-                            Return "Catch (value)"
+                            ' ToDo: add unit
+                            Return SharedResources.HEADER_CATCH_VALUE
                         Case ePlotData.GroupCatch
-                            Return "Catch (weight)"
+                            ' ToDo: add unit
+                            Return SharedResources.HEADER_CATCH_WEIGHT
                     End Select
 
                 Case ePlotTypes.Line, ePlotTypes.Values
@@ -764,7 +762,6 @@ Friend Class cMSEPlotter
 End Class
 
 #End Region
-
 
 #End Region
 

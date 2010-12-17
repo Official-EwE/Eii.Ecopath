@@ -1752,8 +1752,6 @@ Public Class gridEditGroups
 
     Public Function Apply() As Boolean
 
-        ' ToDo: globalize this method
-
         Dim strPrompt As String = ""
         Dim bConfigurationChanged As Boolean = False
         Dim bGroupsChanged As Boolean = False
@@ -1864,7 +1862,7 @@ Public Class gridEditGroups
                 Else
                     If ((iGroup + 1) <> gi.Group.Index) Then
                         If Not Me.Core.MoveGroup(gi.Group.Index, iGroup + 1) Then
-                            sb.AppendLine("Failed to move group " & gi.Name)
+                            sb.AppendLine(String.Format(My.Resources.ECOPATH_MOVEGROUP_ERROR, gi.Name))
                             bSuccess = False
                         End If
                     End If
@@ -1882,7 +1880,7 @@ Public Class gridEditGroups
                         Me.m_lgiGroups.Remove(gi)
                         Me.m_lgiGroupsRemoved.Remove(gi)
                     Else
-                        sb.AppendLine("Failed to delete group " & gi.Name)
+                        sb.AppendLine(String.Format(My.Resources.ECOPATH_DELETEGROUP_ERROR, gi.Name))
                         bSuccess = False
                     End If
                 End If
@@ -1899,7 +1897,7 @@ Public Class gridEditGroups
                         Me.m_lsiStanza.Remove(si)
                         Me.m_lsiStanzaRemoved.Remove(si)
                     Else
-                        sb.AppendLine("Failed to delete stanza configuration " & si.Name)
+                        sb.AppendLine(String.Format(My.Resources.ECOPATH_DELETESTANZA_ERROR, si.Name))
                         bSuccess = False
                     End If
                 End If
@@ -1931,7 +1929,7 @@ Public Class gridEditGroups
                         aiStartAge(i) = gi.StanzaAge
                     Next
                     If Not Me.Core.AppendStanza(si.Name, aiGroupID, aiStartAge, iStanzaID) Then
-                        sb.AppendLine("Failed to add stanza configuration " & si.Name)
+                        sb.AppendLine(String.Format(My.Resources.ECOPATH_ADDSTANZA_ERROR, si.Name))
                         bSuccess = False
                     End If
                 End If
@@ -1966,7 +1964,7 @@ Public Class gridEditGroups
                         Next
 
                         If bSuccess = False Then
-                            sb.AppendLine("Failed to update stanza '" & si.Name & "' life stages")
+                            sb.AppendLine(String.Format(ECOPATH_UPDATESTANZA_ERROR, si.Name))
                         End If
                     End If
                 End If

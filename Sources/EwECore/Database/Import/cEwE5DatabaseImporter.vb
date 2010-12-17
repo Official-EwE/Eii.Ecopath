@@ -1547,14 +1547,7 @@ Namespace Database
                 drow("NudgeFactor") = Me.FixValue(reader, "NudgeFactor")
                 drow("UseNudge") = Me.FixValue(reader, "chkNudge")
                 drow("DoInteg") = Me.FixValue(reader, "DoInteg")
-                ' drow("fValuetoPerturb") = Me.FixValue(reader, "fValuetoPerturb") ' DISCONTINUED
-                ' VERIFY_JS: 060530 not read but fixed at 9 in code!
-                'drow("NMed") = Me.FixValue(reader, "NMed")                        ' DISCONTINUED
-                ' VERIFY_JS: 060530 not read but fixed at 1200 in code!
-                'drow("NMedPoints") = Me.FixValue(reader, "NMedPoints")            ' DISCONTINUED
                 drow("NutBaseFreeProp") = Me.FixValue(reader, "NutBaseFreeProp")
-                ' JS061218: NutForceNumber imported into NutForcingShapeID
-                ' drow("NutForceNumber") = CInt(Me.FixValue(reader, "NutForceNumber", 0))
                 drow("NutPBmax") = Me.FixValue(reader, "NutPBmax")
                 drow("UseVarPQ") = Me.FixValue(reader, "UseVarPQ")
                 drow("LastSaved") = Me.ExtractLastSavedJulianDate(CStr(Me.FixValue(reader, "remarks", "")))
@@ -1564,9 +1557,6 @@ Namespace Database
 
                 ' Remember scenario ID mapping
                 Me.HashKey(eDataTypes.EcoSimScenario, CStr(reader("Scenario"))) = nScenarioID
-
-                ' JS 061221: References do not need to be imported for now
-                ' ImportRefCode("RefCode", "quickRef")
 
                 bHasScenarios = True
                 nScenarioID += 1
@@ -3690,7 +3680,6 @@ Namespace Database
                                 drow("RelCin") = sCellValue
                             End If
 
-                            ' ToDo: import advection
                             drow("XVel") = 0.0!
                             drow("YVel") = 0.0!
                             drow("DepthA") = iDepth

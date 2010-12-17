@@ -52,8 +52,6 @@ Public Class gridRiskResults
         MyBase.InitStyle()
         Me.Redim(1, 16)
 
-        ' ToDo: localize this method
-
         If Me.m_type = eGridType.Group Then
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUP)

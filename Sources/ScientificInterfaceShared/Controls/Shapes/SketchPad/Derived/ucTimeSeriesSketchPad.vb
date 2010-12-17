@@ -49,8 +49,6 @@ Namespace Controls
                 ByVal drawMode As eSketchDrawModeTypes, _
                 ByVal sYMax As Single)
 
-            ' ToDo: Globalize this method
-
             If Me.UIContext Is Nothing Then Return
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
