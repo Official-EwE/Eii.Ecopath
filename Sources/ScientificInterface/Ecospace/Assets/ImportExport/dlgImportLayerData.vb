@@ -333,13 +333,13 @@ Public Class gridMapLayerToAttribute
                         ' NOP
 
                     Case eSpatialFileCompatibility.Unreadable
-                        strMsg = String.Format(SharedResources.FILE_ERROR_READ, foc.FileName)
+                        strMsg = String.Format(SharedResources.FILE_LOAD_ERROR_READ, foc.FileName)
 
                     Case eSpatialFileCompatibility.IncompatibleEmpty
-                        strMsg = String.Format(SharedResources.FILE_ERROR_DATA, foc.FileName)
+                        strMsg = String.Format(SharedResources.FILE_LOAD_ERROR_DATA, foc.FileName)
 
                     Case eSpatialFileCompatibility.IncompatibleDimensions
-                        strMsg = String.Format(SharedResources.FILE_ERROR_INCOMPATIBLE_MAP, foc.FileName)
+                        strMsg = String.Format(SharedResources.FILE_LOAD_ERROR_INCOMPATIBLE_MAP, foc.FileName)
 
                 End Select
 
