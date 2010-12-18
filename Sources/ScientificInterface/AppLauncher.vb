@@ -676,14 +676,19 @@ Public Class AppLauncher
 
         ' Add the dock panel 
         Me.SuspendLayout()
-        m_DockPanel = New DockPanel
-        With m_DockPanel
+        Me.m_DockPanel = New DockPanel
+        With Me.m_DockPanel
             .Parent = Me
             .Dock = DockStyle.Fill
             .BringToFront()
         End With
 
-        Me.Icon = My.Resources.Ecopath
+        Dim d As Date = Date.Now
+        If d.DayOfYear > 345 And d.DayOfYear < 363 Then
+            Me.Icon = My.Resources.Ecopath_hohoho
+        Else
+            Me.Icon = My.Resources.Ecopath
+        End If
         Me.ResumeLayout()
         My.Settings.Reload()
 

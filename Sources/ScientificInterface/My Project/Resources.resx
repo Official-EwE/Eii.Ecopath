@@ -1576,4 +1576,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Failed to update life stages for stanza '{0}'</value>
     <comment>{0}: stanza configuration name</comment>
   </data>
+  <data name="Ecopath_hohoho" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ecopath_hohoho.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
