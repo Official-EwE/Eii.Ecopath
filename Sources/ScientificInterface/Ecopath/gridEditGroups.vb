@@ -1964,7 +1964,7 @@ Public Class gridEditGroups
                         Next
 
                         If bSuccess = False Then
-                            sb.AppendLine(String.Format(ECOPATH_UPDATESTANZA_ERROR, si.Name))
+                            sb.AppendLine(String.Format(My.Resources.ECOPATH_UPDATESTANZA_ERROR, si.Name))
                         End If
                     End If
                 End If
