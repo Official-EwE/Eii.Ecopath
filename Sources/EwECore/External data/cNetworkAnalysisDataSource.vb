@@ -52,6 +52,9 @@ Namespace ExternalData
 
             Dim dataSource As cNetworkAnalysisDataSource = Nothing
 
+            ' JS 12Dec10: Plug-in may not be initialized (yet) on purpose
+            If (cNetworkAnalysisDataSource.s_core Is Nothing) Then Return Nothing
+
             Try
 
                 Dim plugins As ICollection(Of EwEPlugin.IPlugin)
