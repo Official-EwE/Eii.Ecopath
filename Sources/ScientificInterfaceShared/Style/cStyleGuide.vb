@@ -1244,15 +1244,13 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NextRandomColor() As Color
             Get
-                If Me.m_iAngle < 0 Then
-                    Dim r As New Random()
-                    Me.m_iAngle = r.Next(0, 4200)
-                Else
-                    Me.m_iAngle += 42
+                If (Me.m_iAngle = cCore.NULL_VALUE) Or (Me.m_iAngle > 200000) Then
+                    Me.m_iAngle = New Random().Next(0, 31452)
                 End If
-                Return Color.FromArgb(CInt(Math.Sin(Me.m_iAngle / sFactor) * 127 + 128), _
-                                      CInt(Math.Sin((70 - Me.m_iAngle) * 1.841 / sFactor) * 100 + 128), _
-                                      CInt(Math.Cos(Me.m_iAngle * 3.75 / sFactor) * 127 + 128))
+                Me.m_iAngle += 33
+                Return Color.FromArgb(CInt(Math.Sin((Me.m_iAngle) * 1.412 / sFactor) * 115 + 115), _
+                                      CInt(Math.Sin((Me.m_iAngle) * 3.81 / sFactor) * 105 + 150), _
+                                      CInt(Math.Sin((Me.m_iAngle) * 2.1231 / sFactor) * 115 + 140))
             End Get
         End Property
 
