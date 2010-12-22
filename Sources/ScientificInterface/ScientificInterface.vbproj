@@ -1262,6 +1262,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Other\AboutBox\DatabaseGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Other\frmWebBrowser.Designer.vb">
       <DependentUpon>frmWebBrowser.vb</DependentUpon>
     </Compile>

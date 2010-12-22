@@ -24,6 +24,7 @@ Namespace Other
             Me.InitializeComponent()
             Me.m_uic = uic
             Me.m_gridTechnical.UIContext = uic
+            Me.m_gridDatabase.UIContext = uic
         End Sub
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
@@ -49,6 +50,10 @@ Namespace Other
 
             ' Format acknowledgements page
             Me.m_rtbAcknowledgements.Rtf = My.Resources.acknowledgements
+
+            If Not Me.m_uic.Core.StateMonitor.HasEcopathLoaded Then
+                Me.m_tcMain.TabPages.Remove(Me.m_tpDatabase)
+            End If
 
         End Sub
 

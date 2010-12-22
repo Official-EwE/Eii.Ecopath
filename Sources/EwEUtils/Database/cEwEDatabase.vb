@@ -3035,6 +3035,85 @@ Namespace Database
             Return CSng(sAbsVersion - Math.Floor(sAbsVersion))
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Database change log item.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Class cHistoryItem
+            Private m_strVersion As String
+            Private m_strComments As String
+            Private m_date As DateTime
+
+            ''' <summary>
+            ''' 
+            ''' </summary>
+            ''' <param name="strVersion"></param>
+            ''' <param name="strComments"></param>
+            ''' <param name="strDate"></param>
+            ''' <remarks></remarks>
+            Friend Sub New(ByVal strVersion As String, ByVal strComments As String, ByVal strDate As String)
+                Me.m_strVersion = strVersion
+                Me.m_strComments = strComments
+                Me.m_date = Date.Parse(strDate)
+            End Sub
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the version number of a particular history item.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public ReadOnly Property Version() As String
+                Get
+                    Return Me.m_strVersion
+                End Get
+            End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the comments to a particular history item.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public ReadOnly Property Comments() As String
+                Get
+                    Return Me.m_strComments
+                End Get
+            End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the date of a particular history item.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public ReadOnly Property [Date]() As DateTime
+                Get
+                    Return Me.m_date
+                End Get
+            End Property
+
+        End Class
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the change log of the database.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function GetHistory() As cHistoryItem()
+            Dim lHistory As New List(Of cHistoryItem)
+            Dim item As cHistoryItem = Nothing
+            Dim r As IDataReader = Me.GetReader("SELECT * FROM UpdateLog ORDER BY Version ASC")
+            While r.Read
+                Try
+                    item = New cHistoryItem(CStr(r("Version")), CStr(r("Remark")), CStr(r("Date")))
+                    lHistory.Add(item)
+                Catch ex As Exception
+                    ' Whoah! Unable to parse the date?!
+                End Try
+            End While
+            Return lHistory.ToArray
+        End Function
+
 #End Region ' EwE versioning
 
     End Class

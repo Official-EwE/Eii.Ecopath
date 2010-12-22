@@ -49,6 +49,12 @@ Namespace Other
             Me.m_lbTechnical = New System.Windows.Forms.Label
             Me.m_lblNetVersion = New System.Windows.Forms.Label
             Me.m_gridTechnical = New ScientificInterface.AboutEwEGrid
+            Me.m_tpDatabase = New System.Windows.Forms.TabPage
+            Me.m_tlpDatabase = New System.Windows.Forms.TableLayoutPanel
+            Me.m_pbFish4 = New System.Windows.Forms.PictureBox
+            Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
+            Me.m_lblDatabase = New System.Windows.Forms.Label
+            Me.m_gridDatabase = New ScientificInterface.DatabaseGrid
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpDetails.SuspendLayout()
@@ -65,6 +71,10 @@ Namespace Other
             Me.m_tlpTechnical.SuspendLayout()
             CType(Me.m_pbFish3, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpTechnicalDetails.SuspendLayout()
+            Me.m_tpDatabase.SuspendLayout()
+            Me.m_tlpDatabase.SuspendLayout()
+            CType(Me.m_pbFish4, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.TableLayoutPanel2.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnOK
@@ -143,6 +153,7 @@ Namespace Other
             Me.m_tcMain.Controls.Add(Me.m_tpTeam)
             Me.m_tcMain.Controls.Add(Me.m_tpacknowledgements)
             Me.m_tcMain.Controls.Add(Me.m_tpTechnical)
+            Me.m_tcMain.Controls.Add(Me.m_tpDatabase)
             Me.m_tcMain.Name = "m_tcMain"
             Me.m_tcMain.SelectedIndex = 0
             '
@@ -280,6 +291,69 @@ Namespace Other
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridTechnical.UIContext = Nothing
             '
+            'm_tpDatabase
+            '
+            Me.m_tpDatabase.Controls.Add(Me.m_tlpDatabase)
+            resources.ApplyResources(Me.m_tpDatabase, "m_tpDatabase")
+            Me.m_tpDatabase.Name = "m_tpDatabase"
+            Me.m_tpDatabase.UseVisualStyleBackColor = True
+            '
+            'm_tlpDatabase
+            '
+            resources.ApplyResources(Me.m_tlpDatabase, "m_tlpDatabase")
+            Me.m_tlpDatabase.Controls.Add(Me.m_pbFish4, 0, 0)
+            Me.m_tlpDatabase.Controls.Add(Me.TableLayoutPanel2, 1, 0)
+            Me.m_tlpDatabase.Name = "m_tlpDatabase"
+            '
+            'm_pbFish4
+            '
+            Me.m_pbFish4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            resources.ApplyResources(Me.m_pbFish4, "m_pbFish4")
+            Me.m_pbFish4.Image = Global.ScientificInterface.My.Resources.Resources.EwELogo_caption
+            Me.m_pbFish4.Name = "m_pbFish4"
+            Me.m_pbFish4.TabStop = False
+            '
+            'TableLayoutPanel2
+            '
+            resources.ApplyResources(Me.TableLayoutPanel2, "TableLayoutPanel2")
+            Me.TableLayoutPanel2.Controls.Add(Me.m_lblDatabase, 0, 0)
+            Me.TableLayoutPanel2.Controls.Add(Me.m_gridDatabase, 0, 1)
+            Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+            '
+            'm_lblDatabase
+            '
+            resources.ApplyResources(Me.m_lblDatabase, "m_lblDatabase")
+            Me.m_lblDatabase.Name = "m_lblDatabase"
+            '
+            'm_gridDatabase
+            '
+            Me.m_gridDatabase.AllowBlockSelect = True
+            resources.ApplyResources(Me.m_gridDatabase, "m_gridDatabase")
+            Me.m_gridDatabase.AutoSizeMinHeight = 10
+            Me.m_gridDatabase.AutoSizeMinWidth = 10
+            Me.m_gridDatabase.AutoStretchColumnsToFitWidth = False
+            Me.m_gridDatabase.AutoStretchRowsToFitHeight = False
+            Me.m_gridDatabase.BackColor = System.Drawing.Color.White
+            Me.m_gridDatabase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridDatabase.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridDatabase.CustomSort = False
+            Me.m_gridDatabase.FixedColumnWidths = False
+            Me.m_gridDatabase.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridDatabase.GridToolTipActive = True
+            Me.m_gridDatabase.Name = "m_gridDatabase"
+            Me.m_gridDatabase.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridDatabase.UIContext = Nothing
+            '
             'frmAboutEwE
             '
             Me.AcceptButton = Me.m_btnOK
@@ -315,6 +389,11 @@ Namespace Other
             Me.m_tlpTechnical.PerformLayout()
             CType(Me.m_pbFish3, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpTechnicalDetails.ResumeLayout(False)
+            Me.m_tpDatabase.ResumeLayout(False)
+            Me.m_tlpDatabase.ResumeLayout(False)
+            Me.m_tlpDatabase.PerformLayout()
+            CType(Me.m_pbFish4, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.TableLayoutPanel2.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -322,7 +401,6 @@ Namespace Other
         Private WithEvents m_lbTechnical As System.Windows.Forms.Label
         Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
         Private WithEvents m_btnOK As System.Windows.Forms.Button
-        'Private WithEvents m_gridTechnical As AboutEwEGrid
         Private WithEvents m_rtbAcknowledgements As System.Windows.Forms.RichTextBox
         Private WithEvents m_pbFish2 As System.Windows.Forms.PictureBox
         Private WithEvents m_pbFish1 As System.Windows.Forms.PictureBox
@@ -346,6 +424,12 @@ Namespace Other
         Private WithEvents m_tpacknowledgements As System.Windows.Forms.TabPage
         Private WithEvents m_tpTechnical As System.Windows.Forms.TabPage
         Private WithEvents m_gridTechnical As ScientificInterface.AboutEwEGrid
+        Private WithEvents m_tpDatabase As System.Windows.Forms.TabPage
+        Private WithEvents m_tlpDatabase As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_pbFish4 As System.Windows.Forms.PictureBox
+        Private WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_lblDatabase As System.Windows.Forms.Label
+        Private WithEvents m_gridDatabase As DatabaseGrid
 
     End Class
 End Namespace
