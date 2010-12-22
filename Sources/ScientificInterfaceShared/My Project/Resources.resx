@@ -1761,4 +1761,7 @@
   <data name="HEADER_PROBABILITY" xml:space="preserve">
     <value>Probability</value>
   </data>
+  <data name="HEADER_DATE" xml:space="preserve">
+    <value>Date</value>
+  </data>
 </root>

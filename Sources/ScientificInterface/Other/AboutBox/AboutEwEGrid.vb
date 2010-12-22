@@ -65,8 +65,7 @@ Public Class AboutEwEGrid
         ' Column 1 w version numbers must be fully visible. Column 0 will occupy the rest of the space
         Me.Columns(0).AutoSizeMode = SourceGrid2.AutoSizeMode.None
         Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
-        Me.AutoSizeAll()
-
+        Me.FitColumns()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -76,19 +75,23 @@ Public Class AboutEwEGrid
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
         MyBase.OnResize(e)
-
-        Dim iWidth As Integer = 0
-
-        Me.AutoSizeAll()
-
-        If Me.ColumnsCount > 0 Then
-            Me.Columns(0).Width = Me.ClientRectangle.Width - Me.Columns(1).Width - Me.VScrollBar.Width - 1
-        End If
+        Me.FitColumns()
     End Sub
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
         Me.FixedColumnWidths = False
+    End Sub
+
+    Private Sub FitColumns()
+        If Me.ColumnsCount > 0 Then
+            Me.AutoSizeAll()
+            Dim iWidth As Integer = Me.ClientRectangle.Width - Me.Columns(1).Width - 2
+            If (Me.VScrollBar IsNot Nothing) Then
+                iWidth -= Me.VScrollBar.Width
+            End If
+            Me.Columns(0).Width = iWidth
+        End If
     End Sub
 
 End Class

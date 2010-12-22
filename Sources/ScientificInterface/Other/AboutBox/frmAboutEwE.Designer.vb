@@ -264,7 +264,7 @@ Namespace Other
             '
             'm_gridTechnical
             '
-            Me.m_gridTechnical.AllowBlockSelect = True
+            Me.m_gridTechnical.AllowBlockSelect = False
             resources.ApplyResources(Me.m_gridTechnical, "m_gridTechnical")
             Me.m_gridTechnical.AutoSizeMinHeight = 10
             Me.m_gridTechnical.AutoSizeMinWidth = 10
@@ -327,7 +327,7 @@ Namespace Other
             '
             'm_gridDatabase
             '
-            Me.m_gridDatabase.AllowBlockSelect = True
+            Me.m_gridDatabase.AllowBlockSelect = False
             resources.ApplyResources(Me.m_gridDatabase, "m_gridDatabase")
             Me.m_gridDatabase.AutoSizeMinHeight = 10
             Me.m_gridDatabase.AutoSizeMinWidth = 10

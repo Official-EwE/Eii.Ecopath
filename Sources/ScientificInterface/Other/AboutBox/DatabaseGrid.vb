@@ -20,6 +20,18 @@ Imports EwECore.DataSources
 Public Class DatabaseGrid
     Inherits EwEGrid
 
+    Protected Class cDescriptionVisualizer
+        Inherits cEwECellVisualizer
+
+        Public Sub New()
+            MyBase.New()
+            Me.TextAlignment = ContentAlignment.MiddleLeft
+        End Sub
+
+    End Class
+
+    Private m_viz As New cDescriptionVisualizer()
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Populate the grid with data.
@@ -45,7 +57,7 @@ Public Class DatabaseGrid
 
         ' Create header cells
         Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
-        Me(iRow, 1) = New EwEColumnHeaderCell("Date") ' SharedResources.HEADER_DATE)
+        Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_DATE)
         Me(iRow, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
         iRow += 1
 
@@ -55,14 +67,15 @@ Public Class DatabaseGrid
             Me(iRow, 0) = New EwECell(item.Version, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(iRow, 1) = New EwECell(item.Date.ToShortDateString(), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(iRow, 2) = New EwECell(item.Comments, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, 2).VisualModel = Me.m_viz
             ' Next
             iRow += 1
         Next
 
-        ' Column 1 w version numbers must be fully visible. Column 0 will occupy the rest of the space
-        Me.Columns(0).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-        Me.Columns(2).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
-        Me.AutoSizeAll()
+        Me.Columns(0).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
+        Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
+        Me.Columns(2).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.FitColumns()
 
     End Sub
 
@@ -73,19 +86,23 @@ Public Class DatabaseGrid
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
         MyBase.OnResize(e)
-
-        Dim iWidth As Integer = 0
-
-        Me.AutoSizeAll()
-
-        'If Me.ColumnsCount > 0 Then
-        '    Me.Columns(2).Width = Me.ClientRectangle.Width - Me.Columns(0).Width - Me.Columns(1).Width - Me.VScrollBar.Width - 1
-        'End If
+        Me.FitColumns()
     End Sub
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
         Me.FixedColumnWidths = False
+    End Sub
+
+    Private Sub FitColumns()
+        If Me.ColumnsCount > 0 Then
+            Me.AutoSizeAll()
+            Dim iWidth As Integer = Me.ClientRectangle.Width - Me.Columns(0).Width - Me.Columns(1).Width - 2
+            If (Me.VScrollBar IsNot Nothing) Then
+                iWidth -= Me.VScrollBar.Width
+            End If
+            Me.Columns(2).Width = iWidth
+        End If
     End Sub
 
 End Class

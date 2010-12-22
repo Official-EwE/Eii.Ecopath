@@ -3102,7 +3102,7 @@ Namespace Database
         Public Function GetHistory() As cHistoryItem()
             Dim lHistory As New List(Of cHistoryItem)
             Dim item As cHistoryItem = Nothing
-            Dim r As IDataReader = Me.GetReader("SELECT * FROM UpdateLog ORDER BY Version ASC")
+            Dim r As IDataReader = Me.GetReader("SELECT * FROM UpdateLog ORDER BY Date ASC, Version ASC")
             While r.Read
                 Try
                     item = New cHistoryItem(CStr(r("Version")), CStr(r("Remark")), CStr(r("Date")))
