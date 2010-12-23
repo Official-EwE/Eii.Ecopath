@@ -101,6 +101,8 @@ Namespace Database
                                 cLog.Write("Create DB: found a rotten egg: " & ex.Message)
                             End Try
                             db.Close()
+                        Else
+                            cLog.Write("Create DB: Unable to open DB using required drivers, check driver installation.")
                         End If
                         db = Nothing
                     Catch ex As Exception
