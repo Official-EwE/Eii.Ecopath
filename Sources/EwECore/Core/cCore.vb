@@ -2438,7 +2438,7 @@ Public Class cCore
                 'build model
                 bsuccess = InitEwEModel()
 
-                cLog.InitLog(Me.m_EwEModel.Name)
+                cLog.InitLog(DataSource.ToString)
 
                 'I'm not sure about this there 
                 'there needs to be a Maintenance message sent SendEcopathLoadMessage() does not really seem like it would work for this

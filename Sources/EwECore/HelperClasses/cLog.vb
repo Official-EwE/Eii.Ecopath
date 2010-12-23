@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Xml
 Imports System.Threading
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 
 ''' <summary>
 ''' Class encapsulating writing of messages to a log or the interface
@@ -40,22 +41,14 @@ Public Class cLog
     ''' <summary>
     ''' Start a new log file with the model name as part of the log file name
     ''' </summary>
-    ''' <param name="strModelName">Name of the model that this log file is for</param>
+    ''' <param name="strModelPath">File path to the model to create a log file for.</param>
     ''' <remarks></remarks>
-    Public Shared Sub InitLog(ByVal strModelName As String)
+    Public Shared Sub InitLog(ByVal strModelPath As String)
 
-        ' Prevent path characters in the modelname to cause problems
-        strModelName = strModelName.Replace("\", "-")
-        strModelName = strModelName.Replace("/", "-")
-        ' Store new
-        m_modelname = strModelName
-
-        ' ToDo_JS 12Oct2010: Under windows 7 apps are officially not allowed to
-        '                    make changes to files in the programs directories 
-        '                    any more. See bug report http://sources.ecopath.org/trac/Ecopath/ticket/794
-
+        m_modelname = cFileUtils.ToValidFileName(Path.GetFileNameWithoutExtension(strModelPath), False)
         ' m_logFilename = System.AppDomain.CurrentDomain.BaseDirectory() & "Log_" & ModelName & "_" & Format(Date.Now, "yy-M-d-H-m") & ".xml"
-        m_logFilename = System.AppDomain.CurrentDomain.BaseDirectory() & "EwELog_" & m_modelname & ".xml"
+        m_logFilename = Path.Combine(Path.GetDirectoryName(strModelPath), "EwELog_" & m_modelname & ".xml")
+
         WriteSessionStarted()
         m_xmlWriter = Nothing
     End Sub
