@@ -71,10 +71,13 @@ Namespace Database
             Select Case format
                 Case eDataSourceTypes.MDB
                     strSource = "EwE6.mdb"
+                    cLog.Write("Create DB: selected MDB format")
                 Case eDataSourceTypes.ACCDB
                     strSource = "EwE6.accdb"
+                    cLog.Write("Create DB: selected ACCDB format")
                 Case Else
                     datResult = eDatasourceAccessType.Failed_UnknownType
+                    cLog.Write("Create DB: cannot determine format")
             End Select
 
             If (datResult = eDatasourceAccessType.Success) Then
@@ -87,19 +90,26 @@ Namespace Database
                         datResult = db.Open(strDatabase, format)
                         If (datResult = eDatasourceAccessType.Opened) Then
                             db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, cSystemUtils.GetUserName()))
-                            ' Egg - over-easy but slightly obfuscated ;)
-                            If strModelName.ToLower().Contains(cStringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then
-                                db.Execute(String.Format("UPDATE EcopathGroup SET GroupName='{0}' WHERE GroupID=1", cStringUtils.Shift("Dijdlfo!tiju")))
-                                db.Execute(String.Format("UPDATE EcopathFleet SET FleetName='{0}' WHERE FleetID=1", cStringUtils.Shift("Tfbm!cbtifst")))
-                            End If
+                            Try
+                                ' Egg - over-easy but slightly obfuscated ;)
+                                If strModelName.ToLower().Contains(cStringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then
+                                    db.Execute(String.Format("UPDATE EcopathGroup SET GroupName='{0}' WHERE GroupID=1", cStringUtils.Shift("Dijdlfo!tiju")))
+                                    db.Execute(String.Format("UPDATE EcopathFleet SET FleetName='{0}' WHERE FleetID=1", cStringUtils.Shift("Tfbm!cbtifst")))
+                                End If
+                            Catch ex As Exception
+                                ' Do not let eggs make the pot explode
+                                cLog.Write("Create DB: found a rotten egg: " & ex.Message)
+                            End Try
                             db.Close()
                         End If
                         db = Nothing
                     Catch ex As Exception
+                        cLog.Write(ex)
                         datResult = eDatasourceAccessType.Failed_Unknown
                     End Try
                 Else
                     'Unable to write to target location
+                    cLog.Write("Create DB: Unable to save to target location " & strDatabase)
                     datResult = eDatasourceAccessType.Failed_CannotSave
                 End If
             End If
