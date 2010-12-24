@@ -3314,7 +3314,7 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddTaxon(ByVal iGroup As Integer, _
-                             ByVal data As ITaxonData, _
+                             ByVal data As ITaxonSearchData, _
                              ByVal sProportion As Single, _
                              ByRef iDBID As Integer) As Boolean
 

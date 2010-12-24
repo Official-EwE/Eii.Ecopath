@@ -1329,6 +1329,7 @@ Namespace Core
         Family
         Genus
         Species
+        CommonName
         CodeISSCAAP
         CodeTaxon
         Code3A

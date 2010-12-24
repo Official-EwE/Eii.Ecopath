@@ -103,7 +103,7 @@ Public Class gridTaxonSearchResults
         If Me.m_results Is Nothing Then Return
 
         For iRow As Integer = 0 To Me.m_results.SearchResults.Count - 1
-            Me.AddResult(DirectCast(Me.m_results.SearchResults(iRow), ITaxonData))
+            Me.AddResult(DirectCast(Me.m_results.SearchResults(iRow), ITaxonSearchData))
         Next
 
     End Sub
@@ -136,19 +136,19 @@ Public Class gridTaxonSearchResults
     ''' </summary>
     ''' <param name="result"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub AddResult(ByVal result As ITaxonData)
+    Private Sub AddResult(ByVal result As ITaxonSearchData)
         Dim iRow As Integer = Me.AddRow()
         For iCol As Integer = 0 To Me.ColumnsCount - 1
             Me.AddCell(result, iRow, DirectCast(iCol, eColumnTypes))
         Next
     End Sub
 
-    Protected Sub AddCell(ByVal result As ITaxonData, ByVal iRow As Integer, ByVal col As eColumnTypes)
+    Protected Sub AddCell(ByVal result As ITaxonSearchData, ByVal iRow As Integer, ByVal col As eColumnTypes)
 
         Dim strValue As String = ""
         Dim cell As EwECell = Nothing
         Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.TaxonReg)
-        
+
         Select Case col
             Case eColumnTypes.Index
                 strValue = CStr(iRow)

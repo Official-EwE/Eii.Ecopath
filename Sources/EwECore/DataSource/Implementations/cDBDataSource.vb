@@ -3213,7 +3213,7 @@ Namespace DataSources
         ''' <inheritdoc cref="IEcopathDataSource.AddTaxon" />
         ''' -------------------------------------------------------------------
         Public Function AddTaxon(ByVal iGroupID As Integer, _
-                                 ByVal data As ITaxonData, _
+                                 ByVal data As ITaxonSearchData, _
                                  ByVal sProportion As Single, _
                                  ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AddTaxon

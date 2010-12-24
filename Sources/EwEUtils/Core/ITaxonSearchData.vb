@@ -9,10 +9,10 @@ Namespace Core
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Template for exchanging Taxonomy data.
+    ''' Template for searching Taxonomy data from external data sources.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Interface ITaxonData
+    Public Interface ITaxonSearchData
 
         ''' <summary>Class name of a taxon.</summary>
         Property [Class]() As String
@@ -48,8 +48,6 @@ Namespace Core
         Property East() As Single
         ''' <summary>Western limit of the bounding box where this taxon occurs.</summary>
         Property West() As Single
-        ''' <summary>Julian date when this taxon was last updated.</summary>
-        Property LastUpdated() As Double
 
     End Interface
 

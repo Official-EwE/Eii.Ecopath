@@ -27,9 +27,9 @@ Public Class gridEditGroupTaxon
     Private m_lTaxonInfoRemoved As New List(Of cTaxonInfo)
 
     ''' <summary>Search term for public use.</summary>
-    Private m_tiSearch As ITaxonData = Nothing
+    Private m_tiSearch As ITaxonSearchData = Nothing
     ''' <summary>Internal item linked to the search term.</summary>
-    Private m_tiSearchLinked As ITaxonData = Nothing
+    Private m_tiSearchLinked As ITaxonSearchData = Nothing
 
     Private m_vizPropNormalized As New cEwEGridProportionVisualizer()
     Private m_lUsedKeys As New List(Of String)
@@ -40,7 +40,6 @@ Public Class gridEditGroupTaxon
         Name
         Proportion
         PropNorm
-        LastUpdated
         Status
     End Enum
 
@@ -49,7 +48,7 @@ Public Class gridEditGroupTaxon
 #Region " Private helper classes "
 
     Private Class cTaxonInfo
-        Implements ITaxonData
+        Implements ITaxonSearchData
 
 #Region " Private vars "
 
@@ -79,7 +78,6 @@ Public Class gridEditGroupTaxon
         Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a Layer in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
-        Private m_dLastUpdated As Double = 0.0
 
 #End Region ' Private vars
 
@@ -93,7 +91,6 @@ Public Class gridEditGroupTaxon
             Me.m_sProportion = 1.0!
             Me.m_strCommon = group.Name
             Me.m_status = eItemStatusTypes.Added
-            Me.m_dLastUpdated = cDateUtils.DateToJulian()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -121,10 +118,9 @@ Public Class gridEditGroupTaxon
             Me.m_strSource = taxon.Source
             Me.m_strKey = taxon.SourceKey
             Me.m_status = eItemStatusTypes.Original
-            Me.m_dLastUpdated = taxon.LastUpdated
         End Sub
 
-        Public Sub New(ByVal taxon As ITaxonData)
+        Public Sub New(ByVal taxon As ITaxonSearchData)
             Me.Update(taxon)
         End Sub
 
@@ -134,7 +130,7 @@ Public Class gridEditGroupTaxon
         ''' </summary>
         ''' <param name="taxon"></param>
         ''' -------------------------------------------------------------------
-        Public Sub Update(ByVal taxon As ITaxonData)
+        Public Sub Update(ByVal taxon As ITaxonSearchData)
             Me.m_strCode3A = taxon.Code3A
             Me.m_strCodeISSCAAP = taxon.CodeISSCAAP
             Me.m_strCodeTaxon = taxon.CodeTaxon
@@ -151,7 +147,6 @@ Public Class gridEditGroupTaxon
             Me.m_sWest = taxon.West
             Me.m_strKey = taxon.SourceKey
             Me.m_strSource = taxon.Source
-            Me.m_dLastUpdated = taxon.LastUpdated
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -300,7 +295,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.Phylum"/>
         ''' -------------------------------------------------------------------
         Public Property Phylum() As String _
-            Implements ITaxonData.Phylum
+            Implements ITaxonSearchData.Phylum
             Get
                 Return Me.m_strPhylum
             End Get
@@ -313,7 +308,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.[Class]"/>
         ''' -------------------------------------------------------------------
         Public Property [Class]() As String _
-            Implements ITaxonData.Class
+            Implements ITaxonSearchData.Class
             Get
                 Return m_strClass
             End Get
@@ -326,7 +321,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.Code3A"/>
         ''' -------------------------------------------------------------------
         Public Property Code3A() As String _
-            Implements ITaxonData.Code3A
+            Implements ITaxonSearchData.Code3A
             Get
                 Return m_strCode3A
             End Get
@@ -339,7 +334,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.CodeISSCAAP"/>
         ''' -------------------------------------------------------------------
         Public Property CodeISSCAAP() As String _
-            Implements ITaxonData.CodeISSCAAP
+            Implements ITaxonSearchData.CodeISSCAAP
             Get
                 Return m_strCodeISSCAAP
             End Get
@@ -352,7 +347,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.CodeTaxon"/>
         ''' -------------------------------------------------------------------
         Public Property CodeTaxon() As String _
-            Implements ITaxonData.CodeTaxon
+            Implements ITaxonSearchData.CodeTaxon
             Get
                 Return Me.m_strCodeTaxon
             End Get
@@ -365,7 +360,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.Common"/>
         ''' -------------------------------------------------------------------
         Public Property Common() As String _
-            Implements ITaxonData.Common
+            Implements ITaxonSearchData.Common
             Get
                 Return Me.m_strCommon
             End Get
@@ -378,7 +373,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.Family"/>
         ''' -------------------------------------------------------------------
         Public Property Family() As String _
-            Implements ITaxonData.Family
+            Implements ITaxonSearchData.Family
             Get
                 Return Me.m_strFamily
             End Get
@@ -391,7 +386,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.Order"/>
         ''' -------------------------------------------------------------------
         Public Property Order() As String _
-            Implements ITaxonData.Order
+            Implements ITaxonSearchData.Order
             Get
                 Return Me.m_strOrder
             End Get
@@ -404,7 +399,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.Genus"/>
         ''' -------------------------------------------------------------------
         Public Property Genus() As String _
-            Implements ITaxonData.Genus
+            Implements ITaxonSearchData.Genus
             Get
                 Return Me.m_strGenus
             End Get
@@ -414,23 +409,10 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.LastUpdated"/>
-        ''' -------------------------------------------------------------------
-        Public Property LastUpdated() As Double _
-            Implements ITaxonData.LastUpdated
-            Get
-                Return Me.m_dLastUpdated
-            End Get
-            Private Set(ByVal value As Double)
-                ' NOP
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ITaxonData.Source"/>
         ''' -------------------------------------------------------------------
         Public Property Source() As String _
-            Implements ITaxonData.Source
+            Implements ITaxonSearchData.Source
             Get
                 Return Me.m_strSource
             End Get
@@ -443,7 +425,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.SourceKey"/>
         ''' -------------------------------------------------------------------
         Public Property SourceKey() As String _
-            Implements ITaxonData.SourceKey
+            Implements ITaxonSearchData.SourceKey
             Get
                 Return Me.m_strKey
             End Get
@@ -456,7 +438,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.Species"/>
         ''' -------------------------------------------------------------------
         Public Property Species() As String _
-           Implements ITaxonData.Species
+           Implements ITaxonSearchData.Species
             Get
                 Return Me.m_strSpecies
             End Get
@@ -469,7 +451,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.North"/>
         ''' -------------------------------------------------------------------
         Public Property North() As Single _
-            Implements ITaxonData.North
+            Implements ITaxonSearchData.North
             Get
                 Return Me.m_sNorth
             End Get
@@ -482,7 +464,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.South"/>
         ''' -------------------------------------------------------------------
         Public Property South() As Single _
-            Implements ITaxonData.South
+            Implements ITaxonSearchData.South
             Get
                 Return Me.m_sSouth
             End Get
@@ -495,7 +477,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.East"/>
         ''' -------------------------------------------------------------------
         Public Property East() As Single _
-            Implements ITaxonData.East
+            Implements ITaxonSearchData.East
             Get
                 Return Me.m_sEast
             End Get
@@ -508,7 +490,7 @@ Public Class gridEditGroupTaxon
         ''' <inheritdoc cref="ITaxonData.West"/>
         ''' -------------------------------------------------------------------
         Public Property West() As Single _
-            Implements ITaxonData.West
+            Implements ITaxonSearchData.West
             Get
                 Return Me.m_sWest
             End Get
@@ -579,7 +561,6 @@ Public Class gridEditGroupTaxon
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
         Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION)
         Me(0, eColumnTypes.PropNorm) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION)
-        Me(0, eColumnTypes.LastUpdated) = New EwEColumnHeaderCell(SharedResources.HEADER_LASTUPDATED)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         Me.FixedColumns = 1
@@ -686,7 +667,6 @@ Public Class gridEditGroupTaxon
             Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
             Me(iRow, eColumnTypes.PropNorm) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.Proportion) = New EwERowHeaderCell("")
-            Me(iRow, eColumnTypes.LastUpdated) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.Status) = New EwERowHeaderCell("")
 
             For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
@@ -704,7 +684,6 @@ Public Class gridEditGroupTaxon
                     Me(iRow, eColumnTypes.PropNorm).VisualModel = Me.m_vizPropNormalized
                     Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
                     Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.LastUpdated) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
                     Me.m_lUsedKeys.Add(ti.CodeTaxon)
@@ -742,13 +721,6 @@ Public Class gridEditGroupTaxon
         Me(iRow, eColumnTypes.Name).Value = ti.Common
         Me(iRow, eColumnTypes.PropNorm).Value = ti.PropNormalized
         Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
-        ' Last updated
-        If (ti.LastUpdated > 0) Then
-            strText = String.Format("{0:g}", cDateUtils.JulianToDate(ti.LastUpdated))
-        Else
-            strText = ""
-        End If
-        Me(iRow, eColumnTypes.LastUpdated).Value = strText
 
         Select Case ti.Status
             Case eItemStatusTypes.Original
@@ -818,11 +790,11 @@ Public Class gridEditGroupTaxon
 
 #Region " Data "
 
-    Public Property SelectedTaxon() As ITaxonData
+    Public Property SelectedTaxon() As ITaxonSearchData
         Get
             Return Me.TaxonInfo(Me.SelectedRow)
         End Get
-        Set(ByVal taxon As ITaxonData)
+        Set(ByVal taxon As ITaxonSearchData)
             If Not (TypeOf taxon Is cTaxonInfo) Then Return
             For iRow As Integer = 1 To Me.RowsCount - 1
                 If Object.ReferenceEquals(TaxonInfo(iRow), taxon) Then
@@ -859,7 +831,7 @@ Public Class gridEditGroupTaxon
     ''' Returns an array of all available taxa.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Taxa() As ITaxonData()
+    Public ReadOnly Property Taxa() As ITaxonSearchData()
         Get
             Return Me.m_lTaxonInfo.ToArray
         End Get
@@ -870,7 +842,7 @@ Public Class gridEditGroupTaxon
     ''' Add a taxon for the selected group.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub AddTaxon(Optional ByVal taxon As ITaxonData = Nothing)
+    Public Sub AddTaxon(Optional ByVal taxon As ITaxonSearchData = Nothing)
 
         Dim ti As cTaxonInfo = Nothing
         Dim iRow As Integer = Nothing
@@ -983,7 +955,7 @@ Public Class gridEditGroupTaxon
     ''' </summary>
     ''' <param name="taxon"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub UpdateSelectedTaxon(ByVal taxon As ITaxonData)
+    Public Sub UpdateSelectedTaxon(ByVal taxon As ITaxonSearchData)
         Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
         If (ti Is Nothing) Then Return
         ti.Update(taxon)
@@ -1000,7 +972,7 @@ Public Class gridEditGroupTaxon
     ''' <param name="taxonSearch">Taxon to create a search term for.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetSearchTerm(Optional ByVal taxonSearch As ITaxonData = Nothing) As ITaxonData
+    Public Function GetSearchTerm(Optional ByVal taxonSearch As ITaxonSearchData = Nothing) As ITaxonSearchData
 
         Me.m_tiSearchLinked = Me.SelectedTaxon
 
@@ -1018,7 +990,7 @@ Public Class gridEditGroupTaxon
     ''' <param name="taxon"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsSearchTerm(ByVal taxon As ITaxonData) As Boolean
+    Public Function IsSearchTerm(ByVal taxon As ITaxonSearchData) As Boolean
         Return (Object.ReferenceEquals(taxon, Me.m_tiSearch)) And _
                (Object.ReferenceEquals(Me.SelectedTaxon, Me.m_tiSearchLinked))
     End Function
@@ -1030,7 +1002,7 @@ Public Class gridEditGroupTaxon
     ''' <param name="taxon">The <see cref="ITaxonData">taxon data</see> to find</param>
     ''' <returns>A row number, or -1 if no such key was found.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function FindTaxonRow(ByVal taxon As ITaxonData) As Integer
+    Public Function FindTaxonRow(ByVal taxon As ITaxonSearchData) As Integer
 
         For iRow As Integer = 1 To Me.RowsCount - 1
             Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)

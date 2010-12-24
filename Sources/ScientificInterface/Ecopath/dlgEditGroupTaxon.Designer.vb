@@ -27,13 +27,11 @@ Partial Class dlgEditGroupTaxon
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditGroupTaxon))
         Me.m_btnAdd = New System.Windows.Forms.Button
         Me.m_btnRemove = New System.Windows.Forms.Button
-        Me.m_btnUpdate = New System.Windows.Forms.Button
         Me.m_btnKeep = New System.Windows.Forms.Button
         Me.m_btnMoveDown = New System.Windows.Forms.Button
         Me.m_btnMoveUp = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
-        Me.m_btnUpdateAll = New System.Windows.Forms.Button
         Me.m_lbTerm = New System.Windows.Forms.Label
         Me.m_tbSearch = New System.Windows.Forms.TextBox
         Me.m_cmbEngine = New System.Windows.Forms.ComboBox
@@ -71,7 +69,6 @@ Partial Class dlgEditGroupTaxon
         Me.m_lbCommon = New System.Windows.Forms.Label
         Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_hdrExternal = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
@@ -91,12 +88,6 @@ Partial Class dlgEditGroupTaxon
         resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
         Me.m_btnRemove.Name = "m_btnRemove"
         Me.m_btnRemove.UseVisualStyleBackColor = True
-        '
-        'm_btnUpdate
-        '
-        resources.ApplyResources(Me.m_btnUpdate, "m_btnUpdate")
-        Me.m_btnUpdate.Name = "m_btnUpdate"
-        Me.m_btnUpdate.UseVisualStyleBackColor = True
         '
         'm_btnKeep
         '
@@ -126,12 +117,6 @@ Partial Class dlgEditGroupTaxon
         '
         resources.ApplyResources(Me.OK_Button, "OK_Button")
         Me.OK_Button.Name = "OK_Button"
-        '
-        'm_btnUpdateAll
-        '
-        resources.ApplyResources(Me.m_btnUpdateAll, "m_btnUpdateAll")
-        Me.m_btnUpdateAll.Name = "m_btnUpdateAll"
-        Me.m_btnUpdateAll.UseVisualStyleBackColor = True
         '
         'm_lbTerm
         '
@@ -434,11 +419,6 @@ Partial Class dlgEditGroupTaxon
         resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
         Me.m_hdrEdit.Name = "m_hdrEdit"
         '
-        'm_hdrExternal
-        '
-        resources.ApplyResources(Me.m_hdrExternal, "m_hdrExternal")
-        Me.m_hdrExternal.Name = "m_hdrExternal"
-        '
         'dlgEditGroupTaxon
         '
         resources.ApplyResources(Me, "$this")
@@ -446,7 +426,6 @@ Partial Class dlgEditGroupTaxon
         Me.CancelButton = Me.Cancel_Button
         Me.ControlBox = False
         Me.Controls.Add(Me.m_scMain)
-        Me.Controls.Add(Me.m_hdrExternal)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.m_hdrEdit)
@@ -454,8 +433,6 @@ Partial Class dlgEditGroupTaxon
         Me.Controls.Add(Me.m_btnKeep)
         Me.Controls.Add(Me.m_btnMoveDown)
         Me.Controls.Add(Me.m_btnMoveUp)
-        Me.Controls.Add(Me.m_btnUpdateAll)
-        Me.Controls.Add(Me.m_btnUpdate)
         Me.Controls.Add(Me.m_btnRemove)
         Me.Controls.Add(Me.m_btnAdd)
         Me.Name = "dlgEditGroupTaxon"
@@ -474,7 +451,6 @@ Partial Class dlgEditGroupTaxon
 
     End Sub
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
-    Private WithEvents m_btnUpdate As System.Windows.Forms.Button
     Private WithEvents m_gridGroups As ScientificInterface.gridEditGroupTaxon
     Private WithEvents m_hdrOrder As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_btnKeep As System.Windows.Forms.Button
@@ -483,8 +459,6 @@ Partial Class dlgEditGroupTaxon
     Private WithEvents m_hdrEdit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents Cancel_Button As System.Windows.Forms.Button
     Private WithEvents OK_Button As System.Windows.Forms.Button
-    Private WithEvents m_hdrExternal As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_btnUpdateAll As System.Windows.Forms.Button
     Private WithEvents m_lbTerm As System.Windows.Forms.Label
     Private WithEvents m_tbSearch As System.Windows.Forms.TextBox
     Private WithEvents m_cmbEngine As System.Windows.Forms.ComboBox

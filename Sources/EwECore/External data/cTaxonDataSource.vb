@@ -39,7 +39,7 @@ Namespace ExternalData
         ''' </summary>
         ''' <param name="TaxonData"></param>
         ''' -----------------------------------------------------------------------
-        Public Event OnTaxonData(ByVal TaxonData As ITaxonData)
+        Public Event OnTaxonData(ByVal TaxonData As ITaxonSearchData)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -106,10 +106,10 @@ Namespace ExternalData
         Public Property EnableData(ByVal runtype As IRunType) As Boolean _
             Implements IExternalDataSource.EnableData
             Get
-                Return s_core.PluginManager.EnableData(GetType(ITaxonData), runtype)
+                Return s_core.PluginManager.EnableData(GetType(ITaxonSearchData), runtype)
             End Get
             Set(ByVal value As Boolean)
-                s_core.PluginManager.EnableData(GetType(ITaxonData), runtype) = value
+                s_core.PluginManager.EnableData(GetType(ITaxonSearchData), runtype) = value
             End Set
         End Property
 
@@ -122,7 +122,7 @@ Namespace ExternalData
         ''' -----------------------------------------------------------------------
         Public Function IsDataAvailable(ByVal runtype As EwEUtils.Core.IRunType) As Boolean _
               Implements IExternalDataSource.IsDataAvailable
-            Return s_core.PluginManager.IsDataAvailable(GetType(ITaxonData), runtype)
+            Return s_core.PluginManager.IsDataAvailable(GetType(ITaxonSearchData), runtype)
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -133,7 +133,7 @@ Namespace ExternalData
         ''' -----------------------------------------------------------------------
         Public Function ProducerNames() As String()
             Dim lstrNames As New List(Of String)
-            For Each dp As IDataProducerPlugin In s_core.PluginManager.DataProducers(GetType(ITaxonData))
+            For Each dp As IDataProducerPlugin In s_core.PluginManager.DataProducers(GetType(ITaxonSearchData))
                 lstrNames.Add(dp.Name)
             Next
             Return lstrNames.ToArray
@@ -151,7 +151,7 @@ Namespace ExternalData
             Set(ByVal value As String)
                 If String.Compare(value, Me.m_strProviderName, True) = 0 Then Return
                 Me.m_strProviderName = value
-                For Each dp As IDataProducerPlugin In s_core.PluginManager.DataProducers(GetType(ITaxonData))
+                For Each dp As IDataProducerPlugin In s_core.PluginManager.DataProducers(GetType(ITaxonSearchData))
                     dp.SetEnabled(String.Compare(dp.Name, Me.m_strProviderName, True) = 0)
                 Next
             End Set
@@ -161,7 +161,7 @@ Namespace ExternalData
 
 #Region " Private methods "
 
-        Private Sub FireOnTaxonData(ByVal data As ITaxonData)
+        Private Sub FireOnTaxonData(ByVal data As ITaxonSearchData)
             Try
                 RaiseEvent OnTaxonData(data)
             Catch ex As Exception
@@ -201,12 +201,12 @@ Namespace ExternalData
 
             Try
 
-                If TypeOf data Is ITaxonData Then
-                    Dim taxon As ITaxonData = DirectCast(data, ITaxonData)
+                If TypeOf data Is ITaxonSearchData Then
+                    Dim taxon As ITaxonSearchData = DirectCast(data, ITaxonSearchData)
                     Me.FireOnTaxonData(taxon)
                 ElseIf TypeOf data Is IDataSearchResults Then
                     Dim results As IDataSearchResults = DirectCast(data, IDataSearchResults)
-                    If TypeOf results.SearchTerm Is ITaxonData Then
+                    If TypeOf results.SearchTerm Is ITaxonSearchData Then
                         Me.FireOnTaxonSearchResults(results)
                     End If
                 End If

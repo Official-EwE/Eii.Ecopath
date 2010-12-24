@@ -7,6 +7,8 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cTaxon
     Inherits cCoreInputOutputBase
+    Implements ITaxonSearchData
+    Implements ITaxonDetailsData
 
 #Region " Construction and Intialization "
 
@@ -52,6 +54,10 @@ Public Class cTaxon
 
         meta = New cVariableMetaData(250)
         val = New cValue(New String(cbuf), eVarNameFlags.Species, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(250)
+        val = New cValue(New String(cbuf), eVarNameFlags.CommonName, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(2)
@@ -139,7 +145,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the phylum of a taxonomy definition.
     ''' </summary>
-    Public Property Phylum() As String
+    Public Property Phylum() As String _
+        Implements ITaxonDetailsData.Phylum
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Phylum))
         End Get
@@ -151,7 +158,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the class of a taxonomy definition.
     ''' </summary>
-    Public Property [Class]() As String
+    Public Property [Class]() As String _
+        Implements ITaxonDetailsData.Class
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Class))
         End Get
@@ -163,7 +171,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the order of a taxonomy definition.
     ''' </summary>
-    Public Property Order() As String
+    Public Property Order() As String _
+        Implements ITaxonDetailsData.Order
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Order))
         End Get
@@ -175,7 +184,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the family of a taxonomy definition.
     ''' </summary>
-    Public Property Family() As String
+    Public Property Family() As String _
+        Implements ITaxonDetailsData.Family
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Family))
         End Get
@@ -187,7 +197,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the genus of a taxonomy definition.
     ''' </summary>
-    Public Property Genus() As String
+    Public Property Genus() As String _
+        Implements ITaxonDetailsData.Genus
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Genus))
         End Get
@@ -199,7 +210,21 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the species of a taxonomy definition.
     ''' </summary>
-    Public Property Species() As String
+    Public Property Common() As String _
+        Implements ITaxonDetailsData.Common
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.CommonName))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.CommonName, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the species of a taxonomy definition.
+    ''' </summary>
+    Public Property Species() As String _
+        Implements ITaxonDetailsData.Species
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Species))
         End Get
@@ -211,7 +236,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the 2 digit ISSCAAP code of a taxonomy definition.
     ''' </summary>
-    Public Property CodeISSCAAP() As String
+    Public Property CodeISSCAAP() As String _
+        Implements ITaxonDetailsData.CodeISSCAAP
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.CodeISSCAAP))
         End Get
@@ -223,7 +249,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the 10 digit Taxonomy code of a taxonomy definition.
     ''' </summary>
-    Public Property CodeTaxon() As String
+    Public Property CodeTaxon() As String _
+        Implements ITaxonDetailsData.CodeTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.CodeTaxon))
         End Get
@@ -235,7 +262,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the 3 character 3A code of a taxonomy definition.
     ''' </summary>
-    Public Property Code3A() As String
+    Public Property Code3A() As String _
+        Implements ITaxonDetailsData.Code3A
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Code3A))
         End Get
@@ -247,7 +275,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the name of the source that a taxonomy definition was obtained from.
     ''' </summary>
-    Public Property Source() As String
+    Public Property Source() As String _
+        Implements ITaxonDetailsData.Source
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Source))
         End Get
@@ -259,7 +288,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the key to refresh a taxonomy definition from the <see cref="Source">source</see>.
     ''' </summary>
-    Public Property SourceKey() As String
+    Public Property SourceKey() As String _
+        Implements ITaxonDetailsData.SourceKey
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.SourceKey))
         End Get
@@ -271,7 +301,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the southern extent of the model bounding box.
     ''' </summary>
-    Public Property South() As Single
+    Public Property South() As Single _
+        Implements ITaxonDetailsData.South
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.South))
         End Get
@@ -284,7 +315,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the northern extent of the model bounding box.
     ''' </summary>
-    Public Property North() As Single
+    Public Property North() As Single _
+        Implements ITaxonDetailsData.North
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.North))
         End Get
@@ -297,7 +329,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the western extent of the model bounding box.
     ''' </summary>
-    Public Property West() As Single
+    Public Property West() As Single _
+        Implements ITaxonDetailsData.West
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.West))
         End Get
@@ -310,7 +343,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the eastern extent of the model bounding box.
     ''' </summary>
-    Public Property East() As Single
+    Public Property East() As Single _
+        Implements ITaxonDetailsData.East
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.East))
         End Get
@@ -323,7 +357,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the Julian date the taxonomy definition was last updated.
     ''' </summary>
-    Public Property LastUpdated() As Double
+    Public Property LastUpdated() As Double _
+        Implements ITaxonDetailsData.LastUpdated
         Get
             Return CDbl(GetVariable(eVarNameFlags.LastUpdated))
         End Get
