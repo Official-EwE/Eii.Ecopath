@@ -245,15 +245,15 @@ Namespace Database
                             ' OleDb got into trouble
                             datResult = eDatasourceAccessType.Failed_Unknown
                     End Select
-                    Console.WriteLine("** OleDbException {0} when opening Access db {1}", ex.Message, strDatabase)
+                    cLog.Write(String.Format("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
 
                 Catch ex As InvalidOperationException
                     datResult = eDatasourceAccessType.Failed_OSUnsupported
-                    Console.WriteLine("** InvalidOperationException {0} when opening Access db {1}", ex.Message, strDatabase)
+                    cLog.Write(String.Format("Open DB: InvalidOperationException {0} when opening {1}", ex.Message, strDatabase))
 
                 Catch ex As Exception
-                    Console.WriteLine("** OleDbException {0} when opening Access db {1}", ex.Message, strDatabase)
                     datResult = eDatasourceAccessType.Failed_Unknown
+                    cLog.Write(String.Format("Open DB: Exception {0} when opening {1}", ex.Message, strDatabase))
 
                 End Try
 
