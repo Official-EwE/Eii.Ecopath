@@ -642,9 +642,9 @@ Public Class dlgEditGroupTaxon
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Search for a <see cref="ITaxonData">taxonomoy data</see> search term.
+    ''' Search for a <see cref="ITaxonSearchData">taxonomoy data</see> search term.
     ''' </summary>
-    ''' <param name="term">The <see cref="ITaxonData">taxonomoy data</see> 
+    ''' <param name="term">The <see cref="ITaxonSearchData">taxonomoy data</see> 
     ''' search term to search for.</param>
     ''' -----------------------------------------------------------------------
     Private Sub Search(ByVal term As ITaxonSearchData)

@@ -292,7 +292,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.Phylum"/>
+        ''' <inheritdoc cref="ITaxonSearchData.Phylum"/>
         ''' -------------------------------------------------------------------
         Public Property Phylum() As String _
             Implements ITaxonSearchData.Phylum
@@ -305,7 +305,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.[Class]"/>
+        ''' <inheritdoc cref="ITaxonSearchData.[Class]"/>
         ''' -------------------------------------------------------------------
         Public Property [Class]() As String _
             Implements ITaxonSearchData.Class
@@ -318,7 +318,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.Code3A"/>
+        ''' <inheritdoc cref="ITaxonSearchData.Code3A"/>
         ''' -------------------------------------------------------------------
         Public Property Code3A() As String _
             Implements ITaxonSearchData.Code3A
@@ -331,7 +331,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.CodeISSCAAP"/>
+        ''' <inheritdoc cref="ITaxonSearchData.CodeISSCAAP"/>
         ''' -------------------------------------------------------------------
         Public Property CodeISSCAAP() As String _
             Implements ITaxonSearchData.CodeISSCAAP
@@ -344,7 +344,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.CodeTaxon"/>
+        ''' <inheritdoc cref="ITaxonSearchData.CodeTaxon"/>
         ''' -------------------------------------------------------------------
         Public Property CodeTaxon() As String _
             Implements ITaxonSearchData.CodeTaxon
@@ -357,7 +357,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.Common"/>
+        ''' <inheritdoc cref="ITaxonSearchData.Common"/>
         ''' -------------------------------------------------------------------
         Public Property Common() As String _
             Implements ITaxonSearchData.Common
@@ -370,7 +370,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.Family"/>
+        ''' <inheritdoc cref="ITaxonSearchData.Family"/>
         ''' -------------------------------------------------------------------
         Public Property Family() As String _
             Implements ITaxonSearchData.Family
@@ -383,7 +383,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.Order"/>
+        ''' <inheritdoc cref="ITaxonSearchData.Order"/>
         ''' -------------------------------------------------------------------
         Public Property Order() As String _
             Implements ITaxonSearchData.Order
@@ -396,7 +396,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.Genus"/>
+        ''' <inheritdoc cref="ITaxonSearchData.Genus"/>
         ''' -------------------------------------------------------------------
         Public Property Genus() As String _
             Implements ITaxonSearchData.Genus
@@ -409,7 +409,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.Source"/>
+        ''' <inheritdoc cref="ITaxonSearchData.Source"/>
         ''' -------------------------------------------------------------------
         Public Property Source() As String _
             Implements ITaxonSearchData.Source
@@ -422,7 +422,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.SourceKey"/>
+        ''' <inheritdoc cref="ITaxonSearchData.SourceKey"/>
         ''' -------------------------------------------------------------------
         Public Property SourceKey() As String _
             Implements ITaxonSearchData.SourceKey
@@ -435,7 +435,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.Species"/>
+        ''' <inheritdoc cref="ITaxonSearchData.Species"/>
         ''' -------------------------------------------------------------------
         Public Property Species() As String _
            Implements ITaxonSearchData.Species
@@ -448,7 +448,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.North"/>
+        ''' <inheritdoc cref="ITaxonSearchData.North"/>
         ''' -------------------------------------------------------------------
         Public Property North() As Single _
             Implements ITaxonSearchData.North
@@ -461,7 +461,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.South"/>
+        ''' <inheritdoc cref="ITaxonSearchData.South"/>
         ''' -------------------------------------------------------------------
         Public Property South() As Single _
             Implements ITaxonSearchData.South
@@ -474,7 +474,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.East"/>
+        ''' <inheritdoc cref="ITaxonSearchData.East"/>
         ''' -------------------------------------------------------------------
         Public Property East() As Single _
             Implements ITaxonSearchData.East
@@ -487,7 +487,7 @@ Public Class gridEditGroupTaxon
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonData.West"/>
+        ''' <inheritdoc cref="ITaxonSearchData.West"/>
         ''' -------------------------------------------------------------------
         Public Property West() As Single _
             Implements ITaxonSearchData.West
@@ -997,9 +997,9 @@ Public Class gridEditGroupTaxon
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Search the grid for a data row with the same <see cref="ITaxonData.SourceKey">source key</see>.
+    ''' Search the grid for a data row with the same <see cref="ITaxonSearchData.SourceKey">source key</see>.
     ''' </summary>
-    ''' <param name="taxon">The <see cref="ITaxonData">taxon data</see> to find</param>
+    ''' <param name="taxon">The <see cref="ITaxonSearchData">taxon data</see> to find</param>
     ''' <returns>A row number, or -1 if no such key was found.</returns>
     ''' -----------------------------------------------------------------------
     Public Function FindTaxonRow(ByVal taxon As ITaxonSearchData) As Integer
