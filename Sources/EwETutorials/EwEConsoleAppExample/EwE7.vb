@@ -6,23 +6,37 @@ Imports EwEUtils.Core
 
 Module EwE7
 
-    ' Main Sub routine called when program is run.
+    ' Main routine is called when the program is run.
     Sub Main()
-        Dim core As New cCore()                     ' (1) Define core and database variables
-        Dim ds As IEwEDataSource = cDataSourceFactory.Create(eDataSourceTypes.ACCDB)
 
-        ds.Open("baltic.ewemdb", core)              ' (2) Open the database called baltic.ewemdb.  
+        ' (1) Create a new core
+        Dim core As New cCore()
+        ' (2) Create a datasource to read 'mdb' formatted data
+        Dim ds As IEwEDataSource = cDataSourceFactory.Create(eDataSourceTypes.MDB)
 
-        core.InitCore()                             ' (3) Tells the core to do some initialization and load the model
+        ' (3) Tell the datasource to open a database called 'baltic.ewemdb'.  
+        ds.Open("baltic.ewemdb", core)
+
+        ' (4) Tell the core to initialize itself
+        core.InitCore()
+        ' (5) Tell the core to load a model from the datasource
         core.LoadModel(ds)
-        core.RunEcoPath()                           ' (4) Runs Ecopath
+        ' (6) Tell the core to run Ecopath
+        core.RunEcoPath()
 
-                                                    ' (5) Writes to the console the group name and Ecopath EE for group 1.
-        Console.WriteLine("Group '" & core.EcoPathGroupOutputs(1).Name & "'" & _
-                          " EE estimated to " & core.EcoPathGroupOutputs(1).EEOutput)
-        core.CloseModel()                           ' (6) Tells the model to shutdown properly.
+        ' (7) Write to the console the group name and Ecopath EE for all groups
+        For iGroup As Integer = 1 To core.nGroups
+            ' (7.1) Get ecopath results group 'iGroup'
+            Dim group As cEcoPathGroupOutput = core.EcoPathGroupOutputs(iGroup)
+            ' (7.2) Write information for this group to the console
+            Console.WriteLine("Group '" & group.Name & "' EE = " & group.EEOutput)
+        Next
 
-        Console.WriteLine("Press a key to exit")    ' Waits and ask the user to hit a key before closing.
+        ' (8) Tell the core to close the model
+        core.CloseModel()
+
+        ' Ask the user to hit a key before closing, and wait for the key press
+        Console.WriteLine("Press a key to exit")
         Console.ReadKey()
     End Sub
 
