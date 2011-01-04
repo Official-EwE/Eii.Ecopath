@@ -123,8 +123,8 @@ Namespace Ecopath.Output
                 alProdLandingsMarketPrice.Add(propMarketPrice)
                 ' Set the property to the cell
                 opProdLandingsMarketPrice = New cMultiOperation(cMultiOperation.eOperatorType.Multiply, alProdLandingsMarketPrice.ToArray())
-                propProdLandingsMarketPrice = New cFormulaProperty(CType(opProdLandingsMarketPrice, cExpression))
-                propCell = New PropertyCell(CType(propProdLandingsMarketPrice, cProperty))
+                propProdLandingsMarketPrice = New cFormulaProperty(opProdLandingsMarketPrice)
+                propCell = New PropertyCell(propProdLandingsMarketPrice)
                 ' Configure the cell
                 propCell.SuppressZero = True
                 ' Set the cell
@@ -137,8 +137,8 @@ Namespace Ecopath.Output
 
             'Display the sum of market values
             opSumMarketValues = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumRow.ToArray())
-            propSumMarketValues = New cFormulaProperty(CType(opSumMarketValues, cExpression))
-            propCell = New PropertyCell(CType(propSumMarketValues, cProperty))
+            propSumMarketValues = New cFormulaProperty(opSumMarketValues)
+            propCell = New PropertyCell(propSumMarketValues)
             Me(iRow, Me.ColumnsCount - 3) = propCell
 
             ' Non-market value
@@ -147,7 +147,7 @@ Namespace Ecopath.Output
                 Me.PropertyManager.GetProperty(source, eVarNameFlags.NonMarketValue), _
                 Me.PropertyManager.GetProperty(Core.EcoPathGroupOutputs(source.Index), eVarNameFlags.Biomass))
             propProdNonMarketValue = New cFormulaProperty(opNonMarketValue)
-            propCell = New PropertyCell(CType(propProdNonMarketValue, cProperty))
+            propCell = New PropertyCell(propProdNonMarketValue)
             propCell.SuppressZero = True
             Me(iRow, Me.ColumnsCount - 2) = propCell
 
@@ -199,7 +199,7 @@ Namespace Ecopath.Output
                     alProdLandingsMarketPrice.Add(propMarketPrice)
                     ' Set the property 
                     opProdLandingsMarketPrice = New cMultiOperation(cMultiOperation.eOperatorType.Multiply, alProdLandingsMarketPrice.ToArray())
-                    propProdLandingsMarketPrice = New cFormulaProperty(CType(opProdLandingsMarketPrice, cExpression))
+                    propProdLandingsMarketPrice = New cFormulaProperty(opProdLandingsMarketPrice)
 
                     'Sum values in a column
                     alSumCol.Add(propProdLandingsMarketPrice)
@@ -210,14 +210,14 @@ Namespace Ecopath.Output
 
                 'Display the sum of values in a column
                 opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())
-                propSumCol = New cFormulaProperty(CType(opSumCol, cExpression))
-                Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(CType(propSumCol, cProperty))
+                propSumCol = New cFormulaProperty(opSumCol)
+                Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(propSumCol)
             Next
 
             'Display the sum of all values
             opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumAll.ToArray())
-            propSumAll = New cFormulaProperty(CType(opSumAll, cExpression))
-            Me(Me.RowsCount - 1, Me.ColumnsCount - 3) = New PropertyCell(CType(propSumAll, cProperty))
+            propSumAll = New cFormulaProperty(opSumAll)
+            Me(Me.RowsCount - 1, Me.ColumnsCount - 3) = New PropertyCell(propSumAll)
 
         End Sub
 
@@ -267,14 +267,14 @@ Namespace Ecopath.Output
 
                 'Total cost
                 opSumFixedCPUESailCost = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumFixedCPUESailCost.ToArray())
-                propSumFixedCPUESailCost = New cFormulaProperty(CType(opSumFixedCPUESailCost, cExpression))
+                propSumFixedCPUESailCost = New cFormulaProperty(opSumFixedCPUESailCost)
 
                 alProdCostValue.Clear()
                 alProdCostValue.Add(propSumFixedCPUESailCost)
                 alProdCostValue.Add(0.01)
                 alProdCostValue.Add(Me(Me.RowsCount - 2, fleetIndex + 1)) 'total value
                 opProdCostValue = New cMultiOperation(cMultiOperation.eOperatorType.Multiply, alProdCostValue.ToArray()) 'total cost as a percent of total value
-                propProdCostValue = New cFormulaProperty(CType(opProdCostValue, cExpression))
+                propProdCostValue = New cFormulaProperty(opProdCostValue)
                 Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(propProdCostValue)
 
                 alSumCost.Add(propProdCostValue)
@@ -301,16 +301,16 @@ Namespace Ecopath.Output
             alSumProfit.Clear()
             For fleetIndex As Integer = 1 To core.nFleets
 
-                opMinusValueCost = New cBinaryOperation(cBinaryOperation.eOperatorType.Substract, _
-                                                CType(Me(Me.RowsCount - 3, fleetIndex + 1), Object), _
-                                                CType(Me(Me.RowsCount - 2, fleetIndex + 1), Object))  'total value - total cost
-                propMinusValueCost = New cFormulaProperty(CType(opMinusValueCost, cExpression))
+                opMinusValueCost = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
+                                                Me(Me.RowsCount - 3, fleetIndex + 1), _
+                                                Me(Me.RowsCount - 2, fleetIndex + 1))  'total value - total cost
+                propMinusValueCost = New cFormulaProperty(opMinusValueCost)
                 alSumProfit.Add(propMinusValueCost)
-                Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(CType(propMinusValueCost, cProperty))
+                Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(propMinusValueCost)
             Next
 
             opSumProfit = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumProfit.ToArray())
-            propSumProfit = New cFormulaProperty(CType(opSumProfit, cExpression))
+            propSumProfit = New cFormulaProperty(opSumProfit)
             Me(Me.RowsCount - 1, Me.ColumnsCount - 3) = New PropertyCell(propSumProfit)
         End Sub
 

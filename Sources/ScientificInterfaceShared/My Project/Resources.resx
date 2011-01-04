@@ -1451,11 +1451,9 @@
   <data name="HEADER_UPPERLIMIT" xml:space="preserve">
     <value>Upper limit</value>
   </data>
-  <data name="HEADER_VALUE1" xml:space="preserve">
-    <value>Value</value>
-  </data>
-  <data name="HEADER_VALUEBIOMASS" xml:space="preserve">
-    <value>Value/unit biomass</value>
+  <data name="HEADER_VALUEBIOMASS_UNIT" xml:space="preserve">
+    <value>Value/unit biomass ({0})</value>
+    <comment>{0}: monetary unit</comment>
   </data>
   <data name="HEADER_VALUEEND" xml:space="preserve">
     <value>Value (end)</value>

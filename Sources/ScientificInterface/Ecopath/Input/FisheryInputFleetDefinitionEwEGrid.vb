@@ -85,7 +85,7 @@ Namespace Ecopath.Input
                 ' Get the dynamic profit cell by using MultiOperation and binaryOperation
                 opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumAll.ToArray())
                 propSumAll = New cFormulaProperty(CType(opSumAll, cExpression))
-                opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Substract, _
+                opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
                                                 CType(propTotal, Object), CType(propSumAll, Object))
                 propProfit = New cFormulaProperty(CType(opMinus, cExpression))
 

@@ -3764,20 +3764,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Value.
+        '''  Looks up a localized string similar to Value/unit biomass ({0}).
         '''</summary>
-        Public ReadOnly Property HEADER_VALUE1() As String
+        Public ReadOnly Property HEADER_VALUEBIOMASS_UNIT() As String
             Get
-                Return ResourceManager.GetString("HEADER_VALUE1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Value/unit biomass.
-        '''</summary>
-        Public ReadOnly Property HEADER_VALUEBIOMASS() As String
-            Get
-                Return ResourceManager.GetString("HEADER_VALUEBIOMASS", resourceCulture)
+                Return ResourceManager.GetString("HEADER_VALUEBIOMASS_UNIT", resourceCulture)
             End Get
         End Property
         

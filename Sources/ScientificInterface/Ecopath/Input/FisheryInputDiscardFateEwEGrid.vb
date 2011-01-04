@@ -97,7 +97,7 @@ Namespace Ecopath.Input
                 propSumAll = New cFormulaProperty(DirectCast(opSumAll, cExpression))
 
                 ' Calculate the export
-                opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Substract, _
+                opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
                                 CObj(sum), CObj(propSumAll))
 
                 ' Get the export property

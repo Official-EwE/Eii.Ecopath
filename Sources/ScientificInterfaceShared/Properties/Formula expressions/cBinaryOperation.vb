@@ -30,8 +30,8 @@ Namespace Properties
         Public Enum eOperatorType
             ''' <summary>Adds operand 1 to operand 2</summary>
             Add
-            ''' <summary>Substracts operand 2 from operand 1</summary>
-            Substract
+            ''' <summary>Subtracts operand 2 from operand 1</summary>
+            Subtract
             ''' <summary>Multiplies operand 1 with operand 2</summary>
             Multiply
             ''' <summary>Divides operand 1 by operand 2</summary>
@@ -128,7 +128,7 @@ Namespace Properties
             Select Case Me.m_nOperator
                 Case eOperatorType.Add
                     s = s1 + s2
-                Case eOperatorType.Substract
+                Case eOperatorType.Subtract
                     s = s1 - s2
                 Case eOperatorType.Divide
                     s = s1 / s2

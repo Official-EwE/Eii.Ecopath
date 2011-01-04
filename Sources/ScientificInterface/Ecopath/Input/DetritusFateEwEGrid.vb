@@ -121,7 +121,7 @@ Namespace Ecopath.Input
 
                     opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alProp.ToArray)
                     propSumAll = New cFormulaProperty(CType(opSumAll, cExpression))
-                    opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Substract, _
+                    opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
                                                 CType(propSum, Object), CType(propSumAll, Object))
                     propExport = New cFormulaProperty(CType(opMinus, cExpression))
 
@@ -161,7 +161,7 @@ Namespace Ecopath.Input
 
                     opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alProp.ToArray)
                     propSumAll = New cFormulaProperty(CType(opSumAll, cExpression))
-                    opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Substract, _
+                    opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
                                                 CType(propSum, Object), CType(propSumAll, Object))
                     propExport = New cFormulaProperty(CType(opMinus, cExpression))
 
