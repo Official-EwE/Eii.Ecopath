@@ -23,6 +23,8 @@ Public Class cEcopathDataStructures
     Public ModelUnitCurrencyCustom As String = ""
     Public ModelUnitMonetary As eUnitMonetaryType = 0
     Public ModelUnitMonetaryCustom As String = ""
+    Public ModelUnitArea As eUnitAreaType = 0
+    Public ModelUnitAreaCustom As String = ""
     Public ModelAuthor As String = ""
     Public ModelContact As String = ""
     Public ModelLastSaved As Double = 0

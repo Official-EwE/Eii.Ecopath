@@ -744,6 +744,8 @@ Namespace DataSources
                 'ecopathDS.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
                 ecopathDS.FirstYear = CInt(Me.ReadSafe(reader, "FirstYear", cCore.NULL_VALUE))
                 ecopathDS.NumYears = Math.Max(1, CInt(Me.ReadSafe(reader, "NumYears", 1)))
+                ecopathDS.ModelUnitArea = DirectCast(Me.ReadSafe(reader, "UnitArea", eUnitAreaType.Km2), eUnitAreaType)
+                ecopathDS.ModelUnitAreaCustom = CStr(Me.ReadSafe(reader, "UnitAreaCustom", ""))
 
                 sVal1 = CSng(Me.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
                 sVal2 = CSng(Me.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
@@ -810,6 +812,8 @@ Namespace DataSources
                 drow("UnitTime") = ecopathDS.ModelUnitTime
                 drow("UnitTimeCustom") = ecopathDS.ModelUnitTimeCustom
                 drow("UnitMonetary") = ecopathDS.ModelUnitMonetary
+                drow("UnitArea") = ecopathDS.ModelUnitArea
+                drow("UnitAreaCustom") = ecopathDS.ModelUnitAreaCustom
                 drow("FirstYear") = ecopathDS.FirstYear
                 drow("NumYears") = ecopathDS.NumYears
                 drow("MinLat") = ecopathDS.ModelSouth

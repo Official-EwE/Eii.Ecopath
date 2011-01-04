@@ -354,6 +354,10 @@ Namespace Core
         UnitTime
         ''' <summary>Unit text for time-based values.</summary>
         UnitTimeCustomText
+        ''' <summary>Unit enumerated value for area-based values.</summary>
+        UnitArea
+        ''' <summary>Unit text for area-based values.</summary>
+        UnitAreaCustomText
         ''' <summary>Unit enumerated value for currency-based values.</summary>
         UnitCurrency
         ''' <summary>Unit text for currency-based values.</summary>
@@ -362,7 +366,6 @@ Namespace Core
         UnitMonetary
         ''' <summary>Unit text for monetary values.</summary>
         UnitMonetaryCustomText
-        'js 071030 added for storing more generic EwE5 remarks
         ''' <summary>Author of an EwE component.</summary>
         Author
         ''' <summary>Contact info of an EwE component.</summary>
@@ -2338,6 +2341,20 @@ Namespace Core
         ''' <summary>Zimbabwean Dollar</summary>
         ZWD ' 	
 
+    End Enum
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated types providing area types.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Enum eUnitAreaType As Integer
+        ''' <summary>Custom area measure.</summary>
+        Custom = 0
+        ''' <summary>Area expressed in square km.</summary>
+        Km2
+        ''' <summary>Area expressed in square miles.</summary>
+        Mi2
     End Enum
 
 #End Region ' System units

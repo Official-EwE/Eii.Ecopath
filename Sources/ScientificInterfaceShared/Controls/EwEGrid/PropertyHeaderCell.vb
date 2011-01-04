@@ -160,34 +160,49 @@ Namespace Controls.EwEGrid
         Protected m_aUnitTypes() As cStyleGuide.eUnitType
         Protected m_strUnitMask As String = ""
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Configure the cell to automatically incorporate unit strings into
+        ''' its content. These unit strings will be synchronized with 
+        ''' <see cref="cStyleGuide.UnitsChanged">cStyleGuide unit changes</see>.
+        ''' </summary>
+        ''' <param name="strUnitMask">Mask to format units with. This mask must
+        ''' contain a {#} placeholder for the main value and every dynamic unit: 
+        ''' {0} for the value, {1} for the first unit and {2} for the second unit
+        ''' if applicable. Only two units are currently supported.</param>
+        ''' <param name="aUnitTypes">An array of unit types to format into the
+        ''' header cell.</param>
+        ''' -------------------------------------------------------------------
         Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.m_strUnitMask = strUnitMask
             Me.m_aUnitTypes = aUnitTypes
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Configure the cell to no longer incorporate unit strings into its 
+        ''' text.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub ClearUnitHeader()
+            Me.m_strUnitMask = ""
+            Me.m_aUnitTypes = Nothing
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the display text for the header cell.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayText() As String
             Get
                 Dim strDisplayText As String = ""
 
-                If (m_aUnitTypes Is Nothing) Or (String.IsNullOrEmpty(Me.m_strUnitMask)) Then
+                If (Me.m_aUnitTypes Is Nothing) Or (String.IsNullOrEmpty(Me.m_strUnitMask)) Then
                     strDisplayText = MyBase.DisplayText
                 Else
                     Try
-                        Dim sg As cStyleGuide = Me.Property.PropertyManager.StyleGuide
-
-                        Select Case m_aUnitTypes.Length
-                            Case 0
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value)
-                            Case 1
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, _
-                                                               sg.GetUnitString(m_aUnitTypes(0)))
-                            Case 2
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Value, _
-                                                               sg.GetUnitString(m_aUnitTypes(0)), _
-                                                               sg.GetUnitString(m_aUnitTypes(1)))
-                            Case Else
-                                Debug.Assert(False)
-                        End Select
+                        strDisplayText = Me.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.Value.ToString, Me.m_aUnitTypes)
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to apply format mask, please check")
                         strDisplayText = MyBase.DisplayText

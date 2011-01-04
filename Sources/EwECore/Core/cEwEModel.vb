@@ -128,6 +128,17 @@ Public Class cEwEModel
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' Area unit (enum)
+            meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Integer, eVarNameFlags.UnitArea, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' Area unit (text)
+            meta = New cVariableMetaData(20)
+            val = New cValue(New String(desc), eVarNameFlags.UnitAreaCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' Last saved julian date
             meta = New cVariableMetaData(0, Double.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
@@ -264,6 +275,26 @@ Public Class cEwEModel
 
         Set(ByVal str As String)
             SetVariable(eVarNameFlags.UnitMonetaryCustomText, str)
+        End Set
+    End Property
+
+    Public Property UnitArea() As eUnitAreaType
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.UnitArea), eUnitAreaType)
+        End Get
+
+        Set(ByVal i As eUnitAreaType)
+            SetVariable(eVarNameFlags.UnitArea, CInt(i))
+        End Set
+    End Property
+
+    Public Property UnitAreaCustomText() As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.UnitAreaCustomText))
+        End Get
+
+        Set(ByVal str As String)
+            SetVariable(eVarNameFlags.UnitAreaCustomText, str)
         End Set
     End Property
 

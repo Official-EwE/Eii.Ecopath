@@ -49,6 +49,10 @@ Namespace Style
         Private m_unitMonetary As eUnitMonetaryType = eUnitMonetaryType.EUR
         ''' <summary>Monetary unit custom text.</summary>
         Private m_strUnitMonetaryCustom As String = ""
+        ''' <summary>Default area unit.</summary>
+        Private m_unitArea As eUnitAreaType = eUnitAreaType.km2
+        ''' <summary>Area unit custom text.</summary>
+        Private m_strUnitAreaCustom As String = ""
 
         ' -- internal management --
         ''' <summary>States whether the StyleGuide contains unsaved changes</summary>
@@ -527,8 +531,10 @@ Namespace Style
             Time
             ''' <summary>Monetary unit.</summary>
             Monetary
-            ''' <summary>Nominal.</summary>
+            ''' <summary>Nominal unit.</summary>
             Nominal
+            ''' <summary>Area unit.</summary>
+            Area
         End Enum
 
         ''' -------------------------------------------------------------------
@@ -558,10 +564,89 @@ Namespace Style
                     strUnitString = Me.MonetaryUnitText(Me.MonetaryUnit)
                 Case cStyleGuide.eUnitType.Nominal
                     strUnitString = Me.NominalUnitText()
+                Case cStyleGuide.eUnitType.Area
+                    strUnitString = Me.AreaUnitText(Me.AreaUnit)
                 Case Else
                     Debug.Assert(False)
             End Select
             Return strUnitString
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Format a value string using a value and one or more units.
+        ''' </summary>
+        ''' <param name="strUnitMask">The mask to format values with.</param>
+        ''' <param name="strValue">The value to format into the mask.</param>
+        ''' <param name="aUnitTypes">An array of units to format into the mask.</param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' <para>The unit mask will be formatted as follows:</para>
+        ''' <list type="table">
+        ''' <listheader><term>Mask item</term><term>Will format to</term></listheader>
+        ''' <item><term>{0}</term><term><paramref name="strValue"/></term></item>
+        ''' <item><term>{1}</term><term><paramref name="strUnitMask"/> item 0</term></item>
+        ''' <item><term>{2}</term><term><paramref name="strUnitMask"/> item 1 (if applicable)</term></item>
+        ''' </list>
+        ''' <para>The maximum number of <paramref name="aUnitTypes"/> is 2.</para>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function FormatUnitString(ByVal strUnitMask As String, _
+                                         ByVal strValue As String, _
+                                         ByVal aUnitTypes As eUnitType()) As String
+
+            If (strUnitMask IsNot Nothing) And (Not String.IsNullOrEmpty(strUnitMask)) Then
+                Select Case aUnitTypes.Length
+                    Case 0
+                        Return String.Format(strUnitMask, strValue)
+                    Case 1
+                        Return String.Format(strUnitMask, strValue, _
+                                                       Me.GetUnitString(aUnitTypes(0)))
+                    Case 2
+                        Return String.Format(strUnitMask, strValue, _
+                                                       Me.GetUnitString(aUnitTypes(0)), _
+                                                       Me.GetUnitString(aUnitTypes(1)))
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+            End If
+            Return String.Format(strUnitMask, strValue)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Format a string from one or more units.
+        ''' </summary>
+        ''' <param name="strUnitMask">The mask to format values with.</param>
+        ''' <param name="aUnitTypes">An array of units to format into the mask.</param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' <para>The unit mask will be formatted as follows:</para>
+        ''' <list type="table">
+        ''' <listheader><term>Mask item</term><term>Will format to</term></listheader>
+        ''' <item><term>{0}</term><term><paramref name="strUnitMask"/> item 0</term></item>
+        ''' <item><term>{1}</term><term><paramref name="strUnitMask"/> item 1 (if applicable)</term></item>
+        ''' </list>
+        ''' <para>The maximum number of <paramref name="aUnitTypes"/> is 2.</para>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function FormatUnitString(ByVal strUnitMask As String, _
+                                         ByVal aUnitTypes As eUnitType()) As String
+
+            If (strUnitMask IsNot Nothing) And (Not String.IsNullOrEmpty(strUnitMask)) Then
+
+                Select Case aUnitTypes.Length
+                    Case 0
+                        Debug.Assert(False)
+                    Case 1
+                        Return String.Format(strUnitMask, Me.GetUnitString(aUnitTypes(0)))
+                    Case 2
+                        Return String.Format(strUnitMask, Me.GetUnitString(aUnitTypes(0)), Me.GetUnitString(aUnitTypes(1)))
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+            End If
+            Return strUnitMask
         End Function
 
 #Region " Currency units "
@@ -638,18 +723,27 @@ Namespace Style
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the textual representation of a time unit.
+        ''' </summary>
+        ''' <param name="unit">Time unit to represent.</param>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property TimeUnitText(ByVal unit As eUnitTimeType) As String
             Get
                 Select Case unit
-                    Case eUnitTimeType.Day
-                        Return My.Resources.UNIT_TIME_DAY
-                    Case eUnitTimeType.Year
-                        Return My.Resources.UNIT_TIME_YEAR
+                    Case eUnitTimeType.Day : Return My.Resources.UNIT_TIME_DAY
+                    Case eUnitTimeType.Year : Return My.Resources.UNIT_TIME_YEAR
                 End Select
                 Return Me.CustomTimeUnitText()
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the custom time unit text.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property CustomTimeUnitText() As String
             Get
                 Return Me.m_strUnitTimeCustom
@@ -715,8 +809,7 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Helper method, get/set the text for the monetary unit text to show 
-        ''' in the application.
+        ''' Get/set the custom monetary unit text to display to the user.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property CustomMonetaryUnitText() As String
@@ -743,6 +836,60 @@ Namespace Style
         End Property
 
 #End Region ' Monetary units
+
+#Region " Area units "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, get/set the area unit to show in the application.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property AreaUnit() As eUnitAreaType
+            Get
+                Return Me.m_unitArea
+            End Get
+            Set(ByVal value As eUnitAreaType)
+                If (Me.m_unitArea <> value) Then
+                    Me.m_unitArea = value
+                    Me.UnitsChanged()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, get the area unit text to show in the application.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property AreaUnitText(ByVal unit As eUnitAreaType) As String
+            Get
+                Select Case unit
+                    Case eUnitAreaType.Km2 : Return My.Resources.UNIT_AREA_KM2
+                    Case eUnitAreaType.Mi2 : Return My.Resources.UNIT_AREA_MI2
+                End Select
+                Return Me.CustomAreaUnitText
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, get/set the text for the area unit text to show 
+        ''' in the application.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property CustomAreaUnitText() As String
+            Get
+                Return Me.m_strUnitAreaCustom
+            End Get
+            Set(ByVal value As String)
+                If (String.Compare(Me.m_strUnitAreaCustom, value) <> 0) Then
+                    Me.m_strUnitAreaCustom = value
+                    Me.UnitsChanged()
+                End If
+            End Set
+        End Property
+
+#End Region ' Area units
 
 #End Region ' Units
 

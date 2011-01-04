@@ -68,47 +68,51 @@ Namespace Controls.EwEGrid
         Protected m_aUnitTypes() As cStyleGuide.eUnitType
         Protected m_strUnitMask As String = ""
 
-        Public Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Configure the cell to automatically incorporate unit strings into
+        ''' its content. These unit strings will be synchronized with 
+        ''' <see cref="cStyleGuide.UnitsChanged">cStyleGuide unit changes</see>.
+        ''' </summary>
+        ''' <param name="strUnitMask">Mask to format units with. This mask must
+        ''' contain a {#} placeholder for every dynamic unit; {0} for the first
+        ''' unit, {1} for the second unit, etc. Only two units are currently 
+        ''' supported.</param>
+        ''' <param name="aUnitTypes">An array of unit types to format into the
+        ''' header cell.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub SetUnitHeader(ByVal strUnitMask As String, _
+                                 ByVal aUnitTypes() As cStyleGuide.eUnitType)
             ' Sanity checks
             Debug.Assert(aUnitTypes.Length = 1 Or aUnitTypes.Length = 2)
-
+            ' Store
             Me.m_strUnitMask = strUnitMask
             Me.m_aUnitTypes = aUnitTypes
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Configure the cell to no longer incorporate unit strings into its 
+        ''' text.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub ClearUnitHeader()
+            Me.m_strUnitMask = ""
+            Me.m_aUnitTypes = Nothing
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the display text for the header cell.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayText() As String
             Get
-                Dim strDisplayText As String = ""
-                Dim strUnit1 As String = "u1"
-                Dim strUnit2 As String = "u2"
-
-                If m_aUnitTypes Is Nothing Then
-                    strDisplayText = MyBase.DisplayText
+                If (Me.m_aUnitTypes Is Nothing) Then
+                    Return MyBase.DisplayText
                 Else
-                    Select Case m_aUnitTypes.Length
-
-                        Case 0
-                            strDisplayText = MyBase.DisplayText
-
-                        Case 1
-                            If Me.StyleGuide IsNot Nothing Then
-                                strUnit1 = Me.StyleGuide.GetUnitString(m_aUnitTypes(0))
-                            End If
-                            strDisplayText = String.Format(Me.m_strUnitMask, strUnit1)
-
-                        Case 2
-                            If Me.StyleGuide IsNot Nothing Then
-                                strUnit1 = Me.StyleGuide.GetUnitString(m_aUnitTypes(0))
-                                strUnit2 = Me.StyleGuide.GetUnitString(m_aUnitTypes(1))
-                            End If
-                            strDisplayText = String.Format(Me.m_strUnitMask, strUnit1, strUnit2)
-
-                        Case Else
-                            Debug.Assert(False)
-
-                    End Select
+                    Return Me.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.m_aUnitTypes)
                 End If
-                Return strDisplayText
             End Get
         End Property
 

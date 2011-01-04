@@ -1379,11 +1379,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catch value.
+        '''  Looks up a localized string similar to Catch value ({0}).
         '''</summary>
         Public ReadOnly Property HEADER_CATCH_VALUE() As String
             Get
                 Return ResourceManager.GetString("HEADER_CATCH_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catch value ({0}/{1}).
+        '''</summary>
+        Public ReadOnly Property HEADER_CATCH_VALUE_PER_AREA() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATCH_VALUE_PER_AREA", resourceCulture)
             End Get
         End Property
         
@@ -3764,6 +3773,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}).
+        '''</summary>
+        Public ReadOnly Property HEADER_VALUE_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VALUE_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Value/unit biomass ({0}).
         '''</summary>
         Public ReadOnly Property HEADER_VALUEBIOMASS_UNIT() As String
@@ -4422,6 +4440,24 @@ Namespace My.Resources
         Public ReadOnly Property TS_TYPE_TRACER_CONCREL() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_TRACER_CONCREL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to km².
+        '''</summary>
+        Public ReadOnly Property UNIT_AREA_KM2() As String
+            Get
+                Return ResourceManager.GetString("UNIT_AREA_KM2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to mi².
+        '''</summary>
+        Public ReadOnly Property UNIT_AREA_MI2() As String
+            Get
+                Return ResourceManager.GetString("UNIT_AREA_MI2", resourceCulture)
             End Get
         End Property
         

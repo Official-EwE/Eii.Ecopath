@@ -2293,6 +2293,8 @@ Public Class cCore
         Me.m_EwEModel.UnitTimeCustomText = Me.m_EcoPathData.ModelUnitTimeCustom
         Me.m_EwEModel.UnitMonetary = Me.m_EcoPathData.ModelUnitMonetary
         Me.m_EwEModel.UnitMonetaryCustomText = Me.m_EcoPathData.ModelUnitMonetaryCustom
+        Me.m_EwEModel.UnitArea = Me.m_EcoPathData.ModelUnitArea
+        Me.m_EwEModel.UnitAreaCustomText = Me.m_EcoPathData.ModelUnitAreaCustom
         Me.m_EwEModel.FirstYear = Me.m_EcoPathData.FirstYear
         Me.m_EwEModel.NumYears = Me.m_EcoPathData.NumYears
         Me.m_EwEModel.AreaName = Me.m_EcoPathData.ModelAreaName
@@ -2324,6 +2326,8 @@ Public Class cCore
         Me.m_EcoPathData.ModelUnitTimeCustom = Me.m_EwEModel.UnitTimeCustomText
         Me.m_EcoPathData.ModelUnitMonetary = Me.m_EwEModel.UnitMonetary
         Me.m_EcoPathData.ModelUnitMonetaryCustom = Me.m_EwEModel.UnitMonetaryCustomText
+        Me.m_EcoPathData.ModelUnitArea = Me.m_EwEModel.UnitArea
+        Me.m_EcoPathData.ModelUnitAreaCustom = Me.m_EwEModel.UnitAreaCustomText
         Me.m_EcoPathData.FirstYear = Me.m_EwEModel.FirstYear
         Me.m_EcoPathData.NumYears = Me.m_EwEModel.NumYears
         Me.m_EcoPathData.ModelAreaName = Me.m_EwEModel.AreaName

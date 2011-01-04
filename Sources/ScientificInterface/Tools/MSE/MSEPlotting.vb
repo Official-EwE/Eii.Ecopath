@@ -15,19 +15,7 @@ Imports ZedGraph
 
 #End Region
 
-#Region "Enumerators"
-
-Friend Enum ePlotTypes
-    Histogram
-    Values
-    Line
-End Enum
-
-#End Region
-
-#Region "Plotting Class"
-
-#Region "Reference point class"
+#Region " Reference point class "
 
 Friend Class cMSERefPoint
     Private m_low As Single
@@ -57,13 +45,13 @@ Friend Class cMSERefPoint
 
 End Class
 
-#End Region
+#End Region ' Reference point class
 
-#Region "Plotter class"
+#Region " Plotter class "
 
 Friend Class cMSEPlotter
 
-#Region "Private data"
+#Region " Private data "
 
     Private Const LB_TAG As String = "LB"
     Private Const UB_TAG As String = "UB"
@@ -79,9 +67,9 @@ Friend Class cMSEPlotter
     Private m_RefPoints As List(Of cMSERefPoint)
     Private m_nLines As Integer
 
-#End Region
+#End Region ' Private data
 
-#Region "Public interface"
+#Region " Public interface "
 
     ''' <summary>
     ''' Initialize to ZedGraphHelper and a Zedgraph control
@@ -100,7 +88,6 @@ Friend Class cMSEPlotter
         Me.m_manager = MSEManager
     End Sub
 
-
     ''' <summary>
     ''' Get/set how the current data is to be plotted.
     ''' </summary>
@@ -114,11 +101,9 @@ Friend Class cMSEPlotter
     End Property
 
     ''' <summary>
-    ''' What type of data is being plotted. Used mostly for labels
+    ''' Get what type of data is being plotted. Used mostly for labels.
     ''' </summary>
     ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Property DataType() As ePlotData
         Get
             Return Me.m_dataType
@@ -324,9 +309,9 @@ Friend Class cMSEPlotter
 
     End Function
 
-#End Region
+#End Region ' Public interface
 
-#Region "Private methods"
+#Region " Private methods "
 
     Private Sub configPanes()
         If Me.m_type = ePlotTypes.Histogram Then
@@ -405,16 +390,15 @@ Friend Class cMSEPlotter
                         Case ePlotData.Effort
                             Return SharedResources.HEADER_EFFORT
                         Case ePlotData.FleetValue
-                            Return SharedResources.HEADER_CATCH_VALUE
+                            Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCH_VALUE, _
+                                                                        New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary})
                         Case ePlotData.GroupCatch
                             Return SharedResources.HEADER_CATCH_WEIGHT
                     End Select
 
             End Select
 
-
             Return ""
-
         End Get
     End Property
 
@@ -433,16 +417,15 @@ Friend Class cMSEPlotter
                             ' ToDo: add unit
                             Return SharedResources.HEADER_EFFORT
                         Case ePlotData.FleetValue
-                            ' ToDo: add unit
-                            Return SharedResources.HEADER_CATCH_VALUE
+                            Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCH_VALUE, _
+                                                                        New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary})
                         Case ePlotData.GroupCatch
                             ' ToDo: add unit
                             Return SharedResources.HEADER_CATCH_WEIGHT
                     End Select
 
                 Case ePlotTypes.Line, ePlotTypes.Values
-
-                    Return "Year"
+                    Return SharedResources.HEADER_YEAR
 
             End Select
 
@@ -757,11 +740,10 @@ Friend Class cMSEPlotter
         Return n
     End Function
 
-#End Region
+#End Region ' Private methods
 
 End Class
 
-#End Region
+#End Region ' Plotter class
 
-#End Region
 

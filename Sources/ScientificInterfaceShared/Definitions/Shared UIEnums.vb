@@ -137,5 +137,19 @@ Namespace Definitions
         ReferenceData
     End Enum
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Supported plot types.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum ePlotTypes As Byte
+        ''' <summary>Plot values as a histogram.</summary>
+        Histogram = 0
+        ''' <summary>Plot values as individual lines for a groups and fleets.</summary>
+        Values
+        ''' <summary>Plot values as one line per group or fleet.</summary>
+        Line
+    End Enum
+
 End Namespace
 

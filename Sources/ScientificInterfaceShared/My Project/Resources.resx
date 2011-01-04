@@ -769,9 +769,6 @@
   <data name="HEADER_CATCH_UPPER" xml:space="preserve">
     <value>Catch upper</value>
   </data>
-  <data name="HEADER_CATCH_VALUE" xml:space="preserve">
-    <value>Catch value</value>
-  </data>
   <data name="HEADER_CB" xml:space="preserve">
     <value>Cons/biom</value>
   </data>
@@ -1761,5 +1758,23 @@
   </data>
   <data name="HEADER_DATE" xml:space="preserve">
     <value>Date</value>
+  </data>
+  <data name="HEADER_CATCH_VALUE" xml:space="preserve">
+    <value>Catch value ({0})</value>
+    <comment>{0}: monetary unit</comment>
+  </data>
+  <data name="HEADER_CATCH_VALUE_PER_AREA" xml:space="preserve">
+    <value>Catch value ({0}/{1})</value>
+    <comment>{0}: monetary unit, {1}:area unit</comment>
+  </data>
+  <data name="HEADER_VALUE_UNIT" xml:space="preserve">
+    <value>{0} ({1})</value>
+    <comment>{0}: value, {1}: unit</comment>
+  </data>
+  <data name="UNIT_AREA_KM2" xml:space="preserve">
+    <value>km²</value>
+  </data>
+  <data name="UNIT_AREA_MI2" xml:space="preserve">
+    <value>mi²</value>
   </data>
 </root>
