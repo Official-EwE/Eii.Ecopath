@@ -22,7 +22,7 @@ Namespace Ecopath.Input
 
         Public Sub New()
             MyBase.New()
-            Me.FixedColumnWidths = False
+            Me.FixedColumnWidths = True
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -43,7 +43,10 @@ Namespace Ecopath.Input
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
                 source = Me.Core.FleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, _
+                                                                     source, eVarNameFlags.Name, Nothing, _
+                                                                     SharedResources.HEADER_VALUE_A_PER_B, _
+                                                                     New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary, cStyleGuide.eUnitType.Currency})
             Next
 
             ' Total column
