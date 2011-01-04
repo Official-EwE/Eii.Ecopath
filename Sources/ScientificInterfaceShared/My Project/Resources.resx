@@ -1184,7 +1184,7 @@
     <value>Predation mortality</value>
   </data>
   <data name="HEADER_PREDMORTRATE" xml:space="preserve">
-    <value>+ Predatation mort. rate</value>
+    <value>+ Predation mort. rate</value>
   </data>
   <data name="HEADER_PREYPREDATOR" xml:space="preserve">
     <value>Prey \ predator</value>

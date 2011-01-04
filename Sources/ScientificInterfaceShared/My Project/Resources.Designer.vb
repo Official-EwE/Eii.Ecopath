@@ -2909,7 +2909,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to + Predatation mort. rate.
+        '''  Looks up a localized string similar to + Predation mort. rate.
         '''</summary>
         Public ReadOnly Property HEADER_PREDMORTRATE() As String
             Get
