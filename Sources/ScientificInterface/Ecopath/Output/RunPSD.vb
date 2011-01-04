@@ -149,10 +149,20 @@ Namespace Ecopath.Output
         Private Sub BtnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbtnRun.Click
 
+            'PSD Enabled needs to be true for Ecopath to run the PSD 
+            'The PSDEnabled flag is set in the Model Description form and may be False preventing the PSD from running
+            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
+            Dim orgEnabled As Boolean = parms.PSDEnabled
+            parms.PSDEnabled = True
+
             ' Grab PSD settings from the GUI and stick them in the core
             Me.UpdateVariables()
             ' Run Ecopath
             Me.UIContext.Core.RunEcoPath()
+
+            'set PSDEnabled back to it's original value 
+            'This way if it's False (most likley) then it will not run in a normal Ecopath run
+            parms.PSDEnabled = orgEnabled
 
         End Sub
 
