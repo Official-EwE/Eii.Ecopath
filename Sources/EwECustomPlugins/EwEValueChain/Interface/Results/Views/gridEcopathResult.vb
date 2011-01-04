@@ -36,6 +36,8 @@ Public Class gridEcopathResult
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
+        ' ToDo: globalize this method!
+
         Dim cell As SourceGrid2.Cells.Real.Cell = Nothing
         Dim iR As Integer = 0
 
