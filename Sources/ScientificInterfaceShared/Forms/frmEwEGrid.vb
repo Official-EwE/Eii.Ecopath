@@ -124,6 +124,8 @@ Namespace Forms
                         Me.m_bToolStripCreated = True
                     End If
                 End If
+                ' Hide grip
+                Me.m_ts.GripStyle = ToolStripGripStyle.Hidden
 
                 Me.m_sep = New ToolStripSeparator()
 
