@@ -181,7 +181,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALVALUE, cStyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALVALUE)
 
             alSumAll.Clear()
             For fleetIndex As Integer = 1 To core.nFleets
@@ -243,7 +243,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCOST, cStyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCOST)
 
             alSumCost.Clear()
             For fleetIndex As Integer = 1 To core.nFleets
@@ -296,7 +296,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALPROFIT, cStyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALPROFIT)
 
             alSumProfit.Clear()
             For fleetIndex As Integer = 1 To core.nFleets
