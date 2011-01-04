@@ -26,9 +26,6 @@ Namespace Ecopath.Output
 
             Me.InitializeComponent()
 
-            Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.UIContext, Me.zgcZedGraphCntl)
-
         End Sub
 
 #End Region ' Constructor
@@ -40,6 +37,9 @@ Namespace Ecopath.Output
             'Dim parms As cPSDParameters = Nothing
             'Dim str As String = ""
             'Dim msg As cMessage = Nothing
+
+            Me.m_zgh = New cZedGraphHelper()
+            Me.m_zgh.Attach(Me.UIContext, Me.zgcZedGraphCntl)
 
             AddCurves(CreatePane(My.Resources.CAPTION_SIZEWT, SharedResources.HEADER_SIZECLASS, ""))
 
