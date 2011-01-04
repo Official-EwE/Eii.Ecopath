@@ -31,7 +31,7 @@ Namespace Ecopath.Input
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUEBIOMASS)
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUEBIOMASS_UNIT, cStyleGuide.eUnitType.Monetary)
 
             Me.FixedColumns = 2
 
