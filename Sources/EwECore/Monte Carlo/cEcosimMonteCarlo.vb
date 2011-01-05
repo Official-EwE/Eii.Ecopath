@@ -197,6 +197,8 @@ Public Class cEcosimMonteCarlo
                                  eVarNameFlags.QBInput
 
                                 CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
+
+                                'ToDo 7-Dec-2010 MonteCarlo.LoadFromPedigree the intention here is to reset the ParLimit() base on the new CV value
                                 ParLimit(0, Par, i) = 0
                                 ParLimit(1, Par, i) = 0
 
@@ -780,6 +782,7 @@ Public Class cEcosimMonteCarlo
         'Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
 
         Do
+            'jb 7-Dec-2010 ChooseFeasiblePar() changed application of CV 
             ' X = xbar * (1 + 0.02 * CV * RandomNormal())
             X = xbar * (1 + CV * RandomNormal())
 
