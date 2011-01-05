@@ -3906,6 +3906,7 @@ NextPivot:
         Dim PProd As Single
         Dim Production As Single
         Dim fCatch As Single
+        Dim BEmig As Single
         Dim SimCatch() As Single
         Dim SimB() As Single
         Dim SimPB() As Single
@@ -3941,13 +3942,20 @@ NextPivot:
             For i = 1 To m_epdata.NumLiving
                 SimB(i) = BB(i)
                 SimPB(i) = m_esdata.loss(i) / BB(i)
+
+                SimCatch(i) = BB(i) * m_esdata.FishTime(i)
+                BEmig = m_epdata.Emig(i) * BB(i)
+
+                ' SimEE(i) = 1 - (m_esdata.loss(i) - m_esdata.Eatenof(i) - SimCatch(i)) / (SimPB(i) * BB(i))
+                'ToDo_jb 5-Jan-2010 NetworkAnalysis PrepareUlanowForCallFromEcosim calculation of simEE uses fishtime() as catch
+                'm_esdata.FishTime(i) is a rate not an amount it should use SimCatch() BB(i) * m_esdata.FishTime(i)
                 SimEE(i) = 1 - (m_esdata.loss(i) - m_esdata.Eatenof(i) - m_esdata.FishTime(i)) / (SimPB(i) * BB(i))
+
                 If m_epdata.PP(i) < 1 Then 'only for consumers
                     If m_epdata.GE(i) > 0 Then SimQB(i) = SimPB(i) / m_epdata.GE(i)
                     SimIm(i) = m_epdata.DC(i, 0) * SimQB(i)
                     SimResp(i) = BB(i) * (SimQB(i) - SimPB(i) - m_epdata.GS(i))
                 End If
-                SimCatch(i) = BB(i) * m_esdata.FishTime(i)
                 SimEx(i) = SimCatch(i)
 
                 fCatch = fCatch + SimEx(i)
