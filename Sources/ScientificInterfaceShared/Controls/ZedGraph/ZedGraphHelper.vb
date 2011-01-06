@@ -430,6 +430,7 @@ Namespace Controls
             End If
 
             Me.m_zgc = Nothing
+            Me.m_nPanels = 0 ' To ensure that avid child control detaches do not stumble
 
         End Sub
 

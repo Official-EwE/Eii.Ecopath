@@ -668,6 +668,9 @@ Namespace Ecospace
 #Region " Events "
 
         Private Sub ClearResults()
+
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+
             For i As Integer = 1 To Me.Core.nGroups - 1
                 For j As Integer = 1 To Me.Core.nEcospaceTimeSteps - 1
                     Me.m_as2RelBiomassResults(i, j) = 0
@@ -677,7 +680,7 @@ Namespace Ecospace
 
             ' Reset plot drawer if overlay is not needed
             If Me.m_bOverlay = False Then
-                Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps)
+                Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, parms.NumberOfTimeStepsPerYear)
             Else
                 Me.m_zgh.Overlay(Me.Core.nGroups)
             End If

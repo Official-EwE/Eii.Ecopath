@@ -23,21 +23,43 @@ Namespace Ecospace
     Public Class cEcospaceZedGraphHelper
         Inherits cZedGraphHelper
 
-        Private m_nTotalSteps As Integer
-        Private m_nGroups As Integer
+        Private m_nTotalSteps As Integer = 0
+        Private m_iFirstYear As Integer = 0
+        Private m_sNumStepsPerYear As Single = 0.0!
+        Private m_nGroups As Integer = 0
         Private m_pane As GraphPane = Nothing
 
         Private m_showGroupMode As RunEcospace.eShowGroupType = RunEcospace.eShowGroupType.ShowAll
         Private m_iGroupToShow As Integer = cCore.NULL_VALUE
 
-        Public Sub Reset(ByVal nGroups As Integer, ByVal nTotalSteps As Integer)
+        Public Overrides Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, ByVal zgc As ZedGraph.ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
+            MyBase.Attach(uic, zgc, iNumPanels)
+            For i As Integer = 0 To Me.NumPanes - 1
+                AddHandler Me.GetPane(i + 1).XAxis.ScaleFormatEvent, AddressOf XScaleFormatEvent
+            Next
+        End Sub
+
+        Public Overrides Sub Detach()
+            For i As Integer = 0 To Me.NumPanes - 1
+                RemoveHandler Me.GetPane(i + 1).XAxis.ScaleFormatEvent, AddressOf XScaleFormatEvent
+            Next
+            MyBase.Detach()
+        End Sub
+
+        Public Sub Reset(ByVal nGroups As Integer, _
+                         ByVal nTotalSteps As Integer, _
+                         ByVal iFirstYear As Integer, _
+                         ByVal sNumStepsPerYear As Single)
 
             Dim li As LineItem = Nothing
 
-            Me.m_pane = Me.ConfigurePane(My.Resources.ECOSPACE_HEADER_RELB, ScientificInterfaceShared.My.Resources.HEADER_TIME, _
+            Me.m_pane = Me.ConfigurePane(My.Resources.ECOSPACE_HEADER_RELB, _
+                                         ScientificInterfaceShared.My.Resources.HEADER_YEAR, _
                                          0, nTotalSteps, My.Resources.ECOSPACE_HEADER_LOGBREL, -1, 1, True)
             Me.m_nGroups = nGroups
             Me.m_nTotalSteps = nTotalSteps
+            Me.m_iFirstYear = iFirstYear
+            Me.m_sNumStepsPerYear = sNumStepsPerYear
 
             Me.m_pane.CurveList.Clear()
             For iGroup As Integer = 1 To nGroups
@@ -45,7 +67,7 @@ Namespace Ecospace
                 Me.m_pane.CurveList.Add(li)
             Next
 
-            Me.Redraw()
+            Me.RescaleAndRedraw(1)
 
         End Sub
 
@@ -108,6 +130,19 @@ Namespace Ecospace
             End Select
 
             Return True
+
+        End Function
+
+        Private Function XScaleFormatEvent(ByVal pane As GraphPane, _
+                                           ByVal axis As Axis, _
+                                           ByVal dValue As Double, _
+                                           ByVal iIndex As Integer) As String
+            Dim sNumStepsPerYear As Single = Me.m_sNumStepsPerYear
+            Dim sYear As Single = 0.0!
+
+            If (sNumStepsPerYear <= 0.0!) Then sNumStepsPerYear = 1.0!
+            sYear = Me.m_iFirstYear + CSng(dValue / sNumStepsPerYear)
+            Return sYear.ToString
 
         End Function
 
