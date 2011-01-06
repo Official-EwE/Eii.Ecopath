@@ -541,12 +541,12 @@ Namespace FitToTimeSeries
             End Try
 
             Me.m_runstoppedHandler(Me.m_runType)
-            m_runType = eRunType.Idle
 
+            ' Done searching
+            m_runType = eRunType.Idle
+            m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
 
         End Sub
-
-
 
 #End Region ' Search
 
