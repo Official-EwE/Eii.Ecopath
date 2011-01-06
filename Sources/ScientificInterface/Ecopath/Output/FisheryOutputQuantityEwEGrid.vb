@@ -23,6 +23,7 @@ Namespace Ecopath.Output
         Protected Overrides Sub InitStyle()
 
             Dim source As cCoreInputOutputBase = Nothing
+            Dim aunits As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
 
             MyBase.InitStyle()
 
@@ -38,11 +39,13 @@ Namespace Ecopath.Output
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
                 source = Core.FleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, _
+                                                                     source, eVarNameFlags.Name, Nothing, _
+                                                                     SharedResources.HEADER_VALUE_A_PER_B, aunits)
             Next
 
             ' Total catch column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH)
+            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH_UNIT_PY, aunits)
 
             Me.FixedColumns = 2
         End Sub

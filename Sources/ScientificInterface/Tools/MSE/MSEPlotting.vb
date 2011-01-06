@@ -390,7 +390,7 @@ Friend Class cMSEPlotter
                         Case ePlotData.Effort
                             Return SharedResources.HEADER_EFFORT
                         Case ePlotData.FleetValue
-                            Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCH_VALUE, _
+                            Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
                                                                         New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary})
                         Case ePlotData.GroupCatch
                             Return SharedResources.HEADER_CATCH_WEIGHT
@@ -417,7 +417,7 @@ Friend Class cMSEPlotter
                             ' ToDo: add unit
                             Return SharedResources.HEADER_EFFORT
                         Case ePlotData.FleetValue
-                            Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCH_VALUE, _
+                            Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
                                                                         New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary})
                         Case ePlotData.GroupCatch
                             ' ToDo: add unit

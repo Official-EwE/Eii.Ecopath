@@ -18,7 +18,7 @@ Namespace Ecopath.Output
 
         Public Sub New()
             MyBase.New()
-            Me.FixedColumnWidths = False
+            Me.FixedColumnWidths = True
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -29,7 +29,7 @@ Namespace Ecopath.Output
 
             Dim group As cCoreGroupBase = Nothing
             Dim fleet As cFleetInput = Nothing
-            Dim iGroup As Integer
+            Dim iGroup As Integer = 0
 
             Me.Redim(Core.nLivingGroups + 1, 2 + Core.nFleets)
 
@@ -38,7 +38,9 @@ Namespace Ecopath.Output
 
             For iFleet As Integer = 1 To Core.nFleets
                 fleet = Core.FleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Name)
+                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
+                                                                 fleet, eVarNameFlags.Name, Nothing, _
+                                                                 SharedResources.HEADER_VALUE_PERUNIT, cStyleGuide.eUnitType.Time)
             Next iFleet
 
             For iGroup = 1 To Core.nLivingGroups

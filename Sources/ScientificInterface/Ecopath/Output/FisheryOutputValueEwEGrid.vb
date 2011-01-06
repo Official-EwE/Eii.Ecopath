@@ -25,6 +25,7 @@ Namespace Ecopath.Output
         Protected Overrides Sub InitStyle()
 
             Dim source As cCoreInputOutputBase = Nothing
+            Dim aunits As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary, cStyleGuide.eUnitType.Time}
 
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
@@ -44,12 +45,12 @@ Namespace Ecopath.Output
             Next
 
             ' Catch value column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_VALUE)
-            Me(0, Core.nFleets + 3) = New EwEColumnHeaderCell(SharedResources.HEADER_NONMARKET_VALUE, cStyleGuide.eUnitType.Monetary)
-            Me(0, Core.nFleets + 4) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE, cStyleGuide.eUnitType.Monetary)
+            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCHVALUE_UNIT_PY, aunits)
+            Me(0, Core.nFleets + 3) = New EwEColumnHeaderCell(SharedResources.HEADER_NONMARKETVALUE_UNIT_PY, aunits)
+            Me(0, Core.nFleets + 4) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE_UNIT_PY, aunits)
 
             Me.FixedColumns = 2
-            Me.FixedColumnWidths = False
+            Me.FixedColumnWidths = True
         End Sub
 
         Protected Overrides Sub FillData()

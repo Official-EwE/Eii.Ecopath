@@ -686,8 +686,8 @@
     <value>Biom. accumul. ({0}/{1})</value>
     <comment>{0}: ??? unit, {1}: ??? unit</comment>
   </data>
-  <data name="HEADER_BIOMACCURATE2" xml:space="preserve">
-    <value>+ Biomass accum. rate</value>
+  <data name="HEADER_BIOMACCURATE_UNIT" xml:space="preserve">
+    <value>+ Biomass accum. rate (/{0})</value>
   </data>
   <data name="HEADER_BIOMASS" xml:space="preserve">
     <value>Biomass</value>
@@ -1098,8 +1098,8 @@
   <data name="HEADER_NETEFFICIENCY" xml:space="preserve">
     <value>Net efficiency</value>
   </data>
-  <data name="HEADER_NETMIGRATE" xml:space="preserve">
-    <value>+ Net migration rate</value>
+  <data name="HEADER_NETMIGRATE_UNIT" xml:space="preserve">
+    <value>+ Net migration rate (/{0})</value>
   </data>
   <data name="HEADER_NETMIGRATION_UNIT" xml:space="preserve">
     <value>Net migration ({0}/{1})</value>
@@ -1120,9 +1120,9 @@
   <data name="HEADER_NONE" xml:space="preserve">
     <value>None</value>
   </data>
-  <data name="HEADER_NONMARKET_VALUE" xml:space="preserve">
-    <value>Non-market value ({0})</value>
-    <comment>{0}: monetary unit</comment>
+  <data name="HEADER_NONMARKETVALUE_UNIT_PY" xml:space="preserve">
+    <value>Non-market value ({0}/{1})</value>
+    <comment>{0}: monetary unit, {1}: time unit</comment>
   </data>
   <data name="HEADER_NORMALIZED_VALUE" xml:space="preserve">
     <value>Normalized value</value>
@@ -1139,8 +1139,8 @@
   <data name="HEADER_OMNIVORYINDEX" xml:space="preserve">
     <value>Omnivory index</value>
   </data>
-  <data name="HEADER_OTHERMORTRATE" xml:space="preserve">
-    <value>+ Other mort. rate</value>
+  <data name="HEADER_OTHERMORTRATE_UNIT" xml:space="preserve">
+    <value>+ Other mort. rate (/{0})</value>
   </data>
   <data name="HEADER_PARAMETER" xml:space="preserve">
     <value>Parameter</value>
@@ -1180,8 +1180,8 @@
   <data name="HEADER_PREDMORT" xml:space="preserve">
     <value>Predation mortality</value>
   </data>
-  <data name="HEADER_PREDMORTRATE" xml:space="preserve">
-    <value>+ Predation mort. rate</value>
+  <data name="HEADER_PREDMORTRATE_UNIT" xml:space="preserve">
+    <value>+ Predation mort. rate (/{0})</value>
   </data>
   <data name="HEADER_PREYPREDATOR" xml:space="preserve">
     <value>Prey \ predator</value>
@@ -1401,10 +1401,11 @@
   <data name="HEADER_TOTAL" xml:space="preserve">
     <value>Total</value>
   </data>
-  <data name="HEADER_TOTALCATCH" xml:space="preserve">
-    <value>Total catch</value>
+  <data name="HEADER_TOTALCATCH_UNIT_PY" xml:space="preserve">
+    <value>Total catch ({0}/{1})</value>
+    <comment>{0}: currency unit, {1}: time unit</comment>
   </data>
-  <data name="HEADER_TOTALCOST" xml:space="preserve">
+  <data name="HEADER_TOTALCOST_UNIT" xml:space="preserve">
     <value>Total cost ({0})</value>
     <comment>{0}: Monetary unit</comment>
   </data>
@@ -1418,13 +1419,13 @@
     <value>Z (/{0})</value>
     <comment>{0}: ? unit</comment>
   </data>
-  <data name="HEADER_TOTALPROFIT" xml:space="preserve">
+  <data name="HEADER_TOTALPROFIT_UNIT" xml:space="preserve">
     <value>Total profit ({0})</value>
     <comment>{0}: Monetary unit</comment>
   </data>
-  <data name="HEADER_TOTALVALUE" xml:space="preserve">
-    <value>Total value ({0})</value>
-    <comment>{0}: Monetary unit</comment>
+  <data name="HEADER_TOTALVALUE_UNIT_PY" xml:space="preserve">
+    <value>Total value ({0}/{1})</value>
+    <comment>{0}: Monetary unit, {1}: time unit</comment>
   </data>
   <data name="HEADER_TOTALVALUE_PERC" xml:space="preserve">
     <value>Total value (%)</value>
@@ -1759,11 +1760,11 @@
   <data name="HEADER_DATE" xml:space="preserve">
     <value>Date</value>
   </data>
-  <data name="HEADER_CATCH_VALUE" xml:space="preserve">
-    <value>Catch value ({0})</value>
-    <comment>{0}: monetary unit</comment>
+  <data name="HEADER_CATCHVALUE_UNIT_PY" xml:space="preserve">
+    <value>Catch value ({0}/{1})</value>
+    <comment>{0}: monetary unit, {1}: time unit</comment>
   </data>
-  <data name="HEADER_CATCH_VALUE_PER_AREA" xml:space="preserve">
+  <data name="HEADER_CATCHVALUE_UNIT_PA" xml:space="preserve">
     <value>Catch value ({0}/{1})</value>
     <comment>{0}: monetary unit, {1}:area unit</comment>
   </data>
@@ -1776,5 +1777,24 @@
   </data>
   <data name="UNIT_AREA_MI2" xml:space="preserve">
     <value>mi²</value>
+  </data>
+  <data name="HEADER_CATCHVALUE_UNIT" xml:space="preserve">
+    <value>Catch value ({0})</value>
+    <comment>{0}: monetary unit</comment>
+  </data>
+  <data name="HEADER_TOTALCATCH" xml:space="preserve">
+    <value>Total catch</value>
+  </data>
+  <data name="HEADER_TOTALCOST" xml:space="preserve">
+    <value>Total cost</value>
+  </data>
+  <data name="HEADER_TOTALPROFIT" xml:space="preserve">
+    <value>Total profit</value>
+  </data>
+  <data name="HEADER_TOTALVALUE" xml:space="preserve">
+    <value>Total value</value>
+  </data>
+  <data name="HEADER_VALUE_PERUNIT" xml:space="preserve">
+    <value>{0} (/{1})</value>
   </data>
 </root>
