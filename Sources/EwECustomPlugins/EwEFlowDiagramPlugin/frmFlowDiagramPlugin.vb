@@ -9,6 +9,7 @@ Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports System.Globalization
 
 #End Region ' Imports
 
@@ -22,170 +23,186 @@ Public Class frmFlowDiagramPlugin
 #Region " Privates "
 
     Private m_EcopathDs As cEcopathDataStructures
-    Private m_Parent As cEwEFlowDiagramPlugin
+    Private m_plugin As cEwEFlowDiagramPlugin
 
 #End Region ' Privates
 
-    Public Sub New(ByVal strText As String, ByVal Parent As cEwEFlowDiagramPlugin)
+    Public Sub New(ByVal strText As String, ByVal plugin As cEwEFlowDiagramPlugin)
 
         Me.InitializeComponent()
         Me.Text = strText
         Me.TabText = strText
 
-        Me.m_Parent = Parent
+        Me.m_plugin = plugin
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    '''  Create Ascci Flw put together all the necessary information from EcoPathGroupOutputs and EcoPathDataStructures
+    ''' Launch the EwE flow diagram showing current EwE5 data.
     ''' </summary>
-    ''' <param name="flowfile"> Flw file's name to be exported</param>
-    ''' <remarks></remarks>
-    Public Sub CreateAsciiFlw(ByVal flowfile As String, Optional ByVal CreateFile As Boolean = True)  '(EiiFile As String)
+    ''' <param name="strFileName">Name of the EwE5 flow diagram data file to use.</param>
+    ''' <param name="bCreateFile">Flag stating whether the EwE5 flow diagram 
+    ''' data file should be written (true) or if an existing data file should be 
+    ''' used (false).</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub LaunchFlowDiagram(ByVal strFileName As String, _
+                                 Optional ByVal bCreateFile As Boolean = True)
 
-        Dim core As cCore = Me.m_Parent.Core
-
-        Dim GrpName As String
+        Dim core As cCore = Me.m_plugin.Core
+        Dim data As cEcopathDataStructures = Me.m_plugin.EcopathDatastructures
+        Dim writer As TextWriter = Nothing
+        Dim groupIn As cEcoPathGroupInput = Nothing
+        Dim groupOut As cEcoPathGroupOutput = Nothing
+        Dim strGroup As String = ""
         Dim impVal As Single
-        Dim fi(,) As Single
-        Dim aStreamWriter As TextWriter
-        Dim breakline As String
+        Dim fi(core.nGroups, core.nGroups) As Single
         Dim strError As String = ""
-        ReDim fi(core.nGroups, core.nGroups)
 
-        'Check if the extra necessery information is avaiable
-        If (m_Parent.EcoPathDs IsNot Nothing) Then
+        ' Check if the extra necessery information is avaiable
+        If (data Is Nothing) Then Return
 
-            If CreateFile Then
-                aStreamWriter = New StreamWriter(flowfile)
+        If bCreateFile Then
 
-                breakline = aStreamWriter.NewLine()
+            ' Compute food index
+            For i As Integer = 1 To core.nGroups
+                For j As Integer = 1 To core.nGroups
+                    fi(i, j) = core.EcoPathGroupOutputs(i).Biomass * core.EcoPathGroupOutputs(i).QBOutput * core.EcoPathGroupInputs(i).DietComp(j)
+                Next j
+            Next i
 
-                aStreamWriter.WriteLine(Format$(core.nGroups, "00"))
-                aStreamWriter.Write(Format$(core.nLivingGroups, "00") & vbCrLf)
-                aStreamWriter.NewLine = breakline
+            Try
+                writer = New StreamWriter(strFileName)
+            Catch ex As Exception
+                cLog.Write("FlowDiagram: cannot write data file, " & ex.Message)
+                Return
+            End Try
 
-                'compute food index
-                For i As Integer = 1 To core.nGroups
-                    For j As Integer = 1 To core.nGroups
-                        fi(i, j) = core.EcoPathGroupOutputs(i).Biomass * core.EcoPathGroupOutputs(i).QBOutput * core.EcoPathGroupInputs(i).DietComp(j)
-                    Next j
-                Next i
+            ' Write number of groups, formatted to two decimals
+            writer.WriteLine(Format$(core.nGroups, "00"))
+            ' Write number of living groups, formatted to two decimals
+            writer.WriteLine(Format$(core.nLivingGroups, "00"))
 
-                For i As Integer = 1 To core.nGroups 'To 1 Step -1
-                    GrpName = New String(" "c, 20)
-                    Mid$(GrpName, 1, 15) = Trim(core.EcoPathGroupInputs(i).Name) 'Specie(i)
+            For i As Integer = 1 To core.nGroups 'To 1 Step -1
 
-                    aStreamWriter.Write(GrpName)
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(core.EcoPathGroupOutputs(i).TTLX), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((core.EcoPathGroupOutputs(i).Biomass), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(core.EcoPathGroupOutputs(i).Biomass * core.EcoPathGroupOutputs(i).PBOutput), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((m_Parent.EcoPathDs.fCatch(i)), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((m_Parent.EcoPathDs.Ex(i)), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((core.EcoPathGroupOutputs(i).FlowToDet), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((core.EcoPathGroupOutputs(i).Respiration), 3)), 12))
-                    aStreamWriter.Write(Stuff(Trim(MakeAmerican((fi(i, i)), 3)), 12))
+                ' Get core groups
+                groupIn = core.EcoPathGroupInputs(i)
+                groupOut = core.EcoPathGroupOutputs(i)
 
-                    If i > core.nLivingGroups Then
-                        impVal = core.EcoPathGroupInputs(i).DetImport
-                    Else
-                        impVal = core.EcoPathGroupOutputs(i).Biomass * core.EcoPathGroupOutputs(i).QBOutput * core.EcoPathGroupInputs(i).DietComp(0)
-                    End If
+                ' Group name is written as a string of 15 characters max in a 20 character buffer
+                strGroup = New String(" "c, 20)
+                Mid$(strGroup, 1, 15) = Trim(groupIn.Name) 'Specie(i)
 
-                    aStreamWriter.WriteLine(Stuff(Trim(MakeAmerican(impVal, 3)), 12))
-                Next i
+                writer.Write(strGroup)
+                writer.Write(Me.FormatNumber(Math.Abs(core.EcoPathGroupOutputs(i).TTLX)))
+                writer.Write(Me.FormatNumber(core.EcoPathGroupOutputs(i).Biomass))
+                writer.Write(Me.FormatNumber(Math.Abs(groupOut.Biomass * groupOut.PBOutput)))
+                writer.Write(Me.FormatNumber(data.fCatch(i)))
+                writer.Write(Me.FormatNumber(data.Ex(i)))
+                writer.Write(Me.FormatNumber(groupOut.FlowToDet))
+                writer.Write(Me.FormatNumber(groupOut.Respiration))
+                writer.Write(Me.FormatNumber(fi(i, i)))
 
-                'save food index => nt% = 21
-                For i As Integer = 1 To core.nGroups
-                    aStreamWriter.Write("                    ")
-                    For j As Integer = 1 To core.nGroups
-                        aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(fi(i, j)), 3)), 12))
-                    Next j
-                    aStreamWriter.WriteLine("")
-                Next i
+                If i > core.nLivingGroups Then
+                    impVal = groupIn.DetImport
+                Else
+                    impVal = groupOut.Biomass * groupOut.QBOutput * groupIn.DietComp(0)
+                End If
 
-                'saves the Det() matrix for multiple det 121895 eli.
-                For i As Integer = 1 To core.nGroups
-                    aStreamWriter.Write("                    ")
-                    'm_core.nLivingGroups +1 
-                    For z As Integer = 1 To core.nDetritusGroups '+ 1 To m_core.nGroups
-                        aStreamWriter.Write(Stuff(Trim(MakeAmerican(Math.Abs(core.EcoPathGroupInputs(i).DetritusFate(z)), 3)), 12) & vbCrLf)
-                    Next z
-                    aStreamWriter.Write("")
-                Next i
+                writer.WriteLine(Me.FormatNumber(impVal))
+            Next i
 
-                aStreamWriter.Close()
-            End If
+            ' Save food index => nt% = 21
+            For i As Integer = 1 To core.nGroups
+                writer.Write("                    ")
+                For j As Integer = 1 To core.nGroups
+                    writer.Write(Me.FormatNumber(Math.Abs(fi(i, j))))
+                Next j
+                writer.WriteLine("")
+            Next i
 
-            'Execute the external application through the general function on EwEUtils
-            If Not EwEUtils.SystemUtilities.cSystemUtils.AppExec("fd.exe", flowfile, strError, "") Then
-                Dim msg As New cMessage("Unable to run application 'fd.exe': " & strError, _
-                                        eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
-                core.Messages.SendMessage(msg)
-            End If
-        Else
-            Throw New Exception("EwEFlowDiagramPlugin: Ecopath data Structure was not initialized properly.")
+            ' Save the Det() matrix for multiple det 121895 eli.
+            For i As Integer = 1 To core.nGroups
+                writer.Write("                    ")
+                groupIn = core.EcoPathGroupInputs(i)
+                For j As Integer = 1 To core.nDetritusGroups '+ 1 To m_core.nGroups
+                    writer.WriteLine(Me.FormatNumber(Math.Abs(groupIn.DetritusFate(j))))
+                Next j
+            Next i
+            writer.Close()
+        End If
+
+        'Execute the external application through the general function on EwEUtils
+        If Not EwEUtils.SystemUtilities.cSystemUtils.AppExec("fd.exe", strFileName, strError, "") Then
+            Dim msg As New cMessage("Unable to run application 'fd.exe': " & strError, _
+                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
+            core.Messages.SendMessage(msg)
         End If
     End Sub
 
-    Private Function Stuff(ByVal tmpstr As String, ByVal length As Integer) As String
-        Dim cpos As Integer
-        Dim tmpstr2 As String
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Format a number to a string, using en-US notation, padded to a specified
+    ''' number of digits and decimals.
+    ''' </summary>
+    ''' <param name="sValue">Value to format.</param>
+    ''' <param name="iNumDigits">Number of digits before the decimal point.</param>
+    ''' <param name="iNumDec">Number of decmals after the decimal point.</param>
+    ''' <returns></returns>
+    ''' <remarks><para>Room for the minus sign, if any, will be included in 
+    ''' <paramref name="iNumDigits"/></para></remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function FormatNumber(ByVal sValue As Single, _
+                                  Optional ByVal iNumDigits As Integer = 8, _
+                                  Optional ByVal iNumDec As Integer = 3) As String
 
-        If Len(tmpstr) >= length Then
-            tmpstr2 = New String("0"c, Len(tmpstr))
-            Mid(tmpstr2, 1) = tmpstr
-        Else
-            tmpstr2 = New String("0"c, length)
-            Mid$(tmpstr2, (length - Len(tmpstr)) + 1) = tmpstr
+        ' This code aint pretty: a format mask is generated on the fly to
+        ' match the number of digits, decimals and a negative sign if needed.
 
-            cpos = InStr(tmpstr2, "-")
-            If cpos > 1 Then Mid$(tmpstr2, cpos, 1) = "0"
-        End If
+        Dim ci As New CultureInfo("en-US")
+        Dim strMask As String = "{0:"
 
-        If Strings.Left(tmpstr, 1) = "-" Then Mid$(tmpstr2, 1, 1) = "-"
-        Stuff = tmpstr2
-    End Function
+        ' Account for negative sign. String formatting will place a negative sign 
+        ' outside the number of digits, thus screwing up the precise number 
+        ' formatting needed in this data file.
+        If (sValue < 0) Then iNumDigits -= 1
 
-    Private Function MakeAmerican(ByVal oldVal As Single, ByVal numdec As Integer) As String
-        Dim tmpstr As String
-        Dim tmpstr2 As String
-
-        tmpstr2 = New String("0"c, numdec)
-        tmpstr = Format(oldVal, "0." + tmpstr2)
-
-        If InStr(tmpstr, ","c) = 1 Then tmpstr = ReplaceCommaWithPt(tmpstr, ","c, "."c)
-        MakeAmerican = " " + tmpstr
-    End Function
-
-    Private Function ReplaceCommaWithPt(ByVal tmpstr As String, ByVal comma As Char, ByVal pt As Char) As String
-        Dim cpos As Integer
-        Dim newstr As String
-
-        newstr = tmpstr
-        For cpos = 1 To Len(tmpstr) Step 1
-            If Mid(tmpstr, cpos, 1) = comma Then Mid(newstr, cpos, 1) = pt
+        ' Add zero padding character for every digit (eek)
+        For i As Integer = 0 To iNumDigits - 1
+            strMask &= "0"
         Next
+        ' Add decimal point format character
+        strMask &= "."
 
-        ReplaceCommaWithPt = newstr
+        ' Add zero padding character for every decimal (aargh)
+        For i As Integer = 0 To iNumDec - 1
+            strMask &= "0"
+        Next
+        ' Close mask
+        strMask &= "}"
+
+        Return String.Format(ci, strMask, sValue)
+
     End Function
 
-    Private Sub SDF_btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SDF_btn.Click
-        Try
-            Dim OutputFile As String = cFileUtils.MakeTempFile(Me.m_Parent.Core.EwEModel.Name & ".flw")
+    Private Sub OnClickLaunch(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles SDF_btn.Click
 
-            If System.IO.File.Exists(OutputFile) Then
-                ' File exist, prompt user
-                Dim result As MsgBoxResult = MsgBox("Flow diagram file already exist, would you like to load it? " & vbCrLf & "Yes to load the file, No to make a new file", MsgBoxStyle.YesNo)
-                If result = MsgBoxResult.Yes Then
-                    ' No don't create the file
-                    CreateAsciiFlw(OutputFile, False)
-                Else
-                    CreateAsciiFlw(OutputFile, True)
-                End If
-            Else
-                CreateAsciiFlw(OutputFile, True)
+        Try
+            Dim strFileName As String = cFileUtils.ToValidFileName(Me.m_plugin.Core.EwEModel.Name, False) & ".flw"
+            Dim strTempFile As String = cFileUtils.MakeTempFile(strFileName)
+            Dim bCreateFile As Boolean = True
+
+            If System.IO.File.Exists(strTempFile) Then
+
+                Dim fmsg As New cFeedbackMessage("Flow diagram file already exist, would you like to load it? " & vbCrLf & "Yes to load the file, No to make a new file", _
+                                                 eCoreComponentType.External, eMessageType.Any, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+                Me.m_plugin.Core.Messages.SendMessage(fmsg)
+                bCreateFile = (fmsg.Reply = cFeedbackMessage.eReply.NO)
             End If
+
+            Me.LaunchFlowDiagram(strTempFile, bCreateFile)
+
         Catch ex As Exception
             Throw New Exception(ex.ToString)
         End Try

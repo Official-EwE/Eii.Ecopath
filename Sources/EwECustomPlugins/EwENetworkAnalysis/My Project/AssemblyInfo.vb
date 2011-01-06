@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Network Analysis plug-in for Ecopath with Ecosim")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwENetworkAnalysis plugin")> 
-<Assembly: AssemblyCopyright("Copyright © 2007-2010")> 
+<Assembly: AssemblyCopyright("Copyright © 2007")> 
 <Assembly: CLSCompliant(True)> 
 
 <Assembly: ComVisible(False)>
