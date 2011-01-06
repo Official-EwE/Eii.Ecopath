@@ -16,11 +16,6 @@ Public Class cEwEStatusBar
     ''' <summary>The ui context to use.</summary>
     Private m_uic As cUIContext = Nothing
 
-    ''' <summary>The property selection command to listen to.</summary>
-    Private WithEvents m_cmd As cPropertySelectionCommand = Nothing
-    ''' <summary>Selected properties.</summary>
-    Private m_aprop As cProperty() = Nothing
-
     ''' <summary>The core state monitor offering events to observe.</summary>
     Private WithEvents m_csm As cCoreStateMonitor = Nothing
     Private WithEvents m_tsEcopathModel As System.Windows.Forms.ToolStripStatusLabel
@@ -30,7 +25,6 @@ Public Class cEwEStatusBar
     Private WithEvents m_tsStatus As System.Windows.Forms.ToolStripStatusLabel
     Private WithEvents m_tsbProgress As System.Windows.Forms.ToolStripProgressBar
     Private WithEvents m_tslVersion As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsSelection As System.Windows.Forms.ToolStripStatusLabel
     Private WithEvents m_tsiModified As System.Windows.Forms.ToolStripStatusLabel
 
     ''' -----------------------------------------------------------------------
@@ -47,11 +41,8 @@ Public Class cEwEStatusBar
         Dim an As AssemblyName = Assembly.GetExecutingAssembly().GetName()
 
         Me.m_uic = uic
-        Me.m_cmd = DirectCast(Me.m_uic.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
         Me.m_csm = Me.m_uic.Core.StateMonitor
         Me.m_tslVersion.Text = an.Version.ToString()
-
-        Me.UpdateSelectionPane()
 
     End Sub
 
@@ -72,7 +63,7 @@ Public Class cEwEStatusBar
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Private Sub m_csm_CoreDataStateEvent(ByVal csm As EwECore.cCoreStateMonitor) Handles m_csm.CoreDataStateEvent
-        UpdateModelPanes()
+        Me.UpdateModelPanes()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -87,35 +78,10 @@ Public Class cEwEStatusBar
     ''' -----------------------------------------------------------------------
     Private Sub m_csm_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
         Handles m_csm.CoreExecutionStateEvent
-        UpdateModelPanes()
+        Me.UpdateModelPanes()
     End Sub
 
 #End Region ' Events
-
-#Region " Command handling "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Event handler, invoked when the <see cref="m_cmd">selection command</see>
-    ''' is invoked from anywhere in the GUI.
-    ''' </summary>
-    ''' <param name="cmd">The <see cref="Command">Command</see> that was invoked.</param>
-    ''' -----------------------------------------------------------------------
-    Private Sub OnInvoke(ByVal cmd As cCommand) Handles m_cmd.OnInvoke
-
-        Dim aprops() As cProperty = Nothing
-
-        ' Sanity check
-        If Not (cmd Is m_cmd) Then Return
-        ' Get selected props
-        Me.m_aprop = m_cmd.Selection()
-
-        ' Update
-        Me.UpdateSelectionPane()
-
-    End Sub
-
-#End Region ' Command handling 
 
 #Region " Pane content handling "
 
@@ -282,113 +248,11 @@ Public Class cEwEStatusBar
         Me.Refresh()
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Update the state and contents of the controls in the panel.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub UpdateSelectionPane()
-
-        Dim strSelection As String = ""
-        Dim srcPrim As cCoreInputOutputBase = Nothing
-        Dim bPrimMixed As Boolean = False
-        Dim strPrim As String = ""
-        Dim srcSec As cCoreInputOutputBase = Nothing
-        Dim bSecMixed As Boolean = False
-        Dim strSec As String = ""
-        Dim bVarMixed As Boolean = False
-        Dim vn As eVarNameFlags = eVarNameFlags.NotSet
-        Dim vdesc As cVariableDescriptor = Nothing
-
-        If Not Me.m_csm.HasEcopathLoaded() Then
-            ' Clear selection
-            strSelection = ""
-            Me.m_aprop = Nothing
-        Else
-            ' Start with default selection
-            strSelection = My.Resources.SELECTION_NONE
-        End If
-
-        ' Find all prim and sec props
-        If Me.m_aprop IsNot Nothing Then
-
-            For Each prop As cProperty In Me.m_aprop
-
-                If (Not Object.ReferenceEquals(prop.Source, Nothing)) Then
-                    If (Not Object.ReferenceEquals(srcPrim, Nothing)) Then
-                        bPrimMixed = bPrimMixed Or (Not Object.ReferenceEquals(prop.Source, srcPrim))
-                    End If
-
-                    If (vn <> eVarNameFlags.NotSet) Then
-                        bVarMixed = bVarMixed Or (vn <> prop.VarName)
-                    End If
-
-                    srcPrim = prop.Source
-                    vn = prop.VarName
-                End If
-
-                If (Not Object.ReferenceEquals(prop.SourceSec, Nothing)) Then
-                    If (Not Object.ReferenceEquals(srcSec, Nothing)) Then
-                        bSecMixed = bSecMixed Or (Not Object.ReferenceEquals(prop.SourceSec, srcSec))
-                    End If
-                    srcSec = prop.SourceSec
-                End If
-
-            Next
-
-            ' Assess the damage
-            ' 1. No primary source selected?
-            If Object.ReferenceEquals(srcPrim, Nothing) Then
-                ' #Yes: were there properties?
-                If Me.m_aprop.Length > 0 Then
-                    ' #Yes: unable to determine content, must be derived
-                    strSelection = My.Resources.SELECTION_DERIVED
-                End If
-            Else
-
-                ' #No: format prim string 
-                If (bPrimMixed = False) Then
-                    strPrim = srcPrim.Name
-                Else
-                    strPrim = My.Resources.SELECTION_MULTIPLE
-                End If
-
-                ' No secundary source selected?
-                If Object.ReferenceEquals(srcSec, Nothing) Then
-                    strSelection = strPrim
-                Else
-                    ' #Yes: is this a mixed selection?
-                    If (bSecMixed = False) Then
-                        strSec = srcSec.Name
-                    Else
-                        strSec = My.Resources.SELECTION_MULTIPLE
-                    End If
-
-                    ' Format as multiple
-                    strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, strPrim, strSec)
-                End If
-            End If
-        End If
-
-        If (vn <> eVarNameFlags.NotSet) And (Not bVarMixed) Then
-            vdesc = cVariableDescriptor.FromVarname(vn)
-            If String.IsNullOrEmpty(strSelection) Then
-                strSelection = vdesc.Name
-            Else
-                strSelection = String.Format(SharedResources.GENERIC_LABEL_INDEXED, vdesc.Name, strSelection)
-            End If
-        End If
-
-        Me.UpdateToolstripItem(Me.m_tsSelection, strSelection)
-
-    End Sub
-
 #End Region ' Pane content handling
 
     Private Sub InitializeComponent()
         Me.m_tsbProgress = New System.Windows.Forms.ToolStripProgressBar
         Me.m_tsStatus = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsSelection = New System.Windows.Forms.ToolStripStatusLabel
         Me.m_tslVersion = New System.Windows.Forms.ToolStripStatusLabel
         Me.m_tsEcopathModel = New System.Windows.Forms.ToolStripStatusLabel
         Me.m_tsEcosimScenario = New System.Windows.Forms.ToolStripStatusLabel
@@ -411,13 +275,6 @@ Public Class cEwEStatusBar
         Me.m_tsStatus.Text = ""
         Me.m_tsStatus.TextAlign = ContentAlignment.MiddleLeft
         Me.m_tsStatus.Visible = True
-        '
-        'm_tsSelection
-        '
-        Me.m_tsSelection.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsSelection.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsSelection.Name = "m_tsSelection"
-        Me.m_tsSelection.Visible = False
         '
         'm_tsEcopathModel
         '
@@ -472,7 +329,7 @@ Public Class cEwEStatusBar
         '
         'moi
         '
-        Me.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbProgress, Me.m_tsStatus, Me.m_tsSelection, Me.m_tsEcopathModel, Me.m_tsEcosimScenario, Me.m_tsEcospaceScenario, Me.m_tsEcotracerScenario, Me.m_tsiModified, Me.m_tslVersion})
+        Me.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbProgress, Me.m_tsStatus, Me.m_tsEcopathModel, Me.m_tsEcosimScenario, Me.m_tsEcospaceScenario, Me.m_tsEcotracerScenario, Me.m_tsiModified, Me.m_tslVersion})
         Me.ShowItemToolTips = True
         Me.ResumeLayout(False)
         Me.PerformLayout()
