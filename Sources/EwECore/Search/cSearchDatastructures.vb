@@ -817,6 +817,9 @@ Public Class cSearchDatastructures
     ''' <remarks></remarks>
     Public Sub YearTimeStepEcoSpace(ByVal Biomass() As Single, ByRef Fgear() As Single, ByVal iYear As Integer, ByVal nWaterCells As Integer, ByVal RelFopt() As Single)
 
+        ' Sanity checks
+        Debug.Assert(Me.bInSearch, "Not in search?!")
+
         Try
 
             Me.ClearYearlyData()
