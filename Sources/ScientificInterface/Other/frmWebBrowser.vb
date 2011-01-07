@@ -21,7 +21,6 @@ Public Class frmWebBrowser
 #Region " Private vars "
 
     Private Const cBASEURL As String = "http://www.ecopath.org/nonewe/eweexe/index.php"
-    Private m_uic As cUIContext = Nothing
 
 #End Region ' Private vars
 
@@ -34,14 +33,11 @@ Public Class frmWebBrowser
     ''' <param name="uic">UI context to link to.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal uic As cUIContext)
-
+        MyBase.New()
         Me.InitializeComponent()
-
-        Me.m_uic = uic
-
+        Me.UIContext = uic
         Me.Text = SharedResources.GENERIC_LABEL_HOME
         Me.TabText = SharedResources.GENERIC_LABEL_HOME
-
     End Sub
 
 #End Region ' Constructor
@@ -183,7 +179,7 @@ Public Class frmWebBrowser
     Private Function EwEBaseURL() As String
 
         Dim aAssemblyNames As AssemblyName() = cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
-        Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
+        Dim pm As cPluginManager = Me.Core.PluginManager
         Dim ub As New UrlBuilder(cBASEURL)
 
         For Each an As AssemblyName In aAssemblyNames

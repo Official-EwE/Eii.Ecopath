@@ -1,47 +1,3 @@
-'==============================================================================
-'
-' $Log: cF2TSManager.vb,v $
-' Revision 1.5  2009/05/26 04:30:31  jeroens
-' Fixed bug in CanRun that allowd FitToTS only to run with Anomaly Search enabled
-'
-' Revision 1.4  2009/04/24 16:06:18  joeb
-' Added text for proper initialization
-'
-' Revision 1.3  2009/01/16 18:30:27  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.2  2008/11/28 16:54:12  joeb
-' Cleaned up ToDo's
-'
-' Revision 1.1  2008/09/26 07:30:24  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.41  2008/09/23 18:27:59  joeb
-' cF2TSManager Implements ISearchObjective
-'
-' Revision 1.40  2008/05/29 22:22:49  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.39  2008/05/07 17:07:07  joeb
-' SS updated in the core output object via cCore.LoadEcosimStats() once the fit is completed
-'
-' Revision 1.38  2008/04/24 20:04:03  joeb
-' Added Semaphor.Release to error handling
-'
-' Revision 1.37  2008/04/17 20:17:46  joeb
-' Change  cSearchDataStructures.bDoFPSearch to cSearchDataStructures.bInSearch
-'
-' Revision 1.36  2008/03/20 18:33:50  joeb
-' Fixed bug Detritus not being included in fit when set from interface
-'
-' Revision 1.35  2008/02/01 16:53:14  joeb
-' Bunch of stuff for Multi threading
-'
-' Revision 1.34  2008/01/26 00:17:30  joeb
-' Move binning of sensitivity to manager/model
-'
-'==============================================================================
-
 Option Strict On
 
 Imports EwECore.ValueWrapper
@@ -84,18 +40,22 @@ Public Class cF2TSManager
     ''' m_SignalState is use by an calling routine to block its thread until the model has completed
     ''' </summary>
     ''' <remarks>See Wait()</remarks>
-    Private m_SignalState As New ManualResetEvent(True)
+    Private m_SignalState As ManualResetEvent '(True)
 
     ''' <summary>
     ''' m_semaphore is use to block the model from being called while it is running
     ''' </summary>
-    Private m_semaphore As New Semaphore(0, 1)
+    Private m_semaphore As Semaphore
 
     Private m_searchObjective As cSearchObjective
 
 
     Friend Sub New(ByRef theCore As cCore)
         MyBase.New(theCore)
+
+
+        Me.m_semaphore = New Semaphore(0, 1)
+        Me.m_SignalState = New ManualResetEvent(True)
 
         Me.m_lstMessages = New List(Of cMessage)
 
@@ -214,6 +174,10 @@ Public Class cF2TSManager
 
     End Function
 
+    Public Overrides Sub Clear() Implements ISearchObjective.Clear
+        MyBase.Clear()
+
+    End Sub
 
     Public Sub Connect(ByVal syncObject As System.ComponentModel.ISynchronizeInvoke, _
             ByVal runStartedCallback As RunStartedDelegate, ByVal runStepCallback As RunStepDelegate, ByVal runStoppedCallback As RunStoppedDelegate, ByVal RunModelCallBack As RunModelDelegate)

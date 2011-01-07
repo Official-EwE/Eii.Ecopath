@@ -81,13 +81,8 @@ Namespace Controls.EwEGrid
                 RemoveHandler Me.m_property.PropertyChanged, AddressOf Me.OnPropertyChanged
                 Me.m_property = Nothing
             End If
-
             MyBase.Dispose()
 
-        End Sub
-
-        Protected Overrides Sub Finalize()
-            MyBase.Finalize()
         End Sub
 
 #End Region ' Construction 

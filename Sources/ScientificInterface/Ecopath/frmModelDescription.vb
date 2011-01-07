@@ -102,20 +102,21 @@ Public Class frmModelDescription
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-        Me.m_fpArea.Release()
+        Me.m_fpName.Release() '
+        Me.m_fpDescription.Release()
         Me.m_fpAuthor.Release()
         Me.m_fpContact.Release()
-        Me.m_fpDescription.Release()
-        Me.m_fpName.Release()
+        Me.m_fpArea.Release()
         Me.m_fpNumDigits.Release()
         Me.m_fpGroupDigits.Release()
-        Me.m_fpPSD.Release()
         Me.m_fpFirstYear.Release()
         Me.m_fpNumYears.Release()
-        Me.m_fpSouth.Release()
+        Me.m_fpAreaName.Release()
         Me.m_fpNorth.Release()
+        Me.m_fpSouth.Release()
         Me.m_fpWest.Release()
         Me.m_fpEast.Release()
+        Me.m_fpPSD.Release()
 
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
         Me.CoreComponents = Nothing

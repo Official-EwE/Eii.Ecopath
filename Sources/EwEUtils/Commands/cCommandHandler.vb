@@ -3,6 +3,7 @@
 Option Strict On
 Imports System
 Imports System.Collections.Generic
+Imports System.Diagnostics
 
 #End Region ' Imports
 
@@ -89,6 +90,18 @@ Namespace Commands
                 Return Nothing
             End Try
         End Function
+
+        Public Sub Clear()
+            Try
+                Dim lcmds As New List(Of cCommand)
+                For Each cmd As cCommand In Me.m_dictCommands.Values : lcmds.Add(cmd) : Next
+                For Each cmd As cCommand In lcmds : Me.Remove(cmd) : Next
+                lcmds.Clear()
+            Catch ex As Exception
+
+            End Try
+            Debug.Assert(Me.m_dictCommands.Count = 0)
+        End Sub
 
 #End Region ' Command administration 
 

@@ -45,8 +45,8 @@ Namespace Properties
     Public Class cFormulaProperty
         : Inherits cSingleProperty
 
-        ''' <summary>The formula</summary>
-        Private WithEvents m_formula As cExpression = Nothing
+        ''' <summary>The formula.</summary>
+        Private m_formula As cExpression = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -55,7 +55,7 @@ Namespace Properties
         ''' <param name="formula">The formula that will feed the value and
         ''' status of this <see cref="cProperty">Property</see>.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal formula As cExpression)
+        Friend Sub New(ByVal formula As cExpression)
             MyBase.New()
 
             ' Sanity check
@@ -67,6 +67,12 @@ Namespace Properties
             ' Initialize value
             Me.Calculate()
 
+        End Sub
+
+        Protected Friend Overrides Sub Dispose(ByVal bDisposing As Boolean)
+            RemoveHandler m_formula.OnValueChanged, AddressOf OnFormulaChanged
+            Me.m_formula.Dispose()
+            Me.m_formula = Nothing
         End Sub
 
         ''' -------------------------------------------------------------------

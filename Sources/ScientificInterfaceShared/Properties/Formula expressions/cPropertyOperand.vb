@@ -1,18 +1,9 @@
-'==============================================================================
-'
-' $Log: cPropertyOperand.vb,v $
-' Revision 1.2  2009/05/28 12:37:02  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/04/02 13:19:40  jeroens
-' Separated out of cFormulaExpression.vb
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-
-Imports EwECore
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -57,14 +48,10 @@ Namespace Properties
             AddHandler prop.PropertyChanged, AddressOf onPropertyChanged
         End Sub
 
-        ''' ---------------------------------------------------------------
-        ''' <summary>
-        ''' Destructor
-        ''' </summary>
-        ''' ---------------------------------------------------------------
-        Protected Overrides Sub Finalize()
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
             ' Stop listening to property events
             RemoveHandler Me.m_prop.PropertyChanged, AddressOf onPropertyChanged
+            Me.m_prop = Nothing
         End Sub
 
         ''' ---------------------------------------------------------------

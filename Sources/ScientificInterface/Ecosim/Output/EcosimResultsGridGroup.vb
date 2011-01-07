@@ -34,18 +34,6 @@ Namespace Ecosim
             End Set
         End Property
 
-        Public Overrides Property UIContext() As cUIContext
-            Get
-                Return MyBase.UIContext
-            End Get
-            Set(ByVal value As cUIContext)
-                MyBase.UIContext = value
-                If (value IsNot Nothing) Then
-                    AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                End If
-            End Set
-        End Property
-
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
@@ -92,7 +80,7 @@ Namespace Ecosim
                 End If
             Next
 
-            Me.InitCells(m_iNumVisibleGroups + 1, lName.ToArray, aCalc)
+            Me.InitCells(Me.m_iNumVisibleGroups + 1, lName.ToArray, aCalc)
 
             Me.UpdateData()
 
@@ -102,7 +90,7 @@ Namespace Ecosim
 
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim source As cEcosimGroupOutput = Nothing
-            Dim irow As Integer
+            Dim iRow As Integer = 0
 
             Dim asTotal(0 To 10) As Single
             Me.InitTotalArray(asTotal)
@@ -111,40 +99,41 @@ Namespace Ecosim
 
                 'Only display selected groups
                 If sg.GroupVisible(iGroup) Then
-                    irow += 1
+
+                    iRow += 1
                     source = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
 
                     'clear all fleet cells
                     For icell As Integer = 5 To 10
-                        SetCellValue(irow, icell, "")
+                        SetCellValue(iRow, icell, "")
                     Next
 
-                    If source.BiomassStart > 0 Then SetCellValue(irow, 2, source.BiomassStart, asTotal)
-                    If source.BiomassEnd > 0 Then SetCellValue(irow, 3, source.BiomassEnd, asTotal)
+                    If source.BiomassStart > 0 Then SetCellValue(iRow, 2, source.BiomassStart, asTotal)
+                    If source.BiomassEnd > 0 Then SetCellValue(iRow, 3, source.BiomassEnd, asTotal)
 
                     'The logic was pulled out from EwE5
                     If source.BiomassStart > 0 And source.BiomassEnd > 0 Then
-                        SetCellValue(irow, 4, CSng(source.BiomassEnd / source.BiomassStart), asTotal)
+                        SetCellValue(iRow, 4, CSng(source.BiomassEnd / source.BiomassStart), asTotal)
                     End If
 
                     Dim fCS As Single = source.CatchStart(Me.SelectedFleetIndex)
-                    If fCS > 0 Then SetCellValue(irow, 5, fCS, asTotal)
+                    If fCS > 0 Then SetCellValue(iRow, 5, fCS, asTotal)
 
                     Dim fCE As Single = source.CatchEnd(Me.SelectedFleetIndex)
-                    If fCE > 0 Then SetCellValue(irow, 6, fCE, asTotal)
+                    If fCE > 0 Then SetCellValue(iRow, 6, fCE, asTotal)
 
                     If fCS > 0 And fCE > 0 Then
-                        SetCellValue(irow, 7, CSng(fCE / fCS), asTotal)
+                        SetCellValue(iRow, 7, CSng(fCE / fCS), asTotal)
                     End If
 
                     Dim fVS As Single = source.ValueStart(Me.SelectedFleetIndex)
-                    If fVS > 0 Then SetCellValue(irow, 8, fVS, asTotal)
+                    If fVS > 0 Then SetCellValue(iRow, 8, fVS, asTotal)
 
                     Dim fVE As Single = source.ValueEnd(Me.SelectedFleetIndex)
-                    If fVE > 0 Then SetCellValue(irow, 9, fVE, asTotal)
+                    If fVE > 0 Then SetCellValue(iRow, 9, fVE, asTotal)
 
                     If fVS > 0 And fVE > 0 Then
-                        SetCellValue(irow, 10, CSng(fVE / fVS), asTotal)
+                        SetCellValue(iRow, 10, CSng(fVE / fVS), asTotal)
                     End If
 
                 End If
@@ -166,25 +155,6 @@ Namespace Ecosim
 
             Me.Refresh()
         End Sub
-
-#Region " Events "
-
-        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
-            If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
-                Me.RefreshContent()
-            End If
-        End Sub
-
-        Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Disposed
-
-            If Me.StyleGuide IsNot Nothing Then
-                RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            End If
-
-        End Sub
-
-#End Region ' Events
 
     End Class
 

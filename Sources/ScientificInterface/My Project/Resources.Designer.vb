@@ -2909,6 +2909,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Hide this type of message until relevant data is reloaded.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_HIDE_MESSAGES() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_HIDE_MESSAGES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Selected database: {0}{1}{0}{0}Selected Ecopath model:{0}{2}{0}{0}Save model as:{0}{3}.
         '''</summary>
         Friend ReadOnly Property PROMPT_IMPORT_SUMMARY() As String

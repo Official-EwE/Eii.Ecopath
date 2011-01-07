@@ -199,6 +199,22 @@ Namespace Ecospace.Advection
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clear the manager data, but leaves the manager ready for future use.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Clear()
+            Try
+                If Me.m_parameters IsNot Nothing Then
+                    m_parameters.Clear()
+                End If
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
+            End Try
+
+        End Sub
+
 #End Region '  Construction and Initialization
 
 #Region " Public Properties "

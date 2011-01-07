@@ -57,6 +57,14 @@ Public Class cPSDModel
         End Get
     End Property
 
+    Public Sub Clear()
+        Try
+            Me.m_msgPub.Clear()
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".Close() Exception: " & ex.Message)
+        End Try
+    End Sub
+
 #End Region 'Public method
 
 #Region " Helper methods "

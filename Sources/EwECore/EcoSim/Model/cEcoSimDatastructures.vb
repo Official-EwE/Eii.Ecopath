@@ -662,6 +662,130 @@ Public Class cEcosimDatastructures
     Public Sub Clear()
         Me.nGroups = 0
         Me.nGear = 0
+
+        Me.eraseResults()
+
+        'NTimes is the number of time step for the current number of years
+        Me.FishRateNo = Nothing ' (nGroups, nTimeSteps))  'was 1200
+        Me.FishRateGear = Nothing '  (nGear + 1, nTimeSteps))  'was 1200
+
+        Me.Medpoints = Nothing ' (NMedPoints, MediationShapes)
+        Me.MedWeights = Nothing ' (nGroups + nGear, MediationShapes)
+        Me.NMedXused = Nothing ' (MediationShapes)
+        Me.IMedUsed = Nothing ' (nGroups + nGear, MediationShapes)
+        Me.MedXbase = Nothing ' (MediationShapes)
+        Me.MedYbase = Nothing ' (MediationShapes)
+        Me.MedIsUsed = Nothing ' (MediationShapes)
+        Me.MedVal = Nothing ' (MediationShapes)
+        Me.IMedBase = Nothing ' (MediationShapes)
+
+        'jb added
+        Me.MediationTitles = Nothing ' (MediationShapes)
+        Me.MediationShapeParams = Nothing ' (MediationShapes)
+        Me.MediationDBIDs = Nothing ' (MediationShapes)
+
+        Me.FIB = Nothing ' (nTimesteps)
+        Me.TLC = Nothing ' (nTimesteps)     'TL of catch in Ecosim
+        Me.Kemptons = Nothing ' (nTimesteps)
+        Me.CatchSim = Nothing ' (nTimesteps)
+
+        Me.GroupDBID = Nothing ' (nGroups)
+
+        Me.SalOpt = Nothing ' (nGroups)
+        Me.SdSalLeft = Nothing ' (nGroups)
+        Me.SdSalRight = Nothing ' (nGroups)
+
+        'VC Hobart Sep 2008: Adding temperature optimum
+        Me.TempOpt = Nothing ' (nGroups)
+        Me.TempLeft = Nothing ' (nGroups)
+        Me.TempRight = Nothing ' (nGroups)
+
+        'me.BaseTimeSwitch = nothing ' (nGroups)
+        Me.SwitchPower = Nothing ' (nGroups)
+
+        Me.Emig = Nothing ' (nGroups)
+        Me.QmQo = Nothing ' (nGroups), Htime = nothing ' (nGroups) ', Hden = nothing ' (nGroups)
+        Me.CmCo = Nothing ' (nGroups)
+
+        Me.Qmain = Nothing ' (nGroups)
+        Me.Qrisk = Nothing ' (nGroups)
+        Me.RiskTime = Nothing ' (nGroups)
+        Me.Consumption = Nothing ' (nGroups, nGroups)
+
+        Me.Eatenby = Nothing ' (nGroups)
+        Me.Eatenof = Nothing ' (nGroups)
+        Me.EggProdShape = Nothing ' (CInt = nothing ' (nGroups / 2))
+        Me.FtimeAdjust = Nothing ' (nGroups)
+        Me.MoPred = Nothing ' (nGroups)
+
+        Me.iadult = Nothing ' (CInt = nothing ' (nGroups / 2))
+        Me.ijuv = Nothing ' (CInt = nothing ' (nGroups / 2))
+
+        Me.TimeJuv = Nothing ' (CInt = nothing ' (nGroups / 2)) 'Time spent in juv stage
+        Me.maxtimejuv = Nothing ' (CInt = nothing ' (nGroups / 2))
+        Me.mintimejuv = Nothing ' (CInt = nothing ' (nGroups / 2))
+        Me.NoIntegrate = Nothing ' (nGroups)
+        Me.pbm = Nothing ' (nGroups)
+        Me.PBmaxs = Nothing ' (nGroups)
+        Me.pred = Nothing ' (nGroups)
+        Me.RecPower = Nothing ' (CInt = nothing ' (nGroups / 2))
+
+        Me.ilink = Nothing ' (nGroups * nGroups)
+        Me.jlink = Nothing ' (nGroups * nGroups)
+        Me.SimDC = Nothing ' (nGroups, nGroups)
+        Me.MPred = Nothing ' (nGroups * nGroups)
+
+        Me.vulrate = Nothing ' (nGroups, nGroups)
+        Me.VulMult = Nothing ' (nGroups, nGroups)
+        Me.VulnerabilityPredator = Nothing ' (nGroups)
+
+        Me.Fish1 = Nothing ' (nGroups)
+        Me.FishRateNoDBID = Nothing ' (nGroups)
+        Me.FishRateNoTitle = Nothing ' (nGroups)
+        Me.GroupFishRateNoDBID = Nothing ' (nGroups)
+
+        'the plus one is for combined fleets
+        Me.FleetDBID = Nothing ' (nGear + 1)
+        Me.FishRateGearDBID = Nothing ' (nGear + 1)
+        Me.FishRateGearBasis = Nothing ' (nGear + 1)
+        Me.FishRateGearTitle = Nothing ' (nGear + 1)
+        Me.FishMGear = Nothing ' (nGear + 1, nGroups)
+
+        Me.FishRateMax = Nothing ' (nGroups)
+
+        Me.FisForced = Nothing ' (nGroups)
+
+        Me.relQ = Nothing ' (nGear, nGroups)
+
+        Me.SSGroup = Nothing ' (nGroups)
+
+        MaxFunctions = 5
+        Me.FunctionNumber = Nothing ' (nGroups, nGroups, MaxFunctions)
+        Me.IsMedFunction = Nothing ' (nGroups, nGroups, MaxFunctions)
+        Me.FunctionType = Nothing ' (nGroups, nGroups, MaxFunctions)
+
+        Me.TLSim = Nothing ' (nGroups)
+
+        Me.GroupDetritus = Nothing ' (nGroups)
+
+        Me.Epower = Nothing ' (nGear)
+        Me.PcapBase = Nothing ' (nGear)
+        Me.CapDepreciate = Nothing ' (nGear)
+        Me.CapBaseGrowth = Nothing ' (nGear)
+
+        Me.PropLandedTime = Nothing ' (nGear, nGroups)
+        Me.Propdiscardtime = Nothing ' (nGear, nGroups)
+
+        Me.Consumption = Nothing ' (nGroups, nGroups)
+        Me.Consumpt = Nothing ' (nGroups, nGroups)
+        Me.Eatenby = Nothing ' (nGroups)
+        Me.Eatenof = Nothing ' (nGroups)
+        Me.pred = Nothing ' (nGroups)
+        Me.DCMean = Nothing ' (nGroups, nGroups)
+        Me.DCPct = Nothing ' (nGroups, 3) 'used for B1Round, B2Round, QB, derivt  = nothing ' (BA)
+        Me.zscale = Nothing
+        Me.PeatArena = Nothing
+
     End Sub
 
     ''' <summary>

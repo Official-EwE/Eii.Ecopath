@@ -225,6 +225,8 @@ Public Enum eMessageImportance
     ''' <summary>Progress messages typically indicate incremental status
     ''' information about a lengthy operation.</summary>
     Progress
+    ''' <summary>Questions are used to poll the user for regular info.</summary>
+    Question
 End Enum
 
 #End Region

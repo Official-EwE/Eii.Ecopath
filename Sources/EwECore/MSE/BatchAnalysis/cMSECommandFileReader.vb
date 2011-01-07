@@ -83,6 +83,23 @@ Namespace MSECommandFile
 
         End Sub
 
+        Public Sub Clear()
+            Try
+
+                Me.m_ConTypeLookup.Clear()
+                Me.m_RunTypeLookup.Clear()
+                Me.m_OuputTagToEnumLookup.Clear()
+
+                Me.m_ConTypeLookup = Nothing
+                Me.m_RunTypeLookup = Nothing
+                Me.m_OuputTagToEnumLookup = Nothing
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
         Public Function Read(ByVal filename As String) As Boolean
 
             Me.m_BatchData.isInit = False

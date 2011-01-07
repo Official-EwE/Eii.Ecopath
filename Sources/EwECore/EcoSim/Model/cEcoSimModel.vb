@@ -262,6 +262,63 @@ Namespace Ecosim
 
         End Sub
 
+        Public Sub Clear()
+
+            Me.A = Nothing 'nGroups, nGroups
+            Me.RiskRate = Nothing 'nGroups
+            Me.BaseConsumption = Nothing
+
+            Me.ResetPred = Nothing 'nGroups
+            Me.EscalePar = Nothing 'm_EPData.NumFleet
+            Me.CapGrowthFactor = Nothing 'm_EPData.NumFleet
+
+            Me.IadCode = Nothing 'nGroups
+            Me.IjuCode = Nothing 'nGroups
+            Me.IecoCode = Nothing 'nGroups
+
+            Me.Qopt = Nothing 'nGroups
+
+            Me.BB = Nothing 'nGroups
+            Me.biomeq = Nothing 'nGroups
+
+            Me.Brec = Nothing 'nGroups
+            Me.CBlast = Nothing 'nGroups
+            Me.deriv = Nothing 'nGroups
+            Me.Deatenby = Nothing 'nGroups
+            Me.Deatenof = Nothing 'nGroups
+            Me.Dfitness = Nothing 'nGroups
+
+            Me.dydx = Nothing 'nGroups
+            Me.dym = Nothing 'nGroups
+            Me.dyt = Nothing 'nGroups
+            Me.yt = Nothing 'nGroups
+
+            Me.EatenByBase = Nothing 'nGroups
+
+            Me.Nrec = Nothing 'nGroups
+            Me.pbb = Nothing 'nGroups
+            Me.pbbase = Nothing 'nGroups
+            Me.Rbase = Nothing 'nGroups
+            Me.SimGEtemp = Nothing 'nGroups
+
+            Me.StartEatenOf = Nothing 'nGroups
+            Me.Mtotal = Nothing 'nGroups
+            Me.StartEatenBy = Nothing 'nGroups
+            Me.SimQB = Nothing 'nGroups
+
+            Me.BB = Nothing 'nGroups
+            Me.biomeq = Nothing 'nGroups
+            Me.dydx = Nothing 'nGroups
+            Me.dym = Nothing 'nGroups
+            Me.dyt = Nothing 'nGroups
+            Me.EatenByBase = Nothing 'nGroups
+            Me.yt = Nothing 'nGroups
+            Me.Bstore = Nothing 'nGroups, nts
+
+            Me.m_Results = Nothing
+
+        End Sub
+
 
 #Region "Multi threading code"
 

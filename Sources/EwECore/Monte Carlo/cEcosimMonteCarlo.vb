@@ -155,6 +155,18 @@ Public Class cEcosimMonteCarlo
 
     End Function
 
+
+    Public Sub Clear()
+
+        Me.Pmean = Nothing '(6, m_core.nGroups)
+        Me.startValues = Nothing '(6, m_core.nGroups)
+        Me.BestFit = Nothing '(6, m_core.nGroups)
+        Me.orgVul = Nothing '(m_core.nGroups, m_core.nGroups)
+        Me.ParLimit = Nothing '(1, 6, m_core.nGroups)
+        Me.CVpar = Nothing '(6, m_core.nGroups)
+
+    End Sub
+
     Private Function PedigreeVarToMCIndex(ByVal vn As eVarNameFlags) As Integer
 
         Select Case vn

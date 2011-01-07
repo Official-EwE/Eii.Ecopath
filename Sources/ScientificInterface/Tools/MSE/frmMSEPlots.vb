@@ -19,6 +19,8 @@ Imports ZedGraph
 Public Class frmMSEPlots
 
     'ToDo_jb 12-Jan-2010 frmMSEPlots Show Hide button should be disabled when Fleet data is selected
+    'ToDo_jb 14-Dec-2010 frmMSEPlots Zedgraph may not init and clean up the number of graphs correctly 
+    'when changing between Groups and Fleets
 
     Private m_MSE As cMSEManager
     Private m_paneMaster As MasterPane = Nothing
@@ -74,6 +76,9 @@ Public Class frmMSEPlots
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        Me.m_plotter.Detach()
+        Me.m_zgh.Detach()
 
         RemoveHandler Me.m_MSEEvents.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
         RemoveHandler Me.m_MSEEvents.onRunCompleted, AddressOf Me.onRunCompleted
@@ -147,10 +152,8 @@ Public Class frmMSEPlots
         Select Case Me.m_curPlotData
             Case ePlotData.Biomass
                 PlotGroupData(Me.m_MSE.BiomassStats, Me.m_curPlotType, Me.m_curPlotData)
-
             Case ePlotData.BioEst
                 PlotGroupData(Me.m_MSE.BioEstimatesStats, Me.m_curPlotType, Me.m_curPlotData)
-
             Case ePlotData.GroupCatch
                 PlotGroupData(Me.m_MSE.GroupCatchStats, Me.m_curPlotType, Me.m_curPlotData)
             Case ePlotData.FleetValue

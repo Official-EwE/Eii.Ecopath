@@ -81,12 +81,12 @@ Namespace Ecopath.Output
             Dim sourceSec As cCoreInputOutputBase = Nothing
             Dim propLandings As cProperty = Nothing
             Dim propDiscards As cProperty = Nothing
-            Dim alSumLandingsDiscards As New ArrayList()
+            Dim alSumLandingsDiscards As ArrayList = New ArrayList()
             Dim opSumLandingsDiscards As cMultiOperation = Nothing
             Dim propSumLandingsDiscards As cFormulaProperty = Nothing
             Dim propCell As PropertyCell = Nothing
 
-            Dim alSumRow As New ArrayList()
+            Dim alSumRow As ArrayList = New ArrayList()
             Dim opSumRow As cMultiOperation = Nothing
             Dim propSumRow As cFormulaProperty = Nothing
 
@@ -108,7 +108,7 @@ Namespace Ecopath.Output
                 alSumLandingsDiscards.Add(propDiscards)
                 ' Set the property to the cell
                 opSumLandingsDiscards = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumLandingsDiscards.ToArray())
-                propSumLandingsDiscards = New cFormulaProperty(opSumLandingsDiscards)
+                propSumLandingsDiscards = Me.Formula(opSumLandingsDiscards)
                 propCell = New PropertyCell(propSumLandingsDiscards)
                 ' Configure the cell
                 propCell.SuppressZero = True
@@ -122,7 +122,7 @@ Namespace Ecopath.Output
 
             'Display the sum of quantities in a row
             opSumRow = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumRow.ToArray())
-            propSumRow = New cFormulaProperty(opSumRow)
+            propSumRow = Me.Formula(opSumRow)
             propCell = New PropertyCell(propSumRow)
             Me(iRow, Me.ColumnsCount - 1) = propCell
 
@@ -168,7 +168,7 @@ Namespace Ecopath.Output
                     alSumLandingsDiscards.Add(propDiscards)
                     ' Set the property 
                     opSumLandingsDiscards = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumLandingsDiscards.ToArray())
-                    propSumLandingsDiscards = New cFormulaProperty(opSumLandingsDiscards)
+                    propSumLandingsDiscards = Me.Formula(opSumLandingsDiscards)
 
                     'Sum values in a column
                     alSumCol.Add(propSumLandingsDiscards)
@@ -179,13 +179,13 @@ Namespace Ecopath.Output
 
                 'Display the sum of values in a column
                 opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())
-                propSumCol = New cFormulaProperty(opSumCol)
+                propSumCol = Me.Formula(opSumCol)
                 Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(propSumCol)
             Next
 
             'Display the sum of all values
             opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumAll.ToArray())
-            propSumAll = New cFormulaProperty(opSumAll)
+            propSumAll = Me.Formula(opSumAll)
             Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New PropertyCell(propSumAll)
 
         End Sub
@@ -256,11 +256,11 @@ Namespace Ecopath.Output
                     alProdQuantityTTLX.Add(propTTLX)
                     ' Set the property 
                     opSumLandingsDiscards = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumLandingsDiscards.ToArray())
-                    propSumLandingsDiscards = New cFormulaProperty(opSumLandingsDiscards)
+                    propSumLandingsDiscards = Me.Formula(opSumLandingsDiscards)
 
                     alProdQuantityTTLX.Add(propSumLandingsDiscards)
                     opProdQuantityTTLX = New cMultiOperation(cMultiOperation.eOperatorType.Multiply, alProdQuantityTTLX.ToArray())
-                    propProdQuantityTTLX = New cFormulaProperty(opProdQuantityTTLX)
+                    propProdQuantityTTLX = Me.Formula(opProdQuantityTTLX)
 
                     'Sum quantity in a column
                     alSumQuantityCol.Add(propSumLandingsDiscards)
@@ -275,21 +275,21 @@ Namespace Ecopath.Output
 
                 'Display (sum of quantity*TTLX in a column) / (sum of quantity in a column)
                 opSumQuantityCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumQuantityCol.ToArray())
-                propSumQuantityCol = New cFormulaProperty(opSumQuantityCol)
+                propSumQuantityCol = Me.Formula(opSumQuantityCol)
                 opSumQuantityTTLXCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumQuantityTTLXCol.ToArray())
-                propSumQuantityTTLXCol = New cFormulaProperty(opSumQuantityTTLXCol)
+                propSumQuantityTTLXCol = Me.Formula(opSumQuantityTTLXCol)
                 opDivTTLXQuantity = New cBinaryOperation(cBinaryOperation.eOperatorType.Divide, propSumQuantityTTLXCol, propSumQuantityCol)
-                propDivTTLXQuantity = New cFormulaProperty(opDivTTLXQuantity)
+                propDivTTLXQuantity = Me.Formula(opDivTTLXQuantity)
                 Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(propDivTTLXQuantity)
             Next
 
             'Display (sum of all quantity*TTLX) / (sum of all quantity)
             opSumQuantityAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumQuantityAll.ToArray())
-            propSumQuantityAll = New cFormulaProperty(opSumQuantityAll)
+            propSumQuantityAll = Me.Formula(opSumQuantityAll)
             opSumQuantityTTLXAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumQuantityTTLXAll.ToArray())
-            propSumQuantityTTLXAll = New cFormulaProperty(opSumQuantityTTLXAll)
+            propSumQuantityTTLXAll = Me.Formula(opSumQuantityTTLXAll)
             opDivTTLXQuantity = New cBinaryOperation(cBinaryOperation.eOperatorType.Divide, propSumQuantityTTLXAll, propSumQuantityAll)
-            propDivTTLXQuantity = New cFormulaProperty(opDivTTLXQuantity)
+            propDivTTLXQuantity = Me.Formula(opDivTTLXQuantity)
             Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New PropertyCell(propDivTTLXQuantity)
 
         End Sub

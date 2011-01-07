@@ -256,7 +256,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.919, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1116, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
@@ -266,6 +266,33 @@
   </data>
   <data name="m_gpMsg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="m_cbShowTime.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbShowTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 49</value>
+  </data>
+  <data name="m_cbShowTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 17</value>
+  </data>
+  <data name="m_cbShowTime.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_cbShowTime.Text" xml:space="preserve">
+    <value>&amp;Show message time</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowTime.Name" xml:space="preserve">
+    <value>m_cbShowTime</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowTime.Parent" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowTime.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_nudMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
     <value>183, 23</value>
@@ -286,7 +313,7 @@
     <value>m_gpMsg</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lblMaxNumMessages.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -316,13 +343,13 @@
     <value>m_gpMsg</value>
   </data>
   <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 190</value>
   </data>
   <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 56</value>
+    <value>382, 80</value>
   </data>
   <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -344,6 +371,78 @@
   </data>
   <data name="m_gbStartup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;m_lblResetOverwritePrompts.Name" xml:space="preserve">
+    <value>m_lblResetOverwritePrompts</value>
+  </data>
+  <data name="&gt;&gt;m_lblResetOverwritePrompts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblResetOverwritePrompts.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_lblResetOverwritePrompts.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_btnResetOverwritePrompts.Name" xml:space="preserve">
+    <value>m_btnResetOverwritePrompts</value>
+  </data>
+  <data name="&gt;&gt;m_btnResetOverwritePrompts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnResetOverwritePrompts.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_btnResetOverwritePrompts.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_cbCheckEwE6.Name" xml:space="preserve">
+    <value>m_cbCheckEwE6</value>
+  </data>
+  <data name="&gt;&gt;m_cbCheckEwE6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbCheckEwE6.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_cbCheckEwE6.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_cbDownloadUpdates.Name" xml:space="preserve">
+    <value>m_cbDownloadUpdates</value>
+  </data>
+  <data name="&gt;&gt;m_cbDownloadUpdates.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbDownloadUpdates.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_cbDownloadUpdates.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_gbStartup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="m_gbStartup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>382, 95</value>
+  </data>
+  <data name="m_gbStartup.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_gbStartup.Text" xml:space="preserve">
+    <value>Start-up</value>
+  </data>
+  <data name="&gt;&gt;m_gbStartup.Name" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_gbStartup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gbStartup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gbStartup.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_lblResetOverwritePrompts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -464,30 +563,6 @@
   </data>
   <data name="&gt;&gt;m_cbDownloadUpdates.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="m_gbStartup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="m_gbStartup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 95</value>
-  </data>
-  <data name="m_gbStartup.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_gbStartup.Text" xml:space="preserve">
-    <value>Start-up</value>
-  </data>
-  <data name="&gt;&gt;m_gbStartup.Name" xml:space="preserve">
-    <value>m_gbStartup</value>
-  </data>
-  <data name="&gt;&gt;m_gbStartup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbStartup.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gbStartup.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

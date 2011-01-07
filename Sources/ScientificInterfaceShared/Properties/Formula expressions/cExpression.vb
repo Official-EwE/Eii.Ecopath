@@ -1,16 +1,9 @@
-'==============================================================================
-'
-' $Log: cExpression.vb,v $
-' Revision 1.2  2009/05/28 12:37:01  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/04/02 13:19:40  jeroens
-' Separated out of cFormulaExpression.vb
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -20,14 +13,46 @@ Namespace Properties
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public MustInherit Class cExpression
+        Implements IDisposable
+
+#Region " Disposal "
+
+        ''' <summary>To detect redundant calls.</summary>
+        Private m_bDisposed As Boolean = False        ' 
+
+        Public Sub Dispose() _
+            Implements IDisposable.Dispose
+            If Not Me.m_bDisposed Then
+                Me.Dispose(True)
+                Me.m_bDisposed = True
+            End If
+            GC.SuppressFinalize(Me)
+        End Sub
+
+        Protected MustOverride Sub Dispose(ByVal bDisposing As Boolean)
+
+#End Region ' Disposal
 
         ''' ---------------------------------------------------------------
         ''' <summary>
-        ''' Returns the value of this expression
+        ''' Returns the value of this expression.
         ''' </summary>
         ''' ---------------------------------------------------------------
         Public MustOverride Function GetValue() As Single
+
+        ''' ---------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the style of this expression.
+        ''' </summary>
+        ''' ---------------------------------------------------------------
         Public MustOverride Function GetStyle() As cStyleGuide.eStyleFlags
+
+        ''' ---------------------------------------------------------------
+        ''' <summary>
+        ''' Change notification event delegate.
+        ''' </summary>
+        ''' ---------------------------------------------------------------
+        Public Delegate Sub ValueChangedEventHandler(ByVal exp As cExpression)
 
         ''' ---------------------------------------------------------------
         ''' <summary>
@@ -35,7 +60,6 @@ Namespace Properties
         ''' the value of this expression has changed.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Public Delegate Sub ValueChangedEventHandler(ByVal exp As cExpression)
         Public Event OnValueChanged As ValueChangedEventHandler
 
         ''' ---------------------------------------------------------------

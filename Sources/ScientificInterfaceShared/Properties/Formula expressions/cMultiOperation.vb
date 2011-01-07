@@ -1,18 +1,9 @@
-'==============================================================================
-'
-' $Log: cMultiOperation.vb,v $
-' Revision 1.2  2009/05/28 12:37:01  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/04/02 13:19:40  jeroens
-' Separated out of cFormulaExpression.vb
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-
-Imports EwECore
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -78,6 +69,18 @@ Namespace Properties
             Me.m_sValue = Me.CalcValue()
             ' Update style
             Me.m_style = Me.CalcStyle()
+        End Sub
+
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+            ' For each operand
+            For nOperand As Integer = 0 To Me.m_lOperands.Count - 1
+                ' Get it
+                Dim operand As cExpression = Me.m_lOperands(nOperand)
+                ' Stop listening to its events
+                RemoveHandler operand.OnValueChanged, AddressOf OnOperandValueChanged
+                operand.Dispose()
+            Next nOperand
+            Me.m_lOperands.Clear()
         End Sub
 
         ''' ---------------------------------------------------------------

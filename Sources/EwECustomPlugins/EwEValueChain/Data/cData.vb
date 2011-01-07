@@ -56,7 +56,9 @@ Public Class cData
         Return cData.s_inst
     End Function
 
-    Public Sub Clear()
+    Public Overrides Sub Clear()
+
+        MyBase.Clear()
 
         ' Properly detach events
         Me.RemoveParameters(Me.m_parameters)

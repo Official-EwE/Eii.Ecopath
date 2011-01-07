@@ -30,6 +30,7 @@ Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports Microsoft.VisualBasic
 Imports System.Threading
+Imports System.ComponentModel
 
 #End Region ' Imports
 
@@ -57,7 +58,7 @@ Public Class AppLauncher
     ''' <summary>Style guide updater.</summary>
     Private m_styleguideupdater As StyleGuideUpdater = Nothing
     Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
-
+    Private m_MessageHistory As cMessageHistory = Nothing
     Private m_strLastSelectedPath As String = ""
 
     ''' <summary>Status messages stack.</summary>
@@ -67,8 +68,8 @@ Public Class AppLauncher
 
     Private m_DockPanel As DockPanel = Nothing
     Private m_NavPanel As NavigationPanel = Nothing
-    Private m_StatusPanel As StatusPanel = Nothing
-    Private m_RemarkPanel As RemarkPanel = Nothing
+    Private m_StatusPanel As frmStatusPanel = Nothing
+    Private m_RemarkPanel As frmRemarkPanel = Nothing
     Private m_StartPage As frmWebBrowser = Nothing
     Private m_lstrProtectedPanelNames As New List(Of String)
 
@@ -484,8 +485,8 @@ Public Class AppLauncher
 
         ' Init panels
         m_NavPanel = New NavigationPanel(Me.UIContext, Me.m_pluginManager)
-        m_StatusPanel = New StatusPanel(Me.UIContext)
-        m_RemarkPanel = New RemarkPanel(Me.UIContext)
+        m_StatusPanel = New frmStatusPanel(Me.UIContext, Me.m_MessageHistory)
+        m_RemarkPanel = New frmRemarkPanel(Me.UIContext)
         m_StartPage = New frmWebBrowser(Me.UIContext)
 
         ' Add panels
@@ -543,6 +544,10 @@ Public Class AppLauncher
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcotracer)
         Me.Core.Messages.AddMessageHandler(Me.m_mhTimeseries)
 
+        ' Create message history
+        Me.m_MessageHistory = New cMessageHistory()
+        Me.m_MessageHistory.UIContext = Me.UIContext
+
         ' Create plugin manager for this GUI
         Me.m_pluginManager = New cPluginManager()
         Me.m_pluginManager.UIContext = Me.UIContext
@@ -574,7 +579,9 @@ Public Class AppLauncher
 
     Private Sub InitEventHandlers()
 
-        AddHandler My.Settings.SettingsLoaded, AddressOf OnDefaultSettingLoaded
+        AddHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
+        AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
+
         ' JS 27Apr10: ActiveContent seems to track much more accurately than ActiveDocument
         AddHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
 
@@ -727,7 +734,7 @@ Public Class AppLauncher
         Me.AutolaunchPlugins()
 
         Me.ProcessCommandLine()
-        Me.OnDefaultSettingLoaded(Nothing, Nothing) ' Ugh!
+        Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!
         Me.UpdateModelControls()
 
         Me.Help.HelpTopic(Me.m_StartPage) = "Ecopath with Ecosim 6 Getting started.htm"
@@ -745,33 +752,62 @@ Public Class AppLauncher
 
         ' Cancel application shut down if the core does not terminate succesfully.
         e.Cancel = Not Me.CloseEcopathModel()
-
         ' Abort if Ecopath model did not close sucessfully
         If e.Cancel Then Return
-
-        Try
-
-            ' Cleanup: disconnect command handler from idle event
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-            RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
-
-            Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
-            Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
-            Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
-            Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
-
-            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-            RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
-
-            ' Terminate all model-independent UI components
-            Me.CloseAllContents()
-            Me.ClearMRUDropdown()
-
-        Catch ex As Exception
-
-        End Try
-
+        ' Resume shutdown
         MyBase.OnFormClosing(e)
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
+        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
+
+        ' Terminate all model-independent UI components
+        Me.CloseAllContents()
+        Me.ClearScenarioDropdowns()
+        Me.ClearMRUDropdowns()
+
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
+        cmdh.Clear()
+
+        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
+        RemoveHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
+        RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
+
+        Me.m_StatusPanel.Close()
+        Me.m_StatusPanel.Dispose()
+        Me.m_StatusPanel = Nothing
+
+        Me.m_RemarkPanel.Close()
+        Me.m_RemarkPanel.Dispose()
+        Me.m_RemarkPanel = Nothing
+
+        Me.m_StartPage.Close()
+        Me.m_StartPage.Dispose()
+        Me.m_StartPage = Nothing
+
+        Me.m_NavPanel.Close()
+        Me.m_NavPanel.Dispose()
+        Me.m_NavPanel = Nothing
+
+        Me.m_MessageHistory.Dispose()
+        Me.m_MessageHistory = Nothing
+
+        Me.m_pluginManager.UIContext = Nothing
+        Me.UIContext = Nothing
+
+        ' JS 13Dec10: Another attempt to free tooltip memory 
+        Dim ts As cToolTipShared = cToolTipShared.GetInstance()
+        ts.RemoveAll()
+        ts.Dispose()
+
+        MyBase.OnFormClosed(e)
 
     End Sub
 
@@ -1326,7 +1362,7 @@ Public Class AppLauncher
         Dim bHasMRU As Boolean = False
 
         ' Clear MRU list
-        Me.ClearMRUDropdown()
+        Me.ClearMRUDropdowns()
 
         If (alMRU IsNot Nothing) Then
             bHasMRU = (alMRU.Count > 1)
@@ -1370,10 +1406,10 @@ Public Class AppLauncher
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Clear the list of MRU items from the menu structure.
+    ''' Clear the list of MRU items and attached event handlers.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub ClearMRUDropdown()
+    Private Sub ClearMRUDropdowns()
 
         Dim item As ToolStripMenuItem = Nothing
 
@@ -2697,7 +2733,7 @@ Public Class AppLauncher
             m_RemarkPanel.DockState = DockState.Hidden
         Else
             ' ToDo: Restore last dock state
-            m_RemarkPanel.Show(m_DockPanel, DockState.DockRightAutoHide)
+            m_RemarkPanel.Show(m_DockPanel, DockState.DockBottomAutoHide)
         End If
     End Sub
 
@@ -3754,22 +3790,59 @@ Public Class AppLauncher
         Me.m_cmdLoadEcotracerScenario.Tag = Nothing
     End Sub
 
-    Private Sub OnDefaultSettingLoaded(ByVal sender As Object, ByVal e As System.Configuration.SettingsLoadedEventArgs)
+#Region " Settings handling "
 
-        Me.m_strLastSelectedPath = My.Settings.LastSelectedDirectory
-        If Not Directory.Exists(Me.m_strLastSelectedPath) Then
-            'the last selected directory is not a valid directory; set it to My documents by default
-            Me.m_strLastSelectedPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments
-        End If
+    Private Sub OnSettingsLoaded(ByVal sender As Object, ByVal e As System.Configuration.SettingsLoadedEventArgs)
 
-        ' Read form positions
-        Me.m_uic.FormPositionSettings.Setting = My.Settings.FormPositions
+        Try
 
-        ' Get the form position from user settings
-        Me.StartPosition = FormStartPosition.Manual
-        Me.m_uic.FormPositionSettings.Apply(Me, False)
+            Me.m_strLastSelectedPath = My.Settings.LastSelectedDirectory
+            If Not Directory.Exists(Me.m_strLastSelectedPath) Then
+                'the last selected directory is not a valid directory; set it to My documents by default
+                Me.m_strLastSelectedPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+            End If
+
+            ' Read form positions
+            Me.m_uic.FormPositionSettings.Setting = My.Settings.FormPositions
+
+            ' Get the form position from user settings
+            Me.StartPosition = FormStartPosition.Manual
+            Me.m_uic.FormPositionSettings.Apply(Me, False)
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler to respond to individual settings changes.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnSettingsChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
+
+        Try
+
+            Select Case e.PropertyName
+
+                Case "StatusMaxMessages", "StatusShowTime"
+                    If (Me.m_MessageHistory IsNot Nothing) Then Me.m_MessageHistory.Refresh()
+
+                Case "MdbRecentlyUsedCount"
+                    Me.PopulateMRUDropdown()
+
+            End Select
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+#End Region ' Settings handling
 
     Private Sub OnTabFocusChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 

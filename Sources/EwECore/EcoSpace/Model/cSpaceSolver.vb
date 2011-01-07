@@ -166,6 +166,19 @@ Public Class cSpaceSolver
 
     End Sub
 
+    Public Sub Clear()
+
+        Try
+            'each solver get it's own Contaminant Tracer data and model
+            Me.m_TracerData.Clear()
+            Me.m_ConTracer = Nothing
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
+            cLog.Write(ex)
+        End Try
+
+    End Sub
+
     ''' <summary>
     ''' Set the groups to iterate over.
     ''' </summary>

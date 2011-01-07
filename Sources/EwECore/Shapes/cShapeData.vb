@@ -37,6 +37,11 @@ Public MustInherit Class cShapeData
         Init(ArrayOfData)
     End Sub
 
+
+    Public Overridable Sub Clear()
+        Me.m_xdata = Nothing
+    End Sub
+
 #End Region ' Constructors
 
 #Region " Capture "

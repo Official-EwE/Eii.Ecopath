@@ -580,6 +580,17 @@ Public Class cMPAOptManager
 
     End Function
 
+    Public Sub Clear() Implements ISearchObjective.Clear
+        ' NOP
+        Try
+            If Me.m_parameters IsNot Nothing Then Me.m_parameters.Clear()
+            If Me.m_curRowCol IsNot Nothing Then Me.m_curRowCol.Clear()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
     Public Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
 
         Try

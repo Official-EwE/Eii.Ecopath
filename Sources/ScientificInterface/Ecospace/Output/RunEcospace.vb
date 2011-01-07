@@ -254,26 +254,36 @@ Namespace Ecospace
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-            If (Me.m_cmdDisplayGroups IsNot Nothing) Then
-                Me.m_cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
-                RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
-                Me.m_cmdDisplayGroups = Nothing
-            End If
+            Try
 
-            Me.Core.StopEcospace()
+                If (Me.m_cmdDisplayGroups IsNot Nothing) Then
+                    Me.m_cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
+                    RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
+                    Me.m_cmdDisplayGroups = Nothing
+                End If
 
-            Me.m_zgh.Detach()
+                Me.Core.StopEcospace()
 
-            ' Stop tracking core state monitor for Ecospace run states
-            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
-            ' Stop tracking style guide changes
-            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            ' Stop tracking ConcTracing setting
-            RemoveHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
+                Me.m_zgh.Detach()
 
-            Me.m_bpConTracing = Nothing
+                ' Stop tracking core state monitor for Ecospace run states
+                RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+                ' Stop tracking style guide changes
+                RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                ' Stop tracking ConcTracing setting
+                RemoveHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
+
+                Me.m_bpConTracing = Nothing
+
+                Me.m_drawers.Clear()
+
+            Catch ex As Exception
+                'make sure something in the interface does not stop the base from cleaning up
+                Debug.Assert(False, Me.ToString & ".OnFormClosed() Exception: " & ex.Message)
+            End Try
 
             MyBase.OnFormClosed(e)
+
         End Sub
 
         Protected Overrides Sub OnResizeEnd(ByVal e As EventArgs)

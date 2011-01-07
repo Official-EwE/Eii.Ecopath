@@ -27,7 +27,7 @@ Public Class cPedigreeManager
 
 #End Region ' Private vars
 
-#Region " Constructor "
+#Region " Constructor and Cleanup"
 
     Friend Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal iDBID As Integer)
         MyBase.New(core)
@@ -51,6 +51,18 @@ Public Class cPedigreeManager
         Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
+
+    End Sub
+
+    Public Overrides Sub Clear()
+        MyBase.Clear()
+
+        For Each ped As cPedigreeLevel In Me.m_levels
+            ped.Clear()
+        Next
+        Me.m_levels.Clear()
+
+        Me.m_dictID.Clear()
 
     End Sub
 

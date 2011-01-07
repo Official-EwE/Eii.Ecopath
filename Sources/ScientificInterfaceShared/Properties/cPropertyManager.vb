@@ -127,17 +127,37 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns a manually made property
+        ''' Returns a <see cref="cProperty">property</see> by its underlying ID.
         ''' </summary>
         ''' <param name="strID">The ID of the property</param>
+        ''' <returns>A cProperty instance, or Nothing if the instance could not be found.</returns>
         ''' -------------------------------------------------------------------
         Public Function GetProperty(ByVal strID As String) As cProperty
-
+            If (String.IsNullOrEmpty(strID)) Then Return Nothing
             ' Return a property from the internal storage
             If (Not Me.m_htGeneric.ContainsKey(strID)) Then
                 Return Nothing
             End If
             Return Me.m_htGeneric(strID)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns <see cref="cProperty">properties</see> by an array of underlying IDs.
+        ''' </summary>
+        ''' <param name="astrIDs">The IDs of the propertiets to retrieve.</param>
+        ''' <returns>An array of cProperty instances.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function GetProperties(ByVal astrIDs() As String) As cProperty()
+
+            Dim lProps As New List(Of cProperty)
+            Dim prop As cProperty = Nothing
+            For Each strID As String In astrIDs
+                prop = Me.GetProperty(strID)
+                If prop IsNot Nothing Then lProps.Add(prop)
+            Next
+            Return lProps.ToArray
 
         End Function
 
@@ -231,16 +251,16 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Extract a <see cref="cProperty">Property</see> from a given 
-        ''' <see cref="cVariableStatus">VariableStatus</see>.
+        ''' Extract a value ID from a given <see cref="cVariableStatus">VariableStatus</see>.
         ''' </summary>
         ''' <param name="vs">VariableStatus to find the Property instance for.</param>
-        ''' <returns>A cProperty instance, or Nothing if unsuccesful.</returns>
+        ''' <returns>A property ID, or an empty string if unsuccesful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ExtractProperty(ByVal vs As cVariableStatus) As cProperty
-            Dim prop As cProperty = Nothing
+        Public Function ExtractPropertyID(ByVal vs As cVariableStatus) As String
+
             Dim source As cCoreInputOutputBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
+            Dim strID As String = ""
 
             ' Attempt to find an existing property for this variable
             source = DirectCast(vs.CoreDataObject, cCoreInputOutputBase)
@@ -284,37 +304,37 @@ Namespace Properties
 
             ' js 07/jun/06 type check to cast to cCoreInputOutputBase
             If TypeOf source Is cCoreInputOutputBase Then
-                prop = Me.GetProperty(source, vs.VarName, sourceSec, False)
+                strID = New cValueID(source, vs.VarName, sourceSec).ToString
             End If
 
-            Return prop
+            Return strID
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Extract all properties from a Me.m_core message
+        ''' Extract all property IDs from a <see cref="cMessage">message</see>.
         ''' </summary>
-        ''' <param name="Message">Me.m_core message to analyze</param>
-        ''' <returns>A strong-typed cProperty list</returns>
+        ''' <param name="msg"><see cref="cMessage">Message</see> to analyze.</param>
+        ''' <returns>An array of property IDs</returns>
         ''' -------------------------------------------------------------------
-        Public Function ExtractProperties(ByRef Message As cMessage) As List(Of cProperty)
+        Public Function ExtractPropertyIDs(ByVal msg As cMessage) As String()
 
-            Dim lProps As New List(Of cProperty)
-            Dim prop As cProperty = Nothing
+            Dim lstrIDs As New List(Of String)
+            Dim strID As String = ""
 
             ' Validate message
-            If Message Is Nothing Then Return lProps
+            If msg Is Nothing Then Return lstrIDs.ToArray
 
             ' For all variables in the message
-            For Each vs As cVariableStatus In Message.Variables
+            For Each vs As cVariableStatus In msg.Variables
 
-                ' Resolve property for vs
-                prop = Me.ExtractProperty(vs)
+                ' Resolve property ID for vs
+                strID = Me.ExtractPropertyID(vs)
                 ' Add to list of props if resolved
-                If (prop IsNot Nothing) Then lProps.Add(prop)
+                If (Not String.IsNullOrEmpty(strID)) Then lstrIDs.Add(strID)
 
             Next
-            Return lProps
+            Return lstrIDs.ToArray
 
         End Function
 
@@ -413,7 +433,8 @@ Namespace Properties
         Private Sub AllMessagesHandler(ByRef msg As cMessage)
 
             ' Get properties related to message
-            Dim lProps As List(Of cProperty) = Nothing
+            Dim astrPropIDs() As String = Nothing
+            Dim aProps As cProperty() = Nothing
             Dim prop As cProperty = Nothing
 
             ' Respond to major events
@@ -427,14 +448,15 @@ Namespace Properties
             ' Ignore irrelevant messages
             If msg.Type = eMessageType.DataImport Then Return
 
-            lProps = Me.ExtractProperties(msg)
+            astrPropIDs = Me.ExtractPropertyIDs(msg)
+            aProps = Me.GetProperties(astrPropIDs)
 
-            If lProps.Count = 0 Then
+            If (astrPropIDs.Length = 0) Then
                 ' Update everything (ouch)
                 Me.Refresh(msg.Source)
             Else
                 ' Update each property in this message
-                For Each prop In lProps
+                For Each prop In aProps
                     prop.Refresh()
                 Next
             End If

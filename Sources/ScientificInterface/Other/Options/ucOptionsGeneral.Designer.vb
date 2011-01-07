@@ -37,6 +37,7 @@ Partial Class ucOptionsGeneral
             Me.m_btnResetOverwritePrompts = New System.Windows.Forms.Button
             Me.m_cbCheckEwE6 = New System.Windows.Forms.CheckBox
             Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox
+            Me.m_cbShowTime = New System.Windows.Forms.CheckBox
             Me.m_gpMRU.SuspendLayout()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gpMsg.SuspendLayout()
@@ -78,6 +79,7 @@ Partial Class ucOptionsGeneral
             'm_gpMsg
             '
             resources.ApplyResources(Me.m_gpMsg, "m_gpMsg")
+            Me.m_gpMsg.Controls.Add(Me.m_cbShowTime)
             Me.m_gpMsg.Controls.Add(Me.m_nudMaxNumMessages)
             Me.m_gpMsg.Controls.Add(Me.m_lblMaxNumMessages)
             Me.m_gpMsg.Name = "m_gpMsg"
@@ -86,8 +88,7 @@ Partial Class ucOptionsGeneral
             'm_nudMaxNumMessages
             '
             resources.ApplyResources(Me.m_nudMaxNumMessages, "m_nudMaxNumMessages")
-            Me.m_nudMaxNumMessages.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
-            Me.m_nudMaxNumMessages.Minimum = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_nudMaxNumMessages.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
             Me.m_nudMaxNumMessages.Name = "m_nudMaxNumMessages"
             Me.m_nudMaxNumMessages.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
@@ -129,6 +130,12 @@ Partial Class ucOptionsGeneral
             Me.m_cbDownloadUpdates.Name = "m_cbDownloadUpdates"
             Me.m_cbDownloadUpdates.UseVisualStyleBackColor = True
             '
+            'm_cbShowTime
+            '
+            resources.ApplyResources(Me.m_cbShowTime, "m_cbShowTime")
+            Me.m_cbShowTime.Name = "m_cbShowTime"
+            Me.m_cbShowTime.UseVisualStyleBackColor = True
+            '
             'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
@@ -162,6 +169,7 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_lblResetOverwritePrompts As System.Windows.Forms.Label
         Private WithEvents m_btnResetOverwritePrompts As System.Windows.Forms.Button
         Private WithEvents m_hdrCaption As cEwEHeaderLabel
+        Private WithEvents m_cbShowTime As System.Windows.Forms.CheckBox
 
     End Class
 

@@ -93,4 +93,23 @@ Public Class cGameServerInterface
 
     End Function
 
+    ''' <summary>
+    ''' Clear all game server data structures.
+    ''' </summary>
+    Public Sub Clear()
+
+        Try
+            ' Server may not have been initialized!
+            If (Me.m_dctCoreData IsNot Nothing) Then
+                Me.m_dctCoreListData.Clear()
+            End If
+            If (Me.m_dctCoreData IsNot Nothing) Then
+                Me.m_dctCoreData.Clear()
+            End If
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
+        End Try
+
+    End Sub
+
 End Class

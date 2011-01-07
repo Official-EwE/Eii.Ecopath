@@ -215,6 +215,20 @@ Public Class cMessagePublisher
         End Try
     End Function
 
+
+    Public Sub Clear()
+
+        Try
+            For Each handler As cMessageHandler In Me.m_handlers
+                handler.Clear()
+            Next
+            m_handlers.Clear()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
+    End Sub
+
 #Region " Locking "
 
     ''' <summary>

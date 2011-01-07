@@ -27,35 +27,24 @@ Partial Class frmMSEPlots
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEPlots))
-        Me.ZedGraph = New ZedGraph.ZedGraphControl
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.rbBioEst = New System.Windows.Forms.RadioButton
         Me.btShowHide = New System.Windows.Forms.Button
-        Me.m_hdrPlots = New cEwEHeaderLabel
+        Me.m_hdrPlots = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.rbEffort = New System.Windows.Forms.RadioButton
         Me.rbFleetValue = New System.Windows.Forms.RadioButton
         Me.rbGroupCatch = New System.Windows.Forms.RadioButton
         Me.rbGroupBiomass = New System.Windows.Forms.RadioButton
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.m_hdrType = New cEwEHeaderLabel
+        Me.m_hdrType = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.rbValues = New System.Windows.Forms.RadioButton
         Me.rbHisto = New System.Windows.Forms.RadioButton
+        Me.pnlGraph = New System.Windows.Forms.Panel
+        Me.ZedGraph = New ZedGraph.ZedGraphControl
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        Me.pnlGraph.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'ZedGraph
-        '
-        resources.ApplyResources(Me.ZedGraph, "ZedGraph")
-        Me.ZedGraph.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.ZedGraph.Name = "ZedGraph"
-        Me.ZedGraph.ScrollGrace = 0
-        Me.ZedGraph.ScrollMaxX = 0
-        Me.ZedGraph.ScrollMaxY = 0
-        Me.ZedGraph.ScrollMaxY2 = 0
-        Me.ZedGraph.ScrollMinX = 0
-        Me.ZedGraph.ScrollMinY = 0
-        Me.ZedGraph.ScrollMinY2 = 0
         '
         'Panel1
         '
@@ -85,8 +74,6 @@ Partial Class frmMSEPlots
         'm_hdrPlots
         '
         resources.ApplyResources(Me.m_hdrPlots, "m_hdrPlots")
-        Me.m_hdrPlots.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_hdrPlots.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.m_hdrPlots.Name = "m_hdrPlots"
         '
         'rbEffort
@@ -125,9 +112,7 @@ Partial Class frmMSEPlots
         '
         'm_hdrType
         '
-        Me.m_hdrType.BackColor = System.Drawing.SystemColors.ButtonShadow
         resources.ApplyResources(Me.m_hdrType, "m_hdrType")
-        Me.m_hdrType.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.m_hdrType.Name = "m_hdrType"
         '
         'rbValues
@@ -146,22 +131,41 @@ Partial Class frmMSEPlots
         Me.rbHisto.Tag = ""
         Me.rbHisto.UseVisualStyleBackColor = True
         '
+        'pnlGraph
+        '
+        resources.ApplyResources(Me.pnlGraph, "pnlGraph")
+        Me.pnlGraph.Controls.Add(Me.ZedGraph)
+        Me.pnlGraph.Name = "pnlGraph"
+        '
+        'ZedGraph
+        '
+        resources.ApplyResources(Me.ZedGraph, "ZedGraph")
+        Me.ZedGraph.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.ZedGraph.Name = "ZedGraph"
+        Me.ZedGraph.ScrollGrace = 0
+        Me.ZedGraph.ScrollMaxX = 0
+        Me.ZedGraph.ScrollMaxY = 0
+        Me.ZedGraph.ScrollMaxY2 = 0
+        Me.ZedGraph.ScrollMinX = 0
+        Me.ZedGraph.ScrollMinY = 0
+        Me.ZedGraph.ScrollMinY2 = 0
+        '
         'frmMSEPlots
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.pnlGraph)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Panel1)
-        Me.Controls.Add(Me.ZedGraph)
         Me.Name = "frmMSEPlots"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        Me.pnlGraph.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents ZedGraph As ZedGraph.ZedGraphControl
     Private WithEvents Panel1 As System.Windows.Forms.Panel
     Private WithEvents rbEffort As System.Windows.Forms.RadioButton
     Private WithEvents rbFleetValue As System.Windows.Forms.RadioButton
@@ -174,4 +178,6 @@ Partial Class frmMSEPlots
     Private WithEvents btShowHide As System.Windows.Forms.Button
     Private WithEvents rbBioEst As System.Windows.Forms.RadioButton
     Private WithEvents m_hdrPlots As cEwEHeaderLabel
+    Friend WithEvents pnlGraph As System.Windows.Forms.Panel
+    Private WithEvents ZedGraph As ZedGraph.ZedGraphControl
 End Class

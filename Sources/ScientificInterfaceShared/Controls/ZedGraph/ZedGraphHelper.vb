@@ -357,18 +357,7 @@ Namespace Controls
 
             AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
-            While Me.m_zgc.MasterPane.PaneList.Count < iNumPanels
-                Me.m_zgc.MasterPane.PaneList.Add(New GraphPane())
-            End While
-
-            While Me.m_zgc.MasterPane.PaneList.Count > iNumPanels
-                Me.m_zgc.MasterPane.PaneList.RemoveAt(iNumPanels)
-            End While
-
-            ReDim Me.m_abShowCursor(iNumPanels)
-            ReDim Me.m_aliCursors(iNumPanels)
-            ReDim Me.m_asCursorPos(iNumPanels)
-            ReDim Me.m_bCumulative(iNumPanels)
+            Me.ChangeNumPanels()
 
             AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             AddHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
@@ -439,10 +428,16 @@ Namespace Controls
         ''' Get the number of panels in the <see cref="ZedGraph">graph</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property NumPanes() As Integer
+        Public Property NumPanes() As Integer
             Get
                 Return Me.m_nPanels
             End Get
+
+            Set(ByVal value As Integer)
+                Me.m_nPanels = value
+                Me.ChangeNumPanels()
+            End Set
+
         End Property
 
         ''' -------------------------------------------------------------------
@@ -1748,6 +1743,28 @@ Namespace Controls
             Return lLines.ToArray
 
         End Function
+
+        Private Sub ChangeNumPanels()
+
+            Me.m_zgc.MasterPane.PaneList.Clear()
+            For ipn As Integer = 1 To Me.m_nPanels
+                Me.m_zgc.MasterPane.PaneList.Add(New GraphPane)
+            Next
+
+            'While Me.m_zgc.MasterPane.PaneList.Count < Me.m_nPanels
+            '    Me.m_zgc.MasterPane.PaneList.Add(New GraphPane())
+            'End While
+
+            'While Me.m_zgc.MasterPane.PaneList.Count > Me.m_nPanels
+            '    Me.m_zgc.MasterPane.PaneList.RemoveAt(Me.m_nPanels)
+            'End While
+
+            ReDim Me.m_abShowCursor(Me.m_nPanels)
+            ReDim Me.m_aliCursors(Me.m_nPanels)
+            ReDim Me.m_asCursorPos(Me.m_nPanels)
+            ReDim Me.m_bCumulative(Me.m_nPanels)
+
+        End Sub
 
 
 #Region " Styling "

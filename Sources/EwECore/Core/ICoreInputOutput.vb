@@ -36,6 +36,7 @@ End Interface ' ICoreInterface
 '''</remarks>
 ''' ---------------------------------------------------------------------------
 Public Interface ICoreInputOutput
+    Inherits IDisposable
 
     ''' <summary>
     ''' Returns the value exposed by a Core input or output object.
@@ -77,6 +78,11 @@ Public Interface ICoreInputOutput
     ''' the result of the most recent attempt to <see cref="SetVariable">Set</see> 
     ''' a variable.</returns>
     ReadOnly Property ValidationStatus() As cVariableStatus
+
+    ''' <summary>
+    ''' Clear the content of a ICoreInputOutput. This leaves the object ready to reuse.
+    ''' </summary>
+    Sub Clear()
 
 End Interface ' ICoreInputOutput
 
@@ -382,6 +388,32 @@ Public MustInherit Class cCoreInputOutputBase
         Return True
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Destroy an instance.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Sub Dispose() Implements ICoreInputOutput.Dispose
+        Try
+            For Each val As cValue In Me.m_values.Values
+                val.Dispose()
+            Next
+            Me.m_values.Clear()
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".Dispose() Exception: " & ex.Message)
+            cLog.Write(ex)
+        End Try
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Clears an instance for further use.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Sub Clear() Implements ICoreInputOutput.Clear
+        ' NOP
+    End Sub
 
 #End Region ' Mustoverride Methods
 

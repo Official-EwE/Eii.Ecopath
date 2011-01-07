@@ -44,8 +44,6 @@ Public Class frmMSE
     Private m_zgh As cZedGraphHelper = Nothing
     Private m_curState As eMSEStates
 
-    '   Private m_dctEffortControls As Dictionary(Of eMSERegulationMode, RadioButton)
-
     Private m_plotter As cMSEPlotter
     Private m_coreMessage As cMSEEventSource
 
@@ -59,6 +57,16 @@ Public Class frmMSE
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
+        Me.m_plotter.Detach()
+
+        Me.m_fpNTrials.Release()
+        Me.m_fpStartYear.Release()
+        Me.m_fpSave.Release()
+
+        Me.m_fpNTrials = Nothing
+        Me.m_fpStartYear = Nothing
+        Me.m_fpSave = Nothing
+
         ' Show/Hide Groups
         Dim cmdh As cCommandHandler = Me.CommandHandler
         Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
@@ -70,6 +78,8 @@ Public Class frmMSE
         RemoveHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
         Me.m_MSE.Disconnect()
+        Me.m_coreMessage.Dispose() ' = Nothing
+
         MyBase.OnFormClosed(e)
 
     End Sub
@@ -87,7 +97,7 @@ Public Class frmMSE
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
 
-        m_coreMessage = New cMSEEventSource
+        Me.m_coreMessage = New cMSEEventSource
 
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
@@ -102,7 +112,6 @@ Public Class frmMSE
         Me.m_zgh = New cZedGraphHelper()
 
         Me.m_plotter = New cMSEPlotter
-
         Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_zgh, Me.m_zgc)
         Me.m_plotter.PlotType = ePlotTypes.Line
         Me.m_plotter.DataType = ePlotData.Biomass

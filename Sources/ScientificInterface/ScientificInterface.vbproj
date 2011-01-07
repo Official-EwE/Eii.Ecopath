@@ -630,16 +630,16 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="cCoreController.vb" />
-    <Compile Include="Panels\RemarkPanel\RemarkPanel.Designer.vb">
-      <DependentUpon>RemarkPanel.vb</DependentUpon>
+    <Compile Include="Panels\RemarkPanel\frmRemarkPanel.Designer.vb">
+      <DependentUpon>frmRemarkPanel.vb</DependentUpon>
     </Compile>
-    <Compile Include="Panels\RemarkPanel\RemarkPanel.vb">
+    <Compile Include="Panels\RemarkPanel\frmRemarkPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Panels\StatusPanel\StatusPanel.Designer.vb">
-      <DependentUpon>StatusPanel.vb</DependentUpon>
+    <Compile Include="Panels\StatusPanel\frmStatusPanel.Designer.vb">
+      <DependentUpon>frmStatusPanel.vb</DependentUpon>
     </Compile>
-    <Compile Include="Panels\StatusPanel\StatusPanel.vb">
+    <Compile Include="Panels\StatusPanel\frmStatusPanel.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\BasicInputEwEGrid.vb">
@@ -775,8 +775,8 @@
       <DependentUpon>RunEcosim.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Panels\StatusPanel\StatusPanel.resx">
-      <DependentUpon>StatusPanel.vb</DependentUpon>
+    <EmbeddedResource Include="Panels\StatusPanel\frmStatusPanel.resx">
+      <DependentUpon>frmStatusPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Panels\NavigationPanel\NavigationPanel.resx">
@@ -838,6 +838,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\dlgEditGroupTaxon.resx">
       <DependentUpon>dlgEditGroupTaxon.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\EditPedigree.resx">
       <DependentUpon>EditPedigree.vb</DependentUpon>
@@ -849,12 +850,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Input\frmFisheryBasicInput.resx">
       <DependentUpon>frmFisheryBasicInput.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Input\frmBasicInput.resx">
       <DependentUpon>frmBasicInput.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Tools\Pedigree\frmPedigree.resx">
       <DependentUpon>frmPedigree.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Output\PSDContributionPlot.resx">
       <DependentUpon>PSDContributionPlot.vb</DependentUpon>
@@ -884,6 +888,10 @@
       <DependentUpon>frmApplyFFPrimaryProducer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\frmApplyShapeBase.resx">
+      <DependentUpon>frmApplyShapeBase.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedConsumer.resx">
       <DependentUpon>frmApplyMedConsumer.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -894,33 +902,43 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.resx">
       <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Map\ucMapZoomToolbar.resx">
       <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Map\ucMapZoom.resx">
       <DependentUpon>ucMapZoom.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRegion.resx">
       <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Advection\ucAdvectionMap.resx">
       <DependentUpon>ucAdvectionMap.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Advection\ucMap.resx">
       <DependentUpon>ucMap.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Advection\ucUpwelling.resx">
       <DependentUpon>ucUpwelling.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Advection\ucMLD.resx">
       <DependentUpon>ucMLD.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Advection\frmAdvection.resx">
       <DependentUpon>frmAdvection.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Advection\ucWind.resx">
       <DependentUpon>ucWind.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\frmWebBrowser.resx">
       <DependentUpon>frmWebBrowser.vb</DependentUpon>
@@ -936,9 +954,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\frmGroupRefLevels.resx">
       <DependentUpon>frmGroupRefLevels.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\frmQuotaShare.resx">
       <DependentUpon>frmQuotaShare.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\frmTFMpolicy.resx">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
@@ -982,12 +1002,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorPort.resx">
       <DependentUpon>ucLayerEditorPort.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorRange.resx">
       <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorSailCost.resx">
       <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgEditImportanceLayers.resx">
       <DependentUpon>dlgEditImportanceLayers.vb</DependentUpon>
@@ -1027,6 +1050,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Update\frmUpdateComponents.resx">
       <DependentUpon>frmUpdateComponents.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ecopath_logo.ico" />
     <Compile Include="Controls\cEwEStatusBar.vb">
@@ -1265,6 +1289,7 @@
     <Compile Include="Other\AboutBox\DatabaseGrid.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Other\cMessageHistory.vb" />
     <Compile Include="Other\frmWebBrowser.Designer.vb">
       <DependentUpon>frmWebBrowser.vb</DependentUpon>
     </Compile>
@@ -1513,7 +1538,7 @@
     <Compile Include="Other\Update\frmUpdateComponents.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Panels\StatusPanel\cMessageStateHandler.vb" />
+    <Compile Include="Other\cMessageStateHandler.vb" />
     <Compile Include="Tools\MSE\cMSEEventSource.vb" />
     <Compile Include="Tools\MSE\frmMSEAssessFleets.Designer.vb">
       <DependentUpon>frmMSEAssessFleets.vb</DependentUpon>
@@ -1782,8 +1807,8 @@
       <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Panels\RemarkPanel\RemarkPanel.resx">
-      <DependentUpon>RemarkPanel.vb</DependentUpon>
+    <EmbeddedResource Include="Panels\RemarkPanel\frmRemarkPanel.resx">
+      <DependentUpon>frmRemarkPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ucFormSeparator.ico" />
@@ -1839,9 +1864,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\frmOptions.resx">
       <DependentUpon>frmOptions.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\ucCVBlockSelector.resx">
       <DependentUpon>ucCVBlockSelector.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\dlgScenario.resx">
       <DependentUpon>dlgScenario.vb</DependentUpon>

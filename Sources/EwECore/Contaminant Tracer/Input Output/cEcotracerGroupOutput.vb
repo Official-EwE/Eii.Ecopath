@@ -1,23 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcotracerGroupOutput.vb,v $
-' Revision 1.2  2009/01/16 18:30:25  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:10  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/05/29 22:22:46  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.2  2007/12/08 00:55:50  jeroens
-' + Added time dimension
-'
-' Revision 1.1  2007/12/07 21:44:37  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
@@ -31,7 +11,7 @@ Public Class cEcotracerGroupOutput
 
 #Region "Constructor"
 
-    Public Sub New(ByRef TheCore As cCore)
+    Public Sub New(ByVal TheCore As cCore)
         MyBase.New(TheCore)
 
         Dim val As cValue
@@ -51,6 +31,18 @@ Public Class cEcotracerGroupOutput
         Me.m_nTimeSteps = TheCore.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
         ReDim m_data(Me.m_nGroups + 1, Me.m_nTimeSteps)
 
+    End Sub
+
+    ''' <inheritdoc cref="cCoreInputOutputBase.Dispose"/>
+    Public Overrides Sub Dispose()
+        MyBase.Dispose()
+        Me.Clear()
+        Me.m_data = Nothing
+    End Sub
+
+    ''' <inheritdoc cref="cCoreInputOutputBase.Clear"/>
+    Public Overrides Sub Clear()
+        MyBase.Clear()
     End Sub
 
 #End Region

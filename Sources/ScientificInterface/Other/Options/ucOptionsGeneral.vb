@@ -44,10 +44,11 @@ Namespace Other
                                      Math.Max(Me.m_nudMRU.Minimum, My.Settings.MdbRecentlyUsedCount)))
 
             Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
-                                                Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.FeedbackMessageLogSize)))
+                                                Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.StatusMaxMessages)))
 
             Me.m_cbCheckEwE6.Checked = False
             Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
+            Me.m_cbShowTime.Checked = My.Settings.StatusShowTime
 
             Me.UpdateControls()
 
@@ -63,8 +64,9 @@ Namespace Other
             Dim bRestart As Boolean = (My.Settings.AutoUpdatePlugins <> Me.m_cbDownloadUpdates.Checked)
 
             My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
-            My.Settings.FeedbackMessageLogSize = CInt(Me.m_nudMaxNumMessages.Value)
+            My.Settings.StatusMaxMessages = CInt(Me.m_nudMaxNumMessages.Value)
             My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
+            My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
 
             If bRestart Then Return IOptionsPage.eApplyResultType.Success_restart
             Return IOptionsPage.eApplyResultType.Success

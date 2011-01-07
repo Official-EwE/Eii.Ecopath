@@ -354,7 +354,20 @@ Public Class cContaminantTracerDataStructures
 
     Public Sub Clear()
         Me.m_nGroups = 0
-        Me.RedimByNGroups(0)
+
+        TracerConc = Nothing '(nGroups + 1, nTime)
+        TracerConcByRegion = Nothing '(nRegions, nGroups + 1, nTime)
+        TracerCBRegion = Nothing '(nRegions, nGroups + 1, nTime)
+
+        Czero = Nothing '(nGroups)
+        Cimmig = Nothing '(nGroups)
+        Cenv = Nothing '(nGroups)
+        cdecay = Nothing '(nGroups)
+        Cinflow = Nothing '(nGroups)
+        CoutFlow = Nothing '(nGroups)
+        CexcretionRate = Nothing '(nGroups)
+
+        'Me.RedimByNGroups(0)
     End Sub
 
     Public Sub CopyTo(ByRef d As cContaminantTracerDataStructures)

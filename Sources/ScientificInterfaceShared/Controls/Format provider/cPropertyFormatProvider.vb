@@ -88,6 +88,7 @@ Namespace Controls
                 If (TypeOf (Me.m_ctrl) Is Control) Then
                     RemoveHandler DirectCast(Me.m_ctrl, Control).Enter, AddressOf OnGotFocus
                 End If
+                cToolTipShared.GetInstance().SetToolTip(Me.m_ctrl, "")
                 Me.m_ctrl = Nothing
             End If
 

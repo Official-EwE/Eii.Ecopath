@@ -109,8 +109,18 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
+            Me.m_manager.DisConnect()
+            Me.m_lstOptEnabled.Clear()
+
+            Me.m_blocks.Dispose()
+
             RemoveHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
             Me.m_propBaseYear = Nothing
+
+            Me.m_fpDiscRate.Release()
+            Me.m_fpUsePlugin.Release()
+            Me.m_fpDiscRate = Nothing
+            Me.m_fpUsePlugin = Nothing
 
             Me.m_zghResults.Detach()
             Me.m_zghResults = Nothing

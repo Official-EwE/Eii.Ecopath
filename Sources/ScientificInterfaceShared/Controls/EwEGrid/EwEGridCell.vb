@@ -34,6 +34,13 @@ Namespace Controls.EwEGrid
             Me.Style = style
         End Sub
 
+        Public Overrides Sub Dispose()
+            ' JS 13Dec10: Memory leaks were discovered on tooltips. Perhaps explicitly 
+            '             clearing the grid tooltip text wil fix this.
+            Me.ToolTipText = ""
+            MyBase.Dispose()
+        End Sub
+
 #End Region ' Construction 
 
 #Region " Data "

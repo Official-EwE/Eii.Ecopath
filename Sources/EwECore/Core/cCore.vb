@@ -35,9 +35,9 @@ Imports EwECore.Ecospace.Advection
 ''' <para>The underlying model data structures have been converted into classes
 ''' that an interface can program against. For instance, cFleetInput is the
 ''' representation of a fishing fleet.</para>
-''' <para>The Fleets(iFleet) property provides a way for a user interface to
-''' interact with the underlying data structures that represent a fishing fleet
-''' without having to understand the modeling array structures.</para>
+''' <para>The <see cref="cCore.FleetInputs"/>(iFleet) property provides a way for 
+''' a user interface to interact with the underlying data structures that represent 
+''' a fishing fleet without having to understand the modeling array structures.</para>
 ''' <para>Most conversions from interface objects (cFleetInput or cEcoSimResults) into
 ''' model data structures are handled by the core.</para>
 ''' <para>Data structures for each model that need to be made public for setting
@@ -100,8 +100,8 @@ Public Class cCore
     ''' <summary>Manager to access interface specific to the "Game" interface </summary>
     Private m_gameManager As cGameServerInterface = Nothing
 
-    Private m_ShapeManagers As Dictionary(Of eDataTypes, cBaseShapeManager) = Nothing
-    Private m_PedigreeManagers As Dictionary(Of eVarNameFlags, cPedigreeManager) = Nothing
+    Private m_ShapeManagers As New Dictionary(Of eDataTypes, cBaseShapeManager)
+    Private m_PedigreeManagers As New Dictionary(Of eVarNameFlags, cPedigreeManager)
     Private m_MonteCarlo As cMonteCarloManager
     Private m_ConTracer As cContaminantTracer
     Private m_AdvectionManager As cAdvectionManager
@@ -111,8 +111,8 @@ Public Class cCore
     Private m_Functions As cEcoFunctions = Nothing
 
     Private m_EwEModel As cEwEModel = Nothing
-    Private m_stanzaGroups As New cCoreInputOutputList(Of cStanzaGroup)(eDataTypes.Stanza, 0)
-    Private m_timeSeriesDatasets As New cCoreInputOutputList(Of cTimeSeriesDataset)(eDataTypes.TimeSeriesDataset, 1)
+    Private m_stanzaGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.Stanza, 0)
+    Private m_timeSeriesDatasets As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.TimeSeriesDataset, 1)
     Private m_timeSeriesGroup As New cCoreInputOutputList(Of cTimeSeries)(eDataTypes.GroupTimeSeries, 1)
     Private m_timeSeriesFleet As New cCoreInputOutputList(Of cTimeSeries)(eDataTypes.FleetTimeSeries, 1)
 
@@ -563,7 +563,7 @@ Public Class cCore
         Me.m_tracerData = New cContaminantTracerDataStructures
         Me.m_TSData = New cTimeSeriesDataStructures
         Me.m_MPAOptData = New cMPAOptDataStructures
-        Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
+        'Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
         Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
 
         ' Create core state monitor and manager
@@ -1027,9 +1027,9 @@ Public Class cCore
         'each models initialization will handle its own messages and flags
         Dim bsuccess As Boolean
         bsuccess = InitEcopath()
-        bsuccess = bsuccess And InitPSDModel()
         bsuccess = bsuccess And InitEcoSim()
         bsuccess = bsuccess And InitEcoSpace()
+        bsuccess = bsuccess And Me.InitPSD()
 
         m_MonteCarlo = New cMonteCarloManager
         m_ConTracer = New cContaminantTracer
@@ -1084,19 +1084,36 @@ Public Class cCore
 
     End Function
 
-    Private Function InitPSDModel() As Boolean
+    Private Function InitPSD() As Boolean
         Try
-            m_psdModel = New cPSDModel
-            m_psdModel.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.PSDMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
+            Me.m_psdModel = New cPSDModel
+            Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
+            Me.m_psdModel.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.PSDMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
 
-            m_psdModel.m_Data = m_EcoPathData
-            m_psdModel.m_stanza = m_Stanza
-            m_psdModel.m_psd = m_PSDData
+            Me.m_psdModel.m_Data = m_EcoPathData
+            Me.m_psdModel.m_stanza = m_Stanza
+            Me.m_psdModel.m_psd = m_PSDData
             Return True
         Catch ex As Exception
+            cLog.Write(ex)
             Return False
         End Try
     End Function
+
+    Private Sub ClosePSD()
+
+        Try
+            If Me.m_psdModel IsNot Nothing Then
+                'sets all array to nothing
+                Me.m_PSDData.Clear()
+                'Clears out the message publisher
+                Me.m_psdModel.Clear()
+            End If
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
+    End Sub
 
     ''' <summary>
     ''' Send a Data <see cref="eMessageType.DataAddedOrRemoved">added or removed</see> message.
@@ -1472,11 +1489,9 @@ Public Class cCore
     End Property
 
     Public Function TimeSeriesDataset(ByVal iDatasetIndex As Integer) As cTimeSeriesDataset
-
         ' Sanity check
         Debug.Assert(iDatasetIndex > 0 And iDatasetIndex <= Me.m_TSData.nDatasets)
-        Return Me.m_timeSeriesDatasets(iDatasetIndex)
-
+        Return DirectCast(Me.m_timeSeriesDatasets(iDatasetIndex), cTimeSeriesDataset)
     End Function
 
     ''' <summary>
@@ -2403,8 +2418,14 @@ Public Class cCore
         Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
         Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid datasource type specified")
 
-        ' Update core state
-        If Not Me.SaveChanges() Then Return False
+        If Not Me.CloseModel() Then Return False
+
+        'jb changed PSD model back to being created with the model
+        'moved to initCore
+        'Me.InitPSDModel()
+
+        '' Update core state
+        'If Not Me.SaveChanges() Then Return False
 
         Me.m_EcoPathData.ActiveEcosimScenario = -1
         Me.m_EcoPathData.ActiveEcospaceScenario = -1
@@ -2429,11 +2450,6 @@ Public Class cCore
         DataSource = ds
 
         Try
-
-            ' Clear auxillary data
-            Me.m_dtAuxiliaryData.Clear()
-            ' Clear time series datasets
-            Me.m_TSData.ClearTimeSeriesDatasets()
 
             'Init the parameters from the datasource
             dsEcopath = DirectCast(DataSource, IEcopathDataSource)
@@ -2488,7 +2504,6 @@ Public Class cCore
                 bsuccess = bsuccess And LoadPedigreeManagers()
 
                 Me.m_EcopathStats = New cEcoPathStats(Me, cCore.NULL_VALUE)
-                Me.InitSearchManagers()
 
                 Me.m_gameManager.Init()
 
@@ -2602,55 +2617,142 @@ Public Class cCore
     Public Function CloseModel() As Boolean
 
         If Not Me.SaveChanges() Then Return False
+#If DEBUG Then
+        System.Console.WriteLine("CloseModel() memory before  " & GC.GetTotalMemory(True))
+#End If
 
-        ' Has datasource?
-        If (DataSource IsNot Nothing) Then
-            ' #Yes: has open connection?
-            If DataSource.Connection IsNot Nothing Then
-                ' #Yes: Close connection
-                DataSource.Close()
-                ' Close plug-in data sources, close plug-in 
-                If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.CloseDatabase() : Me.m_pluginManager.CloseModel()
+        Try
+            ' Has datasource?
+            If (DataSource IsNot Nothing) Then
+                ' #Yes: has open connection?
+                If DataSource.Connection IsNot Nothing Then
+                    ' #Yes: Close connection
+                    DataSource.Close()
+                    ' Close plug-in data sources, close plug-in 
+                    If (Me.PluginManager IsNot Nothing) Then
+                        Me.PluginManager.CloseDatabase()
+                        Me.m_pluginManager.CloseModel()
+                    End If
+
+                End If
+                ' Release datasource
+                DataSource = Nothing
             End If
-            ' Release datasource
-            DataSource = Nothing
-        End If
 
-        ' Forget model
-        Me.m_StateMonitor.SetEcopathLoaded(False)
-        Me.m_StateMonitor.UpdateDataState(Nothing)
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".CloseModel() Exception closing datasource: " & ex.Message)
+            cLog.Write(ex)
+        End Try
 
-        ' Clear core data
-        Me.m_EcoPathData.Clear()
-        Me.m_Stanza.Clear()
-        Me.m_EcoSimData.Clear()
-        Me.m_EcoSpaceData.Clear()
-        Me.m_tracerData.Clear()
+        Try
+            'work from the top down Space to Path
 
-        ' JS 5may10: Do not discards IO objects; this may have effects throughout the UI
-        '' Empty IO objects
-        'Me.m_EcoPathInputs.Clear()
-        'Me.m_EcoPathOutputs.Clear()
-        'Me.m_EcopathFleetsInput.Clear()
-        'Me.m_EcosimFleetInputs.Clear()
-        'Me.m_EcosimFleetOutputs.Clear()
-        'Me.m_EcoSimGroupOutputs.Clear()
-        'Me.m_EcoSimScenarios.Clear()
-        'Me.m_EcospaceFleetOutputs.Clear()
-        'Me.m_EcoSpaceFleets.Clear()
-        'Me.m_EcospaceGroupOuputs.Clear()
-        'Me.m_EcoSpaceGroups.Clear()
-        'Me.m_EcospaceHabitats.Clear()
-        'Me.m_EcospaceMPAs.Clear()
-        'Me.m_EcospaceRegions.Clear()
-        'Me.m_EcoSpaceScenarios.Clear()
-        'Me.m_EcotracerGroupInputs.Clear()
-        'Me.m_EcotracerScenarios.Clear()
-        'Me.m_stanzaGroups.Clear()
+            'Sim and Space
+            Me.CloseEcoSpaceScenario()
+            Me.CloseEcosimScenario()
+
+            ' Forget model
+            Me.m_StateMonitor.SetEcopathLoaded(False)
+            Me.m_StateMonitor.UpdateDataState(Nothing)
+
+            ' Clear (not destroy) managers 
+            Me.m_gameManager.Clear()
+            For Each pdMng As cPedigreeManager In Me.m_PedigreeManagers.Values
+                pdMng.Clear()
+            Next
+            Me.m_PedigreeManagers.Clear()
+            Me.m_PPIManager.Clear()
+
+            ' Clear core data structures
+            Me.m_EcoPathData.Clear()
+            Me.m_Stanza.Clear()
+            Me.m_EcoSimData.Clear()
+            Me.m_EcoSpaceData.Clear()
+            Me.m_tracerData.Clear()
+            Me.m_TSData.Clear()
+
+            ' Destroy IO objects not in a list - may not have been created yet
+            If (Me.m_EwEModel IsNot Nothing) Then Me.m_EwEModel.Clear() : Me.m_EwEModel = Nothing
+            If (Me.m_EcopathStats IsNot Nothing) Then Me.m_EcopathStats.Clear() : Me.m_EcopathStats = Nothing
+            If (Me.m_PSDParameters IsNot Nothing) Then Me.m_PSDParameters.Clear() : Me.m_PSDParameters = Nothing
+
+            ' Clear the contents of core IO object lists
+            Me.ClearIOList(Me.m_EcoPathInputs)
+            Me.ClearIOList(Me.m_EcoPathOutputs)
+            Me.ClearIOList(Me.m_EcopathFleetsInput)
+            Me.ClearIOList(Me.m_stanzaGroups)
+            Me.ClearIOList(Me.m_EcopathTaxon)
+            Me.ClearIOList(Me.m_EcotracerGroupInputs)
+            ' m_EcotracerGroupOutput is only allocated if Tracer has run
+            If Me.m_EcotracerGroupOutput IsNot Nothing Then Me.m_EcotracerGroupOutput.Dispose() : Me.m_EcotracerGroupOutput = Nothing
+
+            Me.ClearIOList(Me.m_timeSeriesDatasets)
+
+
+            ' Clear scenarios
+            Me.m_EcoPathData.NumEcotracerScenarios = 0
+            Me.m_EcoPathData.NumEcospaceScenarios = 0
+            Me.m_EcoPathData.NumEcosimScenarios = 0
+
+            Me.ClearIOList(Me.m_EcoSimScenarios)
+            Me.ClearIOList(Me.m_EcoSpaceScenarios)
+            Me.ClearIOList(Me.m_EcotracerScenarios)
+
+
+            Me.m_dtAuxiliaryData.Clear()
+
+            Me.ClosePSD()
+
+            Me.m_EcoPath.Clear()
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Can't do this the Datasource needs to be Initialized again 
+            'which only happens when the plugin is loaded.
+            'To do this we need to add an Initialize loop to the plugin manager, which could case problems with some plugins,
+            'or Init the datasources by hand on model load.
+            'Dim EcoDS As cEconomicDataSource = cEconomicDataSource.getInstance
+            'If EcoDS IsNot Nothing Then
+            '    EcoDS.Clear()
+            'End If
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".CloseModel() Exception clearing memory: " & ex.Message)
+            cLog.Write(ex)
+        End Try
+
+        Try
+            Me.m_publisher.sendAllMessages()
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".CloseModel() Exception sending messages: " & ex.Message)
+        End Try
+
+        GC.Collect()
+#If DEBUG Then
+        System.Console.WriteLine("CloseModel() memory after  " & GC.GetTotalMemory(True))
+#End If
 
         Return True
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Clear the contents of a cCoreInputOutputList, disposing all of the items in the list.
+    ''' </summary>
+    ''' <param name="IOList">The list to clear, may be NULL.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub ClearIOList(ByVal IOList As cCoreInputOutputList(Of cCoreInputOutputBase))
+        If (IOList Is Nothing) Then Return
+        Try
+            For Each ioOb As cCoreInputOutputBase In IOList
+                ioOb.Dispose()
+            Next
+            IOList.Clear()
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+    End Sub
 
 #End Region ' Model
 
@@ -3759,7 +3861,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property StanzaGroups(ByVal iIndex As Integer) As cStanzaGroup
         Get
-            Return m_stanzaGroups(iIndex)
+            Return DirectCast(Me.m_stanzaGroups(iIndex), cStanzaGroup)
         End Get
     End Property
 
@@ -5167,8 +5269,10 @@ Public Class cCore
 
             Me.m_EcosimOutputs = New cEcosimOutput(Me)
 
+            Me.CreateSearchManagers()
+
             'Build all the shape managers
-            m_ShapeManagers = New Dictionary(Of eDataTypes, cBaseShapeManager)
+            Me.m_ShapeManagers.Clear()
             Dim manager As cBaseShapeManager
 
             manager = New cForcingFunctionManager(m_EcoSimData, Me, eDataTypes.Forcing)
@@ -5323,8 +5427,8 @@ Public Class cCore
         Try
 
             ' Update core state
-            Me.m_StateMonitor.SetEcoSimLoaded(False)
-            Me.m_EcoPathData.ActiveEcosimScenario = -1
+            Me.CloseEcosimScenario()
+
             Me.m_EcoPathData.ActiveEcospaceScenario = -1
             Me.m_EcoPathData.ActiveEcotracerScenario = -1
 
@@ -5370,7 +5474,7 @@ Public Class cCore
                 Return False
             End If
 
-            m_SearchData.redimTime(Me.nEcosimYears)
+            Me.m_SearchData.RedimToSimScenario(Me.nEcosimYears)
 
             'set the default summary time periods
             m_EcoSimData.DefaultSummaryPeriods()
@@ -5440,6 +5544,70 @@ Public Class cCore
         End Try
 
     End Function
+
+    Public Sub CloseEcosimScenario()
+
+        Me.m_EcoPathData.ActiveEcosimScenario = -1
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'Scenarios are now cleared in CloseModel()
+        'this was causing the interface to thow an error when trying to load the list of Sim scenarios
+        'possible in response to a StateMonitor Event, but I'm not sure what is causing this chain
+        'Need to sort this out as this is where the scenarios should be cleared
+        'Me.m_EcoSimScenarios.Clear()
+        'Me.m_EcoPathData.NumEcosimScenarios = 0
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+        Me.m_TSData.ClearTimeSeries()
+
+        ' JS 01Dec10: This method should be bullet-proof. Search data is for instance not 
+        '             present if this method is called when no model has been loaded.
+        If (Me.m_SearchData IsNot Nothing) Then
+            Me.m_SearchData.redimTime(0)
+        End If
+
+        For Each man As cBaseShapeManager In Me.m_ShapeManagers.Values
+            man.Clear()
+        Next
+
+        Me.ClearSearchManagers()
+
+        Me.m_EcoSim.Clear()
+        Me.m_MonteCarlo.Clear()
+
+        Me.ClearIOList(Me.m_EcoSimGroups)
+        Me.ClearIOList(Me.m_EcoSimGroupOutputs)
+        Me.ClearIOList(Me.m_EcosimFleetInputs)
+        Me.ClearIOList(Me.m_EcosimFleetOutputs)
+
+        Me.m_EcoSimGroups.Clear()
+        Me.m_EcoSimGroupOutputs.Clear()
+        Me.m_EcosimFleetInputs.Clear()
+        Me.m_EcosimFleetOutputs.Clear()
+
+        'Need to change m_timeSeriesFleet from (Of cTimeSeries) to (Of cCoreInputOutputBase)
+        Me.m_timeSeriesFleet.Clear()
+        For Each ts As cTimeSeries In Me.m_timeSeriesGroup
+            ts.Clear()
+        Next
+        Me.m_timeSeriesGroup.Clear()
+        ' Forget active time series dataset (fixes issue #863)
+        Me.m_TSData.ActiveDatasetIndex = -1
+
+        If Me.m_EcosimOutputs IsNot Nothing Then
+            Me.m_EcosimOutputs.Clear()
+            Me.m_EcosimOutputs = Nothing
+        End If
+
+        If Me.m_EcosimStats IsNot Nothing Then
+            Me.m_EcosimStats.Clear()
+            Me.m_EcosimStats = Nothing
+        End If
+
+        'Last thing Setting the state monitor can fire events that use the Ecosim and Ecospace data
+        Me.m_StateMonitor.SetEcoSimLoaded(False)
+
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -6924,11 +7092,11 @@ Public Class cCore
 
     Friend m_Ecospace As cEcoSpace
     Friend m_EcoSpaceData As cEcospaceDataStructures
-    Private m_EcoSpaceGroups As New cCoreInputOutputList(Of cEcospaceGroup)(eDataTypes.EcospaceGroup, 1)
-    Private m_EcoSpaceFleets As New cCoreInputOutputList(Of cEcospaceFleet)(eDataTypes.EcospaceFleet, 1)
-    Private m_EcoSpaceScenarios As New cCoreInputOutputList(Of cEcospaceScenario)(eDataTypes.EcoSpaceScenario, 1)
+    Private m_EcoSpaceGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceGroup, 1)
+    Private m_EcoSpaceFleets As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceFleet, 1)
+    Private m_EcoSpaceScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSpaceScenario, 1)
     Friend m_EcospaceHabitats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceHabitat, 0)
-    Friend m_EcospaceRegions As New cCoreInputOutputList(Of cEcospaceRegion)(eDataTypes.EcospaceLayerRegion, 1)
+    Friend m_EcospaceRegions As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceLayerRegion, 1)
     Friend m_EcospaceMPAs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceMPA, 1)
     Private m_EcospaceModelParams As cEcospaceModelParameters
     Private m_EcospaceBasemap As cEcospaceBasemap
@@ -6961,7 +7129,6 @@ Public Class cCore
         m_EcoSpaceData.StanzaGroups = Me.m_Stanza
         m_EcoSpaceData.EcoPathData = Me.m_EcoPathData
         m_AdvectionManager = New cAdvectionManager
-        m_AdvectionParameters = New cAdvectionParameters(Me, -1)
 
         'counters needed 
         'this could change to get the counter from the above data structures
@@ -7307,7 +7474,7 @@ Public Class cCore
     Public ReadOnly Property EcospaceScenarios(ByVal iScenario As Integer) As cEcospaceScenario
         Get
             ' JS 06Jul07: list will handle scenario index / item index offsets
-            Return Me.m_EcoSpaceScenarios(iScenario)
+            Return DirectCast(Me.m_EcoSpaceScenarios(iScenario), cEcospaceScenario)
         End Get
     End Property
 
@@ -7355,7 +7522,7 @@ Public Class cCore
     Public ReadOnly Property EcospaceGroups(ByVal iGroup As Integer) As cEcospaceGroup
         Get
             ' JS 06Jul07: list will handle group index / item index offsets
-            Return m_EcoSpaceGroups.Item(iGroup)
+            Return DirectCast(Me.m_EcoSpaceGroups.Item(iGroup), cEcospaceGroup)
         End Get
     End Property
 
@@ -7368,7 +7535,7 @@ Public Class cCore
     Public ReadOnly Property EcospaceFleets(ByVal iFleet As Integer) As cEcospaceFleet
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
-            Return m_EcoSpaceFleets.Item(iFleet)
+            Return DirectCast(Me.m_EcoSpaceFleets.Item(iFleet), cEcospaceFleet)
         End Get
     End Property
 
@@ -7394,7 +7561,7 @@ Public Class cCore
     Public ReadOnly Property EcospaceRegions(ByVal iRegion As Integer) As cEcospaceRegion
         Get
             ' JS 06Jul07: list will handle region index / item index offsets
-            Return Me.m_EcospaceRegions(iRegion)
+            Return DirectCast(Me.m_EcospaceRegions(iRegion), cEcospaceRegion)
         End Get
     End Property
 
@@ -7686,8 +7853,10 @@ Public Class cCore
                 Return False
             End If
 
-            ' Update core state
-            Me.m_StateMonitor.SetEcospaceLoaded(False)
+            'Clears out any memory
+            'And updates core state
+            Me.CloseEcoSpaceScenario()
+
             Me.m_EcoPathData.ActiveEcospaceScenario = -1
 
             ds = DirectCast(DataSource, IEcospaceDatasource)
@@ -7724,10 +7893,6 @@ Public Class cCore
             MPAOptManager.Init(Me)
             MPAOptManager.Load()
 
-            'Init advection
-            Me.m_AdvectionManager.Init(Me, Me.m_Ecospace)
-            Me.m_AdvectionManager.Load()
-
             bSuccess = InitEcospaceBasemap()
             bSuccess = bSuccess And InitEcospaceModelParameters()
             bSuccess = bSuccess And InitEcospaceHabitats()
@@ -7735,6 +7900,11 @@ Public Class cCore
             bSuccess = bSuccess And InitEcospaceMPAs()
             bSuccess = bSuccess And InitEcospaceGroups()
             bSuccess = bSuccess And InitEcospaceFleets()
+            bSuccess = bSuccess And InitEcospaceAdvection()
+
+            'Init advection
+            Me.m_AdvectionManager.Init(Me, Me.m_Ecospace)
+            Me.m_AdvectionManager.Load()
 
             InitEcospaceOutputs()
             InitEcotracerOutputs()
@@ -7760,6 +7930,60 @@ Public Class cCore
         Return bSuccess
 
     End Function
+
+    Public Sub CloseEcoSpaceScenario()
+
+        'If (Not Me.StateMonitor.HasEcospaceLoaded) Then Return
+        Try
+
+            Me.m_AdvectionManager.Clear()
+
+            ' Discard advection IO object
+            If (Me.m_AdvectionParameters IsNot Nothing) Then
+                Me.m_AdvectionParameters.Dispose()
+                Me.m_AdvectionParameters = Nothing
+            End If
+
+            'Me.m_EcoSpaceScenarios.Clear()
+            'Me.m_EcoPathData.NumEcospaceScenarios = 0
+
+
+            Me.m_EcoSpaceFleets.Clear()
+            Me.m_EcospaceFleetOutputs.Clear()
+            Me.m_EcoSpaceGroups.Clear()
+            Me.m_EcospaceGroupOuputs.Clear()
+
+            Me.m_EcospaceHabitats.Clear()
+            Me.m_EcospaceMPAs.Clear()
+
+            Me.m_EcospaceMPAs.Clear()
+            Me.m_EcospaceRegions.Clear()
+            Me.m_EcospaceRegionSummaries.Clear()
+
+            '  Me.m_EcoSpaceScenarios.Clear()
+
+            Me.m_EcospaceModelParams = Nothing
+
+            Me.m_Ecospace.Clear()
+
+            Me.m_StateMonitor.SetEcospaceLoaded(False)
+
+            'delegates
+            Me.m_SpaceInterfaceCallBack = Nothing
+            Me.m_Ecospace.TimeStepDelegate = Nothing
+
+
+            'ToDo_jb 19-Nov-2010 EcospaceData clear sets all the counters to zero then calls all redimxxx 
+            'instead it should set all the arrays to nothing
+            'Me.m_EcoSpaceData.Clear()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".CloseEcoSpaceScenario() Exception: " & ex.Message)
+            cLog.Write(ex)
+        End Try
+
+
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -8740,7 +8964,7 @@ Public Class cCore
     End Function
 
     Private Function UpdateEcospaceRegion(ByVal iDBID As Integer) As Boolean
-        Dim objReg As cEcospaceRegion = Nothing
+        Dim objReg As cCoreInputOutputBase = Nothing
         Dim iReg As Integer
 
         Try
@@ -9185,6 +9409,11 @@ Public Class cCore
 #End Region ' Importance layers
 
 #Region " Advection "
+
+    Friend Function InitEcospaceAdvection() As Boolean
+        Me.m_AdvectionParameters = New cAdvectionParameters(Me, -1)
+        Return True
+    End Function
 
     Public ReadOnly Property AdvectionManager() As cAdvectionManager
         Get
@@ -9653,8 +9882,8 @@ Public Class cCore
 
 #Region " Variables "
 
-    Private m_EcotracerScenarios As New cCoreInputOutputList(Of cEcotracerScenario)(eDataTypes.EcotracerScenario, 1)
-    Private m_EcotracerGroupInputs As New cCoreInputOutputList(Of cEcotracerGroupInput)(eDataTypes.EcotracerGroupInput, 1)
+    Private m_EcotracerScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcotracerScenario, 1)
+    Private m_EcotracerGroupInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcotracerGroupInput, 1)
     Private m_EcotracerModelParameters As cEcotracerModelParameters
     Private m_EcotracerGroupOutput As cEcotracerGroupOutput
     Private m_EcotracerRegionGroupOutput As cEcotracerRegionGroupOutput
@@ -9691,7 +9920,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcotracerScenarios(ByVal iScenario As Integer) As cEcotracerScenario
         Get
-            Return Me.m_EcotracerScenarios(iScenario)
+            Return DirectCast(Me.m_EcotracerScenarios(iScenario), cEcotracerScenario)
         End Get
     End Property
 
@@ -10013,7 +10242,7 @@ Public Class cCore
 
     Private Function InitEcotracerScenario(ByVal iScenario As Integer) As Boolean
 
-        Dim ets As cEcotracerScenario = Me.m_EcotracerScenarios(iScenario)
+        Dim ets As cEcotracerScenario = Me.EcotracerScenarios(iScenario)
         Try
             ets.AllowValidation = False
 
@@ -10189,7 +10418,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcotracerGroupInputs(ByVal iGroup As Integer) As cEcotracerGroupInput
         Get
-            Return Me.m_EcotracerGroupInputs(iGroup)
+            Return DirectCast(Me.m_EcotracerGroupInputs(iGroup), cEcotracerGroupInput)
         End Get
     End Property
 
@@ -10283,7 +10512,7 @@ Public Class cCore
             ' Convert the Database ID into an iGroup
             iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, iDBID)
             ' Get the group
-            grp = Me.m_EcotracerGroupInputs(iGroup)
+            grp = Me.EcotracerGroupInputs(iGroup)
             ' Read it
             Me.m_tracerData.Czero(iGroup) = grp.CZero
             Me.m_tracerData.Cimmig(iGroup) = grp.CImmig
@@ -10419,9 +10648,8 @@ Public Class cCore
         Dim level As cPedigreeLevel = Nothing
         Dim varname As eVarNameFlags = eVarNameFlags.NotSet
 
-        ' Create managers
-        Me.m_PedigreeManagers = New Dictionary(Of eVarNameFlags, cPedigreeManager)
         ' Popluate managers
+        Me.m_PedigreeManagers.Clear()
         For iVariable As Integer = 1 To Me.nPedigreeVariables
             ' Get variable
             varname = Me.PedigreeVariable(iVariable)
@@ -11891,44 +12119,51 @@ Public Class cCore
     ''' <summary>
     ''' Build and initialize the search managers
     ''' </summary>
-    Private Sub InitSearchManagers()
+    Private Sub CreateSearchManagers()
 
-        Dim SearchManager As ISearchObjective
         Me.m_SearchData = New cSearchDatastructures(Me.m_Functions, Me.m_EcoPathData)
         AddHandler Me.m_SearchData.OnSearchStateChanged, AddressOf OnSearchChanged
-        ' Sanity check
 
-        'Shared Objective manager
-        If Not Me.m_SearchManagers.ContainsKey(eDataTypes.SearchObjectiveManager) Then
-            SearchManager = New cSearchObjective
-            Me.m_SearchManagers.Add(eDataTypes.SearchObjectiveManager, SearchManager)
-        End If
+        Me.m_SearchManagers.Add(eDataTypes.SearchObjectiveManager, New cSearchObjective)
+        Me.m_SearchManagers.Add(eDataTypes.MSEManager, New cMSEManager(Me, Me.m_MSEData))
+        Me.m_SearchManagers.Add(eDataTypes.MPAOptManager, New cMPAOptManager)
+        Me.m_SearchManagers.Add(eDataTypes.FishingPolicyManager, New cFishingPolicyManager)
+        Me.m_SearchManagers.Add(eDataTypes.FitToTimeSeries, New cF2TSManager(Me))
 
-        'MSE
-        If Not Me.m_SearchManagers.ContainsKey(eDataTypes.MSEManager) Then
-            SearchManager = New cMSEManager(Me, Me.m_MSEData)
-            Me.m_SearchManagers.Add(eDataTypes.MSEManager, SearchManager)
-        End If
+    End Sub
 
-        'Ecoseed
-        If Not Me.m_SearchManagers.ContainsKey(eDataTypes.MPAOptManager) Then
-            SearchManager = New cMPAOptManager
-            Me.m_SearchManagers.Add(eDataTypes.MPAOptManager, SearchManager)
-        End If
+    Private Sub ClearSearchManagers()
+        Try
+            'Search manager are initialized each time a model is loaded
+            For Each man As ISearchObjective In Me.m_SearchManagers.Values
+                Try
+                    man.Clear()
+                Catch ex As Exception
+                    'just for robustness 
+                    'if one of the managers throws an exception the remaining managers will still be cleared
+                    cLog.Write(ex)
+                End Try
 
-        'Fishing Policy
-        If Not Me.m_SearchManagers.ContainsKey(eDataTypes.FishingPolicyManager) Then
-            SearchManager = New cFishingPolicyManager
-            Me.m_SearchManagers.Add(eDataTypes.FishingPolicyManager, SearchManager)
-        End If
+            Next
+        Catch ex As Exception
 
+        End Try
+    End Sub
 
-        'Fit to time series 
-        If Not Me.m_SearchManagers.ContainsKey(eDataTypes.FitToTimeSeries) Then
-            SearchManager = New cF2TSManager(Me)
-            Me.m_SearchManagers.Add(eDataTypes.FitToTimeSeries, SearchManager)
-        End If
+    Private Sub DestroySearchManagers()
+        Try
+            'Search manager are initialized each time a model is loaded
+            For Each man As ISearchObjective In Me.m_SearchManagers.Values
+                man.Clear()
+            Next
+            Me.m_SearchManagers.Clear()
+            If Me.m_SearchData IsNot Nothing Then
+                Me.m_SearchData.Clear()
+                RemoveHandler Me.m_SearchData.OnSearchStateChanged, AddressOf Me.OnSearchChanged
+            End If
+        Catch ex As Exception
 
+        End Try
     End Sub
 
     Private Sub OnSearchChanged(ByVal searchmode As eSearchModes)

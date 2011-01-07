@@ -25,7 +25,6 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Me.m_ttHover = New System.Windows.Forms.ToolTip(Me.components)
             Me.SuspendLayout()
             '
             'ucVulnerabiltyBlocks
@@ -36,7 +35,6 @@ Namespace Ecosim
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents m_ttHover As System.Windows.Forms.ToolTip
 
     End Class
 

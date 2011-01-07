@@ -166,6 +166,7 @@ Namespace Ecosim
                 Me.m_hoverMenu.Dispose()
                 Me.m_hoverMenu = Nothing
 
+
                 Me.m_DataSource = Nothing
                 Me.m_BlockSelector = Nothing
 

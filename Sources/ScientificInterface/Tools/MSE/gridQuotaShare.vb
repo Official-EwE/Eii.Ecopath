@@ -87,7 +87,7 @@ Namespace Ecosim
                 ' Now create the formula property that will calculate the sum of all cells in the row
                 opSum = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alPropSum.ToArray())
                 ' Create sum property
-                propSum = New cFormulaProperty(opSum)
+                propSum = Me.Formula(opSum)
                 ' Define sum cell
                 Me(iGroup, 1 + Me.Core.nFleets + 1) = New PropertyCell(propSum)
 

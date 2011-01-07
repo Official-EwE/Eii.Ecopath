@@ -91,6 +91,29 @@ Public Class cMonteCarloManager
 
     End Sub
 
+
+    Public Sub Clear()
+        Try
+            If Me.m_lstGrps Is Nothing Then Exit Sub
+            For Each MCgrp As cMonteCarloGroup In Me.m_lstGrps
+                MCgrp.Clear()
+            Next
+            Me.m_lstGrps.Clear()
+            Me.m_lstGrps = Nothing
+
+            Me.m_mc.dlgMonteCarloCompletedHandler = Nothing
+            Me.m_mc.dlgEcopathIterationHandler = Nothing
+            Me.m_mc.dlgTrialStepHandler = Nothing
+            Me.m_mc.dlgMonteCarloMessageHandler = Nothing
+
+            Me.m_mc.Clear()
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
+        End Try
+
+    End Sub
+
 #End Region
 
 #Region "Running"

@@ -94,14 +94,13 @@ Namespace Ecopath.Input
 
                 ' Get the sum of discard fate of all detritus groups
                 opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumAll.ToArray)
-                propSumAll = New cFormulaProperty(DirectCast(opSumAll, cExpression))
+                propSumAll = Me.Formula(opSumAll)
 
                 ' Calculate the export
-                opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
-                                CObj(sum), CObj(propSumAll))
+                opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, sum, propSumAll)
 
                 ' Get the export property
-                propExport = New cFormulaProperty(DirectCast(opMinus, cExpression))
+                propExport = Me.Formula(opMinus)
 
                 Me(rowIndex, Me.ColumnsCount - 2) = New PropertyCell(propExport)
                 ' The property cell for the sum column, which is not editable and equal to 1

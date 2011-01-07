@@ -66,19 +66,8 @@ Public Class NavigationPanel
     End Sub
 
     Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
-        RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
 
         If bDisposing Then
-
-            Me.m_nodeController.Detach()
-            Me.m_nodeController = Nothing
-
-            Me.m_ntPluginHandler.Dispose()
-            Me.m_ntPluginHandler = Nothing
-
-            Me.m_pluginManager = Nothing
-            Me.m_uic = Nothing
-
             If components IsNot Nothing Then
                 components.Dispose()
             End If
@@ -233,6 +222,22 @@ Public Class NavigationPanel
 
         AddHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
 
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
+
+        Me.m_nodeController.Detach()
+        Me.m_nodeController = Nothing
+
+        Me.m_ntPluginHandler.Dispose()
+        Me.m_ntPluginHandler = Nothing
+
+        Me.m_pluginManager = Nothing
+        Me.m_uic = Nothing
+
+        MyBase.OnFormClosed(e)
     End Sub
 
 #End Region ' Form overrides

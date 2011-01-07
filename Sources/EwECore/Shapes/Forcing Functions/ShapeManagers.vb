@@ -198,6 +198,18 @@ Public MustInherit Class cBaseShapeManager
 #Region " Saving, loading and updating "
 
     ''' <summary>
+    ''' Clear shapes from memory.
+    ''' </summary>
+    Friend Overridable Sub Clear()
+
+        For Each shp As cForcingFunction In Me.m_shapes
+            shp.Clear()
+        Next
+        Me.m_shapes.Clear()
+
+    End Sub
+
+    ''' <summary>
     ''' Called by a shape to tell the manager that it has changed data. 
     ''' </summary>
     ''' <remarks>Tell the core that a shape has changed. </remarks>

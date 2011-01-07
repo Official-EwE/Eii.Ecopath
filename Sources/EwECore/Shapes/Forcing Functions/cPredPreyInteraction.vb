@@ -95,6 +95,14 @@ Public Class cPredPreyInteraction
 
     End Function
 
+    Public Sub Clear()
+        Try
+            Me.m_SFPairs.Clear()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Public Properties"

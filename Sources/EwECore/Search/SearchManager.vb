@@ -13,6 +13,7 @@ Namespace SearchObjectives
         Function Init(ByRef theCore As cCore) As Boolean
         Function Update(ByVal DataType As eDataTypes) As Boolean
         Function Load() As Boolean
+        Sub Clear()
 
         ReadOnly Property ValueWeights() As cSearchObjectiveWeights
         ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput
@@ -95,7 +96,6 @@ Namespace SearchObjectives
 
         End Function
 
-
         Friend Overridable Function Load() As Boolean Implements ISearchObjective.Load
 
             Try
@@ -175,6 +175,10 @@ Namespace SearchObjectives
 
         End Function
 
+        Public Sub Clear() Implements ISearchObjective.Clear
+            Me.m_lstFleets.Clear()
+            Me.m_lstGroups.Clear()
+        End Sub
 
         Public Overridable Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
             Dim coreData As cSearchDatastructures = m_core.m_SearchData
@@ -280,9 +284,13 @@ Public MustInherit Class cThreadWaitBase
     ''' m_SignalState is use by an calling routine to block its thread until the model has completed
     ''' </summary>
     ''' <remarks>See Wait()</remarks>
-    Private m_SignalState As New System.Threading.ManualResetEvent(True)
+    Private m_SignalState As System.Threading.ManualResetEvent
 
     Private m_bIsRunning As Boolean
+
+    Public Sub New()
+        Me.m_SignalState = New System.Threading.ManualResetEvent(True)
+    End Sub
 
     ''' <summary>
     ''' Block the calling thread until the model has finished running

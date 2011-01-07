@@ -64,6 +64,12 @@ Namespace MSEBatchManager
 
         Public Sub Init(ByVal theCore As cCore, ByVal MSE As cMSE)
 
+            If Me.m_SyncOb Is Nothing Then
+                Me.m_SyncOb = System.Threading.SynchronizationContext.Current
+                'if there is no current context then create a new one on this thread. 
+                If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
+            End If
+
             Me.m_runState = eBatchRunState.Idle
 
             Me.m_BatchData = New cMSEBatchDataStructures
@@ -82,6 +88,21 @@ Namespace MSEBatchManager
 
             End Try
 
+        End Sub
+
+
+        Public Sub Clear()
+            Try
+
+                Me.m_BatchData = Nothing
+                Me.m_fileReader = Nothing
+
+                Me.m_msgDelegate = Nothing
+                Me.m_SyncOb = Nothing
+
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 

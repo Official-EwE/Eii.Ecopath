@@ -230,6 +230,12 @@ Public Class cForcingFunction
 
     End Function
 
+
+    Public Overrides Sub Clear()
+        MyBase.Clear()
+        Me.m_data = Nothing
+    End Sub
+
 #End Region ' Constructors and Initialization
 
 #Region " Updating "
@@ -730,13 +736,15 @@ Public Class cMediationFunction
 
     End Function
 
-    Public Sub Clear()
+    Public Overrides Sub Clear()
 
         Try
             'clear the ecosim data
             clearMedWeights()
             m_groups.Clear()
             m_fleets.Clear()
+
+            MyBase.Clear()
 
         Catch ex As Exception
             Debug.Assert(False)

@@ -379,13 +379,13 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("25")>  _
-    Public Property FeedbackMessageLogSize() As Integer
+     Global.System.Configuration.DefaultSettingValueAttribute("50")>  _
+    Public Property StatusMaxMessages() As Integer
         Get
-            Return CType(Me("FeedbackMessageLogSize"),Integer)
+            Return CType(Me("StatusMaxMessages"),Integer)
         End Get
         Set
-            Me("FeedbackMessageLogSize") = value
+            Me("StatusMaxMessages") = value
         End Set
     End Property
     
@@ -578,6 +578,18 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("PresentationModeCollapseNavPanel") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+    Public Property StatusShowTime() As Boolean
+        Get
+            Return CType(Me("StatusShowTime"),Boolean)
+        End Get
+        Set
+            Me("StatusShowTime") = value
         End Set
     End Property
 End Class

@@ -134,8 +134,8 @@ Namespace Ecopath.Input
 
                 ' Set the property to the last cell of the row, which is the sum of the row
                 opSumRow = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumRow.ToArray())
-                propSumRow = New cFormulaProperty(CType(opSumRow, cExpression))
-                Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(CType(propSumRow, cProperty))
+                propSumRow = Me.Formula(opSumRow)
+                Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(propSumRow)
             Next
 
             ' Sum row
@@ -152,16 +152,16 @@ Namespace Ecopath.Input
                     alSumCol.Add(prop)
                 Next
                 opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())
-                propSumCol = New cFormulaProperty(CType(opSumCol, cExpression))
+                propSumCol = Me.Formula(opSumCol)
                 ' Set the property to the last cell of the column, which is the sum of the column
-                Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(CType(propSumCol, cProperty))
+                Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(propSumCol)
             Next
 
 
             opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumAll.ToArray())
-            propSumAll = New cFormulaProperty(CType(opSumAll, cExpression))
+            propSumAll = Me.Formula(opSumAll)
             ' Set the property to the bottom-right cell, which is the sum of all cells
-            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New PropertyCell(CType(propSumAll, cProperty))
+            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New PropertyCell(propSumAll)
 
         End Sub
 

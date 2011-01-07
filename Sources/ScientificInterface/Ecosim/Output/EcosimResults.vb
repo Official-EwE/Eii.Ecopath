@@ -81,9 +81,14 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
+            ' Clear last grid
+            Me.m_grid.UIContext = Nothing
+
             Me.m_fpEndSum.Release()
             Me.m_fpNumSteps.Release()
             Me.m_fpStartSum.Release()
+
+            ' Done
             MyBase.OnFormClosed(e)
 
         End Sub

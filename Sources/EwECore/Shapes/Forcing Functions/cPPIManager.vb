@@ -81,6 +81,21 @@ Public Class cPPIManager
 
     End Function
 
+    Public Sub Clear()
+
+        Try
+            For Each ppi As cPredPreyInteraction In Me.m_PPIs.Values
+                ppi.Clear()
+            Next
+
+            m_PPIs.Clear()
+            m_shapes.Clear()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
+    End Sub
+
 
 #End Region
 

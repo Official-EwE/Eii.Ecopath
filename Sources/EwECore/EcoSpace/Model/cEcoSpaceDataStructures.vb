@@ -505,6 +505,111 @@ Public Class cEcospaceDataStructures
     Public Sub Clear()
         Me.m_ngroups = 0
         Me.nFleets = 0
+        Me.TotalTime = 0
+        Me.TotalTime = 0
+        Me.NoRegions = 0
+        Me.InCol = 0
+        Me.InRow = 0
+        Me.nvartot = 0
+        Me.NoHabitats = 0
+
+        Try
+
+            AMm = Nothing
+            Bcell = Nothing
+            Bcw = Nothing
+            Blast = Nothing
+            C = Nothing
+            d = Nothing
+            Depth = Nothing
+            DepthA = Nothing
+            DepthX = Nothing
+            DepthY = Nothing
+            Xvel = Nothing
+            Yvel = Nothing
+            Xvloc = Nothing
+            Yvloc = Nothing
+            UpVel = Nothing
+            Xv = Nothing
+            Yv = Nothing
+            flow = Nothing
+            E = Nothing
+            BcwNomig = Nothing
+            CNomig = Nothing
+            dNomig = Nothing
+            Enomig = Nothing
+            F = Nothing
+            HabType = Nothing
+            Region = Nothing
+            MPA = Nothing
+            RelPP = Nothing
+            RelCin = Nothing
+            DepthOrig = Nothing
+            HabTypeorig = Nothing 'for use with habitat change
+            MPAorig = Nothing     'for use with habitat change
+            RelPPorig = Nothing      'for use with habitat change
+            RelCinorig = Nothing     'for use with habitat change
+            Sail = Nothing
+            GroupDetritus = Nothing
+
+            Basebiomass = Nothing
+            Bnew = Nothing
+            der = Nothing
+            EatEffBad = Nothing
+            MPABiomass = Nothing
+            Mrate = Nothing
+            Mvel = Nothing
+            RelMoveBad = Nothing
+            RelVulBad = Nothing
+            IsAdvected = Nothing
+
+            PrefRow = Nothing
+            Prefcol = Nothing
+            IsMigratory = Nothing
+            MigConcRow = Nothing
+            MigConcCol = Nothing
+            barrierAvoidanceWeight = Nothing '
+
+            RegionDBID = Nothing '(NoRegions)
+            RegionName = Nothing '(NoRegions)
+
+            MPADBID = Nothing '(Me.MPAno)
+            MPAname = Nothing '(Me.MPAno)
+            MPAmonth = Nothing '(12, Me.MPAno)
+            MPAfishery = Nothing '(Me.nFleets, Me.MPAno)
+
+            ResultsByGroup = Nothing ', N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
+            ResultsByFleet = Nothing ', N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
+            ResultsByFleetGroup = Nothing ', N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
+
+            ResultsRegionGroup = Nothing ', NoRegions, NGroups, NumberOfTimeSteps)
+            ResultsCatchRegionGearGroup = Nothing ', NoRegions, nFleets, NGroups, NumberOfTimeSteps)
+            MPred = Nothing
+            EffortSpace = Nothing
+            PredCell = Nothing
+            IFDweight = Nothing
+            Ftot = Nothing
+            EffPower = Nothing
+            SEmult = Nothing
+            HabTime = Nothing
+            HabAreaProportion = Nothing
+            HabArea = Nothing
+            'SumStart = Nothing
+
+            'ReDimFleets()
+            'redimForReferenceData()
+            'redimGroupDBID()
+            'RedimHabitatVariables()
+            'ReDimMapDims()
+            '  ReDimMapVars()
+            'RedimMigratoryVariables()
+            ' ReDimRegionVars()
+            'RedimMPAVariables()
+            'redimTimeStepResults(0)
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
+        End Try
+
     End Sub
 
     ''' <summary>
@@ -1037,7 +1142,7 @@ Public Class cEcospaceDataStructures
     ''' <remarks>This must be called by Ecospace at the start of a run to clear out any existing data.</remarks>
     Public Function redimTimeStepResults(ByVal NumberOfTimeSteps As Integer) As Boolean
 
-        Debug.Assert(TimeStep > 0 And TotalTime > 0)
+        'Debug.Assert(TimeStep > 0 And TotalTime > 0)
         Dim success As Boolean = True
 
         'reset the number of time steps the model ran for

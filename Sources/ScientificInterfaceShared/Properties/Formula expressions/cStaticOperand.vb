@@ -1,16 +1,9 @@
-'==============================================================================
-'
-' $Log: cStaticOperand.vb,v $
-' Revision 1.2  2009/05/28 12:37:02  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/04/02 13:19:40  jeroens
-' Separated out of cFormulaExpression.vb
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -33,6 +26,10 @@ Namespace Properties
         ''' ---------------------------------------------------------------
         Public Sub New(ByVal s As Single)
             Me.m_sValue = s
+        End Sub
+
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+            ' NOP
         End Sub
 
         ''' ---------------------------------------------------------------

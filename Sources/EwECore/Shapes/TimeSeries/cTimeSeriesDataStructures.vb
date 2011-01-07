@@ -104,7 +104,10 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>log(observed/predicted) by observation</summary>
     Public Erpred() As Single
 
-    Friend Sub ClearTimeSeriesDatasets()
+    ''' <summary>
+    ''' Clear all time series data and free memory
+    ''' </summary>
+    Friend Sub Clear()
         Me.nDatasets = 0
         Me.ActiveDatasetIndex = cCore.NULL_VALUE
         Me.RedimTimeSeriesDatasets()
@@ -134,7 +137,6 @@ Public Class cTimeSeriesDataStructures
 
     Friend Sub ClearTimeSeries()
 
-        'JS: do not clear datasets, numtimeseries, only clear available and applied TS
         Me.nNumTimeSeries = 0
         Me.nMaxYears = 0
         Me.NdatYear = 0

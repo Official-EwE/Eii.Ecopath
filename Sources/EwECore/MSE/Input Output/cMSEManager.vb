@@ -253,6 +253,8 @@ Namespace MSE
 
             Me.m_Batch = New MSEBatchManager.cMSEBatchManager()
 
+            'clear out the old data
+            Me.m_VarToStat.Clear()
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassHistogram, eMSEStatNames.PercentageHistogram)
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassMeanValues, eMSEStatNames.MeanRun)
             Me.m_VarToStat.Add(eVarNameFlags.MSEBiomassMin, eMSEStatNames.Min)
@@ -516,6 +518,7 @@ Namespace MSE
             Next
 
             Me.m_lstFleetInputs.Clear()
+            Me.m_lstFleetOutputs.Clear()
             Me.m_lstEffortStats.Clear()
             Me.m_lstFleetStats.Clear()
             For iflt As Integer = 1 To m_core.nFleets
@@ -714,6 +717,40 @@ Namespace MSE
             End Try
 
         End Function
+
+        Friend Sub Clear() Implements ISearchObjective.Clear
+            Try
+
+                Me.m_lstBioEstStats.Clear()
+                Me.m_lstBiomassStats.Clear()
+                Me.m_lstEffortStats.Clear()
+                Me.m_lstFleetInputs.Clear()
+                Me.m_lstFleetOutputs.Clear()
+                Me.m_lstFleetStats.Clear()
+                Me.m_lstGroupCatchStats.Clear()
+                Me.m_lstGroupInputs.Clear()
+                Me.m_lstGroupOutputs.Clear()
+
+                Me.m_MSEdata.Clear()
+                Me.m_MSE.Disconnect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
+                Me.m_MSE.Clear()
+
+                Me.m_Batch.Clear()
+
+                Me.m_output.Clear()
+                Me.m_parameters.Clear()
+
+                ' JS: 03Jan01: do not destroy objects only created in the constructor. Clear() is not a Destructor!
+                'Me.m_output = Nothing
+                'Me.m_parameters = Nothing
+                'Me.m_MSE = Nothing
+                'Me.m_Batch = Nothing
+
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+        End Sub
 
         ''' <summary>
         ''' Update the underlying core data with edits from the interface
@@ -1171,6 +1208,9 @@ Namespace MSE
 
 #End Region
 
+        Protected Overrides Sub Finalize()
+            MyBase.Finalize()
+        End Sub
     End Class
 
 End Namespace

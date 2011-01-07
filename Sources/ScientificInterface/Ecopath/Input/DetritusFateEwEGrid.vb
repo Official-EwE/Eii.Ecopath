@@ -73,23 +73,23 @@ Namespace Ecopath.Input
 
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim blnStanza(core.nGroups) As Boolean
-            Dim aiStanza(core.nGroups) As Integer 'Hold the stanza group number
+            Dim blnStanza(Core.nGroups) As Boolean
+            Dim aiStanza(Core.nGroups) As Integer 'Hold the stanza group number
             Dim iStanzaPrev As Integer = -1
 
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
 
-            For i As Integer = 1 To core.nGroups : aiStanza(i) = -1 : Next
+            For i As Integer = 1 To Core.nGroups : aiStanza(i) = -1 : Next
 
             'Remove existing rows
             Me.RowsCount = 1
 
             'Tag stanza group first
-            For iStanzaGroup As Integer = 0 To core.nStanzas - 1
-                sg = core.StanzaGroups(iStanzaGroup)
+            For iStanzaGroup As Integer = 0 To Core.nStanzas - 1
+                sg = Core.StanzaGroups(iStanzaGroup)
                 For iStanza As Integer = 1 To sg.NStanzas
-                    source = core.EcoPathGroupInputs(sg.iGroups(iStanza))
+                    source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
                     blnStanza(source.Index) = True
                     aiStanza(source.Index) = iStanzaGroup
                 Next
@@ -100,17 +100,17 @@ Namespace Ecopath.Input
             propSum.SetValue(1.0)
             propSum.SetStyle(cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable)
 
-            'Create rows for all groups
-            For rowIndex As Integer = 1 To core.nGroups
+            ' Create rows for all groups
+            For rowIndex As Integer = 1 To Core.nGroups
 
-                source = core.EcoPathGroupInputs(rowIndex)
+                source = Core.EcoPathGroupInputs(rowIndex)
                 alProp.Clear()
 
                 If aiStanza(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow
-                    For iCol As Integer = 1 To core.nDetritusGroups
+                    For iCol As Integer = 1 To Core.nDetritusGroups
 
-                        sourceSec = core.EcoPathGroupInputs(core.nGroups - core.nDetritusGroups + iCol)
+                        sourceSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
 
                         Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                         Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
@@ -120,18 +120,19 @@ Namespace Ecopath.Input
                     Next
 
                     opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alProp.ToArray)
-                    propSumAll = New cFormulaProperty(CType(opSumAll, cExpression))
-                    opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
-                                                CType(propSum, Object), CType(propSumAll, Object))
-                    propExport = New cFormulaProperty(CType(opMinus, cExpression))
+                    propSumAll = Me.Formula(opSumAll)
+                    opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, propSum, propSumAll)
+                    propExport = Me.Formula(opMinus)
 
                     ' Export column 
-                    Me(iRow, Me.ColumnsCount - 2) = New PropertyCell(CType(propExport, cProperty))
+                    Me(iRow, Me.ColumnsCount - 2) = New PropertyCell(propExport)
 
                     ' JS 140606: Use static single property here. Seems overkill where a simple Cell(1.0) would have
                     '            been sufficient, but this way the cell inherits StyleGuide colour and decimals feedback.
                     Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(propSum)
-                Else 'Group is stanza
+
+                Else ' Group is stanza
+
                     sg = Core.StanzaGroups(aiStanza(source.Index))
                     If aiStanza(source.Index) <> iStanzaPrev Then 'If stanza group appears the first time Then display + control
                         iRow = Me.AddRow()
@@ -160,13 +161,12 @@ Namespace Ecopath.Input
                     Next
 
                     opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alProp.ToArray)
-                    propSumAll = New cFormulaProperty(CType(opSumAll, cExpression))
-                    opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
-                                                CType(propSum, Object), CType(propSumAll, Object))
-                    propExport = New cFormulaProperty(CType(opMinus, cExpression))
+                    propSumAll = Me.Formula(opSumAll)
+                    opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, propSum, propSumAll)
+                    propExport = Me.Formula(opMinus)
 
                     ' Export column 
-                    Me(iRow, Me.ColumnsCount - 2) = New PropertyCell(CType(propExport, cProperty))
+                    Me(iRow, Me.ColumnsCount - 2) = New PropertyCell(propExport)
                     Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(propSum)
                 End If
             Next

@@ -48,6 +48,8 @@ Namespace ValueWrapper
     ''' ToDo:: the varType enumerator could be change to being a System.Type object.
     ''' </remarks>
     Public Class cValue
+        Implements IDisposable
+
 
         Private m_value As Object
         Protected m_orgvalue As Object
@@ -449,6 +451,15 @@ Namespace ValueWrapper
 
         End Function
 
+        Public Overridable Sub Dispose() Implements IDisposable.Dispose
+            Me.m_metadata = Nothing
+            Me.m_orgStatus = Nothing
+            Me.m_status = Nothing
+            Me.m_value = Nothing
+            Me.m_orgvalue = Nothing
+            Me.m_validator = Nothing
+        End Sub
+
     End Class
 
 #End Region
@@ -473,7 +484,7 @@ Namespace ValueWrapper
                 ByRef CounterDelegate As CoreCounterDelegate, ByRef MetaData As cVariableMetaData, ByRef Validator As cValidatorDefault)
             MyBase.New(Nothing, VarName, Status, theValueType)
 
-            varType = theValueType
+            VarType = theValueType
             m_varName = VarName
 
             m_metadata = MetaData
@@ -687,6 +698,13 @@ Namespace ValueWrapper
 
         End Function
 
+        Public Overrides Sub Dispose()
+            MyBase.Dispose()
+            Me.m_values = Nothing
+            Me.m_CounterDelegate = Nothing
+
+        End Sub
+
     End Class
 
 #End Region ' cValueArray
@@ -714,7 +732,7 @@ Namespace ValueWrapper
                 ByRef CounterDelegate As CoreIndexedCounterDelegate, ByVal iArrayIndex As Integer, ByVal DataType As eDataTypes)
             MyBase.New(theValueType, VarName, Status, CounterType, Nothing)
 
-            varType = theValueType
+            VarType = theValueType
             m_varName = VarName
             m_dataType = DataType
             m_iArrayIndex = iArrayIndex
@@ -729,7 +747,6 @@ Namespace ValueWrapper
             Else
                 Debug.Assert(False, "Something is wrong in " & Me.ToString & ".New()")
             End If
-
 
         End Sub
 
@@ -781,6 +798,15 @@ Namespace ValueWrapper
             End If
 
         End Function
+
+
+        Public Overrides Sub Dispose()
+            MyBase.Dispose()
+
+            Me.m_CounterDelegate = Nothing
+
+        End Sub
+
 
     End Class
 

@@ -48,6 +48,34 @@ Public Class cPSDDatastructures
         Me.EcopathDS = EcopathDS
     End Sub
 
+    Public Sub Clear()
+        Me.BiomassAvgSzWt = Nothing ' (NumGroups)
+        Me.BiomassSzWt = Nothing ' (NumGroups)
+        Me.AinLW = Nothing ' (NumGroups)
+        Me.BinLW = Nothing ' (NumGroups)
+        Me.Loo = Nothing ' (NumGroups)
+        Me.Winf = Nothing ' (NumGroups)
+        Me.t0 = Nothing ' (NumGroups)
+        Me.Tcatch = Nothing ' (NumGroups)
+        Me.Tmax = Nothing ' (NumGroups)
+
+        Me.AinLWInput = Nothing ' (NumGroups)
+        Me.BinLWInput = Nothing ' (NumGroups)
+        Me.LooInput = Nothing ' (NumGroups)
+        Me.WinfInput = Nothing ' (NumGroups)
+        Me.t0Input = Nothing ' (NumGroups)
+        Me.TcatchInput = Nothing ' (NumGroups)
+        Me.TmaxInput = Nothing ' (NumGroups)
+
+        Me.EcopathWeight = Nothing ' (NumGroups, NAgeSteps)
+        Me.EcopathNumber = Nothing ' (NumGroups, NAgeSteps)
+        Me.EcopathBiomass = Nothing ' (NumGroups, NAgeSteps)
+        Me.LorenzenMortality = Nothing ' (NumGroups, NAgeSteps)
+
+        Me.PSD = Nothing ' (NumGroups, NWeightClasses)
+        Me.Include = Nothing ' (NumGroups)
+    End Sub
+
     Public ReadOnly Property NumGroups() As Integer
         Get
             Return Me.EcopathDS.NumGroups
@@ -126,38 +154,38 @@ Public Class cPSDDatastructures
 
     End Function
 
-    Friend Sub copyTo(ByRef dest As cPSDDatastructures)
-        Try
-            'Joeh
-            BiomassAvgSzWt.CopyTo(dest.BiomassAvgSzWt, 0)
-            BiomassSzWt.CopyTo(dest.BiomassSzWt, 0)
+    'Friend Sub copyTo(ByRef dest As cPSDDatastructures)
+    '    Try
+    '        'Joeh
+    '        BiomassAvgSzWt.CopyTo(dest.BiomassAvgSzWt, 0)
+    '        BiomassSzWt.CopyTo(dest.BiomassSzWt, 0)
 
-            AinLW.CopyTo(dest.AinLW, 0)
-            BinLW.CopyTo(dest.BinLW, 0)
-            Loo.CopyTo(dest.Loo, 0)
-            Winf.CopyTo(dest.Winf, 0)
-            t0.CopyTo(dest.t0, 0)
-            Tcatch.CopyTo(dest.Tcatch, 0)
-            Tmax.CopyTo(dest.Tmax, 0)
+    '        AinLW.CopyTo(dest.AinLW, 0)
+    '        BinLW.CopyTo(dest.BinLW, 0)
+    '        Loo.CopyTo(dest.Loo, 0)
+    '        Winf.CopyTo(dest.Winf, 0)
+    '        t0.CopyTo(dest.t0, 0)
+    '        Tcatch.CopyTo(dest.Tcatch, 0)
+    '        Tmax.CopyTo(dest.Tmax, 0)
 
-            AinLWInput.CopyTo(dest.AinLWInput, 0)
-            BinLWInput.CopyTo(dest.BinLWInput, 0)
-            LooInput.CopyTo(dest.LooInput, 0)
-            WinfInput.CopyTo(dest.WinfInput, 0)
-            t0Input.CopyTo(dest.t0Input, 0)
-            TcatchInput.CopyTo(dest.TcatchInput, 0)
-            TmaxInput.CopyTo(dest.TmaxInput, 0)
+    '        AinLWInput.CopyTo(dest.AinLWInput, 0)
+    '        BinLWInput.CopyTo(dest.BinLWInput, 0)
+    '        LooInput.CopyTo(dest.LooInput, 0)
+    '        WinfInput.CopyTo(dest.WinfInput, 0)
+    '        t0Input.CopyTo(dest.t0Input, 0)
+    '        TcatchInput.CopyTo(dest.TcatchInput, 0)
+    '        TmaxInput.CopyTo(dest.TmaxInput, 0)
 
-            dest.EcopathWeight = DirectCast(EcopathWeight.Clone, Single(,))
-            dest.EcopathNumber = DirectCast(EcopathNumber.Clone, Single(,))
-            dest.EcopathBiomass = DirectCast(EcopathBiomass.Clone, Single(,))
-            dest.LorenzenMortality = DirectCast(LorenzenMortality.Clone, Single(,))
+    '        dest.EcopathWeight = DirectCast(EcopathWeight.Clone, Single(,))
+    '        dest.EcopathNumber = DirectCast(EcopathNumber.Clone, Single(,))
+    '        dest.EcopathBiomass = DirectCast(EcopathBiomass.Clone, Single(,))
+    '        dest.LorenzenMortality = DirectCast(LorenzenMortality.Clone, Single(,))
 
-            dest.PSD = DirectCast(PSD.Clone, Single(,))
-        Catch ex2 As Exception
-            Debug.Assert(False, ex2.Message)
-        End Try
+    '        dest.PSD = DirectCast(PSD.Clone, Single(,))
+    '    Catch ex2 As Exception
+    '        Debug.Assert(False, ex2.Message)
+    '    End Try
 
-    End Sub
+    'End Sub
 
 End Class

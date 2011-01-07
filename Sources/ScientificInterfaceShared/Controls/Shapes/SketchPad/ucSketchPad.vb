@@ -676,6 +676,7 @@ Namespace Controls
             Else
                 ' No tip, sorry.
             End If
+            cToolTipShared.GetInstance().SetToolTip(Me, strTooltip)
 
             cToolTipShared.GetInstance().SetToolTip(Me, strTooltip)
 

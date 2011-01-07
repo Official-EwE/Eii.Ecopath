@@ -334,6 +334,9 @@ Namespace Controls.EwEGrid
         ''' <summary>Generic edit behaviour.</summary>
         Private m_bm As cEwEGridBacklinkModel = Nothing
 
+        ''' <summary>Bin of formula properties.</summary>
+        Private m_lpropertyFormula As List(Of cFormulaProperty) = Nothing
+
 #End Region ' Variables
 
 #Region " Constructor / destructor "
@@ -357,7 +360,11 @@ Namespace Controls.EwEGrid
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            MyBase.Dispose(disposing)
+
+            ' JS 13Dec10: Memory leaks were discovered on tooltips. Perhaps explicitly 
+            '             deactivating the grid tooltip will fix this. If not we have a 
+            '             minor bug in SourceGrid.
+            Me.GridToolTipActive = False
 
             If (Me.m_pehTLCell IsNot Nothing) Then
 
@@ -379,6 +386,8 @@ Namespace Controls.EwEGrid
             End If
 
             Me.UIContext = Nothing
+
+            MyBase.Dispose(disposing)
 
         End Sub
 
@@ -849,9 +858,18 @@ Namespace Controls.EwEGrid
         ''' <note_js>Method does not require UI context to be present.</note_js>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub ClearData()
+            ' Clear rows
             For iRow As Integer = 0 To Me.RowsCount - 1
                 Me.ClearRow(iRow)
             Next
+            ' Clear orphaned properties
+            If (Me.m_lpropertyFormula IsNot Nothing) Then
+                For Each prop As cProperty In Me.m_lpropertyFormula
+                    prop.Dispose()
+                Next
+                Me.m_lpropertyFormula.Clear()
+                Me.m_lpropertyFormula = Nothing
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -915,6 +933,18 @@ Namespace Controls.EwEGrid
                 Me.RefreshContent()
             End If
         End Sub
+
+        ''' <summary>
+        ''' Returns a new local formula propery.
+        ''' </summary>
+        Protected Function Formula(ByVal exp As cExpression) As cFormulaProperty
+            Dim fp As New cFormulaProperty(exp)
+            If Me.m_lpropertyFormula Is Nothing Then
+                Me.m_lpropertyFormula = New List(Of cFormulaProperty)
+            End If
+            Me.m_lpropertyFormula.Add(fp)
+            Return fp
+        End Function
 
 #End Region ' Data
 

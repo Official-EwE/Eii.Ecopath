@@ -1,19 +1,9 @@
-'==============================================================================
-'
-' $Log: cConditionalOperation.vb,v $
-' Revision 1.2  2009/05/28 12:37:01  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/04/02 13:19:39  jeroens
-' Separated out of cFormulaExpression.vb
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-
-Imports EwECore
-Imports System.Globalization
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -76,6 +66,19 @@ Namespace Properties
             AddHandler Me.m_opTest.OnValueChanged, AddressOf OnOperandValueChanged
             AddHandler Me.m_opTrue.OnValueChanged, AddressOf OnOperandValueChanged
             AddHandler Me.m_opFalse.OnValueChanged, AddressOf OnOperandValueChanged
+        End Sub
+
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+            ' Stop listening for operand changes
+            RemoveHandler Me.m_opTest.OnValueChanged, AddressOf OnOperandValueChanged
+            RemoveHandler Me.m_opTrue.OnValueChanged, AddressOf OnOperandValueChanged
+            RemoveHandler Me.m_opFalse.OnValueChanged, AddressOf OnOperandValueChanged
+            Me.m_opTest.Dispose()
+            Me.m_opTest = Nothing
+            Me.m_opTrue.Dispose()
+            Me.m_opTrue = Nothing
+            Me.m_opFalse.Dispose()
+            Me.m_opFalse = Nothing
         End Sub
 
         ''' ---------------------------------------------------------------

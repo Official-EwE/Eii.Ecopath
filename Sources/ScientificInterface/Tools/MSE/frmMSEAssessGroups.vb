@@ -63,7 +63,7 @@ Public Class frmMSEAssessGroups
             ' No longer track MSE start year changes
             RemoveHandler Me.m_propStartYear.PropertyChanged, AddressOf OnLastYearChanged
             ' Release blocks
-            Me.m_blocks.Detach()
+            Me.m_blocks.Dispose()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)

@@ -12,7 +12,6 @@ Namespace FishingPolicy
         Implements ICoreInterface
         Implements ISearchObjective
 
-
 #Region "Private Variables"
 
         Private m_FPsearch As cFishingPolicySearch
@@ -55,6 +54,20 @@ Namespace FishingPolicy
             m_SearchCompletedDelegate = SearchCompletedCallBack
 
         End Sub
+
+
+        Public Sub DisConnect()
+
+            m_StartRunDelegate = Nothing
+            m_RunCompletedDelegate = Nothing
+            m_ProgressDelegate = Nothing
+            m_SearchCompletedDelegate = Nothing
+
+
+
+        End Sub
+
+
 
         Friend Sub New()
 
@@ -143,7 +156,6 @@ Namespace FishingPolicy
                 m_parameters.IncludeComp = coreData.IncludeCompetitiveImpact
                 m_parameters.MaxEffChange = coreData.MaxEffortChange
                 m_parameters.UseEconomicPlugin = coreData.FPSUseEconomicPlugin
-                'm_parameters.isEconomicAvailable = Me.m_core.PluginManager.IsDataAvailable(GetType(IEconomicData), New EwEPlugin.cEcosimRunType)
 
                 m_parameters.ResetStatusFlags()
 
@@ -171,6 +183,28 @@ Namespace FishingPolicy
             End Try
 
         End Function
+
+        Public Sub Clear() Implements ISearchObjective.Clear
+
+            Try
+
+                If Me.m_lstFleets IsNot Nothing Then Me.m_lstFleets.Clear()
+                If Me.m_parameters IsNot Nothing Then Me.m_parameters.Clear()
+
+                If Me.m_FPsearch IsNot Nothing Then
+                    Me.m_FPsearch.SearchCompletedCallBack = Nothing
+                    Me.m_FPsearch.AddMessageCallBack = Nothing
+                    Me.m_FPsearch.ProgressCallBack = Nothing
+                    Me.m_FPsearch.SearchStartedCallBack = Nothing
+                    Me.m_FPsearch.RunCompletedCallBack = Nothing
+                End If
+                Me.m_FPsearch = Nothing
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+
+        End Sub
 
         ''' <summary>
         ''' Update the underlying data with values from the interface
@@ -273,7 +307,7 @@ Namespace FishingPolicy
 
 #Region "Public Properties"
 
-  
+
 
         Public ReadOnly Property SearchBlocks(ByVal iFleet As Integer) As cFishingPolicySearchBlock
             Get
@@ -287,7 +321,7 @@ Namespace FishingPolicy
             End Get
         End Property
 
-   
+
 
         ''' <summary>
         ''' Number of unique search blocks across all the fleets
@@ -420,6 +454,9 @@ Namespace FishingPolicy
                     m_syncObject.BeginInvoke(m_SearchCompletedDelegate, Nothing)
                 End If
 
+                ctd = Nothing
+                Me.m_syncObject = Nothing
+
             Catch ex As Exception
                 cLog.Write(ex)
                 m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
@@ -517,7 +554,7 @@ Namespace FishingPolicy
         Public Function Run(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
             m_syncObject = SyncObject
-            Dim thrdMC As Thread
+            Dim FPSthread As Thread
             Dim search As cSearchDatastructures = m_core.m_SearchData
             Dim bsuccess As Boolean
 
@@ -537,8 +574,8 @@ Namespace FishingPolicy
                 Me.m_core.m_EcoSimData.bTimestepOutput = True
                 Me.Update(Me.DataType)
 
-                thrdMC = New Thread(AddressOf Me.m_FPsearch.Run)
-                thrdMC.Start()
+                FPSthread = New Thread(AddressOf Me.m_FPsearch.Run)
+                FPSthread.Start()
 
             Catch ex As Exception
                 cLog.Write(ex)

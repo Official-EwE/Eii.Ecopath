@@ -25,6 +25,28 @@ Namespace Controls
             MyBase.InitStyle()
         End Sub
 
+        Public Overrides Property UIContext() As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As cUIContext)
+                If (MyBase.UIContext IsNot Nothing) Then
+                    RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+                MyBase.UIContext = value
+                If (MyBase.UIContext IsNot Nothing) Then
+                    AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+            End Set
+        End Property
+
+        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+            If ((ct And cStyleGuide.eChangeType.GroupVisibility) > 0) Or _
+               ((ct And cStyleGuide.eChangeType.FleetVisibility) > 0) Then
+                Me.RefreshContent()
+            End If
+        End Sub
+
         ''' <summary>
         ''' 
         ''' </summary>

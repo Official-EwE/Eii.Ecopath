@@ -352,13 +352,90 @@ Namespace MSE
                 Me.ResultsEndYear = theCore.nEcosimYears
                 Me.EffortSource = eMSEEffortSource.NoCap
 
-
             Catch ex As Exception
                 cLog.Write(ex)
                 Throw New ApplicationException("Init() " & ex.Message, ex)
             End Try
 
         End Sub
+
+        Public Sub Clear()
+
+            Me.BioStats = Nothing ' New cMSESummaryStats(Me, Me.BioBounds, nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+            Me.CatchGroupStats = Nothing ' New cMSESummaryStats(Me, Me.CatchGroupBounds, nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+            Me.CatchFleetStats = Nothing ' New cMSESummaryStats(Me, Me.CatchFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+            Me.EffortStats = Nothing ' New cMSESummaryStats(Me, Me.EffortFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+
+            Me.ProfitSum = Nothing ' New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+            Me.JobsSum = Nothing ' New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+            Me.CostSum = Nothing ' New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+
+            'yearly time steps
+            Me.BioEstStats = Nothing ' New cMSESummaryStats(Me, Me.BioEstBounds, nLiving, 1, eCoreCounterTypes.nEcosimYears, AddressOf theCore.GetCoreCounter)
+
+            Me.BioBounds = Nothing
+            Me.BioEstBounds = Nothing
+            Me.CatchGroupBounds = Nothing
+            Me.CatchFleetBounds = Nothing
+            Me.EffortFleetBounds = Nothing
+            Me.CVbiomEst = Nothing
+
+            Me.GstockPred = Nothing ' (NGroups)
+            Me.RstockRatio = Nothing ' (NGroups)
+            Me.RStock0 = Nothing ' (NGroups)
+            Me.KalmanGain = Nothing ' (NGroups)
+            Me.VarQest = Nothing ' (nFleets), KalGainQ = nothing ' (nFleets), VarQyear = nothing ' (nFleets)
+            Me.VarQgrow = Nothing ' (nFleets)
+            Me.Wftot = Nothing ' (nFleets)
+
+            Me.BhalfT = Nothing ' (NGroups)
+            Me.Rmax = Nothing ' (NGroups)
+            Me.RHalfB0Ratio = Nothing ' (NGroups)
+            Me.cvRec = Nothing ' (NGroups)
+
+            Me.Fweight = Nothing ' (nFleets, NGroups)
+            Me.Qgrow = Nothing ' (nFleets)
+            Me.Fwc = Nothing ' (nFleets, 1)
+
+            Me.BioR0 = Nothing ' (NGroups)
+            Me.BioR1 = Nothing ' (NGroups)
+            Me.BioRiskValue = Nothing ' (NGroups, 1)
+            Me.BioRiskCount = Nothing ' (NGroups, 1)
+
+            Me.CVbiomEst = Nothing ' (NGroups)
+            Me.CVFest = Nothing ' (nFleets)
+
+            Me.QGrowUsed = Nothing ' (nFleets)
+
+            Me.Bestimate = Nothing ' (NGroups)
+            Me.BestimateLast = Nothing ' (NGroups)
+
+            Me.MSYGroupWeight = Nothing ' (NGroups)
+
+            Me.BioBounds = Nothing ' (NGroups)
+            Me.BioEstBounds = Nothing ' (NGroups)
+            Me.CatchGroupBounds = Nothing ' (NGroups)
+            Me.CatchFleetBounds = Nothing ' (Me.nFleets)
+            Me.EffortFleetBounds = Nothing ' (Me.nFleets)
+            Me.QuotaType = Nothing ' (nFleets)
+            Me.RegDiscard = Nothing ' (nFleets, NGroups)
+            Me.MaxEffort = Nothing ' (nFleets)
+            Me.Quota = Nothing ' (nFleets, NGroups)
+
+            Me.Quotashare = Nothing ' (nFleets, NGroups)
+            Me.QuotaTime = Nothing ' (nFleets, NGroups)
+            Me.Blim = Nothing ' (NGroups)
+            Me.Bbase = Nothing ' (NGroups)
+            Me.Fopt = Nothing ' (NGroups)
+            Me.Fmin = Nothing ' (NGroups)
+            Me.FixedEscapement = Nothing ' (NGroups)
+            Me.FixedF = Nothing ' (NGroups)
+            Me.TAC = Nothing ' (NGroups)
+            Me.CVBiomT = Nothing
+            Me.CVFT = Nothing
+
+        End Sub
+
 
         ''' <summary>
         ''' Redimension variables and set default variable values.
@@ -400,7 +477,7 @@ Namespace MSE
                 MSYGroupWeight(iGrp) = 1
             Next
 
-            ReDim BioBounds(NGroups)
+            ReDim Me.BioBounds(NGroups)
             ReDim Me.BioEstBounds(NGroups)
             ReDim Me.CatchGroupBounds(NGroups)
             ReDim Me.CatchFleetBounds(Me.nFleets)

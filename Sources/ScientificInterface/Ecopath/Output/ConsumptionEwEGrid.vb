@@ -115,9 +115,9 @@ Namespace Ecopath.Output
 
                     ' Now create the formula property that will calculate the sum of all Consumption props
                     opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alPropSumAll.ToArray())
-                    propSum = New cFormulaProperty(CType(opSumAll, cExpression))
+                    propSum = Me.Formula(opSumAll)
 
-                    Me(rowCnt - 1, columnIndex) = New PropertyCell(CType(propSum, cProperty))
+                    Me(rowCnt - 1, columnIndex) = New PropertyCell(propSum)
 
                     columnIndex = columnIndex + 1
 

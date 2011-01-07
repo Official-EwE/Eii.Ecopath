@@ -13,7 +13,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 
 Partial Public Class AppLauncher
 
-#Region " FormStateHelper "
+#Region " cFormStateHelper "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -153,9 +153,9 @@ Partial Public Class AppLauncher
 
     End Class
 
-#End Region ' FormStateHelper
+#End Region ' cFormStateHelper
 
-#Region " StyleGuideUpdater "
+#Region " cStyleGuideUpdater "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -433,6 +433,6 @@ Partial Public Class AppLauncher
 
     End Class
 
-#End Region ' StyleGuideUpdater
+#End Region ' cStyleGuideUpdater
 
 End Class

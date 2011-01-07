@@ -80,8 +80,8 @@
     <Setting Name="FormPositions" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FeedbackMessageLogSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">25</Value>
+    <Setting Name="StatusMaxMessages" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">50</Value>
     </Setting>
     <Setting Name="FontTitle" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -130,6 +130,9 @@
     </Setting>
     <Setting Name="PresentationModeCollapseNavPanel" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="StatusShowTime" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

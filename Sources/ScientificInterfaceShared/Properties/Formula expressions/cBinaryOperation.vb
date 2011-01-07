@@ -1,17 +1,9 @@
-'==============================================================================
-'
-' $Log: cBinaryOperation.vb,v $
-' Revision 1.2  2009/05/28 12:37:01  jeroens
-' Properly named utility classes StyleGuide and ZedGraphHelper
-'
-' Revision 1.1  2009/04/02 13:19:39  jeroens
-' Separated out of cFormulaExpression.vb
-'
-'==============================================================================
+#Region " Imports "
 
 Option Strict On
-
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Properties
 
@@ -73,6 +65,17 @@ Namespace Properties
             ' Start listening for operand changes
             AddHandler Me.m_operand1.OnValueChanged, AddressOf OnOperandValueChanged
             AddHandler Me.m_operand2.OnValueChanged, AddressOf OnOperandValueChanged
+        End Sub
+
+        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+            ' Stop listening for operand changes
+            RemoveHandler Me.m_operand1.OnValueChanged, AddressOf OnOperandValueChanged
+            RemoveHandler Me.m_operand2.OnValueChanged, AddressOf OnOperandValueChanged
+            ' Clean up
+            Me.m_operand1.Dispose()
+            Me.m_operand2.Dispose()
+            Me.m_operand1 = Nothing
+            Me.m_operand2 = Nothing
         End Sub
 
         ''' ---------------------------------------------------------------

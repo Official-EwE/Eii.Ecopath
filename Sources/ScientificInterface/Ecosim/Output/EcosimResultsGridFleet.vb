@@ -15,6 +15,8 @@ Namespace Ecosim
     Public Class EcosimResultsGridFleet
         : Inherits gridResultsBase
 
+        Private m_iNumVisibleFleets As Integer = 0
+
         Public Sub New()
             MyBase.new()
         End Sub
@@ -56,17 +58,22 @@ Namespace Ecosim
         'This method init the cells, its visual and data models. 
         Protected Overrides Sub FillData()
 
-            Dim astrNames(Core.nFleets) As String
+            Dim lName As New List(Of String)
+            lName.Add(String.Empty)
 
-            For i As Integer = 1 To core.nFleets
-                astrNames(i) = core.EcosimFleetOutput(i).Name
+            Me.m_iNumVisibleFleets = 0
+
+            For iFleet As Integer = 1 To Core.nFleets
+                If Me.StyleGuide.FleetVisible(iFleet) Then
+                    lName.Add(Core.EcosimFleetInputs(iFleet).Name)
+                    Me.m_iNumVisibleFleets += 1
+                End If
             Next
 
             Dim aCalc() As Integer = {4, 7, 10}
+            Me.InitCells(Me.m_iNumVisibleFleets + 1, lName.ToArray, aCalc)
 
-            Me.InitCells(core.nFleets + 1, astrNames, aCalc)
-
-            Me.UpdateData()
+            Me.updateData()
 
         End Sub
 
@@ -74,38 +81,43 @@ Namespace Ecosim
 
             Dim source As cEcosimFleetOutput = Nothing
             Dim ts As cTimeSeries = Nothing
-            'Dim bForcedCatch As Boolean = False
             Dim styleCost As cStyleGuide.eStyleFlags = 0
+            Dim iRow As Integer = 0
 
             Dim totalValue(0 To 11) As Single
             Me.InitTotalArray(totalValue)
 
-            For fleetIndex As Integer = 1 To core.nFleets
+            For iFleet As Integer = 1 To core.nFleets
 
-                source = Core.EcosimFleetOutput(fleetIndex)
+                'Only display selected groups
+                If Me.StyleGuide.FleetVisible(iFleet) Then
 
-                If source.CatchStart > 0 Then SetCellValue(fleetIndex, 2, source.CatchStart, totalValue)
-                If source.CatchEnd > 0 Then SetCellValue(fleetIndex, 3, source.CatchEnd, totalValue)
+                    iRow += 1
+                    source = Core.EcosimFleetOutput(iFleet)
 
-                If source.CatchStart > 0 And source.CatchEnd > 0 Then
-                    SetCellValue(fleetIndex, 4, CSng(source.CatchEnd / source.CatchStart), totalValue)
+                    If source.CatchStart > 0 Then SetCellValue(iRow, 2, source.CatchStart, totalValue)
+                    If source.CatchEnd > 0 Then SetCellValue(iRow, 3, source.CatchEnd, totalValue)
+
+                    If source.CatchStart > 0 And source.CatchEnd > 0 Then
+                        SetCellValue(iRow, 4, CSng(source.CatchEnd / source.CatchStart), totalValue)
+                    End If
+
+                    If source.ValueStart > 0 Then SetCellValue(iRow, 5, source.ValueStart, totalValue)
+                    If source.ValueEnd > 0 Then SetCellValue(iRow, 6, source.ValueEnd, totalValue)
+
+                    If source.ValueStart > 0 And source.ValueEnd > 0 Then
+                        SetCellValue(iRow, 7, CSng(source.ValueEnd / source.ValueStart), totalValue)
+                    End If
+
+                    If source.CostStart > 0 Then SetCellValue(iRow, 8, source.CostStart, totalValue, styleCost)
+                    If source.CostEnd > 0 Then SetCellValue(iRow, 9, source.CostEnd, totalValue, styleCost)
+                    If source.CostStart > 0 And source.CostEnd > 0 Then
+                        SetCellValue(iRow, 10, CSng(source.CostEnd / source.CostStart), totalValue, styleCost)
+                    End If
+
+                    'jb feb??08 cEcosimFleetSummary.Effort is endEffort/StartEffort
+                    SetCellValue(iRow, 11, CSng(source.Effort), totalValue)
                 End If
-
-                If source.ValueStart > 0 Then SetCellValue(fleetIndex, 5, source.ValueStart, totalValue)
-                If source.ValueEnd > 0 Then SetCellValue(fleetIndex, 6, source.ValueEnd, totalValue)
-
-                If source.ValueStart > 0 And source.ValueEnd > 0 Then
-                    SetCellValue(fleetIndex, 7, CSng(source.ValueEnd / source.ValueStart), totalValue)
-                End If
-
-                If source.CostStart > 0 Then SetCellValue(fleetIndex, 8, source.CostStart, totalValue, styleCost)
-                If source.CostEnd > 0 Then SetCellValue(fleetIndex, 9, source.CostEnd, totalValue, styleCost)
-                If source.CostStart > 0 And source.CostEnd > 0 Then
-                    SetCellValue(fleetIndex, 10, CSng(source.CostEnd / source.CostStart), totalValue, styleCost)
-                End If
-
-                'jb feb??08 cEcosimFleetSummary.Effort is endEffort/StartEffort
-                SetCellValue(fleetIndex, 11, CSng(source.Effort), totalValue)
 
             Next
 

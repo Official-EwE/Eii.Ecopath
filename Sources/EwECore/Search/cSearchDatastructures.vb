@@ -43,11 +43,7 @@ Public Class cSearchDatastructures
 
     Public LimitFishingMortality As Boolean
     Public PortFolio As Boolean
-    ' Public LimitFPenalty As Single
 
-    Public NumFleets As Integer
-    Public NumGroups As Integer
-    Public NumLiving As Integer
     Public NYears As Integer
     Public m_NBlocks As Integer 'Number of block for fishing policy explorations
     Public MaxEffort As Single
@@ -194,7 +190,7 @@ Public Class cSearchDatastructures
     ''' Semaphor provides single thread access to calcEcospaceMonthlyCatch()
     ''' </summary>
     ''' <remarks></remarks>
-    Private m_SearchCatchSemaphor As System.Threading.Semaphore = New System.Threading.Semaphore(1, 1, "SearchMontlyCatch")
+    Private m_SearchCatchSemaphor As System.Threading.Semaphore
 
     Public KemptonQ As Single
 
@@ -203,6 +199,8 @@ Public Class cSearchDatastructures
 
     'needed for KemptonsQ
     Private m_EcoFunctions As cEcoFunctions
+
+    Private m_EPdata As cEcopathDataStructures
 
 #End Region
 
@@ -217,7 +215,54 @@ Public Class cSearchDatastructures
 
 #End Region
 
-#Region " Construction "
+#Region " Construction Destruction Cleanup "
+
+    Public Sub New(ByVal EcoFunctions As cEcoFunctions, ByVal EPData As cEcopathDataStructures)
+
+        m_EcoFunctions = EcoFunctions
+
+        Me.m_SearchCatchSemaphor = New System.Threading.Semaphore(1, 1, "SearchMontlyCatch")
+
+        Me.m_EPdata = EPData
+
+        'redim some of the data
+        Me.RedimFleets()
+        Me.RedimGroups()
+
+        'set some default values
+        DiscountFactor = 0.04
+        'GenDiscountFactor = 0.1
+        nRuns = 1
+        nInterations = 2000
+
+    End Sub
+
+    Public Sub Clear()
+
+        Me.LastYearIncome = Nothing ' (NumFleets)
+        Me.Jobs = Nothing ' (NumFleets)
+        Me.TargetProfitability = Nothing ' (NumFleets)
+        Me.BaseYearIncome = Nothing ' (NumFleets)
+        Me.BaseYearCost = Nothing ' (NumFleets)
+        Me.BaseYearEffort = Nothing ' (NumFleets)
+        Me.CostRatio = Nothing ' (NumFleets)
+        Me.FblockCode = Nothing ' (NumFleets, NYears)
+        Me.Jobs = Nothing ' (NumFleets)
+        Me.TargetProfitability = Nothing ' (NumFleets)
+        Me.BGoalValue = Nothing ' (NumGroups)
+        Me.MGoalValue = Nothing ' (NumGroups)
+        Me.ValCatch = Nothing ' (NumFleets, NumGroups)
+        Me.NetCost = Nothing ' (NumFleets)
+        Me.ValCatchGear = Nothing ' (NumFleets)
+        Me.BaseYearIncome = Nothing ' (NumFleets)
+        Me.BaseYearCost = Nothing ' (NumFleets)
+        Me.CatchYear = Nothing ' (NumFleets, NumGroups)
+        Me.CatchYearGroup = Nothing ' (NumGroups)
+        Me.FblockCode = Nothing ' (NumFleets, NYears)
+
+        Me.m_SearchCatchSemaphor = Nothing
+
+    End Sub
 
 
 #End Region ' Construction
@@ -263,19 +308,6 @@ Public Class cSearchDatastructures
         End Get
     End Property
 
-    'Public Function bUseForcedCatch() As Boolean
-
-    '    Select Case Me.m_SearchMode
-
-    '        Case eSearchModes.FishingPolicy, eSearchModes.MSE
-    '            'do not force the catches when in the fishing policy search or MSE
-    '            Return False
-    '    End Select
-
-    '    'all other searches can use forced catches
-    '    Return True
-
-    'End Function
 
     Public Property bUseFishingMortalityPenality() As Boolean
         Get
@@ -323,12 +355,34 @@ Public Class cSearchDatastructures
         End Get
     End Property
 
+    Public ReadOnly Property NumGroups() As Integer
+        Get
+            Return Me.m_EPdata.NumGroups
+        End Get
+    End Property
+
+
+    Public ReadOnly Property NumFleets() As Integer
+        Get
+            Return Me.m_EPdata.NumFleet
+        End Get
+    End Property
+
+
+
+    Public ReadOnly Property NumLiving() As Integer
+        Get
+            Return Me.m_EPdata.NumLiving
+        End Get
+    End Property
+
+
 
 #End Region
 
 #Region "Dimensioning"
 
-    Public Function RedimByNFleets() As Boolean
+    Private Function RedimFleets() As Boolean
         Try
 
             ' JS 08Jul08: this assert is not valid; a new model has no living groups
@@ -358,35 +412,36 @@ Public Class cSearchDatastructures
         End Try
     End Function
 
-    Friend Function redimTime(Optional ByVal NumberOfYears As Integer = cCore.NULL_VALUE) As Boolean
+    Friend Function redimTime(ByVal NumberOfYears As Integer) As Boolean
         Try
 
-            If NumberOfYears <> cCore.NULL_VALUE Then
-                NYears = NumberOfYears
-            End If
-
+            NYears = NumberOfYears
             ReDim FblockCode(NumFleets, NYears)
 
             setDefaultFBlockCodes()
 
-            Return True
         Catch ex As Exception
             Debug.Assert(False)
             Return False
         End Try
+
+        Return True
     End Function
 
 
-    Public Function RedimByNGroups(Optional ByVal NumberOfGroups As Integer = cCore.NULL_VALUE, _
-                    Optional ByVal NumberOfLiving As Integer = cCore.NULL_VALUE) As Boolean
-        Try
+    Public Function RedimToSimScenario(ByVal NumberOfYears As Integer) As Boolean
+        Dim bSuccess As Boolean = True
+        bSuccess = bSuccess And Me.RedimGroups()
+        bSuccess = bSuccess And Me.RedimFleets()
+        bSuccess = bSuccess And Me.redimTime(NumberOfYears)
+        Return bSuccess
+    End Function
 
-            If NumberOfGroups <> cCore.NULL_VALUE Then
-                NumGroups = NumberOfGroups
-            End If
-            If NumberOfLiving <> cCore.NULL_VALUE Then
-                NumLiving = NumberOfLiving
-            End If
+
+
+    Private Function RedimGroups() As Boolean
+
+        Try
 
             ReDim BGoalValue(NumGroups)
             ReDim MGoalValue(NumGroups)
@@ -395,10 +450,12 @@ Public Class cSearchDatastructures
             ReDim NetCost(NumFleets)
             ReDim ValCatchGear(NumFleets)
 
-
         Catch ex As Exception
-
+            Debug.Assert(False, Me.ToString & ".RedimGroups() Exception: " & ex.Message)
+            cLog.Write(ex)
+            Return False
         End Try
+        Return True
     End Function
 
 
@@ -541,29 +598,6 @@ Public Class cSearchDatastructures
                 FblockCode(iFlt, j) = iFlt
             Next
         Next
-
-    End Sub
-
-
-    Public Sub New(ByVal EcoFunctions As cEcoFunctions, ByVal EPData As cEcopathDataStructures)
-
-        m_EcoFunctions = EcoFunctions
-
-        'copy data counters from the Ecopath data
-        NumGroups = EPData.NumGroups
-        NumLiving = EPData.NumLiving
-        NumFleets = EPData.NumFleet
-
-        'redim some of the data
-        RedimByNFleets()
-
-        RedimByNGroups()
-
-        'set some default values
-        DiscountFactor = 0.04
-        'GenDiscountFactor = 0.1
-        nRuns = 1
-        nInterations = 2000
 
     End Sub
 
@@ -887,7 +921,7 @@ Public Class cSearchDatastructures
 
         'System.Console.WriteLine(ecovalue.ToString)
 
-        kemptonQ = KemptonQ + Me.m_EcoFunctions.KemptonsQ(Biomass, 0.25)
+        KemptonQ = KemptonQ + Me.m_EcoFunctions.KemptonsQ(Biomass, 0.25)
 
         EcoDistTime = CSng(Math.Sqrt(EcoDistTime))
         Ecodistance = Ecodistance + DF * EcoDistTime

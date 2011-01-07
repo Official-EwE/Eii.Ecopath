@@ -4,6 +4,7 @@ Option Strict On
 Imports System
 Imports System.Collections
 Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -111,6 +112,17 @@ Namespace Commands
                 Me.m_dictControls.Remove(objGUI)
             Catch ex As Exception
             End Try
+        End Sub
+
+        Public Sub Clear()
+            Try
+                Dim lobs As New List(Of Object)
+                For Each obj As Object In Me.m_dictControls.Keys : lobs.Add(obj) : Next
+                For Each obj As Object In lobs : Me.RemoveControl(obj) : Next
+            Catch ex As Exception
+
+            End Try
+            Debug.Assert(Me.m_dictControls.Count = 0)
         End Sub
 
 #End Region ' Adding and removing GUI controls 

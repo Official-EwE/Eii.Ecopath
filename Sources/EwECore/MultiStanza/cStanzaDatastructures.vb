@@ -137,7 +137,50 @@ Public Class cStanzaDatastructures
     Public Sub Clear()
         Me.Nsplit = 0
         Me.nGroups = 0
-        Me.redimStanza()
+        '  Me.redimStanza()
+
+        Me.StanzaDBID = Nothing ' (Nsplit)
+
+        Me.RecPowerSplit = Nothing ' (Nsplit)
+        Me.Nstanza = Nothing ' (Nsplit) 'number of stanzas by split species  = nothing ' (set in ecopath)
+        Me.BaseStanza = Nothing ' (Nsplit) 'holds stanzano for which info is entered
+        Me.BaseStanzaCB = Nothing ' (Nsplit)
+        Me.EcopathCode = Nothing ' (Nsplit, MaxStanza) 'ecopath group# by split species, stanza  = nothing ' (set in ecopath)
+        Me.StanzaName = Nothing ' (Nsplit)
+        Me.Age1 = Nothing ' (Nsplit, MaxStanza) 'first month of age by species, stanza  = nothing ' (set in ecopath)
+        Me.Age2 = Nothing ' (Nsplit, MaxStanza) 'last month of age by spp, stanza  = nothing ' (set in ecopath)
+        Me.Stanza_Z = Nothing ' (Nsplit, MaxStanza) 'mortality
+        Me.Stanza_Bio = Nothing ' (Nsplit, MaxStanza) 'mortality
+        Me.Stanza_CB = Nothing ' (Nsplit, MaxStanza) 'mortality
+        Me.RzeroS = Nothing ' (Nsplit) 'base recruitment to age 0 for split species
+        'me.PredS = nothing ' () 'effective predator abund for split species  = nothing ' (set in ecosim splitpred)
+        Me.SplitAlpha = Nothing ' (Nsplit, MaxAgeSplit) 'growth coefficients by split spp and age  = nothing ' (set in initialstate)
+        Me.vBM = Nothing ' (Nsplit)  'metabolic parameter 1-3*K by split species  = nothing ' (set in ecopath)
+        ' me.vBMann = nothing ' (Nsplit)
+        Me.WWa = Nothing ' (Nsplit, MaxAgeSplit)
+        Me.SplitNo = Nothing ' (Nsplit, MaxAgeSplit)
+        Me.SplitWage = Nothing ' (Nsplit, MaxAgeSplit)
+        Me.HatchCode = Nothing ' (Nsplit)
+        Me.WmatWinf = Nothing ' (Nsplit)
+        Me.EggsStanza = Nothing ' (Nsplit)
+        Me.FixedFecundity = Nothing ' (Nsplit)
+        Me.BaseEggsStanza = Nothing ' (Nsplit)
+        Me.EggProdShapeSplit = Nothing ' (Nsplit)
+        Me.EggProdIsSeasonal = Nothing ' (Nsplit)
+        Me.BABsplit = Nothing ' (Nsplit)
+
+        'variables by nGroups
+        Me.SpeciesCode = Nothing ' (nGroups, 2) '0: Ecopath group no for this stanza, 1: Ecopath no for leading B stanza, 2: Ecopath no for leading QB stanza
+
+        Me.WmatWinf = Nothing ' (Nsplit)
+        Me.NumSplit = Nothing ' (m_stanza.Nsplit, m_stanza.MaxAgeSplit)
+        Me.NageS = Nothing ' (m_stanza.Nsplit, m_stanza.MaxAgeSplit)
+        Me.WageS = Nothing ' (m_stanza.Nsplit, m_stanza.MaxAgeSplit)
+        Me.SplitAlpha = Nothing ' (m_stanza.Nsplit, m_stanza.MaxAgeSplit)
+        Me.SplitRflow = Nothing ' (m_stanza.Nsplit, m_stanza.MaxAgeSplit)
+        Me.RscaleSplit = Nothing ' (m_stanza.Nsplit)
+        Me.EggsSplit = Nothing ' (m_stanza.Nsplit, m_stanza.MaxAgeSplit)
+
     End Sub
 
     Public Sub copyTo(ByRef d As cStanzaDatastructures)

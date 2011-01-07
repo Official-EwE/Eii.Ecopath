@@ -15,7 +15,19 @@ Imports ZedGraph
 
 #End Region
 
-#Region " Reference point class "
+#Region "Enumerators"
+
+Friend Enum ePlotTypes
+    Histogram
+    Values
+    Line
+End Enum
+
+#End Region
+
+#Region "Plotting Class"
+
+#Region "Reference point class"
 
 Friend Class cMSERefPoint
     Private m_low As Single
@@ -45,13 +57,13 @@ Friend Class cMSERefPoint
 
 End Class
 
-#End Region ' Reference point class
+#End Region
 
-#Region " Plotter class "
+#Region "Plotter class"
 
 Friend Class cMSEPlotter
 
-#Region " Private data "
+#Region "Private data"
 
     Private Const LB_TAG As String = "LB"
     Private Const UB_TAG As String = "UB"
@@ -67,9 +79,9 @@ Friend Class cMSEPlotter
     Private m_RefPoints As List(Of cMSERefPoint)
     Private m_nLines As Integer
 
-#End Region ' Private data
+#End Region
 
-#Region " Public interface "
+#Region "Public interface"
 
     ''' <summary>
     ''' Initialize to ZedGraphHelper and a Zedgraph control
@@ -86,7 +98,29 @@ Friend Class cMSEPlotter
         Me.m_uic = uic
         Me.m_zdGraph = ZedGraph
         Me.m_manager = MSEManager
+
+        Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, Me.nVisPanes)
+
     End Sub
+
+    Public Sub Detach()
+        Try
+            If Me.m_Data IsNot Nothing Then
+                For Each ob As cCoreGroupBase In Me.m_Data
+                    ob.Clear()
+                Next
+                Me.m_Data.Clear()
+            End If
+
+            If Me.m_RefPoints IsNot Nothing Then Me.m_RefPoints.Clear()
+            Me.m_Data = Nothing
+            Me.m_RefPoints = Nothing
+            Me.m_zgh.Detach()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
 
     ''' <summary>
     ''' Get/set how the current data is to be plotted.
@@ -101,9 +135,11 @@ Friend Class cMSEPlotter
     End Property
 
     ''' <summary>
-    ''' Get what type of data is being plotted. Used mostly for labels.
+    ''' What type of data is being plotted. Used mostly for labels
     ''' </summary>
     ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property DataType() As ePlotData
         Get
             Return Me.m_dataType
@@ -116,17 +152,16 @@ Friend Class cMSEPlotter
 
     Public Sub Clear()
         Try
-            Dim npanes As Integer = Me.nVisGroups
-            If Me.m_dataType = ePlotData.Effort Or Me.m_dataType = ePlotData.FleetValue Then
-                npanes = Me.nVisFleets
-            End If
-            Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, npanes)
+            Me.m_zgh.NumPanes = Me.nVisPanes
 
             Me.ClearData()
             Me.ClearGraphs()
             Me.configPanes()
             Me.m_nLines = 0
-            '  Me.configPanes()
+
+            'this forces zedgraph to recalculte the layout of the new panes
+            Me.m_zdGraph.MasterPane.DoLayout(Nothing)
+
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Draw() Exception: " & ex.Message)
         End Try
@@ -137,13 +172,14 @@ Friend Class cMSEPlotter
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Draw()
-
         Try
 
             If Me.m_Data IsNot Nothing Then
 
+                'Me.m_zgh.NumPanes = Me.nVisPanes
+
                 If Me.m_type <> ePlotTypes.Line Then
-                    Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, Me.m_Data.Count)
+                    Me.m_zgh.NumPanes = Me.nVisPanes
                     Me.ClearGraphs()
                     Me.configPanes()
                 End If
@@ -165,7 +201,8 @@ Friend Class cMSEPlotter
 
             End If
 
-            ' Me.plotRefLines()
+            'this forces zedgraph to recalculte the layout of the new panes
+            Me.m_zdGraph.MasterPane.DoLayout(Nothing)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Draw() Exception: " & ex.Message)
@@ -309,9 +346,9 @@ Friend Class cMSEPlotter
 
     End Function
 
-#End Region ' Public interface
+#End Region
 
-#Region " Private methods "
+#Region "Private methods"
 
     Private Sub configPanes()
         If Me.m_type = ePlotTypes.Histogram Then
@@ -325,8 +362,15 @@ Friend Class cMSEPlotter
 
         Me.m_zgh.YScaleGrace = 1.1
         Dim ipane As Integer
+        Dim min As Single, max As Single
         For Each data As cMSEStats In m_Data
             ipane += 1
+            min = data.Min
+            max = data.Max
+            If data.Max = 0.0F Then
+                min = 0
+                max = 1
+            End If
             Me.m_zgh.ConfigurePane(data.Name, Me.XLabel, data.Min, data.Max, Me.YLabel, 0, 1, False, LegendPos.Top, ipane)
             Me.m_zgh.AutoscalePane(ipane) = False
         Next
@@ -398,7 +442,9 @@ Friend Class cMSEPlotter
 
             End Select
 
+
             Return ""
+
         End Get
     End Property
 
@@ -425,7 +471,8 @@ Friend Class cMSEPlotter
                     End Select
 
                 Case ePlotTypes.Line, ePlotTypes.Values
-                    Return SharedResources.HEADER_YEAR
+
+                    Return "Year"
 
             End Select
 
@@ -740,10 +787,18 @@ Friend Class cMSEPlotter
         Return n
     End Function
 
-#End Region ' Private methods
+    Private Function nVisPanes() As Integer
+        If Me.m_dataType = ePlotData.Effort Or Me.m_dataType = ePlotData.FleetValue Then
+            Return nVisFleets()
+        End If
+        Return nVisGroups()
+    End Function
+
+#End Region
 
 End Class
 
-#End Region ' Plotter class
+#End Region
 
+#End Region
 

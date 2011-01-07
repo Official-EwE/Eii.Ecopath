@@ -162,6 +162,13 @@ Public Class cMessageHandler
 
     End Function
 
+    Public Sub Clear()
+        Me.m_DelegateNotifier = Nothing
+        Me.m_syncobj = Nothing
+        Me.m_corecomponent = eCoreComponentType.NotSet
+        Me.m_msgtype = eMessageType.NotSet
+    End Sub
+
     ''' <summary>
     ''' Return the underlying Delagate.
     ''' </summary>

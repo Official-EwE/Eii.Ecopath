@@ -544,6 +544,56 @@ Public Class cEcoSpace
         Me.SM_MapApparentUpwell()
     End Sub
 
+
+    Public Sub Clear()
+
+        Try
+            If Me.m_spaceSolvers IsNot Nothing Then
+                For Each solver As cSpaceSolver In Me.m_spaceSolvers
+                    solver.Clear()
+                Next
+                Me.m_spaceSolvers.Clear()
+                Me.m_spaceSolvers = Nothing
+            End If
+
+            If Me.m_gridSolvers IsNot Nothing Then
+                Me.m_gridSolvers.Clear()
+                Me.m_gridSolvers = Nothing
+            End If
+
+            MigPowi = Nothing '(m_Data.NGroups, m_Data.InRow + 1)
+            MigPowj = Nothing '(m_Data.NGroups, m_Data.InCol + 1)
+            PrefRowP = Nothing '(m_Data.NGroups, 12)
+            PrefColP = Nothing '(m_Data.NGroups, 12)
+            Cper = Nothing '(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+            Ecode = Nothing '(m_Data.Nvarsplit)
+            F = Nothing '
+            AMm = Nothing
+            Bcw = Nothing
+            BcwNomig = Nothing
+            Bcw = Nothing '(,,) As Single
+            C = Nothing '(,,) As Single
+            d = Nothing '(,,) As Single
+            e = Nothing '(,,) As Single
+            AMm = Nothing '(,,) As Single
+            F = Nothing '(,,) As Single
+            BEQlast = Nothing '(,,) As Single 'equilibrium biomass at the last timestep
+            CNomig = Nothing '(,,) As Single
+            dNomig = Nothing '(,,) As Single
+            Enomig = Nothing '(,,) As Single
+            FtimeCell = Nothing
+            HdenCell = Nothing
+            HabAreaUsed = Nothing
+            HabBest = Nothing
+            HabGrad = Nothing
+            RelFitness = Nothing
+
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
+    End Sub
+
 #End Region
 
 #Region "Private modeling code"

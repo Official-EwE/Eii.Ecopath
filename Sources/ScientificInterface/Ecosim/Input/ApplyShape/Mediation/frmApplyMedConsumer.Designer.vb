@@ -25,11 +25,11 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyMedConsumer))
             Me.plApplyFFGrid = New System.Windows.Forms.Panel
-            Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
+            Me.m_ts = New System.Windows.Forms.ToolStrip
             Me.tsBtnClearAll = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.tsBtnSetAll = New System.Windows.Forms.ToolStripButton
-            Me.ToolStrip1.SuspendLayout()
+            Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'plApplyFFGrid
@@ -37,12 +37,13 @@ Namespace Ecosim
             resources.ApplyResources(Me.plApplyFFGrid, "plApplyFFGrid")
             Me.plApplyFFGrid.Name = "plApplyFFGrid"
             '
-            'ToolStrip1
+            'm_ts
             '
-            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsBtnClearAll, Me.ToolStripSeparator1, Me.tsBtnSetAll})
-            resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
-            Me.ToolStrip1.Name = "ToolStrip1"
-            Me.ToolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsBtnClearAll, Me.ToolStripSeparator1, Me.tsBtnSetAll})
+            resources.ApplyResources(Me.m_ts, "m_ts")
+            Me.m_ts.Name = "m_ts"
+            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'tsBtnClearAll
             '
@@ -65,23 +66,23 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.ToolStrip1)
+            Me.Controls.Add(Me.m_ts)
             Me.Controls.Add(Me.plApplyFFGrid)
             Me.Name = "frmApplyMedConsumer"
             Me.TabText = "Apply shapes"
             Me.Controls.SetChildIndex(Me.plApplyFFGrid, 0)
-            Me.Controls.SetChildIndex(Me.ToolStrip1, 0)
-            Me.ToolStrip1.ResumeLayout(False)
-            Me.ToolStrip1.PerformLayout()
+            Me.Controls.SetChildIndex(Me.m_ts, 0)
+            Me.m_ts.ResumeLayout(False)
+            Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
         Friend WithEvents plApplyFFGrid As System.Windows.Forms.Panel
-        Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
         Friend WithEvents tsBtnClearAll As System.Windows.Forms.ToolStripButton
         Friend WithEvents tsBtnSetAll As System.Windows.Forms.ToolStripButton
         Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_ts As System.Windows.Forms.ToolStrip
 
     End Class
 End Namespace

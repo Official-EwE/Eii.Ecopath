@@ -135,7 +135,7 @@ Namespace MSE
         Private m_orgPredictEffort As Boolean
         Private m_orgUsePlugin As Boolean = False
 
-        Private WithEvents m_EconomicData As cEconomicDataSource
+        Private m_EconomicData As New cEconomicDataSource
 
         Private m_MSYCallBack As MSYProgressDelegate
         Private m_baseEffort(,) As Single 'base value relative effort FishRateGear()
@@ -241,8 +241,34 @@ Namespace MSE
         End Sub
 
         Public Sub Connect(ByRef MSECallBack As MSEProgressDelegate, ByRef MSYCallBack As MSYProgressDelegate)
-            Me.m_ProgressDelegate = MSECallBack
-            Me.m_MSYCallBack = MSYCallBack
+            Try
+                Me.m_ProgressDelegate = MSECallBack
+                Me.m_MSYCallBack = MSYCallBack
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+        End Sub
+
+        Public Sub Disconnect(ByRef MSECallBack As MSEProgressDelegate, ByRef MSYCallBack As MSYProgressDelegate)
+            Try
+                Me.m_ProgressDelegate = Nothing
+                Me.m_MSYCallBack = Nothing
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+        End Sub
+
+        Public Sub Clear()
+            Try
+                Me.m_baseEffort = Nothing '(,) As Single '
+                If Me.m_lstData IsNot Nothing Then Me.m_lstData.Clear()
+                Me.m_lstData = Nothing
+
+                Me.m_EconomicData = Nothing
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
         End Sub
 
 
@@ -2513,7 +2539,7 @@ Namespace MSE
         ''' </summary>
         ''' <param name="EconomicData"></param>
         ''' <remarks></remarks>
-        Private Sub onEconomicData(ByVal EconomicData As IEconomicData) Handles m_EconomicData.onEconomicData
+        Private Sub onEconomicData(ByVal EconomicData As IEconomicData) ' Handles m_EconomicData.onEconomicData
 
             Try
 

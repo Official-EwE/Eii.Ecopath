@@ -57,12 +57,12 @@ Namespace Ecosim
                 Return MyBase.UIContext
             End Get
             Set(ByVal value As cUIContext)
-                If value IsNot Nothing Then
+                If (value IsNot Nothing) Then
                     ' First set crucial properties
                     Me.m_PPIManager = value.Core.PPInteractionManager
-                    ' Refresh the grid
-                    MyBase.UIContext = value
                 End If
+                ' Always pass this to the grid
+                MyBase.UIContext = value
             End Set
         End Property
 

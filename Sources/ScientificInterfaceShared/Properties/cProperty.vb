@@ -29,6 +29,7 @@ Namespace Properties
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public MustInherit Class cProperty
+        : Implements IDisposable
 
 #Region " Private parts "
 
@@ -49,9 +50,17 @@ Namespace Properties
         ''' <summary>Property manager that provided this property.</summary>
         Private m_pm As cPropertyManager = Nothing
 
+        ''' <summary>To detect redundant disposal calls.</summary>
+        Private m_bDisposed As Boolean = False
+
+#If DEBUG Then
+        Private Shared s_iNextID As Long = 0
+        Protected m_iID As Long = 0
+#End If
+
 #End Region ' Private parts
 
-#Region " Construction "
+#Region " Construction & distruction"
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -59,6 +68,10 @@ Namespace Properties
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New()
+#If DEBUG Then
+            Me.m_iID = s_iNextID
+            s_iNextID += 1
+#End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -95,74 +108,20 @@ Namespace Properties
             Me.m_iSecIndex = cCore.NULL_VALUE
             Me.m_iSecIndexOffset = iSecIndexOffset
 
+#If DEBUG Then
+            Me.m_iID = s_iNextID
+            s_iNextID += 1
+#End If
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Refresh a property from its related core variable
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Sub Refresh()
+        Protected Friend Overridable Sub Dispose(ByVal bDisposing As Boolean)
+            Me.m_Source = Nothing
+            Me.m_SourceSec = Nothing
+        End Sub
 
-            Dim newValue As Object = Nothing
-            Dim strNewRemark As String = ""
-            Dim coreStatus As eStatusFlags = 0
-            Dim guiStyle As cStyleGuide.eStyleFlags = 0
-            Dim changeFlags As eChangeFlags = 0
-            Dim iIndex As Integer = cCore.NULL_VALUE
-
-            If (Me.m_SourceSec IsNot Nothing) Then
-                iIndex = Me.m_SourceSec.Index
-            End If
-            If (Me.m_iSecIndex <> cCore.NULL_VALUE) Then
-                iIndex = Me.m_iSecIndex
-            End If
-            iIndex -= Me.m_iSecIndexOffset
-
-            If (Me.m_Source IsNot Nothing) Then
-                ' Get the variable
-                newValue = m_Source.GetVariable(Me.m_VarName, iIndex)
-
-                ' Did this entail a change?
-                If Not Me.IsValue(newValue) Then
-                    ' # Yes: flag as changed
-                    changeFlags = eChangeFlags.Value
-                    ' Write the new value
-                    Me.Value = newValue
-                End If
-
-                ' Get the core status
-                coreStatus = m_Source.GetStatus(Me.m_VarName, iIndex)
-                ' Hard-copy only the core status bits. All other flags are GUI flags and are preserved
-                guiStyle = DirectCast(CInt(coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or _
-                                  CInt(Me.Style And (Not cStyleGuide.eStyleFlags.CoreStatusFlagsMask)), cStyleGuide.eStyleFlags)
-                ' Did Style change?
-                If Not Me.IsStyle(guiStyle) Then
-                    ' # Yes: flag as changed
-                    changeFlags = changeFlags Or eChangeFlags.CoreStatus
-                    ' Write the new value
-                    Me.Style = guiStyle
-                End If
-
-                ' Get new remark text
-                strNewRemark = Me.Remark()
-                If String.Compare(strNewRemark, Me.m_strRemark, False) <> 0 Then
-                    changeFlags = changeFlags Or eChangeFlags.Remarks
-                    Me.Remark = strNewRemark
-                End If
-            End If
-
-            ' Get remarks
-            Me.UpdateRemarksStyle(TriState.False)
-
-            ' Get references
-
-            ' Anything changed?
-            If (changeFlags <> 0) Then
-                ' #Yes: fire away
-                Me.FireChangeNotification(changeFlags)
-            End If
-
+        Friend Sub Dispose() Implements IDisposable.Dispose
+            If Not Me.m_bDisposed Then Dispose(True)
+            GC.SuppressFinalize(Me)
         End Sub
 
 #End Region ' Construction 
@@ -253,6 +212,78 @@ Namespace Properties
         End Property
 
 #End Region '  Properties
+
+#Region " Refreshing "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Refresh a property from its related core variable
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Refresh()
+
+            Dim newValue As Object = Nothing
+            Dim strNewRemark As String = ""
+            Dim coreStatus As eStatusFlags = 0
+            Dim guiStyle As cStyleGuide.eStyleFlags = 0
+            Dim changeFlags As eChangeFlags = 0
+            Dim iIndex As Integer = cCore.NULL_VALUE
+
+            If (Me.m_SourceSec IsNot Nothing) Then
+                iIndex = Me.m_SourceSec.Index
+            End If
+            If (Me.m_iSecIndex <> cCore.NULL_VALUE) Then
+                iIndex = Me.m_iSecIndex
+            End If
+            iIndex -= Me.m_iSecIndexOffset
+
+            If (Me.m_Source IsNot Nothing) Then
+                ' Get the variable
+                newValue = m_Source.GetVariable(Me.m_VarName, iIndex)
+
+                ' Did this entail a change?
+                If Not Me.IsValue(newValue) Then
+                    ' # Yes: flag as changed
+                    changeFlags = eChangeFlags.Value
+                    ' Write the new value
+                    Me.Value = newValue
+                End If
+
+                ' Get the core status
+                coreStatus = m_Source.GetStatus(Me.m_VarName, iIndex)
+                ' Hard-copy only the core status bits. All other flags are GUI flags and are preserved
+                guiStyle = DirectCast(CInt(coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or _
+                                  CInt(Me.Style And (Not cStyleGuide.eStyleFlags.CoreStatusFlagsMask)), cStyleGuide.eStyleFlags)
+                ' Did Style change?
+                If Not Me.IsStyle(guiStyle) Then
+                    ' # Yes: flag as changed
+                    changeFlags = changeFlags Or eChangeFlags.CoreStatus
+                    ' Write the new value
+                    Me.Style = guiStyle
+                End If
+
+                ' Get new remark text
+                strNewRemark = Me.Remark()
+                If String.Compare(strNewRemark, Me.m_strRemark, False) <> 0 Then
+                    changeFlags = changeFlags Or eChangeFlags.Remarks
+                    Me.Remark = strNewRemark
+                End If
+            End If
+
+            ' Get remarks
+            Me.UpdateRemarksStyle(TriState.False)
+
+            ' Get references
+
+            ' Anything changed?
+            If (changeFlags <> 0) Then
+                ' #Yes: fire away
+                Me.FireChangeNotification(changeFlags)
+            End If
+
+        End Sub
+
+#End Region ' Refreshing
 
 #Region " Value "
 

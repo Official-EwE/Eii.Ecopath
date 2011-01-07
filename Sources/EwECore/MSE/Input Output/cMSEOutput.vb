@@ -263,7 +263,7 @@ Public Class cMSEFleetOutput
             Return m_coreData.Item(VarName).Value(iIndex1, iIndex2)
         End If
 
-    End Function
+        End Function
 
 #End Region
 

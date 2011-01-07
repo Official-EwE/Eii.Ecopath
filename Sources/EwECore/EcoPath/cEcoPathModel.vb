@@ -71,6 +71,15 @@ Namespace Ecopath
             m_Ecofunctions = EcoFunctions
         End Sub
 
+
+        Public Sub Clear()
+            Me.NoBQB = Nothing '(m_Data.NumGroups)
+            Me.H = Nothing '(m_Data.NumGroups + 3)
+            Me.Y = Nothing '(m_Data.NumGroups, m_Data.NumGroups)
+            Me.P = Nothing '(m_Data.NumGroups)
+            Me.Q = Nothing '(m_Data.NumGroups + 10)
+            Me.AUL = Nothing '(m_Data.NumGroups + 3, m_Data.NumGroups + 3)
+        End Sub
         ''' <summary>
         ''' Results of the Parameter Estimation 
         ''' </summary>

@@ -71,6 +71,14 @@ Public Class frmOptions
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
         Me.m_dctEffortControls.Clear()
+
+        Me.m_fpUsePlugin.Release()
+        ' Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
+
+        'Me.m_fpForecast = New cPropertyFormatProvider(Me.UIContext, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
+        Me.m_fpSBPower.Release()
+        Me.m_fpKalman.Release()
+
         MyBase.OnFormClosed(e)
     End Sub
 
