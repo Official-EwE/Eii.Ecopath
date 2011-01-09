@@ -226,9 +226,18 @@ Public Class cEwENetworkAnalysisPlugin
 
     Public Sub UIContext(ByVal uic As Object) _
         Implements EwEPlugin.IUIContextPlugin.UIContext
+        ' Cleanup
+        If Me.m_uic IsNot Nothing Then
+            Me.m_remote.Detach()
+            Me.m_remote = Nothing
+        End If
+        ' Update
         Me.m_uic = DirectCast(uic, cUIContext)
-        Me.m_remote = New cNetworkAnalysisRemote()
-        Me.m_remote.Attach(Me.m_uic, Me.m_manager)
+        ' Apply
+        If Me.m_uic IsNot Nothing Then
+            Me.m_remote = New cNetworkAnalysisRemote()
+            Me.m_remote.Attach(Me.m_uic, Me.m_manager)
+        End If
     End Sub
 
 #End Region ' GUI
