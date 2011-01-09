@@ -720,7 +720,7 @@ Public Class AppLauncher
         ' Start controlling the status strip
         Me.m_ssMain.Attach(Me.UIContext)
         ' Start controlling forms
-        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_DockPanel)
+        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_coreController, Me.m_DockPanel)
 
         ' Update plug-ins first, if required
         If My.Settings.AutoUpdatePlugins Then
@@ -3873,6 +3873,7 @@ Public Class AppLauncher
 
         ' About to change?
         If (String.Compare(Me.m_strLastActiveContent, strNewNodeName) <> 0) Then
+
             ' Update core state if possible
             Me.CoreController.LoadState(stateNew)
             ' Update help

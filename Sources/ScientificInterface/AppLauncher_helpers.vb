@@ -28,13 +28,18 @@ Partial Public Class AppLauncher
         Private WithEvents m_csm As cCoreStateMonitor = Nothing
         ''' <summary>Dock panel containing the forms to maintain.</summary>
         Private m_dp As DockPanel = Nothing
+        ''' <summary>Core controller to work with.</summary>
+        Private m_cc As cCoreController = Nothing
 
 #End Region ' Privates
 
 #Region " Construction "
 
-        Public Sub New(ByVal csm As cCoreStateMonitor, ByVal dp As DockPanel)
+        Public Sub New(ByVal csm As cCoreStateMonitor, _
+                       ByVal cc As cCoreController, _
+                       ByVal dp As DockPanel)
             Me.m_dp = dp
+            Me.m_cc = cc
             Me.m_csm = csm
         End Sub
 
@@ -108,44 +113,59 @@ Partial Public Class AppLauncher
             Dim bMustCloseForm As Boolean = False
             Dim bMustDisableForm As Boolean = False
 
-            For Each f As frmEwE In Me.GetEwEForms()
+            ' JS 09Jan11: The application should NOT attempt to update the core state
+            '             if the application is amidst responding to a core state change.
+            '             Thus, while executing the following loop, the core controller
+            '             should be disabled.
+            Me.m_cc.Enabled = False
 
-                ' Get form state
-                stateForm = f.CoreExecutionState
+            Try
 
-                ' Check if form should be closed
-                ' A form should be closed if its outputs are invalidated or then the data 
-                ' used to populate the form are no longer available.
-                If frmEwE.IsOutputForm(stateForm) Then
-                    Select Case stateForm
-                        Case eCoreExecutionState.EcopathCompleted
-                            bMustCloseForm = Not Me.m_csm.HasEcopathRan
-                        Case eCoreExecutionState.EcosimCompleted
-                            bMustCloseForm = Not Me.m_csm.HasEcosimRan
-                        Case eCoreExecutionState.EcospaceCompleted
-                            bMustCloseForm = Not Me.m_csm.HasEcospaceRan
-                    End Select
-                Else
-                    bMustCloseForm = Me.m_csm.IsExecutionStateSuperceded(stateForm) = False
+                For Each f As frmEwE In Me.GetEwEForms()
 
-                    ' Check if form should be disabled
-                    ' A form should be disabled if it is an input form; path, sim or space are running,
-                    ' and the form is not used to start the runs.
-                    bMustDisableForm = (Me.m_csm.IsEcopathRunning Or _
-                                        Me.m_csm.IsEcosimRunning Or _
-                                        Me.m_csm.IsEcospaceRunning) And _
-                                       (Not f.IsRunForm())
-                End If
+                    ' Get form state
+                    stateForm = f.CoreExecutionState
 
-                If bMustCloseForm Then
-                    ' #Yes: Close the form
-                    f.Close()
-                Else
-                    ' #No: update enabled state
-                    f.Enabled = (bMustDisableForm = False)
-                End If
+                    ' Check if form should be closed
+                    ' A form should be closed if its outputs are invalidated or then the data 
+                    ' used to populate the form are no longer available.
+                    If frmEwE.IsOutputForm(stateForm) Then
+                        Select Case stateForm
+                            Case eCoreExecutionState.EcopathCompleted
+                                bMustCloseForm = Not Me.m_csm.HasEcopathRan
+                            Case eCoreExecutionState.EcosimCompleted
+                                bMustCloseForm = Not Me.m_csm.HasEcosimRan
+                            Case eCoreExecutionState.EcospaceCompleted
+                                bMustCloseForm = Not Me.m_csm.HasEcospaceRan
+                        End Select
+                    Else
+                        bMustCloseForm = Me.m_csm.IsExecutionStateSuperceded(stateForm) = False
 
-            Next f
+                        ' Check if form should be disabled
+                        ' A form should be disabled if it is an input form; path, sim or space are running,
+                        ' and the form is not used to start the runs.
+                        bMustDisableForm = (Me.m_csm.IsEcopathRunning Or _
+                                            Me.m_csm.IsEcosimRunning Or _
+                                            Me.m_csm.IsEcospaceRunning) And _
+                                           (Not f.IsRunForm())
+                    End If
+
+                    If bMustCloseForm Then
+                        ' #Yes: Close the form
+                        f.Close()
+                    Else
+                        ' #No: update enabled state
+                        f.Enabled = (bMustDisableForm = False)
+                    End If
+
+                Next f
+
+            Catch ex As Exception
+                ' Whoah!
+                cLog.Write("cEwEFormStateHelper: " & ex.Message)
+            End Try
+
+            Me.m_cc.Enabled = True
 
         End Sub
 
