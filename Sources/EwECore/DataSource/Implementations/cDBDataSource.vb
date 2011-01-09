@@ -4300,12 +4300,6 @@ Namespace DataSources
                     '             thus creating Ecosim scenarios what were bugged right from the start.
                     idm.Add(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(i), iGroupID)
 
-                    ' Ecosim groups are identified by Ecopath group, but auxillary data is identified by
-                    ' Ecosim group ID. Therefore, add mapping to allow sim group aux data to proliferate
-                    If (ecopathDS.GroupDBID(i) <> ecosimDS.GroupDBID(i)) Then
-                        idm.Add(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(i), iGroupID)
-                    End If
-
                     drow("pbmaxs") = ecosimDS.PBmaxs(i)
                     drow("FtimeMax") = ecosimDS.FtimeMax(i)
                     drow("FtimeAdjust") = ecosimDS.FtimeAdjust(i)
