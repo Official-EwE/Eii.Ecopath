@@ -1565,7 +1565,13 @@ Public Class cCore
         If (TypeOf Me.m_DataSource Is IEcosimDatasource) Then
             Dim sds As IEcosimDatasource = DirectCast(Me.m_DataSource, IEcosimDatasource)
 
-            ' Can laod dataset succesfully?
+            ' Unloading time series?
+            If (iDataset = 0) Then
+                ' #Yes: reload ecosim scenario instead of trying to be smart
+                Return Me.LoadEcosimScenario(Me.ActiveEcosimScenarioIndex)
+            End If
+
+            ' Can load dataset succesfully?
             If sds.LoadTimeSeriesDataset(iDataset) Then
                 ' #Yes: Can init core interface objects succesfully?
                 If Me.InitEcosimTimeSeries() Then

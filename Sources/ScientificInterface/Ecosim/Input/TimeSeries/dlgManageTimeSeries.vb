@@ -153,7 +153,7 @@ Public Class dlgManageTimeSeries
         Select Case Me.m_mode
             Case eModeType.Load
                 Me.LoadDatasets()
-                If (Me.m_cbLoadEnableOnLoad.Checked = True) Then
+                If (Me.m_cbLoadEnableOnLoad.Checked = True) And (Me.m_uic.Core.ActiveTimeSeriesDatasetIndex > 0) Then
                     Me.ApplyTimeSeries(True)
                 End If
 
