@@ -24,6 +24,8 @@ Public Class cCoreController
     Private m_monitor As cCoreStateMonitor = Nothing
     ''' <summary>Manager to use for bringing the core up to date.</summary>
     Private m_manager As cCoreStateManager = Nothing
+    ''' <summary>Flag stating whether the core controller is enabled.</summary>
+    Private m_bEnabled As Boolean = True
 
 #End Region ' Private vars
 
@@ -56,6 +58,8 @@ Public Class cCoreController
             Optional ByVal bForceState As Boolean = False) As Boolean
 
         Dim bSucces As Boolean = True
+
+        If (Not Me.Enabled) Then Return bSucces
 
         ' State already superceded or active?
         If (Me.m_monitor.IsExecutionStateSuperceded(iState)) And (bForceState = False) Then
@@ -110,6 +114,24 @@ Public Class cCoreController
         ' Force this core state
         LoadState(eCoreExecutionState.EcotracerLoaded, True)
     End Sub
+
+    ''' <summary>
+    ''' Get/set the enabled state of the core controller.
+    ''' </summary>
+    ''' <remarks>
+    ''' It may be necessary to temporarily disable the core controller
+    ''' while performing batch operations on the UI. Please use this 
+    ''' option with great care; leaving the core controller disabled
+    ''' will cripple the Scientific Interface.
+    ''' </remarks>
+    Public Property Enabled() As Boolean
+        Get
+            Return Me.m_bEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bEnabled = value
+        End Set
+    End Property
 
 #End Region ' Public access
 
