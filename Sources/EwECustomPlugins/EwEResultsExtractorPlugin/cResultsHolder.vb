@@ -156,7 +156,7 @@ Public Class cResultsHolder
                             If DataStructure.ResultsOverTime IsNot Nothing Then
                                 Dim iti As Integer = iDyear * 12 - 7
                                 Dim iGroup As Integer = mTimeSeries.DatPool(j)
-                                zest = DataStructure.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_core.EcoPathGroupInputs(iGroup).iStanza, iti)
+                                zest = DataStructure.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, mTimeSeries.DatPool(j), iti)
                                 If zest > 0 Then
                                     ZStat(j, iDyear) = CSng(Math.Log(mTimeSeries.DatVal(iDyear, j) / zest))
                                 End If
@@ -180,7 +180,11 @@ Public Class cResultsHolder
         For i = 1 To mTimeSeries.NdatYear
             iYear = mTimeSeries.DatYear(i) - mTimeSeries.DatYear(1)
             For j = 1 To mTimeSeries.NdatType
-                logdiff(j, i) = ZStat(j, i) - mTimeSeries.DatQ(j)
+                If mTimeSeries.DatVal(i, j) = 0 Then
+                    logdiff(j, i) = 0
+                Else
+                    logdiff(j, i) = ZStat(j, i) - mTimeSeries.DatQ(j)
+                End If
             Next
         Next
 
@@ -197,4 +201,5 @@ Public Class cResultsHolder
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         mEcosimModel = objEcoSim
     End Sub
+
 End Class
