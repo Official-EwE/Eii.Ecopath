@@ -218,7 +218,8 @@ Namespace Ecospace.Advection
 
             If (layers Is Nothing) Then Return Nothing
             If (layers.Length = 0) Then
-                Debug.Assert(False, "No layers found for varname " & vn)
+                ' Do not assert; there may be no habitat layers defined, for instance. This case it 100% valid.
+                ' Debug.Assert(False, "No layers found for varname " & vn)
                 Return Nothing
             End If
 
