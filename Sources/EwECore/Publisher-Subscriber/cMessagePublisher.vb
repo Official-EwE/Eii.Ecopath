@@ -181,7 +181,6 @@ Public Class cMessagePublisher
                 'Debugging issue you have not defined a handler for this type of message
                 '  Debug.Assert(messageHandled, "No default message handler defined for source = " & Message.Source.ToString)
                 cLog.Write(Me.ToString & ".SendMessage(...) No default message handler defined for source = " & Message.Source.ToString)
-                bMessageHandled = False
             End If
 
             Return bMessageHandled

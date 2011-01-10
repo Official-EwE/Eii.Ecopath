@@ -8,7 +8,7 @@ Imports EwEUtils.Core
 
 Public Class cPSDModel
 
-#Region "Variables"
+#Region " Variables "
 
     Private m_bSuppressMsgs As Boolean
     Private m_msgPub As New cMessagePublisher
@@ -17,9 +17,9 @@ Public Class cPSDModel
     Friend m_stanza As cStanzaDatastructures
     Friend m_psd As cPSDDatastructures
 
-#End Region 'Variables
+#End Region ' Variables
 
-#Region "Public methods"
+#Region " Public methods "
 
     Public Function Run() As Boolean
 
@@ -57,15 +57,7 @@ Public Class cPSDModel
         End Get
     End Property
 
-    Public Sub Clear()
-        Try
-            Me.m_msgPub.Clear()
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".Close() Exception: " & ex.Message)
-        End Try
-    End Sub
-
-#End Region 'Public method
+#End Region ' Public methods
 
 #Region " Helper methods "
 
@@ -125,7 +117,7 @@ Public Class cPSDModel
                 m_msgPub.SendMessage(msg)
             End If
         Catch ex As Exception
-            cLog.Write(String.Format("cEcoPathModel.NotifyCore(...) Failed to post message {0}.", msg.ToString()))
+            cLog.Write(String.Format("cPSDModel.NotifyCore(...) Failed to post message {0}.", msg.ToString()))
         End Try
 
     End Sub
