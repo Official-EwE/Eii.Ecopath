@@ -39,9 +39,7 @@ Namespace Ecopath.Input
 
             For iFleet As Integer = 1 To Me.Core.nFleets
                 src = Core.FleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
-                                                                 src, eVarNameFlags.Name, Nothing, _
-                                                                 My.Resources.HEADERMASK_UNIT_ZEROTOONE)
+                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, src, eVarNameFlags.Name)
             Next
 
             Me.FixedColumns = 2
