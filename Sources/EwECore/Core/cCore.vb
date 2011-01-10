@@ -5122,8 +5122,8 @@ Public Class cCore
             ' #Yes: Return first year of active TS dataset
             Return Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).FirstYear
         Else
-            ' #No: no time reference
-            Return 0
+            ' #No: no time reference: return model year from Ecopath
+            Return Me.m_EcoPathData.FirstYear
         End If
     End Function
 
