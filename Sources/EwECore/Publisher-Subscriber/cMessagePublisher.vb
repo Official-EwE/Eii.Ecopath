@@ -214,19 +214,20 @@ Public Class cMessagePublisher
         End Try
     End Function
 
+    ' This method is too dangerous. Calling classes should properly call
+    ' RemoveMessageHandler for each handler that were added.
+    'Public Sub Clear()
 
-    Public Sub Clear()
+    '    Try
+    '        For Each handler As cMessageHandler In Me.m_handlers
+    '            handler.Clear()
+    '        Next
+    '        m_handlers.Clear()
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '    End Try
 
-        Try
-            For Each handler As cMessageHandler In Me.m_handlers
-                handler.Clear()
-            Next
-            m_handlers.Clear()
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-
-    End Sub
+    'End Sub
 
 #Region " Locking "
 
