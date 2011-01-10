@@ -31,7 +31,6 @@ Namespace Other
             Me.m_lbVersion = New System.Windows.Forms.Label
             Me.m_lbCopyright = New System.Windows.Forms.Label
             Me.m_rtbDistribution = New System.Windows.Forms.RichTextBox
-            Me.m_pbSponsors = New System.Windows.Forms.PictureBox
             Me.m_tcMain = New System.Windows.Forms.TabControl
             Me.m_tpGeneral = New System.Windows.Forms.TabPage
             Me.m_tpTeam = New System.Windows.Forms.TabPage
@@ -55,10 +54,10 @@ Namespace Other
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
             Me.m_lblDatabase = New System.Windows.Forms.Label
             Me.m_gridDatabase = New ScientificInterface.DatabaseGrid
+            Me.m_pbSponsors = New System.Windows.Forms.PictureBox
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpDetails.SuspendLayout()
-            CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tcMain.SuspendLayout()
             Me.m_tpGeneral.SuspendLayout()
             Me.m_tpTeam.SuspendLayout()
@@ -75,6 +74,7 @@ Namespace Other
             Me.m_tlpDatabase.SuspendLayout()
             CType(Me.m_pbFish4, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel2.SuspendLayout()
+            CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_btnOK
@@ -137,14 +137,6 @@ Namespace Other
             Me.m_rtbDistribution.BorderStyle = System.Windows.Forms.BorderStyle.None
             resources.ApplyResources(Me.m_rtbDistribution, "m_rtbDistribution")
             Me.m_rtbDistribution.Name = "m_rtbDistribution"
-            '
-            'm_pbSponsors
-            '
-            Me.m_pbSponsors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_pbSponsors.Image = Global.ScientificInterface.My.Resources.Resources.Sponsors
-            resources.ApplyResources(Me.m_pbSponsors, "m_pbSponsors")
-            Me.m_pbSponsors.Name = "m_pbSponsors"
-            Me.m_pbSponsors.TabStop = False
             '
             'm_tcMain
             '
@@ -354,6 +346,14 @@ Namespace Other
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatabase.UIContext = Nothing
             '
+            'm_pbSponsors
+            '
+            Me.m_pbSponsors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_pbSponsors.Image = Global.ScientificInterface.My.Resources.Resources.Sponsors
+            resources.ApplyResources(Me.m_pbSponsors, "m_pbSponsors")
+            Me.m_pbSponsors.Name = "m_pbSponsors"
+            Me.m_pbSponsors.TabStop = False
+            '
             'frmAboutEwE
             '
             Me.AcceptButton = Me.m_btnOK
@@ -373,7 +373,6 @@ Namespace Other
             Me.m_tlpGeneral.PerformLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpDetails.ResumeLayout(False)
-            CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tcMain.ResumeLayout(False)
             Me.m_tpGeneral.ResumeLayout(False)
             Me.m_tpTeam.ResumeLayout(False)
@@ -394,6 +393,7 @@ Namespace Other
             Me.m_tlpDatabase.PerformLayout()
             CType(Me.m_pbFish4, System.ComponentModel.ISupportInitialize).EndInit()
             Me.TableLayoutPanel2.ResumeLayout(False)
+            CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
@@ -405,7 +405,6 @@ Namespace Other
         Private WithEvents m_pbFish2 As System.Windows.Forms.PictureBox
         Private WithEvents m_pbFish1 As System.Windows.Forms.PictureBox
         Private WithEvents m_pbFish0 As System.Windows.Forms.PictureBox
-        Private WithEvents m_pbSponsors As System.Windows.Forms.PictureBox
         Private WithEvents m_rtbDistribution As System.Windows.Forms.RichTextBox
         Private WithEvents m_rtbDisclaimer As System.Windows.Forms.RichTextBox
         Private WithEvents m_lbTitle As System.Windows.Forms.Label
@@ -430,6 +429,7 @@ Namespace Other
         Private WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblDatabase As System.Windows.Forms.Label
         Private WithEvents m_gridDatabase As DatabaseGrid
+        Private WithEvents m_pbSponsors As System.Windows.Forms.PictureBox
 
     End Class
 End Namespace

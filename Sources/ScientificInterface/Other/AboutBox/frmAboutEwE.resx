@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>523, 321</value>
+    <value>522, 321</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -187,7 +187,7 @@
     <value>3, 0</value>
   </data>
   <data name="m_lbTitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 18</value>
+    <value>425, 18</value>
   </data>
   <data name="m_lbTitle.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -214,7 +214,7 @@
     <value>3, 78</value>
   </data>
   <data name="m_rtbDisclaimer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 76</value>
+    <value>425, 76</value>
   </data>
   <data name="m_rtbDisclaimer.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -241,7 +241,7 @@
     <value>3, 18</value>
   </data>
   <data name="m_lbVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 18</value>
+    <value>425, 18</value>
   </data>
   <data name="m_lbVersion.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -268,7 +268,7 @@
     <value>3, 36</value>
   </data>
   <data name="m_lbCopyright.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 39</value>
+    <value>425, 39</value>
   </data>
   <data name="m_lbCopyright.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -295,7 +295,7 @@
     <value>3, 160</value>
   </data>
   <data name="m_rtbDistribution.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 60</value>
+    <value>425, 61</value>
   </data>
   <data name="m_rtbDistribution.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -319,7 +319,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbSponsors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 223</value>
+    <value>0, 224</value>
   </data>
   <data name="m_pbSponsors.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -346,7 +346,7 @@
     <value>Fill</value>
   </data>
   <data name="m_tlpDetails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 0</value>
+    <value>153, 0</value>
   </data>
   <data name="m_tlpDetails.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 0, 0, 0</value>
@@ -355,7 +355,7 @@
     <value>7</value>
   </data>
   <data name="m_tlpDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>429, 281</value>
+    <value>431, 281</value>
   </data>
   <data name="m_tlpDetails.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -373,7 +373,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpDetails.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lbTitle" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rtbDisclaimer" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbVersion" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbCopyright" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rtbDistribution" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbSponsors" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,18,Absolute,18,Absolute,39,AutoSize,0,Absolute,82,Absolute,66,Absolute,10" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lbTitle" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rtbDisclaimer" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbVersion" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbCopyright" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rtbDistribution" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbSponsors" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,18,Absolute,18,Absolute,39,AutoSize,0,Absolute,82,Absolute,67,Absolute,13" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlpGeneral.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -388,7 +388,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tlpGeneral.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -406,7 +406,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpGeneral.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish0" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpDetails" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,150,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish0" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpDetails" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,147,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tcMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -421,7 +421,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tpGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tpGeneral.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -457,7 +457,7 @@
     <value>Vertical</value>
   </data>
   <data name="m_rtbTeam.Size" type="System.Drawing.Size, System.Drawing">
-    <value>435, 281</value>
+    <value>434, 281</value>
   </data>
   <data name="m_rtbTeam.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -520,7 +520,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpCredits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tlpCredits.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -538,7 +538,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpCredits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbTeam" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFish1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25.25773,Percent,74.74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbTeam" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFish1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,25773,Percent,74,74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpTeam.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -547,7 +547,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tpTeam.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tpTeam.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -583,7 +583,7 @@
     <value>Vertical</value>
   </data>
   <data name="m_rtbAcknowledgements.Size" type="System.Drawing.Size, System.Drawing">
-    <value>435, 281</value>
+    <value>434, 281</value>
   </data>
   <data name="m_rtbAcknowledgements.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -649,7 +649,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpModules.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tlpModules.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -667,7 +667,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpModules.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbAcknowledgements" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFish2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25.25773,Percent,74.74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbAcknowledgements" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFish2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,25773,Percent,74,74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpacknowledgements.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -676,7 +676,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tpacknowledgements.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tpacknowledgements.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -742,7 +742,7 @@
     <value>3, 0</value>
   </data>
   <data name="m_lbTechnical.Size" type="System.Drawing.Size, System.Drawing">
-    <value>426, 20</value>
+    <value>425, 20</value>
   </data>
   <data name="m_lbTechnical.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -772,7 +772,7 @@
     <value>3, 261</value>
   </data>
   <data name="m_lblNetVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>426, 20</value>
+    <value>425, 20</value>
   </data>
   <data name="m_lblNetVersion.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -805,7 +805,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridTechnical.Size" type="System.Drawing.Size, System.Drawing">
-    <value>432, 241</value>
+    <value>431, 241</value>
   </data>
   <data name="m_gridTechnical.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -814,7 +814,7 @@
     <value>m_gridTechnical</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Type" xml:space="preserve">
-    <value>ScientificInterface.AboutEwEGrid, EwE6, Version=6.1.1.1221, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.AboutEwEGrid, EwE6, Version=6.1.1.109, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Parent" xml:space="preserve">
     <value>m_tlpTechnicalDetails</value>
@@ -835,7 +835,7 @@
     <value>3</value>
   </data>
   <data name="m_tlpTechnicalDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>432, 281</value>
+    <value>431, 281</value>
   </data>
   <data name="m_tlpTechnicalDetails.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -865,7 +865,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpTechnical.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tlpTechnical.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -883,13 +883,13 @@
     <value>0</value>
   </data>
   <data name="m_tlpTechnical.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpTechnicalDetails" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25.25773,Percent,74.74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpTechnicalDetails" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,25773,Percent,74,74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpTechnical.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
   </data>
   <data name="m_tpTechnical.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tpTechnical.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -958,7 +958,7 @@
     <value>3, 0</value>
   </data>
   <data name="m_lblDatabase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>426, 20</value>
+    <value>425, 20</value>
   </data>
   <data name="m_lblDatabase.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -991,7 +991,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridDatabase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>432, 261</value>
+    <value>431, 261</value>
   </data>
   <data name="m_gridDatabase.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1000,7 +1000,7 @@
     <value>m_gridDatabase</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Type" xml:space="preserve">
-    <value>ScientificInterface.DatabaseGrid, EwE6, Version=6.1.1.1221, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.DatabaseGrid, EwE6, Version=6.1.1.109, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Parent" xml:space="preserve">
     <value>TableLayoutPanel2</value>
@@ -1021,7 +1021,7 @@
     <value>2</value>
   </data>
   <data name="TableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>432, 281</value>
+    <value>431, 281</value>
   </data>
   <data name="TableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1051,7 +1051,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpDatabase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tlpDatabase.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1069,13 +1069,13 @@
     <value>0</value>
   </data>
   <data name="m_tlpDatabase.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish4" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TableLayoutPanel2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25.25773,Percent,74.74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish4" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TableLayoutPanel2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,25773,Percent,74,74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpDatabase.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
   </data>
   <data name="m_tpDatabase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>585, 281</value>
+    <value>584, 281</value>
   </data>
   <data name="m_tpDatabase.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1105,7 +1105,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tcMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>593, 310</value>
+    <value>592, 310</value>
   </data>
   <data name="m_tcMain.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1129,7 +1129,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>605, 353</value>
+    <value>604, 353</value>
   </data>
   <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>9, 9, 9, 9</value>
