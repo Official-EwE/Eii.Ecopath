@@ -135,10 +135,22 @@ Namespace Properties
         Public Function GetProperty(ByVal strID As String) As cProperty
             If (String.IsNullOrEmpty(strID)) Then Return Nothing
             ' Return a property from the internal storage
-            If (Not Me.m_htGeneric.ContainsKey(strID)) Then
-                Return Nothing
+            If (Me.m_htGeneric.ContainsKey(strID)) Then
+                Return Me.m_htGeneric(strID)
             End If
-            Return Me.m_htGeneric(strID)
+            If (Me.m_htEcopath.ContainsKey(strID)) Then
+                Return Me.m_htEcopath(strID)
+            End If
+            If (Me.m_htEcosim.ContainsKey(strID)) Then
+                Return Me.m_htEcosim(strID)
+            End If
+            If (Me.m_htEcospace.ContainsKey(strID)) Then
+                Return Me.m_htEcospace(strID)
+            End If
+            If (Me.m_htEcotracer.ContainsKey(strID)) Then
+                Return Me.m_htEcotracer(strID)
+            End If
+            Return Nothing
 
         End Function
 
