@@ -35,6 +35,10 @@ Public Class gridWeightTS
     End Sub
 
     Public Function Apply(Optional ByVal bEnableAll As Boolean = False) As Boolean
+
+        ' Make sure this method is executed only when allowed
+        If (Me.Core.ActiveTimeSeriesDatasetIndex <= 0) Then Return True
+
         Dim cbc As SourceGrid2.Cells.Real.CheckBox = Nothing
         Dim ts As cTimeSeries = Nothing
         For iRow As Integer = 1 To Me.RowsCount - 1
