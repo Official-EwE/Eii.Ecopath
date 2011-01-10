@@ -27,7 +27,7 @@ Public Class frmModelDescription
     Private m_propUnitCurrencyText As cStringProperty = Nothing
     Private m_propUnitTime As cIntegerProperty = Nothing
     Private m_propUnitTimeText As cStringProperty = Nothing
-    Private m_propUnitMonetary As cIntegerProperty = Nothing
+    Private m_propUnitMonetary As cStringProperty = Nothing
 
     Public Sub New()
         Me.InitializeComponent()
@@ -73,7 +73,7 @@ Public Class frmModelDescription
         Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
         AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnUnitTimeTextChanged
 
-        Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
+        Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitMonetary), cStringProperty)
         AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
 
         Me.m_cmbMonetaryUnit.UIContext = Me.UIContext
@@ -276,7 +276,7 @@ Public Class frmModelDescription
     Private Sub OnUnitMonetaryChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
-        Me.m_cmbMonetaryUnit.Unit = DirectCast(prop.GetValue(), eUnitMonetaryType)
+        Me.m_cmbMonetaryUnit.Unit = DirectCast(prop.GetValue(), String)
         Me.m_bInUpdate = False
     End Sub
 

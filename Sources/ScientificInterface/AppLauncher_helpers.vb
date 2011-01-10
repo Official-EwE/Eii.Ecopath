@@ -196,8 +196,7 @@ Partial Public Class AppLauncher
         Private m_propUnitTimeText As cStringProperty = Nothing
         Private m_propUnitCurrency As cIntegerProperty = Nothing
         Private m_propUnitCurrencyText As cStringProperty = Nothing
-        Private m_propUnitMonetary As cIntegerProperty = Nothing
-        Private m_propUnitMonetaryText As cStringProperty = Nothing
+        Private m_propUnitMonetary As cStringProperty = Nothing
 
 #End Region ' Private vars
 
@@ -255,10 +254,8 @@ Partial Public Class AppLauncher
                 AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnTimeUnitChanged
                 AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnTimeUnitChanged
 
-                Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitMonetary), cIntegerProperty)
-                Me.m_propUnitMonetaryText = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitMonetaryCustomText), cStringProperty)
+                Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitMonetary), cStringProperty)
                 AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnMonetaryUnitChanged
-                AddHandler Me.m_propUnitMonetaryText.PropertyChanged, AddressOf OnMonetaryUnitChanged
 
                 Me.OnCurrencyUnitChanged(m_propUnitCurrency, cProperty.eChangeFlags.All)
                 Me.OnTimeUnitChanged(m_propUnitTime, cProperty.eChangeFlags.All)
@@ -283,9 +280,7 @@ Partial Public Class AppLauncher
                 Me.m_propUnitTimeText = Nothing
 
                 RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnMonetaryUnitChanged
-                RemoveHandler Me.m_propUnitMonetaryText.PropertyChanged, AddressOf OnMonetaryUnitChanged
                 Me.m_propUnitMonetary = Nothing
-                Me.m_propUnitMonetaryText = Nothing
 
             End If
 
@@ -315,8 +310,7 @@ Partial Public Class AppLauncher
         Private Sub OnMonetaryUnitChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
             With Me.StyleGuide
                 .SuspendEvents()
-                .MonetaryUnit = DirectCast(Me.m_propUnitMonetary.GetValue(), eUnitMonetaryType)
-                .CustomMonetaryUnitText = CStr(Me.m_propUnitMonetaryText.GetValue())
+                .MonetaryUnit = DirectCast(Me.m_propUnitMonetary.GetValue(), String)
                 .ResumeEvents()
             End With
         End Sub

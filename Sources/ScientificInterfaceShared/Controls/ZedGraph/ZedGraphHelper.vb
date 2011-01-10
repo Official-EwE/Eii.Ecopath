@@ -1208,7 +1208,7 @@ Namespace Controls
                     Case cStyleGuide.eUnitType.Time
                         strUnitString = sg.TimeUnitText(sg.TimeUnit)
                     Case cStyleGuide.eUnitType.Monetary
-                        strUnitString = sg.MonetaryUnitText(sg.MonetaryUnit)
+                        strUnitString = sg.MonetaryUnit
                     Case cStyleGuide.eUnitType.Nominal
                         strUnitString = sg.NominalUnitText()
                     Case Else

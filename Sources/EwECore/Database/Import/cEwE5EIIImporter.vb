@@ -397,7 +397,7 @@ Namespace Database
             drow("UnitTime") = Me.m_data.UnitTime
             drow("UnitTimeCustom") = Me.m_data.UnitTimeCustom
 
-            drow("MonetaryUnit") = eUnitMonetaryType.EUR.ToString()
+            drow("MonetaryUnit") = "EUR"
             writer.AddRow(drow)
             Me.m_dbEwE6.ReleaseWriter(writer, True)
 

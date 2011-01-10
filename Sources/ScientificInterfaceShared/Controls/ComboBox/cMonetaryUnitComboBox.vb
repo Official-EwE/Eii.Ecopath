@@ -4,6 +4,7 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
+Imports System.Globalization
 
 #End Region
 
@@ -11,7 +12,7 @@ Namespace Controls
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Combo box that allows the user to select a <see cref="eUnitMonetaryType">Monetary unit</see>.
+    ''' Combo box that allows the user to select a monetary unit.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cMonetaryUnitComboBox
@@ -21,23 +22,29 @@ Namespace Controls
 
         Private Class MonetaryUnitItem
 
-            Private m_unit As eUnitMonetaryType = 0
+            Private m_strISOSymbol As String = ""
             Private m_strDescription As String
 
-            Public Sub New(ByVal unit As eUnitMonetaryType, ByVal strDescription As String)
-                Me.m_unit = unit
+            ''' <summary>
+            ''' 
+            ''' </summary>
+            ''' <param name="m_strISOSymbol"></param>
+            ''' <param name="strDescription"></param>
+            ''' <remarks></remarks>
+            Public Sub New(ByVal m_strISOSymbol As String, ByVal strDescription As String)
+                Me.m_strISOSymbol = m_strISOSymbol
                 Me.m_strDescription = strDescription
             End Sub
 
-            Public Overrides Function ToString() As String
-                Return Me.m_strDescription
-            End Function
-
-            Public ReadOnly Property Unit() As eUnitMonetaryType
+            Public ReadOnly Property ISOSymbol() As String
                 Get
-                    Return Me.m_unit
+                    Return Me.m_strISOSymbol
                 End Get
             End Property
+
+            Public Overrides Function ToString() As String
+                Return String.Format(My.Resources.HEADER_VALUE_UNIT, Me.m_strDescription, Me.m_strISOSymbol)
+            End Function
 
         End Class
 
@@ -69,42 +76,43 @@ Namespace Controls
 
             If Me.m_uic Is Nothing Then Return
 
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-            Dim strLabel As String = ""
-
             Me.SuspendLayout()
-            For Each unit As eUnitMonetaryType In [Enum].GetValues(GetType(eUnitMonetaryType))
-                If (unit <> eUnitMonetaryType.NotSet) Then
-                    strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
-                        sg.MonetaryUnitText(unit), _
-                        sg.MonetaryUnitDescription(unit))
-                    Me.Items.Add(New MonetaryUnitItem(unit, strLabel))
+
+            For Each ci As CultureInfo In CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+                Dim ri As New RegionInfo(ci.LCID)
+                If Me.GetUnitIndex(ri.ISOCurrencySymbol) = -1 Then
+                    Me.Items.Add(New MonetaryUnitItem(ri.ISOCurrencySymbol, ri.CurrencyEnglishName))
                 End If
             Next
+
             Me.Sorted = True
             Me.ResumeLayout()
 
         End Sub
 
-        Public Property Unit() As eUnitMonetaryType
+        Public Property Unit() As String
             Get
                 If TypeOf Me.SelectedItem Is MonetaryUnitItem Then
-                    Return DirectCast(Me.SelectedItem, MonetaryUnitItem).Unit
+                    Return DirectCast(Me.SelectedItem, MonetaryUnitItem).ISOSymbol
                 Else
-                    Return eUnitMonetaryType.NotSet
+                    Return "EUR"
                 End If
             End Get
-            Set(ByVal value As eUnitMonetaryType)
-                For iItem As Integer = 0 To Me.Items.Count - 1
-                    If TypeOf Me.Items(iItem) Is MonetaryUnitItem Then
-                        If DirectCast(Me.Items(iItem), MonetaryUnitItem).Unit = value Then
-                            Me.SelectedIndex = iItem
-                        End If
-                    End If
-                Next
+            Set(ByVal value As String)
+                Me.SelectedIndex = GetUnitIndex(value)
             End Set
         End Property
 
+        Public Function GetUnitIndex(ByVal strUnit As String) As Integer
+            For iItem As Integer = 0 To Me.Items.Count - 1
+                If TypeOf Me.Items(iItem) Is MonetaryUnitItem Then
+                    If DirectCast(Me.Items(iItem), MonetaryUnitItem).ISOSymbol = strUnit Then
+                        Return iItem
+                    End If
+                End If
+            Next
+            Return -1
+        End Function
     End Class
 
 End Namespace

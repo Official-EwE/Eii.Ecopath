@@ -21,8 +21,7 @@ Public Class cEcopathDataStructures
     Public ModelUnitTimeCustom As String = ""
     Public ModelUnitCurrency As eUnitCurrencyType = eUnitCurrencyType.NotSet
     Public ModelUnitCurrencyCustom As String = ""
-    Public ModelUnitMonetary As eUnitMonetaryType = 0
-    Public ModelUnitMonetaryCustom As String = ""
+    Public ModelUnitMonetary As String = ""
     Public ModelUnitArea As eUnitAreaType = 0
     Public ModelUnitAreaCustom As String = ""
     Public ModelAuthor As String = ""
@@ -1318,7 +1317,6 @@ Public Class cEcopathDataStructures
             dest.ModelUnitCurrency = Me.ModelUnitCurrency
             dest.ModelUnitCurrencyCustom = Me.ModelUnitCurrencyCustom
             dest.ModelUnitMonetary = Me.ModelUnitMonetary
-            dest.ModelUnitMonetaryCustom = Me.ModelUnitMonetaryCustom
             dest.ModelUnitTime = Me.ModelUnitTime
             dest.ModelUnitTimeCustom = Me.ModelUnitTimeCustom
             dest.ModelWest = Me.ModelWest

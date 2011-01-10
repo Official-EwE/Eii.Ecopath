@@ -791,7 +791,7 @@ Namespace Database
                 End If
             End If
 
-            drow("MonetaryUnit") = Me.FixValue(reader, "monetaryUnit", eUnitMonetaryType.EUR.ToString())
+            drow("MonetaryUnit") = Me.FixValue(reader, "monetaryUnit", "EUR")
             drow("EcoSimVulMultAll") = Me.FixValue(reader, "EcoSim vulMultAll")
             writer.AddRow(drow)
             If Not writer.Commit() Then

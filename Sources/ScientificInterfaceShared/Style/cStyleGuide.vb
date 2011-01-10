@@ -28,9 +28,6 @@ Namespace Style
 
 #Region " Private bits "
 
-        ''' <summary>Admin: Monetary unit name lookup table.</summary>
-        Private m_dtMonetaryUnitNames As New Dictionary(Of eUnitMonetaryType, String)
-
         ''' <summary>States the number of decimal digits to be displayed</summary>
         Private m_iNumDigits As Integer = 3
         ''' <summary>States whether numbers are formatted in groups.</summary>
@@ -46,7 +43,7 @@ Namespace Style
         ''' <summary>Time unit custom text.</summary>
         Private m_strUnitTimeCustom As String = ""
         ''' <summary>Default monetary unit.</summary>
-        Private m_unitMonetary As eUnitMonetaryType = eUnitMonetaryType.EUR
+        Private m_unitMonetary As String = ""
         ''' <summary>Monetary unit custom text.</summary>
         Private m_strUnitMonetaryCustom As String = ""
         ''' <summary>Default area unit.</summary>
@@ -115,7 +112,6 @@ Namespace Style
 
             ' Load up
             Me.ResetApplicationColors()
-            Me.LoadMonetaryUnitNames()
 
         End Sub
 
@@ -561,7 +557,7 @@ Namespace Style
                 Case cStyleGuide.eUnitType.Time
                     strUnitString = Me.TimeUnitText(Me.TimeUnit)
                 Case cStyleGuide.eUnitType.Monetary
-                    strUnitString = Me.MonetaryUnitText(Me.MonetaryUnit)
+                    strUnitString = Me.MonetaryUnit
                 Case cStyleGuide.eUnitType.Nominal
                     strUnitString = Me.NominalUnitText()
                 Case cStyleGuide.eUnitType.Area
@@ -765,74 +761,16 @@ Namespace Style
         ''' Helper method, get/set the monetary unit to show in the application.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property MonetaryUnit() As eUnitMonetaryType
+        Public Property MonetaryUnit() As String
             Get
                 Return Me.m_unitMonetary
             End Get
-            Set(ByVal value As eUnitMonetaryType)
+            Set(ByVal value As String)
                 If (Me.m_unitMonetary <> value) Then
                     Me.m_unitMonetary = value
                     Me.UnitsChanged()
                 End If
             End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method, get the monetary unit text to show in the application.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property MonetaryUnitDescription(ByVal unit As eUnitMonetaryType) As String
-            Get
-                If Me.m_dtMonetaryUnitNames.ContainsKey(unit) Then
-                    Return Me.m_dtMonetaryUnitNames(unit)
-                Else
-                    Return Me.CustomMonetaryUnitText()
-                End If
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method, get the monetary unit text to show in the application.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property MonetaryUnitText(ByVal unit As eUnitMonetaryType) As String
-            Get
-                If Me.m_dtMonetaryUnitNames.ContainsKey(unit) Then
-                    Return unit.ToString()
-                Else
-                    Return Me.CustomMonetaryUnitText()
-                End If
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the custom monetary unit text to display to the user.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property CustomMonetaryUnitText() As String
-            Get
-                Return Me.m_strUnitMonetaryCustom
-            End Get
-            Set(ByVal value As String)
-                If (String.Compare(Me.m_strUnitMonetaryCustom, value) <> 0) Then
-                    Me.m_strUnitMonetaryCustom = value
-                    Me.UnitsChanged()
-                End If
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method, get the nominal unit text to show in the application.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property NominalUnitText() As String
-            Get
-                Return "#"
-            End Get
         End Property
 
 #End Region ' Monetary units
@@ -890,6 +828,21 @@ Namespace Style
         End Property
 
 #End Region ' Area units
+
+#Region " Nominal units "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, get the nominal unit text to show in the application.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property NominalUnitText() As String
+            Get
+                Return "#"
+            End Get
+        End Property
+
+#End Region ' Nominal units
 
 #End Region ' Units
 
@@ -1703,30 +1656,6 @@ Namespace Style
             Debug.Assert(False)
             Return Color.Black
         End Function
-
-        Private Sub LoadMonetaryUnitNames()
-
-            Dim dtNames As New Dictionary(Of String, String)
-            Dim astrBits As String() = My.Resources.GENERIC_CURRENCIES.Split("|"c)
-
-            ' Sanity check
-            For i As Integer = 0 To astrBits.Length - 1 Step 2
-                If astrBits(i).Length <> 3 Then
-                    Debug.Assert(False, String.Format("Error near currency {0}, expected three-letter currency abbreviation", astrBits(i)))
-                    Return
-                End If
-                dtNames(astrBits(i)) = astrBits(i + 1)
-            Next
-
-            For Each unit As eUnitMonetaryType In [Enum].GetValues(GetType(eUnitMonetaryType))
-                If unit <> eUnitMonetaryType.NotSet Then
-                    Me.m_dtMonetaryUnitNames(unit) = dtNames(unit.ToString())
-                End If
-            Next
-
-            dtNames.Clear()
-
-        End Sub
 
         Private Function DefaultFontFamilyName(ByVal ft As eApplicationFontType) As String
             Return "Microsoft Sans Serif"

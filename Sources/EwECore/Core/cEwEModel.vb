@@ -118,13 +118,8 @@ Public Class cEwEModel
             m_values.Add(val.varName, val)
 
             ' Monetary unit (enum)
-            meta = New cVariableMetaData(0, 161, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.UnitMonetary, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            ' Monetary unit (text)
-            meta = New cVariableMetaData(20)
-            val = New cValue(New String(desc), eVarNameFlags.UnitMonetaryCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+            meta = New cVariableMetaData(4)
+            val = New cValue(New String(desc), eVarNameFlags.UnitMonetary, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -258,23 +253,13 @@ Public Class cEwEModel
         End Set
     End Property
 
-    Public Property UnitMonetary() As eUnitMonetaryType
+    Public Property UnitMonetary() As String
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.UnitMonetary), eUnitMonetaryType)
+            Return DirectCast(GetVariable(eVarNameFlags.UnitMonetary), String)
         End Get
 
-        Set(ByVal i As eUnitMonetaryType)
-            SetVariable(eVarNameFlags.UnitMonetary, CInt(i))
-        End Set
-    End Property
-
-    Public Property UnitMonetaryCustomText() As String
-        Get
-            Return CStr(GetVariable(eVarNameFlags.UnitMonetaryCustomText))
-        End Get
-
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.UnitMonetaryCustomText, str)
+        Set(ByVal strUnit As String)
+            SetVariable(eVarNameFlags.UnitMonetary, strUnit)
         End Set
     End Property
 

@@ -335,7 +335,7 @@ Partial Class frmModelDescription
         Me.m_cmbMonetaryUnit.Name = "m_cmbMonetaryUnit"
         Me.m_cmbMonetaryUnit.Sorted = True
         Me.m_cmbMonetaryUnit.UIContext = Nothing
-        Me.m_cmbMonetaryUnit.Unit = EwEUtils.Core.eUnitMonetaryType.NotSet
+        Me.m_cmbMonetaryUnit.Unit = ""
         '
         'm_gbNumFormatting
         '
