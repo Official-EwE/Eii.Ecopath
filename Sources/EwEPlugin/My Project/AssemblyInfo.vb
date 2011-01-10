@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Foundation library for implementing Ecopath with Ecosim plugins")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwEPlugin")> 
-<Assembly: AssemblyCopyright("Copyright © 2006")> 
+<Assembly: AssemblyCopyright("Copyright ï¿½ 2006")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)> 
 
@@ -30,5 +30,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.1.1.0105")> 
-<Assembly: AssemblyFileVersion("6.1.1.0105")> 
+<Assembly: AssemblyVersion("6.1.1.0109")> 
+<Assembly: AssemblyFileVersion("6.1.1.0109")> 

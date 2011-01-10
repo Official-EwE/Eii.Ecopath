@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("Ecopath with Ecosim 6 - Scientific Interface")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwE6SFGUI")> 
-<Assembly: AssemblyCopyright("Copyright © 1991")> 
+<Assembly: AssemblyCopyright("Copyright ï¿½ 1991")> 
 <Assembly: AssemblyDescription("Ecopath with Ecosim (EwE) is a free ecological/ecosystem modeling software suite. EwE has three main components: Ecopath - a static, mass-balanced snapshot of the system; Ecosim - a time dynamic simulation module for policy exploration; and Ecospace - a spatial and temporal dynamic module primarily designed for exploring impact and placement of protected areas.")> 
 
 <Assembly: CLSCompliant(True)> 
@@ -33,5 +33,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.1.1.0105")> 
-<Assembly: AssemblyFileVersion("6.1.1.0105")> 
+<Assembly: AssemblyVersion("6.1.1.0109")> 
+<Assembly: AssemblyFileVersion("6.1.1.0109")> 

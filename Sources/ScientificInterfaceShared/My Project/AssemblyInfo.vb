@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Foundation library with Ecopath with Ecosim Scientific User Interface elements")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("ScientificInterfaceShared")> 
-<Assembly: AssemblyCopyright("Copyright © 2008")> 
+<Assembly: AssemblyCopyright("Copyright ï¿½ 2008")> 
 <Assembly: CLSCompliant(True)> 
 
 ' JS 22jan09: setting this to true will validate the entire project for CLS complicancy - kewl!
@@ -33,5 +33,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.1.1.0105")> 
-<Assembly: AssemblyFileVersion("6.1.1.0105")> 
+<Assembly: AssemblyVersion("6.1.1.0109")> 
+<Assembly: AssemblyFileVersion("6.1.1.0109")> 
