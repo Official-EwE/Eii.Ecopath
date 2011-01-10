@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("A results extractor plugin for EwE6")> 
 <Assembly: AssemblyCompany("CEFAS")> 
 <Assembly: AssemblyProduct("EwEResultsExtractor")> 
-<Assembly: AssemblyCopyright("Copyright © CEFAS 2010")> 
+<Assembly: AssemblyCopyright("Copyright © 2010")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

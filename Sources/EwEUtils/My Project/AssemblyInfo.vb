@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Ecopath with Ecosim utilities")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwEUtils")> 
-<Assembly: AssemblyCopyright("Copyright � 2005")> 
+<Assembly: AssemblyCopyright("Copyright © 2005")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)>

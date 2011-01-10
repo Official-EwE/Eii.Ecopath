@@ -12,11 +12,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Foundation library with Ecopath with Ecosim Scientific User Interface elements")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("ScientificInterfaceShared")> 
-<Assembly: AssemblyCopyright("Copyright � 2008")> 
+<Assembly: AssemblyCopyright("Copyright © 2008")> 
 <Assembly: CLSCompliant(True)> 
-
-' JS 22jan09: setting this to true will validate the entire project for CLS complicancy - kewl!
-' <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)> 
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
