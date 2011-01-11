@@ -1567,12 +1567,6 @@ Public Class cCore
         If (TypeOf Me.m_DataSource Is IEcosimDatasource) Then
             Dim sds As IEcosimDatasource = DirectCast(Me.m_DataSource, IEcosimDatasource)
 
-            ' Unloading time series?
-            If (iDataset = 0) Then
-                ' #Yes: reload ecosim scenario instead of trying to be smart
-                Return Me.LoadEcosimScenario(Me.ActiveEcosimScenarioIndex)
-            End If
-
             ' Can load dataset succesfully?
             If sds.LoadTimeSeriesDataset(iDataset) Then
                 ' #Yes: Can init core interface objects succesfully?
@@ -1584,7 +1578,6 @@ Public Class cCore
                             ' #Yes: Apply
                             For Each ts As cTimeSeries In Me.m_timeSeriesGroup : ts.Enabled = True : Next
                             For Each ts As cTimeSeries In Me.m_timeSeriesFleet : ts.Enabled = True : Next
-                            Me.UpdateTimeSeries()
                         End If
                         ' Send messages
                         If iDataset > 0 Then
@@ -1596,6 +1589,7 @@ Public Class cCore
                         bSucces = True
                     End If
                 End If
+                Me.UpdateTimeSeries()
                 ' Invalidate Ecosim outputs
                 Me.m_StateMonitor.SetEcoSimLoaded(True, TriState.True)
             End If
@@ -1703,17 +1697,15 @@ Public Class cCore
         Me.StateMonitor.SetEcoSimLoaded(True)
 
         'setEcosimRunLength() will call DoDatValCalculations to re-load forcing data
-        Me.setEcosimRunLength(Me.m_TSData.NdatYear, True)
+        If Me.ActiveTimeSeriesDatasetIndex > 0 Then
+            Me.setEcosimRunLength(Me.m_TSData.NdatYear, True)
+        Else
+            Me.setEcosimRunLength(Me.m_EcoSimData.NumYears, True)
+        End If
 
         'reset all efforts that were unloaded/disabled
         Me.m_EcoSimData.setEffortToDefault(lstEffortToReset)
 
-        'set fishing mortality from Fleet Effort/Gear
-        'Dim QYear() As Single
-        'ReDim QYear(Me.nGroups)
-        'For i As Integer = 1 To Me.nGroups
-        '    QYear(i) = 1
-        'Next
         Me.m_EcoSim.SetBaseFFromGear()
 
         Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
