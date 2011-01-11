@@ -870,6 +870,8 @@ Namespace Controls.EwEGrid
                 Me.m_lpropertyFormula.Clear()
                 Me.m_lpropertyFormula = Nothing
             End If
+            ' Remove all rows
+            Me.RowsCount = 0
         End Sub
 
         ''' -------------------------------------------------------------------

@@ -77,7 +77,7 @@ Public Class dlgManageTimeSeries
 
         ' -- Enable --
         Me.m_gridWeights.UIContext = Me.m_uic
-        Me.m_gridWeights.ResetData()
+        Me.m_gridWeights.RefreshContent()
 
         ' -- IMPORT --
         'Me.m_strImportDecimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator
@@ -462,7 +462,7 @@ Public Class dlgManageTimeSeries
 #Region " Weight "
 
     Private Function UpdateWeightsPage(Optional ByVal bAutoApply As Boolean = False) As Boolean
-        Me.m_gridWeights.ResetData()
+        Me.m_gridWeights.RefreshContent()
         Return True
     End Function
 

@@ -21,11 +21,6 @@ Public Class gridWeightTS
         Me.FixedColumnWidths = False
     End Sub
 
-    Public Sub ResetData()
-        Me.ClearData()
-        Me.FillData()
-    End Sub
-
     Public Sub CheckAll(ByVal bCheck As Boolean)
         Dim cbc As SourceGrid2.Cells.Real.CheckBox = Nothing
         For iRow As Integer = 1 To Me.RowsCount - 1
@@ -84,28 +79,14 @@ Public Class gridWeightTS
 
                 ' #Yes: For all timeseries in the dataset
                 For iTS As Integer = 0 To ds.Count - 1
-
+                    ' Get TS
                     ts = ds.Item(iTS)
-
                     ' Determine if this TS is ready to be applied
                     If ts.CanEnable() Then
-
-                        ' #Yes: incorporate it in the dialog so it can be applied
-                        If TypeOf ts Is cGroupTimeSeries Then
-                            strTarget = Me.UIContext.Core.EcoPathGroupInputs(DirectCast(ts, cGroupTimeSeries).GroupIndex).Name
-                        End If
-
-                        If TypeOf ts Is cFleetTimeSeries Then
-                            strTarget = Me.UIContext.Core.FleetInputs(DirectCast(ts, cFleetTimeSeries).FleetIndex).Name
-                        End If
-
                         ' #Yes: create new ts item
                         Me.AddTimeSeriesRow(ts)
-
                     End If
-
                 Next iTS
-
             End If
         Next
 

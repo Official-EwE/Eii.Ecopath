@@ -481,7 +481,7 @@ Partial Class dlgManageTimeSeries
         Me.m_gridWeights.GridToolTipActive = True
         Me.m_gridWeights.Location = New System.Drawing.Point(3, 3)
         Me.m_gridWeights.Name = "m_gridWeights"
-        Me.m_gridWeights.Size = New System.Drawing.Size(420, 510)
+        Me.m_gridWeights.Size = New System.Drawing.Size(420, 578)
         Me.m_gridWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                     Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -537,7 +537,7 @@ Partial Class dlgManageTimeSeries
         Me.m_cbLoadEnableOnLoad.AutoSize = True
         Me.m_cbLoadEnableOnLoad.Checked = True
         Me.m_cbLoadEnableOnLoad.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.m_cbLoadEnableOnLoad.Location = New System.Drawing.Point(3, 499)
+        Me.m_cbLoadEnableOnLoad.Location = New System.Drawing.Point(3, 561)
         Me.m_cbLoadEnableOnLoad.Name = "m_cbLoadEnableOnLoad"
         Me.m_cbLoadEnableOnLoad.Size = New System.Drawing.Size(181, 17)
         Me.m_cbLoadEnableOnLoad.TabIndex = 1
@@ -558,7 +558,7 @@ Partial Class dlgManageTimeSeries
         Me.m_lvLoadDatasets.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lvLoadDatasets.MultiSelect = False
         Me.m_lvLoadDatasets.Name = "m_lvLoadDatasets"
-        Me.m_lvLoadDatasets.Size = New System.Drawing.Size(493, 493)
+        Me.m_lvLoadDatasets.Size = New System.Drawing.Size(493, 555)
         Me.m_lvLoadDatasets.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.m_lvLoadDatasets.TabIndex = 0
         Me.m_lvLoadDatasets.UseCompatibleStateImageBehavior = False
