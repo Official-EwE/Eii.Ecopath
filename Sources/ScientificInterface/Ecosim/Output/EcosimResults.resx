@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lblNumTimeSteps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 84</value>
+    <value>7, 86</value>
   </data>
   <data name="m_lblNumTimeSteps.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 13</value>
@@ -147,7 +147,7 @@
     <value>2</value>
   </data>
   <data name="udNumTimeSteps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>132, 82</value>
+    <value>132, 84</value>
   </data>
   <data name="udNumTimeSteps.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 20</value>
@@ -168,7 +168,7 @@
     <value>6</value>
   </data>
   <data name="m_nudSumEnd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>132, 57</value>
+    <value>132, 58</value>
   </data>
   <data name="m_nudSumEnd.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 20</value>
@@ -240,7 +240,7 @@
     <value>True</value>
   </data>
   <data name="m_lblEnd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 59</value>
+    <value>7, 60</value>
   </data>
   <data name="m_lblEnd.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
@@ -264,7 +264,7 @@
     <value>12</value>
   </data>
   <data name="m_cmbFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>320, 53</value>
+    <value>323, 60</value>
   </data>
   <data name="m_cmbFleets.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 21</value>
@@ -288,7 +288,7 @@
     <value>True</value>
   </data>
   <data name="m_rbGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 54</value>
+    <value>208, 60</value>
   </data>
   <data name="m_rbGroup.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 17</value>
@@ -315,7 +315,7 @@
     <value>True</value>
   </data>
   <data name="m_rbIndices.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 74</value>
+    <value>208, 86</value>
   </data>
   <data name="m_rbIndices.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 17</value>
@@ -430,7 +430,7 @@
     <value>205, 9</value>
   </data>
   <data name="m_hdrShow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>434, 18</value>
+    <value>443, 18</value>
   </data>
   <data name="m_hdrShow.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
