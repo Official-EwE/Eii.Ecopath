@@ -245,8 +245,14 @@ Public Class cTimeSeriesDataset
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the dataset is currently loaded.
+    ''' </summary>
+    ''' <returns>True if the dataset is currently loaded.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function IsLoaded() As Boolean
-        Return (Me.m_lTimeSeries.Count > 0)
+        Return (Me.m_core.ActiveTimeSeriesDatasetIndex = Me.Index)
     End Function
 
 #End Region ' Public interfaces
