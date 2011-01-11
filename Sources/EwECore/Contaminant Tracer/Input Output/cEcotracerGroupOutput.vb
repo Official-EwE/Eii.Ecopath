@@ -5,9 +5,10 @@ Imports EwEUtils.Core
 Public Class cEcotracerGroupOutput
     Inherits cCoreInputOutputBase
 
-    Private m_data(,) As Single
-    Private m_nGroups As Integer = 0
-    Private m_nTimeSteps As Integer = 0
+    ' Private m_data(,) As Single
+    'Private m_nGroups As Integer
+    'Private m_nTimeSteps As Integer
+    Private m_TracerData As cContaminantTracerDataStructures
 
 #Region "Constructor"
 
@@ -17,6 +18,7 @@ Public Class cEcotracerGroupOutput
         Dim val As cValue
         Me.m_dataType = eDataTypes.EcotracerSimOutput
         Me.m_coreComponent = eCoreComponentType.Ecotracer
+        Me.m_TracerData = Me.m_core.m_tracerData
 
         Me.DBID = 1
         Me.Index = 1
@@ -27,17 +29,12 @@ Public Class cEcotracerGroupOutput
         Me.m_values.Add(eVarNameFlags.CEnvironment, val)
         Me.m_values.Add(eVarNameFlags.CSum, val)
 
-        Me.m_nGroups = TheCore.GetCoreCounter(eCoreCounterTypes.nGroups)
-        Me.m_nTimeSteps = TheCore.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-        ReDim m_data(Me.m_nGroups + 1, Me.m_nTimeSteps)
-
     End Sub
 
     ''' <inheritdoc cref="cCoreInputOutputBase.Dispose"/>
     Public Overrides Sub Dispose()
         MyBase.Dispose()
         Me.Clear()
-        Me.m_data = Nothing
     End Sub
 
     ''' <inheritdoc cref="cCoreInputOutputBase.Clear"/>
@@ -53,11 +50,10 @@ Public Class cEcotracerGroupOutput
         Try
             Select Case varName
                 Case eVarNameFlags.Concentration
-                    Return m_data(iGroup, iTimeStep)
+                    Return Me.m_TracerData.TracerConc(iGroup, iTimeStep)
                 Case eVarNameFlags.CEnvironment
-                    Return m_data(0, iTimeStep)
-                Case eVarNameFlags.CSum
-                    Return m_data(Me.m_nGroups + 1, iTimeStep)
+                    'environment data stored in zero group
+                    Return Me.m_TracerData.TracerConc(0, iTimeStep)
             End Select
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -69,16 +65,8 @@ Public Class cEcotracerGroupOutput
 
     Public Overloads Function SetVariable(ByVal varName As eVarNameFlags, ByVal newValue As Single, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Boolean
         Try
-            Select Case varName
-                Case eVarNameFlags.Concentration
-                    m_data(iGroup, iTimeStep) = newValue
-                Case eVarNameFlags.CEnvironment
-                    m_data(0, iTimeStep) = newValue
-                Case eVarNameFlags.CSum
-                    m_data(Me.m_nGroups + 1, iTimeStep) = newValue
-            End Select
-
-            Return True
+            Debug.Assert(False, Me.ToString & " variable " & varName.ToString & " is ReadOnly.")
+            Return False
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -94,6 +82,7 @@ Public Class cEcotracerGroupOutput
     Public Overloads Function SetStatus(ByVal varName As eVarNameFlags, ByVal newValue As eStatusFlags, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Boolean
         Debug.Assert(False, "Not implemented yet.")
     End Function
+
 #End Region
 
 #Region "Variable via dot '.' operator"
@@ -118,45 +107,6 @@ Public Class cEcotracerGroupOutput
         End Set
     End Property
 
-    Public Property CEnvironment(ByVal iTimeStep As Integer) As Single
-        Get
-            Try
-                Return GetVariable(eVarNameFlags.CEnvironment, 0, iTimeStep)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-                Return cCore.NULL_VALUE
-            End Try
-
-        End Get
-
-        Set(ByVal value As Single)
-            Try
-                SetVariable(eVarNameFlags.CEnvironment, value, 0, iTimeStep)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
-        End Set
-    End Property
-
-    Public Property CSum(ByVal iTimeStep As Integer) As Single
-        Get
-            Try
-                Return GetVariable(eVarNameFlags.CEnvironment, Me.m_nGroups + 1, iTimeStep)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-                Return cCore.NULL_VALUE
-            End Try
-
-        End Get
-
-        Set(ByVal value As Single)
-            Try
-                SetVariable(eVarNameFlags.CEnvironment, value, Me.m_nGroups + 1, iTimeStep)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
-        End Set
-    End Property
 
 #End Region
 
@@ -169,26 +119,6 @@ Public Class cEcotracerGroupOutput
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.Concentration, value, iGroup, iTimeStep)
-        End Set
-    End Property
-
-    Public Property CEnvironmentStatus(ByVal iTimeStep As Integer) As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.CEnvironment, 0, iTimeStep)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CEnvironment, value, 0, iTimeStep)
-        End Set
-    End Property
-
-    Public Property CSumStatus(ByVal iTimeStep As Integer) As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.CSum, Me.m_nGroups + 1, iTimeStep)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CSum, value, Me.m_nGroups + 1, iTimeStep)
         End Set
     End Property
 

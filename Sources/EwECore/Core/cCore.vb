@@ -10540,35 +10540,9 @@ Public Class cCore
 
         Try
 
-            If m_tracerData.EcoSimConSimOn Then
-                Debug.Assert(Me.m_EcotracerGroupOutput IsNot Nothing, "Ecotracer can not load results.")
-
-                For igrp As Integer = 0 To nGroups
-                    For it As Integer = 1 To nEcosimTimeSteps
-                        m_EcotracerGroupOutput.Concentration(igrp, it) = m_tracerData.TracerConc(igrp, it)
-                    Next
-                Next
-
-            End If ' If m_tracerData.EcoSimConSimOn Then
-
-            If m_tracerData.EcoSpaceConSimOn Then
-                Debug.Assert(Me.m_EcotracerRegionGroupOutput IsNot Nothing, "Ecotracer can not load results.")
-
-                'For irgn As Integer = 0 To nRegions
-                '    For it As Integer = 1 To nEcospaceTimeSteps
-
-                '        'For igrp As Integer = 1 To nGroups
-                '        '    m_EcotracerRegionGroupOutput.Concentration(irgn, igrp, it) = m_tracerData.TracerConcByRegion(irgn, igrp, it)
-                '        '    m_EcotracerRegionGroupOutput.CB(irgn, igrp, it) = m_tracerData.TracerCBRegion(irgn, igrp, it)
-                '        'Next igrp
-
-                '        ''environment values are stored in the zero group element
-                '        'm_EcotracerRegionGroupOutput.CEnvironment(irgn, it) = m_tracerData.TracerConcByRegion(irgn, 0, it)
-                '        'm_EcotracerRegionGroupOutput.CBEnvironment(irgn, it) = m_tracerData.TracerCBRegion(irgn, 0, it)
-
-                '    Next it
-                'Next irgn
-            End If 'If m_tracerData.EcoSpaceConSimOn Then
+            'jb 11-Jan-2011 All Contaminant Tracer output now uses core data directly.
+            'So we don't need to update the IO objects.
+            'This was left in place incase other data is added to the Tracer ouput objects.
 
         Catch ex As Exception
             cLog.Write(ex)
