@@ -5,9 +5,6 @@ Imports EwEUtils.Core
 Public Class cEcotracerGroupOutput
     Inherits cCoreInputOutputBase
 
-    ' Private m_data(,) As Single
-    'Private m_nGroups As Integer
-    'Private m_nTimeSteps As Integer
     Private m_TracerData As cContaminantTracerDataStructures
 
 #Region "Constructor"
@@ -15,7 +12,7 @@ Public Class cEcotracerGroupOutput
     Public Sub New(ByVal TheCore As cCore)
         MyBase.New(TheCore)
 
-        Dim val As cValue
+        'Dim val As cValue
         Me.m_dataType = eDataTypes.EcotracerSimOutput
         Me.m_coreComponent = eCoreComponentType.Ecotracer
         Me.m_TracerData = Me.m_core.m_tracerData
@@ -23,11 +20,11 @@ Public Class cEcotracerGroupOutput
         Me.DBID = 1
         Me.Index = 1
 
-        ' Add dummy values
-        val = New cValue()
-        Me.m_values.Add(eVarNameFlags.Concentration, val)
-        Me.m_values.Add(eVarNameFlags.CEnvironment, val)
-        Me.m_values.Add(eVarNameFlags.CSum, val)
+        '' Add dummy values
+        'val = New cValue()
+        'Me.m_values.Add(eVarNameFlags.Concentration, val)
+        'Me.m_values.Add(eVarNameFlags.CEnvironment, val)
+        'Me.m_values.Add(eVarNameFlags.CSum, val)
 
     End Sub
 

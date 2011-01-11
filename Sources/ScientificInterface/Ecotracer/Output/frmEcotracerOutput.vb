@@ -79,11 +79,11 @@ Public Class frmEcotracerOutput
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Me.RefreshData()
-
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_zgc)
         Me.m_lbGroups.Attach(Me.UIContext)
+
+        Me.RefreshData()
 
         Me.PlotType = ePlotTypes.CB
 
@@ -95,6 +95,7 @@ Public Class frmEcotracerOutput
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
         AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
@@ -123,7 +124,11 @@ Public Class frmEcotracerOutput
     Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
         If (msg.Source = eCoreComponentType.EcoSim) Or _
            (msg.Source = eCoreComponentType.EcoSpace) Then
-            Me.RefreshData()
+
+            If msg.Type = eMessageType.EcosimRunCompleted Or msg.Type = eMessageType.EcospaceRunCompleted Then
+                Me.RefreshData()
+            End If
+
         End If
     End Sub
 
@@ -283,7 +288,7 @@ Public Class frmEcotracerOutput
     ''' -----------------------------------------------------------------------
     Private Sub UpdateProgess(ByVal sProgress As Single)
 
-        'the rounding is for Ecospace it never actually get to 1
+        'the rounding is for Ecospace it never actually gets to 1
         If (Math.Round(sProgress, 3) < 0.999F) Then
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOTRACER_RUNNING, TriState.UseDefault, sProgress)
         Else
@@ -443,7 +448,9 @@ Public Class frmEcotracerOutput
             Next
 
             ' Plot all encountered lines
-            Me.m_zgh.PlotLines(lLinesPlot.ToArray)
+            'jb 11-Jan-2011 plot all lines as cumulative even if there is only one line
+            'this simplifies the interface there does not need to be toggle to turn On/Off cumulative graphs
+            Me.m_zgh.PlotLines(lLinesPlot.ToArray, , , , True)
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -536,9 +543,9 @@ Public Class frmEcotracerOutput
                 Case eDisplayModeTypes.NoResults
                     Return New cNoResultsDisplayHelper(Me.UIContext)
                 Case eDisplayModeTypes.Ecosim
-                    Return New cEcoSimDisplayHelper(Me.UIContext)
+                    Return New cEcoSimDisplayHelper(Me.UIContext, Me.m_zgh)
                 Case eDisplayModeTypes.Ecospace
-                    Return New cEcoSpaceDisplayHelper(Me.UIContext)
+                    Return New cEcoSpaceDisplayHelper(Me.UIContext, Me.m_zgh)
             End Select
 
             'something went wrong
@@ -770,12 +777,14 @@ Public Class frmEcotracerOutput
         Private m_uic As cUIContext = Nothing
         Private m_bEnabled As Boolean
         Private m_plottype As ePlotTypes
+        Private m_zgh As cZedGraphHelper
 
-        Sub New(ByRef uic As cUIContext)
+        Sub New(ByRef uic As cUIContext, ByVal ZedGraphHelper As cZedGraphHelper)
             ' Sanity check
             Debug.Assert(uic IsNot Nothing)
             Me.UIContext = uic
             Me.m_bEnabled = False
+            Me.m_zgh = ZedGraphHelper
         End Sub
 
         Public Property UIContext() As cUIContext _
@@ -812,7 +821,7 @@ Public Class frmEcotracerOutput
             Dim strLabel As String = SharedResources.HEADER_ENVIRONMENT
             Dim clrLine As Color = Color.Black
             Dim yVal As Double
-            Dim dx As Double
+            Dim dPos As Double
 
             If iGroup > 0 Then
                 Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
@@ -827,22 +836,22 @@ Public Class frmEcotracerOutput
                 SimBio = Me.Core.EcoSimGroupOutputs(iGroup)
 
                 For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
-                    dx = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
+                    dPos = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
                     yVal = CDbl(td.Concentration(iGroup, iTimeStep) / SimBio.Biomass(iTimeStep))
-                    vList.Add(dx, yVal)
+                    vList.Add(dPos, yVal)
                 Next iTimeStep
 
             Else
 
                 For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
-                    dx = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
+                    dPos = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
                     yVal = CDbl(td.Concentration(iGroup, iTimeStep))
-                    vList.Add(dx, yVal)
+                    vList.Add(dPos, yVal)
                 Next iTimeStep
 
             End If
 
-            Return New LineItem(strLabel, vList, clrLine, SymbolType.None, 1)
+            Return Me.m_zgh.CreateLineItem(strLabel, eLineType.ModelData, clrLine, vList)
 
         End Function
 
@@ -1000,11 +1009,13 @@ Public Class frmEcotracerOutput
         Private m_bAllRgns As Boolean
         Private m_rgn1 As Integer
         Private m_rgn2 As Integer
+        Private m_zgh As cZedGraphHelper
 
-        Sub New(ByVal uic As cUIContext)
+        Sub New(ByVal uic As cUIContext, ByVal ZedGraphHelper As cZedGraphHelper)
             ' Sanity check
             Debug.Assert(uic IsNot Nothing)
             Me.UIContext = uic
+            Me.m_zgh = ZedGraphHelper
         End Sub
 
         Private Property UIContext() As cUIContext _
@@ -1075,7 +1086,7 @@ Public Class frmEcotracerOutput
             Dim strFilter As String = ""
             Dim strRegionName As String = ""
             Dim strLabel As String
-            Dim dX As Double
+            Dim dPos As Double
             Dim sY As Single
             Dim ntsYear As Single
 
@@ -1103,12 +1114,13 @@ Public Class frmEcotracerOutput
             list = New PointPairList()
 
             For iTimeStep As Integer = 1 To Me.Core.nEcospaceTimeSteps
-                dX = Me.Core.EcosimFirstYear + (iTimeStep / ntsYear)
+                dPos = Me.Core.EcosimFirstYear + (iTimeStep / ntsYear)
                 sY = td.GetVariable(varName, iRegion, iGroup, iTimeStep)
-                list.Add(dX, CDbl(sY))
+                list.Add(dPos, CDbl(sY))
             Next iTimeStep
 
-            Return New LineItem(strLabel, list, clrLine, SymbolType.None, 1)
+            '  Return New LineItem(strLabel, list, clrLine, SymbolType.None, 1)
+            Return Me.m_zgh.CreateLineItem(strLabel, eLineType.ModelData, clrLine, list)
 
         End Function
 
