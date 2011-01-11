@@ -19,6 +19,8 @@ Namespace Ecosim
     ''' =======================================================================
     Public Class frmStockRecruitmentPlot
 
+        ' ToDo: add colour rectangle beside group name
+
 #Region " Helper classes "
 
         ''' <summary>
@@ -176,7 +178,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
             Me.m_mhEcosim = Nothing

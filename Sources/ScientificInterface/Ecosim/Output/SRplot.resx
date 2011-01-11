@@ -289,9 +289,9 @@
     <value>S/R plot</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>SRplot</value>
+    <value>frmStockRecruitmentPlot</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.0.1019, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.110, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

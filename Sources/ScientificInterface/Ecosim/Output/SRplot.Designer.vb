@@ -81,12 +81,12 @@ Namespace Ecosim
             Me.m_btnRun.Name = "m_btnRun"
             Me.m_btnRun.UseVisualStyleBackColor = True
             '
-            'SRplot
+            'frmStockRecruitmentPlot
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.SplitContainer1)
-            Me.Name = "SRplot"
+            Me.Name = "frmStockRecruitmentPlot"
             Me.TabText = "S/R plot"
             Me.SplitContainer1.Panel1.ResumeLayout(False)
             Me.SplitContainer1.Panel2.ResumeLayout(False)
