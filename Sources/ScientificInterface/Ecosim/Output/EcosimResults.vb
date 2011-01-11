@@ -58,23 +58,20 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim fleet As cEcosimFleetOutput = Nothing
-
             'summary
-            Me.m_fpStartSum = New cPropertyFormatProvider(Me.UIContext, Me.txtSumStart, Me.Core.EcoSimModelParameters, eVarNameFlags.EcosimSumStart)
-            Me.m_fpEndSum = New cPropertyFormatProvider(Me.UIContext, Me.txtSumEnd, Me.Core.EcoSimModelParameters, eVarNameFlags.EcosimSumEnd)
+            Me.m_fpStartSum = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSumStart, Me.Core.EcoSimModelParameters, eVarNameFlags.EcosimSumStart)
+            Me.m_fpEndSum = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSumEnd, Me.Core.EcoSimModelParameters, eVarNameFlags.EcosimSumEnd)
             Me.m_fpNumSteps = New cPropertyFormatProvider(Me.UIContext, Me.udNumTimeSteps, Me.Core.EcoSimModelParameters, eVarNameFlags.EcosimSumNTimeSteps)
 
-            cbGears.Items.Clear()
+            Me.m_cmbFleets.Items.Clear()
             For i As Integer = 0 To Me.Core.nFleets 'includes the 'combined fleets' object
-                fleet = Me.Core.EcosimFleetOutput(i)
-                cbGears.Items.Add(fleet.Name)
+                Me.m_cmbFleets.Items.Add(Me.Core.EcosimFleetOutput(i).Name)
             Next
-            cbGears.SelectedIndex = 0
+            Me.m_cmbFleets.SelectedIndex = 0
 
-            m_displayMode = eDisplayModeTypes.Fleets
-            rbGear.Checked = True
-            UpdateControls()
+            Me.m_displayMode = eDisplayModeTypes.Fleets
+            Me.m_rbGear.Checked = True
+            Me.UpdateControls()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
@@ -94,34 +91,34 @@ Namespace Ecosim
         End Sub
 
         Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles cbGears.SelectedIndexChanged
+            Handles m_cmbFleets.SelectedIndexChanged
 
             If (Me.UIContext Is Nothing) Then Return
             If (Me.m_grid Is Nothing) Then Return
 
             If (TypeOf Me.m_grid Is EcosimResultsGridGroup) Then
-                DirectCast(Me.m_grid, EcosimResultsGridGroup).SelectedFleetIndex = cbGears.SelectedIndex
+                DirectCast(Me.m_grid, EcosimResultsGridGroup).SelectedFleetIndex = m_cmbFleets.SelectedIndex
             End If
 
         End Sub
 
         Private Sub rbGear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles rbGear.CheckedChanged
-            If rbGear.Checked Then
+            Handles m_rbGear.CheckedChanged
+            If m_rbGear.Checked Then
                 Me.DisplayMode = eDisplayModeTypes.Fleets
             End If
         End Sub
 
         Private Sub rbGroup_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles rbGroup.CheckedChanged
-            If rbGroup.Checked Then
+            Handles m_rbGroup.CheckedChanged
+            If m_rbGroup.Checked Then
                 Me.DisplayMode = eDisplayModeTypes.Groups
             End If
         End Sub
 
         Private Sub rbIndices_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles rbIndices.CheckedChanged
-            If rbIndices.Checked Then
+            Handles m_rbIndices.CheckedChanged
+            If m_rbIndices.Checked Then
                 Me.DisplayMode = eDisplayModeTypes.Indices
             End If
         End Sub
@@ -138,7 +135,7 @@ Namespace Ecosim
 
                 If (Me.m_grid IsNot Nothing) Then
                     Me.m_grid.UIContext = Nothing
-                    Me.plResultsGrid.Controls.Remove(Me.m_grid)
+                    Me.m_plResultsGrid.Controls.Remove(Me.m_grid)
                     Me.m_grid = Nothing
                 End If
 
@@ -148,7 +145,7 @@ Namespace Ecosim
                     Case eDisplayModeTypes.Groups
                         Me.m_grid = New EcosimResultsGridGroup()
                         Me.m_grid.UIContext = Me.UIContext
-                        DirectCast(Me.m_grid, EcosimResultsGridGroup).SelectedFleetIndex = Me.cbGears.SelectedIndex
+                        DirectCast(Me.m_grid, EcosimResultsGridGroup).SelectedFleetIndex = Me.m_cmbFleets.SelectedIndex
                     Case eDisplayModeTypes.Fleets
                         Me.m_grid = New EcosimResultsGridFleet()
                         Me.m_grid.UIContext = Me.UIContext
@@ -159,7 +156,7 @@ Namespace Ecosim
 
                 If (Me.m_grid IsNot Nothing) Then
                     Me.m_grid.Dock = DockStyle.Fill
-                    Me.plResultsGrid.Controls.Add(Me.m_grid)
+                    Me.m_plResultsGrid.Controls.Add(Me.m_grid)
                 End If
 
                 Me.UpdateControls()
@@ -188,7 +185,7 @@ Namespace Ecosim
 
             Dim bNeedsYearRange As Boolean = (Me.DisplayMode <> eDisplayModeTypes.Indices)
 
-            Me.cbGears.Enabled = (Me.DisplayMode = eDisplayModeTypes.Groups)
+            Me.m_cmbFleets.Enabled = (Me.DisplayMode = eDisplayModeTypes.Groups)
 
             Me.m_lblBegin.Enabled = bNeedsYearRange
             Me.m_fpStartSum.Enabled = bNeedsYearRange

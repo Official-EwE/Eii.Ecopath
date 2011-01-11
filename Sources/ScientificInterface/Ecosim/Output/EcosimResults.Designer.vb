@@ -1,4 +1,5 @@
 Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Controls
 
 Namespace Ecosim
 
@@ -26,18 +27,20 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimResults))
             Me.m_lblNumTimeSteps = New System.Windows.Forms.Label
             Me.udNumTimeSteps = New System.Windows.Forms.NumericUpDown
-            Me.txtSumEnd = New System.Windows.Forms.TextBox
-            Me.txtSumStart = New System.Windows.Forms.TextBox
+            Me.m_nudSumEnd = New System.Windows.Forms.NumericUpDown
+            Me.m_nudSumStart = New System.Windows.Forms.NumericUpDown
             Me.m_lblBegin = New System.Windows.Forms.Label
             Me.m_lblEnd = New System.Windows.Forms.Label
-            Me.cbGears = New System.Windows.Forms.ComboBox
-            Me.rbGroup = New System.Windows.Forms.RadioButton
-            Me.rbIndices = New System.Windows.Forms.RadioButton
-            Me.rbGear = New System.Windows.Forms.RadioButton
-            Me.plResultsGrid = New System.Windows.Forms.Panel
-            Me.m_lblYear = New System.Windows.Forms.Label
-            Me.m_lblShow = New System.Windows.Forms.Label
+            Me.m_cmbFleets = New System.Windows.Forms.ComboBox
+            Me.m_rbGroup = New System.Windows.Forms.RadioButton
+            Me.m_rbIndices = New System.Windows.Forms.RadioButton
+            Me.m_rbGear = New System.Windows.Forms.RadioButton
+            Me.m_plResultsGrid = New System.Windows.Forms.Panel
+            Me.m_hdrYear = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrShow = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             CType(Me.udNumTimeSteps, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudSumEnd, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudSumStart, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_lblNumTimeSteps
@@ -50,15 +53,15 @@ Namespace Ecosim
             resources.ApplyResources(Me.udNumTimeSteps, "udNumTimeSteps")
             Me.udNumTimeSteps.Name = "udNumTimeSteps"
             '
-            'txtSumEnd
+            'm_nudSumEnd
             '
-            resources.ApplyResources(Me.txtSumEnd, "txtSumEnd")
-            Me.txtSumEnd.Name = "txtSumEnd"
+            resources.ApplyResources(Me.m_nudSumEnd, "m_nudSumEnd")
+            Me.m_nudSumEnd.Name = "m_nudSumEnd"
             '
-            'txtSumStart
+            'm_nudSumStart
             '
-            resources.ApplyResources(Me.txtSumStart, "txtSumStart")
-            Me.txtSumStart.Name = "txtSumStart"
+            resources.ApplyResources(Me.m_nudSumStart, "m_nudSumStart")
+            Me.m_nudSumStart.Name = "m_nudSumStart"
             '
             'm_lblBegin
             '
@@ -70,91 +73,89 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblEnd, "m_lblEnd")
             Me.m_lblEnd.Name = "m_lblEnd"
             '
-            'cbGears
+            'm_cmbFleets
             '
-            Me.cbGears.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cbGears.FormattingEnabled = True
-            resources.ApplyResources(Me.cbGears, "cbGears")
-            Me.cbGears.Name = "cbGears"
+            Me.m_cmbFleets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbFleets.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbFleets, "m_cmbFleets")
+            Me.m_cmbFleets.Name = "m_cmbFleets"
             '
-            'rbGroup
+            'm_rbGroup
             '
-            resources.ApplyResources(Me.rbGroup, "rbGroup")
-            Me.rbGroup.Name = "rbGroup"
-            Me.rbGroup.TabStop = True
-            Me.rbGroup.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbGroup, "m_rbGroup")
+            Me.m_rbGroup.Name = "m_rbGroup"
+            Me.m_rbGroup.TabStop = True
+            Me.m_rbGroup.UseVisualStyleBackColor = True
             '
-            'rbIndices
+            'm_rbIndices
             '
-            resources.ApplyResources(Me.rbIndices, "rbIndices")
-            Me.rbIndices.Name = "rbIndices"
-            Me.rbIndices.TabStop = True
-            Me.rbIndices.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbIndices, "m_rbIndices")
+            Me.m_rbIndices.Name = "m_rbIndices"
+            Me.m_rbIndices.TabStop = True
+            Me.m_rbIndices.UseVisualStyleBackColor = True
             '
-            'rbGear
+            'm_rbGear
             '
-            resources.ApplyResources(Me.rbGear, "rbGear")
-            Me.rbGear.Name = "rbGear"
-            Me.rbGear.TabStop = True
-            Me.rbGear.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbGear, "m_rbGear")
+            Me.m_rbGear.Name = "m_rbGear"
+            Me.m_rbGear.TabStop = True
+            Me.m_rbGear.UseVisualStyleBackColor = True
             '
-            'plResultsGrid
+            'm_plResultsGrid
             '
-            resources.ApplyResources(Me.plResultsGrid, "plResultsGrid")
-            Me.plResultsGrid.Name = "plResultsGrid"
+            resources.ApplyResources(Me.m_plResultsGrid, "m_plResultsGrid")
+            Me.m_plResultsGrid.Name = "m_plResultsGrid"
             '
-            'm_lblYear
+            'm_hdrYear
             '
-            Me.m_lblYear.BackColor = System.Drawing.SystemColors.ButtonShadow
-            resources.ApplyResources(Me.m_lblYear, "m_lblYear")
-            Me.m_lblYear.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblYear.Name = "m_lblYear"
+            resources.ApplyResources(Me.m_hdrYear, "m_hdrYear")
+            Me.m_hdrYear.Name = "m_hdrYear"
             '
-            'm_lblShow
+            'm_hdrShow
             '
-            resources.ApplyResources(Me.m_lblShow, "m_lblShow")
-            Me.m_lblShow.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblShow.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblShow.Name = "m_lblShow"
+            resources.ApplyResources(Me.m_hdrShow, "m_hdrShow")
+            Me.m_hdrShow.Name = "m_hdrShow"
             '
             'EcosimResults
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_lblShow)
-            Me.Controls.Add(Me.cbGears)
+            Me.Controls.Add(Me.m_hdrShow)
+            Me.Controls.Add(Me.m_cmbFleets)
             Me.Controls.Add(Me.m_lblNumTimeSteps)
-            Me.Controls.Add(Me.rbGroup)
-            Me.Controls.Add(Me.m_lblYear)
-            Me.Controls.Add(Me.rbIndices)
+            Me.Controls.Add(Me.m_rbGroup)
+            Me.Controls.Add(Me.m_hdrYear)
+            Me.Controls.Add(Me.m_rbIndices)
             Me.Controls.Add(Me.udNumTimeSteps)
-            Me.Controls.Add(Me.rbGear)
-            Me.Controls.Add(Me.txtSumEnd)
-            Me.Controls.Add(Me.txtSumStart)
-            Me.Controls.Add(Me.plResultsGrid)
+            Me.Controls.Add(Me.m_rbGear)
+            Me.Controls.Add(Me.m_nudSumEnd)
+            Me.Controls.Add(Me.m_nudSumStart)
+            Me.Controls.Add(Me.m_plResultsGrid)
             Me.Controls.Add(Me.m_lblBegin)
             Me.Controls.Add(Me.m_lblEnd)
             Me.Name = "EcosimResults"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             CType(Me.udNumTimeSteps, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudSumEnd, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudSumStart, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents m_lblBegin As System.Windows.Forms.Label
-        Friend WithEvents m_lblEnd As System.Windows.Forms.Label
-        Friend WithEvents rbGroup As System.Windows.Forms.RadioButton
-        Friend WithEvents rbIndices As System.Windows.Forms.RadioButton
-        Friend WithEvents rbGear As System.Windows.Forms.RadioButton
-        Friend WithEvents plResultsGrid As System.Windows.Forms.Panel
-        Friend WithEvents txtSumEnd As System.Windows.Forms.TextBox
-        Friend WithEvents txtSumStart As System.Windows.Forms.TextBox
-        Friend WithEvents m_lblNumTimeSteps As System.Windows.Forms.Label
-        Friend WithEvents udNumTimeSteps As System.Windows.Forms.NumericUpDown
-        Friend WithEvents m_lblYear As System.Windows.Forms.Label
-        Friend WithEvents m_lblShow As System.Windows.Forms.Label
-        Private WithEvents cbGears As System.Windows.Forms.ComboBox
+        Private WithEvents m_lblBegin As System.Windows.Forms.Label
+        Private WithEvents m_lblEnd As System.Windows.Forms.Label
+        Private WithEvents m_rbGroup As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbIndices As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbGear As System.Windows.Forms.RadioButton
+        Private WithEvents m_nudSumEnd As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudSumStart As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_lblNumTimeSteps As System.Windows.Forms.Label
+        Private WithEvents udNumTimeSteps As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_cmbFleets As System.Windows.Forms.ComboBox
+        Private WithEvents m_hdrYear As cEwEHeaderLabel
+        Private WithEvents m_hdrShow As cEwEHeaderLabel
+        Protected WithEvents m_plResultsGrid As System.Windows.Forms.Panel
     End Class
 
 End Namespace
