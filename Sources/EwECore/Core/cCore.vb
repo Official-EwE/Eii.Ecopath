@@ -82,6 +82,8 @@ Public Class cCore
 
 #End Region ' Public delegates
 
+#Region " Generic variables "
+
     ''' <summary>Datasource used by the core for reading and writing model data.</summary>
     Private m_DataSource As IEwEDataSource = Nothing
     ''' <summary>Plug-in manager.</summary>
@@ -102,10 +104,10 @@ Public Class cCore
 
     Private m_ShapeManagers As New Dictionary(Of eDataTypes, cBaseShapeManager)
     Private m_PedigreeManagers As New Dictionary(Of eVarNameFlags, cPedigreeManager)
-    Private m_MonteCarlo As cMonteCarloManager
-    Private m_ConTracer As cContaminantTracer
-    Private m_AdvectionManager As cAdvectionManager
-    Private m_AdvectionParameters As cAdvectionParameters
+    Private m_MonteCarlo As cMonteCarloManager = Nothing
+    Private m_ConTracer As cContaminantTracer = Nothing
+    Private m_AdvectionManager As cAdvectionManager = Nothing
+    Private m_AdvectionParameters As cAdvectionParameters = Nothing
 
     ''' <summary>Class to wrap stand alone functions for internal and external access.</summary>
     Private m_Functions As cEcoFunctions = Nothing
@@ -121,25 +123,27 @@ Public Class cCore
     Friend m_dtAuxiliaryData As New Dictionary(Of String, cAuxiliaryData)
 
     ''' <summary>The central core message publisher.</summary>
-    Friend m_publisher As New cMessagePublisher
+    Friend m_publisher As New cMessagePublisher()
     Friend m_validators As cValidatorManager = Nothing
 
-    Friend m_TSData As cTimeSeriesDataStructures
-    Friend m_SpaceTSData As cEcospaceTimeSeriesDataStructures
-    Friend m_Stanza As cStanzaDatastructures
-    Friend m_FitToTimeSeriesData As cF2TSDataStructures
-    Friend m_tracerData As cContaminantTracerDataStructures
+    Friend m_TSData As cTimeSeriesDataStructures = Nothing
+    Friend m_SpaceTSData As cEcospaceTimeSeriesDataStructures = Nothing
+    Friend m_Stanza As cStanzaDatastructures = Nothing
+    Friend m_FitToTimeSeriesData As cF2TSDataStructures = Nothing
+    Friend m_tracerData As cContaminantTracerDataStructures = Nothing
 
-#Region "Private Initialization Flags"
+#End Region ' Generic variables
+
+#Region " Private Initialization Flags "
 
     ''' <summary>Has the Core been initialized.</summary>
     ''' <remarks>True if a Core has been initialized.</remarks>
     Private m_bCoreIsInit As Boolean = False
-    Private m_bEcoSimIsInit As Boolean
+    Private m_bEcoSimIsInit As Boolean = False
 
 #End Region
 
-#Region "Public Core Counters"
+#Region " Public Core Counters "
 
     ''' <summary>
     ''' Returns the value the Core holds for a given eCoreCounterTypes enumerator. These
@@ -512,7 +516,7 @@ Public Class cCore
         End Get
     End Property
 
-#End Region 'Public core variables
+#End Region ' Public Core Counters
 
 #Region " Singleton "
 
@@ -1006,9 +1010,9 @@ Public Class cCore
 
 #End Region
 
-#End Region 'Public Core Interfaces
+#End Region ' Public Core Interfaces
 
-#Region "Private and Friend Core Functions" 'private functionality used by the core
+#Region " Private and Friend Core Functions " 'private functionality used by the core
 
     ''' <summary>
     ''' Initialize all core objects
@@ -1212,9 +1216,9 @@ Public Class cCore
         Return obj
     End Function
 
-#End Region 'Private and Friend Core Functions
+#End Region ' Private and Friend Core Functions
 
-#Region "Time series"
+#Region " Time series "
 
 #Region " Import "
 
@@ -2078,7 +2082,7 @@ Public Class cCore
         End Set
     End Property
 
-#End Region 'Generic helper methods
+#End Region ' Generic helper methods
 
 #Region " Datasource "
 
@@ -2360,7 +2364,7 @@ Public Class cCore
         Return True
     End Function
 
-#End Region 'EwEModel
+#End Region ' EwEModel
 
 #Region " EcoPath "
 
@@ -2419,6 +2423,11 @@ Public Class cCore
         ' Sanity checks
         Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
         Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid datasource type specified")
+
+        If Not Me.m_bCoreIsInit Then
+            Console.WriteLine("Do not forget to call InitCore!")
+            Me.InitCore()
+        End If
 
         If Not Me.CloseModel() Then Return False
 
@@ -7933,8 +7942,9 @@ Public Class cCore
         'If (Not Me.StateMonitor.HasEcospaceLoaded) Then Return
         Try
 
-            Me.m_AdvectionManager.Clear()
-
+            If (Me.m_AdvectionManager IsNot Nothing) Then
+                Me.m_AdvectionManager.Clear()
+            End If
             ' Discard advection IO object
             If (Me.m_AdvectionParameters IsNot Nothing) Then
                 Me.m_AdvectionParameters.Dispose()

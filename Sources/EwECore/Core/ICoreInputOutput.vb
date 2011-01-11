@@ -92,6 +92,8 @@ End Interface ' ICoreInputOutput
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Interface ICoreGroup
+    Inherits ICoreInputOutput
+    Inherits ICoreInterface
 
     ''' <summary>
     ''' Get/set whether the group is part of a multi-stanza configuration.
@@ -132,6 +134,11 @@ Public Interface ICoreGroup
     ''' Helper method; gets whether this group is detritus.
     ''' </summary>
     ReadOnly Property IsDetritus() As Boolean
+
+    ''' <summary>
+    ''' Helper method; gets whether this group is a living group.
+    ''' </summary>
+    ReadOnly Property IsLiving() As Boolean
 
 End Interface ' ICoreGroup
 
@@ -781,9 +788,11 @@ Public Class cCoreGroupBase
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get whether this group is part of a multi-stanza configuration.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property isMultiStanza() As Boolean _
         Implements ICoreGroup.isMultiStanza
         Get
@@ -791,6 +800,7 @@ Public Class cCoreGroupBase
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' The ratio that this group contributes to Primary Production.
     ''' </summary>
@@ -801,7 +811,9 @@ Public Class cCoreGroupBase
     ''' <item>2 for detritus groups</item>
     ''' </list>
     ''' </returns>
-    ''' <remarks>This can be used as a flag to tell if a group is mixed consumer/producer, primary producer or a detritus group.</remarks>
+    ''' <remarks>This can be used as a flag to tell if a group is mixed consumer/producer, 
+    ''' primary producer or a detritus group.</remarks>
+    ''' -----------------------------------------------------------------------
     Public Property PP() As Single Implements ICoreGroup.PP
         Get
             Return DirectCast(GetVariable(eVarNameFlags.PP), Single)
@@ -811,10 +823,11 @@ Public Class cCoreGroupBase
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the zero-based index of the stanza configuration 
-    ''' this group belongs to.
+    ''' Get/set the zero-based index of the stanza configuration this group belongs to.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property iStanza() As Integer _
         Implements ICoreGroup.StanzaID
         Get
@@ -825,9 +838,11 @@ Public Class cCoreGroupBase
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method; gets whether this group is a consumer (PP &lt; 1.0)
+    ''' Gets whether this group is a consumer (PP &lt; 1.0)
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property IsConsumer() As Boolean _
         Implements ICoreGroup.IsConsumer
         Get
@@ -835,9 +850,11 @@ Public Class cCoreGroupBase
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method; gets whether this group is detritus (PP = 2.0).
+    ''' Gets whether this group is detritus (PP = 2.0).
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property IsDetritus() As Boolean _
         Implements ICoreGroup.IsDetritus
         Get
@@ -845,13 +862,25 @@ Public Class cCoreGroupBase
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method; gets whether this group is a producer (0 &lt; PP &lt;= 1.0).
+    ''' Gets whether this group is a producer (0 &lt; PP &lt;= 1.0).
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property IsProducer() As Boolean _
         Implements ICoreGroup.IsProducer
         Get
             Return (Me.PP > 0 And Me.PP <= 1.0)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ICoreGroup.IsLiving"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property IsLiving() As Boolean _
+        Implements ICoreGroup.IsLiving
+        Get
+            Return (Me.Index <= Me.m_core.nLivingGroups)
         End Get
     End Property
 
