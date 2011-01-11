@@ -125,10 +125,10 @@ Public Class frmEcotracerOutput
         If (msg.Source = eCoreComponentType.EcoSim) Or _
            (msg.Source = eCoreComponentType.EcoSpace) Then
 
-            If msg.Type = eMessageType.EcosimRunCompleted Or msg.Type = eMessageType.EcospaceRunCompleted Then
-                Me.RefreshData()
-            End If
+            'let the interface update to all core states
+            Me.RefreshData()
 
+  
         End If
     End Sub
 
