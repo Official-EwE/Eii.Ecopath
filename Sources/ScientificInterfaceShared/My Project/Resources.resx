@@ -776,10 +776,10 @@
     <value>Color</value>
   </data>
   <data name="HEADER_CONCENTRATION" xml:space="preserve">
-    <value>Concentration</value>
+    <value>Concentration (cumulative)</value>
   </data>
   <data name="HEADER_CONCENTRATION_OVER_B" xml:space="preserve">
-    <value>Concentration / Biomass</value>
+    <value>Concentration / Biomass (cumulative)</value>
   </data>
   <data name="HEADER_CONFIDENCEINTERVAL" xml:space="preserve">
     <value>Conf. interv. (+/-%)</value>

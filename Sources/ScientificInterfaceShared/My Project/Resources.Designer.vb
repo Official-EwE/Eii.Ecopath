@@ -1469,7 +1469,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Concentration.
+        '''  Looks up a localized string similar to Concentration (cumulative).
         '''</summary>
         Public ReadOnly Property HEADER_CONCENTRATION() As String
             Get
@@ -1496,7 +1496,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Concentration / Biomass.
+        '''  Looks up a localized string similar to Concentration / Biomass (cumulative).
         '''</summary>
         Public ReadOnly Property HEADER_CONCENTRATION_OVER_B() As String
             Get
