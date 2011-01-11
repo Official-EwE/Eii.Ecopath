@@ -47,12 +47,26 @@ Public Class ucSuitabilityPlot
 
             If Me.m_uic IsNot Nothing Then
                 RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                If Me.m_zgh IsNot Nothing Then
+                    Me.m_zgh.Detach()
+                    Me.m_zgh = Nothing
+                End If
+                Me.m_lbGroups.Detach()
             End If
 
             Me.m_uic = value
 
             If Me.m_uic IsNot Nothing Then
                 AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                Me.m_zgh = New cZedGraphHelper()
+                Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
+
+                Me.m_lbGroups.Attach(Me.m_uic)
+
+                Me.m_rbElectivity.Checked = True
+
+                Me.UpdatePredatorList()
+                Me.UpdateGraph()
             End If
 
         End Set
@@ -61,42 +75,6 @@ Public Class ucSuitabilityPlot
 #End Region ' IUIElement implementation
 
 #Region " Events "
-
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-
-        MyBase.OnLoad(e)
-
-        If (Me.m_uic Is Nothing) Then Return
-
-        Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
-
-        Me.m_lbGroups.Attach(Me.m_uic)
-
-        Me.m_rbElectivity.Checked = True
-
-        Me.UpdatePredatorList()
-        Me.UpdateGraph()
-
-    End Sub
-
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-
-        Me.UIContext = Nothing
-        Try
-            If Me.m_zgh IsNot Nothing Then
-                Me.m_zgh.Detach()
-                Me.m_zgh = Nothing
-            End If
-
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
-
-    End Sub
 
     Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
         Try
