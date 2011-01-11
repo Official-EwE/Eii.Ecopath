@@ -1744,6 +1744,10 @@ Namespace Controls
 
         End Function
 
+        ''' <summary>
+        ''' Change the number of panels in the graph. Note that user interfaces 
+        ''' should NOT maintain references to existing panes anymore!
+        ''' </summary>
         Private Sub ChangeNumPanels()
 
             Me.m_zgc.MasterPane.PaneList.Clear()

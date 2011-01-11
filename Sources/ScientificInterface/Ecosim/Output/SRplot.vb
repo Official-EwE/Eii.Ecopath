@@ -14,7 +14,7 @@ Namespace Ecosim
 
     ''' =======================================================================
     ''' <summary>
-    ''' 
+    ''' Form that implements the stock recruitment plot.
     ''' </summary>
     ''' =======================================================================
     Public Class frmStockRecruitmentPlot
@@ -51,7 +51,7 @@ Namespace Ecosim
         End Class
 
         ''' <summary>
-        ''' 
+        ''' Class maintaining a single line in the SR plot.
         ''' </summary>
         Private Class cSRLine
 
@@ -127,7 +127,6 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Private m_graphpane As GraphPane = Nothing
         Private m_bEcosimRunning As Boolean = False
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
         Private m_curveSlope As CurveItem = Nothing
@@ -154,7 +153,6 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Me.m_coreStateMonitor = Me.Core.StateMonitor
-            Me.m_graphpane = Me.m_plot.GraphPane
             Me.m_SRResults = New List(Of cSRLine)
             Me.m_zgh = New cZedGraphHelper()
 
@@ -223,33 +221,12 @@ Namespace Ecosim
 
         Private Sub TimeStepFromEcoSim_handler(ByVal iTime As Long, ByVal results As cEcoSimResults)
 
-            Dim stanza As cStanzaGroup = Nothing
-            Dim group As cEcoPathGroupInput = Nothing
-            Dim tmpSR As cSRData = Nothing
-
             If results.hasSRData Then
+                Try
+                    Me.BuildSRData(results)
+                Catch ex As Exception
 
-                For i As Integer = 1 To results.nStanza
-                    stanza = Me.Core.StanzaGroups(i - 1)
-
-                    For j As Integer = 1 To stanza.NStanzas - 1
-
-                        group = Me.Core.EcoPathGroupInputs(stanza.iGroups(j))
-                        If results.hasSRData(i, j) Then
-                            tmpSR = New cSRData(results.BStock(i, j), results.BRecruitment(i, j))
-                            For k As Integer = 0 To m_SRResults.Count - 1
-                                If (Object.ReferenceEquals(stanza, m_SRResults(k).StanzaGroup)) And _
-                                   (Object.ReferenceEquals(group, m_SRResults(k).GroupStart)) Then
-                                    m_SRResults(k).Data.Add(tmpSR)
-                                    Exit For
-                                End If
-                            Next
-                        End If
-
-                    Next
-                Next
-
-                Me.AddCurves(Me.m_graphpane)
+                End Try
             End If
 
         End Sub
@@ -277,7 +254,7 @@ Namespace Ecosim
         Private Sub OnStyleGuideChanged(ByVal change As cStyleGuide.eChangeType)
             If (change And cStyleGuide.eChangeType.Colours) > 0 Then
                 ' Add the curves again
-                Me.AddCurves(Me.m_graphpane, False)
+                Me.AddCurves()
             End If
         End Sub
 
@@ -286,9 +263,8 @@ Namespace Ecosim
             Try
                 Select Case msg.Type
                     Case eMessageType.EcosimRunCompleted
-
                         If Not m_SRResults Is Nothing Then
-                            Me.AddCurves(m_graphpane, True)
+                            Me.AddCurves()
                         End If
                 End Select
 
@@ -307,14 +283,14 @@ Namespace Ecosim
                 Select Case iLevel
 
                     Case 0
-                        Me.SetDefaultDisplay()
+                        Me.ShowDefault()
 
                     Case 1
-                        Me.SetAllStanzaGrpsDisplay(DirectCast(e.Node.Tag, cStanzaGroup))
+                        Me.ShowStanza(DirectCast(e.Node.Tag, cStanzaGroup))
 
                     Case 2
                         ' JS 31Oct10: Enough of this string parsing nonsense
-                        Me.SetOneGroupDisplay(DirectCast(e.Node.Tag, cSRLine))
+                        Me.ShowSingleGroup(DirectCast(e.Node.Tag, cSRLine))
 
                 End Select
 
@@ -330,7 +306,7 @@ Namespace Ecosim
             Try
 
                 Dim ptMouse As New PointF(e.X, e.Y)
-                Dim pane As GraphPane = sender.MasterPane.FindChartRect(ptMouse)
+                Dim pane As GraphPane = Me.m_plot.MasterPane.FindChartRect(ptMouse)
                 Dim x, y As Double
                 Dim item As CurveItem = Nothing
                 Dim sg As cStyleGuide = Me.UIContext.StyleGuide
@@ -342,7 +318,7 @@ Namespace Ecosim
                     m_lblPt.Text = String.Format(My.Resources.ECOSIM_SR_SLOPELABEL, _
                                                sg.FormatNumber(CSng(x)), sg.FormatNumber(CSng(y)), _
                                                sg.FormatNumber(CSng(y / x)))
-                    RemoveSlopeCurve(pane, item)
+                    RemoveSlopeCurve(item)
                 End If
 
             Catch ex As Exception
@@ -358,11 +334,11 @@ Namespace Ecosim
             Try
 
                 Dim mousePt As New PointF(e.X, e.Y)
-                Dim pane As GraphPane = sender.MasterPane.FindChartRect(mousePt)
+                Dim pane As GraphPane = Me.m_plot.MasterPane.FindChartRect(mousePt)
 
                 If pane Is Nothing Then
                     m_lblPt.Text = String.Empty
-                    RemoveSlopeCurve(m_graphpane, Nothing)
+                    RemoveSlopeCurve(Nothing)
                 End If
 
             Catch ex As Exception
@@ -434,16 +410,41 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub BuildSRData(ByVal results As cEcoSimResults)
+
+            Dim stanza As cStanzaGroup = Nothing
+            Dim group As cEcoPathGroupInput = Nothing
+            Dim tmpSR As cSRData = Nothing
+
+            For i As Integer = 1 To results.nStanza
+                stanza = Me.Core.StanzaGroups(i - 1)
+                For j As Integer = 1 To stanza.NStanzas - 1
+                    group = Me.Core.EcoPathGroupInputs(stanza.iGroups(j))
+                    If results.hasSRData(i, j) Then
+                        tmpSR = New cSRData(results.BStock(i, j), results.BRecruitment(i, j))
+                        For k As Integer = 0 To m_SRResults.Count - 1
+                            If (Object.ReferenceEquals(stanza, Me.m_SRResults(k).StanzaGroup)) And _
+                               (Object.ReferenceEquals(group, Me.m_SRResults(k).GroupStart)) Then
+                                Me.m_SRResults(k).Data.Add(tmpSR)
+                                Exit For
+                            End If
+                        Next
+                    End If
+                Next
+            Next
+
+            Me.AddCurves()
+
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Add the curves to the pane.
         ''' </summary>
-        ''' <param name="pane"></param>
-        ''' <param name="bRescale"></param>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurves(ByVal pane As GraphPane, Optional ByVal bRescale As Boolean = False)
+        Private Sub AddCurves()
 
-            pane.CurveList.Clear()
+            Me.m_plot.GraphPane.CurveList.Clear()
 
             Dim curve As CurveItem = Nothing
             Dim ppl As PointPairList = Nothing
@@ -452,7 +453,7 @@ Namespace Ecosim
 
             For i As Integer = 0 To m_SRResults.Count - 1
 
-                srl = m_SRResults(i)
+                srl = Me.m_SRResults(i)
                 ppl = New PointPairList()
 
                 For j As Integer = 0 To m_SRResults(i).Data.Count - 1
@@ -460,7 +461,7 @@ Namespace Ecosim
                     ppl.Add(srd.Stock, srd.Recruitment)
                 Next
 
-                curve = pane.AddCurve(srl.Title, ppl, _
+                curve = Me.m_plot.GraphPane.AddCurve(srl.Title, ppl, _
                                       Me.StyleGuide.GroupColor(Me.Core, srl.GroupStart.Index), _
                                       SymbolType.Circle)
 
@@ -468,8 +469,7 @@ Namespace Ecosim
 
             Next
 
-            If bRescale Then Me.m_plot.AxisChange()
-            Me.m_plot.Refresh()
+            Me.m_plot.AxisChange()
 
         End Sub
 
@@ -477,54 +477,48 @@ Namespace Ecosim
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <param name="pane"></param>
         ''' <param name="strTitleX"></param>
         ''' <param name="strTitleY"></param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateCurves(ByVal pane As GraphPane, ByVal strTitleX As String, ByVal strTitleY As String)
+        Private Sub UpdateCurves(ByVal strTitleX As String, ByVal strTitleY As String)
 
             Dim line As cSRLine = Nothing
             Dim curve As CurveItem = Nothing
 
             For i As Integer = 0 To m_SRResults.Count - 1
-                line = m_SRResults(i)
-                curve = pane.CurveList(line.Title)
+                line = Me.m_SRResults(i)
+                curve = Me.m_plot.GraphPane.CurveList(line.Title)
 
                 If (curve IsNot Nothing) Then
                     curve.IsVisible = line.IsVisible
                 End If
             Next
 
-            Me.m_graphpane.XAxis.Title.Text = String.Format(My.Resources.SR_PLOT_X_AXIS, strTitleX)
-            Me.m_graphpane.YAxis.Title.Text = String.Format(SharedResources.HEADER_RECRUITMENT_UNIT, strTitleY)
+            Me.m_plot.GraphPane.XAxis.Title.Text = String.Format(My.Resources.SR_PLOT_X_AXIS, strTitleX)
+            Me.m_plot.GraphPane.YAxis.Title.Text = String.Format(SharedResources.HEADER_RECRUITMENT_UNIT, strTitleY)
 
             Me.m_plot.AxisChange()
             Me.m_plot.Refresh()
 
         End Sub
 
-        Private Sub SetDefaultDisplay()
+        Private Sub ShowDefault()
             For i As Integer = 0 To m_SRResults.Count - 1
                 Dim srl As cSRLine = Me.m_SRResults(i)
-                'If srl.IsDefault Then
-                '    srl.IsVisible = True
-                'Else
-                '    srl.IsVisible = False
-                'End If
                 srl.IsVisible = srl.IsDefault
             Next
-            Me.UpdateCurves(m_graphpane, "", "")
+            Me.UpdateCurves("", "")
         End Sub
 
-        Private Sub SetAllStanzaGrpsDisplay(ByVal stanzaGroup As cStanzaGroup)
+        Private Sub ShowStanza(ByVal stanzaGroup As cStanzaGroup)
             For i As Integer = 0 To m_SRResults.Count - 1
                 Dim srl As cSRLine = Me.m_SRResults(i)
                 srl.IsVisible = Object.ReferenceEquals(m_SRResults(i).StanzaGroup, stanzaGroup)
             Next
-            Me.UpdateCurves(Me.m_graphpane, "", "")
+            Me.UpdateCurves("", "")
         End Sub
 
-        Private Sub SetOneGroupDisplay(ByVal srlShow As cSRLine)
+        Private Sub ShowSingleGroup(ByVal srlShow As cSRLine)
             Dim strTitleX As String = ""
             Dim strTitleY As String = ""
             Dim srl As cSRLine = Nothing
@@ -539,13 +533,13 @@ Namespace Ecosim
                     srl.IsVisible = False
                 End If
             Next
-            Me.UpdateCurves(Me.m_graphpane, strTitleX, strTitleY)
+            Me.UpdateCurves(strTitleX, strTitleY)
         End Sub
 
-        Private Sub RemoveSlopeCurve(ByVal pane As GraphPane, ByVal item As CurveItem)
+        Private Sub RemoveSlopeCurve(ByVal item As CurveItem)
 
             If Not m_curveSlope Is Nothing Then
-                pane.CurveList.Remove(Me.m_curveSlope)
+                Me.m_plot.GraphPane.CurveList.Remove(Me.m_curveSlope)
             End If
             Me.m_curveSlope = item
             Me.m_plot.Refresh()
