@@ -197,11 +197,13 @@ Namespace Controls
             End Get
             Private Set(ByVal uic As cUIContext)
                 If (Me.m_uic IsNot Nothing) Then
+                    Me.Items.Clear()
                     RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 End If
                 Me.m_uic = uic
                 If (Me.m_uic IsNot Nothing) Then
                     AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    Me.Populate()
                 End If
             End Set
         End Property
@@ -211,23 +213,11 @@ Namespace Controls
 #Region " Attach / detach "
 
         Public Sub Attach(ByVal uic As cUIContext)
-
-            ' Sanity check
-            Debug.Assert(uic IsNot Nothing)
-            Debug.Assert(Not Me.IsInitialized())
-
             Me.UIContext = uic
-            Me.Populate()
-
         End Sub
 
         Public Sub Detach()
-
-            If (Me.IsInitialized()) Then
-                Me.UIContext = Nothing
-                Me.Items.Clear()
-            End If
-
+            Me.UIContext = Nothing
         End Sub
 
 #End Region ' Attach / detach
