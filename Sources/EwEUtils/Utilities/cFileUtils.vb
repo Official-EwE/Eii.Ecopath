@@ -111,24 +111,27 @@ Namespace Utilities
         ''' <param name="strDest">Destination to copy file to. Leave this destination empty 
         ''' to backup to a default location. This parameter will return the backup 
         ''' destination file name.</param>
+        ''' <param name="attributes"><see cref="FileAttributes">Attributes</see> to
+        ''' assign to the backup file.</param>
         ''' <returns>True if succesful.</returns>
+        ''' <remarks>
+        ''' If <paramref name="strDest"/> is left empty, a backup file name will be
+        ''' created that looks like '[original name].[original ext].[short date]'.
+        ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function CreateBackup(ByVal strSrc As String, ByRef strDest As String) As Boolean
+        Public Shared Function CreateBackup(ByVal strSrc As String, _
+                                            ByRef strDest As String, _
+                                            Optional ByVal attributes As FileAttributes = FileAttributes.Archive Or FileAttributes.NotContentIndexed) As Boolean
 
             If String.IsNullOrEmpty(strDest) Then
-
-                Dim strDir As String = Path.GetDirectoryName(strSrc)
-                Dim strFile As String = Path.GetFileNameWithoutExtension(strSrc)
-                Dim strExt As String = Path.GetExtension(strSrc)
-                Dim strDate As String = Date.Now.ToShortDateString
-                Dim strFileNameNew As String = cFileUtils.ToValidFileName(String.Format("{0}_{1}", strFile, strDate), False)
-
-                strDest = Path.Combine(strDir, strFileNameNew + strExt)
+                strDest = strSrc & ".backup_" & ToValidFileName(Date.Now.ToShortDateString, False)
             End If
 
             Try
                 ' Create backup copy
                 File.Copy(strSrc, strDest, True)
+                ' Apply attributes
+                File.SetAttributes(strDest, attributes)
                 Return True
             Catch ex As Exception
             End Try
