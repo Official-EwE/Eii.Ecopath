@@ -107,13 +107,18 @@ Public Class cCustomComboBoxFleetGroupTree
         Dim tnParent As TreeNode = Nothing
         Dim tnChild As TreeNode = Nothing
 
-        ' Clear
-        For Each tnParent In Me.Nodes
-            For Each tnChild In tnParent.Nodes
-                tnChild.Tag = Nothing
+        Try
+            ' Clear
+            For Each tnParent In Me.Nodes
+                For Each tnChild In tnParent.Nodes
+                    tnChild.Tag = Nothing
+                Next
             Next
-        Next
-        Me.Nodes.Clear()
+            Me.Nodes.Clear()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
+        End Try
 
     End Sub
 
