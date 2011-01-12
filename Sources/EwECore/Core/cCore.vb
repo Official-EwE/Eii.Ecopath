@@ -2620,7 +2620,7 @@ Public Class cCore
     Public Function CloseModel() As Boolean
 
         If Not Me.SaveChanges() Then Return False
-#If DEBUG Then
+#If PROFILE Then
         System.Console.WriteLine("CloseModel() memory before  " & GC.GetTotalMemory(True))
 #End If
 
@@ -2731,7 +2731,7 @@ Public Class cCore
         End Try
 
         GC.Collect()
-#If DEBUG Then
+#If PROFILE Then
         System.Console.WriteLine("CloseModel() memory after  " & GC.GetTotalMemory(True))
 #End If
 
