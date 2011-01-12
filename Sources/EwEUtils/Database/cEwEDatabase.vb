@@ -672,7 +672,9 @@ Namespace Database
                 Me.m_transaction = Nothing
                 Return True
             Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("cEwEDatabase: Transaction commit failed: {0}", ex.Message)
+#End If
                 If (bRollbackOnError) Then Me.RollbackTransaction()
             End Try
             Return False
@@ -690,7 +692,9 @@ Namespace Database
                 Me.m_transaction = Nothing
                 Return True
             Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("cEwEDatabase: Transaction rollback failed: {0}", ex.Message)
+#End If
                 Return False
             End Try
         End Function
@@ -751,7 +755,9 @@ Namespace Database
                     reader = command.ExecuteReader()
                 End Using
             Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("GetReader error: {0}", ex.Message)
+#End If
                 reader = Nothing
             End Try
             Return reader
@@ -822,7 +828,9 @@ Namespace Database
                     value = command.ExecuteScalar()
                 End Using
             Catch ex As Exception
+#If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("** DB error '{0}' on query '{1}'", ex.Message, strSQL)
+#End If
                 value = Nothing
             End Try
             Return value
@@ -886,7 +894,9 @@ Namespace Database
                     command.ExecuteNonQuery()
                 End Using
             Catch ex As Exception
+#If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("* DB exception '{0}' on '{1}'", ex.Message, strSQL)
+#End If
                 bSucces = False
             End Try
             Return bSucces
