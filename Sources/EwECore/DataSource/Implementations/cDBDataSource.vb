@@ -2316,8 +2316,9 @@ Namespace DataSources
                     ' 060528JS: ASSERT on "diet leftovers" from previous incarnations, including 041020VC fix for carbon groups
                     ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
                     If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
-                        Debug.Assert(ecopathDS.DCInput(iPred, iPrey) = 0, _
-                            String.Format("Database corrupted on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
+                        If (ecopathDS.DCInput(iPred, iPrey) <> 0) Then
+                            cLog.Write(String.Format("Database error on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
+                        End If
                     End If
 
                     ' VERIFY_JS: check mapping for MTI with JB
