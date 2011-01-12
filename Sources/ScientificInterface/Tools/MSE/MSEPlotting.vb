@@ -78,6 +78,7 @@ Friend Class cMSEPlotter
     Private m_Data As List(Of cCoreGroupBase)
     Private m_RefPoints As List(Of cMSERefPoint)
     Private m_nLines As Integer
+    Private m_isFished() As Boolean
 
 #End Region
 
@@ -98,6 +99,8 @@ Friend Class cMSEPlotter
         Me.m_uic = uic
         Me.m_zdGraph = ZedGraph
         Me.m_manager = MSEManager
+
+        Me.getIsFished()
 
         Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, Me.nVisPanes)
 
@@ -149,6 +152,17 @@ Friend Class cMSEPlotter
         End Set
     End Property
 
+    Private ReadOnly Property isFished(ByVal GroupIndex As Integer) As Boolean
+        Get
+            Try
+                Return Me.m_isFished(GroupIndex)
+            Catch ex As Exception
+                'swallow it...
+            End Try
+            Return False
+        End Get
+    End Property
+
 
     Public Sub Clear()
         Try
@@ -175,8 +189,6 @@ Friend Class cMSEPlotter
         Try
 
             If Me.m_Data IsNot Nothing Then
-
-                'Me.m_zgh.NumPanes = Me.nVisPanes
 
                 If Me.m_type <> ePlotTypes.Line Then
                     Me.m_zgh.NumPanes = Me.nVisPanes
@@ -377,8 +389,26 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Sub configValuePanes()
+    Friend Function isGroupVisible(ByVal GroupIndex As Integer) As Boolean
 
+        If Me.m_uic.StyleGuide.GroupVisible(GroupIndex) Then
+
+            If Me.m_dataType <> ePlotData.GroupCatch Then
+                Return True
+            End If
+
+            If Me.m_dataType = ePlotData.GroupCatch And Me.isFished(GroupIndex) Then
+                'For ePlotData.GroupCatch only fished groups are visible
+                Return True
+            End If
+
+        End If
+
+        Return False
+
+    End Function
+
+    Private Sub configValuePanes()
         Dim ipane As Integer
         Dim xStart As Double = CDbl(Me.m_uic.Core.EcosimFirstYear)
 
@@ -389,13 +419,16 @@ Friend Class cMSEPlotter
                 Dim grp As cCoreGroupBase = Nothing
                 For i As Integer = 1 To Me.m_manager.NumGroups
                     grp = Me.m_manager.GroupInputs(i)
-                    If Me.m_uic.StyleGuide.GroupVisible(grp.Index) Then
+                    'figure out if this group is visible
+                    If Me.isGroupVisible(grp.Index) Then
+                        'Only configure the pane if this group is visible
                         ipane += 1
                         Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart, _
                                                CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
                                                Me.YLabel, 0, 0, False, LegendPos.Top, ipane)
                         Me.m_zgh.AutoscalePane(ipane) = True
                     End If
+
                 Next
 
             Case ePlotData.Effort, ePlotData.FleetValue
@@ -770,7 +803,7 @@ Friend Class cMSEPlotter
     Private Function nVisGroups() As Integer
         Dim n As Integer
         For igrp As Integer = 1 To Me.m_uic.Core.nLivingGroups
-            If Me.m_uic.StyleGuide.GroupVisible(igrp) Then
+            If Me.isGroupVisible(igrp) Then
                 n += 1
             End If
         Next
@@ -787,12 +820,41 @@ Friend Class cMSEPlotter
         Return n
     End Function
 
-    Private Function nVisPanes() As Integer
+    Friend Function nVisPanes() As Integer
         If Me.m_dataType = ePlotData.Effort Or Me.m_dataType = ePlotData.FleetValue Then
             Return nVisFleets()
         End If
         Return nVisGroups()
     End Function
+
+    Private Sub getIsFished()
+
+        Try
+
+            Dim core As cCore = Me.m_uic.Core
+            Dim ngrps As Integer = core.GetCoreCounter(eCoreCounterTypes.nGroups)
+            Dim nflts As Integer = core.GetCoreCounter(eCoreCounterTypes.nFleets)
+            Dim fleetIO As cFleetInput
+            Dim tc As Single
+
+            ReDim Me.m_isFished(ngrps)
+            For iflt As Integer = 1 To nflts
+                fleetIO = core.FleetInputs(iflt)
+                For igrp As Integer = 1 To ngrps
+                    tc = fleetIO.Discards(igrp) + fleetIO.Landings(igrp)
+                    If tc > 0 Then
+                        Me.m_isFished(igrp) = True
+                        Exit For
+                    End If
+                Next
+            Next
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".getIsFished() Exception: " & ex.Message)
+            cLog.Write(ex)
+        End Try
+
+    End Sub
 
 #End Region
 

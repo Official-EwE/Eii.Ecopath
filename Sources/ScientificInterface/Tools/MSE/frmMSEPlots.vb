@@ -19,8 +19,6 @@ Imports ZedGraph
 Public Class frmMSEPlots
 
     'ToDo_jb 12-Jan-2010 frmMSEPlots Show Hide button should be disabled when Fleet data is selected
-    'ToDo_jb 14-Dec-2010 frmMSEPlots Zedgraph may not init and clean up the number of graphs correctly 
-    'when changing between Groups and Fleets
 
     Private m_MSE As cMSEManager
     Private m_paneMaster As MasterPane = Nothing
@@ -30,8 +28,8 @@ Public Class frmMSEPlots
     Private m_curPlotType As ePlotTypes
     Private m_curPlotData As ePlotData
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Debug.Assert(Me.UIContext IsNot Nothing)
@@ -66,6 +64,7 @@ Public Class frmMSEPlots
 
         Me.m_curPlotData = ePlotData.Biomass
         Me.m_curPlotType = ePlotTypes.Histogram
+
 
         Try
             Me.DrawPlots()
@@ -107,14 +106,17 @@ Public Class frmMSEPlots
         Dim data As New List(Of cCoreGroupBase)
 
         Try
+            'set the plot type and data before adding the data to the plotter
+            'DataType is needed by isGroupVisible()
+            Me.m_plotter.PlotType = PlotType
+            Me.m_plotter.DataType = DataType
+
             For Each stat As cMSEStats In lstStatObjects
-                If Me.UIContext.StyleGuide.GroupVisible(stat.Index) Then
+                If Me.m_plotter.isGroupVisible(stat.Index) Then
                     data.Add(stat)
                 End If
             Next
 
-            Me.m_plotter.PlotType = PlotType
-            Me.m_plotter.DataType = DataType
             Me.m_plotter.AddData(data)
             Me.m_plotter.Draw()
 
