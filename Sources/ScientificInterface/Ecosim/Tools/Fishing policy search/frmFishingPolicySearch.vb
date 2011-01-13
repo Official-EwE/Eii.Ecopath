@@ -118,6 +118,7 @@ Namespace Ecosim
 
             Me.m_lstOptEnabled.Clear()
 
+            Me.m_blocks.Detach()
             Me.m_blocks.Dispose()
 
             RemoveHandler Me.m_propBaseYear.PropertyChanged, AddressOf OnBaseYearChanged
