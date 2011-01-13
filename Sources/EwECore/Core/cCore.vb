@@ -5594,7 +5594,6 @@ Public Class cCore
 
         If Me.m_EcosimOutputs IsNot Nothing Then
             Me.m_EcosimOutputs.Clear()
-            Me.m_EcosimOutputs = Nothing
         End If
 
         If Me.m_EcosimStats IsNot Nothing Then
