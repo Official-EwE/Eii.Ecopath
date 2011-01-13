@@ -110,6 +110,12 @@ Namespace Ecosim
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             Me.m_manager.DisConnect()
+
+            'jb remove the Results grids from the interface panels
+            'this did not fix the gridFPSResultSystemObjectives memory leak...
+            m_scIterResultMultiRun.Panel1.Controls.Clear()
+            m_scIterResultMultiRun.Panel2.Controls.Clear()
+
             Me.m_lstOptEnabled.Clear()
 
             Me.m_blocks.Dispose()
