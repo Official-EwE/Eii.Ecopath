@@ -89,7 +89,7 @@ Namespace Ecosim
                     Me(i, 0) = New EwERowHeaderCell(i)
                     Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                     Me(i, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetJobCatchValue)
-                    Me(i, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetTargetProfit)
+                    Me(i, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetTargetProfit)
                 End If
             Next
 
