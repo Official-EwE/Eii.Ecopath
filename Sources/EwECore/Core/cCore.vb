@@ -6680,6 +6680,9 @@ Public Class cCore
             m_publisher.AddMessage(New cMessage("Ecosim run completed.", eMessageType.EcosimRunCompleted, _
                                             eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.NotSet))
 
+            Me.m_EcoSim.TimeStepDelegate = Nothing
+            Me.m_EcoSim.RunCompletedDelegate = Nothing
+
             ' Update core state monitor
             Me.m_StateMonitor.SetEcosimCompleted()
             ' Send messages after
