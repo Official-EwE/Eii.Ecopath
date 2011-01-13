@@ -143,10 +143,12 @@ Namespace Ecosim
 
             Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
             Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
+            Me.CommandHandler.Remove(Me.m_cmdLoadTS)
 
+            'jb the 'WeightTimeSeries' command was not loaded during OnLoad() 
             ' Disconnect from ApplyTS command
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand("WeightTimeSeries")
-            If cmd IsNot Nothing Then cmd.RemoveControl(Me.m_btnTS)
+            'Dim cmd As cCommand = Me.CommandHandler.GetCommand("WeightTimeSeries")
+            'If cmd IsNot Nothing Then cmd.RemoveControl(Me.m_btnTS)
 
             Me.m_lbGroups.Detach()
 
