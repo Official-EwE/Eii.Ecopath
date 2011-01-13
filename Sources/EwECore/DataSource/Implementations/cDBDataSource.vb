@@ -742,7 +742,7 @@ Namespace DataSources
                 ecopathDS.ModelUnitTimeCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
                 ecopathDS.ModelUnitMonetary = DirectCast(Me.ReadSafe(reader, "UnitMonetary", "EUR"), String)
                 'ecopathDS.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
-                ecopathDS.FirstYear = CInt(Me.ReadSafe(reader, "FirstYear", cCore.NULL_VALUE))
+                ecopathDS.FirstYear = CInt(Me.ReadSafe(reader, "FirstYear", 0))
                 ecopathDS.NumYears = Math.Max(1, CInt(Me.ReadSafe(reader, "NumYears", 1)))
                 'ecopathDS.ModelUnitArea = DirectCast(Me.ReadSafe(reader, "UnitArea", eUnitAreaType.Km2), eUnitAreaType)
                 'ecopathDS.ModelUnitAreaCustom = CStr(Me.ReadSafe(reader, "UnitAreaCustom", ""))
