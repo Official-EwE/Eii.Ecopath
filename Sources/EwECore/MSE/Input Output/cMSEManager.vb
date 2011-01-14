@@ -150,11 +150,9 @@ Namespace MSE
             End Get
         End Property
 
-        Public ReadOnly Property Output() As cMSEOutput
-            Get
-                Return Me.m_output
-            End Get
-        End Property
+        Public Function Output() As cMSEOutput
+            Return Me.m_output
+        End Function
 
         Public ReadOnly Property GroupOutputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
             Get
@@ -308,7 +306,7 @@ Namespace MSE
 
             Try
 
-                If Me.isRunning Then
+                If Me.IsRunning Then
                     Me.m_core.Messages.SendMessage(New cMessage("A Management Strategy Evaluation is already running. Only one evaluation can be run at a time.", _
                                                                 eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical, eDataTypes.MSEManager))
                     Return False
@@ -316,7 +314,7 @@ Namespace MSE
 
                 'set the wait object to block all calling threads
                 'this will set isRunning to True
-                Me.setWait()
+                Me.SetWait()
 
                 Try
                     Me.m_core.PluginManager.MSERunStarted()

@@ -5136,11 +5136,9 @@ Public Class cCore
     ''' <summary>
     ''' Get outputs of the last Ecosim run
     ''' </summary>
-    Public ReadOnly Property EcosimOutputs() As cEcosimOutput
-        Get
-            Return Me.m_EcosimOutputs
-        End Get
-    End Property
+    Public Function EcosimOutputs() As cEcosimOutput
+        Return Me.m_EcosimOutputs
+    End Function
 
     ''' <summary>
     ''' Normalize MSE QuotaShare values
@@ -11479,13 +11477,13 @@ Public Class cCore
 
         End Select
 
-                ' Cascade name changes across models
-                If value.varName = eVarNameFlags.Name Then
-                    Me.Cascade_Name(CStr(value.Value), obj, msg)
-                End If
+        ' Cascade name changes across models
+        If value.varName = eVarNameFlags.Name Then
+            Me.Cascade_Name(CStr(value.Value), obj, msg)
+        End If
 
 
-                ' Cascade PP changes across models
+        ' Cascade PP changes across models
 
     End Sub
 
