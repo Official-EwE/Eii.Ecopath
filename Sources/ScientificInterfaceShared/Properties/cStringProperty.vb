@@ -102,7 +102,9 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Public Overrides Function IsValue(ByVal value As Object) As Boolean
             Try
-                Return (String.Compare(Me.m_strValue, CStr(value), StringComparison.Ordinal) = 0)
+                Dim strValue As String = ""
+                If value IsNot Nothing Then strValue = value.ToString
+                Return (String.Compare(Me.m_strValue, strValue, StringComparison.Ordinal) = 0)
             Catch ex As Exception
                 Return False
             End Try
