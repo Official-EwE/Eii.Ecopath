@@ -6,7 +6,9 @@ Public Class cGameServerInterface
     ' Private m_dctDataTypes As Dictionary(Of EwEUtils.Core.eDataTypes, Object)
     Private m_dctCoreListData As Dictionary(Of EwEUtils.Core.eDataTypes, cCoreInputOutputList(Of EwECore.cCoreInputOutputBase))
 
-    Private m_dctCoreData As Dictionary(Of EwEUtils.Core.eDataTypes, EwECore.cCoreInputOutputBase)
+    ' JS 14Jan01: Core data no longer cached due to new core cleanup dynamics
+    '             More vigilant cleanup code requires these objects to be created only when needed
+    'Private m_dctCoreData As Dictionary(Of EwEUtils.Core.eDataTypes, EwECore.cCoreInputOutputBase)
 
 
     Public Sub New(ByRef theCore As cCore)
@@ -16,7 +18,7 @@ Public Class cGameServerInterface
     Friend Sub Init()
 
         m_dctCoreListData = New Dictionary(Of EwEUtils.Core.eDataTypes, cCoreInputOutputList(Of EwECore.cCoreInputOutputBase))
-        m_dctCoreData = New Dictionary(Of EwEUtils.Core.eDataTypes, EwECore.cCoreInputOutputBase)
+        'm_dctCoreData = New Dictionary(Of EwEUtils.Core.eDataTypes, EwECore.cCoreInputOutputBase)
         'ecopath
         m_dctCoreListData.Add(eDataTypes.EcoPathGroupInput, m_core.m_EcoPathInputs)
         m_dctCoreListData.Add(eDataTypes.EcoPathGroupOutput, m_core.m_EcoPathOutputs)
@@ -48,8 +50,8 @@ Public Class cGameServerInterface
         'list.Add(Me.m_core.MSEManager.Output)
         'm_dctCoreListData.Add(eDataTypes.MSEOutput, list)
 
-        m_dctCoreData.Add(eDataTypes.MSEOutput, Me.m_core.MSEManager.Output)
-        m_dctCoreData.Add(eDataTypes.EcosimOutput, Me.m_core.EcosimOutputs)
+        'm_dctCoreData.Add(eDataTypes.MSEOutput, Me.m_core.MSEManager.Output)
+        'm_dctCoreData.Add(eDataTypes.EcosimOutput, Me.m_core.EcosimOutputs)
 
     End Sub
 
@@ -65,11 +67,12 @@ Public Class cGameServerInterface
 
     Public ReadOnly Property CoreData(ByVal DataType As EwEUtils.Core.eDataTypes) As EwECore.cCoreInputOutputBase
         Get
-            Dim data As cCoreInputOutputBase
-            If m_dctCoreData.ContainsKey(DataType) Then
-                data = m_dctCoreData(DataType)
-            End If
-            Return data
+            ' Try to obtain object on the fly
+            Select Case DataType
+                Case eDataTypes.EcosimOutput : Return Me.m_core.EcosimOutputs
+                Case eDataTypes.MSEOutput : Return Me.m_core.MSEManager.Output
+            End Select
+            Return Nothing
         End Get
     End Property
 
@@ -100,11 +103,8 @@ Public Class cGameServerInterface
 
         Try
             ' Server may not have been initialized!
-            If (Me.m_dctCoreData IsNot Nothing) Then
+            If (Me.m_dctCoreListData IsNot Nothing) Then
                 Me.m_dctCoreListData.Clear()
-            End If
-            If (Me.m_dctCoreData IsNot Nothing) Then
-                Me.m_dctCoreData.Clear()
             End If
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
