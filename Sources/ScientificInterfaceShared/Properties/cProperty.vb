@@ -483,25 +483,23 @@ Namespace Properties
                     Optional ByVal notify As TriState = TriState.False, _
                     Optional ByVal BitSetMode As eBitSetMode = eBitSetMode.All) As Boolean
 
-            ' Get the current style
-            Dim style As cStyleGuide.eStyleFlags = Me.Style
             ' Change flag
             Dim bChanged As Boolean = False
 
             ' Calc what new Style flag will become
             Select Case BitSetMode
                 Case eBitSetMode.All
-                    style = newStyle
+                    ' NOP
                 Case eBitSetMode.BitwiseOn
-                    style = style Or newStyle
+                    newStyle = Me.Style Or newStyle
                 Case eBitSetMode.BitwiseOff
-                    style = style And (Not newStyle)
+                    newStyle = Me.Style And (Not newStyle)
             End Select
 
             ' Will the style change?
-            If (Not IsStyle(newStyle)) Then
+            If (Not Me.IsStyle(newStyle)) Then
                 ' #Yes: update the style
-                Me.Style = style
+                Me.Style = newStyle
                 ' Remember that things have changed
                 bChanged = True
             End If
