@@ -4087,7 +4087,8 @@ Public Class cCore
                 End Select
 
                 ' Did this affect any significant core component?
-                If (msAffected <> eCoreComponentType.NotSet) Then
+                If (msAffected <> eCoreComponentType.NotSet) And _
+                   (msg.Importance = eMessageImportance.Maintenance) Then
                     ' Has datasource?
                     If (Me.DataSource IsNot Nothing) Then
                         ' #Yes: dirty the data source
