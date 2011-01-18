@@ -747,15 +747,11 @@ Namespace DataSources
                 'ecopathDS.ModelUnitArea = DirectCast(Me.ReadSafe(reader, "UnitArea", eUnitAreaType.Km2), eUnitAreaType)
                 'ecopathDS.ModelUnitAreaCustom = CStr(Me.ReadSafe(reader, "UnitAreaCustom", ""))
 
-                sVal1 = CSng(Me.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
-                sVal2 = CSng(Me.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
-                ecopathDS.ModelSouth = Math.Min(sVal1, sVal2)
-                ecopathDS.ModelNorth = Math.Max(sVal1, sVal2)
+                ecopathDS.ModelSouth = CSng(Me.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
+                ecopathDS.ModelNorth = CSng(Me.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
+                ecopathDS.ModelWest = CSng(Me.ReadSafe(reader, "MinLon", cCore.NULL_VALUE))
+                ecopathDS.ModelEast = CSng(Me.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
 
-                sVal1 = CSng(Me.ReadSafe(reader, "MinLon", cCore.NULL_VALUE))
-                sVal2 = CSng(Me.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
-                ecopathDS.ModelWest = Math.Min(sVal1, sVal2)
-                ecopathDS.ModelEast = Math.Max(sVal1, sVal2)
                 ecopathDS.ModelAreaName = CStr(Me.ReadSafe(reader, "AreaName", ""))
                 ecopathDS.ModelLastSaved = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
 
