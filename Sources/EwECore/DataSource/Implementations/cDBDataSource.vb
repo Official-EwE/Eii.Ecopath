@@ -6739,14 +6739,14 @@ Namespace DataSources
                 ' Read the one record
                 reader.Read()
                 ' Remember link with Ecosim scenario, if any
-                ecospaceDS.EcosimScenarioDBID = CInt(reader("EcosimScenarioID"))
+                ecospaceDS.EcosimScenarioDBID = CInt(Me.ReadSafe(reader, "EcosimScenarioID", cCore.NULL_VALUE))
                 ecospaceDS.InRow = CInt(reader("Inrow"))
                 ecospaceDS.InCol = CInt(reader("Incol"))
                 ecospaceDS.CellLength = CSng(reader("CellLength"))
-                ecospaceDS.IDH_UL = CSng(reader("IDH_UL"))
-                ecospaceDS.IDH_SS = CSng(reader("IDH_SS"))
-                ecospaceDS.TimeStep = CSng(reader("TimeStep"))
-                ecospaceDS.PredictEffort = CBool(reader("PredictEffort"))
+                ecospaceDS.IDH_UL = CSng(Me.ReadSafe(reader, "IDH_UL", 0))
+                ecospaceDS.IDH_SS = CSng(Me.ReadSafe(reader, "IDH_SS", 2))
+                ecospaceDS.TimeStep = CSng(Me.ReadSafe(reader, "TimeStep", 0))
+                ecospaceDS.PredictEffort = CBool(Me.ReadSafe(reader, "PredictEffort", True))
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
                 If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -7062,7 +7062,10 @@ Namespace DataSources
                 drow("LastSaved") = cDateUtils.DateToJulian()
                 drow("InRow") = InRow
                 drow("InCol") = InCol
+                drow("CellLength") = sCellSize
                 drow("ModelType") = 2
+                drow("IDH_UL") = 0
+                drow("IDH_SS") = 2
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)
