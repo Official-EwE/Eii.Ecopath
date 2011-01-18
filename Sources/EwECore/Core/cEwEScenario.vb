@@ -30,7 +30,7 @@ Public MustInherit Class cEwEScenario
             m_values.Add(val.varName, val)
 
             ' Author
-            meta = New cVariableMetaData(60)
+            meta = New cVariableMetaData(250)
             val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
