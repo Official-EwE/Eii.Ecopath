@@ -5,7 +5,7 @@ Imports EwEUtils.Core
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.1.0.009:</para>
+''' <para>Database update 6.1.1.002:</para>
 ''' <para>
 ''' <list type="bullet">
 ''' <item><description>Fixed MSY group and fleet year constraints.</description></item>
