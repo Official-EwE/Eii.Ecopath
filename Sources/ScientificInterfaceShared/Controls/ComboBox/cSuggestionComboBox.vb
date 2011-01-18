@@ -66,6 +66,23 @@ Namespace Controls
             End Set
         End Property
 
+        Public Shadows Property Text() As String
+            Get
+                Try
+                    Return MyBase.Text
+                Catch ex As Exception
+                    Return ""
+                End Try
+            End Get
+            Set(ByVal value As String)
+                Try
+                    MyBase.Text = value
+                Catch ex As Exception
+                    ' NOP
+                End Try
+            End Set
+        End Property
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get the selected <see cref="cGeoCodeLocation">location</see>.
@@ -73,7 +90,12 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Public Overloads Property SelectedItem() As cGeoCodeLocation
             Get
-                Dim iIndex As Integer = Me.SelectedIndex
+                Dim iIndex As Integer = -1
+                Try
+                    iIndex = Me.SelectedIndex
+                Catch ex As Exception
+                    ' Wow!
+                End Try
                 If iIndex = -1 Then Return Nothing
                 Return DirectCast(Me.Items(iIndex), cGeoLocationItem).Item
             End Get
@@ -139,6 +161,7 @@ Namespace Controls
                     Me.Text = strText
                 Else
                     ' #No: do not show suggestions 'cause there are none
+                    Me.Items.Add(strText)
                     Me.DroppedDown = False
                 End If
 
