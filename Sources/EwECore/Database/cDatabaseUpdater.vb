@@ -275,8 +275,12 @@ Namespace Database
                                                eCoreComponentType.DataSource, _
                                                eMessageImportance.Critical)
 
-            Me.m_core.Messages.SendMessage(msg)
-            cLog.Write("Database update failure: " & msg.Message)
+            Try
+                Me.m_core.Messages.SendMessage(msg)
+                cLog.Write("Database update failure: " & strError)
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
