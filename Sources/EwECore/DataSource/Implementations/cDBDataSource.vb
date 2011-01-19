@@ -7127,6 +7127,7 @@ Namespace DataSources
                 '    Update 6.04005
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE (ScenarioID={0})", iScenarioID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioFleetMap WHERE (ScenarioID={0})", iScenarioID))
                 ' Delete scenario
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
             Catch ex As Exception
