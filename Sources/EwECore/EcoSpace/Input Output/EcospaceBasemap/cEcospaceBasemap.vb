@@ -632,4 +632,53 @@ Public Class cEcospaceBasemap
 
 #End Region ' Layer interface
 
+#Region " Cell position calculations "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the top-left latitude position of the given row.
+    ''' </summary>
+    ''' <param name="iRow"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function RowToLat(ByVal iRow As Integer) As Single
+        Return Me.Latitude + (iRow - 1) * Me.CellLength
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the one-based index of the row that contains a given latitude value.
+    ''' </summary>
+    ''' <param name="sLat"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function LatToRow(ByVal sLat As Single) As Integer
+        Return CInt(Math.Floor((Me.Latitude - sLat) * Me.CellLength)) + 1
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the top-left longitude position of the given row.
+    ''' </summary>
+    ''' <param name="iCol"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function ColToLon(ByVal iCol As Integer) As Single
+        Return Me.Longitude + (iCol - 1) / Me.CellLength
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the one-based index of the column that contains a given longitude 
+    ''' value.
+    ''' </summary>
+    ''' <param name="sLon"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function LonToCol(ByVal sLon As Single) As Integer
+        Return CInt(Math.Floor((sLon - Me.Longitude) * Me.CellLength)) + 1
+    End Function
+
+#End Region ' Cell calculations
+
 End Class
