@@ -276,6 +276,7 @@ Namespace Database
                                                eMessageImportance.Critical)
 
             Me.m_core.Messages.SendMessage(msg)
+            cLog.Write("Database update failure: " & msg.Message)
 
         End Sub
 
