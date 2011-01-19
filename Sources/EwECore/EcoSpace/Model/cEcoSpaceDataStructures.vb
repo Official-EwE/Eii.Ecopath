@@ -135,13 +135,9 @@ Public Class cEcospaceDataStructures
     ''' <summary>Length in KM of a cell </summary>
     ''' <remarks>Not area</remarks>
     Public CellLength As Single
-    ''' <summary>Current basemap stepsize, in number of steps per degree</summary>
-    Public IDH_SS As Single
-    ''' <summary>Upper left coordinate of the current basemap</summary>
-    Public IDH_UL As Single
-    ''' <summary>Latitude of upper left coordinate of the current basemap, calculated from <see cref="IDH_UL">IDH_UL</see></summary>
+    ''' <summary>Latitude of upper left coordinate of the current basemap.</summary>
     Public Lat1 As Single
-    ''' <summary>Longitude of upper left coordinate of the current basemap, calculated from <see cref="IDH_UL">IDH_UL</see></summary>
+    ''' <summary>Longitude of upper left coordinate of the current basemap.</summary>
     Public Lon1 As Single
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -876,15 +872,7 @@ Public Class cEcospaceDataStructures
 
         If InRow = 0 Then InRow = 20 'number of map cell rows
         If InCol = 0 Then InCol = 20 'number of map cell columns
-
-        If CellLength = 0 Then CellLength = 5 'map cell side length (km)
-
-        If IDH_SS = 0 Then IDH_SS = 2
-        If IDH_UL > 0 Then
-            ' JS 061204: Replaced '\' operator by Math.Truncate(# / #)
-            Lat1 = CSng((Math.Truncate(IDH_UL / 10000) - 900) / 10)
-            Lon1 = CSng((IDH_UL - Math.Truncate(IDH_UL / 10000) * 10000) / 10 - 180)
-        End If
+        If CellLength = 0 Then CellLength = 5 'map cell size, in degrees
 
     End Sub
 

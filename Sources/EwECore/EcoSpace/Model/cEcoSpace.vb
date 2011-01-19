@@ -5121,8 +5121,6 @@ exitline:
 
         ' This calculation does NOT take the shape of land into account
 
-        If m_Data.IDH_SS <= 0 Then m_Data.IDH_SS = 2
-
         Ports = 0
         For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
@@ -5161,8 +5159,8 @@ exitline:
         For iPort = 1 To Ports      'go port by port
             ix = PortX(iPort)
             iy = PortY(iPort)
-            LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS))
-            LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS))
+            LonPort = CSng(m_Data.Lon1 + (ix * m_Data.CellLength))
+            LatPort = CSng(m_Data.Lat1 - (iy * m_Data.CellLength))
             For iFleet = 0 To Me.m_Data.nFleets
                 ' Is this fleet based in a this port?
                 If Me.m_Data.Port(iFleet, ix, iy) Then
@@ -5172,8 +5170,8 @@ exitline:
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
                             If Me.EcoSpaceData.Depth(i, j) > 0 Then 'water cell
-                                Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS))
-                                Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS))
+                                Longi = CSng(m_Data.Lon1 + (i * m_Data.CellLength))
+                                Lati = CSng(m_Data.Lat1 - (j * m_Data.CellLength))
                                 'Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / 2.0!)
                                 'Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / 2.0!)
                                 Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.NauticalMiles)

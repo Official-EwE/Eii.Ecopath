@@ -6743,8 +6743,8 @@ Namespace DataSources
                 ecospaceDS.InRow = CInt(reader("Inrow"))
                 ecospaceDS.InCol = CInt(reader("Incol"))
                 ecospaceDS.CellLength = CSng(reader("CellLength"))
-                ecospaceDS.IDH_UL = CSng(Me.ReadSafe(reader, "IDH_UL", 0))
-                ecospaceDS.IDH_SS = CSng(Me.ReadSafe(reader, "IDH_SS", 2))
+                ecospaceDS.Lat1 = CSng(Me.ReadSafe(reader, "MinLat", 0))
+                ecospaceDS.Lon1 = CSng(Me.ReadSafe(reader, "MinLon", 0))
                 ecospaceDS.TimeStep = CSng(Me.ReadSafe(reader, "TimeStep", 0))
                 ecospaceDS.PredictEffort = CBool(Me.ReadSafe(reader, "PredictEffort", True))
 
@@ -6956,8 +6956,8 @@ Namespace DataSources
                 drow("Inrow") = ecospaceDS.InRow
                 drow("Incol") = ecospaceDS.InCol
                 drow("CellLength") = ecospaceDS.CellLength
-                drow("IDH_UL") = ecospaceDS.IDH_UL
-                drow("IDH_SS") = ecospaceDS.IDH_SS
+                drow("MinLon") = ecospaceDS.Lon1
+                drow("MinLat") = ecospaceDS.Lat1
                 drow("TimeStep") = ecospaceDS.TimeStep
                 drow("PredictEffort") = ecospaceDS.PredictEffort
 
@@ -7063,9 +7063,9 @@ Namespace DataSources
                 drow("InRow") = InRow
                 drow("InCol") = InCol
                 drow("CellLength") = sCellSize
+                drow("MinLat") = sOriginLat
+                drow("MinLon") = sOriginLon
                 drow("ModelType") = 2
-                drow("IDH_UL") = 0
-                drow("IDH_SS") = 2
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)
