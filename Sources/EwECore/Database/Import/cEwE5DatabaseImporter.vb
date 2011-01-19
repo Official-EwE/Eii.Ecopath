@@ -3012,9 +3012,19 @@ Namespace Database
                 drow("EcosimScenarioID") = iEcosimScenarioID
                 drow("Inrow") = Me.FixValue(reader, "Inrow")
                 drow("Incol") = Me.FixValue(reader, "Incol")
-                drow("CellLength") = Me.FixValue(reader, "CellLength")
-                drow("IDH_UL") = Me.FixValue(reader, "IDH_UL", 0)
-                drow("IDH_SS") = Me.FixValue(reader, "IDH_SS", 0)
+
+                Dim sCellLength As Single = CSng(Me.FixValue(reader, "CellLength"))
+                If sCellLength = 0 Then
+                    Dim sIDH_SS As Single = CSng(Me.FixValue(reader, "IDH_SS", 2))
+                    If sIDH_SS = 0 Then sIDH_SS = 2
+                    sCellLength = 1 / sIDH_SS
+                End If
+                drow("CellLength") = sCellLength
+
+                Dim lUDH_UL As Long = CLng(Me.FixValue(reader, "IDH_UL", 0))
+                drow("MinLat") = CSng((Math.Truncate(lUDH_UL / 10000) - 900) / 10)
+                drow("MinLon") = CSng((lUDH_UL - Math.Truncate(lUDH_UL / 10000) * 10000) / 10 - 180)
+
                 drow("TimeStep") = Me.FixValue(reader, "TimeStep", 0.25)
                 drow("PredictEffort") = Me.FixValue(reader, "PredictEffort")
                 drow("LastSaved") = Me.ExtractLastSavedJulianDate(CStr(Me.FixValue(reader, "remarks", "")))

@@ -653,7 +653,7 @@ Public Class cEcospaceBasemap
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function LatToRow(ByVal sLat As Single) As Integer
-        Return CInt(Math.Floor((Me.Latitude - sLat) * Me.CellLength)) + 1
+        Return CInt(Math.Floor((Me.Latitude - sLat) / Me.CellLength)) + 1
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -664,7 +664,7 @@ Public Class cEcospaceBasemap
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function ColToLon(ByVal iCol As Integer) As Single
-        Return Me.Longitude + (iCol - 1) / Me.CellLength
+        Return Me.Longitude + (iCol - 1) * Me.CellLength
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -676,7 +676,7 @@ Public Class cEcospaceBasemap
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function LonToCol(ByVal sLon As Single) As Integer
-        Return CInt(Math.Floor((sLon - Me.Longitude) * Me.CellLength)) + 1
+        Return CInt(Math.Floor((sLon - Me.Longitude) / Me.CellLength)) + 1
     End Function
 
 #End Region ' Cell calculations
