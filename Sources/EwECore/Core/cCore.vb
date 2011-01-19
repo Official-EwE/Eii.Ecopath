@@ -1928,6 +1928,18 @@ Public Class cCore
         Return msg
     End Function
 
+    ''' -------------------------------------------------------------------------
+    ''' <summary>
+    ''' Save changes.
+    ''' </summary>
+    ''' <param name="bQuiet">Flag stating whether to suppress any user prompts.</param>
+    ''' <param name="savelevel">The MINIMUM level of data to save. For instance,
+    ''' when loading a new Ecospace scenario, any pending Ecospace changes have
+    ''' to be stored but there is no need to save Sim or Path. A savelevel value 
+    ''' of <see cref="eBatchChangeLevelFlags.Ecospace">Ecospace</see> would 
+    ''' achieve this.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -------------------------------------------------------------------------
     Public Function SaveChanges(Optional ByVal bQuiet As Boolean = False, _
                                 Optional ByVal savelevel As eBatchChangeLevelFlags = eBatchChangeLevelFlags.Ecopath) As Boolean
 
