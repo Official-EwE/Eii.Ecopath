@@ -99,6 +99,11 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerMPA, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' LayerRegion
+            meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nRegions), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            val = New cValue(0, eVarNameFlags.LayerRegion, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' LayerMigration
             meta = New cVariableMetaData(1, cCore.N_MONTHS, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerMigration, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
