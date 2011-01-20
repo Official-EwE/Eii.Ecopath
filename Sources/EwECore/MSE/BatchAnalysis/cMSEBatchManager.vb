@@ -83,7 +83,9 @@ Namespace MSEBatchManager
             MSE.BatchManager = Me
 
             Try
-                Me.Core.PluginManager.MSEBatchInitialized(Me, Me.BatchData)
+                If (Me.Core.PluginManager IsNot Nothing) Then
+                    Me.Core.PluginManager.MSEBatchInitialized(Me, Me.BatchData)
+                End If
             Catch ex As Exception
 
             End Try
