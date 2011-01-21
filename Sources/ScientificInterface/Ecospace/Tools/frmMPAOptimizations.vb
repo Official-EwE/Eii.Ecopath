@@ -681,7 +681,13 @@ Namespace Ecospace
         End Property
 
         Private Function SelectedClosedPercentage() As Integer
-            Return CInt(Val(Me.m_cmbAreaClosed.Text))
+            Dim iPerc As Integer = 20
+            Try
+                iPerc = CInt(Me.m_cmbAreaClosed.Items(Me.m_cmbAreaClosed.SelectedIndex))
+            Catch ex As Exception
+                ' Wow
+            End Try
+            Return iPerc
         End Function
 
         Private Function SelectedBestPercentile() As Single
