@@ -51,11 +51,16 @@ Public Class cPPIManager
                     m_PPIs.Add(getKey(ipred, iprey), ppInter)
                 End If
 
+                'producers must have an interaction with themselves
+                'so the user can add production forcing
                 If ipred = iprey And m_EPData.PP(iprey) = 1 Then
                     ppInter = New cPredPreyInteraction(ipred, iprey, Me)
-                    m_PPIs.Add(getKey(ipred, iprey), ppInter)
+                    'make sure there is not already a key for this PP
+                    'this should not happen but can if the data is wrong
+                    If Not m_PPIs.ContainsKey(getKey(ipred, iprey)) Then
+                        m_PPIs.Add(getKey(ipred, iprey), ppInter)
+                    End If
                 End If
-
             Next iprey
         Next ipred
 
