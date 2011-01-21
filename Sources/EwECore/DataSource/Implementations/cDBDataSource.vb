@@ -3615,6 +3615,9 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iScenarioID))
                 '    DB update 6.07001
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
+                '    DB probably an even older database update, hmm
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetYear WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroupYear WHERE (ScenarioID={0})", iScenarioID))
                 ' Delete actual scenario
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
             Catch ex As Exception
