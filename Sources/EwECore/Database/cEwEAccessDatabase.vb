@@ -338,7 +338,13 @@ Namespace Database
                 '' Handle event to implement Access Autonumber ID fix
                 'AddHandler adapter.RowUpdated, New OleDbRowUpdatedEventHandler(AddressOf OnRowUpdated)
 
+            Catch ex As InvalidOperationException
+                cLog.Write(String.Format("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
+                Debug.Assert(False, String.Format("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
+                adapter = Nothing
+
             Catch ex As Exception
+                cLog.Write(String.Format("Error when opening adapter for query {0}: {1}", strSQL, ex.Message))
                 Debug.Assert(False, String.Format("Error when opening adapter for query {0}: {1}", strSQL, ex.Message))
                 adapter = Nothing
             End Try
