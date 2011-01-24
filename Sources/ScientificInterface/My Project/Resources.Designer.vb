@@ -2828,11 +2828,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to This database appears to be written by a newer major release of Ecopath with Ecosim, and cannot be imported into EwE6..
+        '''  Looks up a localized string similar to This database was last accessed by a newer release of Ecopath with Ecosim. In order to load this model, please download and install a new version of EwE from http://www.ecopath.org and try again..
         '''</summary>
-        Friend ReadOnly Property PROMPT_ERROR_IMPORT_EWE7_OR_NEWER() As String
+        Friend ReadOnly Property PROMPT_ERROR_IMPORT_EWE6_TOO_NEW() As String
             Get
-                Return ResourceManager.GetString("PROMPT_ERROR_IMPORT_EWE7_OR_NEWER", resourceCulture)
+                Return ResourceManager.GetString("PROMPT_ERROR_IMPORT_EWE6_TOO_NEW", resourceCulture)
             End Get
         End Property
         
@@ -2905,15 +2905,6 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_GOOGLELOCATION_SEARCH() As String
             Get
                 Return ResourceManager.GetString("PROMPT_GOOGLELOCATION_SEARCH", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Hide this type of message until relevant data is reloaded.
-        '''</summary>
-        Friend ReadOnly Property PROMPT_HIDE_MESSAGES() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_HIDE_MESSAGES", resourceCulture)
             End Get
         End Property
         

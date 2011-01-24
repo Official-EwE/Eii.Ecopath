@@ -468,10 +468,8 @@ Namespace Database
         Private Const cDBVERSION_EWE5_MIN As Single = 1.67
         ''' <summary>Newest EwE5 version number supported</summary>
         Private Const cDBVERSION_EWE5_MAX As Single = 1.73
-        ''' <summary>Current EwE6 version number supported</summary>
-        Private Const cDBVERSION_EWE6 As Single = 6.0
-        ''' <summary>Next unsupported EwE version number.</summary>
-        Private Const cDBVERSION_FUTURE As Single = 7.0
+        ''' <summary>Oldest EwE6 version number supported</summary>
+        Private Const cDBVERSION_EWE6_MIN As Single = 6.0
 
 #End Region ' Private vars and consts
 
@@ -568,10 +566,12 @@ Namespace Database
             If (sVersion = 0.0!) Then Return eCompatibilityTypes.Unknown
             If (sVersion < cDBVERSION_EWE5_MIN) Then Return eCompatibilityTypes.EwE5TooOld
             If (sVersion <= cDBVERSION_EWE5_MAX) Then Return eCompatibilityTypes.EwE5Supported
-            If (sVersion < cDBVERSION_EWE6) Then Return eCompatibilityTypes.EwE5TooNew
-            If (sVersion < cDBVERSION_FUTURE) Then Return eCompatibilityTypes.EwE6
+            If (sVersion < cDBVERSION_EWE6_MIN) Then Return eCompatibilityTypes.EwE5TooNew
+            If (sVersion <= Me.MaxDBVersion) Then Return eCompatibilityTypes.EwE6
             Return eCompatibilityTypes.UnknownFuture
         End Function
+
+        Public MustOverride Function MaxDBVersion() As Single
 
 #End Region ' Compatibility
 

@@ -30,8 +30,8 @@ Namespace DataSources
         Public Shared Function GetSupportedType(ByVal strFile As String) As eDataSourceTypes
             Select Case Path.GetExtension(strFile).ToLower
                 Case ".eii" : Return eDataSourceTypes.EII
-                Case ".mdb", ".ewemdb" : Return eDataSourceTypes.MDB
-                Case ".accdb", ".eweaccdb" : Return eDataSourceTypes.ACCDB
+                Case ".mdb", ".ewemdb" : Return eDataSourceTypes.Access2003
+                Case ".accdb", ".eweaccdb" : Return eDataSourceTypes.Access2007
             End Select
             Return eDataSourceTypes.NotSet
         End Function
@@ -46,9 +46,9 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Public Shared Function GetDefaultExtension(ByVal dst As eDataSourceTypes) As String
             Select Case dst
-                Case eDataSourceTypes.MDB : Return ".ewemdb"
+                Case eDataSourceTypes.Access2003 : Return ".ewemdb"
                 Case eDataSourceTypes.EII : Return ".eii"
-                Case eDataSourceTypes.ACCDB : Return ".eweaccdb"
+                Case eDataSourceTypes.Access2007 : Return ".eweaccdb"
             End Select
             Return ""
         End Function
@@ -89,7 +89,7 @@ Namespace DataSources
                 ' EII files need to be imported instead
                 'Case eDataSourceTypes.EII
                 '    Return New cEIIDataSource()
-                Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
+                Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
                     ' Create a DB datasource on a MS Access database
                     Return New cDBDataSource(New cEwEAccessDatabase())
                 Case Else

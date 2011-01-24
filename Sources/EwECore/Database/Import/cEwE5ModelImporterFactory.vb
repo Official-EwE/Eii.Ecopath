@@ -31,7 +31,7 @@ Public Class cEwE5ModelImporterFactory
 
         Select Case cDataSourceFactory.GetSupportedType(strFilename)
 
-            Case eDataSourceTypes.ACCDB, eDataSourceTypes.MDB
+            Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003
                 Return New cEwE5DatabaseImporter(core, strFilename)
 
             Case eDataSourceTypes.EII

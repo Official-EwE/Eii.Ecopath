@@ -44,9 +44,9 @@ Namespace Import
             Public Overrides Function ToString() As String
                 Dim strFileFilter As String = ""
                 Select Case Me.m_dst
-                    Case eDataSourceTypes.ACCDB
+                    Case eDataSourceTypes.Access2007
                         strFileFilter = SharedResources.FILEFILTER_SAVE_ACCDB
-                    Case eDataSourceTypes.MDB
+                    Case eDataSourceTypes.Access2003
                         strFileFilter = SharedResources.FILEFILTER_SAVE_MDB
                     Case Else
                         Debug.Assert(False)
@@ -218,11 +218,11 @@ Namespace Import
         Private Sub InitDatabaseFormatsCombo()
 
             Me.m_cmbDatabaseFormat.Items.Clear()
-            If cDataSourceFactory.IsOSSupported(eDataSourceTypes.ACCDB) Then
-                Me.m_cmbDatabaseFormat.Items.Add(New cDatabaseTypeItem(eDataSourceTypes.ACCDB))
+            If cDataSourceFactory.IsOSSupported(eDataSourceTypes.Access2007) Then
+                Me.m_cmbDatabaseFormat.Items.Add(New cDatabaseTypeItem(eDataSourceTypes.Access2007))
             End If
-            If cDataSourceFactory.IsOSSupported(eDataSourceTypes.MDB) Then
-                Me.m_cmbDatabaseFormat.Items.Add(New cDatabaseTypeItem(eDataSourceTypes.MDB))
+            If cDataSourceFactory.IsOSSupported(eDataSourceTypes.Access2003) Then
+                Me.m_cmbDatabaseFormat.Items.Add(New cDatabaseTypeItem(eDataSourceTypes.Access2003))
             End If
 
             Me.m_cmbDatabaseFormat.SelectedIndex = 0

@@ -43,7 +43,7 @@ Public Class cEcopathModelFromEcosim
         coreDest.PluginManager = Nothing
 
         If String.IsNullOrEmpty(Path.GetExtension(strFileName)) Then
-            strFileName &= cDataSourceFactory.GetDefaultExtension(eDataSourceTypes.ACCDB)
+            strFileName &= cDataSourceFactory.GetDefaultExtension(eDataSourceTypes.Access2007)
         End If
 
         atResult = db.Create(strFileName, strModelName, True)

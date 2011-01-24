@@ -663,8 +663,8 @@
   <data name="OPTIONS_FEEDBACK_POPUP" xml:space="preserve">
     <value>As popup message</value>
   </data>
-  <data name="PROMPT_ERROR_IMPORT_EWE7_OR_NEWER" xml:space="preserve">
-    <value>This database appears to be written by a newer major release of Ecopath with Ecosim, and cannot be imported into EwE6.</value>
+  <data name="PROMPT_ERROR_IMPORT_EWE6_TOO_NEW" xml:space="preserve">
+    <value>This database was last accessed by a newer release of Ecopath with Ecosim. In order to load this model, please download and install a new version of EwE from http://www.ecopath.org and try again.</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM" xml:space="preserve">
     <value>Missing parameter|Values that are required by the model to run correctly.</value>

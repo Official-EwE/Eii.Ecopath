@@ -69,10 +69,10 @@ Namespace Database
             End If
 
             Select Case format
-                Case eDataSourceTypes.MDB
+                Case eDataSourceTypes.Access2003
                     strSource = "EwE6.mdb"
                     cLog.Write("Create DB: selected MDB format")
-                Case eDataSourceTypes.ACCDB
+                Case eDataSourceTypes.Access2007
                     strSource = "EwE6.accdb"
                     cLog.Write("Create DB: selected ACCDB format")
                 Case Else
@@ -215,9 +215,9 @@ Namespace Database
 
             ' Try to assemble connection string
             Select Case databaseType
-                Case eDataSourceTypes.MDB
+                Case eDataSourceTypes.Access2003
                     Me.m_conn.ConnectionString = String.Format(m_strConnectionMDB, strDatabase)
-                Case eDataSourceTypes.ACCDB
+                Case eDataSourceTypes.Access2007
                     Me.m_conn.ConnectionString = String.Format(m_strConnectionACCDB, strDatabase)
                 Case eDataSourceTypes.NotSet
                     Me.m_conn.ConnectionString = ""
@@ -377,9 +377,9 @@ Namespace Database
 
             ' Try to assemble connection string
             Select Case dst
-                Case eDataSourceTypes.MDB
+                Case eDataSourceTypes.Access2003
                     conn.ConnectionString = String.Format(m_strConnectionMDB, strDatabase)
-                Case eDataSourceTypes.ACCDB
+                Case eDataSourceTypes.Access2007
                     conn.ConnectionString = String.Format(m_strConnectionACCDB, strDatabase)
                 Case eDataSourceTypes.NotSet
                     conn.ConnectionString = ""
@@ -442,9 +442,9 @@ Namespace Database
             Dim comp As IDatabaseCompact = cDatabaseCompactFactory.GetDatabaseCompact(strFileFrom)
 
             Select Case cDataSourceFactory.GetSupportedType(strFileFrom)
-                Case eDataSourceTypes.MDB
+                Case eDataSourceTypes.Access2003
                     strConnection = Me.m_strConnectionMDB
-                Case eDataSourceTypes.ACCDB
+                Case eDataSourceTypes.Access2007
                     ' Accdb needs different compaction engine, no idea how to do that for now
                     strConnection = Me.m_strConnectionACCDB
                 Case Else
@@ -505,6 +505,10 @@ Namespace Database
 
             Return eDatasourceAccessType.Failed_Unknown
 
+        End Function
+
+        Public Overrides Function MaxDBVersion() As Single
+            Return cDatabaseUpdater.MaxSupportedVersion
         End Function
 
 #End Region ' Overrides

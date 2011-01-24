@@ -39,8 +39,6 @@ Namespace Database
         Private m_core As cCore = Nothing
         ''' <summary>The baseline database version that this updater can update from</summary>
         Private m_sBaselineVersion As Single = 0.0
-        ''' <summary>All available DB updates.</summary>
-        Private m_lUpdates As cDBUpdate() = Nothing
 
 #End Region ' Private bits
 
@@ -56,8 +54,6 @@ Namespace Database
             Me.m_core = core
             ' Store baseline version number
             Me.m_sBaselineVersion = sBaselineVersion
-            ' Get updates
-            Me.m_lUpdates = Me.GetUpdates()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -87,6 +83,22 @@ Namespace Database
             Return Me.UpdateDatabase(db, Me.m_sBaselineVersion)
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the max supported core version of the database.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Shared Function MaxSupportedVersion() As Single
+            Dim sVersion As Single = 6.0! ' Should obtain this from cEwEDatabase, but ok
+            Dim upd As cDBUpdate() = cDatabaseUpdater.GetUpdates()
+            ' Has updates?
+            If upd.Length > 0 Then
+                ' #Yes: return version of last update (updates are sorted by version ASC)
+                sVersion = upd(upd.Length - 1).UpdateVersion
+            End If
+            Return sVersion
+        End Function
+
 #End Region ' Updating
 
 #Region " Internals "
@@ -97,7 +109,7 @@ Namespace Database
         ''' </summary>
         ''' <returns>An array of available updates.</returns>
         ''' -------------------------------------------------------------------
-        Private Function GetUpdates() As cDBUpdate()
+        Private Shared Function GetUpdates() As cDBUpdate()
 
             Dim lUpdates As New List(Of cDBUpdate)
             Dim clsType As Type = Nothing
@@ -149,7 +161,7 @@ Namespace Database
             If db Is Nothing Then Return False
             If sDBVersion < sBaselineVersion Then Return False
 
-            For Each update As cDBUpdate In Me.m_lUpdates
+            For Each update As cDBUpdate In cDatabaseUpdater.GetUpdates()
                 If (update.UpdateVersion > sDBVersion) Then
                     Return True
                 End If
@@ -173,6 +185,7 @@ Namespace Database
             Dim sDBVersion As Single = 0.0!
             Dim iUpdate As Integer = 0
             Dim update As cDBUpdate = Nothing
+            Dim aUpdates As cDBUpdate() = cDatabaseUpdater.GetUpdates()
             Dim bSucces As Boolean = True
 
             ' Sanity check
@@ -185,10 +198,10 @@ Namespace Database
             If (sDBVersion < sBaselineVersion) Then Return True
 
             ' For all updates
-            While (iUpdate < Me.m_lUpdates.Length) And (bSucces = True)
+            While (iUpdate < aUpdates.Length) And (bSucces = True)
 
                 ' Get update
-                update = Me.m_lUpdates(iUpdate)
+                update = aUpdates(iUpdate)
 
                 ' Version ok?
                 If (update.UpdateVersion > sDBVersion) Then

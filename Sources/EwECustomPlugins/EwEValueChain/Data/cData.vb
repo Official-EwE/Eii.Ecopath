@@ -107,7 +107,7 @@ Public Class cData
             strDBName = strModelName
         End If
 
-        If Me.m_db.Open(strDBName, eDataSourceTypes.MDB) = eDatasourceAccessType.Success Then
+        If Me.m_db.Open(strDBName, eDataSourceTypes.Access2003) = eDatasourceAccessType.Success Then
 
             Me.m_bInitializing = True
             bSucces = Me.m_db.LoadModel(Me)

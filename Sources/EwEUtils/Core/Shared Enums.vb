@@ -2055,11 +2055,17 @@ Namespace Core
         ''' <summary>No support.</summary>
         NotSet = 0
         ''' <summary>Datasource capable of handling EII formatted data.</summary>
-        EII
+        EII = 1
         ''' <summary>Datasource capable of handling MDB formatted data.</summary>
-        MDB
+        Access2003 = 2
         ''' <summary>Datasource capable of handling ACCDB and MDB formatted data.</summary>
-        ACCDB
+        Access2007 = 3
+        ''' <summary>Datasource capable of handling MDB formatted data.</summary>
+        <System.Obsolete("Deprecated; use eDataSourceTypes.Access2003 instead")> _
+        MDB = Access2003
+        ''' <summary>Datasource capable of handling ACCDB and MDB formatted data.</summary>
+        <System.Obsolete("Deprecated; use eDataSourceTypes.Access2007 instead")> _
+        ACCDB = Access2007
     End Enum
 
     ''' -------------------------------------------------------------------

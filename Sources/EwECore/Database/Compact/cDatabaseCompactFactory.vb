@@ -28,10 +28,10 @@ Namespace Database
         Shared Function GetDatabaseCompact(ByVal strFileName As String) As IDatabaseCompact
 
             Select Case cDataSourceFactory.GetSupportedType(strFileName)
-                Case eDataSourceTypes.MDB
+                Case eDataSourceTypes.Access2003
                     ' MDB databases compacted via JRO
                     Return New cCompactJRO()
-                Case eDataSourceTypes.ACCDB
+                Case eDataSourceTypes.Access2007
                     ' ACCDB databases compacted via DAO
                     Return New cCompactDAO()
                 Case Else

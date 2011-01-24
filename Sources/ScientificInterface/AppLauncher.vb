@@ -1051,7 +1051,8 @@ Public Class AppLauncher
         dst = cDataSourceFactory.GetSupportedType(strFileName)
         Select Case dst
 
-            Case eDataSourceTypes.ACCDB, eDataSourceTypes.MDB
+            Case eDataSourceTypes.Access2007, _
+                 eDataSourceTypes.Access2003
                 ' Is database, whoohoo
                 Dim db As New cEwEAccessDatabase()
                 If db.Open(strFileName) = eDatasourceAccessType.Opened Then
@@ -1096,7 +1097,7 @@ Public Class AppLauncher
                 ' Moved to core
 
             Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
-                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE7_OR_NEWER)
+                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW)
                 bSucces = False
 
             Case cEwEDatabase.eCompatibilityTypes.Unknown
@@ -1785,7 +1786,7 @@ Public Class AppLauncher
         Dim importance As eMessageImportance = eMessageImportance.Warning
 
         Select Case format
-            Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
+            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
                 db = New cEwEAccessDatabase()
                 atResult = db.Create(strFileName, strModelName, True, format)
 
@@ -2511,10 +2512,10 @@ Public Class AppLauncher
 
         ' JS 27Jul08: Only able to save in current file format (save as between formats not supported by the core)
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
-            Case eDataSourceTypes.MDB
+            Case eDataSourceTypes.Access2003
                 ' Only allow saving as MDB
                 strFileFilter = SharedResources.FILEFILTER_SAVE_MDB
-            Case eDataSourceTypes.ACCDB
+            Case eDataSourceTypes.Access2007
                 ' Only allow saving as ACCDB
                 strFileFilter = SharedResources.FILEFILTER_SAVE_ACCDB
             Case Else
@@ -2548,7 +2549,7 @@ Public Class AppLauncher
         Dim bEnable As Boolean = Me.Core.StateMonitor.HasEcopathLoaded
 
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
-            Case eDataSourceTypes.MDB, eDataSourceTypes.ACCDB
+            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
                 ' NOP
             Case Else
                 ' Only allow save as when file was opened as MDB or ACCDB since the core does
