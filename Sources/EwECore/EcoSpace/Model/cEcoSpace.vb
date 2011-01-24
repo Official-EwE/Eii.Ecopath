@@ -975,6 +975,9 @@ Public Class cEcoSpace
         Try
             Dim nYears As Integer = CInt(m_Data.TotalTime)
 
+            'clear out catch data for each time step
+            Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
+
             If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceBeginTimeStep(m_Data, itt)
 
             If imonth = 1 Then
@@ -3276,12 +3279,15 @@ exitline:
                 'End If
 
                 If m_EPdata.fCatch(igrp) > 0 Then
-                    m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) = m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + Biomass(igrp) * m_SimData.FishTime(igrp)
+                    Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp)
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) = m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + bCatch
+                    m_Data.CatchMap(iRow, iCol, igrp) += bCatch
                     'Next value of catch, depends on what gear was used:
                     For iFlt = 1 To m_EPdata.NumFleet
                         If m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp) > 0 Then
                             'First get catch
                             sum = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, igrp)
+
                             'Sum the total catch by gear
                             m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt, iCumTime) += sum
                             'sum all fleets
