@@ -1134,7 +1134,7 @@ Namespace MSE
             'wftot(i)=total fishing importance weight for gear i (computed at start of simulation)
             'yearly catch catchyear(i,j).  Note Fwc(i,0) has ecopath base weighted fishing impacts
             Dim i As Integer, j As Integer, Fwt As Single, Fest(,) As Single, Best() As Single
-            Dim Fpred As Single, Bp As Single
+            Dim Fpred As Single
 
             Try
 
