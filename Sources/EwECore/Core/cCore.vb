@@ -1983,10 +1983,10 @@ Public Class cCore
                                   eCoreComponentType.Core, eMessageType.Any, _
                                   eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
 
-        If (bQuiet) Then
-            ' Auto-affirm
-            fm.Reply = cFeedbackMessage.eReply.YES
-        Else
+        ' Auto-affirm
+        fm.Reply = cFeedbackMessage.eReply.YES
+
+        If (Not bQuiet) Then
             ' Send and see what happens
             Me.m_publisher.SendMessage(fm)
         End If
