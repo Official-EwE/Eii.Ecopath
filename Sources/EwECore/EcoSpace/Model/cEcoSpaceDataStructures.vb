@@ -179,6 +179,8 @@ Public Class cEcospaceDataStructures
     Public DepthX(,) As Integer
     Public DepthY(,) As Single
 
+    Public CatchMap(,,) As Single
+
     'these are all part of velmaker
     'velmaker may become its own class
     Public Xvel(,) As Single, Yvel(,) As Single
@@ -590,6 +592,7 @@ Public Class cEcospaceDataStructures
             HabTime = Nothing
             HabAreaProportion = Nothing
             HabArea = Nothing
+
             'SumStart = Nothing
 
             'ReDimFleets()
@@ -1058,6 +1061,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(RelCinorig, InRow + 1, InCol + 1)     'for use with habitat change
             Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
             Me.allocate(GroupDetritus, InRow + 1, InCol + 1, nvartot)
+
+            Me.allocate(CatchMap, InRow, InCol, nvartot)
 
             For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
