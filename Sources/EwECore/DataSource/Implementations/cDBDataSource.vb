@@ -295,76 +295,6 @@ Namespace DataSources
             Return strNumberString.Trim().Split(charSeparators, StringSplitOptions.RemoveEmptyEntries)
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method, reads data from a column that may not exist. In that case,
-        ''' an optional default value is returned
-        ''' </summary>
-        ''' <param name="reader">The <see cref="IDataReader">IDataReader</see> to read from.</param>
-        ''' <param name="strField">The name of the DB field (column) to read.</param>
-        ''' <param name="objValueDefault">A default value to return if the field could not be read.</param>
-        ''' <param name="objValueIgnore">Value to interpret as 'no value. When encountered, the default value will be returned.</param>
-        ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
-        ''' -----------------------------------------------------------------------
-        Private Function ReadSafe(ByVal reader As IDataReader, _
-                                  ByVal strField As String, _
-                                  Optional ByVal objValueDefault As Object = Nothing, _
-                                  Optional ByVal objValueIgnore As Object = CSng(cCore.NULL_VALUE)) As Object
-
-            Dim objResult As Object = Nothing
-
-            If reader Is Nothing Then Return objValueDefault
-
-            Try
-                objResult = reader.Item(strField)
-            Catch ex As InvalidOperationException
-                'Console.WriteLine("DB: field '{0}' has no value, returning provided default '{1}'", strField, objValueDefault)
-            Catch ex As IndexOutOfRangeException
-                'Console.WriteLine("DB: field '{0}' not found in table, returning provided default '{1}'", strField, objValueDefault)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-                Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
-            End Try
-
-            If (Object.ReferenceEquals(objResult, Nothing)) Then
-                objResult = objValueDefault
-            ElseIf (Not Object.ReferenceEquals(objValueIgnore, Nothing)) _
-                And Not (IsDBNull(objResult)) _
-                And Not (IsDBNull(objValueIgnore)) Then
-
-                ' Compare ignore values
-                If TypeOf objResult Is String Then
-                    Try
-                        If (String.Compare(CStr(objResult), Convert.ToString(objValueIgnore), True) = 0) Then
-                            objResult = objValueDefault
-                        End If
-                    Catch ex As Exception
-                    End Try
-                ElseIf TypeOf objResult Is Boolean Then
-                    Try
-                        If (CBool(objResult) = Convert.ToBoolean(objValueIgnore)) Then
-                            objResult = objValueDefault
-                        End If
-                    Catch ex As Exception
-                    End Try
-                Else
-                    Try
-                        If (CSng(objResult) = Convert.ToSingle(objValueIgnore)) Then
-                            objResult = objValueDefault
-                        End If
-                    Catch ex As Exception
-                    End Try
-                End If
-
-            End If
-
-            If (Convert.IsDBNull(objResult)) Then
-                objResult = objValueDefault
-            End If
-
-            Return objResult
-        End Function
-
         Private Function BuildWhereClause(ByVal strVariable As String, ByVal astrValues() As String) As String
 
             Debug.Assert(Not astrValues Is Nothing)
@@ -731,32 +661,32 @@ Namespace DataSources
                 ecopathDS.ModelDBID = CInt(reader("ModelID"))
                 ecopathDS.ModelName = CStr(reader("Name"))
                 ecopathDS.ModelDescription = CStr(reader("Description"))
-                ecopathDS.ModelAuthor = CStr(Me.ReadSafe(reader, "Author", ""))
-                ecopathDS.ModelContact = CStr(Me.ReadSafe(reader, "Contact", ""))
-                ecopathDS.ModelArea = CSng(Me.ReadSafe(reader, "Area", 1.0))
+                ecopathDS.ModelAuthor = CStr(Me.m_db.ReadSafe(reader, "Author", ""))
+                ecopathDS.ModelContact = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
+                ecopathDS.ModelArea = CSng(Me.m_db.ReadSafe(reader, "Area", 1.0))
                 ecopathDS.ModelNumDigits = CInt(reader("NumDigits"))
-                ecopathDS.ModelGroupDigits = CBool(Me.ReadSafe(reader, "GroupDigits", False))
-                ecopathDS.ModelUnitCurrency = DirectCast(Me.ReadSafe(reader, "UnitCurrency", eUnitCurrencyType.WetWeight), eUnitCurrencyType)
-                ecopathDS.ModelUnitCurrencyCustom = CStr(Me.ReadSafe(reader, "UnitCurrencyCustom", ""))
-                ecopathDS.ModelUnitTime = DirectCast(Me.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
-                ecopathDS.ModelUnitTimeCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
-                ecopathDS.ModelUnitMonetary = DirectCast(Me.ReadSafe(reader, "UnitMonetary", "EUR"), String)
-                'ecopathDS.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(reader, "UnitTimeCustom", ""))
-                ecopathDS.FirstYear = CInt(Me.ReadSafe(reader, "FirstYear", 0))
-                ecopathDS.NumYears = Math.Max(1, CInt(Me.ReadSafe(reader, "NumYears", 1)))
-                'ecopathDS.ModelUnitArea = DirectCast(Me.ReadSafe(reader, "UnitArea", eUnitAreaType.Km2), eUnitAreaType)
-                'ecopathDS.ModelUnitAreaCustom = CStr(Me.ReadSafe(reader, "UnitAreaCustom", ""))
+                ecopathDS.ModelGroupDigits = CBool(Me.m_db.ReadSafe(reader, "GroupDigits", False))
+                ecopathDS.ModelUnitCurrency = DirectCast(Me.m_db.ReadSafe(reader, "UnitCurrency", eUnitCurrencyType.WetWeight), eUnitCurrencyType)
+                ecopathDS.ModelUnitCurrencyCustom = CStr(Me.m_db.ReadSafe(reader, "UnitCurrencyCustom", ""))
+                ecopathDS.ModelUnitTime = DirectCast(Me.m_db.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
+                ecopathDS.ModelUnitTimeCustom = CStr(Me.m_db.ReadSafe(reader, "UnitTimeCustom", ""))
+                ecopathDS.ModelUnitMonetary = DirectCast(Me.m_db.ReadSafe(reader, "UnitMonetary", "EUR"), String)
+                'ecopathDS.m_EwEModelUnitMonetaryCustom = CStr(Me.m_db.ReadSafe(reader, "UnitTimeCustom", ""))
+                ecopathDS.FirstYear = CInt(Me.m_db.ReadSafe(reader, "FirstYear", 0))
+                ecopathDS.NumYears = Math.Max(1, CInt(Me.m_db.ReadSafe(reader, "NumYears", 1)))
+                'ecopathDS.ModelUnitArea = DirectCast(Me.m_db.ReadSafe(reader, "UnitArea", eUnitAreaType.Km2), eUnitAreaType)
+                'ecopathDS.ModelUnitAreaCustom = CStr(Me.m_db.ReadSafe(reader, "UnitAreaCustom", ""))
 
-                Dim sLat1 As Single = CSng(Me.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
-                Dim sLat2 As Single = CSng(Me.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
+                Dim sLat1 As Single = CSng(Me.m_db.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
+                Dim sLat2 As Single = CSng(Me.m_db.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
                 ecopathDS.ModelNorth = Math.Max(sLat1, sLat2)
                 ecopathDS.ModelSouth = Math.Min(sLat1, sLat2)
 
-                ecopathDS.ModelWest = CSng(Me.ReadSafe(reader, "MinLon", cCore.NULL_VALUE))
-                ecopathDS.ModelEast = CSng(Me.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
+                ecopathDS.ModelWest = CSng(Me.m_db.ReadSafe(reader, "MinLon", cCore.NULL_VALUE))
+                ecopathDS.ModelEast = CSng(Me.m_db.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
 
-                ecopathDS.ModelAreaName = CStr(Me.ReadSafe(reader, "AreaName", ""))
-                ecopathDS.ModelLastSaved = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
+                ecopathDS.ModelAreaName = CStr(Me.m_db.ReadSafe(reader, "AreaName", ""))
+                ecopathDS.ModelLastSaved = CDbl(Me.m_db.ReadSafe(reader, "LastSaved", 0))
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading EcopathModel", ex.Message))
@@ -867,9 +797,9 @@ Namespace DataSources
                     ecopathDS.EcosimScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
                     ecopathDS.EcosimScenarioName(iScenario) = CStr(reader("ScenarioName"))
                     ecopathDS.EcosimScenarioDescription(iScenario) = CStr(reader("Description"))
-                    ecopathDS.EcosimScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
-                    ecopathDS.EcosimScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                    ecopathDS.EcosimScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
+                    ecopathDS.EcosimScenarioAuthor(iScenario) = CStr(Me.m_db.ReadSafe(reader, "Author", ""))
+                    ecopathDS.EcosimScenarioContact(iScenario) = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
+                    ecopathDS.EcosimScenarioLastSaved(iScenario) = CDbl(Me.m_db.ReadSafe(reader, "LastSaved", 0))
                     iScenario += 1
                 End While
             Catch ex As Exception
@@ -958,9 +888,9 @@ Namespace DataSources
                     ecopathDS.EcospaceScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
                     ecopathDS.EcospaceScenarioName(iScenario) = CStr(reader("ScenarioName"))
                     ecopathDS.EcospaceScenarioDescription(iScenario) = CStr(reader("Description"))
-                    ecopathDS.EcospaceScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
-                    ecopathDS.EcospaceScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                    ecopathDS.EcospaceScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
+                    ecopathDS.EcospaceScenarioAuthor(iScenario) = CStr(Me.m_db.ReadSafe(reader, "Author", ""))
+                    ecopathDS.EcospaceScenarioContact(iScenario) = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
+                    ecopathDS.EcospaceScenarioLastSaved(iScenario) = CDbl(Me.m_db.ReadSafe(reader, "LastSaved", 0))
                     iScenario += 1
                 End While
             Catch ex As Exception
@@ -1048,9 +978,9 @@ Namespace DataSources
                     ecopathDS.EcotracerScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
                     ecopathDS.EcotracerScenarioName(iScenario) = CStr(reader("ScenarioName"))
                     ecopathDS.EcotracerScenarioDescription(iScenario) = CStr(reader("Description"))
-                    ecopathDS.EcotracerScenarioAuthor(iScenario) = CStr(Me.ReadSafe(reader, "Author", ""))
-                    ecopathDS.EcotracerScenarioContact(iScenario) = CStr(Me.ReadSafe(reader, "Contact", ""))
-                    ecopathDS.EcotracerScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(reader, "LastSaved", 0))
+                    ecopathDS.EcotracerScenarioAuthor(iScenario) = CStr(Me.m_db.ReadSafe(reader, "Author", ""))
+                    ecopathDS.EcotracerScenarioContact(iScenario) = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
+                    ecopathDS.EcotracerScenarioLastSaved(iScenario) = CDbl(Me.m_db.ReadSafe(reader, "LastSaved", 0))
                     iScenario += 1
                 End While
             Catch ex As Exception
@@ -1144,7 +1074,7 @@ Namespace DataSources
                     ecopathDS.PedigreeLevelVarName(iLevel) = cin.GetVarName(CStr(reader("VarName")))
                     ecopathDS.PedigreeLevelIndexValue(iLevel) = CSng(reader("IndexValue"))
                     ecopathDS.PedigreeLevelConfidence(iLevel) = CInt(reader("Confidence"))
-                    ecopathDS.PedigreeLevelColor(iLevel) = CInt(Me.ReadSafe(reader, "LevelColor", 0))
+                    ecopathDS.PedigreeLevelColor(iLevel) = CInt(Me.m_db.ReadSafe(reader, "LevelColor", 0))
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
@@ -1426,11 +1356,11 @@ Namespace DataSources
                 reader.Read()
                 Try
 
-                    psdDS.NAgeSteps = CInt(Me.ReadSafe(reader, "NumAgeSteps", 101))
-                    psdDS.MortalityType = CType(CInt(Me.ReadSafe(reader, "MortalityType", 0)), ePSDMortalityTypes)
-                    psdDS.NWeightClasses = CInt(Me.ReadSafe(reader, "NumWeightClasses", 25))
-                    psdDS.FirstWeightClass = CSng(Me.ReadSafe(reader, "FirstWeightClass", 0.125))
-                    psdDS.ClimateType = CType(CInt(Me.ReadSafe(reader, "ClimateType", eClimateTypes.Temperate)), eClimateTypes)
+                    psdDS.NAgeSteps = CInt(Me.m_db.ReadSafe(reader, "NumAgeSteps", 101))
+                    psdDS.MortalityType = CType(CInt(Me.m_db.ReadSafe(reader, "MortalityType", 0)), ePSDMortalityTypes)
+                    psdDS.NWeightClasses = CInt(Me.m_db.ReadSafe(reader, "NumWeightClasses", 25))
+                    psdDS.FirstWeightClass = CSng(Me.m_db.ReadSafe(reader, "FirstWeightClass", 0.125))
+                    psdDS.ClimateType = CType(CInt(Me.m_db.ReadSafe(reader, "ClimateType", eClimateTypes.Temperate)), eClimateTypes)
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
@@ -1591,7 +1521,7 @@ Namespace DataSources
 
                         ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
                         ' JS 23nov10: Hah, three and a half years later these values are stored again
-                        stanzaDS.BaseStanza(iStanza) = CInt(Me.ReadSafe(rdStanza, "LeadingLifeStage", cCore.NULL_VALUE))
+                        stanzaDS.BaseStanza(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "LeadingLifeStage", cCore.NULL_VALUE))
 
                     Catch ex As Exception
                         Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
@@ -1972,10 +1902,10 @@ Namespace DataSources
                     ecopathDS.Resp(iGroup) = CSng(reader("Respiration"))
                     ecopathDS.Immig(iGroup) = CSng(reader("Immigration"))
                     ecopathDS.Emigration(iGroup) = CSng(reader("Emigration"))
-                    ecopathDS.Emig(iGroup) = CSng(Me.ReadSafe(reader, "EmigRate", 0.0!))
+                    ecopathDS.Emig(iGroup) = CSng(Me.m_db.ReadSafe(reader, "EmigRate", 0.0!))
 
                     ' PSD
-                    ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(reader, "VBK", -1))
+                    ecopathDS.vbK(iGroup) = CSng(Me.m_db.ReadSafe(reader, "VBK", -1))
                     psdDS.AinLWInput(iGroup) = CSng(reader("AinLW"))
                     psdDS.BinLWInput(iGroup) = CSng(reader("BinLW"))
                     psdDS.LooInput(iGroup) = CSng(reader("Loo"))
@@ -2576,7 +2506,7 @@ Namespace DataSources
                         ecopathDS.Landing(iFleet, iGroup) = CSng(reader("Landing"))
                         ecopathDS.Discard(iFleet, iGroup) = CSng(reader("discards"))
                         ecopathDS.Market(iFleet, iGroup) = CSng(reader("price"))
-                        ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.ReadSafe(reader, "DiscardMortality", 0.0!))
+                        ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.m_db.ReadSafe(reader, "DiscardMortality", 0.0!))
                     Else
                         Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
                         bSucces = False
@@ -2955,9 +2885,9 @@ Namespace DataSources
                     While reader.Read()
                         tsDS.iDatasetDBID(iDataset) = CInt(reader("DatasetID"))
                         tsDS.strDatasetNames(iDataset) = CStr(reader("DatasetName"))
-                        tsDS.strDatasetDescription(iDataset) = CStr(Me.ReadSafe(reader, "Description", ""))
-                        tsDS.strDatasetAuthor(iDataset) = CStr(Me.ReadSafe(reader, "Author", ""))
-                        tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(reader, "Contact", ""))
+                        tsDS.strDatasetDescription(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Description", ""))
+                        tsDS.strDatasetAuthor(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Author", ""))
+                        tsDS.strDatasetContact(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
                         tsDS.nDatasetFirstYear(iDataset) = CInt(reader("FirstYear"))
                         tsDS.nDatasetNumYears(iDataset) = CInt(reader("NumYears"))
                         tsDS.nDatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
@@ -3117,18 +3047,18 @@ Namespace DataSources
                         ecopathDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
                         ecopathDS.TaxonGroup(iTaxon) = iGroup
                         ecopathDS.TaxonGroupProp(iTaxon) = CSng(reader("Proportion"))
-                        ecopathDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.ReadSafe(reader, "CodeISCAAP", ""))
-                        ecopathDS.TaxonCodeTaxon(iTaxon) = CStr(Me.ReadSafe(reader, "CodeTaxon", ""))
-                        ecopathDS.TaxonCode3A(iTaxon) = CStr(Me.ReadSafe(reader, "Code3A", ""))
-                        ecopathDS.TaxonClass(iTaxon) = CStr(Me.ReadSafe(reader, "ClassName", ""))
-                        ecopathDS.TaxonOrder(iTaxon) = CStr(Me.ReadSafe(reader, "OrderName", ""))
-                        ecopathDS.TaxonFamily(iTaxon) = CStr(Me.ReadSafe(reader, "FamilyName", ""))
-                        ecopathDS.TaxonGenus(iTaxon) = CStr(Me.ReadSafe(reader, "GenusName", ""))
-                        ecopathDS.TaxonSpecies(iTaxon) = CStr(Me.ReadSafe(reader, "SpeciesName", ""))
-                        ecopathDS.TaxonCommonName(iTaxon) = CStr(Me.ReadSafe(reader, "CommonName", ""))
-                        ecopathDS.TaxonSource(iTaxon) = CStr(Me.ReadSafe(reader, "SourceName", ""))
-                        ecopathDS.TaxonSourceKey(iTaxon) = CStr(Me.ReadSafe(reader, "SourceKey", ""))
-                        ecopathDS.TaxonLastUpdated(iTaxon) = CDbl(Me.ReadSafe(reader, "LastUpdated", ""))
+                        ecopathDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeISCAAP", ""))
+                        ecopathDS.TaxonCodeTaxon(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeTaxon", ""))
+                        ecopathDS.TaxonCode3A(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "Code3A", ""))
+                        ecopathDS.TaxonClass(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "ClassName", ""))
+                        ecopathDS.TaxonOrder(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "OrderName", ""))
+                        ecopathDS.TaxonFamily(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "FamilyName", ""))
+                        ecopathDS.TaxonGenus(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "GenusName", ""))
+                        ecopathDS.TaxonSpecies(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SpeciesName", ""))
+                        ecopathDS.TaxonCommonName(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CommonName", ""))
+                        ecopathDS.TaxonSource(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceName", ""))
+                        ecopathDS.TaxonSourceKey(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceKey", ""))
+                        ecopathDS.TaxonLastUpdated(iTaxon) = CDbl(Me.m_db.ReadSafe(reader, "LastUpdated", ""))
                         iTaxon += 1
                     End If
 
@@ -3974,34 +3904,34 @@ Namespace DataSources
                     ecosimDS.CmCo(iEcopathGroup) = CSng(reader("CmCo"))
                     ecosimDS.SwitchPower(iEcopathGroup) = CSng(reader("SwitchPower"))
                     ecosimDS.GroupFishRateNoDBID(iEcopathGroup) = CInt(reader("FishMortShapeID"))
-                    ecosimDS.SalOpt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "SalOpt", 35.0!))
-                    ecosimDS.SdSalLeft(iEcopathGroup) = CSng(Me.ReadSafe(reader, "SdSalLeft", 1000.0!))
-                    ecosimDS.SdSalRight(iEcopathGroup) = CSng(Me.ReadSafe(reader, "SdSalRight", 1000.0!))
-                    ecosimDS.TempOpt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempOpt", 10.0!))
-                    ecosimDS.TempLeft(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempLeft", 1000.0!))
-                    ecosimDS.TempRight(iEcopathGroup) = CSng(Me.ReadSafe(reader, "TempRight", 1000.0!))
+                    ecosimDS.SalOpt(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SalOpt", 35.0!))
+                    ecosimDS.SdSalLeft(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SdSalLeft", 1000.0!))
+                    ecosimDS.SdSalRight(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SdSalRight", 1000.0!))
+                    ecosimDS.TempOpt(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempOpt", 10.0!))
+                    ecosimDS.TempLeft(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempLeft", 1000.0!))
+                    ecosimDS.TempRight(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempRight", 1000.0!))
 
-                    mseDS.Blim(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Blim", mseDS.Blim(iEcopathGroup), cCore.NULL_VALUE))
-                    mseDS.Bbase(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup), cCore.NULL_VALUE))
-                    mseDS.Fopt(iEcopathGroup) = CSng(Me.ReadSafe(reader, "Fopt", mseDS.Fopt(iEcopathGroup), cCore.NULL_VALUE))
-                    mseDS.FixedEscapement(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedEscapement", 0.0!, cCore.NULL_VALUE))
-                    mseDS.FixedF(iEcopathGroup) = CSng(Me.ReadSafe(reader, "FixedF", 0.0!, cCore.NULL_VALUE))
+                    mseDS.Blim(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Blim", mseDS.Blim(iEcopathGroup), cCore.NULL_VALUE))
+                    mseDS.Bbase(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup), cCore.NULL_VALUE))
+                    mseDS.Fopt(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Fopt", mseDS.Fopt(iEcopathGroup), cCore.NULL_VALUE))
+                    mseDS.FixedEscapement(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "FixedEscapement", 0.0!, cCore.NULL_VALUE))
+                    mseDS.FixedF(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "FixedF", 0.0!, cCore.NULL_VALUE))
 
-                    mseDS.CVbiomEst(iEcopathGroup) = CSng(Me.ReadSafe(reader, "BiomassCV", mseDS.CVbiomEst(iEcopathGroup), cCore.NULL_VALUE))
-                    mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.ReadSafe(reader, "LowerRisk", mseDS.BioRiskValue(iEcopathGroup, 0), cCore.NULL_VALUE))
-                    mseDS.BioRiskValue(iEcopathGroup, 1) = CSng(Me.ReadSafe(reader, "UpperRisk", mseDS.BioRiskValue(iEcopathGroup, 1), cCore.NULL_VALUE))
+                    mseDS.CVbiomEst(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "BiomassCV", mseDS.CVbiomEst(iEcopathGroup), cCore.NULL_VALUE))
+                    mseDS.BioRiskValue(iEcopathGroup, 0) = CSng(Me.m_db.ReadSafe(reader, "LowerRisk", mseDS.BioRiskValue(iEcopathGroup, 0), cCore.NULL_VALUE))
+                    mseDS.BioRiskValue(iEcopathGroup, 1) = CSng(Me.m_db.ReadSafe(reader, "UpperRisk", mseDS.BioRiskValue(iEcopathGroup, 1), cCore.NULL_VALUE))
 
                     mseDS.DefaultBioBounds(iEcopathGroup)
-                    mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower, cCore.NULL_VALUE))
-                    mseDS.BioBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper, cCore.NULL_VALUE))
+                    mseDS.BioBounds(iEcopathGroup).Lower = CSng(Me.m_db.ReadSafe(reader, "BiomassRefLower", mseDS.BioBounds(iEcopathGroup).Lower, cCore.NULL_VALUE))
+                    mseDS.BioBounds(iEcopathGroup).Upper = CSng(Me.m_db.ReadSafe(reader, "BiomassRefUpper", mseDS.BioBounds(iEcopathGroup).Upper, cCore.NULL_VALUE))
 
                     mseDS.DefaultCatchBoundsGroup(iEcopathGroup)
-                    mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower, cCore.NULL_VALUE))
-                    mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper, cCore.NULL_VALUE))
+                    mseDS.CatchGroupBounds(iEcopathGroup).Lower = CSng(Me.m_db.ReadSafe(reader, "CatchRefLower", mseDS.CatchGroupBounds(iEcopathGroup).Lower, cCore.NULL_VALUE))
+                    mseDS.CatchGroupBounds(iEcopathGroup).Upper = CSng(Me.m_db.ReadSafe(reader, "CatchRefUpper", mseDS.CatchGroupBounds(iEcopathGroup).Upper, cCore.NULL_VALUE))
 
-                    mseDS.RstockRatio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RStockRatio", mseDS.RstockRatio(igroup), cCore.NULL_VALUE))
-                    mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup), cCore.NULL_VALUE))
-                    mseDS.cvRec(iEcopathGroup) = CSng(Me.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup), cCore.NULL_VALUE))
+                    mseDS.RstockRatio(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RStockRatio", mseDS.RstockRatio(igroup), cCore.NULL_VALUE))
+                    mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup), cCore.NULL_VALUE))
+                    mseDS.cvRec(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup), cCore.NULL_VALUE))
 
                     ' bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
@@ -4075,7 +4005,7 @@ Namespace DataSources
                     iFleetID = ecopathDS.FleetDBID(iFleet)
                     reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioFleet WHERE (ScenarioID={0}) AND (EcopathFleetID={1})", iScenarioID, iFleetID))
                     reader.Read()
-                    iShapeID = CInt(Me.ReadSafe(reader, "FishRateShapeID", -1))
+                    iShapeID = CInt(Me.m_db.ReadSafe(reader, "FishRateShapeID", -1))
                 Catch ex As Exception
                     ' A different error occurred: abort!
                     bSucces = False
@@ -4098,22 +4028,22 @@ Namespace DataSources
 
                 Try
                     ecosimDS.FleetDBID(iFleet) = CInt(reader("FleetID"))
-                    ecosimDS.Epower(iFleet) = CSng(Me.ReadSafe(reader, "Epower", 3))
-                    ecosimDS.PcapBase(iFleet) = CSng(Me.ReadSafe(reader, "PCapBase", 0.5))
-                    ecosimDS.CapDepreciate(iFleet) = CSng(Me.ReadSafe(reader, "CapDepreciate", 0.06))
-                    ecosimDS.CapBaseGrowth(iFleet) = CSng(Me.ReadSafe(reader, "CapBaseGrowth", 0.2))
+                    ecosimDS.Epower(iFleet) = CSng(Me.m_db.ReadSafe(reader, "Epower", 3))
+                    ecosimDS.PcapBase(iFleet) = CSng(Me.m_db.ReadSafe(reader, "PCapBase", 0.5))
+                    ecosimDS.CapDepreciate(iFleet) = CSng(Me.m_db.ReadSafe(reader, "CapDepreciate", 0.06))
+                    ecosimDS.CapBaseGrowth(iFleet) = CSng(Me.m_db.ReadSafe(reader, "CapBaseGrowth", 0.2))
 
-                    mseDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
-                    mseDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
-                    mseDS.CVFest(iFleet) = CSng(Me.ReadSafe(reader, "CV", mseDS.CVFest(iFleet)))
-                    mseDS.Qgrow(iFleet) = CSng(Me.ReadSafe(reader, "QIncrease", mseDS.Qgrow(iFleet)))
+                    mseDS.MaxEffort(iFleet) = CSng(Me.m_db.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
+                    mseDS.QuotaType(iFleet) = DirectCast(CInt(Me.m_db.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
+                    mseDS.CVFest(iFleet) = CSng(Me.m_db.ReadSafe(reader, "CV", mseDS.CVFest(iFleet)))
+                    mseDS.Qgrow(iFleet) = CSng(Me.m_db.ReadSafe(reader, "QIncrease", mseDS.Qgrow(iFleet)))
 
                     mseDS.DefaultCatchBoundsFleet(iFleet)
-                    mseDS.CatchFleetBounds(iFleet).Lower = CSng(Me.ReadSafe(reader, "CatchRefLower", mseDS.CatchFleetBounds(iFleet).Lower))
-                    mseDS.CatchFleetBounds(iFleet).Upper = CSng(Me.ReadSafe(reader, "CatchRefUpper", mseDS.CatchFleetBounds(iFleet).Upper))
-                    mseDS.EffortFleetBounds(iFleet).Lower = CSng(Me.ReadSafe(reader, "EffortRefLower", mseDS.EffortFleetBounds(iFleet).Lower))
-                    mseDS.EffortFleetBounds(iFleet).Upper = CSng(Me.ReadSafe(reader, "EffortRefUpper", mseDS.EffortFleetBounds(iFleet).Upper))
-                    'mseDS.MSYEvaluateFleet(iFleet) = (CInt(Me.ReadSafe(reader, "MSYEvaluateFleet", True)) = 1)
+                    mseDS.CatchFleetBounds(iFleet).Lower = CSng(Me.m_db.ReadSafe(reader, "CatchRefLower", mseDS.CatchFleetBounds(iFleet).Lower))
+                    mseDS.CatchFleetBounds(iFleet).Upper = CSng(Me.m_db.ReadSafe(reader, "CatchRefUpper", mseDS.CatchFleetBounds(iFleet).Upper))
+                    mseDS.EffortFleetBounds(iFleet).Lower = CSng(Me.m_db.ReadSafe(reader, "EffortRefLower", mseDS.EffortFleetBounds(iFleet).Lower))
+                    mseDS.EffortFleetBounds(iFleet).Upper = CSng(Me.m_db.ReadSafe(reader, "EffortRefUpper", mseDS.EffortFleetBounds(iFleet).Upper))
+                    'mseDS.MSYEvaluateFleet(iFleet) = (CInt(Me.m_db.ReadSafe(reader, "MSYEvaluateFleet", True)) = 1)
 
                 Catch ex As Exception
                     bSucces = False
@@ -4209,8 +4139,8 @@ Namespace DataSources
                     iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
 
                     If (iFleet > 0) And (iGroup > 0) Then
-                        mseDS.Quotashare(iFleet, iGroup) = CSng(Me.ReadSafe(reader, "QuotaShare", mseDS.Quotashare(iFleet, iGroup)))
-                        mseDS.Fweight(iFleet, iGroup) = CSng(Me.ReadSafe(reader, "FWeight", 1.0))
+                        mseDS.Quotashare(iFleet, iGroup) = CSng(Me.m_db.ReadSafe(reader, "QuotaShare", mseDS.Quotashare(iFleet, iGroup)))
+                        mseDS.Fweight(iFleet, iGroup) = CSng(Me.m_db.ReadSafe(reader, "FWeight", 1.0))
                     End If
                 End While
 
@@ -4705,11 +4635,11 @@ Namespace DataSources
                 ' Read and assign scenario forcing shape number(s)
                 reader = Me.m_db.GetReader(String.Format("SELECT NutForcingShapeID, SalinityForcingShapeID, TemperatureForcingShapeID FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
                 reader.Read()
-                iForcingShape = CInt(Me.ReadSafe(reader, "NutForcingShapeID", 0))
+                iForcingShape = CInt(Me.m_db.ReadSafe(reader, "NutForcingShapeID", 0))
                 ecosimDS.NutForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
-                iForcingShape = CInt(Me.ReadSafe(reader, "SalinityForcingShapeID", 0))
+                iForcingShape = CInt(Me.m_db.ReadSafe(reader, "SalinityForcingShapeID", 0))
                 ecosimDS.SalinityForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
-                iForcingShape = CInt(Me.ReadSafe(reader, "TemperatureForcingShapeID", 0))
+                iForcingShape = CInt(Me.m_db.ReadSafe(reader, "TemperatureForcingShapeID", 0))
                 ecosimDS.TemperatureForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
                 Me.m_db.ReleaseReader(reader)
                 reader = Nothing
@@ -4809,7 +4739,7 @@ Namespace DataSources
                 ecosimDS.ForcingDBIDs(iForcingShape) = iShapeID
                 ecosimDS.ForcingTitles(iForcingShape) = CStr(readerShape("Title"))
                 ecosimDS.ForcingShapeType(iForcingShape) = eDataTypes.Forcing
-                ecosimDS.ForcingApplicationType(iForcingShape) = DirectCast(Me.ReadSafe(readerShape, "ApplicationType", eForcingApplicationTypes.NotSet), eForcingApplicationTypes)
+                ecosimDS.ForcingApplicationType(iForcingShape) = DirectCast(Me.m_db.ReadSafe(readerShape, "ApplicationType", eForcingApplicationTypes.NotSet), eForcingApplicationTypes)
                 ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
 
                 Me.m_db.ReleaseReader(readerShape)
@@ -4857,7 +4787,7 @@ Namespace DataSources
                 ecosimDS.MediationShapeParams(iMediationShape) = shapeParms
                 ecosimDS.MediationDBIDs(iMediationShape) = iShapeID
                 ecosimDS.MediationTitles(iMediationShape) = CStr(readerShape("Title"))
-                ecosimDS.IMedBase(iMediationShape) = CInt(Me.ReadSafe(readerShape, "IMedBase", 1200 / 3))
+                ecosimDS.IMedBase(iMediationShape) = CInt(Me.m_db.ReadSafe(readerShape, "IMedBase", 1200 / 3))
 
                 Me.m_db.ReleaseReader(readerShape)
                 readerShape = Nothing
@@ -6624,10 +6554,10 @@ Namespace DataSources
                 reader.Read()
                 Try
 
-                    mseDS.AssessMethod = DirectCast(Me.ReadSafe(reader, "AssessMethod", eAssessmentMethods.CatchEstmBio), eAssessmentMethods)
-                    mseDS.AssessPower = CSng(Me.ReadSafe(reader, "AssessPower", 1))
-                    mseDS.NTrials = CInt(Me.ReadSafe(reader, "NTrials", 10))
-                    mseDS.MSYStartTimeIndex = CInt(Me.ReadSafe(reader, "StartIndex", 2))
+                    mseDS.AssessMethod = DirectCast(Me.m_db.ReadSafe(reader, "AssessMethod", eAssessmentMethods.CatchEstmBio), eAssessmentMethods)
+                    mseDS.AssessPower = CSng(Me.m_db.ReadSafe(reader, "AssessPower", 1))
+                    mseDS.NTrials = CInt(Me.m_db.ReadSafe(reader, "NTrials", 10))
+                    mseDS.MSYStartTimeIndex = CInt(Me.m_db.ReadSafe(reader, "StartIndex", 2))
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
@@ -6745,14 +6675,14 @@ Namespace DataSources
                 ' Read the one record
                 reader.Read()
                 ' Remember link with Ecosim scenario, if any
-                ecospaceDS.EcosimScenarioDBID = CInt(Me.ReadSafe(reader, "EcosimScenarioID", cCore.NULL_VALUE))
+                ecospaceDS.EcosimScenarioDBID = CInt(Me.m_db.ReadSafe(reader, "EcosimScenarioID", cCore.NULL_VALUE))
                 ecospaceDS.InRow = CInt(reader("Inrow"))
                 ecospaceDS.InCol = CInt(reader("Incol"))
                 ecospaceDS.CellLength = CSng(reader("CellLength"))
-                ecospaceDS.Lat1 = CSng(Me.ReadSafe(reader, "MinLat", 0))
-                ecospaceDS.Lon1 = CSng(Me.ReadSafe(reader, "MinLon", 0))
-                ecospaceDS.TimeStep = CSng(Me.ReadSafe(reader, "TimeStep", 0))
-                ecospaceDS.PredictEffort = CBool(Me.ReadSafe(reader, "PredictEffort", True))
+                ecospaceDS.Lat1 = CSng(Me.m_db.ReadSafe(reader, "MinLat", 0))
+                ecospaceDS.Lon1 = CSng(Me.m_db.ReadSafe(reader, "MinLon", 0))
+                ecospaceDS.TimeStep = CSng(Me.m_db.ReadSafe(reader, "TimeStep", 0))
+                ecospaceDS.PredictEffort = CBool(Me.m_db.ReadSafe(reader, "PredictEffort", True))
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
                 If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -6764,7 +6694,7 @@ Namespace DataSources
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
                 ecospaceDS.AdjustSpace = CBool(reader("AdjustSpace"))
                 ecospaceDS.UseExact = CBool(reader("UseExact"))
-                ecospaceDS.Tol = CSng(Me.ReadSafe(reader, "Tolerance", 0.01!))
+                ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
 
                 Select Case CInt(reader("ModelType"))
                     Case 0
@@ -7259,11 +7189,11 @@ Namespace DataSources
 
                         ' Read scalars
                         ecospaceDS.Depth(iRow, iCol) = CInt(reader("Depth"))
-                        ecospaceDS.DepthA(iRow, iCol) = CInt(Me.ReadSafe(reader, "DepthA", ecospaceDS.Depth(iRow, iCol)))
+                        ecospaceDS.DepthA(iRow, iCol) = CInt(Me.m_db.ReadSafe(reader, "DepthA", ecospaceDS.Depth(iRow, iCol)))
                         ecospaceDS.RelPP(iRow, iCol) = CSng(reader("RelPP"))
                         ecospaceDS.RelCin(iRow, iCol) = CSng(reader("RelCin"))
-                        ecospaceDS.Xvel(iRow, iCol) = CSng(Me.ReadSafe(reader, "XVel", 0.0!))
-                        ecospaceDS.Yvel(iRow, iCol) = CSng(Me.ReadSafe(reader, "YVel", 0.0!))
+                        ecospaceDS.Xvel(iRow, iCol) = CSng(Me.m_db.ReadSafe(reader, "XVel", 0.0!))
+                        ecospaceDS.Yvel(iRow, iCol) = CSng(Me.m_db.ReadSafe(reader, "YVel", 0.0!))
                         ' Read FKs
                         iID = CInt(reader("HabitatID"))
                         ecospaceDS.HabType(iRow, iCol) = CInt(IIf((iID > 0), Math.Max(0, Array.IndexOf(ecospaceDS.HabitatDBID, iID)), 0))
@@ -7902,7 +7832,7 @@ Namespace DataSources
                     ecospaceDS.IsMigratory(iGroup) = CBool(reader("IsMigratory"))
                     ecospaceDS.MigConcRow(iGroup) = CSng(reader("MigConcRow"))
                     ecospaceDS.MigConcCol(iGroup) = CSng(reader("MigConcCol"))
-                    ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(ReadSafe(reader, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
+                    ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.m_db.ReadSafe(reader, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
                     ' Monthly PrefRow
                     astrSplit = CStr(reader("PrefRow")).Split(CChar(" "))
                     For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
@@ -8242,7 +8172,7 @@ Namespace DataSources
                     iPort = CInt(reader("PortID"))
 
                     ecospaceDS.Port(iFleet, iRow, iCol) = (iPort > 0)
-                    ecospaceDS.Sail(iFleet, iRow, iCol) = CSng(Me.ReadSafe(reader, "SailCost", 0.0!))
+                    ecospaceDS.Sail(iFleet, iRow, iCol) = CSng(Me.m_db.ReadSafe(reader, "SailCost", 0.0!))
 
                 End While
 
@@ -9187,7 +9117,7 @@ Namespace DataSources
                 tracerDS.Cinflow(0) = CSng(reader("Cinflow"))
                 tracerDS.CoutFlow(0) = CSng(reader("Coutflow"))
                 tracerDS.cdecay(0) = CSng(reader("Cdecay"))
-                'iConForceNumber = CInt(Me.ReadSafe(reader, "ConForcingShapeID", 0))
+                'iConForceNumber = CInt(Me.m_db.ReadSafe(reader, "ConForcingShapeID", 0))
                 'tracerDS.ConForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iConForceNumber))
 
             Catch ex As Exception
@@ -9585,8 +9515,8 @@ Namespace DataSources
                 While reader.Read()
 
                     strValueID = CStr(reader("ValueID"))
-                    strRemark = CStr(Me.ReadSafe(reader, "Remark", ""))
-                    strVisualStyle = CStr(Me.ReadSafe(reader, "VisualStyle", ""))
+                    strRemark = CStr(Me.m_db.ReadSafe(reader, "Remark", ""))
+                    strVisualStyle = CStr(Me.m_db.ReadSafe(reader, "VisualStyle", ""))
 
                     ad = Me.m_core.AuxillaryData(strValueID)
                     ad.AllowValidation = False
