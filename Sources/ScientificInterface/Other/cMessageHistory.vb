@@ -521,7 +521,7 @@ Public Class cMessageHistory
                 ' Show dialog
                 dlr = cCustomMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, _
                                              mbb, mbi, _
-                                             bChecked, My.Resources.PROMPT_HIDE_MESSAGES)
+                                             bChecked, My.Resources.PROMPT_MESSAGE_HIDE)
                 ' Auto-reply requested?
                 If bChecked Then
                     ' #Yes: store auto-reply
