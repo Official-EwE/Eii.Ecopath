@@ -2226,6 +2226,7 @@ Namespace DataSources
             Dim reader As IDataReader = Nothing
             Dim iPred As Integer = 0
             Dim iPrey As Integer = 0
+            Dim sDiet As Single = 0.0!
             Dim bSucces As Boolean = True
 
             Try
@@ -2236,8 +2237,12 @@ Namespace DataSources
                     iPrey = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PreyID")))
 
                     Debug.Assert(iPred >= 0 And iPrey >= 0)
+                    sDiet = CSng(reader("Diet"))
 
-                    ecopathDS.DCInput(iPred, iPrey) = CSng(reader("Diet"))
+                    ' Set diet to 0 for non-living groups (fixes #878)
+                    If (sDiet > 0) And (iPred > ecopathDS.NumLiving) Then sDiet = 0
+                    ecopathDS.DCInput(iPred, iPrey) = sDiet
+
                     If iPrey > ecopathDS.NumLiving Then
                         ecopathDS.DF(iPred, iPrey - ecopathDS.NumLiving) = CSng(reader("DetritusFate"))
                     End If

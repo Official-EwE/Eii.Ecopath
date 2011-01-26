@@ -50,9 +50,15 @@ Namespace Ecopath.Controls.FlowDiagram
             End Get
         End Property
 
-        Public ReadOnly Property HighlightColor() As Color
+        Public ReadOnly Property HighlightEatsColor() As Color
             Get
                 Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            End Get
+        End Property
+
+        Public ReadOnly Property HighlightIsEatenColor() As Color
+            Get
+                Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND)
             End Get
         End Property
 

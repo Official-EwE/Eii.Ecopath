@@ -129,16 +129,10 @@ Namespace Ecopath.Controls.FlowDiagram
                                       ByVal ptFrom As PointF, _
                                       ByVal ptTo As PointF, _
                                       ByVal clrLine As Color, _
-                                      ByVal iWidth As Integer, _
+                                      ByVal sWidth As Single, _
                                       ByVal connectiontype As eConnectionType)
 
-                Dim pn As New Pen(clrLine, iWidth)
-
-                'If Me.IsAutoLineWidth Then
-                '    pn.Width = iWidth
-                'Else
-                '    pn.Width = 1
-                'End If
+                Dim pn As New Pen(clrLine, sWidth)
 
                 Select Case connectiontype
 
@@ -320,17 +314,22 @@ Namespace Ecopath.Controls.FlowDiagram
                                   ByVal rc As Rectangle, _
                                   ByVal iPred As Integer, _
                                   ByVal iPrey As Integer, _
-                                  ByVal bHighlight As Boolean)
+                                  ByVal bHighlightAsPredator As Boolean, _
+                                  ByVal bHighlightAsPrey As Boolean)
 
             Dim clrLine As Color = Me.m_clrLine
             Dim sDiet As Single = Me.m_data.Diet(iPred, iPrey)
             Dim sDietMax As Single = Me.m_data.DietMax
-            Dim iLineWidth As Integer = 1
+            Dim sLineWidth As Single = 0.5!
 
             If sDiet <= 0 Then Return
 
-            If bHighlight Then
-                clrLine = Me.m_data.HighlightColor
+            If bHighlightAsPredator Then
+                clrLine = Me.m_data.HighlightEatsColor
+                sLineWidth = 2.0!
+            ElseIf bHighlightAsPrey Then
+                clrLine = Me.m_data.HighlightIsEatenColor
+                sLineWidth = 2.0!
             Else
                 Select Case Me.m_colorusagetype
                     Case eColorUsageTypes.Flow
@@ -340,13 +339,13 @@ Namespace Ecopath.Controls.FlowDiagram
                 End Select
             End If
 
-            iLineWidth = Me.CalcLineWidth(sDiet, sDietMax)
+            sLineWidth *= Me.CalcLineWidth(sDiet, sDietMax)
 
             Me.m_connectors.DrawConnection(g, _
                                         Me.NodeLocation(iPred, rc), _
                                         Me.NodeLocation(iPrey, rc), _
                                         clrLine, _
-                                        iLineWidth, _
+                                        sLineWidth, _
                                         Me.LineConnectionType)
         End Sub
 
@@ -678,7 +677,7 @@ Namespace Ecopath.Controls.FlowDiagram
                     If sValue > 0 And sValueMax > 0 Then
                         ' Ln(values 1-11) make max ~2.5 => times 4 to scale to 10
                         ' Note that Math.Log = ln
-                        iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * 24)
+                        iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * (2.4 * iSize))
                     End If
                 End If
                 Return Math.Max(2, iSize)
