@@ -942,6 +942,76 @@ Namespace Database
 
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method, reads data from a column that may not exist. In that case,
+        ''' an optional default value is returned
+        ''' </summary>
+        ''' <param name="reader">The <see cref="IDataReader">IDataReader</see> to read from.</param>
+        ''' <param name="strField">The name of the DB field (column) to read.</param>
+        ''' <param name="objValueDefault">A default value to return if the field could not be read.</param>
+        ''' <param name="objValueIgnore">Value to interpret as 'no value. When encountered, the default value will be returned.</param>
+        ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Function ReadSafe(ByVal reader As IDataReader, _
+                                 ByVal strField As String, _
+                                 Optional ByVal objValueDefault As Object = Nothing, _
+                                 Optional ByVal objValueIgnore As Object = CSng(-9999)) As Object
+
+            Dim objResult As Object = Nothing
+
+            If reader Is Nothing Then Return objValueDefault
+
+            Try
+                objResult = reader.Item(strField)
+            Catch ex As InvalidOperationException
+                'Console.WriteLine("DB: field '{0}' has no value, returning provided default '{1}'", strField, objValueDefault)
+            Catch ex As IndexOutOfRangeException
+                'Console.WriteLine("DB: field '{0}' not found in table, returning provided default '{1}'", strField, objValueDefault)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
+            End Try
+
+            If (Object.ReferenceEquals(objResult, Nothing)) Then
+                objResult = objValueDefault
+            ElseIf (Not Object.ReferenceEquals(objValueIgnore, Nothing)) _
+                And Not (Convert.IsDBNull(objResult)) _
+                And Not (Convert.IsDBNull(objValueIgnore)) Then
+
+                ' Compare ignore values
+                If TypeOf objResult Is String Then
+                    Try
+                        If (String.Compare(CStr(objResult), Convert.ToString(objValueIgnore), True) = 0) Then
+                            objResult = objValueDefault
+                        End If
+                    Catch ex As Exception
+                    End Try
+                ElseIf TypeOf objResult Is Boolean Then
+                    Try
+                        If (CBool(objResult) = Convert.ToBoolean(objValueIgnore)) Then
+                            objResult = objValueDefault
+                        End If
+                    Catch ex As Exception
+                    End Try
+                Else
+                    Try
+                        If (CSng(objResult) = Convert.ToSingle(objValueIgnore)) Then
+                            objResult = objValueDefault
+                        End If
+                    Catch ex As Exception
+                    End Try
+                End If
+
+            End If
+
+            If (Convert.IsDBNull(objResult)) Then
+                objResult = objValueDefault
+            End If
+
+            Return objResult
+        End Function
+
 #End Region ' DB helper methods
 
 #Region " Internals "
