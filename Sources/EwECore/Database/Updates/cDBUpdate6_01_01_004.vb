@@ -32,8 +32,9 @@ Friend Class cDBUpdate6_01_01_004
             Me.m_iScenarioID = iScenarioID
 
             If lUDH_UL > 0 Then
-                Me.m_sMinLat = CSng((Math.Truncate(lUDH_UL / 10000) - 900) / 10)
-                Me.m_sMinLon = CSng((lUDH_UL - Math.Truncate(lUDH_UL / 10000) * 10000) / 10 - 180)
+                Dim iCut As Integer = CInt(Math.Floor(lUDH_UL / 10000))
+                Me.m_sMinLat = (iCut / 10.0!) - 90.0!
+                Me.m_sMinLon = (lUDH_UL - (iCut * 10000)) / 10.0! - 180.0!
             Else
                 Me.m_sMinLat = sLat
                 Me.m_sMinLon = sLon
