@@ -4250,8 +4250,8 @@ Public Class cCore
         If obj.isMultiStanza Then
 
             'BioAccum and BioAccumRate are not editable if this is a multi stanza group
-            obj.SetStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.NotEditable Or eStatusFlags.Null)
-            obj.SetStatusFlags(eVarNameFlags.BioAccumRate, eStatusFlags.NotEditable Or eStatusFlags.Null)
+            obj.SetStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.NotEditable)
+            obj.SetStatusFlags(eVarNameFlags.BioAccumRate, eStatusFlags.NotEditable)
 
         Else 'If obj.isMultiStanza Then
             'not a multi stanza group so set the status flag
