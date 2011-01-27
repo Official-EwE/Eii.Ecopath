@@ -68,6 +68,12 @@ Namespace Ecopath.Controls.FlowDiagram
             End Get
         End Property
 
+        Public ReadOnly Property NumLivingGroups() As Integer
+            Get
+                Return Me.m_uic.Core.nLivingGroups
+            End Get
+        End Property
+
         Public ReadOnly Property Biomass(ByVal iIndex As Integer) As Single
             Get
                 Return Me.m_uic.Core.EcoPathGroupOutputs(iIndex).Biomass

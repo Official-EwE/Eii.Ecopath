@@ -54,7 +54,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tree.DrawBackground(g, rc)
 
             ' Draw the connections
-            For iPred As Integer = 1 To Me.m_data.NumGroups()
+            For iPred As Integer = 1 To Me.m_data.NumLivingGroups()
                 For iPrey As Integer = 1 To Me.m_data.NumGroups()
                     If Me.m_data.GroupVisible(iPred) And Me.m_data.GroupVisible(iPrey) Then
                         Me.m_tree.DrawConnection(g, rc, iPred, iPrey, Me.HighlightNode = iPred, Me.HighlightNode = iPrey)
