@@ -58,6 +58,7 @@ Public Class frmFlowDiagramPlugin
         Dim impVal As Single
         Dim fi(core.nGroups, core.nGroups) As Single
         Dim strError As String = ""
+        Dim sValue As Single = 0.0!
 
         ' Check if the extra necessery information is avaiable
         If (data Is Nothing) Then Return
@@ -95,8 +96,12 @@ Public Class frmFlowDiagramPlugin
 
                 writer.Write(strGroup)
                 writer.Write(Me.FormatNumber(Math.Abs(core.EcoPathGroupOutputs(i).TTLX)))
-                writer.Write(Me.FormatNumber(core.EcoPathGroupOutputs(i).Biomass))
-                writer.Write(Me.FormatNumber(Math.Abs(groupOut.Biomass * groupOut.PBOutput)))
+                writer.Write(Me.FormatNumber(groupOut.Biomass))
+                If groupIn.IsConsumer Then
+                    writer.Write(Me.FormatNumber(Math.Abs(groupOut.Biomass * groupOut.PBOutput)))
+                Else
+                    writer.Write(Me.FormatNumber(0.0!))
+                End If
                 writer.Write(Me.FormatNumber(data.fCatch(i)))
                 writer.Write(Me.FormatNumber(data.Ex(i)))
                 writer.Write(Me.FormatNumber(groupOut.FlowToDet))
@@ -165,7 +170,7 @@ Public Class frmFlowDiagramPlugin
         ' Account for negative sign. String formatting will place a negative sign 
         ' outside the number of digits, thus screwing up the precise number 
         ' formatting needed in this data file.
-        If (sValue < 0) Then iNumDigits -= 1
+        If (Math.Sign(sValue) = -1) Then iNumDigits -= 1
 
         ' Add zero padding character for every digit (eek)
         For i As Integer = 0 To iNumDigits - 1
