@@ -677,7 +677,7 @@ Namespace Ecopath.Controls.FlowDiagram
                     If sValue > 0 And sValueMax > 0 Then
                         ' Ln(values 1-11) make max ~2.5 => times 4 to scale to 10
                         ' Note that Math.Log = ln
-                        iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * (2.4 * iSize))
+                        iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * (1.2 * iSize))
                     End If
                 End If
                 Return Math.Max(2, iSize)
