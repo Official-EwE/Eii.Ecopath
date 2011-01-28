@@ -879,9 +879,9 @@
   <data name="LABEL_FLEET" xml:space="preserve">
     <value>&amp;Fleet:</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_LAND" xml:space="preserve">
-    <value>Land</value>
-    <comment>Layer Land</comment>
+  <data name="ECOSPACE_BASEMAP_LAYERS_DEPTH" xml:space="preserve">
+    <value>Depth</value>
+    <comment>Layer Depth</comment>
   </data>
   <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_OLD" xml:space="preserve">
     <value>This database was written by an outdated version of Ecopath 5, which is not supported by the EwE6 import process. 
