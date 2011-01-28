@@ -489,6 +489,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Includes\Microsoft.Office.Interop.Excel.dll" />
+    <Content Include="Includes\SAUPUtil.dll" />
     <Content Include="Includes\shapelib.dll" />
     <Content Include="Includes\SourceGrid2.dll" />
     <Content Include="Includes\SourceLibrary.dll" />
