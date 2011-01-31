@@ -68,7 +68,7 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerDepth
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerDepth)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_LAND
+                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_DEPTH
 
                     lLayers.Add(layer)
 
@@ -469,7 +469,7 @@ Namespace Ecospace.Basemap.Layers
             Select Case varName
 
                 Case eVarNameFlags.LayerDepth
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_LAND
+                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_DEPTH
 
                 Case eVarNameFlags.LayerHabitat
                     strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_HABITATS
