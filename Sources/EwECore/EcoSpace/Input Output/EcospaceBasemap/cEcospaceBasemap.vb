@@ -663,7 +663,7 @@ Public Class cEcospaceBasemap
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function LatToRow(ByVal sLat As Single) As Integer
-        Return CInt(Math.Floor((Me.Latitude - sLat) / Me.CellLength)) + 1
+        Return CInt(Math.Floor((Me.Latitude + Me.CellLength * Me.InRow - sLat) / Me.CellLength)) + 1
     End Function
 
     ''' -----------------------------------------------------------------------
