@@ -19,6 +19,10 @@ Public Class cEcospaceBasemap
     ''' <summary>Importance layers maintained in a basemap.</summary>
     Private m_lstLayerImportance As New List(Of cEcospaceLayerImportance)
 
+    ''' <summary>Equator length in km.</summary>
+    ''' <remarks>http://en.wikipedia.org/wiki/Equator#Exact_length_of_the_Equator</remarks>
+    Private Shared c_sEquatorLength As Single = 40007.862917
+
 #Region " Constructor "
 
     Sub New(ByRef theCore As cCore)
@@ -664,7 +668,7 @@ Public Class cEcospaceBasemap
 
     Public Shared ReadOnly Property DegreeToKm() As Single
         Get
-            Return 30.0! * 1.855!
+            Return c_sEquatorLength / 360.0!
         End Get
     End Property
 
