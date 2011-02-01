@@ -234,7 +234,7 @@ Namespace Style
             TaxonItalics = 1048576 ' 2^20
 
             ''' <summary>Flag indicating that a value is a regular taxon code.</summary>
-            TaxonReg = OK
+            TaxonReg = 2097152 ' 2^21
 
         End Enum
 
