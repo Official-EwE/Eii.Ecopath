@@ -7782,12 +7782,12 @@ Public Class cCore
     ''' <param name="iNumCols">Number of columns in basemap.</param>
     ''' <param name="sLat">Latitude of basemap (TL corner).</param>
     ''' <param name="sLon">Longitude of basemap (TL corner)></param>
-    ''' <param name="sCellSize">Cell size, in degrees.</param>
+    ''' <param name="sCellLength">Cell length, in km. A square grid is assumed.</param>
     ''' <returns>True if succesful.</returns>
     Public Function NewEcospaceScenario(ByVal strName As String, ByVal strDescription As String, _
             ByVal strAuthor As String, ByVal strContact As String, _
             ByVal iNumRows As Integer, ByVal iNumCols As Integer, _
-            ByVal sLat As Single, ByVal sLon As Single, ByVal sCellSize As Single) As Boolean
+            ByVal sLat As Single, ByVal sLon As Single, ByVal sCellLength As Single) As Boolean
 
         Dim ds As IEcospaceDatasource = Nothing
         Dim iScenarioID As Integer = 0
@@ -7811,7 +7811,7 @@ Public Class cCore
             If (ds.AppendEcospaceScenario(strName, strDescription, _
                     strAuthor, strContact, _
                     iNumRows, iNumCols, _
-                    sLat, sLon, sCellSize, iScenarioID)) Then
+                    sLat, sLon, sCellLength, iScenarioID)) Then
                 ds.EndTransaction(True)
 
                 Me.StateMonitor.UpdateDataState(Me.m_DataSource)

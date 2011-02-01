@@ -6971,7 +6971,7 @@ Namespace DataSources
         Public Function AppendEcospaceScenario(ByVal strScenarioName As String, ByVal strDescription As String, _
                  ByVal strAuthor As String, ByVal strContact As String, _
                  ByVal InRow As Integer, ByVal InCol As Integer, _
-                 ByVal sOriginLat As Single, ByVal sOriginLon As Single, ByVal sCellSize As Single, _
+                 ByVal sOriginLat As Single, ByVal sOriginLon As Single, ByVal sCellLength As Single, _
                  ByRef iScenarioID As Integer) As Boolean _
                  Implements DataSources.IEcospaceDatasource.AppendEcospaceScenario
 
@@ -7003,7 +7003,7 @@ Namespace DataSources
                 drow("LastSaved") = cDateUtils.DateToJulian()
                 drow("InRow") = InRow
                 drow("InCol") = InCol
-                drow("CellLength") = sCellSize
+                drow("CellLength") = sCellLength
                 drow("MinLat") = sOriginLat
                 drow("MinLon") = sOriginLon
                 drow("ModelType") = 2

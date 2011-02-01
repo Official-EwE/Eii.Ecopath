@@ -283,7 +283,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the <see cref="cEcospaceDataStructures.CellLength">CellLength</see>
-    ''' value for this scenario
+    ''' value for this scenario in km
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property CellLength() As Single
@@ -294,6 +294,24 @@ Public Class cEcospaceBasemap
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.CellLength, value)
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="cEcospaceDataStructures.CellLength">CellLength</see>
+    ''' value for this scenario in decimal degrees
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property CellSize() As Single
+
+        Get
+            Return cEcospaceBasemap.ToCellSize(Me.CellLength)
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.CellLength, cEcospaceBasemap.ToCellLength(value))
         End Set
 
     End Property
@@ -644,6 +662,20 @@ Public Class cEcospaceBasemap
 
 #Region " Cell position calculations "
 
+    Public Shared ReadOnly Property DegreeToKm() As Single
+        Get
+            Return 30.0! * 1.855!
+        End Get
+    End Property
+
+    Public Shared Function ToCellSize(ByVal sCellLength As Single) As Single
+        Return sCellLength / DegreeToKm
+    End Function
+
+    Public Shared Function ToCellLength(ByVal sCellSize As Single) As Single
+        Return sCellSize * DegreeToKm
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the top-left latitude position of the given row.
@@ -652,7 +684,7 @@ Public Class cEcospaceBasemap
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function RowToLat(ByVal iRow As Integer) As Single
-        Return Me.Latitude - (iRow - 1) * Me.CellLength
+        Return Me.Latitude - (iRow - 1) * Me.CellSize
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -663,7 +695,7 @@ Public Class cEcospaceBasemap
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function LatToRow(ByVal sLat As Single) As Integer
-        Return CInt(Math.Floor((Me.Latitude - sLat) / Me.CellLength)) + 1
+        Return CInt(Math.Floor((Me.Latitude - sLat) / Me.CellSize)) + 1
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -674,7 +706,7 @@ Public Class cEcospaceBasemap
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function ColToLon(ByVal iCol As Integer) As Single
-        Return Me.Longitude + (iCol - 1) * Me.CellLength
+        Return Me.Longitude + (iCol - 1) * Me.CellSize
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -689,10 +721,10 @@ Public Class cEcospaceBasemap
         ' Coarse wrap check
         If (sLon < Me.Longitude) Then
             sLon += 360
-        ElseIf (sLon > (sLon + Me.InCol * Me.CellLength)) Then
+        ElseIf (sLon > (sLon + Me.InCol * Me.CellSize)) Then
             sLon += 360
         End If
-        Return CInt(Math.Floor((sLon - Me.Longitude) / Me.CellLength)) + 1
+        Return CInt(Math.Floor((sLon - Me.Longitude) / Me.CellSize)) + 1
     End Function
 
 #End Region ' Cell calculations

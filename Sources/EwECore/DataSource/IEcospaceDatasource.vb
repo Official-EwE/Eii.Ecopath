@@ -87,14 +87,14 @@ Namespace DataSources
         ''' <param name="InCol">Number of columns in new basemap.</param>
         ''' <param name="sOriginLat">Latitude of origin of basemap.</param>
         ''' <param name="sOriginLon">Longitude of origin of basemap.</param>
-        ''' <param name="sCellSize">Cell size, in degrees. Cells are presumed square.</param>
+        ''' <param name="sCellLength">Cell size, in kilometers.</param>
         ''' <param name="iDBID">Database ID assigned to the new scenario.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Function AppendEcospaceScenario(ByVal strScenarioName As String, ByVal strDescription As String, _
             ByVal strAuthor As String, ByVal strContact As String, _
             ByVal InRow As Integer, ByVal InCol As Integer, _
-            ByVal sOriginLat As Single, ByVal sOriginLon As Single, ByVal sCellSize As Single, _
+            ByVal sOriginLat As Single, ByVal sOriginLon As Single, ByVal sCellLength As Single, _
             ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
