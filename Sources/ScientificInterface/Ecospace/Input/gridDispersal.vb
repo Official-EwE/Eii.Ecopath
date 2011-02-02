@@ -79,6 +79,7 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             Dim source As cEcospaceGroup = Nothing
+            Dim cell As EwECellBase = Nothing
 
             For iGroup As Integer = 1 To Me.Core.nGroups
                 Me.Rows.Insert(iGroup)
@@ -88,7 +89,9 @@ Namespace Ecospace
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
                 'MVel - Base dispersal rate
-                Me(iGroup, eColumnTypes.DispersalRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MVel)
+                cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MVel)
+                cell.SuppressZero = False
+                Me(iGroup, eColumnTypes.DispersalRate) = cell
                 'Rel dispersal in bad habitat
                 Me(iGroup, eColumnTypes.RelDisp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RelMoveBad)
                 ' Rel. vul.to pred. in bad habitat
