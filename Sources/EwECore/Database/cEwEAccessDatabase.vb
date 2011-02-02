@@ -189,7 +189,8 @@ Namespace Database
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
         Public Overrides Function Open(ByVal strDatabase As String, _
-                                       Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+                                       Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                                       Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType
 
             ' Pre
             Debug.Assert(Not String.IsNullOrEmpty(strDatabase), "Invalid data source specified")
@@ -201,7 +202,7 @@ Namespace Database
             If Not File.Exists(strDatabase) Then Return eDatasourceAccessType.Failed_FileNotFound
 
             ' Test read-only file attributes
-            If (File.GetAttributes(strDatabase) And FileAttributes.ReadOnly) = FileAttributes.ReadOnly Then
+            If (Not bReadOnly) And (File.GetAttributes(strDatabase) And FileAttributes.ReadOnly) = FileAttributes.ReadOnly Then
                 Return eDatasourceAccessType.Failed_ReadOnly
             End If
 
@@ -225,6 +226,9 @@ Namespace Database
             End Select
 
             If Not String.IsNullOrEmpty(Me.m_conn.ConnectionString) Then
+
+                ' Whoah!
+                If bReadOnly Then Me.m_conn.ConnectionString &= "Mode=Read;"
 
                 Try
 

@@ -28,9 +28,10 @@ Public Class cDatabase
     ''' <returns>True if connected succesfully.</returns>
     ''' -------------------------------------------------------------------
     Public Overrides Function Open(ByVal strDatabase As String, _
-                                   Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+                                   Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                                   Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType
 
-        Dim result As eDatasourceAccessType = MyBase.Open(strDatabase, databaseType)
+        Dim result As eDatasourceAccessType = MyBase.Open(strDatabase, databaseType, bReadOnly)
         If result = eDatasourceAccessType.Opened Then
             Me.OOPEnabled = True
             Me.UpdateDatabase()

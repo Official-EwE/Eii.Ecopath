@@ -500,7 +500,8 @@ Namespace Database
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
         Public MustOverride Function Open(ByVal strDatabase As String, _
-                                          Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+                                          Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                                          Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
