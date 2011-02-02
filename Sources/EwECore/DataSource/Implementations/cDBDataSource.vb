@@ -3963,7 +3963,6 @@ Namespace DataSources
 
         Private Function LoadEcosimGroupYear(ByVal iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
@@ -4096,7 +4095,6 @@ Namespace DataSources
 
         Private Function LoadEcosimFleetYear(ByVal iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
