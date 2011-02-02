@@ -87,14 +87,20 @@ Namespace DataSources
         ''' <param name="strName">Name of the DB database to open.</param>
         ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
         ''' datastructures to read to, and write from.</param>
+        ''' <param name="datasourceType">Type of database to open; specify
+        ''' <see cref="eDataSourceTypes.NotSet"/> to automatically determine the
+        ''' type of database.</param>
+        ''' <param name="bReadOnly">Flag stating whether a datasource should be
+        ''' opened as read-only.</param>
         ''' <returns>True if opened successfully.</returns>
         ''' -------------------------------------------------------------------
         Public Function Open(ByVal strName As String, ByVal core As cCore, _
-                             Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType _
+                             Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                             Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType _
                              Implements DataSources.IEwEDataSource.Open
 
             ' Attempt to open existing
-            Dim atResult As eDatasourceAccessType = Me.m_db.Open(strName, datasourceType)
+            Dim atResult As eDatasourceAccessType = Me.m_db.Open(strName, datasourceType, bReadOnly)
             ' Any luck?
             If atResult = eDatasourceAccessType.Success Then
                 ' Store core

@@ -48,9 +48,16 @@ Namespace DataSources
         ''' is interpreted depends on the type of data source that is opened.</param>
         ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
         ''' datastructures to read to, and write from.</param>
+        ''' <param name="datasourceType">Type of datasource to open; specify
+        ''' <see cref="eDataSourceTypes.NotSet"/> to automatically determine the
+        ''' type of datasource.</param>
+        ''' <param name="bReadOnly">Flag stating whether a datasource should be
+        ''' opened as read-only.</param>
         ''' <returns>True if opened successfully.</returns>
         ''' -------------------------------------------------------------------
-        Function Open(ByVal strName As String, ByVal core As cCore, Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+        Function Open(ByVal strName As String, ByVal core As cCore, _
+                      Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                      Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
