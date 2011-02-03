@@ -370,7 +370,7 @@ Public Class cLog
 
         Try
             Dim hardwiredPath As String = "C:\Documents and Settings\Me\My Documents\Projects\EcoPath Ecosim\"
-            strm = System.IO.File.AppendText(hardwiredPath + strFilename)
+            strm = System.IO.File.AppendText(strFilename)
             ' strm = System.IO.File.AppendText(System.AppDomain.CurrentDomain.BaseDirectory() + filename)
 
             If strHeader <> "" Then
