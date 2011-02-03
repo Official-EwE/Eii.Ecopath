@@ -1167,41 +1167,45 @@ Namespace Controls.EwEGrid
         Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs)
 
             Dim cmdh As cCommandHandler = Me.ComandHandler
-            Dim cmd As cCommand = cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME)
-            Dim sc As cPropertySelectionCommand = Nothing
-            Dim c As SourceGrid2.Cells.ICell = Nothing
 
-            If Me.m_bTrackPropertySelection Then
+            If (cmdh IsNot Nothing) Then
 
-                ' Clean up
-                Me.m_lpropertySelected.Clear()
-                If e.EventType <> SelectionChangeEventType.Clear Then
+                Dim cmd As cCommand = cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME)
+                Dim sc As cPropertySelectionCommand = Nothing
+                Dim c As SourceGrid2.Cells.ICell = Nothing
 
-                    ' Get properties from selected cells
-                    For Each p As Position In Me.Selection.GetCellsPositions
-                        Try
-                            c = Me(p.Row, p.Column)
-                            If c IsNot Nothing Then
-                                ' Is property cell?
-                                If TypeOf c Is PropertyCell Then
-                                    ' #Yes: add to list of selected cells
-                                    Me.m_lpropertySelected.Add(DirectCast(c, PropertyCell).GetProperty())
+                If Me.m_bTrackPropertySelection Then
+
+                    ' Clean up
+                    Me.m_lpropertySelected.Clear()
+                    If e.EventType <> SelectionChangeEventType.Clear Then
+
+                        ' Get properties from selected cells
+                        For Each p As Position In Me.Selection.GetCellsPositions
+                            Try
+                                c = Me(p.Row, p.Column)
+                                If c IsNot Nothing Then
+                                    ' Is property cell?
+                                    If TypeOf c Is PropertyCell Then
+                                        ' #Yes: add to list of selected cells
+                                        Me.m_lpropertySelected.Add(DirectCast(c, PropertyCell).GetProperty())
+                                    End If
                                 End If
-                            End If
-                        Catch ex As Exception
+                            Catch ex As Exception
 
-                        End Try
-                    Next
+                            End Try
+                        Next
 
-                End If
-
-                If cmd IsNot Nothing Then
-                    If (TypeOf cmd Is cPropertySelectionCommand) Then
-                        sc = DirectCast(cmd, cPropertySelectionCommand)
-                        sc.Invoke(Me.m_lpropertySelected, e.EventType)
                     End If
-                End If
 
+                    If cmd IsNot Nothing Then
+                        If (TypeOf cmd Is cPropertySelectionCommand) Then
+                            sc = DirectCast(cmd, cPropertySelectionCommand)
+                            sc.Invoke(Me.m_lpropertySelected, e.EventType)
+                        End If
+                    End If
+
+                End If
             End If
 
             Try
