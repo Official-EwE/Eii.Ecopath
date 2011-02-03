@@ -2313,7 +2313,9 @@ nextJ:
 
             For i = 1 To m_Data.NumLiving
                 If m_Data.PB(i) >= 0 And m_Data.EE(i) >= 0 Then
-                    Q(i) = m_Data.fCatch(i) + m_Data.BA(i) + m_Data.Emigration(j) - m_Data.Immig(j)
+                    'jb fixed bug 891
+                    Q(i) = m_Data.fCatch(i) + m_Data.BA(i) + m_Data.Emigration(i) - m_Data.Immig(i)
+                    'Q(i) = m_Data.fCatch(i) + m_Data.BA(i) + m_Data.Emigration(j) - m_Data.Immig(j)
                     'vc980303 This was including detritus, don't know why For j = 1 To NumGroups
                     For j = 1 To m_Data.NumLiving
                         AUL(i, j) = -9999
@@ -2512,8 +2514,6 @@ nextJ:
             ReDim Z(m_Data.NumGroups, m_Data.NumGroups)
             ReDim W(m_Data.NumGroups, m_Data.NumGroups)
             ReDim Y(m_Data.NumGroups, m_Data.NumGroups)
-
-
             'StrLong$ = " Geninv routine" & Chr$(13) & Chr$(13)
             ' LOCATE 16, 12: Print "              2*N + trace =";
 
