@@ -103,17 +103,24 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the display text for the header cell.
+        ''' Get the value for a header cell.
         ''' </summary>
+        ''' <bugfix number="892">
+        ''' Moved this functionality from DisplayText to make sure header values
+        ''' are correctly picked up by Copy and Cut operations.
+        ''' </bugfix>
         ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property DisplayText() As String
+        Public Overrides Property Value() As Object
             Get
                 If (Me.m_aUnitTypes Is Nothing) Then
-                    Return MyBase.DisplayText
+                    Return MyBase.Value
                 Else
                     Return Me.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.m_aUnitTypes)
                 End If
             End Get
+            Set(ByVal value As Object)
+                MyBase.Value = value
+            End Set
         End Property
 
 #End Region ' Unit header text
