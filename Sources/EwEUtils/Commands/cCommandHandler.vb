@@ -67,7 +67,10 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Public Sub Remove(ByVal c As cCommand)
             Try
-                Me.m_dictCommands.Remove(c.Name.ToLower())
+                If (c IsNot Nothing) Then
+                    c.Clear()
+                    Me.m_dictCommands.Remove(c.Name.ToLower())
+                End If
             Catch ex As Exception
                 ' Kaboom
             End Try
