@@ -294,21 +294,21 @@ Public Class frmModelDescription
     Private Sub m_btnLookup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnLookup.Click
 
-        Dim lookup As New cGoogleMapsLookup()
-        Dim eweModel As cEwEModel = Me.UIContext.Core.EwEModel()
+        'Dim lookup As New cGoogleMapsLookup()
+        'Dim eweModel As cEwEModel = Me.UIContext.Core.EwEModel()
 
-        If lookup.FindLocation(Me.m_tbModelAreaName.Text) Then
-            ' No need to use feedback messages here
-            If MsgBox(String.Format(My.Resources.PROMPT_GOOGLELOCATION_SEARCH, _
-                                    lookup.Term, lookup.North, lookup.West, lookup.South, lookup.East), _
-                                    MsgBoxStyle.YesNo Or MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-                eweModel.AreaName = lookup.Term
-                eweModel.South = lookup.South
-                eweModel.North = lookup.North
-                eweModel.West = lookup.West
-                eweModel.East = lookup.East
-            End If
-        End If
+        'If lookup.FindLocation(Me.m_tbModelAreaName.Text) Then
+        '    ' No need to use feedback messages here
+        '    If MsgBox(String.Format(My.Resources.PROMPT_GOOGLELOCATION_SEARCH, _
+        '                            lookup.Term, lookup.North, lookup.West, lookup.South, lookup.East), _
+        '                            MsgBoxStyle.YesNo Or MsgBoxStyle.Question) = MsgBoxResult.Yes Then
+        '        eweModel.AreaName = lookup.Term
+        '        eweModel.South = lookup.South
+        '        eweModel.North = lookup.North
+        '        eweModel.West = lookup.West
+        '        eweModel.East = lookup.East
+        '    End If
+        'End If
 
     End Sub
 

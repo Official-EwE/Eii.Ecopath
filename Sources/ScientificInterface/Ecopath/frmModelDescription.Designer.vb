@@ -443,6 +443,7 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_btnLookup, "m_btnLookup")
         Me.m_btnLookup.Image = Global.ScientificInterface.My.Resources.Resources.google
         Me.m_btnLookup.Name = "m_btnLookup"
+        Me.m_btnLookup.Enabled = False
         Me.m_btnLookup.UseVisualStyleBackColor = True
         '
         'frmModelDescription
