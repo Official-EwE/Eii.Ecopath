@@ -263,8 +263,10 @@ Namespace Ecospace
                 End If
 
                 Me.Core.StopEcospace()
+                Me.m_drawers.Clear()
 
                 Me.m_zgh.Detach()
+                Me.m_zgh = Nothing
 
                 ' Stop tracking core state monitor for Ecospace run states
                 RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
@@ -272,10 +274,7 @@ Namespace Ecospace
                 RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 ' Stop tracking ConcTracing setting
                 RemoveHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
-
                 Me.m_bpConTracing = Nothing
-
-                Me.m_drawers.Clear()
 
             Catch ex As Exception
                 'make sure something in the interface does not stop the base from cleaning up
