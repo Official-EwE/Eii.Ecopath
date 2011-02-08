@@ -66,12 +66,13 @@ Public Class AppLauncher
 
 #Region " Panels "
 
+    Private Const cPANEL_REMARKS As String = "remarks"
+    Private Const cPANEL_STATUS As String = "Status"
+    Private Const cPANEL_NAV As String = "navigation"
+    Private Const cPANEL_START As String = "start"
+
     Private m_DockPanel As DockPanel = Nothing
-    Private m_NavPanel As NavigationPanel = Nothing
-    Private m_StatusPanel As frmStatusPanel = Nothing
-    Private m_RemarkPanel As frmRemarkPanel = Nothing
-    Private m_StartPage As frmWebBrowser = Nothing
-    Private m_lstrProtectedPanelNames As New List(Of String)
+    Private m_dtPanels As New Dictionary(Of String, frmEwEDockContent)
 
 #End Region ' Panels
 
@@ -215,7 +216,7 @@ Public Class AppLauncher
 
     Public ReadOnly Property Core() As cCore
         Get
-            Return Me.m_uic.Core
+            Return Me.UIContext.Core
         End Get
     End Property
 
@@ -227,13 +228,31 @@ Public Class AppLauncher
 
     Public ReadOnly Property StyleGuide() As cStyleGuide
         Get
-            Return Me.m_uic.StyleGuide
+            Return Me.UIContext.StyleGuide
         End Get
     End Property
 
     Public ReadOnly Property Help() As cHelp
         Get
-            Return Me.m_uic.Help
+            Return Me.UIContext.Help
+        End Get
+    End Property
+
+    Public ReadOnly Property PropertyManager() As cPropertyManager
+        Get
+            Return Me.UIContext.PropertyManager
+        End Get
+    End Property
+
+    Public ReadOnly Property CommandHandler() As cCommandHandler
+        Get
+            Return Me.UIContext.CommandHandler
+        End Get
+    End Property
+
+    Public ReadOnly Property SyncObject() As SynchronizationContext
+        Get
+            Return Me.UIContext.SyncObject
         End Get
     End Property
 
@@ -484,24 +503,22 @@ Public Class AppLauncher
     Private Sub InitPanels()
 
         ' Init panels
-        m_NavPanel = New NavigationPanel(Me.UIContext, Me.m_pluginManager)
-        m_StatusPanel = New frmStatusPanel(Me.UIContext, Me.m_MessageHistory)
-        m_RemarkPanel = New frmRemarkPanel(Me.UIContext)
-        m_StartPage = New frmWebBrowser(Me.UIContext)
-
-        ' Add panels
-        m_lstrProtectedPanelNames.Add(m_NavPanel.Name)
-        m_lstrProtectedPanelNames.Add(m_StatusPanel.Name)
-        m_lstrProtectedPanelNames.Add(m_RemarkPanel.Name)
-        m_lstrProtectedPanelNames.Add(m_StartPage.Name)
+        Me.m_dtPanels(cPANEL_NAV) = New frmNavigationPanel(Me.UIContext, Me.m_pluginManager)
+        Me.m_dtPanels(cPANEL_STATUS) = New frmStatusPanel(Me.UIContext, Me.m_MessageHistory)
+        Me.m_dtPanels(cPANEL_REMARKS) = New frmRemarkPanel(Me.UIContext)
+        Me.m_dtPanels(cPANEL_START) = New frmStartPanel(Me.UIContext)
 
     End Sub
 
+    Private Function Panel(ByVal strPanelName As String) As frmEwEDockContent
+        Return Me.m_dtPanels(strPanelName)
+    End Function
+
     Private Sub InitDockPanelPositions()
 
-        Me.m_NavPanel.Show(m_DockPanel, DockState.DockLeft)
-        Me.m_StatusPanel.Show(m_DockPanel, DockState.DockBottomAutoHide)
-        Me.m_RemarkPanel.Show(m_DockPanel, DockState.DockBottomAutoHide)
+        Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockLeft)
+        Me.Panel(cPANEL_STATUS).Show(m_DockPanel, DockState.DockBottomAutoHide)
+        Me.Panel(cPANEL_REMARKS).Show(m_DockPanel, DockState.DockBottomAutoHide)
 
     End Sub
 
@@ -527,10 +544,10 @@ Public Class AppLauncher
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
-        Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
-        Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
-        Me.m_mhEcotracer = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
-        Me.m_mhTimeseries = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.TimeSeries, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
+        Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.SyncObject)
+        Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataAddedOrRemoved, Me.SyncObject)
+        Me.m_mhEcotracer = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.DataAddedOrRemoved, Me.SyncObject)
+        Me.m_mhTimeseries = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.TimeSeries, eMessageType.DataAddedOrRemoved, Me.SyncObject)
 
 #If DEBUG Then
         Me.m_mhEcosim.Name = "ApplSim"
@@ -737,7 +754,7 @@ Public Class AppLauncher
         Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!
         Me.UpdateModelControls()
 
-        Me.Help.HelpTopic(Me.m_StartPage) = "Ecopath with Ecosim 6 Getting started.htm"
+        Me.Help.HelpTopic(Me.Panel(cPANEL_START)) = "Ecopath with Ecosim 6 Getting started.htm"
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
     End Sub
@@ -761,51 +778,50 @@ Public Class AppLauncher
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
-        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
-
-        ' Terminate all model-independent UI components
-        Me.CloseAllContents()
-        Me.ClearScenarioDropdowns()
-        Me.ClearMRUDropdowns()
-
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
-        cmdh.Clear()
-
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
         RemoveHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
         RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
 
-        Me.m_StatusPanel.Close()
-        Me.m_StatusPanel.Dispose()
-        Me.m_StatusPanel = Nothing
+        Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+        Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+        Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
+        Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
+        Me.m_mhEcosim = Nothing
+        Me.m_mhEcospace = Nothing
+        Me.m_mhEcotracer = Nothing
+        Me.m_mhTimeseries = Nothing
 
-        Me.m_RemarkPanel.Close()
-        Me.m_RemarkPanel.Dispose()
-        Me.m_RemarkPanel = Nothing
-
-        Me.m_StartPage.Close()
-        Me.m_StartPage.Dispose()
-        Me.m_StartPage = Nothing
-
-        Me.m_NavPanel.Close()
-        Me.m_NavPanel.Dispose()
-        Me.m_NavPanel = Nothing
-
-        Me.m_MessageHistory.Dispose()
-        Me.m_MessageHistory = Nothing
-
-        Me.m_pluginManager.UIContext = Nothing
-        Me.UIContext = Nothing
+        ' Terminate all model-independent UI components
+        Me.CloseAllDocuments()
+        Me.ClearScenarioDropdowns()
+        Me.ClearMRUDropdowns()
 
         ' JS 13Dec10: Another attempt to free tooltip memory 
         Dim ts As cToolTipShared = cToolTipShared.GetInstance()
         ts.RemoveAll()
         ts.Dispose()
+
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
+        cmdh.Clear()
+
+        For Each p As frmEwEDockContent In Me.m_dtPanels.Values
+            p.Close()
+            p.Dispose()
+        Next
+        Me.m_dtPanels.Clear()
+
+        Me.m_MessageHistory.Dispose()
+        Me.m_MessageHistory = Nothing
+
+        Me.UIContext.PropertyManager.Dispose()
+        Me.UIContext.StyleGuide.Dispose()
+
+        Me.m_pluginManager.UIContext = Nothing
+        Me.UIContext = Nothing
+
+        Me.m_DockPanel.Dispose()
 
         MyBase.OnFormClosed(e)
 
@@ -853,8 +869,9 @@ Public Class AppLauncher
                 End Select
 
                 If Not String.IsNullOrEmpty(strURL) Then
-                    Me.m_StartPage.URL = strURL
-                    Me.m_StartPage.Show(Me.m_DockPanel, DockState.Document)
+                    Dim startpage As frmStartPanel = DirectCast(Me.Panel(cPANEL_START), frmStartPanel)
+                    startpage.URL = strURL
+                    startpage.Show(Me.m_DockPanel, DockState.Document)
                 End If
 
             End If
@@ -1268,9 +1285,9 @@ Public Class AppLauncher
         ' Save the user settings when EwE exits
         My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
 
-        Me.m_uic.FormPositionSettings.Store(Me, False)
+        Me.UIContext.FormPositionSettings.Store(Me, False)
         Me.m_styleguideupdater.Save()
-        My.Settings.FormPositions = Me.m_uic.FormPositionSettings.Setting
+        My.Settings.FormPositions = Me.UIContext.FormPositionSettings.Setting
         Me.SaveSettings()
 
     End Sub
@@ -1581,23 +1598,9 @@ Public Class AppLauncher
         ' Remember this
         Me.m_strLastActiveContent = strNodeName
         ' Kick nav panel
-        Me.m_NavPanel.SelectedNodeName(bAllowDefault) = strNodeName
+        DirectCast(Me.Panel(cPANEL_NAV), frmNavigationPanel).SelectedNodeName(bAllowDefault) = strNodeName
         Me.m_bNavigating = False
 
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Private method to close all open child forms PLUS all panels on the parent form.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub CloseAllContents()
-        ' Forget panels
-        Me.m_NavPanel.DockPanel = Nothing
-        Me.m_RemarkPanel.DockPanel = Nothing
-        Me.m_StatusPanel.DockPanel = Nothing
-        ' Close all other documents
-        Me.CloseAllDocuments()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1608,15 +1611,25 @@ Public Class AppLauncher
     Private Sub CloseAllDocuments()
 
         Dim lForms As New List(Of Form)
+        Dim bIsReserved As Boolean = False
 
         ' Make temp list of all documents that may be closed. This cannot
         ' be performed in a for..ech loop because that affects the iterator
         ' used in the loop.
-        For Each f As Form In Me.m_DockPanel.Contents
-            If Not Me.m_lstrProtectedPanelNames.Contains(f.Name) Then
+        For Each f As DockContent In Me.m_DockPanel.Contents
+
+            If TypeOf (f) Is frmEwEDockContent Then
+                ' Keep system panels open
+                bIsReserved = (DirectCast(f, frmEwEDockContent).PanelType = frmEwEDockContent.ePanelType.SystemPanel)
+            Else
+                bIsReserved = False
+            End If
+
+            If Not bIsReserved Then
                 lForms.Add(f)
             End If
         Next
+
         ' Now close the forms
         For Each f As Form In lForms
             f.Close()
@@ -1625,6 +1638,7 @@ Public Class AppLauncher
         lForms = Nothing
 
         Me.UpdateSelectedNode("", False)
+        Me.UIContext.Help.Clear()
 
     End Sub
 
@@ -1884,14 +1898,13 @@ Public Class AppLauncher
             ' Close all open documents
             Me.CloseAllDocuments()
             Me.ClearScenarioDropdowns()
-            Me.m_uic.Help.Clear()
 
             ' Reset components
-            Me.m_NavPanel.Reset()
-            Me.m_StatusPanel.Reset()
+            DirectCast(Me.Panel(cPANEL_NAV), frmNavigationPanel).Reset()
+            DirectCast(Me.Panel(cPANEL_STATUS), frmStatusPanel).Reset()
 
             ' Clear the properties cache
-            Me.m_uic.PropertyManager.Clear(eCoreComponentType.EcoPath)
+            Me.UIContext.PropertyManager.Clear(eCoreComponentType.EcoPath)
 
             ' Clean up UI bits
             Me.UpdateModelControls()
@@ -2434,7 +2447,7 @@ Public Class AppLauncher
     Private Sub OnNewModel(ByVal cmd As cCommand) Handles m_cmdNewModel.OnInvoke
 
         Dim db As cEwEDatabase = Nothing
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, "", SharedResources.FILEFILTER_MODEL_SAVE, 1)
@@ -2462,7 +2475,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnInvoke
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
         Dim strFilter As String = SharedResources.FILEFILTER_MODEL_OPEN
 
@@ -2505,7 +2518,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnSaveModelAs(ByVal cmd As cCommand) Handles m_cmdSaveModelAs.OnInvoke
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
         Dim strFileFilter As String = ""
@@ -2614,7 +2627,7 @@ Public Class AppLauncher
                 .ShowMenu = Me.m_menuMain.Visible : Me.m_menuMain.Visible = Not My.Settings.PresentationModeHideMainMenu
                 .ShowModelBar = Me.m_tsModel.Visible : Me.m_tsModel.Visible = Not My.Settings.PresentationModeHideModelBar
                 .ShowStatusBar = Me.m_ssMain.Visible : Me.m_ssMain.Visible = Not My.Settings.PresentationModeHideStatusBar
-                .ShowNavPanel = Me.m_NavPanel.IsHiding : Me.m_NavPanel.AutoHide = My.Settings.PresentationModeCollapseNavPanel
+                .ShowNavPanel = Me.Panel(cPANEL_NAV).IsHiding : Me.Panel(cPANEL_NAV).AutoHide = My.Settings.PresentationModeCollapseNavPanel
                 .FormState = Me.WindowState : Me.WindowState = FormWindowState.Maximized
                 .BorderStyle = Me.FormBorderStyle : Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
             End With
@@ -2627,7 +2640,7 @@ Public Class AppLauncher
                 Me.m_menuMain.Visible = .ShowMenu
                 Me.m_tsModel.Visible = .ShowModelBar
                 Me.m_ssMain.Visible = .ShowStatusBar
-                Me.m_NavPanel.AutoHide = .ShowNavPanel
+                Me.Panel(cPANEL_NAV).AutoHide = .ShowNavPanel
             End With
             'Me.TopMost = False
             Me.ControlBox = True
@@ -2679,33 +2692,28 @@ Public Class AppLauncher
     ''' Command handler; shows the start page.
     ''' </summary>
     Private Sub OnViewStartPage(ByVal cmd As cCommand) Handles m_cmdViewStartPanel.OnInvoke
-        ' If m_startPage has been closed, create a new reference. 
-        If m_StartPage.IsDisposed() Then
-            m_StartPage = New frmWebBrowser(Me.UIContext)
+
+        Dim panel As frmStartPanel = DirectCast(Me.Panel(cPANEL_START), frmStartPanel)
+
+        If Not cmd.Checked Then
+            If panel.IsDisposed() Then
+                panel = New frmStartPanel(Me.UIContext)
+                Me.m_dtPanels(cPANEL_START) = panel
+            End If
+            panel.Show(Me.m_DockPanel, DockState.Document)
+        Else
+            If Not panel.IsDisposed Then
+                panel.Close()
+            End If
         End If
 
-        If m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi Then
-            If cmd.Checked Then
-                m_StartPage.Close()
-            Else
-                m_StartPage.Show(m_DockPanel, DockState.Document)
-            End If
-        Else
-            m_StartPage.MdiParent = Me
-            m_StartPage.StartPosition = FormStartPosition.WindowsDefaultLocation
-            If cmd.Checked Then
-                m_StartPage.Close()
-            Else
-                m_StartPage.Show()
-            End If
-        End If
     End Sub
 
     ''' <summary>
     ''' Command update handler; manages the <see cref="m_cmdViewStartPanel">View Start Page command</see> state.
     ''' </summary>
     Private Sub OnUpdateViewStartPage(ByVal cmd As cCommand) Handles m_cmdViewStartPanel.OnUpdate
-        cmd.Checked = Not m_StartPage.IsDisposed() And Me.m_StartPage.Visible
+        cmd.Checked = Not Me.Panel(cPANEL_START).IsDisposed() And (Me.Panel(cPANEL_NAV).DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
@@ -2713,17 +2721,17 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnViewNavPane(ByVal cmd As cCommand) Handles m_cmdViewNavPane.OnInvoke
         If cmd.Checked Then
-            m_NavPanel.DockState = DockState.Hidden
+            Me.Panel(cPANEL_NAV).DockState = DockState.Hidden
         Else
-            m_NavPanel.Show(m_DockPanel, DockState.DockLeft)
+            Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockLeft)
         End If
     End Sub
 
     ''' <summary>
-    ''' Command update handler; manages the <see cref="m_cmdViewStartPanel">View Navigation Panel command</see> state.
+    ''' Command update handler; manages the <see cref="m_cmdViewNavPane">View Navigation Panel command</see> state.
     ''' </summary>
     Private Sub OnUpdateViewNavPane(ByVal cmd As cCommand) Handles m_cmdViewNavPane.OnUpdate
-        cmd.Checked = (m_NavPanel.DockState <> DockState.Hidden)
+        cmd.Checked = (Me.Panel(cPANEL_NAV).DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
@@ -2731,15 +2739,14 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnViewRemarkPane(ByVal cmd As cCommand) Handles m_cmdViewRemarkPane.OnInvoke
         If cmd.Checked Then
-            m_RemarkPanel.DockState = DockState.Hidden
+            Me.Panel(cPANEL_REMARKS).DockState = DockState.Hidden
         Else
-            ' ToDo: Restore last dock state
-            m_RemarkPanel.Show(m_DockPanel, DockState.DockBottomAutoHide)
+            Me.Panel(cPANEL_REMARKS).Show(m_DockPanel, DockState.DockBottomAutoHide)
         End If
     End Sub
 
     Private Sub OnUpdateViewRemarkPane(ByVal cmd As cCommand) Handles m_cmdViewRemarkPane.OnUpdate
-        cmd.Checked = (m_RemarkPanel.DockState <> DockState.Hidden)
+        cmd.Checked = (Me.Panel(cPANEL_REMARKS).DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
@@ -2747,15 +2754,14 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnViewStatusPane(ByVal cmd As cCommand) Handles m_cmdViewStatusPane.OnInvoke
         If cmd.Checked Then
-            m_StatusPanel.DockState = DockState.Hidden
+            Me.Panel(cPANEL_STATUS).DockState = DockState.Hidden
         Else
-            ' ToDo: Restore last dock state
-            m_StatusPanel.Show(m_DockPanel, DockState.DockBottomAutoHide)
+            Me.Panel(cPANEL_STATUS).Show(m_DockPanel, DockState.DockBottomAutoHide)
         End If
     End Sub
 
     Private Sub OnUpdateViewStatusPane(ByVal cmd As cCommand) Handles m_cmdViewStatusPane.OnUpdate
-        cmd.Checked = (m_StatusPanel.DockState <> DockState.Hidden)
+        cmd.Checked = (Me.Panel(cPANEL_STATUS).DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
@@ -2981,27 +2987,6 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
-    '''' <summary>
-    '''' Command handler; saves an Ecosim scenario
-    '''' </summary>
-    'Private Sub OnSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnInvoke
-    '    Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSIM_SAVING, Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name)
-    '    Me.SetStatusText(strStatus, TriState.True)
-    '    Try
-    '        Me.Core.SaveEcosimScenario()
-    '    Catch ex As Exception
-
-    '    End Try
-    '    Me.SetStatusText("", TriState.False)
-    'End Sub
-
-    '''' <summary>
-    '''' Command update handler; enables and disables the 'save ecosim scenario' command
-    '''' </summary>
-    'Private Sub OnUpdateSaveEcosimScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenario.OnUpdate
-    '    cmd.Enabled = Me.Core.StateMonitor.IsEcosimModified
-    'End Sub
-
     ''' <summary>
     ''' Command handler; saves an Ecosim scenario to a new name
     ''' </summary>
@@ -3158,7 +3143,7 @@ Public Class AppLauncher
     Private Sub OnExportEcosimResultsToCSV(ByVal cmd As cCommand) _
         Handles m_cmdExportEcosimResultsToCSV.OnInvoke
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdOD As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         Dim iGroup As Integer = cCore.NULL_VALUE
         Dim bSaveAnnual As Boolean = False
@@ -3313,28 +3298,6 @@ Public Class AppLauncher
     Private Sub OnUpdateSaveEcospaceScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
-
-    '''' <summary>
-    '''' Command handler; saves the current active Ecospace scenario.
-    '''' </summary>
-    'Private Sub OnSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnInvoke
-    '    Dim strStatus As String = String.Format(My.Resources.STATUS_ECOSPACE_SAVING, Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex).Name)
-    '    Me.SetStatusText(strStatus, TriState.True)
-    '    Try
-    '        Me.Core.SaveEcospaceScenario()
-    '    Catch ex As Exception
-
-    '    End Try
-    '    Me.SetStatusText("", TriState.False)
-    'End Sub
-
-    '''' <summary>
-    '''' Command update handler; enables and disables the 
-    '''' <see cref="m_cmdSaveEcospaceScenario">Save Ecospace Scenario</see> command.
-    '''' </summary>
-    'Private Sub OnUpdateSaveEcospaceScenario(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenario.OnUpdate
-    '    cmd.Enabled = Me.Core.StateMonitor.IsEcospaceModified
-    'End Sub
 
     ''' <summary>
     ''' Command handler; deletes an Ecosim scenario 
@@ -3543,22 +3506,6 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
-    'Private Sub OnSaveEcotracerScenario(ByVal cmd As cCommand) _
-    '    Handles m_cmdSaveEcotracerScenario.OnInvoke
-    '    Dim strStatus As String = String.Format(My.Resources.STATUS_ECOTRACER_SAVING, Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex).Name)
-    '    Me.SetStatusText(strStatus, TriState.True)
-    '    Me.Core.SaveEcotracerScenario()
-    '    Me.SetStatusText("", TriState.False)
-    'End Sub
-
-    '''' <summary>
-    '''' Command update handler; enables and disables the 'save ecotracer scenario' command
-    '''' </summary>
-    'Private Sub OnUpdateSaveEcotracerScenario(ByVal cmd As cCommand) _
-    '    Handles m_cmdSaveEcotracerScenario.OnUpdate
-    '    cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded And Me.Core.StateMonitor.IsEcotracerModified
-    'End Sub
-
     Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
         Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
 
@@ -3620,7 +3567,6 @@ Public Class AppLauncher
     Private Sub OnEnableEcotracer(ByVal cmd As cCommand) _
         Handles m_cmdEnableEcotracer.OnInvoke
 
-        Dim pm As cPropertyManager = Me.m_uic.PropertyManager
         Dim ecosimModelParams As cEcoSimModelParameters = Nothing
         Dim propSimConTracing As cBooleanProperty = Nothing
         Dim ecospaceModelParams As cEcospaceModelParameters = Nothing
@@ -3639,7 +3585,7 @@ Public Class AppLauncher
                 If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return
                 ' Get property to enable tracer for Sim
                 ecosimModelParams = Me.Core.EcoSimModelParameters
-                propSimConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
+                propSimConTracing = DirectCast(Me.PropertyManager.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
                 ' Try to load tracer
                 Me.CoreController.LoadState(eCoreExecutionState.EcotracerLoaded)
 
@@ -3650,7 +3596,7 @@ Public Class AppLauncher
                 If Not Me.Core.StateMonitor.HasEcospaceLoaded Then Return
                 ' Get property to enable tracer for Space
                 ecospaceModelParams = Me.Core.EcospaceModelParameters
-                propSpaceConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
+                propSpaceConTracing = DirectCast(Me.PropertyManager.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
                 ' Try to load tracer
                 Me.CoreController.LoadState(eCoreExecutionState.EcotracerLoaded)
 
@@ -3704,12 +3650,6 @@ Public Class AppLauncher
             ' if possible.
             If pgcmd.Form IsNot Nothing Then
                 ' #Yes: form detected
-
-                ' Protect this form from auto-closing if it is supposed to stay 'always open'
-                If (pgcmd.CoreExecutionState = eCoreExecutionState.Idle) And _
-                   (Me.m_lstrProtectedPanelNames.IndexOf(pgcmd.Form.Name) = -1) Then
-                    Me.m_lstrProtectedPanelNames.Add(pgcmd.Form.Name)
-                End If
 
                 ' Able to activate this form from the open tabs?
                 If Not ActivateForm(pgcmd.Form.Text) Then
@@ -3804,11 +3744,11 @@ Public Class AppLauncher
             End If
 
             ' Read form positions
-            Me.m_uic.FormPositionSettings.Setting = My.Settings.FormPositions
+            Me.UIContext.FormPositionSettings.Setting = My.Settings.FormPositions
 
             ' Get the form position from user settings
             Me.StartPosition = FormStartPosition.Manual
-            Me.m_uic.FormPositionSettings.Apply(Me, False)
+            Me.UIContext.FormPositionSettings.Apply(Me, False)
 
         Catch ex As Exception
 

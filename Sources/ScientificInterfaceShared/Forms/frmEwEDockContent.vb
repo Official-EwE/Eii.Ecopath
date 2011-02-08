@@ -17,6 +17,11 @@ Namespace Forms
     Public Class frmEwEDockContent
         Inherits DockContent
 
+        Public Enum ePanelType As Byte
+            Document = 0
+            SystemPanel = 1
+        End Enum
+
         Public Property AutoHide() As Boolean
             Get
                 Return Me.IsHiding()
@@ -63,6 +68,17 @@ Namespace Forms
                    (Me.DockState = DockState.DockLeftAutoHide) Or _
                    (Me.DockState = DockState.DockRightAutoHide)
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States the type of content taht this form displays.
+        ''' </summary>
+        ''' <returns>Returns <see cref="ePanelType.Document"/> by default.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function PanelType() As ePanelType
+            Return ePanelType.Document
+        End Function
+
     End Class
 
 End Namespace

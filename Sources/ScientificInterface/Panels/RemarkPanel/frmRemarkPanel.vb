@@ -5,6 +5,7 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports System.Text
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Forms
 
 #End Region ' Imports
 
@@ -73,6 +74,10 @@ Public Class frmRemarkPanel
         MyBase.OnFormClosed(e)
 
     End Sub
+
+    Public Overrides Function PanelType() As frmEwEDockContent.ePanelType
+        Return ePanelType.SystemPanel
+    End Function
 
 #End Region ' Form overrides
 

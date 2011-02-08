@@ -25,6 +25,7 @@ Namespace Style
     ''' ---------------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public Class cStyleGuide
+        Implements IDisposable
 
 #Region " Private bits "
 
@@ -47,7 +48,7 @@ Namespace Style
         ''' <summary>Monetary unit custom text.</summary>
         Private m_strUnitMonetaryCustom As String = ""
         ''' <summary>Default area unit.</summary>
-        Private m_unitArea As eUnitAreaType = eUnitAreaType.km2
+        Private m_unitArea As eUnitAreaType = eUnitAreaType.Km2
         ''' <summary>Area unit custom text.</summary>
         Private m_strUnitAreaCustom As String = ""
 
@@ -98,6 +99,10 @@ Namespace Style
         ''' <summary>States whether there are events withheld and pending while an event lock is active.</summary>
         Private m_pendingChangeEventTypes As eChangeType = eChangeType.None
 
+#End Region ' Private bits
+
+#Region " Construction & destruction "
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Constructor
@@ -115,7 +120,18 @@ Namespace Style
 
         End Sub
 
-#End Region ' Private bits
+        Public Sub Dispose() _
+            Implements IDisposable.Dispose
+
+            Me.m_dtFontFamilyName.Clear()
+            Me.m_dtFontSize.Clear()
+            Me.m_dtFontStye.Clear()
+
+            Me.m_dtApplicationColors.Clear()
+
+        End Sub
+
+#End Region ' Construction & destruction
 
 #Region " Public Methods "
 

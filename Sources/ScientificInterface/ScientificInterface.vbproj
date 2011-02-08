@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F24972EB-7291-497E-B4D7-9C2EACBE8E62}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -648,10 +648,10 @@
     <Compile Include="Ecopath\Input\DietCompositionEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Panels\NavigationPanel\NavigationPanel.Designer.vb">
-      <DependentUpon>NavigationPanel.vb</DependentUpon>
+    <Compile Include="Panels\NavigationPanel\frmNavigationPanel.Designer.vb">
+      <DependentUpon>frmNavigationPanel.vb</DependentUpon>
     </Compile>
-    <Compile Include="Panels\NavigationPanel\NavigationPanel.vb">
+    <Compile Include="Panels\NavigationPanel\frmNavigationPanel.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -779,8 +779,8 @@
       <DependentUpon>frmStatusPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Panels\NavigationPanel\NavigationPanel.resx">
-      <DependentUpon>NavigationPanel.vb</DependentUpon>
+    <EmbeddedResource Include="Panels\NavigationPanel\frmNavigationPanel.resx">
+      <DependentUpon>frmNavigationPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\AboutBox\frmAboutEwE.resx">
@@ -940,8 +940,8 @@
       <DependentUpon>ucWind.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\frmWebBrowser.resx">
-      <DependentUpon>frmWebBrowser.vb</DependentUpon>
+    <EmbeddedResource Include="Panels\StartPanel\frmStartPanel.resx">
+      <DependentUpon>frmStartPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsPresentation.resx">
@@ -1290,10 +1290,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\cMessageHistory.vb" />
-    <Compile Include="Other\frmWebBrowser.Designer.vb">
-      <DependentUpon>frmWebBrowser.vb</DependentUpon>
+    <Compile Include="Panels\StartPanel\frmStartPanel.Designer.vb">
+      <DependentUpon>frmStartPanel.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\frmWebBrowser.vb">
+    <Compile Include="Panels\StartPanel\frmStartPanel.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Other\Options\ucOptionsPresentation.Designer.vb">

@@ -155,7 +155,9 @@ Public Class cPluginPoint
                                                      eCoreComponentType.EcoPath, _
                                                      eMessageType.DataAddedOrRemoved, _
                                                      Me.m_syncobj)
-
+#If DEBUG Then
+                Me.m_mhEcopath.Name = "ValueChain::Ecopath"
+#End If
                 ' Done initializing
                 Me.m_bInitOK = True
 

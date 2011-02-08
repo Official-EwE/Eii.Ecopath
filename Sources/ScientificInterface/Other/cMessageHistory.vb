@@ -370,6 +370,9 @@ Public Class cMessageHistory
 
         If bSet Then
             mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me.UIContext.SyncObject)
+#If DEBUG Then
+            mh.Name = "owned by cMessageHistory"
+#End If
             Me.m_dtMessageHanders(src) = mh
             Me.UIContext.Core.Messages.AddMessageHandler(mh)
         Else

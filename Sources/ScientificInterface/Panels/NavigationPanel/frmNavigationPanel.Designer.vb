@@ -1,7 +1,7 @@
 Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class NavigationPanel
+Partial Class frmNavigationPanel
     Inherits frmEwEDockContent
 
     'Required by the Windows Form Designer
@@ -13,7 +13,7 @@ Partial Class NavigationPanel
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(NavigationPanel))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNavigationPanel))
         Me.m_tvNavigation = New System.Windows.Forms.TreeView
         Me.m_ilTreeIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.SuspendLayout()

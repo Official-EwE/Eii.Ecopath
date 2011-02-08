@@ -7,6 +7,7 @@ Imports System.Reflection
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports EwEPlugin
+Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -16,7 +17,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' Form class showing a browser window and a mini-toolbar for navigation.
 ''' </summary>
 ''' ===========================================================================
-Public Class frmWebBrowser
+Public Class frmStartPanel
 
 #Region " Private vars "
 
@@ -97,6 +98,10 @@ Public Class frmWebBrowser
         MyBase.OnFormClosed(e)
 
     End Sub
+
+    Public Overrides Function PanelType() As frmEwEDockContent.ePanelType
+        Return ePanelType.SystemPanel
+    End Function
 
 #End Region ' Form overrides
 

@@ -227,6 +227,10 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_uic = uic
             Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+#If DEBUG Then
+            Me.m_mh.Name = "UI::cLayer " & Me.Name
+#End If
+
             Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mh)
 
             ' Sanity checks

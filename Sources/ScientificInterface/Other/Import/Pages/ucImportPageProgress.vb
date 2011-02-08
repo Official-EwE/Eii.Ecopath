@@ -60,6 +60,9 @@ Namespace Import
             Me.m_mh = New cMessageHandler(AddressOf Me.ProgressMessageHandler, _
                                           eCoreComponentType.DataSource, _
                                           eMessageType.Any, Me.m_syncobj)
+#If DEBUG Then
+            Me.m_mh.Name = "ucImportPageProcess"
+#End If
             Me.m_wizard.Core.Messages.AddMessageHandler(Me.m_mh)
 
             ' Start the import process

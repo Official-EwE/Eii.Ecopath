@@ -16,6 +16,7 @@ Imports EwEPlugin
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Forms
 
 #End Region
 
@@ -32,7 +33,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 ''' <see cref="cNavigationCommand">NavigationCommand</see>.</para>
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
-Public Class NavigationPanel
+Public Class frmNavigationPanel
 
     Private m_uic As cUIContext = Nothing
     Private m_nodeController As cTreeViewNodeController = Nothing
@@ -239,6 +240,10 @@ Public Class NavigationPanel
 
         MyBase.OnFormClosed(e)
     End Sub
+
+    Public Overrides Function PanelType() As frmEwEDockContent.ePanelType
+        Return ePanelType.SystemPanel
+    End Function
 
 #End Region ' Form overrides
 

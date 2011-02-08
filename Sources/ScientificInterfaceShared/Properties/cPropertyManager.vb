@@ -17,6 +17,7 @@ Namespace Properties
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cPropertyManager
+        Implements IDisposable
 
 #Region " Private vars "
 
@@ -40,6 +41,8 @@ Namespace Properties
         Private m_htEcosim As New Dictionary(Of String, cProperty)
         Private m_htEcospace As New Dictionary(Of String, cProperty)
         Private m_htEcotracer As New Dictionary(Of String, cProperty)
+
+        Private m_lMessageHandlers As New List(Of cMessageHandler)
 
 #End Region ' Private vars
 
@@ -69,8 +72,24 @@ Namespace Properties
             Me.m_propNoData.SetStyle(cStyleGuide.eStyleFlags.ErrorEncountered Or cStyleGuide.eStyleFlags.NotEditable)
             Me.m_propNoData.SetValue(My.Resources.GENERIC_TEXT_NODATA)
 
-            ' Start listening to Me.m_core messages
-            Me.InitializeMessageHandlers()
+            ' Start listening to core messages
+            Me.SetMessageHandlers()
+
+        End Sub
+
+        Public Sub Dispose() _
+            Implements System.IDisposable.Dispose
+
+            ' Stop listening to core messages
+            Me.ClearMessageHanders()
+
+            ' Bye default property
+            Me.m_propNoData.Dispose()
+            Me.m_propNoData = Nothing
+
+            Me.m_SyncObj = Nothing
+            Me.m_sg = Nothing
+            Me.m_core = Nothing
 
         End Sub
 
@@ -423,17 +442,27 @@ Namespace Properties
         ''' Hook up to Me.m_core messages
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub InitializeMessageHandlers()
+        Private Sub SetMessageHandlers()
 
-            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
-            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj))
-            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_SyncObj))
-            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_SyncObj))
-            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.MSE, eMessageType.Any, Me.m_SyncObj))
-            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.FishingPolicySearch, eMessageType.Any, Me.m_SyncObj))
-            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimFitToTimeSeries, eMessageType.Any, Me.m_SyncObj))
-            Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimMonteCarlo, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.MSE, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.FishingPolicySearch, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimFitToTimeSeries, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimMonteCarlo, eMessageType.Any, Me.m_SyncObj))
 
+            For Each mh As cMessageHandler In Me.m_lMessageHandlers
+                Me.m_core.Messages.AddMessageHandler(mh)
+            Next
+        End Sub
+
+        Private Sub ClearMessageHanders()
+            For Each mh As cMessageHandler In Me.m_lMessageHandlers
+                Me.m_core.Messages.RemoveMessageHandler(mh)
+            Next
+            Me.m_lMessageHandlers.Clear()
         End Sub
 
         ''' -------------------------------------------------------------------

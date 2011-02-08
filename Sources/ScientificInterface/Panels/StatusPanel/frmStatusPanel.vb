@@ -9,6 +9,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Forms
 
 #End Region ' Imports
 
@@ -89,6 +90,10 @@ Public Class frmStatusPanel
         MyBase.OnFormClosed(e)
 
     End Sub
+
+    Public Overrides Function PanelType() As frmEwEDockContent.ePanelType
+        Return ePanelType.SystemPanel
+    End Function
 
 #End Region ' Form overrides
 

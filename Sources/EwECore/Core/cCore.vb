@@ -1052,14 +1052,19 @@ Public Class cCore
     Private Function InitEcopath() As Boolean
 
         Try
+            Dim mh As New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj)
+#If DEBUG Then
+            mh.Name = "cCore::Ecopath"
+#End If
+
             'build a new EcoPath Model object
-            m_EcoPath = New Ecopath.cEcoPathModel(Me.m_Functions)
-            m_EcoPath.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
-            m_EcoPath.m_stanza = m_Stanza
-            m_EcoPath.m_psd = m_PSDData
+            Me.m_EcoPath = New Ecopath.cEcoPathModel(Me.m_Functions)
+            Me.m_EcoPath.Messages.AddMessageHandler(mh)
+            Me.m_EcoPath.m_stanza = Me.m_Stanza
+            Me.m_EcoPath.m_psd = Me.m_PSDData
 
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
-            m_EcoPath.EcopathData = m_EcoPathData
+            Me.m_EcoPath.EcopathData = Me.m_EcoPathData
 
             'protect against error loading the validators
             Try
@@ -1090,9 +1095,13 @@ Public Class cCore
 
     Private Function InitPSD() As Boolean
         Try
+            Dim mh As New cMessageHandler(AddressOf Me.PSDMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj)
+#If DEBUG Then
+            mh.Name = "cCore::PSD"
+#End If
             Me.m_psdModel = New cPSDModel
             Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
-            Me.m_psdModel.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.PSDMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
+            Me.m_psdModel.Messages.AddMessageHandler(mh)
 
             Me.m_psdModel.m_Data = m_EcoPathData
             Me.m_psdModel.m_stanza = m_Stanza
@@ -5254,7 +5263,7 @@ Public Class cCore
 
         Try
 
-            m_bEcoSimIsInit = False
+            Me.m_bEcoSimIsInit = False
 
             'has the core been initialized
             'If Not m_bCoreIsInit Then
@@ -5263,18 +5272,22 @@ Public Class cCore
             '    Return False
             'End If
 
-            m_EcoSim = New Ecosim.cEcoSimModel(Me.EcoFunction)
+            Me.m_EcoSim = New Ecosim.cEcoSimModel(Me.EcoFunction)
 
-            m_EcoSim.Messages.AddMessageHandler(New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj))
+            Dim mh As New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj)
+#If DEBUG Then
+            mh.Name = "cCore::Ecosim"
+#End If
+            Me.m_EcoSim.Messages.AddMessageHandler(mh)
 
             'set the output variables from EcoPath as the Input for EcoSim
             'this sets the baseline state for EcoSim as the last run EcoPath model
-            m_EcoSim.EcopathData = Me.m_EcoPathData
-            m_EcoSim.m_Data = Me.m_EcoSimData
-            m_EcoSim.m_stanza = Me.m_Stanza
-            m_EcoSim.TracerData = Me.m_tracerData
-            m_EcoSim.TimeSeriesData = Me.m_TSData
-            m_EcoSim.MSEData = Me.m_MSEData
+            Me.m_EcoSim.EcopathData = Me.m_EcoPathData
+            Me.m_EcoSim.m_Data = Me.m_EcoSimData
+            Me.m_EcoSim.m_stanza = Me.m_Stanza
+            Me.m_EcoSim.TracerData = Me.m_tracerData
+            Me.m_EcoSim.TimeSeriesData = Me.m_TSData
+            Me.m_EcoSim.MSEData = Me.m_MSEData
 
             Me.m_EcosimOutputs = New cEcosimOutput(Me)
 
@@ -5285,25 +5298,25 @@ Public Class cCore
             Dim manager As cBaseShapeManager
 
             manager = New cForcingFunctionManager(m_EcoSimData, Me, eDataTypes.Forcing)
-            m_ShapeManagers.Add(manager.DataType, manager)
+            Me.m_ShapeManagers.Add(manager.DataType, manager)
 
             manager = New cMediationManager(m_EcoSimData, Me, eDataTypes.Mediation)
-            m_ShapeManagers.Add(manager.DataType, manager)
+            Me.m_ShapeManagers.Add(manager.DataType, manager)
 
             manager = New cEggProductionManager(m_EcoSimData, Me, eDataTypes.EggProd)
-            m_ShapeManagers.Add(manager.DataType, manager)
+            Me.m_ShapeManagers.Add(manager.DataType, manager)
 
             manager = New cFishingEffortManger(m_EcoSimData, Me, eDataTypes.FishingEffort)
-            m_ShapeManagers.Add(manager.DataType, manager)
+            Me.m_ShapeManagers.Add(manager.DataType, manager)
 
             manager = New cFishingMortalityManger(m_EcoSimData, Me, eDataTypes.FishMort)
-            m_ShapeManagers.Add(manager.DataType, manager)
+            Me.m_ShapeManagers.Add(manager.DataType, manager)
 
-            m_PPIManager = New cPPIManager(m_EcoPathData, m_EcoSimData, Me)
-            m_FitToTimeSeriesData = New cF2TSDataStructures()
-            ' m_FitToTimeSeries = New cF2TSManager(Me)
+            Me.m_PPIManager = New cPPIManager(m_EcoPathData, m_EcoSimData, Me)
+            Me.m_FitToTimeSeriesData = New cF2TSDataStructures()
+            ' me.m_FitToTimeSeries = New cF2TSManager(Me)
 
-            m_bEcoSimIsInit = True
+            Me.m_bEcoSimIsInit = True
 
             ' Set core state
             Me.m_StateMonitor.SetEcoSimLoaded(False)

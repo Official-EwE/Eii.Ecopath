@@ -3,7 +3,7 @@ Imports ScientificInterfaceShared.Forms
 
 <CLSCompliant(False)> _
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmWebBrowser
+Partial Class frmStartPanel
     Inherits frmEwE
 
     'UserControl overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Partial Class frmWebBrowser
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmWebBrowser))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStartPanel))
         Me.m_tlp = New System.Windows.Forms.TableLayoutPanel
         Me.m_browser = New System.Windows.Forms.WebBrowser
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
