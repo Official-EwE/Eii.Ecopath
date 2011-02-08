@@ -320,6 +320,7 @@ Public Class cMessageHistory
         If Not Me.m_bDisposed Then
             Me.UIContext = Nothing
         End If
+        Me.m_dtMessageHanders.Clear()
         Me.m_bDisposed = True
         GC.SuppressFinalize(Me)
     End Sub
@@ -371,7 +372,7 @@ Public Class cMessageHistory
         If bSet Then
             mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me.UIContext.SyncObject)
 #If DEBUG Then
-            mh.Name = "owned by cMessageHistory"
+            mh.Name = "cMessageHistory::All"
 #End If
             Me.m_dtMessageHanders(src) = mh
             Me.UIContext.Core.Messages.AddMessageHandler(mh)
