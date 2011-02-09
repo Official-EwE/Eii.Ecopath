@@ -177,6 +177,23 @@ Public Class cF2TSManager
     Public Overrides Sub Clear() Implements ISearchObjective.Clear
         MyBase.Clear()
 
+        Try
+            Me.m_SyncObject = Nothing
+            Me.m_runstartedHandler = Nothing
+            Me.m_runstepHandler = Nothing
+            Me.m_runstoppedHandler = Nothing
+            Me.m_runModelHandler = Nothing
+
+            'kill the thread if it is still alive
+            If Me.m_thrdRun IsNot Nothing Then
+                Me.m_thrdRun.Abort()
+                Me.m_thrdRun = Nothing
+            End If
+
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
     End Sub
 
     Public Sub Connect(ByVal syncObject As System.ComponentModel.ISynchronizeInvoke, _
