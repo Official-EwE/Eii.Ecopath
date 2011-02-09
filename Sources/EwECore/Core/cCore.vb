@@ -49,6 +49,7 @@ Imports EwECore.Ecospace.Advection
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cCore
+    Implements IDisposable
 
 #Region " Shared consts "
 
@@ -2443,10 +2444,6 @@ Public Class cCore
         End If
 
         If Not Me.CloseModel() Then Return False
-
-        'jb changed PSD model back to being created with the model
-        'moved to initCore
-        'Me.InitPSDModel()
 
         '' Update core state
         'If Not Me.SaveChanges() Then Return False
@@ -12340,6 +12337,57 @@ Public Class cCore
             Return Me.m_Functions
         End Get
     End Property
+
+#End Region
+
+    Private _disposedValue As Boolean = False        ' To detect redundant calls
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+
+        If Not Me._disposedValue Then
+            If disposing Then
+
+                Try
+                    'Dispose of all the message handlers
+                    If Me.m_EcoPath.Messages IsNot Nothing Then
+                        Me.m_EcoPath.Messages.Dispose()
+                    End If
+
+                    If Me.m_EcoSim.Messages IsNot Nothing Then
+                        Me.m_EcoSim.Messages.Dispose()
+                    End If
+
+                    If Me.m_Ecospace.Messages IsNot Nothing Then
+                        Me.m_Ecospace.Messages.Dispose()
+                    End If
+
+                    If Me.m_psdModel.Messages IsNot Nothing Then
+                        Me.m_psdModel.Messages.Dispose()
+                    End If
+
+                    Me.Messages.Dispose()
+
+                Catch ex As Exception
+                    System.Console.WriteLine(Me.ToString & ".Dispose() Exception: " & ex.Message)
+                End Try
+
+            End If
+
+            ' TODO: free your own state (unmanaged objects).
+            ' TODO: set large fields to null.
+        End If
+        Me._disposedValue = True
+    End Sub
+
+#Region " IDisposable Support "
+    ' This code added by Visual Basic to correctly implement the disposable pattern.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+
 
 #End Region
 

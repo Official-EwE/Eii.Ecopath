@@ -14,6 +14,7 @@ Imports EwEUtils.Core
 ''' If no default handler has been created then cMessagePublisher.SendMessage will return False.
 ''' </remarks>
 Public Class cMessagePublisher
+    Implements IDisposable
 
     Private m_handlers As New List(Of cMessageHandler)
     Private m_msglist As New List(Of cMessage)
@@ -288,6 +289,39 @@ Public Class cMessagePublisher
     End Function
 
 #End Region ' Private helper methods
+
+
+#Region " IDisposable Support "
+
+    Private disposedValue As Boolean = False        ' To detect redundant calls
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+
+                For Each handler As cMessageHandler In Me.m_handlers
+                    handler.Dispose()
+                Next
+                m_handlers.Clear()
+
+                ' TODO: free other state (managed objects).
+            End If
+
+            ' TODO: free your own state (unmanaged objects).
+            ' TODO: set large fields to null.
+        End If
+        Me.disposedValue = True
+    End Sub
+
+
+    ' This code added by Visual Basic to correctly implement the disposable pattern.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 
 End Class
 
