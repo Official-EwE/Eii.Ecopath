@@ -40,6 +40,7 @@ Partial Class dlgEditBasemap
         Me.nudLatTL = New System.Windows.Forms.NumericUpDown()
         Me.lblLatTL = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.m_pbLink = New System.Windows.Forms.PictureBox()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -49,6 +50,7 @@ Partial Class dlgEditBasemap
         CType(Me.nudCellLength, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nudLonTL, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nudLatTL, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -111,6 +113,7 @@ Partial Class dlgEditBasemap
         'gbSpatialRef
         '
         resources.ApplyResources(Me.gbSpatialRef, "gbSpatialRef")
+        Me.gbSpatialRef.Controls.Add(Me.m_pbLink)
         Me.gbSpatialRef.Controls.Add(Me.lblLonTL)
         Me.gbSpatialRef.Controls.Add(Me.nudCellSize)
         Me.gbSpatialRef.Controls.Add(Me.nudCellLength)
@@ -165,6 +168,13 @@ Partial Class dlgEditBasemap
         resources.ApplyResources(Me.Label2, "Label2")
         Me.Label2.Name = "Label2"
         '
+        'm_pbLink
+        '
+        Me.m_pbLink.Image = Global.ScientificInterface.My.Resources.Resources.chain_vert
+        resources.ApplyResources(Me.m_pbLink, "m_pbLink")
+        Me.m_pbLink.Name = "m_pbLink"
+        Me.m_pbLink.TabStop = False
+        '
         'dlgEditBasemap
         '
         Me.AcceptButton = Me.OK_Button
@@ -190,6 +200,7 @@ Partial Class dlgEditBasemap
         CType(Me.nudCellLength, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.nudLonTL, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.nudLatTL, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -210,5 +221,6 @@ Partial Class dlgEditBasemap
     Friend WithEvents nudLatTL As System.Windows.Forms.NumericUpDown
     Private WithEvents nudCellSize As System.Windows.Forms.NumericUpDown
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Private WithEvents m_pbLink As System.Windows.Forms.PictureBox
 
 End Class

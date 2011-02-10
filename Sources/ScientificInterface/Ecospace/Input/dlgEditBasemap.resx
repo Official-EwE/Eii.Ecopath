@@ -130,13 +130,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
-  </data>
-  <data name="OK_Button.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 3</value>
   </data>
   <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 28</value>
+    <value>67, 23</value>
   </data>
   <data name="OK_Button.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -160,13 +157,10 @@
     <value>None</value>
   </data>
   <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 4</value>
-  </data>
-  <data name="Cancel_Button.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>76, 3</value>
   </data>
   <data name="Cancel_Button.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 28</value>
+    <value>67, 23</value>
   </data>
   <data name="Cancel_Button.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -187,16 +181,13 @@
     <value>1</value>
   </data>
   <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>111, 266</value>
-  </data>
-  <data name="TableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>83, 216</value>
   </data>
   <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 36</value>
+    <value>146, 29</value>
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -220,13 +211,10 @@
     <value>True</value>
   </data>
   <data name="lblRowCount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 26</value>
-  </data>
-  <data name="lblRowCount.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 21</value>
   </data>
   <data name="lblRowCount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 17</value>
+    <value>84, 13</value>
   </data>
   <data name="lblRowCount.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -250,13 +238,10 @@
     <value>True</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 58</value>
-  </data>
-  <data name="Label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 47</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 17</value>
+    <value>81, 13</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -280,13 +265,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="nudRowCount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 23</value>
-  </data>
-  <data name="nudRowCount.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>132, 19</value>
   </data>
   <data name="nudRowCount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 22</value>
+    <value>79, 20</value>
   </data>
   <data name="nudRowCount.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -307,13 +289,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="nudColCount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 55</value>
-  </data>
-  <data name="nudColCount.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>132, 45</value>
   </data>
   <data name="nudColCount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 22</value>
+    <value>79, 20</value>
   </data>
   <data name="nudColCount.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -334,13 +313,10 @@
     <value>True</value>
   </data>
   <data name="lblCellLength.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 85</value>
-  </data>
-  <data name="lblCellLength.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 69</value>
   </data>
   <data name="lblCellLength.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 17</value>
+    <value>82, 13</value>
   </data>
   <data name="lblCellLength.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -358,22 +334,16 @@
     <value>gbSpatialRef</value>
   </data>
   <data name="&gt;&gt;lblCellLength.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="gbDimensions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="gbDimensions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 15</value>
-  </data>
-  <data name="gbDimensions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="gbDimensions.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>12, 12</value>
   </data>
   <data name="gbDimensions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>289, 91</value>
+    <value>217, 74</value>
   </data>
   <data name="gbDimensions.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -396,17 +366,35 @@
   <data name="gbSpatialRef.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="m_pbLink.Location" type="System.Drawing.Point, System.Drawing">
+    <value>123, 81</value>
+  </data>
+  <data name="m_pbLink.Size" type="System.Drawing.Size, System.Drawing">
+    <value>8, 16</value>
+  </data>
+  <data name="m_pbLink.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_pbLink.Name" xml:space="preserve">
+    <value>m_pbLink</value>
+  </data>
+  <data name="&gt;&gt;m_pbLink.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbLink.Parent" xml:space="preserve">
+    <value>gbSpatialRef</value>
+  </data>
+  <data name="&gt;&gt;m_pbLink.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="lblLonTL.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblLonTL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 53</value>
-  </data>
-  <data name="lblLonTL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 43</value>
   </data>
   <data name="lblLonTL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 17</value>
+    <value>92, 13</value>
   </data>
   <data name="lblLonTL.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -424,19 +412,16 @@
     <value>gbSpatialRef</value>
   </data>
   <data name="&gt;&gt;lblLonTL.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="nudCellSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="nudCellSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 112</value>
-  </data>
-  <data name="nudCellSize.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>132, 91</value>
   </data>
   <data name="nudCellSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 22</value>
+    <value>79, 20</value>
   </data>
   <data name="nudCellSize.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -451,19 +436,16 @@
     <value>gbSpatialRef</value>
   </data>
   <data name="&gt;&gt;nudCellSize.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="nudCellLength.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="nudCellLength.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 82</value>
-  </data>
-  <data name="nudCellLength.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>132, 67</value>
   </data>
   <data name="nudCellLength.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 22</value>
+    <value>79, 20</value>
   </data>
   <data name="nudCellLength.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -478,19 +460,16 @@
     <value>gbSpatialRef</value>
   </data>
   <data name="&gt;&gt;nudCellLength.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="nudLonTL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="nudLonTL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 50</value>
-  </data>
-  <data name="nudLonTL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>132, 41</value>
   </data>
   <data name="nudLonTL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 22</value>
+    <value>79, 20</value>
   </data>
   <data name="nudLonTL.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -505,19 +484,16 @@
     <value>gbSpatialRef</value>
   </data>
   <data name="&gt;&gt;nudLonTL.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="nudLatTL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="nudLatTL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 18</value>
-  </data>
-  <data name="nudLatTL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>132, 15</value>
   </data>
   <data name="nudLatTL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 22</value>
+    <value>79, 20</value>
   </data>
   <data name="nudLatTL.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -532,19 +508,16 @@
     <value>gbSpatialRef</value>
   </data>
   <data name="&gt;&gt;nudLatTL.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="lblLatTL.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lblLatTL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 22</value>
-  </data>
-  <data name="lblLatTL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>7, 18</value>
   </data>
   <data name="lblLatTL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 17</value>
+    <value>83, 13</value>
   </data>
   <data name="lblLatTL.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -562,7 +535,7 @@
     <value>gbSpatialRef</value>
   </data>
   <data name="&gt;&gt;lblLatTL.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -571,13 +544,10 @@
     <value>NoControl</value>
   </data>
   <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 114</value>
-  </data>
-  <data name="Label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 93</value>
   </data>
   <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 17</value>
+    <value>111, 13</value>
   </data>
   <data name="Label2.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -595,19 +565,13 @@
     <value>gbSpatialRef</value>
   </data>
   <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="gbSpatialRef.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 113</value>
-  </data>
-  <data name="gbSpatialRef.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="gbSpatialRef.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>12, 92</value>
   </data>
   <data name="gbSpatialRef.Size" type="System.Drawing.Size, System.Drawing">
-    <value>289, 145</value>
+    <value>217, 118</value>
   </data>
   <data name="gbSpatialRef.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -631,13 +595,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 16</value>
+    <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>321, 317</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>241, 258</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
