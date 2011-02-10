@@ -584,7 +584,6 @@ Public Class cEcoSpace
             FtimeCell = Nothing
             HdenCell = Nothing
             HabAreaUsed = Nothing
-            HabBest = Nothing
             HabGrad = Nothing
             RelFitness = Nothing
 
@@ -1989,19 +1988,19 @@ Public Class cEcoSpace
         ReDim HabGrad(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
 
         If m_Data.InRow > m_Data.InCol Then nsweep = m_Data.InRow Else nsweep = m_Data.InCol
-        'nsweep = nsweep * 2
         iWindow = 1
         For ihab = 1 To m_Data.NGroups
             For Sweep = 1 To nsweep
                 'If NcellsHab(ihab) > 0 Then
-                For i = 1 To m_Data.InRow : For j = 1 To m_Data.InCol
-                        'If i = 1 And j = 11 And ihab = 4 Then Stop
+                For i = 0 To m_Data.InRow : For j = 0 To m_Data.InCol
                         Thab = 0 : Nobs = 0
                         i1 = i - iWindow : If i1 < 0 Then i1 = 0
                         i2 = i + iWindow : If i2 > m_Data.InRow + 1 Then i2 = m_Data.InRow + 1
                         j1 = j - iWindow : If j1 < 0 Then j1 = 0
                         j2 = j + iWindow : If j2 > m_Data.InCol + 1 Then j2 = m_Data.InCol + 1
+
                         For ii = i1 To i2 : For jj = j1 To j2
+
                                 Habadd = 0
                                 If m_Data.PrefHab(ihab, m_Data.HabType(ii, jj)) And m_Data.Depth(ii, jj) > 0 _
                                 And m_Data.DistributionEnvelope(ii, jj, ihab) Then
@@ -2009,26 +2008,34 @@ Public Class cEcoSpace
                                 ElseIf Sweep > 1 Then
                                     Habadd = HabGrad(ii, jj, ihab)
                                 End If
-                                Thab = Thab + Habadd
+
+
                                 If m_Data.Depth(ii, jj) > 0 Then
+                                    Thab = Thab + Habadd
                                     Nobs = Nobs + 1
                                 End If
-                            Next : Next
-                        HabGrad(i, j, ihab) = Thab / Nobs
-                        'hack
-                        'If HabGrad(i, j, ihab) > HabBest Then Stop 'HabGrad(i, j, ihab) = HabBest
+
+                            Next jj
+                        Next ii
+
+                        If Nobs > 0 Then HabGrad(i, j, ihab) = Thab / Nobs
+                        If m_Data.PrefHab(ihab, m_Data.HabType(i, j)) Then HabGrad(i, j, ihab) = HabBest
+                        If m_Data.PrefHab(ihab, 0) Then HabGrad(i, j, ihab) = 1
+                        If m_Data.Depth(i, j) = 0 Then HabGrad(i, j, ihab) = 0.0
+
+
+                        If Nobs > 0 Then HabGrad(i, j, ihab) = Thab / Nobs
                         If m_Data.PrefHab(ihab, m_Data.HabType(i, j)) _
-                        And m_Data.DistributionEnvelope(i, j, ihab) Then HabGrad(i, j, ihab) = HabBest
+                                        And m_Data.DistributionEnvelope(i, j, ihab) Then HabGrad(i, j, ihab) = HabBest
 
                         If m_Data.PrefHab(ihab, 0) And m_Data.DistributionEnvelope(i, j, ihab) _
-                        Then HabGrad(i, j, ihab) = 1
+                                                    Then HabGrad(i, j, ihab) = 1
 
                         If m_Data.Depth(i, j) = 0 Then HabGrad(i, j, ihab) = 0.0
-                    Next : Next
-                'If m_Data.PrefHab(ihab, 0) Then Exit For
-                'End If
-            Next
-        Next
+                    Next j
+                Next i
+            Next Sweep
+        Next ihab
 
         'Dim tempstr As String
         'For ihab = 4 To 4 'm_Data.NGroups
