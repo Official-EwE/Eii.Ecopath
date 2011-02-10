@@ -57,7 +57,7 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' CellLength
-            meta = New cVariableMetaData(0, 360.0!, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, c_sEquatorLength, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.CellLength, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
