@@ -79,8 +79,12 @@ Public MustInherit Class cBaseShapeManager
         m_DataType = DataType
     End Sub
 
+    ''' <inheritdocs cref="IDisposable.Dispose"/>
     Friend Sub Dispose() _
         Implements IDisposable.Dispose
+        Me.Clear()
+        Me.m_core = Nothing
+        Me.m_Data = Nothing
         GC.SuppressFinalize(Me)
     End Sub
 
