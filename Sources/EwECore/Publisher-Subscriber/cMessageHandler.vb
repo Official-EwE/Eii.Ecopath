@@ -71,6 +71,17 @@ Public Class cMessageHandler
 
     End Sub
 
+    ''' <inheritdocs cref="IDisposable.Dispose"/>
+    Public Sub Dispose() Implements IDisposable.Dispose
+        If (Me.m_DelegateNotifier IsNot Nothing) Then
+            Me.m_DelegateNotifier = Nothing
+            Me.m_syncobj = Nothing
+            Me.m_corecomponent = eCoreComponentType.NotSet
+            Me.m_msgtype = eMessageType.NotSet
+        End If
+        GC.SuppressFinalize(Me)
+    End Sub
+
     ''' <summary>
     ''' Called by the cMessagePublisher to send a message to a message specific handler. 
     ''' If this cMessageHandler can handle this type of message the message will be sent to the Delegate passed in when this object was constructed.
@@ -190,39 +201,6 @@ Public Class cMessageHandler
     End Property
 
 #End If
-
-
-#Region " IDisposable Support "
-
-    Private disposedValue As Boolean = False        ' To detect redundant calls
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If Not Me.disposedValue Then
-                If disposing Then
-                    Me.m_DelegateNotifier = Nothing
-                    Me.m_syncobj = Nothing
-                    Me.m_corecomponent = eCoreComponentType.NotSet
-                    Me.m_msgtype = eMessageType.NotSet
-                End If
-
-                ' TODO: free your own state (unmanaged objects).
-                ' TODO: set large fields to null.
-            End If
-            Me.disposedValue = True
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString & ".Dispose() Exception: " & ex.Message)
-        End Try
-    End Sub
-
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-#End Region
 
 End Class
 
