@@ -23,29 +23,32 @@ Partial Class dlgEditBasemap
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditBasemap))
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-        Me.OK_Button = New System.Windows.Forms.Button
-        Me.Cancel_Button = New System.Windows.Forms.Button
-        Me.lblRowCount = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.nudRowCount = New System.Windows.Forms.NumericUpDown
-        Me.nudColCount = New System.Windows.Forms.NumericUpDown
-        Me.lblCellLength = New System.Windows.Forms.Label
-        Me.gbDimensions = New System.Windows.Forms.GroupBox
-        Me.gbSpatialRef = New System.Windows.Forms.GroupBox
-        Me.lblLonTL = New System.Windows.Forms.Label
-        Me.lblLatTL = New System.Windows.Forms.Label
-        Me.nudLatTL = New System.Windows.Forms.NumericUpDown
-        Me.nudLonTL = New System.Windows.Forms.NumericUpDown
-        Me.nudCellLength = New System.Windows.Forms.NumericUpDown
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.lblRowCount = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.nudRowCount = New System.Windows.Forms.NumericUpDown()
+        Me.nudColCount = New System.Windows.Forms.NumericUpDown()
+        Me.lblCellLength = New System.Windows.Forms.Label()
+        Me.gbDimensions = New System.Windows.Forms.GroupBox()
+        Me.gbSpatialRef = New System.Windows.Forms.GroupBox()
+        Me.lblLonTL = New System.Windows.Forms.Label()
+        Me.nudCellSize = New System.Windows.Forms.NumericUpDown()
+        Me.nudCellLength = New System.Windows.Forms.NumericUpDown()
+        Me.nudLonTL = New System.Windows.Forms.NumericUpDown()
+        Me.nudLatTL = New System.Windows.Forms.NumericUpDown()
+        Me.lblLatTL = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbDimensions.SuspendLayout()
         Me.gbSpatialRef.SuspendLayout()
-        CType(Me.nudLatTL, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.nudLonTL, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.nudCellSize, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.nudCellLength, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.nudLonTL, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.nudLatTL, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -109,10 +112,12 @@ Partial Class dlgEditBasemap
         '
         resources.ApplyResources(Me.gbSpatialRef, "gbSpatialRef")
         Me.gbSpatialRef.Controls.Add(Me.lblLonTL)
+        Me.gbSpatialRef.Controls.Add(Me.nudCellSize)
         Me.gbSpatialRef.Controls.Add(Me.nudCellLength)
         Me.gbSpatialRef.Controls.Add(Me.nudLonTL)
         Me.gbSpatialRef.Controls.Add(Me.nudLatTL)
         Me.gbSpatialRef.Controls.Add(Me.lblLatTL)
+        Me.gbSpatialRef.Controls.Add(Me.Label2)
         Me.gbSpatialRef.Controls.Add(Me.lblCellLength)
         Me.gbSpatialRef.Name = "gbSpatialRef"
         Me.gbSpatialRef.TabStop = False
@@ -122,17 +127,19 @@ Partial Class dlgEditBasemap
         resources.ApplyResources(Me.lblLonTL, "lblLonTL")
         Me.lblLonTL.Name = "lblLonTL"
         '
-        'lblLatTL
+        'nudCellSize
         '
-        resources.ApplyResources(Me.lblLatTL, "lblLatTL")
-        Me.lblLatTL.Name = "lblLatTL"
+        resources.ApplyResources(Me.nudCellSize, "nudCellSize")
+        Me.nudCellSize.Minimum = New Decimal(New Integer() {1, 0, 0, 196608})
+        Me.nudCellSize.Name = "nudCellSize"
+        Me.nudCellSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
-        'nudLatTL
+        'nudCellLength
         '
-        resources.ApplyResources(Me.nudLatTL, "nudLatTL")
-        Me.nudLatTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudLatTL.Name = "nudLatTL"
-        Me.nudLatTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        resources.ApplyResources(Me.nudCellLength, "nudCellLength")
+        Me.nudCellLength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.nudCellLength.Name = "nudCellLength"
+        Me.nudCellLength.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'nudLonTL
         '
@@ -141,12 +148,22 @@ Partial Class dlgEditBasemap
         Me.nudLonTL.Name = "nudLonTL"
         Me.nudLonTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
-        'nudCellLength
+        'nudLatTL
         '
-        resources.ApplyResources(Me.nudCellLength, "nudCellLength")
-        Me.nudCellLength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudCellLength.Name = "nudCellLength"
-        Me.nudCellLength.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        resources.ApplyResources(Me.nudLatTL, "nudLatTL")
+        Me.nudLatTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.nudLatTL.Name = "nudLatTL"
+        Me.nudLatTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'lblLatTL
+        '
+        resources.ApplyResources(Me.lblLatTL, "lblLatTL")
+        Me.lblLatTL.Name = "lblLatTL"
+        '
+        'Label2
+        '
+        resources.ApplyResources(Me.Label2, "Label2")
+        Me.Label2.Name = "Label2"
         '
         'dlgEditBasemap
         '
@@ -169,9 +186,10 @@ Partial Class dlgEditBasemap
         Me.gbDimensions.PerformLayout()
         Me.gbSpatialRef.ResumeLayout(False)
         Me.gbSpatialRef.PerformLayout()
-        CType(Me.nudLatTL, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.nudLonTL, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.nudCellSize, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.nudCellLength, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.nudLonTL, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.nudLatTL, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -190,5 +208,7 @@ Partial Class dlgEditBasemap
     Friend WithEvents nudCellLength As System.Windows.Forms.NumericUpDown
     Friend WithEvents nudLonTL As System.Windows.Forms.NumericUpDown
     Friend WithEvents nudLatTL As System.Windows.Forms.NumericUpDown
+    Private WithEvents nudCellSize As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 
 End Class

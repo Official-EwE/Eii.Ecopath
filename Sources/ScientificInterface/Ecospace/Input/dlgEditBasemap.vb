@@ -16,7 +16,7 @@ Imports EwEUtils.Core
 ''' =======================================================================
 Public Class dlgEditBasemap
 
-#Region " Private vars "
+#Region " Private variables "
 
     Private m_uic As cUIContext = Nothing
     Private m_basemap As cEcospaceBasemap = Nothing
@@ -26,8 +26,12 @@ Public Class dlgEditBasemap
     Private m_fpLat As cEwEFormatProvider = Nothing
     Private m_fpLon As cEwEFormatProvider = Nothing
     Private m_fpCellLength As cEwEFormatProvider = Nothing
+    Private m_fpCellSize As cEwEFormatProvider = Nothing
 
-#End Region ' Private vars
+    Private m_bInitialized As Boolean = False
+    Private m_bInUpdate As Boolean = False
+
+#End Region ' Private variables
 
     Public Sub New(ByVal uic As cUIContext)
         Me.m_uic = uic
@@ -55,13 +59,19 @@ Public Class dlgEditBasemap
         Me.m_fpCellLength = New cEwEFormatProvider(Me.m_uic, Me.nudCellLength, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellLength))
         Me.m_fpCellLength.Value = Me.m_basemap.CellLength
 
+        Me.m_fpCellSize = New cEwEFormatProvider(Me.m_uic, Me.nudCellSize, GetType(Single))
+        Me.m_fpCellSize.Value = Me.m_basemap.CellSize
+
         Me.UpdateControls()
+
+        Me.m_bInitialized = True
 
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.m_fpCellLength.Release()
+        Me.m_fpCellSize.Release()
         Me.m_fpInCol.Release()
         Me.m_fpInRow.Release()
         Me.m_fpLat.Release()
@@ -81,24 +91,28 @@ Public Class dlgEditBasemap
         Me.Close()
     End Sub
 
-    Private Sub nudColCount_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles nudColCount.ValueChanged, nudLonTL.ValueChanged, nudLatTL.ValueChanged, nudCellLength.ValueChanged
-        Me.UpdateControls()
+    Private Sub OnCellLengthChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles nudCellLength.ValueChanged
+
+        If Not Me.m_bInitialized Or Me.m_bInUpdate Then Return
+
+        Me.m_bInUpdate = True
+        Dim sLen As Single = CSng(Me.nudCellLength.Value)
+        Me.m_fpCellSize.Value = cEcospaceBasemap.ToCellSize(sLen)
+        Me.m_bInUpdate = False
+
     End Sub
 
-    Private Sub nudRowCount_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles nudRowCount.ValueChanged
-        Me.UpdateControls()
-    End Sub
+    Private Sub OnCellSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles nudCellSize.ValueChanged
 
-    Private Sub tbLatTL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.UpdateControls()
-    End Sub
+        If Not Me.m_bInitialized Or Me.m_bInUpdate Then Return
 
-    Private Sub tbLonTL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.UpdateControls()
-    End Sub
+        Me.m_bInUpdate = True
+        Dim sSize As Single = CSng(Me.nudCellSize.Value)
+        Me.m_fpCellLength.Value = cEcospaceBasemap.ToCellLength(sSize)
+        Me.m_bInUpdate = False
 
-    Private Sub tbCellLength_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.UpdateControls()
     End Sub
 
 #End Region ' Events 
