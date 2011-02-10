@@ -188,6 +188,7 @@ Public Class cForcingFunction
 
     End Sub
 
+
     ''' <summary>
     ''' Initialize the propeties from the underlying EcoSim data structures for this shapes Database ID 
     ''' </summary>
@@ -230,10 +231,15 @@ Public Class cForcingFunction
 
     End Function
 
+    ''' <inheritdocs cref="cShapeData.Dispose"/>
+    Friend Overrides Sub Dispose()
+        MyBase.Dispose()
+        Me.m_data = Nothing
+    End Sub
 
+    ''' <inheritdocs cref="cShapeData.Clear"/>
     Public Overrides Sub Clear()
         MyBase.Clear()
-        Me.m_data = Nothing
     End Sub
 
 #End Region ' Constructors and Initialization
@@ -419,7 +425,7 @@ Public Class cMediationFunction
 #Region " Constructors "
 
 
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef Manager As cBaseShapeManager, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+    Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, ByVal DBID As Integer, ByVal DataType As eDataTypes)
         'mediation data arrays from EcoSim
         'Public MedWeights(nGroups + nGear, MediationShapes) As Single 'defines biomass weights for med X
         'Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation
@@ -838,7 +844,7 @@ Public Class cFishingRateShape
 
     'Private m_ntimesteps As Integer
 
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef Manager As cBaseShapeManager, ByVal DBID As Integer, ByVal strFleetName As String)
+    Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, ByVal DBID As Integer, ByVal strFleetName As String)
 
         MyBase.New(EcoSimData, Manager, DBID, eDataTypes.FishingEffort)
 

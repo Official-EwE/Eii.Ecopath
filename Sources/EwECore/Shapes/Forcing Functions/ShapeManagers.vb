@@ -28,6 +28,7 @@ End Enum
 Public MustInherit Class cBaseShapeManager
     Implements Collections.IEnumerable
     Implements ICoreInterface
+    Implements IDisposable
 
 #Region "Protected Variables"
 
@@ -76,6 +77,11 @@ Public MustInherit Class cBaseShapeManager
         m_Data = EcoSimData
         m_core = theCore
         m_DataType = DataType
+    End Sub
+
+    Friend Sub Dispose() _
+        Implements IDisposable.Dispose
+        GC.SuppressFinalize(Me)
     End Sub
 
 #End Region ' Constructor
@@ -203,7 +209,7 @@ Public MustInherit Class cBaseShapeManager
     Friend Overridable Sub Clear()
 
         For Each shp As cForcingFunction In Me.m_shapes
-            shp.Clear()
+            shp.Dispose()
         Next
         Me.m_shapes.Clear()
 

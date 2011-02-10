@@ -8,6 +8,7 @@ Imports EwEUtils.Core
 ''' <remarks>This is used be all the Forcing or Mediation shapes</remarks>
 Public MustInherit Class cShapeData
     Implements ICoreInterface
+    Implements IDisposable
 
 #Region " Private variables "
 
@@ -37,9 +38,21 @@ Public MustInherit Class cShapeData
         Init(ArrayOfData)
     End Sub
 
-
-    Public Overridable Sub Clear()
+    ''' <summary>
+    ''' Destroys all data maintained by cShapeData. This will leave the
+    ''' </summary>
+    Friend Overridable Sub Dispose() _
+            Implements IDisposable.Dispose
+        Me.Clear()
         Me.m_xdata = Nothing
+        GC.SuppressFinalize(Me)
+    End Sub
+
+    ''' <summary>
+    ''' Clear out the data for further use
+    ''' </summary>
+    Public Overridable Sub Clear()
+        ' NOP
     End Sub
 
 #End Region ' Constructors
@@ -74,7 +87,6 @@ Public MustInherit Class cShapeData
 
         ReDim m_xdata(m_Xmax)
         Me.SetValue(1.0!)
-        Me.Refresh()
 
     End Sub
 
@@ -84,22 +96,6 @@ Public MustInherit Class cShapeData
         Debug.Assert(m_Xmax > 0, "You can not initialize cForcingData with zero points.")
 
         Me.m_xdata = ArrayOfData
-        'get Y max
-        Me.Refresh()
-
-    End Sub
-
-    ''' <summary>
-    ''' Determine the max Y value
-    ''' </summary>
-    ''' <remarks></remarks>
-    Protected Sub Refresh()
-
-        'Me.m_Ymax = 0
-        ''calculate Y max of m_xdata
-        'For i As Integer = 1 To Me.m_Xmax
-        '    Me.m_Ymax = Math.Max(Me.m_Ymax, Me.m_xdata(i))
-        'Next
 
     End Sub
 
@@ -249,8 +245,7 @@ Public MustInherit Class cShapeData
                 m_xdata(i) = 1 'give all the new points the value of one this means they will have no effect on the model
             Next i
 
-            m_Xmax = newNumberOfPoints
-            Refresh()
+            Me.m_Xmax = newNumberOfPoints
 
             Return True
 
