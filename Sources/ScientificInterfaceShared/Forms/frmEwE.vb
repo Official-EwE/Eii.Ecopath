@@ -151,9 +151,8 @@ Namespace Forms
 
                 If bSet Then
                     mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me.m_so)
-#If DEBUG Then
                     mh.Name = "cEwEFormRefresh::Any"
-#End If
+
                     Me.m_dtMessageHanders(src) = mh
                     Me.m_core.Messages.AddMessageHandler(mh)
                 Else

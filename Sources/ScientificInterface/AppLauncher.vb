@@ -549,12 +549,10 @@ Public Class AppLauncher
         Me.m_mhEcotracer = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.DataAddedOrRemoved, Me.SyncObject)
         Me.m_mhTimeseries = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.TimeSeries, eMessageType.DataAddedOrRemoved, Me.SyncObject)
 
-#If DEBUG Then
-        Me.m_mhEcosim.Name = "ApplSim"
-        Me.m_mhEcospace.Name = "ApplSpace"
-        Me.m_mhEcotracer.Name = "ApplTracer"
-        Me.m_mhTimeseries.Name = "ApplTS"
-#End If
+        Me.m_mhEcosim.Name = "cAppLauncher:Ecosim"
+        Me.m_mhEcospace.Name = "cAppLauncher:EcoSpace"
+        Me.m_mhEcotracer.Name = "cAppLauncher:EcoTracer"
+        Me.m_mhTimeseries.Name = "cAppLauncher:TimeSeries"
 
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)

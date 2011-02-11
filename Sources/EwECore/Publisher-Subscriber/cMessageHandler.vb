@@ -37,11 +37,8 @@ Public Class cMessageHandler
     Private m_corecomponent As eCoreComponentType = eCoreComponentType.NotSet
     ''' <summary>Message type filter. Can be anything.</summary>
     Private m_msgtype As eMessageType = eMessageType.Any
-
-#If DEBUG Then
-    ''' <summary>Message handler name (DEBUG only).</summary>
+    ''' <summary>Message handler name for ease of debugging.</summary>
     Private m_strName As String = ""
-#End If
 
 #End Region ' Private vars
 
@@ -183,8 +180,6 @@ Public Class cMessageHandler
         Return m_DelegateNotifier
     End Function
 
-#If DEBUG Then
-
     ''' <summary>
     ''' Get/set the name of a message handler for ease of debugging.
     ''' </summary>
@@ -199,8 +194,6 @@ Public Class cMessageHandler
             Me.m_strName = value
         End Set
     End Property
-
-#End If
 
 End Class
 
