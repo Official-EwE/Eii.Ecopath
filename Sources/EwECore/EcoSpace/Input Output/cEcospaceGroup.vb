@@ -26,13 +26,13 @@ Public Class cEcospaceGroup
 
             ' Mvel
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.MVel, eStatusFlags.Null, eValueTypes.Int, _
+            val = New cValue(New Single, eVarNameFlags.MVel, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' RelMoveBad
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.RelMoveBad, eStatusFlags.Null, eValueTypes.Int, _
+            val = New cValue(New Single, eVarNameFlags.RelMoveBad, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
