@@ -2350,6 +2350,7 @@ Public Class cEcoSpace
         ReDim Vbiom(m_SimData.Narena), Vdenom(m_SimData.Narena)
         For ii = 1 To m_SimData.inlinks
             i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
+            'jb EatEff() and VulPred() ignored here because this is only used for initialization and both values are 1
             aeff(ii) = m_SimData.Alink(ii) * m_SimData.Ftime(j) * m_SimData.RelaSwitch(ii)
             Veff(ia) = m_SimData.VulArena(ia) * m_SimData.Ftime(i)
             m_Ecosim.ApplyAVmodifiers(aeff(ii), Veff(ia), i, m_SimData.Jarena(ia), False)  '?not sure this will work right with multiple preds in arenas
