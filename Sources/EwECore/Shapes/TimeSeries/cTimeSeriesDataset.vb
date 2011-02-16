@@ -264,10 +264,8 @@ Public Class cTimeSeriesDataset
     End Sub
 
     Friend Overloads Sub Clear() Implements System.Collections.Generic.ICollection(Of cTimeSeries).Clear
-        'ToDo 30-Nov-2010 Clearing the contents of the time series dataset is causing them to explode in the interface
-        ' have left the Clear() calls in place until we sort this out
-        '  MyBase.Clear()
-        '  Me.m_lTimeSeries.Clear()
+         MyBase.Clear()
+        Me.m_lTimeSeries.Clear()
     End Sub
 
     Public Function Contains(ByVal item As cTimeSeries) As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).Contains
