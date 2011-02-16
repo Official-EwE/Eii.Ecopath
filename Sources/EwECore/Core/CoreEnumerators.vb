@@ -16,6 +16,7 @@ Imports EwEUtils.Core
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cCoreEnumNamesIndex
+    Implements IDisposable
 
     ''' <summary>Singleton instance</summary>
     Private Shared __inst__ As cCoreEnumNamesIndex = New cCoreEnumNamesIndex()
@@ -28,6 +29,20 @@ Public Class cCoreEnumNamesIndex
     Public Shared Function GetInstance() As cCoreEnumNamesIndex
         Return cCoreEnumNamesIndex.__inst__
     End Function
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        If (Me.m_dictDataTypeEnumToName IsNot Nothing) Then
+            Me.m_dictDataTypeEnumToName.Clear()
+            Me.m_dictDataTypeEnumToName = Nothing
+            Me.m_dictDataTypeNameToEnum.Clear()
+            Me.m_dictDataTypeNameToEnum = Nothing
+            Me.m_dictVarEnumToName.Clear()
+            Me.m_dictVarEnumToName = Nothing
+            Me.m_dictVarNameToEnum.Clear()
+            Me.m_dictVarNameToEnum = Nothing
+        End If
+        GC.SuppressFinalize(Me)
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
