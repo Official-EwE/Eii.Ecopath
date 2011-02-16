@@ -25,6 +25,11 @@ Namespace Database
         Private Class cImportData
             Inherits cEcopathDataStructures
 
+            Public Sub New(ByVal CoreMessagePublisher As cMessagePublisher)
+                MyBase.New(CoreMessagePublisher)
+            End Sub
+
+
             Public UnitTime As eUnitTimeType = eUnitTimeType.Year
             Public UnitTimeCustom As String = ""
             Public UnitCurrencyCustom As String = ""
@@ -39,7 +44,7 @@ Namespace Database
         Private m_iFNum As Integer = cCore.NULL_VALUE
 
         ''' <summary>Data buffer.</summary>
-        Private m_data As New cImportData()
+        Private m_data As cImportData
 
 #End Region ' Private vars
 
@@ -54,6 +59,9 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal core As cCore, ByVal strEwE5File As String)
             MyBase.New(core, strEwE5File)
+
+            m_data = New cImportData(Me.m_core.Messages)
+
         End Sub
 
 #End Region ' Construction

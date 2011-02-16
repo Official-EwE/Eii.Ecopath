@@ -7,6 +7,12 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cEcopathDataStructures
 
+#Region "Private data"
+
+    Private m_messages As cMessagePublisher
+
+#End Region
+
 #Region " Public Variables "
 
     Public bInitialized As Boolean = False
@@ -851,15 +857,11 @@ Public Class cEcopathDataStructures
         Next i
 
         If b_resp_below_zero Then
-            'jb changed
-            'If pt > 0 Then
             strMsg = "WARNING : Respiration cannot be negative. Summary statistics for the system"
             strMsg = strMsg & " are suppressed. Please check parameters and rerun program."
 
-            cCore.GetInstance.Messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, _
+            Me.m_messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, _
                                                     eCoreComponentType.EcoPath, eMessageImportance.Warning))
-            ' MsgBox(strMsg)
-            ''SetMousePtr 0
         End If
     End Sub
     ''' <summary>
@@ -1329,4 +1331,7 @@ Public Class cEcopathDataStructures
 
     End Sub
 
+    Public Sub New(ByVal CoreMessagePublisher As cMessagePublisher)
+        Me.m_messages = CoreMessagePublisher
+    End Sub
 End Class

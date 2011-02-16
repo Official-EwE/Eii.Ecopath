@@ -562,7 +562,7 @@ Public Class cCore
         Me.m_bCoreIsInit = False
 
         ' Create core data structures
-        Me.m_EcoPathData = New cEcopathDataStructures
+        Me.m_EcoPathData = New cEcopathDataStructures(Me.Messages)
         Me.m_EcoSimData = New cEcosimDatastructures
         Me.m_EcoSpaceData = New cEcospaceDataStructures(Me.Messages)
         Me.m_Stanza = New cStanzaDatastructures
