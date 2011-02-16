@@ -535,6 +535,7 @@ Public Class cCore
     ''' For a different instance of the core use the New operator.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
+    <Obsolete("Please do not use cCore.GetInstance any longer. We are getting ready for running multiple cores")> _
     Public Shared Function GetInstance() As cCore
 
         'if the core has not been created then create a new cCore instance and return it.
@@ -579,6 +580,39 @@ Public Class cCore
         'if there is no current context then create a new one on this thread. 
         If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
 
+    End Sub
+
+    Private m_bDisposed As Boolean = False        ' To detect redundant calls
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        If Not Me.m_bDisposed Then
+            Try
+                'Dispose of all the message handlers
+                If Me.m_EcoPath.Messages IsNot Nothing Then
+                    Me.m_EcoPath.Messages.Dispose()
+                End If
+
+                If Me.m_EcoSim.Messages IsNot Nothing Then
+                    Me.m_EcoSim.Messages.Dispose()
+                End If
+
+                If Me.m_Ecospace.Messages IsNot Nothing Then
+                    Me.m_Ecospace.Messages.Dispose()
+                End If
+
+                If Me.m_psdModel.Messages IsNot Nothing Then
+                    Me.m_psdModel.Messages.Dispose()
+                End If
+
+                Me.Messages.Dispose()
+                cCoreEnumNamesIndex.GetInstance.Dispose()
+
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString & ".Dispose() Exception: " & ex.Message)
+            End Try
+            Me.m_bDisposed = True
+        End If
+        GC.SuppressFinalize(Me)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -10631,6 +10665,23 @@ Public Class cCore
 
     End Property
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns an array with all <see cref="cAuxiliaryData"/> containing remarks.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property Remarks() As cAuxiliaryData()
+        Get
+            Dim lAux As New List(Of cAuxiliaryData)
+            For Each aux As cAuxiliaryData In Me.m_dtAuxiliaryData.Values
+                If Not String.IsNullOrEmpty(aux.Remark) Then
+                    lAux.Add(aux)
+                End If
+            Next
+            Return lAux.ToArray()
+        End Get
+    End Property
+
 #Region " Pedigree "
 
     Private Function InitPedigreeManagers() As Boolean
@@ -12332,57 +12383,6 @@ Public Class cCore
             Return Me.m_Functions
         End Get
     End Property
-
-#End Region
-
-    Private _disposedValue As Boolean = False        ' To detect redundant calls
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-
-        If Not Me._disposedValue Then
-            If disposing Then
-
-                Try
-                    'Dispose of all the message handlers
-                    If Me.m_EcoPath.Messages IsNot Nothing Then
-                        Me.m_EcoPath.Messages.Dispose()
-                    End If
-
-                    If Me.m_EcoSim.Messages IsNot Nothing Then
-                        Me.m_EcoSim.Messages.Dispose()
-                    End If
-
-                    If Me.m_Ecospace.Messages IsNot Nothing Then
-                        Me.m_Ecospace.Messages.Dispose()
-                    End If
-
-                    If Me.m_psdModel.Messages IsNot Nothing Then
-                        Me.m_psdModel.Messages.Dispose()
-                    End If
-
-                    Me.Messages.Dispose()
-
-                Catch ex As Exception
-                    System.Console.WriteLine(Me.ToString & ".Dispose() Exception: " & ex.Message)
-                End Try
-
-            End If
-
-            ' TODO: free your own state (unmanaged objects).
-            ' TODO: set large fields to null.
-        End If
-        Me._disposedValue = True
-    End Sub
-
-#Region " IDisposable Support "
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-
 
 #End Region
 
