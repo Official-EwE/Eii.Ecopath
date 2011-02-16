@@ -1288,6 +1288,9 @@ Public Class cCore
 
         Try
 
+            For Each ds As cTimeSeriesDataset In Me.m_timeSeriesDatasets
+                ds.Clear()
+            Next
             Me.m_timeSeriesDatasets.Clear()
 
             For iDS As Integer = 1 To Me.m_TSData.nDatasets
