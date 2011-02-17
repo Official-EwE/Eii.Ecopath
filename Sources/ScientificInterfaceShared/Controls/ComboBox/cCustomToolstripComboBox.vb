@@ -82,6 +82,7 @@ Namespace Controls
                 Return Me.m_control
             End Get
             Set(ByVal value As Control)
+                'Remove the existing control
                 If Not Me.m_control Is Nothing Then
                     Me.m_form.Controls.Remove(Me.m_control)
                     RemoveHandler m_control.LostFocus, AddressOf Me.OnControlLostFocus
@@ -89,10 +90,15 @@ Namespace Controls
                 End If
 
                 Me.m_control = value
-                Me.m_control.Dock = DockStyle.Fill
-                AddHandler Me.m_control.LostFocus, AddressOf Me.OnControlLostFocus
-                AddHandler Me.m_control.DoubleClick, AddressOf Me.OnControlDoubleClick
-                Me.m_form.Controls.Add(Me.m_control)
+                'If value is nothing then this is being called to dispose of the existing control
+                If value IsNot Nothing Then
+                    'Setup the new control 
+                    Me.m_control.Dock = DockStyle.Fill
+                    AddHandler Me.m_control.LostFocus, AddressOf Me.OnControlLostFocus
+                    AddHandler Me.m_control.DoubleClick, AddressOf Me.OnControlDoubleClick
+                    Me.m_form.Controls.Add(Me.m_control)
+                End If
+
             End Set
         End Property
 
