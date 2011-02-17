@@ -33,7 +33,7 @@ Namespace Ecosim
             Me.btnRunOrStop = New System.Windows.Forms.Button
             Me.m_tsMain = New System.Windows.Forms.ToolStrip
             Me.tslTarget = New System.Windows.Forms.ToolStripLabel
-            Me.tscbTarget = New ScientificInterfaceShared.Controls.cCustomToolstripComboBox
+            Me.m_tscbTarget = New ScientificInterfaceShared.Controls.cCustomToolstripComboBox
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.tsbSetTo0 = New System.Windows.Forms.ToolStripButton
             Me.tsbSetToValue = New System.Windows.Forms.ToolStripButton
@@ -115,7 +115,7 @@ Namespace Ecosim
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslTarget, Me.tscbTarget, Me.ToolStripSeparator1, Me.tsbSetTo0, Me.tsbSetToValue, Me.tsbResetFs})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslTarget, Me.m_tscbTarget, Me.ToolStripSeparator1, Me.tsbSetTo0, Me.tsbSetToValue, Me.tsbResetFs})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             '
@@ -124,12 +124,12 @@ Namespace Ecosim
             Me.tslTarget.Name = "tslTarget"
             resources.ApplyResources(Me.tslTarget, "tslTarget")
             '
-            'tscbTarget
+            'm_tscbTarget
             '
-            resources.ApplyResources(Me.tscbTarget, "tscbTarget")
-            Me.tscbTarget.DropDownHeight = 1
-            Me.tscbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.tscbTarget.Name = "tscbTarget"
+            resources.ApplyResources(Me.m_tscbTarget, "m_tscbTarget")
+            Me.m_tscbTarget.DropDownHeight = 1
+            Me.m_tscbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscbTarget.Name = "m_tscbTarget"
             '
             'ToolStripSeparator1
             '
@@ -464,7 +464,7 @@ Namespace Ecosim
         Private WithEvents m_sketchPad As ucForcingSketchPad
         Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
         Private WithEvents tslTarget As System.Windows.Forms.ToolStripLabel
-        Private WithEvents tscbTarget As cCustomToolstripComboBox
+        Private WithEvents m_tscbTarget As cCustomToolstripComboBox
         Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents tsbResetFs As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbSetTo0 As System.Windows.Forms.ToolStripButton

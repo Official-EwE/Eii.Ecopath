@@ -90,7 +90,7 @@ Namespace Ecosim
             Me.m_params = Core.EcoSimModelParameters()
             Me.m_simStats = Me.Core.EcosimStats
 
-            Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.Core, Me.tscbTarget)
+            Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.Core, Me.m_tscbTarget)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
             Me.m_lbGroups.Attach(Me.UIContext)
@@ -457,7 +457,7 @@ Namespace Ecosim
 
 #Region " Forcing function "
 
-        Private Sub tscbTarget_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tscbTarget.SelectedIndexChanged
+        Private Sub tscbTarget_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tscbTarget.SelectedIndexChanged
             Dim obj As ICoreInterface = GetSelectedGroupOrFleet()
 
             If TypeOf obj Is cFishingRateShape Then
@@ -890,7 +890,7 @@ Namespace Ecosim
         End Sub
 
         Private Function GetSelectedGroupOrFleet() As ICoreInterface
-            Dim tv As cCustomComboBoxFleetGroupTree = DirectCast(Me.tscbTarget.DropdownControl, cCustomComboBoxFleetGroupTree)
+            Dim tv As cCustomComboBoxFleetGroupTree = DirectCast(Me.m_tscbTarget.DropdownControl, cCustomComboBoxFleetGroupTree)
             Return tv.SelectedItem()
         End Function
 
@@ -936,8 +936,6 @@ Namespace Ecosim
             End If
 
             Me.m_shapeGUIHandler.SelectedShape = shape
-            ' Cannot edit Fs anymore
-            Me.m_sketchPad.Editable = False
             Me.m_bIsEffortSelected = False
             Me.UpdateControls()
         End Sub
