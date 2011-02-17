@@ -128,19 +128,46 @@
   <data name="SplitContainer1.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
+  <data name="m_sketchPadToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_sketchPadToolbar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_sketchPadToolbar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_sketchPadToolbar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>699, 25</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_sketchPadToolbar.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_sketchPadToolbar.Name" xml:space="preserve">
+    <value>m_sketchPadToolbar</value>
+  </data>
+  <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.1.1.207, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_sketchPadToolbar.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_sketchPad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_sketchPad.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 25</value>
   </data>
   <data name="m_sketchPad.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_sketchPad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>701, 352</value>
+    <value>701, 327</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_sketchPad.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -148,13 +175,13 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.1.0.506, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.1.1.207, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;SplitContainer1.Panel1.Name" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -171,17 +198,44 @@
   <data name="SplitContainer1.Panel2.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_shapeToolboxToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_shapeToolboxToolbar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_shapeToolboxToolbar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_shapeToolboxToolbar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>699, 25</value>
+  </data>
+  <data name="m_shapeToolboxToolbar.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_shapeToolboxToolbar.Name" xml:space="preserve">
+    <value>m_shapeToolboxToolbar</value>
+  </data>
+  <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.1.1.207, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
+    <value>SplitContainer1.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_shapeToolboxToolbar.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_shapeToolBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_shapeToolBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 25</value>
   </data>
   <data name="m_shapeToolBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_shapeToolBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>699, 141</value>
+    <value>699, 116</value>
   </data>
   <data name="m_shapeToolBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -190,13 +244,13 @@
     <value>m_shapeToolBox</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.1.0.506, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.1.1.207, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;SplitContainer1.Panel2.Name" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
@@ -247,6 +301,6 @@
     <value>frmFishingMortality</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.506, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.207, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

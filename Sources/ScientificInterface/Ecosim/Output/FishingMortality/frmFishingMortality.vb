@@ -78,8 +78,8 @@ Namespace Ecosim
 
             Me.m_handler = New cFishingMortalityShapeGUIHandler()
             Me.m_handler.Attach(Me.UIContext, _
-                                Me.m_shapeToolBox, Nothing, _
-                                Me.m_sketchPad, Nothing) ' Me.m_sketchPadToolbar removed for uoutput-only form
+                                Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
+                                Me.m_sketchPad, Me.m_sketchPadToolbar)
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)

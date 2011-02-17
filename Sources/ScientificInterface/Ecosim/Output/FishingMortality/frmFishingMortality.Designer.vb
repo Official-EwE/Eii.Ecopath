@@ -24,11 +24,12 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFishingMortality))
-            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad
-            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
+            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
+            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox()
+            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
+            Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar()
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -42,26 +43,30 @@ Namespace Ecosim
             '
             'SplitContainer1.Panel1
             '
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_sketchPadToolbar)
             Me.SplitContainer1.Panel1.Controls.Add(Me.m_sketchPad)
             '
             'SplitContainer1.Panel2
             '
             resources.ApplyResources(Me.SplitContainer1.Panel2, "SplitContainer1.Panel2")
+            Me.SplitContainer1.Panel2.Controls.Add(Me.m_shapeToolboxToolbar)
             Me.SplitContainer1.Panel2.Controls.Add(Me.m_shapeToolBox)
             '
             'm_sketchPad
             '
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
+            Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
-            Me.m_sketchPad.Editable = False
+            Me.m_sketchPad.Editable = True
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
             Me.m_sketchPad.Name = "m_sketchPad"
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
             Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.ShowYMark = False
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_sketchPad.UIContext = Nothing
             Me.m_sketchPad.XMarkLabel = ""
@@ -83,6 +88,19 @@ Namespace Ecosim
             Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
             '
+            'm_sketchPadToolbar
+            '
+            Me.m_sketchPadToolbar.BackColor = System.Drawing.SystemColors.Control
+            resources.ApplyResources(Me.m_sketchPadToolbar, "m_sketchPadToolbar")
+            Me.m_sketchPadToolbar.Handler = Nothing
+            Me.m_sketchPadToolbar.Name = "m_sketchPadToolbar"
+            '
+            'm_shapeToolboxToolbar
+            '
+            resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
+            Me.m_shapeToolboxToolbar.Handler = Nothing
+            Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
+            '
             'frmFishingMortality
             '
             resources.ApplyResources(Me, "$this")
@@ -98,6 +116,8 @@ Namespace Ecosim
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Private WithEvents m_shapeToolBox As ucShapeToolbox
         Private WithEvents m_sketchPad As ucForcingSketchPad
+        Friend WithEvents m_sketchPadToolbar As ScientificInterfaceShared.Controls.ucSketchPadToolbar
+        Friend WithEvents m_shapeToolboxToolbar As ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
 
     End Class
 End Namespace
