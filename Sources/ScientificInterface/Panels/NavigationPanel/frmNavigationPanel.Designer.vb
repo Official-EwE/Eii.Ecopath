@@ -42,14 +42,14 @@ Partial Class frmNavigationPanel
         Me.m_ilTreeIcons.Images.SetKeyName(7, "Ecosim_32x32.png")
         Me.m_ilTreeIcons.Images.SetKeyName(8, "Ecopath_32x32.png")
         '
-        'NavigationPanel
+        'frmNavigationPanel
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.Controls.Add(Me.m_tvNavigation)
         Me.HideOnClose = True
-        Me.Name = "NavigationPanel"
+        Me.Name = "frmNavigationPanel"
         Me.TabText = "Navigator"
         Me.ResumeLayout(False)
 
