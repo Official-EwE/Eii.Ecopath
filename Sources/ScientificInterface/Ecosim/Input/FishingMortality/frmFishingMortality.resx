@@ -142,7 +142,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_sketchPadToolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Name" xml:space="preserve">
     <value>m_sketchPadToolbar</value>
@@ -211,7 +211,7 @@
     <value>699, 25</value>
   </data>
   <data name="m_shapeToolboxToolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Name" xml:space="preserve">
     <value>m_shapeToolboxToolbar</value>
@@ -238,7 +238,7 @@
     <value>699, 116</value>
   </data>
   <data name="m_shapeToolBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Name" xml:space="preserve">
     <value>m_shapeToolBox</value>
@@ -296,6 +296,9 @@
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Fishing mortality</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmFishingMortality</value>

@@ -30,8 +30,8 @@ Namespace Ecosim
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad
-            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
             Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
+            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -86,6 +86,12 @@ Namespace Ecosim
             Me.m_sketchPad.YMarkLabel = ""
             Me.m_sketchPad.YMarkValue = -9999.0!
             '
+            'm_shapeToolboxToolbar
+            '
+            resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
+            Me.m_shapeToolboxToolbar.Handler = Nothing
+            Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
+            '
             'm_shapeToolBox
             '
             Me.m_shapeToolBox.AllowCheckboxes = False
@@ -96,12 +102,6 @@ Namespace Ecosim
             Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
-            '
-            'm_shapeToolboxToolbar
-            '
-            resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
-            Me.m_shapeToolboxToolbar.Handler = Nothing
-            Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
             '
             'frmFishingMortality
             '
