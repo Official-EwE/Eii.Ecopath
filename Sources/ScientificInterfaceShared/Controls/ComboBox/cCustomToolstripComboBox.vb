@@ -29,15 +29,14 @@ Namespace Controls
 
         Public Sub New()
 
-            ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+            Me.InitializeComponent()
 
             ' Setup the form to display the control
-            m_form = New Form()
-            m_form.StartPosition = FormStartPosition.Manual
-            m_form.FormBorderStyle = FormBorderStyle.None
-            m_form.Hide()
-            m_form.ShowInTaskbar = False
+            Me.m_form = New Form()
+            Me.m_form.StartPosition = FormStartPosition.Manual
+            Me.m_form.FormBorderStyle = FormBorderStyle.None
+            Me.m_form.Hide()
+            Me.m_form.ShowInTaskbar = False
 
             ' Default Control
             Me.DropdownControl = New Control()
@@ -46,11 +45,23 @@ Namespace Controls
             Me.DropDownHeight = 1
         End Sub
 
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                ' Clean up
+                Me.DropdownControl = Nothing
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
+        End Sub
+
         Protected Overrides Sub OnDropDown(ByVal e As System.EventArgs)
             MyBase.OnDropDown(e)
 
-            If Not m_form.Visible Then
-                DisplayControl()
+            If Not Me.m_form.Visible Then
+                Me.DisplayControl()
             End If
 
             Me.DroppedDown = False
@@ -60,28 +71,28 @@ Namespace Controls
             Dim loc As Point = Me.Control.PointToScreen(Point.Empty)
             loc.Y += Me.Height
 
-            m_form.Location = loc
-            m_form.Width = Me.DropDownWidth
-            m_form.Height = Me.m_dropDownHeight
-            m_form.Show()
+            Me.m_form.Location = loc
+            Me.m_form.Width = Me.DropDownWidth
+            Me.m_form.Height = Me.m_dropDownHeight
+            Me.m_form.Show()
         End Sub
 
         Public Property DropdownControl() As Control
             Get
-                Return m_control
+                Return Me.m_control
             End Get
             Set(ByVal value As Control)
-                If Not m_control Is Nothing Then
-                    m_form.Controls.Remove(m_control)
+                If Not Me.m_control Is Nothing Then
+                    Me.m_form.Controls.Remove(Me.m_control)
                     RemoveHandler m_control.LostFocus, AddressOf Me.OnControlLostFocus
                     RemoveHandler m_control.DoubleClick, AddressOf Me.OnControlDoubleClick
                 End If
 
-                m_control = value
-                m_control.Dock = DockStyle.Fill
-                AddHandler m_control.LostFocus, AddressOf Me.OnControlLostFocus
-                AddHandler m_control.DoubleClick, AddressOf Me.OnControlDoubleClick
-                m_form.Controls.Add(m_control)
+                Me.m_control = value
+                Me.m_control.Dock = DockStyle.Fill
+                AddHandler Me.m_control.LostFocus, AddressOf Me.OnControlLostFocus
+                AddHandler Me.m_control.DoubleClick, AddressOf Me.OnControlDoubleClick
+                Me.m_form.Controls.Add(Me.m_control)
             End Set
         End Property
 
