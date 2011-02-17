@@ -70,7 +70,7 @@ Namespace Ecosim
 
 #End Region ' Private event handlers
 
-#Region " OVerrides"
+#Region " Overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
