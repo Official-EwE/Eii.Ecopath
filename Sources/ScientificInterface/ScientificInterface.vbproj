@@ -237,6 +237,7 @@
       <DependentUpon>frmFishingMortality.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecosim\Input\FishingMortality\frmFishingMortality.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\TimeSeries\frmTimeSeries.Designer.vb">
       <DependentUpon>frmTimeSeries.vb</DependentUpon>

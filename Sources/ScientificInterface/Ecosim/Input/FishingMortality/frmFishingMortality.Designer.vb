@@ -31,6 +31,7 @@ Namespace Ecosim
             Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad
             Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
+            Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -50,6 +51,7 @@ Namespace Ecosim
             'SplitContainer1.Panel2
             '
             resources.ApplyResources(Me.SplitContainer1.Panel2, "SplitContainer1.Panel2")
+            Me.SplitContainer1.Panel2.Controls.Add(Me.m_shapeToolboxToolbar)
             Me.SplitContainer1.Panel2.Controls.Add(Me.m_shapeToolBox)
             '
             'm_sketchPadToolbar
@@ -62,7 +64,9 @@ Namespace Ecosim
             'm_sketchPad
             '
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
+            Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
+            Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.Handler = Nothing
@@ -71,7 +75,9 @@ Namespace Ecosim
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
             Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.ShowYMark = False
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.UIContext = Nothing
             Me.m_sketchPad.XMarkLabel = ""
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
@@ -88,7 +94,14 @@ Namespace Ecosim
             Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
             Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
+            Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
+            '
+            'm_shapeToolboxToolbar
+            '
+            resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
+            Me.m_shapeToolboxToolbar.Handler = Nothing
+            Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
             '
             'frmFishingMortality
             '
@@ -106,6 +119,7 @@ Namespace Ecosim
         Private WithEvents m_shapeToolBox As ucShapeToolbox
         Private WithEvents m_sketchPad As ucForcingSketchPad
         Private WithEvents m_sketchPadToolbar As ucSketchPadToolbar
+        Friend WithEvents m_shapeToolboxToolbar As ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
 
     End Class
 End Namespace
