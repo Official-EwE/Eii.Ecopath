@@ -22,47 +22,46 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
-            Me.m_scTopBits = New System.Windows.Forms.SplitContainer
-            Me.m_scTop = New System.Windows.Forms.SplitContainer
-            Me.m_plRunParams = New System.Windows.Forms.Panel
-            Me.m_chkIncludeCCosts = New System.Windows.Forms.CheckBox
-            Me.m_chkMaxPortUl = New System.Windows.Forms.CheckBox
-            Me.m_chkUsePlugin = New System.Windows.Forms.CheckBox
-            Me.m_chkPrevCE = New System.Windows.Forms.CheckBox
-            Me.m_lblDiscRate = New System.Windows.Forms.Label
-            Me.m_txtDiscountRate = New System.Windows.Forms.TextBox
-            Me.m_nudMaxEffChg = New System.Windows.Forms.NumericUpDown
-            Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown
-            Me.m_lblBaseYear = New System.Windows.Forms.Label
-            Me.m_cmbOptmApproach = New System.Windows.Forms.ComboBox
-            Me.m_lblMaxEffChg = New System.Windows.Forms.Label
-            Me.m_lblOptmApproach = New System.Windows.Forms.Label
-            Me.m_cmbSearchUsing = New System.Windows.Forms.ComboBox
-            Me.m_lblSearchUsing = New System.Windows.Forms.Label
-            Me.m_cmbInitUsing = New System.Windows.Forms.ComboBox
-            Me.m_lblInitUsing = New System.Windows.Forms.Label
-            Me.m_nudMaxNumEval = New System.Windows.Forms.NumericUpDown
-            Me.m_nudNumberOfRuns = New System.Windows.Forms.NumericUpDown
-            Me.m_lblMaxNumEval = New System.Windows.Forms.Label
-            Me.m_lblNumOfRuns = New System.Windows.Forms.Label
-            Me.m_hdrParms = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tlpRunStop = New System.Windows.Forms.TableLayoutPanel
-            Me.btnStop = New System.Windows.Forms.Button
-            Me.btnSearch = New System.Windows.Forms.Button
-            Me.m_tcMain = New System.Windows.Forms.TabControl
-            Me.m_tabObjectives = New System.Windows.Forms.TabPage
-            Me.m_scObjectives = New System.Windows.Forms.SplitContainer
-            Me.m_gridObjWeights = New ScientificInterface.Ecosim.gridSearchObjectivesWeight
-            Me.m_scAarghArghAaargh = New System.Windows.Forms.SplitContainer
-            Me.m_gridObjFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet
-            Me.m_gridObjGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup
-            Me.m_tabResultTable = New System.Windows.Forms.TabPage
-            Me.m_scIterResult = New System.Windows.Forms.SplitContainer
-            Me.m_scIterResultMultiRun = New System.Windows.Forms.SplitContainer
-            Me.m_tpPlots = New System.Windows.Forms.TabPage
-            Me.m_graphResults = New ZedGraph.ZedGraphControl
-            Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
+            Me.m_scTopBits = New System.Windows.Forms.SplitContainer()
+            Me.m_scTop = New System.Windows.Forms.SplitContainer()
+            Me.m_plRunParams = New System.Windows.Forms.Panel()
+            Me.m_chkIncludeCCosts = New System.Windows.Forms.CheckBox()
+            Me.m_chkMaxPortUl = New System.Windows.Forms.CheckBox()
+            Me.m_chkUsePlugin = New System.Windows.Forms.CheckBox()
+            Me.m_chkPrevCE = New System.Windows.Forms.CheckBox()
+            Me.m_lblDiscRate = New System.Windows.Forms.Label()
+            Me.m_txtDiscountRate = New System.Windows.Forms.TextBox()
+            Me.m_nudMaxEffChg = New System.Windows.Forms.NumericUpDown()
+            Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown()
+            Me.m_lblBaseYear = New System.Windows.Forms.Label()
+            Me.m_cmbOptmApproach = New System.Windows.Forms.ComboBox()
+            Me.m_lblMaxEffChg = New System.Windows.Forms.Label()
+            Me.m_lblOptmApproach = New System.Windows.Forms.Label()
+            Me.m_cmbSearchUsing = New System.Windows.Forms.ComboBox()
+            Me.m_lblSearchUsing = New System.Windows.Forms.Label()
+            Me.m_cmbInitUsing = New System.Windows.Forms.ComboBox()
+            Me.m_lblInitUsing = New System.Windows.Forms.Label()
+            Me.m_nudMaxNumEval = New System.Windows.Forms.NumericUpDown()
+            Me.m_nudNumberOfRuns = New System.Windows.Forms.NumericUpDown()
+            Me.m_lblMaxNumEval = New System.Windows.Forms.Label()
+            Me.m_lblNumOfRuns = New System.Windows.Forms.Label()
+            Me.m_hdrParms = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpRunStop = New System.Windows.Forms.TableLayoutPanel()
+            Me.btnStop = New System.Windows.Forms.Button()
+            Me.btnSearch = New System.Windows.Forms.Button()
+            Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks()
+            Me.m_tcMain = New System.Windows.Forms.TabControl()
+            Me.m_tabObjectives = New System.Windows.Forms.TabPage()
+            Me.m_scObjectives = New System.Windows.Forms.SplitContainer()
+            Me.m_gridObjWeights = New ScientificInterface.Ecosim.gridSearchObjectivesWeight()
+            Me.m_scAarghArghAaargh = New System.Windows.Forms.SplitContainer()
+            Me.m_gridObjFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet()
+            Me.m_gridObjGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup()
+            Me.m_tabResultTable = New System.Windows.Forms.TabPage()
+            Me.m_scIterResult = New System.Windows.Forms.SplitContainer()
+            Me.m_scIterResultMultiRun = New System.Windows.Forms.SplitContainer()
+            Me.m_tpPlots = New System.Windows.Forms.TabPage()
+            Me.m_graphResults = New ZedGraph.ZedGraphControl()
             Me.m_scTopBits.Panel1.SuspendLayout()
             Me.m_scTopBits.Panel2.SuspendLayout()
             Me.m_scTopBits.SuspendLayout()
@@ -404,6 +403,20 @@ Namespace Ecosim
             Me.btnSearch.Text = "&Search"
             Me.btnSearch.UseVisualStyleBackColor = True
             '
+            'm_blocks
+            '
+            Me.m_blocks.ControlPanelVisible = True
+            Me.m_blocks.CurColor = System.Drawing.Color.Empty
+            Me.m_blocks.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_blocks.Location = New System.Drawing.Point(0, 0)
+            Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_blocks.Name = "m_blocks"
+            Me.m_blocks.ParmBlockCodes = Nothing
+            Me.m_blocks.ShowTooltip = True
+            Me.m_blocks.Size = New System.Drawing.Size(735, 351)
+            Me.m_blocks.TabIndex = 3
+            Me.m_blocks.UIContext = Nothing
+            '
             'm_tcMain
             '
             Me.m_tcMain.Controls.Add(Me.m_tabObjectives)
@@ -569,7 +582,7 @@ Namespace Ecosim
             Me.m_tabResultTable.Location = New System.Drawing.Point(4, 22)
             Me.m_tabResultTable.Name = "m_tabResultTable"
             Me.m_tabResultTable.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tabResultTable.Size = New System.Drawing.Size(981, 303)
+            Me.m_tabResultTable.Size = New System.Drawing.Size(981, 298)
             Me.m_tabResultTable.TabIndex = 1
             Me.m_tabResultTable.Text = "Iteration results"
             Me.m_tabResultTable.UseVisualStyleBackColor = True
@@ -583,7 +596,7 @@ Namespace Ecosim
             'm_scIterResult.Panel1
             '
             Me.m_scIterResult.Panel1.Controls.Add(Me.m_scIterResultMultiRun)
-            Me.m_scIterResult.Size = New System.Drawing.Size(975, 297)
+            Me.m_scIterResult.Size = New System.Drawing.Size(975, 292)
             Me.m_scIterResult.SplitterDistance = 541
             Me.m_scIterResult.TabIndex = 0
             '
@@ -593,8 +606,8 @@ Namespace Ecosim
             Me.m_scIterResultMultiRun.Location = New System.Drawing.Point(0, 0)
             Me.m_scIterResultMultiRun.Name = "m_scIterResultMultiRun"
             Me.m_scIterResultMultiRun.Orientation = System.Windows.Forms.Orientation.Horizontal
-            Me.m_scIterResultMultiRun.Size = New System.Drawing.Size(541, 297)
-            Me.m_scIterResultMultiRun.SplitterDistance = 150
+            Me.m_scIterResultMultiRun.Size = New System.Drawing.Size(541, 292)
+            Me.m_scIterResultMultiRun.SplitterDistance = 147
             Me.m_scIterResultMultiRun.TabIndex = 0
             '
             'm_tpPlots
@@ -603,7 +616,7 @@ Namespace Ecosim
             Me.m_tpPlots.Location = New System.Drawing.Point(4, 22)
             Me.m_tpPlots.Name = "m_tpPlots"
             Me.m_tpPlots.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tpPlots.Size = New System.Drawing.Size(981, 303)
+            Me.m_tpPlots.Size = New System.Drawing.Size(981, 298)
             Me.m_tpPlots.TabIndex = 2
             Me.m_tpPlots.Text = "Plot results"
             Me.m_tpPlots.UseVisualStyleBackColor = True
@@ -614,28 +627,15 @@ Namespace Ecosim
             Me.m_graphResults.IsAutoScrollRange = True
             Me.m_graphResults.Location = New System.Drawing.Point(3, 3)
             Me.m_graphResults.Name = "m_graphResults"
-            Me.m_graphResults.ScrollGrace = 0
-            Me.m_graphResults.ScrollMaxX = 0
-            Me.m_graphResults.ScrollMaxY = 0
-            Me.m_graphResults.ScrollMaxY2 = 0
-            Me.m_graphResults.ScrollMinX = 0
-            Me.m_graphResults.ScrollMinY = 0
-            Me.m_graphResults.ScrollMinY2 = 0
-            Me.m_graphResults.Size = New System.Drawing.Size(975, 297)
+            Me.m_graphResults.ScrollGrace = 0.0R
+            Me.m_graphResults.ScrollMaxX = 0.0R
+            Me.m_graphResults.ScrollMaxY = 0.0R
+            Me.m_graphResults.ScrollMaxY2 = 0.0R
+            Me.m_graphResults.ScrollMinX = 0.0R
+            Me.m_graphResults.ScrollMinY = 0.0R
+            Me.m_graphResults.ScrollMinY2 = 0.0R
+            Me.m_graphResults.Size = New System.Drawing.Size(975, 292)
             Me.m_graphResults.TabIndex = 8
-            '
-            'm_blocks
-            '
-            Me.m_blocks.ControlPanelVisible = True
-            Me.m_blocks.CurColor = System.Drawing.Color.Empty
-            Me.m_blocks.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_blocks.Location = New System.Drawing.Point(0, 0)
-            Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_blocks.Name = "m_blocks"
-            Me.m_blocks.ParmBlockCodes = Nothing
-            Me.m_blocks.Size = New System.Drawing.Size(735, 351)
-            Me.m_blocks.TabIndex = 3
-            Me.m_blocks.UIContext = Nothing
             '
             'frmFishingPolicySearch
             '

@@ -75,6 +75,7 @@ Namespace Ecosim
 
             Me.m_gridFleetValue = New gridFPSResultFleetValue()
             Me.m_gridFleetValue.UIContext = Me.UIContext
+            Me.m_gridFleetValue.Dock = DockStyle.Fill
 
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
 
