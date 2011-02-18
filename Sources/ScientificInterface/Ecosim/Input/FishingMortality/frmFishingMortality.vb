@@ -14,8 +14,9 @@ Imports EwEUtils.Core
 
 Namespace Ecosim
 
+    ''' =======================================================================
     ''' <summary>
-    ''' 
+    ''' Form providing the interface to sketch fishing mortality.
     ''' </summary>
     ''' <remarks>
     ''' <para>VC email 18/04/2009:</para>
@@ -41,7 +42,9 @@ Namespace Ecosim
     ''' read-only form?</para>
     ''' <para>VS reply 19/04/2009:</para>
     ''' <para>Good idea, so yes.</para>
+    ''' <para>JS 18/02/2011: F sketching enabled again after repeated requests.</para>
     ''' </remarks>
+    ''' =======================================================================
     Public Class frmFishingMortality
 
 #Region " Private variables "
@@ -58,18 +61,6 @@ Namespace Ecosim
 
 #End Region ' Constructors
 
-#Region " Private event handlers "
-
-        Private Sub frmFishingRate_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
-        End Sub
-
-        Private Sub frmFishingRate_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            Me.CoreComponents = Nothing
-        End Sub
-
-#End Region ' Private event handlers
-
 #Region " Overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
@@ -80,10 +71,12 @@ Namespace Ecosim
             Me.m_handler.Attach(Me.UIContext, _
                                 Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                                 Me.m_sketchPad, Me.m_sketchPadToolbar)
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_handler.Detach()
+            Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
         End Sub
 
@@ -96,7 +89,7 @@ Namespace Ecosim
             End Select
         End Sub
 
-#End Region ' Internal implementation
+#End Region ' Overrides
 
     End Class
 
