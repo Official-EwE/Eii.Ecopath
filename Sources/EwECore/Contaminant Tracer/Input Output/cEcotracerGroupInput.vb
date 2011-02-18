@@ -8,7 +8,7 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cEcotracerGroupInput
-    Inherits cCoreInputOutputBase
+    Inherits cCoreGroupBase
 
 #Region "Constructor"
 

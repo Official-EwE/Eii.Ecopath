@@ -4,9 +4,8 @@ Imports EwEUtils.Core
 ''' <summary>
 ''' Results, over all the time steps, at the end of an ecospace model run
 ''' </summary>
-''' <remarks></remarks>
 Public Class cEcospaceGroupOutput
-    Inherits cCoreInputOutputBase
+    Inherits cCoreGroupBase
 
     Private m_spaceData As cEcospaceDataStructures
     Private m_CoreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)

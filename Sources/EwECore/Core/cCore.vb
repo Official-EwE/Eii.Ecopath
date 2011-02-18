@@ -4958,6 +4958,14 @@ Public Class cCore
                 objCascade.AllowValidation = bAllowValidationOrg
                 msg.AddVariable(GetAffectedVariableStatus(objCascade, eVarNameFlags.PP))
             End If
+
+            objCascade = Me.EcoSimGroupOutputs(obj.Index)
+            If objCascade IsNot Nothing Then
+                bAllowValidationOrg = objCascade.AllowValidation
+                objCascade.PP = sPP
+                msg.AddVariable(GetAffectedVariableStatus(objCascade, eVarNameFlags.PP))
+            End If
+
         End If
 
         If Me.m_StateMonitor.HasEcospaceLoaded() Then
@@ -4968,6 +4976,12 @@ Public Class cCore
                 objCascade.PP = sPP
                 objCascade.ResetStatusFlags()
                 objCascade.AllowValidation = bAllowValidationOrg
+                msg.AddVariable(GetAffectedVariableStatus(objCascade, eVarNameFlags.PP))
+            End If
+            objCascade = Me.EcospaceGroupOutput(obj.Index)
+            If objCascade IsNot Nothing Then
+                bAllowValidationOrg = objCascade.AllowValidation
+                objCascade.PP = sPP
                 msg.AddVariable(GetAffectedVariableStatus(objCascade, eVarNameFlags.PP))
             End If
         End If
@@ -5884,6 +5898,7 @@ Public Class cCore
             group.TemperatureOpt = m_EcoSimData.TempOpt(iGroup)
             group.TemperatureSpreadLeft = m_EcoSimData.TempLeft(iGroup)
             group.TemperatureSpreadRight = m_EcoSimData.TempRight(iGroup)
+            group.PP = m_EcoPathData.PP(iGroup)
 
             Try
                 For iPred = 1 To nGroups
@@ -6137,6 +6152,7 @@ Public Class cCore
             m_EcoSimData.getSummaryBioForGroup(iGroup, sBio, EndBio)
             group.BiomassStart = sBio
             group.BiomassEnd = EndBio
+            group.PP = m_EcoPathData.PP(iGroup)
 
             'catch by group
             For iFlt As Integer = 0 To nFleets 'Zero is the combined fleets 
@@ -8572,6 +8588,7 @@ Public Class cCore
                 grp.MigrationNSCon = m_EcoSpaceData.MigConcCol(iGroup)
                 grp.MigrationEWCon = m_EcoSpaceData.MigConcRow(iGroup)
                 grp.BarrierAvoidanceWeight = m_EcoSpaceData.barrierAvoidanceWeight(iGroup)
+                grp.PP = m_EcoPathData.PP(iGroup)
 
                 'jb test this out PreferedCell
                 Dim pt As Drawing.Point
@@ -8692,89 +8709,89 @@ Public Class cCore
             'Spatial results are averaged over space by Ecospace in cEcoSpaceDataStructures.AverageSpatialResults()
 
             'Fleet summarized output
-            For Each objFlt As cEcospaceFleetOutput In m_EcospaceFleetOutputs
+            For Each flt As cEcospaceFleetOutput In m_EcospaceFleetOutputs
 
                 'loads results over time
-                objFlt.Init()
+                flt.Init()
 
-                If objFlt.Index <> 0 Then
-                    objFlt.Name = m_EcoPathData.FleetName(objFlt.Index)
+                If flt.Index <> 0 Then
+                    flt.Name = m_EcoPathData.FleetName(flt.Index)
                 Else
-                    objFlt.Name = My.Resources.CoreDefaults.CORE_DEFAULT_COMBINEDFLEETS
+                    flt.Name = My.Resources.CoreDefaults.CORE_DEFAULT_COMBINEDFLEETS
                 End If
 
-                m_EcoSpaceData.getSumCatchFleet(objFlt.Index, stVal, endVal)
-                objFlt.CatchStart = stVal
-                objFlt.CatchEnd = endVal
+                m_EcoSpaceData.getSumCatchFleet(flt.Index, stVal, endVal)
+                flt.CatchStart = stVal
+                flt.CatchEnd = endVal
 
-                m_EcoSpaceData.getSumCostFleet(Me.m_EcoPathData.cost, objFlt.Index, stVal, endVal)
-                objFlt.CostStart = stVal
-                objFlt.CostEnd = endVal
+                m_EcoSpaceData.getSumCostFleet(Me.m_EcoPathData.cost, flt.Index, stVal, endVal)
+                flt.CostStart = stVal
+                flt.CostEnd = endVal
 
-                m_EcoSpaceData.getSumValueFleet(objFlt.Index, stVal, endVal)
-                objFlt.ValueStart = stVal
-                objFlt.ValueEnd = endVal
+                m_EcoSpaceData.getSumValueFleet(flt.Index, stVal, endVal)
+                flt.ValueStart = stVal
+                flt.ValueEnd = endVal
 
 
-                m_EcoSpaceData.getSumEffortES(objFlt.Index, stVal)
-                objFlt.EffortES = stVal
+                m_EcoSpaceData.getSumEffortES(flt.Index, stVal)
+                flt.EffortES = stVal
 
-            Next objFlt
+            Next flt
 
-            For Each objRgn As cEcospaceRegionOutput In m_EcospaceRegionSummaries
-                objRgn.Resize()
+            For Each rgn As cEcospaceRegionOutput In m_EcospaceRegionSummaries
+                rgn.Resize()
 
                 'init the core data arrays
-                objRgn.Init()
+                rgn.Init()
 
-                If objRgn.Index <> 0 Then
-                    objRgn.Name = m_EcoSpaceData.RegionName(objRgn.Index)
+                If rgn.Index <> 0 Then
+                    rgn.Name = m_EcoSpaceData.RegionName(rgn.Index)
                 Else
-                    objRgn.Name = "Undefined Area"
+                    rgn.Name = "Undefined Area"
                 End If
 
                 'average the data over the number of cells in the region for output
-                Dim nCellsInRegion As Integer = m_EcoSpaceData.nCellsInRegion(objRgn.Index)
+                Dim nCellsInRegion As Integer = m_EcoSpaceData.nCellsInRegion(rgn.Index)
                 If nCellsInRegion = 0 Then nCellsInRegion = 1
 
                 For igrp = 1 To nGroups
 
                     Dim sbio As Single, ebio As Single
-                    m_EcoSpaceData.getSumBiomByRegion(objRgn.Index, igrp, sbio, ebio)
-                    objRgn.BiomassStart(igrp) = sbio
-                    objRgn.BiomassEnd(igrp) = ebio
+                    m_EcoSpaceData.getSumBiomByRegion(rgn.Index, igrp, sbio, ebio)
+                    rgn.BiomassStart(igrp) = sbio
+                    rgn.BiomassEnd(igrp) = ebio
 
                     For iflt = 0 To nFleets
                         Dim sCatch As Single, eCatch As Single
-                        m_EcoSpaceData.getSumCatchRegionGearGroup(objRgn.Index, iflt, igrp, sCatch, eCatch)
+                        m_EcoSpaceData.getSumCatchRegionGearGroup(rgn.Index, iflt, igrp, sCatch, eCatch)
                         '  Debug.Assert(sCatch = 0)
-                        objRgn.CatchFleetGroupStart(iflt, igrp) = sCatch
-                        objRgn.CatchFleetGroupEnd(iflt, igrp) = eCatch
+                        rgn.CatchFleetGroupStart(iflt, igrp) = sCatch
+                        rgn.CatchFleetGroupEnd(iflt, igrp) = eCatch
                     Next iflt
 
                 Next igrp
 
 
-            Next objRgn
+            Next rgn
 
-            For Each objGrpOutput As cEcospaceGroupOutput In m_EcospaceGroupOuputs
+            For Each grp As cEcospaceGroupOutput In m_EcospaceGroupOuputs
                 'init the object to the underlying ecospace data
-                objGrpOutput.Init()
-                objGrpOutput.ResetStatusFlags()
-                objGrpOutput.Name = m_EcoPathData.GroupName(objGrpOutput.Index)
+                grp.Init()
+                grp.ResetStatusFlags()
+                grp.Name = m_EcoPathData.GroupName(grp.Index)
+                grp.PP = m_EcoPathData.PP(igrp)
 
-                m_EcoSpaceData.getSumBiom(objGrpOutput.Index, stVal, endVal)
-                objGrpOutput.BiomassStart = stVal
-                objGrpOutput.BiomassEnd = endVal
-
+                m_EcoSpaceData.getSumBiom(grp.Index, stVal, endVal)
+                grp.BiomassStart = stVal
+                grp.BiomassEnd = endVal
                 For iflt = 0 To nFleets
-                    m_EcoSpaceData.getSumCatchFleetGroup(iflt, objGrpOutput.Index, stVal, endVal)
-                    objGrpOutput.CatchStart(iflt) = stVal
-                    objGrpOutput.CatchEnd(iflt) = endVal
+                    m_EcoSpaceData.getSumCatchFleetGroup(iflt, grp.Index, stVal, endVal)
+                    grp.CatchStart(iflt) = stVal
+                    grp.CatchEnd(iflt) = endVal
 
-                    m_EcoSpaceData.getSumValueFleetGroup(iflt, objGrpOutput.Index, stVal, endVal)
-                    objGrpOutput.ValueStart(iflt) = stVal
-                    objGrpOutput.ValueEnd(iflt) = endVal
+                    m_EcoSpaceData.getSumValueFleetGroup(iflt, grp.Index, stVal, endVal)
+                    grp.ValueStart(iflt) = stVal
+                    grp.ValueEnd(iflt) = endVal
                 Next iflt
 
             Next
@@ -10542,6 +10559,7 @@ Public Class cCore
                 grp.CEnvironment = Me.m_tracerData.Cenv(iGroup)
                 grp.CDecay = Me.m_tracerData.cdecay(iGroup)
                 grp.CExcretionRate = Me.m_tracerData.CexcretionRate(iGroup)
+                grp.PP = m_EcoPathData.PP(iGroup)
 
                 grp.ResetStatusFlags()
                 grp.AllowValidation = True
@@ -10589,7 +10607,7 @@ Public Class cCore
 
             'jb 11-Jan-2011 All Contaminant Tracer output now uses core data directly.
             'So we don't need to update the IO objects.
-            'This was left in place incase other data is added to the Tracer ouput objects.
+            'This was left in place in case other data is added to the Tracer output objects.
 
         Catch ex As Exception
             cLog.Write(ex)
