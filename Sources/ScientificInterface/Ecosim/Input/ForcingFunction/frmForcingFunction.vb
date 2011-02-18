@@ -40,32 +40,6 @@ Namespace Ecosim
 
 #End Region ' Constructors
 
-#Region " Events "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler; implemented to make sure that this form receives 
-        ''' <see cref="cMessage">messages</see> from specific 
-        ''' <see cref="eCoreComponentType">message sources</see>.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub frmForcingFunction_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler; implemented to make sure that this form stops receiving
-        ''' <see cref="cMessage">messages</see> from specific 
-        ''' <see cref="eCoreComponentType">message sources</see>.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub frmForcingFunction_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-            Me.CoreComponents = Nothing
-        End Sub
-
-#End Region ' Events 
-
 #Region " Overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
@@ -79,11 +53,13 @@ Namespace Ecosim
                                         Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
                                         Me.m_sketchPad, Me.m_sketchPadToolbar)
 
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_shapeguihandler.Detach()
             Me.m_shapeguihandler = Nothing
+            Me.CoreComponents = Nothing
             MyBase.OnFormClosed(e)
         End Sub
 
