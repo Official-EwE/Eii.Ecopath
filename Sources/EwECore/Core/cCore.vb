@@ -11867,8 +11867,10 @@ Public Class cCore
                     'ReDim qyear(Me.nGroups)
                     'For i As Integer = 1 To Me.nFleets : qyear(i) = 1 : Next
 
+                    'JB 21-Feb-2011 No longer set F to base if Effort has been edited
+                    'this allows the user the edit effort when F timeseries is loaded
                     'reset the mortaility due to fishing to the new values
-                    Me.m_EcoSim.SetBaseFFromGear()
+                    '  Me.m_EcoSim.SetBaseFFromGear()
 
                     'now load the interface data
                     'if the FishRate shape manager has changed the data then fishmort was also changed
