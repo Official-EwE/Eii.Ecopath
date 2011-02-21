@@ -954,20 +954,23 @@ Public Class cFishingRateShape
                 For igrp As Integer = 1 To m_data.nGroups
 
                     'don't change the fishing mortality if there is fishing mortality timeseries loaded for this group
-                    If Not Me.m_data.FisForced(igrp) Then
-                        If Not isCombinedFleets Then
+                    'JB 21-Feb-2011 Changed so Effort can be edited when F time series is loaded
+                    'If Not Me.m_data.FisForced(igrp) Then
+                    If Not isCombinedFleets Then
 
-                            m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(m_iEcoSimIndex, igrp) * (m_data.FishRateGear(m_iEcoSimIndex, it) - orgvalue)
+                        m_data.FishRateNo(igrp, it) = m_data.FishMGear(m_iEcoSimIndex, igrp) * m_data.FishRateGear(m_iEcoSimIndex, it)
+                        ' m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(m_iEcoSimIndex, igrp) * (m_data.FishRateGear(m_iEcoSimIndex, it) - orgvalue)
 
-                        Else
-                            'combined fleet this changes all the mortality
-                            m_data.FishRateNo(igrp, it) = 0
-                            For iflt As Integer = 1 To m_data.nGear
-                                m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
-                            Next iflt
+                    Else
+                        'combined fleet this changes all the mortality
+                        m_data.FishRateNo(igrp, it) = 0
+                        For iflt As Integer = 1 To m_data.nGear
+                            m_data.FishRateNo(igrp, it) = m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
+                            '  m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
+                        Next iflt
 
-                        End If ' Not isCombinedFleets
-                    End If ' Not Me.m_data.FisForced(igrp) 
+                    End If ' Not isCombinedFleets
+                    ' End If ' Not Me.m_data.FisForced(igrp) 
 
                 Next igrp
             End If 'newvalue <> orgvalue
