@@ -532,20 +532,29 @@ End Enum
 ''' -----------------------------------------------------------------------
 Public Enum eTimeSeriesAliases As Integer
     BRel = 0
+    BiomassRel = BRel
     BAbs = 1
+    BiomassAbs = BAbs
     BForced = -1
+    BiomassForced = BForced
     Forcing = 2
     Effort = 3
     Z = 4
+    Mort = Z
     F = 5
+    FishingMort = F
     FConst = -5
+    FishingMortConst = FConst
     C = 6
     [Catch] = 6
     CForced = -6
+    CatchForced
     WAvg = 7
+    WeightAvg = WAvg
     ConcRel = 8
     ConcAbs = 9
 End Enum
+
 #End Region ' Time series types
 
 #Region " PSD mortality types "
