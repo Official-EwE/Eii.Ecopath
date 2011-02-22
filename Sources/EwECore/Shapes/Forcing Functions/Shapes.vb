@@ -920,7 +920,7 @@ Public Class cFishingRateShape
         'm_Xdata.ResizeData(m_ntimesteps)
 
         Dim orgvalue As Single, newvalue As Single
-        Dim bhaschanged As Boolean
+        ' Dim bhaschanged As Boolean
         Dim isCombinedFleets As Boolean
 
         If m_iEcoSimIndex = m_data.nGear + 1 Then
@@ -933,54 +933,43 @@ Public Class cFishingRateShape
             orgvalue = m_data.FishRateGear(m_iEcoSimIndex, it)
             newvalue = Me.ShapeData(it)
 
-            'test the new value against the existing value 
-            'if there is no change don't bother going through the entire update process 
-            'this is to make it run a little faster in a live environment
-            If newvalue <> orgvalue Then
-                bhaschanged = True
+            'update FishRateGear() with the new values 
+            m_data.FishRateGear(m_iEcoSimIndex, it) = Me.ShapeData(it)
 
-                'update FishRateGear() with the new values 
-                m_data.FishRateGear(m_iEcoSimIndex, it) = Me.ShapeData(it)
+            'this shape is the combined fleets type so update all the fleets types with the new value
+            If isCombinedFleets Then
+                For iFlt As Integer = 1 To m_data.nGear
+                    m_data.FishRateGear(iFlt, it) = m_data.FishRateGear(m_iEcoSimIndex, it) 'dont worry about overwritting the fleet we just update
+                Next
+            End If
 
-                'this shape is the combined fleets type so update all the fleets types with the new value
-                If isCombinedFleets Then
-                    For iFlt As Integer = 1 To m_data.nGear
-                        m_data.FishRateGear(iFlt, it) = m_data.FishRateGear(m_iEcoSimIndex, it) 'dont worry about overwritting the fleet we just update
-                    Next
-                End If
+            'FishRateGear() is a multiplier that is used to change fishing effort from the base Ecopath value for a fleet
+            'Now use FishRateGear/effort to update the fishing mortality for each group fished by this fleet
+            For igrp As Integer = 1 To m_data.nGroups
 
-                'FishRateGear() is a multiplier that is used to change fishing effort from the base Ecopath value for a fleet
-                'Now use FishRateGear/effort to update the fishing mortality for each group fished by this fleet
-                For igrp As Integer = 1 To m_data.nGroups
+                'don't change the fishing mortality if there is fishing mortality timeseries loaded for this group
+                'JB 21-Feb-2011 Changed so Effort can be edited when F time series is loaded
+                If Not isCombinedFleets Then
 
-                    'don't change the fishing mortality if there is fishing mortality timeseries loaded for this group
-                    'JB 21-Feb-2011 Changed so Effort can be edited when F time series is loaded
-                    'If Not Me.m_data.FisForced(igrp) Then
-                    If Not isCombinedFleets Then
+                    m_data.FishRateNo(igrp, it) = m_data.FishMGear(m_iEcoSimIndex, igrp) * m_data.FishRateGear(m_iEcoSimIndex, it)
+                    'JB 21-Feb-2011 apply the Effort multiplier directly to F 
+                    ' m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(m_iEcoSimIndex, igrp) * (m_data.FishRateGear(m_iEcoSimIndex, it) - orgvalue)
 
-                        m_data.FishRateNo(igrp, it) = m_data.FishMGear(m_iEcoSimIndex, igrp) * m_data.FishRateGear(m_iEcoSimIndex, it)
-                        ' m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(m_iEcoSimIndex, igrp) * (m_data.FishRateGear(m_iEcoSimIndex, it) - orgvalue)
+                Else
+                    'combined fleet this changes all the mortality
+                    m_data.FishRateNo(igrp, it) = 0
+                    For iflt As Integer = 1 To m_data.nGear
+                        m_data.FishRateNo(igrp, it) = m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
+                        '  m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
+                    Next iflt
 
-                    Else
-                        'combined fleet this changes all the mortality
-                        m_data.FishRateNo(igrp, it) = 0
-                        For iflt As Integer = 1 To m_data.nGear
-                            m_data.FishRateNo(igrp, it) = m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
-                            '  m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
-                        Next iflt
+                End If ' Not isCombinedFleets
 
-                    End If ' Not isCombinedFleets
-                    ' End If ' Not Me.m_data.FisForced(igrp) 
-
-                Next igrp
-            End If 'newvalue <> orgvalue
-
+            Next igrp
         Next it
 
-        If bhaschanged Then
-            'tell the manager that a shape has changed it's data
-            ShapeChanged()
-        End If
+        'tell the manager that a shape has changed it's data
+        ShapeChanged()
 
         Return True
 
