@@ -60,7 +60,7 @@ Public Class frmShapeValue
         ''' </summary>
         ''' ---------------------------------------------------------------
         Public Overrides Function ToString() As String
-            Return Me.m_strText
+            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, CInt(Me.m_timeSeriesType), Me.m_strText)
         End Function
 
 #Region " Clever bits "
