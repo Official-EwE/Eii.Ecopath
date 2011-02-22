@@ -23,7 +23,7 @@ Namespace Controls
         ''' <summary>Form to display the control.</summary>
         Private m_form As Form = Nothing
         ''' <summary>Original drop down height, preserved.</summary>
-        Private m_dropDownHeight As Integer = 0
+        Private m_iDropDownHeight As Integer = 0
         ''' <summary>The actual drop down control.</summary>
         Private m_control As Control = Nothing
 
@@ -40,7 +40,7 @@ Namespace Controls
 
             ' Default Control
             Me.DropdownControl = New Control()
-            Me.m_dropDownHeight = Me.DropDownHeight
+            Me.m_iDropDownHeight = Me.DropDownHeight
             ' Prevent the original dropdown from showing
             Me.DropDownHeight = 1
         End Sub
@@ -73,7 +73,7 @@ Namespace Controls
 
             Me.m_form.Location = loc
             Me.m_form.Width = Me.DropDownWidth
-            Me.m_form.Height = Me.m_dropDownHeight
+            Me.m_form.Height = Me.m_iDropDownHeight
             Me.m_form.Show()
         End Sub
 
@@ -83,15 +83,15 @@ Namespace Controls
             End Get
             Set(ByVal value As Control)
                 'Remove the existing control
-                If Not Me.m_control Is Nothing Then
+                If (Not Me.m_control Is Nothing) Then
                     Me.m_form.Controls.Remove(Me.m_control)
                     RemoveHandler m_control.LostFocus, AddressOf Me.OnControlLostFocus
                     RemoveHandler m_control.DoubleClick, AddressOf Me.OnControlDoubleClick
                 End If
 
                 Me.m_control = value
-                'If value is nothing then this is being called to dispose of the existing control
-                If value IsNot Nothing Then
+
+                If (Not Me.m_control Is Nothing) Then
                     'Setup the new control 
                     Me.m_control.Dock = DockStyle.Fill
                     AddHandler Me.m_control.LostFocus, AddressOf Me.OnControlLostFocus
