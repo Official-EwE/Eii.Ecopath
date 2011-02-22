@@ -4,6 +4,7 @@ Option Strict On
 Imports EwECore.MSE
 Imports ScientificInterface.Ecosim
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore
 
 #End Region ' Imports
 
@@ -202,9 +203,8 @@ Public Class cMSEFishingColorBlockDataSource
         Try
             Return Me.m_BlockSelector.BlocktoValue(iBlock)
         Catch ex As Exception
-
+            Return cCore.NULL_VALUE
         End Try
-
     End Function
 
     Protected Overrides Sub Finalize()

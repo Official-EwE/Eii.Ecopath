@@ -346,6 +346,7 @@ Namespace Ecosim
             Catch ex As Exception
 
             End Try
+            Return True
 
         End Function
 

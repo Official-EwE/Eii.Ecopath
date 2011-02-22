@@ -232,6 +232,7 @@ Namespace Ecosim
             Else
                 Me.m_graph.Cursor = Cursors.Default
             End If
+            Return True
 
         End Function
 

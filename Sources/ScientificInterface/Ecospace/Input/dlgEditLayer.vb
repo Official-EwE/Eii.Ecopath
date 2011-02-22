@@ -317,6 +317,7 @@ Namespace Ecospace.Basemap.Layers
 
             ' Fire layer changed notification
             Me.m_layerOriginal.Update(cf)
+            Return True
 
         End Function
 

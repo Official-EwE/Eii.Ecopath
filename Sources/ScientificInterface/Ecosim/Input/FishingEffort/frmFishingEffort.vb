@@ -14,8 +14,11 @@ Imports EwEUtils.Core
 
 Namespace Ecosim
 
+    ''' =======================================================================
     ''' <summary>
+    ''' Form providing the interface to sketch fishing effort.
     ''' </summary>
+    ''' =======================================================================
     Public Class frmFishingEffort
 
 #Region " Private variables "

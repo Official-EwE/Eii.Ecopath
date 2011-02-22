@@ -441,6 +441,7 @@ Namespace Ecosim
                 Case My.Resources.SHAPE_MULTIPLIER_5
                     Return eForcingFunctionApplication.ProductionRate
             End Select
+            Return eForcingFunctionApplication.SearchRate
 
         End Function
 

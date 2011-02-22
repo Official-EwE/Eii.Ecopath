@@ -34,17 +34,22 @@ Public Class gridWeightTS
         ' Make sure this method is executed only when allowed
         If (Me.Core.ActiveTimeSeriesDatasetIndex <= 0) Then Return True
 
-        Dim cbc As SourceGrid2.Cells.Real.CheckBox = Nothing
-        Dim ts As cTimeSeries = Nothing
-        For iRow As Integer = 1 To Me.RowsCount - 1
-            cbc = DirectCast(Me(iRow, CInt(eColumnTypes.Enabled)), SourceGrid2.Cells.Real.CheckBox)
-            ts = DirectCast(cbc.Tag, cTimeSeries)
-            ' Enabled flag
-            ts.Enabled = bEnableAll Or cbc.Checked
-            ' Weight
-            ts.WtType = CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value)
-        Next
-        Me.UIContext.Core.UpdateTimeSeries(True)
+        Try
+            Dim cbc As SourceGrid2.Cells.Real.CheckBox = Nothing
+            Dim ts As cTimeSeries = Nothing
+            For iRow As Integer = 1 To Me.RowsCount - 1
+                cbc = DirectCast(Me(iRow, CInt(eColumnTypes.Enabled)), SourceGrid2.Cells.Real.CheckBox)
+                ts = DirectCast(cbc.Tag, cTimeSeries)
+                ' Enabled flag
+                ts.Enabled = bEnableAll Or cbc.Checked
+                ' Weight
+                ts.WtType = CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value)
+            Next
+            Me.UIContext.Core.UpdateTimeSeries(True)
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
     End Function
 
     Protected Overrides Sub InitStyle()

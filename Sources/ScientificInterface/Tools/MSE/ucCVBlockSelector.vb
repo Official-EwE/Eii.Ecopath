@@ -141,6 +141,7 @@ Public Class ucCVBlockSelector
             Return Me.m_cvs(iBlock)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".BlocktoValue() iBlock out of bounds!")
+            Return cCore.NULL_VALUE
         End Try
     End Function
 

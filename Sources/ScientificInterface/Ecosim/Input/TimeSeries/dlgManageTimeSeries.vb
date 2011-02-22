@@ -472,7 +472,7 @@ Public Class dlgManageTimeSeries
     ''' </summary>
     ''' -------------------------------------------------------------------
     Private Function ApplyTimeSeries(Optional ByVal bApplyAll As Boolean = False) As Boolean
-        Me.m_gridWeights.Apply(bApplyAll)
+        Return Me.m_gridWeights.Apply(bApplyAll)
     End Function
 
 #End Region ' Weight

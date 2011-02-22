@@ -4,6 +4,7 @@ Option Explicit On
 Option Strict On
 
 Imports ScientificInterface.Other
+Imports EwECore
 
 #End Region ' Imports
 
@@ -337,11 +338,11 @@ Namespace Ecosim
 #End Region ' Internal implementation
 
         Public Function BlocktoValue(ByVal iBlock As Integer) As Single Implements IBlockSelector.BlocktoValue
-
+            Return cCore.NULL_VALUE
         End Function
 
         Public Function ValuetoBlock(ByVal cv As Single) As Integer Implements IBlockSelector.ValuetoBlock
-
+            Return cCore.NULL_VALUE
         End Function
 
     End Class

@@ -836,9 +836,10 @@ Namespace Ecosim
         Public Property BatchEdit() As Boolean Implements IPolicyColorBlockDataSource.BatchEdit
             Get
                 'no implementation of the group batch lock for FPS data
+                Return False
             End Get
             Set(ByVal value As Boolean)
-
+                'no implementation of the group batch lock for FPS data
             End Set
         End Property
 
@@ -871,12 +872,8 @@ Namespace Ecosim
 
 
         Public Function BlockToValue(ByVal iBlock As Integer) As Single Implements Ecosim.IPolicyColorBlockDataSource.BlockToValue
-            Try
-                'For the fishing policy block selector the iBlock is the value
-                Return iBlock
-            Catch ex As Exception
-
-            End Try
+            'For the fishing policy block selector the iBlock is the value
+            Return iBlock
         End Function
     End Class
 
