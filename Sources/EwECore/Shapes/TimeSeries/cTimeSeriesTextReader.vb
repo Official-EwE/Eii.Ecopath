@@ -213,7 +213,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <param name="strDecimalSeparator">
     ''' Decimal separator to use when interpreting floating point values in the text.
     ''' </param>
-    ''' <returns>True when succesful.</returns>
+    ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Overridable Function Read(ByVal strDelimiter As String, ByVal strDecimalSeparator As String) As Boolean
 
@@ -420,7 +420,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <summary>
     ''' Reads time series in local collection of cTimeSeries objects.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function ReadTimeSeriesFromText() As Boolean
 
@@ -855,7 +855,7 @@ Public MustInherit Class cTimeSeriesTextReader
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the decimal sepearator used by the reader.
+    ''' Returns the decimal separator used by the reader.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function DecimalSeparator() As String
