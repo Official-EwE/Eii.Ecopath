@@ -8779,7 +8779,7 @@ Public Class cCore
                 grp.Init()
                 grp.ResetStatusFlags()
                 grp.Name = m_EcoPathData.GroupName(grp.Index)
-                grp.PP = m_EcoPathData.PP(igrp)
+                grp.PP = m_EcoPathData.PP(grp.Index)
 
                 m_EcoSpaceData.getSumBiom(grp.Index, stVal, endVal)
                 grp.BiomassStart = stVal
