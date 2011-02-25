@@ -318,6 +318,17 @@ Public MustInherit Class cBaseShapeManager
 
 #End Region ' Protected methods
 
+
+#Region "Public Properties"
+
+    Public ReadOnly Property Core() As cCore
+        Get
+            Return Me.m_core
+        End Get
+    End Property
+
+#End Region
+
 #Region " ICoreInterface Implementation "
 
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
