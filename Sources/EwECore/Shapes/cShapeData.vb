@@ -18,6 +18,11 @@ Public MustInherit Class cShapeData
     Protected m_datatype As eDataTypes = eDataTypes.NotSet
     Protected m_coreComponent As eCoreComponentType = eCoreComponentType.NotSet
     Protected m_iDBID As Integer = 0
+
+    Private m_x1 As Integer
+    Private m_x2 As Integer
+
+
     Private m_strName As String
     Private m_xdata() As Single
     'Private m_Ymax As Single
@@ -87,7 +92,7 @@ Public MustInherit Class cShapeData
 
         ReDim m_xdata(m_Xmax)
         Me.SetValue(1.0!)
-
+        Me.setDefaultEditBlocks()
     End Sub
 
     Protected Sub Init(ByVal ArrayOfData() As Single)
@@ -96,6 +101,7 @@ Public MustInherit Class cShapeData
         Debug.Assert(m_Xmax > 0, "You can not initialize cForcingData with zero points.")
 
         Me.m_xdata = ArrayOfData
+        Me.setDefaultEditBlocks()
 
     End Sub
 
@@ -112,6 +118,12 @@ Public MustInherit Class cShapeData
             Me.m_xdata(i) = sValue
         Next
         'm_Ymax = sValue
+    End Sub
+
+
+    Private Sub setDefaultEditBlocks()
+        Me.m_x1 = 1
+        Me.m_x2 = m_Xmax
     End Sub
 
 #End Region ' Private methods
@@ -213,6 +225,41 @@ Public MustInherit Class cShapeData
         End Get
     End Property
 
+    ''' <summary>
+    ''' First X Index of the current edit block
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>>When a user edits a shape this it the index of the first point</remarks>
+    Public Property StartEditPoint() As Integer
+        Get
+            Return Me.m_x1
+        End Get
+        Set(ByVal value As Integer)
+            'constrain the value
+            If value < 1 Then value = 1
+            If value > Me.m_Xmax Then value = Me.m_Xmax
+            Me.m_x1 = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Last X Index of the current edit block
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>When a user edits a shape this it the index of the last point </remarks>
+    Public Property EndEditPoint() As Integer
+        Get
+            Return Me.m_x2
+        End Get
+        Set(ByVal value As Integer)
+            'constrain the value
+            If value < 1 Then value = 1
+            If value > Me.m_Xmax Then value = Me.m_Xmax
+            Me.m_x2 = value
+        End Set
+    End Property
 
 #End Region ' Properties
 
@@ -246,6 +293,7 @@ Public MustInherit Class cShapeData
             Next i
 
             Me.m_Xmax = newNumberOfPoints
+            Me.setDefaultEditBlocks()
 
             Return True
 
