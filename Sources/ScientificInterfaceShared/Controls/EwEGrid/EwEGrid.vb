@@ -1071,7 +1071,14 @@ Namespace Controls.EwEGrid
                                 prop = DirectCast(cell, PropertyCell).GetProperty()
                                 strValue = CStr(prop.GetValue(False))
                             Else
-                                strValue = CStr(Me(iRow, iCol).GetValue(pos))
+                                Try
+                                    strValue = CStr(Me(iRow, iCol).GetValue(pos))
+                                Catch ex As InvalidCastException
+                                    ' Cell value holds an object that cannot be converted to string - handle graciously
+                                    strValue = ""
+                                Catch ex As Exception
+                                    Debug.Assert(False, ex.Message)
+                                End Try
                             End If
                         End If
                     End If
