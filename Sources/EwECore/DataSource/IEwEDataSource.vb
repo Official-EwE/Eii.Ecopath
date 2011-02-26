@@ -22,14 +22,15 @@ Namespace DataSources
     ''' </remarks>
     ''' =======================================================================
     Public Interface IEwEDataSource
+        Inherits IDisposable
 
 #Region " Generic "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether the datasource has unsaved changes.
+        ''' States whether the data source has unsaved changes.
         ''' </summary>
-        ''' <returns>True if the datasource has pending changes.</returns>
+        ''' <returns>True if the data source has pending changes.</returns>
         ''' -------------------------------------------------------------------
         Function IsModified() As Boolean
 
@@ -48,10 +49,10 @@ Namespace DataSources
         ''' is interpreted depends on the type of data source that is opened.</param>
         ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
         ''' datastructures to read to, and write from.</param>
-        ''' <param name="datasourceType">Type of datasource to open; specify
+        ''' <param name="datasourceType">Type of data source to open; specify
         ''' <see cref="eDataSourceTypes.NotSet"/> to automatically determine the
-        ''' type of datasource.</param>
-        ''' <param name="bReadOnly">Flag stating whether a datasource should be
+        ''' type of data source.</param>
+        ''' <param name="bReadOnly">Flag stating whether a data source should be
         ''' opened as read-only.</param>
         ''' <returns>True if opened successfully.</returns>
         ''' -------------------------------------------------------------------
@@ -63,7 +64,7 @@ Namespace DataSources
         ''' <summary>
         ''' Create the data source connection, possibly overwriting an existing data source
         ''' </summary>
-        ''' <param name="strName">Name of the datasource to create.</param>
+        ''' <param name="strName">Name of the data source to create.</param>
         ''' <param name="strModelName">Name to assign to the model.</param>
         ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
         ''' datastructures to read to, and write from.</param>
@@ -73,9 +74,9 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether a datasource is already open.
+        ''' States whether a data source is already open.
         ''' </summary>
-        ''' <returns>True if the datasource is open.</returns>
+        ''' <returns>True if the data source is open.</returns>
         ''' -------------------------------------------------------------------
         Function IsOpen() As Boolean
 
@@ -89,7 +90,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Flag a core object as changed in the datasource. The datasource
+        ''' Flag a core object as changed in the data source. The data source
         ''' will consult this information when performing incremental saves.
         ''' </summary>
         ''' <param name="cc">The <see cref="eCoreComponentType">core component</see>
@@ -100,7 +101,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the connection to the data (file, database, stream, other?) that
-        ''' this datasource operates on.
+        ''' this data source operates on.
         ''' </summary>
         ''' -------------------------------------------------------------------
         ReadOnly Property Connection() As Object
@@ -108,14 +109,14 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the name of the connection to the data (file, database, stream, 
-        ''' other?) that this datasource operates on.
+        ''' other?) that this data source operates on.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Function ToString() As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the version of the datasource.
+        ''' Returns the version of the data source.
         ''' </summary>
         ''' <returns>A version number.</returns>
         ''' -------------------------------------------------------------------
@@ -162,7 +163,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether the datasource is able to compact.
+        ''' States whether the data source is able to compact.
         ''' </summary>
         ''' <param name="strTarget">The target identifying the a new database
         ''' to compact into. If left blank, the current database is compacted 
