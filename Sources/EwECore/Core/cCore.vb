@@ -25,7 +25,7 @@ Imports EwECore.Ecospace.Advection
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class to handle all interactions between a user interface layer, a 
-''' <see cref="IEwEDataSource">datasource</see> and the 
+''' <see cref="IEwEDataSource">data source</see> and the 
 ''' <see cref="Ecopath.cEcoPathModel">EcoPath</see>, 
 ''' <see cref="EcoSim.cEcoSimModel">EcoSim</see> and EcoSpace models.
 ''' </summary>
@@ -45,7 +45,7 @@ Imports EwECore.Ecospace.Advection
 ''' (<see cref="cEcopathDataStructures">cEcopathDataStructures</see> or 
 ''' <see cref="cEcosimDatastructures">cEcoSimDatastructures</see>). These classes
 ''' provide a thin wrapper as well as a way to pass data back and forth between 
-''' each other and a <see cref="IEwEDataSource">datasource</see>.</para>
+''' each other and a <see cref="IEwEDataSource">data source</see>.</para>
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cCore
@@ -120,7 +120,7 @@ Public Class cCore
     Private m_timeSeriesFleet As New cCoreInputOutputList(Of cTimeSeries)(eDataTypes.FleetTimeSeries, 1)
 
     ''' <summary>Auxillary data not stored in a list, needs to be quickly accessible via hash keys</summary>
-    ''' <remarks>Dictionary is 'friend' to be accessible to datasource.</remarks>
+    ''' <remarks>Dictionary is 'friend' to be accessible to data source.</remarks>
     Friend m_dtAuxiliaryData As New Dictionary(Of String, cAuxiliaryData)
 
     ''' <summary>The central core message publisher.</summary>
@@ -657,7 +657,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="ds"><see cref="IEwEDataSource">DataSource</see> to save to</param>
     ''' <returns>True if succesful.</returns>
-    ''' <remarks>This will perform a full model save to the temporary datasource
+    ''' <remarks>This will perform a full model save to the temporary data source
     ''' passed to this method.</remarks>
     ''' -----------------------------------------------------------------------
     Friend Function Export(ByVal ds As IEwEDataSource) As Boolean
@@ -875,7 +875,7 @@ Public Class cCore
 
         If iGroup < 1 And iGroup <> NULL_VALUE Then iGroup = 1 'less than 1 insert the new group as one
 
-        ' iGroup value does not really matter. This addition may be part of a batch run; the datasource 
+        ' iGroup value does not really matter. This addition may be part of a batch run; the data source 
         ' will take care of proper iGroup value assignments
         'If iGroup > nGroups Then iGroup = nGroups + 1 'greater then ngroups append the new group to the end this means the new group is a detritus group?????
 
@@ -997,7 +997,7 @@ Public Class cCore
             Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
             Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As Boolean
 
-        'the datasource will allocate space in the EcoSim data arrays
+        'the data source will allocate space in the EcoSim data arrays
         Dim ds As IEcosimDatasource = Nothing
         Dim bSucces As Boolean = True
 
@@ -1035,7 +1035,7 @@ Public Class cCore
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
 
         ds = DirectCast(Me.DataSource, IEcosimDatasource)
-        'the datasource is responsible for 
+        'the data source is responsible for 
         '1 removing the record from the database
         '2 resizing the Ecosim data arrays
         '3 reloading the Ecosim data arrays with the values from the database
@@ -1787,7 +1787,7 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Add an Ecosim Time Series to the datasource.
+    ''' Add an Ecosim Time Series to the data source.
     ''' </summary>
     ''' <param name="strName">Name of the new Time Series to add.</param>
     ''' <param name="iPool">Index of item to assign this TS to.</param>
@@ -1808,7 +1808,7 @@ Public Class cCore
         ' Set bach lock for adding and removing items
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
         Try
-            ' Try to add TS to the datasource
+            ' Try to add TS to the data source
             If DirectCast(DataSource, IEcosimDatasource).AppendTimeSeries(strName, iPool, timeSeriesType, sWeight, asValues, iDBID) Then
                 Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 bSucces = True
@@ -1826,7 +1826,7 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Remove an Ecosim Time Series from the datasource.
+    ''' Remove an Ecosim Time Series from the data source.
     ''' </summary>
     ''' <param name="TS"><see cref="cTimeSeries">Time Series instance</see> to remove.</param>
     ''' -----------------------------------------------------------------------
@@ -1836,7 +1836,7 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Remove an Ecosim Time Series from the datasource.
+    ''' Remove an Ecosim Time Series from the data source.
     ''' </summary>
     ''' <param name="iTS">Index of the time series to remove.</param>
     ''' -----------------------------------------------------------------------
@@ -1850,7 +1850,7 @@ Public Class cCore
         ' Set bach lock for adding and removing items
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
         Try
-            ' Try to add TS to the datasource
+            ' Try to add TS to the data source
             If DirectCast(DataSource, IEcosimDatasource).RemoveTimeSeries(iTS) Then
                 Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 bSucces = True
@@ -1935,7 +1935,7 @@ Public Class cCore
         ' Safety check
         If Not TypeOf DataSource Is IEcosimDatasource Then Return False
         Try
-            ' Try to add TS to the datasource
+            ' Try to add TS to the data source
             If DirectCast(DataSource, IEcosimDatasource).RemoveTimeSeriesDataset(dataset.Index) Then
                 Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 bSucces = True
@@ -2333,7 +2333,7 @@ Public Class cCore
 #Region " EwEModel "
 
     ''' <summary>
-    ''' Returns the <see cref="cEwEModel">EwE model</see> for the current loaded datasource.
+    ''' Returns the <see cref="cEwEModel">EwE model</see> for the current loaded data source.
     ''' </summary>
     Public ReadOnly Property EwEModel() As cEwEModel
         Get
@@ -2420,7 +2420,7 @@ Public Class cCore
 
     'Private EcoPath Model Variables
     Friend m_EcoPath As Ecopath.cEcoPathModel ' the EcoPath model
-    Friend m_EcoPathData As cEcopathDataStructures = Nothing 'Parameters read for datasource for EcoPath
+    Friend m_EcoPathData As cEcopathDataStructures = Nothing 'Parameters read for data source for EcoPath
 
     Friend m_EcoPathInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupInput, 1)
     Friend m_EcoPathOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupOutput, 1)
@@ -2460,7 +2460,7 @@ Public Class cCore
     ''' <param name="ds">A <see cref="IEwEDataSource">IEwEDataSource</see>-derived
     ''' object that provides access to the </param>
     ''' <returns>True if the model was loaded successfully. False otherwise</returns>
-    ''' <remarks>The given datasource will be remembered here for subsequent 
+    ''' <remarks>The given data source will be remembered here for subsequent 
     ''' <see cref="SaveModel">SaveModel</see> and SaveEcosimScenario calls.</remarks>
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(ByVal ds As IEwEDataSource) As Boolean
@@ -2470,7 +2470,7 @@ Public Class cCore
 
         ' Sanity checks
         Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
-        Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid datasource type specified")
+        Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid data source type specified")
 
         If Not Me.m_bCoreIsInit Then
             Console.WriteLine("Do not forget to call InitCore!")
@@ -2496,17 +2496,17 @@ Public Class cCore
             Return False
         End If
 
-        ' Run any available updates on the datasource
+        ' Run any available updates on the data source
         If Not Me.UpdateDatasource(ds) Then
             Return False
         End If
 
-        ' Remember the new datasource
+        ' Remember the new data source
         DataSource = ds
 
         Try
 
-            'Init the parameters from the datasource
+            'Init the parameters from the data source
             dsEcopath = DirectCast(DataSource, IEcopathDataSource)
             If dsEcopath.LoadModel() Then
 
@@ -2587,7 +2587,7 @@ Public Class cCore
             Me.m_StateMonitor.SetEcopathLoaded(False)
             ' Major Error
             Me.SendEcopathLoadMessage(ds, ex.Message)
-            ' Release datasource
+            ' Release data source
             DataSource = Nothing
             ' Report error
             Return False
@@ -2622,7 +2622,7 @@ Public Class cCore
         If (Not String.IsNullOrEmpty(strFileName)) Then
             ' #Yes: First save current database to a new location
             If (DirectCast(DataSource, cDBDataSource).SaveAs(strFileName, Me.m_EwEModel.Name)) = eDatasourceAccessType.Success Then
-                ' #Succes! The datasource has been changed this new location, now save data in memory to the new datasource.
+                ' #Success! The data source has been changed this new location, now save data in memory to the new data source.
                 bSucces = Me.SaveChanges(True)
             End If
         Else
@@ -2677,25 +2677,24 @@ Public Class cCore
 #End If
 
         Try
-            ' Has datasource?
+            ' Has data source?
             If (DataSource IsNot Nothing) Then
                 ' #Yes: has open connection?
                 If DataSource.Connection IsNot Nothing Then
-                    ' #Yes: Close connection
-                    DataSource.Close()
-                    ' Close plug-in data sources, close plug-in 
+                    ' '#Yes: close plug-in data sources, close plug-in 
                     If (Me.PluginManager IsNot Nothing) Then
                         Me.PluginManager.CloseDatabase()
                         Me.m_pluginManager.CloseModel()
                     End If
-
+                    ' JS 26Feb11: do not close data source because the core does not have the level of control to open the data source again.
+                    'DataSource.Close()
                 End If
-                ' Release datasource
+                ' Release data source
                 DataSource = Nothing
             End If
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".CloseModel() Exception closing datasource: " & ex.Message)
+            Debug.Assert(False, Me.ToString & ".CloseModel() Exception closing data source: " & ex.Message)
             cLog.Write(ex)
         End Try
 
@@ -3488,7 +3487,7 @@ Public Class cCore
         ' Increase batch count
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
-        ' Start the actual work. The datasource will ensure the new fleet will be added througout models and scenarios
+        ' Start the actual work. The data source will ensure the new fleet will be added througout models and scenarios
         If (DirectCast(DataSource, IEcopathDataSource).AddTaxon(Me.m_EcoPathData.GroupDBID(iGroup), data, sProportion, iDBID)) Then
             Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
             bSucces = True
@@ -3681,7 +3680,7 @@ Public Class cCore
         ' Increase batch count
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
-        ' Start the actual work. The datasource will ensure the new fleet will be added througout models and scenarios
+        ' Start the actual work. The data source will ensure the new fleet will be added througout models and scenarios
         If (DirectCast(DataSource, IEcopathDataSource).AddFleet(strName, iFleet, iFleetID)) Then
 
             Me.DataAddedOrRemovedMessage("Ecopath number of fleets has changed.", eCoreComponentType.EcoPath, eDataTypes.FleetInput)
@@ -3770,7 +3769,7 @@ Public Class cCore
 #Region " Particle size distribution "
 
     ''' <summary>
-    ''' Returns the <see cref="cEwEModel">EwE model</see> for the current loaded datasource.
+    ''' Returns the <see cref="cEwEModel">EwE model</see> for the current loaded data source.
     ''' </summary>
     Public ReadOnly Property ParticleSizeDistributionParameters() As cPSDParameters
         Get
@@ -4141,7 +4140,7 @@ Public Class cCore
                 ' Did this affect any significant core component?
                 If (msAffected <> eCoreComponentType.NotSet) And _
                    (msg.Importance = eMessageImportance.Maintenance) Then
-                    ' Has datasource?
+                    ' Has data source?
                     If (Me.DataSource IsNot Nothing) Then
                         ' #Yes: dirty the data source
                         Me.DataSource.SetChanged(msAffected)
@@ -4224,7 +4223,7 @@ Public Class cCore
         ' Send out data changed message for ecopath
         Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoPath, eMessageType.DataModified))
         Me.m_publisher.sendAllMessages()
-        ' Flag datasource as dirty
+        ' Flag data source as dirty
         Me.DataSource.SetChanged(eCoreComponentType.EcoPath)
         Me.m_StateMonitor.UpdateDataState(DataSource)
 
@@ -5219,7 +5218,7 @@ Public Class cCore
         ' Send out data changed message for MSE
         Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
         Me.m_publisher.sendAllMessages()
-        ' Flag datasource as dirty
+        ' Flag data source as dirty
         Me.DataSource.SetChanged(eCoreComponentType.MSE)
         Me.m_StateMonitor.UpdateDataState(DataSource)
     End Sub
@@ -5236,7 +5235,7 @@ Public Class cCore
         ' Send out data changed message for MSE
         Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
         Me.m_publisher.sendAllMessages()
-        ' Flag datasource as dirty
+        ' Flag data source as dirty
         Me.DataSource.SetChanged(eCoreComponentType.MSE)
         Me.m_StateMonitor.UpdateDataState(DataSource)
     End Sub
@@ -5251,7 +5250,7 @@ Public Class cCore
         ' Send out data changed message for MSE
         Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
         Me.m_publisher.sendAllMessages()
-        ' Flag datasource as dirty
+        ' Flag data source as dirty
         Me.DataSource.SetChanged(eCoreComponentType.MSE)
         Me.m_StateMonitor.UpdateDataState(DataSource)
 
@@ -5272,7 +5271,7 @@ Public Class cCore
             ' Send out data changed message for MSE
             Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
             Me.m_publisher.sendAllMessages()
-            ' Flag datasource as dirty
+            ' Flag data source as dirty
             Me.DataSource.SetChanged(eCoreComponentType.MSE)
             Me.m_StateMonitor.UpdateDataState(DataSource)
 
@@ -5294,7 +5293,7 @@ Public Class cCore
         ' Send out data changed message for MSE
         Me.m_publisher.AddMessage(Me.CreateMessage("", eCoreComponentType.EcoSim, eMessageType.DataModified))
         Me.m_publisher.sendAllMessages()
-        ' Flag datasource as dirty
+        ' Flag data source as dirty
         Me.DataSource.SetChanged(eCoreComponentType.MSE)
         Me.m_StateMonitor.UpdateDataState(DataSource)
     End Sub
@@ -6964,11 +6963,11 @@ Public Class cCore
     '    'save the parameters back to the Ecosim data
     '    UpdateEcoSimModelParameters()
 
-    '    'ToDo_jb Core.UpdateTimeVariables needs to tell the datasource to update time variables
+    '    'ToDo_jb Core.UpdateTimeVariables needs to tell the data source to update time variables
     '    'DataSource.UpdateTime()
 
     '    'jb Tell Ecosim to redim time variables 
-    '    'I think this need to be handled by the core and not the datasource because only it knows about Ecosim's needs
+    '    'I think this need to be handled by the core and not the data source because only it knows about Ecosim's needs
     '    m_EcoSim.ReSetTime()
 
     '    LoadEcosimGroups() 'may not need to load the groups
@@ -9410,7 +9409,7 @@ Public Class cCore
     ''' <param name="strName">Name of layer to add.</param>
     ''' <param name="strDescription">Description of layer to add.</param>
     ''' <param name="sWeight">Weight of layer to add.</param>
-    ''' <param name="iID">DBID that the datasource has assigned to the new 
+    ''' <param name="iID">DBID that the data source has assigned to the new 
     ''' layer.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
@@ -9793,7 +9792,7 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Adds a stanza group to the datasource.
+    ''' Adds a stanza group to the data source.
     ''' </summary>
     ''' <param name="strStanzaName">Name to assign to new stanza group.</param>
     ''' <param name="aiGroupID">ID of the first <see cref="cEcoPathGroupInput">Ecopath group</see>
@@ -9830,7 +9829,7 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Remove a stanza group from the datasource.
+    ''' Remove a stanza group from the data source.
     ''' </summary>
     ''' <param name="iStanza">Index of the stanza group to remove.</param>
     ''' <returns>True if succesful.</returns>
@@ -10989,10 +10988,10 @@ Public Class cCore
                     ' NOP
                 End Try
 
-                ' Dirty datasource
+                ' Dirty data source
                 If Not Object.ReferenceEquals(DataSource, Nothing) Then
 
-                    ' Block non-stored variables from dirtying the datasource
+                    ' Block non-stored variables from dirtying the data source
                     bBlock = (value.Stored = False)
 
                     ' Block cascaded name changes for groups and fleets
@@ -11938,7 +11937,7 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Stanza group changed Ecopath values.", eMessageType.DataModified, eCoreComponentType.EcoPath, _
                                        eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
 
-                    'Tell the datasource that both Ecopath and Stanza data need saving. May not need to do this it may be good enough that the stanza data is dirty
+                    'Tell the data source that both Ecopath and Stanza data need saving. May not need to do this it may be good enough that the stanza data is dirty
                     DataSource.SetChanged(eCoreComponentType.EcoPath)
                     ' JS 23Nov10: only flag sim as dirty when sim is loaded, hm?
                     If Me.m_StateMonitor.HasEcosimLoaded Then
