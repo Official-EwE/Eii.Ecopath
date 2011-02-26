@@ -536,7 +536,7 @@ Namespace Controls
                                 ByVal sYMax As Single)
 
             ' Draw default
-            ShapeImage.DrawShape(Me.UIContext, shape, rcImage, g, clr, drawMode, sYMax, _
+            cShapeImage.DrawShape(Me.UIContext, shape, rcImage, g, clr, drawMode, sYMax, _
                                  Me.YMarkValue, Me.XMarkValue, Me.YMarkLabel, Me.XMarkLabel)
 
         End Sub
@@ -618,7 +618,7 @@ Namespace Controls
         Private Sub DragXMark(ByVal ptPrev As Point, ByVal ptCur As Point)
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
-            Dim ptfCur As PointF = ShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
             Me.XMarkValue = ptfCur.X
             Me.PositionYMark()
             Me.Refresh()
@@ -633,8 +633,8 @@ Namespace Controls
 
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
-            Dim ptfPrev As PointF = ShapeImage.ToModelPoint(ptPrev, Me.ClientRectangle, iXMax, sYMax)
-            Dim ptfCur As PointF = ShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfPrev As PointF = cShapeImage.ToModelPoint(ptPrev, Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
 
             Dim iStart As Integer = CInt(Math.Min(ptfPrev.X, ptfCur.X))
             Dim iEnd As Integer = CInt(Math.Max(ptfPrev.X, ptfCur.X))
@@ -666,7 +666,7 @@ Namespace Controls
 
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
-            Dim ptfCur As PointF = ShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
             Dim sValue As Single = 0.0!
             Dim strTooltip As String = ""
 
@@ -705,8 +705,8 @@ Namespace Controls
             ' Check if x value is near x mark
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
-            Dim ptfMouseL As PointF = ShapeImage.ToModelPoint(New PointF(sX - cCLICK_TOLERANCE, 0), Me.ClientRectangle, iXMax, sYMax)
-            Dim ptfMouseR As PointF = ShapeImage.ToModelPoint(New PointF(sX + cCLICK_TOLERANCE, 0), Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfMouseL As PointF = cShapeImage.ToModelPoint(New PointF(sX - cCLICK_TOLERANCE, 0), Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfMouseR As PointF = cShapeImage.ToModelPoint(New PointF(sX + cCLICK_TOLERANCE, 0), Me.ClientRectangle, iXMax, sYMax)
 
             Return (ptfMouseL.X <= Me.XMarkValue) And (ptfMouseR.X >= Me.XMarkValue)
 
@@ -727,8 +727,8 @@ Namespace Controls
 
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
-            Dim ptfMouseT As PointF = ShapeImage.ToModelPoint(New PointF(ptCur.X, ptCur.Y - 2 * cCLICK_TOLERANCE), Me.ClientRectangle, iXMax, sYMax)
-            Dim ptfMouseB As PointF = ShapeImage.ToModelPoint(New PointF(ptCur.X, ptCur.Y + 2 * cCLICK_TOLERANCE), Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfMouseT As PointF = cShapeImage.ToModelPoint(New PointF(ptCur.X, ptCur.Y - 2 * cCLICK_TOLERANCE), Me.ClientRectangle, iXMax, sYMax)
+            Dim ptfMouseB As PointF = cShapeImage.ToModelPoint(New PointF(ptCur.X, ptCur.Y + 2 * cCLICK_TOLERANCE), Me.ClientRectangle, iXMax, sYMax)
             Dim sValue As Single = Me.Shape.ShapeData(CInt(ptfMouseT.X))
 
             Return (ptfMouseB.Y <= sValue) And (sValue <= ptfMouseT.Y)

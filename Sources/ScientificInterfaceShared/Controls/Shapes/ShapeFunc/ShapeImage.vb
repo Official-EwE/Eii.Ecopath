@@ -18,7 +18,7 @@ Namespace Controls
     ''' <summary>
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class ShapeImage
+    Public Class cShapeImage
 
         Public Const cDOT_SIZE As Integer = 6
         'Public Const cICON_WIDTH As Integer = 48
@@ -94,7 +94,7 @@ Namespace Controls
             If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax * 1.2!
             If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!))
 
-            ShapeImage.DrawShapeDirect(uic, _
+            cShapeImage.DrawShapeDirect(uic, _
                     shape.ShapeData, shape.XMax, shape.IsSeasonal, _
                     rcImage, g, clr, _
                     drawMode, _
@@ -138,19 +138,19 @@ Namespace Controls
                     'new drawing method draws data as discreet line from x-1 to x
                     'same logic for both seasonal and complete time series
 
-                    pt2 = ShapeImage.ToImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
+                    pt2 = cShapeImage.ToImagePoint(New PointF(0, 0), rcImage, nPoints, sYMax)
                     For i As Integer = 1 To nPoints
                         pt1 = pt2
-                        pt2 = ShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
+                        pt2 = cShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
                         gp.AddLine(pt1, pt2)
 
                         pt1 = pt2
-                        pt2 = ShapeImage.ToImagePoint(New PointF(i, asData(i)), rcImage, nPoints, sYMax)
+                        pt2 = cShapeImage.ToImagePoint(New PointF(i, asData(i)), rcImage, nPoints, sYMax)
                         gp.AddLine(pt1, pt2)
                     Next
 
                     pt1 = pt2
-                    pt2 = ShapeImage.ToImagePoint(New PointF(nPoints, 0), rcImage, nPoints, sYMax)
+                    pt2 = cShapeImage.ToImagePoint(New PointF(nPoints, 0), rcImage, nPoints, sYMax)
                     gp.AddLine(pt1, pt2)
 
                     Try
@@ -178,7 +178,7 @@ Namespace Controls
 
                         For i As Integer = 1 To nPoints
                             If asData(i) > 0.0! Then
-                                pt = ShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
+                                pt = cShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
                                 g.FillEllipse(brShape, _
                                         CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2), _
                                         CSng(cDOT_SIZE), CSng(cDOT_SIZE))
@@ -188,7 +188,7 @@ Namespace Controls
                     Else
                         For i As Integer = 1 To nPoints
                             If asData(i) > 0.0! Then
-                                pt = ShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
+                                pt = cShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
                                 g.FillEllipse(brShape, _
                                         CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2), _
                                         CSng(cDOT_SIZE), CSng(cDOT_SIZE))
@@ -205,7 +205,7 @@ Namespace Controls
                     If bIsSeasonal Then
                         For i As Integer = 1 To 12
                             If asData(i) > 0.0! Then
-                                pt1 = ShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
+                                pt1 = cShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
                                 g.FillEllipse(brShape, _
                                         CSng(pt1.X - cDOT_SIZE / 2), CSng(pt1.Y - cDOT_SIZE / 2), _
                                         CSng(cDOT_SIZE), CSng(cDOT_SIZE))
@@ -215,7 +215,7 @@ Namespace Controls
                         For i As Integer = 1 To nPoints
                             If asData(i) > 0.0! Then
                                 pt2 = pt1
-                                pt1 = ShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
+                                pt1 = cShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
                                 iNumPoints += 1
 
                                 If (iNumPoints >= 2) Then g.DrawLine(pnShape, pt1, pt2)
@@ -236,8 +236,8 @@ Namespace Controls
             ' Draw YMark
             If (sYMark > 0) Then
                 Try
-                    Dim ptfFrom As PointF = ShapeImage.ToImagePoint(New PointF(0, sYMark), rcImage, nPoints, sYMax)
-                    Dim ptfTo As PointF = ShapeImage.ToImagePoint(New PointF(nPoints, sYMark), rcImage, nPoints, sYMax)
+                    Dim ptfFrom As PointF = cShapeImage.ToImagePoint(New PointF(0, sYMark), rcImage, nPoints, sYMax)
+                    Dim ptfTo As PointF = cShapeImage.ToImagePoint(New PointF(nPoints, sYMark), rcImage, nPoints, sYMax)
 
                     g.DrawLine(Pens.Gray, ptfFrom, ptfTo)
 
@@ -264,7 +264,7 @@ Namespace Controls
             ' Draw XMark
             If (sXMark > 0) Then
 
-                Dim ptfTmp As PointF = ShapeImage.ToImagePoint(New PointF(sXMark, 0), rcImage, nPoints, sYMax)
+                Dim ptfTmp As PointF = cShapeImage.ToImagePoint(New PointF(sXMark, 0), rcImage, nPoints, sYMax)
                 Dim ptfFrom As New PointF(ptfTmp.X, 0)
                 Dim ptfTo As New PointF(ptfTmp.X, rcImage.Height)
 

@@ -104,8 +104,8 @@ Namespace Controls
 
             'Draw the line with y's value equal to 1
             g.DrawLine(Pens.Black, _
-                ShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax), _
-                ShapeImage.ToImagePoint(New PointF(Me.Shape.XMax, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax))
+                cShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax), _
+                cShapeImage.ToImagePoint(New PointF(Me.Shape.XMax, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax))
 
             ' Draw the axis when this mode is on
             If Me.m_bShowAxis Then
@@ -141,7 +141,7 @@ Namespace Controls
                 If yStep = 0 Then yStep = 1
 
                 For j As Double = 0 To sYMax Step yStep * 0.5
-                    Dim yPos As Integer = CInt(ShapeImage.ToImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
+                    Dim yPos As Integer = CInt(cShapeImage.ToImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
 
                     strLabel = j.ToString
                     If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then

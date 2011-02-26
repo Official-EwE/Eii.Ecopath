@@ -83,7 +83,7 @@ Namespace Controls
                         If iYStep = 0 Then iYStep = 1
 
                         For j As Double = 0 To sYMax Step iYStep * 0.5
-                            iYPos = CInt(ShapeImage.ToImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
+                            iYPos = CInt(cShapeImage.ToImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
 
                             strLabel = j.ToString
                             g.DrawString(strLabel, Me.Font, br, rcImage.Left + 5, iYPos)

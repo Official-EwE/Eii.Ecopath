@@ -66,8 +66,8 @@ Namespace Controls
             ' JS 30Jan08: Only draw this line if it is going to be visible
             If (sYMax >= 1.0) Then
                 g.DrawLine(Pens.Black, _
-                    ShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax), _
-                    ShapeImage.ToImagePoint(New PointF(Me.Shape.XMax, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax))
+                    cShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax), _
+                    cShapeImage.ToImagePoint(New PointF(Me.Shape.XMax, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax))
             End If
 
             ' Draw the axis when this mode is on

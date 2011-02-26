@@ -14,25 +14,25 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Me.lvContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
+            Me.m_lvContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
             Me.AddToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ApplyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.DuplicateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ImportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.RenameToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.lvShapes = New ScientificInterfaceShared.Controls.cSmoothListView
+            Me.m_lvShapes = New ScientificInterfaceShared.Controls.cSmoothListView
             Me.ExportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-            Me.lvContextMenuStrip.SuspendLayout()
+            Me.m_lvContextMenuStrip.SuspendLayout()
             Me.SuspendLayout()
             '
             'lvContextMenuStrip
             '
-            Me.lvContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddToolStripMenuItem, Me.ApplyToolStripMenuItem, Me.DuplicateToolStripMenuItem, Me.ToolStripSeparator1, Me.ImportToolStripMenuItem, Me.ExportToolStripMenuItem, Me.ToolStripSeparator2, Me.RemoveToolStripMenuItem, Me.RenameToolStripMenuItem})
-            Me.lvContextMenuStrip.Name = "lvContextMenuStrip"
-            Me.lvContextMenuStrip.Size = New System.Drawing.Size(153, 192)
+            Me.m_lvContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddToolStripMenuItem, Me.ApplyToolStripMenuItem, Me.DuplicateToolStripMenuItem, Me.ToolStripSeparator1, Me.ImportToolStripMenuItem, Me.ExportToolStripMenuItem, Me.ToolStripSeparator2, Me.RemoveToolStripMenuItem, Me.RenameToolStripMenuItem})
+            Me.m_lvContextMenuStrip.Name = "lvContextMenuStrip"
+            Me.m_lvContextMenuStrip.Size = New System.Drawing.Size(153, 192)
             '
             'AddToolStripMenuItem
             '
@@ -72,15 +72,15 @@ Namespace Controls
             '
             'lvShapes
             '
-            Me.lvShapes.BackColor = System.Drawing.SystemColors.Window
-            Me.lvShapes.BorderStyle = System.Windows.Forms.BorderStyle.None
-            Me.lvShapes.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.lvShapes.HideSelection = False
-            Me.lvShapes.Location = New System.Drawing.Point(0, 0)
-            Me.lvShapes.Name = "lvShapes"
-            Me.lvShapes.Size = New System.Drawing.Size(690, 150)
-            Me.lvShapes.TabIndex = 0
-            Me.lvShapes.UseCompatibleStateImageBehavior = False
+            Me.m_lvShapes.BackColor = System.Drawing.SystemColors.Window
+            Me.m_lvShapes.BorderStyle = System.Windows.Forms.BorderStyle.None
+            Me.m_lvShapes.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lvShapes.HideSelection = False
+            Me.m_lvShapes.Location = New System.Drawing.Point(0, 0)
+            Me.m_lvShapes.Name = "lvShapes"
+            Me.m_lvShapes.Size = New System.Drawing.Size(690, 150)
+            Me.m_lvShapes.TabIndex = 0
+            Me.m_lvShapes.UseCompatibleStateImageBehavior = False
             '
             'ExportToolStripMenuItem
             '
@@ -102,16 +102,16 @@ Namespace Controls
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ContextMenuStrip = Me.lvContextMenuStrip
-            Me.Controls.Add(Me.lvShapes)
+            Me.ContextMenuStrip = Me.m_lvContextMenuStrip
+            Me.Controls.Add(Me.m_lvShapes)
             Me.Name = "ucShapeToolbox"
             Me.Size = New System.Drawing.Size(690, 150)
-            Me.lvContextMenuStrip.ResumeLayout(False)
+            Me.m_lvContextMenuStrip.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents lvShapes As cSmoothListView
-        Private WithEvents lvContextMenuStrip As System.Windows.Forms.ContextMenuStrip
+        Private WithEvents m_lvShapes As cSmoothListView
+        Private WithEvents m_lvContextMenuStrip As System.Windows.Forms.ContextMenuStrip
         Private WithEvents AddToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents DuplicateToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents RemoveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

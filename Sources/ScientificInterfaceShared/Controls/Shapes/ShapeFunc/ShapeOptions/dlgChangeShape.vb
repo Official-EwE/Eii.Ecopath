@@ -156,7 +156,7 @@ Namespace Controls
                 g.FillRectangle(br, rc)
             End Using
 
-            ShapeImage.DrawShapeDirect(Me.m_uic, _
+            cShapeImage.DrawShapeDirect(Me.m_uic, _
                                        Me.m_asDataWork, Me.m_shape.XMax, Me.m_shape.IsSeasonal, _
                                        Me.m_plPreview.ClientRectangle, e.Graphics, Color.Black, _
                                        eSketchDrawModeTypes.Line, _

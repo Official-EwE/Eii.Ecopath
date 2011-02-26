@@ -121,10 +121,10 @@ Namespace Controls
         ''' ------------------------------------------------------------------
         Public Property AllowCheckboxes() As Boolean
             Get
-                Return Me.lvShapes.CheckBoxes
+                Return Me.m_lvShapes.CheckBoxes
             End Get
             Set(ByVal value As Boolean)
-                Me.lvShapes.CheckBoxes = value
+                Me.m_lvShapes.CheckBoxes = value
             End Set
         End Property
 
@@ -143,15 +143,15 @@ Namespace Controls
 
             If iThumbnailIndex = -1 Then Return
 
-            If Not lvShapes.LargeImageList Is Nothing Then
+            If Not m_lvShapes.LargeImageList Is Nothing Then
 
                 ' Determine whether to show enabled tick
                 If TypeOf shape Is cTimeSeries Then
                     bShowWarning = Not DirectCast(shape, cTimeSeries).CanEnable
                 End If
 
-                Me.lvShapes.LargeImageList.Images(iThumbnailIndex) = ShapeImage.IconImage(Me.m_uic, shape, Me.m_clr, cCore.NULL_VALUE, bShowWarning)
-                Me.lvShapes.Refresh()
+                Me.m_lvShapes.LargeImageList.Images(iThumbnailIndex) = cShapeImage.IconImage(Me.m_uic, shape, Me.m_clr, cCore.NULL_VALUE, bShowWarning)
+                Me.m_lvShapes.Refresh()
             End If
 
         End Sub
@@ -202,7 +202,7 @@ Namespace Controls
         Public Property Selection() As cShapeData()
             Get
                 Dim lShapes As New List(Of cShapeData)
-                For Each item As ListViewItem In Me.lvShapes.SelectedItems
+                For Each item As ListViewItem In Me.m_lvShapes.SelectedItems
                     lShapes.Add(DirectCast(item.Tag, cShapeData))
                 Next
                 Return lShapes.ToArray()
@@ -212,15 +212,15 @@ Namespace Controls
 
                 Dim lShapes As New List(Of cShapeData)
 
-                Me.lvShapes.SuspendLayout()
+                Me.m_lvShapes.SuspendLayout()
 
                 If ashapes Is Nothing Then
                     ' Clear all selections
-                    For Each item As ListViewItem In Me.lvShapes.Items
+                    For Each item As ListViewItem In Me.m_lvShapes.Items
                         item.Selected = False
                     Next
                 Else
-                    For Each item As ListViewItem In Me.lvShapes.Items
+                    For Each item As ListViewItem In Me.m_lvShapes.Items
                         ' Get item shape
                         Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
                         ' Get index in selection, if any
@@ -237,7 +237,7 @@ Namespace Controls
                     Next
                 End If
 
-                Me.lvShapes.ResumeLayout()
+                Me.m_lvShapes.ResumeLayout()
 
                 If Not Me.m_bInUpdate Then
                     Me.m_bInUpdate = True
@@ -331,11 +331,11 @@ Namespace Controls
             Dim bShowApplyTick As Boolean = False
             Dim bShowWarning As Boolean = False
 
-            lvShapes.SuspendLayout()
+            m_lvShapes.SuspendLayout()
             Me.m_bInUpdate = True
 
             'Clear the thumbnail list
-            lvShapes.Items.Clear()
+            m_lvShapes.Items.Clear()
 
             'Set up the thumbnail image size
             largeImageList.ImageSize = New Size(iThumbSize, iThumbSize)
@@ -357,7 +357,7 @@ Namespace Controls
                         End If
                     End If
 
-                    largeImageList.Images.Add(ShapeImage.IconImage(Me.UIContext, shape, Me.m_clr, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning))
+                    largeImageList.Images.Add(cShapeImage.IconImage(Me.UIContext, shape, Me.m_clr, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning))
 
                     item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
                     item.ImageIndex = i
@@ -367,16 +367,16 @@ Namespace Controls
                         item.Checked = DirectCast(shape, cTimeSeries).Enabled
                     End If
 
-                    lvShapes.Items.Add(item)
+                    m_lvShapes.Items.Add(item)
 
                 Next
 
-                lvShapes.View = View.LargeIcon
-                lvShapes.LargeImageList = largeImageList
+                m_lvShapes.View = View.LargeIcon
+                m_lvShapes.LargeImageList = largeImageList
 
             End If
 
-            lvShapes.ResumeLayout()
+            m_lvShapes.ResumeLayout()
             Me.m_bInUpdate = False
 
         End Sub
@@ -416,12 +416,12 @@ Namespace Controls
         ''' Modify shape data.
         ''' </summary>
         Private Sub lvShapes_ItemActivate(ByVal sender As Object, ByVal e As System.EventArgs) _
-                    Handles lvShapes.ItemActivate
+                    Handles m_lvShapes.ItemActivate
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify, Me.Selection)
         End Sub
 
         Private Sub lvShapes_ItemChecked(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckedEventArgs) _
-            Handles lvShapes.ItemChecked
+            Handles m_lvShapes.ItemChecked
 
             Dim ts As cTimeSeries = Nothing
 
@@ -451,7 +451,7 @@ Namespace Controls
         ''' The event handler when the selected thumbnail changes in the listview.
         ''' </summary>
         Private Sub lvShapes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles lvShapes.SelectedIndexChanged
+            Handles m_lvShapes.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
             ' Haha
