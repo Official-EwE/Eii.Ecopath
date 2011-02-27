@@ -102,15 +102,8 @@ Public MustInherit Class cTimeSeries
     ''' type of the target is implied by the <see cref="TimeSeriesType">type</see>
     ''' of the time series.
     ''' </summary>
-    ''' <remarks>
-    ''' <para>This property is trying to fly under the radar since DatPool should be
-    ''' accessed via <see cref="cGroupTimeSeries.GroupIndex">cGroupTimeSeries.GroupIndex</see>
-    ''' or <see cref="cFleetTimeSeries.FleetIndex">cFleetTimeSeries.FleetIndex</see>,
-    ''' depending on the <see cref="TimeSeriesType">type</see> of the time series.</para>
-    ''' <para>Naturally, DatPool is freely accessible via GetVariable/SetVariable :(</para>
-    ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Friend Property DatPool() As Integer
+    Public Property DatPool() As Integer
         Get
             Return Me.m_iDatPool
         End Get
@@ -201,7 +194,7 @@ Public MustInherit Class cTimeSeries
     ''' <summary>
     ''' Helper method, call this to inform the EwE core that a Time Series has changed.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Overrides Function Update() As Boolean
         Try
