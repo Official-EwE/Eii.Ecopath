@@ -133,7 +133,7 @@ Namespace Ecosim
 
         Protected Overrides Sub OnMouseHover(ByVal e As System.EventArgs)
             MyBase.OnMouseHover(e)
-            Me.ProcessMouseHover(Me.PointToClient(Cursor.Position))
+            Me.UpdateToolTip(Me.PointToClient(Cursor.Position))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -164,7 +164,7 @@ Namespace Ecosim
             MyBase.OnMouseMove(e)
 
             ' Process mouse hover info
-            Me.ProcessMouseHover(e.Location)
+            Me.UpdateToolTip(e.Location)
 
             If (Me.Capture = False) Then Return
 
@@ -391,6 +391,8 @@ Namespace Ecosim
 
         End Sub
 
+        Dim m_ptLast As New Point(-1, -1)
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Process mouse hover info to show and populate a tooltip or to hide
@@ -402,7 +404,7 @@ Namespace Ecosim
         ''' hover location indicates an invalid predator and prey index.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub ProcessMouseHover(ByVal ptHover As Point)
+        Private Sub UpdateToolTip(ByVal ptHover As Point)
 
             Dim ptPredPrey As New Point(0, 0)
             Dim strToolTip As String = ""
@@ -419,6 +421,10 @@ Namespace Ecosim
             If ptPredPrey.X < 0 Then Return
             If ptPredPrey.Y > Me.m_uic.Core.nGroups Then Return
             If ptPredPrey.Y < 0 Then Return
+
+            If Me.m_ptLast.X = ptPredPrey.X And Me.m_ptLast.Y = ptPredPrey.Y Then Return
+            Me.m_ptLast.X = ptPredPrey.X
+            Me.m_ptLast.Y = ptPredPrey.Y
 
             If ptPredPrey.X > 0 Then strPred = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.X, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name)
             If ptPredPrey.Y > 0 Then strPrey = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.Y, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
