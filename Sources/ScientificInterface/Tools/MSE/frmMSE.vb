@@ -5,12 +5,10 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.SearchObjectives
-Imports ScientificInterface.Controls
 Imports EwEUtils.Core
-Imports ScientificInterface.Ecosim
 Imports EwEUtils.Commands
 Imports ZedGraph
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 

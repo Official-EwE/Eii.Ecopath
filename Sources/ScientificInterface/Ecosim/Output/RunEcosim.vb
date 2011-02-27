@@ -12,6 +12,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SAUPUtil.SAUPData.Mapping
 Imports ZedGraph
 Imports Microsoft.VisualBasic
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 

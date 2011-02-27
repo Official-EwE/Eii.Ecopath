@@ -31,6 +31,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.VisualBasic
 Imports System.Threading
 Imports System.ComponentModel
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -133,7 +134,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditMultiStanza As cCommand = Nothing
     Private WithEvents m_cmdEditFleets As cCommand = Nothing
     Private WithEvents m_cmdEditTaxa As cCommand = Nothing
-    Private WithEvents m_cmdEditPedigree As cCommand = Nothing
+    Private WithEvents m_cmdEditPedigree As cEditPedigreeCommand = Nothing
     Private WithEvents m_cmdEditBasemap As cCommand = Nothing
     Private WithEvents m_cmdEditHabitats As cCommand = Nothing
     Private WithEvents m_cmdEditRegions As cCommand = Nothing
@@ -424,7 +425,7 @@ Public Class AppLauncher
         Me.m_cmdEditGroups = New cCommand(cmdh, "EditGroups")
         Me.m_cmdEditGroups.AddControl(Me.m_tsmiEcopathEditGroups)
 
-        'Create and configure EditMultiStanza cammand
+        'Create and configure EditMultiStanza command
         Me.m_cmdEditMultiStanza = New cCommand(cmdh, "EditMultiStanza")
         Me.m_cmdEditMultiStanza.AddControl(Me.m_tsmiEcopathEditMultiStanza)
 
@@ -432,7 +433,7 @@ Public Class AppLauncher
         Me.m_cmdEditFleets = New cCommand(cmdh, "EditFleets")
         Me.m_cmdEditFleets.AddControl(Me.m_tsmiEcopathEditFleets)
 
-        Me.m_cmdEditPedigree = New cCommand(cmdh, "EditPedigree")
+        Me.m_cmdEditPedigree = New cEditPedigreeCommand(cmdh)
         Me.m_cmdEditPedigree.AddControl(Me.m_tsmiEcopathEditPedigree)
 
         Me.m_cmdEditTaxa = New cCommand(cmdh, "EditTaxa")
@@ -2904,7 +2905,7 @@ Public Class AppLauncher
 
     Private Sub OnEditPedigreeLevels(ByVal cmd As cCommand) _
         Handles m_cmdEditPedigree.OnInvoke
-        Dim dlg As New dlgEditPedigree(Me.UIContext)
+        Dim dlg As New dlgEditPedigree(Me.UIContext, DirectCast(cmd, cEditPedigreeCommand).Variable)
         dlg.ShowDialog(Me)
     End Sub
 

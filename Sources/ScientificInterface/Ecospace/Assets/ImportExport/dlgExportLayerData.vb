@@ -12,6 +12,7 @@ Imports SAUPUtil.SAUPFile
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SourceGrid2
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -28,7 +29,7 @@ Namespace Ecospace.Basemap
 #Region " Private classes "
 
         <CLSCompliant(False)> _
-Public Class gridExportMappings
+        Public Class gridExportMappings
             Inherits EwEGrid
 
 #Region " Private vars "

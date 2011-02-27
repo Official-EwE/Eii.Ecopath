@@ -13,6 +13,7 @@ Imports ScientificInterface.Ecosim
 Imports EwEUtils.Commands
 
 Imports ZedGraph
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 

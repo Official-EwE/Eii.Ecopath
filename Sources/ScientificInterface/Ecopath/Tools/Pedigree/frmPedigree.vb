@@ -3,12 +3,10 @@
 Option Strict On
 
 Imports EwECore
-Imports EwECore.Auxiliary
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
-Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SAUPUtil.Misc.Colours
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -70,6 +68,9 @@ Namespace Ecopath.Tools
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
+            Dim varName As eVarNameFlags = eVarNameFlags.NotSet
+            Dim bLevelsMissing As Boolean = False
+
             If (Me.UIContext Is Nothing) Then Return
 
             Me.m_psg = New cPedigreeStyleGuide(Me.UIContext)
@@ -84,12 +85,38 @@ Namespace Ecopath.Tools
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             AddHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
 
-            Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditPedigree")
+            Dim cmd As cEditPedigreeCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditPedigreeCommand.cCOMMAND_NAME), cEditPedigreeCommand)
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditPedigree)
 
             Me.SelectedVariable = eVarNameFlags.Biomass
 
             Me.UpdateControls()
+
+            For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
+
+                ' Get manager
+                varName = Me.Core.PedigreeVariable(iVariable)
+                If (Me.Core.GetPedigreeManager(varName).NumLevels = 0) Then
+                    bLevelsMissing = True
+                    Exit For
+                End If
+            Next
+
+            If bLevelsMissing And (cmd IsNot Nothing) Then
+                ' ToDo: localize this
+                Dim fmsg As New cFeedbackMessage("Pedigree levels are missing for one or more value types. Do you want to define these now?", _
+                                                 eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                fmsg.Reply = cFeedbackMessage.eReply.YES
+                Core.Messages.SendMessage(fmsg)
+
+                If fmsg.Reply = cFeedbackMessage.eReply.YES Then
+                    Try
+                        cmd.Invoke(varName)
+                    Catch ex As Exception
+                        ' Hmm
+                    End Try
+                End If
+            End If
 
         End Sub
 

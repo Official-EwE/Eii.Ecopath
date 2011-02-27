@@ -14,6 +14,7 @@ Imports System.Drawing
 Imports System.Reflection
 Imports System.IO
 Imports System.Drawing.Imaging
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

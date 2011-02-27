@@ -8,6 +8,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports ZedGraph
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -128,7 +129,7 @@ Public Class frmEcotracerOutput
             'let the interface update to all core states
             Me.RefreshData()
 
-  
+
         End If
     End Sub
 

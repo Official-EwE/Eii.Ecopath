@@ -6,17 +6,18 @@ Option Strict On
 Imports System.Globalization
 
 Imports EwECore
+Imports EwEPlugin
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
 Imports ScientificInterface.Ecopath.Controls
 Imports ScientificInterface.Ecopath.Input
 Imports ScientificInterface.Ecopath.Output
 Imports ScientificInterface.Ecopath.Tools
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
-Imports EwEPlugin
-Imports EwEUtils.Commands
-Imports EwEUtils.Core
-Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Commands
+Imports WeifenLuo.WinFormsUI.Docking
 
 #End Region
 

@@ -8,6 +8,7 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

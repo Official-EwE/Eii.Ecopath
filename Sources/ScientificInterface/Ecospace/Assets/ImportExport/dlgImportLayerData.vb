@@ -11,6 +11,7 @@ Imports SAUPUtil.SAUPFile
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -27,7 +28,7 @@ Namespace Ecospace.Basemap
 #Region " Private classes "
 
         <CLSCompliant(False)> _
-Public Class gridMapLayerToAttribute
+        Public Class gridMapLayerToAttribute
             Inherits EwEGrid
 
             ' ToDo: Sort and display layers by group

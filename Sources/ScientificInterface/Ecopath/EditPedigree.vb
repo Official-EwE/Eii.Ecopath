@@ -21,6 +21,7 @@ Namespace Ecopath
     Public Class dlgEditPedigree
 
         Private m_uic As cUIContext = Nothing
+        Private m_varInitial As eVarNameFlags = eVarNameFlags.NotSet
 
 #Region " Constructor "
 
@@ -30,11 +31,12 @@ Namespace Ecopath
         ''' </summary>
         ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(ByVal uic As cUIContext, Optional ByVal varInitial As eVarNameFlags = eVarNameFlags.NotSet)
 
             Me.InitializeComponent()
             Me.m_uic = uic
             Me.m_grid.UIContext = uic
+            Me.m_varInitial = varInitial
 
         End Sub
 
@@ -47,6 +49,7 @@ Namespace Ecopath
 
             Dim var As eVarNameFlags = eVarNameFlags.NotSet
             Dim descr As cVariableDescriptor = Nothing
+            Dim iSelection As Integer = 0
 
             ' Clear drop down
             Me.m_cmbVariable.Items.Clear()
@@ -58,9 +61,11 @@ Namespace Ecopath
                 descr = cVariableDescriptor.FromVarname(var)
                 ' Add to combo
                 Me.m_cmbVariable.Items.Add(descr.Description)
+
+                If (var = Me.m_varInitial) Then iSelection = iVariable
             Next
-            ' Select frist
-            Me.m_cmbVariable.SelectedIndex = 0
+            ' Select 
+            Me.m_cmbVariable.SelectedIndex = iSelection
 
             ' Done
             Me.UpdateControls()

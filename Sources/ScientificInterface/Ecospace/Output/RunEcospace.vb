@@ -8,6 +8,7 @@ Imports System.Threading
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 
@@ -242,7 +243,7 @@ Namespace Ecospace
 
             'Start tracking ConcTracing setting
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
-            ' Start tracking styleguide changes for colour feedback
+            ' Start tracking style guide changes for colour feedback
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             ' Start tracking core state monitor for Ecospace run states
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
@@ -357,7 +358,7 @@ Namespace Ecospace
             Dim g As Graphics = Nothing
             Dim br As SolidBrush = Nothing
 
-            cmdFS.Invoke(sharedResources.FILEFILTER_IMAGE)
+            cmdFS.Invoke(SharedResources.FILEFILTER_IMAGE)
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 
