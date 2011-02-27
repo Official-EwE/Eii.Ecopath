@@ -77,6 +77,13 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\cDirectoryOpenCommand.vb" />
+    <Compile Include="Commands\cDisplayGroupsCommand.vb" />
+    <Compile Include="Commands\cEditPedigreeCommand.vb" />
+    <Compile Include="Commands\cExecuteCommand.vb" />
+    <Compile Include="Commands\cFileOpenCommand.vb" />
+    <Compile Include="Commands\cFileSaveCommand.vb" />
+    <Compile Include="Commands\cNavigationCommand.vb" />
     <Compile Include="Controls\ApplicationStatus\cApplicationStatusNotifier.vb" />
     <Compile Include="Controls\ColorDialog\cEwEColorDialog.vb">
       <SubType>Component</SubType>

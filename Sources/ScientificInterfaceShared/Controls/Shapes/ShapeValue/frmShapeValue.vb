@@ -661,6 +661,6 @@ Public Class frmShapeValue
         End Set
     End Property
 
-#End Region 'Internal implementation
+#End Region ' Internal implementation
 
 End Class
