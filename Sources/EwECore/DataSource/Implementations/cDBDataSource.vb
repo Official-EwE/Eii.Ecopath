@@ -20,7 +20,7 @@ Namespace DataSources
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' <see cref="IEwEDataSource">EwE datasource</see> implementation for reading
+    ''' <see cref="IEwEDataSource">EwE data source</see> implementation for reading
     ''' and writing Ecopath, Ecosim and Ecospace data from a database.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
@@ -47,9 +47,9 @@ Namespace DataSources
 
 #Region " Private vars "
 
-        ''' <summary>The <see cref="cEwEDatabase">Database</see> connected to this datasource.</summary>
+        ''' <summary>The <see cref="cEwEDatabase">Database</see> connected to this createRectangle.</summary>
         Private m_db As cEwEDatabase = Nothing
-        ''' <summary>The <see cref="cCore">core</see> connected to this datasource.</summary>
+        ''' <summary>The <see cref="cCore">core</see> connected to this createRectangle.</summary>
         Private m_core As cCore = Nothing
         ''' <summary>Datasource name</summary>
         Private m_strName As String = ""
@@ -58,7 +58,7 @@ Namespace DataSources
 
 #Region " Generic "
 
-        Public Sub New(ByRef db As cEwEDatabase)
+        Public Sub New(ByVal db As cEwEDatabase)
 
             ' Pre
             Debug.Assert(db IsNot Nothing)
@@ -67,9 +67,16 @@ Namespace DataSources
 
         End Sub
 
+        ' This code added by Visual Basic to correctly implement the disposable pattern.
+        Public Sub Dispose() Implements IDisposable.Dispose
+            If Me.IsOpen Then Me.Close()
+            Me.m_db = Nothing
+            GC.SuppressFinalize(Me)
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether the local OS supports connecting to a datasource
+        ''' States whether the local OS supports connecting to a data source
         ''' of a given type.
         ''' </summary>
         ''' <param name="dst"></param>
@@ -86,15 +93,16 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="strName">Name of the DB database to open.</param>
         ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
-        ''' datastructures to read to, and write from.</param>
+        ''' data structures to read to, and write from.</param>
         ''' <param name="datasourceType">Type of database to open; specify
         ''' <see cref="eDataSourceTypes.NotSet"/> to automatically determine the
         ''' type of database.</param>
-        ''' <param name="bReadOnly">Flag stating whether a datasource should be
+        ''' <param name="bReadOnly">Flag stating whether a data source should be
         ''' opened as read-only.</param>
         ''' <returns>True if opened successfully.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Open(ByVal strName As String, ByVal core As cCore, _
+        Public Function Open(ByVal strName As String, _
+                             ByVal core As cCore, _
                              Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
                              Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType _
                              Implements DataSources.IEwEDataSource.Open
@@ -107,16 +115,16 @@ Namespace DataSources
                 Me.m_core = core
                 Me.m_strName = strName
             End If
-            ' Report succes
+            ' Report success
             Return atResult
 
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether a datasource is already open.
+        ''' States whether a data source is already open.
         ''' </summary>
-        ''' <returns>True if the datasource is open.</returns>
+        ''' <returns>True if the data source is open.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsOpen() As Boolean _
                  Implements IEwEDataSource.IsOpen
@@ -127,11 +135,11 @@ Namespace DataSources
         ''' <summary>
         ''' Create a new DB, overwriting an existing file.
         ''' </summary>
-        ''' <param name="strName">Name of the datasource to create.</param>
+        ''' <param name="strName">Name of the data source to create.</param>
         ''' <param name="strModelName">Name to assign to the model.</param>
         ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
-        ''' datastructures to read to, and write from.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' data structures to read to, and write from.</param>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType _
                  Implements DataSources.IEwEDataSource.Create
@@ -151,7 +159,7 @@ Namespace DataSources
         ''' <summary>
         ''' Close the DB.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function Close() As Boolean _
                 Implements IEwEDataSource.Close
@@ -160,10 +168,9 @@ Namespace DataSources
             Me.ClearChanged()
             ' Close current db
             Me.m_db.Close()
-
-            ' Forget the core
-            Me.m_core = Nothing
+            ' Forget identity
             Me.m_strName = ""
+            Me.m_core = Nothing
             ' Clear version
             Me.m_sVersion = cDATABASE_NOVERSION
 
@@ -171,7 +178,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns whether the datasource is connected.
+        ''' Returns whether the createRectangle is connected.
         ''' </summary>
         ''' <returns>True if connected.</returns>
         ''' -------------------------------------------------------------------
@@ -182,7 +189,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the connection to the <see cref="cEwEDatabase">database</see>
-        ''' that this datasource operates on.
+        ''' that this createRectangle operates on.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Connection() As Object _
@@ -194,7 +201,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns a string representation of the datasource.
+        ''' Returns a string representation of the createRectangle.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Function ToString() As String _
@@ -205,7 +212,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Switch an open datasource to a new database of the same type.
+        ''' Switch an open createRectangle to a new database of the same type.
         ''' </summary>
         ''' <param name="strFileName">New FN to copy the DB to</param>
         ''' <returns>True if succesful.</returns>
@@ -222,7 +229,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the version of the datasource.
+        ''' Returns the version of the createRectangle.
         ''' </summary>
         ''' <returns>A version number, or <see cref="cDATABASE_NOVERSION">cDATABASE_NOVERSION</see> 
         ''' if the database is not connected.</returns>
@@ -325,10 +332,10 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether the datasource has unsaved changes that do not relate
+        ''' States whether the createRectangle has unsaved changes that do not relate
         ''' to any of the supported sub-models.
         ''' </summary>
-        ''' <returns>True if the datasource has pending changes.</returns>
+        ''' <returns>True if the createRectangle has pending changes.</returns>
         ''' -------------------------------------------------------------------
         Friend Function IsChanged() As Boolean Implements DataSources.IEwEDataSource.IsModified
             If Not Me.IsConnected() Then Return False
@@ -338,7 +345,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Clears all changed information for either a given data type or for 
-        ''' the entire datasource.
+        ''' the entire createRectangle.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Friend Sub ClearChanged() Implements IEwEDataSource.ClearChanged
@@ -350,7 +357,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Flag a core object as changed in the datasource.
+        ''' Flag a core object as changed in the createRectangle.
         ''' </summary>
         ''' <param name="cc">The <see cref="eDataTypes">Type</see> of the object that changed.</param>
         ''' -------------------------------------------------------------------
@@ -446,7 +453,7 @@ Namespace DataSources
             ''' under which the object is stored in the current database, and how it is currently
             ''' known in the core database ID arrays.</param>
             ''' <param name="iIDNew">The mapped database ID of the object. This is the value that
-            ''' has been assigned by the datasource when creating a new instance of the object
+            ''' has been assigned by the createRectangle when creating a new instance of the object
             ''' in the database.</param>
             ''' -----------------------------------------------------------------------
             Public Sub Add(ByVal dt As eDataTypes, ByVal iIDOrg As Integer, ByVal iIDNew As Integer)
@@ -529,14 +536,14 @@ Namespace DataSources
 
 #End Region ' Messages
 
-#Region " Generic datasource "
+#Region " Generic createRectangle "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Compact the data in the datasource. Please ensure that this operation
+        ''' Compact the data in the createRectangle. Please ensure that this operation
         ''' is possible via <see cref="CanCompact">CanCompact</see>.
         ''' </summary>
-        ''' <param name="strTarget">The destination to compact the datasource to.</param>
+        ''' <param name="strTarget">The destination to compact the createRectangle to.</param>
         ''' <returns>True if succesful.</returns>
         ''' -----------------------------------------------------------------------
         Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
@@ -546,9 +553,9 @@ Namespace DataSources
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Returns whether the data underlying the datasource can be compacted.
+        ''' Returns whether the data underlying the createRectangle can be compacted.
         ''' </summary>
-        ''' <param name="strTarget">The destination to test whether the datasource 
+        ''' <param name="strTarget">The destination to test whether the createRectangle 
         ''' can compact to.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
@@ -557,7 +564,7 @@ Namespace DataSources
             Return Me.m_db.CanCompact(strTarget, strTarget)
         End Function
 
-#End Region ' Generic datasource
+#End Region ' Generic createRectangle
 
 #Region " EwEModel "
 
@@ -565,13 +572,16 @@ Namespace DataSources
         ''' <summary>
         ''' Initiates a full load of an EwE model.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function LoadModel() As Boolean _
              Implements IEcopathDataSource.LoadModel
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim bSucces As Boolean = True
+
+            ' Clear changed admin
+            Me.ClearChanged()
 
             bSucces = Me.LoadModelInfo()
             If bSucces = False Then Return False
@@ -1318,7 +1328,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Remove a pedigree level from the datasource.
+        ''' Remove a pedigree level from the createRectangle.
         ''' </summary>
         ''' <param name="iPedigreeLevelID">Database ID of the pedigree level to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -1842,9 +1852,9 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States if the datasource has unsaved changes for Ecopath.
+        ''' States if the createRectangle has unsaved changes for Ecopath.
         ''' </summary>
-        ''' <returns>True if the datasource has pending changes for Ecopath.</returns>
+        ''' <returns>True if the createRectangle has pending changes for Ecopath.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsEcopathModified() As Boolean Implements DataSources.IEcopathDataSource.IsEcopathModified
 
@@ -1958,7 +1968,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Update group info in the datasource.
+        ''' Update group info in the createRectangle.
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
@@ -2048,7 +2058,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a record for a new Ecopath group in the datasource.
+        ''' Create a record for a new Ecopath group in the createRectangle.
         ''' </summary>
         ''' <param name="strGroupName">The name of the group to create.</param>
         ''' <param name="sPP">The type of the new group; 0=consumer, 1=producer, 2=detritus, or a cons/prod ratio.</param>
@@ -2153,7 +2163,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Remove a group from the datasource.
+        ''' Remove a group from the createRectangle.
         ''' </summary>
         ''' <param name="iGroupID">Database ID of the group to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -2585,7 +2595,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Saves all fleet-related data to the datasource.
+        ''' Saves all fleet-related data to the createRectangle.
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
@@ -2746,7 +2756,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds a fleet to the datasource.
+        ''' Adds a fleet to the createRectangle.
         ''' </summary>
         ''' <param name="strFleetName">Name of the new fleet.</param>
         ''' <param name="iFleetID">Database ID assigned to the new fleet.</param>
@@ -2817,7 +2827,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes a fleet from the datasource.
+        ''' Removes a fleet from the createRectangle.
         ''' </summary>
         ''' <param name="iFleetID">Database ID of the fleet to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -2916,7 +2926,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an time series dataset to the datasource.
+        ''' Adds an time series dataset to the createRectangle.
         ''' </summary>
         ''' <param name="strDatasetName">Name to assign to new dataset.</param>
         ''' <param name="strDescription">Description to assign to new dataset.</param>
@@ -2990,7 +3000,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes all time series belonging to a specific dataset from the datasource.
+        ''' Removes all time series belonging to a specific dataset from the createRectangle.
         ''' </summary>
         ''' <param name="iDataset">Index of the dataset to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -3003,7 +3013,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes all time series belonging to a specific dataset from the datasource.
+        ''' Removes all time series belonging to a specific dataset from the createRectangle.
         ''' </summary>
         ''' <param name="iDatasetID">Database ID of the dataset to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -3095,7 +3105,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Update group info in the datasource.
+        ''' Update group info in the createRectangle.
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
@@ -3233,15 +3243,15 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States if the datasource has unsaved changes for Ecosim.
+        ''' States if the createRectangle has unsaved changes for Ecosim.
         ''' </summary>
-        ''' <returns>True if the datasource has pending changes for Ecosim.</returns>
+        ''' <returns>True if the createRectangle has pending changes for Ecosim.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsEcosimModified() As Boolean Implements DataSources.IEcosimDatasource.IsEcosimModified
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-            ' Hmm, maybe the datasource should have a better way to 'remember' whether a sim scenario has been loaded.
+            ' Hmm, maybe the createRectangle should have a better way to 'remember' whether a sim scenario has been loaded.
             If Not Me.IsConnected() Then Return False
             If ecopathDS.ActiveEcosimScenario < 0 Then Return False
             Return Me.IsChanged(s_EcosimComponents)
@@ -3366,7 +3376,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Save the current active Ecosim scenario in the datasource under
+        ''' Save the current active Ecosim scenario in the createRectangle under
         ''' a given database ID.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID to save the current scenario to.
@@ -3944,7 +3954,7 @@ Namespace DataSources
                     mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup), cCore.NULL_VALUE))
                     mseDS.cvRec(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup), cCore.NULL_VALUE))
 
-                    ' bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
+                    bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iEcopathGroup))
@@ -5054,50 +5064,46 @@ Namespace DataSources
 
         End Function
 
-#If 0 Then ' Fish mort data is solely an output: no more need to store in DB
+        Private Function LoadFishMortShape(ByVal iShapeID As Integer, ByVal iForcingShape As Integer) As Boolean
 
-    Private Function LoadFishMortShape(ByVal iShapeID As Integer, ByVal iForcingShape As Integer) As Boolean
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim readerShape As IDataReader = Nothing
+            Dim strMemo As String = ""
+            Dim astrMemoBits() As String
+            Dim bSucces As Boolean = True
 
-        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim readerShape As IDataReader = Nothing
-        Dim strMemo As String = ""
-        Dim astrMemoBits() As String
-        Dim bSucces As Boolean = True
+            If iShapeID = 0 Then Return bSucces
 
-        If iShapeID = 0 Then Return bSucces
+            Try
 
-        Try
+                readerShape = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimShapeFishMort WHERE (ShapeID={0})", iShapeID))
+                readerShape.Read()
+                ' Store ID
+                ecosimDS.FishRateNoDBID(iForcingShape) = iShapeID
+                ' Store title
+                ecosimDS.FishRateNoTitle(iForcingShape) = CStr(readerShape("Title"))
+                ' Store points
+                strMemo = CStr(readerShape("zScale"))
+                ' Got points?
+                If Not String.IsNullOrEmpty(strMemo) Then
+                    ' #Yes: split and process
+                    astrMemoBits = strMemo.Trim.Split(CChar(" "))
+                    For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
+                        ecosimDS.FishRateNo(iForcingShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 0)
+                    Next
+                End If
 
-            readerShape = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimShapeFishMort WHERE (ShapeID={0})", iShapeID))
-            readerShape.Read()
-            ' Store ID
-            ecosimDS.FishRateNoDBID(iForcingShape) = iShapeID
-            ' Store title
-            ecosimDS.FishRateNoTitle(iForcingShape) = CStr(readerShape("Title"))
-            ' Store points
-            strMemo = CStr(readerShape("zScale"))
-            ' Got points?
-            If Not String.IsNullOrEmpty(strMemo) Then
-                ' #Yes: split and process
-                astrMemoBits = strMemo.Trim.Split(CChar(" "))
-                For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
-                    ecosimDS.FishRateNo(iForcingShape, j) = StringUtils.ConvertToSingle(astrMemoBits(j - 1), 0)
-                Next
-            End If
+                Me.m_db.ReleaseReader(readerShape)
+                readerShape = Nothing
 
-            Me.m_db.ReleaseReader(readerShape)
-            readerShape = Nothing
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading fish mortality shape {1}", ex.Message, iShapeID))
+                bSucces = False
+            End Try
 
-        Catch ex As Exception
-            Me.LogMessage(String.Format("Error {0} occurred while reading fish mortality shape {1}", ex.Message, iShapeID))
-            bSucces = False
-        End Try
+            Return bSucces
 
-        Return bSucces
-
-    End Function
-
-#End If
+        End Function
 
 #End Region ' Shape load helpers
 
@@ -5228,7 +5234,7 @@ Namespace DataSources
                         Else
                             drow.EndEdit()
                         End If
-                        ' bSucces = bSucces And Me.SaveFishMortShape(iShape, idm)
+                        bSucces = bSucces And Me.SaveFishMortShape(iShape, idm)
                     End If
                 Next iShape
 
@@ -5669,62 +5675,58 @@ Namespace DataSources
 
         End Function
 
-#If 0 Then ' Fish mort data is solely an output: no more need to store in DB
+        Private Function SaveFishMortShape(ByVal iShape As Integer, ByVal idm As cIDMappings) As Boolean
 
-    Private Function SaveFishMortShape(ByVal iShape As Integer, ByVal idm As cIDMappings) As Boolean
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim iDBID As Integer = idm.GetID(eDataTypes.FishMort, ecosimDS.FishRateNoDBID(iShape))
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim sbZScale As New Text.StringBuilder()
+            Dim adrows() As DataRow = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
 
-        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim iDBID As Integer = idm.GetID(eDataTypes.FishMort, ecosimDS.FishRateNoDBID(iShape))
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-        Dim dt As DataTable = Nothing
-        Dim sbZScale As New Text.StringBuilder()
-        Dim adrows() As DataRow = Nothing
-        Dim drow As DataRow = Nothing
-        Dim bSucces As Boolean = True
+            Debug.Assert(iDBID > 0, String.Format("Invalid ID for FishMortShape shape {0}", iDBID))
 
-        Debug.Assert(iDBID > 0, String.Format("Invalid ID for FishMortShape shape {0}", iDBID))
+            Try
+                writer = Me.m_db.GetWriter("EcosimShapeFishMort")
+                dt = writer.GetDataTable()
+                adrows = dt.Select(String.Format("ShapeID={0}", iDBID))
+                If adrows.Length = 1 Then
+                    drow = adrows(0)
+                    drow.BeginEdit()
+                Else
+                    drow = writer.NewRow()
+                    drow("ShapeID") = iDBID
+                End If
 
-        Try
-            writer = Me.m_db.GetWriter("EcosimShapeFishMort")
-            dt = writer.GetDataTable()
-            adrows = dt.Select(String.Format("ShapeID={0}", iDBID))
-            If adrows.Length = 1 Then
-                drow = adrows(0)
-                drow.BeginEdit()
-            Else
-                drow = writer.NewRow()
-                drow("ShapeID") = iDBID
-            End If
+                drow("Title") = ecosimDS.FishRateNoTitle(iShape)
+                For ipt As Integer = 1 To ecosimDS.NTimes
+                    If (ipt > 1) Then sbZScale.Append(" ")
+                    sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.FishRateNo(iShape, ipt)))
+                Next
+                drow("Zscale") = sbZScale.ToString()
 
-            drow("Title") = ecosimDS.FishRateNoTitle(iShape)
-            For ipt As Integer = 1 To ecosimDS.NTimes
-                If (ipt > 1) Then sbZScale.Append(" ")
-                sbZScale.Append(StringUtils.FormatSingle(ecosimDS.FishRateNo(iShape, ipt)))
-            Next
-            drow("Zscale") = sbZScale.ToString()
+                If adrows.Length = 1 Then
+                    drow.EndEdit()
+                Else
+                    writer.AddRow(drow)
+                End If
+                Me.m_db.ReleaseWriter(writer, True)
 
-            If adrows.Length = 1 Then
-                drow.EndEdit()
-            Else
-                writer.AddRow(drow)
-            End If
-            Me.m_db.ReleaseWriter(writer, True)
+            Catch ex As Exception
+                bSucces = False
+            End Try
 
-        Catch ex As Exception
-            bSucces = False
-        End Try
+            Return bSucces
 
-        Return bSucces
-
-    End Function
-
-#End If
+        End Function
 
 #End Region ' Shape save helpers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Appends a forcing shape to the datasource.
+        ''' Appends a forcing shape to the createRectangle.
         ''' </summary>
         ''' <param name="strShapeName">Name to assign to new shape.</param>
         ''' <param name="shapeType"><see cref="eDataTypes">Type of the shape</see> to add.</param>
@@ -5930,7 +5932,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Import a <see cref="cTimeSeriesImport">cTimeSeriesImport</see> instance into the datasource.
+        ''' Import a <see cref="cTimeSeriesImport">cTimeSeriesImport</see> instance into the createRectangle.
         ''' </summary>
         ''' <param name="ts">The time series data to import.</param>
         ''' <param name="iDataset">Index of the dataset to add the time series to.</param>
@@ -6230,7 +6232,7 @@ Namespace DataSources
             tsDS.ActiveDatasetIndex = iDataset
             tsDS.nMaxYears = tsDS.nDatasetNumYears(iDataset)
 
-            ' JS 20oct07: datasource should NOT do this; is responsibility of core logic
+            ' JS 20oct07: createRectangle should NOT do this; is responsibility of core logic
             tsDS.nGroups = ecopathDS.NumGroups
 
             If (iDataset > 0) Then
@@ -6431,7 +6433,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds a time series to the datasource.
+        ''' Adds a time series to the createRectangle.
         ''' </summary>
         ''' <param name="strName">Name of the new Time Series to add.</param>
         ''' <param name="timeSeriesType"><see cref="eTimeSeriesType">Type</see> of the time series.</param>
@@ -6525,7 +6527,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes a time series from the datasource.
+        ''' Removes a time series from the createRectangle.
         ''' </summary>
         ''' <param name="iTimeSeriesID">Database ID of the time series to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -6637,15 +6639,15 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States if the datasource has unsaved changes for Ecospace.
+        ''' States if the createRectangle has unsaved changes for Ecospace.
         ''' </summary>
-        ''' <returns>True if the datasource has pending changes for Ecospace.</returns>
+        ''' <returns>True if the createRectangle has pending changes for Ecospace.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsEcospaceModified() As Boolean Implements DataSources.IEcospaceDatasource.IsEcospaceModified
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-            ' Hmm, maybe the datasource should have a better way to 'remember' whether a space scenario has been loaded.
+            ' Hmm, maybe the createRectangle should have a better way to 'remember' whether a space scenario has been loaded.
             If Not Me.IsConnected() Then Return False
             If ecopathDS.ActiveEcospaceScenario < 0 Then Return False
 
@@ -6820,7 +6822,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Updates the active ecospace scenario under the given ID in the datasource.
+        ''' Updates the active ecospace scenario under the given ID in the createRectangle.
         ''' This method is the one external interface to save an Ecospace scenario
         ''' and everything under it.
         ''' </summary>
@@ -6870,7 +6872,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Internal method; updates the active ecospace scenario in the datasource,
+        ''' Internal method; updates the active ecospace scenario in the createRectangle,
         ''' optionally saving to a different scenario.
         ''' </summary>
         ''' <param name="idm"><see cref="cIDMappings">ID mapping</see> providing
@@ -6963,7 +6965,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an ecospace scenario to the datasource.
+        ''' Adds an ecospace scenario to the createRectangle.
         ''' </summary>
         ''' <param name="strScenarioName">Name to assign to new scenario.</param>
         ''' <param name="strDescription">Description to assign to new scenario.</param>
@@ -7693,7 +7695,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an ecospace region to active scenario in the datasource.
+        ''' Adds an ecospace region to active scenario in the createRectangle.
         ''' </summary>
         ''' <param name="strRegionName">Name to assign to new region.</param>
         ''' <param name="iRegionID">Database ID assigned to the new region.</param>
@@ -7715,7 +7717,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Internal call to actually add an ecospace region to a select
-        ''' scenario in the datasource.
+        ''' scenario in the createRectangle.
         ''' </summary>
         ''' <param name="strRegionName">Name to assign to new region.</param>
         ''' <param name="iRegionID">Database ID assigned to the new region.</param>
@@ -7773,7 +7775,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes an ecospace region from the active scenario in the datasource.
+        ''' Removes an ecospace region from the active scenario in the createRectangle.
         ''' </summary>
         ''' <param name="iRegionID">Database ID of the region to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -8966,7 +8968,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Adds an ecospace Importance Layer to the active scenario in the
-        ''' datasource.
+        ''' createRectangle.
         ''' </summary>
         ''' <param name="strName"></param>
         ''' <param name="strDescription"></param>
@@ -9034,7 +9036,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Adds an ecospace Importance Layer from the active scenario in the
-        ''' datasource.
+        ''' createRectangle.
         ''' </summary>
         ''' <param name="iLayerID">Database ID of the layer to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -9072,16 +9074,16 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States if the datasource has unsaved changes for Ecotracer.
+        ''' States if the createRectangle has unsaved changes for Ecotracer.
         ''' </summary>
-        ''' <returns>True if the datasource has pending changes for Ecotracer.</returns>
+        ''' <returns>True if the createRectangle has pending changes for Ecotracer.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsEcotracerModified() As Boolean _
                  Implements DataSources.IEcotracerDatasource.IsEcotracerModified
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-            ' Hmm, maybe the datasource should have a better way to 'remember' whether a tracer scenario has been loaded.
+            ' Hmm, maybe the createRectangle should have a better way to 'remember' whether a tracer scenario has been loaded.
             If Not Me.IsConnected() Then Return False
             If ecopathDS.ActiveEcotracerScenario < 0 Then Return False
 
@@ -9095,7 +9097,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Loads an Ecotracer scenario from the datasource.
+        ''' Loads an Ecotracer scenario from the createRectangle.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID of the scenario to load.</param>
         ''' <returns>True if succesful.</returns>
@@ -9150,7 +9152,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Load Ecotracer groups from the datasource.
+        ''' Load Ecotracer groups from the createRectangle.
         ''' </summary>
         ''' <param name="iScenarioID">The Ecotracer scenario to load groups for.</param>
         ''' <returns>True if succesful.</returns>
@@ -9196,7 +9198,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Save the current active Ecotracer scenario in the datasource under
+        ''' Save the current active Ecotracer scenario in the createRectangle under
         ''' a given database ID.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID to save the current scenario to.
@@ -9349,7 +9351,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an Ecotracer scenario to the datasource.
+        ''' Adds an Ecotracer scenario to the createRectangle.
         ''' </summary>
         ''' <param name="strScenarioName">Name to assign to new scenario.</param>
         ''' <param name="strDescription">Description to assign to new scenario.</param>
@@ -9421,7 +9423,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes an Ecotracer scenario from the datasource.
+        ''' Removes an Ecotracer scenario from the createRectangle.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID of the scenario to remove.</param>
         ''' <returns>True if succesful.</returns>
