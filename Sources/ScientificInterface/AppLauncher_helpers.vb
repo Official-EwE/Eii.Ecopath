@@ -21,11 +21,12 @@ Partial Public Class AppLauncher
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Class cEwEFormStateHelper
+        Implements IDisposable
 
 #Region " Privates "
 
         ''' <summary>Core state monitor that is being observed.</summary>
-        Private WithEvents m_csm As cCoreStateMonitor = Nothing
+        Private m_csm As cCoreStateMonitor = Nothing
         ''' <summary>Dock panel containing the forms to maintain.</summary>
         Private m_dp As DockPanel = Nothing
         ''' <summary>Core controller to work with.</summary>
@@ -41,6 +42,21 @@ Partial Public Class AppLauncher
             Me.m_dp = dp
             Me.m_cc = cc
             Me.m_csm = csm
+
+            AddHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        End Sub
+
+        Public Sub Dispose() _
+            Implements IDisposable.Dispose
+
+            If (Me.m_csm IsNot Nothing) Then
+                RemoveHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+                Me.m_dp = Nothing
+                Me.m_cc = Nothing
+                Me.m_csm = Nothing
+            End If
+            GC.SuppressFinalize(Me)
+
         End Sub
 
 #End Region ' Construction
@@ -53,8 +69,7 @@ Partial Public Class AppLauncher
         ''' </summary>
         ''' <param name="csm">Core state monitor that threw the event.</param>
         ''' -------------------------------------------------------------------
-        Private Sub m_csm_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
-            Handles m_csm.CoreExecutionStateEvent
+        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
             Me.UpdateFormStates()
         End Sub
 

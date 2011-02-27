@@ -781,6 +781,9 @@ Public Class AppLauncher
         RemoveHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
         RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
 
+        Me.m_FormStateHelper.Dispose()
+        Me.m_FormStateHelper = Nothing
+
         Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
         Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
         Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
@@ -1632,7 +1635,6 @@ Public Class AppLauncher
         For Each f As Form In lForms
             f.Close()
         Next
-        ' Let's explicitly clean-up for once.
         lForms = Nothing
 
         Me.UpdateSelectedNode("", False)
@@ -2344,19 +2346,16 @@ Public Class AppLauncher
                         ' #Yes
                         If frm.WindowState = FormWindowState.Minimized Then frm.WindowState = FormWindowState.Normal
                         ' Is this a dockable form? 
-                        If (TypeOf frm Is DockContent) And (m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
-                            ' #Yes
-                            ' Show the form in the dock panel
+                        If (TypeOf frm Is DockContent) And (Me.m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
+                            ' #Yes: show the form in the dock panel
                             DirectCast(frm, DockContent).Show(Me.m_DockPanel, DockState.Document)
-                            ' Switch help
-                            Me.Help.HelpTopic(frm) = strNavHelpURL
                         Else
-                            ' Show form
+                            ' #No: Just show the form
                             frm.MdiParent = Me
                             frm.Show()
-                            ' Switch help
-                            Me.Help.HelpTopic(frm) = strNavHelpURL
                         End If
+                        ' Switch help
+                        Me.Help.HelpTopic(frm) = strNavHelpURL
                     End If
                 Catch ex As Exception
                     ' Whoah!
