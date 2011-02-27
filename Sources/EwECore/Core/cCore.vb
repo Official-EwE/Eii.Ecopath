@@ -11610,9 +11610,9 @@ Public Class cCore
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration
                         bRecalcStanza = (egi.iStanza > 0)
 
-                        If value.varName = eVarNameFlags.PBInput Then
+                        If (value.varName = eVarNameFlags.PBInput) And (Me.m_StateMonitor.HasEcosimLoaded) Then
                             'update bgoal from the new PB
-                            Me.m_SearchData.setDefaultBGoal(Me.m_EcoPathData.PBinput) 'use PBInput because PB has not been update at this time
+                            Me.m_SearchData.setDefaultBGoal(Me.m_EcoPathData.PBinput) 'use PBInput because PB has not been updated at this time
                             'load the values into the search manager
                             'if Ecosim has not been loaded SearchObjectiveManager.Load() will do nothing
                             Me.m_SearchManagers(eDataTypes.SearchObjectiveManager).Load()
@@ -11620,7 +11620,6 @@ Public Class cCore
                             Dim msg As New cMessage("Search Structure rel. weight changed.", eMessageType.DataModified, _
                                             eCoreComponentType.SearchObjective, eMessageImportance.Maintenance, eDataTypes.SearchObjectiveManager)
                             Me.m_publisher.AddMessage(msg)
-
                         End If
 
                     Case eVarNameFlags.GS
