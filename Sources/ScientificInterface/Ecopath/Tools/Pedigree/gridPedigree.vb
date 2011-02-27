@@ -202,7 +202,7 @@ Namespace Ecopath.Tools
         ''' to use for rendering cells.
         ''' </summary>
         ''' <remarks>
-        ''' This monster has to be provided by the master UI. Only once occurrance
+        ''' This monster has to be provided by the master UI. Only once occurrence
         ''' is used to trigger display changes throughout the pedigree interface.
         ''' </remarks>
         ''' -------------------------------------------------------------------
