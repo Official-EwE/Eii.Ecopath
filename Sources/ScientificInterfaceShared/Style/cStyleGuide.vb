@@ -62,7 +62,7 @@ Namespace Style
         ''' <summary>Color ramp for obtaining fleet colors</summary>
         Private m_colorrampFleets As New ARGBColorRamp(New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#})
         ''' <summary>Color ramp for obtaining pedigree colors</summary>
-        Private m_colorrampPedigree As New ARGBColorRamp(New Color() {Color.FromArgb(255, 210, 210, 255), Color.FromArgb(255, 80, 80, 200), Color.FromArgb(255, 0, 0, 130)}, New Double() {0.0#, 0.6#, 0.4#})
+        Private m_colorrampPedigree As New SAUPColorRamp() '  New ARGBColorRamp(New Color() {Color.FromArgb(255, 210, 210, 255), Color.FromArgb(255, 80, 80, 200), Color.FromArgb(255, 0, 0, 130)}, New Double() {0.0#, 0.6#, 0.4#})
         ''' <summary>Start offset for colour ramp.</summary>
         Private Const c_sRampOffsetStart As Single = 0.15!
         ''' <summary>End offset for colour ramp.</summary>
@@ -114,6 +114,9 @@ Namespace Style
             ' Control how colour ramp delivers its colours
             Me.m_colorrampGroups.ColorOffsetStart = c_sRampOffsetStart
             Me.m_colorrampGroups.ColorOffsetEnd = c_sRampOffsetEnd
+
+            Me.m_colorrampPedigree.ColorOffsetStart = c_sRampOffsetStart
+            Me.m_colorrampPedigree.ColorOffsetEnd = c_sRampOffsetEnd
 
             ' Load up
             Me.ResetApplicationColors()
@@ -1100,8 +1103,7 @@ Namespace Style
         ''' <param name="iLevel">The level index to obtain the default colour for.</param>
         ''' <param name="nLevels">Number of levels to scale colour by.</param>
         ''' <returns>
-        ''' Default pedgree colours are picked from a colour ramp that runs from
-        ''' red, via yellow, to green.
+        ''' Default pedigree colours are picked from a SAUP/EwE5 colour ramp.
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function PedigreeColorDefault(ByVal iLevel As Integer, _

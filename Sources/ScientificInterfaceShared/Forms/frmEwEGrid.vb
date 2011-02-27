@@ -15,6 +15,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2.Cells
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 

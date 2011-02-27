@@ -5,6 +5,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

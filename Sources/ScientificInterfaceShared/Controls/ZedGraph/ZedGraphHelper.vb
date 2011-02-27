@@ -15,6 +15,7 @@ Imports System.Threading
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
