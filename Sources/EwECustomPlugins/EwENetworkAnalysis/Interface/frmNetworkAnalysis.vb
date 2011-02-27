@@ -5,11 +5,10 @@ Option Explicit On
 
 Imports System.IO
 Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
-Imports EwECore
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
