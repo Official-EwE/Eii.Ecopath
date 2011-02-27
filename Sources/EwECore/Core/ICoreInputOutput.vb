@@ -579,7 +579,7 @@ Public MustInherit Class cCoreInputOutputBase
             End If
 
         Catch ex As KeyNotFoundException
-            'this is most likely a programing error so assert and try to figure out why
+            'this is most likely a programming error so assert and try to figure out why
             m_ValidationStatus.Status = eStatusFlags.ErrorEncountered
             m_ValidationStatus.Message = Me.ToString & ".setVariable(...) Failed to find variable: " & VarName.ToString
             Debug.Assert(False, Me.ToString & ".setVariable(...) Failed to find variable: " & VarName.ToString)
