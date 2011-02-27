@@ -484,13 +484,13 @@ Namespace Ecosim
 
                     bmp = New Bitmap(LargeIconSize, LargeIconSize)
                     Using g As Graphics = Graphics.FromImage(bmp)
-                        ShapeImage.DrawShape(Me.m_uic, shapeFunc, New Rectangle(0, 0, bmp.Width, bmp.Height), g, Color.Red, eSketchDrawModeTypes.Line)
+                        cShapeImage.DrawShape(Me.m_uic, shapeFunc, New Rectangle(0, 0, bmp.Width, bmp.Height), g, Color.Red, eSketchDrawModeTypes.Line)
                         m_ilLarge.Images.Add(bmp)
                     End Using
 
                     bmp = New Bitmap(SmallIconSize, SmallIconSize)
                     Using g As Graphics = Graphics.FromImage(bmp)
-                        ShapeImage.DrawShape(Me.m_uic, shapeFunc, New Rectangle(0, 0, bmp.Width, bmp.Height), g, Color.Red, eSketchDrawModeTypes.Line)
+                        cShapeImage.DrawShape(Me.m_uic, shapeFunc, New Rectangle(0, 0, bmp.Width, bmp.Height), g, Color.Red, eSketchDrawModeTypes.Line)
                         m_ilSmall.Images.Add(bmp)
                     End Using
 
