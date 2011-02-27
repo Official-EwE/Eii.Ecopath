@@ -11630,14 +11630,16 @@ Public Class cCore
                         'DietComp has been changed by the user
                         'this needs to update the Ecosim dietcomp and refresh the shape functions AppliesTo datastructures 
                         Me.m_StateManager.updateDietComp()
-                        ' Sync the ecosim groups
-                        LoadEcosimGroups()
+                        If Me.m_StateMonitor.HasEcosimLoaded Then
+                            ' Sync the ecosim groups
+                            LoadEcosimGroups()
 
-                        m_PPIManager.Init()
-                        m_PPIManager.Load()
+                            m_PPIManager.Init()
+                            m_PPIManager.Load()
 
-                        Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
-                        '  Me.m_FitToTimeSeries.Load()
+                            Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
+                            '  Me.m_FitToTimeSeries.Load()
+                        End If
 
                     Case eVarNameFlags.VBK
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableValidation?
