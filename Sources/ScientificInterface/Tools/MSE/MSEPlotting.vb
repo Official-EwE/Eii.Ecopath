@@ -301,8 +301,10 @@ Friend Class cMSEPlotter
                 ipane += 1
                 'get the reference data from the core for this datatype
                 Dim RefPoint As cMSERefPoint = Me.getRefPoint(statobj.Index)
-                'Add the data to the graph pane, this will remove existing reference lines
-                Me.plotRefLine(RefPoint.LowerReference, RefPoint.UpperReference, Me.m_zgh.GetPane(ipane))
+                If Not RefPoint Is Nothing Then
+                    'Add the data to the graph pane, this will remove existing reference lines
+                    Me.plotRefLine(RefPoint.LowerReference, RefPoint.UpperReference, Me.m_zgh.GetPane(ipane))
+                End If
 
                 'Do NOT rescale if this is a Histogram
                 If Me.m_type <> ePlotTypes.Histogram Then
@@ -445,6 +447,19 @@ Friend Class cMSEPlotter
                         Me.m_zgh.AutoscalePane(ipane) = True
                     End If
                 Next
+
+            Case ePlotData.FleetTotValue
+
+                'By Fleet
+
+                Me.m_zgh.ConfigurePane("Value combined fleets", Me.XLabel, xStart, _
+                                       CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
+                                       Me.YLabel, 0, 0, _
+                                       False, LegendPos.Top, 1)
+                Me.m_zgh.AutoscalePane(1) = True
+                   
+
+
 
         End Select
 
@@ -821,10 +836,17 @@ Friend Class cMSEPlotter
     End Function
 
     Friend Function nVisPanes() As Integer
+
+        If Me.m_dataType = ePlotData.FleetTotValue Then
+            Return 1
+        End If
+
         If Me.m_dataType = ePlotData.Effort Or Me.m_dataType = ePlotData.FleetValue Then
             Return nVisFleets()
         End If
+
         Return nVisGroups()
+
     End Function
 
     Private Sub getIsFished()

@@ -61,6 +61,8 @@ Namespace MSE
 
         Private m_lstBioEstStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBiomassStats, 1)
 
+        Private m_TotFleetValue As cMSEStats
+
         Private m_output As cMSEOutput
         Private m_parameters As cMSEParameters
 
@@ -233,9 +235,17 @@ Namespace MSE
                 Return DirectCast(Me.m_lstBioEstStats(iGroupIndex), cMSEStats) 'Return Me.m_lstBioEstStats
             End Get
         End Property
+
+
         Public ReadOnly Property ModelParameters() As cMSEParameters
             Get
                 Return Me.m_parameters
+            End Get
+        End Property
+
+        Public ReadOnly Property TotalFleetValueStats() As cMSEStats
+            Get
+                Return Me.m_TotFleetValue
             End Get
         End Property
 
@@ -508,6 +518,8 @@ Namespace MSE
             'set the MSE model in Ecosim
             'Ecosim calls MSE.AssessFs() if the Search is turned On
             Me.m_core.m_EcoSim.InitMSE(m_MSE)
+
+            Me.m_TotFleetValue = New cMSEStats(Me.m_core, Me.m_MSEdata.ValueFleetStats, eDataTypes.MSEValueTotalStats, Me.m_VarToStat, -9999, 1)
 
             'build the Input and Output objects
             Me.m_lstGroupInputs.Clear()

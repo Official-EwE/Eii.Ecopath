@@ -125,10 +125,40 @@
     <value>GrowAndShrink</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="rbTotFleetValue.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rbTotFleetValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="rbTotFleetValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>105, 47</value>
+  </data>
+  <data name="rbTotFleetValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 17</value>
+  </data>
+  <data name="rbTotFleetValue.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="rbTotFleetValue.Text" xml:space="preserve">
+    <value>Value &amp;total</value>
+  </data>
+  <data name="&gt;&gt;rbTotFleetValue.Name" xml:space="preserve">
+    <value>rbTotFleetValue</value>
+  </data>
+  <data name="&gt;&gt;rbTotFleetValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rbTotFleetValue.Parent" xml:space="preserve">
+    <value>Panel1</value>
+  </data>
+  <data name="&gt;&gt;rbTotFleetValue.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="rbBioEst.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="rbBioEst.Location" type="System.Drawing.Point, System.Drawing">
     <value>105, 24</value>
   </data>
@@ -151,13 +181,13 @@
     <value>Panel1</value>
   </data>
   <data name="&gt;&gt;rbBioEst.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btShowHide.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
   <data name="btShowHide.Location" type="System.Drawing.Point, System.Drawing">
-    <value>283, 24</value>
+    <value>333, 21</value>
   </data>
   <data name="btShowHide.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 23</value>
@@ -178,7 +208,7 @@
     <value>Panel1</value>
   </data>
   <data name="&gt;&gt;btShowHide.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_hdrPlots.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -205,19 +235,19 @@
     <value>m_hdrPlots</value>
   </data>
   <data name="&gt;&gt;m_hdrPlots.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.1214, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.228, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPlots.Parent" xml:space="preserve">
     <value>Panel1</value>
   </data>
   <data name="&gt;&gt;m_hdrPlots.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="rbEffort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="rbEffort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 48</value>
+    <value>217, 48</value>
   </data>
   <data name="rbEffort.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 17</value>
@@ -238,13 +268,13 @@
     <value>Panel1</value>
   </data>
   <data name="&gt;&gt;rbEffort.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="rbFleetValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="rbFleetValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 24</value>
+    <value>217, 25</value>
   </data>
   <data name="rbFleetValue.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 17</value>
@@ -265,7 +295,7 @@
     <value>Panel1</value>
   </data>
   <data name="&gt;&gt;rbFleetValue.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="rbGroupCatch.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -292,7 +322,7 @@
     <value>Panel1</value>
   </data>
   <data name="&gt;&gt;rbGroupCatch.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="rbGroupBiomass.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -319,7 +349,7 @@
     <value>Panel1</value>
   </data>
   <data name="&gt;&gt;rbGroupBiomass.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="Panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>123, 4</value>
@@ -364,7 +394,7 @@
     <value>m_hdrType</value>
   </data>
   <data name="&gt;&gt;m_hdrType.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.1214, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.228, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrType.Parent" xml:space="preserve">
     <value>Panel2</value>
@@ -523,6 +553,6 @@
     <value>frmMSEPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.1214, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.228, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

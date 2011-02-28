@@ -1855,6 +1855,11 @@ Namespace Core
         PedigreeManager = 93
 
         ''' <summary>
+        ''' Data belongs to Management Strategy Evaluation statistical results total value.
+        ''' </summary>
+        MSEValueTotalStats = 94
+
+        ''' <summary>
         ''' Data belongs to an external, unspecified source.
         ''' </summary>
         External = 777

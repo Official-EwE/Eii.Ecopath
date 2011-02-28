@@ -28,6 +28,7 @@ Partial Class frmMSEPlots
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEPlots))
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.rbTotFleetValue = New System.Windows.Forms.RadioButton
         Me.rbBioEst = New System.Windows.Forms.RadioButton
         Me.btShowHide = New System.Windows.Forms.Button
         Me.m_hdrPlots = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -49,6 +50,7 @@ Partial Class frmMSEPlots
         'Panel1
         '
         resources.ApplyResources(Me.Panel1, "Panel1")
+        Me.Panel1.Controls.Add(Me.rbTotFleetValue)
         Me.Panel1.Controls.Add(Me.rbBioEst)
         Me.Panel1.Controls.Add(Me.btShowHide)
         Me.Panel1.Controls.Add(Me.m_hdrPlots)
@@ -57,6 +59,12 @@ Partial Class frmMSEPlots
         Me.Panel1.Controls.Add(Me.rbGroupCatch)
         Me.Panel1.Controls.Add(Me.rbGroupBiomass)
         Me.Panel1.Name = "Panel1"
+        '
+        'rbTotFleetValue
+        '
+        resources.ApplyResources(Me.rbTotFleetValue, "rbTotFleetValue")
+        Me.rbTotFleetValue.Name = "rbTotFleetValue"
+        Me.rbTotFleetValue.UseVisualStyleBackColor = True
         '
         'rbBioEst
         '
@@ -180,4 +188,5 @@ Partial Class frmMSEPlots
     Private WithEvents m_hdrPlots As cEwEHeaderLabel
     Friend WithEvents pnlGraph As System.Windows.Forms.Panel
     Private WithEvents ZedGraph As ZedGraph.ZedGraphControl
+    Private WithEvents rbTotFleetValue As System.Windows.Forms.RadioButton
 End Class

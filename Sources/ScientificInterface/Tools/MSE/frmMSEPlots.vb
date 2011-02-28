@@ -62,6 +62,7 @@ Public Class frmMSEPlots
         Me.rbFleetValue.Tag = ePlotData.FleetValue
         Me.rbEffort.Tag = ePlotData.Effort
         Me.rbBioEst.Tag = ePlotData.BioEst
+        Me.rbTotFleetValue.Tag = ePlotData.FleetTotValue
 
         Me.m_curPlotData = ePlotData.Biomass
         Me.m_curPlotType = ePlotTypes.Histogram
@@ -150,6 +151,23 @@ Public Class frmMSEPlots
 
     End Sub
 
+    Private Sub PlotFleetTotValData(ByVal TotFleetValue As cMSEStats, ByVal PlotType As ePlotTypes, ByVal DataType As ePlotData)
+        Dim data As New List(Of cCoreGroupBase)
+
+        Try
+            data.Add(TotFleetValue)
+
+            Me.m_plotter.PlotType = PlotType
+            Me.m_plotter.DataType = DataType
+            Me.m_plotter.AddData(data)
+            Me.m_plotter.Draw()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".PlotFleetData() Exception: " & ex.Message)
+        End Try
+
+    End Sub
+
     Private Sub DrawPlots()
 
         Select Case Me.m_curPlotData
@@ -163,13 +181,15 @@ Public Class frmMSEPlots
                 PlotFleetData(Me.m_MSE.FleetStats, Me.m_curPlotType, Me.m_curPlotData)
             Case ePlotData.Effort
                 PlotFleetData(Me.m_MSE.EffortStats, Me.m_curPlotType, Me.m_curPlotData)
+            Case ePlotData.FleetTotValue
+                PlotFleetTotValData(Me.m_MSE.TotalFleetValueStats, Me.m_curPlotType, Me.m_curPlotData)
         End Select
 
     End Sub
 
     Private Sub onDataTypeCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
                 Handles rbGroupBiomass.CheckedChanged, rbGroupCatch.CheckedChanged, _
-                rbFleetValue.CheckedChanged, rbEffort.CheckedChanged, rbBioEst.CheckedChanged
+                rbFleetValue.CheckedChanged, rbEffort.CheckedChanged, rbBioEst.CheckedChanged, rbTotFleetValue.CheckedChanged
         Try
 
             If DirectCast(sender, RadioButton).Checked Then

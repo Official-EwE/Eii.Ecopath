@@ -722,6 +722,8 @@ Namespace MSE
             Me.m_data.EffortStats.ComputeStats()
             Me.m_data.BioEstStats.ComputeStats()
 
+            Me.m_data.ValueFleetStats.ComputeStats()
+
         End Sub
 
         ''' <summary>
@@ -740,6 +742,8 @@ Namespace MSE
             Me.m_data.ProfitSum.AddIteration()
             Me.m_data.JobsSum.AddIteration()
             Me.m_data.CostSum.AddIteration()
+
+            Me.m_data.ValueFleetStats.AddIteration()
 
         End Sub
 
@@ -2522,11 +2526,15 @@ Namespace MSE
                     Me.m_data.BioStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
                     Me.m_data.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
                 Next igrp
-
+                Dim sumValue As Single
                 For iflt As Integer = 1 To Me.m_esData.nGear
+
+                    sumValue += Me.m_esData.ResultsSumValueByGear(iflt, CInt(iTime))
                     Me.m_data.CatchFleetStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
                     Me.m_data.EffortStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsEffort(iflt, CInt(iTime)))
                 Next iflt
+
+                Me.m_data.ValueFleetStats.AddValue(1, CInt(iTime), sumValue)
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
