@@ -15,6 +15,7 @@ Public Enum eMCParams
     EE = 4
     BA = 5
     Vulnerability = 6  '(one per consumer) same for all prey
+    OtherMort = 7
 End Enum
 
 ''' <summary>
@@ -123,16 +124,15 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-
     Public Function Init() As Boolean
 
         Try
             redimVariables()
 
             'vc sep 2008: adding vulnerability to MC: changed first dimension from 5 to 6
-            ReDim Pmean(6, m_core.nGroups)
-            ReDim startValues(6, m_core.nGroups)
-            ReDim BestFit(6, m_core.nGroups)
+            ReDim Pmean(Me.NumParams(), m_core.nGroups)
+            ReDim startValues(Me.NumParams(), m_core.nGroups)
+            ReDim BestFit(Me.NumParams(), m_core.nGroups)
             ReDim orgVul(m_core.nGroups, m_core.nGroups)
 
             For igrp As Integer = 1 To m_core.nGroups
@@ -142,6 +142,8 @@ Public Class cEcosimMonteCarlo
                 Pmean(eMCParams.BA, igrp) = m_epdata.BA(igrp)
                 'vc sep 2008: adding vulnerability to MC
                 Pmean(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
+                'js feb 2011: added other mort
+                Pmean(eMCParams.OtherMort, igrp) = m_epdata.OtherMortinput(igrp)
             Next
             CalculateUpperLowerLimits(False)
 
@@ -158,12 +160,12 @@ Public Class cEcosimMonteCarlo
 
     Public Sub Clear()
 
-        Me.Pmean = Nothing '(6, m_core.nGroups)
-        Me.startValues = Nothing '(6, m_core.nGroups)
-        Me.BestFit = Nothing '(6, m_core.nGroups)
-        Me.orgVul = Nothing '(m_core.nGroups, m_core.nGroups)
-        Me.ParLimit = Nothing '(1, 6, m_core.nGroups)
-        Me.CVpar = Nothing '(6, m_core.nGroups)
+        Me.Pmean = Nothing
+        Me.startValues = Nothing
+        Me.BestFit = Nothing
+        Me.orgVul = Nothing
+        Me.ParLimit = Nothing
+        Me.CVpar = Nothing
 
     End Sub
 
@@ -268,6 +270,8 @@ Public Class cEcosimMonteCarlo
                 Pmean(eMCParams.BA, iGrp) = m_epdata.BA(iGrp)
                 'vc sep 2008: adding vulnerability to MC
                 Pmean(eMCParams.Vulnerability, iGrp) = m_esdata.VulnerabilityPredator(iGrp)
+                'js feb 2011: added other mort
+                Pmean(eMCParams.OtherMort, iGrp) = m_epdata.OtherMortinput(iGrp)
             Next
 
             'make a copy for the best fitting data 
@@ -481,11 +485,9 @@ Public Class cEcosimMonteCarlo
             For i As Integer = 1 To Me.m_epdata.NumLiving
                 If m_epdata.Binput(i) > 0 Then m_epdata.Binput(i) = startValues(eMCParams.Biomass, i)
                 If m_epdata.PBinput(i) > 0 Then m_epdata.PBinput(i) = startValues(eMCParams.PB, i)
-                If m_epdata.EEinput(i) > 0 Then
-                    m_epdata.EEinput(i) = startValues(eMCParams.EE, i)
-                ElseIf m_epdata.OtherMortinput(i) > 0 Then
-                    m_epdata.OtherMortinput(i) = 1 - startValues(eMCParams.EE, i)
-                End If
+                If m_epdata.EEinput(i) > 0 Then m_epdata.EEinput(i) = startValues(eMCParams.EE, i)
+                If m_epdata.OtherMortinput(i) > 0 Then m_epdata.OtherMortinput(i) = startValues(eMCParams.OtherMort, i)
+
                 m_epdata.BA(i) = startValues(eMCParams.BA, i)
                 'vc sep 2008: adding vulnerability to MC
                 m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
@@ -706,6 +708,10 @@ Public Class cEcosimMonteCarlo
         Next
 
     End Sub
+
+    Private Function NumParams() As Integer
+        Return [Enum].GetValues(GetType(eMCParams)).Length + 1
+    End Function
 
     Private Sub redimVariables()
         Try
