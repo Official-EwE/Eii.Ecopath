@@ -1347,6 +1347,9 @@ Namespace Core
 
         ''' <summary>States if a value is estimated by Ewe.</summary>
         Estimated
+        ''' <summary>1 - EE</summary>
+        ''' <remarks>Added 28Feb11</remarks>
+        OtherMortInput
 
     End Enum
 

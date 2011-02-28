@@ -91,7 +91,8 @@ Public Class cEcoPathGroupOutput
             'Set the Status Flags to ValueComputed for input/output pairs 
             'if the modeled value is different than the input value.
             'The original data structure is needed to perform this.
-            If m_core.m_EcoPathData.EE(Me.Index) <> m_core.m_EcoPathData.EEinput(Me.Index) Then
+            If (m_core.m_EcoPathData.EE(Me.Index) <> m_core.m_EcoPathData.EEinput(Me.Index)) And _
+               (m_core.m_EcoPathData.EE(Me.Index) <> (1 - m_core.m_EcoPathData.OtherMortinput(Me.Index))) Then
                 Me.SetStatusFlags(eVarNameFlags.EEOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.EEOutput, eStatusFlags.ValueComputed)

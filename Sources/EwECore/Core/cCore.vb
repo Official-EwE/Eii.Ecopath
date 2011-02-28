@@ -2916,6 +2916,7 @@ Public Class cCore
 
                 'input variables
                 Input.EEInput = CSng(m_EcoPathData.EEinput(iGroup))
+                Input.OtherMortInput = CSng(m_EcoPathData.OtherMortinput(iGroup))
                 Input.QBInput = CSng(m_EcoPathData.QBinput(iGroup))
                 Input.PBInput = CSng(m_EcoPathData.PBinput(iGroup))
                 Input.GEInput = CSng(m_EcoPathData.GEinput(iGroup))
@@ -3021,6 +3022,7 @@ Public Class cCore
                 m_EcoPathData.QBinput(iGroup) = Input.QBInput
                 m_EcoPathData.PBinput(iGroup) = Input.PBInput
                 m_EcoPathData.EEinput(iGroup) = Input.EEInput
+                m_EcoPathData.OtherMortinput(iGroup) = Input.OtherMortInput
                 m_EcoPathData.GEinput(iGroup) = Input.GEInput
                 m_EcoPathData.BHinput(iGroup) = Input.BiomassAreaInput
 
@@ -4489,15 +4491,30 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_EE_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_EE_OtherMort_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
         ' See EwE5 frmInputData.DisplayBasicInput(..), detritus comment
         obj.AllowValidation = False
 
-        If (obj.PP > 1.0) Then
+        Dim sPP As Single = obj.PP
+        Dim sEE As Single = obj.EEInput
+        Dim sOM As Single = obj.OtherMortInput
+        Dim bLockEE As Boolean = False
+        Dim bLockOM As Boolean = False
+
+        bLockEE = (sOM > 0.0!) Or (sPP > 1.0)
+        bLockOM = (sEE > 0.0!) Or (sPP > 1.0)
+
+        If (bLockEE) Then
             obj.SetStatusFlags(eVarNameFlags.EEInput, eStatusFlags.NotEditable)
         Else
             obj.ClearStatusFlags(eVarNameFlags.EEInput, eStatusFlags.NotEditable)
+        End If
+
+        If (bLockOM) Then
+            obj.SetStatusFlags(eVarNameFlags.OtherMortInput, eStatusFlags.NotEditable)
+        Else
+            obj.ClearStatusFlags(eVarNameFlags.OtherMortInput, eStatusFlags.NotEditable)
         End If
 
         If bSendMessage Then
@@ -11658,8 +11675,11 @@ Public Class cCore
                     Case eVarNameFlags.PP
                         Me.Set_GS_Flags(egi)
                         Me.Set_PB_QB_GE_BA_Flags(egi)
-                        Me.Set_EE_Flags(egi)
+                        Me.Set_EE_OtherMort_Flags(egi)
                         Me.Set_DetImp_Flags(egi)
+
+                    Case eVarNameFlags.EEInput, eVarNameFlags.OtherMortInput
+                        Me.Set_EE_OtherMort_Flags(egi)
 
                 End Select
 

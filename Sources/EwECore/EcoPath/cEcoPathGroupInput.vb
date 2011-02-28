@@ -33,7 +33,7 @@ Public Class cEcoPathGroupInput
 
 #Region "Constructor and Initialization"
 
-    Sub New(ByRef core As cCore, ByVal DBID As Integer)
+    Sub New(ByVal core As cCore, ByVal DBID As Integer)
         MyBase.New(core)
 
         Dim val As cValue = Nothing
@@ -97,6 +97,13 @@ Public Class cEcoPathGroupInput
                 cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
                 cCore.NULL_VALUE) ' When value missing set this input to CORE_NULL
         val = New cValue(New Single, eVarNameFlags.EEInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.EEInput))
+        m_values.Add(val.varName, val)
+
+        'OtherMortInput set to NULL_VALUE when cleared
+        meta = New cVariableMetaData(0, 1, _
+                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
+                cCore.NULL_VALUE) ' When value missing set this input to CORE_NULL
+        val = New cValue(New Single, eVarNameFlags.OtherMortInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.OtherMortInput))
         m_values.Add(val.varName, val)
 
         'Emig
@@ -224,7 +231,7 @@ Public Class cEcoPathGroupInput
         Me.m_core.set_BioAccumRate_Flags(Me, , False)
         Me.m_core.Set_Migration_Flags(Me, False)
         Me.m_core.Set_GS_Flags(Me, False)
-        Me.m_core.Set_EE_Flags(Me, False)
+        Me.m_core.Set_EE_OtherMort_Flags(Me, False)
         Me.m_core.Set_DetImp_Flags(Me, False)
 
         Me.m_core.Set_VBK_Flags(Me, False)
@@ -400,6 +407,23 @@ Public Class cEcoPathGroupInput
 
         Set(ByVal value As Single)
             setVariable(eVarNameFlags.EEInput, value)
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the other mortality ratio for this group, defined as 1 - <see cref="EEInput"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property OtherMortInput() As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.OtherMortInput))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.OtherMortInput, value)
         End Set
 
     End Property
@@ -806,6 +830,24 @@ Public Class cEcoPathGroupInput
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EEInput, value)
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eStatusFlags">status</see> of the 
+    ''' <see cref="OtherMortInput">OtherMortInput value</see> of this group.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property OtherMortInputStatus() As EwECore.eStatusFlags
+
+        Get
+            Return GetStatus(eVarNameFlags.OtherMortInput)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.OtherMortInput, value)
         End Set
 
     End Property

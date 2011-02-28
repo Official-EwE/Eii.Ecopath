@@ -1930,9 +1930,9 @@ Namespace DataSources
                     psdDS.TcatchInput(iGroup) = CSng(reader("Tcatch"))
                     psdDS.TmaxInput(iGroup) = CSng(reader("Tmax"))
 
-
                     'variables with input output pairs
                     ecopathDS.EEinput(iGroup) = CSng(reader("EcoEfficiency"))
+                    ecopathDS.OtherMortinput(iGroup) = CSng(Me.m_db.ReadSafe(reader, "OtherMort", cCore.NULL_VALUE))
                     ecopathDS.PBinput(iGroup) = CSng(reader("ProdBiom"))
                     ecopathDS.QBinput(iGroup) = CSng(reader("ConsBiom"))
                     ecopathDS.GEinput(iGroup) = CSng(reader("ProdCons"))
@@ -2012,6 +2012,7 @@ Namespace DataSources
 
                     'variable with input/output pair only the input gets saved
                     drow("EcoEfficiency") = ecopathDS.EEinput(iGroup)
+                    drow("OtherMort") = ecopathDS.OtherMortinput(iGroup)
                     drow("ProdBiom") = ecopathDS.PBinput(iGroup)
                     drow("ConsBiom") = ecopathDS.QBinput(iGroup)
                     drow("ProdCons") = ecopathDS.GEinput(iGroup)

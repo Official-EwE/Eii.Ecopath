@@ -7,11 +7,11 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cEcopathDataStructures
 
-#Region "Private data"
+#Region " Private data "
 
     Private m_messages As cMessagePublisher
 
-#End Region
+#End Region ' Private data
 
 #Region " Public Variables "
 
@@ -128,6 +128,8 @@ Public Class cEcopathDataStructures
 
     ''' <summary>Ecotrophic efficiency (ratio) - original user input value of <see cref="EE">EE</see>.</summary>
     Public EEinput() As Single
+    ''' <summary>Other mortaility (ratio) - defined as 1-<see cref="EE">EE</see>.</summary>
+    Public OtherMortinput() As Single
     ''' <summary>Production / biomass (/year) - original user input of <see cref="PB">PB</see>.</summary>
     Public PBinput() As Single
     ''' <summary>Consumption / biomass (/year) - original user input of <see cref="QB">QB</see>.</summary>
@@ -403,6 +405,7 @@ Public Class cEcopathDataStructures
         ReDim GEinput(NumGroups)
         ReDim PBinput(NumGroups)
         ReDim EEinput(NumGroups)
+        ReDim OtherMortinput(NumGroups)
         ReDim QBinput(NumGroups)
         ReDim Binput(NumGroups)
         ReDim BHinput(NumGroups)
@@ -1012,10 +1015,19 @@ Public Class cEcopathDataStructures
         Try
             Binput.CopyTo(B, 0)
             BHinput.CopyTo(BH, 0)
-            EEinput.CopyTo(EE, 0)
             PBinput.CopyTo(PB, 0)
             QBinput.CopyTo(QB, 0)
             GEinput.CopyTo(GE, 0)
+
+            ' deal with EE and other mort (1-EE)
+            'EEinput.CopyTo(EE, 0)
+            For i As Integer = 0 To Me.NumGroups
+                If Me.OtherMortinput(i) > 0 Then
+                    EE(i) = 1 - Me.OtherMortinput(i)
+                Else
+                    EE(i) = EEinput(i)
+                End If
+            Next
 
             ' copy dc
             For i As Integer = 0 To Me.NumGroups
@@ -1207,6 +1219,7 @@ Public Class cEcopathDataStructures
             GE.CopyTo(dest.GE, 0)
             GS.CopyTo(dest.GS, 0)
             EEinput.CopyTo(dest.EEinput, 0)
+            OtherMortinput.CopyTo(dest.OtherMortinput, 0)
             PBinput.CopyTo(dest.PBinput, 0)
             QBinput.CopyTo(dest.QBinput, 0)
             GEinput.CopyTo(dest.GEinput, 0)

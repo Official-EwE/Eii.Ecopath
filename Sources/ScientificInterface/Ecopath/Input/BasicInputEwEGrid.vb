@@ -30,6 +30,7 @@ Namespace Ecopath.Input
             PB
             QB
             EE
+            OtherMort
             GE
             GS
             DetImp
@@ -53,6 +54,7 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(SharedResources.HEADER_PB_UNIT, cStyleGuide.eUnitType.Time)
             Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
             Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(SharedResources.HEADER_EE)
+            Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell("Other mortality")
             Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(SharedResources.HEADER_GE)
             Me(0, eColumnTypes.GS) = New EwEColumnHeaderCell(SharedResources.HEADER_UNASSIMILCONSUMPTION)
             Me(0, eColumnTypes.DetImp) = New EwEColumnHeaderCell(SharedResources.HEADER_DETIMP_UNIT, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time})
@@ -119,6 +121,7 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.QB) = cell
 
                     Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EEInput)
+                    Me(iRow, eColumnTypes.OtherMort) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OtherMortInput)
                     Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GEInput)
                     Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GS)
                     Me(iRow, eColumnTypes.DetImp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DetImp)
@@ -169,6 +172,7 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.QB) = cell
 
                     Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EEInput)
+                    Me(iRow, eColumnTypes.OtherMort) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OtherMortInput)
                     Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GEInput)
                     Me(iRow, eColumnTypes.GE).Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GS)
