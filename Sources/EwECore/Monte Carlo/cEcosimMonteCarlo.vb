@@ -481,7 +481,11 @@ Public Class cEcosimMonteCarlo
             For i As Integer = 1 To Me.m_epdata.NumLiving
                 If m_epdata.Binput(i) > 0 Then m_epdata.Binput(i) = startValues(eMCParams.Biomass, i)
                 If m_epdata.PBinput(i) > 0 Then m_epdata.PBinput(i) = startValues(eMCParams.PB, i)
-                If m_epdata.EEinput(i) > 0 Then m_epdata.EEinput(i) = startValues(eMCParams.EE, i) : m_epdata.OtherMortinput(i) = 0
+                If m_epdata.EEinput(i) > 0 Then
+                    m_epdata.EEinput(i) = startValues(eMCParams.EE, i)
+                ElseIf m_epdata.OtherMortinput(i) > 0 Then
+                    m_epdata.OtherMortinput(i) = 1 - startValues(eMCParams.EE, i)
+                End If
                 m_epdata.BA(i) = startValues(eMCParams.BA, i)
                 'vc sep 2008: adding vulnerability to MC
                 m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
