@@ -86,6 +86,7 @@ Public Class AppLauncher
         Public ShowNavPanel As Boolean
         Public FormState As FormWindowState
         Public BorderStyle As FormBorderStyle
+        Public TopMost As Boolean
     End Structure
 
     Private m_fspPresentationMode As New sFormStatePrevious()
@@ -850,7 +851,7 @@ Public Class AppLauncher
 
             ' Egg!
             If (e.KeyCode = Keys.F12) Then
-                MsgBox("Bite me", MsgBoxStyle.Exclamation)
+                MsgBox("Blub", MsgBoxStyle.Exclamation)
             End If
 
             ' Egg!
@@ -2626,15 +2627,17 @@ Public Class AppLauncher
                 .ShowModelBar = Me.m_tsModel.Visible : Me.m_tsModel.Visible = Not My.Settings.PresentationModeHideModelBar
                 .ShowStatusBar = Me.m_ssMain.Visible : Me.m_ssMain.Visible = Not My.Settings.PresentationModeHideStatusBar
                 .ShowNavPanel = Me.Panel(cPANEL_NAV).IsHiding : Me.Panel(cPANEL_NAV).AutoHide = My.Settings.PresentationModeCollapseNavPanel
-                .FormState = Me.WindowState : Me.WindowState = FormWindowState.Maximized
+                ' Order matters!
                 .BorderStyle = Me.FormBorderStyle : Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
+                .FormState = Me.WindowState : Me.WindowState = FormWindowState.Maximized
+                .TopMost = Me.TopMost : Me.TopMost = True
             End With
-            'Me.TopMost = True
             Me.ControlBox = False
         Else
             With Me.m_fspPresentationMode
-                Me.WindowState = .FormState
                 Me.FormBorderStyle = .BorderStyle
+                Me.WindowState = .FormState
+                Me.TopMost = .TopMost
                 Me.m_menuMain.Visible = .ShowMenu
                 Me.m_tsModel.Visible = .ShowModelBar
                 Me.m_ssMain.Visible = .ShowStatusBar
