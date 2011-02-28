@@ -529,6 +529,8 @@ Namespace Controls
 
         Public Shared Function GetTimeSeriesTypeName(ByVal tst As eTimeSeriesType) As String
 
+            ' ToDo_JS: globalize this method
+
             Select Case tst
                 Case eTimeSeriesType.AverageWeight : Return My.Resources.TS_TYPE_AVERAGEWEIGHT
                 Case eTimeSeriesType.BiomassAbs : Return My.Resources.TS_TYPE_BIOMASSABS
@@ -543,6 +545,7 @@ Namespace Controls
                 Case eTimeSeriesType.FishingMortality : Return My.Resources.TS_TYPE_FISHINGMORT
                 Case eTimeSeriesType.TimeForcing : Return My.Resources.TS_TYPE_TIMEFORCING
                 Case eTimeSeriesType.TotalMortality : Return My.Resources.TS_TYPE_TOTALMORT
+                Case eTimeSeriesType.FishingMortalityRef : Return "Fishing mortality (ref)"
             End Select
             Return ""
 
