@@ -44,7 +44,7 @@ Public Class frmMSEAssessFleets
         Try
 
             ' Create and attach datasource
-            Dim ds As New cMSEGroupColorBlockDataSource(Me.UIContext)
+            Dim ds As New cMSEFishingColorBlockDataSource(Me.UIContext)
             Me.m_blocks.Attach(ds, New ucCVBlockSelector)
 
             ' Track styleguide changes
