@@ -12,8 +12,16 @@ Public Class cPredatorPreySelection
 
 #Region "Constructor(s)"
 
-    Public Sub New(ByRef Predator As String)
-        Me.m_core = cCore.GetInstance()
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="Predator"></param>
+    ''' <param name="Core"></param>
+    ''' <remarks>
+    ''' JS 01Mar11: Core must be provided as a parameter.
+    ''' </remarks>
+    Public Sub New(ByRef Predator As String, ByVal Core As cCore)
+        Me.m_core = Core
         m_Predator = Predator
         m_Prey = New List(Of String)
     End Sub
