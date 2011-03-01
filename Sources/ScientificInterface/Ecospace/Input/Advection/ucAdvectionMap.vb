@@ -24,8 +24,6 @@ Namespace Ecospace.Advection
         Private m_uic As cUIContext = Nothing
         ''' <summary>The layer that can be edited in this map, if any.</summary>
         Private m_layerData As cLayer = Nothing
-        ''' <summary>The name of the map to display in the header.</summary>
-        Private m_strMapName As String = "<header>"
 
 #End Region ' Private vars
 
