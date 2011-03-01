@@ -139,7 +139,7 @@
     <value>m_zoomContainer</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucMapZoom, EwE6, Version=6.1.0.818, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.ucMapZoom, EwE6, Version=6.1.1.301, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -199,7 +199,7 @@
     <value>m_zoomToolbar</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Type" xml:space="preserve">
-    <value>ScientificInterface.ucMapZoomToolbar, EwE6, Version=6.1.0.818, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.ucMapZoomToolbar, EwE6, Version=6.1.1.301, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -247,7 +247,7 @@
     <value>m_hdrLayers</value>
   </data>
   <data name="&gt;&gt;m_hdrLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.818, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.301, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLayers.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -268,7 +268,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbEditBasemap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 37</value>
+    <value>35, 37</value>
   </data>
   <data name="tsbEditBasemap.Text" xml:space="preserve">
     <value>M&amp;ap</value>
@@ -280,7 +280,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbEditHabitats.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 37</value>
+    <value>50, 37</value>
   </data>
   <data name="tsbEditHabitats.Text" xml:space="preserve">
     <value>&amp;Habitat</value>
@@ -292,7 +292,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbEditMPA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 37</value>
+    <value>37, 37</value>
   </data>
   <data name="tsbEditMPA.Text" xml:space="preserve">
     <value>&amp;MPA</value>
@@ -304,7 +304,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbEditRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 37</value>
+    <value>48, 35</value>
   </data>
   <data name="tsbEditRegion.Text" xml:space="preserve">
     <value>&amp;Region</value>
@@ -472,6 +472,6 @@
     <value>Basemap</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.818, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.301, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

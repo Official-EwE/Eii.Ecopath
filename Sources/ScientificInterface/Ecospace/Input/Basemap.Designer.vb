@@ -27,6 +27,7 @@ Partial Class Basemap
             Me.m_zoomContainer = New ScientificInterface.Ecospace.ucMapZoom
             Me.plLayers = New System.Windows.Forms.Panel
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
+            Me.m_zoomToolbar = New ScientificInterface.Ecospace.ucMapZoomToolbar
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.tsEditBasemapThingies = New System.Windows.Forms.ToolStrip
@@ -35,7 +36,6 @@ Partial Class Basemap
             Me.tsbEditMPA = New System.Windows.Forms.ToolStripButton
             Me.tsbEditRegion = New System.Windows.Forms.ToolStripButton
             Me.m_plEditor = New System.Windows.Forms.Panel
-            Me.m_zoomToolbar = New ScientificInterface.Ecospace.ucMapZoomToolbar
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -50,6 +50,7 @@ Partial Class Basemap
             Me.m_zoomContainer.Name = "m_zoomContainer"
             Me.m_zoomContainer.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
             Me.m_zoomContainer.UIContext = Nothing
+            Me.m_zoomContainer.ZoomPercentage = 100.0!
             '
             'plLayers
             '
@@ -71,6 +72,14 @@ Partial Class Basemap
             '
             Me.SplitContainer1.Panel2.Controls.Add(Me.TableLayoutPanel1)
             '
+            'm_zoomToolbar
+            '
+            resources.ApplyResources(Me.m_zoomToolbar, "m_zoomToolbar")
+            Me.m_zoomToolbar.MinimumSize = New System.Drawing.Size(100, 25)
+            Me.m_zoomToolbar.Name = "m_zoomToolbar"
+            Me.m_zoomToolbar.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
+            Me.m_zoomToolbar.UIContext = Nothing
+            '
             'TableLayoutPanel1
             '
             resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
@@ -88,6 +97,7 @@ Partial Class Basemap
             'tsEditBasemapThingies
             '
             resources.ApplyResources(Me.tsEditBasemapThingies, "tsEditBasemapThingies")
+            Me.tsEditBasemapThingies.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.tsEditBasemapThingies.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbEditBasemap, Me.tsbEditHabitats, Me.tsbEditMPA, Me.tsbEditRegion})
             Me.tsEditBasemapThingies.Name = "tsEditBasemapThingies"
             '
@@ -119,14 +129,6 @@ Partial Class Basemap
             '
             resources.ApplyResources(Me.m_plEditor, "m_plEditor")
             Me.m_plEditor.Name = "m_plEditor"
-            '
-            'm_zoomToolbar
-            '
-            resources.ApplyResources(Me.m_zoomToolbar, "m_zoomToolbar")
-            Me.m_zoomToolbar.MinimumSize = New System.Drawing.Size(100, 25)
-            Me.m_zoomToolbar.Name = "m_zoomToolbar"
-            Me.m_zoomToolbar.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
-            Me.m_zoomToolbar.UIContext = Nothing
             '
             'Basemap
             '
