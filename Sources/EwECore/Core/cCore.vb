@@ -156,7 +156,6 @@ Public Class cCore
     ''' <para>This is used by any object that needs to know the size of one of the core counters.</para>
     ''' <para>For example:</para>
     ''' <code>
-    ''' Dim core As cCore = cCore.GetInstance()
     ''' Dim iNumGroups As Integer = core.GetCoreCounter(eCoreCounterTypes.nGroups)
     ''' </code>
     ''' </remarks>
@@ -519,38 +518,7 @@ Public Class cCore
 
 #End Region ' Public Core Counters
 
-#Region " Singleton "
-
-    ''' <summary>The single instance of the core.</summary>
-    ''' <remarks>This is the instance of the core that is supplied to the user via the GetInstance() method.</remarks>
-    Private Shared __inst__ As cCore = Nothing
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' This provides a Singleton style interface for getting a reference to the core
-    ''' </summary>
-    ''' <returns>A Core instance</returns>
-    ''' <remarks>
-    ''' This will return the same instance of the core on each call.
-    ''' For a different instance of the core use the New operator.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    <Obsolete("Please do not use cCore.GetInstance any longer. We are getting ready for running multiple cores")> _
-    Public Shared Function GetInstance() As cCore
-
-        'if the core has not been created then create a new cCore instance and return it.
-        If __inst__ Is Nothing Then
-            __inst__ = New cCore
-            __inst__.InitCore()
-        End If
-
-        Return __inst__
-
-    End Function
-
-#End Region ' Singleton
-
-#Region "Public Core Interfaces"
+#Region " Public Core Interfaces "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1954,7 +1922,7 @@ Public Class cCore
 
 #End Region ' Time series
 
-#Region "Generic helper methods"
+#Region " Generic helper methods "
 
     ''' <summary>
     ''' Creates a new cMessage Object
