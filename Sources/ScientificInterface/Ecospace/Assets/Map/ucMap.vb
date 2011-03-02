@@ -122,16 +122,16 @@ Namespace Ecospace
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get a legend for the current map.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property Legend() As cLegend
-            Get
-                Return cLegend.FromMap(Me, Me.m_uic)
-            End Get
-        End Property
+        ' ''' -------------------------------------------------------------------
+        ' ''' <summary>
+        ' ''' Get a legend for the current map.
+        ' ''' </summary>
+        ' ''' -------------------------------------------------------------------
+        'Public ReadOnly Property Legend() As cLegend
+        '    Get
+        '        Return cLegend.FromMap(Me, Me.m_uic)
+        '    End Get
+        'End Property
 
         Public Overrides Sub Refresh()
             Me.UpdateMap()
