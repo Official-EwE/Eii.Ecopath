@@ -271,6 +271,7 @@ Namespace Ecosim
             Me.m_F2TSManager.VulnerabilityVariance = CSng(Me.m_nudVariance.Value)
             Me.m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
             Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
+            Me.m_F2TSManager.NAICDataPoints = CInt(Me.m_nudAICDataPts.Value)
 
             Me.m_F2TSManager.RunSearch()
 
@@ -426,11 +427,6 @@ Namespace Ecosim
         Private Sub OnAnomalySearchChecked(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_cbAnomalySearch.CheckedChanged
             Me.UpdateControls()
-        End Sub
-
-        Private Sub OnNumAICDataPointsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_nudAICDataPts.ValueChanged
-            Me.m_F2TSManager.NAICDataPoints = CInt(Me.m_nudAICDataPts.Value)
         End Sub
 
         Private Sub m_tsbSearchGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
