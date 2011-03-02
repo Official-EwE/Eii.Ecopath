@@ -72,7 +72,6 @@ Namespace Ecospace
 
         Public Function SaveAsBitmap(ByVal strFileName As String, ByVal format As System.Drawing.Imaging.ImageFormat) As Boolean
 
-
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
             Dim ftGroup As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
             Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
@@ -82,18 +81,62 @@ Namespace Ecospace
             Dim iHeight As Integer = 0
             Dim szfItem As SizeF = Nothing
 
-            Using bmpTmp As New Bitmap(100, 100, Imaging.PixelFormat.Format32bppArgb)
+            Dim bSuccess As Boolean = True
+
+            Using bmpTmp As New Bitmap(1000, 300, Imaging.PixelFormat.Format32bppArgb)
                 Using g As Graphics = Graphics.FromImage(bmpTmp)
 
                     If Me.m_bShowTitle Then
-                        'szfItem = Me.RenderTitleSize(GetRenderStyle, 
+                        szfItem = Me.RenderTitleSize(g, ftTitle)
+                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                        iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.m_iTitleVSpacing
                     End If
-                End Using
-            End Using
+
+                    For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
+                        szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
+                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                        iHeight += CInt(Math.Ceiling(szfItem.Height))
+                        If iLayer > 0 Then iHeight += Me.m_iLayerBoxVSpacing
+                    Next iLayer
+
+                End Using ' g
+            End Using ' bmp
+
+            Using bmp As New Bitmap(iWidth, iHeight, Imaging.PixelFormat.Format32bppArgb)
+                Using g As Graphics = Graphics.FromImage(bmp)
+
+                    iWidth = 0 : iHeight = 0
+
+                    If Me.m_bShowTitle Then
+                        szfItem = Me.RenderTitleSize(g, ftTitle)
+                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                        Me.RenderTitle(g, ftTitle, New Point(0, iHeight))
+                        iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.m_iTitleVSpacing
+                    End If
+
+                    For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
+                        szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
+                        Me.RenderLayer(g, ftTitle, Me.m_lLayers(iLayer), New Point(0, iHeight))
+                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                        iHeight += CInt(Math.Ceiling(szfItem.Height))
+                        If iLayer > 0 Then iHeight += Me.m_iLayerBoxVSpacing
+                    Next iLayer
+
+                End Using ' g
+
+                Try
+                    bmp.Save(strFileName, format)
+                Catch ex As Exception
+                    bSuccess = False
+                End Try
+
+            End Using ' bmp
 
             ftTitle.Dispose()
             ftGroup.Dispose()
             ftLayer.Dispose()
+
+            Return bSuccess
 
         End Function
 
