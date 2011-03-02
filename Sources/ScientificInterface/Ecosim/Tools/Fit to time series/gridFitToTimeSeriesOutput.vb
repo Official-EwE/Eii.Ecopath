@@ -64,7 +64,6 @@ Namespace Ecosim
             MyBase.FinishStyle()
             Me.FixedColumnWidths = False
             Me.FixedColumns = 1
-            Me.StretchColumnsToFitWidth()
         End Sub
 
         Public Sub AddFitToTimeSeriesOutput(ByVal iNumParams As Integer, ByVal sSS As Single, ByVal sAIC As Single)
