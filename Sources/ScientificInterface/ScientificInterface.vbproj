@@ -331,9 +331,6 @@
     <Compile Include="Ecosim\Tools\Fit to time series\dlgSensitivityOfSStoV.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeries.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecosim\Tools\Fishing policy search\gridFPSResultFleetValue.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1209,6 +1206,9 @@
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedPrimaryProducer.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeriesOutput.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Shared\IBlockSelector.vb" />
     <Compile Include="Ecosim\Tools\Shared\IPolicyColorBlockDataSource.vb" />
