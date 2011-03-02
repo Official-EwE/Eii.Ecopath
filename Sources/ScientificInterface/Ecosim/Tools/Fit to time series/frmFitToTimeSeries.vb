@@ -121,7 +121,7 @@ Namespace Ecosim
             'Me.m_nudLastYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
 
             Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
-            Me.m_tbxVariance.Text = CStr(Me.m_F2TSManager.VulnerabilityVariance)
+            Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
             Me.m_tbVariancePrimaryProd.Text = CStr(Me.m_F2TSManager.PPVariance)
             Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 1
             Me.m_vulnerabilityBlockMatrix.UIContext = Me.UIContext
@@ -182,7 +182,7 @@ Namespace Ecosim
             Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
             Me.m_nudFirstYear.Value = Math.Max(0, Me.m_F2TSManager.FirstYear - 1)
             Me.m_nudLastYear.Value = Me.m_F2TSManager.LastYear
-            Me.m_tbxVariance.Text = CStr(Me.m_F2TSManager.VulnerabilityVariance)
+            Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
             Me.m_tbVariancePrimaryProd.Text = CStr(Me.m_F2TSManager.PPVariance)
 
             Me.UpdateControls()
@@ -274,7 +274,7 @@ Namespace Ecosim
                 Me.m_F2TSManager.PPVariance = 0.1!
             End Try
             Try
-                Me.m_F2TSManager.VulnerabilityVariance = CSng(Me.m_tbxVariance.Text)
+                Me.m_F2TSManager.VulnerabilityVariance = CSng(Me.m_nudVariance.Value)
             Catch ex As Exception
                 Me.m_F2TSManager.VulnerabilityVariance = 10.0!
             End Try
