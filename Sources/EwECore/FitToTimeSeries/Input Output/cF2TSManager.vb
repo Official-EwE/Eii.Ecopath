@@ -132,6 +132,13 @@ Public Class cF2TSManager
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.F2TSAppliedWeights, eStatusFlags.Null, eCoreCounterTypes.nTimeSeriesApplied, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
+ 
+        ' AIC N Data points
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Integer, eVarNameFlags.F2TSNAICData, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSNAICData))
+        m_values.Add(val.varName, val)
+
+
         Me.AllowValidation = True
 
         ' Create and configure model
@@ -166,6 +173,8 @@ Public Class cF2TSManager
         Me.LastYear = f2tsDS.LastYear
         Me.PPVariance = f2tsDS.PPVariance
         Me.VulnerabilityVariance = f2tsDS.VulnerabilityVariance
+
+        Me.NAICDataPoints = f2tsDS.nAICData
 
         ' Use DBID from current Ecosim scenario
         Me.DBID = Me.m_EPData.EcosimScenarioDBID(Me.m_EPData.ActiveEcosimScenario)
@@ -258,6 +267,8 @@ Public Class cF2TSManager
         f2tsDS.LastYear = Me.LastYear
         f2tsDS.PPVariance = Me.PPVariance
         f2tsDS.VulnerabilityVariance = Me.VulnerabilityVariance
+
+        f2tsDS.nAICData = Me.NAICDataPoints
 
     End Function
 
@@ -368,6 +379,23 @@ Public Class cF2TSManager
         End Set
     End Property
 
+   
+    ''' <summary>
+    ''' Number of data points for the AIC indicator
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property NAICDataPoints() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.F2TSNAICData))
+        End Get
+        Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.F2TSNAICData, value)
+        End Set
+    End Property
+
+
     Public ReadOnly Property nTimeSeriesYears() As Integer
         Get
             Return Me.m_core.m_TSData.nMaxYears
@@ -414,6 +442,8 @@ Public Class cF2TSManager
             m_model.nBlockCodes = value
         End Set
     End Property
+
+
 
 #End Region ' Generic variable access
 

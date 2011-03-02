@@ -934,8 +934,12 @@ Namespace Core
         F2TSAppliedWeights
         ''' <summary>Variance of Vulnerability.</summary>
         F2TSVulnerabilityVariance
+
         ''' <summary>Variance of Primary Production.</summary>
         F2TSPPVariance
+
+        ''' <summary>Number of data points for AIC  </summary>
+        F2TSNAICData
 
         ' Ecotracer
         CZero
