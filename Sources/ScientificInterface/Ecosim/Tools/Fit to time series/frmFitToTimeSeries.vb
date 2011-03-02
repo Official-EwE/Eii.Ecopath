@@ -135,7 +135,7 @@ Namespace Ecosim
 
             Me.m_cmdTSWeights = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
             If (Me.m_cmdTSWeights IsNot Nothing) Then
-                AddHandler Me.m_cmdTSWeights.OnUpdate, AddressOf OnUpdateTSCommand
+                AddHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
             End If
 
             If Me.m_F2TSManager.LastYear > Me.m_F2TSManager.FirstYear Then
@@ -165,7 +165,7 @@ Namespace Ecosim
             Me.m_shapeHandler = Nothing
 
             If (Me.m_cmdTSWeights IsNot Nothing) Then
-                RemoveHandler Me.m_cmdTSWeights.OnUpdate, AddressOf OnUpdateTSCommand
+                RemoveHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
                 Me.m_cmdTSWeights = Nothing
             End If
 
@@ -494,6 +494,7 @@ Namespace Ecosim
             End If
 
             Me.m_bIsRunning = True
+            Me.UpdateControls()
 
         End Sub
 
@@ -531,6 +532,7 @@ Namespace Ecosim
                     End If
 
             End Select
+            Me.UpdateControls()
 
         End Sub
 
@@ -546,6 +548,7 @@ Namespace Ecosim
                 Me.m_dlgSensOfSS.OnRunStopped(runType)
             End If
             Me.m_bIsRunning = False
+            Me.UpdateControls()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -570,7 +573,7 @@ Namespace Ecosim
         ''' time series configuration.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnUpdateTSCommand(ByVal cmd As cCommand)
+        Private Sub OnPostInvokeTSCommand(ByVal cmd As cCommand)
             Me.UpdateControls()
         End Sub
 
