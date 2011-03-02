@@ -129,6 +129,7 @@ Namespace Ecosim
 
             Me.m_grid.Manager = Me.Core.FishingPolicyManager
             Me.m_grid.UIContext = Me.UIContext
+            Me.m_gridOutput.UIContext = Me.UIContext
 
             Me.m_shapeHandler = New AppliedFFGUIHandler()
             Me.m_shapeHandler.Attach(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
@@ -543,9 +544,14 @@ Namespace Ecosim
         ''' <param name="runType"></param>
         ''' -------------------------------------------------------------------
         Private Sub OnRunStopped(ByVal runType As eRunType)
+
+            Dim res As cF2TSResults = Me.m_F2TSManager.Results
+
             Me.LogProgress(String.Format(My.Resources.FIT2TS_PROGRESS_RUNCOMPLETED, Date.Now().ToShortTimeString))
             If (Me.m_dlgSensOfSS IsNot Nothing) Then
                 Me.m_dlgSensOfSS.OnRunStopped(runType)
+            Else
+                Me.m_gridOutput.AddFitToTimeSeriesOutput(1, res.BaseSS, 42.0!)
             End If
             Me.m_bIsRunning = False
             Me.UpdateControls()

@@ -691,6 +691,8 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridOutput.TabIndex = 1
             Me.m_gridOutput.UIContext = Nothing
+            Me.m_gridOutput.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right
+
             '
             'frmFitToTimeSeries
             '
@@ -769,12 +771,12 @@ Namespace Ecosim
         Private WithEvents m_btnTimeSeriesWeights As System.Windows.Forms.Button
         Private WithEvents m_hdrSearch As cEwEHeaderLabel
         Private WithEvents m_tsbSearchGroup As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
-        Friend WithEvents m_nudAICDataPts As System.Windows.Forms.NumericUpDown
+        Private WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_nudAICDataPts As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblAICDataPts As System.Windows.Forms.Label
         Private WithEvents m_scGrids As System.Windows.Forms.SplitContainer
         Private WithEvents m_hdrOutput As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Friend WithEvents m_nudVariance As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudVariance As System.Windows.Forms.NumericUpDown
         Private WithEvents m_nudVariancePrimaryProd As System.Windows.Forms.NumericUpDown
         Private WithEvents m_gridOutput As ScientificInterface.Ecosim.gridFitToTimeSeriesOutput
     End Class
