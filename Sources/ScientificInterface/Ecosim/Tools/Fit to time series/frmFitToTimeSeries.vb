@@ -272,7 +272,7 @@ Namespace Ecosim
             Me.m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
             Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
 
-            m_F2TSManager.RunSearch()
+            Me.m_F2TSManager.RunSearch()
 
         End Sub
 
