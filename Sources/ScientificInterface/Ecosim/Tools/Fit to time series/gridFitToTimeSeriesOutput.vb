@@ -57,8 +57,8 @@ Namespace Ecosim
                 Dim out As sOutput = Me.m_lData(i)
                 Me(i + 1, eColumnTypes.TimeStamp) = New EwERowHeaderCell(out.TimeStep.ToShortTimeString)
                 Me(i + 1, eColumnTypes.NoParams) = New EwECell(out.NumParams, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
-                Me(i + 1, eColumnTypes.TimeStamp) = New EwERowHeaderCell(out.TimeStep.ToShortTimeString)
-                Me(i + 1, eColumnTypes.TimeStamp) = New EwERowHeaderCell(out.TimeStep.ToShortTimeString)
+                Me(i + 1, eColumnTypes.SS) = New EwECell(out.SS, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
+                Me(i + 1, eColumnTypes.AIC) = New EwECell(out.AIC, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
             Next
         End Sub
 
