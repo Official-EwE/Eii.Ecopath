@@ -114,7 +114,6 @@ Namespace Ecosim
             Me.m_F2TSManager = Me.Core.EcosimFitToTimeSeries
             Me.m_cbAnomalySearch.Checked = Me.m_F2TSManager.AnomalySearch
             Me.m_cbVulnerabilitySearch.Checked = Me.m_F2TSManager.VulnerabilitySearch
-            Me.m_cbFishingMortalityPenalty.Checked = Me.m_F2TSManager.ObjectiveParameters.FishingMortalityPenalty
 
             ''set the max number of year to the same as the time series data
             'Me.m_nudFirstYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
@@ -262,7 +261,7 @@ Namespace Ecosim
             End If
             Me.m_F2TSManager.AnomalySearch = Me.m_cbAnomalySearch.Checked
             Me.m_F2TSManager.VulnerabilitySearch = Me.m_cbVulnerabilitySearch.Checked
-            Me.m_F2TSManager.ObjectiveParameters.FishingMortalityPenalty = Me.m_cbFishingMortalityPenalty.Checked
+            'Me.m_F2TSManager.ObjectiveParameters.FishingMortalityPenalty = Me.m_cbFishingMortalityPenalty.Checked
 
             Me.m_F2TSManager.FirstYear = CInt(Me.m_nudFirstYear.Text) + 1
             Me.m_F2TSManager.LastYear = CInt(Me.m_nudLastYear.Text)
