@@ -164,6 +164,8 @@ Public Class cF2TSManager
         Dim f2tsDS As cF2TSDataStructures = Me.m_core.m_FitToTimeSeriesData
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
 
+        Me.updateAICNData()
+
         Me.AllowValidation = False
         Me.VulnerabilitySearch = f2tsDS.bVulnerabilitySearch
         Me.CatchAnomaly = f2tsDS.bCatchAnomaly
@@ -271,6 +273,16 @@ Public Class cF2TSManager
         f2tsDS.nAICData = Me.NAICDataPoints
 
     End Function
+
+    Public Sub updateAICNData()
+
+        Dim f2tsDS As cF2TSDataStructures = Me.m_core.m_FitToTimeSeriesData
+        Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
+
+
+        f2tsDS.nAICData = tsDS.NdatType \ 3
+    End Sub
+
 
 #End Region
 

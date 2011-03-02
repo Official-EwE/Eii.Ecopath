@@ -218,11 +218,12 @@ Namespace FitToTimeSeries
         Inherits cF2TSResults
 
         'To be removed in the real thing
-        Protected m_aryIterSS() As Single '= {0, 1801.576, 1801.341, 1801.312, 1801.292, 1801.274, 1801.252, 1801.231, 1801.231, 1801.231}
+        Protected m_aryIterSS() As Single
         'Keep this in the real thing
         Protected m_IterSS As Single
-        'To be removed in the real thing
-        Protected m_Temp As Integer
+
+        Protected m_AIC As Single
+        Protected m_nAICPars As Single
 
         Friend Sub New(ByVal runType As eRunType)
             MyBase.New(eRunType.Search)
@@ -242,7 +243,6 @@ Namespace FitToTimeSeries
                 Me.m_BaseSS = src.m_BaseSS
                 Me.m_IterSS = src.m_IterSS
                 Array.Copy(src.m_aryIterSS, Me.m_aryIterSS, src.m_aryIterSS.Length)
-                Me.m_Temp = src.m_Temp
             End If
 
         End Sub
@@ -253,6 +253,25 @@ Namespace FitToTimeSeries
             End Get
             Set(ByVal value As Single)
                 m_IterSS = value
+            End Set
+        End Property
+
+        Public Property AIC() As Single
+            Get
+                Return Me.m_AIC
+            End Get
+            Set(ByVal value As Single)
+                m_AIC = value
+            End Set
+        End Property
+
+
+        Public Property nAICPars() As Single
+            Get
+                Return Me.m_nAICPars
+            End Get
+            Set(ByVal value As Single)
+                m_nAICPars = value
             End Set
         End Property
 

@@ -540,6 +540,8 @@ Namespace FitToTimeSeries
 
             End Try
 
+            Me.computeAIC()
+
             Me.m_runstoppedHandler(Me.m_runType)
 
             ' Done searching
@@ -570,6 +572,9 @@ Namespace FitToTimeSeries
             Try
 
                 DirectCast(m_results, cSearchResults).IterSS = m_esdata.SS
+                DirectCast(m_results, cSearchResults).AIC = Me.m_data.AIC
+                DirectCast(m_results, cSearchResults).NAICPars = Me.m_data.nAICPars
+
                 m_results.iStep = m_estIter
 
                 If m_runstepHandler IsNot Nothing Then
@@ -672,6 +677,8 @@ Namespace FitToTimeSeries
                 'get Base SS from ecosim 
                 m_ecosim.RunModelValue(TotalTime, Nothing, 0)
 
+                Me.InitAIC()
+
                 'set the baseSS in the results object that was calculated above by ecosim
                 DirectCast(m_results, cF2TSResults).BaseSS = m_esdata.SS
 
@@ -682,6 +689,21 @@ Namespace FitToTimeSeries
 
         End Sub
 
+        Private Sub InitAIC()
+
+            Me.m_data.nAICData = m_tsData.NdatType \ 3
+            '   Me.m_data.nAICPars = nBlockCodes
+
+        End Sub
+
+
+        Public Sub computeAIC()
+            Dim nPars As Integer
+            For i As Integer = 1 To IsBlockEstimated.Length - 1
+                If IsBlockEstimated(i) Then nPars += 1
+            Next i
+            Me.m_data.AIC = 2.0F * nPars + Me.m_data.nAICData * CSng(Math.Log(Me.m_esdata.SS))
+        End Sub
 
         ''' <summary>
         ''' Initialize Ecosim before each search iteration
