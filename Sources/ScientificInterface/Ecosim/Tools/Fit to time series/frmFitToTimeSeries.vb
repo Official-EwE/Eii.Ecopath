@@ -545,14 +545,17 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub OnRunStopped(ByVal runType As eRunType)
 
-            Dim res As cF2TSResults = Me.m_F2TSManager.Results
-
             Me.LogProgress(String.Format(My.Resources.FIT2TS_PROGRESS_RUNCOMPLETED, Date.Now().ToShortTimeString))
+
             If (Me.m_dlgSensOfSS IsNot Nothing) Then
                 Me.m_dlgSensOfSS.OnRunStopped(runType)
-            Else
-                Me.m_gridOutput.AddFitToTimeSeriesOutput(1, res.BaseSS, 42.0!)
             End If
+
+            If (TypeOf Me.m_F2TSManager.Results Is cSearchResults) Then
+                Dim res As cSearchResults = DirectCast(Me.m_F2TSManager.Results, cSearchResults)
+                Me.m_gridOutput.AddFitToTimeSeriesOutput(res.nAICPars, res.IterSS, res.AIC)
+            End If
+
             Me.m_bIsRunning = False
             Me.UpdateControls()
         End Sub

@@ -24,13 +24,11 @@ Namespace Ecosim
 
         Private Structure sOutput
 
-            Public TimeStep As Date
             Public NumParams As Integer
             Public SS As Single
             Public AIC As Single
 
             Public Sub New(ByVal iNumParams As Integer, ByVal sSS As Single, ByVal sAIC As Single)
-                Me.TimeStep = Date.Now
                 Me.NumParams = iNumParams
                 Me.SS = sSS
                 Me.AIC = sAIC
@@ -55,7 +53,7 @@ Namespace Ecosim
         Protected Overrides Sub FillData()
             For i As Integer = 0 To Me.m_lData.Count - 1
                 Dim out As sOutput = Me.m_lData(i)
-                Me(i + 1, eColumnTypes.TimeStamp) = New EwERowHeaderCell(out.TimeStep.ToShortTimeString)
+                Me(i + 1, eColumnTypes.TimeStamp) = New EwERowHeaderCell(i + 1)
                 Me(i + 1, eColumnTypes.NoParams) = New EwECell(out.NumParams, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
                 Me(i + 1, eColumnTypes.SS) = New EwECell(out.SS, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
                 Me(i + 1, eColumnTypes.AIC) = New EwECell(out.AIC, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
