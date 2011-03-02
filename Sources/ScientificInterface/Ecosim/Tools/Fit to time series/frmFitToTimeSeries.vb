@@ -183,6 +183,7 @@ Namespace Ecosim
             Me.m_nudLastYear.Value = Me.m_F2TSManager.LastYear
             Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
             Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
+            Me.m_nudAICDataPts.Value = CDec(Me.m_F2TSManager.NAICDataPoints)
 
             Me.UpdateControls()
         End Sub
@@ -425,6 +426,11 @@ Namespace Ecosim
         Private Sub OnAnomalySearchChecked(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_cbAnomalySearch.CheckedChanged
             Me.UpdateControls()
+        End Sub
+
+        Private Sub OnNumAICDataPointsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_nudAICDataPts.ValueChanged
+            Me.m_F2TSManager.NAICDataPoints = CInt(Me.m_nudAICDataPts.Value)
         End Sub
 
         Private Sub m_tsbSearchGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
