@@ -122,7 +122,7 @@ Namespace Ecosim
 
             Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
             Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
-            Me.m_tbVariancePrimaryProd.Text = CStr(Me.m_F2TSManager.PPVariance)
+            Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
             Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 1
             Me.m_vulnerabilityBlockMatrix.UIContext = Me.UIContext
             Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
@@ -183,7 +183,7 @@ Namespace Ecosim
             Me.m_nudFirstYear.Value = Math.Max(0, Me.m_F2TSManager.FirstYear - 1)
             Me.m_nudLastYear.Value = Me.m_F2TSManager.LastYear
             Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
-            Me.m_tbVariancePrimaryProd.Text = CStr(Me.m_F2TSManager.PPVariance)
+            Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
 
             Me.UpdateControls()
         End Sub
@@ -267,17 +267,8 @@ Namespace Ecosim
             Me.m_F2TSManager.FirstYear = CInt(Me.m_nudFirstYear.Text) + 1
             Me.m_F2TSManager.LastYear = CInt(Me.m_nudLastYear.Text)
             Me.m_F2TSManager.NumSplinePoints = CInt(Me.m_nudSplinePts.Text)
-            Try
-                ' Parse using UI default number formatting
-                Me.m_F2TSManager.PPVariance = Single.Parse(Me.m_tbVariancePrimaryProd.Text)
-            Catch ex As Exception
-                Me.m_F2TSManager.PPVariance = 0.1!
-            End Try
-            Try
-                Me.m_F2TSManager.VulnerabilityVariance = CSng(Me.m_nudVariance.Value)
-            Catch ex As Exception
-                Me.m_F2TSManager.VulnerabilityVariance = 10.0!
-            End Try
+            Me.m_F2TSManager.PPVariance = CSng(Me.m_nudVariancePrimaryProd.Value)
+            Me.m_F2TSManager.VulnerabilityVariance = CSng(Me.m_nudVariance.Value)
             Me.m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
             Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
 

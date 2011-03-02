@@ -60,7 +60,6 @@ Namespace Ecosim
             Me.m_lbLastYear = New System.Windows.Forms.Label()
             Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label()
             Me.m_lbSplinePoints = New System.Windows.Forms.Label()
-            Me.m_tbVariancePrimaryProd = New System.Windows.Forms.TextBox()
             Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
             Me.m_scGrids = New System.Windows.Forms.SplitContainer()
@@ -68,6 +67,7 @@ Namespace Ecosim
             Me.m_nudAICDataPts = New System.Windows.Forms.NumericUpDown()
             Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_nudVariance = New System.Windows.Forms.NumericUpDown()
+            Me.m_nudVariancePrimaryProd = New System.Windows.Forms.NumericUpDown()
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
@@ -91,6 +91,7 @@ Namespace Ecosim
             Me.m_scGrids.SuspendLayout()
             CType(Me.m_nudAICDataPts, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudVariance, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudVariancePrimaryProd, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_split1
@@ -421,6 +422,7 @@ Namespace Ecosim
             '
             'm_tpAnomalySearch
             '
+            Me.m_tpAnomalySearch.Controls.Add(Me.m_nudVariancePrimaryProd)
             Me.m_tpAnomalySearch.Controls.Add(Me.m_nudLastYear)
             Me.m_tpAnomalySearch.Controls.Add(Me.m_nudFirstYear)
             Me.m_tpAnomalySearch.Controls.Add(Me.m_nudSplinePts)
@@ -429,7 +431,6 @@ Namespace Ecosim
             Me.m_tpAnomalySearch.Controls.Add(Me.m_lbLastYear)
             Me.m_tpAnomalySearch.Controls.Add(Me.m_lbVariancePrimaryProd)
             Me.m_tpAnomalySearch.Controls.Add(Me.m_lbSplinePoints)
-            Me.m_tpAnomalySearch.Controls.Add(Me.m_tbVariancePrimaryProd)
             Me.m_tpAnomalySearch.Location = New System.Drawing.Point(4, 22)
             Me.m_tpAnomalySearch.Name = "m_tpAnomalySearch"
             Me.m_tpAnomalySearch.Padding = New System.Windows.Forms.Padding(3)
@@ -581,14 +582,6 @@ Namespace Ecosim
             Me.m_lbSplinePoints.TabIndex = 6
             Me.m_lbSplinePoints.Text = "Spline points:"
             '
-            'm_tbVariancePrimaryProd
-            '
-            Me.m_tbVariancePrimaryProd.Location = New System.Drawing.Point(263, 4)
-            Me.m_tbVariancePrimaryProd.Name = "m_tbVariancePrimaryProd"
-            Me.m_tbVariancePrimaryProd.Size = New System.Drawing.Size(52, 20)
-            Me.m_tbVariancePrimaryProd.TabIndex = 3
-            Me.m_tbVariancePrimaryProd.Text = "0.1"
-            '
             'm_hdrSearch
             '
             Me.m_hdrSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -660,10 +653,21 @@ Namespace Ecosim
             '
             'm_nudVariance
             '
+            Me.m_nudVariance.DecimalPlaces = 3
             Me.m_nudVariance.Location = New System.Drawing.Point(76, 86)
             Me.m_nudVariance.Name = "m_nudVariance"
-            Me.m_nudVariance.Size = New System.Drawing.Size(51, 20)
+            Me.m_nudVariance.Size = New System.Drawing.Size(74, 20)
             Me.m_nudVariance.TabIndex = 4
+            Me.m_nudVariance.Value = New Decimal(New Integer() {10, 0, 0, 0})
+            '
+            'm_nudVariancePrimaryProd
+            '
+            Me.m_nudVariancePrimaryProd.DecimalPlaces = 3
+            Me.m_nudVariancePrimaryProd.Location = New System.Drawing.Point(262, 4)
+            Me.m_nudVariancePrimaryProd.Name = "m_nudVariancePrimaryProd"
+            Me.m_nudVariancePrimaryProd.Size = New System.Drawing.Size(53, 20)
+            Me.m_nudVariancePrimaryProd.TabIndex = 3
+            Me.m_nudVariancePrimaryProd.Value = New Decimal(New Integer() {1, 0, 0, 65536})
             '
             'frmFitToTimeSeries
             '
@@ -704,13 +708,13 @@ Namespace Ecosim
             Me.m_scGrids.ResumeLayout(False)
             CType(Me.m_nudAICDataPts, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudVariance, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudVariancePrimaryProd, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents m_split1 As System.Windows.Forms.SplitContainer
         Private WithEvents m_lbSplinePoints As System.Windows.Forms.Label
         Private WithEvents m_btnSearch As System.Windows.Forms.Button
-        Private WithEvents m_tbVariancePrimaryProd As System.Windows.Forms.TextBox
         Private WithEvents m_lbVariancePrimaryProd As System.Windows.Forms.Label
         Private WithEvents m_lbLastYear As System.Windows.Forms.Label
         Private WithEvents m_lbFirstYear As System.Windows.Forms.Label
@@ -750,6 +754,7 @@ Namespace Ecosim
         Private WithEvents m_scGrids As System.Windows.Forms.SplitContainer
         Private WithEvents m_hdrOutput As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Friend WithEvents m_nudVariance As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_nudVariancePrimaryProd As System.Windows.Forms.NumericUpDown
     End Class
 
 End Namespace
