@@ -677,7 +677,7 @@ Namespace FitToTimeSeries
                 'get Base SS from ecosim 
                 m_ecosim.RunModelValue(TotalTime, Nothing, 0)
 
-                Me.InitAIC()
+                Me.updateAICNPars()
 
                 'set the baseSS in the results object that was calculated above by ecosim
                 DirectCast(m_results, cF2TSResults).BaseSS = m_esdata.SS
@@ -689,21 +689,25 @@ Namespace FitToTimeSeries
 
         End Sub
 
-        Private Sub InitAIC()
+        Public Sub updateAICNPars()
 
-            Me.m_data.nAICData = m_tsData.NdatType \ 3
+            'nAICData is updated dynamical by the manager
+            'Me.m_data.nAICData = m_tsData.NdatType \ 3
+
+            'WARNING SetVblock() must be called first to set IsBlockEstimated()
+            'calculate the number of parameters
+            Me.m_data.nAICPars = 0
+            For i As Integer = 1 To IsBlockEstimated.Length - 1
+                If IsBlockEstimated(i) Then Me.m_data.nAICPars += 1
+            Next i
 
         End Sub
 
 
         Public Sub computeAIC(ByVal SS As Single)
-            'calculate the number of parameters
-            'this value is never stored 
-            Me.m_data.nAICPars = 0
-            For i As Integer = 1 To IsBlockEstimated.Length - 1
-                If IsBlockEstimated(i) Then Me.m_data.nAICPars += 1
-            Next i
+
             Me.m_data.AIC = 2.0F * Me.m_data.nAICPars + Me.m_data.nAICData * CSng(Math.Log(SS))
+
         End Sub
 
         ''' <summary>

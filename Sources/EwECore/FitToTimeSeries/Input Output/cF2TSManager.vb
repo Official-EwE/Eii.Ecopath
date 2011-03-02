@@ -164,7 +164,7 @@ Public Class cF2TSManager
         Dim f2tsDS As cF2TSDataStructures = Me.m_core.m_FitToTimeSeriesData
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
 
-        Me.updateAICNData()
+        Me.setDefaultAICNData()
 
         Me.AllowValidation = False
         Me.VulnerabilitySearch = f2tsDS.bVulnerabilitySearch
@@ -274,12 +274,16 @@ Public Class cF2TSManager
 
     End Function
 
-    Public Sub updateAICNData()
+    ''' <summary>
+    ''' Compute the default value for nAICData number of AIC data points
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub setDefaultAICNData()
 
         Dim f2tsDS As cF2TSDataStructures = Me.m_core.m_FitToTimeSeriesData
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
 
-        f2tsDS.nAICData = tsDS.NdatType \ 3
+        f2tsDS.nAICData = tsDS.NdatType * 3
 
     End Sub
 
