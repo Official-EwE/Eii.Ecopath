@@ -9,6 +9,7 @@ Imports ScientificInterface.Ecospace.Basemap
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports EwEUtils.Win32Api
 Imports EwEUtils.Core
+Imports System.ComponentModel
 
 #End Region ' Imports
 
@@ -23,11 +24,16 @@ Namespace Ecospace
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Class ucMap
+        Implements IUIElement
 
+        ''' <summary>UI context to work against.</summary>
+        Private m_uic As cUIContext = Nothing
         ''' <summary>The bitmap to draw on.</summary>
         Private m_bmp As Bitmap
         ''' <summary>The basemap.</summary>
         Private m_basemap As cEcospaceBasemap = Nothing
+        ''' <summary>Map title.</summary>
+        Private m_strTitle As String = ""
         ''' <summary>List of layers.</summary>
         Private m_layers As New List(Of cLayer)
         ''' <summary>Selected layer</summary>
@@ -49,6 +55,17 @@ Namespace Ecospace
             Me.BorderStyle = Windows.Forms.BorderStyle.FixedSingle
 
         End Sub
+
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        Public Property UIContext() As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal uic As cUIContext)
+                Me.m_uic = uic
+            End Set
+        End Property
 
 #Region " Public interfaces "
 
@@ -86,6 +103,34 @@ Namespace Ecospace
 
                 Me.Refresh()
             End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the map title.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True)> _
+        <Category("Appearance")> _
+        <Description("Title of the map to display")> _
+        Public Property Title() As String
+            Get
+                Return Me.m_strTitle
+            End Get
+            Set(ByVal strTitle As String)
+                Me.m_strTitle = strTitle
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a legend for the current map.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Legend() As cLegend
+            Get
+                Return cLegend.FromMap(Me, Me.m_uic)
+            End Get
         End Property
 
         Public Overrides Sub Refresh()
@@ -554,6 +599,17 @@ Namespace Ecospace
             Me.m_layers.Remove(layer)
 
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get all layers currently active in the map.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Layers() As cLayer()
+            Get
+                Return Me.m_layers.ToArray
+            End Get
+        End Property
 
 #End Region ' Layers
 
