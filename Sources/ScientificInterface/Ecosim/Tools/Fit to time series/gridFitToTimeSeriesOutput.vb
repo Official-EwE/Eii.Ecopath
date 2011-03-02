@@ -43,7 +43,7 @@ Namespace Ecosim
 
             Me.Redim(1 + Me.m_lData.Count, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.TimeStamp) = New EwEColumnHeaderCell("Time")
+            Me(0, eColumnTypes.TimeStamp) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.NoParams) = New EwEColumnHeaderCell("Search params")
             Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell("SS")
             Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell("AIC")
