@@ -279,8 +279,8 @@ Public Class cF2TSManager
         Dim f2tsDS As cF2TSDataStructures = Me.m_core.m_FitToTimeSeriesData
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
 
-
         f2tsDS.nAICData = tsDS.NdatType \ 3
+
     End Sub
 
 

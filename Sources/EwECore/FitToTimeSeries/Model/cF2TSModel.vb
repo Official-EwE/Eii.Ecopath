@@ -540,8 +540,6 @@ Namespace FitToTimeSeries
 
             End Try
 
-            Me.computeAIC()
-
             Me.m_runstoppedHandler(Me.m_runType)
 
             ' Done searching
@@ -571,9 +569,11 @@ Namespace FitToTimeSeries
 
             Try
 
+                Me.computeAIC(m_esdata.SS)
+
                 DirectCast(m_results, cSearchResults).IterSS = m_esdata.SS
                 DirectCast(m_results, cSearchResults).AIC = Me.m_data.AIC
-                DirectCast(m_results, cSearchResults).NAICPars = Me.m_data.nAICPars
+                DirectCast(m_results, cSearchResults).nAICPars = Me.m_data.nAICPars
 
                 m_results.iStep = m_estIter
 
@@ -692,17 +692,18 @@ Namespace FitToTimeSeries
         Private Sub InitAIC()
 
             Me.m_data.nAICData = m_tsData.NdatType \ 3
-            '   Me.m_data.nAICPars = nBlockCodes
 
         End Sub
 
 
-        Public Sub computeAIC()
-            Dim nPars As Integer
+        Public Sub computeAIC(ByVal SS As Single)
+            'calculate the number of parameters
+            'this value is never stored 
+            Me.m_data.nAICPars = 0
             For i As Integer = 1 To IsBlockEstimated.Length - 1
-                If IsBlockEstimated(i) Then nPars += 1
+                If IsBlockEstimated(i) Then Me.m_data.nAICPars += 1
             Next i
-            Me.m_data.AIC = 2.0F * nPars + Me.m_data.nAICData * CSng(Math.Log(Me.m_esdata.SS))
+            Me.m_data.AIC = 2.0F * Me.m_data.nAICPars + Me.m_data.nAICData * CSng(Math.Log(SS))
         End Sub
 
         ''' <summary>
