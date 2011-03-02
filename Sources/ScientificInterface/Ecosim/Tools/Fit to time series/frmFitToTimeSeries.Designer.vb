@@ -31,7 +31,6 @@ Namespace Ecosim
             Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button()
             Me.m_splitSearch = New System.Windows.Forms.SplitContainer()
             Me.m_scGrids = New System.Windows.Forms.SplitContainer()
-            Me.m_cbFishingMortalityPenalty = New System.Windows.Forms.CheckBox()
             Me.m_hdrFishingMortality = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup()
             Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -179,7 +178,6 @@ Namespace Ecosim
             '
             'm_scGrids.Panel1
             '
-            Me.m_scGrids.Panel1.Controls.Add(Me.m_cbFishingMortalityPenalty)
             Me.m_scGrids.Panel1.Controls.Add(Me.m_hdrFishingMortality)
             Me.m_scGrids.Panel1.Controls.Add(Me.m_grid)
             '
@@ -189,18 +187,6 @@ Namespace Ecosim
             Me.m_scGrids.Size = New System.Drawing.Size(246, 373)
             Me.m_scGrids.SplitterDistance = 186
             Me.m_scGrids.TabIndex = 0
-            '
-            'm_cbFishingMortalityPenalty
-            '
-            Me.m_cbFishingMortalityPenalty.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_cbFishingMortalityPenalty.AutoSize = True
-            Me.m_cbFishingMortalityPenalty.Location = New System.Drawing.Point(3, 166)
-            Me.m_cbFishingMortalityPenalty.Name = "m_cbFishingMortalityPenalty"
-            Me.m_cbFishingMortalityPenalty.Size = New System.Drawing.Size(137, 17)
-            Me.m_cbFishingMortalityPenalty.TabIndex = 2
-            Me.m_cbFishingMortalityPenalty.Text = "Fishing mortality &penalty"
-            Me.m_cbFishingMortalityPenalty.UseVisualStyleBackColor = True
-            Me.m_cbFishingMortalityPenalty.Visible = False
             '
             'm_hdrFishingMortality
             '
@@ -237,7 +223,7 @@ Namespace Ecosim
             Me.m_grid.Manager = Nothing
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.Size = New System.Drawing.Size(246, 146)
+            Me.m_grid.Size = New System.Drawing.Size(246, 168)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -691,7 +677,6 @@ Namespace Ecosim
             Me.m_splitSearch.Panel2.ResumeLayout(False)
             Me.m_splitSearch.ResumeLayout(False)
             Me.m_scGrids.Panel1.ResumeLayout(False)
-            Me.m_scGrids.Panel1.PerformLayout()
             Me.m_scGrids.Panel2.ResumeLayout(False)
             Me.m_scGrids.ResumeLayout(False)
             Me.m_tlbSearch.ResumeLayout(False)
@@ -746,7 +731,6 @@ Namespace Ecosim
         Private WithEvents m_tsVulSearchTools As System.Windows.Forms.ToolStrip
         Private WithEvents m_tsbSensOfSS2V As System.Windows.Forms.ToolStripButton
         Private WithEvents m_hdrAppliedFF As cEwEHeaderLabel
-        Private WithEvents m_cbFishingMortalityPenalty As System.Windows.Forms.CheckBox
         Private WithEvents m_grid As gridFitToTimeSeriesGroup
         Private WithEvents m_btnTimeSeriesWeights As System.Windows.Forms.Button
         Private WithEvents m_hdrSearch As cEwEHeaderLabel

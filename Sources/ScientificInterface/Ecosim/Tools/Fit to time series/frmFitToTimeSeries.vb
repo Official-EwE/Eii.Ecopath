@@ -559,12 +559,6 @@ Namespace Ecosim
             '    System.Console.WriteLine("Ecosim run " & iCurrentIterationStep.ToString & " of " & nTotalIterationSteps.ToString)
         End Sub
 
-        Private Sub m_cbFishingMortalityPenalty_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cbFishingMortalityPenalty.CheckedChanged
-            Me.m_grid.Enabled = Me.m_cbFishingMortalityPenalty.Checked
-            Me.UpdateControls()
-        End Sub
-
 #End Region ' Private search event handlers
 
 #Region " Private command handler "

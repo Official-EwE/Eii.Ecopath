@@ -124,17 +124,17 @@
   <data name="m_tsbSensOfSS2V.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIvSURBVDhPpdPda1JhHAdwi/6ErrruLrooImgEhQODTM80
-        2wsERSxZK2pz2YJRR6WyGtJq7qViYjqLVitxL1CuOdFqzaVrc83JciyZlvNl6vGYuvh27KqLsxn1g+fm
-        efk8z/eBH4fDFEnatswvBPnDY64HncZBx83OvnnZte7lllbDqN7sFRb3bFiv7B5Fh9489dI6nrW6PsPq
-        DaDb4sClNhPEUlX02Dn18XWB6rO3trXpzB/eOD0/IxSNEJ1DIEXDHaFg8S5DoRsCr6Y5z5M0bmdFrA63
-        zmAeSQdXVkHlC0jmCohk8piLZWBbTKLXFULddR32iy+oWAGt3jI77PQwh3JI59dAFdYQpwvwx2jYA6t4
-        6oniimEMZaKGBCvQqOyC0x9EIJnFCp1H/EcBoXQOM98pjC4kYJoIQ/V4EgckMrACijvGL70jHzH5jcJc
-        nIY/kcU0k//t1xQGZqPocQQh0w5hL7/ezQqQGqOhRduffb2Ygn0pzYwUrMzTLb4YjK4w1P0zqGq6B8kJ
-        KcUKSMn7W0W1qmTrMzv6PkXxYjqOJ0xu3fswblt8OKV8BG6lDKb2WvYIRfXomRs8wUll5rSyB1cNNubW
-        KTR1DKJG3o6DkvO4qyCQ8KlLIHXqXZc1zx9yK+Xj+4QN6fLqZlTVa5YOHzkk5+7ZiXddO0ojLBk3FecE
-        FQIxUSH4Z+S3+18ISXI2/4kMaHbjorR8/U/dqPMIgigjCMGEUMgXlWrSv1r/BSlMdH0yewBJAAAAAElF
-        TkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIwSURBVDhPpdPbT5JhHAdwa/0JXXXdXeui1lq1thputEXw
+        CmLS1ubWlJm1EoxsteKwispYFp6qyRCklmUxPGxJiQwzEwNTTGSGMyYUchB4eQmwfXvpqotXafXbnpvn
+        8Hme77P9SkroksttW+YXApzBEeejNmO/41Zbz7zkesfylSbDsN7s4RX2bFiv7W5Fq9489WpoPGN1fobV
+        40eHxYGLzSYIapSRirPqk+sCojO3tzXrzB/eOlw/wySFIJWFP0nBFSZh8SxDoRsAW9SYYwsl2xkRq8Ol
+        6zJbU4GVVZC5PBLZPMLpHOaiadgWE+h2BlF7Q4eDgvMqRqBFb5kdHHXTh7JI5dZA5tcQo/LwRSnY/at4
+        5o7gqmEE+/n1cUZAomzHqC8AfyKDFSqH2I88gqksZr6TGF6IwzQRgurJJA4JpWAEFPcMX7rffMTkNxJz
+        MQq+eAbTdP53X5Pom42g0xGAtGUAezl1LkZArjEaLmt7M0OLSdiXUvRIwko/3eKNwugMQd07g8qGByiv
+        EpOMgFj+cCu/WpVoem5Hz6cIXk7H8JTOrXsfwh2LF6eUXWAdl8KkrWaOUFDLT99kc6uU6RplJ64ZbPSt
+        U2ho7ccJmRaHhedwX0Eg7lUXQWrVuy5pXjxmVcjG93HrU6WiRlTW3V06euyIjLVnJ8badxRHGDJuKsxx
+        y7gCooz7z8hv978Qubxk859In2Y3LohL1//UjTqPIIgDBMGd4PE4/GJN+lfrvwD1pXRqSfuC7gAAAABJ
+        RU5ErkJggg==
 </value>
   </data>
   <data name="m_tsbSearchGroup.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
