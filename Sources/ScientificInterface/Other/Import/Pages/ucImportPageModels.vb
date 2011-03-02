@@ -93,9 +93,12 @@ Namespace Import
             Me.m_grid.UIContext = uic
             Me.m_grid.Init(Me.m_wizard)
 
+            AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnModelSelectionChanged
+
             ' Initialize the database targets combo box
             Me.InitDatabaseFormatsCombo()
 
+            Me.m_lblComments.Text = ""
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -105,8 +108,11 @@ Namespace Import
         ''' -------------------------------------------------------------------
         Public Sub Close() _
               Implements IWizardPage.Close
+
             ' Clean-up
+            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnModelSelectionChanged
             Me.m_wizard = Nothing
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -200,10 +206,19 @@ Namespace Import
         ''' Event handler, called when the output format has been modified.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmbDatabaseFormat_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnDBFormatChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_cmbDatabaseFormat.SelectedIndexChanged
             Me.m_wizard.OutputFormat = DirectCast(Me.m_cmbDatabaseFormat.SelectedItem, cDatabaseTypeItem).DataSourceType
             Me.m_wizard.PageChanged(Me)
+        End Sub
+
+        Private Sub OnModelSelectionChanged(ByVal sel As SourceGrid2.CellVirtualCollection)
+            Dim inf As cEwE5ModelImporter.cEwE5ModelInfo = Me.m_grid.SelectedModelInfo
+            If inf Is Nothing Then
+                Me.m_lblComments.Text = ""
+            Else
+                Me.m_lblComments.Text = inf.Description
+            End If
         End Sub
 
 #End Region ' Events

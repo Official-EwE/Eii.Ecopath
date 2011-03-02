@@ -68,6 +68,13 @@ Namespace Import
         ''' -----------------------------------------------------------------------
         Public Event OnEdited(ByVal grid As cImportGrid)
 
+        Public ReadOnly Property SelectedModelInfo As cEwE5ModelImporter.cEwE5ModelInfo
+            Get
+                If Me.SelectedRow < 0 Then Return Nothing
+                Return Me.ImportSettings(Me.SelectedRow).ModelInfo
+            End Get
+        End Property
+
 #End Region ' Public bits
 
 #Region " Internal overrides "

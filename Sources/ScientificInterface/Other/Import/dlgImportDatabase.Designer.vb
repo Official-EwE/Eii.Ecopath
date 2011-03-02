@@ -25,9 +25,9 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImportDatabase))
-            Me.m_sep = New ScientificInterfaceShared.Controls.ucFormSeparator
-            Me.m_navigator = New ScientificInterfaceShared.Controls.Wizard.ucWizardNavigation
-            Me.m_plWizardContent = New System.Windows.Forms.Panel
+            Me.m_sep = New ScientificInterfaceShared.Controls.ucFormSeparator()
+            Me.m_navigator = New ScientificInterfaceShared.Controls.Wizard.ucWizardNavigation()
+            Me.m_plWizardContent = New System.Windows.Forms.Panel()
             Me.SuspendLayout()
             '
             'm_sep
