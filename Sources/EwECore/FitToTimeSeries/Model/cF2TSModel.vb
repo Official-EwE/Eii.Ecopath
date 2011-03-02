@@ -691,7 +691,7 @@ Namespace FitToTimeSeries
 
         Public Sub updateAICNPars()
 
-            'nAICData is updated dynamical by the manager
+            'nAICData is updated by the manager
             'Me.m_data.nAICData = m_tsData.NdatType \ 3
 
             'WARNING SetVblock() must be called first to set IsBlockEstimated()

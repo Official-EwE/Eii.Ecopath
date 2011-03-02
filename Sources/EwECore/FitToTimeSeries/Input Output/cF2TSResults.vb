@@ -223,7 +223,7 @@ Namespace FitToTimeSeries
         Protected m_IterSS As Single
 
         Protected m_AIC As Single
-        Protected m_nAICPars As Single
+        Protected m_nAICPars As Integer
 
         Friend Sub New(ByVal runType As eRunType)
             MyBase.New(eRunType.Search)
@@ -266,11 +266,11 @@ Namespace FitToTimeSeries
         End Property
 
 
-        Public Property nAICPars() As Single
+        Public Property nAICPars() As Integer
             Get
                 Return Me.m_nAICPars
             End Get
-            Set(ByVal value As Single)
+            Set(ByVal value As Integer)
                 m_nAICPars = value
             End Set
         End Property
