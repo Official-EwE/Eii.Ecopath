@@ -348,6 +348,7 @@ Namespace Ecosim
                 End If
 
                 Me.UpdateGraphHighlights()
+                Me.UpdateSS()
             Catch ex As Exception
 
             End Try
@@ -421,7 +422,7 @@ Namespace Ecosim
 
                         'jb if Ecosim was not run by this interface ignore this message
                         If (Me.m_iTimeSteps > 0) Then
-                            Me.tslblSSValue.Text = Me.StyleGuide.FormatNumber(Me.Core.EcosimStats.SS)
+                            Me.UpdateSS()
                             Me.m_iTimeSteps = 0
                         End If
 
@@ -1029,6 +1030,29 @@ Namespace Ecosim
             Next iRun
 
             Me.m_graph.Invalidate()
+
+        End Sub
+
+        Private Sub UpdateSS()
+
+            Dim sSS As Single = 0.0!
+            Dim iGroup As Integer = 0
+
+            For Each iItem As Integer In Me.m_lbGroups.SelectedIndices
+                iGroup = Math.Max(0, Me.m_lbGroups.GetGroupIndexAt(iItem))
+                If iGroup = 0 Then
+                    sSS = Me.Core.EcosimStats.SS
+                    Exit For
+                Else
+                    sSS += Me.Core.EcosimStats.SSGroup(iGroup)
+                End If
+            Next
+
+            Try
+                Me.tslblSSValue.Text = Me.StyleGuide.FormatNumber(sSS)
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
