@@ -1428,10 +1428,10 @@ Namespace Style
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the font for a given application type. The font size is specified
-        ''' in <see cref="GraphicsUnit.Point">points</see>.
+        ''' in <see cref="GraphicsUnit.Point">points</see>. You must manually
+        ''' dispose the font after use!
         ''' </summary>
-        ''' <param name="ft"></param>
-        ''' <remarks>You must manually dispose the font after usage.</remarks>
+        ''' <param name="ft">Font type indicator.</param>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Font(ByVal ft As eApplicationFontType) As Font
             Get

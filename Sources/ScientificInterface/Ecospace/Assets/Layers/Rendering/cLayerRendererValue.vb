@@ -49,9 +49,45 @@ Namespace Ecospace.Basemap.Layers
 
             If Me.m_brFore Is Nothing Then Me.Update()
 
+            Dim sValMax As Single = layer.MaxValue
+            Dim sValMin As Single = 0
+
+            If Not Me.Autoscale Then
+                sValMax = Me.ScaleMax
+                sValMin = Me.ScaleMin
+            End If
+
             If Me.IsStyleValid Then
-                g.FillRectangle(Brushes.White, rc)
-                g.DrawString("#", Me.m_ft, Me.m_brFore, rc)
+                If Me.IsStyleValid() Then
+                    ' To move to another class
+                    Dim dY As Single = 0
+                    Try
+                        dY = rc.Height / layer.MaxValue
+                    Catch ex As Exception
+                    End Try
+
+                    For i As Integer = 0 To rc.Height - 1
+                        Dim sValue As Single = CSng(sValMin + i * dY)
+                        Dim sValRange As Single = (sValMax - sValMin)
+
+                        ' Has a range? draw background
+                        If (sValRange > 0.0) Then
+                            ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
+                            ' not (0, sValueMax)!!!
+                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue - sValMin, sValMax))
+                                g.FillRectangle(br, New Rectangle(rc.X, rc.Y - 1, rc.Width, 1))
+                            End Using
+                        Else
+                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue, sValMax))
+                                g.FillRectangle(br, New Rectangle(rc.X, rc.Y - 1, rc.Width, 1))
+                            End Using
+                        End If
+                    Next
+                Else
+                    Me.RenderError(g, rc)
+                End If
+                'g.FillRectangle(Brushes.White, rc)
+                'g.DrawString("#", Me.m_ft, Me.m_brFore, rc)
             Else
                 Me.RenderError(g, rc)
             End If

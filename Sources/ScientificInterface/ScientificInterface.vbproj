@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -83,7 +83,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-   </PropertyGroup>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -1223,6 +1223,7 @@
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererUpwelling.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererWindEwE5.vb" />
+    <Compile Include="Ecospace\Assets\Legend\cLegend.vb" />
     <Compile Include="Ecospace\Assets\Map\ucMapZoomToolbar.Designer.vb">
       <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
     </Compile>
@@ -1456,7 +1457,6 @@
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorTwoState.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererArrow.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererBitmap.vb" />
-    <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererGradient.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererHatched.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererSymbol.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererText.vb" />
