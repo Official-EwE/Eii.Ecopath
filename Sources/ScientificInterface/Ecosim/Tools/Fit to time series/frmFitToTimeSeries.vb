@@ -145,7 +145,7 @@ Namespace Ecosim
                 Me.ReloadControls()
             End If
 
-            Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_nudAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
+            Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
 
             Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
             Me.m_bIsRunning = Me.m_F2TSManager.IsRunning()
@@ -176,6 +176,9 @@ Namespace Ecosim
                 RemoveHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
                 Me.m_cmdTSWeights = Nothing
             End If
+
+            Me.m_grid.UIContext = Nothing
+            Me.m_gridOutput.UIContext = Nothing
 
             MyBase.OnFormClosed(e)
 
@@ -481,6 +484,11 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnClearOutputs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles m_btnClearOutputs.Click
+            Me.m_gridOutput.Clear()
+        End Sub
+
 #End Region ' Private control event handlers
 
 #Region " Private manager event handlers "
@@ -561,7 +569,7 @@ Namespace Ecosim
 
             If (TypeOf Me.m_F2TSManager.Results Is cSearchResults) Then
                 Dim res As cSearchResults = DirectCast(Me.m_F2TSManager.Results, cSearchResults)
-                Me.m_gridOutput.AddFitToTimeSeriesOutput(res.nAICPars, res.IterSS, res.AIC)
+                Me.m_gridOutput.AddFitToTimeSeriesOutput(res.nAICPars, res.IterSS)
             End If
 
             Me.m_bIsRunning = False

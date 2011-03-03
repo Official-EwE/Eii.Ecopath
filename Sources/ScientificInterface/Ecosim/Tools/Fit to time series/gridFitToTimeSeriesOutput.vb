@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore
 
 #End Region ' Imports
 
@@ -15,35 +16,95 @@ Namespace Ecosim
         Inherits EwEGrid
 
         Private Enum eColumnTypes As Integer
-            TimeStamp
+            Index
             NoParams
+            NoAICPoints
             SS
             AIC
         End Enum
 
-        Private Structure sOutput
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        Private Class cOutput
 
-            Public NumParams As Integer
-            Public SS As Single
-            Public AIC As Single
+            Private m_iNumParams As Integer
+            Private m_sSS As Single
+            Private m_sAIC As Single
 
-            Public Sub New(ByVal iNumParams As Integer, ByVal sSS As Single, ByVal sAIC As Single)
-                Me.NumParams = iNumParams
-                Me.SS = sSS
-                Me.AIC = sAIC
+            ''' <summary>
+            ''' 
+            ''' </summary>
+            ''' <param name="iNumParams"></param>
+            ''' <param name="sSS"></param>
+            ''' <param name="sAIC"></param>
+            Public Sub New(ByVal iNumParams As Integer, _
+                           ByVal sSS As Single, _
+                           ByVal sAIC As Single)
+                Me.m_iNumParams = iNumParams
+                Me.m_sSS = sSS
+                Me.m_sAIC = sAIC
             End Sub
 
-        End Structure
+            Public ReadOnly Property NumParams As Integer
+                Get
+                    Return Me.m_iNumParams
+                End Get
+            End Property
 
-        Private m_lData As New List(Of sOutput)
+            Public ReadOnly Property SS As Single
+                Get
+                    Return Me.m_sSS
+                End Get
+            End Property
+
+            Public Property AIC As Single
+                Get
+                    Return Me.m_sSS
+                End Get
+                Set(ByVal value As Single)
+                    Me.m_sSS = value
+                End Set
+            End Property
+
+        End Class
+
+        Private m_lData As New List(Of cOutput)
+        Private m_man As cF2TSManager = Nothing
+        Private m_propAIC As cProperty = Nothing
+        Private m_iNumAICPoints As Integer = 0
+
+        Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+                If (Me.UIContext IsNot Nothing) Then
+                    RemoveHandler Me.m_propAIC.PropertyChanged, AddressOf OnAICNumPointsChanged
+                    Me.m_propAIC = Nothing
+                    Me.m_man = Nothing
+                End If
+
+                MyBase.UIContext = value
+
+                If (Me.UIContext IsNot Nothing) Then
+                    Me.m_man = Me.UIContext.Core.EcosimFitToTimeSeries
+                    Me.m_propAIC = Me.UIContext.PropertyManager.GetProperty(Me.m_man, EwEUtils.Core.eVarNameFlags.F2TSNAICData)
+                    AddHandler Me.m_propAIC.PropertyChanged, AddressOf OnAICNumPointsChanged
+                End If
+            End Set
+        End Property
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
+            ' ToDo_JS: Globalize this
+
             Me.Redim(1 + Me.m_lData.Count, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.TimeStamp) = New EwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.NoParams) = New EwEColumnHeaderCell(SharedResources.HEADER_NUMPARAMS)
+            Me(0, eColumnTypes.NoAICPoints) = New EwEColumnHeaderCell("Number of AIC points")
             Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell(SharedResources.HEADER_SS)
             Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell(SharedResources.HEADER_AIC)
 
@@ -54,22 +115,51 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
             For i As Integer = 0 To Me.m_lData.Count - 1
-                Dim out As sOutput = Me.m_lData(i)
-                Me(i + 1, eColumnTypes.TimeStamp) = New EwERowHeaderCell(i + 1)
+                Dim out As cOutput = Me.m_lData(i)
+                Me(i + 1, eColumnTypes.Index) = New EwERowHeaderCell(i + 1)
                 Me(i + 1, eColumnTypes.NoParams) = New EwECell(out.NumParams, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
+                Me(i + 1, eColumnTypes.NoAICPoints) = New EwECell(Me.m_iNumAICPoints, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
                 Me(i + 1, eColumnTypes.SS) = New EwECell(out.SS, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
                 Me(i + 1, eColumnTypes.AIC) = New EwECell(out.AIC, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
             Next
         End Sub
 
-        Public Sub AddFitToTimeSeriesOutput(ByVal iNumParams As Integer, ByVal sSS As Single, ByVal sAIC As Single)
-            Me.m_lData.Add(New sOutput(iNumParams, sSS, sAIC))
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="iNumParams"></param>
+        ''' <param name="sSS"></param>
+        ''' <remarks></remarks>
+        Public Sub AddFitToTimeSeriesOutput(ByVal iNumParams As Integer, ByVal sSS As Single)
+            Me.m_lData.Add(New cOutput(iNumParams, sSS, Me.m_man.getAIC(iNumParams, Me.m_iNumAICPoints, sSS)))
             Me.RefreshContent()
         End Sub
 
-        Public Sub ClearOutput()
+        Public Sub Clear()
             Me.m_lData.Clear()
             Me.RefreshContent()
+        End Sub
+
+        Public Property NumAICPoints As Integer
+            Get
+                Return Me.m_iNumAICPoints
+            End Get
+            Set(ByVal iNumAICPoints As Integer)
+
+                If iNumAICPoints = Me.m_iNumAICPoints Then Return
+                Me.m_iNumAICPoints = iNumAICPoints
+
+                For Each out As cOutput In Me.m_lData
+                    out.AIC = Me.m_man.getAIC(out.NumParams, Me.m_iNumAICPoints, out.SS)
+                Next
+                Me.RefreshContent()
+            End Set
+        End Property
+
+        Private Sub OnAICNumPointsChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+            If ((changeFlags And cProperty.eChangeFlags.Value) > 0) Then
+                Me.NumAICPoints = CInt(Me.m_propAIC.GetValue)
+            End If
         End Sub
 
     End Class

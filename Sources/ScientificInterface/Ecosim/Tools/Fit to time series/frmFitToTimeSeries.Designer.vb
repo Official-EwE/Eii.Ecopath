@@ -26,13 +26,14 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFitToTimeSeries))
             Me.m_split1 = New System.Windows.Forms.SplitContainer()
-            Me.m_nudAICDataPts = New System.Windows.Forms.NumericUpDown()
-            Me.m_lblAICDataPts = New System.Windows.Forms.Label()
             Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button()
             Me.m_splitSearch = New System.Windows.Forms.SplitContainer()
             Me.m_scGrids = New System.Windows.Forms.SplitContainer()
             Me.m_hdrFishingMortality = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup()
+            Me.m_btnClearOutputs = New System.Windows.Forms.Button()
+            Me.m_gridOutput = New ScientificInterface.Ecosim.gridFitToTimeSeriesOutput()
+            Me.m_lblAICDataPts = New System.Windows.Forms.Label()
             Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlbSearch = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tbResults = New System.Windows.Forms.TextBox()
@@ -67,11 +68,10 @@ Namespace Ecosim
             Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label()
             Me.m_lbSplinePoints = New System.Windows.Forms.Label()
             Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_gridOutput = New ScientificInterface.Ecosim.gridFitToTimeSeriesOutput()
+            Me.m_tbxAICDataPts = New System.Windows.Forms.TextBox()
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
-            CType(Me.m_nudAICDataPts, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_splitSearch.Panel1.SuspendLayout()
             Me.m_splitSearch.Panel2.SuspendLayout()
             Me.m_splitSearch.SuspendLayout()
@@ -102,8 +102,6 @@ Namespace Ecosim
             '
             'm_split1.Panel1
             '
-            Me.m_split1.Panel1.Controls.Add(Me.m_nudAICDataPts)
-            Me.m_split1.Panel1.Controls.Add(Me.m_lblAICDataPts)
             Me.m_split1.Panel1.Controls.Add(Me.m_btnTimeSeriesWeights)
             Me.m_split1.Panel1.Controls.Add(Me.m_splitSearch)
             Me.m_split1.Panel1.Controls.Add(Me.m_hdrSearchTypes)
@@ -122,22 +120,6 @@ Namespace Ecosim
             Me.m_split1.SplitterDistance = 249
             Me.m_split1.TabIndex = 0
             '
-            'm_nudAICDataPts
-            '
-            Me.m_nudAICDataPts.Location = New System.Drawing.Point(138, 76)
-            Me.m_nudAICDataPts.Name = "m_nudAICDataPts"
-            Me.m_nudAICDataPts.Size = New System.Drawing.Size(57, 20)
-            Me.m_nudAICDataPts.TabIndex = 6
-            '
-            'm_lblAICDataPts
-            '
-            Me.m_lblAICDataPts.AutoSize = True
-            Me.m_lblAICDataPts.Location = New System.Drawing.Point(6, 78)
-            Me.m_lblAICDataPts.Name = "m_lblAICDataPts"
-            Me.m_lblAICDataPts.Size = New System.Drawing.Size(102, 13)
-            Me.m_lblAICDataPts.TabIndex = 5
-            Me.m_lblAICDataPts.Text = "No. &AIC data points:"
-            '
             'm_btnTimeSeriesWeights
             '
             Me.m_btnTimeSeriesWeights.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -154,7 +136,7 @@ Namespace Ecosim
             Me.m_splitSearch.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_splitSearch.Location = New System.Drawing.Point(0, 99)
+            Me.m_splitSearch.Location = New System.Drawing.Point(0, 73)
             Me.m_splitSearch.Margin = New System.Windows.Forms.Padding(0)
             Me.m_splitSearch.Name = "m_splitSearch"
             Me.m_splitSearch.Orientation = System.Windows.Forms.Orientation.Horizontal
@@ -166,8 +148,8 @@ Namespace Ecosim
             'm_splitSearch.Panel2
             '
             Me.m_splitSearch.Panel2.Controls.Add(Me.m_tlbSearch)
-            Me.m_splitSearch.Size = New System.Drawing.Size(246, 534)
-            Me.m_splitSearch.SplitterDistance = 373
+            Me.m_splitSearch.Size = New System.Drawing.Size(246, 560)
+            Me.m_splitSearch.SplitterDistance = 391
             Me.m_splitSearch.TabIndex = 8
             '
             'm_scGrids
@@ -184,10 +166,13 @@ Namespace Ecosim
             '
             'm_scGrids.Panel2
             '
+            Me.m_scGrids.Panel2.Controls.Add(Me.m_tbxAICDataPts)
+            Me.m_scGrids.Panel2.Controls.Add(Me.m_btnClearOutputs)
             Me.m_scGrids.Panel2.Controls.Add(Me.m_gridOutput)
+            Me.m_scGrids.Panel2.Controls.Add(Me.m_lblAICDataPts)
             Me.m_scGrids.Panel2.Controls.Add(Me.m_hdrOutput)
-            Me.m_scGrids.Size = New System.Drawing.Size(246, 373)
-            Me.m_scGrids.SplitterDistance = 186
+            Me.m_scGrids.Size = New System.Drawing.Size(246, 391)
+            Me.m_scGrids.SplitterDistance = 194
             Me.m_scGrids.TabIndex = 0
             '
             'm_hdrFishingMortality
@@ -225,7 +210,7 @@ Namespace Ecosim
             Me.m_grid.Manager = Nothing
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.Size = New System.Drawing.Size(246, 168)
+            Me.m_grid.Size = New System.Drawing.Size(246, 176)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -237,6 +222,64 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
+            '
+            'm_btnClearOutputs
+            '
+            Me.m_btnClearOutputs.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnClearOutputs.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+            Me.m_btnClearOutputs.Location = New System.Drawing.Point(171, 170)
+            Me.m_btnClearOutputs.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_btnClearOutputs.Name = "m_btnClearOutputs"
+            Me.m_btnClearOutputs.Size = New System.Drawing.Size(75, 23)
+            Me.m_btnClearOutputs.TabIndex = 3
+            Me.m_btnClearOutputs.Text = "&Clear"
+            Me.m_btnClearOutputs.UseVisualStyleBackColor = True
+            '
+            'm_gridOutput
+            '
+            Me.m_gridOutput.AllowBlockSelect = True
+            Me.m_gridOutput.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_gridOutput.AutoSizeMinHeight = 10
+            Me.m_gridOutput.AutoSizeMinWidth = 10
+            Me.m_gridOutput.AutoStretchColumnsToFitWidth = False
+            Me.m_gridOutput.AutoStretchRowsToFitHeight = False
+            Me.m_gridOutput.BackColor = System.Drawing.Color.White
+            Me.m_gridOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridOutput.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridOutput.CustomSort = False
+            Me.m_gridOutput.FixedColumnWidths = True
+            Me.m_gridOutput.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridOutput.GridToolTipActive = True
+            Me.m_gridOutput.Location = New System.Drawing.Point(0, 18)
+            Me.m_gridOutput.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_gridOutput.Name = "m_gridOutput"
+            Me.m_gridOutput.NumAICPoints = 0
+            Me.m_gridOutput.Size = New System.Drawing.Size(246, 149)
+            Me.m_gridOutput.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridOutput.TabIndex = 0
+            Me.m_gridOutput.UIContext = Nothing
+            '
+            'm_lblAICDataPts
+            '
+            Me.m_lblAICDataPts.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_lblAICDataPts.AutoSize = True
+            Me.m_lblAICDataPts.Location = New System.Drawing.Point(3, 175)
+            Me.m_lblAICDataPts.Name = "m_lblAICDataPts"
+            Me.m_lblAICDataPts.Size = New System.Drawing.Size(78, 13)
+            Me.m_lblAICDataPts.TabIndex = 1
+            Me.m_lblAICDataPts.Text = "No. &AIC points:"
             '
             'm_hdrOutput
             '
@@ -265,7 +308,7 @@ Namespace Ecosim
             Me.m_tlbSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18.0!))
             Me.m_tlbSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.m_tlbSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
-            Me.m_tlbSearch.Size = New System.Drawing.Size(246, 157)
+            Me.m_tlbSearch.Size = New System.Drawing.Size(246, 165)
             Me.m_tlbSearch.TabIndex = 0
             '
             'm_tbResults
@@ -277,7 +320,7 @@ Namespace Ecosim
             Me.m_tbResults.Name = "m_tbResults"
             Me.m_tbResults.ReadOnly = True
             Me.m_tbResults.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-            Me.m_tbResults.Size = New System.Drawing.Size(246, 109)
+            Me.m_tbResults.Size = New System.Drawing.Size(246, 117)
             Me.m_tbResults.TabIndex = 1
             '
             'm_hdrIterations
@@ -302,7 +345,7 @@ Namespace Ecosim
             Me.TableLayoutPanel2.Controls.Add(Me.m_btnStop, 1, 0)
             Me.TableLayoutPanel2.Controls.Add(Me.m_btnSearch, 2, 0)
             Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 127)
+            Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 135)
             Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(0)
             Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
             Me.TableLayoutPanel2.RowCount = 1
@@ -660,39 +703,13 @@ Namespace Ecosim
             Me.m_hdrSearch.Text = "Search"
             Me.m_hdrSearch.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_gridOutput
+            'm_tbxAICDataPts
             '
-            Me.m_gridOutput.AllowBlockSelect = True
-            Me.m_gridOutput.AutoSizeMinHeight = 10
-            Me.m_gridOutput.AutoSizeMinWidth = 10
-            Me.m_gridOutput.AutoStretchColumnsToFitWidth = False
-            Me.m_gridOutput.AutoStretchRowsToFitHeight = False
-            Me.m_gridOutput.BackColor = System.Drawing.Color.White
-            Me.m_gridOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridOutput.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridOutput.CustomSort = False
-            Me.m_gridOutput.FixedColumnWidths = False
-            Me.m_gridOutput.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridOutput.GridToolTipActive = True
-            Me.m_gridOutput.Location = New System.Drawing.Point(0, 18)
-            Me.m_gridOutput.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_gridOutput.Name = "m_gridOutput"
-            Me.m_gridOutput.Size = New System.Drawing.Size(246, 165)
-            Me.m_gridOutput.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridOutput.TabIndex = 1
-            Me.m_gridOutput.UIContext = Nothing
-            Me.m_gridOutput.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right
-
+            Me.m_tbxAICDataPts.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_tbxAICDataPts.Location = New System.Drawing.Point(87, 172)
+            Me.m_tbxAICDataPts.Name = "m_tbxAICDataPts"
+            Me.m_tbxAICDataPts.Size = New System.Drawing.Size(62, 20)
+            Me.m_tbxAICDataPts.TabIndex = 2
             '
             'frmFitToTimeSeries
             '
@@ -708,12 +725,12 @@ Namespace Ecosim
             Me.m_split1.Panel1.PerformLayout()
             Me.m_split1.Panel2.ResumeLayout(False)
             Me.m_split1.ResumeLayout(False)
-            CType(Me.m_nudAICDataPts, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_splitSearch.Panel1.ResumeLayout(False)
             Me.m_splitSearch.Panel2.ResumeLayout(False)
             Me.m_splitSearch.ResumeLayout(False)
             Me.m_scGrids.Panel1.ResumeLayout(False)
             Me.m_scGrids.Panel2.ResumeLayout(False)
+            Me.m_scGrids.Panel2.PerformLayout()
             Me.m_scGrids.ResumeLayout(False)
             Me.m_tlbSearch.ResumeLayout(False)
             Me.m_tlbSearch.PerformLayout()
@@ -772,13 +789,14 @@ Namespace Ecosim
         Private WithEvents m_hdrSearch As cEwEHeaderLabel
         Private WithEvents m_tsbSearchGroup As System.Windows.Forms.ToolStripButton
         Private WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_nudAICDataPts As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblAICDataPts As System.Windows.Forms.Label
         Private WithEvents m_scGrids As System.Windows.Forms.SplitContainer
         Private WithEvents m_hdrOutput As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_nudVariance As System.Windows.Forms.NumericUpDown
         Private WithEvents m_nudVariancePrimaryProd As System.Windows.Forms.NumericUpDown
         Private WithEvents m_gridOutput As ScientificInterface.Ecosim.gridFitToTimeSeriesOutput
+        Friend WithEvents m_btnClearOutputs As System.Windows.Forms.Button
+        Private WithEvents m_tbxAICDataPts As System.Windows.Forms.TextBox
     End Class
 
 End Namespace
