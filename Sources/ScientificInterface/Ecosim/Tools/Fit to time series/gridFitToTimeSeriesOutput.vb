@@ -91,6 +91,8 @@ Namespace Ecosim
                     Me.m_man = Me.UIContext.Core.EcosimFitToTimeSeries
                     Me.m_propAIC = Me.UIContext.PropertyManager.GetProperty(Me.m_man, EwEUtils.Core.eVarNameFlags.F2TSNAICData)
                     AddHandler Me.m_propAIC.PropertyChanged, AddressOf OnAICNumPointsChanged
+                    ' Kick
+                    Me.OnAICNumPointsChanged(Me.m_propAIC, cProperty.eChangeFlags.Value)
                 End If
             End Set
         End Property
