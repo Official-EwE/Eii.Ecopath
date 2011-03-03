@@ -1797,4 +1797,13 @@
   <data name="HEADER_VALUE_PERUNIT" xml:space="preserve">
     <value>{0} (/{1})</value>
   </data>
+  <data name="HEADER_AIC" xml:space="preserve">
+    <value>Akaike Information Criteria</value>
+  </data>
+  <data name="HEADER_NUMPARAMS" xml:space="preserve">
+    <value>Number of parameters</value>
+  </data>
+  <data name="HEADER_SS" xml:space="preserve">
+    <value>Sum of squares</value>
+  </data>
 </root>
