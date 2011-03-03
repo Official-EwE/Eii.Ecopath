@@ -213,6 +213,13 @@ Namespace FitToTimeSeries
             End Get
         End Property
 
+
+        Public ReadOnly Property Data() As cF2TSDataStructures
+            Get
+                Return Me.m_data
+            End Get
+        End Property
+
 #End Region
 
 #Region " SensitivitySS2VByPredPrey "
@@ -552,6 +559,9 @@ Namespace FitToTimeSeries
 
         End Sub
 
+
+
+
 #End Region ' Search
 
 #Region " Notifications "
@@ -573,7 +583,7 @@ Namespace FitToTimeSeries
 
             Try
 
-                Me.computeAIC(m_esdata.SS)
+                Me.setAIC(m_data.nAICPars, m_data.nAICData, m_esdata.SS)
 
                 DirectCast(m_results, cSearchResults).IterSS = m_esdata.SS
                 DirectCast(m_results, cSearchResults).AIC = Me.m_data.AIC
@@ -728,10 +738,12 @@ Namespace FitToTimeSeries
 
         End Sub
 
+        ''' <summary>
+        ''' Populate cF2TSDataStructures.AIC value
+        ''' </summary>
+        Public Sub setAIC(ByVal nPars As Single, ByVal nData As Single, ByVal SS As Single)
 
-        Public Sub computeAIC(ByVal SS As Single)
-
-            Me.m_data.AIC = 2.0F * Me.m_data.nAICPars + Me.m_data.nAICData * CSng(Math.Log(SS))
+            Me.m_data.AIC = 2.0F * nPars + nData * CSng(Math.Log(SS))
 
         End Sub
 

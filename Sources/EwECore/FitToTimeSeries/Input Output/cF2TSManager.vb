@@ -732,6 +732,16 @@ Public Class cF2TSManager
 
     End Function
 
+
+    Public Function getAIC(ByVal nPars As Integer, ByVal nData As Integer, ByVal ss As Single) As Single
+        Try
+            Me.m_model.setAIC(nPars, nData, ss)
+            Return Me.m_model.Data.AIC
+        Catch ex As Exception
+
+        End Try
+    End Function
+
 #End Region ' Search
 
     ''' -----------------------------------------------------------------------
