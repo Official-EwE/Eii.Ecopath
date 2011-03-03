@@ -31,6 +31,7 @@ Namespace Ecosim
             Me.m_scGrids = New System.Windows.Forms.SplitContainer()
             Me.m_hdrFishingMortality = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup()
+            Me.m_tbxAICDataPts = New System.Windows.Forms.TextBox()
             Me.m_btnClearOutputs = New System.Windows.Forms.Button()
             Me.m_gridOutput = New ScientificInterface.Ecosim.gridFitToTimeSeriesOutput()
             Me.m_lblAICDataPts = New System.Windows.Forms.Label()
@@ -68,7 +69,6 @@ Namespace Ecosim
             Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label()
             Me.m_lbSplinePoints = New System.Windows.Forms.Label()
             Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_tbxAICDataPts = New System.Windows.Forms.TextBox()
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
@@ -223,6 +223,14 @@ Namespace Ecosim
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
             '
+            'm_tbxAICDataPts
+            '
+            Me.m_tbxAICDataPts.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_tbxAICDataPts.Location = New System.Drawing.Point(111, 173)
+            Me.m_tbxAICDataPts.Name = "m_tbxAICDataPts"
+            Me.m_tbxAICDataPts.Size = New System.Drawing.Size(48, 20)
+            Me.m_tbxAICDataPts.TabIndex = 2
+            '
             'm_btnClearOutputs
             '
             Me.m_btnClearOutputs.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -277,9 +285,9 @@ Namespace Ecosim
             Me.m_lblAICDataPts.AutoSize = True
             Me.m_lblAICDataPts.Location = New System.Drawing.Point(3, 175)
             Me.m_lblAICDataPts.Name = "m_lblAICDataPts"
-            Me.m_lblAICDataPts.Size = New System.Drawing.Size(78, 13)
+            Me.m_lblAICDataPts.Size = New System.Drawing.Size(102, 13)
             Me.m_lblAICDataPts.TabIndex = 1
-            Me.m_lblAICDataPts.Text = "No. &AIC points:"
+            Me.m_lblAICDataPts.Text = "No. &AIC data points:"
             '
             'm_hdrOutput
             '
@@ -702,14 +710,6 @@ Namespace Ecosim
             Me.m_hdrSearch.TabIndex = 0
             Me.m_hdrSearch.Text = "Search"
             Me.m_hdrSearch.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'm_tbxAICDataPts
-            '
-            Me.m_tbxAICDataPts.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxAICDataPts.Location = New System.Drawing.Point(87, 172)
-            Me.m_tbxAICDataPts.Name = "m_tbxAICDataPts"
-            Me.m_tbxAICDataPts.Size = New System.Drawing.Size(62, 20)
-            Me.m_tbxAICDataPts.TabIndex = 2
             '
             'frmFitToTimeSeries
             '

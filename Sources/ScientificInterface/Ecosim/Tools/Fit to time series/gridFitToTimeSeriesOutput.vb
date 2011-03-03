@@ -106,7 +106,7 @@ Namespace Ecosim
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.NoParams) = New EwEColumnHeaderCell(SharedResources.HEADER_NUMPARAMS)
-            Me(0, eColumnTypes.NoAICPoints) = New EwEColumnHeaderCell("Number of AIC points")
+            Me(0, eColumnTypes.NoAICPoints) = New EwEColumnHeaderCell("Number of AIC data points")
             Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell(SharedResources.HEADER_SS)
             Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell(SharedResources.HEADER_AIC)
 
