@@ -307,7 +307,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The color for rendering forcing functions.</returns>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function Color() As System.Drawing.Color
+        Public Overrides Function Color() As System.Drawing.Color
             Return Color.FromArgb(255, 236, 55, 12)
         End Function
 

@@ -26,7 +26,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The color for rendering fishing effort shapes.</returns>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function Color() As System.Drawing.Color
+        Public Overrides Function Color() As System.Drawing.Color
             Return Drawing.Color.Coral
         End Function
 

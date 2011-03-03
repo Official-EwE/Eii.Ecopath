@@ -28,8 +28,6 @@ Public Class frmShapeValue
 
         ''' <summary>Time series type enumerated value to associate with the item.</summary>
         Private m_timeSeriesType As eTimeSeriesType = eTimeSeriesType.NotSet
-        ''' <summary>String representation of <see cref="m_timeSeriesType">m_timeSeriesType</see>.</summary>
-        Private m_strText As String = ""
 
         ''' ---------------------------------------------------------------
         ''' <summary>
@@ -41,8 +39,6 @@ Public Class frmShapeValue
         Public Sub New(ByVal tst As eTimeSeriesType)
             ' Store type flag
             Me.m_timeSeriesType = tst
-            ' Store item text
-            Me.m_strText = GetTimeSeriesStringResource(tst)
         End Sub
 
         ''' ---------------------------------------------------------------
@@ -60,37 +56,8 @@ Public Class frmShapeValue
         ''' </summary>
         ''' ---------------------------------------------------------------
         Public Overrides Function ToString() As String
-            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, CInt(Me.m_timeSeriesType), Me.m_strText)
+            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, CInt(Me.m_timeSeriesType), cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(Me.m_timeSeriesType))
         End Function
-
-#Region " Clever bits "
-
-        ''' <summary>
-        ''' Return a localized string represtation for a given time series type enumerated value.
-        ''' </summary>
-        ''' <param name="tst"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Shared Function GetTimeSeriesStringResource(ByVal tst As eTimeSeriesType) As String
-
-            ' Build name to find enum string representation in resources with
-            ' 1. Get enum text
-            Dim strText As String = [Enum].GetName(GetType(eTimeSeriesType), tst)
-            ' 2. Apply enum text in string to resource name mask
-            Dim strResourceName As String = String.Format("TS_{0}_NAME", strText.ToUpper())
-            Try
-                ' Cache string resource (this is processor intensive stuff - let's do it only once per instance of this class :P)
-                Dim strTmp As String = My.Resources.ResourceManager.GetString(strResourceName)
-                If Not String.IsNullOrEmpty(strTmp) Then strText = strTmp
-            Catch e As Exception
-                ' Resource string not found
-                Debug.Assert(False, String.Format("Time series type {0}({1}) has no associated string resource {2}", _
-                    CInt(tst), strText, strResourceName))
-            End Try
-            Return strText
-        End Function
-
-#End Region ' Clever bits
 
     End Class
 

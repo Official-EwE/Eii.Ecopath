@@ -245,7 +245,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The color for Time Series shapes.</returns>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function Color() As System.Drawing.Color
+        Public Overrides Function Color() As System.Drawing.Color
             Return Color.DarkGreen
         End Function
 

@@ -203,7 +203,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The color to use to render shapes.</returns>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function Color() As Color
+        Public MustOverride Function Color() As Color
 
         ''' -------------------------------------------------------------------
         ''' <summary>

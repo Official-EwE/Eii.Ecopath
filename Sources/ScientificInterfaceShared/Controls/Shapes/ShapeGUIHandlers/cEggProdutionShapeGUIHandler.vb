@@ -36,7 +36,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The color for rendering egg production shapes.</returns>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function Color() As System.Drawing.Color
+        Public Overrides Function Color() As System.Drawing.Color
             Return Color.Orange
         End Function
 
