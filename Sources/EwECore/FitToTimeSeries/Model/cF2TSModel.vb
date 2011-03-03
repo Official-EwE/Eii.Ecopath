@@ -689,6 +689,10 @@ Namespace FitToTimeSeries
 
         End Sub
 
+        ''' <summary>
+        ''' Count the number of parameters being searched for. Used to compute AIC.
+        ''' </summary>
+        ''' <remarks></remarks>
         Public Sub updateAICNPars()
 
             'nAICData is updated by the manager
@@ -697,9 +701,26 @@ Namespace FitToTimeSeries
             'WARNING SetVblock() must be called first to set IsBlockEstimated()
             'calculate the number of parameters
             Me.m_data.nAICPars = 0
-            For i As Integer = 1 To IsBlockEstimated.Length - 1
-                If IsBlockEstimated(i) Then Me.m_data.nAICPars += 1
-            Next i
+
+            If Me.m_data.bVulnerabilitySearch Then
+                For i As Integer = 1 To IsBlockEstimated.Length - 1
+                    If IsBlockEstimated(i) Then Me.m_data.nAICPars += 1
+                Next i
+            End If
+
+            If Me.m_data.bAnomalySearch Then
+                Dim n As Integer
+                If Me.m_data.nNumSplinePoints > 0 Then
+                    'using spline points
+                    n = Me.m_data.nNumSplinePoints
+                Else
+                    'using number of years
+                    n = Me.m_data.LastYear - Me.m_data.FirstYear
+                End If
+
+                Me.m_data.nAICPars += n
+
+            End If
 
         End Sub
 
