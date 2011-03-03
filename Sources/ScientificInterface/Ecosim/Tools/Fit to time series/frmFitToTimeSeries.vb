@@ -31,6 +31,8 @@ Namespace Ecosim
         Private m_bIsRunning As Boolean = False
         Private m_bInUpdate As Boolean = False
 
+        Private m_fpNoAICPts As cEwEFormatProvider = Nothing
+
 #End Region 'Private variables
 
 #Region " Helper classes "
@@ -143,6 +145,8 @@ Namespace Ecosim
                 Me.ReloadControls()
             End If
 
+            Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_nudAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
+
             Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
             Me.m_bIsRunning = Me.m_F2TSManager.IsRunning()
 
@@ -154,6 +158,9 @@ Namespace Ecosim
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             If Me.UIContext Is Nothing Then Return
+
+            Me.m_fpNoAICPts.Release()
+            Me.m_fpNoAICPts = Nothing
 
             Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
                                         AddressOf OnRunStopped, AddressOf Me.OnModelRun)
@@ -184,7 +191,7 @@ Namespace Ecosim
             Me.m_nudLastYear.Value = Me.m_F2TSManager.LastYear
             Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
             Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
-            Me.m_nudAICDataPts.Value = CDec(Me.m_F2TSManager.NAICDataPoints)
+            'Me.m_nudAICDataPts.Value = CDec(Me.m_F2TSManager.NAICDataPoints)
 
             Me.UpdateControls()
         End Sub
@@ -272,7 +279,7 @@ Namespace Ecosim
             Me.m_F2TSManager.VulnerabilityVariance = CSng(Me.m_nudVariance.Value)
             Me.m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
             Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
-            Me.m_F2TSManager.NAICDataPoints = CInt(Me.m_nudAICDataPts.Value)
+            'Me.m_F2TSManager.NAICDataPoints = CInt(Me.m_nudAICDataPts.Value)
 
             Me.m_F2TSManager.RunSearch()
 
