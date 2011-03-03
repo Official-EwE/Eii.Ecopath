@@ -1435,7 +1435,31 @@ Namespace Database
             Dim iSequence As Integer = 1
             Dim iLevelID As Integer = 1
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Pedigree]"))
+            ' Check if defaults need to be discarded
+            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT DISTINCT Parameter FROM Pedigree"))
+            Dim lVars As New List(Of eVarNameFlags)
+            While reader.Read
+                Select Case CInt(reader("Parameter"))
+                    Case 1 : varName = eVarNameFlags.Biomass
+                    Case 2 : varName = eVarNameFlags.PBInput
+                    Case 3 : varName = eVarNameFlags.QBInput
+                    Case 4 : varName = eVarNameFlags.DietComp
+                    Case 5 : varName = eVarNameFlags.TCatchInput
+                    Case Else : varName = eVarNameFlags.NotSet
+                End Select
+                lVars.Add(varName)
+            End While
+            Me.m_dbEwE5.ReleaseReader(reader)
+
+            Try
+                For Each varName In lVars
+                    Me.m_dbEwE6.Execute(String.Format("DELETE FROM [Pedigree] WHERE VarName='{0}'", cin.GetVarName(varName)))
+                Next
+            Catch ex As Exception
+
+            End Try
+
+            reader = Me.m_dbEwE5.GetReader("SELECT * from [Pedigree]")
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("Pedigree", "Sequence")
