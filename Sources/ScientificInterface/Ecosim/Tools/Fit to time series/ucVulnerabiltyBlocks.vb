@@ -4,6 +4,7 @@ Imports EwECore
 Imports ScientificInterface.Other
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.ComponentModel
+Imports System.Drawing.Drawing2D
 
 Namespace Ecosim
 
@@ -228,10 +229,10 @@ Namespace Ecosim
                                     End Using
                                 Else
                                     ' JS 22mar08: added crash protection. The m_a2iVulBlocks array contains block codes that exceed the number
-                                    '             of blocks that this interface is supposed to use. This fix displays a black X in the cell.
-                                    '             This is no solution; the m_a2iVulBlocks array should be re-binned instead.
-                                    e.Graphics.DrawLine(Pens.Black, i * szCell.Width, j * szCell.Height, (i + 1) * szCell.Width, (j + 1) * szCell.Height)
-                                    e.Graphics.DrawLine(Pens.Black, i * szCell.Width, (j + 1) * szCell.Height, (i + 1) * szCell.Width, j * szCell.Height)
+                                    '             of blocks that this interface is supposed to use
+                                    Using tmpBrush As New HatchBrush(HatchStyle.DiagonalCross, Color.White)
+                                        e.Graphics.FillRectangle(tmpBrush, i * szCell.Width, j * szCell.Height, szCell.Width, szCell.Height)
+                                    End Using
                                 End If
                             End If
                         End If
