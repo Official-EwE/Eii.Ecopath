@@ -222,7 +222,7 @@ Namespace Ecosim
                             ' Draw content cell
                             If (ppi.isPredPrey(i, j)) Then
                                 iBlock = Me.m_a2iVulBlocks(i, j)
-                                If iBlock <= Me.m_acolors.Count - 1 Then
+                                If iBlock < Me.m_acolors.Count - 1 Then
                                     ' Render solid block
                                     Using tmpBrush As New SolidBrush(Me.m_acolors(iBlock))
                                         e.Graphics.FillRectangle(tmpBrush, i * szCell.Width, j * szCell.Height, szCell.Width, szCell.Height)
