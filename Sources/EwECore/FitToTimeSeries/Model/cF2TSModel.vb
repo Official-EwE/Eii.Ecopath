@@ -682,6 +682,12 @@ Namespace FitToTimeSeries
                     ReDim VblockCode(m_esdata.inlinks)
                 End If
 
+                'Clear out all selected codes > then the max number of blocks
+                Dim n As Integer = VBlock.Length - 1
+                For i As Integer = 1 To m_esdata.inlinks
+                    If VblockCode(i) > n Then VblockCode(i) = 0
+                Next i
+
                 'create the results object for this type of run
                 m_results = cF2TSResultsFactory.Create(runType)
 
