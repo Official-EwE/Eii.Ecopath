@@ -60,10 +60,10 @@ Namespace Ecosim
 
             Public Property AIC As Single
                 Get
-                    Return Me.m_sSS
+                    Return Me.m_sAIC
                 End Get
                 Set(ByVal value As Single)
-                    Me.m_sSS = value
+                    Me.m_sAIC = value
                 End Set
             End Property
 
