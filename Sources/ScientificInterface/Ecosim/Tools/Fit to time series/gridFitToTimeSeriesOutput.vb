@@ -1,8 +1,7 @@
 ﻿#Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -44,9 +43,12 @@ Namespace Ecosim
             Me.Redim(1 + Me.m_lData.Count, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.TimeStamp) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.NoParams) = New EwEColumnHeaderCell("Search params")
-            Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell("SS")
-            Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell("AIC")
+            Me(0, eColumnTypes.NoParams) = New EwEColumnHeaderCell(SharedResources.HEADER_NUMPARAMS)
+            Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell(SharedResources.HEADER_SS)
+            Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell(SharedResources.HEADER_AIC)
+
+            Me.FixedColumnWidths = True
+            Me.FixedColumns = 1
 
         End Sub
 
@@ -58,12 +60,6 @@ Namespace Ecosim
                 Me(i + 1, eColumnTypes.SS) = New EwECell(out.SS, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
                 Me(i + 1, eColumnTypes.AIC) = New EwECell(out.AIC, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
             Next
-        End Sub
-
-        Protected Overrides Sub FinishStyle()
-            MyBase.FinishStyle()
-            Me.FixedColumnWidths = False
-            Me.FixedColumns = 1
         End Sub
 
         Public Sub AddFitToTimeSeriesOutput(ByVal iNumParams As Integer, ByVal sSS As Single, ByVal sAIC As Single)
