@@ -495,6 +495,7 @@ Namespace Ecosim
             End If
 
             Me.m_bIsRunning = True
+            Me.m_tbResults.Text = ""
             Me.UpdateControls()
 
         End Sub
