@@ -198,16 +198,20 @@ Namespace FitToTimeSeries
         ''' <summary>
         ''' Results of the run or iteration depending on when it is accessed
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property Results() As cF2TSResults
             Get
                 Return Me.m_results
             End Get
         End Property
 
-
+        ''' <summary>
+        ''' Get whether a sensitivity search has been ran.
+        ''' </summary>
+        Public ReadOnly Property HasRunSens As Boolean
+            Get
+                Return (Me.m_lastRunSens <> eSensType.NotRun)
+            End Get
+        End Property
 
 #End Region
 

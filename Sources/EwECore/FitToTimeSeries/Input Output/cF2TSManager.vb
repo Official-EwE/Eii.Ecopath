@@ -138,7 +138,7 @@ Public Class cF2TSManager
         val = New cValue(New Integer, eVarNameFlags.F2TSNAICData, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSNAICData))
         m_values.Add(val.varName, val)
 
-
+        Me.ResetStatusFlags()
         Me.AllowValidation = True
 
         ' Create and configure model
@@ -645,6 +645,8 @@ Public Class cF2TSManager
         ' Safety check
         If Not CanRun() Then Return False
 
+        Me.m_core.CheckResetDefaultVulnerabilities()
+
         Try
             'block if the semaphore is already set
             Me.m_semaphore.WaitOne()
@@ -746,6 +748,15 @@ Public Class cF2TSManager
     Public Sub setNBlocksFromSensitivity(ByVal nBlocks As Integer)
         Me.m_model.setNBlocksFromSensitivity(nBlocks)
     End Sub
+
+    ''' <summary>
+    ''' Get whether a sensitivity search has been ran.
+    ''' </summary>
+    Public ReadOnly Property HasRunSens As Boolean
+        Get
+            Return Me.m_model.HasRunSens
+        End Get
+    End Property
 
 #End Region ' Public access
 
