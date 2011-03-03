@@ -311,9 +311,6 @@ Public Class dlgSensitivityOfSStoV
             End If
             Me.m_runType = eRunType.SensitivitySS2VByPredPrey
         Else
-
-            Me.m_uic.Core.CheckResetDefaultVulnerabilities()
-
             If (Me.m_F2TSManager.RunSensitivitySS2VByPredator() = False) Then
                 Return False
             End If
