@@ -24,7 +24,6 @@ Public Class dlgSensitivityOfSStoV
     Private m_F2TSManager As cF2TSManager = Nothing
     Private m_SSbase As Single = 0.0
     Private m_runType As eRunType = eRunType.Idle
-    Private m_runResultType As eRunType = eRunType.Idle
     Private m_bInUpdate As Boolean = False
 
 #End Region ' Private variables
@@ -102,6 +101,7 @@ Public Class dlgSensitivityOfSStoV
         MyBase.OnLoad(e)
         Me.m_nudNumBlocks.Maximum = Me.m_uic.Core.nGroups * Me.m_uic.Core.nGroups
         Me.UpdateControls()
+        Me.UpdateDisplay()
 
     End Sub
 
@@ -189,7 +189,7 @@ Public Class dlgSensitivityOfSStoV
         ' Sanity check
         Debug.Assert(runType = Me.m_runType)
 
-        Console.WriteLine("Dlg: run started " & runType)
+        'Console.WriteLine("Dlg: run started " & runType)
 
         Me.m_progress.Maximum = nSteps
         Me.m_progress.Visible = True
@@ -239,15 +239,6 @@ Public Class dlgSensitivityOfSStoV
         Me.m_progress.Visible = False
         Me.m_btnSearch.Enabled = True
 
-        'write out the SS matrix that was collected in m_F2TSManager_OnRunStep
-        For i As Integer = 1 To Me.m_uic.Core.nGroups
-            For j As Integer = 1 To Me.m_uic.Core.nGroups
-                System.Console.Write(Me.m_SSPreyPred(i, j).ToString & ", ")
-            Next
-            System.Console.WriteLine()
-        Next
-
-        Me.m_runResultType = runType
         Me.UpdateControls()
         Me.UpdateDisplay()
 
@@ -265,17 +256,6 @@ Public Class dlgSensitivityOfSStoV
         End Get
         Set(ByVal value As eRunType)
             Me.m_runType = value
-            Me.ResultType = eRunType.Idle
-        End Set
-    End Property
-
-    Private Property ResultType() As eRunType
-        Get
-            Return Me.m_runResultType
-        End Get
-        Set(ByVal value As eRunType)
-            Me.m_runResultType = value
-            Me.UpdateControls()
         End Set
     End Property
 
@@ -323,7 +303,6 @@ Public Class dlgSensitivityOfSStoV
         If (Me.m_F2TSManager.IsRunning()) Then Return False
 
         ' Reset controls
-        Me.m_runResultType = eRunType.Idle
         Me.m_progress.Value = 0
 
         If (Me.m_rbSearchPredPrey.Checked) Then
@@ -360,7 +339,7 @@ Public Class dlgSensitivityOfSStoV
 
     Private Function HasRun() As Boolean
         ' States whether a search has been ran
-        Return (Me.m_runResultType <> eRunType.Idle)
+        Return (Me.m_F2TSManager.HasRunSens)
     End Function
 
     ''' -----------------------------------------------------------------------
