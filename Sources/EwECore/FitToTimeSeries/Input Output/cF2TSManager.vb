@@ -601,6 +601,9 @@ Public Class cF2TSManager
             ' Sanity check
             Debug.Assert(Me.m_thrdRun Is Nothing)
 
+            Me.m_core.CheckResetDefaultVulnerabilities()
+
+
             'block if the semaphore is already set
             Me.m_semaphore.WaitOne()
             Me.m_SignalState.Reset()
@@ -699,6 +702,8 @@ Public Class cF2TSManager
         Me.m_runSilent = RunSilent
 
         Try
+
+            Me.m_core.CheckResetDefaultVulnerabilities()
 
             'block if the semaphore is already set
             Me.m_semaphore.WaitOne()

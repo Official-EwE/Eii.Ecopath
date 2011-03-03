@@ -632,8 +632,6 @@ Namespace FitToTimeSeries
 
                 m_lastRunSens = eSensType.NotRun
 
-                Debug.Assert(m_tsData.Iobs <> 0, "No time series data has been loaded, cannot do nonlinear estimation.")
-
                 'for convenience set local variables to values set by interface
                 'these variables can not be changed by the interface during a run so this should be Ok
                 AnomalySearch = m_data.bAnomalySearch
