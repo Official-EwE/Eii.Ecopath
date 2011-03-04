@@ -7058,7 +7058,10 @@ Public Class cCore
                                         eMessageImportance.Information, _
                                         cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
             Me.m_publisher.SendMessage(fmsg)
-            If fmsg.Reply = cFeedbackMessage.eReply.NO Then Return False
+            If fmsg.Reply = cFeedbackMessage.eReply.NO Then
+                Me.EcosimFitToTimeSeries.UseDefaultV = False
+                Return False
+            End If
         End If
 
         For iPrey As Integer = 1 To Me.nGroups
@@ -7067,6 +7070,8 @@ Public Class cCore
                 groupSim.VulMult(iPred) = sDefaultValue
             Next iPred
         Next iPrey
+
+        Me.EcosimFitToTimeSeries.UseDefaultV = True
 
     End Function
 
