@@ -86,9 +86,13 @@ Public Class cF2TSManager
         'boolean
         ' AnomalySearch
         meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.F2TSAnomalySearch, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSVulnerabilitySearch))
+        val = New cValue(New Boolean, eVarNameFlags.F2TSAnomalySearch, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSAnomalySearch))
         m_values.Add(val.varName, val)
 
+        ' UseDefaultVs
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.F2TSUseDefaultV, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSUseDefaultV))
+        m_values.Add(val.varName, val)
 
         ' F2TSCatchAnomaly
         meta = New cVariableMetaData()
@@ -338,6 +342,15 @@ Public Class cF2TSManager
         End Get
         Set(ByVal value As Boolean)
             Me.SetVariable(eVarNameFlags.F2TSAnomalySearch, value)
+        End Set
+    End Property
+
+    Public Property UseDefaultV() As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.F2TSUseDefaultV))
+        End Get
+        Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.F2TSUseDefaultV, value)
         End Set
     End Property
 
