@@ -61,24 +61,19 @@ Namespace Ecosim
                 MyBase.Attach(uic, stb, Nothing, sp, Nothing)
             End Sub
 
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' 
-            ''' </summary>
-            ''' ---------------------------------------------------------------
-            Public Overrides Property SketchPad() As ucSketchPad
-                Get
-                    Return MyBase.SketchPad
-                End Get
-                Set(ByVal value As ucSketchPad)
-                    MyBase.SketchPad = value
-
-                    If value IsNot Nothing Then
-                        ' No doodling allowed here
-                        value.Editable = False
-                    End If
-                End Set
-            End Property
+            ' ''' ---------------------------------------------------------------
+            ' ''' <summary>
+            ' ''' 
+            ' ''' </summary>
+            ' ''' ---------------------------------------------------------------
+            'Public Overrides Property SketchPad() As ucSketchPad
+            '    Get
+            '        Return MyBase.SketchPad
+            '    End Get
+            '    Set(ByVal value As ucSketchPad)
+            '        MyBase.SketchPad = value
+            '    End Set
+            'End Property
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -115,20 +110,6 @@ Namespace Ecosim
             If Me.UIContext Is Nothing Then Return
 
             Me.m_F2TSManager = Me.Core.EcosimFitToTimeSeries
-            Me.m_cbAnomalySearch.Checked = Me.m_F2TSManager.AnomalySearch
-            Me.m_cbVulnerabilitySearch.Checked = Me.m_F2TSManager.VulnerabilitySearch
-
-            ''set the max number of year to the same as the time series data
-            'Me.m_nudFirstYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
-            'Me.m_nudLastYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
-
-            Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
-            Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
-            Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
-            Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 1
-            Me.m_vulnerabilityBlockMatrix.UIContext = Me.UIContext
-            Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
-            Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlock
 
             Me.m_grid.Manager = Me.Core.FishingPolicyManager
             Me.m_grid.UIContext = Me.UIContext
@@ -148,6 +129,20 @@ Namespace Ecosim
 
             Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
             Me.m_fpUseDefaultVs = New cPropertyFormatProvider(Me.UIContext, Me.m_cbResetVs, Me.m_F2TSManager, eVarNameFlags.F2TSUseDefaultV)
+
+            Me.m_cbAnomalySearch.Checked = Me.m_F2TSManager.AnomalySearch
+            Me.m_cbVulnerabilitySearch.Checked = Me.m_F2TSManager.VulnerabilitySearch
+
+            Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
+            Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
+            Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
+            Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 1
+            Me.m_vulnerabilityBlockMatrix.UIContext = Me.UIContext
+            Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
+            Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlock
+            Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
+            Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
+            Me.m_sketchPad.NumTSYears = Me.Core.nTimeSeriesYears
 
             Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
             Me.m_bIsRunning = Me.m_F2TSManager.IsRunning()
@@ -199,7 +194,6 @@ Namespace Ecosim
             Me.m_nudLastYear.Value = Me.m_F2TSManager.LastYear
             Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
             Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
-            'Me.m_nudAICDataPts.Value = CDec(Me.m_F2TSManager.NAICDataPoints)
 
             Me.UpdateControls()
         End Sub
@@ -278,7 +272,6 @@ Namespace Ecosim
             End If
             Me.m_F2TSManager.AnomalySearch = Me.m_cbAnomalySearch.Checked
             Me.m_F2TSManager.VulnerabilitySearch = Me.m_cbVulnerabilitySearch.Checked
-            'Me.m_F2TSManager.ObjectiveParameters.FishingMortalityPenalty = Me.m_cbFishingMortalityPenalty.Checked
 
             Me.m_F2TSManager.FirstYear = CInt(Me.m_nudFirstYear.Text) + 1
             Me.m_F2TSManager.LastYear = CInt(Me.m_nudLastYear.Text)

@@ -436,6 +436,7 @@ Namespace Ecosim
             Me.m_tabSearchOptions.Controls.Add(Me.tpVulnerabilitySearch)
             Me.m_tabSearchOptions.Controls.Add(Me.m_tpAnomalySearch)
             Me.m_tabSearchOptions.Location = New System.Drawing.Point(0, 26)
+            Me.m_tabSearchOptions.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tabSearchOptions.Name = "m_tabSearchOptions"
             Me.m_tabSearchOptions.SelectedIndex = 0
             Me.m_tabSearchOptions.Size = New System.Drawing.Size(531, 607)
@@ -510,7 +511,7 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockCodeSelector.Name = "m_vulnerabilityBlockCodeSelector"
             Me.m_vulnerabilityBlockCodeSelector.NumBlocks = 30
             Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 15
-            Me.m_vulnerabilityBlockCodeSelector.Size = New System.Drawing.Size(524, 52)
+            Me.m_vulnerabilityBlockCodeSelector.Size = New System.Drawing.Size(520, 52)
             Me.m_vulnerabilityBlockCodeSelector.TabIndex = 1
             Me.m_vulnerabilityBlockCodeSelector.UIContext = Nothing
             '
@@ -621,7 +622,7 @@ Namespace Ecosim
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
             Me.m_sketchPad.DisplayAxis = True
             Me.m_sketchPad.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_sketchPad.Editable = True
+            Me.m_sketchPad.Editable = False
             Me.m_sketchPad.FirstYear = 0
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
@@ -665,13 +666,14 @@ Namespace Ecosim
             Me.m_shapeToolBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                         Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_shapeToolBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
             Me.m_shapeToolBox.Handler = Nothing
-            Me.m_shapeToolBox.Location = New System.Drawing.Point(-1, 23)
+            Me.m_shapeToolBox.Location = New System.Drawing.Point(0, 23)
             Me.m_shapeToolBox.Margin = New System.Windows.Forms.Padding(0)
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
             Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
-            Me.m_shapeToolBox.Size = New System.Drawing.Size(523, 114)
+            Me.m_shapeToolBox.Size = New System.Drawing.Size(523, 113)
             Me.m_shapeToolBox.TabIndex = 1
             Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
