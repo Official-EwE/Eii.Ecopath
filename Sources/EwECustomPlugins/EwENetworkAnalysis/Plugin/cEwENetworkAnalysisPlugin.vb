@@ -2,13 +2,11 @@
 
 Option Strict On
 
+Imports System.Reflection
 Imports EwECore
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
-Imports EwEUtils.SystemUtilities
-Imports System.Reflection
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

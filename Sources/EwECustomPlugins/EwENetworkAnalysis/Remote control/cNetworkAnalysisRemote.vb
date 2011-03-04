@@ -22,12 +22,15 @@ Public Class cNetworkAnalysisRemote
 
         Me.m_uic = uic
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        Dim cmd As cCommand = cmdh.GetCommand(cExecuteCommand.COMMAND_NAME)
+        Try
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmd As cCommand = cmdh.GetCommand(cExecuteCommand.COMMAND_NAME)
+            If (cmd IsNot Nothing) Then
+                AddHandler cmd.OnInvoke, AddressOf OnExecuteCommand
+            End If
+        Catch ex As Exception
 
-        If (cmd IsNot Nothing) Then
-            AddHandler cmd.OnInvoke, AddressOf OnExecuteCommand
-        End If
+        End Try
 
         Me.m_manager = manager
 
@@ -35,12 +38,16 @@ Public Class cNetworkAnalysisRemote
 
     Public Sub Detach()
 
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        Dim cmd As cCommand = cmdh.GetCommand(cExecuteCommand.COMMAND_NAME)
+        Try
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmd As cCommand = cmdh.GetCommand(cExecuteCommand.COMMAND_NAME)
 
-        If (cmd IsNot Nothing) Then
-            RemoveHandler cmd.OnInvoke, AddressOf OnExecuteCommand
-        End If
+            If (cmd IsNot Nothing) Then
+                RemoveHandler cmd.OnInvoke, AddressOf OnExecuteCommand
+            End If
+        Catch ex As Exception
+
+        End Try
 
         Me.m_manager = Nothing
     End Sub
