@@ -99,6 +99,8 @@ Namespace Ecosim
             End Set
         End Property
 
+        Public Event OnSelectedBlockChanged(ByVal sender As Object, ByVal block As Integer)
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get or set the index of block in the list of 
@@ -146,6 +148,23 @@ Namespace Ecosim
             MyBase.OnMouseDown(e)
 
             If (Me.m_uic Is Nothing) Then Return
+
+            If (e.Button And Windows.Forms.MouseButtons.Right) > 0 Then
+                Dim ptClick As Point = Me.PointToPredPrey(e.Location)
+                Dim ppi As cPPIManager = Me.m_uic.Core.PPInteractionManager
+
+                If ptClick.X > 0 And ptClick.Y > 0 Then
+                    If ppi.isPredPrey(ptClick.X, ptClick.Y) Then
+                        Me.SelectedBlockNum = Me.m_a2iVulBlocks(ptClick.X, ptClick.Y)
+                        Try
+                            RaiseEvent OnSelectedBlockChanged(Me, Me.m_iSelectedBlockCodeIndex)
+                        Catch ex As Exception
+                            ' NOP
+                        End Try
+                    End If
+                End If
+                Return
+            End If
 
             Me.Capture = True
 

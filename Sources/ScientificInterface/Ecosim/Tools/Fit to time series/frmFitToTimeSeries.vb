@@ -488,8 +488,17 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnClearOutputs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_btnClearOutputs.Click
+            Handles m_btnClearOutputs.Click
             Me.m_gridOutput.Clear()
+        End Sub
+
+        Private Sub OnVulBlocksColourChanged(ByVal sender As Object, ByVal iBlock As Integer) _
+            Handles m_vulnerabilityBlockMatrix.OnSelectedBlockChanged
+            Try
+                Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = iBlock
+            Catch ex As Exception
+                ' NOP
+            End Try
         End Sub
 
 #End Region ' Private control event handlers
