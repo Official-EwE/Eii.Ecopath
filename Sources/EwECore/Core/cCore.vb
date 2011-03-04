@@ -7061,6 +7061,8 @@ Public Class cCore
             If fmsg.Reply = cFeedbackMessage.eReply.NO Then
                 Me.EcosimFitToTimeSeries.UseDefaultV = False
                 Return False
+            Else
+                Me.EcosimFitToTimeSeries.UseDefaultV = True
             End If
         End If
 
@@ -7070,8 +7072,6 @@ Public Class cCore
                 groupSim.VulMult(iPred) = sDefaultValue
             Next iPred
         Next iPrey
-
-        Me.EcosimFitToTimeSeries.UseDefaultV = True
 
     End Function
 
