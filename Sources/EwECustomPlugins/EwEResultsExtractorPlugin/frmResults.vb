@@ -98,7 +98,9 @@ Public Class frmResults
         DataOutputter = New cDataOutputer
 
         frmPlugin = Me
-        Me.Show()
+
+        'JS 04 March 2011: Do not show yet; let form populate itself and let the framework do the showing after the plugin is fully prepared
+        'Me.Show()
 
         nDataRows = m_core.nEcosimTimeSteps
 
@@ -126,14 +128,13 @@ Public Class frmResults
         ' Create FleetOnlySelection
         FleetOnlySelection = New cSelectionData("Fleet only", str2)
 
-        DataOutputter.POutputType = "excel"
-        optExcel.Select()
-        Dim ex As Excel.Application
         Try
-            ex = New Excel.Application
+            Dim ex As New Excel.Application
+            DataOutputter.POutputType = "excel"
+            optExcel.Checked = True
         Catch anyname As Exception
             DataOutputter.POutputType = "csv"
-            optCSV.Select()
+            optCSV.Checked = True
         End Try
 
     End Sub
