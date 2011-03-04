@@ -24,6 +24,7 @@ Public Class dlgSensitivityOfSStoV
     Private m_F2TSManager As cF2TSManager = Nothing
     Private m_SSbase As Single = 0.0
     Private m_runType As eRunType = eRunType.Idle
+    Private m_bRunning As Boolean = False
     Private m_bInUpdate As Boolean = False
 
 #End Region ' Private variables
@@ -192,8 +193,9 @@ Public Class dlgSensitivityOfSStoV
         'Console.WriteLine("Dlg: run started " & runType)
 
         Me.m_progress.Maximum = nSteps
-        Me.m_progress.Visible = True
-        Me.m_btnSearch.Enabled = False
+
+        Me.m_bRunning = True
+        Me.UpdateControls()
 
     End Sub
 
@@ -236,8 +238,8 @@ Public Class dlgSensitivityOfSStoV
 
         ' Sanity check
         Debug.Assert(runType = Me.m_runType)
-        Me.m_progress.Visible = False
-        Me.m_btnSearch.Enabled = True
+
+        Me.m_bRunning = False
 
         Me.UpdateControls()
         Me.UpdateDisplay()
@@ -282,12 +284,15 @@ Public Class dlgSensitivityOfSStoV
 
         Me.m_nudNumBlocks.Value = Me.m_iNumBlocks
 
-        'Me.m_rbTransferPredPreyCell.Enabled = Me.HasRun() And False
-        'Me.m_rbTransferPredCol.Enabled = Me.HasRun() And (Me.ResultType = eRunType.SensitivitySS2VByPredPrey)
-        'Me.m_rbTransferPredRow.Enabled = Me.HasRun() And (Me.ResultType = eRunType.SensitivitySS2VByPredator)
+        Me.m_rbSearchPred.Enabled = Not Me.m_bRunning
+        Me.m_rbSearchPredPrey.Enabled = Not Me.m_bRunning
 
         Me.m_nudNumBlocks.Enabled = Me.HasRun()
-        Me.m_btnOk.Enabled = Me.HasRun()
+        Me.m_progress.Visible = Me.m_bRunning
+        Me.m_nudNumBlocks.Enabled = Not Me.m_bRunning
+
+        Me.m_btnSearch.Enabled = Not Me.m_bRunning
+        Me.m_btnOk.Enabled = Me.HasRun() And Not Me.m_bRunning
 
         Me.m_bInUpdate = False
 
