@@ -37,10 +37,10 @@ Namespace Ecospace
 
 #End Region ' Private vars
 
-        Private Sub New(ByVal map As ucMap, ByVal uic As cUIContext)
+        Private Sub New(ByVal map As ucMap)
 
             Me.m_map = map
-            Me.m_uic = uic
+            Me.m_uic = map.UIContext
 
             Dim al As cLayer() = Me.m_map.Layers
             Dim l As cLayer = Nothing
@@ -62,8 +62,8 @@ Namespace Ecospace
 
 #Region " Shared interfaces "
 
-        Public Shared Function FromMap(ByVal map As ucMap, ByVal uic As cUIContext) As cLegend
-            Return New cLegend(map, uic)
+        Public Shared Function FromMap(ByVal map As ucMap) As cLegend
+            Return New cLegend(map)
         End Function
 
 #End Region ' Shared interfaces
@@ -71,6 +71,11 @@ Namespace Ecospace
 #Region " Public interfaces "
 
         Public Function SaveAsBitmap(ByVal strFileName As String, ByVal format As System.Drawing.Imaging.ImageFormat) As Boolean
+
+            If Me.m_uic Is Nothing Then
+                Debug.Assert(False, "UIContext not set")
+                Return False
+            End If
 
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
             Dim ftGroup As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
