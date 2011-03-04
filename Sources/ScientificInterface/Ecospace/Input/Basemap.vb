@@ -80,6 +80,8 @@ Namespace Ecospace.Basemap
 
             ' Initalize m_ucBasemap
             Me.m_ucBasemap = Me.m_zoomContainer.Map()
+            Me.m_ucBasemap.UIContext = Me.UIContext
+            Me.m_ucBasemap.Title = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex).Name
 
             ' Add LayersControl
             Me.m_ucLayers = New ucLayersControl(Me.UIContext)
