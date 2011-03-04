@@ -940,6 +940,8 @@ Namespace Core
 
         ''' <summary>Number of data points for AIC  </summary>
         F2TSNAICData
+        ''' <summary>Use default V's instead of currect V's</summary>
+        F2TSUseDefaultV
 
         ' Ecotracer
         CZero
