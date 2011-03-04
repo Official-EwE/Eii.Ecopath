@@ -9,6 +9,7 @@ Imports ScientificInterface.Ecospace.Basemap
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports EwEUtils.Win32Api
 Imports EwEUtils.Core
+Imports System.Drawing.Imaging
 
 #End Region ' Imports
 
@@ -19,6 +20,7 @@ Namespace Ecospace
 #Region " Private vars "
 
         Private Enum eLayerRenderStyle As Integer
+            Symbol
             Element
             Gradient
         End Enum
@@ -70,12 +72,9 @@ Namespace Ecospace
 
 #Region " Public interfaces "
 
-        Public Function SaveAsBitmap(ByVal strFileName As String, ByVal format As System.Drawing.Imaging.ImageFormat) As Boolean
+        Public Function SaveAsBitmap(ByVal strFileName As String, ByVal format As ImageFormat) As Boolean
 
-            If Me.m_uic Is Nothing Then
-                Debug.Assert(False, "UIContext not set")
-                Return False
-            End If
+            If Me.m_uic Is Nothing Then Return False
 
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
             Dim ftGroup As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
@@ -109,6 +108,14 @@ Namespace Ecospace
 
             Using bmp As New Bitmap(iWidth, iHeight, Imaging.PixelFormat.Format32bppArgb)
                 Using g As Graphics = Graphics.FromImage(bmp)
+
+                    If format Is ImageFormat.Png Then
+                        g.FillRectangle(Brushes.Transparent, 0, 0, iWidth, iHeight)
+                    Else
+                        Using br As New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
+                            g.FillRectangle(br, 0, 0, iWidth, iHeight)
+                        End Using
+                    End If
 
                     iWidth = 0 : iHeight = 0
 
@@ -161,7 +168,8 @@ Namespace Ecospace
 
             Dim sLayerBox As SizeF = g.MeasureString(l.Name, ft)
             Select Case Me.GetRenderStyle(l)
-                Case eLayerRenderStyle.Element
+                Case eLayerRenderStyle.Element, eLayerRenderStyle.Symbol
+                    ' NOP
                 Case eLayerRenderStyle.Gradient
                     sLayerBox.Height *= 3
             End Select
@@ -175,12 +183,21 @@ Namespace Ecospace
 
             Dim szfBox As SizeF = Me.RenderLayerSize(g, ft, l)
             Dim rcPreview As Rectangle = New Rectangle(ptLocation.X, ptLocation.Y, 20, CInt(szfBox.Height))
-            l.Renderer.RenderPreview(g, rcPreview, l.Data)
 
             Select Case Me.GetRenderStyle(l)
+
                 Case eLayerRenderStyle.Element
+                    l.Renderer.RenderPreview(g, rcPreview, l.Data)
+                    g.DrawRectangle(Pens.Black, rcPreview)
                     g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
+
+                Case eLayerRenderStyle.Symbol
+                    l.Renderer.RenderPreview(g, rcPreview, l.Data)
+                    g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
+
                 Case eLayerRenderStyle.Gradient
+                    l.Renderer.RenderPreview(g, rcPreview, l.Data)
+                    g.DrawRectangle(Pens.Black, rcPreview)
                     g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Data.MaxValue), _
                                  ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
                     g.DrawString(l.Name, _
@@ -191,8 +208,10 @@ Namespace Ecospace
         End Sub
 
         Private Function GetRenderStyle(ByVal l As cLayer) As eLayerRenderStyle
-            If TypeOf (l.Renderer) Is cLayerRendererValue Then
+            If (TypeOf (l.Renderer) Is cLayerRendererValue) Then
                 Return eLayerRenderStyle.Gradient
+            ElseIf (TypeOf (l.Renderer) Is cLayerRendererSymbol) Then
+                Return eLayerRenderStyle.Symbol
             Else
                 Return eLayerRenderStyle.Element
             End If
