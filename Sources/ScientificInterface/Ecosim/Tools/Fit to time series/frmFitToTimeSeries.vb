@@ -32,6 +32,7 @@ Namespace Ecosim
         Private m_bInUpdate As Boolean = False
 
         Private m_fpNoAICPts As cEwEFormatProvider = Nothing
+        Private m_fpUseDefaultVs As cEwEFormatProvider = Nothing
 
 #End Region 'Private variables
 
@@ -146,6 +147,7 @@ Namespace Ecosim
             End If
 
             Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
+            Me.m_fpUseDefaultVs = New cPropertyFormatProvider(Me.UIContext, Me.m_cbResetVs, Me.m_F2TSManager, eVarNameFlags.F2TSUseDefaultV)
 
             Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
             Me.m_bIsRunning = Me.m_F2TSManager.IsRunning()
@@ -161,6 +163,9 @@ Namespace Ecosim
 
             Me.m_fpNoAICPts.Release()
             Me.m_fpNoAICPts = Nothing
+
+            Me.m_fpUseDefaultVs.Release()
+            Me.m_fpUseDefaultVs = Nothing
 
             Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
                                         AddressOf OnRunStopped, AddressOf Me.OnModelRun)
@@ -347,25 +352,30 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_VulnerabilityBlockCodeSelector_OnBlockSelected(ByVal sender As IBlockSelector) _
+        Private Sub OnResetVsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbResetVs.CheckedChanged
+
+        End Sub
+
+        Private Sub OnBlockSelected(ByVal sender As IBlockSelector) _
             Handles m_vulnerabilityBlockCodeSelector.OnBlockSelected
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = sender.SelectedBlock
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_VulnerabilityBlockCodeSelector_OnNumBlocksChanged(ByVal sender As IBlockSelector) _
+        Private Sub OnNumBlocksChanged(ByVal sender As IBlockSelector) _
             Handles m_vulnerabilityBlockCodeSelector.OnNumBlocksChanged
             Me.m_vulnerabilityBlockMatrix.BlockColors = sender.BlockColors
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_nudFirstYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnFirstYearChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudFirstYear.ValueChanged
             If (Not Me.m_bInUpdate) Then Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_nudLastYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLastYearChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudLastYear.ValueChanged
 
             If (Not Me.m_bInUpdate) Then Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
@@ -373,7 +383,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_nudSplinePts_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnNoSplinePtsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudSplinePts.ValueChanged
 
             If (Not Me.m_bInUpdate) Then Me.m_sketchPad.NumSplinePoints = CInt(Me.m_nudSplinePts.Value)
@@ -381,7 +391,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_shapeToolBox_OnSelectionChanged(ByVal ashapes As EwECore.cShapeData()) _
+        Private Sub OnShapeSelectionChanged(ByVal ashapes As EwECore.cShapeData()) _
             Handles m_shapeToolBox.OnSelectionChanged
 
             If Me.UIContext Is Nothing Then Return

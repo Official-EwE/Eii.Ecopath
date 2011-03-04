@@ -26,6 +26,7 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFitToTimeSeries))
             Me.m_split1 = New System.Windows.Forms.SplitContainer()
+            Me.m_cbResetVs = New System.Windows.Forms.CheckBox()
             Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button()
             Me.m_splitSearch = New System.Windows.Forms.SplitContainer()
             Me.m_scGrids = New System.Windows.Forms.SplitContainer()
@@ -102,6 +103,7 @@ Namespace Ecosim
             '
             'm_split1.Panel1
             '
+            Me.m_split1.Panel1.Controls.Add(Me.m_cbResetVs)
             Me.m_split1.Panel1.Controls.Add(Me.m_btnTimeSeriesWeights)
             Me.m_split1.Panel1.Controls.Add(Me.m_splitSearch)
             Me.m_split1.Panel1.Controls.Add(Me.m_hdrSearchTypes)
@@ -120,6 +122,17 @@ Namespace Ecosim
             Me.m_split1.SplitterDistance = 249
             Me.m_split1.TabIndex = 0
             '
+            'm_cbResetVs
+            '
+            Me.m_cbResetVs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_cbResetVs.AutoSize = True
+            Me.m_cbResetVs.Location = New System.Drawing.Point(138, 53)
+            Me.m_cbResetVs.Name = "m_cbResetVs"
+            Me.m_cbResetVs.Size = New System.Drawing.Size(109, 17)
+            Me.m_cbResetVs.TabIndex = 3
+            Me.m_cbResetVs.Text = "&Reset V's on Run"
+            Me.m_cbResetVs.UseVisualStyleBackColor = True
+            '
             'm_btnTimeSeriesWeights
             '
             Me.m_btnTimeSeriesWeights.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -127,7 +140,7 @@ Namespace Ecosim
             Me.m_btnTimeSeriesWeights.Location = New System.Drawing.Point(138, 26)
             Me.m_btnTimeSeriesWeights.Name = "m_btnTimeSeriesWeights"
             Me.m_btnTimeSeriesWeights.Size = New System.Drawing.Size(108, 23)
-            Me.m_btnTimeSeriesWeights.TabIndex = 7
+            Me.m_btnTimeSeriesWeights.TabIndex = 0
             Me.m_btnTimeSeriesWeights.Text = "&Time series..."
             Me.m_btnTimeSeriesWeights.UseVisualStyleBackColor = True
             '
@@ -226,7 +239,7 @@ Namespace Ecosim
             'm_tbxAICDataPts
             '
             Me.m_tbxAICDataPts.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxAICDataPts.Location = New System.Drawing.Point(111, 173)
+            Me.m_tbxAICDataPts.Location = New System.Drawing.Point(111, 172)
             Me.m_tbxAICDataPts.Name = "m_tbxAICDataPts"
             Me.m_tbxAICDataPts.Size = New System.Drawing.Size(48, 20)
             Me.m_tbxAICDataPts.TabIndex = 2
@@ -411,7 +424,7 @@ Namespace Ecosim
             Me.m_cbAnomalySearch.Location = New System.Drawing.Point(3, 53)
             Me.m_cbAnomalySearch.Name = "m_cbAnomalySearch"
             Me.m_cbAnomalySearch.Size = New System.Drawing.Size(101, 17)
-            Me.m_cbAnomalySearch.TabIndex = 4
+            Me.m_cbAnomalySearch.TabIndex = 2
             Me.m_cbAnomalySearch.Text = "&Anomaly search"
             Me.m_cbAnomalySearch.UseVisualStyleBackColor = True
             '
@@ -797,6 +810,7 @@ Namespace Ecosim
         Private WithEvents m_gridOutput As ScientificInterface.Ecosim.gridFitToTimeSeriesOutput
         Friend WithEvents m_btnClearOutputs As System.Windows.Forms.Button
         Private WithEvents m_tbxAICDataPts As System.Windows.Forms.TextBox
+        Private WithEvents m_cbResetVs As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace
