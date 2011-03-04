@@ -64,7 +64,8 @@ Public Class cResultsHolder
 
         ResultsForm.DataStructure = mDataStructure
 
-        ResultsForm.Show()
+        ' JS 04 Mar 2011: Let EwE framework deal with this
+        'ResultsForm.Show()
 
     End Sub
 
