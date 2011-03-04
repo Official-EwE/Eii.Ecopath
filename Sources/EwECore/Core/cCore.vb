@@ -7046,34 +7046,46 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Function CheckResetDefaultVulnerabilities(Optional ByVal bQuiet As Boolean = False, _
                                                      Optional ByVal sDefaultValue As Single = 2.0!) As Boolean
-
-        Dim groupSim As cEcoSimGroupInput = Nothing
         Dim fmsg As cFeedbackMessage = Nothing
 
-        If Not Me.HasNonDefaultVulnerabilty(sDefaultValue) Then Return True
+        Try
 
-        If Not bQuiet Then
-            fmsg = New cFeedbackMessage(String.Format(My.Resources.CoreMessages.VULNERABILITIES_PROMPT_RESET, sDefaultValue), _
-                                        eCoreComponentType.EcoSim, eMessageType.Any, _
-                                        eMessageImportance.Information, _
-                                        cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
-            Me.m_publisher.SendMessage(fmsg)
-            If fmsg.Reply = cFeedbackMessage.eReply.NO Then
-                Me.EcosimFitToTimeSeries.UseDefaultV = False
-                Return False
-            Else
-                Me.EcosimFitToTimeSeries.UseDefaultV = True
+            If Not Me.HasNonDefaultVulnerabilty(sDefaultValue) Then Return True
+
+            If Not bQuiet Then
+                fmsg = New cFeedbackMessage(String.Format(My.Resources.CoreMessages.VULNERABILITIES_PROMPT_RESET, sDefaultValue), _
+                                            eCoreComponentType.EcoSim, eMessageType.Any, _
+                                            eMessageImportance.Information, _
+                                            cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+                Me.m_publisher.SendMessage(fmsg)
+                If fmsg.Reply = cFeedbackMessage.eReply.NO Then
+                    Me.EcosimFitToTimeSeries.UseDefaultV = False
+                    Return False
+                Else
+                    Me.EcosimFitToTimeSeries.UseDefaultV = True
+                End If
             End If
-        End If
 
-        For iPrey As Integer = 1 To Me.nGroups
-            groupSim = Me.EcoSimGroupInputs(iPrey)
-            For iPred As Integer = 1 To Me.nGroups
-                groupSim.VulMult(iPred) = sDefaultValue
-            Next iPred
-        Next iPrey
+            Dim groupSim As cEcoSimGroupInput = Nothing
+            For iPrey As Integer = 1 To Me.nGroups
+                groupSim = Me.EcoSimGroupInputs(iPrey)
+                For iPred As Integer = 1 To Me.nGroups
+                    groupSim.VulMult(iPred) = sDefaultValue
+                Next iPred
+            Next iPrey
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, ex.Message)
+            Return False
+        End Try
+
+        Return True
 
     End Function
+
+
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
