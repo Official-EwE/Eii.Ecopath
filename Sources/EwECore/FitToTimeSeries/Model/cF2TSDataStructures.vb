@@ -31,4 +31,6 @@ Public Class cF2TSDataStructures
     ''' <remarks></remarks>
     Public AIC As Single
 
+    Public UseDefaultV As Boolean = True
+
 End Class

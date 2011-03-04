@@ -181,6 +181,7 @@ Public Class cF2TSManager
         Me.VulnerabilityVariance = f2tsDS.VulnerabilityVariance
 
         Me.NAICDataPoints = f2tsDS.nAICData
+        Me.UseDefaultV = f2tsDS.UseDefaultV
 
         ' Use DBID from current Ecosim scenario
         Me.DBID = Me.m_EPData.EcosimScenarioDBID(Me.m_EPData.ActiveEcosimScenario)
@@ -275,6 +276,8 @@ Public Class cF2TSManager
         f2tsDS.VulnerabilityVariance = Me.VulnerabilityVariance
 
         f2tsDS.nAICData = Me.NAICDataPoints
+
+        f2tsDS.useDefaultV = Me.UseDefaultV
 
     End Function
 
@@ -614,9 +617,6 @@ Public Class cF2TSManager
             ' Sanity check
             Debug.Assert(Me.m_thrdRun Is Nothing)
 
-            Me.m_core.CheckResetDefaultVulnerabilities()
-
-
             'block if the semaphore is already set
             Me.m_semaphore.WaitOne()
             Me.m_SignalState.Reset()
@@ -715,8 +715,6 @@ Public Class cF2TSManager
         Me.m_runSilent = RunSilent
 
         Try
-
-            Me.m_core.CheckResetDefaultVulnerabilities()
 
             'block if the semaphore is already set
             Me.m_semaphore.WaitOne()

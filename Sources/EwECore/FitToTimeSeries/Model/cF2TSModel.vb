@@ -350,6 +350,8 @@ Namespace FitToTimeSeries
 
             Try
 
+
+
                 'init 
                 m_runType = eRunType.SensitivitySS2VByPredator
                 InitForRun(m_runType)
@@ -696,6 +698,10 @@ Namespace FitToTimeSeries
                 m_ecosim.RunModelValue(TotalTime, Nothing, 0)
 
                 Me.updateAICNPars()
+
+                If Me.m_data.UseDefaultV Then
+                    Me.m_core.CheckResetDefaultVulnerabilities(True)
+                End If
 
                 'set the baseSS in the results object that was calculated above by ecosim
                 DirectCast(m_results, cF2TSResults).BaseSS = m_esdata.SS
