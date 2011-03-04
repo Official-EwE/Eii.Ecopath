@@ -10,6 +10,7 @@ Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports EwEUtils.Win32Api
 Imports EwEUtils.Core
 Imports System.ComponentModel
+Imports System.IO
 
 #End Region ' Imports
 
@@ -79,6 +80,13 @@ Namespace Ecospace
             Catch ex As Exception
                 Return False
             End Try
+
+            Dim lgd As cLegend = cLegend.FromMap(Me)
+            Dim strExt As String = Path.GetExtension(strFileName)
+
+            strFileName = Path.Combine(Path.GetDirectoryName(strFileName), Path.GetFileNameWithoutExtension(strFileName) & "_legend" & strExt)
+            lgd.SaveAsBitmap(strFileName, format)
+
             Return True
 
         End Function
