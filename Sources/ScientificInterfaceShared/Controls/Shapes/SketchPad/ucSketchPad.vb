@@ -565,10 +565,8 @@ Namespace Controls
             If (Me.m_uic Is Nothing) Then Return
 
             If (Me.Editable = True) And (Me.m_shape IsNot Nothing) Then
-                Me.Enabled = True
                 Me.BackColor = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
             Else
-                Me.Enabled = False
                 Me.BackColor = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
             End If
 
