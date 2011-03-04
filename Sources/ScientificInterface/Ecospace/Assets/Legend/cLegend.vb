@@ -99,8 +99,8 @@ Namespace Ecospace
                     For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
                         szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
                         iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                        iHeight += CInt(Math.Ceiling(szfItem.Height))
                         If iLayer > 0 Then iHeight += Me.m_iLayerBoxVSpacing
+                        iHeight += CInt(Math.Ceiling(szfItem.Height))
                     Next iLayer
 
                 End Using ' g
@@ -112,9 +112,7 @@ Namespace Ecospace
                     If format Is ImageFormat.Png Then
                         g.FillRectangle(Brushes.Transparent, 0, 0, iWidth, iHeight)
                     Else
-                        Using br As New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
-                            g.FillRectangle(br, 0, 0, iWidth, iHeight)
-                        End Using
+                        g.FillRectangle(Brushes.White, 0, 0, iWidth, iHeight)
                     End If
 
                     iWidth = 0 : iHeight = 0
@@ -128,10 +126,10 @@ Namespace Ecospace
 
                     For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
                         szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
-                        Me.RenderLayer(g, ftTitle, Me.m_lLayers(iLayer), New Point(0, iHeight))
+                        If iLayer > 0 Then iHeight += Me.m_iLayerBoxVSpacing
+                        Me.RenderLayer(g, ftLayer, Me.m_lLayers(iLayer), New Point(0, iHeight))
                         iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
                         iHeight += CInt(Math.Ceiling(szfItem.Height))
-                        If iLayer > 0 Then iHeight += Me.m_iLayerBoxVSpacing
                     Next iLayer
 
                 End Using ' g
@@ -173,7 +171,7 @@ Namespace Ecospace
                 Case eLayerRenderStyle.Gradient
                     sLayerBox.Height *= 3
             End Select
-            sLayerBox.Width = Math.Max(Me.m_iLayerBoxWidth + Me.m_iLayerBoxHSpacing, sLayerBox.Width)
+            sLayerBox.Width += (Me.m_iLayerBoxWidth + Me.m_iLayerBoxHSpacing)
             sLayerBox.Height = Math.Max(Me.m_iLayerBoxHeight, sLayerBox.Height)
             Return sLayerBox
 
