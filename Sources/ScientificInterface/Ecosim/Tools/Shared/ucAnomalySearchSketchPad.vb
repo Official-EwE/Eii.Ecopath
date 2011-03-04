@@ -29,6 +29,15 @@ Namespace Ecosim
 
 #Region " Public properties "
 
+        Public Overrides Property Editable As Boolean
+            Get
+                Return False
+            End Get
+            Set(ByVal value As Boolean)
+                ' NOP
+            End Set
+        End Property
+
         Public Property FirstYear() As Integer
             Get
                 Return Me.m_iFirstYear
@@ -155,7 +164,7 @@ Namespace Ecosim
 
         Private cMOUSE_TOLERANCE As Integer = 3
 
-        Private Sub ucAnomalySearchSketchPad_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
+        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
             If (Math.Abs(e.X - Me.YearToX(Me.m_iFirstYear, Me.ClientRectangle.Width)) <= cMOUSE_TOLERANCE) Then
                 Me.m_iYearStartDragPos = e.X
                 Me.Capture = True
@@ -165,8 +174,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub ucAnomalySearchSketchPad_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
-
+        Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
             If Me.Capture Then
                 If (Me.m_iYearStartDragPos >= 0) Then
                     Me.m_iYearStartDragPos = e.X
@@ -183,18 +191,16 @@ Namespace Ecosim
                     Me.Cursor = Cursors.Default
                 End If
             End If
-
         End Sub
 
-        Private Sub ucAnomalySearchSketchPad_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseUp
-
+        Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
             If Me.Capture Then
 
                 ' Calc resulting years
                 If (Me.m_iYearStartDragPos >= 0) Then
-                    Me.m_iFirstYear = Me.XToYear(Me.m_iYearStartDragPos, Me.ClientRectangle.Width)
+                    Me.m_iFirstYear = Math.Max(0, Me.XToYear(Me.m_iYearStartDragPos, Me.ClientRectangle.Width))
                 ElseIf (Me.m_iYearEndDragPos >= 0) Then
-                    Me.m_iLastYear = Me.XToYear(Me.m_iYearEndDragPos, Me.ClientRectangle.Width)
+                    Me.m_iLastYear = Math.Min(Me.NumTSYears, Me.XToYear(Me.m_iYearEndDragPos, Me.ClientRectangle.Width))
                 End If
 
                 ' Sort resulting years
