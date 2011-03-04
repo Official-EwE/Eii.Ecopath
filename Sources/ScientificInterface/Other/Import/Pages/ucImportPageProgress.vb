@@ -134,11 +134,20 @@ Namespace Import
             Dim pmsg As cProgressMessage = DirectCast(msg, cProgressMessage)
 
             ' Update progress bar
-            Me.m_pb.Value = Math.Max(0, Math.Min(100, CInt(100 * pmsg.Progress)))
+            If Me.InvokeRequired Then
+                Me.Invoke(New UpdateProgressDelegate(AddressOf UpdateProgress), New Object() {CInt(100 * pmsg.Progress), pmsg.Message})
+            Else
+                Me.UpdateProgress(CInt(100 * pmsg.Progress), pmsg.Message)
+            End If
+        End Sub
 
+        Private Delegate Sub UpdateProgressDelegate(ByVal iProgress As Integer, ByVal strMsg As String)
+
+        Private Sub UpdateProgress(ByVal iProgress As Integer, ByVal strMsg As String)
+            ' Update progress bar
+            Me.m_pb.Value = Math.Max(0, Math.Min(100, iProgress))
             ' Update progress label
-            Me.m_lbProgress.Text = pmsg.Message
-
+            Me.m_lbProgress.Text = strMsg
         End Sub
 
 #End Region ' Events
