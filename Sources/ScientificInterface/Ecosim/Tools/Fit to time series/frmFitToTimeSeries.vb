@@ -644,6 +644,8 @@ Namespace Ecosim
             ' Search button enabled when ts loaded and not running
             Me.m_btnStop.Enabled = Me.m_bIsRunning
             Me.m_btnSearch.Enabled = (Not Me.m_bIsRunning) And bInputsValid
+            Me.m_sketchPad.Enabled = (Not Me.m_bIsRunning)
+            Me.m_shapeToolBox.Enabled = (Not Me.m_bIsRunning)
 
             'constrain the number of years to the number of years in the time series data
             If Me.m_nudLastYear.Value > Me.m_F2TSManager.nTimeSeriesYears Then
