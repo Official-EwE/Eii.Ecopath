@@ -948,6 +948,20 @@ Namespace Controls.EwEGrid
             Return fp
         End Function
 
+        ''' <summary>
+        ''' Method called when a mass change of cells is about to begin.
+        ''' </summary>
+        Public Overridable Sub BeginBatchEdit()
+            ' NOP
+        End Sub
+
+        ''' <summary>
+        ''' Method called when a mass change of cells is done.
+        ''' </summary>
+        Public Overridable Sub EndBatchEdit()
+            ' NOP
+        End Sub
+
 #End Region ' Data
 
 #Region " Selection behavior "
@@ -1127,6 +1141,8 @@ Namespace Controls.EwEGrid
             Dim cell As SourceGrid2.Cells.ICell = Nothing
             Dim strValue As String = ""
 
+            Me.BeginBatchEdit()
+
             ' Empty or near-empty range?
             If (r.IsEmpty) Then
                 ' Select remaining grid
@@ -1170,6 +1186,8 @@ Namespace Controls.EwEGrid
             Next iRow
             ' Redraw later
             Me.InvalidateCells()
+            Me.EndBatchEdit()
+
         End Sub
 
         ''' -------------------------------------------------------------------

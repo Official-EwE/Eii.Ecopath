@@ -444,6 +444,8 @@ Namespace Forms
                 If Not core.SetBatchLock(cCore.eBatchLockType.Update) Then Return
 
                 cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+                Me.m_grid.BeginBatchEdit()
+
                 For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
                     If TypeOf cell Is PropertyCell Then
                         Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
@@ -467,6 +469,7 @@ Namespace Forms
                 ' Remember last applied value
                 Me.m_strValueOrg = strValue
 
+                Me.m_grid.EndBatchEdit()
                 cApplicationStatusNotifier.SetStatusText("", TriState.False)
 
                 core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
