@@ -1155,7 +1155,10 @@ Namespace Controls.EwEGrid
                                     strValue = cCore.NULL_VALUE.ToString()
                                 End If
 
+                                cell.StartEdit(pos, strValue)
                                 cell.SetValue(pos, strValue)
+                                cell.EndEdit(False)
+
                             End If
                         End If
                     Next iCol
