@@ -165,6 +165,9 @@ Namespace Ecosim
         Private cMOUSE_TOLERANCE As Integer = 3
 
         Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
+
+            If Me.Shape Is Nothing Then Return
+
             If (Math.Abs(e.X - Me.YearToX(Me.m_iFirstYear, Me.ClientRectangle.Width)) <= cMOUSE_TOLERANCE) Then
                 Me.m_iYearStartDragPos = e.X
                 Me.Capture = True
@@ -175,6 +178,9 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
+
+            If Me.Shape Is Nothing Then Return
+
             If Me.Capture Then
                 If (Me.m_iYearStartDragPos >= 0) Then
                     Me.m_iYearStartDragPos = e.X
@@ -194,8 +200,10 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
-            If Me.Capture Then
 
+            If Me.Shape Is Nothing Then Return
+
+            If Me.Capture Then
                 ' Calc resulting years
                 If (Me.m_iYearStartDragPos >= 0) Then
                     Me.m_iFirstYear = Math.Max(0, Me.XToYear(Me.m_iYearStartDragPos, Me.ClientRectangle.Width))
