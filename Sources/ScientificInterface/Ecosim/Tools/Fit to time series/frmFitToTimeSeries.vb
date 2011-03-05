@@ -152,6 +152,12 @@ Namespace Ecosim
 
         End Sub
 
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+            ' Prevent form from closing while a search is running
+            e.Cancel = Me.m_bIsRunning
+            MyBase.OnFormClosing(e)
+        End Sub
+
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             If Me.UIContext Is Nothing Then Return
