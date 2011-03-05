@@ -337,6 +337,9 @@ Namespace Controls.EwEGrid
         ''' <summary>Bin of formula properties.</summary>
         Private m_lpropertyFormula As List(Of cFormulaProperty) = Nothing
 
+        ''' <summary>Helper flag, states whether a batch cell edit is active</summary>
+        Private m_bInBatchEdit As Boolean = False
+
 #End Region ' Variables
 
 #Region " Constructor / destructor "
@@ -952,15 +955,23 @@ Namespace Controls.EwEGrid
         ''' Method called when a mass change of cells is about to begin.
         ''' </summary>
         Public Overridable Sub BeginBatchEdit()
-            ' NOP
+            Me.m_bInBatchEdit = True
         End Sub
 
         ''' <summary>
         ''' Method called when a mass change of cells is done.
         ''' </summary>
         Public Overridable Sub EndBatchEdit()
-            ' NOP
+            Me.m_bInBatchEdit = False
         End Sub
+
+        ''' <summary>
+        ''' Returns whether a <see cref="BeginBatchEdit">Batch edit</see> is active.
+        ''' </summary>
+        ''' <returns>True if a batch edit is active, false otherwise.</returns>
+        Public Function IsInBatchEdit() As Boolean
+            Return Me.m_bInBatchEdit
+        End Function
 
 #End Region ' Data
 
