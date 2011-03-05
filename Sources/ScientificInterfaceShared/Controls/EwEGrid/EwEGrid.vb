@@ -1155,9 +1155,13 @@ Namespace Controls.EwEGrid
                                     strValue = cCore.NULL_VALUE.ToString()
                                 End If
 
-                                cell.StartEdit(pos, strValue)
-                                cell.SetValue(pos, strValue)
-                                cell.EndEdit(False)
+                                cell.Value = strValue
+                                For Each bh As SourceGrid2.BehaviorModels.IBehaviorModel In cell.Behaviors
+                                    Try
+                                        bh.OnValueChanged(New SourceGrid2.PositionEventArgs(pos, cell))
+                                    Catch ex As Exception
+                                    End Try
+                                Next
 
                             End If
                         End If

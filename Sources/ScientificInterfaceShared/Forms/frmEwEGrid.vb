@@ -453,9 +453,13 @@ Namespace Forms
                     Else
                         If cell.DataModel.EnableEdit Then
                             Dim pos As New SourceGrid2.Position(cell.Row, cell.Column)
-                            cell.StartEdit(pos, strValue)
                             cell.Value = strValue
-                            cell.EndEdit(False)
+                            For Each bh As SourceGrid2.BehaviorModels.IBehaviorModel In cell.Behaviors
+                                Try
+                                    bh.OnValueChanged(New SourceGrid2.PositionEventArgs(pos, cell))
+                                Catch ex As Exception
+                                End Try
+                            Next
                         End If
                     End If
                 Next
