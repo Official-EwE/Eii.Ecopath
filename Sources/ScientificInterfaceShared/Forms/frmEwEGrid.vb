@@ -452,8 +452,10 @@ Namespace Forms
                         End If
                     Else
                         If cell.DataModel.EnableEdit Then
+                            Dim pos As New SourceGrid2.Position(cell.Row, cell.Column)
+                            cell.StartEdit(pos, strValue)
                             cell.Value = strValue
-                            cell.Invalidate()
+                            cell.EndEdit(False)
                         End If
                     End If
                 Next
