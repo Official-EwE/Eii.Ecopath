@@ -30,7 +30,7 @@ Partial Class Basemap
             Me.m_zoomToolbar = New ScientificInterface.Ecospace.ucMapZoomToolbar
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.tsEditBasemapThingies = New System.Windows.Forms.ToolStrip
+            Me.tsEditBasemapThingies = New cEwEToolstrip
             Me.tsbEditBasemap = New System.Windows.Forms.ToolStripButton
             Me.tsbEditHabitats = New System.Windows.Forms.ToolStripButton
             Me.tsbEditMPA = New System.Windows.Forms.ToolStripButton
@@ -152,7 +152,7 @@ Partial Class Basemap
         Private WithEvents plLayers As System.Windows.Forms.Panel
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents tsEditBasemapThingies As System.Windows.Forms.ToolStrip
+        Private WithEvents tsEditBasemapThingies As cEwEToolstrip
         Private WithEvents tsbEditBasemap As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbEditHabitats As System.Windows.Forms.ToolStripButton
         Private WithEvents tsbEditRegion As System.Windows.Forms.ToolStripButton
