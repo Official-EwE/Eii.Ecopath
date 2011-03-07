@@ -35,15 +35,6 @@ Namespace Controls.EwEGrid
             Me.Style = style
         End Sub
 
-        Public Sub New(ByVal objVal As Object, ByVal ed As EditorControlBase, _
-                       Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
-            MyBase.New(objVal, ed)
-            ' Set value
-            If objVal IsNot Nothing Then Me.Value = objVal
-            ' Set style
-            Me.Style = style
-        End Sub
-
         Public Overrides Sub Dispose()
             ' JS 13Dec10: Memory leaks were discovered on tooltips. Perhaps explicitly 
             '             clearing the grid tooltip text wil fix this.
