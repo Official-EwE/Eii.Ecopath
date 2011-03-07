@@ -3049,16 +3049,13 @@ Namespace DataSources
         Private Function LoadEcopathTaxa() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            ecopathDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroupTaxon"))
+            ecopathDS.RedimTaxon()
+
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupTaxon")
             Dim iTaxon As Integer = 1
             Dim iGroup As Integer = 1
             Dim bSucces As Boolean = True
-
-            ' Init data structure
-            ecopathDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroupTaxon"))
-
-            ' Allocate space
-            ecopathDS.RedimTaxon()
 
             While reader.Read()
 
@@ -3066,7 +3063,6 @@ Namespace DataSources
                     ecopathDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("EcopathGroupID")))
                     If iGroup > 0 Then
-                        ecopathDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
                         ecopathDS.TaxonGroup(iTaxon) = iGroup
                         ecopathDS.TaxonGroupProp(iTaxon) = CSng(reader("Proportion"))
                         ecopathDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeISCAAP", ""))
@@ -3077,7 +3073,7 @@ Namespace DataSources
                         ecopathDS.TaxonFamily(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "FamilyName", ""))
                         ecopathDS.TaxonGenus(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "GenusName", ""))
                         ecopathDS.TaxonSpecies(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SpeciesName", ""))
-                        ecopathDS.TaxonCommonName(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CommonName", ""))
+                        ecopathDS.TaxonName(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CommonName", ""))
                         ecopathDS.TaxonSource(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceName", ""))
                         ecopathDS.TaxonSourceKey(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceKey", ""))
                         ecopathDS.TaxonEcologyType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "EcologyType", eEcologyTypes.NotSet), eEcologyTypes)
@@ -3094,7 +3090,7 @@ Namespace DataSources
                     End If
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, ecopathDS.TaxonCommonName(iTaxon)))
+                    Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, ecopathDS.TaxonName(iTaxon)))
                     bSucces = False
                 End Try
 
@@ -3147,7 +3143,7 @@ Namespace DataSources
                     drow("FamilyName") = ecopathDS.TaxonFamily(iTaxon)
                     drow("GenusName") = ecopathDS.TaxonGenus(iTaxon)
                     drow("SpeciesName") = ecopathDS.TaxonSpecies(iTaxon)
-                    drow("CommonName") = ecopathDS.TaxonCommonName(iTaxon)
+                    drow("CommonName") = ecopathDS.TaxonName(iTaxon)
                     drow("SourceName") = ecopathDS.TaxonSource(iTaxon)
                     drow("SourceKey") = ecopathDS.TaxonSourceKey(iTaxon)
                     drow("EcologyType") = ecopathDS.TaxonEcologyType(iTaxon)
