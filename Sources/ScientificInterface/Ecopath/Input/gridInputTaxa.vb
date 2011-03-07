@@ -21,6 +21,11 @@ Namespace Ecopath.Input
     Public Class gridInputTaxa
         : Inherits EwEGrid
 
+        Private m_editorEcology As EwEComboBoxCellEditor(Of eEcologyTypes) = Nothing
+        Private m_editorConservation As EwEComboBoxCellEditor(Of eIUCNConservationStatusTypes) = Nothing
+        Private m_editorOrganism As EwEComboBoxCellEditor(Of eOrganismTypes) = Nothing
+        Private m_editorOccurrence As EwEComboBoxCellEditor(Of eOccurrenceStatusTypes) = Nothing
+
         Enum eColumnTypes As Integer
             Index = 0
             Name
@@ -69,6 +74,20 @@ Namespace Ecopath.Input
             Dim cellParent As EwEHierarchyGridCell = Nothing
             Dim iRow As Integer = -1
 
+            ' Prepare editors
+            Me.m_editorEcology = New EwEComboBoxCellEditor(Of eEcologyTypes) _
+                                                          (DirectCast([Enum].GetValues(GetType(eEcologyTypes)), eEcologyTypes()), _
+                                                           New cEcologyTypeFormatter())
+            Me.m_editorConservation = New EwEComboBoxCellEditor(Of eIUCNConservationStatusTypes) _
+                                                          (DirectCast([Enum].GetValues(GetType(eIUCNConservationStatusTypes)), eIUCNConservationStatusTypes()), _
+                                                           New cIUCNConservationTypeFormatter())
+            Me.m_editorOrganism = New EwEComboBoxCellEditor(Of eOrganismTypes) _
+                                                          (DirectCast([Enum].GetValues(GetType(eOrganismTypes)), eOrganismTypes()), _
+                                                           New cOrganismTypeFormatter())
+            Me.m_editorOccurrence = New EwEComboBoxCellEditor(Of eOccurrenceStatusTypes) _
+                                                          (DirectCast([Enum].GetValues(GetType(eOccurrenceStatusTypes)), eOccurrenceStatusTypes()), _
+                                                           New cOccurrenceTypeFormatter())
+
             ' Sort taxa by group
             Dim aiGroupTaxa(Me.Core.nGroups) As List(Of cTaxon)
             For iGroup As Integer = 0 To Me.Core.nGroups
@@ -89,7 +108,6 @@ Namespace Ecopath.Input
 
                 ' Add group
                 iRow = Me.AddRow()
-                iRow = Me.AddRow()
                 For i As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
 
                 cellParent = New EwEHierarchyGridCell()
@@ -100,72 +118,25 @@ Namespace Ecopath.Input
 
                     ' Add taxon
                     iRow = Me.AddRow()
-                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.CommonName)
+                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, taxon, eVarNameFlags.Index)
+                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, taxon, eVarNameFlags.Name)
 
-                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BiomassAreaInput)
-                    cell.Behaviors.Add(Me.EwEEditHandler)
-                    cell.SuppressZero = True
-                    Me(iRow, eColumnTypes.Ecology) = cell
+                    Me(iRow, eColumnTypes.Ecology) = New SourceGrid2.Cells.Real.Cell(taxon.EcologyType, Me.m_editorEcology)
+                    Me(iRow, eColumnTypes.Organism) = New SourceGrid2.Cells.Real.Cell(taxon.OrganismType, Me.m_editorOrganism)
+                    Me(iRow, eColumnTypes.Conservation) = New SourceGrid2.Cells.Real.Cell(taxon.IUCNConservationStatus, Me.m_editorConservation)
+                    Me(iRow, eColumnTypes.Occurrence) = New SourceGrid2.Cells.Real.Cell(taxon.OccurrenceStatus, Me.m_editorOccurrence)
 
-                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.PBInput)
-                    cell.Behaviors.Add(Me.EwEEditHandler)
-                    cell.SuppressZero = True
-                    Me(iRow, eColumnTypes.Organism) = cell
-
-                    cell = New EwECell("", GetType(String))
-                    cell.Style = cStyleGuide.eStyleFlags.NotEditable
-                    cell.Behaviors.Add(Me.EwEEditHandler)
+                    cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.Exploited)
                     Me(iRow, eColumnTypes.Exploited) = cell
 
-                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.QBInput)
-                    cell.Behaviors.Add(Me.EwEEditHandler)
-                    cell.SuppressZero = True
-                    Me(iRow, eColumnTypes.Conservation) = cell
-
-                    Me(iRow, eColumnTypes.Occurrence) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.EEInput)
-                    Me(iRow, eColumnTypes.MeanLen) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.OtherMortInput)
-                    Me(iRow, eColumnTypes.MeanWeight) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.GEInput)
-                    Me(iRow, eColumnTypes.MeanWeight).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.MaxLen) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.GS)
-                    Me(iRow, eColumnTypes.MeanLifeSpan) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.DetImp)
+                    Me(iRow, eColumnTypes.MeanLen) = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLength)
+                    Me(iRow, eColumnTypes.MaxLen) = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMaxLength)
+                    Me(iRow, eColumnTypes.MeanWeight) = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanWeight)
+                    Me(iRow, eColumnTypes.MeanLifeSpan) = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLifespan)
 
                     cellParent.AddChildRow(iRow)
                 Next
             Next iGroup
-
-        End Sub
-
-        Protected Overrides Sub OnCellDoubleClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
-            Dim dlg As EditMultiStanza = Nothing
-            Dim prop As cProperty = Nothing
-            Dim group As cEcoPathGroupInput = Nothing
-
-            If Not TypeOf cell Is PropertyCell Then Return
-            prop = DirectCast(cell, PropertyCell).GetProperty()
-            group = DirectCast(prop.Source, cEcoPathGroupInput)
-
-            dlg = New EditMultiStanza(Me.UIContext, group)
-            dlg.ShowDialog(Me)
-        End Sub
-
-        Protected Overrides Sub FinishStyle()
-            MyBase.FinishStyle()
-
-            Dim ci As ColumnInfo = Me.Columns(eColumnTypes.Organism)
-
-            Me.Rows(0).Height = 60
-            Me.Columns(0).Width = 24
-            Me.Columns(1).Width = 120
-            Me.Columns(1).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-
-            For i As Integer = 2 To Me.ColumnsCount - 1
-                Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
-            Next
-
-            If Me.UIContext Is Nothing Then Return
-
-            ci.Visible = (Me.Core.nStanzas > 0)
 
         End Sub
 
