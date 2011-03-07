@@ -1035,18 +1035,18 @@ Imports SourceGrid2.Cells
 
             Case eVarNameFlags.Biomass
 
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 0))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.1, 80))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 70))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.1, 60))
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_APPROX_INDIRECT, 0.7, 40))
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_LOW, 0.7, 40))
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_HIGH, 1.0, 20))
 
             Case eVarNameFlags.PBInput, eVarNameFlags.QBInput
 
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 0))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 80))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.2, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 80))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.2, 70))
+                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.2, 60))
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_EMPERICAL, 0.5, 50))
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SIM, 0.6, 40))
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SAME, 0.7, 30))
