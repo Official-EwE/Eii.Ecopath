@@ -964,10 +964,7 @@ Namespace Database
             If (reader Is Nothing) Then Return objValueDefault
 
             Try
-                ' Try to cut down on exceptions
-                If reader.GetSchemaTable().Columns.Contains(strField) Then
-                    objResult = reader.Item(strField)
-                End If
+                objResult = reader.Item(strField)
             Catch ex As InvalidOperationException
                 'Console.WriteLine("DB: field '{0}' has no value, returning provided default '{1}'", strField, objValueDefault)
             Catch ex As IndexOutOfRangeException
