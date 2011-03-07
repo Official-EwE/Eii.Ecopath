@@ -95,7 +95,7 @@ Imports SourceGrid2.Cells
             Me.m_man = Me.m_core.GetPedigreeManager(Me.m_vn)
 
             ' Add info objects for all existing levels in the manager
-            For iLevel As Integer = 0 To Me.m_man.NumLevels - 1
+            For iLevel As Integer = 1 To Me.m_man.NumLevels
                 Dim level As cPedigreeLevel = Me.m_man.Level(iLevel)
                 Dim lvlInfo As cPedigreeLevelInfo = New cPedigreeLevelInfo(level)
                 Me.m_lfiLevels.Add(lvlInfo)
@@ -225,7 +225,7 @@ Imports SourceGrid2.Cells
                     If lvlInfo.IsChanged() Then
                         bUpdated = False
                         ' Find (possibly reloaded) level that matches this lvlInfo
-                        For iLevel As Integer = 0 To Me.m_man.NumLevels - 1
+                        For iLevel As Integer = 1 To Me.m_man.NumLevels
                             level = Me.m_man.Level(iLevel)
                             If level.DBID = lvlInfo.Level.DBID Then
                                 ' Only commint changes to prevent unnecessary updates

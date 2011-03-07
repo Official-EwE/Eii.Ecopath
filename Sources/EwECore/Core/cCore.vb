@@ -11204,11 +11204,11 @@ Public Class cCore
                 Dim man As cPedigreeManager = Me.GetPedigreeManager(Me.PedigreeVariable(iVar))
 
                 If (man IsNot Nothing) Then
-                    If value < 0 Then
+                    If value <= 0 Then
                         ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                         ValueObject.ValidationStatus = eStatusFlags.OK
                         ValueObject.ValidationStatus = eStatusFlags.Null
-                    ElseIf value >= man.NumLevels Then
+                    ElseIf value > man.NumLevels Then
                         ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION)
                         ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                     Else

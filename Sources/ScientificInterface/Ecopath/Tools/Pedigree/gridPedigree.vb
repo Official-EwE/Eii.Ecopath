@@ -58,8 +58,8 @@ Namespace Ecopath.Tools
                     If Not (TypeOf value Is Integer) Then Return Nothing
 
                     Dim iLevel As Integer = CInt(value)
-                    ' Need a zero-based index
-                    If (iLevel < 0) Then Return Nothing
+                    ' Need a one-based index
+                    If (iLevel <= 0) Then Return Nothing
 
                     Dim clr As Color = Nothing
                     Dim core As cCore = Me.Core(cell)
@@ -276,6 +276,29 @@ Namespace Ecopath.Tools
             core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
 
         End Sub
+
+        Public ReadOnly Property SelectedValue As Integer
+            Get
+                Dim sel As SourceGrid2.Selection = Me.Selection
+                Dim iValueSel As Integer = 0
+                Dim iValue As Integer
+                Dim bValid As Boolean = True
+
+                For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
+                    If TypeOf cell Is PropertyCell Then
+                        Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                        If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                            iValue = CInt(pcell.GetProperty().GetValue)
+                            If (iValue > 0) Then
+                                bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
+                                iValueSel = iValue
+                            End If
+                        End If
+                    End If
+                Next cell
+                If bValid Then Return iValueSel Else Return 0
+            End Get
+        End Property
 
 #End Region ' Grid configuration
 

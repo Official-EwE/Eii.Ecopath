@@ -84,6 +84,7 @@ Namespace Ecopath.Tools
             AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             AddHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
+            AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
             Dim cmd As cEditPedigreeCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditPedigreeCommand.cCOMMAND_NAME), cEditPedigreeCommand)
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditPedigree)
@@ -125,6 +126,7 @@ Namespace Ecopath.Tools
             RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             RemoveHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
+            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
             Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditPedigree")
             If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditPedigree)
@@ -236,7 +238,7 @@ Namespace Ecopath.Tools
 
             Dim item As Object = Me.m_lbLevels.SelectedItem
             Dim level As cPedigreeLevel = Nothing
-            Dim iValue As Integer = cCore.NULL_VALUE
+            Dim iValue As Integer = 0 ' No level
 
             If (item IsNot Nothing) Then
                 If (TypeOf item Is cPedigreeLevelListboxItem) Then
@@ -257,6 +259,16 @@ Namespace Ecopath.Tools
         Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
                 Me.Invalidate()
+            End If
+        End Sub
+
+        Protected Sub OnGridSelectionChanged(ByVal sel As Object)
+            Dim level As cPedigreeLevel = Nothing
+            Dim iValueSel As Integer = Me.m_grid.SelectedValue
+            If iValueSel <= 0 Then
+                Me.m_lbLevels.SelectedIndex = -1
+            Else
+                Me.m_lbLevels.SelectedIndex = iValueSel
             End If
         End Sub
 
@@ -309,7 +321,14 @@ Namespace Ecopath.Tools
                 Return DirectCast(Me.m_lbLevels.SelectedItem, cPedigreeLevelListboxItem).Level
             End Get
             Set(ByVal value As cPedigreeLevel)
-
+                For i As Integer = 0 To Me.m_lbLevels.Items.Count - 1
+                    Dim item As cPedigreeLevelListboxItem = DirectCast(Me.m_lbLevels.Items(i), cPedigreeLevelListboxItem)
+                    If Object.ReferenceEquals(item.Level, value) Then
+                        Me.m_lbLevels.SelectedIndex = i
+                        Return
+                    End If
+                Next
+                Me.m_lbLevels.SelectedIndex = -1
             End Set
         End Property
 
@@ -345,7 +364,7 @@ Namespace Ecopath.Tools
 
             ' Add 'None' item
             Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(Nothing))
-            For iLevel As Integer = 0 To man.NumLevels - 1
+            For iLevel As Integer = 1 To man.NumLevels
                 lvl = man.Level(iLevel)
                 Me.m_lbLevels.Items.Add(New cPedigreeLevelListboxItem(lvl))
             Next iLevel

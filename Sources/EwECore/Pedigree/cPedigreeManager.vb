@@ -21,7 +21,7 @@ Public Class cPedigreeManager
     ''' <summary>The variable that this manager is responsible for.</summary>
     Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
     ''' <summary>The pedigree levels that belong to the variable of this manager.</summary>
-    Private m_levels As New cCoreInputOutputList(Of cPedigreeLevel)(eDataTypes.PedigreeLevel, 0)
+    Private m_levels As New cCoreInputOutputList(Of cPedigreeLevel)(eDataTypes.PedigreeLevel, 1)
     ''' <summary>Mapping of Core level index to local level ID.</summary>
     Private m_dictID As New Dictionary(Of Integer, Integer)
 
@@ -120,11 +120,11 @@ Public Class cPedigreeManager
     ''' <summary>
     ''' Get a pedigree level from the manager.
     ''' </summary>
-    ''' <param name="iLevel">The zero-based index of the level to obtain.</param>
+    ''' <param name="iLevel">The one-based index of the level to obtain.</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Level(ByVal iLevel As Integer) As cPedigreeLevel
         Get
-            If (iLevel < 0) Then Return Nothing
+            If (iLevel <= 0) Then Return Nothing
             Return Me.m_levels(iLevel)
         End Get
     End Property
@@ -149,7 +149,7 @@ Public Class cPedigreeManager
         Me.m_bInUpdate = True
 
         Try
-            For iLevel As Integer = 0 To Me.NumLevels - 1
+            For iLevel As Integer = 1 To Me.NumLevels
 
                 Try
 
@@ -201,7 +201,7 @@ Public Class cPedigreeManager
             ' Get local index
             iIndex = Me.Pedigree(iGroup)
             ' Is in valid range?
-            If (iIndex >= 0) And (iIndex < Me.m_levels.Count) Then
+            If (iIndex > 0) And (iIndex <= Me.m_levels.Count) Then
                 ' #Yes: obtain actual core index for this level
                 iLevel = Me.m_levels(iIndex).Index
             Else
@@ -299,7 +299,7 @@ Public Class cPedigreeManager
 
                 ' Config level
                 level.AllowValidation = False
-                level.ID = Me.m_levels.Count ' zero based to stay in sync w EwE5
+                level.ID = Me.m_levels.Count + 1 ' one based
                 level.Index = iLevel
                 level.AllowValidation = True
 
@@ -330,7 +330,7 @@ Public Class cPedigreeManager
 
             For iLevel As Integer = 1 To Me.NumLevels
 
-                level = Me.m_levels(iLevel - 1)
+                level = Me.m_levels(iLevel)
 
                 level.AllowValidation = False
                 level.Name = data.PedigreeLevelName(level.Index)
