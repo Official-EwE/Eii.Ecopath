@@ -3376,6 +3376,16 @@ Public Class cCore
                 taxon.South = Me.m_EcoPathData.TaxonSouth(iTaxon)
                 taxon.East = Me.m_EcoPathData.TaxonEast(iTaxon)
                 taxon.West = Me.m_EcoPathData.TaxonWest(iTaxon)
+                taxon.EcologyType = Me.m_EcoPathData.TaxonEcologyType(iTaxon)
+                taxon.Exploited = Me.m_EcoPathData.TaxonExploited(iTaxon)
+                taxon.IUCNConservationStatus = Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon)
+                taxon.OrganismType = Me.m_EcoPathData.TaxonOrganismType(iTaxon)
+                taxon.OccurrenceStatus = Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon)
+                taxon.MeanLength = Me.m_EcoPathData.TaxonMeanLength(iTaxon)
+                taxon.MaxLength = Me.m_EcoPathData.TaxonMaxLength(iTaxon)
+                taxon.MeanWeight = Me.m_EcoPathData.TaxonMeanWeight(iTaxon)
+                taxon.MeanLifespan = Me.m_EcoPathData.TaxonMeanLifeSpan(iTaxon)
+
                 taxon.LastUpdated = Me.m_EcoPathData.TaxonLastUpdated(iTaxon)
 
                 taxon.ResetStatusFlags()
@@ -3414,8 +3424,16 @@ Public Class cCore
         Me.m_EcoPathData.TaxonCodeTaxon(iTaxon) = taxon.CodeTaxon
         Me.m_EcoPathData.TaxonSource(iTaxon) = taxon.Source
         Me.m_EcoPathData.TaxonSourceKey(iTaxon) = taxon.SourceKey
+        Me.m_EcoPathData.TaxonEcologyType(iTaxon) = taxon.EcologyType
+        Me.m_EcoPathData.TaxonExploited(iTaxon) = taxon.Exploited
+        Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon) = taxon.IUCNConservationStatus
+        Me.m_EcoPathData.TaxonOrganismType(iTaxon) = taxon.OrganismType
+        Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon) = taxon.OccurrenceStatus
+        Me.m_EcoPathData.TaxonMeanLength(iTaxon) = taxon.MeanLength
+        Me.m_EcoPathData.TaxonMaxLength(iTaxon) = taxon.MaxLength
+        Me.m_EcoPathData.TaxonMeanWeight(iTaxon) = taxon.MeanWeight
+        Me.m_EcoPathData.TaxonMeanLifeSpan(iTaxon) = taxon.MeanLifespan
         Me.m_EcoPathData.TaxonLastUpdated(iTaxon) = taxon.LastUpdated
-
         Return True
 
     End Function
