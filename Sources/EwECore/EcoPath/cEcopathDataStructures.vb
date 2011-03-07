@@ -319,8 +319,8 @@ Public Class cEcopathDataStructures
     Public TaxonGenus() As String
     ''' <summary>Taxonomy species names (xNumTaxa).</summary>
     Public TaxonSpecies() As String
-    ''' <summary>Taxonomy common names (xNumTaxa).</summary>
-    Public TaxonCommonName() As String
+    ''' <summary>Taxonomy (common) names (xNumTaxa).</summary>
+    Public TaxonName() As String
     ''' <summary>Taxonomy ISCAAP codes (xNumTaxa).</summary>
     Public TaxonCodeISCAAP() As String
     ''' <summary>Taxonomy taxon names (xNumTaxa).</summary>
@@ -643,7 +643,7 @@ Public Class cEcopathDataStructures
         ReDim Me.TaxonCode3A(Me.NumTaxon)
         ReDim Me.TaxonCodeISCAAP(Me.NumTaxon)
         ReDim Me.TaxonCodeTaxon(Me.NumTaxon)
-        ReDim Me.TaxonCommonName(Me.NumTaxon)
+        ReDim Me.TaxonName(Me.NumTaxon)
         ReDim Me.TaxonFamily(Me.NumTaxon)
         ReDim Me.TaxonGenus(Me.NumTaxon)
         ReDim Me.TaxonOrder(Me.NumTaxon)
