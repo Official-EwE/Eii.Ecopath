@@ -4482,9 +4482,18 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fishing mortality.
         '''</summary>
-        Public ReadOnly Property TS_TYPE_FISHINGMORT() As String
+        Public ReadOnly Property TS_TYPE_FISHMORTABS() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_FISHINGMORT", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_FISHMORTABS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Relative fishing mortality.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_FISHMORTREL() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_FISHMORTREL", resourceCulture)
             End Get
         End Property
         

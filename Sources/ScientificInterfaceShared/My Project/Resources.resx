@@ -228,7 +228,7 @@
     <value>Constant total mortality</value>
     <comment>Time series type</comment>
   </data>
-  <data name="TS_TYPE_FISHINGMORT" xml:space="preserve">
+  <data name="TS_TYPE_FISHMORTABS" xml:space="preserve">
     <value>Fishing mortality</value>
     <comment>Time series type</comment>
   </data>
@@ -1805,5 +1805,8 @@
   </data>
   <data name="HEADER_SS" xml:space="preserve">
     <value>Sum of squares</value>
+  </data>
+  <data name="TS_TYPE_FISHMORTREL" xml:space="preserve">
+    <value>Relative fishing mortality</value>
   </data>
 </root>
