@@ -341,6 +341,20 @@ Public Class cEcopathDataStructures
     Public TaxonEast() As Single
     ''' <summary>Western limit of taxon occurrence bounding box</summary>
     Public TaxonWest() As Single
+    ''' <summary>Ecology types for taxa</summary>
+    Public TaxonEcologyType() As eEcologyTypes
+    ''' <summary>Organism types for taxa</summary>
+    Public TaxonOrganismType() As eOrganismTypes
+    ''' <summary>Taxa exploited status</summary>
+    Public TaxonExploited() As Boolean
+    ''' <summary>Taxa IUCN csonservation status</summary>
+    Public TaxonIUCNConservationStatus() As eIUCNConservationStatusTypes
+    ''' <summary>Taxa occurrence status</summary>
+    Public TaxonOccurrenceStatus() As eOccurrenceStatusTypes
+    Public TaxonMeanWeight() As Single
+    Public TaxonMeanLength() As Single
+    Public TaxonMaxLength() As Single
+    Public TaxonMeanLifeSpan() As Single
 
     ''' <summary>
     ''' Number of missing variables per groups
@@ -640,11 +654,21 @@ Public Class cEcopathDataStructures
         ReDim Me.TaxonSouth(Me.NumTaxon)
         ReDim Me.TaxonEast(Me.NumTaxon)
         ReDim Me.TaxonWest(Me.NumTaxon)
+        ReDim Me.TaxonEcologyType(Me.NumTaxon)
+        ReDim Me.TaxonOrganismType(Me.NumTaxon)
+        ReDim Me.TaxonExploited(Me.NumTaxon)
+        ReDim Me.TaxonIUCNConservationStatus(Me.NumTaxon)
+        ReDim Me.TaxonOccurrenceStatus(Me.NumTaxon)
+        ReDim Me.TaxonMeanWeight(Me.NumTaxon)
+        ReDim Me.TaxonMeanLength(Me.NumTaxon)
+        ReDim Me.TaxonMaxLength(Me.NumTaxon)
+        ReDim Me.TaxonMeanLifeSpan(Me.NumTaxon)
         ReDim Me.TaxonLastUpdated(Me.NumTaxon)
 
     End Sub
 
     Public Sub Clear()
+
         Me.NumGroups = 0
         Me.NumTaxon = 0
         Me.NumFleet = 0
@@ -653,6 +677,7 @@ Public Class cEcopathDataStructures
         Me.NumEcosimScenarios = 0
         Me.NumEcospaceScenarios = 0
         Me.NumEcotracerScenarios = 0
+
     End Sub
 
 #End Region

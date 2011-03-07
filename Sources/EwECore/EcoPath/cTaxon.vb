@@ -100,9 +100,54 @@ Public Class cTaxon
         val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
-        'proportion
+        ' Proportion
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.TaxonProp, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonProp))
+        m_values.Add(val.varName, val)
+
+        ' EcologyType
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.EcologyType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.EcologyType))
+        m_values.Add(val.varName, val)
+
+        ' OrganismType
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.OrganismType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.OrganismType))
+        m_values.Add(val.varName, val)
+
+        ' Exploited
+        meta = New cVariableMetaData(False)
+        val = New cValue(New Boolean, eVarNameFlags.Exploited, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.Exploited))
+        m_values.Add(val.varName, val)
+
+        ' IUCNConservationStatus
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.IUCNConservationStatus, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.IUCNConservationStatus))
+        m_values.Add(val.varName, val)
+
+        ' OccurrenceStatus
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.OccurrenceStatus, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.OccurrenceStatus))
+        m_values.Add(val.varName, val)
+
+        ' TaxonMeanWeight
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.TaxonMeanWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonMeanWeight))
+        m_values.Add(val.varName, val)
+
+        ' TaxonMeanLength
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.TaxonMeanLength, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonMeanLength))
+        m_values.Add(val.varName, val)
+
+        ' TaxonMaxLength
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.TaxonMaxLength, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonMaxLength))
+        m_values.Add(val.varName, val)
+
+        ' TaxonMeanLifespan
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.TaxonMeanLifespan, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonMeanLifespan))
         m_values.Add(val.varName, val)
 
         ' Last updated julian date
@@ -351,6 +396,114 @@ Public Class cTaxon
 
         Set(ByVal value As Single)
             Me.SetVariable(eVarNameFlags.East, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the <see cref="eEcologyTypes"/> for a taxon.
+    ''' </summary>
+    Public Property EcologyType As eEcologyTypes
+        Get
+            Return DirectCast(Me.GetVariable(eVarNameFlags.EcologyType), eEcologyTypes)
+        End Get
+        Set(ByVal value As eEcologyTypes)
+            Me.SetVariable(eVarNameFlags.EcologyType, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the <see cref="eOrganismTypes"/> for a taxon.
+    ''' </summary>
+    Public Property OrganismType As eOrganismTypes
+        Get
+            Return DirectCast(Me.GetVariable(eVarNameFlags.OrganismType), eOrganismTypes)
+        End Get
+        Set(ByVal value As eOrganismTypes)
+            Me.SetVariable(eVarNameFlags.OrganismType, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set whether the taxon is exploited.
+    ''' </summary>
+    Public Property Exploited() As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.Exploited))
+        End Get
+        Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.Exploited, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the <see cref="eIUCNConservationStatusTypes"/> for a taxon.
+    ''' </summary>
+    Public Property IUCNConservationStatus As eIUCNConservationStatusTypes
+        Get
+            Return DirectCast(Me.GetVariable(eVarNameFlags.IUCNConservationStatus), eIUCNConservationStatusTypes)
+        End Get
+        Set(ByVal value As eIUCNConservationStatusTypes)
+            Me.SetVariable(eVarNameFlags.IUCNConservationStatus, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the <see cref="eOccurrenceStatusTypes"/> for a taxon.
+    ''' </summary>
+    Public Property OccurrenceStatus As eOccurrenceStatusTypes
+        Get
+            Return DirectCast(Me.GetVariable(eVarNameFlags.OccurrenceStatus), eOccurrenceStatusTypes)
+        End Get
+        Set(ByVal value As eOccurrenceStatusTypes)
+            Me.SetVariable(eVarNameFlags.OccurrenceStatus, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the mean weight for a taxon.
+    ''' </summary>
+    Public Property MeanWeight As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.TaxonMeanWeight))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.TaxonMeanWeight, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the mean length for a taxon.
+    ''' </summary>
+    Public Property MeanLength As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.TaxonMeanLength))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.TaxonMeanLength, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the max length for a taxon.
+    ''' </summary>
+    Public Property MaxLength As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.TaxonMaxLength))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.TaxonMaxLength, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the mean life span for a taxon.
+    ''' </summary>
+    Public Property MeanLifespan As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.TaxonMeanLifespan))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.TaxonMeanLifespan, value)
         End Set
     End Property
 
