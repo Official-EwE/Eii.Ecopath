@@ -652,10 +652,18 @@ Namespace ValueWrapper
             'convert null or empty inputs into something that can be used
             NewValue = Me.convertEmptyInputs(NewValue)
 
+            ' JS 06Mar11: Array.SetValue cannot perform certain type conversions, such as Single to Integer.
+            '             If an integer array receives a single value Array.SetValue will throw an exception.
+            '             A dynamic type conversion will prevent this problem.
+
+            ' Determine the type that this array accepts
+            Dim arr As Array = DirectCast(m_values, Array)
+            Dim tArr As Type = arr.GetType.GetElementType
+
             'set the value to the newvalue 
-            'keep the old value incase the newvalue fails validation
-            m_orgvalue = DirectCast(m_values, Array).GetValue(iSecondaryIndex)
-            DirectCast(m_values, Array).SetValue(NewValue, iSecondaryIndex)
+            'keep the old value in case the newvalue fails validation
+            Me.m_orgvalue = arr.GetValue(iSecondaryIndex)
+            arr.SetValue(Convert.ChangeType(NewValue, tArr), iSecondaryIndex)
 
             If Not m_bValidate Then
                 m_validationstatus = eStatusFlags.OK
@@ -675,8 +683,7 @@ Namespace ValueWrapper
                 If m_validationstatus = eStatusFlags.FailedValidation Then
                     'if the new value failed validation then set the value back to it's original value
                     Try
-                        DirectCast(m_values, Array).SetValue(m_orgvalue, iSecondaryIndex)
-                        '    m_values(iSecondaryIndex) = m_orgvalue
+                        arr.SetValue(Me.m_orgvalue, iSecondaryIndex)
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to reset value")
                     End Try
@@ -685,8 +692,7 @@ Namespace ValueWrapper
                 If m_statusarray(iSecondaryIndex) = eStatusFlags.Null Then
                     ' m_values(iSecondaryIndex) = m_metadata.NullValue
                     Try
-                        DirectCast(m_values, Array).SetValue(m_metadata.NullValue, iSecondaryIndex)
-                        '     m_values(iSecondaryIndex) = m_metadata.NullValue
+                        arr.SetValue(Convert.ChangeType(m_metadata.NullValue, tArr), iSecondaryIndex)
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to set default value")
                     End Try
