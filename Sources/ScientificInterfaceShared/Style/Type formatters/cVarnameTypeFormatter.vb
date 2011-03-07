@@ -29,7 +29,8 @@ Namespace Style
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
-            Dim strDescr As String = cResourceUtils.LoadString("VARIABLE_" & vn.ToString.ToUpper, GetType(cVarnameTypeFormatter).Assembly)
+            Dim strVar As String = cin.GetVarName(vn)
+            Dim strDescr As String = cResourceUtils.LoadString("VARIABLE_" & strVar.ToUpper, GetType(cVarnameTypeFormatter).Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""
@@ -43,8 +44,8 @@ Namespace Style
 
                 ' Is first part?
                 If (i = 0) Then
-                    ' #Yes: remember bit
-                    strBit = cin.GetVarName(vn)
+                    ' #Yes: remember default
+                    strBit = strVar
                 End If
 
                 If i < iNumBits Then
