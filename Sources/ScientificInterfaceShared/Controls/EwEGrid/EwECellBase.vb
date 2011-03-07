@@ -57,8 +57,9 @@ Namespace Controls.EwEGrid
         Public Sub New(ByVal objVal As Object, ByVal t As Type)
             MyBase.New(Nothing, t)
 
-            ' Set shared visualizer
-            Me.VisualModel = g_visualizer
+            '' Set shared visualizer
+            'Me.VisualModel = g_visualizer
+
             ' Configure data model
             Me.DataModel.AllowNull = True
 

@@ -368,6 +368,8 @@
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
     <Compile Include="Style\Type formatters\cCoreInputOutputBaseFormatter.vb" />
+    <Compile Include="Style\Type formatters\cEcologyTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cIUCNConservationTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cShapeDataFormatter.vb" />
     <Compile Include="Style\Type formatters\cTimeSeriesTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cVarnameTypeFormatter.vb" />

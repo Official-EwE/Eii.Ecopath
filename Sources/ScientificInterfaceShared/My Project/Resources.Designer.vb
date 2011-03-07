@@ -227,6 +227,105 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Bathydemersal.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_BATHYDEMERSAL() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_BATHYDEMERSAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Bathypelagic.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_BATHYPELAGIC() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_BATHYPELAGIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Belagic-oceanic.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_BELAGICOCEANIC() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_BELAGICOCEANIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Benthic.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_BENTHIC() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_BENTHIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Benthopelagic.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_BENTHOPELAGIC() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_BENTHOPELAGIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Demersal.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_DEMERSAL() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_DEMERSAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Land-based.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_LANDBASED() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_LANDBASED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Not specied.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_NOTSET() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_NOTSET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Pelagic.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_PELAGIC() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_PELAGIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Pelagic-neritic.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_PELAGICNERITIC() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_PELAGICNERITIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reef-associated.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_REEFASSOCIATED() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_REEFASSOCIATED", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property Ecopath_32x32() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecopath_32x32", resourceCulture)

@@ -9,10 +9,10 @@ Imports SourceGrid2.DataModels
 Namespace Controls.EwEGrid
 
     <CLSCompliant(False)> _
-    Public Class EwEComboBoxCellEditor
+    Public Class EwEComboBoxCellEditor(Of t)
         Inherits EditorComboBox
 
-        Public Sub New(ByVal aValues() As Type, ByVal formatter As ITypeFormatter(Of Object))
+        Public Sub New(ByVal aValues() As t, ByVal formatter As ITypeFormatter(Of t))
 
             MyBase.New(aValues.GetType.GetElementType)
             Dim mapping As New SourceLibrary.ComponentModel.Validator.ValueMapping()

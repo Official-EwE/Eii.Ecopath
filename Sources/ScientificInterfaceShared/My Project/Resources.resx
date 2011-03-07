@@ -1809,4 +1809,37 @@
   <data name="TS_TYPE_FISHMORTREL" xml:space="preserve">
     <value>Relative fishing mortality</value>
   </data>
+  <data name="ECOLOGY_BATHYDEMERSAL" xml:space="preserve">
+    <value>Bathydemersal</value>
+  </data>
+  <data name="ECOLOGY_BATHYPELAGIC" xml:space="preserve">
+    <value>Bathypelagic</value>
+  </data>
+  <data name="ECOLOGY_BELAGICOCEANIC" xml:space="preserve">
+    <value>Belagic-oceanic</value>
+  </data>
+  <data name="ECOLOGY_BENTHIC" xml:space="preserve">
+    <value>Benthic</value>
+  </data>
+  <data name="ECOLOGY_BENTHOPELAGIC" xml:space="preserve">
+    <value>Benthopelagic</value>
+  </data>
+  <data name="ECOLOGY_DEMERSAL" xml:space="preserve">
+    <value>Demersal</value>
+  </data>
+  <data name="ECOLOGY_LANDBASED" xml:space="preserve">
+    <value>Land-based</value>
+  </data>
+  <data name="ECOLOGY_NOTSET" xml:space="preserve">
+    <value>Not specied</value>
+  </data>
+  <data name="ECOLOGY_PELAGIC" xml:space="preserve">
+    <value>Pelagic</value>
+  </data>
+  <data name="ECOLOGY_PELAGICNERITIC" xml:space="preserve">
+    <value>Pelagic-neritic</value>
+  </data>
+  <data name="ECOLOGY_REEFASSOCIATED" xml:space="preserve">
+    <value>Reef-associated</value>
+  </data>
 </root>

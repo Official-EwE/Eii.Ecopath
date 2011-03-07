@@ -37,13 +37,44 @@ Namespace Controls.EwEGrid
         ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to extract data from.</param>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
-        ''' <param name="SourceSec">An optional secundary index in the VarName, or Nothing when irrelevant</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal pm As cPropertyManager, _
                        ByVal source As cCoreInputOutputBase, _
                        ByVal varname As eVarNameFlags, _
                        Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
             Me.New(pm.GetProperty(source, varname, sourceSec))
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor
+        ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to extract data from.</param>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal source As cCoreInputOutputBase, _
+                       ByVal varname As eVarNameFlags, _
+                       ByVal ed As SourceGrid2.DataModels.EditorControlBase)
+            Me.New(pm.GetProperty(source, varname, Nothing), ed)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor
+        ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to extract data from.</param>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
+        ''' <param name="SourceSec">An optional secundary index in the VarName, or Nothing when irrelevant</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal pm As cPropertyManager, _
+                       ByVal source As cCoreInputOutputBase, _
+                       ByVal varname As eVarNameFlags, _
+                       ByVal sourceSec As cCoreInputOutputBase, _
+                       ByVal ed As SourceGrid2.DataModels.EditorControlBase)
+            Me.New(pm.GetProperty(source, varname, sourceSec), ed)
         End Sub
 
         ''' -------------------------------------------------------------------
