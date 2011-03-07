@@ -45,8 +45,8 @@ Namespace Ecopath.Input
                 source = Me.Core.FleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, _
                                                                      source, eVarNameFlags.Name, Nothing, _
-                                                                     SharedResources.HEADER_VALUE_UNIT, _
-                                                                     New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency})
+                                                                     SharedResources.HEADER_VALUE_PERUNIT, _
+                                                                     New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Time})
             Next
 
             ' Total column
