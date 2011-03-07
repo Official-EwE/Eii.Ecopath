@@ -3080,7 +3080,16 @@ Namespace DataSources
                         ecopathDS.TaxonCommonName(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CommonName", ""))
                         ecopathDS.TaxonSource(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceName", ""))
                         ecopathDS.TaxonSourceKey(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceKey", ""))
-                        ecopathDS.TaxonLastUpdated(iTaxon) = CDbl(Me.m_db.ReadSafe(reader, "LastUpdated", ""))
+                        ecopathDS.TaxonEcologyType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "EcologyType", eEcologyTypes.NotSet), eEcologyTypes)
+                        ecopathDS.TaxonOrganismType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OrganismType", eOrganismTypes.NotSet), eOrganismTypes)
+                        ecopathDS.TaxonExploited(iTaxon) = CBool(Me.m_db.ReadSafe(reader, "Exploited", False))
+                        ecopathDS.TaxonIUCNConservationStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "ConservationStatus", eIUCNConservationStatusTypes.NotSet), eIUCNConservationStatusTypes)
+                        ecopathDS.TaxonOccurrenceStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OccurenceStatus", eOccurrenceStatusTypes.NotSet), eOccurrenceStatusTypes)
+                        ecopathDS.TaxonMeanWeight(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanWeight", cCore.NULL_VALUE))
+                        ecopathDS.TaxonMeanLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLength", cCore.NULL_VALUE))
+                        ecopathDS.TaxonMaxLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MaxLength", cCore.NULL_VALUE))
+                        ecopathDS.TaxonMeanLifeSpan(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLifeSpan", cCore.NULL_VALUE))
+                        ecopathDS.TaxonLastUpdated(iTaxon) = CDbl(Me.m_db.ReadSafe(reader, "LastUpdated", -1))
                         iTaxon += 1
                     End If
 
@@ -3141,6 +3150,15 @@ Namespace DataSources
                     drow("CommonName") = ecopathDS.TaxonCommonName(iTaxon)
                     drow("SourceName") = ecopathDS.TaxonSource(iTaxon)
                     drow("SourceKey") = ecopathDS.TaxonSourceKey(iTaxon)
+                    drow("EcologyType") = ecopathDS.TaxonEcologyType(iTaxon)
+                    drow("OrganismType") = ecopathDS.TaxonOrganismType(iTaxon)
+                    drow("Exploited") = ecopathDS.TaxonExploited(iTaxon)
+                    drow("ConservationStatus") = ecopathDS.TaxonIUCNConservationStatus(iTaxon)
+                    drow("OccurenceStatus") = ecopathDS.TaxonOccurrenceStatus(iTaxon)
+                    drow("MeanWeight") = ecopathDS.TaxonMeanWeight(iTaxon)
+                    drow("MeanLength") = ecopathDS.TaxonMeanLength(iTaxon)
+                    drow("MaxLength") = ecopathDS.TaxonMaxLength(iTaxon)
+                    drow("MeanLifeSpan") = ecopathDS.TaxonMeanLifeSpan(iTaxon)
                     drow("LastUpdated") = ecopathDS.TaxonLastUpdated(iTaxon)
                     writer.AddRow(drow)
 
