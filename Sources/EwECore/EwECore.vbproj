@@ -235,6 +235,7 @@
     <Compile Include="Database\Updates\cDBUpdate6_01_01_004.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_01_005.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_01_006.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_01_01_007.vb" />
     <Compile Include="EcoPath\cEcopathModelFromEcosim.vb" />
     <Compile Include="Pedigree\cPedigreeLevel.vb" />
     <Compile Include="Pedigree\cPedigreeManager.vb" />
