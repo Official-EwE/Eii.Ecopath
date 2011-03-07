@@ -11,7 +11,7 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eEcologyTypes"/>.
+    ''' Class for providing a textual description of <see cref="eIUCNConservationStatusTypes"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cIUCNConservationTypeFormatter
