@@ -3361,7 +3361,7 @@ Public Class cCore
                 taxon.DBID = Me.m_EcoPathData.TaxonDBID(iTaxon)
                 taxon.Group = Me.m_EcoPathData.TaxonGroup(iTaxon)
                 taxon.Proportion = Me.m_EcoPathData.TaxonGroupProp(iTaxon)
-                taxon.Name = Me.m_EcoPathData.TaxonCommonName(iTaxon)
+                taxon.Name = Me.m_EcoPathData.TaxonName(iTaxon)
                 taxon.Class = Me.m_EcoPathData.TaxonClass(iTaxon)
                 taxon.Order = Me.m_EcoPathData.TaxonOrder(iTaxon)
                 taxon.Family = Me.m_EcoPathData.TaxonFamily(iTaxon)
@@ -3403,7 +3403,7 @@ Public Class cCore
 
         Me.m_EcoPathData.TaxonGroup(iTaxon) = taxon.Group
         Me.m_EcoPathData.TaxonGroupProp(iTaxon) = taxon.Proportion
-        Me.m_EcoPathData.TaxonCommonName(iTaxon) = taxon.Name
+        Me.m_EcoPathData.TaxonName(iTaxon) = taxon.Name
         Me.m_EcoPathData.TaxonClass(iTaxon) = taxon.Class
         Me.m_EcoPathData.TaxonOrder(iTaxon) = taxon.Order
         Me.m_EcoPathData.TaxonFamily(iTaxon) = taxon.Family
