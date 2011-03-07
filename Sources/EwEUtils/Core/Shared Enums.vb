@@ -1345,6 +1345,15 @@ Namespace Core
         Source
         SourceKey
         LastUpdated
+        OrganismType
+        EcologyType
+        Exploited
+        IUCNConservationStatus
+        OccurrenceStatus
+        TaxonMeanWeight
+        TaxonMeanLength
+        TaxonMaxLength
+        TaxonMeanLifespan
 
         Coriolis
         XVelocity
@@ -1354,7 +1363,7 @@ Namespace Core
         ''' <summary>States if a value is estimated by Ewe.</summary>
         Estimated
         ''' <summary>1 - EE</summary>
-        ''' <remarks>Added 28Feb11</remarks>
+        ''' <remarks>JS Added 28Feb11</remarks>
         OtherMortInput
 
     End Enum
@@ -2198,5 +2207,105 @@ Namespace Core
     End Enum
 
 #End Region ' Forcing application types
+
+#Region " IUCN threat classifications "
+
+    ''' <summary>
+    ''' IUCN Red List of Threatened Species threat types.
+    ''' </summary>
+    ''' <remarks>
+    ''' http://www.eoearth.org/article/IUCN_Red_List_Criteria_for_Endangered
+    ''' </remarks>
+    Public Enum eIUCNConservationStatusTypes As Integer
+        NotSet = 0
+        ''' <summary>Not Evaluated (NE).</summary>
+        NotEvaluated
+        ''' <summary>Data Deficient (DD)</summary>
+        DataDeficient
+        ''' <summary>Least Concern (LC)</summary>
+        LeastConcern
+        ''' <summary>Near Threatened (NT)</summary>
+        NearThreatened
+        ''' <summary>Vulnerable (VU)</summary>
+        Vulnerable
+        ''' <summary>Endangered (EN)</summary>
+        Endangered
+        ''' <summary>Critically Endangered (CR)</summary>
+        CriticallyEndangered
+        ''' <summary>Extinct in the Wild (EW)</summary>
+        EextinctInWild
+        ''' <summary>Extinct (EX)</summary>
+        Extinct
+    End Enum
+
+#End Region ' IUCN threat classifications
+
+#Region " Ecology types "
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks>
+    ''' http://www.fishbase.org
+    ''' </remarks>
+    Public Enum eEcologyTypes As Integer
+        NotSet = 0
+        BathyDemersal
+        BathyPelagic
+        Bethic
+        BenthoPelagic
+        Demersal
+        Pelagic
+        PelagicNeritic
+        BelagicOceanic
+        ReefAssociated
+        ''' <summary></summary>
+        ''' <remarks>To be specified further</remarks>
+        LandBased
+    End Enum
+
+#End Region ' Ecology types
+
+#Region " Occurrence status types "
+
+    ''' <summary>
+    ''' Habitat classifications where taxa prefer to dwell. Not necessarily related to Ecospace habitats.
+    ''' </summary>
+    ''' <remarks>
+    ''' http://www.fishbase.org
+    ''' </remarks>
+    Public Enum eOccurrenceStatusTypes As Integer
+        NotSet = 0
+        Native
+        Introduced
+        Endemic
+        Questionable
+    End Enum
+
+#End Region ' Occurrence status types
+
+#Region " Organism types "
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks>
+    ''' 
+    ''' </remarks>
+    Public Enum eOrganismTypes As Integer
+        NotSet = 0
+        Bacteria
+        Fungi
+        Algae
+        Plants
+        Invertebrates
+        Fishes
+        Birds
+        Mammals
+        Reptiles
+        Other
+    End Enum
+
+#End Region ' Organism types
 
 End Namespace ' Core
