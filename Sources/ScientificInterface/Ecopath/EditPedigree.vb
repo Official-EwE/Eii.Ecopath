@@ -48,7 +48,7 @@ Namespace Ecopath
             MyBase.OnLoad(e)
 
             Dim var As eVarNameFlags = eVarNameFlags.NotSet
-            Dim descr As cVariableDescriptor = Nothing
+            Dim descr As cVarnameTypeFormatter = Nothing
             Dim iSelection As Integer = 0
 
             ' Clear drop down
@@ -58,9 +58,9 @@ Namespace Ecopath
                 ' Get variable
                 var = Me.m_uic.Core.PedigreeVariable(iVariable)
                 ' Get descriptor
-                descr = cVariableDescriptor.FromVarname(var)
+                descr = New cVarnameTypeFormatter()
                 ' Add to combo
-                Me.m_cmbVariable.Items.Add(descr.Description)
+                Me.m_cmbVariable.Items.Add(descr.GetDescriptor(var, eDescriptorTypes.Name))
 
                 If (var = Me.m_varInitial) Then iSelection = iVariable
             Next

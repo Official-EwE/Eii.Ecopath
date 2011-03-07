@@ -70,6 +70,7 @@ Namespace Ecopath.Tools
 
             Dim varName As eVarNameFlags = eVarNameFlags.NotSet
             Dim bLevelsMissing As Boolean = False
+            Dim desc As New cVarnameTypeFormatter()
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -78,7 +79,7 @@ Namespace Ecopath.Tools
 
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
                 Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iVariable)
-                Me.m_cmbCategory.Items.Add(cVariableDescriptor.FromVarname(var).Description)
+                Me.m_cmbCategory.Items.Add(desc.GetDescriptor(var, eDescriptorTypes.Description))
             Next
 
             AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged

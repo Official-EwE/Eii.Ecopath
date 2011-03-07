@@ -69,6 +69,22 @@ Namespace Controls.EwEGrid
             End If
         End Sub
 
+        Public Sub New(ByVal prop As cProperty, ByVal ed As SourceGrid2.DataModels.EditorControlBase)
+            MyBase.New(Nothing, ed)
+            ' Store the property
+            ' Set the property
+            Me.m_property = prop
+            ' Valid assignment?
+            If (prop IsNot Nothing) Then
+                ' Configure the cell
+                Me.ConfigureCell(prop.GetVariableMetadata())
+                ' Fire a change notification
+                Me.OnPropertyChanged(prop, cProperty.eChangeFlags.All)
+                ' Register property
+                AddHandler Me.m_property.PropertyChanged, AddressOf Me.OnPropertyChanged
+            End If
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Clean up!

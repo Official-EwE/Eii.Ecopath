@@ -6,6 +6,7 @@ Imports EwEUtils.Commands
 Imports System.Text
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Forms
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -232,6 +233,7 @@ Public Class frmRemarkPanel
         Dim strSelection As String = My.Resources.SELECTION_NONE
         Dim strRemark As String = ""
         Dim strRemarkFinal As String = ""
+        Dim vd As New cVarnameTypeFormatter()
 
         If Me.m_aprop IsNot Nothing Then
             Select Case Me.m_aprop.Length
@@ -241,14 +243,19 @@ Public Class frmRemarkPanel
 
                 Case 1
                     ' Get selection text
-                    If Not Object.ReferenceEquals(m_aprop(0).Source, Nothing) Then
+                    If Not Object.ReferenceEquals(Me.m_aprop(0).Source, Nothing) Then
                         ' Get variable descriptor
-                        Dim vd As cVariableDescriptor = cVariableDescriptor.FromVarname(m_aprop(0).VarName)
+                        Dim var As eVarNameFlags = Me.m_aprop(0).VarName
                         ' Format message
                         If Not Object.ReferenceEquals(m_aprop(0).SourceSec, Nothing) Then
-                            strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR, m_aprop(0).Source.Name, vd.Name, m_aprop(0).SourceSec.Name)
+                            strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
+                                                         Me.m_aprop(0).Source.Name, _
+                                                         vd.GetDescriptor(var, eDescriptorTypes.Name), _
+                                                         Me.m_aprop(0).SourceSec.Name)
                         Else
-                            strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, m_aprop(0).Source.Name, vd.Description)
+                            strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                                                         Me.m_aprop(0).Source.Name, _
+                                                         vd.GetDescriptor(var, eDescriptorTypes.Description))
                         End If
                     Else
                         strSelection = My.Resources.SELECTION_DERIVED

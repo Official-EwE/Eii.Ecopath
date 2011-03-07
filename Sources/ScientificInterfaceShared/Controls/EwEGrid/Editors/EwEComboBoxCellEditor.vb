@@ -1,0 +1,37 @@
+﻿#Region " Imports "
+
+Option Strict On
+Imports ScientificInterfaceShared.Style
+Imports SourceGrid2.DataModels
+
+#End Region ' Imports
+
+Namespace Controls.EwEGrid
+
+    <CLSCompliant(False)> _
+    Public Class EwEComboBoxCellEditor
+        Inherits EditorComboBox
+
+        Public Sub New(ByVal aValues() As Type, ByVal formatter As ITypeFormatter(Of Object))
+
+            MyBase.New(aValues.GetType.GetElementType)
+            Dim mapping As New SourceLibrary.ComponentModel.Validator.ValueMapping()
+            Dim lRepresentations As New List(Of String)
+
+            For i As Integer = 0 To aValues.Length - 1
+                lRepresentations.Add(formatter.GetDescriptor(aValues(i)))
+            Next
+
+            Me.StandardValues = aValues
+            Me.StandardValuesExclusive = True
+            Me.AllowStringConversion = False
+
+            mapping.ValueList = aValues
+            mapping.DisplayStringList = lRepresentations
+            mapping.BindValidator(Me)
+
+        End Sub
+
+    End Class
+
+End Namespace

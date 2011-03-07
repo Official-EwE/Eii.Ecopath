@@ -115,6 +115,8 @@ Namespace Ecospace
 
         Private Sub InitUIParams()
 
+            Dim desc As New cCoreInputOutputBaseFormatter()
+
             Me.m_iTimeStepCur = 0
             Me.m_iTimeStepPrev = 0
 
@@ -124,9 +126,7 @@ Namespace Ecospace
             'Load group combo box
             Me.m_cmbDisplayGroup.Items.Clear()
             For i As Integer = 1 To Me.Core.nGroups
-                Me.m_cmbDisplayGroup.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, _
-                                                             i, _
-                                                             Me.Core.EcospaceGroups(i).Name))
+                Me.m_cmbDisplayGroup.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroups(i), eDescriptorTypes.Name))
             Next i
             Me.m_cmbDisplayGroup.SelectedIndex = 0
 

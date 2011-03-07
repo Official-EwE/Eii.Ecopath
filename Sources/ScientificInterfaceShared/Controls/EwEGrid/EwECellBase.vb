@@ -54,8 +54,26 @@ Namespace Controls.EwEGrid
         ''' <summary>Behaviour model to catch cell resize events.</summary>
         Private m_bmResize As BehaviorModels.IBehaviorModel = Nothing
 
-        Public Sub New(ByVal objVal As Object, ByRef t As Type)
+        Public Sub New(ByVal objVal As Object, ByVal t As Type)
             MyBase.New(Nothing, t)
+
+            ' Set shared visualizer
+            Me.VisualModel = g_visualizer
+            ' Configure data model
+            Me.DataModel.AllowNull = True
+
+            ' Catch ENTER presses
+            Me.m_bmCatchEnter = New cCatchEnterPressBehaviour()
+            Me.Behaviors.Add(Me.m_bmCatchEnter)
+
+            ' Only resize width, not height of cells
+            Me.m_bmResize = New SourceGrid2.BehaviorModels.Resize(CellResizeMode.Width)
+            Me.Behaviors.Add(Me.m_bmResize)
+
+        End Sub
+
+        Public Sub New(ByVal objVal As Object, ByVal editor As SourceGrid2.DataModels.EditorControlBase)
+            MyBase.New(objVal, editor)
 
             ' Set shared visualizer
             Me.VisualModel = g_visualizer

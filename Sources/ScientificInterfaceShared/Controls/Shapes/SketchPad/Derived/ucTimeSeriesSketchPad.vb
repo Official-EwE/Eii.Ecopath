@@ -57,6 +57,7 @@ Namespace Controls
             Dim strName As String = ""
             Dim strLabel As String = ""
             Dim fmt As StringFormat = Nothing
+            Dim desc As New cTimeSeriesTypeFormatter()
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
 
@@ -149,7 +150,7 @@ Namespace Controls
                     Else
                         strName = My.Resources.TIMESERIES_WARNING_NOGROUP
                     End If
-                    strType = cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(gts.TimeSeriesType)
+                    strType = desc.GetDescriptor(gts.TimeSeriesType)
 
                 ElseIf TypeOf shape Is cFleetTimeSeries Then
 
@@ -161,11 +162,11 @@ Namespace Controls
                     Else
                         strName = My.Resources.TIMESERIES_WARNING_NOFLEET
                     End If
-                    strType = cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(fts.TimeSeriesType)
+                    strType = desc.GetDescriptor(fts.TimeSeriesType)
 
                 End If
 
-                strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAILED, strType, strName)
+                strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, strType, strName)
                 g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 33, fmt)
 
                 ' Dispose the pen, brush and font we created and let the system garbage collect them.

@@ -9,6 +9,7 @@ Imports SourceGrid2.Cells.Real
 Imports SourceGrid2.VisualModels
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports SourceGrid2.DataModels
 
 #End Region ' Imports
 
@@ -28,6 +29,15 @@ Namespace Controls.EwEGrid
         Public Sub New(ByVal objVal As Object, ByVal t As Type, _
                        Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
             MyBase.New(objVal, t)
+            ' Set value
+            If objVal IsNot Nothing Then Me.Value = objVal
+            ' Set style
+            Me.Style = style
+        End Sub
+
+        Public Sub New(ByVal objVal As Object, ByVal ed As EditorControlBase, _
+                       Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
+            MyBase.New(objVal, ed)
             ' Set value
             If objVal IsNot Nothing Then Me.Value = objVal
             ' Set style

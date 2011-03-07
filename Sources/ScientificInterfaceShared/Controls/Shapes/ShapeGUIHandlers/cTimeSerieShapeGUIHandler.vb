@@ -525,34 +525,6 @@ Namespace Controls
 
 #End Region ' Helper methods
 
-#Region " Public bits "
-
-        Public Shared Function GetTimeSeriesTypeName(ByVal tst As eTimeSeriesType) As String
-
-            ' ToDo_JS: globalize this method
-
-            Select Case tst
-                Case eTimeSeriesType.AverageWeight : Return My.Resources.TS_TYPE_AVERAGEWEIGHT
-                Case eTimeSeriesType.BiomassAbs : Return My.Resources.TS_TYPE_BIOMASSABS
-                Case eTimeSeriesType.BiomassForcing : Return My.Resources.TS_TYPE_BIOMASSFORCING
-                Case eTimeSeriesType.BiomassRel : Return My.Resources.TS_TYPE_BIOMASSREL
-                Case eTimeSeriesType.Catches : Return My.Resources.TS_TYPE_CATCHES
-                Case eTimeSeriesType.CatchesForcing : Return My.Resources.TS_TYPE_CATCHESFORCING
-                Case eTimeSeriesType.ConstantTotalMortality : Return My.Resources.TS_TYPE_CONSTTOTALMORT
-                Case eTimeSeriesType.EcotracerConcAbs : Return My.Resources.TS_TYPE_TRACER_CONCABS
-                Case eTimeSeriesType.EcotracerConcRel : Return My.Resources.TS_TYPE_TRACER_CONCREL
-                Case eTimeSeriesType.FishingEffort : Return My.Resources.TS_TYPE_FISHINGEFFORT
-                Case eTimeSeriesType.FishingMortality : Return My.Resources.TS_TYPE_FISHINGMORT
-                Case eTimeSeriesType.TimeForcing : Return My.Resources.TS_TYPE_TIMEFORCING
-                Case eTimeSeriesType.TotalMortality : Return My.Resources.TS_TYPE_TOTALMORT
-                Case eTimeSeriesType.FishingMortalityRef : Return "Fishing mortality (ref)"
-            End Select
-            Return ""
-
-        End Function
-
-#End Region ' Public bits
-
     End Class
 
 End Namespace

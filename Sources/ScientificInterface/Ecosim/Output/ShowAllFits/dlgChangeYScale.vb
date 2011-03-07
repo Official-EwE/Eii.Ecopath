@@ -22,7 +22,7 @@ Namespace Ecosim
 
         Public Sub New(ByVal lplots As List(Of cShowAllFitsPlotData))
 
-            InitializeComponent()
+            Me.InitializeComponent()
             Me.m_lplots = lplots
 
         End Sub
@@ -32,13 +32,14 @@ Namespace Ecosim
 
             Dim plot As cShowAllFitsPlotData = Nothing
             Dim ts As cTimeSeries = Nothing
+            Dim desc As New cShapeDataFormatter()
 
             m_lbAllPlots.Items.Clear()
 
             For i As Integer = 0 To Me.m_lplots.Count - 1
                 plot = Me.m_lplots(i)
                 ts = plot.TimeSeries
-                m_lbAllPlots.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, ts.Index, ts.Name))
+                m_lbAllPlots.Items.Add(desc.GetDescriptor(ts, eDescriptorTypes.Name))
             Next
 
             If m_lbAllPlots.Items.Count > 0 Then

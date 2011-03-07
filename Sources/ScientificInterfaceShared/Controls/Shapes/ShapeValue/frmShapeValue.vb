@@ -5,6 +5,7 @@ Option Strict On
 Imports EwECore
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -28,6 +29,7 @@ Public Class frmShapeValue
 
         ''' <summary>Time series type enumerated value to associate with the item.</summary>
         Private m_timeSeriesType As eTimeSeriesType = eTimeSeriesType.NotSet
+        Private m_desc As New cTimeSeriesTypeFormatter()
 
         ''' ---------------------------------------------------------------
         ''' <summary>
@@ -56,7 +58,7 @@ Public Class frmShapeValue
         ''' </summary>
         ''' ---------------------------------------------------------------
         Public Overrides Function ToString() As String
-            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, CInt(Me.m_timeSeriesType), cTimeSeriesShapeGUIHandler.GetTimeSeriesTypeName(Me.m_timeSeriesType))
+            Return Me.m_desc.GetDescriptor(Me.m_timeSeriesType, eDescriptorTypes.Name)
         End Function
 
     End Class

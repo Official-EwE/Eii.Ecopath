@@ -324,7 +324,7 @@ Namespace Ecopath.Tools
             Dim group As cCoreGroupBase = Nothing
             Dim cell As EwECellBase = Nothing
             Dim var As eVarNameFlags = eVarNameFlags.NotSet
-            Dim descr As cVariableDescriptor = Nothing
+            Dim descr As New cVarnameTypeFormatter()
 
             Me.Redim(Me.Core.nGroups + 1, Me.Core.nPedigreeVariables + 2)
 
@@ -334,11 +334,9 @@ Namespace Ecopath.Tools
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
                 ' Get variable
                 var = Me.Core.PedigreeVariable(iVariable)
-                ' Get var descriptor
-                descr = cVariableDescriptor.FromVarname(var)
                 ' Create and configure cell
-                cell = New EwEColumnHeaderCell(descr.Name)
-                cell.ToolTipText = descr.Description
+                cell = New EwEColumnHeaderCell(descr.GetDescriptor(var, eDescriptorTypes.Name))
+                cell.ToolTipText = descr.GetDescriptor(var, eDescriptorTypes.Description)
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 ' Add it
                 Me(0, iVariable + 1) = cell
