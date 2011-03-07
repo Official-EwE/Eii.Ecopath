@@ -56,10 +56,6 @@ Public Class cTaxon
         val = New cValue(New String(cbuf), eVarNameFlags.Species, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.CommonName, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
-        m_values.Add(val.varName, val)
-
         meta = New cVariableMetaData(2)
         val = New cValue(New String(cbuf), eVarNameFlags.CodeISSCAAP, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
@@ -253,15 +249,15 @@ Public Class cTaxon
     End Property
 
     ''' <summary>
-    ''' Get/set the species of a taxonomy definition.
+    ''' Get/set the species common name.
     ''' </summary>
     Public Property Common() As String _
         Implements ITaxonDetailsData.Common
         Get
-            Return CStr(Me.GetVariable(eVarNameFlags.CommonName))
+            Return Me.Name
         End Get
         Set(ByVal value As String)
-            Me.SetVariable(eVarNameFlags.CommonName, value)
+            Me.Name = value
         End Set
     End Property
 
