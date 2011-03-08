@@ -1071,19 +1071,19 @@ Namespace Style
                 Dim clr As Color = Color.Transparent
                 Dim man As cPedigreeManager = core.GetPedigreeManager(vn)
                 If (man Is Nothing) Then Return clr
-                If (0 <= iLevel) And (iLevel < man.NumLevels) Then
+                If (0 < iLevel) And (iLevel <= man.NumLevels) Then
                     Dim lvl As cPedigreeLevel = man.Level(iLevel)
                     clr = cColorUtils.IntToColor(lvl.PoolColor)
                 End If
                 If clr.A = 0 Then
-                    clr = Me.PedigreeColorDefault(iLevel, man.NumLevels - 1)
+                    clr = Me.PedigreeColorDefault(iLevel, man.NumLevels)
                 End If
                 Return clr
             End Get
             Set(ByVal value As Color)
                 Dim man As cPedigreeManager = core.GetPedigreeManager(vn)
                 If (man IsNot Nothing) Then
-                    If (0 < iLevel) And (iLevel < man.NumLevels) Then
+                    If (0 < iLevel) And (iLevel <= man.NumLevels) Then
                         Dim lvl As cPedigreeLevel = man.Level(iLevel)
                         ' Optimization
                         If lvl.PoolColor = cColorUtils.ColorToInt(value) Then Return
@@ -1108,7 +1108,7 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Function PedigreeColorDefault(ByVal iLevel As Integer, _
                                              ByVal nLevels As Integer) As Color
-            Return Me.m_colorrampPedigree.GetColor(iLevel, nLevels)
+            Return Me.m_colorrampPedigree.GetColor(iLevel - 1, nLevels)
         End Function
 
         ''' -------------------------------------------------------------------
