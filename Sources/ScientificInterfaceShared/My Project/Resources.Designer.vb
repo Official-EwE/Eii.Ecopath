@@ -3917,15 +3917,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} ({1}/{2}).
-        '''</summary>
-        Public ReadOnly Property HEADER_VALUE_A_PER_B() As String
-            Get
-                Return ResourceManager.GetString("HEADER_VALUE_A_PER_B", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Value component.
         '''</summary>
         Public ReadOnly Property HEADER_VALUE_COMPONENT() As String
@@ -3944,29 +3935,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} (/{1}).
+        '''  Looks up a localized string similar to Value ({0}/{1}).
         '''</summary>
-        Public ReadOnly Property HEADER_VALUE_PERUNIT() As String
+        Public ReadOnly Property HEADER_VALUE_UNIT_PER_UNIT() As String
             Get
-                Return ResourceManager.GetString("HEADER_VALUE_PERUNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0} ({1}).
-        '''</summary>
-        Public ReadOnly Property HEADER_VALUE_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_VALUE_UNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Value/unit biomass ({0}).
-        '''</summary>
-        Public ReadOnly Property HEADER_VALUEBIOMASS_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_VALUEBIOMASS_UNIT", resourceCulture)
+                Return ResourceManager.GetString("HEADER_VALUE_UNIT_PER_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -4075,6 +4048,33 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_WITHOUT_FORAGING_TIME() As String
             Get
                 Return ResourceManager.GetString("HEADER_WITHOUT_FORAGING_TIME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} (/{1}).
+        '''</summary>
+        Public ReadOnly Property HEADER_X_PER_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_X_PER_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}).
+        '''</summary>
+        Public ReadOnly Property HEADER_X_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_X_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}/{2}).
+        '''</summary>
+        Public ReadOnly Property HEADER_X_UNIT_PER_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_X_UNIT_PER_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -4647,6 +4647,15 @@ Namespace My.Resources
         Public ReadOnly Property UNIT_AREA_MI2() As String
             Get
                 Return ResourceManager.GetString("UNIT_AREA_MI2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to unit biomass.
+        '''</summary>
+        Public ReadOnly Property UNIT_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("UNIT_BIOMASS", resourceCulture)
             End Get
         End Property
         

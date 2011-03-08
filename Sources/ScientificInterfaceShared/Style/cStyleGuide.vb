@@ -550,6 +550,8 @@ Namespace Style
             Nominal
             ''' <summary>Area unit.</summary>
             Area
+            ''' <summary>Biomass unit.</summary>
+            Biomass
         End Enum
 
         ''' -------------------------------------------------------------------
@@ -581,6 +583,8 @@ Namespace Style
                     strUnitString = Me.NominalUnitText()
                 Case cStyleGuide.eUnitType.Area
                     strUnitString = Me.AreaUnitText(Me.AreaUnit)
+                Case eUnitType.Biomass
+                    strUnitString = My.Resources.UNIT_BIOMASS ' Fixed
                 Case Else
                     Debug.Assert(False)
             End Select

@@ -43,7 +43,7 @@ Namespace Controls
             End Property
 
             Public Overrides Function ToString() As String
-                Return String.Format(My.Resources.HEADER_VALUE_UNIT, Me.m_strDescription, Me.m_strISOSymbol)
+                Return String.Format(My.Resources.HEADER_X_UNIT, Me.m_strDescription, Me.m_strISOSymbol)
             End Function
 
         End Class

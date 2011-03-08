@@ -1449,10 +1449,6 @@
   <data name="HEADER_UPPERLIMIT" xml:space="preserve">
     <value>Upper limit</value>
   </data>
-  <data name="HEADER_VALUEBIOMASS_UNIT" xml:space="preserve">
-    <value>Value/unit biomass ({0})</value>
-    <comment>{0}: monetary unit</comment>
-  </data>
   <data name="HEADER_VALUEEND" xml:space="preserve">
     <value>Value (end)</value>
   </data>
@@ -1462,7 +1458,7 @@
   <data name="HEADER_VALUESTART" xml:space="preserve">
     <value>Value (start)</value>
   </data>
-  <data name="HEADER_VALUE_A_PER_B" xml:space="preserve">
+  <data name="HEADER_X_UNIT_PER_UNIT" xml:space="preserve">
     <value>{0} ({1}/{2})</value>
     <comment>{0}: value, {1}: unit 1, {2}: unit 2</comment>
   </data>
@@ -1768,7 +1764,7 @@
     <value>Catch value ({0}/{1})</value>
     <comment>{0}: monetary unit, {1}:area unit</comment>
   </data>
-  <data name="HEADER_VALUE_UNIT" xml:space="preserve">
+  <data name="HEADER_X_UNIT" xml:space="preserve">
     <value>{0} ({1})</value>
     <comment>{0}: value, {1}: unit</comment>
   </data>
@@ -1794,7 +1790,7 @@
   <data name="HEADER_TOTALVALUE" xml:space="preserve">
     <value>Total value</value>
   </data>
-  <data name="HEADER_VALUE_PERUNIT" xml:space="preserve">
+  <data name="HEADER_X_PER_UNIT" xml:space="preserve">
     <value>{0} (/{1})</value>
   </data>
   <data name="HEADER_AIC" xml:space="preserve">
@@ -1841,5 +1837,11 @@
   </data>
   <data name="ECOLOGY_REEFASSOCIATED" xml:space="preserve">
     <value>Reef-associated</value>
+  </data>
+  <data name="HEADER_VALUE_UNIT_PER_UNIT" xml:space="preserve">
+    <value>Value ({0}/{1})</value>
+  </data>
+  <data name="UNIT_BIOMASS" xml:space="preserve">
+    <value>unit biomass</value>
   </data>
 </root>
