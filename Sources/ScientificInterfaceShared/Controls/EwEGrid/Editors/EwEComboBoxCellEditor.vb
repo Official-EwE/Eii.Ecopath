@@ -26,7 +26,7 @@ Namespace Controls.EwEGrid
 
             Me.StandardValues = aValues
             Me.StandardValuesExclusive = True
-            Me.AllowStringConversion = True
+            Me.AllowStringConversion = False
 
             mapping.ValueList = aValues
             mapping.DisplayStringList = lRepresentations
