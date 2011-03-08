@@ -114,7 +114,7 @@ Namespace Ecopath.Input
                 Me(iRow, eColumnTypes.Index) = cellParent
                 Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-                For Each t As cTaxon In aiGroupTaxa(iGroup)
+                For Each taxon In aiGroupTaxa(iGroup)
 
                     ' Add taxon
                     iRow = Me.AddRow()
@@ -122,6 +122,7 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, taxon, eVarNameFlags.Name)
 
                     Me(iRow, eColumnTypes.Ecology) = New SourceGrid2.Cells.Real.Cell(taxon.EcologyType, Me.m_editorEcology)
+                    Me(iRow, eColumnTypes.Ecology).Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.Organism) = New SourceGrid2.Cells.Real.Cell(taxon.OrganismType, Me.m_editorOrganism)
                     Me(iRow, eColumnTypes.Conservation) = New SourceGrid2.Cells.Real.Cell(taxon.IUCNConservationStatus, Me.m_editorConservation)
                     Me(iRow, eColumnTypes.Occurrence) = New SourceGrid2.Cells.Real.Cell(taxon.OccurrenceStatus, Me.m_editorOccurrence)
@@ -133,6 +134,7 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.MaxLen) = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMaxLength)
                     Me(iRow, eColumnTypes.MeanWeight) = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanWeight)
                     Me(iRow, eColumnTypes.MeanLifeSpan) = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLifespan)
+                    Me.Taxon(iRow) = taxon
 
                     cellParent.AddChildRow(iRow)
                 Next
@@ -140,11 +142,43 @@ Namespace Ecopath.Input
 
         End Sub
 
+        Protected Property Taxon(ByVal iRow As Integer) As cTaxon
+            Get
+                Return DirectCast(Me.Rows(iRow).Tag, cTaxon)
+            End Get
+            Set(ByVal value As cTaxon)
+                Me.Rows(iRow).Tag = value
+            End Set
+        End Property
+
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.EcoPath
             End Get
         End Property
+
+        Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+            Dim taxon As cTaxon = Me.Taxon(p.Row)
+
+            Select Case DirectCast(p.Column, eColumnTypes)
+                Case eColumnTypes.Conservation
+                    taxon.IUCNConservationStatus = CType(cell.GetValue(p), eIUCNConservationStatusTypes)
+                Case eColumnTypes.Ecology
+                    taxon.EcologyType = CType(cell.GetValue(p), eEcologyTypes)
+                Case eColumnTypes.Exploited
+                    taxon.Exploited = CBool(cell.GetValue(p))
+                Case eColumnTypes.Occurrence
+                    taxon.OccurrenceStatus = CType(cell.GetValue(p), eOccurrenceStatusTypes)
+                Case eColumnTypes.Organism
+                    taxon.OrganismType = CType(cell.GetValue(p), eOrganismTypes)
+                Case Else
+
+            End Select
+
+            Return MyBase.OnCellValueChanged(p, cell)
+
+        End Function
 
     End Class
 
