@@ -1107,6 +1107,9 @@
     <Compile Include="Ecopath\gridTaxonSearchResults.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecopath\Tools\Taxon\gridTaxonInput.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecopath\Input\frmFisheryBasicInput.Designer.vb">
       <DependentUpon>frmFisheryBasicInput.vb</DependentUpon>
     </Compile>
