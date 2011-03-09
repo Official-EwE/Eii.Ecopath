@@ -111,7 +111,7 @@ Namespace Ecosim
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         Me(iRow, eColumnTypes.Index) = hgcStanza
-                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name)
+                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         Me(iRow, eColumnTypes.DenDepCatchability) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.FeedingTimeAdjustRate) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.MaxRelFeedingTime) = New EwERowHeaderCell()
