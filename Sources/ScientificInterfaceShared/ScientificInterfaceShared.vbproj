@@ -145,7 +145,7 @@
     <Compile Include="Controls\EwEGrid\EwECellBase.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridColorVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\EwEHierarchyGridCell.vb" />
-    <Compile Include="Controls\EwEGrid\EwEHierarchyGridVisualizers.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\EwEHierarchyGridVisualizers.vb" />
     <Compile Include="Controls\GlyphSelect\ucGlyph.Designer.vb">
       <DependentUpon>ucGlyph.vb</DependentUpon>
     </Compile>

@@ -131,6 +131,96 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to CR||Critically endangered.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_CRITICALLYENDANGERED() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_CRITICALLYENDANGERED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to DD||Data deficient.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_DATADEFICIENT() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_DATADEFICIENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EN||Endangered.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_ENDANGERED() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_ENDANGERED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EX||Extinct.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_EXTINCT() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_EXTINCT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EW||Extinct in the wild.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_EXTINCTINWILD() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_EXTINCTINWILD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to LC||Least concern.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_LEASTCONCERN() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_LEASTCONCERN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to NT||Near threathened.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_NEARTHREATENED() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_NEARTHREATENED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to NE||Not evaluated.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_NOTEVALUATED() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_NOTEVALUATED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Not set.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_NOTSET() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_NOTSET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to VU||Vulnerable.
+        '''</summary>
+        Public ReadOnly Property CONSERVATIONSTATUS_VULNERABLE() As String
+            Get
+                Return ResourceManager.GetString("CONSERVATIONSTATUS_VULNERABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to New Ecosim scenario.
         '''</summary>
         Public ReadOnly Property DEFAULT_NEWECOSIMSCENARIO() As String
@@ -4268,6 +4358,51 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("NotEditable", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Endemic.
+        '''</summary>
+        Public ReadOnly Property OCCURRENCESTATUS_ENDEMIC() As String
+            Get
+                Return ResourceManager.GetString("OCCURRENCESTATUS_ENDEMIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Introduced.
+        '''</summary>
+        Public ReadOnly Property OCCURRENCESTATUS_INTRODUCED() As String
+            Get
+                Return ResourceManager.GetString("OCCURRENCESTATUS_INTRODUCED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Native.
+        '''</summary>
+        Public ReadOnly Property OCCURRENCESTATUS_NATIVE() As String
+            Get
+                Return ResourceManager.GetString("OCCURRENCESTATUS_NATIVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Not set.
+        '''</summary>
+        Public ReadOnly Property OCCURRENCESTATUS_NOTSET() As String
+            Get
+                Return ResourceManager.GetString("OCCURRENCESTATUS_NOTSET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Questionable.
+        '''</summary>
+        Public ReadOnly Property OCCURRENCESTATUS_QUESTIONABLE() As String
+            Get
+                Return ResourceManager.GetString("OCCURRENCESTATUS_QUESTIONABLE", resourceCulture)
             End Get
         End Property
         

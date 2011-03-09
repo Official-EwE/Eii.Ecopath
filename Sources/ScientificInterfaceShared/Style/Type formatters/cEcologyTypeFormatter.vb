@@ -21,7 +21,6 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter(Of eEcologyTypes).GetDescriptor
 
-
             Dim strValue As String = value.ToString
             Dim strDescr As String = cResourceUtils.LoadString("ECOLOGY_" & strValue.ToUpper, GetType(cEcologyTypeFormatter).Assembly)
             Dim astrBits As String() = Nothing

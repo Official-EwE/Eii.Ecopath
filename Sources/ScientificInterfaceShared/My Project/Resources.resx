@@ -1844,4 +1844,49 @@
   <data name="UNIT_BIOMASS" xml:space="preserve">
     <value>unit biomass</value>
   </data>
+  <data name="CONSERVATIONSTATUS_CRITICALLYENDANGERED" xml:space="preserve">
+    <value>CR||Critically endangered</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_DATADEFICIENT" xml:space="preserve">
+    <value>DD||Data deficient</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_ENDANGERED" xml:space="preserve">
+    <value>EN||Endangered</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_EXTINCT" xml:space="preserve">
+    <value>EX||Extinct</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_EXTINCTINWILD" xml:space="preserve">
+    <value>EW||Extinct in the wild</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_LEASTCONCERN" xml:space="preserve">
+    <value>LC||Least concern</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_NEARTHREATENED" xml:space="preserve">
+    <value>NT||Near threathened</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_NOTEVALUATED" xml:space="preserve">
+    <value>NE||Not evaluated</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_NOTSET" xml:space="preserve">
+    <value>Not set</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_VULNERABLE" xml:space="preserve">
+    <value>VU||Vulnerable</value>
+  </data>
+  <data name="OCCURRENCESTATUS_ENDEMIC" xml:space="preserve">
+    <value>Endemic</value>
+  </data>
+  <data name="OCCURRENCESTATUS_INTRODUCED" xml:space="preserve">
+    <value>Introduced</value>
+  </data>
+  <data name="OCCURRENCESTATUS_NATIVE" xml:space="preserve">
+    <value>Native</value>
+  </data>
+  <data name="OCCURRENCESTATUS_NOTSET" xml:space="preserve">
+    <value>Not set</value>
+  </data>
+  <data name="OCCURRENCESTATUS_QUESTIONABLE" xml:space="preserve">
+    <value>Questionable</value>
+  </data>
 </root>

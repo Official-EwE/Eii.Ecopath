@@ -21,8 +21,35 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter(Of eIUCNConservationStatusTypes).GetDescriptor
 
-            Return value.ToString ' Muahaha
+            Dim strValue As String = value.ToString
+            Dim strDescr As String = cResourceUtils.LoadString("CONSERVATIONSTATUS_" & strValue.ToUpper, GetType(cIUCNConservationTypeFormatter).Assembly)
+            Dim astrBits As String() = Nothing
+            Dim iNumBits As Integer = 0
+            Dim strBit As String = ""
 
+            If (strDescr IsNot Nothing) Then
+                astrBits = strDescr.Split("|"c)
+                iNumBits = astrBits.Length
+            End If
+
+            For i As Integer = 0 To Math.Min(descriptor, iNumBits)
+
+                ' Is first part?
+                If (i = 0) Then
+                    ' #Yes: remember default
+                    strBit = strValue
+                End If
+
+                If i < iNumBits Then
+                    ' Has a part?
+                    If Not String.IsNullOrEmpty(astrBits(i)) Then
+                        ' #Yes: update bit
+                        strBit = astrBits(i).Trim
+                    End If
+                End If
+
+            Next
+            Return strBit
         End Function
 
     End Class
