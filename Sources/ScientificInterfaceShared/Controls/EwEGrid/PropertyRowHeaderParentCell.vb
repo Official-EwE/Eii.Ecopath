@@ -65,7 +65,7 @@ Namespace Controls.EwEGrid
                 Dim strText As String = MyBase.DisplayText
                 If (Me.m_hcell IsNot Nothing) Then
                     Dim iNumChildren As Integer = Me.m_hcell.NumChildRows
-                    If (iNumChildren > 0) Then
+                    If (iNumChildren > 0) And (Not Me.m_hcell.Expanded) Then
                         strText = String.Format(My.Resources.GENERIC_LABEL_DETAILED, strText, iNumChildren)
                     End If
                 End If
