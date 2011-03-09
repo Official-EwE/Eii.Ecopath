@@ -28,12 +28,13 @@
             Me.m_tbxOutputFolder = New System.Windows.Forms.TextBox()
             Me.m_lblOutputFolder = New System.Windows.Forms.Label()
             Me.m_lblModels = New System.Windows.Forms.Label()
-            Me.m_grid = New ScientificInterface.Import.cImportGrid()
-            Me.m_hdr = New ScientificInterface.Import.ucImportHeader()
             Me.m_lblFormat = New System.Windows.Forms.Label()
             Me.m_cmbDatabaseFormat = New System.Windows.Forms.ComboBox()
             Me.m_scModels = New System.Windows.Forms.SplitContainer()
             Me.m_lblComments = New System.Windows.Forms.Label()
+            Me.m_lblDetails = New System.Windows.Forms.Label()
+            Me.m_grid = New ScientificInterface.Import.cImportGrid()
+            Me.m_hdr = New ScientificInterface.Import.ucImportHeader()
             Me.m_scModels.Panel1.SuspendLayout()
             Me.m_scModels.Panel2.SuspendLayout()
             Me.m_scModels.SuspendLayout()
@@ -55,9 +56,9 @@
             '
             Me.m_tbxOutputFolder.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxOutputFolder.Location = New System.Drawing.Point(97, 429)
+            Me.m_tbxOutputFolder.Location = New System.Drawing.Point(104, 429)
             Me.m_tbxOutputFolder.Name = "m_tbxOutputFolder"
-            Me.m_tbxOutputFolder.Size = New System.Drawing.Size(343, 20)
+            Me.m_tbxOutputFolder.Size = New System.Drawing.Size(336, 20)
             Me.m_tbxOutputFolder.TabIndex = 4
             '
             'm_lblOutputFolder
@@ -68,9 +69,9 @@
             Me.m_lblOutputFolder.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.m_lblOutputFolder.Location = New System.Drawing.Point(3, 432)
             Me.m_lblOutputFolder.Name = "m_lblOutputFolder"
-            Me.m_lblOutputFolder.Size = New System.Drawing.Size(71, 13)
+            Me.m_lblOutputFolder.Size = New System.Drawing.Size(92, 13)
             Me.m_lblOutputFolder.TabIndex = 3
-            Me.m_lblOutputFolder.Text = "&Output folder:"
+            Me.m_lblOutputFolder.Text = "&Destination folder:"
             '
             'm_lblModels
             '
@@ -82,6 +83,72 @@
             Me.m_lblModels.Size = New System.Drawing.Size(178, 13)
             Me.m_lblModels.TabIndex = 1
             Me.m_lblModels.Text = "&Select one or more models to import:"
+            '
+            'm_lblFormat
+            '
+            Me.m_lblFormat.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_lblFormat.AutoSize = True
+            Me.m_lblFormat.Location = New System.Drawing.Point(3, 458)
+            Me.m_lblFormat.Name = "m_lblFormat"
+            Me.m_lblFormat.Size = New System.Drawing.Size(95, 13)
+            Me.m_lblFormat.TabIndex = 6
+            Me.m_lblFormat.Text = "&Destination format:"
+            '
+            'm_cmbDatabaseFormat
+            '
+            Me.m_cmbDatabaseFormat.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_cmbDatabaseFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbDatabaseFormat.FormattingEnabled = True
+            Me.m_cmbDatabaseFormat.Location = New System.Drawing.Point(104, 455)
+            Me.m_cmbDatabaseFormat.Name = "m_cmbDatabaseFormat"
+            Me.m_cmbDatabaseFormat.Size = New System.Drawing.Size(336, 21)
+            Me.m_cmbDatabaseFormat.TabIndex = 7
+            '
+            'm_scModels
+            '
+            Me.m_scModels.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_scModels.Location = New System.Drawing.Point(0, 92)
+            Me.m_scModels.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_scModels.Name = "m_scModels"
+            Me.m_scModels.Orientation = System.Windows.Forms.Orientation.Horizontal
+            '
+            'm_scModels.Panel1
+            '
+            Me.m_scModels.Panel1.Controls.Add(Me.m_grid)
+            '
+            'm_scModels.Panel2
+            '
+            Me.m_scModels.Panel2.Controls.Add(Me.m_lblComments)
+            Me.m_scModels.Panel2.Controls.Add(Me.m_lblDetails)
+            Me.m_scModels.Size = New System.Drawing.Size(510, 332)
+            Me.m_scModels.SplitterDistance = 189
+            Me.m_scModels.TabIndex = 8
+            '
+            'm_lblComments
+            '
+            Me.m_lblComments.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblComments.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_lblComments.Location = New System.Drawing.Point(0, 18)
+            Me.m_lblComments.Name = "m_lblComments"
+            Me.m_lblComments.Size = New System.Drawing.Size(510, 120)
+            Me.m_lblComments.TabIndex = 0
+            Me.m_lblComments.Text = "<comments>"
+            '
+            'm_lblDetails
+            '
+            Me.m_lblDetails.AutoSize = True
+            Me.m_lblDetails.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+            Me.m_lblDetails.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_lblDetails.Location = New System.Drawing.Point(3, 2)
+            Me.m_lblDetails.Name = "m_lblDetails"
+            Me.m_lblDetails.Size = New System.Drawing.Size(134, 13)
+            Me.m_lblDetails.TabIndex = 1
+            Me.m_lblDetails.Text = "Selected model comments:"
             '
             'm_grid
             '
@@ -103,7 +170,7 @@
             Me.m_grid.Location = New System.Drawing.Point(0, 0)
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.Size = New System.Drawing.Size(510, 250)
+            Me.m_grid.Size = New System.Drawing.Size(510, 189)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -128,57 +195,7 @@
             Me.m_hdr.Size = New System.Drawing.Size(510, 64)
             Me.m_hdr.SubText = "<database name goes here>"
             Me.m_hdr.TabIndex = 0
-            Me.m_hdr.Text = "Selected model"
-            '
-            'm_lblFormat
-            '
-            Me.m_lblFormat.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_lblFormat.AutoSize = True
-            Me.m_lblFormat.Location = New System.Drawing.Point(3, 458)
-            Me.m_lblFormat.Name = "m_lblFormat"
-            Me.m_lblFormat.Size = New System.Drawing.Size(88, 13)
-            Me.m_lblFormat.TabIndex = 6
-            Me.m_lblFormat.Text = "&Database format:"
-            '
-            'm_cmbDatabaseFormat
-            '
-            Me.m_cmbDatabaseFormat.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_cmbDatabaseFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbDatabaseFormat.FormattingEnabled = True
-            Me.m_cmbDatabaseFormat.Location = New System.Drawing.Point(97, 455)
-            Me.m_cmbDatabaseFormat.Name = "m_cmbDatabaseFormat"
-            Me.m_cmbDatabaseFormat.Size = New System.Drawing.Size(189, 21)
-            Me.m_cmbDatabaseFormat.TabIndex = 7
-            '
-            'm_scModels
-            '
-            Me.m_scModels.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_scModels.Location = New System.Drawing.Point(0, 92)
-            Me.m_scModels.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_scModels.Name = "m_scModels"
-            Me.m_scModels.Orientation = System.Windows.Forms.Orientation.Horizontal
-            '
-            'm_scModels.Panel1
-            '
-            Me.m_scModels.Panel1.Controls.Add(Me.m_grid)
-            '
-            'm_scModels.Panel2
-            '
-            Me.m_scModels.Panel2.Controls.Add(Me.m_lblComments)
-            Me.m_scModels.Size = New System.Drawing.Size(510, 332)
-            Me.m_scModels.SplitterDistance = 250
-            Me.m_scModels.TabIndex = 8
-            '
-            'm_lblComments
-            '
-            Me.m_lblComments.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lblComments.Location = New System.Drawing.Point(0, 0)
-            Me.m_lblComments.Name = "m_lblComments"
-            Me.m_lblComments.Size = New System.Drawing.Size(510, 78)
-            Me.m_lblComments.TabIndex = 0
-            Me.m_lblComments.Text = "<comments>"
+            Me.m_hdr.Text = "Select model(s) to import"
             '
             'ucImportPageModels
             '
@@ -196,6 +213,7 @@
             Me.Size = New System.Drawing.Size(510, 476)
             Me.m_scModels.Panel1.ResumeLayout(False)
             Me.m_scModels.Panel2.ResumeLayout(False)
+            Me.m_scModels.Panel2.PerformLayout()
             Me.m_scModels.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -208,9 +226,10 @@
         Private WithEvents m_lblModels As System.Windows.Forms.Label
         Private WithEvents m_hdr As ucImportHeader
         Private WithEvents m_lblFormat As System.Windows.Forms.Label
-        Friend WithEvents m_cmbDatabaseFormat As System.Windows.Forms.ComboBox
         Private WithEvents m_scModels As System.Windows.Forms.SplitContainer
         Private WithEvents m_lblComments As System.Windows.Forms.Label
+        Private WithEvents m_lblDetails As System.Windows.Forms.Label
+        Private WithEvents m_cmbDatabaseFormat As System.Windows.Forms.ComboBox
 
     End Class
 
