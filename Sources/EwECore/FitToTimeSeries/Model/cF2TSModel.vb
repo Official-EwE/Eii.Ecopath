@@ -700,7 +700,7 @@ Namespace FitToTimeSeries
                 Me.updateAICNPars()
 
                 If Me.m_data.UseDefaultV Then
-                    Me.m_core.CheckResetDefaultVulnerabilities(True)
+                    Me.m_core.setVToDefault()
                 End If
 
                 'set the baseSS in the results object that was calculated above by ecosim

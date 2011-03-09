@@ -7084,13 +7084,7 @@ Public Class cCore
                 End If
             End If
 
-            Dim groupSim As cEcoSimGroupInput = Nothing
-            For iPrey As Integer = 1 To Me.nGroups
-                groupSim = Me.EcoSimGroupInputs(iPrey)
-                For iPred As Integer = 1 To Me.nGroups
-                    groupSim.VulMult(iPred) = sDefaultValue
-                Next iPred
-            Next iPrey
+            Return Me.setVToDefault(sDefaultValue)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -7102,7 +7096,25 @@ Public Class cCore
 
     End Function
 
+    Public Function setVToDefault(Optional ByVal sDefaultValue As Single = 2.0F) As Boolean
 
+        Try
+            Dim groupSim As cEcoSimGroupInput = Nothing
+            For iPrey As Integer = 1 To Me.nGroups
+                groupSim = Me.EcoSimGroupInputs(iPrey)
+                For iPred As Integer = 1 To Me.nGroups
+                    groupSim.VulMult(iPred) = sDefaultValue
+                Next iPred
+            Next iPrey
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, ex.Message)
+            Return False
+        End Try
+
+        Return True
+
+    End Function
 
 
     ''' -----------------------------------------------------------------------
