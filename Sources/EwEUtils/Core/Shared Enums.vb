@@ -2232,7 +2232,7 @@ Namespace Core
         ''' <summary>Critically Endangered (CR)</summary>
         CriticallyEndangered
         ''' <summary>Extinct in the Wild (EW)</summary>
-        EextinctInWild
+        ExtinctInWild
         ''' <summary>Extinct (EX)</summary>
         Extinct
     End Enum
