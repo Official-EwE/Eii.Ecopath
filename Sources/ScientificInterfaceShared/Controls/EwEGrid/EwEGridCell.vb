@@ -70,7 +70,16 @@ Namespace Controls.EwEGrid
                 Return Me.m_objValue
             End Get
             Set(ByVal objValue As Object)
-                Me.m_objValue = objValue
+                If Not Object.Equals(objValue, Me.m_objValue) Then
+                    Me.m_objValue = objValue
+                    Dim pos As New Position(Me.Row, Me.Column)
+                    For Each bh As SourceGrid2.BehaviorModels.IBehaviorModel In Me.Behaviors
+                        Try
+                            bh.OnValueChanged(New SourceGrid2.PositionEventArgs(pos, Me))
+                        Catch ex As Exception
+                        End Try
+                    Next
+                End If
             End Set
         End Property
 
