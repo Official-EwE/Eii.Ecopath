@@ -26,18 +26,14 @@ Namespace Controls.EwEGrid
 
             Me.StandardValues = aValues
             Me.StandardValuesExclusive = True
-            Me.AllowStringConversion = False
+            Me.AllowStringConversion = True
+            Me.EditableMode = SourceGrid2.EditableMode.SingleClick Or SourceGrid2.EditableMode.Focus Or SourceGrid2.EditableMode.AnyKey
 
             mapping.ValueList = aValues
             mapping.DisplayStringList = lRepresentations
             mapping.BindValidator(Me)
 
         End Sub
-
-        'Protected Overrides Sub OnConvertingObjectToValue(ByVal e As SourceLibrary.ComponentModel.ConvertingObjectEventArgs)
-        '    ' JS: called internally when done editing the combo box
-        '    MyBase.OnConvertingObjectToValue(e)
-        'End Sub
 
         Protected Overrides Sub OnConvertingValueToDisplayString(ByVal e As SourceLibrary.ComponentModel.ConvertingObjectEventArgs)
             Try
@@ -55,10 +51,6 @@ Namespace Controls.EwEGrid
                 ' Should not occur any more
             End Try
         End Sub
-
-        'Protected Overrides Sub OnConvertingValueToObject(ByVal e As SourceLibrary.ComponentModel.ConvertingObjectEventArgs)
-        '    MyBase.OnConvertingValueToObject(e)
-        'End Sub
 
     End Class
 
