@@ -208,6 +208,36 @@ End Class
 
 #End Region
 
+#Region " Enumerated type validators "
+
+Public Class cValidatorEnum
+    Inherits cValidatorDefault
+
+    Private m_type As Type = Nothing
+
+    Public Sub New(ByVal t As Type)
+        Debug.Assert(t.IsEnum)
+        Me.m_type = t
+    End Sub
+
+    Public Overrides Function Validate(ByVal ValueObject As ValueWrapper.cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean
+
+        ' Perform 'normal' validation
+        If Not MyBase.Validate(ValueObject, MetaData, iSecondaryIndex) Then Return False
+        ' Check type
+        If Not [Enum].IsDefined(Me.m_type, ValueObject.Value(iSecondaryIndex)) Then
+            ValueObject.ValidationStatus = eStatusFlags.FailedValidation
+        Else
+            ValueObject.ValidationStatus = eStatusFlags.OK
+        End If
+        Return True
+
+    End Function
+
+End Class
+
+#End Region ' Enumerated type validators
+
 #Region "Core counter validator"
 
 ''' <summary>
@@ -437,6 +467,11 @@ Public Class cValidatorManager
         'Pedigree
         validator = New cValidatorCore(theCore)
         m_validators.Add(eVarNameFlags.Pedigree, validator)
+
+        Me.m_validators.Add(eVarNameFlags.EcologyType, New cValidatorEnum(GetType(eEcologyTypes)))
+        Me.m_validators.Add(eVarNameFlags.IUCNConservationStatus, New cValidatorEnum(GetType(eIUCNConservationStatusTypes)))
+        Me.m_validators.Add(eVarNameFlags.OrganismType, New cValidatorEnum(GetType(eOrganismTypes)))
+        Me.m_validators.Add(eVarNameFlags.OccurrenceStatus, New cValidatorEnum(GetType(eOccurrenceStatusTypes)))
 
     End Sub
 
