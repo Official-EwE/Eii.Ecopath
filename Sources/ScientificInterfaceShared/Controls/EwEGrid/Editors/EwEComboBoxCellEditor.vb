@@ -35,30 +35,26 @@ Namespace Controls.EwEGrid
 
         End Sub
 
-        Protected Overrides Sub OnConvertingValueToDisplayString(ByVal e As SourceLibrary.ComponentModel.ConvertingObjectEventArgs)
-            Try
-                If Not Me.ValueType.UnderlyingSystemType.IsAssignableFrom(e.Value.GetType) Then
-                    Dim iValue As Integer = 0
-                    If TypeOf (e.Value) Is String Then
-                        iValue = Integer.Parse(CStr(e.Value))
-                    Else
-                        iValue = CInt(e.Value)
-                    End If
-                    If Me.ValueType.IsEnum Then
-                        If Not [Enum].IsDefined(Me.ValueType, iValue) Then
-                            ' Clear!
-                            e.Value = Me.StandardValueAtIndex(0)
-                        Else
-                            e.Value = [Enum].ToObject(Me.ValueType, iValue)
-                        End If
-                    Else
-                        e.Value = iValue
-                    End If
+        Protected Overrides Sub OnConvertingObjectToValue(ByVal e As SourceLibrary.ComponentModel.ConvertingObjectEventArgs)
+            If Not Me.ValueType.UnderlyingSystemType.IsAssignableFrom(e.Value.GetType) Then
+                Dim iValue As Integer = 0
+                If TypeOf (e.Value) Is String Then
+                    iValue = Integer.Parse(CStr(e.Value))
+                Else
+                    iValue = CInt(e.Value)
                 End If
-                MyBase.OnConvertingValueToDisplayString(e)
-            Catch ex As Exception
-                ' Should not occur any more
-            End Try
+                If Me.ValueType.IsEnum Then
+                    If Not [Enum].IsDefined(Me.ValueType, iValue) Then
+                        ' Clear!
+                        e.Value = Me.StandardValueAtIndex(0)
+                    Else
+                        e.Value = [Enum].ToObject(Me.ValueType, iValue)
+                    End If
+                Else
+                    e.Value = iValue
+                End If
+            End If
+            MyBase.OnConvertingObjectToValue(e)
         End Sub
 
     End Class

@@ -1182,8 +1182,9 @@ Namespace Controls.EwEGrid
                                     strValue = cCore.NULL_VALUE.ToString()
                                 End If
 
-                                ' cell.Value = strValue
-                                cell.SetValue(pos, strValue)
+                                If cell.DataModel.IsValidValue(strValue) Then
+                                    cell.SetValue(pos, strValue)
+                                End If
 
                             End If
                         End If

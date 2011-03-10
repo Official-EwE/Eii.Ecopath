@@ -454,14 +454,11 @@ Namespace Forms
                         End If
                     Else
                         If cell.DataModel.EnableEdit Then
-                            Dim pos As New SourceGrid2.Position(cell.Row, cell.Column)
-                            cell.Value = strValue
-                            For Each bh As SourceGrid2.BehaviorModels.IBehaviorModel In cell.Behaviors
-                                Try
-                                    bh.OnValueChanged(New SourceGrid2.PositionEventArgs(pos, cell))
-                                Catch ex As Exception
-                                End Try
-                            Next
+                            Try
+                                cell.SetValue(New SourceGrid2.Position(cell.Row, cell.Column), cell.DataModel.ObjectToValue(strValue))
+                            Catch ex As Exception
+
+                            End Try
                         End If
                     End If
                 Next
