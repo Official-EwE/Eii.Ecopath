@@ -30,7 +30,7 @@ Namespace Style
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
             Dim strVar As String = cin.GetVarName(vn)
-            Dim strDescr As String = cResourceUtils.LoadString("VARIABLE_" & strVar.ToUpper, GetType(cVarnameTypeFormatter).Assembly)
+            Dim strDescr As String = cResourceUtils.LoadString("VARIABLE_" & strVar.ToUpper, Me.GetType.Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

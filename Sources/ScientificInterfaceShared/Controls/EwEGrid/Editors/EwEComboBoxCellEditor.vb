@@ -26,7 +26,7 @@ Namespace Controls.EwEGrid
 
             Me.StandardValues = aValues
             Me.StandardValuesExclusive = True
-            Me.AllowStringConversion = True
+            Me.AllowStringConversion = False
             Me.EditableMode = SourceGrid2.EditableMode.SingleClick Or SourceGrid2.EditableMode.Focus Or SourceGrid2.EditableMode.AnyKey
 
             mapping.ValueList = aValues
@@ -44,7 +44,16 @@ Namespace Controls.EwEGrid
                     Else
                         iValue = CInt(e.Value)
                     End If
-                    e.Value = [Enum].ToObject(Me.ValueType, iValue)
+                    If Me.ValueType.IsEnum Then
+                        If Not [Enum].IsDefined(Me.ValueType, iValue) Then
+                            ' Clear!
+                            e.Value = Me.StandardValueAtIndex(0)
+                        Else
+                            e.Value = [Enum].ToObject(Me.ValueType, iValue)
+                        End If
+                    Else
+                        e.Value = iValue
+                    End If
                 End If
                 MyBase.OnConvertingValueToDisplayString(e)
             Catch ex As Exception

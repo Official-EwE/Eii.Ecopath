@@ -203,15 +203,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Not set.
-        '''</summary>
-        Public ReadOnly Property CONSERVATIONSTATUS_NOTSET() As String
-            Get
-                Return ResourceManager.GetString("CONSERVATIONSTATUS_NOTSET", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to VU||Vulnerable.
         '''</summary>
         Public ReadOnly Property CONSERVATIONSTATUS_VULNERABLE() As String
@@ -377,15 +368,6 @@ Namespace My.Resources
         Public ReadOnly Property ECOLOGY_LANDBASED() As String
             Get
                 Return ResourceManager.GetString("ECOLOGY_LANDBASED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Not specied.
-        '''</summary>
-        Public ReadOnly Property ECOLOGY_NOTSET() As String
-            Get
-                Return ResourceManager.GetString("ECOLOGY_NOTSET", resourceCulture)
             End Get
         End Property
         
@@ -981,6 +963,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VALUE_NOTAVAILABLE() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_NOTAVAILABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (Not specified).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_NOTSET() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_NOTSET", resourceCulture)
             End Get
         End Property
         
@@ -4389,15 +4380,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Not set.
-        '''</summary>
-        Public ReadOnly Property OCCURRENCESTATUS_NOTSET() As String
-            Get
-                Return ResourceManager.GetString("OCCURRENCESTATUS_NOTSET", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Questionable.
         '''</summary>
         Public ReadOnly Property OCCURRENCESTATUS_QUESTIONABLE() As String
@@ -4424,6 +4406,96 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("OptionsHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Algae.
+        '''</summary>
+        Public ReadOnly Property ORGANISM_ALGAE() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_ALGAE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Bacteria.
+        '''</summary>
+        Public ReadOnly Property ORGANISM_BACTERIA() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_BACTERIA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Birds.
+        '''</summary>
+        Public ReadOnly Property ORGANISM_BIRDS() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_BIRDS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishes.
+        '''</summary>
+        Public ReadOnly Property ORGANISM_FISHES() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_FISHES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fungi.
+        '''</summary>
+        Public ReadOnly Property ORGANISM_FUNGI() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_FUNGI", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Invertebrates.
+        '''</summary>
+        Public ReadOnly Property ORGANISM_INVERTEBRATES() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_INVERTEBRATES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mammals.
+        '''</summary>
+        Public ReadOnly Property ORGANISM_MAMMALS() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_MAMMALS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (Other).
+        '''</summary>
+        Public ReadOnly Property ORGANISM_OTHER() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_OTHER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plants.
+        '''</summary>
+        Public ReadOnly Property ORGANISM_PLANTS() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_PLANTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reptiles.
+        '''</summary>
+        Public ReadOnly Property ORGANISM_REPTILES() As String
+            Get
+                Return ResourceManager.GetString("ORGANISM_REPTILES", resourceCulture)
             End Get
         End Property
         

@@ -1826,9 +1826,6 @@
   <data name="ECOLOGY_LANDBASED" xml:space="preserve">
     <value>Land-based</value>
   </data>
-  <data name="ECOLOGY_NOTSET" xml:space="preserve">
-    <value>Not specied</value>
-  </data>
   <data name="ECOLOGY_PELAGIC" xml:space="preserve">
     <value>Pelagic</value>
   </data>
@@ -1868,9 +1865,6 @@
   <data name="CONSERVATIONSTATUS_NOTEVALUATED" xml:space="preserve">
     <value>NE||Not evaluated</value>
   </data>
-  <data name="CONSERVATIONSTATUS_NOTSET" xml:space="preserve">
-    <value>Not set</value>
-  </data>
   <data name="CONSERVATIONSTATUS_VULNERABLE" xml:space="preserve">
     <value>VU||Vulnerable</value>
   </data>
@@ -1883,10 +1877,40 @@
   <data name="OCCURRENCESTATUS_NATIVE" xml:space="preserve">
     <value>Native</value>
   </data>
-  <data name="OCCURRENCESTATUS_NOTSET" xml:space="preserve">
-    <value>Not set</value>
-  </data>
   <data name="OCCURRENCESTATUS_QUESTIONABLE" xml:space="preserve">
     <value>Questionable</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTSET" xml:space="preserve">
+    <value>(Not specified)</value>
+  </data>
+  <data name="ORGANISM_ALGAE" xml:space="preserve">
+    <value>Algae</value>
+  </data>
+  <data name="ORGANISM_BACTERIA" xml:space="preserve">
+    <value>Bacteria</value>
+  </data>
+  <data name="ORGANISM_BIRDS" xml:space="preserve">
+    <value>Birds</value>
+  </data>
+  <data name="ORGANISM_FISHES" xml:space="preserve">
+    <value>Fishes</value>
+  </data>
+  <data name="ORGANISM_FUNGI" xml:space="preserve">
+    <value>Fungi</value>
+  </data>
+  <data name="ORGANISM_INVERTEBRATES" xml:space="preserve">
+    <value>Invertebrates</value>
+  </data>
+  <data name="ORGANISM_MAMMALS" xml:space="preserve">
+    <value>Mammals</value>
+  </data>
+  <data name="ORGANISM_OTHER" xml:space="preserve">
+    <value>(Other)</value>
+  </data>
+  <data name="ORGANISM_PLANTS" xml:space="preserve">
+    <value>Plants</value>
+  </data>
+  <data name="ORGANISM_REPTILES" xml:space="preserve">
+    <value>Reptiles</value>
   </data>
 </root>
