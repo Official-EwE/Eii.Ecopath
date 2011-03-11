@@ -247,6 +247,9 @@ Public Class cEcosimMonteCarlo
             ReDim isCrashed(m_core.nGroups)
             ReDim isExploded(m_core.nGroups)
 
+            'seed the random number generator
+            Randomize()
+
             m_ecosim.Init(True)
 
             m_core.m_EcoSimData.bTimestepOutput = True
@@ -847,7 +850,7 @@ Public Class cEcosimMonteCarlo
         Dim i As Integer, X As Single
         X = -6
         For i = 1 To 12 : X = X + Rnd() : Next
-        RandomNormal = X
+        Return X
     End Function
 
     Private Sub ChangeVulnerabilities(ByVal ParCurVal(,) As Single, ByVal CVpar(,) As Single)
