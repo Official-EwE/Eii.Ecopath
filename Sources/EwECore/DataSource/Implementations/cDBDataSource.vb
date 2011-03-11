@@ -7042,13 +7042,20 @@ Namespace DataSources
                         drow("ScenarioID") = iScenarioID
                         drow("InRow") = i
                         drow("InCol") = j
+                        drow("HabitatID") = 0
+                        drow("RegionID") = 0
+                        drow("MPAID") = 0
+                        drow("MPA") = 0
                         drow("Depth") = 1
                         drow("RelPP") = 1 ' Fixes bug 410
                         drow("RelCin") = 1 ' Fixes bug 744
+                        drow("XVel") = 0
+                        drow("YVel") = 0
+                        drow("DepthA") = 1
                         writer.AddRow(drow)
                     Next
                 Next
-                Me.m_db.ReleaseWriter(writer)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
 
                 ' First duplicate all Ecospace 'objects'
                 For i As Integer = 1 To ecopathDS.NumGroups
