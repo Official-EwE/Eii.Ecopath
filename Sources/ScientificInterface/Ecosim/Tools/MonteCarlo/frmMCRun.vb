@@ -143,7 +143,6 @@ Namespace Ecosim
 
             Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
             Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
-            Me.CommandHandler.Remove(Me.m_cmdLoadTS)
 
             'jb the 'WeightTimeSeries' command was not loaded during OnLoad() 
             ' Disconnect from ApplyTS command
