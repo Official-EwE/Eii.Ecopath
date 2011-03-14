@@ -3969,7 +3969,7 @@ Namespace DataSources
                     mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup), cCore.NULL_VALUE))
                     mseDS.cvRec(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup), cCore.NULL_VALUE))
 
-                    bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
+                    'bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iEcopathGroup))
@@ -5249,7 +5249,7 @@ Namespace DataSources
                         Else
                             drow.EndEdit()
                         End If
-                        bSucces = bSucces And Me.SaveFishMortShape(iShape, idm)
+                        'bSucces = bSucces And Me.SaveFishMortShape(iShape, idm)
                     End If
                 Next iShape
 
