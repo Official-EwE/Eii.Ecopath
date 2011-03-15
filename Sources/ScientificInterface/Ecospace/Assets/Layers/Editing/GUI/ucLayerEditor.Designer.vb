@@ -27,37 +27,24 @@ Namespace Ecospace.Basemap.Layers
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditor))
-            Me.m_lbImage = New System.Windows.Forms.Label
-            Me.m_lbCaption = New System.Windows.Forms.Label
+            Me.m_lblCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.SuspendLayout()
             '
-            'm_lbImage
+            'm_lblCaption
             '
-            Me.m_lbImage.BackColor = System.Drawing.SystemColors.ControlDark
-            resources.ApplyResources(Me.m_lbImage, "m_lbImage")
-            Me.m_lbImage.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lbImage.Image = SharedResources.Editable
-            Me.m_lbImage.Name = "m_lbImage"
-            '
-            'm_lbCaption
-            '
-            resources.ApplyResources(Me.m_lbCaption, "m_lbCaption")
-            Me.m_lbCaption.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lbCaption.ForeColor = System.Drawing.SystemColors.ControlLightLight
-            Me.m_lbCaption.Name = "m_lbCaption"
+            resources.ApplyResources(Me.m_lblCaption, "m_lblCaption")
+            Me.m_lblCaption.Name = "m_lblCaption"
             '
             'ucLayerEditor
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_lbCaption)
-            Me.Controls.Add(Me.m_lbImage)
+            Me.Controls.Add(Me.m_lblCaption)
             Me.Name = "ucLayerEditor"
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_lbImage As System.Windows.Forms.Label
-        Private WithEvents m_lbCaption As System.Windows.Forms.Label
+        Private WithEvents m_lblCaption As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
     End Class
 

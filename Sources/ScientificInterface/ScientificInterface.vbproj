@@ -893,6 +893,9 @@
       <DependentUpon>frmApplyMedPrimaryProducer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDepth.resx">
+      <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.resx">
       <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1215,9 +1218,16 @@
     </Compile>
     <Compile Include="Ecosim\Tools\Shared\IBlockSelector.vb" />
     <Compile Include="Ecosim\Tools\Shared\IPolicyColorBlockDataSource.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorDepth.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorVector.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorMLD.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ILayerEditorGUI.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDepth.Designer.vb">
+      <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDepth.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.Designer.vb">
       <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
     </Compile>

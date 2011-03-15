@@ -12,8 +12,7 @@ Namespace Ecospace
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' This class visualizes the layers defined in the basemap, and allows 
-    ''' user interaction on the layers.
+    ''' Container for <see cref="ucLayerGroup"/>s.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class ucLayersControl
@@ -23,7 +22,7 @@ Namespace Ecospace
         Private m_dtLayerToGroup As New Dictionary(Of cLayer, String)
 
         Public Sub New(ByVal uic As cUIContext)
-            InitializeComponent()
+            Me.InitializeComponent()
             Me.Dock = DockStyle.Fill
             Me.m_uic = uic
         End Sub
@@ -197,7 +196,7 @@ Namespace Ecospace
             End If
         End Sub
 
-        Private Sub ucLayersControl_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
             Me.fpItems.Width = Me.Width - Me.Margin.Horizontal
         End Sub
 

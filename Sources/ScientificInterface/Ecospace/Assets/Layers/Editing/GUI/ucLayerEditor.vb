@@ -127,7 +127,7 @@ Namespace Ecospace.Basemap.Layers
 
             If (Me.IsAttached = True) Then
                 ' Get label text (could use diplay text?)
-                strLabel = Me.Editor.Layer.Name
+                strLabel = Me.Editor.Layer.DisplayText() & " (Editor)"
                 ' Get layer image
                 If Me.Editor.IsReadOnly Then
                     img = SharedResources.ProtectFormHS
@@ -140,8 +140,8 @@ Namespace Ecospace.Basemap.Layers
                 End If
             End If
 
-            Me.m_lbCaption.Text = strLabel
-            Me.m_lbImage.Image = img
+            Me.m_lblCaption.Image = img
+            Me.m_lblCaption.Text = strLabel
 
         End Sub
 

@@ -177,6 +177,9 @@
     <Compile Include="Controls\MessageBox\frmCustomMessageBox.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\Panel\ucSmoothPanel.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\Pyramid\cPyramid.vb" />
     <Compile Include="Controls\Pyramid\ucPyramid.Designer.vb">
       <DependentUpon>ucPyramid.vb</DependentUpon>

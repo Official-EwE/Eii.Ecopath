@@ -1,4 +1,6 @@
-﻿Namespace Ecospace.Basemap.Layers
+﻿Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+Namespace Ecospace.Basemap.Layers
 
     Public Class ucLayerEditorDepth
 
@@ -13,8 +15,6 @@
             Try
                 If bDisposing Then
                     If (Me.UIContext Is Nothing) Then Return
-
-                    RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                     If components IsNot Nothing Then
                         components.Dispose()
                     End If
@@ -41,6 +41,7 @@
                 Me.m_rbLand.Checked = True
             End If
             Me.UpdatePreview(Me.m_pbPreviewLand, 0)
+
         End Sub
 
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
@@ -51,10 +52,15 @@
             If (Me.UIContext Is Nothing) Then Return
 
             ' Set control value
-            Dim sValue As Single =CSng(Me.Editor.CellValue)
+            Dim sValue As Single = CSng(Me.Editor.CellValue)
             If sValue > 0 Then
                 Me.m_nudDepth.Value = Convert.ToDecimal(Math.Max(Math.Min(sValue, CSng(Me.m_nudDepth.Maximum)), CSng(Me.m_nudDepth.Minimum)))
                 Me.UpdatePreview(Me.m_pbPreviewWater, sValue)
+            End If
+
+            If (TypeOf Me.Editor Is cLayerEditorDepth) Then
+                Dim ed As cLayerEditorDepth = DirectCast(Me.Editor, cLayerEditorDepth)
+                Me.m_cbProtectCoastline.Checked = ed.ProtectCoastLine
             End If
 
         End Sub
@@ -66,7 +72,6 @@
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
             If (Me.UIContext Is Nothing) Then Return
-            AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             Me.UpdateContent(Me.Editor)
         End Sub
 
@@ -82,17 +87,19 @@
 
         Private Sub OnValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudDepth.ValueChanged
-
             If (Me.UIContext Is Nothing) Then Return
-
             Me.m_rbWater.Checked = True
             Me.UpdateValue()
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
-            If ((cf And cStyleGuide.eChangeType.NumberFormatting) > 0) Then
-                Me.UpdateContent(Me.Editor)
+        Private Sub OnEditWaterOnly(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbProtectCoastline.CheckedChanged
+            If (Me.UIContext Is Nothing) Then Return
+            If (TypeOf Me.Editor Is cLayerEditorDepth) Then
+                Dim ed As cLayerEditorDepth = DirectCast(Me.Editor, cLayerEditorDepth)
+                ed.ProtectCoastLine = Me.m_cbProtectCoastline.Checked
             End If
+            Me.UpdateContent(Me.Editor)
         End Sub
 
 #End Region ' Events

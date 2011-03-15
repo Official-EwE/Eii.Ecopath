@@ -85,7 +85,7 @@ Namespace Ecospace.Basemap
 
             ' Add LayersControl
             Me.m_ucLayers = New ucLayersControl(Me.UIContext)
-            plLayers.Controls.Add(Me.m_ucLayers)
+            m_plLayers.Controls.Add(Me.m_ucLayers)
 
             Me.Basemap = Me.Core.EcospaceBasemap
             Me.m_ucBasemap.Editable = True
@@ -232,8 +232,8 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerRelPP, False)
             Me.AddData(eVarNameFlags.LayerRelCin, False)
             Me.AddData(eVarNameFlags.LayerRegion)
-            Me.AddData(eVarNameFlags.LayerHabitat)
             Me.AddData(eVarNameFlags.LayerDepth)
+            Me.AddData(eVarNameFlags.LayerHabitat)
 
             Me.m_ucLayers.UnlockUpdates()
 
@@ -342,7 +342,8 @@ Namespace Ecospace.Basemap
 
                 If Object.ReferenceEquals(layer, Me.m_layerSelected) Then Return
 
-                Me.SuspendLayout()
+                Me.m_plLayers.SuspendLayout()
+                Me.m_plEditor.SuspendLayout()
 
                 If (Me.m_layerSelected IsNot Nothing) Then
                     ' Has editor GUI?
@@ -370,7 +371,8 @@ Namespace Ecospace.Basemap
                     End If
                 End If
 
-                Me.ResumeLayout()
+                Me.m_plEditor.ResumeLayout(True)
+                Me.m_plLayers.ResumeLayout(True)
 
             End Set
         End Property
