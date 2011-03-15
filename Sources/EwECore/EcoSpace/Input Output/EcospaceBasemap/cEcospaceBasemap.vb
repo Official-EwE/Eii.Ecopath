@@ -18,6 +18,8 @@ Public Class cEcospaceBasemap
     Private m_dictLayers As New Dictionary(Of eVarNameFlags, cEcospaceLayer)
     ''' <summary>Importance layers maintained in a basemap.</summary>
     Private m_lstLayerImportance As New List(Of cEcospaceLayerImportance)
+    ''' <summary>IBM layers maintained in a basemap.</summary>
+    Private m_lstLayerIBM As New List(Of cEcospaceLayerIBMPackets)
 
     ''' <summary>Equator length in km.</summary>
     ''' <remarks>http://en.wikipedia.org/wiki/Equator#Exact_length_of_the_Equator</remarks>
@@ -212,7 +214,7 @@ Public Class cEcospaceBasemap
 
             ' IBM layers
             For i As Integer = 1 To Me.m_core.nStanzas
-                Me.SetVariable(eVarNameFlags.LayerIBMPackets, New cEcospaceLayerIBMPackets(theCore, Me, i), i)
+                Me.m_lstLayerIBM.Add(New cEcospaceLayerIBMPackets(theCore, Me, i))
             Next
 
             layer = New cEcospaceLayerDistribution(theCore, Me)
@@ -605,10 +607,11 @@ Public Class cEcospaceBasemap
     ''' <summary>
     ''' 
     ''' </summary>
+    ''' <param name="iStanza">Stanza group index</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerIBMPackets() As cEcospaceLayerIBMPackets
+    Public ReadOnly Property LayerIBMPackets(ByVal iStanza As Integer) As cEcospaceLayerIBMPackets
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerIBMPackets), cEcospaceLayerIBMPackets)
+            Return Me.m_lstLayerIBM(iStanza)
         End Get
     End Property
 
