@@ -21,6 +21,8 @@ Namespace Ecospace.Basemap.Layers
 
         ''' <summary>Underlying editor.</summary>
         Private m_editor As cLayerEditor = Nothing
+        ''' <summary>Underlying editor.</summary>
+        Private m_layer As cLayer = Nothing
         ''' <summary>Underlying UI context.</summary>
         Private m_uic As cUIContext = Nothing
 
@@ -37,9 +39,12 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Public interfaces "
 
-        Public Sub Attach(ByVal uic As cUIContext, ByVal editor As cLayerEditor)
+        Public Sub Attach(ByVal uic As cUIContext, _
+                          ByVal editor As cLayerEditor, _
+                          ByVal layer As cLayer)
             Me.UIContext = uic
             Me.Editor = editor
+            Me.Layer = layer
         End Sub
 
         Public Sub Detach()
@@ -70,6 +75,22 @@ Namespace Ecospace.Basemap.Layers
             Protected Set(ByVal editor As cLayerEditor)
                 Me.m_editor = editor
                 Me.UpdateContent(editor)
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="cLayerRenderer">layer renderer</see> for this
+        ''' GUI to show editor previews.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable Property Layer() As cLayer
+            Get
+                Return Me.m_layer
+            End Get
+            Protected Set(ByVal layer As cLayer)
+                Me.m_layer = Layer
+                Me.Invalidate(True)
             End Set
         End Property
 

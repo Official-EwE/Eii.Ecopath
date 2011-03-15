@@ -78,6 +78,23 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_nudValue.Value = Convert.ToDecimal(sValue)
 
+            Dim bmp As New Bitmap(Me.m_pbPreview.Width, Me.m_pbPreview.Height, Imaging.PixelFormat.Format32bppArgb)
+            Dim g As Graphics = Graphics.FromImage(bmp)
+            Dim renderer As cLayerRenderer = Nothing
+
+            If Me.Layer IsNot Nothing Then
+                renderer = Me.Layer.Renderer
+            End If
+
+            If (renderer IsNot Nothing) Then
+                renderer.RenderCell(g, New Rectangle(0, 0, bmp.Width, bmp.Height), _
+                                    Me.Layer.Data, sValue, _
+                                    cStyleGuide.eStyleFlags.Highlight)
+            End If
+            Me.m_pbPreview.Image = bmp
+
+            g.Dispose()
+
         End Sub
 
 #End Region ' Overrides

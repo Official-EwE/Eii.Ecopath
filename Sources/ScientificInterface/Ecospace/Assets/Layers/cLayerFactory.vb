@@ -65,7 +65,7 @@ Namespace Ecospace.Basemap.Layers
 
                     ' Represent depth as a .. depth layer! Whoohoo!
                     renderer = New cLayerRendererDepth(vs)
-                    editor = New cLayerEditorRange()
+                    editor = New cLayerEditorRange(GetType(ucLayerEditorDepth))
                     If layerData Is Nothing Then layerData = bmd.LayerDepth
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerDepth)
                     layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_DEPTH

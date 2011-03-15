@@ -158,7 +158,7 @@ Namespace Ecospace.Basemap.Layers
                 Debug.Assert(TypeOf obj Is ucLayerEditor)
 
                 gui = DirectCast(obj, ucLayerEditor)
-                gui.Attach(Me.m_uic, Me)
+                gui.Attach(Me.m_uic, Me, Me.m_layer)
                 gui.Initialize(Me)
 
                 ' Remember GUI
