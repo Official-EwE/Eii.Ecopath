@@ -123,13 +123,13 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_ucSlider.Location" type="System.Drawing.Point, System.Drawing">
-    <value>46, 19</value>
+    <value>65, 19</value>
   </data>
   <data name="m_ucSlider.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_ucSlider.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 20</value>
+    <value>132, 20</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_ucSlider.TabIndex" type="System.Int32, mscorlib">
@@ -139,7 +139,7 @@
     <value>m_ucSlider</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.0.7.303, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.1.1.315, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Parent" xml:space="preserve">
     <value>$this</value>
@@ -187,6 +187,6 @@
     <value>ucLayerEditorDefault</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditor, EwE6, Version=6.0.7.303, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditor, EwE6, Version=6.1.1.315, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

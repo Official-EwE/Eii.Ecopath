@@ -151,10 +151,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>46, 42</value>
+    <value>65, 42</value>
   </data>
   <data name="m_nudValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 20</value>
+    <value>99, 20</value>
   </data>
   <data name="m_nudValue.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -181,7 +181,7 @@
     <value>170, 42</value>
   </data>
   <data name="m_pbPreview.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 20</value>
+    <value>27, 22</value>
   </data>
   <data name="m_pbPreview.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -205,12 +205,12 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 65</value>
+    <value>200, 67</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucLayerEditorRange</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditorDefault, EwE6, Version=6.1.1.310, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditorDefault, EwE6, Version=6.1.1.315, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

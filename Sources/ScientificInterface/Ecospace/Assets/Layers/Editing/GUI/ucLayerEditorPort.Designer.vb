@@ -74,7 +74,7 @@
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_tlpButtons)
             Me.Name = "ucLayerEditorPort"
-            Me.Size = New System.Drawing.Size(200, 82)
+            Me.Size = New System.Drawing.Size(200, 77)
             Me.Controls.SetChildIndex(Me.m_tlpButtons, 0)
             Me.m_tlpButtons.ResumeLayout(False)
             Me.ResumeLayout(False)

@@ -193,7 +193,7 @@
     <value>12</value>
   </data>
   <data name="m_cmbMonth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>151, 21</value>
+    <value>148, 21</value>
   </data>
   <data name="m_cmbMonth.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -310,7 +310,7 @@
     <value>12</value>
   </data>
   <data name="m_cmbGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>151, 21</value>
+    <value>148, 21</value>
   </data>
   <data name="m_cmbGroup.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -340,6 +340,6 @@
     <value>ucLayerEditorMigration</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditor, EwE6, Version=6.0.7.303, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditor, EwE6, Version=6.1.1.315, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

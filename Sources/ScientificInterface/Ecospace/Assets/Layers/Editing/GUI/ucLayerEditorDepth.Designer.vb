@@ -49,11 +49,11 @@
             '
             Me.m_nudDepth.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudDepth.Location = New System.Drawing.Point(64, 42)
+            Me.m_nudDepth.Location = New System.Drawing.Point(65, 42)
             Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudDepth.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudDepth.Name = "m_nudDepth"
-            Me.m_nudDepth.Size = New System.Drawing.Size(100, 20)
+            Me.m_nudDepth.Size = New System.Drawing.Size(99, 20)
             Me.m_nudDepth.TabIndex = 3
             Me.m_nudDepth.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
@@ -82,7 +82,7 @@
             'm_cbProtectCoastline
             '
             Me.m_cbProtectCoastline.AutoSize = True
-            Me.m_cbProtectCoastline.Location = New System.Drawing.Point(4, 92)
+            Me.m_cbProtectCoastline.Location = New System.Drawing.Point(65, 93)
             Me.m_cbProtectCoastline.Name = "m_cbProtectCoastline"
             Me.m_cbProtectCoastline.Size = New System.Drawing.Size(126, 17)
             Me.m_cbProtectCoastline.TabIndex = 1

@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lbRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 44</value>
+    <value>0, 44</value>
   </data>
   <data name="m_lbRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 13</value>
@@ -151,10 +151,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>53, 41</value>
+    <value>65, 41</value>
   </data>
   <data name="m_cmbRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 21</value>
+    <value>132, 21</value>
   </data>
   <data name="m_cmbRegion.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -184,6 +184,6 @@
     <value>ucLayerEditorRegion</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditorDefault, EwE6, Version=6.1.0.511, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditorDefault, EwE6, Version=6.1.1.315, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

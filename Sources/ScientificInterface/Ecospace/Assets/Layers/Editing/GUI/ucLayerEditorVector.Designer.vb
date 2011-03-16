@@ -41,15 +41,18 @@
             '
             'm_nudValue
             '
-            Me.m_nudValue.Location = New System.Drawing.Point(46, 42)
+            Me.m_nudValue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudValue.Location = New System.Drawing.Point(65, 42)
             Me.m_nudValue.Name = "m_nudValue"
             Me.m_nudValue.Size = New System.Drawing.Size(85, 20)
             Me.m_nudValue.TabIndex = 3
             '
             'm_lblUnits
             '
+            Me.m_lblUnits.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_lblUnits.AutoSize = True
-            Me.m_lblUnits.Location = New System.Drawing.Point(137, 44)
+            Me.m_lblUnits.Location = New System.Drawing.Point(156, 44)
             Me.m_lblUnits.Name = "m_lblUnits"
             Me.m_lblUnits.Size = New System.Drawing.Size(41, 13)
             Me.m_lblUnits.TabIndex = 4
