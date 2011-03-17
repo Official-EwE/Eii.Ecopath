@@ -4575,19 +4575,28 @@ Namespace Ecosim
                     Me.m_Data.FIB(TimeStep) = CSng(Math.Log10(sFiBT / sFiB0))
                 End If
 
+                ' Calculate kemptons Q
+                If TimeStep = 0 Then
+                    'Baseline value
+                    Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
+                Else
+                    Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
+                End If
+
                 If m_Data.CatchSim(0) > 0 Then
                     ' Calculate TL of catch
-                    Me.m_Data.TLC(TimeStep) = totalTL / Me.m_Data.CatchSim(TimeStep)
+                    Me.m_Data.TLC(TimeStep) = totalTL / (Me.m_Data.CatchSim(TimeStep) + 1.0E-20)
 
-                    ' Calculate keptons Q
-                    If TimeStep = 0 Then
-                        Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
-                    Else
-                        Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
-                    End If
+                    'jb 17-Mar-2011 move calculation of Kemptons() outside CatchSim(0) > 0
+                    '' Calculate keptons Q
+                    'If TimeStep = 0 Then
+                    '    Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
+                    'Else
+                    '    Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
+                    'End If
                 Else
                     ' ?!
-                    m_EPData.TLcatch = totalTL / m_Data.CatchSim(TimeStep)
+                    m_EPData.TLcatch = totalTL / (m_Data.CatchSim(TimeStep) + 1.0E-20)
                 End If
 
             Catch ex As Exception
