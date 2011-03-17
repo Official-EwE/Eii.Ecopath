@@ -69,6 +69,7 @@ Namespace Ecosim
             '
             'tsToolStrip
             '
+            Me.tsToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.tsToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbtDefaults})
             resources.ApplyResources(Me.tsToolStrip, "tsToolStrip")
             Me.tsToolStrip.Name = "tsToolStrip"
@@ -81,6 +82,7 @@ Namespace Ecosim
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = True
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
@@ -106,7 +108,6 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
             'frmMSERecruitment

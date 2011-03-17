@@ -30,9 +30,9 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTargetFishingMortalityPolicy))
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.m_grid = New ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy
             Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
             Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton
+            Me.m_grid = New ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -68,6 +68,19 @@ Namespace Ecosim
             Me.m_graph.ScrollMinY2 = 0
             Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
             '
+            'ToolStrip1
+            '
+            Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbDefaultTFM})
+            resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
+            Me.ToolStrip1.Name = "ToolStrip1"
+            '
+            'tsbDefaultTFM
+            '
+            Me.tsbDefaultTFM.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.tsbDefaultTFM, "tsbDefaultTFM")
+            Me.tsbDefaultTFM.Name = "tsbDefaultTFM"
+            '
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
@@ -97,18 +110,6 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
-            '
-            'ToolStrip1
-            '
-            Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbDefaultTFM})
-            resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
-            Me.ToolStrip1.Name = "ToolStrip1"
-            '
-            'tsbDefaultTFM
-            '
-            Me.tsbDefaultTFM.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsbDefaultTFM, "tsbDefaultTFM")
-            Me.tsbDefaultTFM.Name = "tsbDefaultTFM"
             '
             'frmTargetFishingMortalityPolicy
             '

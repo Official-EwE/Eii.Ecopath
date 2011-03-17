@@ -37,6 +37,7 @@ Namespace Ecosim
             '
             'm_tss
             '
+            Me.m_tss.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tss.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefaults, Me.m_tsSumtoOneBtn})
             resources.ApplyResources(Me.m_tss, "m_tss")
             Me.m_tss.Name = "m_tss"
@@ -50,12 +51,12 @@ Namespace Ecosim
             'm_tsSumtoOneBtn
             '
             Me.m_tsSumtoOneBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsSumtoOneBtn.Image = sharedResources.CalculatorHS
             resources.ApplyResources(Me.m_tsSumtoOneBtn, "m_tsSumtoOneBtn")
             Me.m_tsSumtoOneBtn.Name = "m_tsSumtoOneBtn"
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = True
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -80,7 +81,6 @@ Namespace Ecosim
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
             'frmQuotaShare

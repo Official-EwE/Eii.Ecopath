@@ -35,7 +35,7 @@ Partial Class frmMSEResults
         '
         Me.rbGroup.AutoSize = True
         Me.rbGroup.Checked = True
-        Me.rbGroup.Location = New System.Drawing.Point(1, 10)
+        Me.rbGroup.Location = New System.Drawing.Point(12, 10)
         Me.rbGroup.Name = "rbGroup"
         Me.rbGroup.Size = New System.Drawing.Size(54, 17)
         Me.rbGroup.TabIndex = 0
@@ -55,6 +55,7 @@ Partial Class frmMSEResults
         '
         'm_grid
         '
+        Me.m_grid.AllowBlockSelect = True
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
         Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -83,7 +84,6 @@ Partial Class frmMSEResults
                     Or SourceGrid2.GridSpecialKeys.Escape) _
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.TabIndex = 4
-        Me.m_grid.TrackPropertySelection = True
         Me.m_grid.UIContext = Nothing
         '
         'pnlGrid

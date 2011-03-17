@@ -39,12 +39,12 @@ Partial Class frmOptions
         Me.rbCatchEstBio = New System.Windows.Forms.RadioButton
         Me.rbUseRegs = New System.Windows.Forms.RadioButton
         Me.rbNoRegs = New System.Windows.Forms.RadioButton
-        Me.m_hdrEffortRegOptions = New cEwEHeaderLabel
+        Me.m_hdrEffortRegOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_pnlRunOpt = New System.Windows.Forms.Panel
         Me.txKalmanGain = New System.Windows.Forms.TextBox
         Me.m_lblKalmanGain = New System.Windows.Forms.Label
         Me.m_ckPlugin = New System.Windows.Forms.CheckBox
-        Me.m_hdrRunOptions = New cEwEHeaderLabel
+        Me.m_hdrRunOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_pnlRegOpt.SuspendLayout()
         Me.pnlUseReg.SuspendLayout()
         Me.pnlFTracking.SuspendLayout()
@@ -146,9 +146,7 @@ Partial Class frmOptions
         '
         'm_hdrEffortRegOptions
         '
-        Me.m_hdrEffortRegOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
         resources.ApplyResources(Me.m_hdrEffortRegOptions, "m_hdrEffortRegOptions")
-        Me.m_hdrEffortRegOptions.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.m_hdrEffortRegOptions.Name = "m_hdrEffortRegOptions"
         '
         'm_pnlRunOpt
@@ -178,9 +176,7 @@ Partial Class frmOptions
         '
         'm_hdrRunOptions
         '
-        Me.m_hdrRunOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
         resources.ApplyResources(Me.m_hdrRunOptions, "m_hdrRunOptions")
-        Me.m_hdrRunOptions.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.m_hdrRunOptions.Name = "m_hdrRunOptions"
         '
         'frmOptions
