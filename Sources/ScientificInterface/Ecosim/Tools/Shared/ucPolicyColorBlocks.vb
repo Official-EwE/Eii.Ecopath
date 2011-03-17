@@ -335,6 +335,7 @@ Namespace Ecosim
             If Me.m_bIsSketching Then
                 Me.ProcessMouseSketch(e.Location)
             End If
+
             Me.ProcessMouseHover(e.Location)
 
         End Sub
@@ -622,6 +623,8 @@ Namespace Ecosim
             If (ptBlock.Y < 1 Or ptBlock.Y >= Me.m_iRows) Then Return
             If (ptBlock.X < 1 Or ptBlock.X > Me.m_iCols) Then Return
 
+            If ptCursor.X = Me.m_ptLast.X And ptCursor.Y = Me.m_ptLast.Y Then Return
+
             Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
             Dim strValue As String = ""
 
@@ -639,6 +642,9 @@ Namespace Ecosim
                                      Me.m_DataSource.RowLabel(ptBlock.Y), ptBlock.X)
 
             cToolTipShared.GetInstance().SetToolTip(Me.m_pbFishingBlocks, strValue)
+
+            Me.m_ptLast = ptCursor
+
         End Sub
 
         Private Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer)
