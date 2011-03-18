@@ -1321,6 +1321,7 @@ Namespace Core
         TLCatchPM
         TLPM
         FIBPM
+        KemptonsQPM
 
         EcopathFirstYear
         EcopathNumYears
