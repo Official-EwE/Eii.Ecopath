@@ -431,11 +431,25 @@ Public Class cPluginPoint
         Implements EwEPlugin.Data.IDataProducerPlugin.IsDataAvailable
 
         Dim bIsAvailable As Boolean = False
-        Try
-            bIsAvailable = (typeData Is GetType(IEconomicData))
-        Catch ex As Exception
-            bIsAvailable = False
-        End Try
+
+        If (Me.m_data IsNot Nothing) Then
+            If (Me.m_data.Parameters IsNot Nothing) Then
+                Try
+                    If (typeData Is GetType(IEconomicData)) Then
+                        If TypeOf (runType) Is cEcopathRunType Then
+                            bIsAvailable = Me.m_data.Parameters.RunWithEcopath
+                        ElseIf TypeOf (runType) Is cEcosimRunType Then
+                            bIsAvailable = Me.m_data.Parameters.RunWithEcosim
+                        ElseIf TypeOf (runType) Is cSearchRunType Then
+                            bIsAvailable = Me.m_data.Parameters.RunWithSearches
+                        End If
+                    End If
+                Catch ex As Exception
+                    bIsAvailable = False
+                End Try
+            End If
+        End If
+
         Return bIsAvailable
 
     End Function
