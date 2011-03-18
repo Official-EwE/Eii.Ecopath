@@ -390,7 +390,7 @@ Public Class cPluginPoint
                 Me.Populate(DirectCast(Me.m_ddx.Subtotal(iFleet), cPluginData.cVCEconomicData), iTimeStep, iFleet)
             Next iFleet
 
-            Me.m_dataBroadcaster.BroadcastData(Me.Name, Me.m_ddx)
+            Me.m_dataBroadcaster.BroadcastData("ValueChain", Me.m_ddx)
         End If
 
     End Sub
