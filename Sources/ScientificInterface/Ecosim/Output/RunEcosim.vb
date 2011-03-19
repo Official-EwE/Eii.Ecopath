@@ -49,12 +49,6 @@ Namespace Ecosim
         Private m_sChangeTrackSize As Single = 0.1!
         Private m_zgp As cEcosimOutputPlotHelper = Nothing
 
-        ''' <summary>
-        ''' True when this interface is running ecosim. False otherwise
-        ''' </summary>
-        ''' <remarks>This is to stop this interface from responding to Ecosim messages if it did not start the ecosim run </remarks>
-        Private m_bEcosimRunning As Boolean = False
-
         Private m_simStats As cEcosimStats
 
         Private m_bInUpdate As Boolean = False
@@ -206,7 +200,7 @@ Namespace Ecosim
         Private Sub btnRunOrStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles btnRunOrStop.Click
 
-            If Not Me.m_bEcosimRunning Then
+            If Not Me.IsRunning Then
                 Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
                 Me.m_graph.Refresh()
                 Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
@@ -394,10 +388,10 @@ Namespace Ecosim
 
             ' Check whether ecosim is running
             ' Is this a state change?
-            If (bEcosimRunning <> Me.m_bEcosimRunning) Then
+            If (bEcosimRunning <> Me.IsRunning) Then
                 ' #Yes: update to new state
-                Me.m_bEcosimRunning = bEcosimRunning
-                If Me.m_bEcosimRunning Then
+                me.IsRunning = bEcosimRunning
+                If Me.IsRunning Then
                     cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.True, 0)
                 Else
                     cApplicationStatusNotifier.SetStatusText("", TriState.False, 0)
@@ -957,14 +951,14 @@ Namespace Ecosim
             End Set
         End Property
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             If (Me.m_zgp Is Nothing) Then Return
 
             Me.m_bInUpdate = True
 
             ' Configure run/stop button
-            Me.btnRunOrStop.Text = CStr(IIf(Me.m_bEcosimRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
+            Me.btnRunOrStop.Text = CStr(IIf(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
             Me.btnRunOrStop.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
             ' Reflect change immediately
             Me.btnRunOrStop.Update()

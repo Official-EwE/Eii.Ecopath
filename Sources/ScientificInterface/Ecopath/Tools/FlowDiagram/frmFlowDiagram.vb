@@ -285,7 +285,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Internals "
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
             Me.m_scContent.Panel2Collapsed = Not Me.m_tsmiSettings.Checked
             Me.m_pgFlowDiagram.Refresh()
         End Sub

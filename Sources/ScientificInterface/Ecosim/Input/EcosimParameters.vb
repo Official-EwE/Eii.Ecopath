@@ -192,7 +192,7 @@ Namespace Ecosim
             Me.m_fpTempForceNumber.Items = aItems
         End Sub
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             If (Me.m_propConTracing Is Nothing) Then Return
             Me.m_chkConTracing.Checked = CBool(Me.m_propConTracing.GetValue())

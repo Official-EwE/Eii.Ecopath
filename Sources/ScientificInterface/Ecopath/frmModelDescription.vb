@@ -316,7 +316,7 @@ Public Class frmModelDescription
 
 #Region " Internal implementation "
 
-    Private Sub UpdateControls()
+    Protected Overrides Sub UpdateControls()
         Me.m_btnLookup.Enabled = Not String.IsNullOrEmpty(Me.m_tbModelAreaName.Text)
     End Sub
 

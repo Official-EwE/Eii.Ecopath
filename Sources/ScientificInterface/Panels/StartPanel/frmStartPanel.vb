@@ -167,7 +167,7 @@ Public Class frmStartPanel
     ''' Update control states in the form
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateControls()
+    Protected Overrides Sub UpdateControls()
 
         Me.m_tsbnBack.Enabled = (Me.m_browser.CanGoBack)
         Me.m_tsbnForward.Enabled = (Me.m_browser.CanGoForward)

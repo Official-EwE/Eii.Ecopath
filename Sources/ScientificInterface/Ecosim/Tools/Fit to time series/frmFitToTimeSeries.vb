@@ -28,7 +28,6 @@ Namespace Ecosim
         Private m_SensitivityByPredatorResults As cSensitivityToVulResults = Nothing
         Private m_cmdTSWeights As cCommand = Nothing
         Private m_shapeSelected As cShapeData = Nothing
-        Private m_bIsRunning As Boolean = False
         Private m_bInUpdate As Boolean = False
 
         Private m_fpNoAICPts As cEwEFormatProvider = Nothing
@@ -101,7 +100,13 @@ Namespace Ecosim
 
 #End Region ' Constructor
 
-#Region " Private form event handlers "
+#Region " Form overrides "
+
+        Public Overrides ReadOnly Property IsRunForm() As Boolean
+            Get
+                Return True
+            End Get
+        End Property
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
@@ -145,17 +150,11 @@ Namespace Ecosim
             Me.m_sketchPad.NumTSYears = Me.Core.nTimeSeriesYears
 
             Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
-            Me.m_bIsRunning = Me.m_F2TSManager.IsRunning()
+            Me.IsRunning = Me.m_F2TSManager.IsRunning()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.PPIManager}
             Me.UpdateControls()
 
-        End Sub
-
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
-            ' Prevent form from closing while a search is running
-            e.Cancel = Me.m_bIsRunning
-            MyBase.OnFormClosing(e)
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
@@ -244,7 +243,7 @@ Namespace Ecosim
             End Set
         End Property
 
-#End Region ' Private form event handlers
+#End Region ' Form overrides
 
 #Region " Private control event handlers "
 
@@ -527,7 +526,7 @@ Namespace Ecosim
                 Me.m_dlgSensOfSS.OnRunStarted(runType, nSteps)
             End If
 
-            Me.m_bIsRunning = True
+            Me.IsRunning = True
             Me.m_tbResults.Text = ""
             Me.UpdateControls()
 
@@ -590,7 +589,7 @@ Namespace Ecosim
                 Me.m_gridOutput.AddFitToTimeSeriesOutput(res.nAICPars, res.IterSS)
             End If
 
-            Me.m_bIsRunning = False
+            Me.IsRunning = False
             Me.UpdateControls()
         End Sub
 
@@ -629,7 +628,7 @@ Namespace Ecosim
         ''' Update state of main controls based on user selections.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             If (Me.m_F2TSManager Is Nothing) Then Return
             If (Me.m_sketchPad Is Nothing) Then Return
@@ -647,18 +646,18 @@ Namespace Ecosim
                 'bInputsValid = True
             End If
 
-            Me.m_btnStop.Enabled = Me.m_bIsRunning
-            Me.m_btnSearch.Enabled = (Not Me.m_bIsRunning) And bInputsValid
-            Me.m_sketchPad.Enabled = (Not Me.m_bIsRunning)
-            Me.m_shapeToolBox.Enabled = (Not Me.m_bIsRunning)
-            Me.m_nudFirstYear.Enabled = (Not Me.m_bIsRunning)
-            Me.m_nudLastYear.Enabled = (Not Me.m_bIsRunning)
-            Me.m_nudSplinePts.Enabled = (Not Me.m_bIsRunning)
-            Me.m_nudVariance.Enabled = (Not Me.m_bIsRunning)
-            Me.m_nudVariancePrimaryProd.Enabled = (Not Me.m_bIsRunning)
-            Me.m_cbVulnerabilitySearch.Enabled = (Not Me.m_bIsRunning)
-            Me.m_cbAnomalySearch.Enabled = (Not Me.m_bIsRunning)
-            Me.m_cbResetVs.Enabled = (Not Me.m_bIsRunning)
+            Me.m_btnStop.Enabled = Me.IsRunning
+            Me.m_btnSearch.Enabled = (Not Me.IsRunning) And bInputsValid
+            Me.m_sketchPad.Enabled = (Not Me.IsRunning)
+            Me.m_shapeToolBox.Enabled = (Not Me.IsRunning)
+            Me.m_nudFirstYear.Enabled = (Not Me.IsRunning)
+            Me.m_nudLastYear.Enabled = (Not Me.IsRunning)
+            Me.m_nudSplinePts.Enabled = (Not Me.IsRunning)
+            Me.m_nudVariance.Enabled = (Not Me.IsRunning)
+            Me.m_nudVariancePrimaryProd.Enabled = (Not Me.IsRunning)
+            Me.m_cbVulnerabilitySearch.Enabled = (Not Me.IsRunning)
+            Me.m_cbAnomalySearch.Enabled = (Not Me.IsRunning)
+            Me.m_cbResetVs.Enabled = (Not Me.IsRunning)
 
             'constrain the number of years to the number of years in the time series data
             If Me.m_nudLastYear.Value > Me.m_F2TSManager.nTimeSeriesYears Then

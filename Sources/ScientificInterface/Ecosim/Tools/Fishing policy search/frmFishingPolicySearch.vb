@@ -206,7 +206,7 @@ Namespace Ecosim
             m_nudBaseYear.Value = CDec(Me.m_manager.ObjectiveParameters.BaseYear)
         End Sub
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             Dim optAproach As eOptimizeApproachTypes = Me.m_manager.ModelParameters.OptimizeApproach
             For Each ct As cControlEnabler In m_lstOptEnabled

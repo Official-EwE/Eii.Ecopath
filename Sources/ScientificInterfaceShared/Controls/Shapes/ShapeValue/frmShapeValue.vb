@@ -501,7 +501,7 @@ Public Class frmShapeValue
     ''' Update the state of crucial controls based on the content in the form
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateControls()
+    Protected Overrides Sub UpdateControls()
 
         Dim bEnableOk As Boolean = True
         Try

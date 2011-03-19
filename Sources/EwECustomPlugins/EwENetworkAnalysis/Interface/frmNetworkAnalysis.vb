@@ -113,7 +113,7 @@ Public Class frmNetworkAnalysis
 
     End Sub
 
-    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
             Me.m_cmdDisplayGroups.RemoveControl(Me.tsmiDisplayGroups)
@@ -124,7 +124,7 @@ Public Class frmNetworkAnalysis
 
         RemoveHandler Me.m_networkmanager.OnRunStateChanged, AddressOf OnRunStateChanged
 
-        MyBase.OnFormClosing(e)
+        MyBase.OnFormClosed(e)
     End Sub
 
     ''' -----------------------------------------------------------------------

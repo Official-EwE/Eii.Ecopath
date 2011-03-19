@@ -279,6 +279,7 @@ Public Class frmEcotracerOutput
         ' Reset progress
         Me.UpdateProgess(0.0!)
         Me.UpdateControls()
+        Me.IsRunning = True
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -294,6 +295,7 @@ Public Class frmEcotracerOutput
             cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOTRACER_RUNNING, TriState.UseDefault, sProgress)
         Else
             cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
+            Me.IsRunning = False
         End If
 
     End Sub
@@ -303,7 +305,7 @@ Public Class frmEcotracerOutput
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateControls()
+    Protected Overrides Sub UpdateControls()
 
         If Me.m_bInUpdate Then Return
 
@@ -317,6 +319,9 @@ Public Class frmEcotracerOutput
         Me.m_zgc.Enabled = Me.m_DisplayHelper.Enabled
         Me.m_lbGroups.Enabled = m_DisplayHelper.Enabled
         Me.m_cmbRegions.Enabled = m_DisplayHelper.EnabledForSpace
+
+        Me.m_btnRunSim.Enabled = (Not Me.IsRunning)
+        Me.m_btnRunSpace.Enabled = (Not Me.IsRunning)
 
         Me.m_bInUpdate = False
 

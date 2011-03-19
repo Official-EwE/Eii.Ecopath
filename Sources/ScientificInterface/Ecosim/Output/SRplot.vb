@@ -129,7 +129,6 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Private m_bEcosimRunning As Boolean = False
         Private m_coreStateMonitor As cCoreStateMonitor = Nothing
         Private m_curveSlope As CurveItem = Nothing
         Private m_mhEcosim As cMessageHandler = Nothing
@@ -205,7 +204,7 @@ Namespace Ecosim
 
             Try
 
-                If Not m_bEcosimRunning Then
+                If Not IsRunning Then
 
                     For i As Integer = 0 To m_SRResults.Count - 1
                         m_SRResults(i).Data.Clear()
@@ -239,12 +238,12 @@ Namespace Ecosim
             Dim bEcosimRunning As Boolean = (csm.IsEcosimRunning)
 
             ' Is this a state change?
-            If (bEcosimRunning <> Me.m_bEcosimRunning) Then
+            If (bEcosimRunning <> Me.IsRunning) Then
                 ' #Yes: update to new state
-                Me.m_bEcosimRunning = bEcosimRunning
+                Me.IsRunning = bEcosimRunning
 
                 ' Configure run/stop button
-                Me.m_btnRun.Text = CStr(IIf(Me.m_bEcosimRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
+                Me.m_btnRun.Text = CStr(IIf(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
                 Me.m_btnRun.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
                 ' Reflect change immediately
                 Me.m_btnRun.Update()

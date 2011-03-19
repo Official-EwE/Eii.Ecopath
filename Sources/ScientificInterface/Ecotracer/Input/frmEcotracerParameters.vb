@@ -109,7 +109,7 @@ Namespace Ecotracer
 
 #Region " Internals "
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
             'UpdateControls() is called by the Ecosim and Ecospace properties PropertyChanged event handler 
             'This means anytime another interface or the core changes one of these flags this will be called 
 

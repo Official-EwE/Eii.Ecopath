@@ -101,7 +101,7 @@ Namespace Ecopath
 
         End Sub
 
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             ' Clean up
             Me.m_zgh.Detach()
@@ -114,7 +114,7 @@ Namespace Ecopath
             Me.m_fpFF.Release()
             Me.m_fpStanza.Release()
 
-            MyBase.OnFormClosing(e)
+            MyBase.OnFormClosed(e)
 
         End Sub
 

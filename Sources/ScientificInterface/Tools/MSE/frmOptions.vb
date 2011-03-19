@@ -137,7 +137,7 @@ Public Class frmOptions
     End Sub
 
 
-    Private Sub UpdateControls()
+    Protected Overrides Sub UpdateControls()
 
         Me.pnlUseReg.Enabled = False
         Me.pnlFTracking.Enabled = False

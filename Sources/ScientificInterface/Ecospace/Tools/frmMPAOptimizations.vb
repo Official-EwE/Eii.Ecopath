@@ -1508,7 +1508,7 @@ Namespace Ecospace
 
 #Region " Generic "
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             ' The %^@#$^#@$ check boxes throw events even before the form OnLoad has been called. Nice.
             ' Added sanity check to prevent premature control handling

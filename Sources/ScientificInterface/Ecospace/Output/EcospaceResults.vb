@@ -123,7 +123,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             ' Show grids
             Me.m_GridGear.Visible = Me.m_rbFleet.Checked

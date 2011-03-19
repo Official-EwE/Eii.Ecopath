@@ -58,7 +58,7 @@ Public Class frmMSY
 
     End Sub
 
-    Private Sub updateControls(ByVal bRunning As Boolean)
+    Private Shadows Sub updateControls(ByVal bRunning As Boolean)
 
         If bRunning Then
             Me.btRunMSY.Enabled = False

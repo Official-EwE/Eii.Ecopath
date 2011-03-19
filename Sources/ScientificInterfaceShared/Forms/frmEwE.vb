@@ -218,6 +218,9 @@ Namespace Forms
         Private m_aMessageSources As eCoreComponentType() = Nothing
         ''' <summary>Flag stating whether this is an input grid.</summary>
         Private m_bIsInputForm As Boolean = False
+        ''' <summary>States whether the form is running. Only valid for forms 
+        ''' that are flagged as <see cref="IsRunForm"/>.</summary>
+        Private m_bIsRunning As Boolean = False
 
 #End Region ' Private variables
 
@@ -375,6 +378,17 @@ Namespace Forms
             End Set
         End Property
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Overridden to prevent active forms reflecting active runs from closing.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+            MyBase.OnFormClosing(e)
+            ' Prevent active run forms from closing.
+            If Me.IsRunForm And Me.IsRunning Then e.Cancel = True
+        End Sub
+
 #End Region ' Overrides
 
 #Region " Core messages "
@@ -456,6 +470,34 @@ Namespace Forms
                 Return False
             End Get
         End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether this form is running. A <see cref="IsRunForm"/> form
+        ''' will not close when a run is still active.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        <Browsable(False)> _
+        Protected Overridable Property IsRunning() As Boolean
+            Get
+                Return Me.IsRunForm And Me.m_bIsRunning
+            End Get
+            Set(ByVal value As Boolean)
+                If (value <> Me.m_bIsRunning) Then
+                    Me.m_bIsRunning = value
+                    Me.UpdateControls()
+                End If
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Override to update the state of controls.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overridable Sub UpdateControls()
+            ' NOP
+        End Sub
 
 #End Region ' Share and enjoy
 

@@ -150,7 +150,7 @@ Namespace Ecospace
         ''' Update and enable controls that cannot be managed any other way.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             Dim threadingModel As eThreadingModelType = eThreadingModelType.OldSchool
             Dim bUseIBM As Boolean = CBool(Me.m_bpUseIBM.GetValue())

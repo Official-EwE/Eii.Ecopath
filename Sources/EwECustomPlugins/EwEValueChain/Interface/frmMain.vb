@@ -40,14 +40,16 @@ Public Class frmMain
 
     Public Sub New(ByVal plugin As cPluginPoint)
 
-        InitializeComponent()
+        Me.InitializeComponent()
 
         Me.m_plugin = plugin
 
+        Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+        Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        Me.SetStyle(ControlStyles.UserPaint, True)
+
         Me.Text = My.Resources.GENERIC_CAPTION
         Me.TabText = My.Resources.GENERIC_CAPTION
-
-        Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
     End Sub
 
@@ -96,7 +98,7 @@ Public Class frmMain
 
     End Sub
 
-#End Region
+#End Region ' Public interfaces
 
 #Region " Internals "
 

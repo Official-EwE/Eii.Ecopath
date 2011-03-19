@@ -65,7 +65,6 @@ Namespace Ecospace
         'jb added
         Private m_spaceStats As cEcospaceStats
 
-        Private m_bIsEcospaceRunning As Boolean = False
         Private m_bOverlay As Boolean = False
         Private m_bShowMPA As Boolean = True
         Private m_bShowLabels As Boolean = True
@@ -239,7 +238,7 @@ Namespace Ecospace
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
             Me.ShowGroupMode = eShowGroupType.ShowAll
-            Me.m_bIsEcospaceRunning = Me.Core.StateMonitor.IsEcospaceRunning
+            Me.IsRunning = Me.Core.StateMonitor.IsEcospaceRunning
 
             'Start tracking ConcTracing setting
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
@@ -881,13 +880,13 @@ Namespace Ecospace
 
         Private Sub OnCoreStateChanged(ByVal cms As cCoreStateMonitor)
 
-            If cms.IsEcospaceRunning <> Me.m_bIsEcospaceRunning Then
+            If cms.IsEcospaceRunning <> Me.IsRunning Then
 
                 ' Update state flag
-                Me.m_bIsEcospaceRunning = cms.IsEcospaceRunning
+                Me.IsRunning = cms.IsEcospaceRunning
 
                 ' Update status feedback
-                If Me.m_bIsEcospaceRunning Then
+                If Me.IsRunning Then
                     cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSPACE_RUNNING, TriState.True)
                 Else
                     cApplicationStatusNotifier.SetStatusText("", TriState.False)
@@ -961,7 +960,7 @@ Namespace Ecospace
 
         Private m_bInUpdate As Boolean = False
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             ' Sanity check
             If Me.Core Is Nothing Then Return
@@ -972,8 +971,8 @@ Namespace Ecospace
             Me.m_bInUpdate = True
 
             ' Enable run and stop buttons based on Ecospace run state
-            Me.m_btnRun.Enabled = (Me.m_bIsEcospaceRunning = False)
-            Me.m_btnStop.Enabled = (Me.m_bIsEcospaceRunning = True)
+            Me.m_btnRun.Enabled = (Me.IsRunning = False)
+            Me.m_btnStop.Enabled = (Me.IsRunning = True)
 
             ' Enable display options for non-fleet maps
             Me.m_plDisplayOptions.Enabled = (m_rbDisplayFishingEffort.Checked = False)

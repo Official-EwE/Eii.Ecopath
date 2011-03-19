@@ -181,7 +181,7 @@ Namespace Ecosim
             MyBase.OnCoreMessage(msg)
         End Sub
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             Dim bNeedsYearRange As Boolean = (Me.DisplayMode <> eDisplayModeTypes.Indices)
 

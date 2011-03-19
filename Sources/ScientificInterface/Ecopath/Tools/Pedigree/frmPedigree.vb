@@ -377,7 +377,7 @@ Namespace Ecopath.Tools
         ''' Update the UI.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             If (Me.SelectedRenderStyle <> cPedigreeStyleGuide.eRenderStyleTypes.NotSet) Then
                 Me.m_cmbViewAs.SelectedIndex = CInt(Me.SelectedRenderStyle) - 1

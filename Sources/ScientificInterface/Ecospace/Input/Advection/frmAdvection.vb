@@ -310,7 +310,7 @@ Namespace Ecospace.Advection
 
 #Region " Internals "
 
-        Private Sub UpdateControls()
+        Protected Overrides Sub UpdateControls()
 
             ' Gather stats
             Dim bBusy As Boolean = Me.m_manager.IsRunning

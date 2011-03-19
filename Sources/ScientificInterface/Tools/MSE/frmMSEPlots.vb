@@ -237,11 +237,6 @@ Public Class frmMSEPlots
 
     End Sub
 
-    Private Sub updateControls()
-        'Me.btShowHideGroups.Visible = (Me.m_curPlotData <> ePlotData.FleetValue) And _
-        '                              (Me.m_curPlotData <> ePlotData.Effort)
-    End Sub
-
 #Region "Core interactions"
 
     Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)

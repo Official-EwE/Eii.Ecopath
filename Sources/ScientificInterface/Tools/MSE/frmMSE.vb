@@ -337,7 +337,7 @@ Public Class frmMSE
 
 #Region "Controls"
 
-    Private Sub UpdateControls(ByVal State As eMSEStates)
+    Private Shadows Sub UpdateControls(ByVal State As eMSEStates)
 
         Try
 
