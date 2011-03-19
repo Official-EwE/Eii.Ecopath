@@ -895,6 +895,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDepth.resx">
       <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorVector.resx">
       <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
