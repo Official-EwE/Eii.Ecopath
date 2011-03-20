@@ -25,8 +25,9 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucShapeToolboxToolbar))
-            Me.m_ts = New cEwEToolstrip
+            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_tsbImport = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbExport = New System.Windows.Forms.ToolStripButton
             Me.m_tsbLoad = New System.Windows.Forms.ToolStripButton
             Me.m_tsbWeight = New System.Windows.Forms.ToolStripButton
             Me.m_ts1 = New System.Windows.Forms.ToolStripSeparator
@@ -37,18 +38,18 @@ Namespace Controls
             Me.m_tsbSetTo0 = New System.Windows.Forms.ToolStripButton
             Me.m_tsbSetToValue = New System.Windows.Forms.ToolStripButton
             Me.m_tsbResetAll = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbExport = New System.Windows.Forms.ToolStripButton
+            Me.m_tscmbFilter = New System.Windows.Forms.ToolStripComboBox
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToValue, Me.m_tsbResetAll})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            Me.m_ts.Size = New System.Drawing.Size(600, 25)
+            Me.m_ts.Size = New System.Drawing.Size(903, 25)
             Me.m_ts.TabIndex = 0
             Me.m_ts.Text = "ToolStrip1"
             '
@@ -58,8 +59,17 @@ Namespace Controls
             Me.m_tsbImport.Image = CType(resources.GetObject("m_tsbImport.Image"), System.Drawing.Image)
             Me.m_tsbImport.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbImport.Name = "m_tsbImport"
-            Me.m_tsbImport.Size = New System.Drawing.Size(55, 22)
+            Me.m_tsbImport.Size = New System.Drawing.Size(56, 22)
             Me.m_tsbImport.Text = "&Import..."
+            '
+            'm_tsbExport
+            '
+            Me.m_tsbExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbExport.Image = CType(resources.GetObject("m_tsbExport.Image"), System.Drawing.Image)
+            Me.m_tsbExport.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbExport.Name = "m_tsbExport"
+            Me.m_tsbExport.Size = New System.Drawing.Size(53, 22)
+            Me.m_tsbExport.Text = "E&xport..."
             '
             'm_tsbLoad
             '
@@ -76,7 +86,7 @@ Namespace Controls
             Me.m_tsbWeight.Image = CType(resources.GetObject("m_tsbWeight.Image"), System.Drawing.Image)
             Me.m_tsbWeight.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbWeight.Name = "m_tsbWeight"
-            Me.m_tsbWeight.Size = New System.Drawing.Size(57, 22)
+            Me.m_tsbWeight.Size = New System.Drawing.Size(58, 22)
             Me.m_tsbWeight.Text = "&Weight..."
             '
             'm_ts1
@@ -99,7 +109,7 @@ Namespace Controls
             Me.m_tsbRemove.Image = CType(resources.GetObject("m_tsbRemove.Image"), System.Drawing.Image)
             Me.m_tsbRemove.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbRemove.Name = "m_tsbRemove"
-            Me.m_tsbRemove.Size = New System.Drawing.Size(62, 22)
+            Me.m_tsbRemove.Size = New System.Drawing.Size(63, 22)
             Me.m_tsbRemove.Text = "&Remove..."
             '
             'm_tsbDuplicate
@@ -108,7 +118,7 @@ Namespace Controls
             Me.m_tsbDuplicate.Image = CType(resources.GetObject("m_tsbDuplicate.Image"), System.Drawing.Image)
             Me.m_tsbDuplicate.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbDuplicate.Name = "m_tsbDuplicate"
-            Me.m_tsbDuplicate.Size = New System.Drawing.Size(55, 22)
+            Me.m_tsbDuplicate.Size = New System.Drawing.Size(61, 22)
             Me.m_tsbDuplicate.Text = "&Duplicate"
             '
             'm_ts2
@@ -122,7 +132,7 @@ Namespace Controls
             Me.m_tsbSetTo0.Image = CType(resources.GetObject("m_tsbSetTo0.Image"), System.Drawing.Image)
             Me.m_tsbSetTo0.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSetTo0.Name = "m_tsbSetTo0"
-            Me.m_tsbSetTo0.Size = New System.Drawing.Size(49, 22)
+            Me.m_tsbSetTo0.Size = New System.Drawing.Size(50, 22)
             Me.m_tsbSetTo0.Text = "&Set to 0"
             '
             'm_tsbSetToValue
@@ -140,17 +150,17 @@ Namespace Controls
             Me.m_tsbResetAll.Image = CType(resources.GetObject("m_tsbResetAll.Image"), System.Drawing.Image)
             Me.m_tsbResetAll.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbResetAll.Name = "m_tsbResetAll"
-            Me.m_tsbResetAll.Size = New System.Drawing.Size(53, 22)
+            Me.m_tsbResetAll.Size = New System.Drawing.Size(56, 22)
             Me.m_tsbResetAll.Text = "Reset &All"
             '
-            'm_tsbExport
+            'm_tscmbFilter
             '
-            Me.m_tsbExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbExport.Image = CType(resources.GetObject("m_tsbExport.Image"), System.Drawing.Image)
-            Me.m_tsbExport.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbExport.Name = "m_tsbExport"
-            Me.m_tsbExport.Size = New System.Drawing.Size(55, 22)
-            Me.m_tsbExport.Text = "E&xport..."
+            Me.m_tscmbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tscmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbFilter.MaxDropDownItems = 12
+            Me.m_tscmbFilter.Name = "m_tscmbFilter"
+            Me.m_tscmbFilter.Size = New System.Drawing.Size(150, 23)
+            Me.m_tscmbFilter.Sorted = True
             '
             'ucShapeToolboxToolbar
             '
@@ -158,7 +168,7 @@ Namespace Controls
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_ts)
             Me.Name = "ucShapeToolboxToolbar"
-            Me.Size = New System.Drawing.Size(600, 25)
+            Me.Size = New System.Drawing.Size(903, 25)
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
@@ -178,6 +188,7 @@ Namespace Controls
         Private WithEvents m_tsbSetToValue As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbResetAll As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbExport As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tscmbFilter As System.Windows.Forms.ToolStripComboBox
 
     End Class
 

@@ -62,6 +62,8 @@ Namespace Controls
             Weight
             ''' <summary>Mediation define X-axis.</summary>
             DefineXAxis
+            ''' <summary>Filter display of shapes.</summary>
+            Filter
         End Enum
 
 #Region " Private variables "
@@ -359,6 +361,35 @@ Namespace Controls
             Dim dlg As New dlgGraphDisplayOptions(Me.UIContext, Me.m_sketchPad)
             dlg.ShowDialog()
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a list of filters to apply to the shape handler.
+        ''' </summary>
+        ''' <returns>A list of filter descriptions, or Nothing if filters do not
+        ''' apply.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property Filters() As String()
+            Get
+                Return Nothing
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the selected filter index.
+        ''' </summary>
+        ''' <remarks>The filter index corresponds to an index in the list of 
+        ''' provided <see cref="Filters"/></remarks>
+        ''' -------------------------------------------------------------------
+        Public Overridable Property FilterIndex() As Integer
+            Get
+                Return -1
+            End Get
+            Set(ByVal value As Integer)
+                ' NOP
+            End Set
+        End Property
 
 #End Region ' Tools
 

@@ -6,6 +6,7 @@ Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -25,6 +26,58 @@ Namespace Controls
         Private m_bInUpdate As Boolean = False
         ''' <summary>The Time Series to distribute.</summary>
         Private m_lShapes As New List(Of cShapeData)
+        ''' <summary>Time series type filter</summary>
+        Private m_iTSTypeFilter As Integer = 0
+        ''' <summary>List of available time series types.</summary>
+        Private m_types() As eTimeSeriesType = Nothing
+
+#Region " Time series type filter "
+
+        Private Class cTypeAdmin
+
+            Private m_strName As String
+            Private m_type As eTimeSeriesType
+            Private m_iNumShapes As Integer
+
+            Public Sub New(ByVal t As eTimeSeriesType)
+                Me.m_type = t
+                Dim fmt As New cTimeSeriesTypeFormatter
+                Me.m_strName = fmt.GetDescriptor(t, eDescriptorTypes.Abbreviation)
+            End Sub
+
+            Public Property NumShapes() As Integer
+                Get
+                    Return Me.m_iNumShapes
+                End Get
+                Set(ByVal value As Integer)
+                    Me.m_iNumShapes = value
+                End Set
+            End Property
+
+            Public ReadOnly Property TimeSeriesType() As eTimeSeriesType
+                Get
+                    Return Me.m_type
+                End Get
+            End Property
+
+            Public ReadOnly Property Name() As String
+                Get
+                    Return Me.m_strName
+                End Get
+            End Property
+
+        End Class
+
+        Private Class cTypeAdminComparer
+            Implements IComparer(Of cTypeAdmin)
+
+            Public Function Compare(ByVal x As cTypeAdmin, ByVal y As cTypeAdmin) As Integer _
+                Implements System.Collections.Generic.IComparer(Of cTypeAdmin).Compare
+                Return String.Compare(x.Name, y.Name)
+            End Function
+
+        End Class
+#End Region ' Filter
 
 #Region " Baseclass overrides "
 
@@ -94,6 +147,8 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.ResetAll
                     Return False
+                Case eShapeCommandTypes.Filter
+                    Return True
                 Case Else
                     ' Debug.Assert(False, String.Format("Command {0} not supported", cmd))
             End Select
@@ -117,7 +172,8 @@ Namespace Controls
             Select Case cmd
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Import, _
-                     eShapeCommandTypes.Load
+                     eShapeCommandTypes.Load, _
+                     eShapeCommandTypes.Filter
                     Return True
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Add, _
@@ -270,6 +326,68 @@ Namespace Controls
         Protected Overrides Function MinYScale() As Single
             Return 0.0!
         End Function
+
+        Public Overrides ReadOnly Property Filters() As String()
+            Get
+                ' Got a bit of work to do here!
+
+                ' 1) Iterate over all TS
+                ' 2) Count no of shapes per time series type
+                Dim dtAdmin As New Dictionary(Of eTimeSeriesType, cTypeAdmin)
+                Dim ts As cTimeSeries = Nothing
+
+                For i As Integer = 1 To Me.Core.nTimeSeries
+                    ' Get TS
+                    ts = Me.Core.EcosimTimeSeries(i)
+                    If Not dtAdmin.ContainsKey(ts.TimeSeriesType) Then
+                        dtAdmin(ts.TimeSeriesType) = New cTypeAdmin(ts.TimeSeriesType)
+                    End If
+                    dtAdmin(ts.TimeSeriesType).NumShapes += 1
+                Next
+
+                ' 3) Create a list of filters for all types with one or more TS
+                Dim lAdmin As New List(Of cTypeAdmin)
+                For Each ad As cTypeAdmin In dtAdmin.Values
+                    If ad.NumShapes > 0 Then
+                        lAdmin.Add(ad)
+                    End If
+                Next
+
+                ' 4) Sort filters alphabetically
+                lAdmin.Sort(New cTypeAdminComparer)
+
+                ' 5) Maintain 2 lists: one of filter names and one of filter types
+                Dim lTypes As New List(Of eTimeSeriesType)
+                Dim lstrFilters As New List(Of String)
+
+                lstrFilters.Add(My.Resources.GENERIC_VALUE_ALL)
+                lTypes.Add(eTimeSeriesType.NotSet)
+
+                For i As Integer = 0 To lAdmin.Count - 1
+                    lstrFilters.Add(lAdmin(i).Name)
+                    lTypes.Add(lAdmin(i).TimeSeriesType)
+                Next
+
+                dtAdmin.Clear()
+                lAdmin.Clear()
+
+                Me.m_types = lTypes.ToArray
+                Return lstrFilters.ToArray
+            End Get
+        End Property
+
+        Public Overrides Property FilterIndex() As Integer
+            Get
+                Return Me.m_iTSTypeFilter
+            End Get
+            Set(ByVal value As Integer)
+                Dim iFilterNew As Integer = Math.Max(0, Math.Min(value, Me.m_types.Length - 1))
+                If (iFilterNew <> Me.m_iTSTypeFilter) Then
+                    Me.m_iTSTypeFilter = iFilterNew
+                    Me.Refresh()
+                End If
+            End Set
+        End Property
 
 #End Region ' Baseclass overrides
 
@@ -490,12 +608,30 @@ Namespace Controls
                 Optional ByVal selectMode As eAutoSelectMode = eAutoSelectMode.SelectCurrentShape)
 
             Dim ts As cTimeSeries = Nothing
+            Dim bIncludeShape As Boolean = False
             Dim shapeSelectCurr As cShapeData() = Me.SelectedShapes
 
             Me.m_lShapes.Clear()
 
+            ' For all TS
             For i As Integer = 1 To Me.Core.nTimeSeries
-                Me.m_lShapes.Add(Me.Core.EcosimTimeSeries(i))
+                ' Get TS
+                ts = Me.Core.EcosimTimeSeries(i)
+                bIncludeShape = True
+
+                ' Need to filter?
+                If Me.m_iTSTypeFilter > 0 Then
+                    ' #Yes: check if type matches
+                    Try
+                        bIncludeShape = (ts.TimeSeriesType = Me.m_types(Me.m_iTSTypeFilter))
+                    Catch ex As Exception
+                        ' Aargh
+                    End Try
+                End If
+
+                If (bIncludeShape) Then
+                    Me.m_lShapes.Add(ts)
+                End If
             Next
 
             ' Select a shape

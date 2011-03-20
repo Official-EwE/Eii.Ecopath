@@ -16,7 +16,8 @@ Namespace Controls
 #Region " Constructors "
 
         Public Sub New()
-            InitializeComponent()
+            Me.InitializeComponent()
+            Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.UserPaint, True)
         End Sub
 
 #End Region ' Constructors
@@ -33,7 +34,7 @@ Namespace Controls
             End Set
         End Property
 
-#End Region
+#End Region ' Properties
 
 #Region " Public interfaces "
 
@@ -64,6 +65,20 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ResetAll, Me.m_tsbResetAll)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.m_tsbSetTo0)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetValue, Me.m_tsbSetToValue)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Filter, Me.m_tscmbFilter)
+
+            Dim astrFilters As String() = Me.m_handler.Filters()
+            Me.m_tscmbFilter.Items.Clear()
+            If (astrFilters IsNot Nothing) Then
+                For i As Integer = 0 To astrFilters.Length - 1
+                    Me.m_tscmbFilter.Items.Add(astrFilters(i))
+                Next
+                Try
+                    Me.m_tscmbFilter.SelectedIndex = Me.m_handler.FilterIndex
+                Catch ex As Exception
+                    ' Hmm
+                End Try
+            End If
 
         End Sub
 
@@ -71,7 +86,7 @@ Namespace Controls
             If (Me.m_handler Is Nothing) Then Return
             If Me.m_handler.SupportCommand(cmd) Then
                 tsi.Visible = True
-                tsi.Enabled = (m_handler.EnableCommand(cmd))
+                tsi.Enabled = (Me.m_handler.EnableCommand(cmd))
             Else
                 tsi.Visible = False
             End If
@@ -199,8 +214,21 @@ Namespace Controls
             End If
         End Sub
 
+        Private Sub OnFilterSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tscmbFilter.SelectedIndexChanged
+            If (Me.m_handler Is Nothing) Then Return
+            Try
+                Me.m_handler.FilterIndex = Me.m_tscmbFilter.SelectedIndex
+            Catch ex As Exception
+                ' Hmm
+            End Try
+        End Sub
+
 #End Region ' Event handlers
 
+        Private Sub m_tscmbFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+        End Sub
     End Class
 
 End Namespace
