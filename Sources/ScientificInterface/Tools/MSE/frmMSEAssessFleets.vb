@@ -47,9 +47,6 @@ Public Class frmMSEAssessFleets
             Dim ds As New cMSEFishingColorBlockDataSource(Me.UIContext)
             Me.m_blocks.Attach(ds, New ucCVBlockSelector)
 
-            ' Track styleguide changes
-            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
             ' Track MSE start year changes
             Me.m_propStartYear = Me.PropertyManager.GetProperty(Me.UIContext.Core.MSEManager.ModelParameters, eVarNameFlags.MSEStartYear)
             AddHandler Me.m_propStartYear.PropertyChanged, AddressOf OnLastYearChanged
@@ -66,8 +63,6 @@ Public Class frmMSEAssessFleets
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
         Try
-            ' No longer track styleguide changes
-            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             ' No longer track MSE start year changes
             RemoveHandler Me.m_propStartYear.PropertyChanged, AddressOf OnLastYearChanged
             ' Release blocks
@@ -80,7 +75,7 @@ Public Class frmMSEAssessFleets
 
     End Sub
 
-    Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+    Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
 
         If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
             Me.m_blocks.Refresh()

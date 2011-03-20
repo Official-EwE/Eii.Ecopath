@@ -190,7 +190,7 @@ Namespace Ecospace
             Next
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
             If ((changeType And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
                 Me.UpdateStyleColors()
             End If
@@ -242,8 +242,6 @@ Namespace Ecospace
 
             'Start tracking ConcTracing setting
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
-            ' Start tracking style guide changes for colour feedback
-            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             ' Start tracking core state monitor for Ecospace run states
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
@@ -270,8 +268,6 @@ Namespace Ecospace
 
                 ' Stop tracking core state monitor for Ecospace run states
                 RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
-                ' Stop tracking style guide changes
-                RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 ' Stop tracking ConcTracing setting
                 RemoveHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
                 Me.m_bpConTracing = Nothing

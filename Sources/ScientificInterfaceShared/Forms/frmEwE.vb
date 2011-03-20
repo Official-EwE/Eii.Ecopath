@@ -247,8 +247,13 @@ Namespace Forms
 
             MyBase.OnLoad(e)
 
-            If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
-                Me.UIContext.FormPositionSettings.Apply(Me)
+            If (Me.UIContext IsNot Nothing) Then
+
+                AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+
+                If (Me.DesignMode = False) Then
+                    Me.UIContext.FormPositionSettings.Apply(Me)
+                End If
             End If
 
         End Sub
@@ -260,10 +265,15 @@ Namespace Forms
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-            If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
-                ' Store form position
-                Me.UIContext.FormPositionSettings.Store(Me)
-                ' Dispose UI context
+            If (Me.UIContext IsNot Nothing) Then
+                If (Me.DesignMode = False) Then
+                    ' Store form position
+                    Me.UIContext.FormPositionSettings.Store(Me)
+                End If
+
+                ' Release style guide event
+                RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                ' Release UI context
                 Me.UIContext = Nothing
             End If
 
@@ -387,6 +397,17 @@ Namespace Forms
             MyBase.OnFormClosing(e)
             ' Prevent active run forms from closing.
             If Me.IsRunForm And Me.IsRunning Then e.Cancel = True
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Callback, invoked when the style guide has changed in response to
+        ''' <see cref="cStyleGuide.StyleGuideChanged"/>
+        ''' </summary>
+        ''' <param name="ct"></param>
+        ''' -----------------------------------------------------------------------
+        Protected Overridable Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+            ' NOP
         End Sub
 
 #End Region ' Overrides

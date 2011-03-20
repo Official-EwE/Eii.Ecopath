@@ -39,13 +39,9 @@ Namespace Ecosim
             ' Hook up to baseclass refresh
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager}
 
-            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            ' Release style guide
-            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             ' Done
             MyBase.OnFormClosed(e)
         End Sub
@@ -103,7 +99,7 @@ Namespace Ecosim
             Me.UpdateSetControls()
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
             ' Respond to color changes and thumbnail size changes
             If (ct And (cStyleGuide.eChangeType.Thumbnails Or cStyleGuide.eChangeType.Colours)) > 0 Then
                 Me.LoadShapes()

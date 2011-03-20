@@ -77,6 +77,11 @@ Namespace Ecopath.Output
             End Select
         End Sub
 
+        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As ScientificInterfaceShared.Style.cStyleGuide.eChangeType)
+            MyBase.OnStyleGuideChanged(ct)
+            Me.UpdatePlot()
+        End Sub
+
         Private Sub UpdatePlot()
 
             ' ToDo: globalize this method

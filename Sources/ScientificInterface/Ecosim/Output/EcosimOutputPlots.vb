@@ -94,7 +94,6 @@ Namespace Ecosim
             Me.UpdateColors()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
-            AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
 
@@ -106,8 +105,6 @@ Namespace Ecosim
             Me.m_lbPrey.Detach()
             Me.m_lbFleets.Detach()
 
-            RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
             Me.m_paneMaster = Nothing
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
@@ -116,7 +113,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
             If ((changeType And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
                 Me.UpdateColors()
             End If

@@ -83,7 +83,6 @@ Namespace Ecopath.Tools
             Next
 
             AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
-            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             AddHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
             AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
@@ -125,7 +124,6 @@ Namespace Ecopath.Tools
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
-            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             RemoveHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
             RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
@@ -257,7 +255,7 @@ Namespace Ecopath.Tools
             Me.SelectedVariable = vn
         End Sub
 
-        Protected Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
                 Me.Invalidate()
             End If

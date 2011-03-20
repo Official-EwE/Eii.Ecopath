@@ -95,13 +95,9 @@ Public Class frmEcotracerOutput
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
-        AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
-
-        RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         RemoveHandler Me.m_propConcSimOn.PropertyChanged, AddressOf OnConcPropChanged
         RemoveHandler Me.m_propConcSpaceOn.PropertyChanged, AddressOf OnConcPropChanged
@@ -151,7 +147,7 @@ Public Class frmEcotracerOutput
         Me.PlotSelectedGroups()
     End Sub
 
-    Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+    Protected Overrides Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
         If ((changeType And cStyleGuide.eChangeType.Colours) > 0) Then
             ' Respond to group colour changes
             Me.PlotSelectedGroups()

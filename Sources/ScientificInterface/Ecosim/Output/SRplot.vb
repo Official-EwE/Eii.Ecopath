@@ -173,7 +173,6 @@ Namespace Ecosim
             Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
 
@@ -184,7 +183,6 @@ Namespace Ecosim
             Me.m_zgh.Detach()
 
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             MyBase.OnFormClosed(e)
 
@@ -252,7 +250,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal change As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ByVal change As cStyleGuide.eChangeType)
             If (change And cStyleGuide.eChangeType.Colours) > 0 Then
                 ' Add the curves again
                 Me.AddCurves()

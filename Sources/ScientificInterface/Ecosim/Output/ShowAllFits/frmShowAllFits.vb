@@ -65,13 +65,10 @@ Namespace Ecosim
             Me.GatherPlotData()
             Me.CalcPlotParams()
 
-            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
-
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
             MyBase.OnFormClosed(e)
         End Sub
 
@@ -763,7 +760,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnStyleguideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleguideChanged(ByVal changeType As cStyleGuide.eChangeType)
             ' Redraw
             Me.Invalidate()
         End Sub
