@@ -123,6 +123,7 @@ Public Class frmNavigationPanel
             .Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputValueEwEGrid), "Fishery (Ecopath parameterization).htm")
             .Add("ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.FlowDiagram), "Flow diagram.htm")
             .Add("ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(EcopathStatisticsEwEGrid), "")
+            .Add("ndNichePredPreyPlot", eCoreExecutionState.EcopathCompleted, GetType(frmNichePredPreyPlot), "")
             ' Network Analysis PlugIn: "Network%20analysis%20indices%20in.htm"
 
             ' PSD Input

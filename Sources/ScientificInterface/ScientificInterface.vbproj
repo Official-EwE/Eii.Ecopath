@@ -849,6 +849,10 @@
       <DependentUpon>frmBasicInput.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\Output\frmNichePredPreyPlot.resx">
+      <DependentUpon>frmNichePredPreyPlot.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Tools\Pedigree\frmPedigree.resx">
       <DependentUpon>frmPedigree.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1110,6 +1114,18 @@
     </Compile>
     <Compile Include="Ecopath\gridTaxonSearchResults.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\frmNichePredPreyPlot.Designer.vb">
+      <DependentUpon>frmNichePredPreyPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\Output\frmNichePredPreyPlot.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\frmSizeShifterConnectancePlot.Designer.vb">
+      <DependentUpon>frmSizeShifterConnectancePlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\Output\frmSizeShifterConnectancePlot.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\Tools\Taxon\gridTaxonInput.vb">
       <SubType>Component</SubType>
