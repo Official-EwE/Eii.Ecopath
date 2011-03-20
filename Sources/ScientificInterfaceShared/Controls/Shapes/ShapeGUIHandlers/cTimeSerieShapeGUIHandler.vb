@@ -364,7 +364,7 @@ Namespace Controls
                 lTypes.Add(eTimeSeriesType.NotSet)
 
                 For i As Integer = 0 To lAdmin.Count - 1
-                    lstrFilters.Add(lAdmin(i).Name)
+                    lstrFilters.Add(String.Format(My.Resources.GENERIC_LABEL_DETAILED, lAdmin(i).Name, lAdmin(i).NumShapes))
                     lTypes.Add(lAdmin(i).TimeSeriesType)
                 Next
 
