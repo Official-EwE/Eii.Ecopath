@@ -133,7 +133,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
     <value>m_graph</value>
@@ -153,44 +153,74 @@
   <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_lblColour.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblColours.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblColour.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 47</value>
+  <data name="m_lblColours.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 110</value>
   </data>
-  <data name="m_lblColour.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 13</value>
+  <data name="m_lblColours.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
   </data>
-  <data name="m_lblColour.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="m_lblColours.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="m_lblColour.Text" xml:space="preserve">
-    <value>Show colours:</value>
+  <data name="m_lblColours.Text" xml:space="preserve">
+    <value>Node colouring:</value>
   </data>
-  <data name="&gt;&gt;m_lblColour.Name" xml:space="preserve">
-    <value>m_lblColour</value>
+  <data name="&gt;&gt;m_lblColours.Name" xml:space="preserve">
+    <value>m_lblColours</value>
   </data>
-  <data name="&gt;&gt;m_lblColour.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblColours.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblColour.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblColours.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;m_lblColour.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblColours.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_btnShowHideGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_btnShowHideGroups.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnShowHideGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 75</value>
+  </data>
+  <data name="m_btnShowHideGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 23</value>
+  </data>
+  <data name="m_btnShowHideGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_btnShowHideGroups.Text" xml:space="preserve">
+    <value>&amp;Show/hide groups</value>
+  </data>
+  <data name="&gt;&gt;m_btnShowHideGroups.Name" xml:space="preserve">
+    <value>m_btnShowHideGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnShowHideGroups.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnShowHideGroups.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_btnShowHideGroups.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_rbNone.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbNone.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 134</value>
+    <value>12, 129</value>
   </data>
   <data name="m_rbNone.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 17</value>
   </data>
   <data name="m_rbNone.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="m_rbNone.Text" xml:space="preserve">
     <value>None</value>
@@ -205,22 +235,22 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbNone.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_rbOverlap.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbOverlap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 111</value>
+    <value>12, 198</value>
   </data>
   <data name="m_rbOverlap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 17</value>
+    <value>110, 17</value>
   </data>
   <data name="m_rbOverlap.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>9</value>
   </data>
   <data name="m_rbOverlap.Text" xml:space="preserve">
-    <value>Overlap</value>
+    <value>By ratio of overlap</value>
   </data>
   <data name="&gt;&gt;m_rbOverlap.Name" xml:space="preserve">
     <value>m_rbOverlap</value>
@@ -232,22 +262,22 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbOverlap.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_rbPrey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbPrey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 88</value>
+    <value>12, 175</value>
   </data>
   <data name="m_rbPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 17</value>
+    <value>60, 17</value>
   </data>
   <data name="m_rbPrey.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>8</value>
   </data>
   <data name="m_rbPrey.Text" xml:space="preserve">
-    <value>Prey</value>
+    <value>By prey</value>
   </data>
   <data name="&gt;&gt;m_rbPrey.Name" xml:space="preserve">
     <value>m_rbPrey</value>
@@ -259,22 +289,22 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbPrey.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_rbPredator.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbPredator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 65</value>
+    <value>12, 152</value>
   </data>
   <data name="m_rbPredator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 17</value>
+    <value>79, 17</value>
   </data>
   <data name="m_rbPredator.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>7</value>
   </data>
   <data name="m_rbPredator.Text" xml:space="preserve">
-    <value>Predator</value>
+    <value>By predator</value>
   </data>
   <data name="&gt;&gt;m_rbPredator.Name" xml:space="preserve">
     <value>m_rbPredator</value>
@@ -286,16 +316,16 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbPredator.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_nudCutOff.Location" type="System.Drawing.Point, System.Drawing">
     <value>59, 21</value>
   </data>
   <data name="m_nudCutOff.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 20</value>
+    <value>87, 20</value>
   </data>
   <data name="m_nudCutOff.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_nudCutOff.Name" xml:space="preserve">
     <value>m_nudCutOff</value>
@@ -307,7 +337,43 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_nudCutOff.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
+  </data>
+  <data name="m_hdrDisplay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrDisplay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrDisplay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 54</value>
+  </data>
+  <data name="m_hdrDisplay.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_hdrDisplay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 18</value>
+  </data>
+  <data name="m_hdrDisplay.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_hdrDisplay.Text" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="m_hdrDisplay.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrDisplay.Name" xml:space="preserve">
+    <value>m_hdrDisplay</value>
+  </data>
+  <data name="&gt;&gt;m_hdrDisplay.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.317, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrDisplay.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_hdrDisplay.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="m_hdrOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -340,7 +406,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_hdrOptions.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_lblCutOff.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -352,7 +418,7 @@
     <value>41, 13</value>
   </data>
   <data name="m_lblCutOff.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lblCutOff.Text" xml:space="preserve">
     <value>&amp;Cut-off:</value>
@@ -367,7 +433,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblCutOff.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -400,7 +466,7 @@
     <value>149</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
     <value>m_scMain</value>

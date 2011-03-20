@@ -9,6 +9,8 @@ Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 Imports SAUPUtil.Misc.Colours
+Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -49,6 +51,11 @@ Namespace Ecopath.Output
             Me.m_nudCutOff.Minimum = CDec(0.0)
             Me.m_nudCutOff.Increment = CDec(0.1)
 
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            If (cmd IsNot Nothing) Then
+                cmd.AddControl(Me.m_btnShowHideGroups)
+            End If
+
             Me.CoreExecutionState = eCoreExecutionState.EcopathCompleted
 
             Me.UpdateControls()
@@ -57,6 +64,13 @@ Namespace Ecopath.Output
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+            If Me.UIContext Is Nothing Then Return
+
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            If (cmd IsNot Nothing) Then
+                cmd.RemoveControl(Me.m_btnShowHideGroups)
+            End If
 
             Me.m_fpCutOff.Release()
             Me.m_fpCutOff = Nothing
@@ -109,39 +123,42 @@ Namespace Ecopath.Output
                 For i As Integer = 1 To Me.Core.nGroups
                     prey = Me.Core.EcoPathGroupOutputs(i)
 
-                    ' Avoid 0
-                    If (prey.Hlap(j) > Me.CutOff) And _
-                       (prey.Plap(j) > Me.CutOff) And _
-                       (i > j) Then
+                    If Me.StyleGuide.GroupVisible(i) And Me.StyleGuide.GroupVisible(j) Then
 
-                        ' Create a new line item for each diet
-                        ppl = New PointPairList()
-                        li = New LineItem(strLabel, ppl, Color.Black, SymbolType.Circle)
-                        li.Line.Color = Color.Transparent
-                        li.Symbol.Size = CSng(10)
+                        ' Avoid 0
+                        If (prey.Hlap(j) > Me.CutOff) And _
+                           (prey.Plap(j) > Me.CutOff) And _
+                           (i > j) Then
 
-                        Select Case Me.m_colourType
-                            Case eColourType.None
-                                li.Symbol.Fill.IsVisible = False
-                            Case eColourType.ByPredator
-                                li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.Core, pred.Index))
-                            Case eColourType.ByPrey
-                                li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.Core, prey.Index))
-                            Case eColourType.ByOverlap
-                                li.Symbol.Fill = New Fill(Me.m_crColor.GetColor(prey.Hlap(j) + prey.Plap(j) / 2, 1.0))
-                        End Select
+                            ' Create a new line item for each diet
+                            ppl = New PointPairList()
+                            li = New LineItem(strLabel, ppl, Color.Black, SymbolType.Circle)
+                            li.Line.Color = Color.Transparent
+                            li.Symbol.Size = CSng(10)
 
-                        strLabel = String.Format(SharedResources.GENERIC_LABEL_INDEXED, pred.Name, prey.Name)
-                        ppl.Add(prey.Hlap(j), prey.Plap(j))
+                            Select Case Me.m_colourType
+                                Case eColourType.None
+                                    li.Symbol.Fill.IsVisible = False
+                                Case eColourType.ByPredator
+                                    li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.Core, pred.Index))
+                                Case eColourType.ByPrey
+                                    li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.Core, prey.Index))
+                                Case eColourType.ByOverlap
+                                    li.Symbol.Fill = New Fill(Me.m_crColor.GetColor(prey.Hlap(j) + prey.Plap(j) / 2, 1.0))
+                            End Select
 
-                        label = New TextObj(String.Format("{0}, {1}", pred.Index, prey.Index), _
-                                            prey.Hlap(j), prey.Plap(j), CoordType.AxisXYScale, AlignH.Left, AlignV.Top)
-                        label.FontSpec.Border.IsVisible = False
-                        label.FontSpec.Fill.IsVisible = False
-                        pane.GraphObjList.Add(label)
+                            strLabel = String.Format(SharedResources.GENERIC_LABEL_INDEXED, pred.Name, prey.Name)
+                            ppl.Add(prey.Hlap(j), prey.Plap(j))
 
-                        pane.CurveList.Add(li)
+                            label = New TextObj(String.Format("{0}, {1}", pred.Index, prey.Index), _
+                                                prey.Hlap(j), prey.Plap(j), CoordType.AxisXYScale, AlignH.Left, AlignV.Top)
+                            label.FontSpec.Border.IsVisible = False
+                            label.FontSpec.Fill.IsVisible = False
+                            pane.GraphObjList.Add(label)
 
+                            pane.CurveList.Add(li)
+
+                        End If
                     End If
                 Next
             Next
