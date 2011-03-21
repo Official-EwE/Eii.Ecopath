@@ -156,12 +156,11 @@ Namespace Ecosim
             Me.m_clbGroups.SuspendLayout()
 
             Dim iIndex As Integer = 0
-
             If Me.m_bShowGroups Then
                 For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
                     Me.m_clbGroups.SetItemChecked(iGroup - 1, True)
                 Next
-                iIndex = Me.m_uic.Core.nGroups
+                iIndex += 1
             End If
 
             If Me.m_bShowTotals Then
@@ -174,6 +173,78 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnSelectProducers(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnProducers.Click
+
+            Me.m_clbGroups.SuspendLayout()
+            If Me.m_bShowGroups Then
+                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                    Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsProducer)
+                Next
+            End If
+            Me.m_clbGroups.ResumeLayout()
+
+        End Sub
+
+        Private Sub OnSelectComsumers(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnConsumers.Click
+
+            Me.m_clbGroups.SuspendLayout()
+            If Me.m_bShowGroups Then
+                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                    Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsConsumer)
+                Next
+            End If
+            Me.m_clbGroups.ResumeLayout()
+
+        End Sub
+
+        Private Sub OnSelectDetritus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnNonLiving.Click
+
+            Me.m_clbGroups.SuspendLayout()
+            If Me.m_bShowGroups Then
+                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                    Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsDetritus)
+                Next
+            End If
+            Me.m_clbGroups.ResumeLayout()
+
+        End Sub
+
+        Private Sub OnSelectLiving(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnLiving.Click
+
+            Me.m_clbGroups.SuspendLayout()
+            If Me.m_bShowGroups Then
+                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                    Me.m_clbGroups.SetItemChecked(iGroup - 1, iGroup <= Me.m_uic.Core.nLivingGroups)
+                Next
+            End If
+            Me.m_clbGroups.ResumeLayout()
+
+        End Sub
+
+        Private Sub OnSelectFished(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnFished.Click
+
+            Me.m_clbGroups.SuspendLayout()
+            If Me.m_bShowGroups Then
+                Dim core As cCore = Me.m_uic.Core
+                Dim asIsFished(core.nGroups) As Boolean
+                For iFleet As Integer = 1 To core.nFleets
+                    Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+                    For iGroup As Integer = 1 To core.nGroups
+                        asIsFished(iGroup) = asIsFished(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
+                    Next
+                Next
+                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                    Me.m_clbGroups.SetItemChecked(iGroup - 1, asIsFished(iGroup))
+                Next
+            End If
+            Me.m_clbGroups.ResumeLayout()
+
+        End Sub
 
         Private Sub OnSelectAllFleets(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnAllFleets.Click
