@@ -38,6 +38,7 @@ Namespace Ecopath.Input
             MaxLen
             MeanWeight
             MeanLifeSpan
+            VulIndex
         End Enum
 
         Public Sub New()
@@ -45,6 +46,8 @@ Namespace Ecopath.Input
         End Sub
 
         Protected Overrides Sub InitStyle()
+
+            ' ToDo_JS: globalize this
 
             MyBase.InitStyle()
 
@@ -61,6 +64,7 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell("Max length")
             Me(0, eColumnTypes.MeanWeight) = New EwEColumnHeaderCell("Mean weight")
             Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell("Mean life span")
+            Me(0, eColumnTypes.VulIndex) = New EwEColumnHeaderCell("Vulnerability index")
 
             Me.FixedColumns = 2
 
@@ -129,12 +133,12 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.Ecology).Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.Organism) = New SourceGrid2.Cells.Real.Cell(taxon.OrganismType, Me.m_editorOrganism)
                     Me(iRow, eColumnTypes.Organism).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Conservation) = New SourceGrid2.Cells.Real.Cell(taxon.IUCNConservationStatus, Me.m_editorConservation)
+                    Me(iRow, eColumnTypes.Conservation) = New SourceGrid2.Cells.Real.Cell(taxon.IUCNConservationType, Me.m_editorConservation)
                     Me(iRow, eColumnTypes.Conservation).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Occurrence) = New SourceGrid2.Cells.Real.Cell(taxon.OccurrenceStatus, Me.m_editorOccurrence)
+                    Me(iRow, eColumnTypes.Occurrence) = New SourceGrid2.Cells.Real.Cell(taxon.OccurrenceType, Me.m_editorOccurrence)
                     Me(iRow, eColumnTypes.Occurrence).Behaviors.Add(Me.EwEEditHandler)
 
-                    Me(iRow, eColumnTypes.Exploited) = New SourceGrid2.Cells.Real.CheckBox(taxon.Exploited)
+                    Me(iRow, eColumnTypes.Exploited) = New SourceGrid2.Cells.Real.CheckBox(taxon.ExploitedType)
                     Me(iRow, eColumnTypes.Exploited).Behaviors.Add(Me.EwEEditHandler)
 
                     cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLength)
@@ -152,6 +156,10 @@ Namespace Ecopath.Input
                     cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLifespan)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.MeanLifeSpan) = cell
+
+                    cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonVulnerabilityIndex)
+                    cell.SuppressZero = True
+                    Me(iRow, eColumnTypes.VulIndex) = cell
 
                     cellParent.AddChildRow(iRow)
                 Next
@@ -179,13 +187,13 @@ Namespace Ecopath.Input
 
             Select Case DirectCast(p.Column, eColumnTypes)
                 Case eColumnTypes.Conservation
-                    taxon.IUCNConservationStatus = CType(cell.GetValue(p), eIUCNConservationStatusTypes)
+                    taxon.IUCNConservationType = CType(cell.GetValue(p), eIUCNConservationStatusTypes)
                 Case eColumnTypes.Ecology
                     taxon.EcologyType = CType(cell.GetValue(p), eEcologyTypes)
                 Case eColumnTypes.Exploited
-                    taxon.Exploited = CBool(cell.GetValue(p))
+                    taxon.ExploitedType = CBool(cell.GetValue(p))
                 Case eColumnTypes.Occurrence
-                    taxon.OccurrenceStatus = CType(cell.GetValue(p), eOccurrenceStatusTypes)
+                    taxon.OccurrenceType = CType(cell.GetValue(p), eOccurrenceStatusTypes)
                 Case eColumnTypes.Organism
                     taxon.OrganismType = CType(cell.GetValue(p), eOrganismTypes)
                 Case Else

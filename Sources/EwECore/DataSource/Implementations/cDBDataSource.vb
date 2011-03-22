@@ -587,7 +587,7 @@ Namespace DataSources
             If bSucces = False Then Return False
 
             bSucces = bSucces And Me.LoadEcopathGroups()
-            bSucces = bSucces And Me.LoadEcopathTaxa()
+            bSucces = bSucces And Me.LoadEcopathGroupTaxon()
             bSucces = bSucces And Me.LoadEcopathFleetInfo()
             bSucces = bSucces And Me.LoadParticleSizeDistribution()
             bSucces = bSucces And Me.LoadPedigreeLevels()
@@ -624,7 +624,7 @@ Namespace DataSources
             ' Start saving
             bSucces = Me.SaveModelInfo()
             bSucces = bSucces And Me.SaveEcopathGroups()
-            bSucces = bSucces And Me.SaveEcopathTaxa()
+            bSucces = bSucces And Me.SaveEcopathGroupTaxon()
             bSucces = bSucces And Me.SaveEcopathFleetInfo()
             bSucces = bSucces And Me.SaveParticleSizeDistribution()
             bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
@@ -3046,7 +3046,7 @@ Namespace DataSources
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Private Function LoadEcopathTaxa() As Boolean
+        Private Function LoadEcopathGroupTaxon() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             ecopathDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroupTaxon"))
@@ -3085,6 +3085,7 @@ Namespace DataSources
                         ecopathDS.TaxonMeanLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLength", cCore.NULL_VALUE))
                         ecopathDS.TaxonMaxLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MaxLength", cCore.NULL_VALUE))
                         ecopathDS.TaxonMeanLifeSpan(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLifeSpan", cCore.NULL_VALUE))
+                        ecopathDS.TaxonVulnerabilityIndex(iTaxon) = CInt(Me.m_db.ReadSafe(reader, "VulnerabiltyIndex", cCore.NULL_VALUE))
                         ecopathDS.TaxonLastUpdated(iTaxon) = CDbl(Me.m_db.ReadSafe(reader, "LastUpdated", -1))
                         iTaxon += 1
                     End If
@@ -3115,7 +3116,7 @@ Namespace DataSources
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Private Function SaveEcopathTaxa() As Boolean
+        Private Function SaveEcopathGroupTaxon() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -3155,6 +3156,7 @@ Namespace DataSources
                     drow("MeanLength") = ecopathDS.TaxonMeanLength(iTaxon)
                     drow("MaxLength") = ecopathDS.TaxonMaxLength(iTaxon)
                     drow("MeanLifeSpan") = ecopathDS.TaxonMeanLifeSpan(iTaxon)
+                    drow("VulnerabiltyIndex") = ecopathDS.TaxonVulnerabilityIndex(iTaxon)
                     drow("LastUpdated") = ecopathDS.TaxonLastUpdated(iTaxon)
                     writer.AddRow(drow)
 

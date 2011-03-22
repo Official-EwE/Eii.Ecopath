@@ -21,7 +21,7 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter(Of eEcologyTypes).GetDescriptor
 
-            If value = eEcologyTypes.NotSet Then Return My.Resources.GENERIC_VALUE_NOTSET
+            If value = eEcologyTypes.NotSet Then Return ""
 
             Dim strValue As String = value.ToString
             Dim strDescr As String = cResourceUtils.LoadString("ECOLOGY_" & strValue.ToUpper, Me.GetType.Assembly)

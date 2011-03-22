@@ -355,6 +355,7 @@ Public Class cEcopathDataStructures
     Public TaxonMeanLength() As Single
     Public TaxonMaxLength() As Single
     Public TaxonMeanLifeSpan() As Single
+    Public TaxonVulnerabilityIndex() As Integer
 
     ''' <summary>
     ''' Number of missing variables per groups
@@ -663,6 +664,7 @@ Public Class cEcopathDataStructures
         ReDim Me.TaxonMeanLength(Me.NumTaxon)
         ReDim Me.TaxonMaxLength(Me.NumTaxon)
         ReDim Me.TaxonMeanLifeSpan(Me.NumTaxon)
+        ReDim Me.TaxonVulnerabilityIndex(Me.NumTaxon)
         ReDim Me.TaxonLastUpdated(Me.NumTaxon)
 
     End Sub

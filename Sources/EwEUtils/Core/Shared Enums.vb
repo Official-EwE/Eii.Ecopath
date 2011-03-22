@@ -1354,6 +1354,7 @@ Namespace Core
         TaxonMeanLength
         TaxonMaxLength
         TaxonMeanLifespan
+        TaxonVulnerabilityIndex
 
         Coriolis
         XVelocity

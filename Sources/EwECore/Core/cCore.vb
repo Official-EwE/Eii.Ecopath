@@ -3330,7 +3330,7 @@ Public Class cCore
             For iTaxon As Integer = 1 To m_EcoPathData.NumTaxon
                 Me.m_EcopathTaxon.Add(New cTaxon(Me, m_EcoPathData.TaxonDBID(iTaxon)))
             Next iTaxon
-            Me.LoadTaxa()
+            Me.LoadEcopathGroupTaxon()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".InitTaxa() Error: " & ex.Message)
@@ -3341,7 +3341,7 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadTaxa() As Boolean
+    Private Function LoadEcopathGroupTaxon() As Boolean
 
         Dim iTaxon As Integer = 0
 
@@ -3377,14 +3377,15 @@ Public Class cCore
                 taxon.East = Me.m_EcoPathData.TaxonEast(iTaxon)
                 taxon.West = Me.m_EcoPathData.TaxonWest(iTaxon)
                 taxon.EcologyType = Me.m_EcoPathData.TaxonEcologyType(iTaxon)
-                taxon.Exploited = Me.m_EcoPathData.TaxonExploited(iTaxon)
-                taxon.IUCNConservationStatus = Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon)
+                taxon.ExploitedType = Me.m_EcoPathData.TaxonExploited(iTaxon)
+                taxon.IUCNConservationType = Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon)
                 taxon.OrganismType = Me.m_EcoPathData.TaxonOrganismType(iTaxon)
-                taxon.OccurrenceStatus = Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon)
+                taxon.OccurrenceType = Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon)
                 taxon.MeanLength = Me.m_EcoPathData.TaxonMeanLength(iTaxon)
                 taxon.MaxLength = Me.m_EcoPathData.TaxonMaxLength(iTaxon)
                 taxon.MeanWeight = Me.m_EcoPathData.TaxonMeanWeight(iTaxon)
                 taxon.MeanLifespan = Me.m_EcoPathData.TaxonMeanLifeSpan(iTaxon)
+                taxon.VulnerabilityIndex = Me.m_EcoPathData.TaxonVulnerabilityIndex(iTaxon)
 
                 taxon.LastUpdated = Me.m_EcoPathData.TaxonLastUpdated(iTaxon)
 
@@ -3404,7 +3405,7 @@ Public Class cCore
 
     End Function
 
-    Private Function UpdateTaxon(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcopathGroupTaxon(ByVal iDBID As Integer) As Boolean
 
         Dim iTaxon As Integer = Array.IndexOf(Me.m_EcoPathData.TaxonDBID, iDBID)
         Debug.Assert(iTaxon > 0 And iTaxon <= m_EcoPathData.NumTaxon, "Failed to find Taxon index for database ID " & iDBID)
@@ -3425,15 +3426,16 @@ Public Class cCore
         Me.m_EcoPathData.TaxonSource(iTaxon) = taxon.Source
         Me.m_EcoPathData.TaxonSourceKey(iTaxon) = taxon.SourceKey
         Me.m_EcoPathData.TaxonEcologyType(iTaxon) = taxon.EcologyType
-        Me.m_EcoPathData.TaxonExploited(iTaxon) = taxon.Exploited
-        Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon) = taxon.IUCNConservationStatus
+        Me.m_EcoPathData.TaxonExploited(iTaxon) = taxon.ExploitedType
+        Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon) = taxon.IUCNConservationType
         Me.m_EcoPathData.TaxonOrganismType(iTaxon) = taxon.OrganismType
-        Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon) = taxon.OccurrenceStatus
+        Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon) = taxon.OccurrenceType
         Me.m_EcoPathData.TaxonMeanLength(iTaxon) = taxon.MeanLength
         Me.m_EcoPathData.TaxonMaxLength(iTaxon) = taxon.MaxLength
         Me.m_EcoPathData.TaxonMeanWeight(iTaxon) = taxon.MeanWeight
         Me.m_EcoPathData.TaxonMeanLifeSpan(iTaxon) = taxon.MeanLifespan
         Me.m_EcoPathData.TaxonLastUpdated(iTaxon) = taxon.LastUpdated
+        Me.m_EcoPathData.TaxonVulnerabilityIndex(iTaxon) = taxon.VulnerabilityIndex
         Return True
 
     End Function
@@ -10915,7 +10917,7 @@ Public Class cCore
                     End If
 
                 Case eDataTypes.Taxon
-                    If bValidatedOk Then Me.UpdateTaxon(idAffected)
+                    If bValidatedOk Then Me.UpdateEcopathGroupTaxon(idAffected)
 
                 Case eDataTypes.FleetInput
                     If bValidatedOk Then Me.UpdateFleetInput(idAffected)

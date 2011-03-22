@@ -21,7 +21,7 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter(Of eOccurrenceStatusTypes).GetDescriptor
 
-            If value = eOccurrenceStatusTypes.NotSet Then Return My.Resources.GENERIC_VALUE_NOTSET
+            If value = eOccurrenceStatusTypes.NotSet Then Return ""
 
             Dim strValue As String = value.ToString
             Dim strDescr As String = cResourceUtils.LoadString("OCCURRENCESTATUS_" & strValue.ToUpper, Me.GetType.Assembly)
