@@ -123,6 +123,8 @@ Namespace Properties
                 End If
             End If
 
+            If newValue Is Nothing Then newValue = s
+
             Try
                 ' Try to convert to single
                 s = Convert.ToSingle(newValue)

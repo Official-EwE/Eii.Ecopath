@@ -122,6 +122,8 @@ Namespace Properties
                 End If
             End If
 
+            If newValue Is Nothing Then newValue = i
+
             Try
                 ' Try to convert to integer
                 i = Convert.ToInt32(newValue)
