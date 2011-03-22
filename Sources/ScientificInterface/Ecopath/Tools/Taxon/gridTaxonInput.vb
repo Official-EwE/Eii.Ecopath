@@ -60,11 +60,11 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.Exploited) = New EwEColumnHeaderCell("Exploited")
             Me(0, eColumnTypes.Conservation) = New EwEColumnHeaderCell("Conservation status")
             Me(0, eColumnTypes.Occurrence) = New EwEColumnHeaderCell("Occurrence status")
-            Me(0, eColumnTypes.MeanLen) = New EwEColumnHeaderCell("Mean length")
-            Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell("Max length")
-            Me(0, eColumnTypes.MeanWeight) = New EwEColumnHeaderCell("Mean weight")
-            Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell("Mean life span")
-            Me(0, eColumnTypes.VulIndex) = New EwEColumnHeaderCell("Vulnerability index")
+            Me(0, eColumnTypes.MeanLen) = New EwEColumnHeaderCell("Mean length (cm)")
+            Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell("Max length (cm)")
+            Me(0, eColumnTypes.MeanWeight) = New EwEColumnHeaderCell("Mean weight (kg)")
+            Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell("Mean life span ({0})", cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.VulIndex) = New EwEColumnHeaderCell("Vulnerability index [0, 100]")
 
             Me.FixedColumns = 2
 
@@ -158,7 +158,6 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.MeanLifeSpan) = cell
 
                     cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonVulnerabilityIndex)
-                    cell.SuppressZero = True
                     Me(iRow, eColumnTypes.VulIndex) = cell
 
                     cellParent.AddChildRow(iRow)

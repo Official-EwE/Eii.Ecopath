@@ -4836,6 +4836,16 @@ Public Class cCore
 
     End Function
 
+    Friend Function Set_Taxon_Flags(ByVal t As cTaxon, Optional ByVal bSendMessage As Boolean = True) As Boolean
+
+        If t.OrganismType = eOrganismTypes.Fishes Then
+            t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable Or eStatusFlags.Null)
+        Else
+            t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable Or eStatusFlags.Null)
+        End If
+
+    End Function
+
     Private Function Cascade_Name(ByVal strName As String, ByVal obj As cCoreInputOutputBase, ByVal msg As cMessage) As Boolean
 
         Dim objCascade As cCoreInputOutputBase = Nothing
@@ -11730,6 +11740,16 @@ Public Class cCore
 
                 End Select
 
+
+            Case eDataTypes.Taxon
+
+                Select Case value.varName
+                    Case eVarNameFlags.OrganismType
+                        Me.Set_Taxon_Flags(DirectCast(obj, cTaxon))
+                        Dim msg As New cMessage("Organism type changed.", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.Taxon)
+                        Me.m_publisher.AddMessage(msg)
+
+                End Select
 
             Case eDataTypes.EcoSimModelParameter
                 Select Case value.varName

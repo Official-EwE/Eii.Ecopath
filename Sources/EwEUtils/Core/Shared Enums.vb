@@ -1836,11 +1836,6 @@ Namespace Core
         EcospaceLayerDistribution = 85
 
         ''' <summary>
-        ''' Data belongs to a taxonomy definition.
-        ''' </summary>
-        Taxon = 85
-
-        ''' <summary>
         ''' Data belongs to the Ecospace wind layer.
         ''' </summary>
         EcospaceLayerWind = 86
@@ -1874,6 +1869,11 @@ Namespace Core
         ''' Data belongs to Management Strategy Evaluation statistical results total value.
         ''' </summary>
         MSEValueTotalStats = 94
+
+        ''' <summary>
+        ''' Data belongs to a taxonomy definition.
+        ''' </summary>
+        Taxon = 95
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

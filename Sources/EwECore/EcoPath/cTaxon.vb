@@ -156,11 +156,24 @@ Public Class cTaxon
         val = New cValue(New Single, eVarNameFlags.LastUpdated, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastUpdated))
         m_values.Add(val.varName, val)
 
+        Me.ResetStatusFlags()
         Me.AllowValidation = True
 
     End Sub
 
 #End Region
+
+#Region " Overrides "
+
+    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+
+        MyBase.ResetStatusFlags(bForceReset)
+        Me.m_core.Set_Taxon_Flags(Me, True)
+        Return True
+
+    End Function
+
+#End Region ' Overrides
 
 #Region " Variables via dot (.) operator "
 
