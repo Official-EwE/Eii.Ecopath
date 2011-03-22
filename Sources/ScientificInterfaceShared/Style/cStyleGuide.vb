@@ -654,16 +654,20 @@ Namespace Style
 
             If (strUnitMask IsNot Nothing) And (Not String.IsNullOrEmpty(strUnitMask)) Then
 
-                Select Case aUnitTypes.Length
-                    Case 0
-                        Debug.Assert(False)
-                    Case 1
-                        Return String.Format(strUnitMask, Me.GetUnitString(aUnitTypes(0)))
-                    Case 2
-                        Return String.Format(strUnitMask, Me.GetUnitString(aUnitTypes(0)), Me.GetUnitString(aUnitTypes(1)))
-                    Case Else
-                        Debug.Assert(False)
-                End Select
+                Try
+                    Select Case aUnitTypes.Length
+                        Case 0
+                            Debug.Assert(False)
+                        Case 1
+                            Return String.Format(strUnitMask, Me.GetUnitString(aUnitTypes(0)))
+                        Case 2
+                            Return String.Format(strUnitMask, Me.GetUnitString(aUnitTypes(0)), Me.GetUnitString(aUnitTypes(1)))
+                        Case Else
+                            Debug.Assert(False)
+                    End Select
+                Catch ex As Exception
+                    Debug.Assert(False, "Unable to format unit string '" & strUnitMask & "'")
+                End Try
             End If
             Return strUnitMask
         End Function
