@@ -662,6 +662,8 @@ Namespace Controls
 
         Private Sub UpdateTooltip(ByVal ptCur As Point)
 
+            If (Me.Shape Is Nothing) Then Return
+
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
             Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
@@ -674,8 +676,6 @@ Namespace Controls
             Else
                 ' No tip, sorry.
             End If
-            cToolTipShared.GetInstance().SetToolTip(Me, strTooltip)
-
             cToolTipShared.GetInstance().SetToolTip(Me, strTooltip)
 
         End Sub
