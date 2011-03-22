@@ -4838,10 +4838,33 @@ Public Class cCore
 
     Friend Function Set_Taxon_Flags(ByVal t As cTaxon, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
-        If t.OrganismType = eOrganismTypes.Fishes Then
-            t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable Or eStatusFlags.Null)
+        Dim bLockVI As Boolean = False
+        Dim bClearVI As Boolean = False
+        Dim iVI As Integer = t.VulnerabilityIndex
+
+        ' Cheung Vulnerability index is only available for fish (per FishBase)
+        bLockVI = (t.OrganismType <> eOrganismTypes.Fishes)
+        bClearVI = (bLockVI Or (iVI < 0))
+
+        t.AllowValidation = False
+
+        If bLockVI Then
+            t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable)
         Else
-            t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable Or eStatusFlags.Null)
+            t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable)
+        End If
+
+        If bClearVI Then
+            t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null)
+        Else
+            t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null)
+        End If
+
+        t.AllowValidation = True
+
+        If bSendMessage Then
+            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, t.DataType))
         End If
 
     End Function
@@ -11744,10 +11767,10 @@ Public Class cCore
             Case eDataTypes.Taxon
 
                 Select Case value.varName
-                    Case eVarNameFlags.OrganismType
-                        Me.Set_Taxon_Flags(DirectCast(obj, cTaxon))
-                        Dim msg As New cMessage("Organism type changed.", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.Taxon)
-                        Me.m_publisher.AddMessage(msg)
+
+                    Case eVarNameFlags.OrganismType, eVarNameFlags.TaxonVulnerabilityIndex
+                        ' Update vul index status
+                        Me.Set_Taxon_Flags(DirectCast(obj, cTaxon), True)
 
                 End Select
 
