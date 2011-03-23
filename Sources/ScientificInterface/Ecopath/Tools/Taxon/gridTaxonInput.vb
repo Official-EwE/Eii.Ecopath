@@ -51,6 +51,8 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
+            If (Me.UIContext Is Nothing) Then Return
+
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")

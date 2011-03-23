@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F24972EB-7291-497E-B4D7-9C2EACBE8E62}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -877,6 +877,9 @@
       <DependentUpon>SizeWeightPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\Tools\Taxon\frmTaxonInput.resx">
+      <DependentUpon>frmTaxonInput.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\dlgApplyShape.resx">
       <DependentUpon>dlgApplyShape.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1129,6 +1132,12 @@
       <DependentUpon>frmSizeShiftedConnectancePlot.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecopath\Output\frmSizeShiftedConnectancePlot.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Tools\Taxon\frmTaxonInput.Designer.vb">
+      <DependentUpon>frmTaxonInput.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\Tools\Taxon\frmTaxonInput.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\Tools\Taxon\gridTaxonInput.vb">
