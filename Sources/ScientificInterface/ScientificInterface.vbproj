@@ -1853,7 +1853,6 @@
       <DependentUpon>frmRemarkPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ucFormSeparator.ico" />
     <EmbeddedResource Include="Resources\Ecopath.ico" />
     <EmbeddedResource Include="Resources\Ecosim3.ico" />
     <EmbeddedResource Include="Resources\Ecospace3.ico" />
