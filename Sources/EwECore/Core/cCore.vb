@@ -91,6 +91,8 @@ Public Class cCore
     Private WithEvents m_pluginManager As cPluginManager = Nothing
     ''' <summary>Path for EwE core processes to write output information to.</summary>
     Private m_strOutputPath As String = ""
+    ''' <summary>Path for the core to write backup files to.</summary>
+    Private m_strBackupFileMask As String = ""
     ''' <summary>Core state monitor</summary>
     Private WithEvents m_StateMonitor As cCoreStateMonitor = Nothing
     ''' <summary>Core thread synchronization object for thread marshalling.</summary>
@@ -2116,6 +2118,15 @@ Public Class cCore
         End Set
     End Property
 
+    Public Property BackupFileMask() As String
+        Get
+            Return Me.m_strBackupFileMask
+        End Get
+        Set(ByVal value As String)
+            Me.m_strBackupFileMask = value
+        End Set
+    End Property
+
     Private Function UpdateDatasource(ByVal ds As IEwEDataSource) As Boolean
 
         ' Run database updates
@@ -2146,6 +2157,13 @@ Public Class cCore
                             Dim strSrc As String = CStr(src)
                             Dim strDest As String = ""
                             Dim msg As cMessage = Nothing
+
+                            Try
+                                ' Pick destiniation location
+                                cPathUtility.ResolvePath(Me.BackupFileMask, strSrc, db.GetVersion.ToString, strDest)
+                            Catch ex As Exception
+                                ' Hmm
+                            End Try
 
                             ' Create backup
                             If cFileUtils.CreateBackup(strSrc, strDest) Then
