@@ -20,9 +20,9 @@ Namespace Controls.EwEGrid
         Public WriteOnly Property Expanded() As Boolean
             Set(ByVal bExpanded As Boolean)
                 If bExpanded Then
-                    Me.Image = My.Resources.Collapsed
-                Else
                     Me.Image = My.Resources.Expanded
+                Else
+                    Me.Image = My.Resources.Collapsed
                 End If
             End Set
         End Property
