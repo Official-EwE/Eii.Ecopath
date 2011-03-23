@@ -505,6 +505,31 @@ Namespace Utilities
             Return Convert.ToBase64String(abHash)
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Replace all occurrences of a pattern in a source string with a replacement.
+        ''' </summary>
+        ''' <param name="strSrc"></param>
+        ''' <param name="strPattern"></param>
+        ''' <param name="strReplace"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function ReplaceAll(ByVal strSrc As String, ByVal strPattern As String, ByVal strReplace As String) As String
+
+            ' Very simple error testing. Feel free to elaborate. This code is not monkey proof!
+            If strReplace.Contains(strPattern) Then
+                Debug.Assert(False, "Replacement string cannot contain pattern string")
+                Return strSrc
+            End If
+
+            While strSrc.Contains(strPattern)
+                strSrc = strSrc.Replace(strPattern, strReplace)
+            End While
+            Return strSrc
+
+        End Function
+
     End Class
 
 End Namespace ' Utilities

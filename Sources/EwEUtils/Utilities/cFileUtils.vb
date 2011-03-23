@@ -68,6 +68,8 @@ Namespace Utilities
 
             If bProtectPath Then
                 strText = Path.Combine(strPath, strFile)
+                ' Replace all accidental 'double dots'
+                strText = cStringUtils.ReplaceAll(strText, "..", ".")
             Else
                 strText = strFile
             End If
@@ -125,6 +127,15 @@ Namespace Utilities
 
             If String.IsNullOrEmpty(strDest) Then
                 strDest = strSrc & ".backup_" & ToValidFileName(Date.Now.ToShortDateString, False)
+            End If
+
+            If Not Directory.Exists(Path.GetDirectoryName(strDest)) Then
+                Try
+                    Directory.CreateDirectory(Path.GetDirectoryName(strDest))
+                Catch ex As Exception
+                    ' Ouch!
+                    Return False
+                End Try
             End If
 
             Try
