@@ -180,7 +180,7 @@ Namespace Database
         ''' This method does not attempt to cross thread boundaries.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Function UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
+        Private Function UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
 
             Dim sDBVersion As Single = 0.0!
             Dim iUpdate As Integer = 0
