@@ -3751,6 +3751,9 @@ Public Class AppLauncher
             Me.StartPosition = FormStartPosition.Manual
             Me.UIContext.FormPositionSettings.Apply(Me, False)
 
+            ' Kick the core
+            Me.Core.BackupFileMask = My.Settings.BackupFileMask
+
         Catch ex As Exception
 
         End Try
@@ -3776,6 +3779,8 @@ Public Class AppLauncher
                 Case "MdbRecentlyUsedCount"
                     Me.PopulateMRUDropdown()
 
+                Case "BackupFileMask"
+                    Me.Core.BackupFileMask = My.Settings.BackupFileMask
             End Select
 
         Catch ex As Exception

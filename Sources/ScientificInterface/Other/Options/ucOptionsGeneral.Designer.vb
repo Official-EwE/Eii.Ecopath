@@ -6,15 +6,6 @@ Namespace Other
 Partial Class ucOptionsGeneral
         Inherits System.Windows.Forms.UserControl
 
-        'UserControl overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-            MyBase.Dispose(disposing)
-        End Sub
-
         'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
 
@@ -25,11 +16,17 @@ Partial Class ucOptionsGeneral
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGeneral))
             Me.m_gpMRU = New System.Windows.Forms.GroupBox
+            Me.m_lblSample = New System.Windows.Forms.Label
+            Me.m_tsBogus = New System.Windows.Forms.ToolStrip
+            Me.m_tsddFields = New System.Windows.Forms.ToolStripSplitButton
+            Me.m_tbBackupMask = New System.Windows.Forms.TextBox
+            Me.m_lblBackup = New System.Windows.Forms.Label
             Me.m_nudMRU = New System.Windows.Forms.NumericUpDown
             Me.m_btnClearMRU = New System.Windows.Forms.Button
-            Me.lblMDB = New System.Windows.Forms.Label
+            Me.m_lblMRU = New System.Windows.Forms.Label
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_gpMsg = New System.Windows.Forms.GroupBox
+            Me.m_cbShowTime = New System.Windows.Forms.CheckBox
             Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label
             Me.m_gbStartup = New System.Windows.Forms.GroupBox
@@ -37,8 +34,9 @@ Partial Class ucOptionsGeneral
             Me.m_btnResetOverwritePrompts = New System.Windows.Forms.Button
             Me.m_cbCheckEwE6 = New System.Windows.Forms.CheckBox
             Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox
-            Me.m_cbShowTime = New System.Windows.Forms.CheckBox
+            Me.Label1 = New System.Windows.Forms.Label
             Me.m_gpMRU.SuspendLayout()
+            Me.m_tsBogus.SuspendLayout()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gpMsg.SuspendLayout()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -48,11 +46,50 @@ Partial Class ucOptionsGeneral
             'm_gpMRU
             '
             resources.ApplyResources(Me.m_gpMRU, "m_gpMRU")
+            Me.m_gpMRU.Controls.Add(Me.m_lblSample)
+            Me.m_gpMRU.Controls.Add(Me.m_tsBogus)
+            Me.m_gpMRU.Controls.Add(Me.m_tbBackupMask)
+            Me.m_gpMRU.Controls.Add(Me.Label1)
+            Me.m_gpMRU.Controls.Add(Me.m_lblBackup)
             Me.m_gpMRU.Controls.Add(Me.m_nudMRU)
             Me.m_gpMRU.Controls.Add(Me.m_btnClearMRU)
-            Me.m_gpMRU.Controls.Add(Me.lblMDB)
+            Me.m_gpMRU.Controls.Add(Me.m_lblMRU)
             Me.m_gpMRU.Name = "m_gpMRU"
             Me.m_gpMRU.TabStop = False
+            '
+            'm_lblSample
+            '
+            resources.ApplyResources(Me.m_lblSample, "m_lblSample")
+            Me.m_lblSample.Name = "m_lblSample"
+            '
+            'm_tsBogus
+            '
+            resources.ApplyResources(Me.m_tsBogus, "m_tsBogus")
+            Me.m_tsBogus.BackColor = System.Drawing.Color.Transparent
+            Me.m_tsBogus.CanOverflow = False
+            Me.m_tsBogus.GripMargin = New System.Windows.Forms.Padding(0)
+            Me.m_tsBogus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsBogus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddFields})
+            Me.m_tsBogus.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table
+            Me.m_tsBogus.Name = "m_tsBogus"
+            Me.m_tsBogus.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
+            '
+            'm_tsddFields
+            '
+            Me.m_tsddFields.BackColor = System.Drawing.Color.Transparent
+            Me.m_tsddFields.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsddFields, "m_tsddFields")
+            Me.m_tsddFields.Name = "m_tsddFields"
+            '
+            'm_tbBackupMask
+            '
+            resources.ApplyResources(Me.m_tbBackupMask, "m_tbBackupMask")
+            Me.m_tbBackupMask.Name = "m_tbBackupMask"
+            '
+            'm_lblBackup
+            '
+            resources.ApplyResources(Me.m_lblBackup, "m_lblBackup")
+            Me.m_lblBackup.Name = "m_lblBackup"
             '
             'm_nudMRU
             '
@@ -66,10 +103,10 @@ Partial Class ucOptionsGeneral
             Me.m_btnClearMRU.Name = "m_btnClearMRU"
             Me.m_btnClearMRU.UseVisualStyleBackColor = True
             '
-            'lblMDB
+            'm_lblMRU
             '
-            resources.ApplyResources(Me.lblMDB, "lblMDB")
-            Me.lblMDB.Name = "lblMDB"
+            resources.ApplyResources(Me.m_lblMRU, "m_lblMRU")
+            Me.m_lblMRU.Name = "m_lblMRU"
             '
             'm_hdrCaption
             '
@@ -84,6 +121,12 @@ Partial Class ucOptionsGeneral
             Me.m_gpMsg.Controls.Add(Me.m_lblMaxNumMessages)
             Me.m_gpMsg.Name = "m_gpMsg"
             Me.m_gpMsg.TabStop = False
+            '
+            'm_cbShowTime
+            '
+            resources.ApplyResources(Me.m_cbShowTime, "m_cbShowTime")
+            Me.m_cbShowTime.Name = "m_cbShowTime"
+            Me.m_cbShowTime.UseVisualStyleBackColor = True
             '
             'm_nudMaxNumMessages
             '
@@ -130,11 +173,10 @@ Partial Class ucOptionsGeneral
             Me.m_cbDownloadUpdates.Name = "m_cbDownloadUpdates"
             Me.m_cbDownloadUpdates.UseVisualStyleBackColor = True
             '
-            'm_cbShowTime
+            'Label1
             '
-            resources.ApplyResources(Me.m_cbShowTime, "m_cbShowTime")
-            Me.m_cbShowTime.Name = "m_cbShowTime"
-            Me.m_cbShowTime.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
             '
             'ucOptionsGeneral
             '
@@ -147,6 +189,8 @@ Partial Class ucOptionsGeneral
             Me.Name = "ucOptionsGeneral"
             Me.m_gpMRU.ResumeLayout(False)
             Me.m_gpMRU.PerformLayout()
+            Me.m_tsBogus.ResumeLayout(False)
+            Me.m_tsBogus.PerformLayout()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gpMsg.ResumeLayout(False)
             Me.m_gpMsg.PerformLayout()
@@ -156,7 +200,7 @@ Partial Class ucOptionsGeneral
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents lblMDB As System.Windows.Forms.Label
+        Private WithEvents m_lblMRU As System.Windows.Forms.Label
         Private WithEvents m_nudMaxNumMessages As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblMaxNumMessages As System.Windows.Forms.Label
         Private WithEvents m_btnClearMRU As System.Windows.Forms.Button
@@ -170,6 +214,12 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_btnResetOverwritePrompts As System.Windows.Forms.Button
         Private WithEvents m_hdrCaption As cEwEHeaderLabel
         Private WithEvents m_cbShowTime As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblBackup As System.Windows.Forms.Label
+        Private WithEvents m_tsBogus As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsddFields As System.Windows.Forms.ToolStripSplitButton
+        Private WithEvents m_tbBackupMask As System.Windows.Forms.TextBox
+        Private WithEvents m_lblSample As System.Windows.Forms.Label
+        Private WithEvents Label1 As System.Windows.Forms.Label
 
     End Class
 

@@ -5,6 +5,7 @@ Option Strict On
 
 Imports System.IO
 Imports WeifenLuo.WinFormsUI
+Imports EwECore
 
 #End Region
 
@@ -18,10 +19,21 @@ Namespace Other
     Public Class ucOptionsGeneral
         Implements IOptionsPage
 
+        Private m_uic As cUIContext = Nothing
+
 #Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext)
+            Me.m_uic = uic
             Me.InitializeComponent()
+        End Sub
+
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Me.m_tsddFields.DropDown.Items.Clear()
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+            MyBase.Dispose(disposing)
         End Sub
 
 #End Region ' Constructors
@@ -46,6 +58,12 @@ Namespace Other
             Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
                                                 Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.StatusMaxMessages)))
 
+            ' Backup path masks
+            For Each ph As cPathUtility.ePathPlaceholderTypes In [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
+                Me.m_tsddFields.DropDown.Items.Add(ph.ToString, Nothing, AddressOf OnInsertField)
+            Next
+            Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
+
             Me.m_cbCheckEwE6.Checked = False
             Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
             Me.m_cbShowTime.Checked = My.Settings.StatusShowTime
@@ -67,6 +85,7 @@ Namespace Other
             My.Settings.StatusMaxMessages = CInt(Me.m_nudMaxNumMessages.Value)
             My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
             My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
+            My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
 
             If bRestart Then Return IOptionsPage.eApplyResultType.Success_restart
             Return IOptionsPage.eApplyResultType.Success
@@ -87,6 +106,37 @@ Namespace Other
             Handles m_btnClearMRU.Click
             Me.ClearFileList(My.Settings.MdbRecentlyUsedList)
             Me.m_btnClearMRU.Enabled = False
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub OnInsertField(ByVal sender As Object, ByVal e As EventArgs)
+
+            Dim strSrc As String = Me.m_tbBackupMask.Text
+            Dim strDest As String
+            Dim iSelStart As Integer = Me.m_tbBackupMask.SelectionStart
+            Dim iSelLen As Integer = Me.m_tbBackupMask.SelectionLength
+            Dim item As ToolStripItem = DirectCast(sender, ToolStripItem)
+            Dim strItemText As String = "{" & item.Text & "}"
+            Dim iItemLen As Integer = strItemText.Length
+
+            If (iSelLen = 0) Then
+                strDest = strSrc & strItemText
+                iSelStart = strDest.Length
+            Else
+                strDest = strSrc.Substring(0, iSelStart) & strItemText & strSrc.Substring(iSelStart + iSelLen)
+                iSelStart += iItemLen
+            End If
+
+            Me.m_tbBackupMask.Text = strDest
+            Me.m_tbBackupMask.SelectionStart = iSelStart
+            Me.m_tbBackupMask.SelectionLength = 0
+
+            Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnBackupMaskChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tbBackupMask.TextChanged
             Me.UpdateControls()
         End Sub
 
@@ -120,6 +170,12 @@ Namespace Other
             Me.m_cbCheckEwE6.Enabled = bCanCheckExEUpdate
 
             Me.m_btnClearMRU.Enabled = bHasMRU
+
+            Dim strSample As String = ""
+            If Not cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, Me.m_uic.Core, strSample) Then
+                cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, "model", "C:\models", ".ext", "6.version", strSample)
+            End If
+            Me.m_lblSample.Text = strSample
 
         End Sub
 
