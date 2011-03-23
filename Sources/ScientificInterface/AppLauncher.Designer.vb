@@ -86,11 +86,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiViewItems = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuEcopath = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiEcopathEditGroups = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiEcopathEditMultiStanza = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiEcopathEditFleets = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiEcopathEditPedigree = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiEcopathEditTaxa = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcopathDefineGroups = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcopathDefineMultiStanza = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcopathDefineFleets = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcopathDefinePedigree = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiEcopathDefineTaxa = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuEcosim = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimNew = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcosimLoad = New System.Windows.Forms.ToolStripMenuItem
@@ -467,38 +467,39 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'MenuEcopath
         '
-        Me.MenuEcopath.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcopathEditGroups, Me.m_tsmiEcopathEditMultiStanza, Me.m_tsmiEcopathEditFleets, Me.m_tsmiEcopathEditPedigree, Me.m_tsmiEcopathEditTaxa})
+        Me.MenuEcopath.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcopathDefineGroups, Me.m_tsmiEcopathDefineMultiStanza, Me.m_tsmiEcopathDefineFleets, Me.m_tsmiEcopathDefinePedigree, Me.m_tsmiEcopathDefineTaxa})
         Me.MenuEcopath.Name = "MenuEcopath"
         resources.ApplyResources(Me.MenuEcopath, "MenuEcopath")
         '
-        'm_tsmiEcopathEditGroups
+        'm_tsmiEcopathDefineGroups
         '
-        Me.m_tsmiEcopathEditGroups.Image = Global.ScientificInterface.My.Resources.Resources.EditGroup
-        Me.m_tsmiEcopathEditGroups.Name = "m_tsmiEcopathEditGroups"
-        resources.ApplyResources(Me.m_tsmiEcopathEditGroups, "m_tsmiEcopathEditGroups")
+        Me.m_tsmiEcopathDefineGroups.Image = Global.ScientificInterface.My.Resources.Resources.EditGroup
+        Me.m_tsmiEcopathDefineGroups.Name = "m_tsmiEcopathDefineGroups"
+        resources.ApplyResources(Me.m_tsmiEcopathDefineGroups, "m_tsmiEcopathDefineGroups")
         '
-        'm_tsmiEcopathEditMultiStanza
+        'm_tsmiEcopathDefineMultiStanza
         '
-        Me.m_tsmiEcopathEditMultiStanza.Image = Global.ScientificInterface.My.Resources.Resources.EditMultiStanza
-        Me.m_tsmiEcopathEditMultiStanza.Name = "m_tsmiEcopathEditMultiStanza"
-        resources.ApplyResources(Me.m_tsmiEcopathEditMultiStanza, "m_tsmiEcopathEditMultiStanza")
+        Me.m_tsmiEcopathDefineMultiStanza.Image = Global.ScientificInterface.My.Resources.Resources.EditMultiStanza
+        Me.m_tsmiEcopathDefineMultiStanza.Name = "m_tsmiEcopathDefineMultiStanza"
+        resources.ApplyResources(Me.m_tsmiEcopathDefineMultiStanza, "m_tsmiEcopathDefineMultiStanza")
         '
-        'm_tsmiEcopathEditFleets
+        'm_tsmiEcopathDefineFleets
         '
-        Me.m_tsmiEcopathEditFleets.Image = Global.ScientificInterface.My.Resources.Resources.EditFleets
-        Me.m_tsmiEcopathEditFleets.Name = "m_tsmiEcopathEditFleets"
-        resources.ApplyResources(Me.m_tsmiEcopathEditFleets, "m_tsmiEcopathEditFleets")
+        Me.m_tsmiEcopathDefineFleets.Image = Global.ScientificInterface.My.Resources.Resources.EditFleets
+        Me.m_tsmiEcopathDefineFleets.Name = "m_tsmiEcopathDefineFleets"
+        resources.ApplyResources(Me.m_tsmiEcopathDefineFleets, "m_tsmiEcopathDefineFleets")
         '
-        'm_tsmiEcopathEditPedigree
+        'm_tsmiEcopathDefinePedigree
         '
-        Me.m_tsmiEcopathEditPedigree.Image = Global.ScientificInterface.My.Resources.Resources.certificate
-        Me.m_tsmiEcopathEditPedigree.Name = "m_tsmiEcopathEditPedigree"
-        resources.ApplyResources(Me.m_tsmiEcopathEditPedigree, "m_tsmiEcopathEditPedigree")
+        Me.m_tsmiEcopathDefinePedigree.Image = Global.ScientificInterface.My.Resources.Resources.certificate
+        Me.m_tsmiEcopathDefinePedigree.Name = "m_tsmiEcopathDefinePedigree"
+        resources.ApplyResources(Me.m_tsmiEcopathDefinePedigree, "m_tsmiEcopathDefinePedigree")
         '
-        'm_tsmiEcopathEditTaxa
+        'm_tsmiEcopathDefineTaxa
         '
-        Me.m_tsmiEcopathEditTaxa.Name = "m_tsmiEcopathEditTaxa"
-        resources.ApplyResources(Me.m_tsmiEcopathEditTaxa, "m_tsmiEcopathEditTaxa")
+        Me.m_tsmiEcopathDefineTaxa.Image = Global.ScientificInterface.My.Resources.Resources.EditTaxa
+        resources.ApplyResources(Me.m_tsmiEcopathDefineTaxa, "m_tsmiEcopathDefineTaxa")
+        Me.m_tsmiEcopathDefineTaxa.Name = "m_tsmiEcopathDefineTaxa"
         '
         'MenuEcosim
         '
@@ -709,9 +710,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents m_tsmiHelpBugReport As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiExportBiomassToCSV As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuEcopath As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcopathEditGroups As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcopathEditMultiStanza As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcopathEditFleets As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcopathDefineGroups As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcopathDefineMultiStanza As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcopathDefineFleets As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuView As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiViewStatusBar As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiViewRemarks As System.Windows.Forms.ToolStripMenuItem
@@ -740,9 +741,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbEcotracer As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiEcotracerDelete As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcopathEditTaxa As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcopathDefineTaxa As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripSplitButton
-    Private WithEvents m_tsmiEcopathEditPedigree As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcopathDefinePedigree As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiPresentation As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewMenu As System.Windows.Forms.ToolStripMenuItem

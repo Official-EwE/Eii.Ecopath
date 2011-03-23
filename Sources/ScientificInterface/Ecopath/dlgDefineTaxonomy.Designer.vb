@@ -1,7 +1,7 @@
 ﻿Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class dlgEditGroupTaxon
+Partial Class dlgDefineTaxa
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -24,7 +24,7 @@ Partial Class dlgEditGroupTaxon
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditGroupTaxon))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineTaxa))
         Me.m_btnAdd = New System.Windows.Forms.Button
         Me.m_btnRemove = New System.Windows.Forms.Button
         Me.m_btnKeep = New System.Windows.Forms.Button
@@ -419,7 +419,7 @@ Partial Class dlgEditGroupTaxon
         resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
         Me.m_hdrEdit.Name = "m_hdrEdit"
         '
-        'dlgEditGroupTaxon
+        'dlgDefineTaxa
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -435,7 +435,7 @@ Partial Class dlgEditGroupTaxon
         Me.Controls.Add(Me.m_btnMoveUp)
         Me.Controls.Add(Me.m_btnRemove)
         Me.Controls.Add(Me.m_btnAdd)
-        Me.Name = "dlgEditGroupTaxon"
+        Me.Name = "dlgDefineTaxa"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show

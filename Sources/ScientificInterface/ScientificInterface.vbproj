@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F24972EB-7291-497E-B4D7-9C2EACBE8E62}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -150,10 +150,10 @@
     <Compile Include="AppLauncher_helpers.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\EditFleets.Designer.vb">
-      <DependentUpon>EditFleets.vb</DependentUpon>
+    <Compile Include="Ecopath\dlgDefineFleets.Designer.vb">
+      <DependentUpon>dlgDefineFleets.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\EditFleets.vb">
+    <Compile Include="Ecopath\dlgDefineFleets.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\gridEditFleets.vb">
@@ -165,19 +165,19 @@
     <Compile Include="Ecopath\Tools\FlowDiagram\frmFlowDiagram.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\EditGroups.Designer.vb">
-      <DependentUpon>EditGroups.vb</DependentUpon>
+    <Compile Include="Ecopath\dlgDefineGroups.Designer.vb">
+      <DependentUpon>dlgDefineGroups.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\EditGroups.vb">
+    <Compile Include="Ecopath\dlgDefineGroups.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\gridEditGroups.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\EditMultiStanza.Designer.vb">
-      <DependentUpon>EditMultiStanza.vb</DependentUpon>
+    <Compile Include="Ecopath\dlgEditMultiStanza.Designer.vb">
+      <DependentUpon>dlgEditMultiStanza.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\EditMultiStanza.vb">
+    <Compile Include="Ecopath\dlgEditMultiStanza.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\gridEditMultiStanza.vb">
@@ -692,12 +692,12 @@
       <DependentUpon>frmFlowDiagram.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\EditGroups.resx">
-      <DependentUpon>EditGroups.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\dlgDefineGroups.resx">
+      <DependentUpon>dlgDefineGroups.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\EditMultiStanza.resx">
-      <DependentUpon>EditMultiStanza.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\dlgEditMultiStanza.resx">
+      <DependentUpon>dlgEditMultiStanza.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Input\DietComp.resx">
@@ -829,12 +829,12 @@
       <DependentUpon>ucHatchSelect.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\dlgEditGroupTaxon.resx">
-      <DependentUpon>dlgEditGroupTaxon.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\dlgDefineTaxonomy.resx">
+      <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\EditPedigree.resx">
-      <DependentUpon>EditPedigree.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\dlgDefinePedigree.resx">
+      <DependentUpon>dlgDefinePedigree.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\frmModelDescription.resx">
@@ -879,6 +879,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Tools\Taxon\frmTaxonInput.resx">
       <DependentUpon>frmTaxonInput.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\dlgApplyShape.resx">
       <DependentUpon>dlgApplyShape.vb</DependentUpon>
@@ -1101,19 +1102,19 @@
     <Compile Include="Controls\VisualStyleEditors\ucHatchSelect.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecopath\dlgEditGroupTaxon.Designer.vb">
-      <DependentUpon>dlgEditGroupTaxon.vb</DependentUpon>
+    <Compile Include="Ecopath\dlgDefineTaxonomy.Designer.vb">
+      <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\dlgEditGroupTaxon.vb">
+    <Compile Include="Ecopath\dlgDefineTaxonomy.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\gridEditPedigree.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\EditPedigree.Designer.vb">
-      <DependentUpon>EditPedigree.vb</DependentUpon>
+    <Compile Include="Ecopath\dlgDefinePedigree.Designer.vb">
+      <DependentUpon>dlgDefinePedigree.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\EditPedigree.vb">
+    <Compile Include="Ecopath\dlgDefinePedigree.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\gridEditGroupTaxon.vb">
@@ -1700,6 +1701,7 @@
     <None Include="Resources\certificate.png" />
     <None Include="Resources\Ecopath_hohoho.ico" />
     <None Include="Resources\chain_vert.png" />
+    <None Include="Resources\EditTaxa.png" />
     <Content Include="Resources\EU_50px.jpg" />
     <None Include="Resources\ewe_wiki.url.txt" />
     <Content Include="Resources\fimr_logo_50px.jpg" />
@@ -1731,8 +1733,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="_Designs_\Ecospace basemap layers.cd" />
-    <EmbeddedResource Include="Ecopath\EditFleets.resx">
-      <DependentUpon>EditFleets.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\dlgDefineFleets.resx">
+      <DependentUpon>dlgDefineFleets.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\EggProduction\ApplyEP.resx">

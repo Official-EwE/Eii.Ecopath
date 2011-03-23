@@ -42,7 +42,7 @@ Namespace Ecopath.Input
         End Enum
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -73,6 +73,8 @@ Namespace Ecopath.Input
         End Sub
 
         Protected Overrides Sub FillData()
+
+            If (Me.UIContext Is Nothing) Then Return
 
             Dim group As cCoreInputOutputBase = Nothing
             Dim taxon As cTaxon = Nothing
@@ -116,9 +118,14 @@ Namespace Ecopath.Input
                 iRow = Me.AddRow()
                 For i As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
 
-                cellParent = New EwEHierarchyGridCell()
-                Me(iRow, eColumnTypes.Index) = cellParent
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, group, eVarNameFlags.Name, Nothing, cellParent)
+                If (aiGroupTaxa(iGroup).Count > 0) Then
+                    cellParent = New EwEHierarchyGridCell()
+                    Me(iRow, eColumnTypes.Index) = cellParent
+                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, group, eVarNameFlags.Name, Nothing, cellParent)
+                Else
+                    Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell()
+                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                End If
 
                 For Each taxon In aiGroupTaxa(iGroup)
 

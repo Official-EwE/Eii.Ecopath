@@ -424,21 +424,21 @@ Public Class AppLauncher
 
         'Create and configure EditGroups command
         Me.m_cmdEditGroups = New cCommand(cmdh, "EditGroups")
-        Me.m_cmdEditGroups.AddControl(Me.m_tsmiEcopathEditGroups)
+        Me.m_cmdEditGroups.AddControl(Me.m_tsmiEcopathDefineGroups)
 
         'Create and configure EditMultiStanza command
         Me.m_cmdEditMultiStanza = New cCommand(cmdh, "EditMultiStanza")
-        Me.m_cmdEditMultiStanza.AddControl(Me.m_tsmiEcopathEditMultiStanza)
+        Me.m_cmdEditMultiStanza.AddControl(Me.m_tsmiEcopathDefineMultiStanza)
 
         'Create and configure EditFleets command
         Me.m_cmdEditFleets = New cCommand(cmdh, "EditFleets")
-        Me.m_cmdEditFleets.AddControl(Me.m_tsmiEcopathEditFleets)
+        Me.m_cmdEditFleets.AddControl(Me.m_tsmiEcopathDefineFleets)
 
         Me.m_cmdEditPedigree = New cEditPedigreeCommand(cmdh)
-        Me.m_cmdEditPedigree.AddControl(Me.m_tsmiEcopathEditPedigree)
+        Me.m_cmdEditPedigree.AddControl(Me.m_tsmiEcopathDefinePedigree)
 
         Me.m_cmdEditTaxa = New cCommand(cmdh, "EditTaxa")
-        Me.m_cmdEditTaxa.AddControl(Me.m_tsmiEcopathEditTaxa)
+        Me.m_cmdEditTaxa.AddControl(Me.m_tsmiEcopathDefineTaxa)
 
         Me.m_cmdEditBasemap = New cCommand(cmdh, "EditBasemap")
         Me.m_cmdEditBasemap.AddControl(Me.m_tsmiEcospaceEditMap)
@@ -2919,7 +2919,7 @@ Public Class AppLauncher
 
     Private Sub OnEditTaxa(ByVal cmd As cCommand) _
         Handles m_cmdEditTaxa.OnInvoke
-        Dim dlg As New dlgEditGroupTaxon(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
+        Dim dlg As New dlgDefineTaxa(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
         dlg.ShowDialog(Me)
     End Sub
 

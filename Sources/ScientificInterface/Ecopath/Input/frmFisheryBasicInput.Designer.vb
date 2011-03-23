@@ -35,6 +35,7 @@ Namespace Ecopath.Input
             '
             'm_ts
             '
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditFleets})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
@@ -47,8 +48,8 @@ Namespace Ecopath.Input
             Me.m_tsbnEditFleets.Image = Global.ScientificInterface.My.Resources.Resources.EditGroup
             Me.m_tsbnEditFleets.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditFleets.Name = "m_tsbnEditFleets"
-            Me.m_tsbnEditFleets.Size = New System.Drawing.Size(87, 22)
-            Me.m_tsbnEditFleets.Text = "&Edit fleets..."
+            Me.m_tsbnEditFleets.Size = New System.Drawing.Size(101, 22)
+            Me.m_tsbnEditFleets.Text = "&Define fleets..."
             Me.m_tsbnEditFleets.ToolTipText = "Create or delete fleet definitions..."
             '
             'm_grid

@@ -46,6 +46,7 @@ Namespace Ecopath.Tools
             '
             'm_tsMain
             '
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditPedigree})
             Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
             Me.m_tsMain.Name = "m_tsMain"
@@ -58,8 +59,8 @@ Namespace Ecopath.Tools
             Me.m_tsbnEditPedigree.Image = Global.ScientificInterface.My.Resources.Resources.certificate
             Me.m_tsbnEditPedigree.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditPedigree.Name = "m_tsbnEditPedigree"
-            Me.m_tsbnEditPedigree.Size = New System.Drawing.Size(102, 22)
-            Me.m_tsbnEditPedigree.Text = "&Edit pedigree..."
+            Me.m_tsbnEditPedigree.Size = New System.Drawing.Size(119, 22)
+            Me.m_tsbnEditPedigree.Text = "&Define pedigree..."
             Me.m_tsbnEditPedigree.ToolTipText = "Edit pedigree classifications"
             '
             'm_scMain

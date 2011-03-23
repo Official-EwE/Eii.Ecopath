@@ -36,6 +36,7 @@ Namespace Ecopath.Input
             '
             'm_ts
             '
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditGroups, Me.m_tsbnEditMultiStanza})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
@@ -48,8 +49,8 @@ Namespace Ecopath.Input
             Me.m_tsbnEditGroups.Image = Global.ScientificInterface.My.Resources.Resources.EditGroup
             Me.m_tsbnEditGroups.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditGroups.Name = "m_tsbnEditGroups"
-            Me.m_tsbnEditGroups.Size = New System.Drawing.Size(93, 22)
-            Me.m_tsbnEditGroups.Text = "&Edit groups..."
+            Me.m_tsbnEditGroups.Size = New System.Drawing.Size(110, 22)
+            Me.m_tsbnEditGroups.Text = "&Define groups..."
             Me.m_tsbnEditGroups.ToolTipText = "Create or delete group definitions..."
             '
             'm_tsbnEditMultiStanza
@@ -57,8 +58,8 @@ Namespace Ecopath.Input
             Me.m_tsbnEditMultiStanza.Image = Global.ScientificInterface.My.Resources.Resources.EditMultiStanza
             Me.m_tsbnEditMultiStanza.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditMultiStanza.Name = "m_tsbnEditMultiStanza"
-            Me.m_tsbnEditMultiStanza.Size = New System.Drawing.Size(118, 22)
-            Me.m_tsbnEditMultiStanza.Text = "Edit multi-stanza..."
+            Me.m_tsbnEditMultiStanza.Size = New System.Drawing.Size(125, 22)
+            Me.m_tsbnEditMultiStanza.Text = "&Edit multi-stanza..."
             '
             'm_grid
             '

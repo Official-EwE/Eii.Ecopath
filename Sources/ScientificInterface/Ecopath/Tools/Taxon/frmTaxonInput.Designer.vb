@@ -33,7 +33,6 @@ Namespace Ecopath.Input
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTaxonInput))
             Me.m_ts = New System.Windows.Forms.ToolStrip
             Me.m_tsbnEditTaxa = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecopath.Input.gridTaxonInput
@@ -51,11 +50,10 @@ Namespace Ecopath.Input
             '
             'm_tsbnEditTaxa
             '
-            Me.m_tsbnEditTaxa.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbnEditTaxa.Image = CType(resources.GetObject("m_tsbnEditTaxa.Image"), System.Drawing.Image)
+            Me.m_tsbnEditTaxa.Image = Global.ScientificInterface.My.Resources.Resources.EditTaxa
             Me.m_tsbnEditTaxa.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditTaxa.Name = "m_tsbnEditTaxa"
-            Me.m_tsbnEditTaxa.Size = New System.Drawing.Size(78, 22)
+            Me.m_tsbnEditTaxa.Size = New System.Drawing.Size(94, 22)
             Me.m_tsbnEditTaxa.Text = "Define taxa..."
             '
             'm_grid
