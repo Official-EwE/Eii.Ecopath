@@ -4,9 +4,9 @@ Imports EwEUtils.Core
 
 Public Class cComputeLandingPortions
 
-    Private ProducerReference(,) As Integer
-    Private sumCatch() As Single
-    Private sumValue() As Single
+    Private m_ProducerReference(,) As Integer
+    Private m_sumCatch() As Single
+    Private m_sumValue() As Single
 
     Public Sub New(ByVal data As cData, ByVal iTimeStep As Integer, ByVal runType As cModel.eRunTypes)
         Compute(data, iTimeStep, runType)
@@ -120,7 +120,7 @@ Public Class cComputeLandingPortions
             'I presume here (for lack of knowledge of how it has been implemented)
             'that there is a matrix, which stores 'producer-association', somewhat like this
 
-            ReDim ProducerReference(EwECore.nGroups, EwECore.nGroups)
+            ReDim m_ProducerReference(EwECore.nGroups, EwECore.nGroups)
             'then assume that when the flow is set up we read the producer ID into the ProducerReference
             'and that we thus can cycle through species/groups and read producer number
 
@@ -140,27 +140,27 @@ Public Class cComputeLandingPortions
                 '(which may be a fleet, or a fleet/group combination)
                 'cycle through each producer, and get the catches:
 
-                ReDim sumCatch(NoProducers)
-                ReDim sumValue(NoProducers)
+                ReDim m_sumCatch(NoProducers)
+                ReDim m_sumValue(NoProducers)
 
                 For iSp As Integer = 1 To EwECore.nGroups
                     For iFt As Integer = 1 To EwECore.nFleets
                         'Is this species/fleet combination associated with a producer?
-                        If ProducerReference(iSp, iFt) > 0 Then
+                        If m_ProducerReference(iSp, iFt) > 0 Then
                             'If there is a TS catch then use it
                             If iSpTimeSeriesCatch(iSp) Then
-                                sumCatch(ProducerReference(iSp, iFt)) += _
+                                m_sumCatch(m_ProducerReference(iSp, iFt)) += _
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) * sArea
                                 'sum value = landing x marketprice (which is really landingprice
-                                sumValue(ProducerReference(iSp, iFt)) += _
+                                m_sumValue(m_ProducerReference(iSp, iFt)) += _
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) _
                                     * EwECore.FleetInputs(iFt).OffVesselPrice(iSp)
                             Else        'if not then use the Ecosim landing
-                                sumCatch(ProducerReference(iSp, iFt)) += _
+                                m_sumCatch(m_ProducerReference(iSp, iFt)) += _
                                     EwECore.EcoSimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcoSimGroupOutputs(iSp).FishMort(iTimeStep) _
                                     * sArea
                                 'sum value = landing x marketprice (which is really landingprice
-                                sumValue(ProducerReference(iSp, iFt)) += _
+                                m_sumValue(m_ProducerReference(iSp, iFt)) += _
                                     EwECore.EcoSimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcoSimGroupOutputs(iSp).FishMort(iTimeStep) _
                                     * EwECore.FleetInputs(iFt).OffVesselPrice(iSp) * sArea
                             End If
@@ -189,7 +189,7 @@ Public Class cComputeLandingPortions
 #Region " Properties "
     Public ReadOnly Property ProducerValue(ByVal spc As Integer, ByVal flt As Integer) As Integer
         Get
-            Return Me.ProducerReference(spc, flt)
+            Return Me.m_ProducerReference(spc, flt)
         End Get
     End Property
 #End Region
