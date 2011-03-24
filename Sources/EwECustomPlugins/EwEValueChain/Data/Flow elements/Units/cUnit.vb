@@ -41,6 +41,8 @@ Public MustInherit Class cUnit
     ''' <summary>Zhe ceur</summary>
     Private m_core As cCore = Nothing
 
+    Private m_bCanCompute As Boolean = False
+
 #Region " Constructor "
 
     ''' -----------------------------------------------------------------------
@@ -92,15 +94,15 @@ Public MustInherit Class cUnit
     End Function
 
     Protected Sub AddInputLink(ByVal link As cLink)
-
         ' Sanity check
         Debug.Assert(Object.ReferenceEquals(link.Target, Me))
-
         Me.m_llinkInput.Add(link)
+        Me.UpdateComputeStatus()
     End Sub
 
     Protected Sub RemoveInputLink(ByVal link As cLink)
         Me.m_llinkInput.Remove(link)
+        Me.UpdateComputeStatus()
     End Sub
 
     Public Function IsLoop(ByVal unit As cUnit) As Boolean
@@ -120,6 +122,10 @@ Public MustInherit Class cUnit
         End If
 
         Return bIsLoop
+    End Function
+
+    Public Function IsLinkedToProducer() As Boolean
+
     End Function
 
     Public Function HasTarget(ByVal unit As cUnit) As Boolean
@@ -263,6 +269,32 @@ Public MustInherit Class cUnit
 
     End Function
 
+    ''' <summary>
+    ''' Assess whether a unit is ready to compute, e.g. when all its
+    ''' inputs are (in)directly connected to EwE model data.
+    ''' </summary>
+    Private Sub UpdateComputeStatus()
+
+        ' Check if all input links can compute
+        Dim bCanCompute As Boolean = True
+        Dim bHasInputs As Boolean = False
+        For Each LinkIn As cLink In Me.m_llinkInput
+            bCanCompute = bCanCompute And LinkIn.Source.CanCompute
+            bHasInputs = True
+        Next
+        bCanCompute = bCanCompute And bHasInputs
+
+        ' No changes? Abort
+        If (bCanCompute = Me.CanCompute) Then Return
+
+        Me.m_bCanCompute = bCanCompute
+
+        For Each linkOut As cLink In Me.m_llinkOutput
+            linkOut.Target.UpdateComputeStatus()
+        Next
+
+    End Sub
+
 #End Region ' Run
 
 #Region " Copy / paste "
@@ -348,6 +380,13 @@ Public MustInherit Class cUnit
     Public Overridable ReadOnly Property Style() As cStyleGuide.eStyleFlags
         Get
             Return cStyleGuide.eStyleFlags.OK
+        End Get
+    End Property
+
+    <Browsable(False)> _
+    Public Overridable ReadOnly Property CanCompute() As Boolean
+        Get
+            Return Me.m_bCanCompute
         End Get
     End Property
 

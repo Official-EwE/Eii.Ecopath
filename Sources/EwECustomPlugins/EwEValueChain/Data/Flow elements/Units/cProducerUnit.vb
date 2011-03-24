@@ -709,6 +709,13 @@ Public Property ObserverCost() As Single
         End Get
     End Property
 
+    <Browsable(False)> _
+    Public Overrides ReadOnly Property CanCompute() As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
 #Region " Ecopath integration "
 
     <Browsable(False)> _
