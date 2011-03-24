@@ -93,13 +93,13 @@ Namespace Controls
             Dim gpCap As New GraphicsPath()
             Dim gpArrow As New GraphicsPath()
 
-            '     (-5,0)
+            '     (0, -5)
             '       /|\  
             '(-2,-3) | (2,-3)
             '      (0,0)
             '        |
             '        |
-            '      (5,0)
+            '      (0, -5)
 
             ' Create cap
             gpCap.AddLine(-2, -3, 0, -5)
