@@ -170,6 +170,10 @@ Public Class plUnitControl
         ' Get style colors
         Me.m_uic.StyleGuide.GetStyleColors(Me.Unit.Style, clrText, clrBackground)
 
+        If Not Me.Unit.CanCompute Then
+            clrBackground = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+        End If
+
         'Determine border color
         If Me.Selected Then
             clrBorder = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)

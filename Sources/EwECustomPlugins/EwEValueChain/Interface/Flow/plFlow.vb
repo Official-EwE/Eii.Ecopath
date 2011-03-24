@@ -3,6 +3,7 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
+Imports System.Data.Linq
 Imports EwECore
 Imports EwEUtils.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Style
@@ -15,6 +16,11 @@ Imports ScientificInterfaceShared.Controls
 ''' Flow editor control, including flow area, relevant toolbar(s) and 
 ''' property grid(s).
 ''' </summary>
+''' <remarks>
+''' JS: this diagram is so 'hack' it's not even funny. This code should be replaced
+''' by a proper diagramming tool that uses less resources, has straight lines,
+''' etc. How about itegrating with Diagram.Net?
+''' </remarks>
 ''' ===========================================================================
 Public Class plFlow
     Inherits Panel
@@ -668,6 +674,7 @@ Public Class plFlow
             Me.EditMode = eEditMode.Move
         End If
 
+        Me.CheckMissingParameters()
         Return unit
 
     End Function
@@ -808,7 +815,7 @@ Public Class plFlow
 
         Dim uc As New UnitConnector(link)
         Me.m_dtLinks(link) = uc
-        If bRefresh Then Me.Invalidate()
+        Me.Invalidate(True)
         Return uc
     End Function
 
@@ -840,6 +847,7 @@ Public Class plFlow
     Public Function DeleteLink(ByVal link As cLink) As Boolean
         Me.RemoveLink(link)
         Me.m_data.DeleteLink(link)
+        Me.Invalidate(True)
         Return True
     End Function
 
@@ -864,6 +872,7 @@ Public Class plFlow
                     Dim link As cLink = Me.m_data.CreateLink(DirectCast(Me.Selection, plUnitControl).Unit, uc.Unit)
                     If link IsNot Nothing Then
                         Me.AddLink(link)
+                        Me.CheckMissingParameters()
                     End If
                     ' Clear selection
                     Me.Selection = Nothing
@@ -877,6 +886,7 @@ Public Class plFlow
                     Me.EditMode = eEditMode.Move
                     ' Yeah!
                     Me.RebuildFlow()
+                    Me.CheckMissingParameters()
                 End If
 
         End Select
@@ -989,6 +999,7 @@ Public Class plFlow
             Select Case Me.EditMode
                 Case eEditMode.Delete
                     Me.DeleteLink(conn.Link)
+                    Me.CheckMissingParameters()
                     Me.Refresh()
                 Case eEditMode.Move
                     Me.Selection = conn
@@ -1196,6 +1207,12 @@ Public Class plFlow
         Return sAngle
 
     End Function
+
+    Private Sub CheckMissingParameters()
+
+        If Me.EditMode = eEditMode.ReadOnly Then Return
+
+    End Sub
 
 #End Region ' Internals
 
