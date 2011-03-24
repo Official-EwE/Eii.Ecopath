@@ -270,6 +270,18 @@ Public Class ucParameters
         If (Not Me.m_nudBaseYear.IsDisposed) Then
             Me.m_lblBaseYear.Enabled = bConnect
             Me.m_nudBaseYear.Enabled = bConnect
+
+            Me.m_lblEffortMin.Enabled = bConnect
+            Me.m_nudEffortMin.Enabled = bConnect
+
+            Me.m_lblEffortMax.Enabled = bConnect
+            Me.m_nudEffortMax.Enabled = bConnect
+
+            Me.m_lbEffortIncr.Enabled = bConnect
+            Me.m_nudEffortIncr.Enabled = bConnect
+
+            Me.m_lblFleets.Enabled = bConnect
+            Me.m_clbFleets.Enabled = bConnect
         End If
 
     End Sub
