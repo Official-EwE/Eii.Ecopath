@@ -316,10 +316,15 @@ Public Class cProducerUnit
         '
         ' VC:  because of the problem above, I force the effort to be 1 at timestep 1.
 
+        ' JS110325: Added sanity check
+        If (results.RunType = cModel.eRunTypes.Ecopath) Then
+            Debug.Assert(iTimeStep = 1, "Ecopath should use time step 1 only")
+        End If
+
         If (iTimeStep = 1) Then
             ' #Yes: store base biomass
             Me.m_sOriginalOutputBiomass = sOutputBiomass
-            ' Du not use effort this time step
+            ' Do not use effort this time step
             Me.m_bUseEffort = False
         Else
             ' #No: use effort-based biomass
