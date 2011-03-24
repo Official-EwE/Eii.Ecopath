@@ -39,7 +39,6 @@ Public Class gridEcopathResult
         ' ToDo: globalize this method!
 
         Dim cell As SourceGrid2.Cells.Real.Cell = Nothing
-        Dim iR As Integer = 0
 
         Me.AutoSizeMode = Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.GridToolTipActive = True
@@ -62,74 +61,68 @@ Public Class gridEcopathResult
         Me(0, 6) = New EwEColumnHeaderCell("Total")
 
         ' Row headers
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Production")
-        ' Units
-        Me(iR, 1) = CreateUnitCell("t")
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Production, live weight")
-        Me(iR, 1) = CreateUnitCell("t")
+        Me(1, 0) = CreateRowHeaderCell("Production")
+        Me(1, 1) = CreateUnitCell("t")
 
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Production value")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Other production value")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Ticket revenue")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Subsidies")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("= Revenue", cStyleGuide.eStyleFlags.Sum)
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(2, 0) = CreateRowHeaderCell("Production, live weight")
+        Me(2, 1) = CreateUnitCell("t")
 
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Salaries/shares")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Input (fish)")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Input other")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Taxes")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Management, royalty, certification, observers")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("= Cost", cStyleGuide.eStyleFlags.Sum)
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("= Profit", cStyleGuide.eStyleFlags.Sum)
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("= Total utility", cStyleGuide.eStyleFlags.Sum)   'throughput
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(3, 0) = CreateRowHeaderCell("Production value")
+        Me(3, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Jobs, female")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Currency)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Jobs, male")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("= Jobs, total", cStyleGuide.eStyleFlags.Sum)
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal, cStyleGuide.eStyleFlags.Sum)
+        Me(4, 0) = CreateRowHeaderCell("Other production value")
+        Me(4, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Worker dependents")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("Owner dependents")
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
-        iR += 1
-        Me(iR, 0) = CreateRowHeaderCell("= Dependents, total", cStyleGuide.eStyleFlags.Sum)
-        Me(iR, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal, cStyleGuide.eStyleFlags.Sum)
+        Me(5, 0) = CreateRowHeaderCell("Ticket revenue")
+        Me(5, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+
+        Me(6, 0) = CreateRowHeaderCell("Subsidies")
+        Me(6, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+
+        Me(7, 0) = CreateRowHeaderCell("= Revenue", cStyleGuide.eStyleFlags.Sum)
+        Me(7, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+
+        Me(8, 0) = CreateRowHeaderCell("Salaries/shares")
+        Me(8, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+
+        Me(9, 0) = CreateRowHeaderCell("Input (fish)")
+        Me(9, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+
+        Me(10, 0) = CreateRowHeaderCell("Input other")
+        Me(10, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+
+        Me(11, 0) = CreateRowHeaderCell("Taxes")
+        Me(11, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+
+        Me(12, 0) = CreateRowHeaderCell("Management, royalty, certification, observers")
+        Me(12, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+
+        Me(13, 0) = CreateRowHeaderCell("= Cost", cStyleGuide.eStyleFlags.Sum)
+        Me(13, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+
+        Me(14, 0) = CreateRowHeaderCell("= Profit", cStyleGuide.eStyleFlags.Sum)
+        Me(14, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+
+        Me(15, 0) = CreateRowHeaderCell("= Total utility", cStyleGuide.eStyleFlags.Sum)   'throughput
+        Me(15, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+
+        Me(16, 0) = CreateRowHeaderCell("Jobs, female")
+        Me(16, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+
+        Me(17, 0) = CreateRowHeaderCell("Jobs, male")
+        Me(17, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+
+        Me(18, 0) = CreateRowHeaderCell("= Jobs, total", cStyleGuide.eStyleFlags.Sum)
+        Me(18, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal, cStyleGuide.eStyleFlags.Sum)
+
+        Me(19, 0) = CreateRowHeaderCell("Worker dependents")
+        Me(19, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+
+        Me(20, 0) = CreateRowHeaderCell("Owner dependents")
+        Me(20, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+
+        Me(21, 0) = CreateRowHeaderCell("= Dependents, total", cStyleGuide.eStyleFlags.Sum)
+        Me(21, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal, cStyleGuide.eStyleFlags.Sum)
 
         ' Create data cells
         For i As Integer = 0 To 3
