@@ -1,24 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: ArrayGraph.vb,v $
-' Revision 1.4  2009/04/16 21:52:36  joeh
-' Add Legends to the MTI plot
-'
-' Revision 1.3  2008/12/05 19:45:20  joeh
-' Add 'Legend' to be plotted on top of labels
-'
-' Revision 1.2  2008/11/28 20:20:44  joeh
-' Change the label topaxis angle to 0
-'
-' Revision 1.1  2008/11/28 01:58:32  joeh
-' Implement new MTI plot and save MTI plot as emf file
-'
-' Revision 1.5  2008/11/24 16:06:13  jeroens
-' Header!
-'
-'==============================================================================
-
-Option Strict On
+﻿Option Strict On
 Option Explicit On
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
