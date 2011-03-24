@@ -45,9 +45,9 @@ Public Class ucResults
     Private Shared g_iLastFleet As Integer = 0
 
     Private Enum eViewModeType As Integer
-        Ecopath = 0
-        Ecosim
-        Equilibrium
+        Grid = 0
+        Graph
+        GraphEquilibrium
     End Enum
 
     Enum eGraphDataType As Integer
@@ -68,7 +68,7 @@ Public Class ucResults
     Private m_uic As cUIContext = Nothing
 
     ''' <summary>Viewmode dictates what type of result screen the user sees.</summary>
-    Private m_viewMode As eViewModeType = eViewModeType.Ecosim
+    Private m_viewMode As eViewModeType = eViewModeType.Graph
     ''' <summary>Graphmode dictates what data is viewed in result graphs.</summary>
     Private m_graphmode As eGraphDataType = eGraphDataType.CostRevenue
     ''' <summary>Current view to update when triggers arrive.</summary>
@@ -169,6 +169,14 @@ Public Class ucResults
 
         ' Restore last selection
         Me.m_tscmbFleets.SelectedIndex = Math.Min(Me.m_tscmbFleets.Items.Count - 1, Math.Max(-1, ucResults.g_iLastFleet))
+
+        ' Initialize view
+        Select Case Me.m_result.RunType
+            Case cModel.eRunTypes.Ecopath : Me.SetViewMode(eViewModeType.Grid)
+            Case cModel.eRunTypes.Ecosim : Me.SetViewMode(eViewModeType.Graph)
+            Case cModel.eRunTypes.Equilibrium : Me.SetViewMode(eViewModeType.GraphEquilibrium)
+        End Select
+
     End Sub
 
     Private Sub OnFilterByFleet(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -208,17 +216,17 @@ Public Class ucResults
 
     Private Sub OnShowEcopath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbEcopath.Click
-        Me.SetViewMode(eViewModeType.Ecopath)
+        Me.SetViewMode(eViewModeType.Grid)
     End Sub
 
     Private Sub OnShowEcosim(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbEcosim.Click
-        Me.SetViewMode(eViewModeType.Ecosim)
+        Me.SetViewMode(eViewModeType.Graph)
     End Sub
 
     Private Sub OnShowEquilibrium(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbEquilibrium.Click
-        Me.SetViewMode(eViewModeType.Equilibrium)
+        Me.SetViewMode(eViewModeType.GraphEquilibrium)
     End Sub
 
     Private Sub OnModelRunCompleted(ByVal iTimeStep As Integer)
@@ -249,7 +257,7 @@ Public Class ucResults
             '    In manual mode the calling process becomes responsible for resetting results
             Me.m_result.Reset(cModel.eRunTypes.Ecopath)
             ' Prepare to display Ecopath results
-            Me.SetViewMode(eViewModeType.Ecopath)
+            Me.SetViewMode(eViewModeType.Grid)
             ' Run Ecopath
             Me.m_data.Core.RunEcoPath()
             ' Reflect results
@@ -288,7 +296,7 @@ Public Class ucResults
             '    In manual mode the calling process becomes responsible for resetting results
             Me.m_result.Reset(cModel.eRunTypes.Ecosim)
             ' Prepare view
-            Me.SetViewMode(eViewModeType.Ecosim)
+            Me.SetViewMode(eViewModeType.Graph)
             ' Run Ecosim
             Me.m_data.Core.RunEcoSim(AddressOf EcosimTimestepHandler)
             ' Update results
@@ -322,7 +330,7 @@ Public Class ucResults
         '    In manual mode the calling process becomes responsible for resetting results
         Me.m_result.Reset(cModel.eRunTypes.Equilibrium)
         ' Prepare view
-        Me.SetViewMode(eViewModeType.Equilibrium)
+        Me.SetViewMode(eViewModeType.GraphEquilibrium)
         ' Run
         Me.m_model.RunEquilibrium(Me.m_data, Me.m_result)
         ' Process results
@@ -420,15 +428,15 @@ Public Class ucResults
         Me.m_bInUpdate = True
 
         Me.m_scResults.Panel1Collapsed = (Me.m_tsbShowFlow.Checked = False)
-        Me.m_tsbEcopath.Checked = (Me.m_viewMode = eViewModeType.Ecopath)
-        Me.m_tsbEcosim.Checked = (Me.m_viewMode = eViewModeType.Ecosim)
-        Me.m_tsbEquilibrium.Checked = (Me.m_viewMode = eViewModeType.Equilibrium)
+        Me.m_tsbEcopath.Checked = (Me.m_viewMode = eViewModeType.Grid)
+        Me.m_tsbEcosim.Checked = (Me.m_viewMode = eViewModeType.Graph)
+        Me.m_tsbEquilibrium.Checked = (Me.m_viewMode = eViewModeType.GraphEquilibrium)
 
         Me.m_tscmbFleets.Enabled = (Me.m_data.Parameters.ResultsByFleet = True)
         Me.m_tscmbFleets.SelectedItem = Me.GetCoreComboItem(Me.m_plFlow.FleetFilter, Me.m_tscmbFleets)
 
-        Me.m_tslblData.Visible = (Me.m_viewMode <> eViewModeType.Ecopath)
-        Me.m_tscmbGraphData.Visible = (Me.m_viewMode <> eViewModeType.Ecopath)
+        Me.m_tslblData.Visible = (Me.m_viewMode <> eViewModeType.Grid)
+        Me.m_tscmbGraphData.Visible = (Me.m_viewMode <> eViewModeType.Grid)
 
         Me.m_bInUpdate = False
 
@@ -448,13 +456,13 @@ Public Class ucResults
 
         Select Case viewMode
 
-            Case eViewModeType.Ecopath
+            Case eViewModeType.Grid
                 ctrl = New gridEcopathResult(Me.m_uic)
 
-            Case eViewModeType.Ecosim
+            Case eViewModeType.Graph
                 ctrl = New ucEcosimGraph(Me.m_data, Me.m_uic)
 
-            Case eViewModeType.Equilibrium
+            Case eViewModeType.GraphEquilibrium
                 ctrl = New ucEquilibriumGraph(Me.m_uic)
 
             Case Else
@@ -489,7 +497,7 @@ Public Class ucResults
 
         Dim gv As IGraphView = DirectCast(Me.m_view, IGraphView)
         Dim strGraphTitle As String = ""
-        Dim strXAxisLabel As String = CStr(IIf(Me.m_viewMode = eViewModeType.Equilibrium, "Effort", "Year"))
+        Dim strXAxisLabel As String = CStr(IIf(Me.m_viewMode = eViewModeType.GraphEquilibrium, "Effort", "Year"))
         Dim strYAxisLabel As String = ""
         Dim aUnitsYAxis() As cStyleGuide.eUnitType = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary}
         Dim avars() As cResults.eVariableType = Nothing
