@@ -389,7 +389,9 @@ Namespace Ecosim
             Handles m_cmdLoadTS.OnPostInvoke
             'this means the time series data could have changed
             'reload the data into the manager
-            Me.m_mcmanager.Load()
+            'jb 14-Mar-2011 MonteCarlo manager does not need to reload if timeseries is loaded
+            'Infact this will overwrite user edited Parameter Limit values
+            'Me.m_mcmanager.Load()
             Me.UpdateGraphXAxis()
         End Sub
 

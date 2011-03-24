@@ -573,9 +573,18 @@ Public Class cMonteCarloManager
     End Property
 
     Public Sub LoadFromPedigree()
-        Me.m_mc.LoadFromPedigree()
-        Me.LoadGroups()
-        Me.m_core.onChanged(Me, eMessageType.DataModified)
+
+        Try
+
+            Me.m_mc.LoadFromPedigree()
+            Me.m_mc.CalculateUpperLowerLimits(False)
+            Me.LoadGroups()
+
+            Me.m_core.onChanged(Me, eMessageType.DataModified)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
     End Sub
 
 #End Region

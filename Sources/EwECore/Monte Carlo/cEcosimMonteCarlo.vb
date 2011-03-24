@@ -175,9 +175,9 @@ Public Class cEcosimMonteCarlo
             Case eVarNameFlags.Biomass : Return 1
             Case eVarNameFlags.PBInput : Return 2
             Case eVarNameFlags.QBInput : Return 3
-            Case eVarNameFlags.DietComp : Return 4
-            Case eVarNameFlags.TCatchInput : Return 5
         End Select
+
+        System.Console.WriteLine(Me.ToString & ".PedigreeVarToMCIndex() Invalid VarName '" & vn.ToString & "'")
         Return -1
 
     End Function
@@ -187,7 +187,7 @@ Public Class cEcosimMonteCarlo
         Dim opt As Integer ' Opt = pedigree level
         Dim varname As eVarNameFlags = eVarNameFlags.NotSet
         Dim man As cPedigreeManager = Nothing
-        Dim Par As Integer = 0
+        Dim iPar As Integer = 0
 
         ' For all pedigree supported vars
         For iVar As Integer = 1 To Me.m_epdata.NumPedigreeVariables
@@ -200,35 +200,23 @@ Public Class cEcosimMonteCarlo
                 If opt > 0 Then ' Non-estimated level
                     Try
 
-                        Par = Me.PedigreeVarToMCIndex(varname)
-                        'ToDo 7-Dec-2010 MonteCarlo.LoadFromPedigree see ticket #855
-                        'TCatchInput pedigree level is being applied to BA
-                        'DietComp and TCatchInput should be removed
-                        'BA should be added???
-                        Select Case varname
-                            Case eVarNameFlags.Biomass, _
-                                 eVarNameFlags.PBInput, _
-                                 eVarNameFlags.QBInput
+                        iPar = Me.PedigreeVarToMCIndex(varname)
 
-                                CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
+                        If iPar > 0 And iPar < 4 Then
+                            Select Case varname
+                                Case eVarNameFlags.Biomass, _
+                                     eVarNameFlags.PBInput, _
+                                     eVarNameFlags.QBInput
 
-                                'ToDo 7-Dec-2010 MonteCarlo.LoadFromPedigree the intention here is to reset the ParLimit() base on the new CV value
-                                ParLimit(0, Par, i) = 0
-                                ParLimit(1, Par, i) = 0
+                                    CVpar(iPar, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
 
-                            Case eVarNameFlags.DietComp  'DC
-                                'If PP(GrpNo) < 1 Then
-                                '    For Grp2 = 0 To NumGroups
-                                '        DCPct(GrpNo, Grp2) = value
-                                '    Next
-                                'End If
+                                    ''ToDo 7-Dec-2010 MonteCarlo.LoadFromPedigree the intention here is to reset the ParLimit() base on the new CV value
+                                    'ParLimit(0, iPar, i) = 0
+                                    'ParLimit(1, iPar, i) = 0
 
-                            Case eVarNameFlags.TCatchInput
-                                Debug.Assert(False, Me.ToString & ".LoadFromPedigree() Pedigree for Catch is being applied to BA()")
-                                '040114VC: Now want to use BA in Ecosim Monte Carlo, so trying this
-                                CVpar(Par, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
 
-                        End Select
+                            End Select
+                        End If
                     Catch ex As Exception
 
                     End Try
@@ -285,7 +273,9 @@ Public Class cEcosimMonteCarlo
             'vulnerabilities 
             Array.Copy(m_core.m_EcoSimData.VulMult, Me.orgVul, m_core.m_EcoSimData.VulMult.Length)
 
-            CalculateUpperLowerLimits(True)
+            'jb Mar-24-2011 Do NOT reset Upper and Lower Parameter Limits 
+            'they may have been edited by a user and this will overwrite the edits with defaults
+            'CalculateUpperLowerLimits(True)
 
 #If 0 Then
 
@@ -739,11 +729,17 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
+
+    ''' <summary>
+    ''' Calculte the Upper and Lower Parameter limits from CV values
+    ''' </summary>
+    ''' <param name="IsCrashEvaluated">Not USED!</param>
+    ''' <remarks>Called once during initialization to set default values or when CV values have been edited</remarks>
     Public Sub CalculateUpperLowerLimits(ByVal IsCrashEvaluated As Boolean)
 
         Dim i As Integer
         Try
-            Dim factor As Integer = 100 'IIf(IsCrashEvaluated, 1000, 2)
+            Dim factor As Integer = 1  'IIf(IsCrashEvaluated, 1000, 2)
             'We want a wide range for searching, cv will still limit the steps
             For i = 1 To m_core.nLivingGroups
                 'If IsCrashEvaluated Then factor = IIf(isCrashed(i), 4, 2)
