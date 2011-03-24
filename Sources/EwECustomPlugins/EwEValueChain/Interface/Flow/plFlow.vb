@@ -3,11 +3,11 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
-Imports System.Data.Linq
 Imports EwECore
 Imports EwEUtils.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
+Imports System.Drawing.Drawing2D
 
 #End Region ' Imports
 
@@ -436,6 +436,8 @@ Public Class plFlow
                 ctrlSource = Me.m_dtControls(c.Link.Source)
                 ctrlTarget = Me.m_dtControls(c.Link.Target)
 
+                Dim ptT As Point = Me.FindIntersect(ctrlSource.Center, ctrlTarget.Center, ctrlTarget)
+
                 ' Paint link on visible canvas
                 If Object.ReferenceEquals(Me.Selection, c) Then
                     clrFore = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
@@ -446,10 +448,10 @@ Public Class plFlow
                 Else
                     Me.m_uic.StyleGuide.GetStyleColors(c.Link.Style, clrFore, clrBack)
                 End If
-                PaintLink(e.Graphics, ctrlSource.Center, ctrlTarget.Center, clrFore, c.Link.BiomassRatio, c.Link.External)
+                PaintLink(e.Graphics, ctrlSource.Center, ptT, clrFore, c.Link.BiomassRatio, c.Link.External)
 
                 ' Paint detection link on detection bitmap with a fixed width to make the link better clickable
-                PaintLink(g, ctrlSource.Center, ctrlTarget.Center, c.Color, 5)
+                PaintLink(g, ctrlSource.Center, ptT, c.Color, 5)
 
             Catch ex As Exception
                 Console.WriteLine("Link {0} not correctly configured", c.Link.Name)
@@ -1081,6 +1083,51 @@ Public Class plFlow
         Me.Invalidate()
     End Sub
 
+    Private Function FindIntersect(ByVal ptFrom As Point, ByVal ptTo As Point, ByVal unitTo As plUnitControl) As Point
+        If (unitTo Is Nothing) Then Return ptTo
+
+        'The slope of the line is s = (Ay - By)/(Ax - Bx).
+
+        'If -h/2 <= s * w/2 <= h/2 then the line intersects:
+        '    The right edge if Ax > Bx
+        '    The left edge if Ax < Bx.
+        'If -w/2 <= (h/2)/s <= w/2 then the line intersects:
+        '    The top edge if Ay > By
+        '    The bottom edge if Ay < By.
+
+        Dim dx As Single = ptFrom.X - ptTo.X
+        Dim dy As Single = ptFrom.Y - ptTo.Y
+        Dim ptIntersect As Point = ptTo
+        Dim rc As New Rectangle(unitTo.Location, unitTo.Size)
+
+        If dx <> 0 And dy <> 0 Then
+            Dim sSlope As Single = (dy / rc.Height) / (dx / rc.Width)
+            If Math.Abs(sSlope * rc.Width / dx) <= Math.Abs(rc.Height / dy) Then
+                If dx < 0 Then
+                    ptIntersect = New Point(rc.Left, CInt(ptTo.Y - rc.Height * (0.5 * sSlope)))
+                Else
+                    ptIntersect = New Point(rc.Right, CInt(ptTo.Y + rc.Height * (0.5 * sSlope)))
+                End If
+
+            Else
+                If dy < 0 Then
+                    ptIntersect = New Point(CInt(ptTo.X - rc.Width * (0.5 / sSlope)), rc.Top)
+                Else
+                    ptIntersect = New Point(CInt(ptTo.X + rc.Width * (0.5 / sSlope)), rc.Bottom)
+                End If
+
+            End If
+        Else
+            If dx = 0 Then
+                ptIntersect = New Point(ptTo.X, CInt(If(dy < 0, rc.Top, rc.Bottom)))
+            Else
+                ptIntersect = New Point(CInt(If(dx < 0, rc.Left, rc.Right)), ptTo.Y)
+            End If
+
+        End If
+        Return ptIntersect
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Paint a link between two units.
@@ -1094,8 +1141,10 @@ Public Class plFlow
     ''' <param name="bExternal">Flag stating whether this link represents an 
     ''' 'External' connection.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub PaintLink(ByVal g As Graphics, ByVal ptStart As Point, ByVal ptEnd As Point, ByVal clr As Color, ByVal sWeight As Single, _
-            Optional ByVal bExternal As Boolean = False)
+    Private Sub PaintLink(ByVal g As Graphics, _
+                          ByVal ptStart As Point, ByVal ptEnd As Point, _
+                          ByVal clr As Color, ByVal sWeight As Single, _
+                          Optional ByVal bExternal As Boolean = False)
 
         Dim p As Pen = Nothing
         Dim ptStartScaled As New Point(CInt(ptStart.X * Me.m_sScale), CInt(ptStart.Y * Me.m_sScale))
@@ -1103,13 +1152,7 @@ Public Class plFlow
 
         Dim dx As Integer = ptEndScaled.X - ptStartScaled.X
         Dim dy As Integer = ptEndScaled.Y - ptStartScaled.Y
-        Dim ptIndicatorStartScaled As New Point(ptStartScaled.X + CInt(dx * 0.6), ptStartScaled.Y + CInt(dy * 0.6))
-        Dim ptIndicatorEndScaled As New Point(ptIndicatorStartScaled.X, ptIndicatorStartScaled.Y)
-        Dim sIndicatorLength As Single = Me.m_sScale * 5
-        Dim sAngle As Single = Me.Angle(dx, dy) - CSng(Math.PI / 2)
 
-        ptIndicatorEndScaled.X += CInt(sIndicatorLength * Math.Sin(sAngle))
-        ptIndicatorEndScaled.Y -= CInt(sIndicatorLength * Math.Cos(sAngle))
 
         ' Get pen to draw with. Zero weight?
         If sWeight = 0 Then
@@ -1129,9 +1172,8 @@ Public Class plFlow
             p.DashStyle = Drawing2D.DashStyle.Dash
         End If
 
-        ' Finally draw
+        p.CustomEndCap = New AdjustableArrowCap(Me.m_sScale * 4, Me.m_sScale * 4)
         g.DrawLine(p, ptStartScaled, ptEndScaled)
-        g.DrawLine(p, ptIndicatorStartScaled, ptIndicatorEndScaled)
 
         p.Dispose()
 
