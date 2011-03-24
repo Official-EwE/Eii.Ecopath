@@ -478,21 +478,19 @@ Public Class cResults
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function GetTimeStepTotal(ByVal vartype As eVariableType, _
-                             Optional ByVal iTimeStep As Integer = 0, _
+                             Optional ByVal iTimeStep As Integer = 1, _
                              Optional ByVal lUnits As List(Of cUnit) = Nothing, _
                              Optional ByVal iFleet As Integer = 0) As Single
 
         Dim sTotal As Single = 0.0!
 
         If lUnits Is Nothing Then
-            For Each unit As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
-                sTotal += Me.Result(unit, vartype, iTimeStep, iFleet)
-            Next
-        Else
-            For Each unit As cUnit In lUnits
-                sTotal += Me.Result(unit, vartype, iTimeStep, iFleet)
-            Next
+            lUnits = Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
         End If
+
+        For Each unit As cUnit In lUnits
+            sTotal += Me.Result(unit, vartype, iTimeStep, iFleet)
+        Next
 
         Return sTotal
 
@@ -512,20 +510,20 @@ Public Class cResults
 
         Dim sTotal As Single = 0.0!
 
+        If lUnits Is Nothing Then
+            lUnits = Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
+        End If
+
         For iTimestep = 0 To Me.m_iMaxTimeStep
-            If lUnits Is Nothing Then
-                For Each unit As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
-                    sTotal += Me.Result(unit, vartype, iTimestep, iFleet)
-                Next
-            Else
-                For Each unit As cUnit In lUnits
-                    sTotal += Me.Result(unit, vartype, iTimestep, iFleet)
-                Next
-            End If
-        Next
+            For Each unit As cUnit In lUnits
+                sTotal += Me.Result(unit, vartype, iTimestep, iFleet)
+            Next
+        Next iTimestep
+
         Return sTotal
 
     End Function
+
 #End Region ' Totals
 
 #Region " Internals "
@@ -573,7 +571,16 @@ Public Class cResults
                                       ByVal unit As cUnit, _
                                       ByVal iTimeStep As Integer, _
                                       ByVal sContribution As Single)
-        If iTimeStep < Me.m_data.Core.nEcosimTimeSteps Then
+
+        Dim bOkidoki As Boolean = False
+
+        Select Case Me.RunType
+            Case cModel.eRunTypes.Ecopath : bOkidoki = (iTimeStep = 1)
+            Case cModel.eRunTypes.Ecosim : bOkidoki = (iTimeStep < Me.m_data.Core.nEcosimTimeSteps)
+            Case cModel.eRunTypes.Equilibrium : bOkidoki = (iTimeStep < Me.m_data.Core.nEcosimTimeSteps)
+        End Select
+
+        If bOkidoki Then
             Try
                 Me.m_asFleetBiomassContribution(iFleet, unit.Sequence, iTimeStep) = sContribution
             Catch ex As Exception
@@ -602,7 +609,15 @@ Public Class cResults
 
         If (iFleet = 0) Then Return 1
 
-        If (iTimestep < Me.m_data.Core.nEcosimTimeSteps) Then
+        Dim bOkidoki As Boolean = False
+
+        Select Case Me.RunType
+            Case cModel.eRunTypes.Ecopath : bOkidoki = (iTimestep = 1)
+            Case cModel.eRunTypes.Ecosim : bOkidoki = (iTimestep < Me.m_data.Core.nEcosimTimeSteps)
+            Case cModel.eRunTypes.Equilibrium : bOkidoki = (iTimestep < Me.m_data.Core.nEcosimTimeSteps)
+        End Select
+
+        If bOkidoki Then
             Try
                 sTotal = Me.m_asFleetBiomassContribution(0, unit.Sequence, iTimestep)
                 sContr = Me.m_asFleetBiomassContribution(iFleet, unit.Sequence, iTimestep)

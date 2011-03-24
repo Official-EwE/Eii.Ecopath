@@ -285,7 +285,7 @@ Public Class cPluginPoint
         ' Prepare data
         Me.m_data.InitRun()
         ' Run a single time step
-        Me.m_model.RunTimeStep(Me.m_data, Me.m_result)
+        Me.m_model.RunTimeStep(Me.m_data, Me.m_result, 1)
 
         ' Send out data
         Me.BroadcastResults(1)

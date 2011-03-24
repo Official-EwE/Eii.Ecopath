@@ -8,6 +8,7 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
+' Experimental flag to allow multi-fleet calculations
 #Const RUN_MULTIFLEET = 1
 
 ''' ---------------------------------------------------------------------------
@@ -212,9 +213,18 @@ Public Class cModel
 
     End Function
 
+    ''' <summary>
+    ''' Run a time step.
+    ''' </summary>
+    ''' <param name="data"></param>
+    ''' <param name="result"></param>
+    ''' <param name="iTimeStep">1 when running Ecopath.</param>
+    ''' <param name="ecosimResults"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function RunTimeStep(ByVal data As cData, _
                         ByVal result As cResults, _
-                        Optional ByVal iTimeStep As Integer = 1, _
+                        ByVal iTimeStep As Integer, _
                         Optional ByVal ecosimResults As cEcoSimResults = Nothing) As Boolean
 
         Dim prodUnit As cProducerUnit = Nothing
@@ -263,10 +273,11 @@ Public Class cModel
 
             If bAllowedToRun Then
 
-                ' PreCompute the landings values. 
-                ' This should be changed: 
-                ' Should also check for Ecopath or Ecosim Running, right now, it just always precomputes
-                Dim clpLandPort As New cComputeLandingPortions(data, iTimeStep, result.RunType)
+                ' JS 23Mar11: not used
+                '' PreCompute the landings values. 
+                '' This should be changed: 
+                '' Should also check for Ecopath or Ecosim Running, right now, it just always precomputes
+                'Dim clpLandPort As New cComputeLandingPortions(data, iTimeStep, result.RunType)
 
                 ' Run for each fleet
                 For iFleetRun = 0 To iNumFleetRun
