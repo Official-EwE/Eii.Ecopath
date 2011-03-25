@@ -453,6 +453,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         'm_tsmiPresentation
         '
         Me.m_tsmiPresentation.Name = "m_tsmiPresentation"
+        Me.m_tsmiPresentation.Image = SharedResources.FullScreenHS
         resources.ApplyResources(Me.m_tsmiPresentation, "m_tsmiPresentation")
         '
         'ToolStripSeparator1
