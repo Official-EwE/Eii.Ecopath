@@ -286,13 +286,8 @@ Namespace Controls
         ' Menu items to add to the context menu. The menu items are member vars so eventhandlers 
         ' can be properly detached preventing memory leaks.
 
-        ''' <summary>Save to CSV menu item.</summary>
-        Private m_menuitemSaveToCSV As ToolStripMenuItem = Nothing
-        ''' <summary>Show legend menu item.</summary>
-        Private m_menuitemShowLegend As ToolStripMenuItem = Nothing
-
-        ''' <summary>To set the max and min auto options.</summary>
-        Public Enum eScaleOptionTypes
+        ''' <summary>Enumerated type defining supported max and min auto scale options.</summary>
+        Public Enum eScaleOptionTypes As Byte
             MaxOnly
             MinOnly
             Both
@@ -407,17 +402,6 @@ Namespace Controls
             Me.m_hovermenu.Detach()
             Me.m_hovermenu.Dispose()
             Me.m_hovermenu = Nothing
-
-            If (Me.m_menuitemSaveToCSV IsNot Nothing) Then
-                RemoveHandler Me.m_menuitemSaveToCSV.Click, AddressOf OnExtractToCSV
-                Me.m_menuitemSaveToCSV.Dispose()
-                Me.m_menuitemSaveToCSV = Nothing
-            End If
-            If (Me.m_menuitemShowLegend IsNot Nothing) Then
-                RemoveHandler Me.m_menuitemShowLegend.Click, AddressOf OnShowHideLegend
-                Me.m_menuitemShowLegend.Dispose()
-                Me.m_menuitemShowLegend = Nothing
-            End If
 
             Me.m_zgc = Nothing
             Me.m_nPanels = 0 ' To ensure that avid child control detaches do not stumble
@@ -1327,6 +1311,258 @@ Namespace Controls
 
 #End Region ' Cursor
 
+#Region " Data extraction "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get all lines tagged as <see cref="eLineType.ModelData">model data</see>
+        ''' from a graph pane.
+        ''' </summary>
+        ''' <param name="iPane">The index of the graph pane to check.</param>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property DataLines(Optional ByVal iPane As Integer = 1) As CurveItem()
+            Get
+                Dim gp As GraphPane = Me.GetPane(iPane)
+                Dim lLines As New List(Of CurveItem)
+                Dim info As cCurveInfo = Nothing
+                Dim bIncludeCurve As Boolean = True
+
+                If gp IsNot Nothing Then
+                    ' For each curve
+                    For Each ci As CurveItem In gp.CurveList
+                        ' Get curve info
+                        info = Me.CurveInfo(ci)
+                        bIncludeCurve = True
+                        If (info IsNot Nothing) Then
+                            bIncludeCurve = (info.LineType = eLineType.ModelData)
+                        End If
+                        If bIncludeCurve Then
+                            lLines.Add(ci)
+                        End If
+                    Next
+
+                End If
+                Return lLines.ToArray
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get whether the data in a given graph pane is sequential, e.g. if
+        ''' X axis values steadily increment from first to last point.
+        ''' </summary>
+        ''' <param name="iPane">The index of the graph pane to check.</param>
+        ''' <returns>True if data is sequential, False if data is scattered.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property IsDataSequential(Optional ByVal iPane As Integer = 1) As Boolean
+            Get
+                Dim bSequential As Boolean = True
+                For Each ci As CurveItem In Me.DataLines(iPane)
+                    For i As Integer = 1 To ci.Points.Count - 1
+                        bSequential = bSequential And (ci.Points(i - 1).X < ci.Points(i).X)
+                    Next
+                Next
+                Return bSequential
+            End Get
+        End Property
+   
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Extract the data in the graph to text. The format that data is extracted
+        ''' if the data is <see cref="IsDataSequential">sequential or scattered</see>.
+        ''' </summary>
+        ''' <returns>A massive string.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Overridable Function ExtractData() As String
+
+            Dim bSequential As Boolean = True
+            For iPane As Integer = 1 To Me.NumPanes
+                bSequential = bSequential And Me.IsDataSequential(iPane)
+            Next
+
+            If bSequential Then
+                Return Me.ExtractDataSequential()
+            Else
+                Return Me.ExtractDataScattered()
+            End If
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Extract data in a sequential manner, e.g. as a table with a column for every
+        ''' line, and a row for every X value. This only works for graphs that contain
+        ''' <see cref="IsDataSequential">sequential</see> data.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
+        Protected Overridable Function ExtractDataSequential() As String
+
+            Dim sb As New StringBuilder()
+            Dim lAllCurves As New List(Of CurveItem)
+            Dim ci As CurveItem = Nothing
+            Dim bIsCumulative As Boolean = False
+            Dim info As cCurveInfo = Nothing
+            Dim gp As GraphPane = Nothing
+            Dim dValue As Double = 0.0#
+
+            ' == Write pane header line ==
+            sb.Append("Pane") ' Row header
+            ' For each pane
+            For iPane As Integer = 1 To Me.NumPanes
+                ' Get pane
+                gp = Me.GetPane(iPane)
+                ' Print the title of the pane
+                sb.Append(String.Format(",{0}{1}{0}", Chr(34), gp.Title.Text))
+                ' Get all data lines for the pane
+                Dim aCurves As CurveItem() = Me.DataLines(iPane)
+                ' Append columns for child curves
+                '   NB: Add one less comma than there are curves because the next pane name will add this last comma.
+                '       We do not want the csv file to end with a dummy column!
+                For iCurve As Integer = 2 To aCurves.Length
+                    sb.Append(",")
+                Next
+                lAllCurves.AddRange(aCurves)
+            Next
+            sb.AppendLine()
+
+            ' == Write title header line
+            sb.Append("Data") ' Row header
+            ' For each curve
+            For iCurve As Integer = 0 To lAllCurves.Count - 1
+                ' Print the title of the curve
+                sb.Append(String.Format(",{0}{1}{0}", Chr(34), lAllCurves(iCurve).Label.Text))
+            Next
+            sb.AppendLine()
+
+            ' Build temporary line admin
+            Dim iNumActiveLines As Integer = lAllCurves.Count
+            Dim aiLineIndex(iNumActiveLines) As Integer
+            Dim abLineDone(iNumActiveLines) As Boolean
+            Dim dXLabel As Double = Single.MaxValue
+
+            ' == Write curve values
+            While (iNumActiveLines > 0)
+
+                ' Determine next min
+                dXLabel = Single.MaxValue
+                For iCurve As Integer = 0 To lAllCurves.Count - 1
+                    ci = lAllCurves(iCurve)
+                    If (Not abLineDone(iCurve)) Then
+                        If (aiLineIndex(iCurve) = ci.Points.Count) Then
+                            abLineDone(iCurve) = True
+                            iNumActiveLines -= 1
+                        Else
+                            dXLabel = Math.Min(ci.Points(aiLineIndex(iCurve)).X, dXLabel)
+                        End If
+                    End If
+                Next
+
+                ' Plot row
+                ' 1) plot label value
+                sb.Append(cStringUtils.FormatDouble(dXLabel))
+                ' 2) For all curves
+                For iCurve As Integer = 0 To lAllCurves.Count - 1
+                    ' Get curve
+                    ci = lAllCurves(iCurve)
+                    ' Add comma to finish last value (if any)
+                    sb.Append(",")
+                    ' Curve not done yet?
+                    If (Not abLineDone(iCurve)) Then
+                        ' Curve point = current label?
+                        If (ci.Points(aiLineIndex(iCurve)).X = dXLabel) Then
+                            ' Is cumulative?
+                            info = Me.CurveInfo(ci)
+                            If (info IsNot Nothing) Then
+                                bIsCumulative = info.IsCumulative
+                            Else
+                                bIsCumulative = False
+                            End If
+                            ' Yeeehaw, plot value
+                            ' JS 13May10: Addressed issue 645 - do not export as cumulative data
+                            dValue = ci.Points(aiLineIndex(iCurve)).Y
+                            If (bIsCumulative) Then
+                                dValue -= info.Offset.Points(aiLineIndex(iCurve)).Y
+                            End If
+                            sb.Append(cStringUtils.FormatDouble(dValue))
+                            ' Next
+                            aiLineIndex(iCurve) += 1
+                        End If ' Is label
+                    End If ' Curve not done
+                Next
+                ' Add line terminator
+                sb.AppendLine()
+
+            End While
+
+            Return sb.ToString()
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Extract data in a sequential manner, e.g. as a table with a column for every
+        ''' line, and a row for every X value. This format will be used for graphs that 
+        ''' do not contain <see cref="IsDataSequential">sequential</see> data.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
+        Protected Overridable Function ExtractDataScattered() As String
+
+            Dim sb As New StringBuilder()
+            Dim aCurves As CurveItem() = Nothing
+            Dim bIsCumulative As Boolean = False
+            Dim info As cCurveInfo = Nothing
+            Dim sbX As StringBuilder = Nothing
+            Dim sbY As StringBuilder = Nothing
+            Dim dValue As Double = 0.0#
+            Dim gp As GraphPane = Nothing
+
+            ' For each pane
+            For iPane As Integer = 1 To Me.NumPanes
+                ' Get pane
+                gp = Me.GetPane(iPane)
+                ' Print the title
+                sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), gp.Title.Text))
+                ' Get curves
+                aCurves = Me.DataLines(iPane)
+                ' For each curve
+                For Each ci As CurveItem In aCurves
+                    ' Get curve info
+                    info = Me.CurveInfo(ci)
+
+                    If (info IsNot Nothing) Then
+                        bIsCumulative = info.IsCumulative
+                    Else
+                        bIsCumulative = False
+                    End If
+
+                    ' Print Item
+                    sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), ci.Label.Text))
+                    sbX = New StringBuilder("x")
+                    sbY = New StringBuilder("y")
+                    For i As Integer = 0 To ci.NPts - 1
+                        sbX.Append(",")
+                        sbX.Append(cStringUtils.FormatDouble(ci.Points(i).X))
+                        sbY.Append(",")
+
+                        ' JS 13May10: Addressed issue 645 - do not export as cumulative data
+                        dValue = ci.Points(i).Y
+                        If (bIsCumulative) Then
+                            dValue -= info.Offset.Points(i).Y
+                        End If
+                        sbY.Append(cStringUtils.FormatDouble(dValue))
+                    Next
+
+                    sb.AppendLine(sbX.ToString())
+                    sb.AppendLine(sbY.ToString())
+                Next
+            Next
+            Return sb.ToString()
+
+        End Function
+
+#End Region ' Data extraction 
+
 #Region " Context Menu "
 
         ''' -----------------------------------------------------------------------
@@ -1338,7 +1574,7 @@ Namespace Controls
         ''' True if successful.
         ''' </returns>
         ''' -----------------------------------------------------------------------
-        Public Function ExtractDataToCSV(ByVal strFileName As String) As Boolean
+        Public Function WriteDataToCSV(ByVal strFileName As String) As Boolean
 
             Dim sw As StreamWriter = Nothing
 
@@ -1392,76 +1628,19 @@ Namespace Controls
             cmdFS.Invoke(strFN, My.Resources.FILEFILTER_CSV, 0)
 
             If cmdFS.Result = DialogResult.OK Then
-                Return Me.ExtractDataToCSV(cmdFS.FileName)
+                Return Me.WriteDataToCSV(cmdFS.FileName)
             End If
 
             Return True
 
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Extract the data in the graph to a comma-separated string.
-        ''' </summary>
-        ''' <returns>A massive string.</returns>
-        ''' -----------------------------------------------------------------------
-        Public Function ExtractData() As String
-
-            Dim sb As New StringBuilder()
-            Dim bIncludeCurve As Boolean = False
-            Dim bIsCumulative As Boolean = False
-            Dim info As cCurveInfo = Nothing
-            Dim sbX As StringBuilder = Nothing
-            Dim sbY As StringBuilder = Nothing
-            Dim dValue As Double = 0.0#
-            Dim gp As GraphPane = Nothing
-
-            ' For each pane
-            For iPane As Integer = 1 To Me.NumPanes
-                ' Get pane
-                gp = Me.GetPane(iPane)
-                ' Print the title
-                sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), gp.Title.Text))
-                ' For each curve
-                For Each ci As CurveItem In gp.CurveList
-                    ' Get curve info
-                    info = Me.CurveInfo(ci)
-
-                    If (info IsNot Nothing) Then
-                        bIncludeCurve = info.LineType = eLineType.ModelData
-                        bIsCumulative = info.IsCumulative
-                    Else
-                        bIncludeCurve = False
-                        bIsCumulative = False
-                    End If
-
-                    ' Should curve be included?
-                    If bIncludeCurve Then
-
-                        ' Print Item
-                        sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), ci.Label.Text))
-                        sbX = New StringBuilder("x")
-                        sbY = New StringBuilder("y")
-                        For i As Integer = 0 To ci.NPts - 1
-                            sbX.Append(", ")
-                            sbX.Append(cStringUtils.FormatDouble(ci.Points(i).X))
-                            sbY.Append(", ")
-
-                            ' JS 13May10: Addressed issue 645 - do not export as cumulative data
-                            dValue = ci.Points(i).Y
-                            If (bIsCumulative) Then
-                                dValue -= info.Offset.Points(i).Y
-                            End If
-                            sbY.Append(cStringUtils.FormatDouble(dValue))
-                        Next
-
-                        sb.AppendLine(sbX.ToString())
-                        sb.AppendLine(sbY.ToString())
-                    End If
-                Next
-            Next
-
-            Return sb.ToString()
+        Public Function ExtractDataToClipboard() As Boolean
+            Try
+                Clipboard.SetText(Me.ExtractData())
+            Catch ex As Exception
+                ' NOP
+            End Try
         End Function
 
 #End Region ' Context Menu
@@ -2045,6 +2224,8 @@ Namespace Controls
                                          ByVal mousePt As Point, _
                                          ByVal objState As ZedGraphControl.ContextMenuObjectState)
 
+            Dim item As ToolStripMenuItem = Nothing
+
             ' Remove 'Set_to_default' item
             ' (After http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu)
             For Each tsmi As ToolStripMenuItem In menuStrip.Items
@@ -2054,30 +2235,21 @@ Namespace Controls
                 End If
             Next
 
-            ' SaveToCSV menu item not used yet?
-            If (Me.m_menuitemSaveToCSV Is Nothing) Then
-                ' #Yes: create it
-                Me.m_menuitemSaveToCSV = New ToolStripMenuItem()
-                ' Set menu item text
-                Me.m_menuitemSaveToCSV.Text = My.Resources.MENU_EXTRACT_TO_CSV
-                ' Add a handler that will respond when that menu item is selected
-                ' ** Note that this handler needs to be removed manually to ensure the menu item is released
-                AddHandler Me.m_menuitemSaveToCSV.Click, AddressOf OnExtractToCSV
-            End If
-            menuStrip.Items.Add(Me.m_menuitemSaveToCSV)
+            item = New ToolStripMenuItem(My.Resources.MENU_EXTRACT_TO_CSV, My.Resources.ExportXMLHS, AddressOf OnExtractToCSV)
+            item.ShortcutKeys = Keys.Control Or Keys.X
+            item.ShowShortcutKeys = True
+            menuStrip.Items.Add(item)
 
-            ' Show legend menu item not used yet?
-            If (Me.m_menuitemShowLegend Is Nothing) Then
-                ' #Yes: create it
-                Me.m_menuitemShowLegend = New ToolStripMenuItem()
-                ' Set menu item text
-                Me.m_menuitemShowLegend.Text = My.Resources.MENU_SHOW_LEGEND
-                ' Add a handler that will respond when that menu item is selected
-                ' ** Note that this handler needs to be removed manually to ensure the menu item is released
-                AddHandler Me.m_menuitemShowLegend.Click, AddressOf OnShowHideLegend
-            End If
-            Me.m_menuitemShowLegend.Checked = Me.IsLegendVisible
-            menuStrip.Items.Add(Me.m_menuitemShowLegend)
+            item = New ToolStripMenuItem(My.Resources.MENU_EXTRACT_DATA_TO_CLIPBOARD, My.Resources.CopyHS, AddressOf OnExtractToClipboard)
+            item.ShortcutKeys = Keys.Control Or Keys.C
+            item.ShowShortcutKeys = True
+            menuStrip.Items.Add(item)
+
+            item = New ToolStripMenuItem(My.Resources.MENU_SHOW_LEGEND, My.Resources.LegendHS, AddressOf OnShowHideLegend)
+            item.ShortcutKeys = Keys.Control Or Keys.L
+            item.ShowShortcutKeys = True
+            item.Checked = Me.IsLegendVisible
+            menuStrip.Items.Add(item)
 
         End Sub
 
@@ -2097,6 +2269,15 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Protected Sub OnShowHideLegend(ByVal sender As Object, ByVal e As EventArgs)
             Me.IsLegendVisible = Not Me.IsLegendVisible
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler for extracting data to the clipboard.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Sub OnExtractToClipboard(ByVal sender As Object, ByVal e As EventArgs)
+            Me.ExtractDataToClipboard()
         End Sub
 
 #End Region ' Context menu
