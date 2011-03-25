@@ -792,13 +792,6 @@ Public Class cEcosimMonteCarlo
 
     Private Function ChooseFeasiblePar(ByVal xbar As Single, ByVal CV As Single, ByVal ParMin As Single, ByVal ParMax As Single, ByVal isCrashed As Boolean) As Single
         Dim X As Single, ict As Integer
-        '  Static Answer As Object
-
-        'if the populatoin is crashed then double the cv:
-        'Dim cvFactor As Double = 0.02 ' 0.01 + 0.5 * Math.Log10(RunsSinceLastWithLowerSS) ' IIf(isCrashed, 2, 1)
-
-
-        'Debug.Assert(ParMin <> ParMax, Me.ToString & ".ChooseFeasiblePar() ParMax = ParMin!!!!!")
 
         Do
             'jb 7-Dec-2010 ChooseFeasiblePar() changed application of CV 
@@ -849,10 +842,6 @@ Public Class cEcosimMonteCarlo
 
     Private Sub ChangeVulnerabilities(ByVal ParCurVal(,) As Single, ByVal CVpar(,) As Single)
 
-        'm_epdata.EE(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, igrp), _
-        '                              CVpar(6, igrp), ParLimit(0, eMCParams.Vulnerability, igrp), _
-        '                             ParLimit(1, eMCParams.Vulnerability, igrp))
-        '        Using sw As StreamWriter = New StreamWriter("c:\LME\Vulnerabilities.csv", True)  'true makes it append
         For iPred As Integer = 1 To m_core.nLivingGroups
             m_esdata.VulnerabilityPredator(iPred) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, iPred), _
                                                                      CVpar(6, iPred), _
@@ -862,10 +851,7 @@ Public Class cEcosimMonteCarlo
             For iPrey As Integer = 1 To m_core.nGroups
                 m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
             Next
-            '    sw.WriteLine(iPred.ToString & ", " & m_esdata.VulnerabilityPredator(iPred).ToString)
         Next
-        'sw.Close()
-        'End Using
 
     End Sub
 
