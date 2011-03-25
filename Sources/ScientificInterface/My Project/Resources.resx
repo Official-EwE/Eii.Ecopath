@@ -1585,4 +1585,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="EditTaxa" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\EditTaxa.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="GENERIC_LABEL_TRIAL" xml:space="preserve">
+    <value>Trial {0} - {1}</value>
+    <comment>{0}: trial number, {1} trial detail</comment>
+  </data>
 </root>

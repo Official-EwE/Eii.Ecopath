@@ -1614,6 +1614,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Trial {0} - {1}.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_LABEL_TRIAL() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_TRIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Are you sure you want to clear the recent accessed file history? This action cannot be undone..
         '''</summary>
         Friend ReadOnly Property GENERIC_PROMPT_CLEAR_MRU() As String

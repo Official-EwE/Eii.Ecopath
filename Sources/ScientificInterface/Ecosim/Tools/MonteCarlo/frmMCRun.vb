@@ -456,7 +456,10 @@ Namespace Ecosim
                 Next
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                    lLines.Add(Me.m_plothelper.CreateLine(Me.Core.EcoPathGroupInputs(iGroup), Me.m_lpplIteration(iGroup - 1)))
+                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+                    Dim strGroupName As String = String.Format(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name)
+                    Dim strTrialLabel As String = String.Format(My.Resources.GENERIC_LABEL_TRIAL, Me.m_nTrials, strGroupName)
+                    lLines.Add(Me.m_plothelper.CreateLine(group, Me.m_lpplIteration(iGroup - 1), strTrialLabel))
                 Next iGroup
 
             End If
