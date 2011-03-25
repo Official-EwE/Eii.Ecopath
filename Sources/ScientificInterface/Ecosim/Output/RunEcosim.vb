@@ -721,7 +721,7 @@ Namespace Ecosim
 
                     ' Yes: Create data list
                     pplData = New PointPairList
-                    pplData.Add(0, 1) ' Brute force to make 0 TS 1
+                    pplData.Add(Me.Core.EcosimFirstYear, 0) ' Brute force to make 0 TS 1
                     src = Me.Core.EcoSimGroupOutputs(iGroup)
 
                     For iTimeStep As Integer = 1 To Core.nEcosimTimeSteps
