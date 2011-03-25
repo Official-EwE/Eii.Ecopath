@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -513,6 +513,16 @@
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
+    <None Include="Resources\PasteHS.png" />
+    <None Include="Resources\CopyHS.png" />
+    <None Include="Resources\ShowGridlinesHS.png" />
+    <None Include="Resources\ShowGridlines2HS.png" />
+    <None Include="Resources\RulerHS.png" />
+    <None Include="Resources\Properties.png" />
+    <None Include="Resources\OrgChartHS.png" />
+    <None Include="Resources\LegendHS.png" />
+    <None Include="Resources\FullScreenHS.png" />
+    <None Include="Resources\PasteHS.bmp" />
     <None Include="Resources\graphhs.png" />
     <None Include="Resources\FunctionHS.png" />
     <None Include="Resources\ColorHS.png" />
