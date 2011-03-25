@@ -664,8 +664,10 @@ Namespace FitToTimeSeries
                 'setting bTimestepOutput = False should have had the same effect
                 m_core.m_EcoSim.TimeStepDelegate = Nothing
 
-                ''init ecosim
-                'm_esdata.dimResults()
+                ' Set V to default before initialization of Ecosim so it uses the new V's
+                If Me.m_data.UseDefaultV Then
+                    Me.m_core.setVToDefault()
+                End If
 
                 'Now Init Ecosim
                 initEcosimForSearchIteration()
@@ -698,10 +700,6 @@ Namespace FitToTimeSeries
                 m_ecosim.RunModelValue(TotalTime, Nothing, 0)
 
                 Me.updateAICNPars()
-
-                If Me.m_data.UseDefaultV Then
-                    Me.m_core.setVToDefault()
-                End If
 
                 'set the baseSS in the results object that was calculated above by ecosim
                 DirectCast(m_results, cF2TSResults).BaseSS = m_esdata.SS
