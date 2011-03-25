@@ -1,5 +1,6 @@
 Option Strict On
 Imports System.Drawing.Drawing2D
+Imports EwEUtils.Utilities
 
 Namespace Controls
 
@@ -9,29 +10,6 @@ Namespace Controls
     ''' </summary>
     ''' ===========================================================================
     Public Class cArrowIndicator
-
-#Region " Private vars "
-
-        ''' <summary>Single existing graphics path holding the arrow to draw.</summary>
-        ''' <remarks>This path is created on the first use.</remarks>
-        Private m_gpArrow As GraphicsPath = Nothing
-
-#End Region ' Private vars
-
-#Region " Singleton "
-
-        Private Shared __inst__ As cArrowIndicator
-
-        Private Shared Function GetInstance() As cArrowIndicator
-            If __inst__ Is Nothing Then __inst__ = New cArrowIndicator()
-            Return __inst__
-        End Function
-
-        Private Sub New()
-            Me.Init()
-        End Sub
-
-#End Region ' Singleton
 
 #Region " Public access "
 
@@ -51,7 +29,8 @@ Namespace Controls
                                     ByVal clr As Color, _
                                     ByVal rc As Rectangle, _
                                     ByVal sAngle As Single, _
-                                    ByVal sSize As Single)
+                                    ByVal sSize As Single, _
+                                    Optional ByVal bFilledArrow As Boolean = True)
 
             Dim matOrg As Matrix = g.Transform
             Dim matArr As New Matrix()
@@ -75,7 +54,9 @@ Namespace Controls
                 g.Transform = matArr
                 ' Draw arrow in requested color
                 Using p As New Pen(clr)
-                    g.DrawPath(p, GetInstance().m_gpArrow)
+                    p.StartCap = LineCap.Round
+                    p.CustomEndCap = New AdjustableArrowCap(3, 3, bFilledArrow)
+                    g.DrawLine(p, 0, -5, 0, 5)
                 End Using
                 ' Clean up borrowed DC by restoring original transformation matrix
                 g.Transform = matOrg
@@ -84,37 +65,42 @@ Namespace Controls
 
         End Sub
 
-#End Region ' Public access
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Draws an arrow in the indicated rectangle with an indicated colour, 
+        ''' at a given horizontal and vertical verlocity.
+        ''' </summary>
+        ''' <param name="g">Graphics to draw onto.</param>
+        ''' <param name="clr">Colour of the arrow to draw.</param>
+        ''' <param name="rc">Rectangle to draw the arrow into.</param>
+        ''' <param name="dx">X velocity.</param>
+        ''' <param name="dy">Y velocity.</param>
+        ''' -----------------------------------------------------------------------
+        Public Shared Sub DrawArrowDxDy(ByVal g As Graphics, _
+                                    ByVal clr As Color, _
+                                    ByVal rc As Rectangle, _
+                                    ByVal dx As Single, _
+                                    ByVal dy As Single, _
+                                    Optional ByVal bFilledArrow As Boolean = True)
 
-#Region " Internal implementation "
+            ' Leave a margin
+            rc.Inflate(-2, -2)
+            ' Calc center
+            Dim ptfCenter As New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
+            ' Calc arrow size
+            Dim szfHalfArrow As New SizeF(rc.Width * dx / 2.0!, rc.Height * dy / 2.0!)
 
-        Private Sub Init()
-
-            Dim gpCap As New GraphicsPath()
-            Dim gpArrow As New GraphicsPath()
-
-            '     (0, -5)
-            '       /|\  
-            '(-2,-3) | (2,-3)
-            '      (0,0)
-            '        |
-            '        |
-            '      (0, -5)
-
-            ' Create cap
-            gpCap.AddLine(-2, -3, 0, -5)
-            gpCap.AddLine(2, -3, 0, -5)
-            ' Create body
-            gpArrow.AddLine(0, -5, 0, 5)
-            ' Add cap
-            gpArrow.AddPath(gpCap, False)
-
-            ' Keep
-            m_gpArrow = gpArrow
+            Using p As New Pen(clr, 0.001!)
+                p.StartCap = LineCap.Round
+                p.CustomEndCap = New AdjustableArrowCap(3, 3, bFilledArrow)
+                g.DrawLine(p, _
+                           ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height, _
+                           ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)
+            End Using
 
         End Sub
 
-#End Region ' Internal implementation
+#End Region ' Public access
 
     End Class
 

@@ -65,10 +65,6 @@ Namespace Ecospace.Basemap.Layers
                 asValues = DirectCast(value, Single())
                 If asValues.Length = 2 Then
 
-                    ' Leave a margin
-                    rc.Inflate(-2, -2)
-                    ' Calc center
-                    ptfCenter = New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
                     ' Calc display scale, rounded to two decimals between -1 and 1
                     Try
                         sScaleX = Math.Max(-1, Math.Min(cNumberUtils.FixValue(CSng(Math.Round(asValues(0) / sMax, 2))), 1))
@@ -77,23 +73,30 @@ Namespace Ecospace.Basemap.Layers
                         sScaleX = 0
                         sScaleY = 0
                     End Try
-                    ' Calc arrow size
-                    szfHalfArrow = New SizeF(rc.Width * sScaleX / 2.0!, rc.Height * sScaleY / 2.0!)
 
-                    Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
-                        Try
-                            g.DrawLine(p, _
-                                       ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height, _
-                                       ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)
-                            g.DrawEllipse(p, _
-                                          ptfCenter.X + szfHalfArrow.Width - rc.Width / 8.0!, _
-                                          ptfCenter.Y + szfHalfArrow.Height - rc.Height / 8.0!, _
-                                          rc.Width / 4.0!, _
-                                          rc.Height / 4.0!)
-                        Catch ex As Exception
-                            ' NOP
-                        End Try
-                    End Using
+                    cArrowIndicator.DrawArrowDxDy(g, Me.VisualStyle.ForeColour, rc, sScaleX, sScaleY)
+
+                    '' Leave a margin
+                    'rc.Inflate(-2, -2)
+                    '' Calc center
+                    'ptfCenter = New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
+                    '' Calc arrow size
+                    'szfHalfArrow = New SizeF(rc.Width * sScaleX / 2.0!, rc.Height * sScaleY / 2.0!)
+
+                    'Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
+
+                    '    p.StartCap = LineCap.Round
+                    '    p.CustomEndCap = New AdjustableArrowCap(3, 3)
+
+                    '    g.DrawLine(p, _
+                    '                   ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height, _
+                    '                   ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)
+                    '    'g.DrawEllipse(p, _
+                    '    '              ptfCenter.X + szfHalfArrow.Width - rc.Width / 8.0!, _
+                    '    '              ptfCenter.Y + szfHalfArrow.Height - rc.Height / 8.0!, _
+                    '    '              rc.Width / 4.0!, _
+                    '    '              rc.Height / 4.0!)
+                    'End Using
 
                     ' If Depth(i, j + 1) > 0 Then Vxp = Xvloc(i, j) Else Vxp = 0
                     ' If Depth(i + 1, j) > 0 Then Vyp = Yvloc(i, j) Else Vyp = 0
