@@ -711,7 +711,9 @@ Public Class cEcosimMonteCarlo
                 For j As Integer = 0 To 4
                     CVpar(j, i) = 0.1
                 Next
+                'BA
                 CVpar(5, i) = 0.05
+                'Vulnerability
                 CVpar(6, i) = 0.1
             Next
 
