@@ -210,11 +210,6 @@ Public Class cEcosimMonteCarlo
 
                                     CVpar(iPar, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
 
-                                    ''ToDo 7-Dec-2010 MonteCarlo.LoadFromPedigree the intention here is to reset the ParLimit() base on the new CV value
-                                    'ParLimit(0, iPar, i) = 0
-                                    'ParLimit(1, iPar, i) = 0
-
-
                             End Select
                         End If
                     Catch ex As Exception
@@ -739,7 +734,10 @@ Public Class cEcosimMonteCarlo
 
         Dim i As Integer
         Try
-            Dim factor As Integer = 1  'IIf(IsCrashEvaluated, 1000, 2)
+            'jb set the Upper and Lower Limits to 2*CV
+            'CV = SD/Mean So upper and lower limits are 2 standard deviations
+            Dim factor As Integer = 2
+
             'We want a wide range for searching, cv will still limit the steps
             For i = 1 To m_core.nLivingGroups
                 'If IsCrashEvaluated Then factor = IIf(isCrashed(i), 4, 2)
