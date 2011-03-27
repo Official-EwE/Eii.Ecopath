@@ -669,11 +669,15 @@ Namespace Controls
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
                 ' Sanity checks
-                If objValue Is Nothing Then Return
+                If (objValue Is Nothing) Then Return
 
                 ' Update control
                 ' - Set selection state
-                Me.SelectItem(objValue)
+                Try
+                    Me.SelectItem(objValue)
+                Catch ex As Exception
+
+                End Try
                 ' - Set colours
                 sg.GetStyleColors(style, Me.m_cmb.ForeColor, Me.m_cmb.BackColor)
                 ' - Set enabled state
@@ -685,22 +689,26 @@ Namespace Controls
                 Dim objItem As Object = Nothing
                 Dim iValue As Integer = -1
 
-                For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
-                    objItem = Me.m_cmb.Items(iItem)
-                    If (TypeOf objItem Is IndexedCollectionItem) Then
-                        If (CInt(objValue) = DirectCast(objItem, IndexedCollectionItem).CoreIndex) Then
-                            iValue = iItem
-                            Exit For
+                If Me.m_provider.ValueType Is GetType(Integer) Then
+                    For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
+                        objItem = Me.m_cmb.Items(iItem)
+                        If (TypeOf objItem Is IndexedCollectionItem) Then
+                            If (CInt(objValue) = DirectCast(objItem, IndexedCollectionItem).CoreIndex) Then
+                                iValue = iItem
+                                Exit For
+                            End If
+                        Else
+                            If (String.Compare(CStr(objValue), CStr(objItem), False) = 0) Then
+                                iValue = iItem
+                                Exit For
+                            End If
                         End If
-                    Else
-                        If (String.Compare(CStr(objValue), CStr(objItem), False) = 0) Then
-                            iValue = iItem
-                            Exit For
-                        End If
-                    End If
-                Next
-                ' Truncate
-                Me.m_cmb.SelectedIndex = Math.Max(-1, Math.Min(Me.m_cmb.Items.Count - 1, iValue))
+                    Next
+                    ' Truncate
+                    Me.m_cmb.SelectedIndex = Math.Max(-1, Math.Min(Me.m_cmb.Items.Count - 1, iValue))
+                Else
+                    Me.m_cmb.Text = objValue.ToString
+                End If
             End Sub
 
             Private Function SelectedIndex() As Integer
@@ -751,11 +759,20 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Private Sub OnControlValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 
+                ' Update internal value
                 If Me.m_provider.ValueType Is GetType(Integer) Then
-                    ' Update internal value
+                    ' #Integer? Set index
                     Me.m_provider.Value = Me.SelectedIndex()
+                ElseIf Me.m_provider.ValueType Is GetType(String) Then
+                    ' #String? Set text
+                    Me.m_provider.Value = Me.m_cmb.Text
                 Else
-                    Me.m_provider.Value = Me.m_cmb.SelectedItem
+                    ' #Try to do automatic magic, somehow
+                    Try
+                        Me.m_provider.Value = Convert.ChangeType(Me.m_cmb.SelectedItem, Me.m_provider.ValueType)
+                    Catch ex As Exception
+                        Debug.Assert(False, "Unable to convert value type")
+                    End Try
                 End If
 
             End Sub

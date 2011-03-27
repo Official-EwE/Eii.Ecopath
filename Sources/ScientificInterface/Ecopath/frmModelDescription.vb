@@ -53,7 +53,7 @@ Public Class frmModelDescription
         Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
         Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
         Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumYears, eweModel, eVarNameFlags.EcopathNumYears)
-        Me.m_fpAreaName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbModelAreaName, eweModel, eVarNameFlags.AreaName)
+        Me.m_fpAreaName = New cPropertyFormatProvider(Me.UIContext, Me.m_cmdModelAreaName, eweModel, eVarNameFlags.AreaName)
         Me.m_fpNorth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNorth, eweModel, eVarNameFlags.North)
         Me.m_fpSouth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSouth, eweModel, eVarNameFlags.South)
         Me.m_fpWest = New cPropertyFormatProvider(Me.UIContext, Me.m_nudWest, eweModel, eVarNameFlags.West)
@@ -77,7 +77,6 @@ Public Class frmModelDescription
         AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
 
         Me.m_cmbMonetaryUnit.UIContext = Me.UIContext
-
         ' Listen to shapes data added or removed messages
         Me.CoreComponents = Nothing
 
@@ -286,39 +285,27 @@ Public Class frmModelDescription
 
 #Region " Events "
 
-    Private Sub OnModelAreaNameChanging(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_tbModelAreaName.TextChanged
-        Me.UpdateControls()
+    Private Sub OnLocationSearching(ByVal sender As ScientificInterfaceShared.Controls.cGeocodeLookupComboBox, ByVal bSearching As Boolean) _
+        Handles m_cmdModelAreaName.OnSeaching
+        Me.m_pbSearching.Visible = bSearching
     End Sub
 
-    Private Sub m_btnLookup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnLookup.Click
+    Private Sub OnLocationSelected(ByVal sender As Object, ByVal e As EventArgs) _
+        Handles m_cmdModelAreaName.SelectedIndexChanged
 
-        'Dim lookup As New cGoogleMapsLookup()
-        'Dim eweModel As cEwEModel = Me.UIContext.Core.EwEModel()
+        Dim location As cGeoCodeLocation = Me.m_cmdModelAreaName.SelectedLocation
+        If Location Is Nothing Then Return
 
-        'If lookup.FindLocation(Me.m_tbModelAreaName.Text) Then
-        '    ' No need to use feedback messages here
-        '    If MsgBox(String.Format(My.Resources.PROMPT_GOOGLELOCATION_SEARCH, _
-        '                            lookup.Term, lookup.North, lookup.West, lookup.South, lookup.East), _
-        '                            MsgBoxStyle.YesNo Or MsgBoxStyle.Question) = MsgBoxResult.Yes Then
-        '        eweModel.AreaName = lookup.Term
-        '        eweModel.South = lookup.South
-        '        eweModel.North = lookup.North
-        '        eweModel.West = lookup.West
-        '        eweModel.East = lookup.East
-        '    End If
-        'End If
+        Me.m_fpNorth.Value = Location.North
+        Me.m_fpEast.Value = Location.East
+        Me.m_fpSouth.Value = Location.South
+        Me.m_fpWest.Value = Location.West
 
     End Sub
 
 #End Region ' Events
 
 #Region " Internal implementation "
-
-    Protected Overrides Sub UpdateControls()
-        Me.m_btnLookup.Enabled = Not String.IsNullOrEmpty(Me.m_tbModelAreaName.Text)
-    End Sub
 
 #End Region ' Internal implementation
 

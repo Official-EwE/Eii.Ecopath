@@ -88,6 +88,9 @@
     <Compile Include="Controls\ColorDialog\cEwEColorDialog.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ComboBox\cGeocodeLookupComboBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\EwEGrid\cPropertyInfoHelper.vb" />
     <Compile Include="Controls\EwEGrid\Editors\EwEComboBoxCellEditor.vb">
       <SubType>Code</SubType>
@@ -513,6 +516,7 @@
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
+    <None Include="Resources\ani_loader.gif" />
     <None Include="Resources\PasteHS.png" />
     <None Include="Resources\CopyHS.png" />
     <None Include="Resources\ShowGridlinesHS.png" />

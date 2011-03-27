@@ -82,8 +82,8 @@ Partial Class frmModelDescription
         Me.m_lblWest = New System.Windows.Forms.Label
         Me.m_lblEast = New System.Windows.Forms.Label
         Me.m_lblSouth = New System.Windows.Forms.Label
-        Me.m_tbModelAreaName = New System.Windows.Forms.TextBox
-        Me.m_btnLookup = New System.Windows.Forms.Button
+        Me.m_cmdModelAreaName = New cGeocodeLookupComboBox
+        Me.m_pbSearching = New System.Windows.Forms.PictureBox
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -335,7 +335,7 @@ Partial Class frmModelDescription
         Me.m_cmbMonetaryUnit.Name = "m_cmbMonetaryUnit"
         Me.m_cmbMonetaryUnit.Sorted = True
         Me.m_cmbMonetaryUnit.UIContext = Nothing
-        Me.m_cmbMonetaryUnit.Unit = ""
+        Me.m_cmbMonetaryUnit.Unit = "EUR"
         '
         'm_gbNumFormatting
         '
@@ -433,24 +433,23 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_lblSouth, "m_lblSouth")
         Me.m_lblSouth.Name = "m_lblSouth"
         '
-        'm_tbModelAreaName
+        'm_cmdModelAreaName
         '
-        resources.ApplyResources(Me.m_tbModelAreaName, "m_tbModelAreaName")
-        Me.m_tbModelAreaName.Name = "m_tbModelAreaName"
+        resources.ApplyResources(Me.m_cmdModelAreaName, "m_cmdModelAreaName")
+        Me.m_cmdModelAreaName.Name = "m_cmdModelAreaName"
         '
-        'm_btnLookup
+        'm_pbSearching
         '
-        resources.ApplyResources(Me.m_btnLookup, "m_btnLookup")
-        Me.m_btnLookup.Image = Global.ScientificInterface.My.Resources.Resources.google
-        Me.m_btnLookup.Name = "m_btnLookup"
-        Me.m_btnLookup.Enabled = False
-        Me.m_btnLookup.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_pbSearching, "m_pbSearching")
+        Me.m_pbSearching.Name = "m_pbSearching"
+        Me.m_pbSearching.Image = ScientificInterfaceShared.My.Resources.ani_loader
+        Me.m_pbSearching.Visible = False
         '
         'frmModelDescription
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.m_btnLookup)
+        Me.Controls.Add(Me.m_pbSearching)
         Me.Controls.Add(Me.m_nudNumYears)
         Me.Controls.Add(Me.m_nudEast)
         Me.Controls.Add(Me.m_nudSouth)
@@ -470,7 +469,7 @@ Partial Class frmModelDescription
         Me.Controls.Add(Me.m_lblNorth)
         Me.Controls.Add(Me.m_lblLocation)
         Me.Controls.Add(Me.m_lblFirstYear)
-        Me.Controls.Add(Me.m_tbModelAreaName)
+        Me.Controls.Add(Me.m_cmdModelAreaName)
         Me.Controls.Add(Me.m_tbArea)
         Me.Controls.Add(Me.m_tbAuthor)
         Me.Controls.Add(Me.m_lblModel)
@@ -557,7 +556,8 @@ Partial Class frmModelDescription
     Private WithEvents m_lblWest As System.Windows.Forms.Label
     Private WithEvents m_lblEast As System.Windows.Forms.Label
     Private WithEvents m_lblSouth As System.Windows.Forms.Label
-    Private WithEvents m_tbModelAreaName As System.Windows.Forms.TextBox
-    Private WithEvents m_btnLookup As System.Windows.Forms.Button
+    Private WithEvents m_cmdModelAreaName As cGeocodeLookupComboBox
     Private WithEvents m_lblNote As System.Windows.Forms.Label
+    Private WithEvents m_pbSearching As System.Windows.Forms.PictureBox
+
 End Class
