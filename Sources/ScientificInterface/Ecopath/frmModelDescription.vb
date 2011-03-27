@@ -53,7 +53,7 @@ Public Class frmModelDescription
         Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
         Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
         Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumYears, eweModel, eVarNameFlags.EcopathNumYears)
-        Me.m_fpAreaName = New cPropertyFormatProvider(Me.UIContext, Me.m_cmdModelAreaName, eweModel, eVarNameFlags.AreaName)
+        Me.m_fpAreaName = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbModelAreaName, eweModel, eVarNameFlags.AreaName)
         Me.m_fpNorth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNorth, eweModel, eVarNameFlags.North)
         Me.m_fpSouth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSouth, eweModel, eVarNameFlags.South)
         Me.m_fpWest = New cPropertyFormatProvider(Me.UIContext, Me.m_nudWest, eweModel, eVarNameFlags.West)
@@ -286,14 +286,14 @@ Public Class frmModelDescription
 #Region " Events "
 
     Private Sub OnLocationSearching(ByVal sender As ScientificInterfaceShared.Controls.cGeocodeLookupComboBox, ByVal bSearching As Boolean) _
-        Handles m_cmdModelAreaName.OnSeaching
+        Handles m_cmbModelAreaName.OnSeaching
         Me.m_pbSearching.Visible = bSearching
     End Sub
 
     Private Sub OnLocationSelected(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles m_cmdModelAreaName.SelectedIndexChanged
+        Handles m_cmbModelAreaName.SelectedIndexChanged
 
-        Dim location As cGeoCodeLocation = Me.m_cmdModelAreaName.SelectedLocation
+        Dim location As cGeoCodeLocation = Me.m_cmbModelAreaName.SelectedLocation
         If Location Is Nothing Then Return
 
         Me.m_fpNorth.Value = Location.North

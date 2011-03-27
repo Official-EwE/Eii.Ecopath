@@ -26,6 +26,7 @@ Partial Class frmModelDescription
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmModelDescription))
+        Dim CGoogleMapsLookup2 As SAUPUtil.Misc.GeoCode.cGoogleMapsLookup = New SAUPUtil.Misc.GeoCode.cGoogleMapsLookup
         Me.m_udNumDigits = New System.Windows.Forms.NumericUpDown
         Me.lbNumDigits = New System.Windows.Forms.Label
         Me.m_lblOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -82,7 +83,7 @@ Partial Class frmModelDescription
         Me.m_lblWest = New System.Windows.Forms.Label
         Me.m_lblEast = New System.Windows.Forms.Label
         Me.m_lblSouth = New System.Windows.Forms.Label
-        Me.m_cmdModelAreaName = New cGeocodeLookupComboBox
+        Me.m_cmbModelAreaName = New ScientificInterfaceShared.Controls.cGeocodeLookupComboBox
         Me.m_pbSearching = New System.Windows.Forms.PictureBox
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
@@ -96,6 +97,7 @@ Partial Class frmModelDescription
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_udNumDigits
@@ -433,17 +435,17 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_lblSouth, "m_lblSouth")
         Me.m_lblSouth.Name = "m_lblSouth"
         '
-        'm_cmdModelAreaName
+        'm_cmbModelAreaName
         '
-        resources.ApplyResources(Me.m_cmdModelAreaName, "m_cmdModelAreaName")
-        Me.m_cmdModelAreaName.Name = "m_cmdModelAreaName"
+        resources.ApplyResources(Me.m_cmbModelAreaName, "m_cmbModelAreaName")
+        Me.m_cmbModelAreaName.LookupEngine = CGoogleMapsLookup2
+        Me.m_cmbModelAreaName.Name = "m_cmbModelAreaName"
         '
         'm_pbSearching
         '
         resources.ApplyResources(Me.m_pbSearching, "m_pbSearching")
         Me.m_pbSearching.Name = "m_pbSearching"
-        Me.m_pbSearching.Image = ScientificInterfaceShared.My.Resources.ani_loader
-        Me.m_pbSearching.Visible = False
+        Me.m_pbSearching.TabStop = False
         '
         'frmModelDescription
         '
@@ -469,7 +471,7 @@ Partial Class frmModelDescription
         Me.Controls.Add(Me.m_lblNorth)
         Me.Controls.Add(Me.m_lblLocation)
         Me.Controls.Add(Me.m_lblFirstYear)
-        Me.Controls.Add(Me.m_cmdModelAreaName)
+        Me.Controls.Add(Me.m_cmbModelAreaName)
         Me.Controls.Add(Me.m_tbArea)
         Me.Controls.Add(Me.m_tbAuthor)
         Me.Controls.Add(Me.m_lblModel)
@@ -497,6 +499,7 @@ Partial Class frmModelDescription
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -556,7 +559,7 @@ Partial Class frmModelDescription
     Private WithEvents m_lblWest As System.Windows.Forms.Label
     Private WithEvents m_lblEast As System.Windows.Forms.Label
     Private WithEvents m_lblSouth As System.Windows.Forms.Label
-    Private WithEvents m_cmdModelAreaName As cGeocodeLookupComboBox
+    Private WithEvents m_cmbModelAreaName As cGeocodeLookupComboBox
     Private WithEvents m_lblNote As System.Windows.Forms.Label
     Private WithEvents m_pbSearching As System.Windows.Forms.PictureBox
 
