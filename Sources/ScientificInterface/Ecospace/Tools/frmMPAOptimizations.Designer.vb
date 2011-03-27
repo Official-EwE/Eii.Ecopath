@@ -95,6 +95,7 @@ Namespace Ecospace
             Me.PictureBox1 = New System.Windows.Forms.PictureBox
             Me.PictureBox2 = New System.Windows.Forms.PictureBox
             Me.m_bntReset = New System.Windows.Forms.Button
+            Me.m_tlpMap = New System.Windows.Forms.TableLayoutPanel
             Me.m_tsMap.SuspendLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudStep, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -123,6 +124,7 @@ Namespace Ecospace
             Me.m_scContent.SuspendLayout()
             CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tlpMap.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -140,9 +142,9 @@ Namespace Ecospace
             '
             'm_tsMap
             '
-            resources.ApplyResources(Me.m_tsMap, "m_tsMap")
             Me.m_tsMap.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMap.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbMPA, Me.m_tsbSeed, Me.m_tsbEditLayers})
+            resources.ApplyResources(Me.m_tsMap, "m_tsMap")
             Me.m_tsMap.Name = "m_tsMap"
             '
             'm_tsbMPA
@@ -634,8 +636,7 @@ Namespace Ecospace
             '
             'm_tabMap
             '
-            Me.m_tabMap.Controls.Add(Me.m_tsMap)
-            Me.m_tabMap.Controls.Add(Me.m_scMap)
+            Me.m_tabMap.Controls.Add(Me.m_tlpMap)
             resources.ApplyResources(Me.m_tabMap, "m_tabMap")
             Me.m_tabMap.Name = "m_tabMap"
             Me.m_tabMap.UseVisualStyleBackColor = True
@@ -716,6 +717,13 @@ Namespace Ecospace
             Me.m_bntReset.Name = "m_bntReset"
             Me.m_bntReset.UseVisualStyleBackColor = True
             '
+            'm_tlpMap
+            '
+            resources.ApplyResources(Me.m_tlpMap, "m_tlpMap")
+            Me.m_tlpMap.Controls.Add(Me.m_tsMap, -1, 0)
+            Me.m_tlpMap.Controls.Add(Me.m_scMap, 0, 1)
+            Me.m_tlpMap.Name = "m_tlpMap"
+            '
             'frmMPAOptimizations
             '
             Me.AcceptButton = Me.m_btnRun
@@ -767,6 +775,8 @@ Namespace Ecospace
             Me.m_scContent.ResumeLayout(False)
             CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tlpMap.ResumeLayout(False)
+            Me.m_tlpMap.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -840,5 +850,6 @@ Namespace Ecospace
         Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
         Private WithEvents PictureBox2 As System.Windows.Forms.PictureBox
         Private WithEvents m_bntReset As System.Windows.Forms.Button
+        Private WithEvents m_tlpMap As System.Windows.Forms.TableLayoutPanel
     End Class
 End Namespace
