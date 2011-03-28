@@ -437,7 +437,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public ReadOnly Property GetFleetAt(ByVal iIndex As Integer) As cFleetInput
             Get
-                If (iIndex <= 0 Or iIndex >= Me.Items.Count) Then Return Nothing
+                If (iIndex < 0 Or iIndex >= Me.Items.Count) Then Return Nothing
                 Return DirectCast(Me.Items(iIndex), cFleetItem).Source
             End Get
         End Property
@@ -506,13 +506,13 @@ Namespace Controls
 
                 Case eFleetTrackingType.Manual
                     If aiFleets IsNot Nothing Then
-                        For i As Integer = 0 To aiFleets.Length - 1
+                        For i As Integer = 1 To aiFleets.Length - 1
                             Me.Items.Add(New cFleetItem(Me.m_uic.Core.FleetInputs(aiFleets(i))))
                         Next
                     End If
 
                 Case eFleetTrackingType.AllFleets
-                    iFleetStart = 0 : iFleetEnd = Me.m_uic.Core.nFleets
+                    iFleetStart = 1 : iFleetEnd = Me.m_uic.Core.nFleets
                     For i As Integer = iFleetStart To iFleetEnd
                         Me.Items.Add(New cFleetItem(Me.m_uic.Core.FleetInputs(i)))
                     Next
