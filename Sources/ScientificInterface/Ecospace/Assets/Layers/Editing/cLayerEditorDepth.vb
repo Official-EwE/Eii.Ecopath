@@ -5,8 +5,8 @@
 
         Private m_bProtectLand As Boolean = False
 
-        Public Sub New(ByVal typeGUI As Type)
-            MyBase.New(typeGUI)
+        Public Sub New()
+            MyBase.New(GetType(ucLayerEditorDepth))
         End Sub
 
         Public Property ProtectCoastLine() As Boolean
