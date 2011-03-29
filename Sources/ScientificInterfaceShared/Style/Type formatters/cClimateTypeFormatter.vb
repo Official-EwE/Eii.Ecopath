@@ -11,27 +11,23 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eOrganismTypes"/>.
+    ''' Class for providing a textual description of <see cref="eClimateTypes"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cOrganismTypeFormatter
+    Public Class cClimateTypeFormatter
         Implements ITypeFormatter
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(eOrganismTypes)
+            Return GetType(eClimateTypes)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
-            Dim val As eOrganismTypes = DirectCast(value, eOrganismTypes)
-
-            If val = eOrganismTypes.NotSet Then Return ""
-
-            Dim strValue As String = val.ToString
-            Dim strDescr As String = cResourceUtils.LoadString("ORGANISM_" & strValue.ToUpper, Me.GetType.Assembly)
+            Dim strValue As String = value.ToString
+            Dim strDescr As String = cResourceUtils.LoadString("CLIMATE_" & strValue.ToUpper, Me.GetType.Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

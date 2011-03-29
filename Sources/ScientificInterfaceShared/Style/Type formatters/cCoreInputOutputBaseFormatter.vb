@@ -15,15 +15,19 @@ Namespace Style
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cCoreInputOutputBaseFormatter
-        Implements ITypeFormatter(Of cCoreInputOutputBase)
+        Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal value As EwECore.cCoreInputOutputBase, _
+        Public Function GetDescribedType() As System.Type _
+            Implements ITypeFormatter.GetDescribedType
+            Return GetType(cCoreInputOutputBase)
+        End Function
+
+        Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter(Of EwECore.cCoreInputOutputBase).GetDescriptor
-
-            If descriptor = eDescriptorTypes.Description Then Return value.Remark(eVarNameFlags.Name)
-            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, value.Index, value.Name)
-
+                                      Implements ITypeFormatter.GetDescriptor
+            Dim obj As cCoreInputOutputBase = DirectCast(value, cCoreInputOutputBase)
+            If descriptor = eDescriptorTypes.Description Then Return obj.Remark(eVarNameFlags.Name)
+            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
         End Function
 
     End Class

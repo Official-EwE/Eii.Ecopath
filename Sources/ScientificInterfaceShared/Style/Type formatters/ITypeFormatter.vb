@@ -22,9 +22,10 @@ Namespace Style
     ''' Interface for implementing classes that provide string representations
     ''' for objects and enumerated types in EwE.
     ''' </summary>
-    ''' <typeparam name="enumtype">The <see cref="Type"/> to create the formatter for.</typeparam>
     ''' -----------------------------------------------------------------------
-    Public Interface ITypeFormatter(Of enumtype)
+    Public Interface ITypeFormatter
+
+        Function GetDescribedType() As Type
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -34,7 +35,7 @@ Namespace Style
         ''' <param name="descriptor">The <see cref="eDescriptorTypes">representation</see> to provide.</param>
         ''' <returns>A textual representation.</returns>
         ''' -------------------------------------------------------------------
-        Function GetDescriptor(ByVal value As enumtype, _
+        Function GetDescriptor(ByVal value As Object, _
                                Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String
 
     End Interface

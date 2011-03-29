@@ -9,27 +9,28 @@ Imports SourceGrid2.DataModels
 Namespace Controls.EwEGrid
 
     <CLSCompliant(False)> _
-    Public Class EwEComboBoxCellEditor(Of t)
+    Public Class EwEComboBoxCellEditor
         Inherits EditorComboBox
 
-        Public Sub New(ByVal aValues() As t, ByVal formatter As ITypeFormatter(Of t))
+        Public Sub New(ByVal formatter As ITypeFormatter)
 
-            MyBase.New(aValues.GetType.GetElementType)
+            MyBase.New(formatter.GetDescribedType)
 
             Dim mapping As New SourceLibrary.ComponentModel.Validator.ValueMapping()
-            Dim lValues As New List(Of Integer)
+            Dim lValues As New List(Of Object)
             Dim lRepresentations As New List(Of String)
 
-            For i As Integer = 0 To aValues.Length - 1
-                lRepresentations.Add(formatter.GetDescriptor(aValues(i)))
+            For Each key As Object In [Enum].GetValues(formatter.GetDescribedType)
+                lValues.Add(key)
+                lRepresentations.Add(formatter.GetDescriptor(key))
             Next
 
-            Me.StandardValues = aValues
+            Me.StandardValues = lValues
             Me.StandardValuesExclusive = True
             Me.AllowStringConversion = False
             Me.EditableMode = SourceGrid2.EditableMode.SingleClick Or SourceGrid2.EditableMode.Focus Or SourceGrid2.EditableMode.AnyKey
 
-            mapping.ValueList = aValues
+            mapping.ValueList = lValues
             mapping.DisplayStringList = lRepresentations
             mapping.BindValidator(Me)
 

@@ -13,15 +13,16 @@ Namespace Style
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cTimeSeriesTypeFormatter
-        Implements ITypeFormatter(Of eTimeSeriesType)
+        Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal value As EwECore.eTimeSeriesType, _
+        Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter(Of EwECore.eTimeSeriesType).GetDescriptor
+                                      Implements ITypeFormatter.GetDescriptor
 
+            Dim ts As eTimeSeriesType = DirectCast(value, eTimeSeriesType)
             Dim strType As String = ""
 
-            Select Case value
+            Select Case ts
                 Case eTimeSeriesType.AverageWeight : strType = My.Resources.TS_TYPE_AVERAGEWEIGHT
                 Case eTimeSeriesType.BiomassAbs : strType = My.Resources.TS_TYPE_BIOMASSABS
                 Case eTimeSeriesType.BiomassForcing : strType = My.Resources.TS_TYPE_BIOMASSFORCING
@@ -44,6 +45,11 @@ Namespace Style
             End Select
             Return strType
 
+        End Function
+
+        Public Function GetDescribedType() As System.Type _
+            Implements ITypeFormatter.GetDescribedType
+            Return GetType(eTimeSeriesType)
         End Function
 
     End Class

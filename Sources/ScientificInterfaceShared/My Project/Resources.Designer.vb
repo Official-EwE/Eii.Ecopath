@@ -109,6 +109,33 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Polar|||Polar (60 to 90 deg).
+        '''</summary>
+        Public ReadOnly Property CLIMATE_POLAR() As String
+            Get
+                Return ResourceManager.GetString("CLIMATE_POLAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Temporal|||Temporal (30 to 60 deg).
+        '''</summary>
+        Public ReadOnly Property CLIMATE_TEMPORAL() As String
+            Get
+                Return ResourceManager.GetString("CLIMATE_TEMPORAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Tropical|||Tropical (0 to 30 deg).
+        '''</summary>
+        Public ReadOnly Property CLIMATE_TROPICAL() As String
+            Get
+                Return ResourceManager.GetString("CLIMATE_TROPICAL", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property Collapsed() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Collapsed", resourceCulture)

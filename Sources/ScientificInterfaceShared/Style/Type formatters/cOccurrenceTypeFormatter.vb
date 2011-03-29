@@ -15,15 +15,22 @@ Namespace Style
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cOccurrenceTypeFormatter
-        Implements ITypeFormatter(Of eOccurrenceStatusTypes)
+        Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal value As eOccurrenceStatusTypes, _
+        Public Function GetDescribedType() As System.Type _
+            Implements ITypeFormatter.GetDescribedType
+            Return GetType(eOccurrenceStatusTypes)
+        End Function
+
+        Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter(Of eOccurrenceStatusTypes).GetDescriptor
+                                      Implements ITypeFormatter.GetDescriptor
 
-            If value = eOccurrenceStatusTypes.NotSet Then Return ""
+            Dim val As eOccurrenceStatusTypes = DirectCast(value, eOccurrenceStatusTypes)
 
-            Dim strValue As String = value.ToString
+            If val = eOccurrenceStatusTypes.NotSet Then Return ""
+
+            Dim strValue As String = val.ToString
             Dim strDescr As String = cResourceUtils.LoadString("OCCURRENCESTATUS_" & strValue.ToUpper, Me.GetType.Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0

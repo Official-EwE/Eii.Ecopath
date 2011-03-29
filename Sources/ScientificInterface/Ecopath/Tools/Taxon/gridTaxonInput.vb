@@ -21,10 +21,10 @@ Namespace Ecopath.Input
     Public Class gridTaxonInput
         : Inherits EwEGrid
 
-        Private m_editorEcology As EwEComboBoxCellEditor(Of eEcologyTypes) = Nothing
-        Private m_editorConservation As EwEComboBoxCellEditor(Of eIUCNConservationStatusTypes) = Nothing
-        Private m_editorOrganism As EwEComboBoxCellEditor(Of eOrganismTypes) = Nothing
-        Private m_editorOccurrence As EwEComboBoxCellEditor(Of eOccurrenceStatusTypes) = Nothing
+        Private m_editorEcology As EwEComboBoxCellEditor = Nothing
+        Private m_editorConservation As EwEComboBoxCellEditor = Nothing
+        Private m_editorOrganism As EwEComboBoxCellEditor = Nothing
+        Private m_editorOccurrence As EwEComboBoxCellEditor = Nothing
 
         Enum eColumnTypes As Integer
             Index = 0
@@ -83,18 +83,10 @@ Namespace Ecopath.Input
             Dim iRow As Integer = -1
 
             ' Prepare editors
-            Me.m_editorEcology = New EwEComboBoxCellEditor(Of eEcologyTypes) _
-                                                          (DirectCast([Enum].GetValues(GetType(eEcologyTypes)), eEcologyTypes()), _
-                                                           New cEcologyTypeFormatter())
-            Me.m_editorConservation = New EwEComboBoxCellEditor(Of eIUCNConservationStatusTypes) _
-                                                          (DirectCast([Enum].GetValues(GetType(eIUCNConservationStatusTypes)), eIUCNConservationStatusTypes()), _
-                                                           New cIUCNConservationTypeFormatter())
-            Me.m_editorOrganism = New EwEComboBoxCellEditor(Of eOrganismTypes) _
-                                                          (DirectCast([Enum].GetValues(GetType(eOrganismTypes)), eOrganismTypes()), _
-                                                           New cOrganismTypeFormatter())
-            Me.m_editorOccurrence = New EwEComboBoxCellEditor(Of eOccurrenceStatusTypes) _
-                                                          (DirectCast([Enum].GetValues(GetType(eOccurrenceStatusTypes)), eOccurrenceStatusTypes()), _
-                                                           New cOccurrenceTypeFormatter())
+            Me.m_editorEcology = New EwEComboBoxCellEditor(New cEcologyTypeFormatter())
+            Me.m_editorConservation = New EwEComboBoxCellEditor(New cIUCNConservationTypeFormatter())
+            Me.m_editorOrganism = New EwEComboBoxCellEditor(New cOrganismTypeFormatter())
+            Me.m_editorOccurrence = New EwEComboBoxCellEditor(New cOccurrenceTypeFormatter())
 
             ' Sort taxa by group
             Dim aiGroupTaxa(Me.Core.nGroups) As List(Of cTaxon)

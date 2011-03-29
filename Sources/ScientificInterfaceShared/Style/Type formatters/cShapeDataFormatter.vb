@@ -14,13 +14,18 @@ Namespace Style
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cShapeDataFormatter
-        Implements ITypeFormatter(Of cShapeData)
+        Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal value As cShapeData, _
+        Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
+            Return GetType(cShapeData)
+        End Function
+
+        Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter(Of cShapeData).GetDescriptor
+                                      Implements ITypeFormatter.GetDescriptor
 
-            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, value.Index, value.Name)
+            Dim data As cShapeData = TryCast(value, cShapeData)
+            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, data.Index, data.Name)
 
         End Function
 

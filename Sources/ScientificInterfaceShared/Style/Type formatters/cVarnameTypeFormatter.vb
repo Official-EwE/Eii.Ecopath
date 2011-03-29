@@ -21,11 +21,19 @@ Namespace Style
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Class cVarnameTypeFormatter
-        Implements ITypeFormatter(Of eVarNameFlags)
+        Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal vn As eVarNameFlags, _
+        Public Function GetDescriptor(ByVal data As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter(Of eVarNameFlags).GetDescriptor
+                                      Implements ITypeFormatter.GetDescriptor
+
+            Dim vn As eVarNameFlags = eVarNameFlags.NotSet
+
+            Try
+                vn = DirectCast(data, eVarNameFlags)
+            Catch ex As Exception
+                Return ""
+            End Try
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
@@ -60,6 +68,12 @@ Namespace Style
             Return strBit
 
         End Function
+
+        Public Function GetDescribedType() As System.Type _
+            Implements ITypeFormatter.GetDescribedType
+            Return GetType(eVarNameFlags)
+        End Function
+
     End Class
 
 End Namespace ' Style

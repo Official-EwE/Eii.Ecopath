@@ -50,6 +50,40 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' <param name="ctrl"></param>
+        ''' <param name="source"></param>
+        ''' <param name="varName"></param>
+        ''' <param name="sourceSec"></param>
+        ''' -----------------------------------------------------------------------
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal ctrl As Control, _
+                       ByVal source As cCoreInputOutputBase, _
+                       ByVal varName As eVarNameFlags, _
+                       ByVal sourceSec As cCoreInputOutputBase, _
+                       ByVal formatter As ITypeFormatter)
+            ' Get underlying cProperty for these values
+            Me.New(uic, ctrl, uic.PropertyManager.GetProperty(source, varName, sourceSec), formatter)
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="ctrl"></param>
+        ''' <param name="prop"></param>
+        ''' <param name="formatter">Formatter to obtain values from</param>
+        ''' -----------------------------------------------------------------------
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal ctrl As Control, _
+                       ByVal prop As cProperty, _
+                       ByVal formatter As ITypeFormatter)
+            Me.New(uic, ctrl, prop, DirectCast(GetDescriptorContent(formatter), Object()))
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="ctrl"></param>
         ''' <param name="prop"></param>
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _

@@ -15,15 +15,22 @@ Namespace Style
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cIUCNConservationTypeFormatter
-        Implements ITypeFormatter(Of eIUCNConservationStatusTypes)
+        Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal value As eIUCNConservationStatusTypes, _
+        Public Function GetDescribedType() As System.Type _
+            Implements ITypeFormatter.GetDescribedType
+            Return GetType(eIUCNConservationStatusTypes)
+        End Function
+
+        Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter(Of eIUCNConservationStatusTypes).GetDescriptor
+                                      Implements ITypeFormatter.GetDescriptor
 
-            If value = eIUCNConservationStatusTypes.NotSet Then Return ""
+            Dim val As eIUCNConservationStatusTypes = DirectCast(value, eIUCNConservationStatusTypes)
 
-            Dim strValue As String = value.ToString
+            If val = eIUCNConservationStatusTypes.NotSet Then Return ""
+
+            Dim strValue As String = val.ToString
             Dim strDescr As String = cResourceUtils.LoadString("CONSERVATIONSTATUS_" & strValue.ToUpper, Me.GetType.Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0

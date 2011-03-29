@@ -1136,6 +1136,19 @@ Namespace Controls
             Me.New(uic, ctrl, tValue, Nothing, metadata)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="ctrl"></param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal ctrl As Control, _
+                       ByVal formatter As ITypeFormatter, _
+                       ByVal metadata As cVariableMetaData)
+            Me.New(uic, ctrl, GetType(Integer), GetDescriptorContent(formatter), Nothing)
+        End Sub
+
 #End Region ' Constructor
 
 #Region " Release "
@@ -1325,6 +1338,26 @@ Namespace Controls
         End Sub
 
 #End Region ' Updates
+
+        Protected Shared Function GetDescriptorContent(ByVal formatter As ITypeFormatter) As String()
+
+            Dim lstrValues As New List(Of String)
+            ' Get first generic argument
+            Dim tEnum As Type = formatter.GetDescribedType
+            ' IS an enum?
+            If tEnum.IsEnum Then
+                Try
+                    For Each v As Object In [Enum].GetValues(tEnum)
+                        lstrValues.Add(formatter.GetDescriptor(v, eDescriptorTypes.Description))
+                    Next
+                Catch ex As Exception
+                    ' Whoah!
+                    Debug.Assert(False, ex.Message)
+                End Try
+            End If
+            Return lstrValues.ToArray()
+
+        End Function
 
     End Class
 

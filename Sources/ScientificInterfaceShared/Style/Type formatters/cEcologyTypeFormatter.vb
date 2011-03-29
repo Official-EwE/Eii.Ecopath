@@ -15,15 +15,22 @@ Namespace Style
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cEcologyTypeFormatter
-        Implements ITypeFormatter(Of eEcologyTypes)
+        Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal value As eEcologyTypes, _
+        Public Function GetDescribedType() As System.Type _
+            Implements ITypeFormatter.GetDescribedType
+            Return GetType(eEcologyTypes)
+        End Function
+
+        Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter(Of eEcologyTypes).GetDescriptor
+                                      Implements ITypeFormatter.GetDescriptor
 
-            If value = eEcologyTypes.NotSet Then Return ""
+            Dim val As eEcologyTypes = DirectCast(value, eEcologyTypes)
 
-            Dim strValue As String = value.ToString
+            If val = eEcologyTypes.NotSet Then Return ""
+
+            Dim strValue As String = val.ToString
             Dim strDescr As String = cResourceUtils.LoadString("ECOLOGY_" & strValue.ToUpper, Me.GetType.Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
