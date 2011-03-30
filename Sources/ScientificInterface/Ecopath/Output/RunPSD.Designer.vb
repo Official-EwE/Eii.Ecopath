@@ -31,34 +31,34 @@ Namespace Ecopath.Output
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunPSD))
             Me.m_zedgraph = New ZedGraph.ZedGraphControl
             Me.m_scContent = New System.Windows.Forms.SplitContainer
-            Me.m_plTotalMortality = New System.Windows.Forms.Panel
             Me.m_tlpInputs = New System.Windows.Forms.TableLayoutPanel
-            Me.m_rbGroupPB = New System.Windows.Forms.RadioButton
+            Me.m_plTotalMortality = New System.Windows.Forms.Panel
+            Me.m_cmbMeanLat = New System.Windows.Forms.ComboBox
+            Me.m_lblMeanLat = New System.Windows.Forms.Label
             Me.m_hdrTotalMort = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_rbLorenzen = New System.Windows.Forms.RadioButton
+            Me.m_rbGroupPB = New System.Windows.Forms.RadioButton
             Me.m_plInputs = New System.Windows.Forms.Panel
-            Me.m_hdrInputs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lblNoWtClasses = New System.Windows.Forms.Label
-            Me.m_nudNoWtClasses = New System.Windows.Forms.NumericUpDown
-            Me.m_nudLowestWtClass = New System.Windows.Forms.NumericUpDown
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.m_lblNoPts = New System.Windows.Forms.Label
             Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown
+            Me.m_nudLowestWtClass = New System.Windows.Forms.NumericUpDown
+            Me.m_nudNoWtClasses = New System.Windows.Forms.NumericUpDown
+            Me.m_lblNoPts = New System.Windows.Forms.Label
+            Me.Label1 = New System.Windows.Forms.Label
+            Me.m_lblNoWtClasses = New System.Windows.Forms.Label
+            Me.m_hdrInputs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.Panel1 = New System.Windows.Forms.Panel
+            Me.m_bntShowGroups = New System.Windows.Forms.Button
             Me.m_btnRun = New System.Windows.Forms.Button
             Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_bntShowGroups = New System.Windows.Forms.Button
-            Me.m_lblMeanLat = New System.Windows.Forms.Label
-            Me.m_cmbMeanLat = New System.Windows.Forms.ComboBox
             Me.m_scContent.Panel1.SuspendLayout()
             Me.m_scContent.Panel2.SuspendLayout()
             Me.m_scContent.SuspendLayout()
-            Me.m_plTotalMortality.SuspendLayout()
             Me.m_tlpInputs.SuspendLayout()
+            Me.m_plTotalMortality.SuspendLayout()
             Me.m_plInputs.SuspendLayout()
-            CType(Me.m_nudNoWtClasses, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudLowestWtClass, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudLowestWtClass, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudNoWtClasses, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.Panel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -87,6 +87,14 @@ Namespace Ecopath.Output
             '
             Me.m_scContent.Panel2.Controls.Add(Me.m_zedgraph)
             '
+            'm_tlpInputs
+            '
+            resources.ApplyResources(Me.m_tlpInputs, "m_tlpInputs")
+            Me.m_tlpInputs.Controls.Add(Me.m_plTotalMortality, 0, 0)
+            Me.m_tlpInputs.Controls.Add(Me.m_plInputs, 0, 1)
+            Me.m_tlpInputs.Controls.Add(Me.Panel1, 0, 2)
+            Me.m_tlpInputs.Name = "m_tlpInputs"
+            '
             'm_plTotalMortality
             '
             Me.m_plTotalMortality.Controls.Add(Me.m_cmbMeanLat)
@@ -97,19 +105,17 @@ Namespace Ecopath.Output
             resources.ApplyResources(Me.m_plTotalMortality, "m_plTotalMortality")
             Me.m_plTotalMortality.Name = "m_plTotalMortality"
             '
-            'm_tlpInputs
+            'm_cmbMeanLat
             '
-            resources.ApplyResources(Me.m_tlpInputs, "m_tlpInputs")
-            Me.m_tlpInputs.Controls.Add(Me.m_plTotalMortality, 0, 0)
-            Me.m_tlpInputs.Controls.Add(Me.m_plInputs, 0, 1)
-            Me.m_tlpInputs.Controls.Add(Me.Panel1, 0, 2)
-            Me.m_tlpInputs.Name = "m_tlpInputs"
+            resources.ApplyResources(Me.m_cmbMeanLat, "m_cmbMeanLat")
+            Me.m_cmbMeanLat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbMeanLat.FormattingEnabled = True
+            Me.m_cmbMeanLat.Name = "m_cmbMeanLat"
             '
-            'm_rbGroupPB
+            'm_lblMeanLat
             '
-            resources.ApplyResources(Me.m_rbGroupPB, "m_rbGroupPB")
-            Me.m_rbGroupPB.Name = "m_rbGroupPB"
-            Me.m_rbGroupPB.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_lblMeanLat, "m_lblMeanLat")
+            Me.m_lblMeanLat.Name = "m_lblMeanLat"
             '
             'm_hdrTotalMort
             '
@@ -121,6 +127,12 @@ Namespace Ecopath.Output
             resources.ApplyResources(Me.m_rbLorenzen, "m_rbLorenzen")
             Me.m_rbLorenzen.Name = "m_rbLorenzen"
             Me.m_rbLorenzen.UseVisualStyleBackColor = True
+            '
+            'm_rbGroupPB
+            '
+            resources.ApplyResources(Me.m_rbGroupPB, "m_rbGroupPB")
+            Me.m_rbGroupPB.Name = "m_rbGroupPB"
+            Me.m_rbGroupPB.UseVisualStyleBackColor = True
             '
             'm_plInputs
             '
@@ -134,40 +146,40 @@ Namespace Ecopath.Output
             resources.ApplyResources(Me.m_plInputs, "m_plInputs")
             Me.m_plInputs.Name = "m_plInputs"
             '
-            'm_hdrInputs
+            'NumericUpDown1
             '
-            resources.ApplyResources(Me.m_hdrInputs, "m_hdrInputs")
-            Me.m_hdrInputs.Name = "m_hdrInputs"
-            '
-            'm_lblNoWtClasses
-            '
-            resources.ApplyResources(Me.m_lblNoWtClasses, "m_lblNoWtClasses")
-            Me.m_lblNoWtClasses.Name = "m_lblNoWtClasses"
-            '
-            'm_nudNoWtClasses
-            '
-            resources.ApplyResources(Me.m_nudNoWtClasses, "m_nudNoWtClasses")
-            Me.m_nudNoWtClasses.Name = "m_nudNoWtClasses"
+            resources.ApplyResources(Me.NumericUpDown1, "NumericUpDown1")
+            Me.NumericUpDown1.Name = "NumericUpDown1"
             '
             'm_nudLowestWtClass
             '
             resources.ApplyResources(Me.m_nudLowestWtClass, "m_nudLowestWtClass")
             Me.m_nudLowestWtClass.Name = "m_nudLowestWtClass"
             '
-            'Label1
+            'm_nudNoWtClasses
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_nudNoWtClasses, "m_nudNoWtClasses")
+            Me.m_nudNoWtClasses.Name = "m_nudNoWtClasses"
             '
             'm_lblNoPts
             '
             resources.ApplyResources(Me.m_lblNoPts, "m_lblNoPts")
             Me.m_lblNoPts.Name = "m_lblNoPts"
             '
-            'NumericUpDown1
+            'Label1
             '
-            resources.ApplyResources(Me.NumericUpDown1, "NumericUpDown1")
-            Me.NumericUpDown1.Name = "NumericUpDown1"
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'm_lblNoWtClasses
+            '
+            resources.ApplyResources(Me.m_lblNoWtClasses, "m_lblNoWtClasses")
+            Me.m_lblNoWtClasses.Name = "m_lblNoWtClasses"
+            '
+            'm_hdrInputs
+            '
+            resources.ApplyResources(Me.m_hdrInputs, "m_hdrInputs")
+            Me.m_hdrInputs.Name = "m_hdrInputs"
             '
             'Panel1
             '
@@ -176,6 +188,12 @@ Namespace Ecopath.Output
             Me.Panel1.Controls.Add(Me.m_hdrRun)
             resources.ApplyResources(Me.Panel1, "Panel1")
             Me.Panel1.Name = "Panel1"
+            '
+            'm_bntShowGroups
+            '
+            resources.ApplyResources(Me.m_bntShowGroups, "m_bntShowGroups")
+            Me.m_bntShowGroups.Name = "m_bntShowGroups"
+            Me.m_bntShowGroups.UseVisualStyleBackColor = True
             '
             'm_btnRun
             '
@@ -188,24 +206,6 @@ Namespace Ecopath.Output
             resources.ApplyResources(Me.m_hdrRun, "m_hdrRun")
             Me.m_hdrRun.Name = "m_hdrRun"
             '
-            'm_bntShowGroups
-            '
-            resources.ApplyResources(Me.m_bntShowGroups, "m_bntShowGroups")
-            Me.m_bntShowGroups.Name = "m_bntShowGroups"
-            Me.m_bntShowGroups.UseVisualStyleBackColor = True
-            '
-            'm_lblMeanLat
-            '
-            resources.ApplyResources(Me.m_lblMeanLat, "m_lblMeanLat")
-            Me.m_lblMeanLat.Name = "m_lblMeanLat"
-            '
-            'm_cmbMeanLat
-            '
-            resources.ApplyResources(Me.m_cmbMeanLat, "m_cmbMeanLat")
-            Me.m_cmbMeanLat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbMeanLat.FormattingEnabled = True
-            Me.m_cmbMeanLat.Name = "m_cmbMeanLat"
-            '
             'RunPSD
             '
             resources.ApplyResources(Me, "$this")
@@ -216,14 +216,14 @@ Namespace Ecopath.Output
             Me.m_scContent.Panel1.ResumeLayout(False)
             Me.m_scContent.Panel2.ResumeLayout(False)
             Me.m_scContent.ResumeLayout(False)
+            Me.m_tlpInputs.ResumeLayout(False)
             Me.m_plTotalMortality.ResumeLayout(False)
             Me.m_plTotalMortality.PerformLayout()
-            Me.m_tlpInputs.ResumeLayout(False)
             Me.m_plInputs.ResumeLayout(False)
             Me.m_plInputs.PerformLayout()
-            CType(Me.m_nudNoWtClasses, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudLowestWtClass, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudLowestWtClass, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudNoWtClasses, System.ComponentModel.ISupportInitialize).EndInit()
             Me.Panel1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
