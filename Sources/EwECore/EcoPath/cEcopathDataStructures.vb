@@ -520,13 +520,6 @@ Public Class cEcopathDataStructures
     ''' <remarks></remarks>
     Public Function RedimFleetVariables(ByVal NoPreserve As Boolean) As Boolean
 
-        Dim bNeedDefaultFleet As Boolean = False ' (NumFleet = 0)
-
-        ' Always need one fleet
-        If (bNeedDefaultFleet) Then
-            NumFleet = 1
-        End If
-
         'det() is not saved to database
         ReDim det(NumGroups + NumFleet, NumGroups + NumFleet)
         If NoPreserve Then
@@ -551,32 +544,13 @@ Public Class cEcopathDataStructures
         ReDim Market(NumFleet, NumGroups)
         ReDim FleetColor(NumFleet)
 
-        If (bNeedDefaultFleet) Then
-            ' Populate default fleet
-            FleetName(1) = My.Resources.CoreDefaults.CORE_DEFAULT_FLEET()
-            FleetDBID(1) = 1
-            CostPct(1, eCostIndex.Fixed) = 0
-            CostPct(1, eCostIndex.CUPE) = 100
-            CostPct(1, eCostIndex.Sail) = 0
-            For iGroup As Integer = 1 To NumLiving
-                ' Set default landing
-                Landing(1, iGroup) = fCatch(iGroup)
-                ' Set default price
-                Market(1, iGroup) = 1
-            Next
-            For nFleet As Integer = 1 To NumFleet
-                ' Set the last det col values to 1.0
-                DiscardFate(nFleet, NumDetrit) = 1
-            Next
-        Else
-            ' Set default market (off-vessel) prices
-            For iFleet As Integer = 1 To NumFleet
-                For iGroup As Integer = 1 To NumGroups
-                    Market(iFleet, iGroup) = 1.0!
-                    PropDiscardMort(iFleet, iGroup) = 1.0!
-                Next iGroup
-            Next iFleet
-        End If
+        ' Set default market (off-vessel) prices
+        For iFleet As Integer = 1 To NumFleet
+            For iGroup As Integer = 1 To NumGroups
+                Market(iFleet, iGroup) = 1.0!
+                PropDiscardMort(iFleet, iGroup) = 1.0!
+            Next iGroup
+        Next iFleet
 
         Return True
 
