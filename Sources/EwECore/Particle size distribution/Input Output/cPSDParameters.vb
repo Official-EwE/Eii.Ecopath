@@ -31,12 +31,14 @@ Public Class cPSDParameters
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.PSDEnabled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDEnabled))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'PSDComputed
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.PSDComputed, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDEnabled))
             val.Stored = False
+            val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'PSDNumWeightClasses

@@ -27,9 +27,10 @@ Namespace Ecopath.Output
         Private m_zgh As cZedGraphHelper = Nothing
 
         ' -- Format providers --
-        Private m_fpNoOfPointsPSD As cEwEFormatProvider = Nothing
-        Private m_fpMinWeight As cEwEFormatProvider = Nothing
-        Private m_fpNoOfPointsMovAvg As cEwEFormatProvider = Nothing
+        Private m_fpNoOfPointsPSD As cPropertyFormatProvider = Nothing
+        Private m_fpMinWeight As cPropertyFormatProvider = Nothing
+        Private m_fpNoOfPointsMovAvg As cPropertyFormatProvider = Nothing
+        Private m_fpClimateType As cPropertyFormatProvider = Nothing
 
         ' -- Internal admin --
         ''' <summary>Flag stating whether the current Ecopath results have been plotted.</summary>
@@ -42,14 +43,18 @@ Namespace Ecopath.Output
 #Region " Constructor/Destructor "
 
         Public Sub New()
-
             Me.InitializeComponent()
-
         End Sub
 
 #End Region ' Constructor/Destructor
 
-#Region " Event handlers "
+#Region " Form overrides "
+
+        Public Overrides ReadOnly Property IsRunForm() As Boolean
+            Get
+                Return True
+            End Get
+        End Property
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
@@ -59,44 +64,47 @@ Namespace Ecopath.Output
 
             Dim parms As cPSDParameters = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim pm As cPropertyManager = Me.UIContext.PropertyManager
+            Dim pm As cPropertyManager = Me.PropertyManager
 
-            Me.m_coreStateMonitor = Me.UIContext.Core.StateMonitor
+            Me.m_coreStateMonitor = Me.Core.StateMonitor
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
 
             ' Connect to show/hide groups command
             Me.m_cmdShowGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
             If Not Object.ReferenceEquals(Me.m_cmdShowGroups, Nothing) Then
-                Me.m_cmdShowGroups.AddControl(Me.m_tsbnShowHideGroups)
+                Me.m_cmdShowGroups.AddControl(Me.m_bntShowGroups)
                 AddHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
             End If
 
             ' Connect format providers
-            parms = Me.UIContext.Core.ParticleSizeDistributionParameters
-            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.UIContext, Me.m_tstbxNoOfPointsPSD.Control, parms, eVarNameFlags.PSDNumWeightClasses)
-            Me.m_fpMinWeight = New cPropertyFormatProvider(Me.UIContext, Me.m_tstbxMinWeight.Control, parms, eVarNameFlags.PSDFirstWeightClass)
-            Me.m_fpNoOfPointsMovAvg = New cPropertyFormatProvider(Me.UIContext, Me.m_tstbxNoOfPointsMovAvg.Control, parms, eVarNameFlags.NumPtsMovAvg)
+            parms = Me.Core.ParticleSizeDistributionParameters
+            Me.m_fpNoOfPointsPSD = New cPropertyFormatProvider(Me.UIContext, Me.NumericUpDown1, parms, eVarNameFlags.PSDNumWeightClasses)
+            Me.m_fpMinWeight = New cPropertyFormatProvider(Me.UIContext, Me.m_nudLowestWtClass, parms, eVarNameFlags.PSDFirstWeightClass)
+            Me.m_fpNoOfPointsMovAvg = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNoWtClasses, parms, eVarNameFlags.NumPtsMovAvg)
+            Me.m_fpClimateType = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbMeanLat, parms, eVarNameFlags.NumPtsMovAvg, Nothing, New cClimateTypeFormatter())
 
             ' Connect to core state monitor events
             AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
-            ' Sync controls
-            Me.UpdateToolstrip()
+            Try
+                Me.SynchronizePSDGroups()
+                Me.SynchronizePlot()
+            Catch ex As Exception
 
-            ' Synchronize plot with Ecopath results
-            Me.SynchronizePlot()
+            End Try
+            ' Sync controls
+            Me.UpdateControls()
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
-
             ' Detach format providers
             Me.m_fpNoOfPointsPSD.Release()
             Me.m_fpMinWeight.Release()
             Me.m_fpNoOfPointsMovAvg.Release()
+            Me.m_fpClimateType.Release()
 
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
@@ -104,89 +112,93 @@ Namespace Ecopath.Output
             ' Detach from show/hide groups command
             If Not Object.ReferenceEquals(Me.m_cmdShowGroups, Nothing) Then
                 RemoveHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
-                Me.m_cmdShowGroups.RemoveControl(Me.m_tsbnShowHideGroups)
+                Me.m_cmdShowGroups.RemoveControl(Me.m_bntShowGroups)
             End If
 
             ' Detach from core state monitor events
             RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             MyBase.OnFormClosed(e)
-        End Sub
-
-        Private Sub MenuItmGroupPB_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiGroupPB.Click
-
-            ' Make sure one checkbox is checked exclusively
-            Me.m_tsmiGroupPB.Checked = True
-            Me.m_tsmiLorenzen.Checked = Not Me.m_tsmiGroupPB.Checked
-            'Disable MeanLat label and combo box
-            m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
-            m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
-
-            ' JS to JH: on this event, please update the core PSD params immediately to 
-            '           let the core know that PSD needs to re-run
-            Me.UpdateVariables()
 
         End Sub
 
-        Private Sub MenuItmLorenzen_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiLorenzen.Click
+#End Region ' Form overrides
 
-            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
+#Region " Event handlers "
 
-            ' Make sure one checkbox is checked exclusively
-            Me.m_tsmiLorenzen.Checked = True
-            Me.m_tsmiGroupPB.Checked = Not Me.m_tsmiLorenzen.Checked
-            'Enable MeanLat label and combo box
-            m_tsmiMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
-            m_tscbxMeanLat.Enabled = Me.m_tsmiLorenzen.Checked
+        Private Sub OnMortalityTypeSelected(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_rbGroupPB.CheckedChanged, m_rbLorenzen.CheckedChanged
 
-            ' JS to JH: on this event, please update the core PSD params immediately to 
-            '           let the core know that PSD needs to re-run
-            Me.UpdateVariables()
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
+
+            ' This should invalidate PSD results via cCore variable validation
+            If Me.m_rbGroupPB.Checked Then
+                parms.MortalityType = ePSDMortalityTypes.GroupZ
+            Else
+                parms.MortalityType = ePSDMortalityTypes.Lorenzen
+            End If
+
+            ' Reflect changes
+            Me.UpdateControls()
 
         End Sub
 
-        Private Sub BtnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsbtnRun.Click
+        Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnRun.Click
 
             'PSD Enabled needs to be true for Ecopath to run the PSD 
             'The PSDEnabled flag is set in the Model Description form and may be False preventing the PSD from running
-            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim orgEnabled As Boolean = parms.PSDEnabled
             parms.PSDEnabled = True
 
-            ' Grab PSD settings from the GUI and stick them in the core
-            Me.UpdateVariables()
             ' Run Ecopath
-            Me.UIContext.Core.RunEcoPath()
+            Me.Core.RunEcoPath()
 
             'set PSDEnabled back to it's original value 
-            'This way if it's False (most likley) then it will not run in a normal Ecopath run
+            'This way if it's False (most likely) then it will not run in a normal Ecopath run
             parms.PSDEnabled = orgEnabled
 
         End Sub
 
         Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
-            Me.SynchronizePlot()
+            Try
+                Me.SynchronizePlot()
+            Catch ex As Exception
+            End Try
         End Sub
 
         Private Sub OnAfterShowGroups(ByVal cmd As cCommand)
-            ' JS to JH: on this event, please update the core PSD params immediately to 
-            '           let the core know that PSD needs to re-run
-            Me.UpdateVariables()
+            Try
+                Me.SynchronizePSDGroups()
+            Catch ex As Exception
+            End Try
         End Sub
 
-        Private Sub m_tscbxMeanLat_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tscbxMeanLat.SelectedIndexChanged
-            ' JS to JH: on this event, please update the core PSD params immediately to 
-            '           let the core know that PSD needs to re-run
-            Me.UpdateVariables()
+        Private Sub OnLatChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_cmbMeanLat.SelectedIndexChanged
+            Try
+                Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
+                parms.ClimateType = DirectCast(Me.m_cmbMeanLat.SelectedIndex, eClimateTypes)
+            Catch ex As Exception
+                ' Whoah
+            End Try
         End Sub
 
 #End Region ' Event handlers
 
 #Region " Helper methods "
+
+        ''' <summary>
+        ''' Apply selected groups to PSD
+        ''' </summary>
+        Private Sub SynchronizePSDGroups()
+            ' Update groups to include in PSD - which is driven by show groups interface
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
+                parms.GroupIncluded(iGroup) = Me.StyleGuide.GroupVisible(iGroup)
+            Next
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -196,6 +208,7 @@ Namespace Ecopath.Output
         Private Sub SynchronizePlot()
 
             ' This code is optimized to only plot when new results are available
+
             ' Are Ecopath results available?
             If Me.m_coreStateMonitor.HasPSDRan Then
                 ' #Yes: are these results not plotted yet?
@@ -229,7 +242,7 @@ Namespace Ecopath.Output
         Private Function InitializePane() As GraphPane
 
             Dim pane As GraphPane = Me.m_zedgraph.GraphPane
-            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
 
             pane.CurveList.Clear()
 
@@ -246,7 +259,7 @@ Namespace Ecopath.Output
             'pane.YAxis.Title.FontSpec.Size = 14
 
             pane.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
-            pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.UIContext.Core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
+            pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.Core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
             pane.YAxis.Scale.Min = 0
 
             pane.YAxis.Cross = 0
@@ -260,7 +273,7 @@ Namespace Ecopath.Output
 
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
-            Dim sSystemPSD(Me.UIContext.Core.nWeightClasses) As Single
+            Dim sSystemPSD(Me.Core.nWeightClasses) As Single
             Dim sSlope As Single
             Dim sSlopeStdErr As Single
             Dim sIntercept As Single
@@ -269,7 +282,7 @@ Namespace Ecopath.Output
             Dim sLowWtClass As Single
             Dim sHighWtClass As Single
             Dim iSampleSize As Integer
-            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim strLabel As String = ""
 
@@ -282,7 +295,7 @@ Namespace Ecopath.Output
             Me.FindRegression(sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, _
                               sLowWtClass, sHighWtClass, iSampleSize, sSystemPSD)
 
-            For iWtClass As Integer = 1 To Me.UIContext.Core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
@@ -338,44 +351,6 @@ Namespace Ecopath.Output
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Update PSD variables from user settings.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub UpdateVariables()
-
-            ' JS to JH: This method is now abused to update core PSD params with
-            '           UI changed vars in order to let the core know that PSD 
-            '           needs to re-run. UpdateVariables may not be the best way
-            '           to do this, I'm not sure. It seems that two calls to
-            '           UpdateVariables are necessary to make new values reach
-            '           the actual core PSD computations.
-
-            Dim grpInput As cEcoPathGroupInput = Nothing
-            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
-            Dim sg As cStyleGuide = Me.StyleGuide
-
-            'Mortality type
-            If m_tsmiGroupPB.Checked Then
-                parms.MortalityType = ePSDMortalityTypes.GroupZ
-            ElseIf m_tsmiLorenzen.Checked Then
-                parms.MortalityType = ePSDMortalityTypes.Lorenzen
-            End If
-
-            'Climate type
-            If m_tsmiLorenzen.Checked Then
-                parms.ClimateType = DirectCast(m_tscbxMeanLat.SelectedIndex, eClimateTypes)
-            End If
-
-            'Group included in PSD 
-            For iGroup As Integer = 1 To Me.UIContext.Core.nLivingGroups
-                grpInput = Me.UIContext.Core.EcoPathGroupInputs(iGroup)
-                parms.GroupIncluded(iGroup) = sg.GroupVisible(iGroup)
-            Next
-
-        End Sub
-
         Private Sub UpdatePlot()
             Me.m_zedgraph.AxisChange()
             Me.m_zedgraph.Refresh()
@@ -386,45 +361,25 @@ Namespace Ecopath.Output
         ''' Update toolstrip item states.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateToolstrip()
+        Protected Overrides Sub UpdateControls()
 
-            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim grpInput As cEcoPathGroupInput = Nothing
             Dim sg As cStyleGuide = Me.StyleGuide
 
-            'Mortality type
             Select Case parms.MortalityType
                 Case ePSDMortalityTypes.GroupZ
-                    Me.m_tsmiGroupPB.Checked = True
+                    Me.m_rbGroupPB.Checked = True
+                    Me.m_cmbMeanLat.Enabled = False
+                    Me.m_cmbMeanLat.SelectedIndex = parms.ClimateType
+
                 Case ePSDMortalityTypes.Lorenzen
-                    Me.m_tsmiLorenzen.Checked = True
+                    Me.m_rbLorenzen.Checked = True
+                    Me.m_cmbMeanLat.Enabled = True
+                    Me.m_cmbMeanLat.SelectedIndex = parms.ClimateType
             End Select
 
-            'Climate type
-            If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                Me.m_tscbxMeanLat.Enabled = True
-                Me.m_tscbxMeanLat.SelectedIndex = parms.ClimateType
-            End If
-
-            'Group included in PSD
-            ' ToDo_JS or ToDo_JH: The groupvisible flags are meant solely for showing/hiding groups in graphs.
-            ' The PSD group inclusion settings is separate behaviour, and should perhaps not alter the EwE group 
-            ' visibility settings. 
-            '
-            ' We can solve this by either:
-            '    1. building a different show/hide group interface solely for use with PSD, 
-            '    2. reuse the current show/hide group interface but make it operate on different data,
-            '    3. reuse show/hide groups but do NOT store PSD group inclusion settings in the database.
-            '
-            ' 1) is quite a bit of work
-            ' 2) is possible by passing an array of show/hide flags into the command.Tag, which we could make
-            '    the show/hide dialog operate on. This is pretty hack. Additionally, the hijacked dialog needs to 
-            '    display an alternate caption to distinguish its behaviour from regular show/hide group behaviour.
-            ' 3) is probably the best option
-            'For iGroup As Integer = 1 To m_core.nLivingGroups
-            '    grpInput = m_core.EcoPathGroupInputs(iGroup)
-            '    sg.GroupVisible(iGroup) = grpInput.PSDIncluded
-            'Next
+            MyBase.UpdateControls()
 
         End Sub
 
@@ -435,14 +390,14 @@ Namespace Ecopath.Output
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
 
-            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
-            For iGroup As Integer = 1 To Me.UIContext.Core.nLivingGroups
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 If parms.GroupIncluded(iGroup) Then
-                    grpOutput = Me.UIContext.Core.EcoPathGroupOutputs(iGroup)
-                    For iWtClass As Integer = 1 To Me.UIContext.Core.nWeightClasses
+                    grpOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+                    For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                         sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
                     Next
                 End If
@@ -472,9 +427,9 @@ Namespace Ecopath.Output
             Dim dXStdDev As Double
             Dim dYStdDev As Double
             Dim dEstStdErr As Double
-            Dim parms As cPSDParameters = Me.UIContext.Core.ParticleSizeDistributionParameters
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
 
-            For iWtClass As Integer = 1 To Me.UIContext.Core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 
@@ -498,7 +453,7 @@ Namespace Ecopath.Output
             dXMean = dSumX / iNum
             dYMean = dSumY / iNum
 
-            For iWtClass As Integer = 1 To Me.UIContext.Core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                 If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                     sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
 

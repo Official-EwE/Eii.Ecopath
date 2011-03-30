@@ -28,146 +28,39 @@ Namespace Ecopath.Output
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Dim m_sep1 As System.Windows.Forms.ToolStripSeparator
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunPSD))
-            Dim m_sep666 As System.Windows.Forms.ToolStripSeparator
-            Dim m_sep2 As System.Windows.Forms.ToolStripSeparator
-            Dim m_sep3 As System.Windows.Forms.ToolStripSeparator
-            Dim m_sep4 As System.Windows.Forms.ToolStripSeparator
-            Dim m_sep5 As System.Windows.Forms.ToolStripSeparator
-            Me.m_tsRunPSD = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.m_tsddTotalMortality = New System.Windows.Forms.ToolStripDropDownButton
-            Me.m_tsmiGroupPB = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiLorenzen = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiMeanLat = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tscbxMeanLat = New System.Windows.Forms.ToolStripComboBox
-            Me.m_tsbnShowHideGroups = New System.Windows.Forms.ToolStripButton
-            Me.m_tslblNoOfPointsPSD = New System.Windows.Forms.ToolStripLabel
-            Me.m_tstbxNoOfPointsPSD = New System.Windows.Forms.ToolStripTextBox
-            Me.m_tslblMinWeight = New System.Windows.Forms.ToolStripLabel
-            Me.m_tstbxMinWeight = New System.Windows.Forms.ToolStripTextBox
-            Me.m_tslblNoOfPointsMovAvg = New System.Windows.Forms.ToolStripLabel
-            Me.m_tstbxNoOfPointsMovAvg = New System.Windows.Forms.ToolStripTextBox
-            Me.m_tsbtnRun = New System.Windows.Forms.ToolStripButton
             Me.m_zedgraph = New ZedGraph.ZedGraphControl
-            m_sep1 = New System.Windows.Forms.ToolStripSeparator
-            m_sep666 = New System.Windows.Forms.ToolStripSeparator
-            m_sep2 = New System.Windows.Forms.ToolStripSeparator
-            m_sep3 = New System.Windows.Forms.ToolStripSeparator
-            m_sep4 = New System.Windows.Forms.ToolStripSeparator
-            m_sep5 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsRunPSD.SuspendLayout()
+            Me.m_scContent = New System.Windows.Forms.SplitContainer
+            Me.m_plTotalMortality = New System.Windows.Forms.Panel
+            Me.m_tlpInputs = New System.Windows.Forms.TableLayoutPanel
+            Me.m_rbGroupPB = New System.Windows.Forms.RadioButton
+            Me.m_hdrTotalMort = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_rbLorenzen = New System.Windows.Forms.RadioButton
+            Me.m_plInputs = New System.Windows.Forms.Panel
+            Me.m_hdrInputs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_lblNoWtClasses = New System.Windows.Forms.Label
+            Me.m_nudNoWtClasses = New System.Windows.Forms.NumericUpDown
+            Me.m_nudLowestWtClass = New System.Windows.Forms.NumericUpDown
+            Me.Label1 = New System.Windows.Forms.Label
+            Me.m_lblNoPts = New System.Windows.Forms.Label
+            Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown
+            Me.Panel1 = New System.Windows.Forms.Panel
+            Me.m_btnRun = New System.Windows.Forms.Button
+            Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_bntShowGroups = New System.Windows.Forms.Button
+            Me.m_lblMeanLat = New System.Windows.Forms.Label
+            Me.m_cmbMeanLat = New System.Windows.Forms.ComboBox
+            Me.m_scContent.Panel1.SuspendLayout()
+            Me.m_scContent.Panel2.SuspendLayout()
+            Me.m_scContent.SuspendLayout()
+            Me.m_plTotalMortality.SuspendLayout()
+            Me.m_tlpInputs.SuspendLayout()
+            Me.m_plInputs.SuspendLayout()
+            CType(Me.m_nudNoWtClasses, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudLowestWtClass, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.Panel1.SuspendLayout()
             Me.SuspendLayout()
-            '
-            'm_sep1
-            '
-            m_sep1.Name = "m_sep1"
-            resources.ApplyResources(m_sep1, "m_sep1")
-            '
-            'm_sep666
-            '
-            m_sep666.Name = "m_sep666"
-            resources.ApplyResources(m_sep666, "m_sep666")
-            '
-            'm_sep2
-            '
-            m_sep2.Name = "m_sep2"
-            resources.ApplyResources(m_sep2, "m_sep2")
-            '
-            'm_sep3
-            '
-            m_sep3.Name = "m_sep3"
-            resources.ApplyResources(m_sep3, "m_sep3")
-            '
-            'm_sep4
-            '
-            m_sep4.Name = "m_sep4"
-            resources.ApplyResources(m_sep4, "m_sep4")
-            '
-            'm_sep5
-            '
-            m_sep5.Name = "m_sep5"
-            resources.ApplyResources(m_sep5, "m_sep5")
-            '
-            'm_tsRunPSD
-            '
-            Me.m_tsRunPSD.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddTotalMortality, m_sep1, Me.m_tsbnShowHideGroups, m_sep666, Me.m_tslblNoOfPointsPSD, Me.m_tstbxNoOfPointsPSD, m_sep2, Me.m_tslblMinWeight, Me.m_tstbxMinWeight, m_sep3, Me.m_tslblNoOfPointsMovAvg, Me.m_tstbxNoOfPointsMovAvg, m_sep4, Me.m_tsbtnRun, m_sep5})
-            resources.ApplyResources(Me.m_tsRunPSD, "m_tsRunPSD")
-            Me.m_tsRunPSD.Name = "m_tsRunPSD"
-            '
-            'm_tsddTotalMortality
-            '
-            Me.m_tsddTotalMortality.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiGroupPB, Me.m_tsmiLorenzen, Me.m_tsmiMeanLat, Me.m_tscbxMeanLat})
-            Me.m_tsddTotalMortality.Image = SharedResources.OptionsHS
-            resources.ApplyResources(Me.m_tsddTotalMortality, "m_tsddTotalMortality")
-            Me.m_tsddTotalMortality.Name = "m_tsddTotalMortality"
-            '
-            'm_tsmiGroupPB
-            '
-            Me.m_tsmiGroupPB.CheckOnClick = True
-            Me.m_tsmiGroupPB.Name = "m_tsmiGroupPB"
-            resources.ApplyResources(Me.m_tsmiGroupPB, "m_tsmiGroupPB")
-            '
-            'm_tsmiLorenzen
-            '
-            Me.m_tsmiLorenzen.CheckOnClick = True
-            Me.m_tsmiLorenzen.Name = "m_tsmiLorenzen"
-            resources.ApplyResources(Me.m_tsmiLorenzen, "m_tsmiLorenzen")
-            '
-            'm_tsmiMeanLat
-            '
-            Me.m_tsmiMeanLat.Margin = New System.Windows.Forms.Padding(5, 0, 0, 0)
-            Me.m_tsmiMeanLat.Name = "m_tsmiMeanLat"
-            resources.ApplyResources(Me.m_tsmiMeanLat, "m_tsmiMeanLat")
-            '
-            'm_tscbxMeanLat
-            '
-            resources.ApplyResources(Me.m_tscbxMeanLat, "m_tscbxMeanLat")
-            Me.m_tscbxMeanLat.Items.AddRange(New Object() {resources.GetString("m_tscbxMeanLat.Items"), resources.GetString("m_tscbxMeanLat.Items1"), resources.GetString("m_tscbxMeanLat.Items2")})
-            Me.m_tscbxMeanLat.Margin = New System.Windows.Forms.Padding(55, -22, 2, 2)
-            Me.m_tscbxMeanLat.Name = "m_tscbxMeanLat"
-            '
-            'm_tsbnShowHideGroups
-            '
-            Me.m_tsbnShowHideGroups.Image = SharedResources.Eye_open
-            resources.ApplyResources(Me.m_tsbnShowHideGroups, "m_tsbnShowHideGroups")
-            Me.m_tsbnShowHideGroups.Name = "m_tsbnShowHideGroups"
-            '
-            'm_tslblNoOfPointsPSD
-            '
-            Me.m_tslblNoOfPointsPSD.Name = "m_tslblNoOfPointsPSD"
-            resources.ApplyResources(Me.m_tslblNoOfPointsPSD, "m_tslblNoOfPointsPSD")
-            '
-            'm_tstbxNoOfPointsPSD
-            '
-            Me.m_tstbxNoOfPointsPSD.Name = "m_tstbxNoOfPointsPSD"
-            resources.ApplyResources(Me.m_tstbxNoOfPointsPSD, "m_tstbxNoOfPointsPSD")
-            '
-            'm_tslblMinWeight
-            '
-            Me.m_tslblMinWeight.Name = "m_tslblMinWeight"
-            resources.ApplyResources(Me.m_tslblMinWeight, "m_tslblMinWeight")
-            '
-            'm_tstbxMinWeight
-            '
-            Me.m_tstbxMinWeight.Name = "m_tstbxMinWeight"
-            resources.ApplyResources(Me.m_tstbxMinWeight, "m_tstbxMinWeight")
-            '
-            'm_tslblNoOfPointsMovAvg
-            '
-            Me.m_tslblNoOfPointsMovAvg.Name = "m_tslblNoOfPointsMovAvg"
-            resources.ApplyResources(Me.m_tslblNoOfPointsMovAvg, "m_tslblNoOfPointsMovAvg")
-            '
-            'm_tstbxNoOfPointsMovAvg
-            '
-            Me.m_tstbxNoOfPointsMovAvg.Name = "m_tstbxNoOfPointsMovAvg"
-            resources.ApplyResources(Me.m_tstbxNoOfPointsMovAvg, "m_tstbxNoOfPointsMovAvg")
-            '
-            'm_tsbtnRun
-            '
-            resources.ApplyResources(Me.m_tsbtnRun, "m_tsbtnRun")
-            Me.m_tsbtnRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbtnRun.Name = "m_tsbtnRun"
             '
             'm_zedgraph
             '
@@ -181,35 +74,181 @@ Namespace Ecopath.Output
             Me.m_zedgraph.ScrollMinY = 0
             Me.m_zedgraph.ScrollMinY2 = 0
             '
+            'm_scContent
+            '
+            resources.ApplyResources(Me.m_scContent, "m_scContent")
+            Me.m_scContent.Name = "m_scContent"
+            '
+            'm_scContent.Panel1
+            '
+            Me.m_scContent.Panel1.Controls.Add(Me.m_tlpInputs)
+            '
+            'm_scContent.Panel2
+            '
+            Me.m_scContent.Panel2.Controls.Add(Me.m_zedgraph)
+            '
+            'm_plTotalMortality
+            '
+            Me.m_plTotalMortality.Controls.Add(Me.m_cmbMeanLat)
+            Me.m_plTotalMortality.Controls.Add(Me.m_lblMeanLat)
+            Me.m_plTotalMortality.Controls.Add(Me.m_hdrTotalMort)
+            Me.m_plTotalMortality.Controls.Add(Me.m_rbLorenzen)
+            Me.m_plTotalMortality.Controls.Add(Me.m_rbGroupPB)
+            resources.ApplyResources(Me.m_plTotalMortality, "m_plTotalMortality")
+            Me.m_plTotalMortality.Name = "m_plTotalMortality"
+            '
+            'm_tlpInputs
+            '
+            resources.ApplyResources(Me.m_tlpInputs, "m_tlpInputs")
+            Me.m_tlpInputs.Controls.Add(Me.m_plTotalMortality, 0, 0)
+            Me.m_tlpInputs.Controls.Add(Me.m_plInputs, 0, 1)
+            Me.m_tlpInputs.Controls.Add(Me.Panel1, 0, 2)
+            Me.m_tlpInputs.Name = "m_tlpInputs"
+            '
+            'm_rbGroupPB
+            '
+            resources.ApplyResources(Me.m_rbGroupPB, "m_rbGroupPB")
+            Me.m_rbGroupPB.Name = "m_rbGroupPB"
+            Me.m_rbGroupPB.UseVisualStyleBackColor = True
+            '
+            'm_hdrTotalMort
+            '
+            resources.ApplyResources(Me.m_hdrTotalMort, "m_hdrTotalMort")
+            Me.m_hdrTotalMort.Name = "m_hdrTotalMort"
+            '
+            'm_rbLorenzen
+            '
+            resources.ApplyResources(Me.m_rbLorenzen, "m_rbLorenzen")
+            Me.m_rbLorenzen.Name = "m_rbLorenzen"
+            Me.m_rbLorenzen.UseVisualStyleBackColor = True
+            '
+            'm_plInputs
+            '
+            Me.m_plInputs.Controls.Add(Me.NumericUpDown1)
+            Me.m_plInputs.Controls.Add(Me.m_nudLowestWtClass)
+            Me.m_plInputs.Controls.Add(Me.m_nudNoWtClasses)
+            Me.m_plInputs.Controls.Add(Me.m_lblNoPts)
+            Me.m_plInputs.Controls.Add(Me.Label1)
+            Me.m_plInputs.Controls.Add(Me.m_lblNoWtClasses)
+            Me.m_plInputs.Controls.Add(Me.m_hdrInputs)
+            resources.ApplyResources(Me.m_plInputs, "m_plInputs")
+            Me.m_plInputs.Name = "m_plInputs"
+            '
+            'm_hdrInputs
+            '
+            resources.ApplyResources(Me.m_hdrInputs, "m_hdrInputs")
+            Me.m_hdrInputs.Name = "m_hdrInputs"
+            '
+            'm_lblNoWtClasses
+            '
+            resources.ApplyResources(Me.m_lblNoWtClasses, "m_lblNoWtClasses")
+            Me.m_lblNoWtClasses.Name = "m_lblNoWtClasses"
+            '
+            'm_nudNoWtClasses
+            '
+            resources.ApplyResources(Me.m_nudNoWtClasses, "m_nudNoWtClasses")
+            Me.m_nudNoWtClasses.Name = "m_nudNoWtClasses"
+            '
+            'm_nudLowestWtClass
+            '
+            resources.ApplyResources(Me.m_nudLowestWtClass, "m_nudLowestWtClass")
+            Me.m_nudLowestWtClass.Name = "m_nudLowestWtClass"
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'm_lblNoPts
+            '
+            resources.ApplyResources(Me.m_lblNoPts, "m_lblNoPts")
+            Me.m_lblNoPts.Name = "m_lblNoPts"
+            '
+            'NumericUpDown1
+            '
+            resources.ApplyResources(Me.NumericUpDown1, "NumericUpDown1")
+            Me.NumericUpDown1.Name = "NumericUpDown1"
+            '
+            'Panel1
+            '
+            Me.Panel1.Controls.Add(Me.m_bntShowGroups)
+            Me.Panel1.Controls.Add(Me.m_btnRun)
+            Me.Panel1.Controls.Add(Me.m_hdrRun)
+            resources.ApplyResources(Me.Panel1, "Panel1")
+            Me.Panel1.Name = "Panel1"
+            '
+            'm_btnRun
+            '
+            resources.ApplyResources(Me.m_btnRun, "m_btnRun")
+            Me.m_btnRun.Name = "m_btnRun"
+            Me.m_btnRun.UseVisualStyleBackColor = True
+            '
+            'm_hdrRun
+            '
+            resources.ApplyResources(Me.m_hdrRun, "m_hdrRun")
+            Me.m_hdrRun.Name = "m_hdrRun"
+            '
+            'm_bntShowGroups
+            '
+            resources.ApplyResources(Me.m_bntShowGroups, "m_bntShowGroups")
+            Me.m_bntShowGroups.Name = "m_bntShowGroups"
+            Me.m_bntShowGroups.UseVisualStyleBackColor = True
+            '
+            'm_lblMeanLat
+            '
+            resources.ApplyResources(Me.m_lblMeanLat, "m_lblMeanLat")
+            Me.m_lblMeanLat.Name = "m_lblMeanLat"
+            '
+            'm_cmbMeanLat
+            '
+            resources.ApplyResources(Me.m_cmbMeanLat, "m_cmbMeanLat")
+            Me.m_cmbMeanLat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbMeanLat.FormattingEnabled = True
+            Me.m_cmbMeanLat.Name = "m_cmbMeanLat"
+            '
             'RunPSD
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_zedgraph)
-            Me.Controls.Add(Me.m_tsRunPSD)
+            Me.Controls.Add(Me.m_scContent)
             Me.Name = "RunPSD"
             Me.ShowInTaskbar = False
-            Me.m_tsRunPSD.ResumeLayout(False)
-            Me.m_tsRunPSD.PerformLayout()
+            Me.m_scContent.Panel1.ResumeLayout(False)
+            Me.m_scContent.Panel2.ResumeLayout(False)
+            Me.m_scContent.ResumeLayout(False)
+            Me.m_plTotalMortality.ResumeLayout(False)
+            Me.m_plTotalMortality.PerformLayout()
+            Me.m_tlpInputs.ResumeLayout(False)
+            Me.m_plInputs.ResumeLayout(False)
+            Me.m_plInputs.PerformLayout()
+            CType(Me.m_nudNoWtClasses, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudLowestWtClass, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.Panel1.ResumeLayout(False)
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_tsRunPSD As cEwEToolstrip
-        Private WithEvents m_tstbxNoOfPointsMovAvg As System.Windows.Forms.ToolStripTextBox
-        Private WithEvents m_tsbtnRun As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsddTotalMortality As System.Windows.Forms.ToolStripDropDownButton
-        Private WithEvents m_tsmiGroupPB As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tsmiLorenzen As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tsbnShowHideGroups As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tslblNoOfPointsPSD As System.Windows.Forms.ToolStripLabel
-        Private WithEvents m_tstbxNoOfPointsPSD As System.Windows.Forms.ToolStripTextBox
-        Private WithEvents m_tslblMinWeight As System.Windows.Forms.ToolStripLabel
-        Private WithEvents m_tstbxMinWeight As System.Windows.Forms.ToolStripTextBox
-        Private WithEvents m_tslblNoOfPointsMovAvg As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_zedgraph As ZedGraph.ZedGraphControl
-        Private WithEvents m_tsmiMeanLat As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tscbxMeanLat As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
+        Friend WithEvents m_tlpInputs As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents m_plTotalMortality As System.Windows.Forms.Panel
+        Friend WithEvents m_rbGroupPB As System.Windows.Forms.RadioButton
+        Friend WithEvents m_hdrTotalMort As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Friend WithEvents m_rbLorenzen As System.Windows.Forms.RadioButton
+        Friend WithEvents m_plInputs As System.Windows.Forms.Panel
+        Friend WithEvents m_nudNoWtClasses As System.Windows.Forms.NumericUpDown
+        Friend WithEvents m_lblNoWtClasses As System.Windows.Forms.Label
+        Friend WithEvents m_hdrInputs As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Friend WithEvents NumericUpDown1 As System.Windows.Forms.NumericUpDown
+        Friend WithEvents m_nudLowestWtClass As System.Windows.Forms.NumericUpDown
+        Friend WithEvents m_lblNoPts As System.Windows.Forms.Label
+        Friend WithEvents Label1 As System.Windows.Forms.Label
+        Friend WithEvents Panel1 As System.Windows.Forms.Panel
+        Friend WithEvents m_btnRun As System.Windows.Forms.Button
+        Friend WithEvents m_hdrRun As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Friend WithEvents m_bntShowGroups As System.Windows.Forms.Button
+        Friend WithEvents m_lblMeanLat As System.Windows.Forms.Label
+        Private WithEvents m_cmbMeanLat As System.Windows.Forms.ComboBox
     End Class
 
 End Namespace

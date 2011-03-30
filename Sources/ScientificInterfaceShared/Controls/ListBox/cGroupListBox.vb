@@ -441,6 +441,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Property IsGroupSelected(ByVal iGroup As Integer) As Boolean
             Get
+                If (Not Me.IsInitialized()) Then Return False
                 Dim iItem As Integer = Me.GroupIndex(iGroup)
                 Return Me.GetSelected(iItem)
             End Get
@@ -448,6 +449,18 @@ Namespace Controls
                 If (Not Me.IsInitialized()) Then Return
                 Dim iItem As Integer = Me.GroupIndex(iGroup)
                 Me.SetSelected(iItem, bSelected)
+            End Set
+        End Property
+
+        Public Property IsAllGroupsItemSelected() As Boolean
+            Get
+                If (Not Me.IsInitialized()) Then Return False
+                Return Me.m_bShowAllGroupsItem And Me.GetSelected(0)
+            End Get
+            Set(ByVal value As Boolean)
+                If (Not Me.IsInitialized()) Then Return
+                If Not Me.m_bShowAllGroupsItem Then Return
+                Me.SetSelected(0, value)
             End Set
         End Property
 

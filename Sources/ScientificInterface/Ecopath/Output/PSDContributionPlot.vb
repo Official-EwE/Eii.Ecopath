@@ -37,7 +37,7 @@ Namespace Ecopath.Output
             Debug.Assert(Me.UIContext IsNot Nothing)
 
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.UIContext, Me.zgcZedGraphCntl)
+            Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
 
             Me.m_lbGroups.Attach(Me.UIContext)
             Me.m_lbGroups.SelectedIndex = 0
@@ -65,8 +65,7 @@ Namespace Ecopath.Output
 
         Private Function CreatePane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
                                     ByVal strYAxisTitle As String) As GraphPane
-            Dim pane As GraphPane = Me.zgcZedGraphCntl.GraphPane
-
+            Dim pane As GraphPane = Me.m_graph.GraphPane
             InitGraphPane(strTitle, strXAxisTitle, strYAxisTitle)
             Return pane
         End Function
@@ -76,9 +75,9 @@ Namespace Ecopath.Output
             Dim psd As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim gp As GraphPane = Me.m_zgh.ConfigurePane(strTitle, strXAxisTitle, strYAxisTitle, False)
 
-            gp.XAxis.Scale.Min = Int(Math.Log10(psd.FirstWeightClass))
-            gp.XAxis.Scale.Max = Math.Round(Math.Log10(psd.FirstWeightClass * 2 ^ (Me.Core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
-            gp.YAxis.Scale.Min = 0
+            'gp.XAxis.Scale.Min = Int(Math.Log10(psd.FirstWeightClass))
+            'gp.XAxis.Scale.Max = Math.Round(Math.Log10(psd.FirstWeightClass * 2 ^ (Me.Core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
+            'gp.YAxis.Scale.Min = 0
 
         End Sub
 
@@ -87,10 +86,14 @@ Namespace Ecopath.Output
             Dim psd As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
-            Dim grpOutput As cEcoPathGroupOutput = Nothing
+            Dim dPlotX, dPlotY As Double
+            Dim sXMax, sYMax As Single
+            Dim sXMin, sYMin As Single
+            Dim group As cEcoPathGroupOutput = Nothing
             Dim sSystemPSD(Me.Core.nWeightClasses) As Single
-            Dim curveSelected As BarItem = Nothing
-            Dim iSelectedGrpNum As Integer = 1
+            Dim curve As BarItem = Nothing
+            Dim fmt As New cCoreInputOutputBaseFormatter()
+            Dim iNumSelected As Integer = Me.m_lbGroups.SelectedIndices.Count
 
             InitLists(resultLists, Me.Core.nLivingGroups) '3)
 
@@ -100,16 +103,27 @@ Namespace Ecopath.Output
             For igroup As Integer = 1 To Me.Core.nLivingGroups
                 'No need to check if group is selected. Generate the result list even for the not selected group. It will have zero Y values
                 'If IsGroupSelected(igroup) Then
-                grpOutput = Me.Core.EcoPathGroupOutputs(igroup)
+                group = Me.Core.EcoPathGroupOutputs(igroup)
                 For iWtClass As Integer = 1 To Me.Core.nWeightClasses
+                    ' Calc X
                     sXValue = CSng(psd.FirstWeightClass * 2 ^ (iWtClass - 1))
+                    ' Convert to plot values
+                    dPlotX = Math.Log10(sXValue)
+                    dPlotY = 0
                     If sSystemPSD(iWtClass) * 1000000000 > 0 Then
                         'group contribution to the system PSD is Math.Log10(sSystemPSD(iWtClass) * 1000000000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass)
                         '* 1000000000 for plotting purpose
-                        resultLists(igroup - 1).Add(Math.Log10(sXValue), Math.Log10(sSystemPSD(iWtClass) * 1000000000) * grpOutput.PSD(iWtClass) / sSystemPSD(iWtClass))
-                    Else
-                        resultLists(igroup - 1).Add(Math.Log10(sXValue), 0)
+                        dPlotY = Math.Log10(sSystemPSD(iWtClass) * 1000000000) * group.PSD(iWtClass) / sSystemPSD(iWtClass)
                     End If
+
+                    ' Add point
+                    resultLists(igroup - 1).Add(New PointPair(dPlotX, dPlotY))
+
+                    ' Keep track of scale range
+                    sXMin = CSng(Math.Min(sXMin, dPlotX))
+                    sXMax = CSng(Math.Max(sXMax, dPlotX))
+                    sYMin = CSng(Math.Min(sYMin, dPlotY))
+                    sYMax = CSng(Math.Max(sYMax, dPlotY))
                 Next
                 'End If
             Next
@@ -117,24 +131,25 @@ Namespace Ecopath.Output
             ' Clear pane
             pane.CurveList.Clear()
 
-            'Find the selected group number based on the selected index
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                If Me.Core.EcoPathGroupOutputs(iGroup).Name = m_lbGroups.Items(m_lbGroups.SelectedIndex).ToString() Then
-                    iSelectedGrpNum = iGroup
-                    Exit For
+                group = Me.Core.EcoPathGroupOutputs(iGroup)
+
+                Dim clrFore As Color = Color.Black
+                Dim clrBack As Color = Color.Gray
+
+                If (Me.m_lbGroups.IsAllGroupsItemSelected) Or (Me.m_lbGroups.IsGroupSelected(iGroup)) Then
+                    clrFore = Color.DarkGray
+                    clrBack = Me.StyleGuide.GroupColor(Me.Core, iGroup)
                 End If
+                AddCurveToGraphPane(pane, fmt.GetDescriptor(group), resultLists(iGroup - 1), clrBack, clrFore)
             Next
 
-            For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                If iGroup = iSelectedGrpNum Then
-                    curveSelected = AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), Me.StyleGuide.GroupColor(Me.Core, iGroup - 1), Color.Gray)
-                Else
-                    AddCurveToGraphPane(pane, "", resultLists(iGroup - 1), Me.StyleGuide.GroupColor(Me.Core, iGroup - 1), Color.Gray)
-                End If
-            Next
-
-            curveSelected.Bar.Border = New Border(Color.Black, 2)
+            pane.XAxis.Scale.Min = sXMin * 1.1
+            pane.XAxis.Scale.Max = sXMax / 1.1
+            pane.YAxis.Scale.Min = 0
+            pane.YAxis.Scale.Max = sYMax * 1.2
             pane.BarSettings.Type = BarType.Stack
+
         End Sub
 
         Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
@@ -145,20 +160,19 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Function AddCurveToGraphPane(ByVal pane As GraphPane, ByVal legend As String, ByVal list As PointPairList, _
+        Private Function AddCurveToGraphPane(ByVal pane As GraphPane, ByVal strName As String, ByVal list As PointPairList, _
                                         ByVal clrFill As Color, ByVal clrBorder As Color) As BarItem
-            Dim brItem As BarItem
+            Dim curve As BarItem = Nothing
+            curve = pane.AddBar(strName, list, clrFill)
+            curve.Bar.Fill = New Fill(clrFill)
+            curve.Bar.Border = New Border(clrBorder, 0.2)
+            Return curve
 
-            brItem = pane.AddBar(legend, list, clrFill)
-            brItem.Bar.Fill = New Fill(clrFill)
-            brItem.Bar.Border = New Border(clrBorder, 2)
-
-            Return brItem
         End Function
 
         Private Sub UpdatePlot()
-            Me.zgcZedGraphCntl.AxisChange()
-            Me.zgcZedGraphCntl.Refresh()
+            Me.m_graph.AxisChange()
+            Me.m_graph.Refresh()
         End Sub
 
         Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)

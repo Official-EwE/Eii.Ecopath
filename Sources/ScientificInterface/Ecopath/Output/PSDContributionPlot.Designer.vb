@@ -30,7 +30,7 @@ Namespace Ecopath.Output
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(PSDContributionPlot))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
+            Me.m_graph = New ZedGraph.ZedGraphControl
             Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.SplitContainer1.Panel1.SuspendLayout()
@@ -45,24 +45,24 @@ Namespace Ecopath.Output
             '
             'SplitContainer1.Panel1
             '
-            Me.SplitContainer1.Panel1.Controls.Add(Me.zgcZedGraphCntl)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_graph)
             '
             'SplitContainer1.Panel2
             '
             Me.SplitContainer1.Panel2.Controls.Add(Me.m_hdrGroups)
             Me.SplitContainer1.Panel2.Controls.Add(Me.m_lbGroups)
             '
-            'zgcZedGraphCntl
+            'm_graph
             '
-            resources.ApplyResources(Me.zgcZedGraphCntl, "zgcZedGraphCntl")
-            Me.zgcZedGraphCntl.Name = "zgcZedGraphCntl"
-            Me.zgcZedGraphCntl.ScrollGrace = 0
-            Me.zgcZedGraphCntl.ScrollMaxX = 0
-            Me.zgcZedGraphCntl.ScrollMaxY = 0
-            Me.zgcZedGraphCntl.ScrollMaxY2 = 0
-            Me.zgcZedGraphCntl.ScrollMinX = 0
-            Me.zgcZedGraphCntl.ScrollMinY = 0
-            Me.zgcZedGraphCntl.ScrollMinY2 = 0
+            resources.ApplyResources(Me.m_graph, "m_graph")
+            Me.m_graph.Name = "m_graph"
+            Me.m_graph.ScrollGrace = 0
+            Me.m_graph.ScrollMaxX = 0
+            Me.m_graph.ScrollMaxY = 0
+            Me.m_graph.ScrollMaxY2 = 0
+            Me.m_graph.ScrollMinX = 0
+            Me.m_graph.ScrollMinY = 0
+            Me.m_graph.ScrollMinY2 = 0
             '
             'm_hdrGroups
             '
@@ -81,7 +81,7 @@ Namespace Ecopath.Output
             Me.m_lbGroups.Name = "m_lbGroups"
             Me.m_lbGroups.SelectedGroup = Nothing
             Me.m_lbGroups.SelectedGroupIndex = -1
-            Me.m_lbGroups.ShowAllGroupsItem = False
+            Me.m_lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexDesc
             '
@@ -98,7 +98,7 @@ Namespace Ecopath.Output
 
         End Sub
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
-        Private WithEvents zgcZedGraphCntl As ZedGraph.ZedGraphControl
+        Private WithEvents m_graph As ZedGraph.ZedGraphControl
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents m_hdrGroups As cEwEHeaderLabel
     End Class
