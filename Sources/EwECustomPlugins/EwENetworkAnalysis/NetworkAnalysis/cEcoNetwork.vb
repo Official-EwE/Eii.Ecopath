@@ -699,7 +699,7 @@ Public Class cEcoNetwork
         ImportAmount()
         SumDiet(SumDC)
         ThruputByGroup()
-        'If FoundCycles = False Then FindCycles(Cons) 'Joeh
+        If FoundCycles = False Then FindCycles(Cons) 'Joeh
         FoundCycles = True
         'CycDC contains the proportion of the diet that is the minimum
         'amount in a cycle and should be removed to break the cycle.
