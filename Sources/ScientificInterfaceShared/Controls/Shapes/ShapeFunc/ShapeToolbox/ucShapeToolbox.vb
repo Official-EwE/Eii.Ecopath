@@ -8,6 +8,8 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
+Imports System.ComponentModel
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -30,6 +32,7 @@ Namespace Controls
         Private m_lShapes As New List(Of cShapeData)
         Private m_clr As Color
         Private m_sMinYScale As Single = cCore.NULL_VALUE
+        Private m_sketchDrawMode As eSketchDrawModeTypes = eSketchDrawModeTypes.Fill
 
 #End Region ' Variables
 
@@ -56,6 +59,11 @@ Namespace Controls
                     End If
 
                     Me.m_uic = Nothing
+                End If
+
+                If Me.m_lvShapes.LargeImageList IsNot Nothing Then
+                    Me.m_lvShapes.LargeImageList.Dispose()
+                    Me.m_lvShapes.LargeImageList = Nothing
                 End If
 
                 If components IsNot Nothing Then
@@ -128,6 +136,23 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the line style used to render the graph.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Category("Thumbnails"), _
+         Description("The line style used to render the graph")> _
+        Public Property SketchDrawMode() As eSketchDrawModeTypes
+            Get
+                Return Me.m_sketchDrawMode
+            End Get
+            Set(ByVal value As eSketchDrawModeTypes)
+                Me.m_sketchDrawMode = value
+                Me.Invalidate()
+            End Set
+        End Property
+
         ''' ------------------------------------------------------------------
         ''' <summary>
         ''' Update the thumbnail image for a given shape.
@@ -137,22 +162,13 @@ Namespace Controls
         Public Sub UpdateThumbnail(ByVal shape As cShapeData)
 
             If Me.m_bInUpdate Then Return
+            If m_lvShapes.LargeImageList Is Nothing Then Return
 
             Dim iThumbnailIndex As Integer = Me.m_lShapes.IndexOf(shape)
-            Dim bShowWarning As Boolean = False
-
             If iThumbnailIndex = -1 Then Return
 
-            If Not m_lvShapes.LargeImageList Is Nothing Then
-
-                ' Determine whether to show enabled tick
-                If TypeOf shape Is cTimeSeries Then
-                    bShowWarning = Not DirectCast(shape, cTimeSeries).CanEnable
-                End If
-
-                Me.m_lvShapes.LargeImageList.Images(iThumbnailIndex) = cShapeImage.IconImage(Me.m_uic, shape, Me.m_clr, cCore.NULL_VALUE, bShowWarning)
-                Me.m_lvShapes.Refresh()
-            End If
+            Me.m_lvShapes.LargeImageList.Images(iThumbnailIndex) = GetThumbnail(shape)
+            Me.m_lvShapes.Refresh()
 
         End Sub
 
@@ -267,6 +283,23 @@ Namespace Controls
 
 #Region " Helper methods "
 
+        ''' <summary>
+        ''' Create a thumbnail image for a shape
+        ''' </summary>
+        ''' <param name="shape"></param>
+        Private Function GetThumbnail(ByVal shape As cShapeData) As Image
+
+            ' Determine whether to show enabled tick
+            Dim bShowWarning As Boolean = False
+
+            If TypeOf shape Is cTimeSeries Then
+                bShowWarning = Not DirectCast(shape, cTimeSeries).CanEnable
+            End If
+
+            Return cShapeImage.IconImage(Me.m_uic, shape, Me.m_clr, Me.SketchDrawMode, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning)
+
+        End Function
+
         Private Sub UpdateControls()
 
             If (Me.m_handler Is Nothing) Then Return
@@ -329,13 +362,19 @@ Namespace Controls
             Dim item As ListViewItem = Nothing
             Dim shape As cShapeData = Nothing
             Dim bShowApplyTick As Boolean = False
-            Dim bShowWarning As Boolean = False
+            Dim bCanEnable As Boolean = False
 
-            m_lvShapes.SuspendLayout()
+            Me.m_lvShapes.SuspendLayout()
             Me.m_bInUpdate = True
 
             'Clear the thumbnail list
-            m_lvShapes.Items.Clear()
+            Me.m_lvShapes.Items.Clear()
+
+            ' Clean up
+            If Me.m_lvShapes.LargeImageList IsNot Nothing Then
+                Me.m_lvShapes.LargeImageList.Dispose()
+                Me.m_lvShapes.LargeImageList = Nothing
+            End If
 
             'Set up the thumbnail image size
             largeImageList.ImageSize = New Size(iThumbSize, iThumbSize)
@@ -345,34 +384,23 @@ Namespace Controls
                 For i As Integer = 0 To Me.m_lShapes.Count - 1
 
                     shape = Me.m_lShapes(i)
-
-                    ' Determine whether to show apply tick
-                    If TypeOf shape Is cTimeSeries Then
-                        bShowApplyTick = DirectCast(shape, cTimeSeries).Enabled
-                        If TypeOf shape Is cGroupTimeSeries Then
-                            bShowWarning = (DirectCast(shape, cGroupTimeSeries).GroupIndex <= 0)
-                        End If
-                        If TypeOf shape Is cFleetTimeSeries Then
-                            bShowWarning = (DirectCast(shape, cFleetTimeSeries).FleetIndex <= 0)
-                        End If
-                    End If
-
-                    largeImageList.Images.Add(cShapeImage.IconImage(Me.UIContext, shape, Me.m_clr, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning))
-
+                    ' Add thumbnail image
+                    largeImageList.Images.Add(Me.GetThumbnail(shape))
+                    ' Create list view item
                     item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
                     item.ImageIndex = i
                     item.Tag = shape
-                    ' Set enabled flag
-                    If (TypeOf shape Is cTimeSeries) Then
+                    If TypeOf shape Is cTimeSeries Then
+                        ' Determine the checked state of the listview check box
                         item.Checked = DirectCast(shape, cTimeSeries).Enabled
                     End If
-
-                    m_lvShapes.Items.Add(item)
-
+                    ' Add list view item
+                    Me.m_lvShapes.Items.Add(item)
                 Next
 
-                m_lvShapes.View = View.LargeIcon
-                m_lvShapes.LargeImageList = largeImageList
+                ' Apply the lot
+                Me.m_lvShapes.View = View.LargeIcon
+                Me.m_lvShapes.LargeImageList = largeImageList
 
             End If
 
@@ -434,9 +462,16 @@ Namespace Controls
 
                 ts = DirectCast(shape, cTimeSeries)
                 If (ts.Enabled <> e.Item.Checked) Then
+
+                    If Not ts.CanEnable Then
+                        e.Item.Checked = False
+                        ' ToDo_JS: The core should really validate TS enabled state!
+                        Me.m_uic.Core.Messages.SendMessage(New cMessage("This time series cannot be enabled because it is targeting an invalid group or fleet", eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.TimeSeries, eMessageImportance.Warning))
+                        Return
+                    End If
+
                     ' Update enabled state
                     ts.Enabled = e.Item.Checked
-
                     ' HACK!!!
                     If (m_bInUpdate = False) Then
                         Me.m_uic.Core.UpdateTimeSeries()

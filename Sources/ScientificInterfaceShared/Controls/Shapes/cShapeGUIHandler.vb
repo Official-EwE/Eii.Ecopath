@@ -462,6 +462,7 @@ Namespace Controls
                     Me.m_shapeToolBox.UIContext = Me.UIContext
                     Me.m_shapeToolBox.Color = Me.Color
                     Me.m_shapeToolBox.YAxisMinValue = Me.MinYScale
+                    Me.m_shapeToolBox.SketchDrawMode = Me.SketchDrawMode
                 End If
 
             End Set

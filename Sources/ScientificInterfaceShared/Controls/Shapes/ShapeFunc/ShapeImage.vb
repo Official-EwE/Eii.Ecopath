@@ -298,7 +298,9 @@ Namespace Controls
         ''' The shape to obtain an image for. If this parameter is not specified,
         ''' a thumbnail image will be returned for the current shape.
         ''' </param>
+        ''' <param name="uic">UI context for looking up style information.</param>
         ''' <param name="clr">Colour to render the thumbnail image with.</param>
+        ''' <param name="dm"><see cref="eSketchDrawModeTypes">Mode</see> for rendering lines.</param>
         ''' <param name="sYMax">Y-scale to use for rendering the image.</param>
         ''' <param name="bShowWarning">Flag stating whether a warning icon
         ''' should be displayed in the lower left corner of the shape
@@ -307,16 +309,17 @@ Namespace Controls
         Public Shared Function IconImage(ByVal uic As cUIContext, _
                 ByVal shape As cShapeData, _
                 ByVal clr As Color, _
+                ByVal dm As eSketchDrawModeTypes, _
                 Optional ByVal sYMax As Single = cCore.NULL_VALUE, _
                 Optional ByVal bShowWarning As Boolean = False) As System.Drawing.Image
 
             Dim sg As cStyleGuide = uic.StyleGuide
-            Dim dm As eSketchDrawModeTypes = eSketchDrawModeTypes.Line
             Dim bmp As New Bitmap(sg.ThumbnailSize, sg.ThumbnailSize)
             Dim g As Graphics = Graphics.FromImage(bmp)
+            Dim iOverlaySize As Integer = Math.Min(16, sg.ThumbnailSize)
 
-            ' JS 06sep07: pragmatic hack, this belongs elsewhere
-            If TypeOf shape Is cTimeSeries Then dm = eSketchDrawModeTypes.LineSelective : sYMax = shape.YMax
+            ' Icons with dots become selective lines
+            If dm = eSketchDrawModeTypes.Dots Then dm = eSketchDrawModeTypes.LineSelective
 
             Try
                 DrawShape(uic, shape, New Rectangle(New Point(0, 0), bmp.Size), g, clr, dm, sYMax, cCore.NULL_VALUE)
@@ -330,23 +333,23 @@ Namespace Controls
             ' Draw warning icon, if neccessary
             If bShowWarning Then
                 ' Try to get system icon
-                Using icoOverlay As New Icon(SystemIcons.Information, 16, 16)
+                Using icoOverlay As New Icon(SystemIcons.Warning, iOverlaySize, iOverlaySize)
                     ' Did it work?
                     If (icoOverlay IsNot Nothing) Then
                         ' Calc rectangle to render icon
+                        Dim rc As Rectangle = Nothing
                         If sg.IsRightToLeft Then
-                            ' RtoL reading order: draw image in lower right corner
-                            Dim rc As New Rectangle(Math.Max(0, bmp.Width - icoOverlay.Width - 2), _
-                                                    Math.Max(0, bmp.Height - icoOverlay.Height - 2), _
-                                                    icoOverlay.Width, icoOverlay.Height)
-                            g.DrawIconUnstretched(icoOverlay, rc)
+                            ' RtoL reading order: draw image in lower left corner
+                            rc = New Rectangle(0, _
+                                               Math.Max(0, bmp.Height - iOverlaySize), _
+                                               iOverlaySize, iOverlaySize)
                         Else
-                            ' LtoR reading order: draw image in lower left corner
-                            Dim rc As New Rectangle(1, _
-                                                    Math.Max(0, bmp.Height - icoOverlay.Height - 2), _
-                                                    icoOverlay.Width, icoOverlay.Height)
-                            g.DrawIconUnstretched(icoOverlay, rc)
+                            ' LtoR reading order: draw image in lower right corner
+                            rc = New Rectangle(Math.Max(0, bmp.Width - iOverlaySize), _
+                                               Math.Max(0, bmp.Height - iOverlaySize), _
+                                               iOverlaySize, iOverlaySize)
                         End If
+                        g.DrawIcon(icoOverlay, rc)
                     End If
                 End Using
             End If
