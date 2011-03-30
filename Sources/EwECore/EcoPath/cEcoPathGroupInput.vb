@@ -220,6 +220,13 @@ Public Class cEcoPathGroupInput
         m_values.Add(val.varName, val)
         'End Joeh: PSD
 
+        ' IsFished
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.IsFished))
+        val.AffectsRunState = False
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
         Me.AllowValidation = True
 
     End Sub
@@ -702,6 +709,22 @@ Public Class cEcoPathGroupInput
     End Property
 
     'End Joeh
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get whether a group is being fished. This value is kept up to date by 
+    ''' the core.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property IsFished() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.IsFished))
+        End Get
+
+        Friend Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.TmaxInput, value)
+        End Set
+    End Property
 
 #End Region
 

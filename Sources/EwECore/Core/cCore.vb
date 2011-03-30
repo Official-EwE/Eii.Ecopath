@@ -1362,6 +1362,16 @@ Public Class cCore
                 Next iYear
 
                 ts.Enabled = Me.m_TSData.bEnable(ts.Index)
+
+                ' Special case
+                If (ts.TimeSeriesType = eTimeSeriesType.FishingMortality) Or (ts.TimeSeriesType = eTimeSeriesType.FishingMortalityRef) Then
+                    Dim bIsValid As Boolean = False
+                    If ts.DatPool > 0 And ts.DatPool <= nGroups Then
+                        bIsValid = Me.EcoPathGroupInputs(ts.DatPool).IsFished
+                    End If
+                    ts.CanEnable = bIsValid
+                End If
+
                 ts.UnlockUpdates(False)
 
                 tsd.Add(ts)
@@ -5083,6 +5093,46 @@ Public Class cCore
 
     End Sub
 
+    Private Sub Update_IsFished(ByVal bSendMessage As Boolean)
+
+        Dim group As cEcoPathGroupInput = Nothing
+        Dim fleet As cFleetInput = Nothing
+        Dim bIsFished As Boolean = False
+        Dim msg As cMessage = Nothing
+        Dim vs As cVariableStatus = Nothing
+
+        For iGroup As Integer = 1 To Me.nGroups
+            group = Me.EcoPathGroupInputs(iGroup)
+
+            bIsFished = False
+            For iFleet As Integer = 1 To Me.nFleets
+                fleet = Me.FleetInputs(iFleet)
+                If fleet.Landings(iGroup) > 0 Or fleet.Discards(iGroup) > 0 Then
+                    bIsFished = True
+                    Exit For
+                End If
+            Next
+
+            If bIsFished <> group.IsFished Then
+                group.AllowValidation = False
+                group.IsFished = bIsFished
+                If bSendMessage Then
+                    If msg Is Nothing Then
+                        msg = New cMessage("Group fished state has changed", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput)
+                    End If
+                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Group " & group.Name & " is " & CStr(IIf(bIsFished, "", "not ")) & "fished", eVarNameFlags.IsFished, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, group.Index)
+                    msg.AddVariable(vs)
+                End If
+                group.AllowValidation = True
+            End If
+        Next
+
+        If msg IsNot Nothing Then
+            Me.Messages.AddMessage(msg)
+        End If
+
+    End Sub
+
     Private Sub Cascade_TCatchInput(ByVal sTCatchInput As Single, ByVal group As cEcoPathGroupInput, ByVal msg As cMessage)
 
         Dim groupCascade As cEcoPathGroupInput = Nothing
@@ -6445,6 +6495,9 @@ Public Class cCore
             Return False
 
         End Try
+
+        Me.Update_IsFished(False)
+
         Return True
 
     End Function
@@ -11759,6 +11812,7 @@ Public Class cCore
                 Select Case value.varName
 
                     Case eVarNameFlags.Landings, eVarNameFlags.Discards
+                        'Me.Update_IsFished(True)
                         Me.Update_Stanza_Catches()
                         Me.Set_DiscardMort_Flags(flt, True)
                         Me.Set_MarketPrice_Flags(flt, True)

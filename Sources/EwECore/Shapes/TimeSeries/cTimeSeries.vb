@@ -38,6 +38,8 @@ Public MustInherit Class cTimeSeries
 
     ''' <summary>The core this TS belongs to.</summary>
     Protected m_core As cCore = Nothing
+    ''' <summary>Time series validity flag.</summary>
+    Private m_bIsValid As Boolean = True
 
 #End Region ' Protected variables
 
@@ -136,7 +138,7 @@ Public MustInherit Class cTimeSeries
     ''' -----------------------------------------------------------------------
     Public Property Enabled() As Boolean
         Get
-            Return Me.m_bEnabled
+            Return (Me.m_bEnabled) And Me.CanEnable
         End Get
 
         Set(ByVal bEnable As Boolean)
@@ -208,13 +210,18 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' States whether this TS can be applied, e.g. is has all required data to
+    ''' Get/set whether this TS can be applied, e.g. is has all required data to
     ''' be applied.
     ''' </summary>
-    ''' <returns>True if valid.</returns>
+    ''' <returns>True if a TS can be enabled.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function CanEnable() As Boolean
-        Return (Me.m_iDatPool > 0)
-    End Function
+    Public Property CanEnable() As Boolean
+        Get
+            Return (Me.m_iDatPool > 0) And Me.m_bIsValid
+        End Get
+        Friend Set(ByVal value As Boolean)
+            Me.m_bIsValid = value
+        End Set
+    End Property
 
 End Class
