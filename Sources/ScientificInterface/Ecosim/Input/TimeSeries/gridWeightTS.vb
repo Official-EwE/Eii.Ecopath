@@ -86,11 +86,8 @@ Public Class gridWeightTS
                 For iTS As Integer = 0 To ds.Count - 1
                     ' Get TS
                     ts = ds.Item(iTS)
-                    ' Determine if this TS is ready to be applied
-                    If ts.CanEnable() Then
-                        ' #Yes: create new ts item
-                        Me.AddTimeSeriesRow(ts)
-                    End If
+                    ' #Yes: create new ts item
+                    Me.AddTimeSeriesRow(ts)
                 Next iTS
             End If
         Next
@@ -103,15 +100,20 @@ Public Class gridWeightTS
 
         Dim iRow As Integer = Me.AddRow()
         Dim cell As SourceGrid2.Cells.ICell = Nothing
+        Dim bCanEnable As Boolean = ts.CanEnable
+        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+
+        If Not bCanEnable Then style = cStyleGuide.eStyleFlags.NotEditable
 
         cell = New SourceGrid2.Cells.Real.CheckBox(ts.Enabled)
         cell.Tag = ts
+        cell.DataModel.EnableEdit = bCanEnable
         Me(iRow, CInt(eColumnTypes.Enabled)) = cell
 
         cell = New EwERowHeaderCell(ts.Name)
         Me(iRow, CInt(eColumnTypes.Name)) = cell
 
-        cell = New EwECell(ts.WtType, GetType(Single))
+        cell = New EwECell(ts.WtType, GetType(Single), style)
         Me(iRow, CInt(eColumnTypes.Weight)) = cell
 
     End Sub
