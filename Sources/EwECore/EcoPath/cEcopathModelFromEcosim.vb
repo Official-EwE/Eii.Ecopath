@@ -12,7 +12,9 @@ Imports System.IO
 ''' <summary>
 ''' Class to export an Ecosim time step to a new Ecopath model.
 ''' </summary>
-''' <remarks></remarks>
+''' <remarks>
+''' 30Mar11: NOT IN USE YET!
+''' </remarks>
 Public Class cEcopathModelFromEcosim
 
     Private m_core As cCore = Nothing
