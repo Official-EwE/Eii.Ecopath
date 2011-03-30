@@ -944,7 +944,7 @@ Public Class cNetworkManager
 
     Public ReadOnly Property ThroughputByGroup(ByVal iGroup As Integer) As Single
         Get
-            Return m_econetwork.Q(iGroup)
+            Return CSng(m_econetwork.Q(iGroup))
         End Get
     End Property
 

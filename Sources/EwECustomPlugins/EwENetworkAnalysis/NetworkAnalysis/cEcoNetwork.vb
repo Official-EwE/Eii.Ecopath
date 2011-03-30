@@ -42,7 +42,7 @@ Public Class cEcoNetwork
     'end of modif.....
     '************************************************
 
-    Private TrPut() As Single
+    Private TrPut() As Double
 
     Private F(,) As Single
 
@@ -183,8 +183,8 @@ Public Class cEcoNetwork
     Public Ac() As Single
     Public Ec() As Single
     Public CC() As Single
-    Public Q() As Single
 
+    Public Q() As Double
 
     'see EwE5 DisplayFlowIndices
     Public TruPut As Single, SumAc As Single, SumEc As Single, SumCc As Single
@@ -613,7 +613,7 @@ Public Class cEcoNetwork
         Dim ii As Integer
         Dim SumDC(Me.m_epdata.NumGroups) As Single
 
-        Dim Consu As Single, T1 As Single, T2 As Single, Tr1 As Single, TotTr As Single, TotalB As Single
+        Dim Consu As Single, T1 As Double, T2 As Double, Tr1 As Single, TotTr As Single, TotalB As Single
 
         Dim ErrCode As Integer, SumTrp As Single, Sum As Single
         Dim SumTrpD As Single, DTDSum As Single, DDT As Single
@@ -787,7 +787,10 @@ Public Class cEcoNetwork
                     End If
                 Next j
             Next i
-            If T1 + T2 < 0.00001 Then NoTL = K + 1 : Exit For
+            If T1 + T2 < 0.00001 Then
+                NoTL = K + 1 : Exit For
+            End If
+
         Next K
 
         'MsgBox "NOTL=" & NoTL
@@ -877,7 +880,7 @@ Public Class cEcoNetwork
                 If AM(j, ii) = 0 Then
 
                 Else
-                    AM_Abs(j, ii) = AM(j, ii) * Q(ii)
+                    AM_Abs(j, ii) = CSng(AM(j, ii) * Q(ii))
                     QTL(j) = QTL(j) + AM_Abs(j, ii)
                 End If
             Next j
@@ -1305,7 +1308,7 @@ EmergyRun:
                 Qcyc(i) = Qcyc(i) + Acyc(i, j)
                 HCyc(i) = HCyc(i) + Acyc(j, i)
             Next j
-            TruPut = TruPut + Q(i)             'Total flow=throughput
+            TruPut = CSng(TruPut + Q(i))            'Total flow=throughput
             TCyc = TCyc + Qcyc(i)
         Next i
         If DCnt = 1 Then Tmix = TruPut
@@ -1314,7 +1317,7 @@ EmergyRun:
             X = 0 : Yy = 0
             Au = 0 : E1 = 0 : C1 = 0
             If Q(K) > 0 And Q(i) > 0 Then
-                X = AUL(K, i) * TruPut / Q(K) / Q(i)
+                X = CSng(AUL(K, i) * TruPut / Q(K) / Q(i))
                 Yy = CSng(AUL(K, i) ^ 2 / Q(K) / Q(i))
             End If
             If X > 0 Then Au = CSng(AUL(K, i) * Math.Log(X))
@@ -1340,7 +1343,7 @@ EmergyRun:
                         End If
                     Else
                         If Q(i) > 0 And Q(j) > 0 And TrPut(j) <> 0 Then
-                            X = AUL(i, j) * TruPut / Q(i) / Q(j)
+                            X = CSng(AUL(i, j) * TruPut / Q(i) / Q(j))
                             Yy = CSng(AUL(i, j) ^ 2 / Q(i) / Q(j))
                         End If
                     End If
@@ -1455,10 +1458,10 @@ EmergyRun:
                 For j = 1 To m_epdata.NumGroups
                     If SumWgt(j) = 0 Then SumWgt(j) = 1
                     If DCnt = 1 Then
-                        If SumWgt(j) > 0 Then TrpTLEm1(i) = TrpTLEm1(i) + Q(j) * Wgt(i, j) / SumWgt(j)
+                        If SumWgt(j) > 0 Then TrpTLEm1(i) = CSng(TrpTLEm1(i) + Q(j) * Wgt(i, j) / SumWgt(j))
                         TrpTLen(i) = TrpTLen(i) + Qold(j) * AM(i, j)
                     ElseIf DCnt = 2 Then
-                        If SumWgt(j) > 0 Then TrpTLEm2(i) = TrpTLEm2(i) + Q(j) * Wgt(i, j) / SumWgt(j)
+                        If SumWgt(j) > 0 Then TrpTLEm2(i) = CSng(TrpTLEm2(i) + Q(j) * Wgt(i, j) / SumWgt(j))
                     End If
                 Next j
             Next i
@@ -1513,7 +1516,7 @@ EmergyRun:
         For i = 1 To m_epdata.NumGroups               'FOR CYCLING INDEX
             If Q(i) > 0 Then
                 For j = 1 To m_epdata.NumGroups
-                    fi(i, j) = -AUL(i, j) / Q(i)
+                    fi(i, j) = CSng(-AUL(i, j) / Q(i))
                     If i = j Then fi(i, j) = 1 + fi(i, j)
                 Next j
             End If
@@ -1541,7 +1544,7 @@ EmergyRun:
             Else
                 For i = 1 To m_epdata.NumGroups
                     If fi(i, i) > 0 Then
-                        AmCyc = Q(i) * (fi(i, i) - 1) / fi(i, i)   'Amount cycled
+                        AmCyc = CSng(Q(i) * (fi(i, i) - 1) / fi(i, i))   'Amount cycled
                         TcD = TcD + AmCyc      'For cycling index including detritus
                     End If
                 Next i
@@ -2562,7 +2565,7 @@ NextPivot:
                 If m_epdata.PP(i) > 0 Then TrPut(i) = TrPut(i) + im(i) + m_epdata.Resp(i) 'For primary prod
                 'vc resp for detr  If i > m_epdata.NumLiving Then TrPut(i) = TrPut(i) + Im(i)     'For detritus
                 If i > m_epdata.NumLiving Then TrPut(i) = TrPut(i) + im(i) + m_epdata.Resp(i) 'For detritus
-                ThruPut = ThruPut + TrPut(i)
+                ThruPut = CSng(ThruPut + TrPut(i))
             Next i
         Catch ex As Exception
             cLog.Write(ex)
@@ -2598,7 +2601,7 @@ NextPivot:
                     AmCyc = AmCyc - CycDC(i, j)       'CycDC is negative
                     'CycDC is negative
                     If TrPut(i) > 0 Then
-                        CycDC(i, j) = -CycDC(i, j) / TrPut(i)
+                        CycDC(i, j) = CSng(-CycDC(i, j) / TrPut(i))
                         If m_epdata.DC(i, j) < CycDC(i, j) Then CycDC(i, j) = m_epdata.DC(i, j)
                         '***VC*** made this check 07dec95 to avoid negative DC's
                         '041022VC to accomodate PP with diets:
