@@ -3961,8 +3961,9 @@ Public Class cCore
     ''' </remarks>
     Public Function RunEcoPath() As Boolean
 
-        Dim bSucces As Boolean = False
         Dim msg As cMessage
+        Dim bSuccessEcopath As Boolean = False
+        Dim bSuccessPSD As Boolean = False
 
         Try
 
@@ -3989,83 +3990,79 @@ Public Class cCore
             'call EcoPath to estimate the missing parameters
             If (m_EcoPath.Run()) Then
 
+                'run PSD
+                '  !PSD needs to run before Ecopath outputs are populated
+                If (Me.m_PSDData.Enabled) Then
+                    'copy all PSD data into the modeling arrays 
+                    m_PSDData.CopyInputToModelArrays()
+                    ' Run PSD
+                    bSuccessPSD = m_psdModel.Run()
+                End If
+
+                ' Repopulate data
                 're-populate the output list with the new outputs from Ecopath
                 LoadEcopathOutputs()
                 're-populate the Ecopath statistics
                 LoadEcopathStats()
 
+                If bSuccessPSD Then
+                    're-populate PSD parameters
+                    LoadPSDParameters()
+                End If
+
                 If Me.PluginManager IsNot Nothing Then
                     Me.PluginManager.EcopathRunCompleted(m_EcoPathData)
                 End If
+                bSuccessEcopath = True
 
-                bSucces = True
-
-            Else 'If mEcoPath.EstimateParameters() Then
-
-                'I am assuming here that if EcoPath returned false it has already sent a message that explains the problem 
-                'so I don't need to send another message
-
+            Else
+                'Assuming here that if EcoPath returned false it has already sent a message that explains the problem 
+                'No need to send another message
                 cLog.Write(Me.ToString & ".RunEcoPath() Failed to Estimate Parameters.")
-
-                bSucces = False
-
+                bSuccessEcopath = True
             End If
 
         Catch ex As Exception
-
             msg = CreateMessage(String.Format(My.Resources.CoreMessages.ECOPATH_RUN_ERROR_EXCEPTION, ex.Message), _
                     eCoreComponentType.EcoPath, eMessageType.ErrorEncountered)
             m_publisher.AddMessage(msg)
 
             cLog.Write(Me.ToString & ".RunEcoPath() Error. " & ex.Message)
             Debug.Assert(False)
-            bSucces = False
+            bSuccessEcopath = False
+            bSuccessPSD = False
         End Try
 
         ' Did Ecopath run succesful?
-        If bSucces Then
-
+        If bSuccessEcopath Then
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
             m_publisher.AddMessage(msg)
 
             ' Update core state monitor
             Me.m_StateMonitor.SetEcopathCompleted()
-
-            ' Now deal with PSD
-
-            ' PSD not enabled?
-            If (Me.m_PSDData.Enabled) Then
-
-                'copy all PSD data into the modeling arrays 
-                m_PSDData.CopyInputToModelArrays()
-
-                ' Run PSD
-                If m_psdModel.Run() Then
-
-                    're-populate PSD parameters
-                    LoadPSDParameters()
-
-                    msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
-                    m_publisher.AddMessage(msg)
-
-                    Me.m_StateMonitor.SetPSDCompleted()
-                Else
-                    msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_ERROR, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
-                    m_publisher.AddMessage(msg)
-                End If
-            End If
         Else
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
             m_publisher.AddMessage(msg)
-
             ' Update core state monitor
             Me.m_StateMonitor.SetEcopathLoaded(True)
+        End If
+
+        ' Did PSD run succesful?
+        If Me.m_PSDData.Enabled Then
+            If (bSuccessPSD) Then
+                msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
+                m_publisher.AddMessage(msg)
+                Me.m_StateMonitor.SetPSDCompleted()
+            Else
+                msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_ERROR, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
+                m_publisher.AddMessage(msg)
+            End If
         End If
 
         ' Unleash all messages after core state monitor is up to date
         m_publisher.sendAllMessages()
 
-        Return bSucces
+        Return bSuccessEcopath
 
     End Function
 
