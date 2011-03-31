@@ -4282,96 +4282,6 @@ Public Class cCore
     End Function
 
     ''' <summary>
-    ''' Set the NotEditable flags for BioAcum or BiomAccumRate based on data in only one of the two
-    ''' </summary>
-    ''' <param name="obj">The object to update.</param>
-    ''' <param name="bSendMessage">True to send a message, False to suppress this.</param>
-    ''' <returns>Always true.</returns>
-    ''' <remarks>This is called by <see cref="PostVariableValidation">PostVariableValidation</see> 
-    ''' to set status when a variable has been edited, as well as <see cref="cEcoPathGroupInput.ResetStatusFlags">ResetStatusFlags</see>
-    ''' when the object is first created.</remarks>
-    Friend Function set_BioAccumRate_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal VarName As eVarNameFlags = eVarNameFlags.NotSet, Optional ByVal bSendMessage As Boolean = True) As Boolean
-
-        'If Multi Stanza then Not Editable
-        'If VarName supplied then called for validation of variable
-        'If No VarName then call for initialization
-        obj.AllowValidation = False
-
-        Dim varnameToDisable As eVarNameFlags
-        Dim bDisable As Boolean = True
-        Dim iGrp As Integer = obj.Index
-
-        If obj.isMultiStanza Then
-
-            'BioAccum and BioAccumRate are not editable if this is a multi stanza group
-            obj.SetStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.NotEditable)
-            obj.SetStatusFlags(eVarNameFlags.BioAccumRate, eStatusFlags.NotEditable)
-
-        Else 'If obj.isMultiStanza Then
-            'not a multi stanza group so set the status flag
-
-            If VarName = eVarNameFlags.NotSet Then
-                'caller has not supplied a varname
-                'this is called for initialization
-
-                If CSng(obj.GetVariable(eVarNameFlags.BioAccum)) = 0 And CSng(obj.GetVariable(eVarNameFlags.BioAccumRate)) = 0 Then
-                    'if neither is set then both are OK to edit
-                    bDisable = False
-                    obj.SetStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.OK)
-                    obj.SetStatusFlags(eVarNameFlags.BioAccumRate, eStatusFlags.OK)
-
-                ElseIf CSng(obj.GetVariable(eVarNameFlags.BioAccum)) <> 0 And CSng(obj.GetVariable(eVarNameFlags.BioAccumRate)) <> 0 Then
-                    'if both are set then make BioAccum blocked
-                    varnameToDisable = eVarNameFlags.BioAccum
-                    VarName = eVarNameFlags.BioAccumRate
-
-                ElseIf CSng(obj.GetVariable(eVarNameFlags.BioAccum)) <> 0 Then
-                    'if one is set then the other is blocked
-                    varnameToDisable = eVarNameFlags.BioAccumRate
-                    VarName = eVarNameFlags.BioAccum
-                Else
-                    varnameToDisable = eVarNameFlags.BioAccum
-                    VarName = eVarNameFlags.BioAccumRate
-                End If
-
-
-            Else 'VarName <> eVarNameFlags.NotSet
-                'caller supplied a VarName 
-                'VarName has been edited
-
-                'which var is being edited (block the other)
-                If VarName = eVarNameFlags.BioAccum Then
-                    varnameToDisable = eVarNameFlags.BioAccumRate
-                Else
-                    varnameToDisable = eVarNameFlags.BioAccum
-                End If
-
-            End If 'If varname = eVarNameFlags.NotSet Then
-
-            If bDisable Then
-                ' Make un-editable if the other var is populated
-                If CSng(obj.GetVariable(VarName)) <> 0 Then
-                    obj.SetStatusFlags(varnameToDisable, eStatusFlags.NotEditable) 'Or eStatusFlags.Null
-                    obj.ClearStatusFlags(VarName, eStatusFlags.NotEditable) 'Or eStatusFlags.Null
-                Else
-                    obj.ClearStatusFlags(varnameToDisable, eStatusFlags.NotEditable) 'Or eStatusFlags.Null
-                End If
-
-            End If 'If block Then
-
-        End If ' If obj.isMultiStanza Then
-
-        If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                    eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
-        End If
-
-        obj.AllowValidation = True
-        Return True
-
-    End Function
-
-    ''' <summary>
     ''' Set the NotEditable flags for PB QB and GE
     ''' </summary>
     ''' <param name="obj">The object to update.</param>
@@ -4380,20 +4290,30 @@ Public Class cCore
     ''' <remarks>This is called by <see cref="PostVariableValidation">PostVariableValidation</see> 
     ''' to set status when a variable has been edited, as well as <see cref="cEcoPathGroupInput.ResetStatusFlags">ResetStatusFlags</see>
     ''' when the object is first created.</remarks>
-    Friend Function Set_PB_QB_GE_BA_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_PB_QB_GE_BA_Flags(ByVal obj As cEcoPathGroupInput, _
+                                          Optional ByVal bSendMessage As Boolean = True) As Boolean
 
         'Make the variable(s) un-editable under certain circumstances
         'see EwE5 frmInputData.LockInputFor_PB_QB_GE(...)
 
+        Dim sB As Single = CSng(obj.GetVariable(eVarNameFlags.BiomassAreaInput))
+        Dim sEE As Single = CSng(obj.GetVariable(eVarNameFlags.EEInput))
+        Dim sOtherMort As Single = CSng(obj.GetVariable(eVarNameFlags.OtherMortInput))
         Dim sQB As Single = CSng(obj.GetVariable(eVarNameFlags.QBInput))
         Dim sGE As Single = CSng(obj.GetVariable(eVarNameFlags.GEInput))
         Dim sPB As Single = CSng(obj.GetVariable(eVarNameFlags.PBInput))
+        Dim sBA As Single = CSng(obj.GetVariable(eVarNameFlags.BioAccum))
+        Dim sBAr As Single = CSng(obj.GetVariable(eVarNameFlags.BioAccumRate))
         Dim bLockGE As Boolean = False
         Dim bLockQB As Boolean = False
         Dim bLockPB As Boolean = False
+        Dim bLockB As Boolean = False
         Dim bLockBA As Boolean = False
+        Dim bLockBARate As Boolean = False
         Dim bClearPB As Boolean = False
         Dim bClearQB As Boolean = False
+        Dim bClearBA As Boolean = False
+        Dim bClearBARate As Boolean = False
 
         Dim bIsPartOfStanza As Boolean = obj.isMultiStanza()
         Dim bIsDetritus As Boolean = (obj.PP > 1.1)
@@ -4402,7 +4322,7 @@ Public Class cCore
         obj.AllowValidation = False
 
         ' Stanza: block all
-        If bIsPartOfStanza Then bLockGE = True : bLockQB = True : bLockPB = True : bLockBA = True
+        If bIsPartOfStanza Then bLockGE = True : bLockQB = True : bLockPB = True : bLockB = True : bLockBA = True : bLockBARate = True
 
         If bIsDetritus Then
             ' Detritus: block all
@@ -4424,6 +4344,22 @@ Public Class cCore
 
         bClearPB = bClearPB Or (sPB <= 0)
         bClearQB = bClearQB Or (sQB <= 0)
+
+        ' BA and BA rate cleared when PB, QB, (EE or OtherMort) and Barea entered
+        If (sPB > 0) And (sQB > 0) And ((sEE > 0) Or (sOtherMort > 0)) And (sB > 0) Then
+            bClearBA = True : bLockBA = True
+            bClearBARate = True : bLockBARate = True
+        End If
+
+        ' Asses BA / BAr changes
+        '   BaBi is only non-zero when entered. Entering BaBi will update Ba. By
+        '   checking BaBi for non-zero it can be deducted which value was
+        '   originally entered: BaBi or Ba.
+        If sBAr > 0 Then
+            bLockBA = True : bClearBA = True
+        ElseIf sBA > 0 Then
+            bLockBARate = True : bClearBARate = True
+        End If
 
         ' Update status flags
         If bLockGE Then
@@ -4456,10 +4392,36 @@ Public Class cCore
             obj.ClearStatusFlags(eVarNameFlags.QBInput, eStatusFlags.Null)
         End If
 
-        If bLockBA Then
+        ' -- biomass area --
+        If bLockB Then
             obj.SetStatusFlags(eVarNameFlags.BiomassAreaInput, eStatusFlags.NotEditable)
         Else
             obj.ClearStatusFlags(eVarNameFlags.BiomassAreaInput, eStatusFlags.NotEditable)
+        End If
+
+        ' -- biomass accumulation --
+        If bLockBA Then
+            obj.SetStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.NotEditable)
+        Else
+            obj.ClearStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.NotEditable)
+        End If
+
+        If bClearBA Then
+            obj.SetStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.Null)
+        Else
+            obj.ClearStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.Null)
+        End If
+
+        If bLockBARate Then
+            obj.SetStatusFlags(eVarNameFlags.BioAccumRate, eStatusFlags.NotEditable)
+        Else
+            obj.ClearStatusFlags(eVarNameFlags.BioAccumRate, eStatusFlags.NotEditable)
+        End If
+
+        If bClearBARate Then
+            obj.SetStatusFlags(eVarNameFlags.BioAccumRate, eStatusFlags.Null)
+        Else
+            obj.ClearStatusFlags(eVarNameFlags.BioAccumRate, eStatusFlags.Null)
         End If
 
         obj.AllowValidation = True
@@ -11444,6 +11406,16 @@ Public Class cCore
                         ' Cascade PP change to other Groups
                         Me.Cascade_PP(group.PP, group, msg)
 
+                    Case eVarNameFlags.BioAccum
+                        group.AllowValidation = False
+                        group.BioAccumRate = 0.0
+                        group.AllowValidation = True
+
+                    Case eVarNameFlags.BioAccumRate
+                        group.AllowValidation = False
+                        group.BioAccum = 0.0
+                        group.AllowValidation = True
+
                 End Select
 
             Case eDataTypes.FleetInput
@@ -11783,7 +11755,7 @@ Public Class cCore
                         bRecalcStanza = (egi.iStanza > 0)
 
                     Case eVarNameFlags.BioAccum, eVarNameFlags.BioAccumRate
-                        Me.set_BioAccumRate_Flags(egi, value.varName)
+                        Me.Set_PB_QB_GE_BA_Flags(egi)
                         Me.LoadEcopathInput(egi)
 
                     Case eVarNameFlags.GS
@@ -11798,6 +11770,7 @@ Public Class cCore
 
                     Case eVarNameFlags.EEInput, eVarNameFlags.OtherMortInput
                         Me.Set_EE_OtherMort_Flags(egi)
+                        Me.Set_PB_QB_GE_BA_Flags(egi)
 
                 End Select
 

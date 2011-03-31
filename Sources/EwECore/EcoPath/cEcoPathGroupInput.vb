@@ -235,7 +235,6 @@ Public Class cEcoPathGroupInput
         MyBase.ResetStatusFlags(bForceReset)
 
         Me.m_core.Set_PB_QB_GE_BA_Flags(Me, False)
-        Me.m_core.set_BioAccumRate_Flags(Me, , False)
         Me.m_core.Set_Migration_Flags(Me, False)
         Me.m_core.Set_GS_Flags(Me, False)
         Me.m_core.Set_EE_OtherMort_Flags(Me, False)
@@ -264,7 +263,7 @@ Public Class cEcoPathGroupInput
         End Get
 
         Set(ByVal value As Single)
-            setVariable(eVarNameFlags.BioAccum, value)
+            SetVariable(eVarNameFlags.BioAccum, value)
         End Set
 
     End Property
