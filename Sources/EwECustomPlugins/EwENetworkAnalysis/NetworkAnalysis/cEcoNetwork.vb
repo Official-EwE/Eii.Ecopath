@@ -2469,18 +2469,19 @@ NextComp:
                     If Level = pivot - 2 Then Exit For 'Exit the Level for next and try new pivot
                 End If
 
-                iProg += 1
-                Me.m_manager.UpdateProgress(My.Resources.STATUS_FINDING_PATHWAY_CYCLES, CSng(iProg / 10000))
-
-                '   frmWait.Label1(0).Caption = "Cycles: " + CStr(Cnt) + ", Pivot: " + CStr(pivot) + ", Level: " + CStr(Level)
             Next Level
 NextPivot:
+
+            Me.m_manager.UpdateProgress(My.Resources.STATUS_FINDING_PATHWAY_CYCLES, CSng(pivot / m_epdata.NumLiving))
+
         Next pivot
         '   Unload(frmWait)
         '   frmWait = Nothing
         'all done
         'prgmsg.ProgressState = eProgressState.Finished
         'm_publisher.SendMessage(prgmsg)
+
+        System.Console.WriteLine("FindCycles Done")
 
     End Sub
 
