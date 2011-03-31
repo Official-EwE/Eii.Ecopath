@@ -347,9 +347,12 @@ Namespace Ecospace
             Handles m_cmbAreaClosed.SelectedIndexChanged
 
             If (Me.m_propSearchType Is Nothing) Then Return
-
-            Me.UpdateBestCountMap()
-            Me.UpdateResultsGraph()
+            Try
+                Me.UpdateBestCountMap()
+                Me.UpdateResultsGraph()
+            Catch ex As Exception
+                ' nop
+            End Try
 
         End Sub
 
@@ -358,13 +361,28 @@ Namespace Ecospace
 
             If (Me.m_propSearchType Is Nothing) Then Return
 
-            Me.ShowBestPercentage()
-            Me.UpdateResultsGraph()
+            Try
+                Me.ShowBestPercentage()
+                Me.UpdateResultsGraph()
+            Catch ex As Exception
+                ' NOP
+            End Try
 
         End Sub
 
+        ''' <summary>
+        ''' Event handler, responds to the user exploring the progress graph.
+        ''' </summary>
+        ''' <param name="zgh"></param>
+        ''' <param name="iPane"></param>
+        ''' <param name="sPos"></param>
+        ''' <remarks></remarks>
         Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
-            Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
+            Try
+                Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
+            Catch ex As Exception
+                ' NOP
+            End Try
         End Sub
 
         Private Sub OnConvertToMPA(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -1226,10 +1244,9 @@ Namespace Ecospace
 
             End Select
 
+            ' Truncate iteration index
             iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
-
-            If iIteration >= lResults.Count Then Return
-
+            ' Get results
             res = lResults(iIteration)
             For iCell As Integer = 0 To res.Cells.Count - 1
                 cell = res.Cells(iCell)
