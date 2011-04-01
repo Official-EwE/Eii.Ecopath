@@ -26,7 +26,7 @@ Public Class cNavTree28FB_CatchPmd
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "nwa18"
+            Return "nwa28"
         End Get
     End Property
 
