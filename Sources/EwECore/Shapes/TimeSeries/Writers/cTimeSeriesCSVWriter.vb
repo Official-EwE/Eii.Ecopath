@@ -91,6 +91,9 @@ Public Class cTimeSeriesCSVWriter
         ' Is dataset available?
         If (ds Is Nothing) Then Return False
 
+        ' Create path, if neccessary
+        If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName), True) Then Return False
+
         Try
             Using sw As StreamWriter = New StreamWriter(strFileName, False)
 

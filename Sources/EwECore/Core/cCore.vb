@@ -2102,11 +2102,19 @@ Public Class cCore
     ''' </summary>
     Public Property OutputPath() As String
         Get
-            If String.IsNullOrEmpty(m_strOutputPath) Then Return System.Windows.Forms.Application.StartupPath
+            If String.IsNullOrEmpty(Me.m_strOutputPath) Then
+                If Me.DataSource IsNot Nothing Then
+                    Return Me.DataSource.Directory
+                End If
+            End If
             Return Me.m_strOutputPath
         End Get
         Set(ByVal value As String)
-            Me.m_strOutputPath = value
+            ' Make dummy-proof
+            ' - Eliminate all invalid path characters
+            Dim strValidPath As String = cFileUtils.ToValidFileName(value, True)
+            ' - Extract directory part in case a file name was mistakenly included
+            Me.m_strOutputPath = Path.GetDirectoryName(strValidPath)
         End Set
     End Property
 

@@ -229,6 +229,8 @@ Namespace Database
 
                 ' Whoah!
                 If bReadOnly Then Me.m_conn.ConnectionString &= "Mode=Read;"
+                ' Remember read-only state
+                Me.IsReadOnly = bReadOnly
 
                 Try
 
@@ -514,6 +516,12 @@ Namespace Database
         Public Overrides Function MaxDBVersion() As Single
             Return cDatabaseUpdater.MaxSupportedVersion
         End Function
+
+        Public Overrides ReadOnly Property Directory() As String
+            Get
+                Return Path.GetDirectoryName(Me.m_strFileName)
+            End Get
+        End Property
 
 #End Region ' Overrides
 

@@ -189,6 +189,29 @@ Namespace Utilities
 
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Checks if a directory is available, and optionally tries to create the directory if missing.
+        ''' </summary>
+        ''' <param name="strDirectory">The directory to check.</param>
+        ''' <param name="bCreate">Optional flag, stating whether the directory 
+        ''' should be created if it does not exist yet.</param>
+        ''' <returns>True if the directory is available.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsDirectoryAvailable(ByVal strDirectory As String, _
+                                                    Optional ByVal bCreate As Boolean = False) As Boolean
+
+            If Not Directory.Exists(strDirectory) Then
+                Try
+                    If bCreate Then Return (Directory.CreateDirectory(strDirectory) IsNot Nothing)
+                Catch ex As Exception
+                    ' Whoah
+                End Try
+                Return False
+            End If
+            Return True
+
+        End Function
     End Class
 
 End Namespace

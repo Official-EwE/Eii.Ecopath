@@ -1366,6 +1366,8 @@ Namespace Core
         ''' <summary>1 - EE</summary>
         ''' <remarks>JS Added 28Feb11</remarks>
         OtherMortInput
+        ''' <summary>Helper flag to determine whether a group is fished</summary>
+        IsFished
 
     End Enum
 

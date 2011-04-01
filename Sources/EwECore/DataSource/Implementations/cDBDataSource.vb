@@ -212,6 +212,16 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Returns a string representation of the createRectangle.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Function Directory() As String _
+            Implements IEwEDataSource.Directory
+            Return Me.m_db.Directory
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Switch an open createRectangle to a new database of the same type.
         ''' </summary>
         ''' <param name="strFileName">New FN to copy the DB to</param>
@@ -262,6 +272,14 @@ Namespace DataSources
             Else
                 Return Me.m_db.RollbackTransaction
             End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="IEwEDataSource.IsReadOnly" />
+        ''' -------------------------------------------------------------------
+        Public Function IsReadOnly() As Boolean _
+            Implements IEwEDataSource.IsReadOnly
+            Return Me.m_db.IsReadOnly()
         End Function
 
 #Region " Helper methods "
@@ -363,7 +381,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Public Sub SetChanged(ByVal cc As eCoreComponentType) _
                 Implements IEwEDataSource.SetChanged
-            If cc = eCoreComponentType.External Then Return
+            If (cc = eCoreComponentType.External) Then Return
             Me.m_dictChangedComponents.Item(cc) = True
         End Sub
 
@@ -3971,7 +3989,7 @@ Namespace DataSources
                     mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup), cCore.NULL_VALUE))
                     mseDS.cvRec(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup), cCore.NULL_VALUE))
 
-                    'bSucces = bSucces And Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
+                    ' Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iEcopathGroup))

@@ -70,6 +70,9 @@ Public Class cEcosimResultWriter
             strPath = Me.m_core.OutputPath
         End If
 
+        ' Try to make sure that the output path is there
+        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return False
+
         For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(eResultTypes))
             Try
                 bSucces = bSucces And Me.WriteResults(outputtype, strPath, bSaveAnnual, iGroup)

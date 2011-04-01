@@ -459,10 +459,14 @@ Namespace Database
 
 #End Region ' Class cEwEDbWriter
 
-#Region " Private vars and consts"
+#Region " Private vars and consts "
 
         ''' <summary>Current database version.</summary>
         Private m_sVersion As Single = 0.0
+        ''' <summary>Database read-only state.</summary>
+        Private m_bIsReadonly As Boolean = False
+        ''' <summary>Directory associated with the database.</summary>
+        Private m_strDirectory As String = ""
 
         ''' <summary>Oldest EwE5 version number supported</summary>
         Private Const cDBVERSION_EWE5_MIN As Single = 1.67
@@ -530,6 +534,20 @@ Namespace Database
                 ByVal strModelName As String, _
                 Optional ByVal bOverwrite As Boolean = False, _
                 Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the database is read-only.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property IsReadOnly() As Boolean
+            Get
+                Return Me.m_bIsReadonly
+            End Get
+            Protected Set(ByVal value As Boolean)
+                Me.m_bIsReadonly = value
+            End Set
+        End Property
 
 #End Region ' Open and close
 
@@ -633,6 +651,13 @@ Namespace Database
         ''' <returns>True if the OS can connect to a given datasource type.</returns>
         ''' -------------------------------------------------------------------
         Public MustOverride Function CanConnect(ByVal dst As eDataSourceTypes) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a directory assicoated with this database.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public MustOverride ReadOnly Property Directory() As String
 
 #End Region ' Connection
 
