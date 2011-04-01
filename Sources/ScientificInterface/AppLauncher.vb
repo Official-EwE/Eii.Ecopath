@@ -778,6 +778,9 @@ Public Class AppLauncher
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
+
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
         RemoveHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
@@ -805,10 +808,6 @@ Public Class AppLauncher
         ts.RemoveAll()
         ts.Dispose()
 
-        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
-        cmdh.Clear()
-
         For Each p As frmEwEDockContent In Me.m_dtPanels.Values
             p.Close()
             p.Dispose()
@@ -823,6 +822,10 @@ Public Class AppLauncher
 
         Me.m_pluginManager.UIContext = Nothing
         Me.UIContext = Nothing
+
+        ' Clear commands after all UI elements have lost their UI context, which 
+        ' should have triggered proper cleanups
+        cmdh.Clear()
 
         Me.m_DockPanel.Dispose()
 
