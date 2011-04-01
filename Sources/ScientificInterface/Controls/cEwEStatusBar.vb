@@ -220,6 +220,9 @@ Public Class cEwEStatusBar
         End With
     End Sub
 
+    Private m_strLastStatusText As String = ""
+    Private m_iLastProgress As Integer = 0
+
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Set the text of the main status strip item.
@@ -229,9 +232,22 @@ Public Class cEwEStatusBar
     ''' 0.0 to hide progress bar, or -1 to show a marquee progress bar.</param>
     ''' -------------------------------------------------------------------
     Public Sub SetStatusText(ByVal strText As String, Optional ByVal sProgress As Single = 0.0)
-        If Me.m_tsStatus Is Nothing Then Return
-        Me.m_tsStatus.Text = strText
 
+        If (Me.m_tsStatus Is Nothing) Then Return
+
+        Dim iProgress As Integer = Math.Max(Math.Min(100, CInt(CInt(sProgress * 25) * 4)), 0)
+
+        ' Optimization
+        If (String.Compare(Me.m_strLastStatusText, strText) = 0) And _
+           (iProgress = Me.m_iLastProgress) Then
+            Return
+        End If
+
+        Me.m_strLastStatusText = strText
+        Me.m_iLastProgress = iProgress
+
+        ' Update
+        Me.m_tsStatus.Text = strText
         Select Case sProgress
             Case 0
                 Me.m_tsbProgress.Visible = False
@@ -245,7 +261,9 @@ Public Class cEwEStatusBar
         End Select
 
         ' Redraw status bar immediately
+        '   This is a known performace killer (issue #937)
         Me.Refresh()
+
     End Sub
 
 #End Region ' Pane content handling

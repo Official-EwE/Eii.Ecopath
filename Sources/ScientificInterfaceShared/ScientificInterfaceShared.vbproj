@@ -91,6 +91,12 @@
     <Compile Include="Controls\ComboBox\cGeocodeLookupComboBox.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ComboBox\ucFieldPicker.Designer.vb">
+      <DependentUpon>ucFieldPicker.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ComboBox\ucFieldPicker.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\EwEGrid\cPropertyInfoHelper.vb" />
     <Compile Include="Controls\EwEGrid\Editors\EwEComboBoxCellEditor.vb">
       <SubType>Code</SubType>
@@ -388,6 +394,9 @@
     <EmbeddedResource Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.resx">
       <DependentUpon>ucCollapsiblePanelController.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ComboBox\ucFieldPicker.resx">
+      <DependentUpon>ucFieldPicker.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GlyphSelect\ucGlyph.resx">
       <DependentUpon>ucGlyph.vb</DependentUpon>

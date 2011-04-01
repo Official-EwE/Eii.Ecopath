@@ -4,8 +4,10 @@ Option Explicit On
 Option Strict On
 
 Imports System.IO
-Imports WeifenLuo.WinFormsUI
 Imports EwECore
+Imports EwEUtils.Commands
+Imports WeifenLuo.WinFormsUI
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 
@@ -29,7 +31,7 @@ Namespace Other
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            Me.m_tsddFields.DropDown.Items.Clear()
+            'Me.m_tsddFields.DropDown.Items.Clear()
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
             End If
@@ -58,10 +60,17 @@ Namespace Other
             Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
                                                 Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.StatusMaxMessages)))
 
+            ' Output path
+            Me.m_fieldpickOutput.UIContext = Me.m_uic
+            Me.m_fieldpickOutput.Fields = New Object() {cPathUtility.ePathPlaceholderTypes.Desktop, _
+                                                        cPathUtility.ePathPlaceholderTypes.ModelPath, _
+                                                        cPathUtility.ePathPlaceholderTypes.MyAppData, _
+                                                        cPathUtility.ePathPlaceholderTypes.MyDocuments}
+            Me.m_tbOutput.Text = My.Settings.OutputPathMask
+
             ' Backup path masks
-            For Each ph As cPathUtility.ePathPlaceholderTypes In [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
-                Me.m_tsddFields.DropDown.Items.Add(ph.ToString, Nothing, AddressOf OnInsertField)
-            Next
+            Me.m_fieldpickBackup.UIContext = Me.m_uic
+            Me.m_fieldpickBackup.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
             Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
 
             Me.m_cbCheckEwE6.Checked = False
@@ -86,6 +95,7 @@ Namespace Other
             My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
             My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
             My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
+            My.Settings.OutputPathMask = Me.m_tbOutput.Text
 
             If bRestart Then Return IOptionsPage.eApplyResultType.Success_restart
             Return IOptionsPage.eApplyResultType.Success
@@ -109,34 +119,42 @@ Namespace Other
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnInsertField(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnOutputDirPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal strDirectory As String) _
+            Handles m_fieldpickOutput.OnDirectoryPicked
 
-            Dim strSrc As String = Me.m_tbBackupMask.Text
-            Dim strDest As String
-            Dim iSelStart As Integer = Me.m_tbBackupMask.SelectionStart
-            Dim iSelLen As Integer = Me.m_tbBackupMask.SelectionLength
-            Dim item As ToolStripItem = DirectCast(sender, ToolStripItem)
-            Dim strItemText As String = "{" & item.Text & "}"
-            Dim iItemLen As Integer = strItemText.Length
+            Me.ReplaceText(Me.m_tbOutput, strDirectory)
+            Me.UpdateControls()
 
-            If (iSelLen = 0) Then
-                strDest = strSrc & strItemText
-                iSelStart = strDest.Length
-            Else
-                strDest = strSrc.Substring(0, iSelStart) & strItemText & strSrc.Substring(iSelStart + iSelLen)
-                iSelStart += iItemLen
-            End If
+        End Sub
 
-            Me.m_tbBackupMask.Text = strDest
-            Me.m_tbBackupMask.SelectionStart = iSelStart
-            Me.m_tbBackupMask.SelectionLength = 0
+        Private Sub OnOutputFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
+            Handles m_fieldpickOutput.OnFieldPicked
 
+            Me.ReplaceText(Me.m_tbOutput, "{" & value.ToString & "}")
+            Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnBackupDirectoryPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal strDirectory As String) _
+            Handles m_fieldpickBackup.OnDirectoryPicked
+
+            Me.m_tbBackupMask.SelectionStart = 0
+            Me.m_tbBackupMask.SelectionLength = Math.Max(0, Me.m_tbBackupMask.Text.LastIndexOf("\"c))
+            Me.InsertText(Me.m_tbBackupMask, strDirectory)
+            Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
+            Handles m_fieldpickBackup.OnFieldPicked
+
+            Me.InsertText(Me.m_tbBackupMask, "{" & value.ToString & "}")
             Me.UpdateControls()
 
         End Sub
 
         Private Sub OnBackupMaskChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tbBackupMask.TextChanged
+            Handles m_tbBackupMask.TextChanged, m_tbOutput.TextChanged
             Me.UpdateControls()
         End Sub
 
@@ -177,6 +195,30 @@ Namespace Other
             End If
             Me.m_lblSample.Text = strSample
 
+        End Sub
+
+        Private Sub InsertText(ByVal tb As TextBox, ByVal strText As String)
+            Dim strSrc As String = tb.Text
+            Dim strDest As String
+            Dim iSelStart As Integer = tb.SelectionStart
+            Dim iSelLen As Integer = tb.SelectionLength
+            Dim iItemLen As Integer = strText.Length
+
+            If (iSelLen = 0) Then
+                strDest = strSrc & strText
+                iSelStart = strDest.Length
+            Else
+                strDest = strSrc.Substring(0, iSelStart) & strText & strSrc.Substring(iSelStart + iSelLen)
+                iSelStart += iItemLen
+            End If
+
+            tb.Text = strDest
+            tb.SelectionStart = iSelStart
+            tb.SelectionLength = 0
+        End Sub
+
+        Private Sub ReplaceText(ByVal tb As TextBox, ByVal strText As String)
+            tb.Text = strText
         End Sub
 
 #End Region ' Internals

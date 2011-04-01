@@ -16,15 +16,17 @@ Partial Class ucOptionsGeneral
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGeneral))
             Me.m_gpMRU = New System.Windows.Forms.GroupBox
+            Me.m_fieldpickOutput = New ScientificInterfaceShared.Controls.ucFieldPicker
+            Me.m_fieldpickBackup = New ScientificInterfaceShared.Controls.ucFieldPicker
             Me.m_lblSample = New System.Windows.Forms.Label
-            Me.m_tsBogus = New System.Windows.Forms.ToolStrip
-            Me.m_tsddFields = New System.Windows.Forms.ToolStripSplitButton
+            Me.m_tbOutput = New System.Windows.Forms.TextBox
             Me.m_tbBackupMask = New System.Windows.Forms.TextBox
+            Me.m_lblExample = New System.Windows.Forms.Label
+            Me.m_lblOutput = New System.Windows.Forms.Label
             Me.m_lblBackup = New System.Windows.Forms.Label
             Me.m_nudMRU = New System.Windows.Forms.NumericUpDown
             Me.m_btnClearMRU = New System.Windows.Forms.Button
             Me.m_lblMRU = New System.Windows.Forms.Label
-            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_gpMsg = New System.Windows.Forms.GroupBox
             Me.m_cbShowTime = New System.Windows.Forms.CheckBox
             Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
@@ -34,9 +36,8 @@ Partial Class ucOptionsGeneral
             Me.m_btnResetOverwritePrompts = New System.Windows.Forms.Button
             Me.m_cbCheckEwE6 = New System.Windows.Forms.CheckBox
             Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox
-            Me.Label1 = New System.Windows.Forms.Label
+            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_gpMRU.SuspendLayout()
-            Me.m_tsBogus.SuspendLayout()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gpMsg.SuspendLayout()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -46,10 +47,13 @@ Partial Class ucOptionsGeneral
             'm_gpMRU
             '
             resources.ApplyResources(Me.m_gpMRU, "m_gpMRU")
+            Me.m_gpMRU.Controls.Add(Me.m_fieldpickOutput)
+            Me.m_gpMRU.Controls.Add(Me.m_fieldpickBackup)
             Me.m_gpMRU.Controls.Add(Me.m_lblSample)
-            Me.m_gpMRU.Controls.Add(Me.m_tsBogus)
+            Me.m_gpMRU.Controls.Add(Me.m_tbOutput)
             Me.m_gpMRU.Controls.Add(Me.m_tbBackupMask)
-            Me.m_gpMRU.Controls.Add(Me.Label1)
+            Me.m_gpMRU.Controls.Add(Me.m_lblExample)
+            Me.m_gpMRU.Controls.Add(Me.m_lblOutput)
             Me.m_gpMRU.Controls.Add(Me.m_lblBackup)
             Me.m_gpMRU.Controls.Add(Me.m_nudMRU)
             Me.m_gpMRU.Controls.Add(Me.m_btnClearMRU)
@@ -57,34 +61,50 @@ Partial Class ucOptionsGeneral
             Me.m_gpMRU.Name = "m_gpMRU"
             Me.m_gpMRU.TabStop = False
             '
+            'm_fieldpickOutput
+            '
+            resources.ApplyResources(Me.m_fieldpickOutput, "m_fieldpickOutput")
+            Me.m_fieldpickOutput.Fields = Nothing
+            Me.m_fieldpickOutput.Label = "Folder"
+            Me.m_fieldpickOutput.Name = "m_fieldpickOutput"
+            Me.m_fieldpickOutput.ShowDirectoryPicker = True
+            Me.m_fieldpickOutput.TypeFormatter = Nothing
+            Me.m_fieldpickOutput.UIContext = Nothing
+            '
+            'm_fieldpickBackup
+            '
+            resources.ApplyResources(Me.m_fieldpickBackup, "m_fieldpickBackup")
+            Me.m_fieldpickBackup.Fields = Nothing
+            Me.m_fieldpickBackup.Label = "Fields"
+            Me.m_fieldpickBackup.Name = "m_fieldpickBackup"
+            Me.m_fieldpickBackup.ShowDirectoryPicker = True
+            Me.m_fieldpickBackup.TypeFormatter = Nothing
+            Me.m_fieldpickBackup.UIContext = Nothing
+            '
             'm_lblSample
             '
             resources.ApplyResources(Me.m_lblSample, "m_lblSample")
             Me.m_lblSample.Name = "m_lblSample"
             '
-            'm_tsBogus
+            'm_tbOutput
             '
-            resources.ApplyResources(Me.m_tsBogus, "m_tsBogus")
-            Me.m_tsBogus.BackColor = System.Drawing.Color.Transparent
-            Me.m_tsBogus.CanOverflow = False
-            Me.m_tsBogus.GripMargin = New System.Windows.Forms.Padding(0)
-            Me.m_tsBogus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsBogus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddFields})
-            Me.m_tsBogus.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table
-            Me.m_tsBogus.Name = "m_tsBogus"
-            Me.m_tsBogus.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
-            '
-            'm_tsddFields
-            '
-            Me.m_tsddFields.BackColor = System.Drawing.Color.Transparent
-            Me.m_tsddFields.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsddFields, "m_tsddFields")
-            Me.m_tsddFields.Name = "m_tsddFields"
+            resources.ApplyResources(Me.m_tbOutput, "m_tbOutput")
+            Me.m_tbOutput.Name = "m_tbOutput"
             '
             'm_tbBackupMask
             '
             resources.ApplyResources(Me.m_tbBackupMask, "m_tbBackupMask")
             Me.m_tbBackupMask.Name = "m_tbBackupMask"
+            '
+            'm_lblExample
+            '
+            resources.ApplyResources(Me.m_lblExample, "m_lblExample")
+            Me.m_lblExample.Name = "m_lblExample"
+            '
+            'm_lblOutput
+            '
+            resources.ApplyResources(Me.m_lblOutput, "m_lblOutput")
+            Me.m_lblOutput.Name = "m_lblOutput"
             '
             'm_lblBackup
             '
@@ -94,8 +114,9 @@ Partial Class ucOptionsGeneral
             'm_nudMRU
             '
             resources.ApplyResources(Me.m_nudMRU, "m_nudMRU")
-            Me.m_nudMRU.Maximum = New Decimal(New Integer() {24, 0, 0, 0})
+            Me.m_nudMRU.Maximum = New Decimal(New Integer() {42, 0, 0, 0})
             Me.m_nudMRU.Name = "m_nudMRU"
+            Me.m_nudMRU.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
             'm_btnClearMRU
             '
@@ -107,11 +128,6 @@ Partial Class ucOptionsGeneral
             '
             resources.ApplyResources(Me.m_lblMRU, "m_lblMRU")
             Me.m_lblMRU.Name = "m_lblMRU"
-            '
-            'm_hdrCaption
-            '
-            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
-            Me.m_hdrCaption.Name = "m_hdrCaption"
             '
             'm_gpMsg
             '
@@ -173,10 +189,10 @@ Partial Class ucOptionsGeneral
             Me.m_cbDownloadUpdates.Name = "m_cbDownloadUpdates"
             Me.m_cbDownloadUpdates.UseVisualStyleBackColor = True
             '
-            'Label1
+            'm_hdrCaption
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
+            Me.m_hdrCaption.Name = "m_hdrCaption"
             '
             'ucOptionsGeneral
             '
@@ -189,8 +205,6 @@ Partial Class ucOptionsGeneral
             Me.Name = "ucOptionsGeneral"
             Me.m_gpMRU.ResumeLayout(False)
             Me.m_gpMRU.PerformLayout()
-            Me.m_tsBogus.ResumeLayout(False)
-            Me.m_tsBogus.PerformLayout()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gpMsg.ResumeLayout(False)
             Me.m_gpMsg.PerformLayout()
@@ -215,11 +229,13 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_hdrCaption As cEwEHeaderLabel
         Private WithEvents m_cbShowTime As System.Windows.Forms.CheckBox
         Private WithEvents m_lblBackup As System.Windows.Forms.Label
-        Private WithEvents m_tsBogus As System.Windows.Forms.ToolStrip
-        Private WithEvents m_tsddFields As System.Windows.Forms.ToolStripSplitButton
         Private WithEvents m_tbBackupMask As System.Windows.Forms.TextBox
         Private WithEvents m_lblSample As System.Windows.Forms.Label
-        Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_lblExample As System.Windows.Forms.Label
+        Private WithEvents m_tbOutput As System.Windows.Forms.TextBox
+        Private WithEvents m_lblOutput As System.Windows.Forms.Label
+        Private WithEvents m_fieldpickBackup As ScientificInterfaceShared.Controls.ucFieldPicker
+        Private WithEvents m_fieldpickOutput As ScientificInterfaceShared.Controls.ucFieldPicker
 
     End Class
 

@@ -1740,8 +1740,8 @@ Public Class AppLauncher
         ' Ok, now let's see if the core can work with this
         If Me.Core.LoadModel(ds) Then
 
-            ' Set core output path
-            Me.Core.OutputPath = Path.GetDirectoryName(strFileName)
+            ' Set core paths
+            Me.UpdateCorePaths()
 
             '' JS 08Aug07: Whatever happened, at least the default node needs to be visible.
             ''             This also overcomes bug 133 (see bug description in ActivateForm). The Dock engine
@@ -3756,6 +3756,7 @@ Public Class AppLauncher
 
             ' Kick the core
             Me.Core.BackupFileMask = My.Settings.BackupFileMask
+            Me.Core.OutputPath = My.Settings.OutputPathMask
 
         Catch ex As Exception
 
@@ -3782,13 +3783,37 @@ Public Class AppLauncher
                 Case "MdbRecentlyUsedCount"
                     Me.PopulateMRUDropdown()
 
-                Case "BackupFileMask"
-                    Me.Core.BackupFileMask = My.Settings.BackupFileMask
+                Case "BackupFileMask", "OutputPathMask"
+                    Me.UpdateCorePaths()
+
             End Select
 
         Catch ex As Exception
 
         End Try
+
+    End Sub
+
+    Private Sub UpdateCorePaths()
+
+        If Me.Core.StateMonitor.HasEcopathLoaded Then
+            Dim strPath As String = ""
+
+            If cPathUtility.ResolvePath(My.Settings.BackupFileMask, Me.Core, strPath) Then
+                If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath)) Then
+                    ' Pass MASK in because the core will need to substitute fields into the mask
+                    Me.Core.BackupFileMask = My.Settings.BackupFileMask
+                End If
+            End If
+
+            If cPathUtility.ResolvePath(My.Settings.OutputPathMask, Me.Core, strPath) Then
+                If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath)) Then
+                    ' Pass actual formatted path because the core will not change this further.
+                    Me.Core.OutputPath = strPath
+                End If
+            End If
+
+        End If
 
     End Sub
 

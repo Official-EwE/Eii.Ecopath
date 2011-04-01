@@ -604,6 +604,18 @@ Partial Friend NotInheritable Class Settings
             Me("BackupFileMask") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("{ModelPath}")>  _
+    Public Property OutputPathMask() As String
+        Get
+            Return CType(Me("OutputPathMask"),String)
+        End Get
+        Set
+            Me("OutputPathMask") = value
+        End Set
+    End Property
 End Class
 
 Namespace My
