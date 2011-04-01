@@ -26,7 +26,7 @@ Public Class cNavTree70CP_CycLiv_P
 
     Public Overrides ReadOnly Property Name() As String
         Get
-            Return "nwa74"
+            Return "nwa70"
         End Get
     End Property
 
