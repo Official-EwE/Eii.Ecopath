@@ -3413,10 +3413,10 @@ Public Class cCore
                 taxon.East = Me.m_EcoPathData.TaxonEast(iTaxon)
                 taxon.West = Me.m_EcoPathData.TaxonWest(iTaxon)
                 taxon.EcologyType = Me.m_EcoPathData.TaxonEcologyType(iTaxon)
-                taxon.ExploitedType = Me.m_EcoPathData.TaxonExploited(iTaxon)
-                taxon.IUCNConservationType = Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon)
+                taxon.Exploited = Me.m_EcoPathData.TaxonExploited(iTaxon)
+                taxon.IUCNConservationStatus = Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon)
                 taxon.OrganismType = Me.m_EcoPathData.TaxonOrganismType(iTaxon)
-                taxon.OccurrenceType = Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon)
+                taxon.OccurrenceStatus = Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon)
                 taxon.MeanLength = Me.m_EcoPathData.TaxonMeanLength(iTaxon)
                 taxon.MaxLength = Me.m_EcoPathData.TaxonMaxLength(iTaxon)
                 taxon.MeanWeight = Me.m_EcoPathData.TaxonMeanWeight(iTaxon)
@@ -3462,10 +3462,10 @@ Public Class cCore
         Me.m_EcoPathData.TaxonSource(iTaxon) = taxon.Source
         Me.m_EcoPathData.TaxonSourceKey(iTaxon) = taxon.SourceKey
         Me.m_EcoPathData.TaxonEcologyType(iTaxon) = taxon.EcologyType
-        Me.m_EcoPathData.TaxonExploited(iTaxon) = taxon.ExploitedType
-        Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon) = taxon.IUCNConservationType
+        Me.m_EcoPathData.TaxonExploited(iTaxon) = taxon.Exploited
+        Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon) = taxon.IUCNConservationStatus
         Me.m_EcoPathData.TaxonOrganismType(iTaxon) = taxon.OrganismType
-        Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon) = taxon.OccurrenceType
+        Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon) = taxon.OccurrenceStatus
         Me.m_EcoPathData.TaxonMeanLength(iTaxon) = taxon.MeanLength
         Me.m_EcoPathData.TaxonMaxLength(iTaxon) = taxon.MaxLength
         Me.m_EcoPathData.TaxonMeanWeight(iTaxon) = taxon.MeanWeight

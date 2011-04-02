@@ -416,7 +416,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the <see cref="eEcologyTypes"/> for a taxon.
     ''' </summary>
-    Public Property EcologyType As eEcologyTypes
+    Public Property EcologyType() As eEcologyTypes _
+        Implements ITaxonDetailsData.EcologyType
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.EcologyType), eEcologyTypes)
         End Get
@@ -428,7 +429,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the <see cref="eOrganismTypes"/> for a taxon.
     ''' </summary>
-    Public Property OrganismType() As eOrganismTypes
+    Public Property OrganismType() As eOrganismTypes _
+        Implements ITaxonDetailsData.OrganismType
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.OrganismType), eOrganismTypes)
         End Get
@@ -440,7 +442,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set whether the taxon is exploited.
     ''' </summary>
-    Public Property ExploitedType() As Boolean
+    Public Property Exploited() As Boolean _
+        Implements ITaxonDetailsData.Exploited
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.Exploited))
         End Get
@@ -452,7 +455,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the <see cref="eIUCNConservationStatusTypes"/> for a taxon.
     ''' </summary>
-    Public Property IUCNConservationType() As eIUCNConservationStatusTypes
+    Public Property IUCNConservationStatus() As eIUCNConservationStatusTypes _
+        Implements ITaxonDetailsData.IUCNConservationStatus
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.IUCNConservationStatus), eIUCNConservationStatusTypes)
         End Get
@@ -464,7 +468,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the <see cref="eOccurrenceStatusTypes"/> for a taxon.
     ''' </summary>
-    Public Property OccurrenceType() As eOccurrenceStatusTypes
+    Public Property OccurrenceStatus() As eOccurrenceStatusTypes _
+        Implements ITaxonDetailsData.OccurrenceStatus
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.OccurrenceStatus), eOccurrenceStatusTypes)
         End Get
@@ -476,7 +481,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the mean weight for a taxon.
     ''' </summary>
-    Public Property MeanWeight As Single
+    Public Property MeanWeight() As Single _
+        Implements ITaxonDetailsData.MeanWeight
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonMeanWeight))
         End Get
@@ -500,7 +506,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the mean length for a taxon.
     ''' </summary>
-    Public Property MeanLength() As Single
+    Public Property MeanLength() As Single _
+        Implements ITaxonDetailsData.MeanLength
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonMeanLength))
         End Get
@@ -524,7 +531,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the max length for a taxon.
     ''' </summary>
-    Public Property MaxLength() As Single
+    Public Property MaxLength() As Single _
+        Implements ITaxonDetailsData.MaxLength
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonMaxLength))
         End Get
@@ -548,7 +556,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the mean life span for a taxon.
     ''' </summary>
-    Public Property MeanLifespan() As Single
+    Public Property MeanLifespan() As Single _
+        Implements ITaxonDetailsData.MeanLifespan
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonMeanLifespan))
         End Get
@@ -572,7 +581,8 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the vulnerability index for a taxon.
     ''' </summary>
-    Public Property VulnerabilityIndex() As Integer
+    Public Property VulnerabilityIndex() As Integer _
+        Implements ITaxonDetailsData.VulnerabilityIndex
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.TaxonVulnerabilityIndex))
         End Get
