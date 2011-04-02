@@ -1739,23 +1739,8 @@ Public Class AppLauncher
 
         ' Ok, now let's see if the core can work with this
         If Me.Core.LoadModel(ds) Then
-
             ' Set core paths
             Me.UpdateCorePaths()
-
-            '' JS 08Aug07: Whatever happened, at least the default node needs to be visible.
-            ''             This also overcomes bug 133 (see bug description in ActivateForm). The Dock engine
-            ''             may create forms from crippled XML settings where a doc parent section is missing.
-            ''             Such forms get instantiated but GetContentFromPersistentString never gets called
-            ''             because the forms are not content as far as the dock engine is concerned. Nice!
-            ''             This logic makes sure that at least the default form is properly selected (and indirectly activated)
-            'Me.EnsureDefaultNodeSelected()
-            Me.UpdateSelectedNode("", True)
-            ' Keep at it, Maurice
-            Me.UpdateModelControls()
-            Me.PopulateMRUDropdown()
-            Me.PopulateScenarioDropdowns()
-
             Return True
         Else
             Dim message As String = String.Format(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName)
@@ -3866,9 +3851,18 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+
+        ' Busy loading or unloading Ecopath?
+        If (csm.CoreExecutionState = eCoreExecutionState.Idle) Or _
+           (csm.CoreExecutionState = eCoreExecutionState.EcopathLoaded) Then
+            ' Set or clear initial nav node
+            Me.UpdateSelectedNode("", (csm.CoreExecutionState = eCoreExecutionState.EcopathLoaded))
+        End If
+
         Me.UpdateModelControls()
         Me.PopulateMRUDropdown()
         Me.PopulateScenarioDropdowns()
+
     End Sub
 
     Private Sub OnCoreMessage(ByRef msg As cMessage)

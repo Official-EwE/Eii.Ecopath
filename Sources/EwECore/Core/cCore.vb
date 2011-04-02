@@ -2519,8 +2519,7 @@ Public Class cCore
 
                 cLog.InitLog(DataSource.ToString)
 
-                'I'm not sure about this there 
-                'there needs to be a Maintenance message sent SendEcopathLoadMessage() does not really seem like it would work for this
+                'There needs to be a Maintenance message sent SendEcopathLoadMessage() does not really seem like it would work for this
                 m_publisher.AddMessage(New cMessage("Loaded model '" & m_EwEModel.Name & "'", eMessageType.DataModified, _
                                         eCoreComponentType.Core, eMessageImportance.Maintenance))
 
@@ -2756,6 +2755,9 @@ Public Class cCore
             Me.ClearIOList(Me.m_EcoSpaceScenarios)
             Me.ClearIOList(Me.m_EcotracerScenarios)
 
+            'ToDo: add SendEcopathClosedMessage()
+            Me.m_publisher.SendMessage(New cMessage("Closed model", eMessageType.DataAddedOrRemoved, _
+                                       eCoreComponentType.EcoPath, eMessageImportance.Maintenance), True)
 
             Me.m_dtAuxiliaryData.Clear()
 

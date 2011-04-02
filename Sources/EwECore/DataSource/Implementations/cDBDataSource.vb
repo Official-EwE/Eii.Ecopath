@@ -3257,7 +3257,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (TaxonID={1})", iTaxonID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (TaxonID={0})", iTaxonID))
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace taxon {1}", ex.Message, iTaxonID))
                 bSucces = False

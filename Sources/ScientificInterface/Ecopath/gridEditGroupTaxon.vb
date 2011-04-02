@@ -52,7 +52,11 @@ Public Class gridEditGroupTaxon
 
 #Region " Private vars "
 
-        Private m_taxon As cTaxon = Nothing
+        ' JS cannot hang on to a cTaxon because the core may reload taxa amidst applying.
+        ' Private m_taxon As cTaxon = Nothing
+        Private m_iDBIDTaxon As Integer = cCore.NULL_VALUE
+        Private m_iTaxon As Integer = -1
+
         Private m_strCode3A As String = ""
         Private m_strCodeISSCAAP As String = ""
         Private m_strCodeTaxon As String = ""
@@ -99,7 +103,8 @@ Public Class gridEditGroupTaxon
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal taxon As cTaxon)
-            Me.m_taxon = taxon
+            Me.m_iDBIDTaxon = CInt(taxon.GetVariable(eVarNameFlags.DBID))
+            Me.m_iTaxon = taxon.Index
             Me.m_iGroup = taxon.Group
             Me.m_sProportion = taxon.Proportion
             Me.m_strCode3A = taxon.Code3A
@@ -151,13 +156,19 @@ Public Class gridEditGroupTaxon
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="cTaxon">EwE Taxonomy code</see> associated
+        ''' Get the DBID of the <see cref="cTaxon">EwE Taxonomy code</see> associated
         ''' with this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Taxon() As cTaxon
+        Public ReadOnly Property TaxonID() As Integer
             Get
-                Return Me.m_taxon
+                Return Me.m_iDBIDTaxon
+            End Get
+        End Property
+
+        ReadOnly Property TaxonIndex() As Integer
+            Get
+                Return Me.m_iTaxon
             End Get
         End Property
 
@@ -170,7 +181,7 @@ Public Class gridEditGroupTaxon
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function IsNew() As Boolean
-            Return (Me.m_taxon Is Nothing)
+            Return (Me.m_iDBIDTaxon = cCore.NULL_VALUE)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -180,22 +191,25 @@ Public Class gridEditGroupTaxon
         ''' <returns>
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property IsChanged() As Boolean
+        Public ReadOnly Property IsChanged(ByVal taxon As cTaxon) As Boolean
             Get
                 If (Me.IsNew()) Then Return False
-                If (Me.m_taxon.Proportion <> Me.m_sProportion) Then Return True
-                If (Me.m_taxon.Group <> Me.m_iGroup) Then Return True
-                If (String.Compare(Me.Taxon.Name, Me.m_strCommon) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.Phylum, Me.m_strPhylum) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.Class, Me.m_strClass) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.Order, Me.m_strOrder) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.Family, Me.m_strFamily) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.Genus, Me.m_strGenus) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.Species, Me.m_strSpecies) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.Source, Me.m_strSource) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.CodeTaxon, Me.m_strCodeTaxon) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.CodeISSCAAP, Me.m_strCodeISSCAAP) <> 0) Then Return True
-                If (String.Compare(Me.Taxon.Code3A, Me.m_strCode3A) <> 0) Then Return True
+
+                Debug.Assert(CInt(taxon.GetVariable(eVarNameFlags.DBID)) = Me.m_iDBIDTaxon)
+
+                If (taxon.Proportion <> Me.m_sProportion) Then Return True
+                If (taxon.Group <> Me.m_iGroup) Then Return True
+                If (String.Compare(taxon.Name, Me.m_strCommon) <> 0) Then Return True
+                If (String.Compare(taxon.Phylum, Me.m_strPhylum) <> 0) Then Return True
+                If (String.Compare(taxon.Class, Me.m_strClass) <> 0) Then Return True
+                If (String.Compare(taxon.Order, Me.m_strOrder) <> 0) Then Return True
+                If (String.Compare(taxon.Family, Me.m_strFamily) <> 0) Then Return True
+                If (String.Compare(taxon.Genus, Me.m_strGenus) <> 0) Then Return True
+                If (String.Compare(taxon.Species, Me.m_strSpecies) <> 0) Then Return True
+                If (String.Compare(taxon.Source, Me.m_strSource) <> 0) Then Return True
+                If (String.Compare(taxon.CodeTaxon, Me.m_strCodeTaxon) <> 0) Then Return True
+                If (String.Compare(taxon.CodeISSCAAP, Me.m_strCodeISSCAAP) <> 0) Then Return True
+                If (String.Compare(taxon.Code3A, Me.m_strCode3A) <> 0) Then Return True
                 Return False
             End Get
         End Property
@@ -499,9 +513,9 @@ Public Class gridEditGroupTaxon
             End Set
         End Property
 
-        Public Sub ApplyChanges()
-            If Me.IsChanged Then
-                With Me.Taxon
+        Public Sub ApplyChanges(ByVal taxon As cTaxon)
+            If Me.IsChanged(taxon) Then
+                With taxon
                     .Name = Me.m_strCommon
                     .Group = Me.m_iGroup
                     .Proportion = Me.m_sProportion
@@ -995,26 +1009,6 @@ Public Class gridEditGroupTaxon
                (Object.ReferenceEquals(Me.SelectedTaxon, Me.m_tiSearchLinked))
     End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Search the grid for a data row with the same <see cref="ITaxonSearchData.SourceKey">source key</see>.
-    ''' </summary>
-    ''' <param name="taxon">The <see cref="ITaxonSearchData">taxon data</see> to find</param>
-    ''' <returns>A row number, or -1 if no such key was found.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function FindTaxonRow(ByVal taxon As ITaxonSearchData) As Integer
-
-        For iRow As Integer = 1 To Me.RowsCount - 1
-            Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)
-            If ti IsNot Nothing Then
-                If ti.Taxon IsNot Nothing Then
-                    If ti.SourceKey = taxon.SourceKey Then Return iRow
-                End If
-            End If
-        Next
-        Return -1
-    End Function
-
 #End Region ' Search
 
 #Region " Apply changes "
@@ -1064,12 +1058,11 @@ Public Class gridEditGroupTaxon
         For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
             ti = DirectCast(Me.m_lTaxonInfo(iTaxon), cTaxonInfo)
             ' Check this Taxon is newly added
-            If Object.ReferenceEquals(ti.Taxon, Nothing) Then
+            If ti.IsNew Then
                 bConfigurationChanged = True
-            End If
-            ' Check if this Taxon is an existing Taxon that has been moved
-            If Not Object.ReferenceEquals(ti.Taxon, Nothing) Then
-                If ((iTaxon + 1) <> ti.Taxon.Index) Then
+            Else
+                ' Check if this Taxon is an existing Taxon that has been moved
+                If ((iTaxon + 1) <> ti.TaxonIndex) Then
                     bConfigurationChanged = True
                 End If
             End If
@@ -1079,8 +1072,7 @@ Public Class gridEditGroupTaxon
         strPrompt = ""
         For iTaxon = 0 To Me.m_lTaxonInfoRemoved.Count - 1
             ti = DirectCast(Me.m_lTaxonInfoRemoved(iTaxon), cTaxonInfo)
-            If (Not Object.ReferenceEquals(ti.Taxon, Nothing)) Then
-
+            If (Not ti.IsNew) Then
                 strPrompt = String.Format("Are you sure you want to delete taxonomy entry '{0}'?", ti.Common)
 
                 Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
@@ -1127,8 +1119,8 @@ Public Class gridEditGroupTaxon
             Dim iTaxonRemove As Integer = 0
             For iTaxon = 0 To Me.m_lTaxonInfoRemoved.Count - 1
                 ti = DirectCast(Me.m_lTaxonInfoRemoved(iTaxonRemove), cTaxonInfo)
-                If (Not Object.ReferenceEquals(ti.Taxon, Nothing)) And (ti.Confirmed = True) Then
-                    If (Me.Core.RemoveTaxon(ti.Taxon.Index)) Then
+                If (Not ti.IsNew) And (ti.Confirmed = True) Then
+                    If (Me.Core.RemoveTaxon(ti.TaxonIndex)) Then
                         Me.m_lTaxonInfo.Remove(ti)
                         Me.m_lTaxonInfoRemoved.Remove(ti)
                     Else
@@ -1147,8 +1139,16 @@ Public Class gridEditGroupTaxon
         End If
 
         ' Update any changed taxa
+        '   * The core may have discarded taxa in response to the logic above. New taxa with the same
+        '     DBIDs will need to be reconnected to taxon info.
+        Dim dtTaxa As New Dictionary(Of Integer, cTaxon)
+        For i As Integer = 1 To Me.Core.nTaxon
+            taxon = Me.Core.Taxon(i)
+            dtTaxa(CInt(taxon.GetVariable(eVarNameFlags.DBID))) = taxon
+        Next
+
         For Each ti In Me.m_lTaxonInfo
-            ti.ApplyChanges()
+            If Not ti.IsNew Then ti.ApplyChanges(dtTaxa(ti.TaxonID))
         Next
 
         Return bSuccess
