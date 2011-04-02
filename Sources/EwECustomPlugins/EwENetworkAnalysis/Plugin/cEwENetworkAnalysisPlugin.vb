@@ -74,7 +74,7 @@ Public Class cEwENetworkAnalysisPlugin
             Else
                 frm = cEwENetworkAnalysisPlugin._inst_.m_frmNA
             End If
-            frm.ShowForm(page)
+            frm.ShowPage(page)
         Else
             Debug.Assert(False, "Plugin was not initialized properly.")
         End If

@@ -135,7 +135,7 @@ Public Class frmNetworkAnalysis
     Private Sub m_tsbnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles tsmiRun.Click
         ' Shazaam
-        Me.ShowForm(Me.m_pageCurrent)
+        Me.ShowPage(Me.m_pageCurrent)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -339,9 +339,13 @@ Public Class frmNetworkAnalysis
 
         Me.tsmiRun.Enabled = (Me.m_networkmanager.IsMainNetworkRun = False) Or _
                              ((Me.m_networkmanager.IsEcosimNetworkRun = False) And (Me.m_contentmanager.UsesEcosim = True))
+
+        ' Fixes bug 937
+        Me.ShowPage(Me.m_pageCurrent)
+
     End Sub
 
-    Public Sub ShowForm(ByVal page As eNetworkAnalysisPageTypes)
+    Public Sub ShowPage(ByVal page As eNetworkAnalysisPageTypes)
 
         Me.m_pageCurrent = page
 
@@ -353,131 +357,122 @@ Public Class frmNetworkAnalysis
         End If
 
         ' Make sure main network has ran
-        Me.m_networkmanager.RunMainNetwork()
+        ' Fixes bug 937
+        If Me.m_networkmanager.RunMainNetwork() Then
 
-        Select Case page
+            Select Case page
 
-            Case eNetworkAnalysisPageTypes.Credits
-                Me.m_contentmanager = Nothing
+                Case eNetworkAnalysisPageTypes.Credits
+                    Me.m_contentmanager = Nothing
 
-            Case eNetworkAnalysisPageTypes.RelativeFlows
-                Me.m_contentmanager = New cRelativeFlows()
+                Case eNetworkAnalysisPageTypes.RelativeFlows
+                    Me.m_contentmanager = New cRelativeFlows()
 
-            Case eNetworkAnalysisPageTypes.AbsoluteFlows
-                Me.m_contentmanager = New cAbsoluteFlows()
+                Case eNetworkAnalysisPageTypes.AbsoluteFlows
+                    Me.m_contentmanager = New cAbsoluteFlows()
 
-            Case eNetworkAnalysisPageTypes.TransferEfficiency
-                Me.m_contentmanager = New cTransferEfficiency()
+                Case eNetworkAnalysisPageTypes.TransferEfficiency
+                    Me.m_contentmanager = New cTransferEfficiency()
 
-            Case eNetworkAnalysisPageTypes.FlowPyramid
-                Me.m_contentmanager = New cFlowPyramid()
+                Case eNetworkAnalysisPageTypes.FlowPyramid
+                    Me.m_contentmanager = New cFlowPyramid()
 
-            Case eNetworkAnalysisPageTypes.BiomassByTrophicLevel
-                Me.m_contentmanager = New cBiomassByTrophicLevel()
+                Case eNetworkAnalysisPageTypes.BiomassByTrophicLevel
+                    Me.m_contentmanager = New cBiomassByTrophicLevel()
 
-            Case eNetworkAnalysisPageTypes.BiomassPyramid
-                Me.m_contentmanager = New cBiomassPyramid()
+                Case eNetworkAnalysisPageTypes.BiomassPyramid
+                    Me.m_contentmanager = New cBiomassPyramid()
 
-            Case eNetworkAnalysisPageTypes.CatchByTrophicLevel
-                Me.m_contentmanager = New cCatchByTrophicLevel()
+                Case eNetworkAnalysisPageTypes.CatchByTrophicLevel
+                    Me.m_contentmanager = New cCatchByTrophicLevel()
 
-            Case eNetworkAnalysisPageTypes.CatchPyramid
-                Me.m_contentmanager = New cCatchPyramid()
+                Case eNetworkAnalysisPageTypes.CatchPyramid
+                    Me.m_contentmanager = New cCatchPyramid()
 
-            Case eNetworkAnalysisPageTypes.FromPrimaryProducers
-                Me.m_contentmanager = New cFromPrimaryProd()
+                Case eNetworkAnalysisPageTypes.FromPrimaryProducers
+                    Me.m_contentmanager = New cFromPrimaryProd()
 
-            Case eNetworkAnalysisPageTypes.FromDetritus
-                Me.m_contentmanager = New cFromDetritus()
+                Case eNetworkAnalysisPageTypes.FromDetritus
+                    Me.m_contentmanager = New cFromDetritus()
 
-            Case eNetworkAnalysisPageTypes.FromAllCombined
-                Me.m_contentmanager = New cFromAllCombined()
+                Case eNetworkAnalysisPageTypes.FromAllCombined
+                    Me.m_contentmanager = New cFromAllCombined()
 
-            Case eNetworkAnalysisPageTypes.ForHarvestOfAllGroups
-                Me.m_contentmanager = New cForHarvestOfAllGp()
+                Case eNetworkAnalysisPageTypes.ForHarvestOfAllGroups
+                    Me.m_contentmanager = New cForHarvestOfAllGp()
 
-            Case eNetworkAnalysisPageTypes.ForConsumptionOfAllGroups
-                Me.m_contentmanager = New cForConsumpOfAllGp()
+                Case eNetworkAnalysisPageTypes.ForConsumptionOfAllGroups
+                    Me.m_contentmanager = New cForConsumpOfAllGp()
 
-            Case eNetworkAnalysisPageTypes.ImpactData
-                Me.m_contentmanager = New cImpactData()
+                Case eNetworkAnalysisPageTypes.ImpactData
+                    Me.m_contentmanager = New cImpactData()
 
-            Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpact
-                Me.m_contentmanager = New cPlotOfMixedTrophicImpact()
+                Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpact
+                    Me.m_contentmanager = New cPlotOfMixedTrophicImpact()
 
-            Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpactEwE5
-                Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
+                Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpactEwE5
+                    Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
 
-            Case eNetworkAnalysisPageTypes.KeystonenessTable
-                Me.m_contentmanager = New cKeystonenessTable()
+                Case eNetworkAnalysisPageTypes.KeystonenessTable
+                    Me.m_contentmanager = New cKeystonenessTable()
 
-            Case eNetworkAnalysisPageTypes.KeystonenessGraph
-                Me.m_contentmanager = New cKeystonenessGraph()
+                Case eNetworkAnalysisPageTypes.KeystonenessGraph
+                    Me.m_contentmanager = New cKeystonenessGraph()
 
-            Case eNetworkAnalysisPageTypes.Total
-                Me.m_contentmanager = New cTotal()
+                Case eNetworkAnalysisPageTypes.Total
+                    Me.m_contentmanager = New cTotal()
 
-            Case eNetworkAnalysisPageTypes.ByGroup
-                Me.m_contentmanager = New cByGroup()
+                Case eNetworkAnalysisPageTypes.ByGroup
+                    Me.m_contentmanager = New cByGroup()
 
-            Case eNetworkAnalysisPageTypes.FlowFromDetritus
-                Me.m_contentmanager = New cFlowFromDetritus()
+                Case eNetworkAnalysisPageTypes.FlowFromDetritus
+                    Me.m_contentmanager = New cFlowFromDetritus()
 
-            Case eNetworkAnalysisPageTypes.Pathway_cons_tl1
-                Me.m_contentmanager = New TL1ToConsumer.cCyclesPathways()
+                Case eNetworkAnalysisPageTypes.Pathway_cons_tl1
+                    Me.m_contentmanager = New TL1ToConsumer.cCyclesPathways()
 
-            Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_tl1
-                Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
+                Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_tl1
+                    Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
 
-            Case eNetworkAnalysisPageTypes.Pathway_cons_prey_tl1
-                Me.m_contentmanager = New TL1ToPreyToConsumer.cCyclesPathways()
+                Case eNetworkAnalysisPageTypes.Pathway_cons_prey_tl1
+                    Me.m_contentmanager = New TL1ToPreyToConsumer.cCyclesPathways()
 
-            Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_prey_tl1
-                Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
+                Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_prey_tl1
+                    Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
 
-            Case eNetworkAnalysisPageTypes.Pathway_pred_prey
-                Me.m_contentmanager = New PreyToPredator.cCyclesPathways()
+                Case eNetworkAnalysisPageTypes.Pathway_pred_prey
+                    Me.m_contentmanager = New PreyToPredator.cCyclesPathways()
 
-            Case eNetworkAnalysisPageTypes.SummaryOfPathways_pred_prey
-                Me.m_contentmanager = New PreyToPredator.cSummaryCyclesPathways()
+                Case eNetworkAnalysisPageTypes.SummaryOfPathways_pred_prey
+                    Me.m_contentmanager = New PreyToPredator.cSummaryCyclesPathways()
 
-            Case eNetworkAnalysisPageTypes.Pathway_living
-                Me.m_contentmanager = New CyclesLiving.cCyclesPathways()
+                Case eNetworkAnalysisPageTypes.Pathway_living
+                    Me.m_contentmanager = New CyclesLiving.cCyclesPathways()
 
-            Case eNetworkAnalysisPageTypes.SummaryOfPathways_living
-                Me.m_contentmanager = New CyclesLiving.cSummaryPathways()
+                Case eNetworkAnalysisPageTypes.SummaryOfPathways_living
+                    Me.m_contentmanager = New CyclesLiving.cSummaryPathways()
 
-            Case eNetworkAnalysisPageTypes.Pathway_all
-                Me.m_contentmanager = New CyclesAll.cCyclesPathways()
+                Case eNetworkAnalysisPageTypes.Pathway_all
+                    Me.m_contentmanager = New CyclesAll.cCyclesPathways()
 
-            Case eNetworkAnalysisPageTypes.SummaryOfPathways_all
-                Me.m_contentmanager = New CyclesAll.cSummaryCyclesPathways()
+                Case eNetworkAnalysisPageTypes.SummaryOfPathways_all
+                    Me.m_contentmanager = New CyclesAll.cSummaryCyclesPathways()
 
-            Case eNetworkAnalysisPageTypes.CyclingAndPathLength
-                Me.m_contentmanager = New cCyclingAndPathLen()
+                Case eNetworkAnalysisPageTypes.CyclingAndPathLength
+                    Me.m_contentmanager = New cCyclingAndPathLen()
 
-            Case eNetworkAnalysisPageTypes.LindemanSpine
-                Me.m_contentmanager = New cLindemanSpine()
+                Case eNetworkAnalysisPageTypes.LindemanSpine
+                    Me.m_contentmanager = New cLindemanSpine()
 
-            Case eNetworkAnalysisPageTypes.WithoutPrimaryProductionRequiredEstimate
-                Me.m_contentmanager = New cIndicesWithoutPPREst()
+                Case eNetworkAnalysisPageTypes.WithoutPrimaryProductionRequiredEstimate
+                    Me.m_contentmanager = New cIndicesWithoutPPREst()
 
-            Case eNetworkAnalysisPageTypes.WithPrimaryProductionRequiredEstimate
-                Me.m_contentmanager = New cIndicesWithPPREst()
+                Case eNetworkAnalysisPageTypes.WithPrimaryProductionRequiredEstimate
+                    Me.m_contentmanager = New cIndicesWithPPREst()
 
-                ' JS 27apr09: discontinued, StyleGuide group/fleet visible flags should be used for this (if ever)
-                ' JS 01may09: besides, the interface will be triggered from a toolbar btn instead of a tree node.
-                '             Changing viz items will need to cause toolbars to refresh, grid population code to 
-                '             change, etc... It's not straight-forward at all!
-
-                'Case My.Resources.TREE_NODE_SHOW_HIDE_GRP
-                '    m_HideGroupsClass = cHideGroups.GetInstance(scNetworkAnalysis.Panel2)
-                '    m_HideGroupsClass.SetUpPanel()
-                '    m_HideGroupsForm = frmHideGroups.GetInstance(m_NetworkManager)
-                '    m_HideGroupsForm.ShowDialog()
-
-            Case Else
-        End Select
+                Case Else
+            End Select
+        End If
 
         cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
 

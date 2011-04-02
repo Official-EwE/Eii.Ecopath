@@ -125,6 +125,9 @@ Public Class cNetworkManager
 
         Debug.Assert(m_econetwork IsNot Nothing)
 
+        ' Core not ready? Abort and wait for the world to improve
+        If Me.m_runstate = eRunState.CoreNotReady Then Return False
+
         ' Optimization
         If Me.IsMainNetworkRun = True Then Return True
 
@@ -137,7 +140,7 @@ Public Class cNetworkManager
             bSucces = False
         End If
 
-        If bSucces And (m_runstate <> eRunState.CoreNotReady) Then
+        If bSucces Then
             Try
                 For iGroup As Integer = 1 To Me.Core.nGroups
                     abGroupsToShow(iGroup) = True
@@ -2078,37 +2081,46 @@ Public Class cNetworkManager
 #End Region
 
     ''' <summary>
-    ''' Listen to the core's state monitor to see if Ecopath has been changed
+    ''' Listen to the core's state monitor to see if Ecopath and Ecosim have changed
     ''' </summary>
     Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
 
-        'ToDo_jb CoreStateMonitor_CoreExecutionStateEvent() Ecoism loaded does not need to be false if Ecopath is rerun 
+        Dim bStateChanged As Boolean = False
+
+        ' Assume the worst
+        ' Fixes bug 937
+        m_runstate = eRunState.CoreNotReady
 
         'If ecopath has loaded or it has just run 
         'then the network analysis needs to be run or re-run
         If csm.IsExecutionStateSuperceded(EwEUtils.Core.eCoreExecutionState.EcopathCompleted) Then
             m_runstate = eRunState.NetworkNeedsToRun
-            'System.Console.WriteLine("Network Analysis Plugin state changed. Core state = " & iState.ToString & " Network Analysis plugin state = " & m_runstate.ToString)
         End If
 
         'An ecosim scenario has loaded 
         If csm.IsExecutionStateSuperceded(EwEUtils.Core.eCoreExecutionState.EcosimLoaded) Then
             m_runstate = eRunState.EcosimIsLoaded
-            'System.Console.WriteLine("Network Analysis Plugin state changed. Core state = " & iState.ToString & " Network Analysis plugin state = " & m_runstate.ToString)
         End If
 
         ' Invalidate results when core states dictate 
         ' Fixes bug 617
         If Not csm.HasEcopathRan Then
+            bStateChanged = Me.IsMainNetworkRun
             Me.IsMainNetworkRun = False
         End If
 
         If Not csm.HasEcosimRan Then
+            bStateChanged = bStateChanged Or Me.IsEcosimNetworkRun
             Me.IsEcosimNetworkRun = False
         End If
 
-    End Sub
+        Try
+            If bStateChanged Then RaiseEvent OnRunStateChanged()
+        Catch ex As Exception
 
+        End Try
+
+    End Sub
 
 #End Region ' Message handlers
 
