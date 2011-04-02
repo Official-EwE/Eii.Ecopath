@@ -101,7 +101,7 @@ Public MustInherit Class cNavTreeControlPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Must override to define the name of the <see cref="frmNetworkAnalysis.ShowForm"></see>
+    ''' Must override to define the name of the <see cref="frmNetworkAnalysis.ShowPage"></see>
     ''' network analysis page that a navigation item opens.
     ''' </summary>
     ''' <returns>The page to navigate to when this plug-in point is activated.</returns>
