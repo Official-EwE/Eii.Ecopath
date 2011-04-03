@@ -42,7 +42,7 @@ Namespace Other
 
         Public Sub New(ByVal uic As cUIContext)
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PLEASE_WAIT)
 
             Me.InitializeComponent()
 
@@ -70,7 +70,7 @@ Namespace Other
 
             Me.SelectPage("")
 
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
         End Sub
 

@@ -5,24 +5,28 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
 Namespace Ecospace
 
+    ''' <summary>
+    ''' Grid catered to defining <see cref="cEcospaceHabitat">habitats</see>.
+    ''' </summary>
     <CLSCompliant(False)> _
-    Public Class gridEditImportanceLayers
-        Inherits EwEGrid
+    Public Class gridEditHabitats
+        : Inherits EwEGrid
 
-        ''' <summary>A number representing the row that contains the first Layer</summary>
-        Private Const iFIRSTDATAROW As Integer = 1
+        ''' <summary>A number representing the row that contains the first Habitat</summary>
+        Private Const iFIRSTHABITATROW As Integer = 1
 
-        ''' <summary>List of active Layers.</summary>
-        Private m_alLayers As New List(Of LayerInfo)
-        ''' <summary>List of removed Layers.</summary>
-        Private m_alLayersRemoved As New List(Of LayerInfo)
+        ''' <summary>List of active Habitats.</summary>
+        Private m_alHabitats As New List(Of HabitatInfo)
+        ''' <summary>List of removed Habitats.</summary>
+        Private m_alHabitatsRemoved As New List(Of HabitatInfo)
+
         ''' <summary>Update lock, used to distinguish between code updates and
         ''' user updates of grid cells. When grid cells are updated from within
         ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
@@ -30,56 +34,48 @@ Namespace Ecospace
 
         ''' <summary>Enumerated type defining the columns in this grid.</summary>
         Private Enum eColumnTypes
-            LayerIndex = 0
-            LayerName
-            LayerWeight
-            LayerDescription
-            LayerStatus
+            HabitatIndex = 0
+            HabitatName
+            HabitatStatus
         End Enum
 
 #Region " Helper classes "
 
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Administrative unit representing a <see cref="cEcospaceBasemap">Importance layer</see>
+        ''' Administrative unit representing a <see cref="cEcospaceHabitat">Habitat</see>
         ''' in the EwE model.
         ''' </summary>
         ''' <remarks>
-        ''' This class can represent existing and new Layers. If this class has its
-        ''' <see cref="LayerInfo.Layer">Layer</see> parameter set, a real live
-        ''' Layer is represented. If this parameter is not set, a new Layer is
-        ''' represented.
+        ''' This class can represent existing and new Habitats.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Class LayerInfo
+        Private Class HabitatInfo
 
-            ''' <summary><see cref="cEcospaceBasemap">cEcospaceBasemap</see> associated with this Layer, if any.</summary>
-            Private m_Layer As cEcospaceLayerImportance = Nothing
-            ''' <summary>Name for this Layer.</summary>
+            ''' <summary>DBID of associated habitat.</summary>
+            Private m_iHabitatDBID As Integer = cCore.NULL_VALUE
+            Private m_iHabitatIndex As Integer = cCore.NULL_VALUE
+            ''' <summary>Name for this Habitat.</summary>
             Private m_strName As String = ""
-            ''' <summary>Description for this Layer.</summary>
-            Private m_strDescription As String = ""
-            ''' <summary>Weight for this Layer.</summary>
-            Private m_sWeight As Single = 0.0
             ''' <summary>Flag stating whether a user action is confirmed</summary>
             Private m_bConfirmed As Boolean = True
-            ''' <summary>The status of a Layer in the interface.</summary>
+            ''' <summary>The status of a Habitat in the interface.</summary>
             Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Constructor, initializes a new instanze of this class.
             ''' </summary>
-            ''' <param name="Layer">The <see cref="cEcospaceBasemap">cEcospaceBasemap</see> to
+            ''' <param name="Habitat">The <see cref="cEcospaceHabitat">cEcospaceHabitat</see> to
             ''' initialize this instance from. If set, this instance represents a
-            ''' Layer currently active in the EwE model.</param>
+            ''' Habitat currently active in the EwE model.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal Layer As cEcospaceLayerImportance)
-                Debug.Assert(Layer IsNot Nothing)
-                Me.m_Layer = Layer
-                Me.m_strName = Layer.Name
-                Me.m_strDescription = Layer.Description
-                Me.m_sWeight = Layer.Weight
+            Public Sub New(ByVal habitat As cEcospaceHabitat)
+                Debug.Assert(habitat IsNot Nothing)
+                Me.m_iHabitatDBID = habitat.DBID
+                Me.m_iHabitatIndex = habitat.Index
+                Me.m_strName = habitat.Name
                 Me.m_status = eItemStatusTypes.Original
             End Sub
 
@@ -89,11 +85,8 @@ Namespace Ecospace
             ''' </summary>
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single)
-                Me.m_Layer = Nothing
+            Public Sub New(ByVal strName As String)
                 Me.m_strName = strName
-                Me.m_strDescription = strDescription
-                Me.m_sWeight = sWeight
                 Me.m_status = eItemStatusTypes.Added
             End Sub
 
@@ -113,48 +106,32 @@ Namespace Ecospace
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get/set the description of this administrative unit.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public Property Description() As String
-                Get
-                    Return Me.m_strDescription
-                End Get
-                Set(ByVal value As String)
-                    Me.m_strDescription = value
-                End Set
-            End Property
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' Get/set the weight of this administrative unit.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public Property Weight() As Single
-                Get
-                    Return Me.m_sWeight
-                End Get
-                Set(ByVal value As Single)
-                    Me.m_sWeight = value
-                End Set
-            End Property
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' Get the <see cref="cEcospaceBasemap">EwE Layer</see> associated
+            ''' Get the <see cref="cEcospaceHabitat.DBID"/> of the habitat associated
             ''' with this administrative unit.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Layer() As cEcospaceLayerImportance
+            Public ReadOnly Property HabitatDBID() As Integer
                 Get
-                    Return Me.m_Layer
+                    Return Me.m_iHabitatDBID
+                End Get
+            End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the <see cref="cEcospaceHabitat.Index"/> of the habitat associated
+            ''' with this administrative unit.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public ReadOnly Property HabitatIndex() As Integer
+                Get
+                    Return Me.m_iHabitatIndex
                 End Get
             End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Get the <see cref="eItemStatusTypes">item status</see>
-            ''' for the layer object.
+            ''' for the habitat object.
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public ReadOnly Property Status() As eItemStatusTypes
@@ -179,34 +156,33 @@ Namespace Ecospace
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' States whether the Layer has changed.
+            ''' States whether the Habitat has changed.
             ''' </summary>
             ''' <returns>
-            ''' True when Layer <see cref="Name">Name</see> value has changed.
+            ''' True when Habitat <see cref="Name">Name</see> value has changed.
             ''' </returns>
             ''' -------------------------------------------------------------------
-            Public Function IsChanged() As Boolean
+            Public Function IsChanged(ByVal habitat As cEcospaceHabitat) As Boolean
                 If (Me.IsNew()) Then Return False
-                Return (Me.m_Layer.Name <> Me.m_strName) Or _
-                       (Me.Layer.Description <> Me.m_strDescription) Or _
-                       (Me.Layer.Weight <> Me.m_sWeight)
+                If (habitat.DBID <> Me.m_iHabitatDBID) Then Return False
+                Return (habitat.Name <> Me.m_strName)
             End Function
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' States whether the Layer is to be created.
+            ''' States whether the Habitat is to be created.
             ''' </summary>
             ''' <returns>
-            ''' True when Layer <see cref="Name">Name</see> value has changed.
+            ''' True when Habitat <see cref="Name">Name</see> value has changed.
             ''' </returns>
             ''' -------------------------------------------------------------------
             Public Function IsNew() As Boolean
-                Return (Me.m_Layer Is Nothing)
+                Return (Me.m_iHabitatDBID = cCore.NULL_VALUE)
             End Function
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get/set whether this layer is flagged for deletion. Toggling this flag
+            ''' Get/set whether this habitat is flagged for deletion. Toggling this flag
             ''' will update the <see cref="Status">Status</see> of the item.
             ''' </summary>
             ''' -------------------------------------------------------------------
@@ -215,7 +191,7 @@ Namespace Ecospace
                     Return Me.m_status = eItemStatusTypes.Removed
                 End Get
                 Set(ByVal bDelete As Boolean)
-                    If Me.m_Layer IsNot Nothing Then
+                    If Not Me.IsNew() Then
                         If bDelete Then
                             Me.m_status = eItemStatusTypes.Removed
                         Else
@@ -243,7 +219,6 @@ Namespace Ecospace
         Public Sub New()
 
             MyBase.New()
-            Me.FixedColumnWidths = False
 
         End Sub
 
@@ -267,54 +242,44 @@ Namespace Ecospace
             ' Redim columns
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
-            ' Layer index cell
-            Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
-            ' Layer name cell, editable this time
-            Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.LayerWeight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
-            Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+            ' Habitat index cell
+            Me(0, eColumnTypes.HabitatIndex) = New EwEColumnHeaderCell()
+            ' Habitat name cell, editable this time
+            Me(0, eColumnTypes.HabitatName) = New EwEColumnHeaderCell(SharedResources.HEADER_HABITAT)
 
-            ' Layer index cell
-            Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+            ' Habitat index cell
+            Me(0, eColumnTypes.HabitatStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
-            ' Fix index column only; Layer name column cannot be fixed because it must be editable
+            ' Fix index column only; Habitat name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
 
         End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Overridden to first create a snapshot of the Layer/stanza configuration
+        ''' Overridden to first create a snapshot of the Habitat/stanza configuration
         ''' in the current EwE model. The grid will be populated from this local
         ''' administration.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub FillData()
 
-            Dim Layer As cEcospaceLayerImportance = Nothing
-            Dim li As LayerInfo = Nothing
+            ' Get the core reference
+            Dim Habitat As cEcospaceHabitat = Nothing
+            Dim hi As HabitatInfo = Nothing
 
             ' Populate local administration from a snapshot of the live data
 
-            ' Make snapshot of Layer configuration
-            For iLayer As Integer = 1 To Me.Core.nImportanceLayers
-                Layer = Me.Core.EcospaceBasemap.LayerImportance(iLayer)
-                li = New LayerInfo(Layer)
-                Me.m_alLayers.Add(li)
+            ' Make snapshot of Habitat configuration
+            ' SKIP ALL HABITAT HERE!
+            For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
+                Habitat = Me.Core.EcospaceHabitats(iHabitat)
+                hi = New HabitatInfo(Habitat)
+                Me.m_alHabitats.Add(hi)
             Next
 
             ' Brute-force update grid
             UpdateGrid()
-
-        End Sub
-
-        Protected Overrides Sub FinishStyle()
-            MyBase.FinishStyle()
-
-            Me.Columns(eColumnTypes.LayerIndex).Width = 40
-            Me.Columns(eColumnTypes.LayerName).Width = 120
-            Me.Columns(eColumnTypes.LayerWeight).Width = 60
-            Me.Columns(eColumnTypes.LayerDescription).Width = 278
 
         End Sub
 
@@ -326,7 +291,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Public Sub UpdateGrid()
 
-            Dim li As LayerInfo = Nothing
+            Dim hi As HabitatInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
@@ -334,41 +299,35 @@ Namespace Ecospace
             Dim ewec As EwECell = Nothing
 
             ' Create missing rows
-            For iRow As Integer = Me.Rows.Count To Me.m_alLayers.Count
+            For iRow As Integer = Me.Rows.Count To Me.m_alHabitats.Count
                 Me.AddRow()
 
                 ewec = New EwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
-                Me(iRow, eColumnTypes.LayerIndex) = ewec
+                Me(iRow, eColumnTypes.HabitatIndex) = ewec
 
-                Me(iRow, eColumnTypes.LayerName) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
-
-                Me(iRow, eColumnTypes.LayerDescription) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
-
-                Me(iRow, eColumnTypes.LayerWeight) = New Cells.Real.Cell(0.0!, GetType(Single))
-                Me(iRow, eColumnTypes.LayerWeight).Behaviors.Add(Me.EwEEditHandler)
+                Me(iRow, eColumnTypes.HabitatName) = New Cells.Real.Cell("", GetType(String))
+                Me(iRow, eColumnTypes.HabitatName).Behaviors.Add(Me.EwEEditHandler)
 
                 ' Status
                 vm = New VisualModels.Common()
                 vm.ImageAlignment = ContentAlignment.MiddleCenter
-                Me(iRow, eColumnTypes.LayerStatus) = New Cells.Real.Cell()
+                Me(iRow, eColumnTypes.HabitatStatus) = New Cells.Real.Cell()
                 Dim dm As New DataModels.DataModelBase(GetType(String))
                 dm.EditableMode = EditableMode.None
-                Me(iRow, eColumnTypes.LayerStatus).DataModel = dm
+                Me(iRow, eColumnTypes.HabitatStatus).DataModel = dm
             Next
 
             ' Delete obsolete rows
-            While Me.Rows.Count > Me.m_alLayers.Count + 1
-                Me.Rows.Remove(Me.Rows.Count - iFIRSTDATAROW)
+            While Me.Rows.Count > Me.m_alHabitats.Count + 1
+                Me.Rows.Remove(Me.Rows.Count - iFIRSTHABITATROW)
             End While
 
-            ' Sanity check whether grid can accomodate all Layers + header
-            Debug.Assert(Me.Rows.Count = Me.m_alLayers.Count + 1)
+            ' Sanity check whether grid can accomodate all Habitats + header
+            Debug.Assert(Me.Rows.Count = Me.m_alHabitats.Count + 1)
 
             ' Populate rows
-            For iRow As Integer = 1 To Me.m_alLayers.Count
+            For iRow As Integer = 1 To Me.m_alHabitats.Count
                 UpdateRow(iRow)
             Next iRow
 
@@ -382,7 +341,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Private Sub UpdateRow(ByVal iRow As Integer)
 
-            Dim li As LayerInfo = Nothing
+            Dim hi As HabitatInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
@@ -391,25 +350,19 @@ Namespace Ecospace
 
             Me.AllowUpdates = False
 
-            li = DirectCast(Me.m_alLayers(iRow - iFIRSTDATAROW), LayerInfo)
+            hi = DirectCast(Me.m_alHabitats(iRow - iFIRSTHABITATROW), HabitatInfo)
             ri = Me.Rows(iRow)
 
-            ri.Tag = li
+            ri.Tag = hi
             aCells = ri.GetCells()
 
-            pos = New Position(iRow, eColumnTypes.LayerIndex)
-            aCells(eColumnTypes.LayerIndex).SetValue(pos, CInt(iRow))
+            pos = New Position(iRow, eColumnTypes.HabitatIndex)
+            aCells(eColumnTypes.HabitatIndex).SetValue(pos, CInt(iRow))
 
-            pos = New Position(iRow, eColumnTypes.LayerName)
-            aCells(eColumnTypes.LayerName).SetValue(pos, CStr(li.Name))
+            pos = New Position(iRow, eColumnTypes.HabitatName)
+            aCells(eColumnTypes.HabitatName).SetValue(pos, CStr(hi.Name))
 
-            pos = New Position(iRow, eColumnTypes.LayerDescription)
-            aCells(eColumnTypes.LayerDescription).SetValue(pos, CStr(li.Description))
-
-            pos = New Position(iRow, eColumnTypes.LayerWeight)
-            aCells(eColumnTypes.LayerWeight).SetValue(pos, CSng(li.Weight))
-
-            Select Case li.Status
+            Select Case hi.Status
                 Case eItemStatusTypes.Original
                     vm = Me.DefaultVisualOriginal
                     strText = ""
@@ -421,9 +374,9 @@ Namespace Ecospace
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
 
-            pos = New Position(iRow, eColumnTypes.LayerStatus)
-            aCells(eColumnTypes.LayerStatus).VisualModel = vm
-            aCells(eColumnTypes.LayerStatus).SetValue(pos, strText)
+            pos = New Position(iRow, eColumnTypes.HabitatStatus)
+            aCells(eColumnTypes.HabitatStatus).VisualModel = vm
+            aCells(eColumnTypes.HabitatStatus).SetValue(pos, strText)
 
             Me.AllowUpdates = True
 
@@ -447,19 +400,19 @@ Namespace Ecospace
 
             If Not Me.AllowUpdates Then Return True
 
-            Dim li As LayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), LayerInfo)
+            Dim hi As HabitatInfo = DirectCast(Me.m_alHabitats(p.Row - 1), HabitatInfo)
 
             Select Case DirectCast(p.Column, eColumnTypes)
-                Case eColumnTypes.LayerIndex
+                Case eColumnTypes.HabitatIndex
                     ' Not possible
 
-                Case eColumnTypes.LayerName
+                Case eColumnTypes.HabitatName
                     Dim strName As String = CStr(cell.GetValue(p))
                     ' Check if name is unique
-                    For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
-                        Dim giTemp As LayerInfo = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
+                    For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
+                        Dim giTemp As HabitatInfo = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
                         ' Does name already exist?
-                        If (Not Object.ReferenceEquals(giTemp, li)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                        If (Not Object.ReferenceEquals(giTemp, hi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                             ' Change is not allowed
                             Me.UpdateRow(p.Row)
                             ' Report failure
@@ -467,15 +420,7 @@ Namespace Ecospace
                         End If
                     Next
                     ' Allow name change
-                    li.Name = strName
-
-                Case eColumnTypes.LayerDescription
-                    li.Description = CStr(cell.GetValue(p))
-
-                Case eColumnTypes.LayerWeight
-                    Dim sWeight As Single = CSng(cell.GetValue(p))
-                    If sWeight < 0 Then Me.UpdateRow(p.Row) : Return False
-                    li.Weight = sWeight
+                    hi.Name = strName
 
             End Select
 
@@ -509,35 +454,35 @@ Namespace Ecospace
 
             If iRow = -1 Then iRow = Me.SelectedRow
 
-            Dim iLayer As Integer = iRow - iFIRSTDATAROW
-            Dim li As LayerInfo = Nothing
+            Dim iHabitat As Integer = iRow - iFIRSTHABITATROW
+            Dim hi As HabitatInfo = Nothing
             Dim strPrompt As String = ""
 
             ' Validate
-            If iLayer < 0 Then Return
+            If iHabitat < 0 Then Return
 
-            li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
+            hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
             ' Toggle 'flagged for deletion' flag
-            li.FlaggedForDeletion = Not li.FlaggedForDeletion
+            hi.FlaggedForDeletion = Not hi.FlaggedForDeletion
 
-            ' Check to see what is to happen to the Layer now
-            Select Case li.Status
+            ' Check to see what is to happen to the Habitat now
+            Select Case hi.Status
 
                 Case eItemStatusTypes.Original
-                    ' Clear removed status of the Layer
-                    Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
+                    ' Clear removed status of the Habitat
+                    Me.m_alHabitatsRemoved.Remove(Me.m_alHabitats(iHabitat))
 
                 Case eItemStatusTypes.Added
-                    ' Clear removed status of the Layer
-                    Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
+                    ' Clear removed status of the Habitat
+                    Me.m_alHabitatsRemoved.Remove(Me.m_alHabitats(iHabitat))
 
                 Case eItemStatusTypes.Removed
                     ' Set removed status
-                    Me.m_alLayersRemoved.Add(Me.m_alLayers(iLayer))
+                    Me.m_alHabitatsRemoved.Add(Me.m_alHabitats(iHabitat))
 
                 Case eItemStatusTypes.Invalid
                     ' Set removed status
-                    Me.m_alLayers.RemoveAt(iLayer)
+                    Me.m_alHabitats.RemoveAt(iHabitat)
 
             End Select
 
@@ -546,68 +491,66 @@ Namespace Ecospace
         End Sub
 
         ''' <summary>
-        ''' States whether a row holds a layer.
+        ''' States whether a row holds a habitat.
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' <returns></returns>
-        Public Function IsLayerRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsHabitatRow(Optional ByVal iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            Return (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount)
+            Return (iRow >= iFIRSTHABITATROW) And (iRow < Me.RowsCount)
         End Function
 
         ''' <summary>
-        ''' States whether the layer on a row is flagged for deletion.
+        ''' States whether the habitat on a row is flagged for deletion.
         ''' </summary>
         Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not IsLayerRow(iRow) Then Return False
+            If Not IsHabitatRow(iRow) Then Return False
 
-            Dim iLayer As Integer = iRow - iFIRSTDATAROW
-            Dim li As LayerInfo = Nothing
+            Dim iHabitat As Integer = iRow - iFIRSTHABITATROW
+            Dim hi As HabitatInfo = Nothing
             Dim strPrompt As String = ""
 
-            li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
-            Return li.FlaggedForDeletion
+            hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+            Return hi.FlaggedForDeletion
         End Function
 
         ''' <summary>
-        ''' Add a row by creating a new layer.
+        ''' Add a row by creating a new habitat.
         ''' </summary>
         Public Sub InsertRow()
             If Not Me.CanAddRow() Then Return
-            Me.CreateLayer()
+            Me.CreateHabitat()
         End Sub
 
         ''' <summary>
-        ''' Create a new layer.
+        ''' Create a new habitat.
         ''' </summary>
-        Private Sub CreateLayer()
+        Private Sub CreateHabitat()
             Dim iRow As Integer = -1
-            Dim iLayer As Integer = -1
-            Dim li As LayerInfo = Nothing
-            Dim lstrLayers As New List(Of String)
+            Dim iHabitat As Integer = -1
+            Dim hi As HabitatInfo = Nothing
+            Dim lstrHabitats As New List(Of String)
 
             ' Make fit
-            iRow = Math.Max(iFIRSTDATAROW, Me.RowsCount)
-            iLayer = iRow - iFIRSTDATAROW
+            iRow = Math.Max(iFIRSTHABITATROW, Me.RowsCount)
+            iHabitat = iRow - iFIRSTHABITATROW
 
             ' Validate
-            If iLayer < 0 Then Return
+            If iHabitat < 0 Then Return
 
-            ' Collect all current layer names
-            For Each li In Me.m_alLayers
-                lstrLayers.Add(li.Name)
+            ' Collect all current habitat names
+            For Each hi In Me.m_alHabitats
+                lstrHabitats.Add(hi.Name)
             Next
 
-            ' Format new layer with an autonumber value based on existing names
-            Dim iNextNum As Integer = cStringUtils.GetNextNumber(lstrLayers.ToArray(), SharedResources.DEFAULT_NEWLAYER_NUM)
-            Dim strName As String = String.Format(SharedResources.DEFAULT_NEWLAYER_NUM, iNextNum)
-
-            li = New LayerInfo(strName, "", 1.0!)
-            Me.m_alLayers.Insert(iLayer, li)
+            ' Format new hab with an autonumber value based on existing names
+            hi = New HabitatInfo(String.Format(SharedResources.DEFAULT_NEWHABITAT_NUM, _
+                    cStringUtils.GetNextNumber(lstrHabitats.ToArray(), SharedResources.DEFAULT_NEWHABITAT_NUM)))
+            Me.m_alHabitats.Insert(iHabitat, hi)
 
             Me.UpdateGrid()
-            Me.SelectRow(li)
+            Me.SelectRow(hi)
         End Sub
 
         ''' <summary>
@@ -647,10 +590,10 @@ Namespace Ecospace
 
 #Region " Selection extension "
 
-        Private Overloads Sub SelectRow(ByVal li As LayerInfo)
-            For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
-                If Object.ReferenceEquals(Me.m_alLayers(iLayer), li) Then
-                    Me.SelectRow(iLayer + iFIRSTDATAROW)
+        Private Overloads Sub SelectRow(ByVal hi As HabitatInfo)
+            For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
+                If Object.ReferenceEquals(Me.m_alHabitats(iHabitat), hi) Then
+                    Me.SelectRow(iHabitat + iFIRSTHABITATROW)
                 End If
             Next
         End Sub
@@ -666,10 +609,20 @@ Namespace Ecospace
         ''' Helper method; validates the content of the grid.
         ''' </summary>
         ''' <returns>True when the content of the grid depicts a valid
-        ''' Layer configuration for a model.</returns>
+        ''' Habitat configuration for a model.</returns>
         ''' -----------------------------------------------------------------------
         Public Function ValidateContent() As Boolean
+
+            '' Check if the user is about to delete all fleets - one should remain
+            'If Me.m_alHabitatsRemoved.Count = Me.m_alHabitats.Count Then
+            '    MsgBox(My.Resources.ECOPATH_EDITHABITAT_PROMPT_CANNOTDELETEALL, _
+            '            MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, _
+            '            My.Resources.ECOPATH_EDITHABITAT_CONFIRMDELETE_CAPTION)
+            '    Return False
+            'End If
+
             Return True
+
         End Function
 
 #End Region ' Validation
@@ -680,28 +633,31 @@ Namespace Ecospace
 
             Dim strPrompt As String = ""
             Dim bConfigurationChanged As Boolean = False
-            Dim bLayersChanged As Boolean = False
-            Dim li As LayerInfo = Nothing
+            Dim bHabitatsChanged As Boolean = False
+            Dim hi As HabitatInfo = Nothing
             Dim iDBID As Integer = Nothing
-            Dim Layer As cEcospaceLayerImportance = Nothing
-            Dim iLayer As Integer = 0
+            Dim hab As cEcospaceHabitat = Nothing
+            Dim iHabitat As Integer = 0
             Dim bSuccess As Boolean = True
 
             ' Validate content of the grid
             If Not Me.ValidateContent() Then Return False
 
-            ' Assess Layer changes
-            For iLayer = 0 To Me.m_alLayers.Count - 1
-                li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
-                ' Check if this layer is newly added
-                bConfigurationChanged = bConfigurationChanged Or li.IsNew()
-                ' Check if this layer has been modified
-                bLayersChanged = bLayersChanged Or li.IsChanged()
-            Next iLayer
+            ' Assess Habitat changes
+            For iHabitat = 0 To Me.m_alHabitats.Count - 1
+                hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
 
-            If Me.m_alLayersRemoved.Count > 5 Then
+                If hi.IsNew Then
+                    bConfigurationChanged = True
+                Else
+                    ' Check if this habitat has been modified
+                    bHabitatsChanged = bHabitatsChanged Or hi.IsChanged(Me.Core.EcospaceHabitats(hi.HabitatIndex))
+                End If
+            Next iHabitat
 
-                strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT, Me.m_alLayersRemoved.Count)
+            If Me.m_alHabitatsRemoved.Count > 5 Then
+
+                strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT, Me.m_alHabitatsRemoved.Count)
 
                 Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Cancel
@@ -709,8 +665,8 @@ Namespace Ecospace
                         Return False
                     Case MsgBoxResult.Yes
                         ' Confirm all regions
-                        For Each li In Me.m_alLayersRemoved
-                            li.Confirmed = True
+                        For Each hi In Me.m_alHabitatsRemoved
+                            hi.Confirmed = True
                         Next
                         bConfigurationChanged = True
                     Case Else
@@ -719,23 +675,23 @@ Namespace Ecospace
                 End Select
 
             Else
-                ' Assess Layers to remove
-                For iLayer = 0 To Me.m_alLayersRemoved.Count - 1
-                    li = DirectCast(Me.m_alLayersRemoved(iLayer), LayerInfo)
-                    If (Not li.IsNew()) Then
+                ' Assess Habitats to remove
+                For iHabitat = 0 To Me.m_alHabitatsRemoved.Count - 1
+                    hi = DirectCast(Me.m_alHabitatsRemoved(iHabitat), HabitatInfo)
+                    If (Not hi.IsNew()) Then
 
-                        strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT, li.Name)
+                        strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT, hi.Name)
 
                         Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
                             Case MsgBoxResult.Cancel
                                 ' Abort Apply process
                                 Return False
                             Case MsgBoxResult.No
-                                ' Do not delete this Layer
-                                li.Confirmed = False
+                                ' Do not delete this Habitat
+                                hi.Confirmed = False
                             Case MsgBoxResult.Yes
-                                ' Delete this Layer
-                                li.Confirmed = True
+                                ' Delete this Habitat
+                                hi.Confirmed = True
                                 bConfigurationChanged = True
                             Case Else
                                 ' Unexpected anwer: assert
@@ -743,38 +699,39 @@ Namespace Ecospace
                         End Select
 
                     End If
-                Next iLayer
+                Next iHabitat
             End If
 
             ' Handle added and removed items
             If (bConfigurationChanged) Then
 
                 If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+
                 cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
 
-                ' Add new Layers
-                For iLayer = 0 To Me.m_alLayers.Count - 1
-                    li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
-                    If (li.IsNew()) Then
-                        bSuccess = bSuccess And Me.Core.AddEcospaceImportanceLayer(li.Name, li.Description, li.Weight, iDBID)
+                ' Add new Habitats
+                For iHabitat = 0 To Me.m_alHabitats.Count - 1
+                    hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+                    If (hi.IsNew()) Then
+                        bSuccess = bSuccess And Me.Core.AddEcospaceHabitat(hi.Name, iDBID)
                     End If
                 Next
 
-                ' Remove deleted (and confirmed) Layers
-                Dim iLayerRemove As Integer = 0
-                For iLayer = 0 To Me.m_alLayersRemoved.Count - 1
-                    li = DirectCast(Me.m_alLayersRemoved(iLayerRemove), LayerInfo)
+                ' Remove deleted (and confirmed) Habitats
+                Dim iHabitatRemove As Integer = 0
+                For iHabitat = 0 To Me.m_alHabitatsRemoved.Count - 1
+                    hi = DirectCast(Me.m_alHabitatsRemoved(iHabitatRemove), HabitatInfo)
 
                     ' Sanity check
-                    Debug.Assert(Not li.IsNew())
+                    Debug.Assert(Not hi.IsNew())
 
-                    If (li.Confirmed()) Then
-                        If (Me.Core.RemoveEcospaceImportanceLayer(li.Layer)) Then
-                            Me.m_alLayers.Remove(li)
-                            Me.m_alLayersRemoved.Remove(li)
+                    If (hi.Confirmed()) Then
+                        If (Me.Core.RemoveEcospaceHabitat(hi.HabitatDBID)) Then
+                            Me.m_alHabitats.Remove(hi)
+                            Me.m_alHabitatsRemoved.Remove(hi)
                         Else
                             bSuccess = False
-                            iLayerRemove += 1
+                            iHabitatRemove += 1
                         End If
                     End If
                 Next
@@ -783,38 +740,31 @@ Namespace Ecospace
                 Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
                 cApplicationStatusNotifier.EndProgress(Me.Core)
 
-                ' Test whether new Layers were loaded correctly 
-                Debug.Assert(Me.m_alLayers.Count = Me.Core.nImportanceLayers, ">> Internal panic: Dialog and core out of sync on Layers")
+                ' Test whether new Habitats were loaded correctly 
+                ' !! taking into account that this dialog does NOT contain the All habitat, hence the '-1'
+                Debug.Assert(Me.m_alHabitats.Count = (Me.Core.nHabitats - 1), ">> Internal panic: Dialog and core out of sync on Habitats")
             End If
 
             ' Update core objects
-            If (bLayersChanged) Then
-                ' For each local layer admin unit
-                For iLayer = 0 To Me.m_alLayers.Count - 1
+            If (bHabitatsChanged) Then
+
+                ' Build quick habitat lookup
+                Dim dtHabs As New Dictionary(Of Integer, cEcospaceHabitat)
+                For iHabitat = 1 To Me.Core.nHabitats - 1
+                    hab = Me.Core.EcospaceHabitats(iHabitat)
+                    dtHabs(hab.DBID) = hab
+                Next
+
+                ' For each local habitat admin unit
+                For iHabitat = 0 To Me.m_alHabitats.Count - 1
                     ' Get local admin unit
-                    li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
-                    ' Has it changed?
-                    If (li.IsChanged()) Then
-                        ' Find core layer with same BDID (cannot use cached cEcospaceBasemap instances since the core has reloaded)
-                        Dim bFound As Boolean = False
-                        ' For every core layer instance (and yes, this array is one-based)
-                        For iLayTest As Integer = 1 To Me.Core.nImportanceLayers
-                            ' Get core layer instance
-                            Dim layTest As cEcospaceLayerImportance = Me.Core.EcospaceBasemap.LayerImportance(iLayTest)
-                            ' Has matching ID?
-                            If (layTest.getID = li.Layer.getID) Then
-                                ' #Yes: Update
-                                layTest.Name = li.Name
-                                layTest.Description = li.Description
-                                layTest.Weight = li.Weight
-                                ' Are we relieved or what!
-                                bFound = True
-                            End If
-                        Next
-                        ' All went well?
-                        If Not bFound Then
-                            ' #No?! Uh oh...
-                            Debug.Assert(False, ">> Internal panic: Unable to apply changes to layer id " & li.Layer.getID)
+                    hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+                    If Not hi.IsNew() Then
+                        hab = dtHabs(hi.HabitatDBID)
+                        ' Has it changed?
+                        If (hi.IsChanged(hab)) Then
+                            ' #Yes: Update
+                            hab.Name = hi.Name
                         End If
                     End If
                 Next

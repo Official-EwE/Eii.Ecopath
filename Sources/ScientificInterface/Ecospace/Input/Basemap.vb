@@ -100,21 +100,21 @@ Namespace Ecospace.Basemap
 
             Me.m_cmdEditHabitats = cmdh.GetCommand("EditHabitats")
             If (Not Object.ReferenceEquals(Me.m_cmdEditHabitats, Nothing)) Then
-                Me.m_cmdEditHabitats.AddControl(Me.tsbEditHabitats)
+                Me.m_cmdEditHabitats.AddControl(Me.m_tsbDefineHabitats)
                 AddHandler Me.m_cmdEditHabitats.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 AddHandler Me.m_cmdEditHabitats.OnPostInvoke, AddressOf OnPostIvokeEditcommand
             End If
 
             Me.m_cmdEditMPAs = cmdh.GetCommand("EditMPAs")
             If (Not Object.ReferenceEquals(Me.m_cmdEditMPAs, Nothing)) Then
-                Me.m_cmdEditMPAs.AddControl(Me.tsbEditMPA)
+                Me.m_cmdEditMPAs.AddControl(Me.m_tsbDefineMPA)
                 AddHandler Me.m_cmdEditMPAs.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 AddHandler Me.m_cmdEditMPAs.OnPostInvoke, AddressOf OnPostIvokeEditcommand
             End If
 
             Me.m_cmdEditRegions = cmdh.GetCommand("EditRegions")
             If (Not Object.ReferenceEquals(Me.m_cmdEditRegions, Nothing)) Then
-                Me.m_cmdEditRegions.AddControl(Me.tsbEditRegion)
+                Me.m_cmdEditRegions.AddControl(Me.m_tsbDefineRegion)
                 AddHandler Me.m_cmdEditRegions.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 AddHandler Me.m_cmdEditRegions.OnPostInvoke, AddressOf OnPostIvokeEditcommand
             End If
@@ -148,21 +148,21 @@ Namespace Ecospace.Basemap
             End If
 
             If (Not Object.ReferenceEquals(Me.m_cmdEditHabitats, Nothing)) Then
-                Me.m_cmdEditHabitats.RemoveControl(Me.tsbEditHabitats)
+                Me.m_cmdEditHabitats.RemoveControl(Me.m_tsbDefineHabitats)
                 RemoveHandler Me.m_cmdEditHabitats.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 RemoveHandler Me.m_cmdEditHabitats.OnPostInvoke, AddressOf OnPostIvokeEditcommand
                 Me.m_cmdEditHabitats = Nothing
             End If
 
             If (Not Object.ReferenceEquals(Me.m_cmdEditMPAs, Nothing)) Then
-                Me.m_cmdEditMPAs.RemoveControl(Me.tsbEditRegion)
+                Me.m_cmdEditMPAs.RemoveControl(Me.m_tsbDefineRegion)
                 RemoveHandler Me.m_cmdEditMPAs.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 RemoveHandler Me.m_cmdEditMPAs.OnPostInvoke, AddressOf OnPostIvokeEditcommand
                 Me.m_cmdEditMPAs = Nothing
             End If
 
             If (Not Object.ReferenceEquals(Me.m_cmdEditRegions, Nothing)) Then
-                Me.m_cmdEditRegions.RemoveControl(Me.tsbEditRegion)
+                Me.m_cmdEditRegions.RemoveControl(Me.m_tsbDefineRegion)
                 RemoveHandler Me.m_cmdEditRegions.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 RemoveHandler Me.m_cmdEditRegions.OnPostInvoke, AddressOf OnPostIvokeEditcommand
                 Me.m_cmdEditRegions = Nothing

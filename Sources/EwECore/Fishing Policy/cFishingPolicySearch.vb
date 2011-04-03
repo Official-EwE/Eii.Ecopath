@@ -1004,7 +1004,9 @@ pte:        ' continue
             'End If
 
             printstats(Xtime, itn, ifn, F, n, X, G)
-            Me.addMessage("Optimization done", eMessageType.Progress, eMessageImportance.Information)
+
+            ' ToDo: globalize this
+            Me.addMessage("Optimization done", eMessageType.Any, eMessageImportance.Information)
             ' MsgBox("Optimization done", vbOKOnly, "EwE: optimum fishing strategy")
             GoTo endline
 

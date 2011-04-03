@@ -73,7 +73,7 @@ Public Class gridWeightTS
 
         If (Me.UIContext Is Nothing) Then Return
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_PLEASE_WAIT)
 
         For iDS As Integer = 1 To Me.UIContext.Core.nTimeSeriesDatasets
 
@@ -92,7 +92,7 @@ Public Class gridWeightTS
             End If
         Next
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
     End Sub
 

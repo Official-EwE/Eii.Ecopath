@@ -3471,6 +3471,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Advection running iteration {0}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_ADVECTION_ITERATION() As String
+            Get
+                Return ResourceManager.GetString("STATUS_ADVECTION_ITERATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Starting Advection computations....
+        '''</summary>
+        Friend ReadOnly Property STATUS_ADVECTION_STARTED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_ADVECTION_STARTED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Applying values, please wait.
         '''</summary>
         Friend ReadOnly Property STATUS_APPLYVALUES() As String
@@ -3777,6 +3795,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Importing {0}....
+        '''</summary>
+        Friend ReadOnly Property STATUS_MODEL_IMPORTING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_IMPORTING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Unable to save your model to location &apos;{0}&apos;..
         '''</summary>
         Friend ReadOnly Property STATUS_MODEL_SAVE_404() As String
@@ -3791,6 +3818,24 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_MODEL_SAVING() As String
             Get
                 Return ResourceManager.GetString("STATUS_MODEL_SAVING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Initializing MSE....
+        '''</summary>
+        Friend ReadOnly Property STATUS_MSE_INITIALIZING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MSE_INITIALIZING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Running MSE....
+        '''</summary>
+        Friend ReadOnly Property STATUS_MSE_RUNNNG() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MSE_RUNNNG", resourceCulture)
             End Get
         End Property
         
@@ -3836,6 +3881,15 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_SEARCH_STOPPING() As String
             Get
                 Return ResourceManager.GetString("STATUS_SEARCH_STOPPING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Loading time series &apos;{0}&apos;....
+        '''</summary>
+        Friend ReadOnly Property STATUS_TIMESERIES_LOADING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_TIMESERIES_LOADING", resourceCulture)
             End Get
         End Property
         

@@ -235,13 +235,13 @@ Public Class frmNetworkAnalysis
             If Me.m_bInUpdate Then Return
 
             If Me.m_contentmanager IsNot Nothing Then
-                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+                cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_UPDATING_UI)
                 Try
                     Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
                 Catch ex As Exception
                     ' Woops
                 End Try
-                cApplicationStatusNotifier.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
             End If
 
         Catch ex As Exception
@@ -260,13 +260,13 @@ Public Class frmNetworkAnalysis
             If Me.m_bInUpdate Then Return
 
             If Me.m_contentmanager IsNot Nothing Then
-                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+                cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_UPDATING_UI)
                 Try
                     Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
                 Catch ex As Exception
                     ' Woops
                 End Try
-                cApplicationStatusNotifier.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
             End If
 
         Catch ex As Exception
@@ -474,7 +474,7 @@ Public Class frmNetworkAnalysis
             End Select
         End If
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_UPDATING_UI, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_UPDATING_UI)
 
         ' Put content manager to work
         If (Me.m_contentmanager IsNot Nothing) Then
@@ -545,7 +545,7 @@ Public Class frmNetworkAnalysis
             Me.m_plot.Top = 0
         End If
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         Me.ResumeLayout()
 
     End Sub

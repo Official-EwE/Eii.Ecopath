@@ -43,6 +43,8 @@ Public Class cData
 
 #End Region ' Private vars 
 
+    ' ToDo: Globalize this class
+
     Public Sub New(ByVal core As cCore)
         MyBase.New(core)
 
@@ -97,7 +99,7 @@ Public Class cData
 
         If Me.m_db.IsConnected Then Me.m_db.Close()
 
-        cApplicationStatusNotifier.SetStatusText("Loading Value Chain model, please wait...", TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_LOADING)
 
         ' Open for migration
         If File.Exists(strOldDBName) Then
@@ -124,9 +126,9 @@ Public Class cData
                 Catch ex As Exception
 
                 End Try
-                msg = New cMessage(String.Format("Value chain data file '{0}' merged into Ecopath model '{1}'", _
+                msg = New cMessage(String.Format(My.Resources.STATUS_MERGED, _
                                                  Path.GetFileName(strOldDBName), Path.GetFileName(strModelName)), _
-                                   eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Information)
+                                                 eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Information)
                 Me.m_core.Messages.SendMessage(msg)
 
             End If
@@ -135,7 +137,7 @@ Public Class cData
 
         Me.m_strDBName = strModelName
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         ' Start clean
         Me.IsChanged = False
@@ -157,9 +159,9 @@ Public Class cData
         If (Not Me.m_db.IsConnected) Then Return bSucces
         If (Not Me.IsChanged) Then Return bSucces
 
-        cApplicationStatusNotifier.SetStatusText("Saving Value Chain model, please wait...", TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SAVING)
         bSucces = Me.m_db.SaveModel(Me)
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         If bSucces Then Me.IsChanged = False
         Return bSucces

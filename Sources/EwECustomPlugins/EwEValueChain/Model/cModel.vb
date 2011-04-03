@@ -86,9 +86,9 @@ Public Class cModel
                 For sEffort As Single = sMin To sMax Step data.Parameters.EquilibriumEffortIncrement
 
                     ' Update status text
-                    cApplicationStatusNotifier.SetStatusText(String.Format("Running value chain equilibrium fleet {0}, effort {1}", _
-                                                    fleet.Name, Math.Round(sEffort, 2)), _
-                                      TriState.UseDefault, CSng(iStep / iNumSteps))
+                    cApplicationStatusNotifier.UpdateProgress(data.Core, _
+                                                              String.Format(My.Resources.STATUS_PROGRESS_EQUILIBIRUM, fleet.Name, Math.Round(sEffort, 2)), _
+                                                              CSng(iStep / iNumSteps))
                     ' Set effort
                     Me.SetFishingEffort(data, iFleet, sEffort)
                     ' Run Ecosim for X years

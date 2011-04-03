@@ -96,7 +96,7 @@ Namespace Ecosim
             Dim ff As cForcingFunction = Nothing
             Dim application As eForcingFunctionApplication
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_APPLYVALUES)
             Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
 
             ' For each column  (groupIndex - Predator)
@@ -132,7 +132,7 @@ Namespace Ecosim
             Next
 
             Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, True)
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End Sub
 

@@ -5,24 +5,24 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class gridEditImportanceLayers
-        Inherits EwEGrid
+    Public Class gridEditMPA
+        : Inherits EwEGrid
 
-        ''' <summary>A number representing the row that contains the first Layer</summary>
-        Private Const iFIRSTDATAROW As Integer = 1
+        ''' <summary>A number representing the row that contains the first MPA</summary>
+        Private Const iFIRSTMPAROW As Integer = 1
 
-        ''' <summary>List of active Layers.</summary>
-        Private m_alLayers As New List(Of LayerInfo)
-        ''' <summary>List of removed Layers.</summary>
-        Private m_alLayersRemoved As New List(Of LayerInfo)
+        ''' <summary>List of active MPAs.</summary>
+        Private m_alMPAs As New List(Of cMPAInfo)
+        ''' <summary>List of removed MPAs.</summary>
+        Private m_alMPAsRemoved As New List(Of cMPAInfo)
         ''' <summary>Update lock, used to distinguish between code updates and
         ''' user updates of grid cells. When grid cells are updated from within
         ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
@@ -30,56 +30,63 @@ Namespace Ecospace
 
         ''' <summary>Enumerated type defining the columns in this grid.</summary>
         Private Enum eColumnTypes
-            LayerIndex = 0
-            LayerName
-            LayerWeight
-            LayerDescription
-            LayerStatus
+            MPAIndex = 0
+            MPAName
+            MPAAll
+            MPAJan
+            MPAFeb
+            MPAMar
+            MPAApr
+            MPAMay
+            MPAJun
+            MPAJul
+            MPAAug
+            MPASep
+            MPAOct
+            MPANov
+            MPADec
+            MPAStatus
         End Enum
 
 #Region " Helper classes "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Administrative unit representing a <see cref="cEcospaceBasemap">Importance layer</see>
+        ''' Administrative unit representing a <see cref="cEcospaceMPA">MPA</see>
         ''' in the EwE model.
         ''' </summary>
         ''' <remarks>
-        ''' This class can represent existing and new Layers. If this class has its
-        ''' <see cref="LayerInfo.Layer">Layer</see> parameter set, a real live
-        ''' Layer is represented. If this parameter is not set, a new Layer is
-        ''' represented.
+        ''' This class can represent existing and new MPAs.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Class LayerInfo
+        Private Class cMPAInfo
 
-            ''' <summary><see cref="cEcospaceBasemap">cEcospaceBasemap</see> associated with this Layer, if any.</summary>
-            Private m_Layer As cEcospaceLayerImportance = Nothing
-            ''' <summary>Name for this Layer.</summary>
+            Private m_iMPADBID As Integer = cCore.NULL_VALUE
+            Private m_iMPAIndex As Integer = cCore.NULL_VALUE
+
+            ''' <summary>Name for this MPA.</summary>
             Private m_strName As String = ""
-            ''' <summary>Description for this Layer.</summary>
-            Private m_strDescription As String = ""
-            ''' <summary>Weight for this Layer.</summary>
-            Private m_sWeight As Single = 0.0
-            ''' <summary>Flag stating whether a user action is confirmed</summary>
-            Private m_bConfirmed As Boolean = True
-            ''' <summary>The status of a Layer in the interface.</summary>
+            ''' <summary>Months this MPA is closed.</summary>
+            Private m_bOpenMonths(cCore.N_MONTHS) As Boolean
+            ''' <summary>The status of a MPA in the interface.</summary>
             Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Constructor, initializes a new instanze of this class.
             ''' </summary>
-            ''' <param name="Layer">The <see cref="cEcospaceBasemap">cEcospaceBasemap</see> to
+            ''' <param name="MPA">The <see cref="cEcospaceMPA">cEcospaceMPA</see> to
             ''' initialize this instance from. If set, this instance represents a
-            ''' Layer currently active in the EwE model.</param>
+            ''' MPA currently active in the EwE model.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal Layer As cEcospaceLayerImportance)
-                Debug.Assert(Layer IsNot Nothing)
-                Me.m_Layer = Layer
-                Me.m_strName = Layer.Name
-                Me.m_strDescription = Layer.Description
-                Me.m_sWeight = Layer.Weight
+            Public Sub New(ByVal MPA As cEcospaceMPA)
+                Debug.Assert(MPA IsNot Nothing)
+                Me.m_iMPADBID = MPA.DBID
+                Me.m_iMPAIndex = MPA.Index
+                Me.m_strName = MPA.Name
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    Me.m_bOpenMonths(iMonth) = MPA.MPAMonth(iMonth)
+                Next
                 Me.m_status = eItemStatusTypes.Original
             End Sub
 
@@ -89,11 +96,11 @@ Namespace Ecospace
             ''' </summary>
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single)
-                Me.m_Layer = Nothing
+            Public Sub New(ByVal strName As String)
                 Me.m_strName = strName
-                Me.m_strDescription = strDescription
-                Me.m_sWeight = sWeight
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    Me.m_bOpenMonths(iMonth) = False
+                Next
                 Me.m_status = eItemStatusTypes.Added
             End Sub
 
@@ -113,48 +120,55 @@ Namespace Ecospace
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get/set the description of this administrative unit.
+            ''' Get the <see cref="cEcospaceMPA.DBID"/> of an associated MPA, if any.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Property Description() As String
+            Public ReadOnly Property MPADBID() As Integer
                 Get
-                    Return Me.m_strDescription
+                    Return Me.m_iMPADBID
                 End Get
-                Set(ByVal value As String)
-                    Me.m_strDescription = value
+            End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the <see cref="cEcospaceMPA.Index"/> of an associated MPA, if any.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public ReadOnly Property MPAIndex() As Integer
+                Get
+                    Return Me.m_iMPAIndex
+                End Get
+            End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the months that an MPA is open for fishing.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public ReadOnly Property MPAMonths() As Boolean()
+                Get
+                    Return Me.m_bOpenMonths
+                End Get
+            End Property
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set open months in this administrative unit.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public Property IsOpen(ByVal iMonth As Integer) As Boolean
+                Get
+                    Return Me.m_bOpenMonths(iMonth)
+                End Get
+                Set(ByVal value As Boolean)
+                    Me.m_bOpenMonths(iMonth) = value
                 End Set
             End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get/set the weight of this administrative unit.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public Property Weight() As Single
-                Get
-                    Return Me.m_sWeight
-                End Get
-                Set(ByVal value As Single)
-                    Me.m_sWeight = value
-                End Set
-            End Property
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' Get the <see cref="cEcospaceBasemap">EwE Layer</see> associated
-            ''' with this administrative unit.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public ReadOnly Property Layer() As cEcospaceLayerImportance
-                Get
-                    Return Me.m_Layer
-                End Get
-            End Property
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' Get the <see cref="eItemStatusTypes">item status</see>
-            ''' for the layer object.
+            ''' Get the <see cref="eItemStatusTypes">item status</see> for the MPA 
+            ''' object.
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public ReadOnly Property Status() As eItemStatusTypes
@@ -163,50 +177,31 @@ Namespace Ecospace
                 End Get
             End Property
 
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' Get/set whether the user has confirmed an action on this object.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public Property Confirmed() As Boolean
-                Get
-                    Return Me.m_bConfirmed
-                End Get
-                Set(ByVal value As Boolean)
-                    Me.m_bConfirmed = value
-                End Set
-            End Property
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' States whether the Layer has changed.
-            ''' </summary>
-            ''' <returns>
-            ''' True when Layer <see cref="Name">Name</see> value has changed.
-            ''' </returns>
-            ''' -------------------------------------------------------------------
-            Public Function IsChanged() As Boolean
-                If (Me.IsNew()) Then Return False
-                Return (Me.m_Layer.Name <> Me.m_strName) Or _
-                       (Me.Layer.Description <> Me.m_strDescription) Or _
-                       (Me.Layer.Weight <> Me.m_sWeight)
-            End Function
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' States whether the Layer is to be created.
-            ''' </summary>
-            ''' <returns>
-            ''' True when Layer <see cref="Name">Name</see> value has changed.
-            ''' </returns>
-            ''' -------------------------------------------------------------------
             Public Function IsNew() As Boolean
-                Return (Me.m_Layer Is Nothing)
+                Return (Me.m_iMPADBID = cCore.NULL_VALUE)
             End Function
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get/set whether this layer is flagged for deletion. Toggling this flag
+            ''' States whether the MPA has changed.
+            ''' </summary>
+            ''' <returns>
+            ''' True when MPA <see cref="Name">Name</see> value has changed.
+            ''' </returns>
+            ''' -------------------------------------------------------------------
+            Public Function IsChanged(ByVal mpa As cEcospaceMPA) As Boolean
+                Dim bChanged As Boolean = False
+                If Me.IsNew Then Return False
+                bChanged = (mpa.Name <> Me.m_strName)
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    bChanged = bChanged Or (Me.m_bOpenMonths(iMonth) <> mpa.MPAMonth(iMonth))
+                Next
+                Return bChanged
+            End Function
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set whether this MPA is flagged for deletion. Toggling this flag
             ''' will update the <see cref="Status">Status</see> of the item.
             ''' </summary>
             ''' -------------------------------------------------------------------
@@ -215,7 +210,7 @@ Namespace Ecospace
                     Return Me.m_status = eItemStatusTypes.Removed
                 End Get
                 Set(ByVal bDelete As Boolean)
-                    If Me.m_Layer IsNot Nothing Then
+                    If Not Me.IsNew() Then
                         If bDelete Then
                             Me.m_status = eItemStatusTypes.Removed
                         Else
@@ -267,40 +262,45 @@ Namespace Ecospace
             ' Redim columns
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
-            ' Layer index cell
-            Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
-            ' Layer name cell, editable this time
-            Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.LayerWeight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
-            Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+            ' MPA index cell
+            Me(0, eColumnTypes.MPAIndex) = New EwEColumnHeaderCell()
+            ' MPA name cell, editable this time
+            Me(0, eColumnTypes.MPAName) = New EwEColumnHeaderCell(SharedResources.HEADER_MPA)
+            Me(0, eColumnTypes.MPAAll) = New EwEColumnHeaderCell("Closed")
+            'Define column header Jan - Dec
+            For iCol As Integer = eColumnTypes.MPAJan To eColumnTypes.MPADec
+                Dim d As New Date(1, (iCol - eColumnTypes.MPAJan) + 1, 1)
+                Me(0, iCol) = New EwEColumnHeaderCell(d.ToString("MMM"))
+            Next
 
-            ' Layer index cell
-            Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+            ' MPA index cell
+            Me(0, eColumnTypes.MPAStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
-            ' Fix index column only; Layer name column cannot be fixed because it must be editable
+            ' Fix index column only; MPA name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
 
         End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Overridden to first create a snapshot of the Layer/stanza configuration
+        ''' Overridden to first create a snapshot of the MPA/stanza configuration
         ''' in the current EwE model. The grid will be populated from this local
         ''' administration.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub FillData()
 
-            Dim Layer As cEcospaceLayerImportance = Nothing
-            Dim li As LayerInfo = Nothing
+            ' Get the core reference
+            Dim MPA As cEcospaceMPA = Nothing
+            Dim mi As cMPAInfo = Nothing
 
             ' Populate local administration from a snapshot of the live data
 
-            ' Make snapshot of Layer configuration
-            For iLayer As Integer = 1 To Me.Core.nImportanceLayers
-                Layer = Me.Core.EcospaceBasemap.LayerImportance(iLayer)
-                li = New LayerInfo(Layer)
-                Me.m_alLayers.Add(li)
+            ' Make snapshot of MPA configuration 
+            For iMPA As Integer = 1 To Me.Core.nMPAs
+                MPA = Me.Core.EcospaceMPAs(iMPA)
+                mi = New cMPAInfo(MPA)
+                Me.m_alMPAs.Add(mi)
             Next
 
             ' Brute-force update grid
@@ -308,14 +308,21 @@ Namespace Ecospace
 
         End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Finish the style
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
-
-            Me.Columns(eColumnTypes.LayerIndex).Width = 40
-            Me.Columns(eColumnTypes.LayerName).Width = 120
-            Me.Columns(eColumnTypes.LayerWeight).Width = 60
-            Me.Columns(eColumnTypes.LayerDescription).Width = 278
-
+            Me.AutoSizeColumnRange(1, Me.ColumnsCount - 1, 1, Me.RowsCount - 1)
+            'Me.Columns(eColumnTypes.MPAIndex).Width = 20
+            'Me.Columns(eColumnTypes.MPAName).Width = 80
+            'Me.Columns(eColumnTypes.MPAAll).Width = 60
+            'For col As eColumnTypes = eColumnTypes.MPAJan To eColumnTypes.MPADec
+            '    Me.Columns(col).Width = 40
+            'Next
+            'Me.Columns(eColumnTypes.MPAStatus).Width = 80
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -326,7 +333,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Public Sub UpdateGrid()
 
-            Dim li As LayerInfo = Nothing
+            Dim mi As cMPAInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
@@ -334,41 +341,43 @@ Namespace Ecospace
             Dim ewec As EwECell = Nothing
 
             ' Create missing rows
-            For iRow As Integer = Me.Rows.Count To Me.m_alLayers.Count
+            For iRow As Integer = Me.Rows.Count To Me.m_alMPAs.Count
                 Me.AddRow()
 
                 ewec = New EwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
-                Me(iRow, eColumnTypes.LayerIndex) = ewec
+                Me(iRow, eColumnTypes.MPAIndex) = ewec
 
-                Me(iRow, eColumnTypes.LayerName) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
+                Me(iRow, eColumnTypes.MPAName) = New Cells.Real.Cell("", GetType(String))
+                Me(iRow, eColumnTypes.MPAName).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerDescription) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
+                Me(iRow, eColumnTypes.MPAAll) = New Cells.Real.CheckBox(False)
+                Me(iRow, eColumnTypes.MPAAll).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerWeight) = New Cells.Real.Cell(0.0!, GetType(Single))
-                Me(iRow, eColumnTypes.LayerWeight).Behaviors.Add(Me.EwEEditHandler)
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    Me(iRow, eColumnTypes.MPAJan - 1 + iMonth) = New Cells.Real.CheckBox(False)
+                    Me(iRow, eColumnTypes.MPAJan - 1 + iMonth).Behaviors.Add(Me.EwEEditHandler)
+                Next iMonth
 
                 ' Status
                 vm = New VisualModels.Common()
                 vm.ImageAlignment = ContentAlignment.MiddleCenter
-                Me(iRow, eColumnTypes.LayerStatus) = New Cells.Real.Cell()
+                Me(iRow, eColumnTypes.MPAStatus) = New Cells.Real.Cell()
                 Dim dm As New DataModels.DataModelBase(GetType(String))
                 dm.EditableMode = EditableMode.None
-                Me(iRow, eColumnTypes.LayerStatus).DataModel = dm
+                Me(iRow, eColumnTypes.MPAStatus).DataModel = dm
             Next
 
             ' Delete obsolete rows
-            While Me.Rows.Count > Me.m_alLayers.Count + 1
-                Me.Rows.Remove(Me.Rows.Count - iFIRSTDATAROW)
+            While Me.Rows.Count > Me.m_alMPAs.Count + 1
+                Me.Rows.Remove(Me.Rows.Count - iFIRSTMPAROW)
             End While
 
-            ' Sanity check whether grid can accomodate all Layers + header
-            Debug.Assert(Me.Rows.Count = Me.m_alLayers.Count + 1)
+            ' Sanity check whether grid can accomodate all MPAs + header
+            Debug.Assert(Me.Rows.Count = Me.m_alMPAs.Count + 1)
 
             ' Populate rows
-            For iRow As Integer = 1 To Me.m_alLayers.Count
+            For iRow As Integer = 1 To Me.m_alMPAs.Count
                 UpdateRow(iRow)
             Next iRow
 
@@ -382,34 +391,42 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Private Sub UpdateRow(ByVal iRow As Integer)
 
-            Dim li As LayerInfo = Nothing
+            Dim mi As cMPAInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
             Dim vm As VisualModels.IVisualModel = Nothing
             Dim strText As String = ""
+            Dim iNumOpen As Integer = 0
 
             Me.AllowUpdates = False
 
-            li = DirectCast(Me.m_alLayers(iRow - iFIRSTDATAROW), LayerInfo)
+            mi = DirectCast(Me.m_alMPAs(iRow - iFIRSTMPAROW), cMPAInfo)
             ri = Me.Rows(iRow)
 
-            ri.Tag = li
+            ri.Tag = mi
             aCells = ri.GetCells()
 
-            pos = New Position(iRow, eColumnTypes.LayerIndex)
-            aCells(eColumnTypes.LayerIndex).SetValue(pos, CInt(iRow))
+            ' Set index
+            pos = New Position(iRow, eColumnTypes.MPAIndex)
+            aCells(eColumnTypes.MPAIndex).SetValue(pos, CInt(iRow))
 
-            pos = New Position(iRow, eColumnTypes.LayerName)
-            aCells(eColumnTypes.LayerName).SetValue(pos, CStr(li.Name))
+            ' Set name
+            pos = New Position(iRow, eColumnTypes.MPAName)
+            aCells(eColumnTypes.MPAName).SetValue(pos, CStr(mi.Name))
 
-            pos = New Position(iRow, eColumnTypes.LayerDescription)
-            aCells(eColumnTypes.LayerDescription).SetValue(pos, CStr(li.Description))
+            ' Set montly states
+            For iMonth As Integer = 1 To cCore.N_MONTHS
+                pos = New Position(iRow, eColumnTypes.MPAJan - 1 + iMonth)
+                ' Display a check when the MPA is NOT open for fishing
+                aCells(eColumnTypes.MPAJan - 1 + iMonth).SetValue(pos, Not mi.IsOpen(iMonth))
+                If mi.IsOpen(iMonth) Then iNumOpen += 1
+            Next
 
-            pos = New Position(iRow, eColumnTypes.LayerWeight)
-            aCells(eColumnTypes.LayerWeight).SetValue(pos, CSng(li.Weight))
+            ' Display a check when the MPA is NOT open for fishing
+            aCells(eColumnTypes.MPAAll).SetValue(pos, (iNumOpen = 0))
 
-            Select Case li.Status
+            Select Case mi.Status
                 Case eItemStatusTypes.Original
                     vm = Me.DefaultVisualOriginal
                     strText = ""
@@ -421,13 +438,57 @@ Namespace Ecospace
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
 
-            pos = New Position(iRow, eColumnTypes.LayerStatus)
-            aCells(eColumnTypes.LayerStatus).VisualModel = vm
-            aCells(eColumnTypes.LayerStatus).SetValue(pos, strText)
+            ' Set modification status
+            pos = New Position(iRow, eColumnTypes.MPAStatus)
+            aCells(eColumnTypes.MPAStatus).VisualModel = vm
+            aCells(eColumnTypes.MPAStatus).SetValue(pos, strText)
 
             Me.AllowUpdates = True
 
         End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Called Update local admin based on cell value changes.
+        ''' </summary>
+        ''' <returns>
+        ''' True if the value change is allowed, False to block the value change.
+        ''' </returns>
+        ''' <remarks>
+        ''' This method differs from OnCellValueEdited; during a cell value 
+        ''' change notification (at the end of an edit operation) it is unsafe
+        ''' to modify the value of the cell being edited. However, the end edit 
+        ''' event will not be triggered for particular specialized cells which
+        ''' makes this method mandatory. We once again apologize for the confusion; )
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+
+            If Not Me.AllowUpdates Then Return True
+
+            Dim mi As cMPAInfo = DirectCast(Me.m_alMPAs(p.Row - 1), cMPAInfo)
+
+            Select Case DirectCast(p.Column, eColumnTypes)
+
+                Case eColumnTypes.MPAName
+                    ' JS: Handled in OnCellEdited()
+                    ' mi.Name = CStr(cell.GetValue(p))
+
+                Case eColumnTypes.MPAAll
+                    For i As Integer = 1 To cCore.N_MONTHS
+                        mi.IsOpen(i) = Not CBool(cell.GetValue(p))
+                    Next
+                    Me.UpdateRow(p.Row)
+
+                Case eColumnTypes.MPAJan To eColumnTypes.MPADec
+                    mi.IsOpen(p.Column + 1 - CInt(eColumnTypes.MPAJan)) = Not CBool(cell.GetValue(p))
+                    Me.UpdateRow(p.Row)
+
+            End Select
+
+            Return True
+
+        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -447,19 +508,19 @@ Namespace Ecospace
 
             If Not Me.AllowUpdates Then Return True
 
-            Dim li As LayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), LayerInfo)
+            Dim mi As cMPAInfo = DirectCast(Me.m_alMPAs(p.Row - 1), cMPAInfo)
 
             Select Case DirectCast(p.Column, eColumnTypes)
-                Case eColumnTypes.LayerIndex
+                Case eColumnTypes.MPAIndex
                     ' Not possible
 
-                Case eColumnTypes.LayerName
+                Case eColumnTypes.MPAName
                     Dim strName As String = CStr(cell.GetValue(p))
                     ' Check if name is unique
-                    For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
-                        Dim giTemp As LayerInfo = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
+                    For iMPA As Integer = 0 To Me.m_alMPAs.Count - 1
+                        Dim giTemp As cMPAInfo = DirectCast(Me.m_alMPAs(iMPA), cMPAInfo)
                         ' Does name already exist?
-                        If (Not Object.ReferenceEquals(giTemp, li)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                        If (Not Object.ReferenceEquals(giTemp, mi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                             ' Change is not allowed
                             Me.UpdateRow(p.Row)
                             ' Report failure
@@ -467,15 +528,7 @@ Namespace Ecospace
                         End If
                     Next
                     ' Allow name change
-                    li.Name = strName
-
-                Case eColumnTypes.LayerDescription
-                    li.Description = CStr(cell.GetValue(p))
-
-                Case eColumnTypes.LayerWeight
-                    Dim sWeight As Single = CSng(cell.GetValue(p))
-                    If sWeight < 0 Then Me.UpdateRow(p.Row) : Return False
-                    li.Weight = sWeight
+                    mi.Name = strName
 
             End Select
 
@@ -509,35 +562,34 @@ Namespace Ecospace
 
             If iRow = -1 Then iRow = Me.SelectedRow
 
-            Dim iLayer As Integer = iRow - iFIRSTDATAROW
-            Dim li As LayerInfo = Nothing
-            Dim strPrompt As String = ""
+            Dim iMPA As Integer = iRow - iFIRSTMPAROW
+            Dim mi As cMPAInfo = Nothing
 
             ' Validate
-            If iLayer < 0 Then Return
+            If iMPA < 0 Then Return
 
-            li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
+            mi = DirectCast(Me.m_alMPAs(iMPA), cMPAInfo)
             ' Toggle 'flagged for deletion' flag
-            li.FlaggedForDeletion = Not li.FlaggedForDeletion
+            mi.FlaggedForDeletion = Not mi.FlaggedForDeletion
 
-            ' Check to see what is to happen to the Layer now
-            Select Case li.Status
+            ' Check to see what is to happen to the MPA now
+            Select Case mi.Status
 
                 Case eItemStatusTypes.Original
-                    ' Clear removed status of the Layer
-                    Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
+                    ' Clear removed status of the MPA
+                    Me.m_alMPAsRemoved.Remove(Me.m_alMPAs(iMPA))
 
                 Case eItemStatusTypes.Added
-                    ' Clear removed status of the Layer
-                    Me.m_alLayersRemoved.Remove(Me.m_alLayers(iLayer))
+                    ' Clear removed status of the MPA
+                    Me.m_alMPAsRemoved.Remove(Me.m_alMPAs(iMPA))
 
                 Case eItemStatusTypes.Removed
                     ' Set removed status
-                    Me.m_alLayersRemoved.Add(Me.m_alLayers(iLayer))
+                    Me.m_alMPAsRemoved.Add(Me.m_alMPAs(iMPA))
 
                 Case eItemStatusTypes.Invalid
                     ' Set removed status
-                    Me.m_alLayers.RemoveAt(iLayer)
+                    Me.m_alMPAs.RemoveAt(iMPA)
 
             End Select
 
@@ -546,68 +598,63 @@ Namespace Ecospace
         End Sub
 
         ''' <summary>
-        ''' States whether a row holds a layer.
+        ''' States whether a row holds a MPA.
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' <returns></returns>
-        Public Function IsLayerRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsMPARow(Optional ByVal iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            Return (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount)
+            Return (iRow >= iFIRSTMPAROW) And (iRow < Me.RowsCount)
         End Function
 
         ''' <summary>
-        ''' States whether the layer on a row is flagged for deletion.
+        ''' States whether the MPA on a row is flagged for deletion.
         ''' </summary>
         Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not IsLayerRow(iRow) Then Return False
+            If Not IsMPARow(iRow) Then Return False
 
-            Dim iLayer As Integer = iRow - iFIRSTDATAROW
-            Dim li As LayerInfo = Nothing
-            Dim strPrompt As String = ""
+            Dim iMPA As Integer = iRow - iFIRSTMPAROW
+            Dim mi As cMPAInfo = DirectCast(Me.m_alMPAs(iMPA), cMPAInfo)
 
-            li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
-            Return li.FlaggedForDeletion
+            Return mi.FlaggedForDeletion
         End Function
 
         ''' <summary>
-        ''' Add a row by creating a new layer.
+        ''' Add a row by creating a new MPA.
         ''' </summary>
         Public Sub InsertRow()
             If Not Me.CanAddRow() Then Return
-            Me.CreateLayer()
+            Me.CreateMPA()
         End Sub
 
         ''' <summary>
-        ''' Create a new layer.
+        ''' Create a new MPA.
         ''' </summary>
-        Private Sub CreateLayer()
+        Private Sub CreateMPA()
             Dim iRow As Integer = -1
-            Dim iLayer As Integer = -1
-            Dim li As LayerInfo = Nothing
-            Dim lstrLayers As New List(Of String)
+            Dim iMPA As Integer = -1
+            Dim mi As cMPAInfo = Nothing
+            Dim lstrMPAs As New List(Of String)
 
             ' Make fit
-            iRow = Math.Max(iFIRSTDATAROW, Me.RowsCount)
-            iLayer = iRow - iFIRSTDATAROW
+            iRow = Math.Max(iFIRSTMPAROW, Me.RowsCount)
+            iMPA = iRow - iFIRSTMPAROW
 
             ' Validate
-            If iLayer < 0 Then Return
+            If iMPA < 0 Then Return
 
-            ' Collect all current layer names
-            For Each li In Me.m_alLayers
-                lstrLayers.Add(li.Name)
+            ' Collect all current MPA names
+            For Each mi In Me.m_alMPAs
+                lstrMPAs.Add(mi.Name)
             Next
 
-            ' Format new layer with an autonumber value based on existing names
-            Dim iNextNum As Integer = cStringUtils.GetNextNumber(lstrLayers.ToArray(), SharedResources.DEFAULT_NEWLAYER_NUM)
-            Dim strName As String = String.Format(SharedResources.DEFAULT_NEWLAYER_NUM, iNextNum)
-
-            li = New LayerInfo(strName, "", 1.0!)
-            Me.m_alLayers.Insert(iLayer, li)
+            mi = New cMPAInfo(String.Format(SharedResources.DEFAULT_NEWMPA_NUM, _
+                    cStringUtils.GetNextNumber(lstrMPAs.ToArray(), SharedResources.DEFAULT_NEWMPA_NUM)))
+            Me.m_alMPAs.Insert(iMPA, mi)
 
             Me.UpdateGrid()
-            Me.SelectRow(li)
+            Me.SelectRow(mi)
         End Sub
 
         ''' <summary>
@@ -647,10 +694,10 @@ Namespace Ecospace
 
 #Region " Selection extension "
 
-        Private Overloads Sub SelectRow(ByVal li As LayerInfo)
-            For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
-                If Object.ReferenceEquals(Me.m_alLayers(iLayer), li) Then
-                    Me.SelectRow(iLayer + iFIRSTDATAROW)
+        Private Overloads Sub SelectRow(ByVal mi As cMPAInfo)
+            For iMPA As Integer = 0 To Me.m_alMPAs.Count - 1
+                If Object.ReferenceEquals(Me.m_alMPAs(iMPA), mi) Then
+                    Me.SelectRow(iMPA + iFIRSTMPAROW)
                 End If
             Next
         End Sub
@@ -666,10 +713,20 @@ Namespace Ecospace
         ''' Helper method; validates the content of the grid.
         ''' </summary>
         ''' <returns>True when the content of the grid depicts a valid
-        ''' Layer configuration for a model.</returns>
+        ''' MPA configuration for a model.</returns>
         ''' -----------------------------------------------------------------------
         Public Function ValidateContent() As Boolean
+
+            '' Check if the user is about to delete all fleets - one should remain
+            'If Me.m_alMPAsRemoved.Count = Me.m_alMPAs.Count Then
+            '    MsgBox(My.Resources.ECOPATH_EDITMPA_PROMPT_CANNOTDELETEALL, _
+            '            MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, _
+            '            My.Resources.ECOPATH_EDITMPA_CONFIRMDELETE_CAPTION)
+            '    Return False
+            'End If
+
             Return True
+
         End Function
 
 #End Region ' Validation
@@ -680,70 +737,53 @@ Namespace Ecospace
 
             Dim strPrompt As String = ""
             Dim bConfigurationChanged As Boolean = False
-            Dim bLayersChanged As Boolean = False
-            Dim li As LayerInfo = Nothing
+            Dim bMPAsChanged As Boolean = False
+            Dim mi As cMPAInfo = Nothing
             Dim iDBID As Integer = Nothing
-            Dim Layer As cEcospaceLayerImportance = Nothing
-            Dim iLayer As Integer = 0
+            Dim mpa As cEcospaceMPA = Nothing
+            Dim iMPA As Integer = 0
+            Dim iDeleteCount As Integer = 0
             Dim bSuccess As Boolean = True
 
             ' Validate content of the grid
             If Not Me.ValidateContent() Then Return False
 
-            ' Assess Layer changes
-            For iLayer = 0 To Me.m_alLayers.Count - 1
-                li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
-                ' Check if this layer is newly added
-                bConfigurationChanged = bConfigurationChanged Or li.IsNew()
-                ' Check if this layer has been modified
-                bLayersChanged = bLayersChanged Or li.IsChanged()
-            Next iLayer
+            ' Assess MPA changes
+            For iMPA = 0 To Me.m_alMPAs.Count - 1
+                mi = DirectCast(Me.m_alMPAs(iMPA), cMPAInfo)
+                If mi.IsNew() Then
+                    bConfigurationChanged = True
+                Else
+                    bMPAsChanged = bMPAsChanged Or mi.IsChanged(Me.Core.EcospaceMPAs(mi.MPAIndex))
+                End If
+            Next iMPA
 
-            If Me.m_alLayersRemoved.Count > 5 Then
+            ' Assess MPAs to remove
+            iDeleteCount = 0
+            For iMPA = 0 To Me.m_alMPAsRemoved.Count - 1
+                mi = DirectCast(Me.m_alMPAsRemoved(iMPA), cMPAInfo)
+                If (Not mi.IsNew()) Then iDeleteCount += 1
+            Next iMPA
 
-                strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT, Me.m_alLayersRemoved.Count)
+            If (iDeleteCount > 0) Then
+
+                strPrompt = String.Format(My.Resources.ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT, iDeleteCount)
 
                 Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
                     Case MsgBoxResult.Cancel
                         ' Abort Apply process
                         Return False
+                    Case MsgBoxResult.No
+                        ' Do not delete MPAs
+                        iDeleteCount = 0
                     Case MsgBoxResult.Yes
-                        ' Confirm all regions
-                        For Each li In Me.m_alLayersRemoved
-                            li.Confirmed = True
-                        Next
+                        ' Delete MPAs
                         bConfigurationChanged = True
                     Case Else
                         ' Unexpected anwer: assert
                         Debug.Assert(False)
                 End Select
 
-            Else
-                ' Assess Layers to remove
-                For iLayer = 0 To Me.m_alLayersRemoved.Count - 1
-                    li = DirectCast(Me.m_alLayersRemoved(iLayer), LayerInfo)
-                    If (Not li.IsNew()) Then
-
-                        strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT, li.Name)
-
-                        Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                            Case MsgBoxResult.Cancel
-                                ' Abort Apply process
-                                Return False
-                            Case MsgBoxResult.No
-                                ' Do not delete this Layer
-                                li.Confirmed = False
-                            Case MsgBoxResult.Yes
-                                ' Delete this Layer
-                                li.Confirmed = True
-                                bConfigurationChanged = True
-                            Case Else
-                                ' Unexpected anwer: assert
-                                Debug.Assert(False)
-                        End Select
-
-                    End If
-                Next iLayer
             End If
 
             ' Handle added and removed items
@@ -752,69 +792,65 @@ Namespace Ecospace
                 If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
                 cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
 
-                ' Add new Layers
-                For iLayer = 0 To Me.m_alLayers.Count - 1
-                    li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
-                    If (li.IsNew()) Then
-                        bSuccess = bSuccess And Me.Core.AddEcospaceImportanceLayer(li.Name, li.Description, li.Weight, iDBID)
+                ' Add new MPAs
+                For iMPA = 0 To Me.m_alMPAs.Count - 1
+                    mi = DirectCast(Me.m_alMPAs(iMPA), cMPAInfo)
+                    If (mi.IsNew()) Then
+                        bSuccess = bSuccess And Me.Core.AddEcospaceMPA(mi.Name, mi.MPAMonths, iDBID)
                     End If
                 Next
 
-                ' Remove deleted (and confirmed) Layers
-                Dim iLayerRemove As Integer = 0
-                For iLayer = 0 To Me.m_alLayersRemoved.Count - 1
-                    li = DirectCast(Me.m_alLayersRemoved(iLayerRemove), LayerInfo)
-
-                    ' Sanity check
-                    Debug.Assert(Not li.IsNew())
-
-                    If (li.Confirmed()) Then
-                        If (Me.Core.RemoveEcospaceImportanceLayer(li.Layer)) Then
-                            Me.m_alLayers.Remove(li)
-                            Me.m_alLayersRemoved.Remove(li)
-                        Else
-                            bSuccess = False
-                            iLayerRemove += 1
+                ' Remove MPAs
+                If iDeleteCount > 0 Then
+                    For iMPA = 0 To Me.m_alMPAsRemoved.Count - 1
+                        mi = DirectCast(Me.m_alMPAsRemoved(iMPA), cMPAInfo)
+                        If (Not mi.IsNew()) Then
+                            If (Me.Core.RemoveEcospaceMPA(mi.MPADBID)) Then
+                                Me.m_alMPAs.Remove(mi)
+                            Else
+                                bSuccess = False
+                            End If
                         End If
-                    End If
-                Next
+                    Next iMPA
+                    If bSuccess Then Me.m_alMPAsRemoved.Clear()
+                End If
 
                 ' The core will reload now
-                Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+                If bSuccess Then
+                    bSuccess = Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, True)
+                    ' Test whether new MPAs were loaded correctly
+                    Debug.Assert(Me.m_alMPAs.Count = Me.Core.nMPAs, ">> Internal panic: Dialog and core out of sync on MPAs")
+                Else
+                    Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+                End If
                 cApplicationStatusNotifier.EndProgress(Me.Core)
-
-                ' Test whether new Layers were loaded correctly 
-                Debug.Assert(Me.m_alLayers.Count = Me.Core.nImportanceLayers, ">> Internal panic: Dialog and core out of sync on Layers")
             End If
 
             ' Update core objects
-            If (bLayersChanged) Then
-                ' For each local layer admin unit
-                For iLayer = 0 To Me.m_alLayers.Count - 1
+            If (bMPAsChanged) Then
+
+                ' Build quick local lookup for locating MPAs by DBID
+                Dim dtMPAs As New Dictionary(Of Integer, cEcospaceMPA)
+                For iMPA = 1 To Me.Core.nMPAs
+                    mpa = Me.Core.EcospaceMPAs(iMPA)
+                    dtMPAs(mpa.DBID) = mpa
+                Next
+
+                ' For each local MPA admin unit
+                For iMPA = 0 To Me.m_alMPAs.Count - 1
                     ' Get local admin unit
-                    li = DirectCast(Me.m_alLayers(iLayer), LayerInfo)
-                    ' Has it changed?
-                    If (li.IsChanged()) Then
-                        ' Find core layer with same BDID (cannot use cached cEcospaceBasemap instances since the core has reloaded)
-                        Dim bFound As Boolean = False
-                        ' For every core layer instance (and yes, this array is one-based)
-                        For iLayTest As Integer = 1 To Me.Core.nImportanceLayers
-                            ' Get core layer instance
-                            Dim layTest As cEcospaceLayerImportance = Me.Core.EcospaceBasemap.LayerImportance(iLayTest)
-                            ' Has matching ID?
-                            If (layTest.getID = li.Layer.getID) Then
-                                ' #Yes: Update
-                                layTest.Name = li.Name
-                                layTest.Description = li.Description
-                                layTest.Weight = li.Weight
-                                ' Are we relieved or what!
-                                bFound = True
-                            End If
-                        Next
-                        ' All went well?
-                        If Not bFound Then
-                            ' #No?! Uh oh...
-                            Debug.Assert(False, ">> Internal panic: Unable to apply changes to layer id " & li.Layer.getID)
+                    mi = DirectCast(Me.m_alMPAs(iMPA), cMPAInfo)
+                    ' Is associated w existing MPA, e.g. could be changed?
+                    If Not mi.IsNew Then
+                        ' Get MPA
+                        mpa = dtMPAs(mi.MPADBID)
+                        ' Has user changed the MPA?
+                        If mi.IsChanged(mpa) Then
+                            ' #Yes: update MPA
+                            mpa.Name = mi.Name
+                            For iMonth As Integer = 1 To cCore.N_MONTHS
+                                mpa.MPAMonth(iMonth) = mi.IsOpen(iMonth)
+                            Next
                         End If
                     End If
                 Next
@@ -824,10 +860,9 @@ Namespace Ecospace
 
         End Function
 
+
 #End Region ' Apply changes
 
     End Class
 
 End Namespace
-
-

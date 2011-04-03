@@ -58,17 +58,12 @@ Namespace Ecospace
         ''' Administrative unit representing a <see cref="cEcospaceRegion">Region</see>
         ''' in the EwE model.
         ''' </summary>
-        ''' <remarks>
-        ''' This class can represent existing and new Regions. If this class has its
-        ''' <see cref="cRegionInfo.Region">Region</see> parameter set, a real live
-        ''' Region is represented. If this parameter is not set, a new Region is
-        ''' represented.
-        ''' </remarks>
         ''' -----------------------------------------------------------------------
         Private Class cRegionInfo
 
-            ''' <summary><see cref="cEcospaceRegion">cEcospaceRegion</see> associated with this Region, if any.</summary>
-            Private m_Region As cEcospaceRegion = Nothing
+            Private m_iRegionDBID As Integer = cCore.NULL_VALUE
+            Private m_iRegionIndex As Integer = cCore.NULL_VALUE
+
             ''' <summary>Name for this Region.</summary>
             Private m_strName As String = ""
             ''' <summary>Flag stating whether a user action is confirmed</summary>
@@ -94,7 +89,8 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal Region As cEcospaceRegion)
                 Debug.Assert(Region IsNot Nothing)
-                Me.m_Region = Region
+                Me.m_iRegionDBID = Region.DBID
+                Me.m_iRegionIndex = Region.Index
                 Me.m_strName = Region.Name
                 Me.m_status = eItemStatusTypes.Original
                 Me.m_iNumCells = Region.NumCells
@@ -107,7 +103,6 @@ Namespace Ecospace
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal strName As String)
-                Me.m_Region = Nothing
                 Me.m_strName = strName
                 Me.m_status = eItemStatusTypes.Added
             End Sub
@@ -126,15 +121,15 @@ Namespace Ecospace
                 End Set
             End Property
 
-            ''' -------------------------------------------------------------------
-            ''' <summary>
-            ''' Get the <see cref="cEcospaceRegion">EwE Region</see> associated
-            ''' with this administrative unit.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public ReadOnly Property Region() As cEcospaceRegion
+            Public ReadOnly Property RegionDBID() As Integer
                 Get
-                    Return Me.m_Region
+                    Return Me.m_iRegionDBID
+                End Get
+            End Property
+
+            Public ReadOnly Property RegionIndex() As Integer
+                Get
+                    Return Me.m_iRegionIndex
                 End Get
             End Property
 
@@ -172,9 +167,9 @@ Namespace Ecospace
             ''' True when Region <see cref="Name">Name</see> value has changed.
             ''' </returns>
             ''' -------------------------------------------------------------------
-            Public Function IsChanged() As Boolean
+            Public Function IsChanged(ByVal region As cEcospaceRegion) As Boolean
                 If Me.IsNew() Then Return False
-                Return (Me.m_Region.Name <> Me.m_strName)
+                Return (region.Name <> Me.m_strName)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -186,7 +181,7 @@ Namespace Ecospace
             ''' </returns>
             ''' -------------------------------------------------------------------
             Public Function IsNew() As Boolean
-                Return (Me.Region Is Nothing)
+                Return (Me.m_iRegionDBID = cCore.NULL_VALUE)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -1038,7 +1033,7 @@ Namespace Ecospace
             Dim bRegionsChanged As Boolean = False
             Dim ri As cRegionInfo = Nothing
             Dim iDBID As Integer = Nothing
-            Dim Region As cEcospaceRegion = Nothing
+            Dim region As cEcospaceRegion = Nothing
             Dim iRegion As Integer = 0
             Dim bSuccess As Boolean = True
 
@@ -1052,8 +1047,11 @@ Namespace Ecospace
             ' Assess Region changes
             For iRegion = 0 To Me.m_lregions.Count - 1
                 ri = Me.m_lregions(iRegion)
-                bConfigurationChanged = bConfigurationChanged Or ri.IsNew()
-                bRegionsChanged = bRegionsChanged Or ri.IsChanged()
+                If ri.IsNew Then
+                    bConfigurationChanged = True
+                Else
+                    bRegionsChanged = bRegionsChanged Or ri.IsChanged(Me.Core.EcospaceRegions(ri.RegionIndex))
+                End If
             Next iRegion
 
             If Me.m_alRegionsRemoved.Count > 5 Then
@@ -1117,7 +1115,7 @@ Namespace Ecospace
             If (bConfigurationChanged) Then
 
                 If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
-                cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+                cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
 
                 Try
 
@@ -1160,7 +1158,7 @@ Namespace Ecospace
 
                         If (ri.Confirmed()) Then
                             ' Find region to remove
-                            If (Me.Core.RemoveEcospaceRegion(ri.Region)) Then
+                            If (Me.Core.RemoveEcospaceRegion(ri.RegionDBID)) Then
                                 Me.m_lregions.Remove(ri)
                                 Me.m_alRegionsRemoved.Remove(ri)
                             Else
@@ -1173,7 +1171,7 @@ Namespace Ecospace
                     bSuccess = False
                 End Try
 
-                cApplicationStatusNotifier.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.EndProgress(Me.Core)
                 Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
 
                 ' Test whether new Regions were loaded correctly
@@ -1184,42 +1182,34 @@ Namespace Ecospace
             If (bRegionsChanged) Then
 
                 If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Update) Then Return False
-                cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+                cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
+
+                ' Build local lookup structure to assess changed regions
+                Dim dt As New Dictionary(Of Integer, cEcospaceRegion)
+                For iRegion = 1 To Me.Core.nRegions
+                    region = Me.Core.EcospaceRegions(iRegion)
+                    dt(region.DBID) = region
+                Next
 
                 Try
                     ' For each local region admin unit
                     For iRegion = 0 To Me.m_lregions.Count - 1
                         ' Get local admin unit
                         ri = Me.m_lregions(iRegion)
-                        ' Has it changed?
-                        If ri.IsChanged() Then
-                            ' Find core region with same BDID (cannot use cached cEcospaceRegion instances since the core has reloaded)
-                            Dim bFound As Boolean = False
-                            ' For every core region instance
-                            For iRegionTest As Integer = 1 To Me.Core.nRegions - 1
-                                ' Get core region instance
-                                Dim RegionTest As cEcospaceRegion = Me.Core.EcospaceRegions(iRegionTest)
-                                ' Has matching ID?
-                                If (RegionTest.getID = ri.Region.getID) Then
-                                    ' #Yes: Update
-                                    RegionTest.Name = ri.Name
-                                    ' Oh yes! YES! YESSS!
-                                    bFound = True
-                                End If
-                            Next
-                            ' All went well?
-                            If Not bFound Then
-                                ' #No?! Uh oh...
-                                Debug.Assert(False, ">> Internal panic: Unable to apply changes to region id " & ri.Region.getID)
+                        If Not ri.IsNew Then
+                            region = dt(ri.RegionDBID)
+                            ' Has it changed?
+                            If ri.IsChanged(region) Then
+                                ' #Yes: Update
+                                region.Name = ri.Name
                             End If
                         End If
-
                     Next
                 Catch ex As Exception
                     bSuccess = False
                 End Try
 
-                cApplicationStatusNotifier.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.EndProgress(Me.Core)
                 Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
 
 

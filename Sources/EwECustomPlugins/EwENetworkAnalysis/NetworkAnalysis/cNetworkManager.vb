@@ -292,8 +292,8 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSUMER, _
-                                        Me.GroupName(iToGroup)), TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_core, String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSUMER, _
+                                        Me.GroupName(iToGroup)))
         Try
             m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumer, iToGroup, 0, nPaths, nArrows)
         Catch ex As Exception
@@ -301,7 +301,7 @@ Public Class cNetworkManager
             Debug.Assert(False, ex.Message)
         End Try
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
         Return True
 
     End Function
@@ -317,9 +317,9 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSPREY, _
+        cApplicationStatusNotifier.StartProgress(Me.m_core, String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSPREY, _
                                         Me.GroupName(iToGroup), _
-                                        Me.GroupName(iViaGroup)), TriState.True)
+                                        Me.GroupName(iViaGroup)))
 
         Try
             m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumerViaPrey, iToGroup, iViaGroup, nPaths, nArrows)
@@ -328,7 +328,7 @@ Public Class cNetworkManager
             Debug.Assert(False, ex.Message)
         End Try
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
         Return True
 
     End Function
@@ -343,8 +343,8 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_FINDING_PATHWAYS_PREY, _
-                                        Me.GroupName(iFromGroup)), TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_core, String.Format(My.Resources.STATUS_FINDING_PATHWAYS_PREY, _
+                                        Me.GroupName(iFromGroup)))
 
         Try
             m_econetwork.FindCycles(m_epdata.DC, ePathways.FromPrey, 1, iFromGroup, nPaths, nArrows)
@@ -353,7 +353,7 @@ Public Class cNetworkManager
             Debug.Assert(False, ex.Message)
         End Try
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
         Return True
 
     End Function
@@ -367,7 +367,7 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_FINDING_PATHWAYS, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_FINDING_PATHWAYS)
 
         Try
             'ToDo_jb FindPathwaysCycles EwE5 calls InitCyclesList ????? I can not find this again
@@ -377,7 +377,7 @@ Public Class cNetworkManager
             Debug.Assert(False, ex.Message)
         End Try
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
         Return True
 
     End Function
@@ -391,7 +391,7 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_FINDING_PATHWAYS, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_FINDING_PATHWAYS)
 
         Try
             m_econetwork.FindCycles(m_epdata.DC, ePathways.All, 1, 1, nPaths, nArrows)
@@ -400,7 +400,7 @@ Public Class cNetworkManager
             Debug.Assert(False, ex.Message)
         End Try
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
         Return True
 
     End Function
@@ -446,9 +446,9 @@ Public Class cNetworkManager
 
             If Me.IsEcosimNetworkRun Then Return True
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_NETWORKANALYSIS, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_RUNNING_NETWORKANALYSIS)
             Me.IsEcosimNetworkRun = Me.Core.RunEcoSim()
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.m_core)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -658,7 +658,7 @@ Public Class cNetworkManager
 
     Public ReadOnly Property Core() As cCore
         Get
-            Return Me.m_Core
+            Return Me.m_core
         End Get
     End Property
 
@@ -2073,7 +2073,7 @@ Public Class cNetworkManager
     ''' ------------------------------------------------------------------------
     Friend Sub UpdateProgress(ByVal strText As String, ByVal sProgress As Single)
         Try
-            cApplicationStatusNotifier.SetStatusText(strText, TriState.UseDefault, sProgress)
+            cApplicationStatusNotifier.UpdateProgress(Me.m_core, strText, sProgress)
         Catch ex As Exception
         End Try
     End Sub

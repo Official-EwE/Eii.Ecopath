@@ -162,7 +162,7 @@ Public Class frmMSE
             If Me.m_MSE.ValidateRun() Then
                 Me.m_MSE.Connect(AddressOf Me.onMSECallBack, Nothing)
 
-                cApplicationStatusNotifier.SetStatusText("Initializing MSE...")
+                cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MSE_INITIALIZING)
 
                 'init the graphs for a new run
                 Me.m_plotter.Clear()
@@ -179,7 +179,7 @@ Public Class frmMSE
 
     Private Sub onMSECompleted()
 
-        cApplicationStatusNotifier.SetStatusText("")
+        cApplicationStatusNotifier.EndProgress(Me.Core)
         Me.m_MSE.Disconnect()
 
     End Sub
@@ -213,7 +213,7 @@ Public Class frmMSE
 
     Private Sub onMSEProgress()
         Dim sProgress As Single = CSng(Me.m_MSE.Output.TrialNumber / Me.m_MSE.ModelParameters.NTrials)
-        cApplicationStatusNotifier.SetStatusText("Running MSE...", TriState.UseDefault, sProgress)
+        cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_MSE_RUNNNG, sProgress)
     End Sub
 
 #End Region

@@ -724,17 +724,17 @@ Namespace Ecospace
 
                 Case eFormModeTypes.Initializing
                     ' Set running status text
-                    cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_INITIALIZING, TriState.UseDefault, -1)
+                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_INITIALIZING)
                     ' Switch to 'Results' page
                     Me.m_tcResults.SelectedIndex = 0
 
                 Case eFormModeTypes.Searching
                     ' Set running status text
-                    cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1)
+                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_SEARCHING)
 
                 Case eFormModeTypes.Stopping
                     ' Set running status text
-                    cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_STOPPING, TriState.UseDefault, -1)
+                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_STOPPING)
 
                 Case eFormModeTypes.Results
                     ' Switch to 'Results' page
@@ -755,15 +755,15 @@ Namespace Ecospace
 
                 Case eFormModeTypes.Searching
                     ' Cancel running status text
-                    cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault, 0)
+                    cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 Case eFormModeTypes.Initializing
                     ' Cancel running status text
-                    cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault, 0)
+                    cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 Case eFormModeTypes.Stopping
                     ' Cancel running status text
-                    cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault, 0)
+                    cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 Case eFormModeTypes.Results ' Show results
                     ' Clear results

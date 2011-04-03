@@ -187,4 +187,27 @@
   <data name="NAVTREE_OUTPUT_RUN" xml:space="preserve">
     <value>Run value chain</value>
   </data>
+  <data name="STATUS_RUNNING_ECOPATH" xml:space="preserve">
+    <value>Running value chain for Ecopath, please wait...</value>
+  </data>
+  <data name="STATUS_RUNNING_ECOSIM" xml:space="preserve">
+    <value>Running value chain for Ecosim, please wait...</value>
+  </data>
+  <data name="STATUS_RUNNING_EQUILIBRIUM" xml:space="preserve">
+    <value>Running value chain Equilibrium search, please wait...</value>
+  </data>
+  <data name="STATUS_PROGRESS_EQUILIBIRUM" xml:space="preserve">
+    <value>Running value chain equilibrium fleet {0}, effort {1}</value>
+    <comment>{0}: fleet name, {1}: effort</comment>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>Loading value chain model, please wait...</value>
+  </data>
+  <data name="STATUS_MERGED" xml:space="preserve">
+    <value>Value chain data file '{0}' merged into Ecopath model '{1}'</value>
+    <comment>{0}: value chain model file. {1}: ecopath model</comment>
+  </data>
+  <data name="STATUS_SAVING" xml:space="preserve">
+    <value>Saving value chain model, please wait...</value>
+  </data>
 </root>

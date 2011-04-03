@@ -222,61 +222,6 @@ Public Class cPedigreeManager
 
 #End Region ' Public update interfaces
 
-#Region " Level management "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Add a pedigree level to the model.
-    ''' </summary>
-    ''' <param name="strName">Name of the new level.</param>
-    ''' <param name="strDescription">Description of the new level.</param>
-    ''' <param name="iPosition">The position of the level to assign in the manager.</param>
-    ''' <param name="varName"></param>
-    ''' <param name="sIndexValue"></param>
-    ''' <param name="sConfidence"></param>
-    ''' <returns>True if successful.</returns>
-    ''' <remarks>This method does NOT instruct the core to reload!</remarks>
-    ''' -----------------------------------------------------------------------
-    Public Function AddLevel(ByVal iPosition As Integer, _
-                             ByVal varName As eVarNameFlags, _
-                             ByVal strName As String, _
-                             ByVal iColor As Integer, _
-                             ByVal strDescription As String, _
-                             ByVal sIndexValue As Single, _
-                             ByVal sConfidence As Single, _
-                             ByRef iDBID As Integer) As Boolean
-        ' Issue #796: in some daily build databases the description field cannot be empty
-        If String.IsNullOrEmpty(strDescription) Then strDescription = " "
-        Return m_core.AddPedigreeLevel(varName, iPosition, strName, iColor, strDescription, sIndexValue, sConfidence, iDBID)
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Move a pedigree level to a new position in the level list.
-    ''' </summary>
-    ''' <param name="level"></param>
-    ''' <param name="iPosTo"></param>
-    ''' <returns>True if successful.</returns>
-    ''' <remarks>This method does NOT instruct the core to reload!</remarks>
-    ''' -----------------------------------------------------------------------
-    Public Function MoveLevel(ByVal level As cPedigreeLevel, ByVal iPosTo As Integer) As Boolean
-        Return Me.m_core.MovePedigreeLevel(level.Index, iPosTo)
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Remove a pedigree level from the model.
-    ''' </summary>
-    ''' <param name="level"></param>
-    ''' <returns>True if successful.</returns>
-    ''' <remarks>This method does NOT instruct the core to reload!</remarks>
-    ''' -----------------------------------------------------------------------
-    Public Function RemoveLevel(ByVal level As cPedigreeLevel) As Boolean
-        Return m_core.RemovePedigreeLevel(level.DBID)
-    End Function
-
-#End Region ' Level management
-
 #Region " Configuration "
 
     ''' -----------------------------------------------------------------------
@@ -299,13 +244,13 @@ Public Class cPedigreeManager
 
                 ' Config level
                 level.AllowValidation = False
-                level.ID = Me.m_levels.Count + 1 ' one based
+                level.Sequence = Me.m_levels.Count + 1 ' one based
                 level.Index = iLevel
                 level.AllowValidation = True
 
                 ' Update local admin
                 Me.m_levels.Add(level)
-                Me.m_dictID(iLevel) = level.ID
+                Me.m_dictID(iLevel) = level.Sequence
 
             End If
         Next

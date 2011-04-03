@@ -128,7 +128,7 @@ Public Class gridDefineGroups
         ''' group currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal group As cEcoPathGroupInput)
-            Me.m_iGroupDBID = CInt(group.GetVariable(eVarNameFlags.DBID))
+            Me.m_iGroupDBID = group.DBID
             Me.m_iGroupIndex = group.Index
             Me.m_sVBK = group.VBK
 
@@ -307,7 +307,7 @@ Public Class gridDefineGroups
 
             If (Me.IsNew()) Then Return False
 
-            Debug.Assert(Me.m_iGroupDBID = CInt(group.GetVariable(eVarNameFlags.DBID)))
+            Debug.Assert(Me.m_iGroupDBID = group.DBID)
 
             Return (group.Name <> Me.m_strName) Or _
                    (group.PP <> Me.m_sPP) Or _
@@ -1854,13 +1854,13 @@ Public Class gridDefineGroups
         ' Application
         ' =================
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_APPLYVALUES)
 
         ' Handle added and removed items
         If (bConfigurationChanged) Then
 
             If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then
-                cApplicationStatusNotifier.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.EndProgress(Me.Core)
                 Return False
             End If
 
@@ -1963,7 +1963,7 @@ Public Class gridDefineGroups
                         ' Remove all current groups
                         For iLifestage As Integer = 1 To si.StanzaGroup.NStanzas
                             group = Me.Core.EcoPathGroupInputs(sg.iGroups(iLifestage))
-                            If Not Me.Core.RemoveStanzaLifestage(sg.Index, CInt(group.GetVariable(eVarNameFlags.DBID))) Then
+                            If Not Me.Core.RemoveStanzaLifestage(sg.Index, group.DBID) Then
                                 bSuccess = False
                             End If
                         Next
@@ -2007,7 +2007,7 @@ Public Class gridDefineGroups
             Dim dtGroups As New Dictionary(Of Integer, cEcoPathGroupInput)
             For iGroup = 1 To Me.Core.nGroups
                 group = Me.Core.EcoPathGroupInputs(iGroup)
-                dtGroups(CInt(group.GetVariable(eVarNameFlags.DBID))) = group
+                dtGroups(group.DBID) = group
             Next
 
             For iGroup = 0 To Me.m_lgiGroups.Count - 1
@@ -2033,7 +2033,7 @@ Public Class gridDefineGroups
             If bColorsChanged Then Me.StyleGuide.ColorsChanged()
         End If
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         Return bSuccess
 

@@ -446,25 +446,25 @@
     <Compile Include="Ecospace\Input\BasemapFromGIS.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridEditHabitats.vb">
+    <Compile Include="Ecospace\Input\gridDefineHabitats.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridEditMPAs.vb">
+    <Compile Include="Ecospace\Input\gridDefineMPAs.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridDispersal.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgEditHabitats.Designer.vb">
-      <DependentUpon>dlgEditHabitats.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\dlgDefineHabitats.Designer.vb">
+      <DependentUpon>dlgDefineHabitats.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgEditHabitats.vb">
+    <Compile Include="Ecospace\Input\dlgDefineHabitats.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgEditMPAs.Designer.vb">
-      <DependentUpon>dlgEditMPAs.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\dlgDefineMPAs.Designer.vb">
+      <DependentUpon>dlgDefineMPAs.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgEditMPAs.vb">
+    <Compile Include="Ecospace\Input\dlgDefineMPAs.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridFishery.vb">
@@ -732,13 +732,13 @@
       <SubType>Designer</SubType>
       <DependentUpon>BasemapFromGIS.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgEditHabitats.resx">
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineHabitats.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>dlgEditHabitats.vb</DependentUpon>
+      <DependentUpon>dlgDefineHabitats.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgEditMPAs.resx">
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineMPAs.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>dlgEditMPAs.vb</DependentUpon>
+      <DependentUpon>dlgDefineMPAs.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Output\EcospaceResults.resx">
       <SubType>Designer</SubType>
@@ -1029,8 +1029,8 @@
       <DependentUpon>dlgImportLayerData.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgEditRegions.resx">
-      <DependentUpon>dlgEditRegions.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineRegions.resx">
+      <DependentUpon>dlgDefineRegions.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Import\dlgImportDatabase.resx">
@@ -1476,13 +1476,13 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererDepth.vb" />
-    <Compile Include="Ecospace\Input\dlgEditRegions.Designer.vb">
-      <DependentUpon>dlgEditRegions.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">
+      <DependentUpon>dlgDefineRegions.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgEditRegions.vb">
+    <Compile Include="Ecospace\Input\dlgDefineRegions.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridEditRegions.vb">
+    <Compile Include="Ecospace\Input\gridDefineRegions.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridLayerData.vb">

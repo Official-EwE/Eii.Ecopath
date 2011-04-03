@@ -354,7 +354,7 @@ Namespace Ecosim
             Me.m_plRunParams.Enabled = False
             Me.m_blocks.Enabled = False
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_SEARCH_SEARCHING, TriState.UseDefault, -1.0!)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_SEARCHING)
 
         End Sub
 
@@ -408,7 +408,7 @@ Namespace Ecosim
                 Me.m_plRunParams.Enabled = True
                 Me.m_blocks.Enabled = True
 
-                cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
+                cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 Me.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
                         eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))

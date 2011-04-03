@@ -1250,7 +1250,7 @@ Public Class gridDefineTaxonomy
 
             If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
 
             Dim htTaxonID As New Dictionary(Of cTaxonInfo, Integer)
             Dim iDBID As Integer = Nothing
@@ -1283,7 +1283,7 @@ Public Class gridDefineTaxonomy
 
             ' The core will reload now
             Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
             ' Test whether new Taxons were loaded correctly
             Debug.Assert(Me.m_lTaxonInfo.Count = Me.Core.nTaxon, "Dialog and core out of sync on Taxons")

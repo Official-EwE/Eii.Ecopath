@@ -21,7 +21,7 @@ Public Class cPedigreeLevel
     Inherits cCoreInputOutputBase
 
     Private m_manager As cPedigreeManager = Nothing
-    Private m_ID As Integer = 0
+    Private m_iSequence As Integer = 0
 
     Friend Sub New(ByVal core As cCore, ByVal manager As cPedigreeManager, ByVal iDBID As Integer)
         MyBase.New(core)
@@ -156,15 +156,15 @@ Public Class cPedigreeLevel
     ''' </summary>
     ''' <remarks>
     ''' This variable will never make it into the core; it's a mere administrative
-    ''' value.
+    ''' value. Note that this value is one-based.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Property ID() As Integer
+    Public Property Sequence() As Integer
         Get
-            Return Me.m_ID
+            Return Me.m_iSequence
         End Get
         Friend Set(ByVal value As Integer)
-            Me.m_ID = value
+            Me.m_iSequence = value
         End Set
     End Property
 

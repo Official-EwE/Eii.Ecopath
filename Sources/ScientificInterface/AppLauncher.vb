@@ -41,12 +41,12 @@ Imports ScientificInterfaceShared.Commands
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class AppLauncher
-    Implements IApplicationStatusDispatcher
     Implements IUIElement
 
 #Region " Variables "
 
     Private m_uic As cUIContext = Nothing
+    Private m_mhProgress As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
     Private m_mhEcospace As cMessageHandler = Nothing
     Private m_mhEcotracer As cMessageHandler = Nothing
@@ -192,8 +192,6 @@ Public Class AppLauncher
 
         Debug.Assert(AppLauncher.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
         AppLauncher.__inst__ = Me
-
-        Me.m_applictionStatusNotifier = New cApplicationStatusNotifier(Me)
 
 #If Not Debug Then
         ' Remove estimate V's from release version while under development
@@ -444,16 +442,16 @@ Public Class AppLauncher
         Me.m_cmdEditBasemap.AddControl(Me.m_tsmiEcospaceEditMap)
 
         Me.m_cmdEditHabitats = New cCommand(cmdh, "EditHabitats")
-        Me.m_cmdEditHabitats.AddControl(Me.m_tsmiEcospaceEditHabitats)
+        Me.m_cmdEditHabitats.AddControl(Me.m_tsmiEcospaceDefineHabitats)
 
         Me.m_cmdEditRegions = New cCommand(cmdh, "EditRegions")
-        Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceEditRegions)
+        Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceDefineRegions)
 
         Me.m_cmdEditMPAs = New cCommand(cmdh, "EditMPAs")
-        Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceEditMPAs)
+        Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceDefineMPAs)
 
         Me.m_cmdEditImportanceLayers = New cCommand(cmdh, "EditImportanceLayers")
-        Me.m_cmdEditImportanceLayers.AddControl(Me.m_tsmiEcospaceEditImportanceLayers)
+        Me.m_cmdEditImportanceLayers.AddControl(Me.m_tsmiEcospaceDefineImportanceLayers)
 
         Me.m_cmdImportLayerData = New cCommand(cmdh, "ImportLayerData")
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
@@ -546,20 +544,27 @@ Public Class AppLauncher
 
         ' Config state monitor
         Me.Core.StateMonitor.SyncObject = Me
+        Me.m_mhProgress = New cMessageHandler(AddressOf OnProgressMessage, eCoreComponentType.External, eMessageType.Progress, Me.SyncObject)
         Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.SyncObject)
         Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataAddedOrRemoved, Me.SyncObject)
         Me.m_mhEcotracer = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.DataAddedOrRemoved, Me.SyncObject)
         Me.m_mhTimeseries = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.TimeSeries, eMessageType.DataAddedOrRemoved, Me.SyncObject)
 
+        Me.m_mhProgress.Name = "cAppLauncher:Progress"
         Me.m_mhEcosim.Name = "cAppLauncher:Ecosim"
         Me.m_mhEcospace.Name = "cAppLauncher:EcoSpace"
         Me.m_mhEcotracer.Name = "cAppLauncher:EcoTracer"
         Me.m_mhTimeseries.Name = "cAppLauncher:TimeSeries"
 
+        Me.Core.Messages.AddMessageHandler(Me.m_mhProgress)
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcotracer)
         Me.Core.Messages.AddMessageHandler(Me.m_mhTimeseries)
+
+        ' Ready for status messages. We'll stick with a shared application status notified 
+        ' as long as the shared deprecated method to set status text is used.
+        Me.m_applictionStatusNotifier = New cApplicationStatusNotifier(Me.Core)
 
         ' Create message history
         Me.m_MessageHistory = New cMessageHistory()
@@ -646,7 +651,7 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Public Sub SendMessage(ByVal strMsg As String, _
                            Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
-                           Optional ByVal component As eCoreComponentType = eCoreComponentType.Core)
+                           Optional ByVal component As eCoreComponentType = eCoreComponentType.External)
 
         If Me.InvokeRequired() Then
             Me.Invoke(New SendMessageDelegate(AddressOf Me.SendMessage), _
@@ -789,10 +794,12 @@ Public Class AppLauncher
         Me.m_FormStateHelper.Dispose()
         Me.m_FormStateHelper = Nothing
 
-        Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
-        Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
-        Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
-        Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
+        Me.Core.Messages.RemoveMessageHandler(Me.m_mhProgress)
+        Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+        Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+        Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
+        Me.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
+        Me.m_mhProgress = Nothing
         Me.m_mhEcosim = Nothing
         Me.m_mhEcospace = Nothing
         Me.m_mhEcotracer = Nothing
@@ -890,20 +897,18 @@ Public Class AppLauncher
 
 #Region " Status feedback "
 
-    Private Delegate Sub SetStatusTextDelegate(ByVal strText As String, ByVal tsUseWaitCursor As TriState, ByVal sProgress As Single)
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Set the application status strip text and wait cursor.
     ''' </summary>
     ''' <param name="strText">Status text to display, if any.</param>
-    ''' <param name="tsUseWaitCursor">
-    ''' <para>Tri-state flag stating whether a wait cursor should be shown.
+    ''' <param name="state">
+    ''' <para>Flag stating whether a wait cursor should be shown.
     ''' Values are interpreted as follows:</para>
     ''' <list type="bullet">
-    ''' <item><description>True: the wait cursor must be set.</description></item>
-    ''' <item><description>False: the wait cursor must be cleared.</description></item>
-    ''' <item><description>UseDefault: the wait cursor state should not change.</description></item>
+    ''' <item><description><see cref="eProgressState.Start"/>: wait cursor will be set.</description></item>
+    ''' <item><description><see cref="eProgressState.Finished"/>: wait cursor will be cleared.</description></item>
+    ''' <item><description><see cref="eProgressState.Running"/>: wait cursor state will not change.</description></item>
     ''' </list>
     ''' </param>
     ''' <param name="sProgress">Ratio [0, 1] of progress to display. 0 to hide progress.</param>
@@ -914,30 +919,24 @@ Public Class AppLauncher
     ''' and is cleared when this counter reaches zero.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub SetStatusText(Optional ByVal strText As String = "", _
-        Optional ByVal tsUseWaitCursor As TriState = TriState.UseDefault, _
-        Optional ByVal sProgress As Single = 0.0) _
-        Implements IApplicationStatusDispatcher.SetStatusText
+    Private Sub ShowProgress(ByVal state As eProgressState, ByVal strText As String, ByVal sProgress As Single)
 
-        If Me.InvokeRequired() Then
-            Me.Invoke(New SetStatusTextDelegate(AddressOf Me.SetStatusText), _
-                      New Object() {strText, tsUseWaitCursor, sProgress})
-            Return
-        End If
+        ' Should have been handled
+        If Me.InvokeRequired() Then Return
 
         ' ToDo_JS: Consider using a timer to clear any status text after a certain interval
 
         ' Update wait cursor
-        Select Case tsUseWaitCursor
+        Select Case state
 
-            Case TriState.True ' Set wait cursor
+            Case eProgressState.Start
 
                 ' Push text to the status text stack
                 Me.m_lstrStatus.Insert(0, strText)
                 ' Set wait cursor
                 Me.Cursor = Cursors.WaitCursor
 
-            Case TriState.False ' Clear wait cursor
+            Case eProgressState.Finished
 
                 ' Has wait cursors pending?
                 If Me.m_lstrStatus.Count > 0 Then
@@ -957,7 +956,7 @@ Public Class AppLauncher
                     strText = ""
                 End If
 
-            Case TriState.UseDefault
+            Case eProgressState.Running
                 ' Don't do anything. Really.
 
         End Select
@@ -1016,9 +1015,9 @@ Public Class AppLauncher
 
         If Me.CloseEcopathModel() = False Then Return False
 
-        Me.SetStatusText(My.Resources.STATUS_MODEL_COMPACTING, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MODEL_COMPACTING)
         result = ds.Compact(strFileName)
-        Me.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         If result = eDatasourceAccessType.Success Then
             bSucces = Me.LoadEcopathModel(strFileName, eLoadSourceType.API)
@@ -1977,9 +1976,9 @@ Public Class AppLauncher
 
         If (es IsNot Nothing) Then
             ' #Yes: Load it
-            Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_LOADING, es.Name), TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_LOADING, es.Name))
             bSucces = Me.Core.LoadEcosimScenario(es)
-            Me.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
         Return bSucces
 
@@ -1997,9 +1996,9 @@ Public Class AppLauncher
 
         Dim bSucces As Boolean = False
 
-        Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_CREATING, strName), TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_CREATING, strName))
         bSucces = Me.Core.NewEcosimScenario(strName, strDescription, strAuthor, strContact)
-        Me.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
         Return bSucces
 
     End Function
@@ -2090,10 +2089,10 @@ Public Class AppLauncher
 
         Dim bSucces As Boolean = False
 
-        Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_CREATING, strName), TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_CREATING, strName))
         bSucces = Me.Core.NewEcospaceScenario(strName, strDescription, _
             strAuthor, strContact, iNumRows, iNumCols, sLatTL, sLonTL, sCellSize)
-        Me.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
         Return bSucces
 
     End Function
@@ -2111,9 +2110,9 @@ Public Class AppLauncher
 
         If (es IsNot Nothing) Then
             ' #Yes: Load it
-            Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_LOADING, es.Name), TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_LOADING, es.Name))
             bSucces = Me.Core.LoadEcospaceScenario(es)
-            Me.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
         Return bSucces
 
@@ -2188,9 +2187,9 @@ Public Class AppLauncher
 
         Dim bSucces As Boolean = False
 
-        Me.SetStatusText(String.Format(My.Resources.STATUS_ECOTRACER_CREATING, strName), TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_CREATING, strName))
         bSucces = Me.Core.NewEcotracerScenario(strName, strDescription, strAuthor, strContact)
-        Me.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
         Return bSucces
 
     End Function
@@ -2208,9 +2207,9 @@ Public Class AppLauncher
 
         If (es IsNot Nothing) Then
             ' #Yes: Load it
-            Me.SetStatusText(String.Format(My.Resources.STATUS_ECOTRACER_LOADING, es.Name), TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_LOADING, es.Name))
             bSucces = Me.Core.LoadEcotracerScenario(es)
-            Me.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
         Return bSucces
 
@@ -2326,7 +2325,7 @@ Public Class AppLauncher
             ' Is form already loaded?
             If Not ActivateForm(strNavPageName) Then
 
-                Me.SetStatusText(My.Resources.GENERIC_STATUS_LOADINGFORM, TriState.True)
+                cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_LOADINGFORM)
 
                 Try
                     ' Load instance of form for selected node
@@ -2351,7 +2350,7 @@ Public Class AppLauncher
                     ' Whoah!
                 End Try
 
-                Me.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.EndProgress(Me.Core)
 
             End If
         End If
@@ -2475,9 +2474,9 @@ Public Class AppLauncher
         If (cmdFO.Result = DialogResult.OK) Then
 
             ' Open the model
-            Me.SetStatusText(My.Resources.STATUS_ECOPATH_LOADING, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
             Me.LoadEcopathModel(cmdFO.FileName, eLoadSourceType.User)
-            Me.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End If
 
@@ -2487,10 +2486,14 @@ Public Class AppLauncher
     ''' Save the model
     ''' </summary>
     Private Sub OnSave(ByVal cmd As cCommand) Handles m_cmdSave.OnInvoke
-        Me.SetStatusText(My.Resources.STATUS_MODEL_SAVING, TriState.True)
-        Me.Core.Save()
-        Me.SaveSettings()
-        Me.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MODEL_SAVING)
+        Try
+            Me.Core.Save()
+            Me.SaveSettings()
+        Catch ex As Exception
+            ' Whoah!
+        End Try
+        cApplicationStatusNotifier.EndProgress(Me.Core)
     End Sub
 
     ''' <summary>
@@ -2529,13 +2532,13 @@ Public Class AppLauncher
         If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
 
             ' Save the model
-            Me.SetStatusText(My.Resources.STATUS_MODEL_SAVING, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MODEL_SAVING)
             Try
                 SaveEcopathModelAs(cmdFS.FileName)
             Catch ex As Exception
 
             End Try
-            Me.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End If
 
@@ -2992,13 +2995,13 @@ Public Class AppLauncher
                         My.Resources.SCENARIO_CONFIRMOVERWRITE_CAPTION, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
 
                     ' #Overwrite
-                    Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_SAVING, dlg.ScenarioName), TriState.True)
+                    cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_SAVING, dlg.ScenarioName))
                     Try
                         Me.Core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                     Catch ex As Exception
 
                     End Try
-                    Me.SetStatusText("", TriState.False)
+                    cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 End If
                 ' User does not want to overwrite? Abort
@@ -3006,13 +3009,13 @@ Public Class AppLauncher
             End If
 
             ' Add scenario under new name
-            Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSIM_CREATING, dlg.ScenarioName), TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_CREATING, dlg.ScenarioName))
             Try
                 Me.Core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
             Catch ex As Exception
 
             End Try
-            Me.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End If
 
@@ -3114,7 +3117,10 @@ Public Class AppLauncher
         If (Me.m_cmdLoadTimeSeries.Tag Is Nothing) Then
             Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Load)
         ElseIf (TypeOf Me.m_cmdLoadTimeSeries.Tag Is cTimeSeriesDataset) Then
-            Me.Core.LoadTimeSeries(DirectCast(Me.m_cmdLoadTimeSeries.Tag, cTimeSeriesDataset), True)
+            Dim ds As cTimeSeriesDataset = DirectCast(Me.m_cmdLoadTimeSeries.Tag, cTimeSeriesDataset)
+            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_TIMESERIES_LOADING, ds.Name))
+            Me.Core.LoadTimeSeries(ds, True)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
 
     End Sub
@@ -3253,13 +3259,13 @@ Public Class AppLauncher
                             My.Resources.SCENARIO_CONFIRMOVERWRITE_CAPTION, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
 
                         ' #Overwrite
-                        Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_SAVING, dlg.ScenarioName), TriState.True)
+                        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_SAVING, dlg.ScenarioName))
                         Try
                             Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                         Catch ex As Exception
 
                         End Try
-                        Me.SetStatusText("", TriState.False)
+                        cApplicationStatusNotifier.EndProgress(Me.Core)
 
                     End If
                     ' User does not want to overwrite? Abort
@@ -3267,13 +3273,13 @@ Public Class AppLauncher
                 End If
 
                 ' Add scenario
-                Me.SetStatusText(String.Format(My.Resources.STATUS_ECOSPACE_CREATING, dlg.ScenarioName), TriState.True)
+                cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_CREATING, dlg.ScenarioName))
                 Try
                     Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                 Catch ex As Exception
 
                 End Try
-                Me.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.EndProgress(Me.Core)
 
             End If
         End If
@@ -3510,9 +3516,9 @@ Public Class AppLauncher
                         My.Resources.SCENARIO_CONFIRMOVERWRITE_CAPTION, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
 
                     ' #Overwrite
-                    Me.SetStatusText(String.Format(My.Resources.STATUS_ECOTRACER_SAVING, dlg.ScenarioName), TriState.True)
+                    cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_SAVING, dlg.ScenarioName))
                     Me.Core.SaveEcotracerScenario(DirectCast(dlg.Scenario, cEcotracerScenario))
-                    Me.SetStatusText("", TriState.False)
+                    cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 End If
                 ' User does not want to overwrite? Abort
@@ -3520,9 +3526,9 @@ Public Class AppLauncher
             End If
 
             ' Add scenario under new name
-            Me.SetStatusText(String.Format(My.Resources.STATUS_ECOTRACER_CREATING, dlg.ScenarioName), TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_CREATING, dlg.ScenarioName))
             Me.Core.SaveEcotracerScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
-            Me.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End If
 
@@ -3627,13 +3633,13 @@ Public Class AppLauncher
             ' and whether any plug-in UI elements are still active. The plug-in is responsible for dealing
             ' with consecutive run requests.
 
-            Me.SetStatusText(My.Resources.GENERIC_STATUS_LOADINGPLUGIN, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_LOADINGPLUGIN)
             Try
                 pgcmd.RunPlugin()
             Catch ex As Exception
 
             End Try
-            Me.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
             ' See if the plug-in attached any form to the command. This form will be nested in the interface
             ' if possible.
@@ -3852,28 +3858,47 @@ Public Class AppLauncher
 
     Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
 
-        ' Busy loading or unloading Ecopath?
-        If (csm.CoreExecutionState = eCoreExecutionState.Idle) Or _
-           (csm.CoreExecutionState = eCoreExecutionState.EcopathLoaded) Then
-            ' Set or clear initial nav node
-            Me.UpdateSelectedNode("", (csm.CoreExecutionState = eCoreExecutionState.EcopathLoaded))
-        End If
+        Try
+            ' Busy loading or unloading Ecopath?
+            If (csm.CoreExecutionState = eCoreExecutionState.Idle) Or _
+               (csm.CoreExecutionState = eCoreExecutionState.EcopathLoaded) Then
+                ' Set or clear initial nav node
+                Me.UpdateSelectedNode("", (csm.CoreExecutionState = eCoreExecutionState.EcopathLoaded))
+            End If
 
-        Me.UpdateModelControls()
-        Me.PopulateMRUDropdown()
-        Me.PopulateScenarioDropdowns()
+            Me.UpdateModelControls()
+            Me.PopulateMRUDropdown()
+            Me.PopulateScenarioDropdowns()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
     Private Sub OnCoreMessage(ByRef msg As cMessage)
-        If msg.Type = eMessageType.DataAddedOrRemoved Then
-            If (msg.DataType = eDataTypes.EcoSimScenario) Or _
-               (msg.DataType = eDataTypes.EcoSpaceScenario) Or _
-               (msg.DataType = eDataTypes.EcotracerScenario) Or _
-               (msg.DataType = eDataTypes.TimeSeriesDataset) Then
-                Me.PopulateScenarioDropdowns()
+        Try
+            If msg.Type = eMessageType.DataAddedOrRemoved Then
+                If (msg.DataType = eDataTypes.EcoSimScenario) Or _
+                   (msg.DataType = eDataTypes.EcoSpaceScenario) Or _
+                   (msg.DataType = eDataTypes.EcotracerScenario) Or _
+                   (msg.DataType = eDataTypes.TimeSeriesDataset) Then
+                    Me.PopulateScenarioDropdowns()
+                End If
             End If
-        End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnProgressMessage(ByRef msg As cMessage)
+        If Not TypeOf (msg) Is cProgressMessage Then Return
+        Debug.Assert(msg.Type = eMessageType.Progress)
+        Try
+            Dim pmsg As cProgressMessage = DirectCast(msg, cProgressMessage)
+            Me.ShowProgress(pmsg.ProgressState, pmsg.Message, pmsg.Progress)
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 #End Region ' Big and evil event handlers

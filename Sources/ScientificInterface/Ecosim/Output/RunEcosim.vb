@@ -365,7 +365,10 @@ Namespace Ecosim
 
         Private Sub TimeStepFromEcoSim_handler(ByVal iTime As Long, ByVal results As cEcoSimResults)
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.UseDefault, CSng(iTime / m_iTimeSteps))
+            ' Status update only every 12 months
+            If (iTime Mod cCore.N_MONTHS) = 0 Then
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSIM_RUNNING, CSng(iTime / m_iTimeSteps))
+            End If
 
         End Sub
 
@@ -389,9 +392,9 @@ Namespace Ecosim
                 ' #Yes: update to new state
                 me.IsRunning = bEcosimRunning
                 If Me.IsRunning Then
-                    cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOSIM_RUNNING, TriState.True, 0)
+                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOSIM_RUNNING)
                 Else
-                    cApplicationStatusNotifier.SetStatusText("", TriState.False, 0)
+                    cApplicationStatusNotifier.EndProgress(Me.Core)
                     If Not Me.m_zgp.ShowMultipleRuns Then
                         Me.m_zgp.Clear()
                     End If

@@ -31,11 +31,11 @@ Namespace Ecospace
             Me.m_btnKeep = New System.Windows.Forms.Button
             Me.m_btnHabToRegion = New System.Windows.Forms.Button
             Me.m_btnFromCells = New System.Windows.Forms.Button
-            Me.m_hdrEdit = New cEwEHeaderLabel
-            Me.m_hdrGenerate = New cEwEHeaderLabel
+            Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrGenerate = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_btnMPAtoRegion = New System.Windows.Forms.Button
             Me.m_btnSelectEmpty = New System.Windows.Forms.Button
-            Me.m_hdrSelect = New cEwEHeaderLabel
+            Me.m_hdrSelect = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_btnSelectAll = New System.Windows.Forms.Button
             Me.m_btnSelectNone = New System.Windows.Forms.Button
             Me.TableLayoutPanel1.SuspendLayout()
@@ -43,6 +43,7 @@ Namespace Ecospace
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = True
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
@@ -65,7 +66,6 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = True
             Me.m_grid.UIContext = Nothing
             '
             'm_btnAddRegion

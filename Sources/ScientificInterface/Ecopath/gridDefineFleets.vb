@@ -78,7 +78,7 @@ Imports SourceGrid2.VisualModels
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal fleet As cFleetInput)
             Debug.Assert(fleet IsNot Nothing)
-            Me.m_iFleetDBID = CInt(fleet.GetVariable(EwEUtils.Core.eVarNameFlags.DBID))
+            Me.m_iFleetDBID = fleet.DBID
             Me.m_iFleetIndex = fleet.Index
             Me.m_strName = fleet.Name
             Me.m_iColor = fleet.PoolColor
@@ -128,7 +128,7 @@ Imports SourceGrid2.VisualModels
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="cFleetInput">EwE Fleet</see> associated
+        ''' Get the <see cref="cCoreInputOutputBase.Index"/> of the fleet associated
         ''' with this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -138,6 +138,12 @@ Imports SourceGrid2.VisualModels
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cCoreInputOutputBase.DBID"/> of the fleet associated
+        ''' with this administrative unit.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property FleetDBID() As Integer
             Get
                 Return Me.m_iFleetDBID
@@ -179,14 +185,20 @@ Imports SourceGrid2.VisualModels
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function IsChanged(ByVal fleet As cFleetInput) As Boolean
-            If (Me.m_iFleetDBID <> CInt(fleet.GetVariable(EwEUtils.Core.eVarNameFlags.DBID))) Then Return False
+            If (Me.m_iFleetDBID <> fleet.DBID) Then Return False
             Return (fleet.Name <> Me.m_strName) Or _
                    (fleet.PoolColor <> Me.m_iColor)
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether this info is not associated with an existing fleet.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Function IsNew() As Boolean
             Return Me.m_iFleetDBID = cCore.NULL_VALUE
         End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set whether this fleet is flagged for deletion. Toggling this flag
@@ -860,7 +872,7 @@ Imports SourceGrid2.VisualModels
 
             If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
 
             Dim htFleetID As New Dictionary(Of cFleetInfo, Integer)
             Dim iDBID As Integer = Nothing
@@ -898,7 +910,7 @@ Imports SourceGrid2.VisualModels
 
             ' The core will reload now
             Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
             ' Test whether new Fleets were loaded correctly
             Debug.Assert(Me.m_lfiFleets.Count = Me.Core.nFleets, "Dialog and core out of sync on Fleets")
@@ -911,7 +923,7 @@ Imports SourceGrid2.VisualModels
             Dim dtFleets As New Dictionary(Of Integer, cFleetInput)
             For iFleet = 1 To Core.nFleets
                 fleet = Me.Core.FleetInputs(iFleet)
-                dtFleets(CInt(fleet.GetVariable(EwEUtils.Core.eVarNameFlags.DBID))) = fleet
+                dtFleets(fleet.DBID) = fleet
             Next
 
             For iFleet = 0 To Me.m_lfiFleets.Count - 1

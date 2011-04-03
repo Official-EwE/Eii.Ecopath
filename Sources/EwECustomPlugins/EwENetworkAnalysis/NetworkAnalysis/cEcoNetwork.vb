@@ -371,7 +371,7 @@ Public Class cEcoNetwork
                 Return False
             End If
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_NA, TriState.True, 0.1)
+            cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_RUNNING_NA)
 
             FoundCycles = False
             NetworkDimensioning()
@@ -379,14 +379,14 @@ Public Class cEcoNetwork
             ' EconetMain_g% = 1
             'jb this is weird I can’t put a Try Catch statement into either Ulanow or Lindeman           
             Try
-                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_ULANOW, TriState.UseDefault, 0.2)
+                cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_ULANOW, 0.2)
                 strErr = "Ulanow()"
                 Ulanow(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp)
 
-                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_LINDEMAN, TriState.UseDefault, 0.3)
+                cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_LINDEMAN, 0.3)
                 strErr = "Lindeman()"
                 Lindeman(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp) '
-                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_NA, TriState.UseDefault, 0.4)
+                cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_NA, 0.4)
             Catch ex As Exception
                 cLog.Write(ex)
                 bSucces = False
@@ -414,10 +414,10 @@ Public Class cEcoNetwork
                 'VC090527 Adding calculation of keystoneness based on Libralato et al 2006:
                 Keystoneness()
 
-                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_RUNNING_EQPP, TriState.UseDefault, 0.6)
+                cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_EQPP, 0.6)
                 InitReqPP()
 
-                'asn.SetStatusText("Finalizing Network Analysis run...", TriState.UseDefault, 0.8)
+                'asn.SetStatusText("Finalizing Network Analysis run...", 0.8)
                 'activate the textStream to save the output to file
                 'Dim textStream As New System.IO.StreamWriter(System.AppDomain.CurrentDomain.BaseDirectory() & "NetworkOutput.csv")
                 'DumpResultsToStream(Nothing)
@@ -431,7 +431,7 @@ Public Class cEcoNetwork
             bSucces = False
         End Try
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
 
         'Count = 2
     End Function

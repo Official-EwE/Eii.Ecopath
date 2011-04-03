@@ -404,7 +404,7 @@ Public Class frmShapeValue
         Dim gts As cGroupTimeSeries = Nothing
         Dim bSucces As Boolean = True
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_TIMESERIES_UPDATING, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_TIMESERIES_UPDATING)
 
         'Get the time series
         ts = DirectCast(Me.m_shape, cTimeSeries)
@@ -433,7 +433,7 @@ Public Class frmShapeValue
 
         ts.Update()
         bSucces = Me.Core.UpdateTimeSeries()
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         Return bSucces
     End Function
@@ -476,7 +476,7 @@ Public Class frmShapeValue
         Dim asValues As Single() = Nothing
         Dim bSucces As Boolean = True
 
-        cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_TIMESERIES_ADDING, m_txtName.Text), TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_TIMESERIES_ADDING, m_txtName.Text))
 
         strName = m_txtName.Text
         ' Parse value using UI number settings
@@ -490,7 +490,7 @@ Public Class frmShapeValue
 
         bSucces = Me.Core.AddTimeSeries(strName, iPoolCode, tsType, sWeight, asValues, iDBID)
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         Return bSucces
 

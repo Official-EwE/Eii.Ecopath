@@ -476,7 +476,7 @@ Namespace Ecosim
             msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_SUCCESS, strPath), _
                                eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information)
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_PLEASE_WAIT)
 
             For i As Integer = 1 To 3
                 Select Case i
@@ -602,7 +602,7 @@ Namespace Ecosim
             Next
 
             ' Clear status text
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
             ' Notify user
             Me.Core.Messages.SendMessage(msg)

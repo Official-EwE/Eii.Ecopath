@@ -1985,6 +1985,8 @@ Public Class cCore
 
         ' Assess tracer
         Dim bIsModified As Boolean = Me.m_StateMonitor.IsEcotracerModified
+        Dim bSuccess As Boolean = True
+
         If savelevel = eBatchChangeLevelFlags.Ecotracer Then
             If Not bIsModified Then Return True
         End If
@@ -2015,6 +2017,11 @@ Public Class cCore
             Me.m_publisher.SendMessage(fm)
         End If
 
+        ' Send progress message
+        ' ToDo: globalize this
+        msg = New cProgressMessage(0, "Saving changes, please wait...", eMessageType.DataExport)
+        Me.Messages.SendMessage(msg, True)
+
         ' Hmm...
         Select Case fm.Reply
 
@@ -2025,19 +2032,19 @@ Public Class cCore
             Case cFeedbackMessage.eReply.YES
 
                 ' Plug-ins
-                If Me.m_StateMonitor.IsPluginModified Then
+                If bSuccess And Me.m_StateMonitor.IsPluginModified Then
                     If Not Me.PluginManager.SaveModel(Me.m_DataSource) Then
-                        Return False
+                        bSuccess = False
                     Else
                         Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
                     End If
                 End If
 
                 ' Ecotracer
-                If (savelevel <= eBatchChangeLevelFlags.Ecotracer) Then
+                If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecotracer) Then
                     If Me.m_StateMonitor.IsEcotracerModified Then
                         If Not Me.SaveEcotracerScenario() Then
-                            Return False
+                            bSuccess = False
                         Else
                             Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
                         End If
@@ -2045,10 +2052,10 @@ Public Class cCore
                 End If
 
                 ' Ecospace
-                If (savelevel <= eBatchChangeLevelFlags.Ecospace) Then
+                If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecospace) Then
                     If Me.m_StateMonitor.IsEcospaceModified Then
                         If Not Me.SaveEcospaceScenario() Then
-                            Return False
+                            bSuccess = False
                         Else
                             Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
                         End If
@@ -2056,10 +2063,10 @@ Public Class cCore
                 End If
 
                 ' Ecosim
-                If (savelevel <= eBatchChangeLevelFlags.Ecosim) Then
+                If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecosim) Then
                     If Me.m_StateMonitor.IsEcosimModified Then
                         If Not Me.SaveEcosimScenario() Then
-                            Return False
+                            bSuccess = False
                         Else
                             Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
                         End If
@@ -2067,10 +2074,10 @@ Public Class cCore
                 End If
 
                 ' The bottom of it all
-                If (savelevel <= eBatchChangeLevelFlags.Ecopath) Then
+                If bSuccess = (savelevel <= eBatchChangeLevelFlags.Ecopath) Then
                     If Me.m_StateMonitor.IsEcopathModified Or Me.m_StateMonitor.IsDatasourceModified Then
                         If Not Me.SaveModel() Then
-                            Return False
+                            bSuccess = False
                         Else
                             Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
                         End If
@@ -2083,8 +2090,11 @@ Public Class cCore
 
         End Select
 
-        ' All well, proceed.
-        Return True
+        msg = New cProgressMessage(0, "", eMessageType.DataExport)
+        Me.Messages.SendMessage(msg, True)
+
+        ' Report success
+        Return bSuccess
 
     End Function
 
@@ -9047,10 +9057,11 @@ Public Class cCore
     ''' Remove an <see cref="cEcospaceHabitat">Ecospace habitat</see> from the current
     ''' <see cref="DataSource">data source</see>.
     ''' </summary>
-    ''' <param name="objHabitat">The <see cref="cEcospaceHabitat">Ecospace habitat</see> to remove.</param>
+    ''' <param name="iDBID">The <see cref="cEcospaceHabitat.DBID"/> of the habitat 
+    ''' to remove.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceHabitat(ByVal objHabitat As cEcospaceHabitat) As Boolean
+    Public Function RemoveEcospaceHabitat(ByVal iDBID As Integer) As Boolean
         Dim bsucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
 
@@ -9059,13 +9070,13 @@ Public Class cCore
         If Me.ActiveEcospaceScenarioIndex <= 0 Then Return False
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
         ' Not allowed to remove 'All' habitat
-        If objHabitat.Index = 0 Then Return False
+        If iDBID <= 0 Then Return False
 
         ' Increase batch count
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        bsucces = ds.RemoveEcospaceHabitat(objHabitat.DBID)
+        bsucces = ds.RemoveEcospaceHabitat(iDBID)
 
         If bsucces Then
             ' Broadcast update
@@ -9202,10 +9213,11 @@ Public Class cCore
     ''' Remove an <see cref="cEcospaceRegion">Ecospace region</see> from the current
     ''' <see cref="DataSource">data source</see>.
     ''' </summary>
-    ''' <param name="objRegion">The <see cref="cEcospaceRegion">Ecospace region</see> to remove.</param>
+    ''' <param name="iDBID">The <see cref="cEcospaceRegion.DBID"/> of the region
+    ''' to remove.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceRegion(ByVal objRegion As cEcospaceRegion) As Boolean
+    Public Function RemoveEcospaceRegion(ByVal iDBID As Integer) As Boolean
         Dim bsucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
 
@@ -9215,13 +9227,13 @@ Public Class cCore
         If Not TypeOf (DataSource) Is IEcospaceDatasource Then Return False
 
         ' Not allowed to delete 0 region (if any)
-        If objRegion.Index = 0 Then Return False
+        If iDBID <= 0 Then Return False
 
         ' Increase batch count
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        bsucces = ds.RemoveEcospaceRegion(objRegion.DBID)
+        bsucces = ds.RemoveEcospaceRegion(iDBID)
 
         If bsucces Then
             ' Broadcast update
@@ -9368,10 +9380,10 @@ Public Class cCore
     ''' Remove an <see cref="cEcospaceMPA">Ecospace MPA</see> from the current
     ''' <see cref="DataSource">data source</see>.
     ''' </summary>
-    ''' <param name="objMPA">The <see cref="cEcospaceMPA">Ecospace MPA</see> to remove.</param>
+    ''' <param name="iMPADBID">The <see cref="cEcospaceMPA.DBID"/> to remove.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceMPA(ByVal objMPA As cEcospaceMPA) As Boolean
+    Public Function RemoveEcospaceMPA(ByVal iMPADBID As Integer) As Boolean
         Dim bsucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
 
@@ -9384,7 +9396,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        bsucces = ds.RemoveEcospaceMPA(objMPA.DBID)
+        bsucces = ds.RemoveEcospaceMPA(iMPADBID)
 
         If bsucces Then
             ' Broadcast update
@@ -12451,13 +12463,23 @@ Public Class cCore
 
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecopath) Then Return False
 
+        ' Issue #796: in some daily build databases the description field cannot be empty
+        If String.IsNullOrEmpty(strDescription) Then strDescription = " "
+
         ds = DirectCast(Me.DataSource, IEcopathDataSource)
 
         Return ds.AddPedigreeLevel(iPosition, strName, iColor, strDescription, varName, sIndexValue, sConfidence, iDBID)
 
     End Function
 
-    Public Function RemovePedigreeLevel(ByVal iDBID As Integer) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Remove an existing pedigree level.
+    ''' </summary>
+    ''' <param name="iLevelDBID">The <see cref="cPedigreeLevel.DBID"/> of the level to remove.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function RemovePedigreeLevel(ByVal iLevelDBID As Integer) As Boolean
 
         Dim ds As IEcopathDataSource = Nothing
 
@@ -12469,17 +12491,19 @@ Public Class cCore
 
         ds = DirectCast(Me.DataSource, IEcopathDataSource)
 
-        Return ds.RemovePedigreeLevel(iDBID)
+        Return ds.RemovePedigreeLevel(iLevelDBID)
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Move a pedigree level to a new location in the pedigree levels list.
     ''' </summary>
-    ''' <param name="iLevel">The level <see cref="cCoreInputOutputbase.Index">Index</see></param>
+    ''' <param name="iLevelDBID">The <see cref="cPedigreeLevel.DBID"/> of the level to move.</param>
     ''' <param name="iIndex">The new posiition to move the level to.</param>
     ''' <returns>True if succesful.</returns>
-    Public Function MovePedigreeLevel(ByVal iLevel As Integer, ByVal iIndex As Integer) As Boolean
+    ''' -----------------------------------------------------------------------
+    Public Function MovePedigreeLevel(ByVal iLevelDBID As Integer, ByVal iIndex As Integer) As Boolean
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
 
@@ -12491,10 +12515,8 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcopathDataSource)
-        If ds.MovePedigreeLevel(Me.m_EcoPathData.PedigreeLevelDBID(iLevel), iIndex) Then
-
-            Me.DataAddedOrRemovedMessage("Ecopath pedigree order has changed.", eCoreComponentType.EcoPath, eDataTypes.PedigreeLevel)
-
+        If ds.MovePedigreeLevel(iLevelDBID, iIndex) Then
+            Me.DataModifiedMessage("Ecopath pedigree order has changed.", eCoreComponentType.EcoPath, eDataTypes.PedigreeLevel)
             bSucces = True
         End If
 

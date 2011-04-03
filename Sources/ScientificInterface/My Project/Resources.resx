@@ -1596,4 +1596,25 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="TAXON_DELETE_CONFIRMATION" xml:space="preserve">
     <value>You are about to delete taxa. This action cannot be undone. Are you sure you want to do this?</value>
   </data>
+  <data name="STATUS_MODEL_IMPORTING" xml:space="preserve">
+    <value>Importing {0}...</value>
+    <comment>{0}: model name</comment>
+  </data>
+  <data name="STATUS_ADVECTION_ITERATION" xml:space="preserve">
+    <value>Advection running iteration {0}</value>
+    <comment>{0}: iteration number</comment>
+  </data>
+  <data name="STATUS_ADVECTION_STARTED" xml:space="preserve">
+    <value>Starting Advection computations...</value>
+  </data>
+  <data name="STATUS_MSE_INITIALIZING" xml:space="preserve">
+    <value>Initializing MSE...</value>
+  </data>
+  <data name="STATUS_MSE_RUNNNG" xml:space="preserve">
+    <value>Running MSE...</value>
+  </data>
+  <data name="STATUS_TIMESERIES_LOADING" xml:space="preserve">
+    <value>Loading time series '{0}'...</value>
+    <comment>{0}: time series dataset name</comment>
+  </data>
 </root>

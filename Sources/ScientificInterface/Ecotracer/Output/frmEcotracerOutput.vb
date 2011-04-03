@@ -273,7 +273,7 @@ Public Class frmEcotracerOutput
     ''' -----------------------------------------------------------------------
     Private Sub StartModelRun()
         ' Reset progress
-        Me.UpdateProgess(0.0!)
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOTRACER_RUNNING)
         Me.UpdateControls()
         Me.IsRunning = True
     End Sub
@@ -288,9 +288,9 @@ Public Class frmEcotracerOutput
 
         'the rounding is for Ecospace it never actually gets to 1
         If (Math.Round(sProgress, 3) < 0.999F) Then
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_ECOTRACER_RUNNING, TriState.UseDefault, sProgress)
+            cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOTRACER_RUNNING, sProgress)
         Else
-            cApplicationStatusNotifier.SetStatusText("", TriState.UseDefault)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
             Me.IsRunning = False
         End If
 
@@ -357,8 +357,6 @@ Public Class frmEcotracerOutput
     Private Sub RefreshData()
 
         If Me.UIContext Is Nothing Then Return
-
-        Console.WriteLine(">> {0}: frmEcotracerOutput refreshed", Date.Now.ToLongTimeString)
 
         Dim modeNew As eDisplayModeTypes = Me.DisplayMode
 
@@ -461,18 +459,18 @@ Public Class frmEcotracerOutput
     End Sub
 
     Private Sub EcosimCallback(ByVal iTime As Long, ByVal data As cEcoSimResults)
-        'Ecosim callback()
         Try
-            UpdateProgess(CSng(iTime / Me.m_DisplayHelper.nStepPerYear))
+            If (iTime Mod cCore.N_MONTHS) = 0 Then
+                Me.UpdateProgess(CSng(iTime / Me.m_DisplayHelper.nStepPerYear))
+            End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
     End Sub
 
     Private Sub EcospaceCallback(ByRef EcospaceResults As cEcospaceTimestep)
-        'Ecospace callback()
         Try
-            UpdateProgess(CSng(EcospaceResults.TimeStepinYears / Me.m_DisplayHelper.nYears))
+            Me.UpdateProgess(CSng(EcospaceResults.TimeStepinYears / Me.m_DisplayHelper.nYears))
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try

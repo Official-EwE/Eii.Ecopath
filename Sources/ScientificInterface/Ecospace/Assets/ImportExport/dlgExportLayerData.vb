@@ -420,7 +420,7 @@ Namespace Ecospace.Basemap
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
 
             ' Populate local data
             For Each layer In dtMappings.Keys
@@ -465,7 +465,7 @@ Namespace Ecospace.Basemap
                     Me.WriteShapeFile(strFile)
             End Select
 
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             Return True
 

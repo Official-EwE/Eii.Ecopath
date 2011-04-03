@@ -1,4 +1,7 @@
-﻿#Region " Imports "
+﻿Imports EwECore
+Imports EwEUtils.Core
+
+#Region " Imports "
 
 #End Region ' Imports
 
@@ -14,21 +17,22 @@ Namespace Controls
     Public Class cApplicationStatusNotifier
 
         ''' <summary>The dispatcher that will receives and visualizes status feedback.</summary>
-        Private m_dispatcher As IApplicationStatusDispatcher = Nothing
+        Private m_core As cCore = Nothing
 
 #Region " Singleton "
 
         ''' <summary>Singleton instance of the status notifier.</summary>
         Private Shared __inst__ As cApplicationStatusNotifier
 
-        Public Sub New(ByVal dispatcher As IApplicationStatusDispatcher)
+        <Obsolete("Deprecated, but will be continued until SetStatusText is no longer used")> _
+        Public Sub New(ByVal core As cCore)
 
             ' Singleton asserts
             Debug.Assert(__inst__ Is Nothing)
-            Debug.Assert(dispatcher IsNot Nothing)
+            Debug.Assert(core IsNot Nothing)
 
             ' Store dispatcher
-            Me.m_dispatcher = dispatcher
+            Me.m_core = core
 
             ' Store singleton instance
             __inst__ = Me
@@ -63,6 +67,7 @@ Namespace Controls
         ''' </para>
         ''' </param>
         ''' -------------------------------------------------------------------
+        <Obsolete("Deprecated, use StartProcess, UpdateProgress, EndProgress instead")> _
         Public Shared Sub SetStatusText(Optional ByVal strText As String = "", _
                                         Optional ByVal tsUseWaitCursor As Microsoft.VisualBasic.TriState = Microsoft.VisualBasic.TriState.UseDefault, _
                                         Optional ByVal sProgress As Single = 0.0)
@@ -70,23 +75,71 @@ Namespace Controls
             ' Sanity check
             If (__inst__ Is Nothing) Then Return
 
-            ' Pass the word
-            __inst__.m_dispatcher.SetStatusText(strText, tsUseWaitCursor, sProgress)
+            Select Case tsUseWaitCursor
+                Case TriState.True
+                    StartProgress(__inst__.m_core, strText)
+                Case TriState.False
+                    EndProgress(__inst__.m_core)
+                Case TriState.UseDefault
+                    UpdateProgress(__inst__.m_core, strText, sProgress)
+            End Select
+
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Start progress status text feedback.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Shared Sub StartProgress(ByVal core As cCore, ByVal strText As String, _
+                                        Optional ByVal sProgress As Single = 0.0!)
+
+
+            If (core Is Nothing) Then Return
+            If (core.Messages Is Nothing) Then Return
+
+            Dim pmsg As New cProgressMessage(sProgress, strText, eMessageType.Progress)
+            pmsg.ProgressState = eProgressState.Start
+            core.Messages.SendMessage(pmsg, True)
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update progress.
+        ''' </summary>
+        ''' <param name="strText">The text to set.</param>
+        ''' <param name="sProgress">A value between 0 and 1 to control a progress
+        ''' bar, or -1 to display a continuous progress bar.</param>
+        ''' -------------------------------------------------------------------
+        Public Shared Sub UpdateProgress(ByVal core As cCore, ByVal strText As String, ByVal sProgress As Single)
+
+
+            If (core Is Nothing) Then Return
+            If (core.Messages Is Nothing) Then Return
+
+            Dim pmsg As New cProgressMessage(sProgress, strText, eMessageType.Progress)
+            pmsg.ProgressState = eProgressState.Running
+            core.Messages.SendMessage(pmsg, True)
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' End running progress feedback
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Shared Sub EndProgress(ByVal core As cCore)
+
+
+            If (core Is Nothing) Then Return
+            If (core.Messages Is Nothing) Then Return
+
+            Dim pmsg As New cProgressMessage(0, "", eMessageType.Progress)
+            pmsg.ProgressState = eProgressState.Finished
+            core.Messages.SendMessage(pmsg, True)
+
+        End Sub
     End Class
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Interface to implement status feedback.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Public Interface IApplicationStatusDispatcher
-
-        Sub SetStatusText(Optional ByVal strText As String = "", _
-            Optional ByVal tsUseWaitCursor As TriState = TriState.UseDefault, _
-            Optional ByVal sProgress As Single = 0.0)
-
-    End Interface
 
 End Namespace ' Controls

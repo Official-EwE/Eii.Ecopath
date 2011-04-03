@@ -139,7 +139,7 @@
     <value>m_plLayers</value>
   </data>
   <data name="&gt;&gt;m_plLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSmoothPanel, ScientificInterfaceShared, Version=6.1.1.315, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSmoothPanel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_plLayers.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -172,7 +172,7 @@
     <value>m_zoomToolbar</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucMapZoomToolbar, EwE6, Version=6.1.1.315, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.ucMapZoomToolbar, EwE6, Version=6.1.1.402, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -199,7 +199,7 @@
     <value>m_zoomContainer</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucMapZoom, EwE6, Version=6.1.1.315, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.ucMapZoom, EwE6, Version=6.1.1.402, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -250,7 +250,7 @@
     <value>m_hdrLayers</value>
   </data>
   <data name="&gt;&gt;m_hdrLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.315, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLayers.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -279,41 +279,50 @@
   <data name="tsbEditBasemap.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
   </data>
-  <data name="tsbEditHabitats.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbDefineHabitats.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsbEditHabitats.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsbDefineHabitats.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 37</value>
   </data>
-  <data name="tsbEditHabitats.Text" xml:space="preserve">
+  <data name="m_tsbDefineHabitats.Text" xml:space="preserve">
     <value>&amp;Habitat</value>
   </data>
-  <data name="tsbEditHabitats.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_tsbDefineHabitats.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
   </data>
-  <data name="tsbEditMPA.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbDefineHabitats.ToolTipText" xml:space="preserve">
+    <value>Define habitats</value>
+  </data>
+  <data name="m_tsbDefineMPA.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsbEditMPA.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsbDefineMPA.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 37</value>
   </data>
-  <data name="tsbEditMPA.Text" xml:space="preserve">
+  <data name="m_tsbDefineMPA.Text" xml:space="preserve">
     <value>&amp;MPA</value>
   </data>
-  <data name="tsbEditMPA.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_tsbDefineMPA.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
   </data>
-  <data name="tsbEditRegion.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbDefineMPA.ToolTipText" xml:space="preserve">
+    <value>Define Marine Protected Areas</value>
+  </data>
+  <data name="m_tsbDefineRegion.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsbEditRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 37</value>
+  <data name="m_tsbDefineRegion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 35</value>
   </data>
-  <data name="tsbEditRegion.Text" xml:space="preserve">
+  <data name="m_tsbDefineRegion.Text" xml:space="preserve">
     <value>&amp;Region</value>
   </data>
-  <data name="tsbEditRegion.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+  <data name="m_tsbDefineRegion.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageAboveText</value>
+  </data>
+  <data name="m_tsbDefineRegion.ToolTipText" xml:space="preserve">
+    <value>Define regions</value>
   </data>
   <data name="m_tsEditBasemapThingies.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -331,7 +340,7 @@
     <value>m_tsEditBasemapThingies</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.1.1.315, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -444,9 +453,6 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Basemap</value>
   </data>
@@ -456,28 +462,28 @@
   <data name="&gt;&gt;tsbEditBasemap.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsbEditHabitats.Name" xml:space="preserve">
-    <value>tsbEditHabitats</value>
+  <data name="&gt;&gt;m_tsbDefineHabitats.Name" xml:space="preserve">
+    <value>m_tsbDefineHabitats</value>
   </data>
-  <data name="&gt;&gt;tsbEditHabitats.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsbDefineHabitats.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsbEditMPA.Name" xml:space="preserve">
-    <value>tsbEditMPA</value>
+  <data name="&gt;&gt;m_tsbDefineMPA.Name" xml:space="preserve">
+    <value>m_tsbDefineMPA</value>
   </data>
-  <data name="&gt;&gt;tsbEditMPA.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsbDefineMPA.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsbEditRegion.Name" xml:space="preserve">
-    <value>tsbEditRegion</value>
+  <data name="&gt;&gt;m_tsbDefineRegion.Name" xml:space="preserve">
+    <value>m_tsbDefineRegion</value>
   </data>
-  <data name="&gt;&gt;tsbEditRegion.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsbDefineRegion.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Basemap</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.315, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

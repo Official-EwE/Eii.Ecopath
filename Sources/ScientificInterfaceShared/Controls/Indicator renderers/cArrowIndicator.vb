@@ -55,7 +55,7 @@ Namespace Controls
                 ' Draw arrow in requested color
                 Using p As New Pen(clr)
                     p.StartCap = LineCap.Round
-                    p.CustomEndCap = New AdjustableArrowCap(3, 3, bFilledArrow)
+                    p.CustomEndCap = New AdjustableArrowCap(2.2, 2.2, bFilledArrow)
                     g.DrawLine(p, 0, -5, 0, 5)
                 End Using
                 ' Clean up borrowed DC by restoring original transformation matrix

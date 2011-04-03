@@ -389,7 +389,7 @@ Public Class dlgManageTimeSeries
         Dim aitems(Me.m_uic.Core.nTimeSeriesDatasets - 1) As ListViewItem
         Me.m_lvLoadDatasets.Items.Clear()
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PLEASE_WAIT)
 
         Me.m_lvLoadDatasets.Items.Add(SharedResources.GENERIC_VALUE_NONE)
         For iDS As Integer = 1 To Me.m_uic.Core.nTimeSeriesDatasets
@@ -423,7 +423,7 @@ Public Class dlgManageTimeSeries
             Me.m_lvLoadDatasets.TopItem.Selected = True
         End If
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         Return True
 
     End Function
@@ -437,14 +437,14 @@ Public Class dlgManageTimeSeries
 
         Dim ds As cTimeSeriesDataset = Nothing
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_LOADING, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_LOADING)
         ds = Me.GetLoadSelectedDataset()
         If (ds IsNot Nothing) Then
             Me.m_uic.Core.LoadTimeSeries(ds.Index)
         Else
             Me.m_uic.Core.LoadTimeSeries(0)
         End If
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
         Me.UpdateWeightsPage(True)
 
@@ -548,7 +548,7 @@ Public Class dlgManageTimeSeries
 
         If (Not Me.m_bInitialized) Then Return
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PREVIEW_LOADING, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PREVIEW_LOADING)
         Try
             If TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then
                 Me.m_tr.Read(CStr(Me.m_tbImportDelimiter.Character), CStr(Me.m_tbImportSeparator.Character))
@@ -560,7 +560,7 @@ Public Class dlgManageTimeSeries
         Catch ex As Exception
 
         End Try
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
     End Sub
 
@@ -644,7 +644,7 @@ Public Class dlgManageTimeSeries
         ' So far so good?
         If (bSucces = True) Then
             ' #Yes: start importing
-            cApplicationStatusNotifier.SetStatusText(String.Format(My.Resources.STATUS_IMPORTING_DATASET, Me.DatasetName), TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, String.Format(My.Resources.STATUS_IMPORTING_DATASET, Me.DatasetName))
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
 
@@ -693,7 +693,7 @@ Public Class dlgManageTimeSeries
             Catch ex As Exception
                 bSucces = False
             End Try
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         End If
 
         ' Release appropriate level (this will reload the time series definitions)
@@ -702,9 +702,9 @@ Public Class dlgManageTimeSeries
         ' Need to apply on load?
         If (bSucces And Me.m_cbImportEnableOnImport.Checked) Then
             ' Reload time series
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PLEASE_WAIT)
             Me.m_uic.Core.LoadTimeSeries(iDataset, True)
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         End If
 
         ' Close dialog
@@ -725,7 +725,7 @@ Public Class dlgManageTimeSeries
         Dim aitems(Me.m_uic.Core.nTimeSeriesDatasets - 1) As ListViewItem
         Me.m_lvDeleteDatasets.Items.Clear()
 
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_PLEASE_WAIT, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PLEASE_WAIT)
 
         For iDS As Integer = 1 To Me.m_uic.Core.nTimeSeriesDatasets
             ' Get dataset
@@ -742,7 +742,7 @@ Public Class dlgManageTimeSeries
         Next
         Me.m_lvDeleteDatasets.Items.AddRange(aitems)
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         Return True
 
     End Function
@@ -761,7 +761,7 @@ Public Class dlgManageTimeSeries
 
         ' Save any changes
         If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
-        cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_LOADING, TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_LOADING)
 
         Try
             For Each ds As cTimeSeriesDataset In Me.GetDeleteSelectedDatasets
@@ -775,7 +775,7 @@ Public Class dlgManageTimeSeries
 
         ' TS dataset delete will reload Ecopath. It's a bit too brutal but hey, it will properly re-initialize TS
         Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSucces)
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
         Return bSucces
     End Function

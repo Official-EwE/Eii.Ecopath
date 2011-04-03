@@ -9,19 +9,19 @@ Public Class cProgressMessage
     Private m_state As eProgressState
     Private m_max As Single
 
-    Sub New(ByVal sProgress As Single, ByVal msgStr As String, ByVal msgType As eMessageType, ByVal msgSource As eCoreComponentType, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+    Sub New(ByVal sProgress As Single, ByVal msgStr As String, ByVal msgType As eMessageType, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
         Me.m_sProgress = sProgress
         Me.Message = msgStr
         Me.Type = msgType
-        Me.Source = msgSource
+        Me.Source = eCoreComponentType.External
         Me.DataType = msgDataType
         Me.Importance = eMessageImportance.Progress
     End Sub
 
 
     Sub New(ByVal State As eProgressState, ByVal MaxValue As Single, ByVal sProgress As Single, ByVal msgStr As String, ByVal msgType As eMessageType, _
-                    ByVal msgSource As eCoreComponentType, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
-        Me.New(sProgress, msgStr, msgType, msgSource, msgDataType)
+            Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+        Me.New(sProgress, msgStr, msgType, msgDataType)
 
         Me.m_state = State
         Me.m_max = MaxValue

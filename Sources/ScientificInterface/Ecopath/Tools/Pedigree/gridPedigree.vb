@@ -262,7 +262,7 @@ Namespace Ecopath.Tools
             ' while we're at it.
             If Not core.SetBatchLock(cCore.eBatchLockType.Update) Then Return
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_APPLYVALUES)
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
                 If TypeOf cell Is PropertyCell Then
                     Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
@@ -271,7 +271,7 @@ Namespace Ecopath.Tools
                     End If
                 End If
             Next
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
             core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
 

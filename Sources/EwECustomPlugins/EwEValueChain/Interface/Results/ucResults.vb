@@ -249,7 +249,7 @@ Public Class ucResults
         Me.m_model.IsManualRunMode = True
         Me.m_data.Parameters.RunWithEcopath = True
 
-        cApplicationStatusNotifier.SetStatusText("Running value chain for Ecopath, please wait...", TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_RUNNING_ECOPATH)
 
         Try
 
@@ -271,7 +271,7 @@ Public Class ucResults
         Me.m_model.IsManualRunMode = False
         Me.m_data.Parameters.RunWithEcopath = bOldRunFlag
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
     End Sub
 
@@ -284,7 +284,7 @@ Public Class ucResults
 
         Dim bOldRunFlag As Boolean = Me.m_data.Parameters.RunWithEcosim
 
-        cApplicationStatusNotifier.SetStatusText("Running value chain for Ecosim, please wait...", TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_RUNNING_ECOSIM)
 
         ' Switch to manual run mode
         Me.m_model.IsManualRunMode = True
@@ -310,7 +310,7 @@ Public Class ucResults
         Me.m_model.IsManualRunMode = False
         Me.m_data.Parameters.RunWithEcosim = bOldRunFlag
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
     End Sub
 
@@ -321,7 +321,7 @@ Public Class ucResults
 
     Private Sub OnInvokeRunEquilibrium(ByVal cmd As EwEUtils.Commands.cCommand)
 
-        cApplicationStatusNotifier.SetStatusText("Running value chain equilibrium, please wait...", TriState.True)
+        cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_RUNNING_EQUILIBRIUM)
 
         ' Switch to manual run mode
         Me.m_model.IsManualRunMode = True
@@ -339,7 +339,7 @@ Public Class ucResults
         ' Switch back to auto run mode
         Me.m_model.IsManualRunMode = False
 
-        cApplicationStatusNotifier.SetStatusText("", TriState.False)
+        cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
     End Sub
 

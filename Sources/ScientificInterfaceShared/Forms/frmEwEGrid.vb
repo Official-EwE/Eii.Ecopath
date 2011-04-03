@@ -443,7 +443,7 @@ Namespace Forms
                 ' while we're at it.
                 If Not core.SetBatchLock(cCore.eBatchLockType.Update) Then Return
 
-                cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
+                cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
                 Me.m_grid.BeginBatchEdit()
 
                 For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
@@ -467,7 +467,7 @@ Namespace Forms
                 Me.m_strValueOrg = strValue
 
                 Me.m_grid.EndBatchEdit()
-                cApplicationStatusNotifier.SetStatusText("", TriState.False)
+                cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
                 core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
 

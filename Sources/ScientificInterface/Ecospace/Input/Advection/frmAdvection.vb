@@ -233,10 +233,8 @@ Namespace Ecospace.Advection
         Private Sub OnCalcProgress(ByVal iIter As Integer)
 
             If iIter Mod 100 = 0 Then
-
                 ' Update app status
-                cApplicationStatusNotifier.SetStatusText("Advection running iteration " & iIter, TriState.UseDefault, -1)
-
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_ADVECTION_ITERATION, iIter), -1)
             End If
 
             ' Update data layer
@@ -343,7 +341,7 @@ Namespace Ecospace.Advection
             Me.m_bSearching = Me.m_manager.IsRunning
 
             If m_bSearching Then
-                cApplicationStatusNotifier.SetStatusText("Starting Advection computations...", TriState.True, -1)
+                cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ADVECTION_STARTED, -1)
                 Me.UpdateControls()
             End If
 
@@ -354,7 +352,7 @@ Namespace Ecospace.Advection
             If Not Me.m_bSearching Then Return
 
             Me.m_bSearching = False
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
             Me.m_manager.StopRun()
             Me.UpdateControls()
 

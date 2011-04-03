@@ -63,7 +63,7 @@ Namespace Ecopath.Tools
             Select Case style
                 Case eRenderStyleTypes.Colors
                     ' Use colour defined in the style guide for this level.
-                    Return Me.m_uic.StyleGuide.PedigreeColor(Me.m_uic.Core, level.VariableName, level.ID)
+                    Return Me.m_uic.StyleGuide.PedigreeColor(Me.m_uic.Core, level.VariableName, level.Sequence)
             End Select
 
             ' Return provided default
@@ -99,7 +99,7 @@ Namespace Ecopath.Tools
 
                 Case eRenderStyleTypes.Index
                     ' Represent level by its index (local to its manager)
-                    Dim iValue As Integer = level.ID
+                    Dim iValue As Integer = level.Sequence
                     If (iValue < 0) Then Return ""
                     Return Me.m_uic.StyleGuide.FormatNumber(iValue)
 
@@ -134,7 +134,7 @@ Namespace Ecopath.Tools
             NotSet = 0
             ''' <summary>Render pedigree cells as colours.</summary>
             Colors
-            ''' <summary>Render pedigree cells by <see cref="cPedigreeLevel.ID">level ID</see>.</summary>
+            ''' <summary>Render pedigree cells by <see cref="cPedigreeLevel.Sequence">level sequence</see>.</summary>
             Index
             ''' <summary>Render pedigree cells by <see cref="cPedigreeLevel.IndexValue">index value</see>.</summary>
             IndexValue

@@ -212,8 +212,7 @@ Namespace Ecosim
             Dim ppi As cPredPreyInteraction = Nothing
             Dim ffappl As eForcingFunctionApplication = Nothing
 
-            cApplicationStatusNotifier.SetStatusText(My.Resources.STATUS_APPLYVALUES, TriState.True)
-
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
             Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Update)
 
             ' Update Applied Shape info for this Pred Prey Pair
@@ -248,7 +247,7 @@ Namespace Ecosim
             End Try
 
             Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, True)
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()

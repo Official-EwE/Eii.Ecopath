@@ -3,8 +3,8 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls.Wizard
 Imports System.Threading
+Imports ScientificInterfaceShared.Controls.Wizard
 
 #End Region ' Imports
 
@@ -28,7 +28,8 @@ Namespace Import
         Private m_syncobj As SynchronizationContext = Nothing
         ''' <summary>Importing state flag.</summary>
         Private m_bImporting As Boolean = False
-
+        ''' <summary>UI context</summary>
+        Private m_uic As cUIContext = Nothing
         Private m_threadImport As Thread = Nothing
 
 #End Region ' Private vars
@@ -48,6 +49,8 @@ Namespace Import
             Debug.Assert(TypeOf (wizard) Is cImportWizard)
 
             Me.m_wizard = DirectCast(wizard, cImportWizard)
+            Me.m_uic = uic
+
             Me.m_pb.Minimum = 0
             Me.m_pb.Maximum = 100
 
@@ -57,9 +60,7 @@ Namespace Import
             If (Me.m_syncobj Is Nothing) Then Me.m_syncobj = New System.Threading.SynchronizationContext()
 
             ' Subscribe to core import messages
-            Me.m_mh = New cMessageHandler(AddressOf Me.ProgressMessageHandler, _
-                                          eCoreComponentType.DataSource, _
-                                          eMessageType.Any, Me.m_syncobj)
+            Me.m_mh = New cMessageHandler(AddressOf Me.ProgressMessageHandler, eCoreComponentType.External, eMessageType.DataImport, Me.m_syncobj)
             Me.m_mh.Name = "ucImportPageProcess"
             Me.m_wizard.Core.Messages.AddMessageHandler(Me.m_mh)
 
@@ -206,7 +207,8 @@ Namespace Import
                     ' #Yes: perform import of this model
 
                     ' Set global application status
-                    cApplicationStatusNotifier.SetStatusText("Importing " & setting.EwE6ModelName & "...", TriState.True)
+                    cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, String.Format(My.Resources.STATUS_MODEL_IMPORTING, setting.EwE6ModelName))
+
                     ' Set local import status
                     Me.SetImportStatus(True, String.Format(My.Resources.STATUS_IMPORTING_MODEL, setting.ModelInfo.Name))
 
@@ -222,7 +224,7 @@ Namespace Import
                     End If
 
                     ' Clear application status
-                    cApplicationStatusNotifier.SetStatusText("", TriState.False)
+                    cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
                 End If
             Next setting

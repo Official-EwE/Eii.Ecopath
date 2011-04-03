@@ -116,12 +116,12 @@ Imports SourceGrid2.Cells
             For iLevel = 0 To Me.m_lfiLevels.Count - 1
                 lvlInfo = DirectCast(Me.m_lfiLevels(iLevel), cPedigreeLevelInfo)
                 ' Check this Level is newly added
-                If Object.ReferenceEquals(lvlInfo.Level, Nothing) Then
+                If (lvlInfo.IsNew()) Then
                     Me.m_bConfigChanged = True
                 Else
                     Me.m_bConfigChanged = Me.m_bConfigChanged Or (lvlInfo.Index <> iLevel)
+                    Me.m_bLevelsChanged = Me.m_bLevelsChanged Or lvlInfo.IsChanged(Me.m_man.Level(lvlInfo.Index))
                 End If
-                Me.m_bLevelsChanged = Me.m_bLevelsChanged Or lvlInfo.IsChanged()
             Next iLevel
 
             Return True
@@ -178,27 +178,20 @@ Imports SourceGrid2.Cells
                 For iLevel = 0 To Me.m_lfiLevels.Count - 1
 
                     lvlInfo = DirectCast(Me.m_lfiLevels(iLevel), cPedigreeLevelInfo)
-                    If (Object.ReferenceEquals(lvlInfo.Level, Nothing)) Then
-                        bSuccess = bSuccess And Me.m_man.AddLevel(iLevel, _
-                                                                  Me.m_vn, _
-                                                                  lvlInfo.Name, _
-                                                                  lvlInfo.Color, _
-                                                                  lvlInfo.Description, _
-                                                                  lvlInfo.IndexValue, _
-                                                                  lvlInfo.ConfidenceInterval, _
-                                                                  iDBID)
+                    If (lvlInfo.IsNew()) Then
+                        bSuccess = bSuccess And Me.m_core.AddPedigreeLevel(Me.m_vn, iLevel, lvlInfo.Name, lvlInfo.Color, lvlInfo.Description, lvlInfo.IndexValue, lvlInfo.ConfidenceInterval, iDBID)
                     Else
-                        If (iLevel <> lvlInfo.Index) Then
-                            bSuccess = bSuccess And Me.m_core.MovePedigreeLevel(lvlInfo.Level.Index, iLevel)
+                        If ((iLevel + 1) <> lvlInfo.Index) Then
+                            bSuccess = bSuccess And Me.m_core.MovePedigreeLevel(lvlInfo.LevelDBID, (iLevel + 1))
                         End If
                     End If
                 Next
 
                 ' Remove deleted (and confirmed) Levels
                 For iLevel = 0 To Me.m_lfiLevelsRemoved.Count - 1
-                    lvlInfo = DirectCast(Me.m_lfiLevelsRemoved(iLevel), cPedigreeLevelInfo)
-                    If (Not Object.ReferenceEquals(lvlInfo.Level, Nothing)) Then
-                        bSuccess = bSuccess And (Me.m_man.RemoveLevel(lvlInfo.Level))
+                    lvlInfo = Me.m_lfiLevelsRemoved(iLevel)
+                    If (Not lvlInfo.IsNew()) Then
+                        bSuccess = bSuccess And (Me.m_core.RemovePedigreeLevel(lvlInfo.LevelDBID))
                     End If
                 Next
 
@@ -221,22 +214,24 @@ Imports SourceGrid2.Cells
             ' Levels may have been reloaded
             If (Me.m_bLevelsChanged) Then
 
+                ' Build quick map of (reloaded) levels
+                Dim dtLevels As New Dictionary(Of Integer, cPedigreeLevel)
+                For iLevel As Integer = 1 To Me.m_man.NumLevels
+                    level = Me.m_man.Level(iLevel)
+                    dtLevels(level.DBID) = level
+                Next
+
                 For Each lvlInfo As cPedigreeLevelInfo In Me.m_lfiLevels
-                    If lvlInfo.IsChanged() Then
-                        bUpdated = False
-                        ' Find (possibly reloaded) level that matches this lvlInfo
-                        For iLevel As Integer = 1 To Me.m_man.NumLevels
-                            level = Me.m_man.Level(iLevel)
-                            If level.DBID = lvlInfo.Level.DBID Then
-                                ' Only commint changes to prevent unnecessary updates
-                                If level.Name <> lvlInfo.Name Then level.Name = lvlInfo.Name
-                                If level.PoolColor <> lvlInfo.Color Then level.PoolColor = lvlInfo.Color
-                                If level.Description <> lvlInfo.Description Then level.Description = lvlInfo.Description
-                                If level.IndexValue <> lvlInfo.IndexValue Then level.IndexValue = lvlInfo.IndexValue
-                                If level.ConfidenceInterval <> lvlInfo.ConfidenceInterval Then level.ConfidenceInterval = lvlInfo.ConfidenceInterval
-                                bUpdated = True
-                            End If
-                        Next
+                    If Not lvlInfo.IsNew Then
+                        If lvlInfo.IsChanged(dtLevels(lvlInfo.LevelDBID)) Then
+                            ' Only commint changes to prevent unnecessary updates
+                            If level.Name <> lvlInfo.Name Then level.Name = lvlInfo.Name
+                            If level.PoolColor <> lvlInfo.Color Then level.PoolColor = lvlInfo.Color
+                            If level.Description <> lvlInfo.Description Then level.Description = lvlInfo.Description
+                            If level.IndexValue <> lvlInfo.IndexValue Then level.IndexValue = lvlInfo.IndexValue
+                            If level.ConfidenceInterval <> lvlInfo.ConfidenceInterval Then level.ConfidenceInterval = lvlInfo.ConfidenceInterval
+                            bUpdated = True
+                        End If
                         bSuccess = bSuccess And bUpdated
                     End If
                 Next
@@ -254,16 +249,14 @@ Imports SourceGrid2.Cells
     ''' in the EwE model.
     ''' </summary>
     ''' <remarks>
-    ''' This class can represent existing and new Levels. If this class has its
-    ''' <see cref="cPedigreeLevelInfo.Level">Level</see> parameter set, a real live
-    ''' Level is represented. If this parameter is not set, a new Level is
-    ''' represented.
+    ''' This class can represent existing and new Levels.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Protected Class cPedigreeLevelInfo
 
-        ''' <summary><see cref="cPedigreeLevel">cPedigreeLevel</see> associated with this info, if any.</summary>
-        Private m_level As cPedigreeLevel = Nothing
+        Private m_iLevelDBID As Integer = cCore.NULL_VALUE
+        Private m_iLevelIndex As Integer = cCore.NULL_VALUE
+
         ''' <summary>Name for this level.</summary>
         Private m_strName As String = ""
         ''' <summary>Level color.</summary>
@@ -277,7 +270,7 @@ Imports SourceGrid2.Cells
         ''' <summary>The status of a Level in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
         ''' <summary>Index of the pedigree level in its manager.</summary>
-        Private m_ID As Integer = 0
+        Private m_iSequence As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -288,15 +281,19 @@ Imports SourceGrid2.Cells
         ''' Level currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal level As cPedigreeLevel)
+
             Debug.Assert(level IsNot Nothing)
-            Me.m_level = level
+
+            Me.m_iLevelDBID = level.DBID
+            Me.m_iLevelIndex = level.Index
+
             Me.m_strName = level.Name
             Me.m_iColor = level.PoolColor
             Me.m_strDescription = level.Description
             Me.m_sIndexValue = level.IndexValue
             Me.m_iConfidenceInterval = level.ConfidenceInterval
             Me.m_status = eItemStatusTypes.Original
-            Me.m_ID = level.ID
+            Me.m_iSequence = level.Sequence
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -309,7 +306,6 @@ Imports SourceGrid2.Cells
                        Optional ByVal sIndexValue As Single = 0.0!, _
                        Optional ByVal iConfidenceInterval As Integer = 0)
 
-            Me.m_level = Nothing
             If strName.IndexOf("|"c) > -1 Then
                 Dim astrSplit As String() = strName.Split("|"c)
                 Me.m_strName = astrSplit(0)
@@ -368,13 +364,23 @@ Imports SourceGrid2.Cells
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="cPedigreeLevel">EwE Level</see> associated
-        ''' with a level.
+        ''' Get the DBID associated with a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Level() As cPedigreeLevel
+        Public ReadOnly Property LevelDBID() As Integer
             Get
-                Return Me.m_level
+                Return Me.m_iLevelDBID
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the index associated with a level.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property LevelIndex() As Integer
+            Get
+                Return Me.m_iLevelIndex
             End Get
         End Property
 
@@ -419,10 +425,10 @@ Imports SourceGrid2.Cells
         ''' -------------------------------------------------------------------
         Public Property Index() As Integer
             Get
-                Return Me.m_ID
+                Return Me.m_iSequence
             End Get
             Set(ByVal value As Integer)
-                Me.m_ID = value
+                Me.m_iSequence = value
             End Set
         End Property
 
@@ -438,6 +444,10 @@ Imports SourceGrid2.Cells
             End Get
         End Property
 
+        Public Function IsNew() As Boolean
+            Return (Me.m_iLevelDBID = cCore.NULL_VALUE)
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' States whether the underlying <see cref="cPedigreeLevel">pedigree level</see>
@@ -448,13 +458,13 @@ Imports SourceGrid2.Cells
         ''' has been changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged() As Boolean
-            If Me.m_level Is Nothing Then Return False
-            Return (Me.m_level.Name <> Me.Name) Or _
-                   (Me.m_level.PoolColor <> Me.m_iColor) Or _
-                   (Me.m_level.Description <> Me.Description) Or _
-                   (Me.m_level.IndexValue <> Me.IndexValue) Or _
-                   (Me.m_level.ConfidenceInterval <> Me.ConfidenceInterval)
+        Public Function IsChanged(ByVal level As cPedigreeLevel) As Boolean
+            If (Me.m_iLevelDBID <> level.DBID) Then Return False
+            Return (level.Name <> Me.Name) Or _
+                   (level.PoolColor <> Me.m_iColor) Or _
+                   (level.Description <> Me.Description) Or _
+                   (level.IndexValue <> Me.IndexValue) Or _
+                   (level.ConfidenceInterval <> Me.ConfidenceInterval)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -468,7 +478,7 @@ Imports SourceGrid2.Cells
                 Return Me.m_status = eItemStatusTypes.Removed
             End Get
             Set(ByVal bDelete As Boolean)
-                If Me.m_level IsNot Nothing Then
+                If Not Me.IsNew() Then
                     If bDelete Then
                         Me.m_status = eItemStatusTypes.Removed
                     Else
@@ -821,7 +831,7 @@ Imports SourceGrid2.Cells
 
         For iRow As Integer = iFIRSTDATAROW To Me.RowsCount - 1
             lvlInfo = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cPedigreeLevelInfo)
-            If (Object.ReferenceEquals(lvlInfo.Level, Level)) Then
+            If (lvlInfo.LevelDBID = Level.DBID) Then
                 Me.SelectRow(iRow)
                 Return
             End If
@@ -1132,7 +1142,7 @@ Imports SourceGrid2.Cells
 
             ' Ooh!
             If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
-            cApplicationStatusNotifier.SetStatusText(My.Resources.GENERIC_STATUS_APPLYCHANGES, TriState.True)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
 
             For Each manInfo As cPedigreeManagerInfo In Me.m_dictConfigs.Values
                 bSucces = bSucces And manInfo.ApplyConfigChanges()
@@ -1140,7 +1150,7 @@ Imports SourceGrid2.Cells
 
             ' The core will reload now
             Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
-            cApplicationStatusNotifier.SetStatusText("", TriState.False)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End If
 

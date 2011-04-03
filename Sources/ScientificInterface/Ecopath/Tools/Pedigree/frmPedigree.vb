@@ -243,7 +243,7 @@ Namespace Ecopath.Tools
                 If (TypeOf item Is cPedigreeLevelListboxItem) Then
                     level = DirectCast(item, cPedigreeLevelListboxItem).Level
                     If (level IsNot Nothing) Then
-                        iValue = level.ID
+                        iValue = level.Sequence
                     End If
                 End If
             End If
