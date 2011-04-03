@@ -38,7 +38,7 @@ Namespace Ecopath
             Me.m_hdrColors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_grid = New ScientificInterface.gridEditFleets
+            Me.m_grid = New ScientificInterface.gridDefineFleets
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -188,7 +188,7 @@ Namespace Ecopath
         Private WithEvents m_btnInsert As System.Windows.Forms.Button
         Private WithEvents m_hdrEdit As cEwEHeaderLabel
         Private WithEvents m_hdrOrder As cEwEHeaderLabel
-        Private WithEvents m_grid As gridEditFleets
+        Private WithEvents m_grid As gridDefineFleets
         Private WithEvents m_btnDefaultAll As System.Windows.Forms.Button
         Private WithEvents m_hdrColors As cEwEHeaderLabel
         Private WithEvents m_btnDefaultCurrent As System.Windows.Forms.Button

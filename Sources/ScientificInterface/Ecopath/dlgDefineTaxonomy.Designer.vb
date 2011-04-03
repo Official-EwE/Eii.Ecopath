@@ -35,10 +35,10 @@ Partial Class dlgDefineTaxa
         Me.m_lbTerm = New System.Windows.Forms.Label
         Me.m_tbSearch = New System.Windows.Forms.TextBox
         Me.m_cmbEngine = New System.Windows.Forms.ComboBox
-        Me.m_btnConfigure = New System.Windows.Forms.Button
+        Me.m_btnConnect = New System.Windows.Forms.Button
         Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox
         Me.m_scMain = New System.Windows.Forms.SplitContainer
-        Me.m_gridGroups = New ScientificInterface.gridEditGroupTaxon
+        Me.m_gridGroups = New ScientificInterface.gridDefineTaxonomy
         Me.m_tcMain = New System.Windows.Forms.TabControl
         Me.m_tpSearch = New System.Windows.Forms.TabPage
         Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults
@@ -69,6 +69,8 @@ Partial Class dlgDefineTaxa
         Me.m_lbCommon = New System.Windows.Forms.Label
         Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_btnProps = New System.Windows.Forms.Button
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
@@ -136,11 +138,11 @@ Partial Class dlgDefineTaxa
         Me.m_cmbEngine.Items.AddRange(New Object() {resources.GetString("m_cmbEngine.Items"), resources.GetString("m_cmbEngine.Items1"), resources.GetString("m_cmbEngine.Items2")})
         Me.m_cmbEngine.Name = "m_cmbEngine"
         '
-        'm_btnConfigure
+        'm_btnConnect
         '
-        resources.ApplyResources(Me.m_btnConfigure, "m_btnConfigure")
-        Me.m_btnConfigure.Name = "m_btnConfigure"
-        Me.m_btnConfigure.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnConnect, "m_btnConnect")
+        Me.m_btnConnect.Name = "m_btnConnect"
+        Me.m_btnConnect.UseVisualStyleBackColor = True
         '
         'm_cbIncludeExtent
         '
@@ -208,7 +210,7 @@ Partial Class dlgDefineTaxa
         Me.m_tpSearch.Controls.Add(Me.m_tbSearch)
         Me.m_tpSearch.Controls.Add(Me.m_lblEngine)
         Me.m_tpSearch.Controls.Add(Me.m_lbTerm)
-        Me.m_tpSearch.Controls.Add(Me.m_btnConfigure)
+        Me.m_tpSearch.Controls.Add(Me.m_btnConnect)
         resources.ApplyResources(Me.m_tpSearch, "m_tpSearch")
         Me.m_tpSearch.Name = "m_tpSearch"
         '
@@ -419,6 +421,17 @@ Partial Class dlgDefineTaxa
         resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
         Me.m_hdrEdit.Name = "m_hdrEdit"
         '
+        'm_hdrProps
+        '
+        resources.ApplyResources(Me.m_hdrProps, "m_hdrProps")
+        Me.m_hdrProps.Name = "m_hdrProps"
+        '
+        'm_btnProps
+        '
+        resources.ApplyResources(Me.m_btnProps, "m_btnProps")
+        Me.m_btnProps.Name = "m_btnProps"
+        Me.m_btnProps.UseVisualStyleBackColor = True
+        '
         'dlgDefineTaxa
         '
         resources.ApplyResources(Me, "$this")
@@ -429,9 +442,11 @@ Partial Class dlgDefineTaxa
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.m_hdrEdit)
+        Me.Controls.Add(Me.m_hdrProps)
         Me.Controls.Add(Me.m_hdrOrder)
         Me.Controls.Add(Me.m_btnKeep)
         Me.Controls.Add(Me.m_btnMoveDown)
+        Me.Controls.Add(Me.m_btnProps)
         Me.Controls.Add(Me.m_btnMoveUp)
         Me.Controls.Add(Me.m_btnRemove)
         Me.Controls.Add(Me.m_btnAdd)
@@ -451,7 +466,7 @@ Partial Class dlgDefineTaxa
 
     End Sub
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
-    Private WithEvents m_gridGroups As ScientificInterface.gridEditGroupTaxon
+    Private WithEvents m_gridGroups As ScientificInterface.gridDefineTaxonomy
     Private WithEvents m_hdrOrder As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_btnKeep As System.Windows.Forms.Button
     Private WithEvents m_btnMoveDown As System.Windows.Forms.Button
@@ -462,7 +477,7 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_lbTerm As System.Windows.Forms.Label
     Private WithEvents m_tbSearch As System.Windows.Forms.TextBox
     Private WithEvents m_cmbEngine As System.Windows.Forms.ComboBox
-    Private WithEvents m_btnConfigure As System.Windows.Forms.Button
+    Private WithEvents m_btnConnect As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Private WithEvents m_cbIncludeExtent As System.Windows.Forms.CheckBox
     Private WithEvents m_tcMain As System.Windows.Forms.TabControl
@@ -494,5 +509,7 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_cmbPhylum As System.Windows.Forms.ComboBox
     Private WithEvents m_lblPhylum As System.Windows.Forms.Label
     Private WithEvents m_btnSearchPhylum As System.Windows.Forms.Button
+    Private WithEvents m_hdrProps As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_btnProps As System.Windows.Forms.Button
 
 End Class

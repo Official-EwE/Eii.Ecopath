@@ -35,7 +35,7 @@ Namespace Ecopath
             Me.m_cmbVariable = New System.Windows.Forms.ComboBox
             Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_grid = New ScientificInterface.gridEditPedigree
+            Me.m_grid = New ScientificInterface.gridDefinePedigree
             Me.m_scYupi = New System.Windows.Forms.SplitContainer
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.m_lblDescription = New System.Windows.Forms.Label
@@ -242,7 +242,7 @@ Namespace Ecopath
         Private WithEvents m_btnInsert As System.Windows.Forms.Button
         Private WithEvents m_hdrEdit As cEwEHeaderLabel
         Private WithEvents m_hdrOrder As cEwEHeaderLabel
-        Private WithEvents m_grid As gridEditPedigree
+        Private WithEvents m_grid As gridDefinePedigree
         Private WithEvents m_lblVariable As System.Windows.Forms.Label
         Private WithEvents m_cmbVariable As System.Windows.Forms.ComboBox
         Private WithEvents m_scYupi As System.Windows.Forms.SplitContainer

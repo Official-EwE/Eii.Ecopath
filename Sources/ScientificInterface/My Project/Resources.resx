@@ -1589,4 +1589,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Trial {0} - {1}</value>
     <comment>{0}: trial number, {1} trial detail</comment>
   </data>
+  <data name="PROMPT_ERROR_CONNECTION" xml:space="preserve">
+    <value>An error occurred while trying to connect to '{0}': {1}</value>
+    <comment>{0}: connection target, {1}: error message</comment>
+  </data>
+  <data name="TAXON_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>You are about to delete taxa. This action cannot be undone. Are you sure you want to do this?</value>
+  </data>
 </root>

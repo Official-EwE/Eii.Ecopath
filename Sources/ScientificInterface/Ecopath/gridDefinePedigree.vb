@@ -17,7 +17,7 @@ Imports SourceGrid2.Cells
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
-   Public Class gridEditPedigree
+   Public Class gridDefinePedigree
     : Inherits EwEGrid
 
 #Region " Private vars "

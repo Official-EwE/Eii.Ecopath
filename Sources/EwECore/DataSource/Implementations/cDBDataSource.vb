@@ -3236,6 +3236,22 @@ Namespace DataSources
             drow("GenusName") = data.Genus
             drow("SpeciesName") = data.Species
             drow("CommonName") = data.Common
+
+            ' Add bonus data if available
+            If TypeOf (data) Is ITaxonDetailsData Then
+                Dim dataDetails As ITaxonDetailsData = DirectCast(data, ITaxonDetailsData)
+                drow("EcologyType") = dataDetails.EcologyType
+                drow("OrganismType") = dataDetails.OrganismType
+                drow("Exploited") = dataDetails.Exploited
+                drow("ConservationStatus") = dataDetails.IUCNConservationStatus
+                drow("OccurenceStatus") = dataDetails.OccurrenceStatus
+                drow("MeanWeight") = dataDetails.MeanWeight
+                drow("MeanLength") = dataDetails.MeanLength
+                drow("MaxLength") = dataDetails.MaxLength
+                drow("MeanLifeSpan") = dataDetails.MeanLifespan
+                drow("VulnerabiltyIndex") = dataDetails.VulnerabilityIndex
+            End If
+
             drow("SourceName") = data.Source
             drow("SourceKey") = data.SourceKey
             drow("LastUpdated") = cDateUtils.DateToJulian()

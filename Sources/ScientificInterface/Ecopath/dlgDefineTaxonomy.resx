@@ -151,7 +151,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -184,7 +184,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRemove.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="m_btnKeep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -223,7 +223,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnKeep.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_btnMoveDown.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -262,7 +262,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnMoveDown.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_btnMoveUp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -301,7 +301,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnMoveUp.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -450,37 +450,37 @@
   <data name="&gt;&gt;m_cmbEngine.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_btnConfigure.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnConnect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnConfigure.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+  <data name="m_btnConnect.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="m_btnConfigure.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnConnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnConfigure.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnConnect.Location" type="System.Drawing.Point, System.Drawing">
     <value>504, 30</value>
   </data>
-  <data name="m_btnConfigure.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnConnect.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 23</value>
   </data>
-  <data name="m_btnConfigure.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnConnect.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="m_btnConfigure.Text" xml:space="preserve">
-    <value>&amp;Configure...</value>
+  <data name="m_btnConnect.Text" xml:space="preserve">
+    <value>&amp;Connect...</value>
   </data>
-  <data name="&gt;&gt;m_btnConfigure.Name" xml:space="preserve">
-    <value>m_btnConfigure</value>
+  <data name="&gt;&gt;m_btnConnect.Name" xml:space="preserve">
+    <value>m_btnConnect</value>
   </data>
-  <data name="&gt;&gt;m_btnConfigure.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnConnect.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnConfigure.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnConnect.Parent" xml:space="preserve">
     <value>m_tpSearch</value>
   </data>
-  <data name="&gt;&gt;m_btnConfigure.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnConnect.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="m_cbIncludeExtent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -544,7 +544,7 @@
     <value>m_gridGroups</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Type" xml:space="preserve">
-    <value>ScientificInterface.gridEditGroupTaxon, EwE6, Version=6.1.1.322, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.1.1.402, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -580,7 +580,7 @@
     <value>m_gridResults</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.1.1.322, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.1.1.402, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
     <value>m_tpSearch</value>
@@ -714,8 +714,8 @@
   <data name="m_btnSearchPhylum.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDQAA
-        Cw0B7QfALAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
+        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
         amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
         sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
         gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
@@ -760,8 +760,8 @@
   <data name="m_btnSearchClass.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDQAA
-        Cw0B7QfALAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
+        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
         amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
         sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
         gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
@@ -806,8 +806,8 @@
   <data name="m_btnSearchOrder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDQAA
-        Cw0B7QfALAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
+        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
         amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
         sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
         gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
@@ -852,8 +852,8 @@
   <data name="m_btnSearchFamily.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDQAA
-        Cw0B7QfALAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
+        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
         amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
         sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
         gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
@@ -898,8 +898,8 @@
   <data name="m_btnSearchGenus.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDQAA
-        Cw0B7QfALAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
+        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
         amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
         sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
         gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
@@ -944,8 +944,8 @@
   <data name="m_btnSearchSpecies.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDQAA
-        Cw0B7QfALAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
+        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
         amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
         sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
         gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
@@ -990,8 +990,8 @@
   <data name="m_btnSearchCommon.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDQAA
-        Cw0B7QfALAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
+        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
         amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
         sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
         gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
@@ -1523,13 +1523,13 @@
     <value>m_hdrOrder</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_hdrEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1556,13 +1556,85 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="m_hdrProps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_hdrProps.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrProps.Location" type="System.Drawing.Point, System.Drawing">
+    <value>647, 201</value>
+  </data>
+  <data name="m_hdrProps.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 18</value>
+  </data>
+  <data name="m_hdrProps.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_hdrProps.Text" xml:space="preserve">
+    <value>Proportions</value>
+  </data>
+  <data name="m_hdrProps.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrProps.Name" xml:space="preserve">
+    <value>m_hdrProps</value>
+  </data>
+  <data name="&gt;&gt;m_hdrProps.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrProps.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrProps.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_btnProps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnProps.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Popup</value>
+  </data>
+  <data name="m_btnProps.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnProps.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnProps.Location" type="System.Drawing.Point, System.Drawing">
+    <value>646, 222</value>
+  </data>
+  <data name="m_btnProps.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 23</value>
+  </data>
+  <data name="m_btnProps.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_btnProps.Text" xml:space="preserve">
+    <value>&amp;Sum to one</value>
+  </data>
+  <data name="m_btnProps.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
+  </data>
+  <data name="&gt;&gt;m_btnProps.Name" xml:space="preserve">
+    <value>m_btnProps</value>
+  </data>
+  <data name="&gt;&gt;m_btnProps.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnProps.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnProps.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

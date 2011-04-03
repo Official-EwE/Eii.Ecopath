@@ -241,6 +241,15 @@ Public Class dlgDefineTaxa
         End Try
     End Sub
 
+    Private Sub m_btnProps_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnProps.Click
+        Try
+            Me.m_gridGroups.NormalizeProportions(True)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
     'Private Sub OnUpdateCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
     '    Handles m_btnUpdate.Click
     '    ' Hmm
@@ -269,10 +278,10 @@ Public Class dlgDefineTaxa
         End Try
     End Sub
 
-    Private Sub OnConfigure(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnConfigure.Click
+    Private Sub OnConnect(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnConnect.Click
         Try
-            Me.ConfigureSelectedDataProducer()
+            Me.ConnectSelectedDataProducer()
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -453,7 +462,7 @@ Public Class dlgDefineTaxa
 
         ' Config search controls
         Me.m_cmbEngine.Enabled = Me.m_bHasSearchEngines
-        Me.m_btnConfigure.Enabled = bCanConfig
+        Me.m_btnConnect.Enabled = bCanConfig
         Me.m_tbSearch.Enabled = bCanSearch
         Me.m_cbIncludeExtent.Enabled = bCanSearch
         Me.m_gridResults.Enabled = bCanSearch
@@ -569,7 +578,7 @@ Public Class dlgDefineTaxa
         End Get
     End Property
 
-    Private Sub ConfigureSelectedDataProducer()
+    Private Sub ConnectSelectedDataProducer()
 
         Dim prod As IDataSearchProducerPlugin = Me.SelectedDataProducer
         Dim frm As Form = Nothing
@@ -587,7 +596,10 @@ Public Class dlgDefineTaxa
             frm.ShowDialog(Me)
 
         Catch ex As Exception
-
+            ' Send an error
+            Dim msg As New cMessage(String.Format(My.Resources.PROMPT_ERROR_CONNECTION, prod.Name, ex.Message), _
+                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
+            Me.m_uic.Core.Messages.SendMessage(msg)
         End Try
 
         Me.UpdateControls()

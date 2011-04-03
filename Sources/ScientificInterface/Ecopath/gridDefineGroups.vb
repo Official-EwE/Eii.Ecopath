@@ -18,7 +18,7 @@ Imports SourceGrid2
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
-Public Class gridEditGroups
+Public Class gridDefineGroups
     Inherits EwEGrid
 
 #Region " Private vars "
@@ -89,24 +89,24 @@ Public Class gridEditGroups
     ''' in the EwE model.
     ''' </summary>
     ''' <remarks>
-    ''' This class can represent existing and new groups. If this class has its
-    ''' <see cref="cGroupInfo.Group">Group</see> parameter set, a real live
-    ''' group is represented. If this parameter is not set, a new group is
-    ''' represented.
+    ''' This class can represent existing and new groups.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Private Class cGroupInfo
 
-        ''' <summary><see cref="cEcoPathGroupInput">Group</see> associated with this group, if any.</summary>
-        Private m_group As cEcoPathGroupInput = Nothing
+        Private m_iGroupDBID As Integer = cCore.NULL_VALUE
+        Private m_iGroupIndex As Integer = cCore.NULL_VALUE
+
         ''' <summary>PP value for this group.</summary>
         Private m_sPP As Single = 0.0
         ''' <summary>Name for this group.</summary>
         Private m_strName As String = ""
         ''' <summary>Group color.</summary>
         Private m_iColor As Integer = 0
+
         ''' <summary>Stanza configuration this group belongs to, if any.</summary>
         Private m_stanza As cStanzaInfo = Nothing
+
         ''' <summary>Age of this group within a stanza configuration.</summary>
         Private m_iStanzaAge As Integer = 0
         ''' <summary>Mortality of this group within a stanza configuration.</summary>
@@ -115,6 +115,9 @@ Public Class gridEditGroups
         Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a group in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
+
+        Private m_sVBK As Single = cCore.NULL_VALUE
+        Private m_sVBKStanza As Single = cCore.NULL_VALUE
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -125,8 +128,10 @@ Public Class gridEditGroups
         ''' group currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal group As cEcoPathGroupInput)
-            Debug.Assert(group IsNot Nothing)
-            Me.m_group = group
+            Me.m_iGroupDBID = CInt(group.GetVariable(eVarNameFlags.DBID))
+            Me.m_iGroupIndex = group.Index
+            Me.m_sVBK = group.VBK
+
             Me.m_strName = group.Name
             Me.m_sPP = group.PP
             Me.m_iColor = group.PoolColor
@@ -140,7 +145,6 @@ Public Class gridEditGroups
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal strName As String)
-            Me.m_group = Nothing
             Me.m_strName = strName
             Me.m_sPP = CSng(ePrimaryProductionTypes.Consumer)
             Me.m_iColor = 0
@@ -197,9 +201,15 @@ Public Class gridEditGroups
         ''' with this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Group() As cEcoPathGroupInput
+        Public ReadOnly Property GroupDBID() As Integer
             Get
-                Return Me.m_group
+                Return Me.m_iGroupDBID
+            End Get
+        End Property
+
+        Public ReadOnly Property GroupIndex() As Integer
+            Get
+                Return Me.m_iGroupIndex
             End Get
         End Property
 
@@ -208,6 +218,11 @@ Public Class gridEditGroups
         ''' Get/set the stanza configuration this administrative unit is part of,
         ''' if any. Set this property to Nothing to clear a stanza assigment.
         ''' </summary>
+        ''' <remarks>
+        ''' No need to replace stanza member with a stanza dbid, since stanza
+        ''' are only assessed in Apply prior to core reloads. Oh, this interface
+        ''' is hokey...
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Property Stanza() As cStanzaInfo
             Get
@@ -215,6 +230,7 @@ Public Class gridEditGroups
             End Get
             Set(ByVal value As cStanzaInfo)
                 Me.m_stanza = value
+                If (value IsNot Nothing) Then Me.m_sVBKStanza = value.VBK
             End Set
         End Property
 
@@ -287,13 +303,15 @@ Public Class gridEditGroups
         ''' values or <see cref="Color">Color </see> has changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged() As Boolean
+        Public Function IsChanged(ByVal group As cEcoPathGroupInput) As Boolean
 
             If (Me.IsNew()) Then Return False
 
-            Return (Me.m_group.Name <> Me.m_strName) Or _
-                   (Me.m_group.PP <> Me.m_sPP) Or _
-                   (Me.m_group.PoolColor <> Me.m_iColor)
+            Debug.Assert(Me.m_iGroupDBID = CInt(group.GetVariable(eVarNameFlags.DBID)))
+
+            Return (group.Name <> Me.m_strName) Or _
+                   (group.PP <> Me.m_sPP) Or _
+                   (group.PoolColor <> Me.m_iColor)
 
         End Function
 
@@ -303,7 +321,7 @@ Public Class gridEditGroups
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function IsNew() As Boolean
-            Return (Me.m_group Is Nothing)
+            Return (Me.m_iGroupDBID = cCore.NULL_VALUE)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -320,7 +338,7 @@ Public Class gridEditGroups
             ' Not a stanza group: no lifestage changes
             If Me.Stanza Is Nothing Then Return False
             ' No group? New but part of a stanza: lifestage changed
-            If Me.Group Is Nothing Then Return True
+            If Me.IsNew() Then Return True
 
             sg = Me.Stanza.StanzaGroup
 
@@ -329,7 +347,7 @@ Public Class gridEditGroups
 
             ' Find pos of this group in the original stanza group
             For i As Integer = 0 To sg.NStanzas - 1
-                If sg.iGroups(i) = (Me.Group.Index - 1) Then
+                If sg.iGroups(i) = (Me.GroupIndex - 1) Then
                     iStanza = i
                 End If
             Next
@@ -350,13 +368,13 @@ Public Class gridEditGroups
         Public ReadOnly Property VBK() As Single
             Get
                 If (Me.m_stanza Is Nothing) Then
-                    If (Me.m_group Is Nothing) Then
-                        Return gridEditGroups.sVBK
+                    If (Me.IsNew()) Then
+                        Return gridDefineGroups.sVBK
                     Else
-                        Return Me.m_group.VBK
+                        Return Me.m_sVBK
                     End If
                 Else
-                    Return Me.m_stanza.VBK
+                    Return Me.m_sVBKStanza
                 End If
             End Get
         End Property
@@ -371,7 +389,7 @@ Public Class gridEditGroups
                 Return Me.m_status = eItemStatusTypes.Removed
             End Get
             Set(ByVal bDelete As Boolean)
-                If Me.m_group IsNot Nothing Then
+                If Not Me.IsNew() Then
                     If bDelete Then
                         Me.m_status = eItemStatusTypes.Removed
                     Else
@@ -407,7 +425,7 @@ Public Class gridEditGroups
         ''' <summary>List of groups in this stanza configuration.</summary>
         Private m_alGroups As New List(Of cGroupInfo)
         ''' <summary>VBK value of a stanza group.</summary>
-        Private m_sVBK As Single = gridEditGroups.sVBK
+        Private m_sVBK As Single = gridDefineGroups.sVBK
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -437,7 +455,7 @@ Public Class gridEditGroups
         Public Sub New(ByVal strName As String)
             Me.m_sg = Nothing
             Me.m_strName = strName
-            Me.m_sVBK = gridEditGroups.sVBK
+            Me.m_sVBK = gridDefineGroups.sVBK
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -589,10 +607,10 @@ Public Class gridEditGroups
                 ' Get group info admin unit
                 gi = Me.m_alGroups(i)
                 ' Is a new group? Flag as changed
-                If Object.ReferenceEquals(gi.Group, Nothing) Then Return True
+                If Me.IsNew() Then Return True
                 ' Is an existing group. Now check if group order has changed.
                 group = core.EcoPathGroupInputs(Me.StanzaGroup.iGroups(i + 1))
-                If Not Object.ReferenceEquals(gi.Group, group) Then Return True
+                If gi.GroupIndex <> group.Index Then Return True
                 ' Check if stanza age has changed
                 If gi.StanzaAge <> Me.StanzaGroup.StartAge(i + 1) Then Return True
             Next i
@@ -1475,7 +1493,7 @@ Public Class gridEditGroups
 
         For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
             gi = DirectCast(Me.m_lgiGroups(iRow - iFIRSTGROUPROW), cGroupInfo)
-            If (Object.ReferenceEquals(gi.Group, group)) Then
+            If (gi.GroupIndex = group.Index) Then
                 Me.SelectRow(iRow)
                 Return
             End If
@@ -1785,9 +1803,9 @@ Public Class gridEditGroups
                 bConfigurationChanged = True
             Else
                 ' Check if this existing group has moved
-                bConfigurationChanged = bConfigurationChanged Or ((iGroup + 1) <> gi.Group.Index)
+                bConfigurationChanged = bConfigurationChanged Or ((iGroup + 1) <> gi.GroupIndex)
                 ' Check if this exisitng group has been modified
-                bGroupsChanged = bGroupsChanged Or gi.IsChanged()
+                bGroupsChanged = bGroupsChanged Or gi.IsChanged(Me.Core.EcoPathGroupInputs(gi.GroupIndex))
             End If
         Next iGroup
 
@@ -1860,8 +1878,8 @@ Public Class gridEditGroups
                     ' Map this new ID during update
                     htGroupID.Add(gi, iDBID)
                 Else
-                    If ((iGroup + 1) <> gi.Group.Index) Then
-                        If Not Me.Core.MoveGroup(gi.Group.Index, iGroup + 1) Then
+                    If ((iGroup + 1) <> gi.GroupIndex) Then
+                        If Not Me.Core.MoveGroup(gi.GroupIndex, iGroup + 1) Then
                             sb.AppendLine(String.Format(My.Resources.ECOPATH_MOVEGROUP_ERROR, gi.Name))
                             bSuccess = False
                         End If
@@ -1876,7 +1894,7 @@ Public Class gridEditGroups
             While (bSuccess = True) And (iGroup < agi.Length)
                 gi = agi(iGroup)
                 If (Not gi.IsNew()) And (gi.Confirmed = True) Then
-                    If (Me.Core.RemoveGroup(gi.Group.Index)) Then
+                    If (Me.Core.RemoveGroup(gi.GroupIndex)) Then
                         Me.m_lgiGroups.Remove(gi)
                         Me.m_lgiGroupsRemoved.Remove(gi)
                     Else
@@ -1919,10 +1937,9 @@ Public Class gridEditGroups
                     For i As Integer = 0 To si.GroupList.Count - 1
                         ' Get the first group
                         gi = si.GroupList(i)
-                        ' Is an existing group?
-                        If gi.Group IsNot Nothing Then
-                            iDBID = CInt(gi.Group.GetVariable(eVarNameFlags.DBID))
-                        Else
+                        iDBID = gi.GroupDBID
+                        ' Is not an existing group?
+                        If iDBID = cCore.NULL_VALUE Then
                             iDBID = htGroupID(gi)
                         End If
                         aiGroupID(i) = iDBID
@@ -1953,9 +1970,8 @@ Public Class gridEditGroups
                         ' Add newly assigned groups
                         For iLifestage As Integer = 0 To si.NumGroups - 1
                             gi = si.GroupList(iLifestage)
-                            If gi.Group IsNot Nothing Then
-                                iDBID = CInt(gi.Group.GetVariable(eVarNameFlags.DBID))
-                            Else
+                            iDBID = gi.GroupDBID
+                            If (iDBID = cCore.NULL_VALUE) Then
                                 iDBID = htGroupID(gi)
                             End If
                             If Not Me.Core.AddStanzaLifestage(si.StanzaGroup.Index, iDBID, gi.StanzaAge, gi.StanzaMortality) Then
@@ -1987,30 +2003,31 @@ Public Class gridEditGroups
         ' Update core objects when previous operations were succesful
         If (bSuccess And bGroupsChanged) Then
             Dim bColorsChanged As Boolean = False
+
+            Dim dtGroups As New Dictionary(Of Integer, cEcoPathGroupInput)
+            For iGroup = 1 To Me.Core.nGroups
+                group = Me.Core.EcoPathGroupInputs(iGroup)
+                dtGroups(CInt(group.GetVariable(eVarNameFlags.DBID))) = group
+            Next
+
             For iGroup = 0 To Me.m_lgiGroups.Count - 1
                 gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
-                If gi.IsChanged() Then
-                    ' Find groups by ID; the core has reloaded
-                    For iGrpTmp As Integer = 1 To Me.Core.nGroups
-                        group = Me.Core.EcoPathGroupInputs(iGrpTmp)
-                        If group.getID = gi.Group.getID Then
-                            If (group.Name <> gi.Name) Then group.Name = gi.Name
-                            If (group.PP <> gi.PP) Then group.PP = gi.PP
-                            If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
-                            If (group.PoolColor <> gi.PoolColor) Then
-                                ' Is gi.poolcolor the default color? 
-                                If gi.PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.GroupColorDefault(iGrpTmp, Me.m_lgiGroups.Count)) Then
-                                    ' #Yes: Set color to transparent to allow group to show up as true default colour
-                                    group.PoolColor = 0
-                                Else
-                                    ' #No: Assign new color
-                                    group.PoolColor = gi.PoolColor
-                                End If
-                                bColorsChanged = True
-                            End If
-                            Exit For
+                group = dtGroups(gi.GroupDBID)
+                If gi.IsChanged(group) Then
+                    If (group.Name <> gi.Name) Then group.Name = gi.Name
+                    If (group.PP <> gi.PP) Then group.PP = gi.PP
+                    If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
+                    If (group.PoolColor <> gi.PoolColor) Then
+                        ' Is gi.poolcolor the default color? 
+                        If gi.PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.GroupColorDefault(group.Index, Me.m_lgiGroups.Count)) Then
+                            ' #Yes: Set color to transparent to allow group to show up as true default colour
+                            group.PoolColor = 0
+                        Else
+                            ' #No: Assign new color
+                            group.PoolColor = gi.PoolColor
                         End If
-                    Next
+                        bColorsChanged = True
+                    End If
                 End If
             Next
             If bColorsChanged Then Me.StyleGuide.ColorsChanged()

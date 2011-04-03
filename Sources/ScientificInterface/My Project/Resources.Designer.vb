@@ -2829,6 +2829,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to An error occurred while trying to connect to &apos;{0}&apos;: {1}.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR_CONNECTION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_CONNECTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from http://ecopath.org/.
         '''</summary>
         Friend ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_NEW() As String
@@ -3899,6 +3908,15 @@ Namespace My.Resources
         Friend ReadOnly Property STATUSSTRIP_MODIFIED() As String
             Get
                 Return ResourceManager.GetString("STATUSSTRIP_MODIFIED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You are about to delete taxa. This action cannot be undone. Are you sure you want to do this?.
+        '''</summary>
+        Friend ReadOnly Property TAXON_DELETE_CONFIRMATION() As String
+            Get
+                Return ResourceManager.GetString("TAXON_DELETE_CONFIRMATION", resourceCulture)
             End Get
         End Property
         

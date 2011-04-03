@@ -16,7 +16,7 @@ Imports SourceGrid2.VisualModels
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
-   Public Class gridEditFleets
+   Public Class gridDefineFleets
     : Inherits EwEGrid
 
 #Region " Private vars "
@@ -51,16 +51,14 @@ Imports SourceGrid2.VisualModels
     ''' in the EwE model.
     ''' </summary>
     ''' <remarks>
-    ''' This class can represent existing and new Fleets. If this class has its
-    ''' <see cref="cFleetInfo.Fleet">Fleet</see> parameter set, a real live
-    ''' Fleet is represented. If this parameter is not set, a new Fleet is
-    ''' represented.
+    ''' This class can represent existing and new Fleets.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Private Class cFleetInfo
 
-        ''' <summary><see cref="cFleetInput">cFleetInput</see> associated with this Fleet, if any.</summary>
-        Private m_fleet As cFleetInput = Nothing
+        Private m_iFleetIndex As Integer = -1
+        Private m_iFleetDBID As Integer = cCore.NULL_VALUE
+
         ''' <summary>Name for this Fleet.</summary>
         Private m_strName As String = ""
         ''' <summary>Fleet color.</summary>
@@ -80,7 +78,8 @@ Imports SourceGrid2.VisualModels
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal fleet As cFleetInput)
             Debug.Assert(fleet IsNot Nothing)
-            Me.m_fleet = fleet
+            Me.m_iFleetDBID = CInt(fleet.GetVariable(EwEUtils.Core.eVarNameFlags.DBID))
+            Me.m_iFleetIndex = fleet.Index
             Me.m_strName = fleet.Name
             Me.m_iColor = fleet.PoolColor
             Me.m_status = eItemStatusTypes.Original
@@ -93,7 +92,6 @@ Imports SourceGrid2.VisualModels
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal strName As String)
-            Me.m_fleet = Nothing
             Me.m_strName = strName
             Me.m_iColor = 0
             Me.m_status = eItemStatusTypes.Added
@@ -134,9 +132,15 @@ Imports SourceGrid2.VisualModels
         ''' with this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Fleet() As cFleetInput
+        Public ReadOnly Property FleetIndex() As Integer
             Get
-                Return Me.m_fleet
+                Return Me.m_iFleetIndex
+            End Get
+        End Property
+
+        Public ReadOnly Property FleetDBID() As Integer
+            Get
+                Return Me.m_iFleetDBID
             End Get
         End Property
 
@@ -174,12 +178,15 @@ Imports SourceGrid2.VisualModels
         ''' True if the underlying fleet has been changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged() As Boolean
-            If Me.m_fleet Is Nothing Then Return False
-            Return (Me.m_fleet.Name <> Me.m_strName) Or _
-                   (Me.m_fleet.PoolColor <> Me.m_iColor)
+        Public Function IsChanged(ByVal fleet As cFleetInput) As Boolean
+            If (Me.m_iFleetDBID <> CInt(fleet.GetVariable(EwEUtils.Core.eVarNameFlags.DBID))) Then Return False
+            Return (fleet.Name <> Me.m_strName) Or _
+                   (fleet.PoolColor <> Me.m_iColor)
         End Function
 
+        Public Function IsNew() As Boolean
+            Return Me.m_iFleetDBID = cCore.NULL_VALUE
+        End Function
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set whether this fleet is flagged for deletion. Toggling this flag
@@ -191,7 +198,7 @@ Imports SourceGrid2.VisualModels
                 Return Me.m_status = eItemStatusTypes.Removed
             End Get
             Set(ByVal bDelete As Boolean)
-                If Me.m_fleet IsNot Nothing Then
+                If Not Me.IsNew() Then
                     If bDelete Then
                         Me.m_status = eItemStatusTypes.Removed
                     Else
@@ -490,7 +497,7 @@ Imports SourceGrid2.VisualModels
 
         For iRow As Integer = iFIRSTFLEETROW To Me.RowsCount - 1
             fi = DirectCast(Me.m_lfiFleets(iRow - iFIRSTFLEETROW), cFleetInfo)
-            If (Object.ReferenceEquals(fi.Fleet, fleet)) Then
+            If (Object.ReferenceEquals(fi.FleetIndex, fleet.Index)) Then
                 Me.SelectRow(iRow)
                 Return
             End If
@@ -813,23 +820,19 @@ Imports SourceGrid2.VisualModels
         For iFleet = 0 To Me.m_lfiFleets.Count - 1
             fi = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
             ' Check this Fleet is newly added
-            If Object.ReferenceEquals(fi.Fleet, Nothing) Then
+            If fi.IsNew Then
                 bConfigurationChanged = True
+            Else
+                If ((iFleet + 1) <> fi.FleetIndex) Then bConfigurationChanged = True
+                bFleetsChanged = bFleetsChanged Or fi.IsChanged(Me.Core.FleetInputs(fi.FleetIndex))
             End If
-            ' Check if this Fleet is an existing Fleet that has been moved
-            If Not Object.ReferenceEquals(fi.Fleet, Nothing) Then
-                If ((iFleet + 1) <> fi.Fleet.Index) Then
-                    bConfigurationChanged = True
-                End If
-            End If
-            bFleetsChanged = bFleetsChanged Or fi.IsChanged()
         Next iFleet
 
         ' Assess Fleets to remove
         strPrompt = ""
         For iFleet = 0 To Me.m_lfiFleetsRemoved.Count - 1
             fi = DirectCast(Me.m_lfiFleetsRemoved(iFleet), cFleetInfo)
-            If (Not Object.ReferenceEquals(fi.Fleet, Nothing)) Then
+            If (Not fi.IsNew()) Then
 
                 strPrompt = String.Format(My.Resources.ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT, fi.Name)
 
@@ -866,14 +869,14 @@ Imports SourceGrid2.VisualModels
             For iFleet = 0 To Me.m_lfiFleets.Count - 1
 
                 fi = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
-                If (Object.ReferenceEquals(fi.Fleet, Nothing)) Then
+                If (fi.IsNew()) Then
                     Dim igt As Integer = iFleet + 1
                     bSuccess = bSuccess And Me.Core.AddFleet(fi.Name, igt, iDBID)
                     ' Map this new ID during update
                     htFleetID.Add(fi, iDBID)
                 Else
-                    If ((iFleet + 1) <> fi.Fleet.Index) Then
-                        bSuccess = bSuccess And Me.Core.MoveFleet(fi.Fleet.Index, iFleet + 1)
+                    If ((iFleet + 1) <> fi.FleetIndex) Then
+                        bSuccess = bSuccess And Me.Core.MoveFleet(fi.FleetIndex, iFleet + 1)
                     End If
                 End If
             Next
@@ -882,8 +885,8 @@ Imports SourceGrid2.VisualModels
             Dim iFleetRemove As Integer = 0
             For iFleet = 0 To Me.m_lfiFleetsRemoved.Count - 1
                 fi = DirectCast(Me.m_lfiFleetsRemoved(iFleetRemove), cFleetInfo)
-                If (Not Object.ReferenceEquals(fi.Fleet, Nothing)) And (fi.Confirmed = True) Then
-                    If (Me.Core.RemoveFleet(fi.Fleet.Index)) Then
+                If (Not fi.IsNew) And (fi.Confirmed = True) Then
+                    If (Me.Core.RemoveFleet(fi.FleetIndex)) Then
                         Me.m_lfiFleets.Remove(fi)
                         Me.m_lfiFleetsRemoved.Remove(fi)
                     Else
@@ -903,21 +906,31 @@ Imports SourceGrid2.VisualModels
 
         ' Update core objects
         If (bFleetsChanged) Then
+
+            ' Get (possibly changed) core fleets
+            Dim dtFleets As New Dictionary(Of Integer, cFleetInput)
+            For iFleet = 1 To Core.nFleets
+                fleet = Me.Core.FleetInputs(iFleet)
+                dtFleets(CInt(fleet.GetVariable(EwEUtils.Core.eVarNameFlags.DBID))) = fleet
+            Next
+
             For iFleet = 0 To Me.m_lfiFleets.Count - 1
                 fi = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
-                If fi.IsChanged() Then
-                    fleet = Me.Core.FleetInputs(iFleet + 1)
-                    If fleet.Name <> fi.Name Then fleet.Name = fi.Name
-                    If fleet.PoolColor <> fi.PoolColor Then
-                        ' Is gi.poolcolor the default color? 
-                        If fi.PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.FleetColorDefault(fleet.Index, Me.m_lfiFleets.Count)) Then
-                            ' #Yes: Set color to transparent to allow group to show up as true default colour
-                            fleet.PoolColor = 0
-                        Else
-                            ' #No: Assign new color
-                            fleet.PoolColor = fi.PoolColor
+                If Not fi.IsNew Then
+                    fleet = dtFleets(fi.FleetDBID)
+                    If fi.IsChanged(fleet) Then
+                        If fleet.Name <> fi.Name Then fleet.Name = fi.Name
+                        If fleet.PoolColor <> fi.PoolColor Then
+                            ' Is gi.poolcolor the default color? 
+                            If fi.PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.FleetColorDefault(fleet.Index, Me.m_lfiFleets.Count)) Then
+                                ' #Yes: Set color to transparent to allow group to show up as true default colour
+                                fleet.PoolColor = 0
+                            Else
+                                ' #No: Assign new color
+                                fleet.PoolColor = fi.PoolColor
+                            End If
+                            bColorsChanged = True
                         End If
-                        bColorsChanged = True
                     End If
                 End If
             Next

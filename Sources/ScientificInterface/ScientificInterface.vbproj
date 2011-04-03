@@ -156,7 +156,7 @@
     <Compile Include="Ecopath\dlgDefineFleets.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\gridEditFleets.vb">
+    <Compile Include="Ecopath\gridDefineFleets.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Tools\FlowDiagram\cFlowDiagramData.vb" />
@@ -171,7 +171,7 @@
     <Compile Include="Ecopath\dlgDefineGroups.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\gridEditGroups.vb">
+    <Compile Include="Ecopath\gridDefineGroups.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\dlgEditMultiStanza.Designer.vb">
@@ -1108,7 +1108,7 @@
     <Compile Include="Ecopath\dlgDefineTaxonomy.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\gridEditPedigree.vb">
+    <Compile Include="Ecopath\gridDefinePedigree.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\dlgDefinePedigree.Designer.vb">
@@ -1117,7 +1117,7 @@
     <Compile Include="Ecopath\dlgDefinePedigree.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\gridEditGroupTaxon.vb">
+    <Compile Include="Ecopath\gridDefineTaxonomy.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\gridTaxonSearchResults.vb">

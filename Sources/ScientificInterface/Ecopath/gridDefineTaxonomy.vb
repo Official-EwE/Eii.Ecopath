@@ -16,7 +16,7 @@ Imports SourceGrid2
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
-Public Class gridEditGroupTaxon
+Public Class gridDefineTaxonomy
     Inherits EwEGrid
 
 #Region " Privates "
@@ -32,7 +32,6 @@ Public Class gridEditGroupTaxon
     Private m_tiSearchLinked As ITaxonSearchData = Nothing
 
     Private m_vizPropNormalized As New cEwEGridProportionVisualizer()
-    Private m_lUsedKeys As New List(Of String)
 
     ''' <summary>Enumerated type defining the columns in this grid.</summary>
     Private Enum eColumnTypes
@@ -49,6 +48,7 @@ Public Class gridEditGroupTaxon
 
     Private Class cTaxonInfo
         Implements ITaxonSearchData
+        Implements ITaxonDetailsData
 
 #Region " Private vars "
 
@@ -73,13 +73,23 @@ Public Class gridEditGroupTaxon
         Private m_sSouth As Single = cCore.NULL_VALUE
         Private m_sWest As Single = cCore.NULL_VALUE
         Private m_sEast As Single = cCore.NULL_VALUE
-        Private m_sProportion As Single = 1.0!
-        Private m_sPropNorm As Single = 1.0!
+        Private m_bExploited As Boolean = False
+        Private m_ecology As eEcologyTypes = eEcologyTypes.NotSet
+        Private m_conservation As eIUCNConservationStatusTypes = eIUCNConservationStatusTypes.NotSet
+        Private m_occurrence As eOccurrenceStatusTypes = eOccurrenceStatusTypes.NotSet
+        Private m_organism As eOrganismTypes = eOrganismTypes.Fishes
+        Private m_dLastUpdated As Double = cDateUtils.DateToJulian(Date.Now())
+        Private m_sMaxLength As Single = cCore.NULL_VALUE
+        Private m_sMeanLength As Single = cCore.NULL_VALUE
+        Private m_sMeanLifespan As Single = cCore.NULL_VALUE
+        Private m_sMeanWeight As Single = cCore.NULL_VALUE
+        Private m_iVulnerabilityIndex As Integer = 0
+
         ''' <summary>Index of the ecopath group that this taxon contributes to.</summary>
         Private m_iGroup As Integer = Nothing
+        Private m_sProportion As Single = 1.0!
+        Private m_sPropNorm As Single = 1.0!
 
-        ''' <summary>Flag stating whether a user action is confirmed</summary>
-        Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a Layer in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
@@ -120,6 +130,16 @@ Public Class gridEditGroupTaxon
             Me.m_sSouth = taxon.South
             Me.m_sEast = taxon.East
             Me.m_sWest = taxon.West
+            Me.m_bExploited = taxon.Exploited
+            Me.m_ecology = taxon.EcologyType
+            Me.m_occurrence = taxon.OccurrenceStatus
+            Me.m_organism = taxon.OrganismType
+            Me.m_conservation = taxon.IUCNConservationStatus
+            Me.m_sMeanLength = taxon.MeanLength
+            Me.m_sMaxLength = taxon.MaxLength
+            Me.m_sMeanWeight = taxon.MeanWeight
+            Me.m_sMeanLifespan = taxon.MeanLifespan
+            Me.m_dLastUpdated = taxon.LastUpdated
             Me.m_strSource = taxon.Source
             Me.m_strKey = taxon.SourceKey
             Me.m_status = eItemStatusTypes.Original
@@ -150,6 +170,19 @@ Public Class gridEditGroupTaxon
             Me.m_sSouth = taxon.South
             Me.m_sEast = taxon.East
             Me.m_sWest = taxon.West
+            If TypeOf (taxon) Is ITaxonDetailsData Then
+                Dim details As ITaxonDetailsData = DirectCast(taxon, ITaxonDetailsData)
+                Me.m_bExploited = details.Exploited
+                Me.m_ecology = details.EcologyType
+                Me.m_occurrence = details.OccurrenceStatus
+                Me.m_organism = details.OrganismType
+                Me.m_conservation = details.IUCNConservationStatus
+                Me.m_sMeanLength = details.MeanLength
+                Me.m_sMaxLength = details.MaxLength
+                Me.m_sMeanWeight = details.MeanWeight
+                Me.m_sMeanLifespan = details.MeanLifespan
+                Me.m_dLastUpdated = details.LastUpdated
+            End If
             Me.m_strKey = taxon.SourceKey
             Me.m_strSource = taxon.Source
         End Sub
@@ -224,20 +257,6 @@ Public Class gridEditGroupTaxon
             Get
                 Return Me.m_status
             End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set whether the user has confirmed an action on this object.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property Confirmed() As Boolean
-            Get
-                Return Me.m_bConfirmed
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bConfirmed = value
-            End Set
         End Property
 
         ''' -------------------------------------------------------------------
@@ -529,10 +548,144 @@ Public Class gridEditGroupTaxon
                     .Class = Me.m_strClass
                     .Source = Me.m_strSource
                     .SourceKey = Me.m_strKey
+                    .North = Me.m_sNorth
+                    .West = Me.m_sWest
+                    .East = Me.m_sEast
+                    .South = Me.m_sSouth
+                    .EcologyType = Me.m_ecology
+                    .IUCNConservationStatus = Me.m_conservation
+                    .OrganismType = Me.m_organism
+                    .OccurrenceStatus = Me.m_occurrence
+                    .MaxLength = Me.m_sMaxLength
+                    .MeanLength = Me.m_sMeanLength
+                    .MeanWeight = Me.m_sMeanWeight
+                    .MeanLifespan = Me.m_sMeanLifespan
+                    .Exploited = Me.m_bExploited
                     .LastUpdated = cDateUtils.DateToJulian()
                 End With
             End If
         End Sub
+
+        ''' <inheritdocs cref="ITaxonDetailsData.EcologyType"/>
+        Public Property EcologyType() As eEcologyTypes _
+            Implements ITaxonDetailsData.EcologyType
+            Get
+                Return Me.m_ecology
+            End Get
+            Set(ByVal value As eEcologyTypes)
+                Me.m_ecology = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.Exploited"/>
+        Public Property Exploited() As Boolean _
+            Implements ITaxonDetailsData.Exploited
+            Get
+                Return Me.m_bExploited
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bExploited = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.IUCNConservationStatus"/>
+        Public Property IUCNConservationStatus() As eIUCNConservationStatusTypes _
+            Implements ITaxonDetailsData.IUCNConservationStatus
+            Get
+                Return Me.m_conservation
+            End Get
+            Set(ByVal value As eIUCNConservationStatusTypes)
+                Me.m_conservation = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.LastUpdated"/>
+        Public Property LastUpdated() As Double _
+            Implements ITaxonDetailsData.LastUpdated
+            Get
+                Return Me.m_dLastUpdated
+            End Get
+            Set(ByVal value As Double)
+                Me.m_dLastUpdated = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.MaxLength"/>
+        Public Property MaxLength() As Single _
+            Implements ITaxonDetailsData.MaxLength
+            Get
+                Return Me.m_sMaxLength
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sMaxLength = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.MeanLength"/>
+        Public Property MeanLength() As Single _
+            Implements ITaxonDetailsData.MeanLength
+            Get
+                Return Me.m_sMeanLength
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sMeanLength = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.MeanLifespan"/>
+        Public Property MeanLifespan() As Single _
+            Implements ITaxonDetailsData.MeanLifespan
+            Get
+                Return Me.m_sMeanLifespan
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sMeanLifespan = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.MeanWeight"/>
+        Public Property MeanWeight() As Single _
+            Implements ITaxonDetailsData.MeanWeight
+            Get
+                Return Me.m_sMeanWeight
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sMeanWeight = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.OccurrenceStatus"/>
+        Public Property OccurrenceStatus() As eOccurrenceStatusTypes _
+            Implements ITaxonDetailsData.OccurrenceStatus
+            Get
+                Return Me.m_occurrence
+            End Get
+            Set(ByVal value As eOccurrenceStatusTypes)
+                Me.m_occurrence = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.OrganismType"/>
+        Public Property OrganismType() As eOrganismTypes _
+            Implements ITaxonDetailsData.OrganismType
+            Get
+                Return Me.m_organism
+            End Get
+            Set(ByVal value As eOrganismTypes)
+                Me.m_organism = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.VulnerabilityIndex"/>
+        Public Property VulnerabilityIndex() As Integer _
+            Implements ITaxonDetailsData.VulnerabilityIndex
+            Get
+                Return Me.m_iVulnerabilityIndex
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iVulnerabilityIndex = value
+            End Set
+        End Property
 
     End Class
 
@@ -603,7 +756,7 @@ Public Class gridEditGroupTaxon
             Me.m_lTaxonInfo.Add(ti)
         Next
 
-        Me.NormalizeProportions()
+        Me.NormalizeProportions(False)
 
         ' Brute-force update grid
         Me.UpdateGrid()
@@ -664,8 +817,6 @@ Public Class gridEditGroupTaxon
         Dim hgcGroup As EwEHierarchyGridCell = Nothing
         Dim dt As Date = Nothing
 
-        Me.m_lUsedKeys.Clear()
-
         ' Create rows
         Me.RowsCount = 1
         For iGroup As Integer = 1 To Me.Core.nGroups
@@ -678,7 +829,7 @@ Public Class gridEditGroupTaxon
             hgcGroup.Tag = grp
 
             Me(iRow, eColumnTypes.Hierarchy) = hgcGroup
-            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, grp, eVarNameFlags.Name, Nothing, hgcGroup)
             Me(iRow, eColumnTypes.PropNorm) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.Proportion) = New EwERowHeaderCell("")
             Me(iRow, eColumnTypes.Status) = New EwERowHeaderCell("")
@@ -694,13 +845,11 @@ Public Class gridEditGroupTaxon
                     Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(hgcGroup.NumChildRows)
                     Me(iRow, eColumnTypes.Hierarchy).Tag = ti
                     Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(ti.Common)
-                    Me(iRow, eColumnTypes.PropNorm) = New EwECell(ti.PropNormalized, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
-                    Me(iRow, eColumnTypes.PropNorm).VisualModel = Me.m_vizPropNormalized
                     Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
                     Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iRow, eColumnTypes.PropNorm) = New EwECell(ti.PropNormalized, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.PropNorm).VisualModel = Me.m_vizPropNormalized
                     Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-
-                    Me.m_lUsedKeys.Add(ti.CodeTaxon)
 
                 End If
             Next
@@ -721,20 +870,17 @@ Public Class gridEditGroupTaxon
     ''' -----------------------------------------------------------------------
     Private Sub UpdateRow(ByVal iRow As Integer)
 
-        Dim tag As Object = Me(iRow, eColumnTypes.Hierarchy).Tag
-        Dim ti As cTaxonInfo = Nothing
+        Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)
         Dim vm As VisualModels.IVisualModel = Nothing
         Dim dt As Date = Nothing
         Dim strText As String = ""
         Dim iNumOpen As Integer = 0
 
-        If Not TypeOf tag Is cTaxonInfo Then Return
-
-        ti = DirectCast(tag, cTaxonInfo)
+        If ti Is Nothing Then Return
 
         Me(iRow, eColumnTypes.Name).Value = ti.Common
-        Me(iRow, eColumnTypes.PropNorm).Value = ti.PropNormalized
         Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
+        Me(iRow, eColumnTypes.PropNorm).Value = ti.PropNormalized
 
         Select Case ti.Status
             Case eItemStatusTypes.Original
@@ -747,9 +893,21 @@ Public Class gridEditGroupTaxon
                 vm = Me.DefaultVisualRemoved
                 strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
         End Select
+
         Me(iRow, eColumnTypes.Status).VisualModel = vm
         Me(iRow, eColumnTypes.Status).Value = strText
 
+    End Sub
+
+    Private Sub UpdateProportionsColumns()
+
+        For iRow As Integer = 1 To Me.RowsCount - 1
+            Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)
+            If ti IsNot Nothing Then
+                Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
+                Me(iRow, eColumnTypes.PropNorm).Value = ti.PropNormalized
+            End If
+        Next
 
     End Sub
 
@@ -773,11 +931,10 @@ Public Class gridEditGroupTaxon
         Dim ti As cTaxonInfo = Me.TaxonInfo(p.Row)
         If ti Is Nothing Then Return False
         ti.Proportion = CSng(Me(p.Row, p.Column).Value)
-        Me.NormalizeProportions()
 
-        For iRow As Integer = 1 To Me.RowsCount - 1
-            Me.UpdateRow(iRow)
-        Next
+        Me.NormalizeProportions(False)
+        Me.UpdateProportionsColumns()
+
         Return True
 
     End Function
@@ -865,16 +1022,19 @@ Public Class gridEditGroupTaxon
             ti = New cTaxonInfo(Me.SelectedGroup)
             Me.m_lTaxonInfo.Add(ti)
         Else
-            If Me.m_lUsedKeys.Contains(taxon.CodeTaxon) Then Return
+            Dim lUsedTaxa As New List(Of String)
+            For Each ti In Me.m_lTaxonInfo
+                lUsedTaxa.Add(ti.CodeTaxon)
+            Next
+            ' Same taxon code should be used only once
+            If lUsedTaxa.Contains(taxon.CodeTaxon) Then Return
 
             ti = New cTaxonInfo(taxon)
             ti.Group = Me.SelectedGroup.Index
             Me.m_lTaxonInfo.Add(ti)
-            Me.NormalizeProportions()
-
-            Me.m_lUsedKeys.Add(taxon.CodeTaxon)
         End If
 
+        Me.NormalizeProportions(False)
         Me.UpdateGrid()
         Me.SelectedTaxon = ti
 
@@ -932,14 +1092,15 @@ Public Class gridEditGroupTaxon
 
                     End Select
 
-                    Me.NormalizeProportions()
+                    Me.UpdateRow(iRow)
+                    Me.NormalizeProportions(False)
+                    Me.UpdateProportionsColumns()
+                    Me.SelectedTaxon = ti
+                    Exit For
 
                 End If
             End If
         Next
-
-        Me.UpdateGrid()
-        Me.SelectedTaxon = ti
 
     End Sub
 
@@ -1013,7 +1174,7 @@ Public Class gridEditGroupTaxon
 
 #Region " Apply changes "
 
-    Public Sub NormalizeProportions()
+    Public Sub NormalizeProportions(ByVal bSumToOne As Boolean)
 
         Dim asTotal(Me.Core.nGroups) As Single
         Dim aiTotal(Me.Core.nGroups) As Integer
@@ -1038,6 +1199,10 @@ Public Class gridEditGroupTaxon
                 Else
                     ti.PropNormalized = ti.Proportion / asTotal(ti.Group)
                 End If
+
+                If bSumToOne Then
+                    ti.Proportion = ti.PropNormalized
+                End If
             End If
         Next
 
@@ -1045,14 +1210,11 @@ Public Class gridEditGroupTaxon
 
     Public Function Apply() As Boolean
 
-        Dim strPrompt As String = ""
         Dim bConfigurationChanged As Boolean = False
         Dim ti As cTaxonInfo = Nothing
         Dim taxon As cTaxon = Nothing
         Dim iTaxon As Integer = 0
         Dim bSuccess As Boolean = True
-
-        Me.NormalizeProportions()
 
         ' Assess Taxon changes
         For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
@@ -1069,30 +1231,19 @@ Public Class gridEditGroupTaxon
         Next iTaxon
 
         ' Assess Taxons to remove
-        strPrompt = ""
-        For iTaxon = 0 To Me.m_lTaxonInfoRemoved.Count - 1
-            ti = DirectCast(Me.m_lTaxonInfoRemoved(iTaxon), cTaxonInfo)
-            If (Not ti.IsNew) Then
-                strPrompt = String.Format("Are you sure you want to delete taxonomy entry '{0}'?", ti.Common)
-
-                Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                    Case MsgBoxResult.Cancel
-                        ' Abort Apply process
-                        Return False
-                    Case MsgBoxResult.No
-                        ' Do not delete this Taxon
-                        ti.Confirmed = False
-                    Case MsgBoxResult.Yes
-                        ' Delete this Taxon
-                        ti.Confirmed = True
-                        bConfigurationChanged = True
-                    Case Else
-                        ' Unexpected anwer: assert
-                        Debug.Assert(False)
-                End Select
-
-            End If
-        Next iTaxon
+        If Me.m_lTaxonInfoRemoved.Count > 0 Then
+            Select Case MsgBox(My.Resources.TAXON_DELETE_CONFIRMATION, MsgBoxStyle.Question Or MsgBoxStyle.YesNo)
+                Case MsgBoxResult.No
+                    ' Abort
+                    Return False
+                Case MsgBoxResult.Yes
+                    ' Delete this Taxon
+                    bConfigurationChanged = True
+                Case Else
+                    ' Unexpected anwer: assert
+                    Debug.Assert(False)
+            End Select
+        End If
 
         ' Handle added and removed items
         If (bConfigurationChanged) Then
@@ -1115,11 +1266,11 @@ Public Class gridEditGroupTaxon
                 End If
             Next
 
-            ' Remove deleted (and confirmed) Taxons
+            ' Remove deleted Taxons
             Dim iTaxonRemove As Integer = 0
             For iTaxon = 0 To Me.m_lTaxonInfoRemoved.Count - 1
                 ti = DirectCast(Me.m_lTaxonInfoRemoved(iTaxonRemove), cTaxonInfo)
-                If (Not ti.IsNew) And (ti.Confirmed = True) Then
+                If (Not ti.IsNew) Then
                     If (Me.Core.RemoveTaxon(ti.TaxonIndex)) Then
                         Me.m_lTaxonInfo.Remove(ti)
                         Me.m_lTaxonInfoRemoved.Remove(ti)
@@ -1139,8 +1290,6 @@ Public Class gridEditGroupTaxon
         End If
 
         ' Update any changed taxa
-        '   * The core may have discarded taxa in response to the logic above. New taxa with the same
-        '     DBIDs will need to be reconnected to taxon info.
         Dim dtTaxa As New Dictionary(Of Integer, cTaxon)
         For i As Integer = 1 To Me.Core.nTaxon
             taxon = Me.Core.Taxon(i)
