@@ -18,6 +18,7 @@ Public Class cNetworkManager
 #Region " Private data "
 
     Private Enum ePathways
+        NotRan = 0
         ''' <summary>TL1->Consumer </summary>
         ToConsumer = 1
         ''' <summary>TL1->Prey->Consumer </summary>
@@ -52,11 +53,16 @@ Public Class cNetworkManager
 
     Private m_core As cCore = Nothing
     Private m_econetwork As cEcoNetwork = Nothing
-    Private Corestatemonitor As cCoreStateMonitor = Nothing
+    Private m_corestatemonitor As cCoreStateMonitor = Nothing
     Private m_epdata As cEcopathDataStructures = Nothing
     Private m_esdata As cEcosimDatastructures = Nothing
     Private m_messagesource As eCoreComponentType = eCoreComponentType.Plugin
     Private m_runstate As eRunState = eRunState.CoreNotReady
+    ''' <summary>Last pathways run state</summary>
+    Private m_pathwaystate As ePathways = ePathways.NotRan
+    Private m_iPathwayToGroup As Integer = cCore.NULL_VALUE
+    Private m_iPathwayViaGroup As Integer = cCore.NULL_VALUE
+    Private m_iPathwayFromGroup As Integer = cCore.NULL_VALUE
 
     ''' <summary>Flag stating whether Ecosim NA should run with Ecosim.</summary>
     Private m_bUseEcosimNetwork As Boolean = False
@@ -86,17 +92,17 @@ Public Class cNetworkManager
     Friend Function Init(ByRef theCore As cCore) As Boolean
 
         Me.m_core = theCore
-        Me.Corestatemonitor = theCore.StateMonitor
+        Me.m_corestatemonitor = theCore.StateMonitor
         Me.m_publisher = theCore.Messages
         Me.m_econetwork = New cEcoNetwork(Me)
 
-        AddHandler Me.Corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        AddHandler Me.m_corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         Return True
 
     End Function
 
     Friend Sub Clear()
-        RemoveHandler Me.Corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        RemoveHandler Me.m_corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
     End Sub
 
 #End Region ' Construction and initialization
@@ -123,7 +129,7 @@ Public Class cNetworkManager
         Dim bSucces As Boolean = True
         Dim abGroupsToShow(Me.Core.nGroups) As Boolean
 
-        Debug.Assert(m_econetwork IsNot Nothing)
+        Debug.Assert(Me.m_econetwork IsNot Nothing)
 
         ' Core not ready? Abort and wait for the world to improve
         If Me.m_runstate = eRunState.CoreNotReady Then Return False
@@ -131,11 +137,13 @@ Public Class cNetworkManager
         ' Optimization
         If Me.IsMainNetworkRun = True Then Return True
 
-        m_runstate = eRunState.NetworkNeedsToRun
+        ' Forget run states
+        Me.m_runstate = eRunState.NetworkNeedsToRun
+        Me.m_pathwaystate = ePathways.NotRan
 
-        If m_econetwork Is Nothing Then
+        If Me.m_econetwork Is Nothing Then
             'message of some sort
-            m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_INITIALIZE, _
+            Me.m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_INITIALIZE, _
                                                  eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Warning))
             bSucces = False
         End If
@@ -148,16 +156,16 @@ Public Class cNetworkManager
                     'abGroupsToShow(iGroup) = sg.GroupVisible(iGroup)
                 Next
 
-                m_runstate = eRunState.NetworkNeedsToRun
-                m_econetwork.GroupsToShow = abGroupsToShow
+                Me.m_runstate = eRunState.NetworkNeedsToRun
+                Me.m_econetwork.GroupsToShow = abGroupsToShow
 
                 'Make sure the network analysis object has the latest data computed by the core
                 'This may not be necessary because m_EcoNetwork keeps a reference to the data. 
                 'However, this is more robust, incase the core has created a new m_EcoPathData object.
-                m_econetwork.EcopathData = m_epdata
-                m_econetwork.RunNetworkAnalysis()
+                Me.m_econetwork.EcopathData = m_epdata
+                Me.m_econetwork.RunNetworkAnalysis()
 
-                m_runstate = eRunState.NetworkHasRun
+                Me.m_runstate = eRunState.NetworkHasRun
 
                 bSucces = True
                 Me.IsMainNetworkRun = True
@@ -171,7 +179,7 @@ Public Class cNetworkManager
             End Try
         Else
             ''message of some sort
-            m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_ECOPATH, _
+            Me.m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_ECOPATH, _
                                                  eMessageType.StateNotMet, m_messagesource, eMessageImportance.Warning))
             bSucces = False
         End If
@@ -287,16 +295,21 @@ Public Class cNetworkManager
     ''' </summary>
     ''' <param name="iToGroup"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function FindPathwaysToConsumer(ByVal iToGroup As Integer) As Boolean
 
         Dim nPaths As Integer, nArrows As Integer
 
-        cApplicationStatusNotifier.StartProgress(Me.m_core, String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSUMER, _
-                                        Me.GroupName(iToGroup)))
+        ' Optimization
+        If (Me.m_pathwaystate = ePathways.ToConsumer) And (Me.m_iPathwayToGroup = iToGroup) Then Return True
+
+        cApplicationStatusNotifier.StartProgress(Me.m_core, _
+                                                 String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSUMER, Me.GroupName(iToGroup)))
         Try
-            m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumer, iToGroup, 0, nPaths, nArrows)
+            Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumer, iToGroup, 0, nPaths, nArrows)
+            Me.m_pathwaystate = ePathways.ToConsumer
+            Me.m_iPathwayToGroup = iToGroup
         Catch ex As Exception
+            Me.m_pathwaystate = ePathways.NotRan
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
@@ -317,13 +330,23 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        cApplicationStatusNotifier.StartProgress(Me.m_core, String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSPREY, _
-                                        Me.GroupName(iToGroup), _
-                                        Me.GroupName(iViaGroup)))
+        ' Optimization
+        If (Me.m_pathwaystate = ePathways.ToConsumerViaPrey) And _
+           (Me.m_iPathwayToGroup = iToGroup) And _
+           (Me.m_iPathwayViaGroup = iViaGroup) Then Return True
+
+        cApplicationStatusNotifier.StartProgress(Me.m_core, _
+                                                 String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSPREY, _
+                                                               Me.GroupName(iToGroup), _
+                                                               Me.GroupName(iViaGroup)))
 
         Try
-            m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumerViaPrey, iToGroup, iViaGroup, nPaths, nArrows)
+            Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumerViaPrey, iToGroup, iViaGroup, nPaths, nArrows)
+            Me.m_pathwaystate = ePathways.ToConsumerViaPrey
+            Me.m_iPathwayToGroup = iToGroup
+            Me.m_iPathwayViaGroup = iViaGroup
         Catch ex As Exception
+            Me.m_pathwaystate = ePathways.NotRan
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
@@ -343,12 +366,19 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
+        ' Optimization
+        If (Me.m_pathwaystate = ePathways.FromPrey) And _
+           (Me.m_iPathwayFromGroup = iFromGroup) Then Return True
+
         cApplicationStatusNotifier.StartProgress(Me.m_core, String.Format(My.Resources.STATUS_FINDING_PATHWAYS_PREY, _
                                         Me.GroupName(iFromGroup)))
 
         Try
-            m_econetwork.FindCycles(m_epdata.DC, ePathways.FromPrey, 1, iFromGroup, nPaths, nArrows)
+            Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.FromPrey, 1, iFromGroup, nPaths, nArrows)
+            Me.m_pathwaystate = ePathways.FromPrey
+            Me.m_iPathwayFromGroup = iFromGroup
         Catch ex As Exception
+            Me.m_pathwaystate = ePathways.NotRan
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
@@ -367,12 +397,17 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
+        ' Optimization
+        If (Me.m_pathwaystate = ePathways.LinkedPathways) Then Return True
+
         cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_FINDING_PATHWAYS)
 
         Try
             'ToDo_jb FindPathwaysCycles EwE5 calls InitCyclesList ????? I can not find this again
-            m_econetwork.FindCycles(m_epdata.DC, ePathways.LinkedPathways, 1, 1, nPaths, nArrows)
+            Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.LinkedPathways, 1, 1, nPaths, nArrows)
+            Me.m_pathwaystate = ePathways.LinkedPathways
         Catch ex As Exception
+            Me.m_pathwaystate = ePathways.NotRan
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
@@ -391,34 +426,22 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_FINDING_PATHWAYS)
+        ' Optimization
+        If (Me.m_pathwaystate = ePathways.All) Then Return True
+
+        cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_FINDING_PATHWAYS, -1)
 
         Try
-            m_econetwork.FindCycles(m_epdata.DC, ePathways.All, 1, 1, nPaths, nArrows)
+            Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.All, 1, 1, nPaths, nArrows)
+            Me.m_pathwaystate = ePathways.All
         Catch ex As Exception
+            Me.m_pathwaystate = ePathways.NotRan
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
 
         cApplicationStatusNotifier.EndProgress(Me.m_core)
         Return True
-
-    End Function
-
-    ''' <summary>
-    ''' Primary producer required
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function FindPathwaysPPR() As Boolean
-
-        Try
-            'm_EcoNetwork.FindPaths(
-            Return True
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False, ex.Message)
-        End Try
 
     End Function
 
@@ -2121,6 +2144,21 @@ Public Class cNetworkManager
         End Try
 
     End Sub
+
+    Friend Function AskUserConfirmation(ByVal strMsg As String) As Boolean
+
+        Dim fmsg As New cFeedbackMessage(strMsg, _
+                                         eCoreComponentType.External, _
+                                         eMessageType.Any, _
+                                         eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+        fmsg.Suppressable = True
+        fmsg.Reply = cFeedbackMessage.eReply.YES
+
+        Me.Core.Messages.SendMessage(fmsg)
+
+        Return (fmsg.Reply = cFeedbackMessage.eReply.YES)
+
+    End Function
 
 #End Region ' Message handlers
 

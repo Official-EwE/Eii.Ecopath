@@ -31,7 +31,7 @@ Namespace CyclesAll
 
             Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
 
-            If (MsgBox(My.Resources.PROMPT_COMPUTE_ALL_CYCLES, MsgBoxStyle.YesNo, My.Resources.CAPTION) = MsgBoxResult.Yes) Then
+            If Me.NetworkManager.AskUserConfirmation(My.Resources.PROMPT_COMPUTE_ALL_CYCLES) Then
                 Me.Grid.Visible = bSucces And Me.NetworkManager.FindPathwaysCyclesAll()
             End If
             Return Me.Grid.Visible
