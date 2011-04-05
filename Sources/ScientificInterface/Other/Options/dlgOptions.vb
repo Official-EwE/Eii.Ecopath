@@ -42,15 +42,15 @@ Namespace Other
 
         Public Sub New(ByVal uic As cUIContext)
 
-            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PLEASE_WAIT)
+            Me.m_uic = uic
 
             Me.InitializeComponent()
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PLEASE_WAIT)
 
             For Each nodeChild As TreeNode In Me.m_tvOptions.Nodes
                 Me.ExpandNode(nodeChild)
             Next
 
-            Me.m_uic = uic
             Me.m_tvOptions.ExpandAll()
 
             Me.m_ucOptionsColors = New ucOptionsColors(uic)
