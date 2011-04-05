@@ -20,16 +20,17 @@ Namespace Controls
 
         Private m_uic As cUIContext = Nothing
         Private m_medfn As cMediationFunction = Nothing
-        Private m_RdmColor As ColorSymbolRotator = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
+        Private m_strXAxisLabel As String = ""
+        Private m_strYAxisLabel As String = ""
 
         Public Sub New()
 
             Me.InitializeComponent()
-            Me.m_RdmColor = New ColorSymbolRotator
 
         End Sub
 
+        <Browsable(False)> _
         Public Property Shape() As cShapeData
             Get
                 Return Me.m_medfn
@@ -40,6 +41,7 @@ Namespace Controls
             End Set
         End Property
 
+        <Browsable(False)> _
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -48,6 +50,7 @@ Namespace Controls
             Set(ByVal value As cUIContext)
 
                 If m_uic IsNot Nothing Then
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                     Me.m_zgh.Detach()
                     Me.m_zgh = Nothing
                 End If
@@ -57,9 +60,40 @@ Namespace Controls
                 If Me.m_uic IsNot Nothing Then
                     Me.m_zgh = New cZedGraphHelper()
                     Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
-                    Me.m_zgh.ConfigurePane("", My.Resources.ECOSIM_DEF_MED_X_AXIS, My.Resources.HEADER_RELATIVEWEIGHT, True)
+                    Me.m_zgh.ConfigurePane("", Me.m_strXAxisLabel, Me.m_strYAxisLabel, True)
                     Me.LoadGraphData()
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 End If
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Get/set the X-axis label for the control.
+        ''' </summary>
+        <Browsable(True), _
+         Category("Mediation"), _
+         Description("Label to display on the Y axis")> _
+        Public Property XAxisLabel() As String
+            Get
+                Return Me.m_strXAxisLabel
+            End Get
+            Set(ByVal value As String)
+                Me.m_strXAxisLabel = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Get/set the Y-axis label for the control.
+        ''' </summary>
+        <Browsable(True), _
+         Category("Mediation"), _
+         Description("Label to display on the X axis")> _
+        Public Property YAxisLabel() As String
+            Get
+                Return Me.m_strYAxisLabel
+            End Get
+            Set(ByVal value As String)
+                Me.m_strYAxisLabel = value
             End Set
         End Property
 
@@ -70,6 +104,12 @@ Namespace Controls
         Protected Overrides Sub DestroyHandle()
             Me.UIContext = Nothing
             MyBase.DestroyHandle()
+        End Sub
+
+        Protected Overridable Sub OnStyleGuideChanged(ByVal change As cStyleGuide.eChangeType)
+            If (change And cStyleGuide.eChangeType.Colours) > 0 Then
+                Me.LoadGraphData()
+            End If
         End Sub
 
         Public Sub LoadGraphData()
@@ -109,12 +149,12 @@ Namespace Controls
                 For i As Integer = 0 To m_medfn.CountFleet - 1
                     list = New PointPairList()
                     medFlt = m_medfn.Fleet(i)
+                    list.Add(i + 1 + m_medfn.CountGroup, medFlt.Weight)
 
                     ' Get the fleet
                     source = Me.m_uic.Core.FleetInputs(medFlt.iFleetIndex)
-                    list.Add(i + 1 + m_medfn.CountGroup, medFlt.Weight)
+                    clr = sg.FleetColor(Me.m_uic.Core, medFlt.iFleetIndex)
 
-                    clr = m_RdmColor.NextColor
                     myCurve = pane.AddBar(source.Name, list, clr)
                     myCurve.Bar.Fill = New Fill(clr)
                 Next
@@ -155,7 +195,7 @@ Namespace Controls
                     ' Is fleet?
                     If (TypeOf source Is cFleetInput) Then
                         ' #Yes: get the fleet
-                        clr = m_RdmColor.NextColor
+                        clr = Me.m_uic.StyleGuide.FleetColor(Me.m_uic.Core, source.Index)
                         myCurve = myPane.AddBar(source.Name, list, clr)
                         myCurve.Bar.Fill = New Fill(clr)
                     Else
