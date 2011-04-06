@@ -5,6 +5,7 @@ Option Strict On
 
 Imports EwECore
 Imports ZedGraph
+Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
 
 #End Region
