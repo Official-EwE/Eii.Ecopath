@@ -1182,8 +1182,21 @@ Namespace Controls.EwEGrid
                                     strValue = cCore.NULL_VALUE.ToString()
                                 End If
 
-                                If cell.DataModel.IsValidValue(strValue) Then
-                                    cell.SetValue(pos, strValue)
+                                ' Try to convert
+                                Dim objValue As Object = strValue
+                                Try
+                                    If (cell.DataModel.ValueType Is GetType(Single)) Then
+                                        objValue = Single.Parse(strValue)
+                                    ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
+                                        objValue = Double.Parse(strValue)
+                                    ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                                        objValue = Integer.Parse(strValue)
+                                    End If
+                                Catch ex As Exception
+                                    ' Whoah
+                                End Try
+                                If cell.DataModel.IsValidValue(objValue) Then
+                                    cell.SetValue(pos, objValue)
                                 End If
 
                             End If
