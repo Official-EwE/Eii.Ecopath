@@ -3244,7 +3244,7 @@ Namespace DataSources
                 drow("OrganismType") = dataDetails.OrganismType
                 drow("Exploited") = dataDetails.Exploited
                 drow("ConservationStatus") = dataDetails.IUCNConservationStatus
-                drow("OccurenceStatus") = dataDetails.OccurrenceStatus
+                drow("OccurrenceStatus") = dataDetails.OccurrenceStatus
                 drow("MeanWeight") = dataDetails.MeanWeight
                 drow("MeanLength") = dataDetails.MeanLength
                 drow("MaxLength") = dataDetails.MaxLength
