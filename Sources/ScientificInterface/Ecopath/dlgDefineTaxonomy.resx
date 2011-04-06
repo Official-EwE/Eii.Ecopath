@@ -129,14 +129,14 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>646, 33</value>
+    <value>944, 33</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_btnAdd.Text" xml:space="preserve">
     <value>Add...</value>
@@ -163,13 +163,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>646, 62</value>
+    <value>944, 62</value>
   </data>
   <data name="m_btnRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="m_btnRemove.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_btnRemove.Text" xml:space="preserve">
     <value>Remove</value>
@@ -199,13 +199,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnKeep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>646, 91</value>
+    <value>944, 91</value>
   </data>
   <data name="m_btnKeep.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="m_btnKeep.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_btnKeep.Text" xml:space="preserve">
     <value>Keep</value>
@@ -238,13 +238,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnMoveDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>646, 171</value>
+    <value>944, 171</value>
   </data>
   <data name="m_btnMoveDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="m_btnMoveDown.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="m_btnMoveDown.Text" xml:space="preserve">
     <value>Move down</value>
@@ -277,13 +277,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnMoveUp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>646, 142</value>
+    <value>944, 142</value>
   </data>
   <data name="m_btnMoveUp.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="m_btnMoveUp.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_btnMoveUp.Text" xml:space="preserve">
     <value>Move up</value>
@@ -310,13 +310,13 @@
     <value>NoControl</value>
   </data>
   <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>646, 550</value>
+    <value>944, 550</value>
   </data>
   <data name="Cancel_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="Cancel_Button.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>10</value>
   </data>
   <data name="Cancel_Button.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -340,13 +340,13 @@
     <value>NoControl</value>
   </data>
   <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>544, 550</value>
+    <value>842, 550</value>
   </data>
   <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="OK_Button.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>9</value>
   </data>
   <data name="OK_Button.Text" xml:space="preserve">
     <value>OK</value>
@@ -370,13 +370,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbTerm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 9</value>
+    <value>3, 38</value>
   </data>
   <data name="m_lbTerm.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 13</value>
   </data>
   <data name="m_lbTerm.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="m_lbTerm.Text" xml:space="preserve">
     <value>&amp;Search term:</value>
@@ -388,22 +388,22 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lbTerm.Parent" xml:space="preserve">
-    <value>m_tpSearch</value>
+    <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_lbTerm.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_tbSearch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>82, 6</value>
+    <value>119, 35</value>
   </data>
   <data name="m_tbSearch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>416, 20</value>
+    <value>691, 20</value>
   </data>
   <data name="m_tbSearch.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_tbSearch.Name" xml:space="preserve">
     <value>m_tbSearch</value>
@@ -412,10 +412,10 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbSearch.Parent" xml:space="preserve">
-    <value>m_tpSearch</value>
+    <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_tbSearch.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_cmbEngine.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -430,13 +430,13 @@
     <value>Sea Life Base</value>
   </data>
   <data name="m_cmbEngine.Location" type="System.Drawing.Point, System.Drawing">
-    <value>82, 32</value>
+    <value>119, 8</value>
   </data>
   <data name="m_cmbEngine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>416, 21</value>
+    <value>691, 21</value>
   </data>
   <data name="m_cmbEngine.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_cmbEngine.Name" xml:space="preserve">
     <value>m_cmbEngine</value>
@@ -445,10 +445,10 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cmbEngine.Parent" xml:space="preserve">
-    <value>m_tpSearch</value>
+    <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_cmbEngine.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="m_btnConnect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -460,13 +460,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>504, 30</value>
+    <value>816, 6</value>
   </data>
   <data name="m_btnConnect.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 23</value>
   </data>
   <data name="m_btnConnect.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>2</value>
   </data>
   <data name="m_btnConnect.Text" xml:space="preserve">
     <value>&amp;Connect...</value>
@@ -478,10 +478,10 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnConnect.Parent" xml:space="preserve">
-    <value>m_tpSearch</value>
+    <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_btnConnect.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="m_cbIncludeExtent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -493,13 +493,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbIncludeExtent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>504, 9</value>
+    <value>816, 37</value>
   </data>
   <data name="m_cbIncludeExtent.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 17</value>
   </data>
   <data name="m_cbIncludeExtent.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="m_cbIncludeExtent.Text" xml:space="preserve">
     <value>&amp;Use model extent</value>
@@ -511,7 +511,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbIncludeExtent.Parent" xml:space="preserve">
-    <value>m_tpSearch</value>
+    <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_cbIncludeExtent.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -535,7 +535,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>626, 286</value>
+    <value>924, 286</value>
   </data>
   <data name="m_gridGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -544,7 +544,7 @@
     <value>m_gridGroups</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.1.1.402, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.1.1.404, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -568,10 +568,10 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_gridResults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 59</value>
+    <value>0, 61</value>
   </data>
   <data name="m_gridResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>612, 131</value>
+    <value>923, 181</value>
   </data>
   <data name="m_gridResults.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -580,13 +580,13 @@
     <value>m_gridResults</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.1.1.402, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.1.1.404, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
-    <value>m_tpSearch</value>
+    <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_gridResults.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_lblEngine.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -595,16 +595,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblEngine.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 35</value>
+    <value>3, 11</value>
   </data>
   <data name="m_lblEngine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
+    <value>110, 13</value>
   </data>
   <data name="m_lblEngine.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="m_lblEngine.Text" xml:space="preserve">
-    <value>&amp;Engine:</value>
+    <value>&amp;Taxon search engine:</value>
   </data>
   <data name="&gt;&gt;m_lblEngine.Name" xml:space="preserve">
     <value>m_lblEngine</value>
@@ -613,857 +613,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblEngine.Parent" xml:space="preserve">
-    <value>m_tpSearch</value>
-  </data>
-  <data name="&gt;&gt;m_lblEngine.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_tpSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tpSearch.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_tpSearch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>618, 216</value>
-  </data>
-  <data name="m_tpSearch.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_tpSearch.Text" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="&gt;&gt;m_tpSearch.Name" xml:space="preserve">
-    <value>m_tpSearch</value>
-  </data>
-  <data name="&gt;&gt;m_tpSearch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tpSearch.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tpSearch.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_lblSelectedGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_lblSelectedGroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblSelectedGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 11</value>
-  </data>
-  <data name="m_lblSelectedGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>511, 18</value>
-  </data>
-  <data name="m_lblSelectedGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_lblSelectedGroup.Text" xml:space="preserve">
-    <value>&lt;group&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_lblSelectedGroup.Name" xml:space="preserve">
-    <value>m_lblSelectedGroup</value>
-  </data>
-  <data name="&gt;&gt;m_lblSelectedGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSelectedGroup.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblSelectedGroup.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_lblGroup.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblGroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 11</value>
-  </data>
-  <data name="m_lblGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 13</value>
-  </data>
-  <data name="m_lblGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_lblGroup.Text" xml:space="preserve">
-    <value>Functional group:</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroup.Name" xml:space="preserve">
-    <value>m_lblGroup</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroup.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroup.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_btnSearchPhylum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnSearchPhylum.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnSearchPhylum.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
-        amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
-        sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
-        gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
-        RDJ5zMUyGFxIwugJQXxLh0PcS0pGoIM0aXV7yaUc0vlVUIVVxOkC/DEazsAKXnijaNYP4WBtQ4IRuKzQ
-        wu0PIpDMYpnOI/6zgFA6h+kfFBxfEjCNhqF8NobDPAm5//cwWfJW01fj208Y+05hLk7Dn8hiivT//lsK
-        fbNRdLmCkHT0Y19V/TgjcPO+Qd/8yJwdWEjBuZgmlYKNRLf4YjB4wlCZpyGQtoF/RkQxAuevabafECmT
-        91460TMZxaupOJ6TvnUfwrhr8aFO0Q02XwJT+1nmFooq+ZUVnDpF5pyiCzf0g+SrE5Bq3uCkrB1HeBfx
-        UF6NhE/FiPzZMILsvqo2P2ELZSMHahrS5cImCOpbFys5x2TsvbswrC1jREquaDGZoKpsS/FZXcPhkmJE
-        /gmsH1opZFMASbJ1fZI+9R40isrXhropYEOS/STNKKna/wI27sJvQCDfOWGizWQAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_btnSearchPhylum.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnSearchPhylum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 192</value>
-  </data>
-  <data name="m_btnSearchPhylum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 21</value>
-  </data>
-  <data name="m_btnSearchPhylum.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchPhylum.Name" xml:space="preserve">
-    <value>m_btnSearchPhylum</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchPhylum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchPhylum.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchPhylum.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_btnSearchClass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnSearchClass.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnSearchClass.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
-        amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
-        sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
-        gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
-        RDJ5zMUyGFxIwugJQXxLh0PcS0pGoIM0aXV7yaUc0vlVUIVVxOkC/DEazsAKXnijaNYP4WBtQ4IRuKzQ
-        wu0PIpDMYpnOI/6zgFA6h+kfFBxfEjCNhqF8NobDPAm5//cwWfJW01fj208Y+05hLk7Dn8hiivT//lsK
-        fbNRdLmCkHT0Y19V/TgjcPO+Qd/8yJwdWEjBuZgmlYKNRLf4YjB4wlCZpyGQtoF/RkQxAuevabafECmT
-        91460TMZxaupOJ6TvnUfwrhr8aFO0Q02XwJT+1nmFooq+ZUVnDpF5pyiCzf0g+SrE5Bq3uCkrB1HeBfx
-        UF6NhE/FiPzZMILsvqo2P2ELZSMHahrS5cImCOpbFys5x2TsvbswrC1jREquaDGZoKpsS/FZXcPhkmJE
-        /gmsH1opZFMASbJ1fZI+9R40isrXhropYEOS/STNKKna/wI27sJvQCDfOWGizWQAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_btnSearchClass.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnSearchClass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 166</value>
-  </data>
-  <data name="m_btnSearchClass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 21</value>
-  </data>
-  <data name="m_btnSearchClass.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchClass.Name" xml:space="preserve">
-    <value>m_btnSearchClass</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchClass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchClass.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchClass.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_btnSearchOrder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnSearchOrder.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnSearchOrder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
-        amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
-        sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
-        gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
-        RDJ5zMUyGFxIwugJQXxLh0PcS0pGoIM0aXV7yaUc0vlVUIVVxOkC/DEazsAKXnijaNYP4WBtQ4IRuKzQ
-        wu0PIpDMYpnOI/6zgFA6h+kfFBxfEjCNhqF8NobDPAm5//cwWfJW01fj208Y+05hLk7Dn8hiivT//lsK
-        fbNRdLmCkHT0Y19V/TgjcPO+Qd/8yJwdWEjBuZgmlYKNRLf4YjB4wlCZpyGQtoF/RkQxAuevabafECmT
-        91460TMZxaupOJ6TvnUfwrhr8aFO0Q02XwJT+1nmFooq+ZUVnDpF5pyiCzf0g+SrE5Bq3uCkrB1HeBfx
-        UF6NhE/FiPzZMILsvqo2P2ELZSMHahrS5cImCOpbFys5x2TsvbswrC1jREquaDGZoKpsS/FZXcPhkmJE
-        /gmsH1opZFMASbJ1fZI+9R40isrXhropYEOS/STNKKna/wI27sJvQCDfOWGizWQAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_btnSearchOrder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnSearchOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 139</value>
-  </data>
-  <data name="m_btnSearchOrder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 21</value>
-  </data>
-  <data name="m_btnSearchOrder.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchOrder.Name" xml:space="preserve">
-    <value>m_btnSearchOrder</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchOrder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchOrder.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchOrder.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_btnSearchFamily.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnSearchFamily.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnSearchFamily.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
-        amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
-        sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
-        gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
-        RDJ5zMUyGFxIwugJQXxLh0PcS0pGoIM0aXV7yaUc0vlVUIVVxOkC/DEazsAKXnijaNYP4WBtQ4IRuKzQ
-        wu0PIpDMYpnOI/6zgFA6h+kfFBxfEjCNhqF8NobDPAm5//cwWfJW01fj208Y+05hLk7Dn8hiivT//lsK
-        fbNRdLmCkHT0Y19V/TgjcPO+Qd/8yJwdWEjBuZgmlYKNRLf4YjB4wlCZpyGQtoF/RkQxAuevabafECmT
-        91460TMZxaupOJ6TvnUfwrhr8aFO0Q02XwJT+1nmFooq+ZUVnDpF5pyiCzf0g+SrE5Bq3uCkrB1HeBfx
-        UF6NhE/FiPzZMILsvqo2P2ELZSMHahrS5cImCOpbFys5x2TsvbswrC1jREquaDGZoKpsS/FZXcPhkmJE
-        /gmsH1opZFMASbJ1fZI+9R40isrXhropYEOS/STNKKna/wI27sJvQCDfOWGizWQAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_btnSearchFamily.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnSearchFamily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 111</value>
-  </data>
-  <data name="m_btnSearchFamily.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 21</value>
-  </data>
-  <data name="m_btnSearchFamily.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchFamily.Name" xml:space="preserve">
-    <value>m_btnSearchFamily</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchFamily.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchFamily.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchFamily.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="m_btnSearchGenus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnSearchGenus.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnSearchGenus.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
-        amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
-        sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
-        gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
-        RDJ5zMUyGFxIwugJQXxLh0PcS0pGoIM0aXV7yaUc0vlVUIVVxOkC/DEazsAKXnijaNYP4WBtQ4IRuKzQ
-        wu0PIpDMYpnOI/6zgFA6h+kfFBxfEjCNhqF8NobDPAm5//cwWfJW01fj208Y+05hLk7Dn8hiivT//lsK
-        fbNRdLmCkHT0Y19V/TgjcPO+Qd/8yJwdWEjBuZgmlYKNRLf4YjB4wlCZpyGQtoF/RkQxAuevabafECmT
-        91460TMZxaupOJ6TvnUfwrhr8aFO0Q02XwJT+1nmFooq+ZUVnDpF5pyiCzf0g+SrE5Bq3uCkrB1HeBfx
-        UF6NhE/FiPzZMILsvqo2P2ELZSMHahrS5cImCOpbFys5x2TsvbswrC1jREquaDGZoKpsS/FZXcPhkmJE
-        /gmsH1opZFMASbJ1fZI+9R40isrXhropYEOS/STNKKna/wI27sJvQCDfOWGizWQAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_btnSearchGenus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnSearchGenus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 85</value>
-  </data>
-  <data name="m_btnSearchGenus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 21</value>
-  </data>
-  <data name="m_btnSearchGenus.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchGenus.Name" xml:space="preserve">
-    <value>m_btnSearchGenus</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchGenus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchGenus.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchGenus.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="m_btnSearchSpecies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnSearchSpecies.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnSearchSpecies.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
-        amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
-        sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
-        gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
-        RDJ5zMUyGFxIwugJQXxLh0PcS0pGoIM0aXV7yaUc0vlVUIVVxOkC/DEazsAKXnijaNYP4WBtQ4IRuKzQ
-        wu0PIpDMYpnOI/6zgFA6h+kfFBxfEjCNhqF8NobDPAm5//cwWfJW01fj208Y+05hLk7Dn8hiivT//lsK
-        fbNRdLmCkHT0Y19V/TgjcPO+Qd/8yJwdWEjBuZgmlYKNRLf4YjB4wlCZpyGQtoF/RkQxAuevabafECmT
-        91460TMZxaupOJ6TvnUfwrhr8aFO0Q02XwJT+1nmFooq+ZUVnDpF5pyiCzf0g+SrE5Bq3uCkrB1HeBfx
-        UF6NhE/FiPzZMILsvqo2P2ELZSMHahrS5cImCOpbFys5x2TsvbswrC1jREquaDGZoKpsS/FZXcPhkmJE
-        /gmsH1opZFMASbJ1fZI+9R40isrXhropYEOS/STNKKna/wI27sJvQCDfOWGizWQAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_btnSearchSpecies.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnSearchSpecies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 58</value>
-  </data>
-  <data name="m_btnSearchSpecies.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 21</value>
-  </data>
-  <data name="m_btnSearchSpecies.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchSpecies.Name" xml:space="preserve">
-    <value>m_btnSearchSpecies</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchSpecies.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchSpecies.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchSpecies.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="m_btnSearchCommon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnSearchCommon.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="m_btnSearchCommon.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
-        CwwBP0AiyAAAAjhJREFUOE+d0t1PUnEYB3Bq/Qlddd2d66LWRetlNVxuTUklBrTa2lwx2qwMJFvLAmbR
-        amSpRLPJkpdaNpphciGBEmQmJr4mssIZEwp5ETgcAmzffnjRnB2a6+LZuTi/3+d8n+c8LACsNl3vtvlA
-        sNI65OnUGq2uO9qe+caWzqXraoPjqWX2ePFMqVp7MfDOK9d0WyZe20eyNs9n2GYCeGxx4coDE7jilij/
-        gup0SYAnvr2DJPhoH578FaFohOgcAika4xEKlpklyHX9qDjVlD8qlO5kQlh2t1dn7HWkg8sroPIFJHMF
-        RDJ5zMUyGFxIwugJQXxLh0PcS0pGoIM0aXV7yaUc0vlVUIVVxOkC/DEazsAKXnijaNYP4WBtQ4IRuKzQ
-        wu0PIpDMYpnOI/6zgFA6h+kfFBxfEjCNhqF8NobDPAm5//cwWfJW01fj208Y+05hLk7Dn8hiivT//lsK
-        fbNRdLmCkHT0Y19V/TgjcPO+Qd/8yJwdWEjBuZgmlYKNRLf4YjB4wlCZpyGQtoF/RkQxAuevabafECmT
-        91460TMZxaupOJ6TvnUfwrhr8aFO0Q02XwJT+1nmFooq+ZUVnDpF5pyiCzf0g+SrE5Bq3uCkrB1HeBfx
-        UF6NhE/FiPzZMILsvqo2P2ELZSMHahrS5cImCOpbFys5x2TsvbswrC1jREquaDGZoKpsS/FZXcPhkmJE
-        /gmsH1opZFMASbJ1fZI+9R40isrXhropYEOS/STNKKna/wI27sJvQCDfOWGizWQAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_btnSearchCommon.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnSearchCommon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 32</value>
-  </data>
-  <data name="m_btnSearchCommon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 20</value>
-  </data>
-  <data name="m_btnSearchCommon.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchCommon.Name" xml:space="preserve">
-    <value>m_btnSearchCommon</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchCommon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchCommon.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearchCommon.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="m_cmbSpecies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cmbSpecies.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Italic</value>
-  </data>
-  <data name="m_cmbSpecies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 58</value>
-  </data>
-  <data name="m_cmbSpecies.Size" type="System.Drawing.Size, System.Drawing">
-    <value>475, 21</value>
-  </data>
-  <data name="m_cmbSpecies.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSpecies.Name" xml:space="preserve">
-    <value>m_cmbSpecies</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSpecies.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSpecies.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSpecies.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="m_cmbGenus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cmbGenus.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Italic</value>
-  </data>
-  <data name="m_cmbGenus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 85</value>
-  </data>
-  <data name="m_cmbGenus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>475, 21</value>
-  </data>
-  <data name="m_cmbGenus.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_cmbGenus.Name" xml:space="preserve">
-    <value>m_cmbGenus</value>
-  </data>
-  <data name="&gt;&gt;m_cmbGenus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbGenus.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_cmbGenus.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="m_cmbFamily.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cmbFamily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 112</value>
-  </data>
-  <data name="m_cmbFamily.Size" type="System.Drawing.Size, System.Drawing">
-    <value>475, 21</value>
-  </data>
-  <data name="m_cmbFamily.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFamily.Name" xml:space="preserve">
-    <value>m_cmbFamily</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFamily.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFamily.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFamily.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="m_cmbOrder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cmbOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 139</value>
-  </data>
-  <data name="m_cmbOrder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>475, 21</value>
-  </data>
-  <data name="m_cmbOrder.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;m_cmbOrder.Name" xml:space="preserve">
-    <value>m_cmbOrder</value>
-  </data>
-  <data name="&gt;&gt;m_cmbOrder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbOrder.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_cmbOrder.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="m_cmbPhylum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cmbPhylum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 193</value>
-  </data>
-  <data name="m_cmbPhylum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>475, 21</value>
-  </data>
-  <data name="m_cmbPhylum.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="&gt;&gt;m_cmbPhylum.Name" xml:space="preserve">
-    <value>m_cmbPhylum</value>
-  </data>
-  <data name="&gt;&gt;m_cmbPhylum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbPhylum.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_cmbPhylum.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="m_cmbClass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_cmbClass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 166</value>
-  </data>
-  <data name="m_cmbClass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>475, 21</value>
-  </data>
-  <data name="m_cmbClass.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;m_cmbClass.Name" xml:space="preserve">
-    <value>m_cmbClass</value>
-  </data>
-  <data name="&gt;&gt;m_cmbClass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbClass.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_cmbClass.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="m_lbSpecies.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbSpecies.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbSpecies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 62</value>
-  </data>
-  <data name="m_lbSpecies.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 13</value>
-  </data>
-  <data name="m_lbSpecies.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_lbSpecies.Text" xml:space="preserve">
-    <value>&amp;Species:</value>
-  </data>
-  <data name="&gt;&gt;m_lbSpecies.Name" xml:space="preserve">
-    <value>m_lbSpecies</value>
-  </data>
-  <data name="&gt;&gt;m_lbSpecies.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbSpecies.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lbSpecies.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="m_lbGenus.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbGenus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbGenus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 89</value>
-  </data>
-  <data name="m_lbGenus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 13</value>
-  </data>
-  <data name="m_lbGenus.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_lbGenus.Text" xml:space="preserve">
-    <value>&amp;Genus:</value>
-  </data>
-  <data name="&gt;&gt;m_lbGenus.Name" xml:space="preserve">
-    <value>m_lbGenus</value>
-  </data>
-  <data name="&gt;&gt;m_lbGenus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbGenus.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lbGenus.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="m_lbFamily.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbFamily.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbFamily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 116</value>
-  </data>
-  <data name="m_lbFamily.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 13</value>
-  </data>
-  <data name="m_lbFamily.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="m_lbFamily.Text" xml:space="preserve">
-    <value>&amp;Family:</value>
-  </data>
-  <data name="&gt;&gt;m_lbFamily.Name" xml:space="preserve">
-    <value>m_lbFamily</value>
-  </data>
-  <data name="&gt;&gt;m_lbFamily.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbFamily.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lbFamily.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="m_lbOrder.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbOrder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 143</value>
-  </data>
-  <data name="m_lbOrder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 13</value>
-  </data>
-  <data name="m_lbOrder.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="m_lbOrder.Text" xml:space="preserve">
-    <value>&amp;Order:</value>
-  </data>
-  <data name="&gt;&gt;m_lbOrder.Name" xml:space="preserve">
-    <value>m_lbOrder</value>
-  </data>
-  <data name="&gt;&gt;m_lbOrder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbOrder.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lbOrder.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="m_lblPhylum.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblPhylum.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblPhylum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 196</value>
-  </data>
-  <data name="m_lblPhylum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 13</value>
-  </data>
-  <data name="m_lblPhylum.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="m_lblPhylum.Text" xml:space="preserve">
-    <value>&amp;Phylum:</value>
-  </data>
-  <data name="&gt;&gt;m_lblPhylum.Name" xml:space="preserve">
-    <value>m_lblPhylum</value>
-  </data>
-  <data name="&gt;&gt;m_lblPhylum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPhylum.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblPhylum.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="m_tbCommon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_tbCommon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 32</value>
-  </data>
-  <data name="m_tbCommon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>475, 20</value>
-  </data>
-  <data name="m_tbCommon.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_tbCommon.Name" xml:space="preserve">
-    <value>m_tbCommon</value>
-  </data>
-  <data name="&gt;&gt;m_tbCommon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbCommon.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tbCommon.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="m_lbClass.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbClass.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbClass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 170</value>
-  </data>
-  <data name="m_lbClass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 13</value>
-  </data>
-  <data name="m_lbClass.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="m_lbClass.Text" xml:space="preserve">
-    <value>C&amp;lass:</value>
-  </data>
-  <data name="&gt;&gt;m_lbClass.Name" xml:space="preserve">
-    <value>m_lbClass</value>
-  </data>
-  <data name="&gt;&gt;m_lbClass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbClass.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lbClass.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
-  <data name="m_lbCommon.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lbCommon.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lbCommon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 36</value>
-  </data>
-  <data name="m_lbCommon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 13</value>
-  </data>
-  <data name="m_lbCommon.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_lbCommon.Text" xml:space="preserve">
-    <value>&amp;Common name:</value>
-  </data>
-  <data name="&gt;&gt;m_lbCommon.Name" xml:space="preserve">
-    <value>m_lbCommon</value>
-  </data>
-  <data name="&gt;&gt;m_lbCommon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbCommon.Parent" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lbCommon.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
-  <data name="m_tpDetails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tpDetails.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_tpDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>618, 216</value>
-  </data>
-  <data name="m_tpDetails.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tpDetails.Text" xml:space="preserve">
-    <value>Details</value>
-  </data>
-  <data name="&gt;&gt;m_tpDetails.Name" xml:space="preserve">
-    <value>m_tpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tpDetails.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tpDetails.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tpDetails.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tcMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_tcMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tcMain.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tcMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>626, 242</value>
-  </data>
-  <data name="m_tcMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Name" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;m_tcMain.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;m_lblEngine.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -1478,7 +631,7 @@
     <value>1</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>626, 532</value>
+    <value>924, 532</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
     <value>286</value>
@@ -1505,13 +658,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>647, 121</value>
+    <value>945, 121</value>
   </data>
   <data name="m_hdrOrder.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 18</value>
   </data>
   <data name="m_hdrOrder.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_hdrOrder.Text" xml:space="preserve">
     <value>Target group</value>
@@ -1523,7 +676,7 @@
     <value>m_hdrOrder</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.404, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1538,13 +691,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>647, 12</value>
+    <value>945, 12</value>
   </data>
   <data name="m_hdrEdit.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 18</value>
   </data>
   <data name="m_hdrEdit.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_hdrEdit.Text" xml:space="preserve">
     <value>Edit</value>
@@ -1556,7 +709,7 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.404, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1571,13 +724,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrProps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>647, 201</value>
+    <value>945, 201</value>
   </data>
   <data name="m_hdrProps.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 18</value>
   </data>
   <data name="m_hdrProps.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_hdrProps.Text" xml:space="preserve">
     <value>Proportions</value>
@@ -1589,7 +742,7 @@
     <value>m_hdrProps</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.404, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1610,13 +763,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnProps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>646, 222</value>
+    <value>944, 222</value>
   </data>
   <data name="m_btnProps.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="m_btnProps.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_btnProps.Text" xml:space="preserve">
     <value>&amp;Sum to one</value>
@@ -1646,7 +799,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>754, 585</value>
+    <value>1052, 585</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>500, 563</value>

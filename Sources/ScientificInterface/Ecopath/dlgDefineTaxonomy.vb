@@ -132,7 +132,6 @@ Public Class dlgDefineTaxa
 
         Me.m_tds = cTaxonDataSource.GetInstance()
 
-        Me.PopulateTaxonDetailControls()
         Me.PopulateTaxonDataProducerControls()
         Me.UpdateControls()
 
@@ -146,11 +145,6 @@ Public Class dlgDefineTaxa
         If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
         Me.m_gridGroups.SelectedGroup = Me.m_groupStartup
 
-        If Me.m_bHasSearchEngines Then
-            Me.m_tcMain.SelectTab(Me.m_tpSearch)
-        Else
-            Me.m_tcMain.SelectTab(Me.m_tpDetails)
-        End If
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -244,7 +238,7 @@ Public Class dlgDefineTaxa
     Private Sub m_btnProps_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnProps.Click
         Try
-            Me.m_gridGroups.NormalizeProportions(True)
+            Me.m_gridGroups.NormalizeProportions()
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -293,118 +287,6 @@ Public Class dlgDefineTaxa
         If (Me.m_bInUpdate) Then Return
         Me.UpdateControls()
 
-    End Sub
-
-    Private Sub OnCommonChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tbCommon.TextChanged
-
-        If (Me.m_bInUpdate) Then Return
-        If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
-
-        Me.m_gridGroups.SelectedTaxon.Common = Me.m_tbCommon.Text
-        Me.m_gridGroups.UpdateSelectedTaxonRow()
-
-    End Sub
-
-    Private Sub OnSearchCommon(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSearchCommon.Click
-        Me.Search(Me.m_tbCommon.Text)
-    End Sub
-
-    Private Sub OnPhylumChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cmbPhylum.TextChanged
-
-        If (Me.m_bInUpdate) Then Return
-        If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
-
-        Me.m_gridGroups.SelectedTaxon.Phylum = Me.m_cmbPhylum.Text
-        Me.m_gridGroups.UpdateSelectedTaxonRow()
-
-    End Sub
-
-    Private Sub OnSearchPhylum(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSearchPhylum.Click
-        Me.Search(Me.m_cmbPhylum.Text)
-    End Sub
-
-    Private Sub OnClassChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cmbClass.TextChanged
-
-        If (Me.m_bInUpdate) Then Return
-        If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
-
-        Me.m_gridGroups.SelectedTaxon.Class = Me.m_cmbClass.Text
-        Me.m_gridGroups.UpdateSelectedTaxonRow()
-
-    End Sub
-
-    Private Sub OnSearchClass(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSearchClass.Click
-        Me.Search(Me.m_cmbClass.Text)
-    End Sub
-
-    Private Sub OnOrderChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cmbOrder.TextChanged
-
-        If (Me.m_bInUpdate) Then Return
-        If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
-
-        Me.m_gridGroups.SelectedTaxon.Order = Me.m_cmbOrder.Text
-        Me.m_gridGroups.UpdateSelectedTaxonRow()
-
-    End Sub
-
-    Private Sub OnSearchOrder(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSearchOrder.Click
-        Me.Search(Me.m_cmbOrder.Text)
-    End Sub
-
-    Private Sub OnFamilyChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cmbFamily.TextChanged
-
-        If (Me.m_bInUpdate) Then Return
-        If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
-
-        Me.m_gridGroups.SelectedTaxon.Family = Me.m_cmbFamily.Text
-        Me.m_gridGroups.UpdateSelectedTaxonRow()
-
-    End Sub
-
-    Private Sub OnSearchFamily(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSearchFamily.Click
-        Me.Search(Me.m_cmbFamily.Text)
-    End Sub
-
-    Private Sub OnGenusChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cmbGenus.TextChanged
-
-        If (Me.m_bInUpdate) Then Return
-        If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
-
-        Me.m_gridGroups.SelectedTaxon.Genus = Me.m_cmbGenus.Text
-        Me.m_gridGroups.UpdateSelectedTaxonRow()
-
-    End Sub
-
-    Private Sub OnSearchGenus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSearchGenus.Click
-        Me.Search(Me.m_cmbGenus.Text)
-    End Sub
-
-    Private Sub OnSpeciesChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cmbSpecies.TextChanged
-
-        If (Me.m_bInUpdate) Then Return
-        If (Me.m_gridGroups.SelectedTaxon Is Nothing) Then Return
-
-        Me.m_gridGroups.SelectedTaxon.Species = Me.m_cmbSpecies.Text
-        Me.m_gridGroups.UpdateSelectedTaxonRow()
-
-    End Sub
-
-    Private Sub OnSearchSpecies(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSearchSpecies.Click
-        Me.Search(Me.m_cmbSpecies.Text)
     End Sub
 
     Private m_wait As cWaitForSearch = Nothing
@@ -467,67 +349,7 @@ Public Class dlgDefineTaxa
         Me.m_cbIncludeExtent.Enabled = bCanSearch
         Me.m_gridResults.Enabled = bCanSearch
 
-        ' Config taxon controls
-        If (taxon Is Nothing) Then
-            Me.m_lblSelectedGroup.Text = SharedResources.GENERIC_VALUE_NONE
-            Me.m_tbCommon.Enabled = False : Me.m_tbCommon.Text = ""
-            Me.m_btnSearchCommon.Enabled = False
-            Me.m_cmbClass.Enabled = False : Me.m_cmbClass.SelectedIndex = -1
-            Me.m_btnSearchClass.Enabled = False
-            Me.m_cmbOrder.Enabled = False : Me.m_cmbOrder.SelectedIndex = -1
-            Me.m_btnSearchOrder.Enabled = False
-            Me.m_cmbFamily.Enabled = False : Me.m_cmbFamily.SelectedIndex = -1
-            Me.m_btnSearchFamily.Enabled = False
-            Me.m_cmbGenus.Enabled = False : Me.m_cmbGenus.SelectedIndex = -1
-            Me.m_btnSearchGenus.Enabled = False
-            Me.m_cmbSpecies.Enabled = False : Me.m_cmbSpecies.SelectedIndex = -1
-            Me.m_btnSearchSpecies.Enabled = False
-            Me.m_cmbPhylum.Enabled = False : Me.m_cmbPhylum.SelectedIndex = -1
-            Me.m_btnSearchPhylum.Enabled = False
-            Me.m_btnAdd.Enabled = (group IsNot Nothing)
-            Me.m_btnRemove.Enabled = False
-            Me.m_btnKeep.Enabled = False
-            Me.m_btnMoveUp.Enabled = False
-            Me.m_btnMoveDown.Enabled = False
-        Else
-            Me.m_lblSelectedGroup.Text = group.Name
-            Me.m_tbCommon.Enabled = True : Me.m_tbCommon.Text = taxon.Common
-            Me.m_btnSearchCommon.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_tbCommon.Text.Trim))
-            Me.m_cmbClass.Enabled = True : Me.m_cmbClass.Text = taxon.Class
-            Me.m_btnSearchClass.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbClass.Text.Trim))
-            Me.m_cmbOrder.Enabled = True : Me.m_cmbOrder.Text = taxon.Order
-            Me.m_btnSearchOrder.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbOrder.Text.Trim))
-            Me.m_cmbFamily.Enabled = True : Me.m_cmbFamily.Text = taxon.Family
-            Me.m_btnSearchFamily.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbFamily.Text.Trim))
-            Me.m_cmbGenus.Enabled = True : Me.m_cmbGenus.Text = taxon.Genus
-            Me.m_btnSearchGenus.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbGenus.Text.Trim))
-            Me.m_cmbSpecies.Enabled = True : Me.m_cmbSpecies.Text = taxon.Species
-            Me.m_btnSearchSpecies.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbSpecies.Text.Trim))
-            Me.m_cmbPhylum.Enabled = True : Me.m_cmbPhylum.Text = taxon.Phylum
-            Me.m_btnSearchPhylum.Enabled = bCanSearch And (Not String.IsNullOrEmpty(Me.m_cmbPhylum.Text.Trim))
-            Me.m_btnAdd.Enabled = True
-            Me.m_btnRemove.Enabled = Not Me.m_gridGroups.IsFlaggedForDeletionRow
-            Me.m_btnKeep.Enabled = Me.m_gridGroups.IsFlaggedForDeletionRow
-            Me.m_btnMoveUp.Enabled = (group.Index > 1)
-            Me.m_btnMoveDown.Enabled = (group.Index < Me.m_uic.Core.nGroups)
-        End If
-
         Me.m_bInUpdate = False
-
-    End Sub
-
-    Private Sub PopulateTaxonDetailControls()
-
-        Dim taxon As ITaxonSearchData = Nothing
-
-        For Each taxon In Me.m_gridGroups.Taxa
-            Me.AddText(Me.m_cmbClass, taxon.Class)
-            Me.AddText(Me.m_cmbOrder, taxon.Order)
-            Me.AddText(Me.m_cmbGenus, taxon.Genus)
-            Me.AddText(Me.m_cmbFamily, taxon.Family)
-            Me.AddText(Me.m_cmbSpecies, taxon.Species)
-            Me.AddText(Me.m_cmbPhylum, taxon.Phylum)
-        Next
 
     End Sub
 
@@ -643,8 +465,6 @@ Public Class dlgDefineTaxa
         If searchterm IsNot Nothing Then
             '#Yes: populate term
             searchterm.Common = strTerm
-            ' Switch to search tab
-            Me.m_tcMain.SelectTab(Me.m_tpSearch)
             Me.m_tbSearch.Text = strTerm
             ' Go Jimmy
             Me.Search(searchterm)

@@ -31,14 +31,17 @@ Public Class gridDefineTaxonomy
     ''' <summary>Internal item linked to the search term.</summary>
     Private m_tiSearchLinked As ITaxonSearchData = Nothing
 
-    Private m_vizPropNormalized As New cEwEGridProportionVisualizer()
-
     ''' <summary>Enumerated type defining the columns in this grid.</summary>
     Private Enum eColumnTypes
         Hierarchy = 0
         Name
         Proportion
-        PropNorm
+        Species
+        Genus
+        Family
+        Order
+        [Class]
+        Phylum
         Status
     End Enum
 
@@ -312,15 +315,6 @@ Public Class gridDefineTaxonomy
             End Get
             Set(ByVal value As Single)
                 Me.m_sProportion = value
-            End Set
-        End Property
-
-        Public Property PropNormalized() As Single
-            Get
-                Return Me.m_sPropNorm
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sPropNorm = value
             End Set
         End Property
 
@@ -727,7 +721,12 @@ Public Class gridDefineTaxonomy
         Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
         Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION)
-        Me(0, eColumnTypes.PropNorm) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION)
+        Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
+        Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(SharedResources.HEADER_CLASS)
+        Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell(SharedResources.HEADER_ORDER)
+        Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(SharedResources.HEADER_FAMILY)
+        Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
+        Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         Me.FixedColumns = 1
@@ -756,7 +755,7 @@ Public Class gridDefineTaxonomy
             Me.m_lTaxonInfo.Add(ti)
         Next
 
-        Me.NormalizeProportions(False)
+        Me.NormalizeProportions()
 
         ' Brute-force update grid
         Me.UpdateGrid()
@@ -770,8 +769,6 @@ Public Class gridDefineTaxonomy
             Select Case DirectCast(iCol, eColumnTypes)
                 Case eColumnTypes.Hierarchy
                     Me.Columns(iCol).Width = 20
-                Case eColumnTypes.PropNorm
-                    Me.Columns(iCol).Width = 100
                 Case Else
                     Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
                     Me.AutoSizeColumn(iCol, 100)
@@ -830,9 +827,9 @@ Public Class gridDefineTaxonomy
 
             Me(iRow, eColumnTypes.Hierarchy) = hgcGroup
             Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, grp, eVarNameFlags.Name, Nothing, hgcGroup)
-            Me(iRow, eColumnTypes.PropNorm) = New EwERowHeaderCell("")
-            Me(iRow, eColumnTypes.Proportion) = New EwERowHeaderCell("")
-            Me(iRow, eColumnTypes.Status) = New EwERowHeaderCell("")
+            For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
+                Me(iRow, iCol) = New EwERowHeaderCell("")
+            Next
 
             For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
 
@@ -842,13 +839,24 @@ Public Class gridDefineTaxonomy
                     iRow = Me.AddRow()
 
                     hgcGroup.AddChildRow(iRow)
-                    Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(hgcGroup.NumChildRows)
+                    Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell()
                     Me(iRow, eColumnTypes.Hierarchy).Tag = ti
-                    Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(ti.Common)
+                    Me(iRow, eColumnTypes.Name) = New EwECell(ti.Common, GetType(String))
+                    Me(iRow, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iRow, eColumnTypes.Species) = New EwECell(ti.Species, GetType(String), cStyleGuide.eStyleFlags.TaxonItalics)
+                    Me(iRow, eColumnTypes.Species).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iRow, eColumnTypes.Genus) = New EwECell(ti.Genus, GetType(String), cStyleGuide.eStyleFlags.TaxonItalics)
+                    Me(iRow, eColumnTypes.Genus).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iRow, eColumnTypes.Family) = New EwECell(ti.Family, GetType(String))
+                    Me(iRow, eColumnTypes.Family).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iRow, eColumnTypes.Order) = New EwECell(ti.Order, GetType(String))
+                    Me(iRow, eColumnTypes.Order).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iRow, eColumnTypes.Class) = New EwECell(ti.Class, GetType(String))
+                    Me(iRow, eColumnTypes.Class).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iRow, eColumnTypes.Phylum) = New EwECell(ti.Phylum, GetType(String))
+                    Me(iRow, eColumnTypes.Phylum).Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
                     Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.PropNorm) = New EwECell(ti.PropNormalized, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
-                    Me(iRow, eColumnTypes.PropNorm).VisualModel = Me.m_vizPropNormalized
                     Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
                 End If
@@ -879,8 +887,12 @@ Public Class gridDefineTaxonomy
         If ti Is Nothing Then Return
 
         Me(iRow, eColumnTypes.Name).Value = ti.Common
+        Me(iRow, eColumnTypes.Class).Value = ti.Class
+        Me(iRow, eColumnTypes.Order).Value = ti.Order
+        Me(iRow, eColumnTypes.Family).Value = ti.Family
+        Me(iRow, eColumnTypes.Genus).Value = ti.Genus
+        Me(iRow, eColumnTypes.Species).Value = ti.Species
         Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
-        Me(iRow, eColumnTypes.PropNorm).Value = ti.PropNormalized
 
         Select Case ti.Status
             Case eItemStatusTypes.Original
@@ -899,13 +911,12 @@ Public Class gridDefineTaxonomy
 
     End Sub
 
-    Private Sub UpdateProportionsColumns()
+    Public Sub UpdateProportions()
 
         For iRow As Integer = 1 To Me.RowsCount - 1
             Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)
             If ti IsNot Nothing Then
                 Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
-                Me(iRow, eColumnTypes.PropNorm).Value = ti.PropNormalized
             End If
         Next
 
@@ -927,13 +938,24 @@ Public Class gridDefineTaxonomy
     ''' -----------------------------------------------------------------------
     Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
 
-        ' Can only be proportion
         Dim ti As cTaxonInfo = Me.TaxonInfo(p.Row)
         If ti Is Nothing Then Return False
-        ti.Proportion = CSng(Me(p.Row, p.Column).Value)
 
-        Me.NormalizeProportions(False)
-        Me.UpdateProportionsColumns()
+        Dim val As Object = Me(p.Row, p.Column).Value
+
+        Select Case DirectCast(p.Column, eColumnTypes)
+            Case eColumnTypes.Name : ti.Common = CStr(val)
+            Case eColumnTypes.Class : ti.Class = CStr(val)
+            Case eColumnTypes.Family : ti.Family = CStr(val)
+            Case eColumnTypes.Order : ti.Order = CStr(val)
+            Case eColumnTypes.Genus : ti.Genus = CStr(val)
+            Case eColumnTypes.Species : ti.Species = CStr(val)
+            Case eColumnTypes.Phylum : ti.Phylum = CStr(val)
+            Case eColumnTypes.Proportion : ti.Proportion = CSng(val)
+        End Select
+
+        ' Perhaps redundant but hey
+        Me.UpdateRow(p.Row)
 
         Return True
 
@@ -1032,9 +1054,9 @@ Public Class gridDefineTaxonomy
             ti = New cTaxonInfo(taxon)
             ti.Group = Me.SelectedGroup.Index
             Me.m_lTaxonInfo.Add(ti)
+
         End If
 
-        Me.NormalizeProportions(False)
         Me.UpdateGrid()
         Me.SelectedTaxon = ti
 
@@ -1093,8 +1115,6 @@ Public Class gridDefineTaxonomy
                     End Select
 
                     Me.UpdateRow(iRow)
-                    Me.NormalizeProportions(False)
-                    Me.UpdateProportionsColumns()
                     Me.SelectedTaxon = ti
                     Exit For
 
@@ -1174,7 +1194,7 @@ Public Class gridDefineTaxonomy
 
 #Region " Apply changes "
 
-    Public Sub NormalizeProportions(ByVal bSumToOne As Boolean)
+    Public Sub NormalizeProportions()
 
         Dim asTotal(Me.Core.nGroups) As Single
         Dim aiTotal(Me.Core.nGroups) As Integer
@@ -1195,16 +1215,14 @@ Public Class gridDefineTaxonomy
                 ' Has a total of 0?
                 If (asTotal(ti.Group) = 0.0!) Then
                     ' #Yes: redistribute values
-                    ti.PropNormalized = 1.0! / aiTotal(ti.Group)
+                    ti.Proportion = 1.0! / aiTotal(ti.Group)
                 Else
-                    ti.PropNormalized = ti.Proportion / asTotal(ti.Group)
+                    ti.Proportion = ti.Proportion / asTotal(ti.Group)
                 End If
 
-                If bSumToOne Then
-                    ti.Proportion = ti.PropNormalized
-                End If
             End If
         Next
+        Me.UpdateProportions()
 
     End Sub
 
@@ -1222,10 +1240,12 @@ Public Class gridDefineTaxonomy
             ' Check this Taxon is newly added
             If ti.IsNew Then
                 bConfigurationChanged = True
+                Exit For
             Else
                 ' Check if this Taxon is an existing Taxon that has been moved
                 If ((iTaxon + 1) <> ti.TaxonIndex) Then
                     bConfigurationChanged = True
+                    Exit For
                 End If
             End If
         Next iTaxon
@@ -1255,31 +1275,37 @@ Public Class gridDefineTaxonomy
             Dim htTaxonID As New Dictionary(Of cTaxonInfo, Integer)
             Dim iDBID As Integer = Nothing
 
-            ' Add new Taxons
-            For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
-                ti = Me.m_lTaxonInfo(iTaxon)
-                If (ti.IsNew) Then
-                    Dim igt As Integer = iTaxon + 1
-                    bSuccess = bSuccess And Me.Core.AddTaxon(ti.Group, ti, ti.Proportion, iDBID)
-                    ' Map this new ID during update
-                    htTaxonID.Add(ti, iDBID)
-                End If
-            Next
+            Try
 
-            ' Remove deleted Taxons
-            Dim iTaxonRemove As Integer = 0
-            For iTaxon = 0 To Me.m_lTaxonInfoRemoved.Count - 1
-                ti = DirectCast(Me.m_lTaxonInfoRemoved(iTaxonRemove), cTaxonInfo)
-                If (Not ti.IsNew) Then
-                    If (Me.Core.RemoveTaxon(ti.TaxonIndex)) Then
-                        Me.m_lTaxonInfo.Remove(ti)
-                        Me.m_lTaxonInfoRemoved.Remove(ti)
-                    Else
-                        bSuccess = False
-                        iTaxonRemove += 1
+                ' Add new Taxons
+                For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
+                    ti = Me.m_lTaxonInfo(iTaxon)
+                    If (ti.IsNew) Then
+                        Dim igt As Integer = iTaxon + 1
+                        bSuccess = bSuccess And Me.Core.AddTaxon(ti.Group, ti, ti.Proportion, iDBID)
+                        ' Map this new ID during update
+                        htTaxonID.Add(ti, iDBID)
                     End If
-                End If
-            Next
+                Next
+
+                ' Remove deleted Taxons
+                Dim iTaxonRemove As Integer = 0
+                For iTaxon = 0 To Me.m_lTaxonInfoRemoved.Count - 1
+                    ti = DirectCast(Me.m_lTaxonInfoRemoved(iTaxonRemove), cTaxonInfo)
+                    If (Not ti.IsNew) Then
+                        If (Me.Core.RemoveTaxon(ti.TaxonIndex)) Then
+                            Me.m_lTaxonInfo.Remove(ti)
+                            Me.m_lTaxonInfoRemoved.Remove(ti)
+                        Else
+                            bSuccess = False
+                            iTaxonRemove += 1
+                        End If
+                    End If
+                Next
+
+            Catch ex As Exception
+
+            End Try
 
             ' The core will reload now
             Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)

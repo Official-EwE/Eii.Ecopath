@@ -39,34 +39,8 @@ Partial Class dlgDefineTaxa
         Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox
         Me.m_scMain = New System.Windows.Forms.SplitContainer
         Me.m_gridGroups = New ScientificInterface.gridDefineTaxonomy
-        Me.m_tcMain = New System.Windows.Forms.TabControl
-        Me.m_tpSearch = New System.Windows.Forms.TabPage
         Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults
         Me.m_lblEngine = New System.Windows.Forms.Label
-        Me.m_tpDetails = New System.Windows.Forms.TabPage
-        Me.m_lblSelectedGroup = New System.Windows.Forms.Label
-        Me.m_lblGroup = New System.Windows.Forms.Label
-        Me.m_btnSearchPhylum = New System.Windows.Forms.Button
-        Me.m_btnSearchClass = New System.Windows.Forms.Button
-        Me.m_btnSearchOrder = New System.Windows.Forms.Button
-        Me.m_btnSearchFamily = New System.Windows.Forms.Button
-        Me.m_btnSearchGenus = New System.Windows.Forms.Button
-        Me.m_btnSearchSpecies = New System.Windows.Forms.Button
-        Me.m_btnSearchCommon = New System.Windows.Forms.Button
-        Me.m_cmbSpecies = New System.Windows.Forms.ComboBox
-        Me.m_cmbGenus = New System.Windows.Forms.ComboBox
-        Me.m_cmbFamily = New System.Windows.Forms.ComboBox
-        Me.m_cmbOrder = New System.Windows.Forms.ComboBox
-        Me.m_cmbPhylum = New System.Windows.Forms.ComboBox
-        Me.m_cmbClass = New System.Windows.Forms.ComboBox
-        Me.m_lbSpecies = New System.Windows.Forms.Label
-        Me.m_lbGenus = New System.Windows.Forms.Label
-        Me.m_lbFamily = New System.Windows.Forms.Label
-        Me.m_lbOrder = New System.Windows.Forms.Label
-        Me.m_lblPhylum = New System.Windows.Forms.Label
-        Me.m_tbCommon = New System.Windows.Forms.TextBox
-        Me.m_lbClass = New System.Windows.Forms.Label
-        Me.m_lbCommon = New System.Windows.Forms.Label
         Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -74,9 +48,6 @@ Partial Class dlgDefineTaxa
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
-        Me.m_tcMain.SuspendLayout()
-        Me.m_tpSearch.SuspendLayout()
-        Me.m_tpDetails.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_btnAdd
@@ -161,7 +132,13 @@ Partial Class dlgDefineTaxa
         '
         'm_scMain.Panel2
         '
-        Me.m_scMain.Panel2.Controls.Add(Me.m_tcMain)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_btnConnect)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_cbIncludeExtent)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_gridResults)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_lblEngine)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tbSearch)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_cmbEngine)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_lbTerm)
         '
         'm_gridGroups
         '
@@ -193,26 +170,6 @@ Partial Class dlgDefineTaxa
                     Or SourceGrid2.GridSpecialKeys.Escape) _
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridGroups.UIContext = Nothing
-        '
-        'm_tcMain
-        '
-        Me.m_tcMain.Controls.Add(Me.m_tpSearch)
-        Me.m_tcMain.Controls.Add(Me.m_tpDetails)
-        resources.ApplyResources(Me.m_tcMain, "m_tcMain")
-        Me.m_tcMain.Name = "m_tcMain"
-        Me.m_tcMain.SelectedIndex = 0
-        '
-        'm_tpSearch
-        '
-        Me.m_tpSearch.Controls.Add(Me.m_gridResults)
-        Me.m_tpSearch.Controls.Add(Me.m_cbIncludeExtent)
-        Me.m_tpSearch.Controls.Add(Me.m_cmbEngine)
-        Me.m_tpSearch.Controls.Add(Me.m_tbSearch)
-        Me.m_tpSearch.Controls.Add(Me.m_lblEngine)
-        Me.m_tpSearch.Controls.Add(Me.m_lbTerm)
-        Me.m_tpSearch.Controls.Add(Me.m_btnConnect)
-        resources.ApplyResources(Me.m_tpSearch, "m_tpSearch")
-        Me.m_tpSearch.Name = "m_tpSearch"
         '
         'm_gridResults
         '
@@ -247,169 +204,6 @@ Partial Class dlgDefineTaxa
         '
         resources.ApplyResources(Me.m_lblEngine, "m_lblEngine")
         Me.m_lblEngine.Name = "m_lblEngine"
-        '
-        'm_tpDetails
-        '
-        Me.m_tpDetails.Controls.Add(Me.m_lblSelectedGroup)
-        Me.m_tpDetails.Controls.Add(Me.m_lblGroup)
-        Me.m_tpDetails.Controls.Add(Me.m_btnSearchPhylum)
-        Me.m_tpDetails.Controls.Add(Me.m_btnSearchClass)
-        Me.m_tpDetails.Controls.Add(Me.m_btnSearchOrder)
-        Me.m_tpDetails.Controls.Add(Me.m_btnSearchFamily)
-        Me.m_tpDetails.Controls.Add(Me.m_btnSearchGenus)
-        Me.m_tpDetails.Controls.Add(Me.m_btnSearchSpecies)
-        Me.m_tpDetails.Controls.Add(Me.m_btnSearchCommon)
-        Me.m_tpDetails.Controls.Add(Me.m_cmbSpecies)
-        Me.m_tpDetails.Controls.Add(Me.m_cmbGenus)
-        Me.m_tpDetails.Controls.Add(Me.m_cmbFamily)
-        Me.m_tpDetails.Controls.Add(Me.m_cmbOrder)
-        Me.m_tpDetails.Controls.Add(Me.m_cmbPhylum)
-        Me.m_tpDetails.Controls.Add(Me.m_cmbClass)
-        Me.m_tpDetails.Controls.Add(Me.m_lbSpecies)
-        Me.m_tpDetails.Controls.Add(Me.m_lbGenus)
-        Me.m_tpDetails.Controls.Add(Me.m_lbFamily)
-        Me.m_tpDetails.Controls.Add(Me.m_lbOrder)
-        Me.m_tpDetails.Controls.Add(Me.m_lblPhylum)
-        Me.m_tpDetails.Controls.Add(Me.m_tbCommon)
-        Me.m_tpDetails.Controls.Add(Me.m_lbClass)
-        Me.m_tpDetails.Controls.Add(Me.m_lbCommon)
-        resources.ApplyResources(Me.m_tpDetails, "m_tpDetails")
-        Me.m_tpDetails.Name = "m_tpDetails"
-        Me.m_tpDetails.UseVisualStyleBackColor = True
-        '
-        'm_lblSelectedGroup
-        '
-        resources.ApplyResources(Me.m_lblSelectedGroup, "m_lblSelectedGroup")
-        Me.m_lblSelectedGroup.Name = "m_lblSelectedGroup"
-        '
-        'm_lblGroup
-        '
-        resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
-        Me.m_lblGroup.Name = "m_lblGroup"
-        '
-        'm_btnSearchPhylum
-        '
-        resources.ApplyResources(Me.m_btnSearchPhylum, "m_btnSearchPhylum")
-        Me.m_btnSearchPhylum.Name = "m_btnSearchPhylum"
-        Me.m_btnSearchPhylum.UseVisualStyleBackColor = True
-        '
-        'm_btnSearchClass
-        '
-        resources.ApplyResources(Me.m_btnSearchClass, "m_btnSearchClass")
-        Me.m_btnSearchClass.Name = "m_btnSearchClass"
-        Me.m_btnSearchClass.UseVisualStyleBackColor = True
-        '
-        'm_btnSearchOrder
-        '
-        resources.ApplyResources(Me.m_btnSearchOrder, "m_btnSearchOrder")
-        Me.m_btnSearchOrder.Name = "m_btnSearchOrder"
-        Me.m_btnSearchOrder.UseVisualStyleBackColor = True
-        '
-        'm_btnSearchFamily
-        '
-        resources.ApplyResources(Me.m_btnSearchFamily, "m_btnSearchFamily")
-        Me.m_btnSearchFamily.Name = "m_btnSearchFamily"
-        Me.m_btnSearchFamily.UseVisualStyleBackColor = True
-        '
-        'm_btnSearchGenus
-        '
-        resources.ApplyResources(Me.m_btnSearchGenus, "m_btnSearchGenus")
-        Me.m_btnSearchGenus.Name = "m_btnSearchGenus"
-        Me.m_btnSearchGenus.UseVisualStyleBackColor = True
-        '
-        'm_btnSearchSpecies
-        '
-        resources.ApplyResources(Me.m_btnSearchSpecies, "m_btnSearchSpecies")
-        Me.m_btnSearchSpecies.Name = "m_btnSearchSpecies"
-        Me.m_btnSearchSpecies.UseVisualStyleBackColor = True
-        '
-        'm_btnSearchCommon
-        '
-        resources.ApplyResources(Me.m_btnSearchCommon, "m_btnSearchCommon")
-        Me.m_btnSearchCommon.Name = "m_btnSearchCommon"
-        Me.m_btnSearchCommon.UseVisualStyleBackColor = True
-        '
-        'm_cmbSpecies
-        '
-        resources.ApplyResources(Me.m_cmbSpecies, "m_cmbSpecies")
-        Me.m_cmbSpecies.FormattingEnabled = True
-        Me.m_cmbSpecies.Name = "m_cmbSpecies"
-        Me.m_cmbSpecies.Sorted = True
-        '
-        'm_cmbGenus
-        '
-        resources.ApplyResources(Me.m_cmbGenus, "m_cmbGenus")
-        Me.m_cmbGenus.FormattingEnabled = True
-        Me.m_cmbGenus.Name = "m_cmbGenus"
-        Me.m_cmbGenus.Sorted = True
-        '
-        'm_cmbFamily
-        '
-        resources.ApplyResources(Me.m_cmbFamily, "m_cmbFamily")
-        Me.m_cmbFamily.FormattingEnabled = True
-        Me.m_cmbFamily.Name = "m_cmbFamily"
-        Me.m_cmbFamily.Sorted = True
-        '
-        'm_cmbOrder
-        '
-        resources.ApplyResources(Me.m_cmbOrder, "m_cmbOrder")
-        Me.m_cmbOrder.FormattingEnabled = True
-        Me.m_cmbOrder.Name = "m_cmbOrder"
-        Me.m_cmbOrder.Sorted = True
-        '
-        'm_cmbPhylum
-        '
-        resources.ApplyResources(Me.m_cmbPhylum, "m_cmbPhylum")
-        Me.m_cmbPhylum.FormattingEnabled = True
-        Me.m_cmbPhylum.Name = "m_cmbPhylum"
-        Me.m_cmbPhylum.Sorted = True
-        '
-        'm_cmbClass
-        '
-        resources.ApplyResources(Me.m_cmbClass, "m_cmbClass")
-        Me.m_cmbClass.FormattingEnabled = True
-        Me.m_cmbClass.Name = "m_cmbClass"
-        Me.m_cmbClass.Sorted = True
-        '
-        'm_lbSpecies
-        '
-        resources.ApplyResources(Me.m_lbSpecies, "m_lbSpecies")
-        Me.m_lbSpecies.Name = "m_lbSpecies"
-        '
-        'm_lbGenus
-        '
-        resources.ApplyResources(Me.m_lbGenus, "m_lbGenus")
-        Me.m_lbGenus.Name = "m_lbGenus"
-        '
-        'm_lbFamily
-        '
-        resources.ApplyResources(Me.m_lbFamily, "m_lbFamily")
-        Me.m_lbFamily.Name = "m_lbFamily"
-        '
-        'm_lbOrder
-        '
-        resources.ApplyResources(Me.m_lbOrder, "m_lbOrder")
-        Me.m_lbOrder.Name = "m_lbOrder"
-        '
-        'm_lblPhylum
-        '
-        resources.ApplyResources(Me.m_lblPhylum, "m_lblPhylum")
-        Me.m_lblPhylum.Name = "m_lblPhylum"
-        '
-        'm_tbCommon
-        '
-        resources.ApplyResources(Me.m_tbCommon, "m_tbCommon")
-        Me.m_tbCommon.Name = "m_tbCommon"
-        '
-        'm_lbClass
-        '
-        resources.ApplyResources(Me.m_lbClass, "m_lbClass")
-        Me.m_lbClass.Name = "m_lbClass"
-        '
-        'm_lbCommon
-        '
-        resources.ApplyResources(Me.m_lbCommon, "m_lbCommon")
-        Me.m_lbCommon.Name = "m_lbCommon"
         '
         'm_hdrOrder
         '
@@ -456,12 +250,8 @@ Partial Class dlgDefineTaxa
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel2.ResumeLayout(False)
+        Me.m_scMain.Panel2.PerformLayout()
         Me.m_scMain.ResumeLayout(False)
-        Me.m_tcMain.ResumeLayout(False)
-        Me.m_tpSearch.ResumeLayout(False)
-        Me.m_tpSearch.PerformLayout()
-        Me.m_tpDetails.ResumeLayout(False)
-        Me.m_tpDetails.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -480,35 +270,9 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_btnConnect As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Private WithEvents m_cbIncludeExtent As System.Windows.Forms.CheckBox
-    Private WithEvents m_tcMain As System.Windows.Forms.TabControl
-    Friend WithEvents m_tpSearch As System.Windows.Forms.TabPage
-    Friend WithEvents m_tpDetails As System.Windows.Forms.TabPage
     Friend WithEvents m_gridResults As ScientificInterface.gridTaxonSearchResults
-    Private WithEvents m_cmbSpecies As System.Windows.Forms.ComboBox
-    Private WithEvents m_cmbGenus As System.Windows.Forms.ComboBox
-    Private WithEvents m_cmbFamily As System.Windows.Forms.ComboBox
-    Private WithEvents m_cmbOrder As System.Windows.Forms.ComboBox
-    Private WithEvents m_cmbClass As System.Windows.Forms.ComboBox
-    Private WithEvents m_lbSpecies As System.Windows.Forms.Label
-    Private WithEvents m_lbGenus As System.Windows.Forms.Label
-    Private WithEvents m_lbFamily As System.Windows.Forms.Label
-    Private WithEvents m_lbOrder As System.Windows.Forms.Label
-    Private WithEvents m_tbCommon As System.Windows.Forms.TextBox
-    Private WithEvents m_lbClass As System.Windows.Forms.Label
-    Private WithEvents m_lbCommon As System.Windows.Forms.Label
     Private WithEvents m_lblEngine As System.Windows.Forms.Label
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
-    Private WithEvents m_btnSearchCommon As System.Windows.Forms.Button
-    Private WithEvents m_btnSearchSpecies As System.Windows.Forms.Button
-    Private WithEvents m_btnSearchGenus As System.Windows.Forms.Button
-    Private WithEvents m_btnSearchFamily As System.Windows.Forms.Button
-    Private WithEvents m_btnSearchClass As System.Windows.Forms.Button
-    Private WithEvents m_btnSearchOrder As System.Windows.Forms.Button
-    Private WithEvents m_lblSelectedGroup As System.Windows.Forms.Label
-    Private WithEvents m_lblGroup As System.Windows.Forms.Label
-    Private WithEvents m_cmbPhylum As System.Windows.Forms.ComboBox
-    Private WithEvents m_lblPhylum As System.Windows.Forms.Label
-    Private WithEvents m_btnSearchPhylum As System.Windows.Forms.Button
     Private WithEvents m_hdrProps As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_btnProps As System.Windows.Forms.Button
 
