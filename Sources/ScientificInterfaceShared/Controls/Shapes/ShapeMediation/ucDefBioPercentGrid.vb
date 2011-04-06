@@ -194,8 +194,6 @@ Namespace Controls
             ' Weight cell
             Me(0, eColumnTypes.Weight) = New EwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT)
 
-            Me.FixedColumns = 2
-
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -217,6 +215,7 @@ Namespace Controls
             Me.Columns(eColumnTypes.Weight).Width = 150
             Me.Columns(eColumnTypes.Name).Width = Math.Max(150, Me.ClientRectangle.Width - 150)
             Me.FixedColumns = 1
+            Me.FixedColumnWidths = False
         End Sub
 
         ''' -----------------------------------------------------------------------
