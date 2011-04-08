@@ -1044,17 +1044,9 @@ Public Class gridDefineTaxonomy
             ti = New cTaxonInfo(Me.SelectedGroup)
             Me.m_lTaxonInfo.Add(ti)
         Else
-            Dim lUsedTaxa As New List(Of String)
-            For Each ti In Me.m_lTaxonInfo
-                lUsedTaxa.Add(ti.CodeTaxon)
-            Next
-            ' Same taxon code should be used only once
-            If lUsedTaxa.Contains(taxon.CodeTaxon) Then Return
-
             ti = New cTaxonInfo(taxon)
             ti.Group = Me.SelectedGroup.Index
             Me.m_lTaxonInfo.Add(ti)
-
         End If
 
         Me.UpdateGrid()
