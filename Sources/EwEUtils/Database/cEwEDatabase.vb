@@ -968,6 +968,46 @@ Namespace Database
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the name of a primary key of a table.
+        ''' </summary>
+        ''' <param name="strTable">The table name to obtain the primary key for.</param>
+        ''' <returns>A name, or an empty string when no primary key was found.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function GetFkKeyName(ByVal strTable As String, ByVal strColumn As String) As String
+
+            Dim conn As IDbConnection = Me.GetConnection()
+            Dim dtKeys As DataTable = Nothing
+            Dim strFKKey As String = ""
+
+            ' Execute oledb variant
+            If (TypeOf conn Is OleDbConnection) Then
+
+                Try
+                    Dim cdb As OleDbConnection = DirectCast(conn, OleDbConnection)
+                    ' Get PK keys schema information for entire DB
+                    dtKeys = cdb.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, New Object() {Nothing, Nothing, strTable})
+                    ' Sanity checks, pk may not be defined
+                    If (dtKeys.Rows.Count = 0) Then Return strFKKey
+                    For Each drow As DataRow In dtKeys.Rows
+                        If (String.Compare(CStr(drow("PK_COLUMN_NAME")), strColumn, True) = 0) Then
+                            strFKKey = CStr(drow("FK_NAME"))
+                        End If
+                    Next
+                Catch ex As Exception
+                End Try
+            End If
+
+            If (TypeOf conn Is SqlConnection) Then
+                ' Not implemented yet
+
+            End If
+
+            Return strFKKey
+
+        End Function
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Helper method, reads data from a column that may not exist. In that case,
