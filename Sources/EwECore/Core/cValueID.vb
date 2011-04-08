@@ -17,6 +17,7 @@ Public Class cValueID
     Private m_dtPrim As eDataTypes = eDataTypes.NotSet
     Private m_iDBIDPrim As Integer = cCore.NULL_VALUE
     Private m_strVarName As String = ""
+    Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
     Private m_dtSec As eDataTypes = eDataTypes.NotSet
     Private m_iDBIDSec As Integer = cCore.NULL_VALUE
     Private m_strCached As String = ""
@@ -102,7 +103,7 @@ Public Class cValueID
         Get
             Return Me.m_dtPrim
         End Get
-        Set(ByVal dt As eDataTypes)
+        Friend Set(ByVal dt As eDataTypes)
             Me.m_dtPrim = dt
             Me.m_strCached = ""
         End Set
@@ -112,7 +113,7 @@ Public Class cValueID
         Get
             Return Me.m_dtSec
         End Get
-        Set(ByVal dt As eDataTypes)
+        Friend Set(ByVal dt As eDataTypes)
             Me.m_dtSec = dt
             Me.m_strCached = ""
         End Set
@@ -122,7 +123,7 @@ Public Class cValueID
         Get
             Return Me.m_iDBIDPrim
         End Get
-        Set(ByVal iDBID As Integer)
+        Friend Set(ByVal iDBID As Integer)
             Me.m_iDBIDPrim = iDBID
             Me.m_strCached = ""
         End Set
@@ -132,18 +133,28 @@ Public Class cValueID
         Get
             Return Me.m_iDBIDSec
         End Get
-        Set(ByVal iDBID As Integer)
+        Friend Set(ByVal iDBID As Integer)
             Me.m_iDBIDSec = iDBID
             Me.m_strCached = ""
         End Set
     End Property
 
-    Public Property VarName() As String
+    Public Property VarNameText() As String
         Get
             Return Me.m_strVarName
         End Get
-        Set(ByVal strVarName As String)
+        Friend Set(ByVal strVarName As String)
             Me.m_strVarName = strVarName
+            Me.m_strCached = ""
+        End Set
+    End Property
+
+    Public Property VarName() As eVarNameFlags
+        Get
+            Return Me.m_varname
+        End Get
+        Friend Set(ByVal vn As eVarNameFlags)
+            Me.m_varname = vn
             Me.m_strCached = ""
         End Set
     End Property
@@ -152,12 +163,13 @@ Public Class cValueID
 
         Dim asBits() As String = strAuxKey.Split(":"c)
         Dim key As New cValueID()
+        Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance
 
         For i As Integer = 0 To asBits.Length - 1
             Select Case i
                 Case 0 : key.m_dtPrim = s_cni.GetDataType(asBits(0))
                 Case 1 : key.m_iDBIDPrim = CInt(asBits(1))
-                Case 2 : key.m_strVarName = asBits(2)
+                Case 2 : key.m_strVarName = asBits(2) : key.m_varname = cni.GetVarName(asBits(2))
                 Case 3 : key.m_dtSec = s_cni.GetDataType(asBits(3))
                 Case 4 : key.m_iDBIDSec = CInt(asBits(4))
             End Select
