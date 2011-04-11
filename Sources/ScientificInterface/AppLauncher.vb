@@ -1600,10 +1600,15 @@ Public Class AppLauncher
 
         If Me.m_bNavigating Then Return
         Me.m_bNavigating = True
-        ' Remember this
-        Me.m_strLastActiveContent = strNodeName
-        ' Kick nav panel
-        DirectCast(Me.Panel(cPANEL_NAV), frmNavigationPanel).SelectedNodeName(bAllowDefault) = strNodeName
+
+        ' Does active node still exist?
+        If String.IsNullOrEmpty(strNodeName) And Not Me.ActivateForm(Me.m_strLastActiveContent) Then
+            ' Remember new page
+            Me.m_strLastActiveContent = strNodeName
+            ' Kick nav panel
+            DirectCast(Me.Panel(cPANEL_NAV), frmNavigationPanel).SelectedNodeName(bAllowDefault) = strNodeName
+        End If
+
         Me.m_bNavigating = False
 
     End Sub
