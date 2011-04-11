@@ -1599,15 +1599,19 @@ Public Class AppLauncher
                                    Optional ByVal bAllowDefault As Boolean = False)
 
         If Me.m_bNavigating Then Return
+
+        ' Default switching?
+        If String.IsNullOrEmpty(strNodeName) And bAllowDefault Then
+            ' #Yes: can reactivate current node?
+            If Me.ActivateForm(Me.m_strLastActiveContent) Then Return
+        End If
+
         Me.m_bNavigating = True
 
-        ' Does active node still exist?
-        If String.IsNullOrEmpty(strNodeName) And Not Me.ActivateForm(Me.m_strLastActiveContent) Then
-            ' Remember new page
-            Me.m_strLastActiveContent = strNodeName
-            ' Kick nav panel
-            DirectCast(Me.Panel(cPANEL_NAV), frmNavigationPanel).SelectedNodeName(bAllowDefault) = strNodeName
-        End If
+        ' Remember new page
+        Me.m_strLastActiveContent = strNodeName
+        ' Kick nav panel
+        DirectCast(Me.Panel(cPANEL_NAV), frmNavigationPanel).SelectedNodeName(bAllowDefault) = strNodeName
 
         Me.m_bNavigating = False
 
