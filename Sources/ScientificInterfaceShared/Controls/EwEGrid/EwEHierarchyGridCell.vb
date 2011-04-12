@@ -43,10 +43,10 @@ Namespace Controls.EwEGrid
             Set(ByVal bExpanded As Boolean)
                 ' Store flag
                 Me.m_bExpanded = bExpanded
-                ' Update visualizer
-                Me.m_viz.Expanded = bExpanded
                 ' Show/hide child rows
                 Me.ShowHideChildren()
+                ' Update viz
+                Me.UpdateViz()
             End Set
         End Property
 
@@ -57,6 +57,8 @@ Namespace Controls.EwEGrid
                 If (Me.m_liChildRows(iPos) < iRow) Then Exit While
             End While
             Me.m_liChildRows.Insert(iPos, iRow)
+
+            Me.UpdateViz()
         End Sub
 
         ''' <summary>
@@ -95,6 +97,21 @@ Namespace Controls.EwEGrid
                 ' No style
             End Set
         End Property
+
+        Private Sub UpdateViz()
+            Try
+                ' Update visualizer
+                If Me.NumChildRows = 0 Then
+                    Me.m_viz.SetCollapsedState(cVisualizerEwECollapseExpandRowHeader.eCollapsedState.NoChildren)
+                ElseIf Me.m_bExpanded Then
+                    Me.m_viz.SetCollapsedState(cVisualizerEwECollapseExpandRowHeader.eCollapsedState.Expanded)
+                Else
+                    Me.m_viz.SetCollapsedState(cVisualizerEwECollapseExpandRowHeader.eCollapsedState.Collapsed)
+                End If
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
     End Class
 

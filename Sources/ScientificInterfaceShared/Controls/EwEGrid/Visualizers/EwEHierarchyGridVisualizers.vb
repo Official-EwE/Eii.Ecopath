@@ -12,20 +12,27 @@ Namespace Controls.EwEGrid
      Public Class cVisualizerEwECollapseExpandRowHeader
         : Inherits cEwEGridRowHeaderVisualizer
 
+        Public Enum eCollapsedState As Integer
+            NoChildren = 0
+            Collapsed
+            Expanded
+        End Enum
+
         Public Sub New()
             MyBase.new()
             Me.ImageAlignment = ContentAlignment.MiddleCenter
         End Sub
 
-        Public WriteOnly Property Expanded() As Boolean
-            Set(ByVal bExpanded As Boolean)
-                If bExpanded Then
-                    Me.Image = My.Resources.Expanded
-                Else
+        Public Sub SetCollapsedState(ByVal state As eCollapsedState)
+            Select Case state
+                Case eCollapsedState.Collapsed
                     Me.Image = My.Resources.Collapsed
-                End If
-            End Set
-        End Property
+                Case eCollapsedState.Expanded
+                    Me.Image = My.Resources.Expanded
+                Case eCollapsedState.NoChildren
+                    Me.Image = Nothing
+            End Select
+        End Sub
 
     End Class
 
