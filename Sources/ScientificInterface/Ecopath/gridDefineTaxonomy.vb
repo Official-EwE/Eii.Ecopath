@@ -809,7 +809,6 @@ Public Class gridDefineTaxonomy
             Next
 
             For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
-
                 ti = Me.m_lTaxonInfo(iTaxon)
                 If ti.Stanza = stz.Index Then
                     Me.AddTaxonRow(ti, iRow)
