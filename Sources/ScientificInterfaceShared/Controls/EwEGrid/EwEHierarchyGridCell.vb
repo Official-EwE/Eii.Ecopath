@@ -50,14 +50,32 @@ Namespace Controls.EwEGrid
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a child row to the hierarchy cell.
+        ''' </summary>
+        ''' <param name="iRow">Index of the row to add.</param>
+        ''' -------------------------------------------------------------------
         Public Sub AddChildRow(ByVal iRow As Integer)
             Dim iPos As Integer = 0
             ' Add in descending order
             While iPos < Me.m_liChildRows.Count()
                 If (Me.m_liChildRows(iPos) < iRow) Then Exit While
+                iPos += 1
             End While
             Me.m_liChildRows.Insert(iPos, iRow)
 
+            Me.UpdateViz()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Remove a child row from the hierarchy cell.
+        ''' </summary>
+        ''' <param name="iRow">Index of the row to remove.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub RemoveChildRow(ByVal iRow As Integer)
+            Me.m_liChildRows.Remove(iRow)
             Me.UpdateViz()
         End Sub
 

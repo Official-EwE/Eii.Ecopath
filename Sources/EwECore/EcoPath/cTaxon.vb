@@ -32,6 +32,10 @@ Public Class cTaxon
         val = New cValue(New Integer, eVarNameFlags.TaxonGroup, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.TaxonStanza, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
         meta = New cVariableMetaData(250)
         val = New cValue(New String(cbuf), eVarNameFlags.Class, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
@@ -186,6 +190,18 @@ Public Class cTaxon
         End Get
         Set(ByVal value As Integer)
             Me.SetVariable(eVarNameFlags.TaxonGroup, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the index of the Stanza configuration that a taxonomy definition contributes to.
+    ''' </summary>
+    Public Property Stanza() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.TaxonStanza))
+        End Get
+        Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.TaxonStanza, value)
         End Set
     End Property
 

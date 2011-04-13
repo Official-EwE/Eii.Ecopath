@@ -249,14 +249,16 @@ Namespace DataSources
         ''' <summary>
         ''' Adds a taxonomy definition to the datasource.
         ''' </summary>
-        ''' <param name="iGroupID">DBIDs of <see cref="cEcoPathGroupInput">Ecopath group</see>
-        ''' to assign this taxon to.</param>
+        ''' <param name="iTargetDBID">DBIDs of the target to assign this taxon to.</param>
+        ''' <param name="bIsStanza">Flag stating whether the <paramref name="iTargetDBID"/>
+        ''' is a stanza (true) or a group (false).</param>
         ''' <param name="data">Data to populate taxonomy definition with.</param>
         ''' <param name="sProportion">Proportion this taxon contributes to the group.</param>
         ''' <param name="iDBID">Database ID assigned to the new taxon.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddTaxon(ByVal iGroupID As Integer, _
+        Function AddTaxon(ByVal iTargetDBID As Integer, _
+                          ByVal bIsStanza As Boolean, _
                           ByVal data As ITaxonSearchData, _
                           ByVal sProportion As Single, _
                           ByRef iDBID As Integer) As Boolean

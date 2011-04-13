@@ -47,9 +47,9 @@ Namespace DataSources
 
 #Region " Private vars "
 
-        ''' <summary>The <see cref="cEwEDatabase">Database</see> connected to this createRectangle.</summary>
+        ''' <summary>The <see cref="cEwEDatabase">Database</see> connected to this data source.</summary>
         Private m_db As cEwEDatabase = Nothing
-        ''' <summary>The <see cref="cCore">core</see> connected to this createRectangle.</summary>
+        ''' <summary>The <see cref="cCore">core</see> connected to this data source.</summary>
         Private m_core As cCore = Nothing
         ''' <summary>Datasource name</summary>
         Private m_strName As String = ""
@@ -178,7 +178,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns whether the createRectangle is connected.
+        ''' Returns whether the data source is connected.
         ''' </summary>
         ''' <returns>True if connected.</returns>
         ''' -------------------------------------------------------------------
@@ -189,7 +189,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the connection to the <see cref="cEwEDatabase">database</see>
-        ''' that this createRectangle operates on.
+        ''' that this data source operates on.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Connection() As Object _
@@ -201,7 +201,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns a string representation of the createRectangle.
+        ''' Returns a string representation of the data source.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Function ToString() As String _
@@ -212,7 +212,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns a string representation of the createRectangle.
+        ''' Returns a string representation of the data source.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function Directory() As String _
@@ -222,7 +222,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Switch an open createRectangle to a new database of the same type.
+        ''' Switch an open data source to a new database of the same type.
         ''' </summary>
         ''' <param name="strFileName">New FN to copy the DB to</param>
         ''' <returns>True if succesful.</returns>
@@ -239,7 +239,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the version of the createRectangle.
+        ''' Returns the version of the data source.
         ''' </summary>
         ''' <returns>A version number, or <see cref="cDATABASE_NOVERSION">cDATABASE_NOVERSION</see> 
         ''' if the database is not connected.</returns>
@@ -350,10 +350,10 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether the createRectangle has unsaved changes that do not relate
+        ''' States whether the data source has unsaved changes that do not relate
         ''' to any of the supported sub-models.
         ''' </summary>
-        ''' <returns>True if the createRectangle has pending changes.</returns>
+        ''' <returns>True if the data source has pending changes.</returns>
         ''' -------------------------------------------------------------------
         Friend Function IsChanged() As Boolean Implements DataSources.IEwEDataSource.IsModified
             If Not Me.IsConnected() Then Return False
@@ -363,7 +363,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Clears all changed information for either a given data type or for 
-        ''' the entire createRectangle.
+        ''' the entire data source.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Friend Sub ClearChanged() Implements IEwEDataSource.ClearChanged
@@ -375,7 +375,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Flag a core object as changed in the createRectangle.
+        ''' Flag a core object as changed in the data source.
         ''' </summary>
         ''' <param name="cc">The <see cref="eDataTypes">Type</see> of the object that changed.</param>
         ''' -------------------------------------------------------------------
@@ -471,7 +471,7 @@ Namespace DataSources
             ''' under which the object is stored in the current database, and how it is currently
             ''' known in the core database ID arrays.</param>
             ''' <param name="iIDNew">The mapped database ID of the object. This is the value that
-            ''' has been assigned by the createRectangle when creating a new instance of the object
+            ''' has been assigned by the data source when creating a new instance of the object
             ''' in the database.</param>
             ''' -----------------------------------------------------------------------
             Public Sub Add(ByVal dt As eDataTypes, ByVal iIDOrg As Integer, ByVal iIDNew As Integer)
@@ -554,14 +554,14 @@ Namespace DataSources
 
 #End Region ' Messages
 
-#Region " Generic createRectangle "
+#Region " Generic data source "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Compact the data in the createRectangle. Please ensure that this operation
+        ''' Compact the data in the data source. Please ensure that this operation
         ''' is possible via <see cref="CanCompact">CanCompact</see>.
         ''' </summary>
-        ''' <param name="strTarget">The destination to compact the createRectangle to.</param>
+        ''' <param name="strTarget">The destination to compact the data source to.</param>
         ''' <returns>True if succesful.</returns>
         ''' -----------------------------------------------------------------------
         Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
@@ -571,9 +571,9 @@ Namespace DataSources
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Returns whether the data underlying the createRectangle can be compacted.
+        ''' Returns whether the data underlying the data source can be compacted.
         ''' </summary>
-        ''' <param name="strTarget">The destination to test whether the createRectangle 
+        ''' <param name="strTarget">The destination to test whether the data source 
         ''' can compact to.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
@@ -582,7 +582,7 @@ Namespace DataSources
             Return Me.m_db.CanCompact(strTarget, strTarget)
         End Function
 
-#End Region ' Generic createRectangle
+#End Region ' Generic data source
 
 #Region " EwEModel "
 
@@ -605,7 +605,7 @@ Namespace DataSources
             If bSucces = False Then Return False
 
             bSucces = bSucces And Me.LoadEcopathGroups()
-            bSucces = bSucces And Me.LoadEcopathGroupTaxon()
+            bSucces = bSucces And Me.LoadEcopathTaxon()
             bSucces = bSucces And Me.LoadEcopathFleetInfo()
             bSucces = bSucces And Me.LoadParticleSizeDistribution()
             bSucces = bSucces And Me.LoadPedigreeLevels()
@@ -642,7 +642,7 @@ Namespace DataSources
             ' Start saving
             bSucces = Me.SaveModelInfo()
             bSucces = bSucces And Me.SaveEcopathGroups()
-            bSucces = bSucces And Me.SaveEcopathGroupTaxon()
+            bSucces = bSucces And Me.SaveEcopathTaxon()
             bSucces = bSucces And Me.SaveEcopathFleetInfo()
             bSucces = bSucces And Me.SaveParticleSizeDistribution()
             bSucces = bSucces And Me.SaveEcosimScenarioDefinitions()
@@ -1346,7 +1346,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Remove a pedigree level from the createRectangle.
+        ''' Remove a pedigree level from the data source.
         ''' </summary>
         ''' <param name="iPedigreeLevelID">Database ID of the pedigree level to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -1870,9 +1870,9 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States if the createRectangle has unsaved changes for Ecopath.
+        ''' States if the data source has unsaved changes for Ecopath.
         ''' </summary>
-        ''' <returns>True if the createRectangle has pending changes for Ecopath.</returns>
+        ''' <returns>True if the data source has pending changes for Ecopath.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsEcopathModified() As Boolean Implements DataSources.IEcopathDataSource.IsEcopathModified
 
@@ -1986,7 +1986,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Update group info in the createRectangle.
+        ''' Update group info in the data source.
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
@@ -2077,7 +2077,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a record for a new Ecopath group in the createRectangle.
+        ''' Create a record for a new Ecopath group in the data source.
         ''' </summary>
         ''' <param name="strGroupName">The name of the group to create.</param>
         ''' <param name="sPP">The type of the new group; 0=consumer, 1=producer, 2=detritus, or a cons/prod ratio.</param>
@@ -2182,7 +2182,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Remove a group from the createRectangle.
+        ''' Remove a group from the data source.
         ''' </summary>
         ''' <param name="iGroupID">Database ID of the group to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -2209,6 +2209,7 @@ Namespace DataSources
                 ' Oh, now wait until we need to do this for Ecospace...
 
                 ' Now Ecosim is clean, delete the group from Ecopath
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (GroupID={0})", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iGroupID))
 
             Catch ex As Exception
@@ -2614,7 +2615,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Saves all fleet-related data to the createRectangle.
+        ''' Saves all fleet-related data to the data source.
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
@@ -2775,7 +2776,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds a fleet to the createRectangle.
+        ''' Adds a fleet to the data source.
         ''' </summary>
         ''' <param name="strFleetName">Name of the new fleet.</param>
         ''' <param name="iFleetID">Database ID assigned to the new fleet.</param>
@@ -2846,7 +2847,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes a fleet from the createRectangle.
+        ''' Removes a fleet from the data source.
         ''' </summary>
         ''' <param name="iFleetID">Database ID of the fleet to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -2945,7 +2946,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an time series dataset to the createRectangle.
+        ''' Adds an time series dataset to the data source.
         ''' </summary>
         ''' <param name="strDatasetName">Name to assign to new dataset.</param>
         ''' <param name="strDescription">Description to assign to new dataset.</param>
@@ -3019,7 +3020,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes all time series belonging to a specific dataset from the createRectangle.
+        ''' Removes all time series belonging to a specific dataset from the data source.
         ''' </summary>
         ''' <param name="iDataset">Index of the dataset to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -3032,7 +3033,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes all time series belonging to a specific dataset from the createRectangle.
+        ''' Removes all time series belonging to a specific dataset from the data source.
         ''' </summary>
         ''' <param name="iDatasetID">Database ID of the dataset to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -3064,62 +3065,121 @@ Namespace DataSources
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Private Function LoadEcopathGroupTaxon() As Boolean
+        Private Function LoadEcopathTaxon() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            ecopathDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroupTaxon"))
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+            ecopathDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathTaxon"))
             ecopathDS.RedimTaxon()
 
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupTaxon")
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathTaxon")
             Dim iTaxon As Integer = 1
-            Dim iGroup As Integer = 1
             Dim bSucces As Boolean = True
 
-            While reader.Read()
-
-                Try
+            Try
+                While reader.Read()
                     ecopathDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
-                    iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("EcopathGroupID")))
-                    If iGroup > 0 Then
-                        ecopathDS.TaxonGroup(iTaxon) = iGroup
-                        ecopathDS.TaxonGroupProp(iTaxon) = CSng(reader("Proportion"))
-                        ecopathDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeISCAAP", ""))
-                        ecopathDS.TaxonCodeTaxon(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeTaxon", ""))
-                        ecopathDS.TaxonCode3A(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "Code3A", ""))
-                        ecopathDS.TaxonClass(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "ClassName", ""))
-                        ecopathDS.TaxonOrder(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "OrderName", ""))
-                        ecopathDS.TaxonFamily(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "FamilyName", ""))
-                        ecopathDS.TaxonGenus(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "GenusName", ""))
-                        ecopathDS.TaxonSpecies(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SpeciesName", ""))
-                        ecopathDS.TaxonName(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CommonName", ""))
-                        ecopathDS.TaxonSource(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceName", ""))
-                        ecopathDS.TaxonSourceKey(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceKey", ""))
-                        ecopathDS.TaxonEcologyType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "EcologyType", eEcologyTypes.NotSet), eEcologyTypes)
-                        ecopathDS.TaxonOrganismType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OrganismType", eOrganismTypes.NotSet), eOrganismTypes)
-                        ecopathDS.TaxonExploited(iTaxon) = CBool(Me.m_db.ReadSafe(reader, "Exploited", False))
-                        ecopathDS.TaxonIUCNConservationStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "ConservationStatus", eIUCNConservationStatusTypes.NotSet), eIUCNConservationStatusTypes)
-                        ecopathDS.TaxonOccurrenceStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OccurenceStatus", eOccurrenceStatusTypes.NotSet), eOccurrenceStatusTypes)
-                        ecopathDS.TaxonMeanWeight(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanWeight", cCore.NULL_VALUE))
-                        ecopathDS.TaxonMeanLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLength", cCore.NULL_VALUE))
-                        ecopathDS.TaxonMaxLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MaxLength", cCore.NULL_VALUE))
-                        ecopathDS.TaxonMeanLifeSpan(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLifeSpan", cCore.NULL_VALUE))
-                        ecopathDS.TaxonVulnerabilityIndex(iTaxon) = CInt(Me.m_db.ReadSafe(reader, "VulnerabiltyIndex", cCore.NULL_VALUE))
-                        ecopathDS.TaxonLastUpdated(iTaxon) = CDbl(Me.m_db.ReadSafe(reader, "LastUpdated", -1))
-                        iTaxon += 1
-                    End If
+                    ecopathDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeISCAAP", ""))
+                    ecopathDS.TaxonCodeTaxon(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeTaxon", ""))
+                    ecopathDS.TaxonCode3A(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "Code3A", ""))
+                    ecopathDS.TaxonClass(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "ClassName", ""))
+                    ecopathDS.TaxonOrder(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "OrderName", ""))
+                    ecopathDS.TaxonFamily(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "FamilyName", ""))
+                    ecopathDS.TaxonGenus(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "GenusName", ""))
+                    ecopathDS.TaxonSpecies(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SpeciesName", ""))
+                    ecopathDS.TaxonName(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CommonName", ""))
+                    ecopathDS.TaxonSource(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceName", ""))
+                    ecopathDS.TaxonSourceKey(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceKey", ""))
+                    ecopathDS.TaxonEcologyType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "EcologyType", eEcologyTypes.NotSet), eEcologyTypes)
+                    ecopathDS.TaxonOrganismType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OrganismType", eOrganismTypes.NotSet), eOrganismTypes)
+                    ecopathDS.TaxonExploited(iTaxon) = CBool(Me.m_db.ReadSafe(reader, "Exploited", False))
+                    ecopathDS.TaxonIUCNConservationStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "ConservationStatus", eIUCNConservationStatusTypes.NotSet), eIUCNConservationStatusTypes)
+                    ecopathDS.TaxonOccurrenceStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OccurenceStatus", eOccurrenceStatusTypes.NotSet), eOccurrenceStatusTypes)
+                    ecopathDS.TaxonMeanWeight(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanWeight", cCore.NULL_VALUE))
+                    ecopathDS.TaxonMeanLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLength", cCore.NULL_VALUE))
+                    ecopathDS.TaxonMaxLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MaxLength", cCore.NULL_VALUE))
+                    ecopathDS.TaxonMeanLifeSpan(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLifeSpan", cCore.NULL_VALUE))
+                    ecopathDS.TaxonVulnerabilityIndex(iTaxon) = CInt(Me.m_db.ReadSafe(reader, "VulnerabiltyIndex", cCore.NULL_VALUE))
+                    ecopathDS.TaxonLastUpdated(iTaxon) = CDbl(Me.m_db.ReadSafe(reader, "LastUpdated", -1))
+                    iTaxon += 1
+                End While
 
-                Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, ecopathDS.TaxonName(iTaxon)))
-                    bSucces = False
-                End Try
-
-            End While
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, ecopathDS.TaxonName(iTaxon)))
+                bSucces = False
+            End Try
 
             Debug.Assert(iTaxon - 1 = ecopathDS.NumTaxon)
 
             Me.m_db.ReleaseReader(reader)
             reader = Nothing
 
+            ' Read taxa assignments
+            bSucces = bSucces And Me.LoadEcopathGroupTaxon()
+            bSucces = bSucces And Me.LoadEcopathStanzaTaxon()
+
+            Return bSucces
+
+        End Function
+
+        Private Function LoadEcopathGroupTaxon() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupTaxon")
+            Dim iTaxon As Integer = 1
+            Dim iGroup As Integer = 1
+            Dim bSucces As Boolean = True
+
+            Try
+                While reader.Read()
+                    iTaxon = Array.IndexOf(ecopathDS.TaxonDBID, CInt(reader("TaxonID")))
+                    iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("EcopathGroupID")))
+
+                    If (iTaxon > 0 And iGroup > 0) Then
+                        ecopathDS.TaxonTarget(iTaxon) = iGroup
+                        ecopathDS.IsTaxonStanza(iTaxon) = False
+                        ecopathDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
+                    End If
+                End While
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}, group {2}", ex.Message, iTaxon, iGroup))
+                bSucces = False
+            End Try
+
+            Me.m_db.ReleaseReader(reader)
+            Return bSucces
+
+        End Function
+
+        Private Function LoadEcopathStanzaTaxon() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathStanzaTaxon")
+            Dim iTaxon As Integer = 1
+            Dim iStanza As Integer = 1
+            Dim bSucces As Boolean = True
+
+            Try
+                While reader.Read()
+                    iTaxon = Array.IndexOf(ecopathDS.TaxonDBID, CInt(reader("TaxonID")))
+                    iStanza = Array.IndexOf(stanzaDS.StanzaDBID, CInt(reader("StanzaID")))
+
+                    If (iTaxon > 0 And iStanza > 0) Then
+                        ecopathDS.TaxonTarget(iTaxon) = iStanza
+                        ecopathDS.IsTaxonStanza(iTaxon) = True
+                        ecopathDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
+                    End If
+                End While
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}, stanza {2}", ex.Message, iTaxon, iStanza))
+                bSucces = False
+            End Try
+
+            Me.m_db.ReleaseReader(reader)
             Return bSucces
 
         End Function
@@ -3130,11 +3190,11 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Update group info in the createRectangle.
+        ''' Update group info in the data source.
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Private Function SaveEcopathGroupTaxon() As Boolean
+        Private Function SaveEcopathTaxon() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -3142,18 +3202,14 @@ Namespace DataSources
             Dim nTaxonSaved As Integer = 0
             Dim bSucces As Boolean = True
 
+            bSucces = Me.m_db.Execute("DELETE FROM EcopathTaxon")
+            writer = Me.m_db.GetWriter("EcopathTaxon")
+
             Try
-                bSucces = Me.m_db.Execute("DELETE FROM EcopathGroupTaxon")
-                writer = Me.m_db.GetWriter("EcopathGroupTaxon")
-
                 For iTaxon As Integer = 1 To ecopathDS.NumTaxon
-
-                    Debug.Assert(iTaxon > 0)
 
                     drow = writer.NewRow()
                     drow("TaxonID") = ecopathDS.TaxonDBID(iTaxon)
-                    drow("EcopathGroupID") = ecopathDS.GroupDBID(ecopathDS.TaxonGroup(iTaxon))
-                    drow("Proportion") = ecopathDS.TaxonGroupProp(iTaxon)
                     drow("CodeISCAAP") = ecopathDS.TaxonCodeISCAAP(iTaxon)
                     drow("CodeTaxon") = ecopathDS.TaxonCodeTaxon(iTaxon)
                     drow("Code3A") = ecopathDS.TaxonCode3A(iTaxon)
@@ -3188,11 +3244,78 @@ Namespace DataSources
 
             Debug.Assert(nTaxonSaved = ecopathDS.NumTaxon)
 
-            ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            Me.m_db.ReleaseWriter(writer, bSucces)
+
+            bSucces = bSucces And Me.SaveEcopathGroupTaxon()
+            bSucces = bSucces And Me.SaveEcopathStanzaTaxon()
 
             Return bSucces
 
+        End Function
+
+        Private Function SaveEcopathGroupTaxon() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            bSucces = Me.m_db.Execute("DELETE FROM EcopathGroupTaxon")
+            writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+
+            Try
+                For iTaxon As Integer = 1 To ecopathDS.NumTaxon
+                    If Not ecopathDS.IsTaxonStanza(iTaxon) Then
+                        drow = writer.NewRow()
+                        drow("TaxonID") = ecopathDS.TaxonDBID(iTaxon)
+                        drow("EcopathGroupID") = ecopathDS.GroupDBID(ecopathDS.TaxonTarget(iTaxon))
+                        drow("Proportion") = ecopathDS.TaxonProp(iTaxon)
+                        writer.AddRow(drow)
+                    End If
+                Next iTaxon
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathGroupTaxon", ex.Message))
+                bSucces = False
+            End Try
+
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, bSucces)
+
+            Return bSucces
+        End Function
+
+        Private Function SaveEcopathStanzaTaxon() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            bSucces = Me.m_db.Execute("DELETE FROM EcopathGroupTaxon")
+            writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+
+            Try
+                For iTaxon As Integer = 1 To ecopathDS.NumTaxon
+                    If ecopathDS.IsTaxonStanza(iTaxon) Then
+                        drow = writer.NewRow()
+                        drow("TaxonID") = ecopathDS.TaxonDBID(iTaxon)
+                        drow("StanzaID") = stanzaDS.StanzaDBID(ecopathDS.TaxonTarget(iTaxon))
+                        drow("Proportion") = ecopathDS.TaxonProp(iTaxon)
+                        writer.AddRow(drow)
+                    End If
+                Next iTaxon
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathGroupTaxon", ex.Message))
+                bSucces = False
+            End Try
+
+            ' Save changes
+            Me.m_db.ReleaseWriter(writer, bSucces)
+
+            Return bSucces
         End Function
 
 #End Region ' Save
@@ -3202,7 +3325,8 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="IEcopathDataSource.AddTaxon" />
         ''' -------------------------------------------------------------------
-        Public Function AddTaxon(ByVal iGroupID As Integer, _
+        Public Function AddTaxon(ByVal iTargetDBID As Integer, _
+                                 ByVal bIsStanza As Boolean, _
                                  ByVal data As ITaxonSearchData, _
                                  ByVal sProportion As Single, _
                                  ByRef iDBID As Integer) As Boolean _
@@ -3215,18 +3339,16 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                ' MPAID unique for all scenarios
-                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(TaxonID) FROM EcopathGroupTaxon")) + 1
+                ' TaxonID unique for all scenarios
+                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(TaxonID) FROM EcopathTaxon")) + 1
             Catch ex As Exception
                 iDBID = 1
             End Try
 
-            writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+            writer = Me.m_db.GetWriter("EcopathTaxon")
 
             drow = writer.NewRow()
             drow("TaxonID") = iDBID
-            drow("EcopathGroupID") = iGroupID
-            drow("Proportion") = sProportion
             drow("CodeISCAAP") = data.CodeISSCAAP
             drow("CodeTaxon") = data.CodeTaxon
             drow("Code3A") = data.Code3A
@@ -3236,6 +3358,9 @@ Namespace DataSources
             drow("GenusName") = data.Genus
             drow("SpeciesName") = data.Species
             drow("CommonName") = data.Common
+            drow("SourceName") = data.Source
+            drow("SourceKey") = data.SourceKey
+            drow("LastUpdated") = cDateUtils.DateToJulian()
 
             ' Add bonus data if available
             If TypeOf (data) Is ITaxonDetailsData Then
@@ -3252,12 +3377,26 @@ Namespace DataSources
                 drow("VulnerabiltyIndex") = dataDetails.VulnerabilityIndex
             End If
 
-            drow("SourceName") = data.Source
-            drow("SourceKey") = data.SourceKey
-            drow("LastUpdated") = cDateUtils.DateToJulian()
             writer.AddRow(drow)
+            bSucces = Me.m_db.ReleaseWriter(writer, bSucces)
 
-            Me.m_db.ReleaseWriter(writer)
+            If Not bIsStanza Then
+                writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+                drow = writer.NewRow()
+                drow("TaxonID") = iDBID
+                drow("EcopathGroupID") = iTargetDBID
+                drow("Proportion") = sProportion
+                writer.AddRow(drow)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+            Else
+                writer = Me.m_db.GetWriter("EcopathStanzaTaxon")
+                drow = writer.NewRow()
+                drow("TaxonID") = iDBID
+                drow("StanzaID") = iTargetDBID
+                drow("Proportion") = sProportion
+                writer.AddRow(drow)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+            End If
 
             Return bSucces
 
@@ -3294,15 +3433,15 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States if the createRectangle has unsaved changes for Ecosim.
+        ''' States if the data source has unsaved changes for Ecosim.
         ''' </summary>
-        ''' <returns>True if the createRectangle has pending changes for Ecosim.</returns>
+        ''' <returns>True if the data source has pending changes for Ecosim.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsEcosimModified() As Boolean Implements DataSources.IEcosimDatasource.IsEcosimModified
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-            ' Hmm, maybe the createRectangle should have a better way to 'remember' whether a sim scenario has been loaded.
+            ' Hmm, maybe the data source should have a better way to 'remember' whether a sim scenario has been loaded.
             If Not Me.IsConnected() Then Return False
             If ecopathDS.ActiveEcosimScenario < 0 Then Return False
             Return Me.IsChanged(s_EcosimComponents)
@@ -3427,7 +3566,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Save the current active Ecosim scenario in the createRectangle under
+        ''' Save the current active Ecosim scenario in the data source under
         ''' a given database ID.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID to save the current scenario to.
@@ -5777,7 +5916,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Appends a forcing shape to the createRectangle.
+        ''' Appends a forcing shape to the data source.
         ''' </summary>
         ''' <param name="strShapeName">Name to assign to new shape.</param>
         ''' <param name="shapeType"><see cref="eDataTypes">Type of the shape</see> to add.</param>
@@ -5983,7 +6122,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Import a <see cref="cTimeSeriesImport">cTimeSeriesImport</see> instance into the createRectangle.
+        ''' Import a <see cref="cTimeSeriesImport">cTimeSeriesImport</see> instance into the data source.
         ''' </summary>
         ''' <param name="ts">The time series data to import.</param>
         ''' <param name="iDataset">Index of the dataset to add the time series to.</param>
@@ -6283,7 +6422,7 @@ Namespace DataSources
             tsDS.ActiveDatasetIndex = iDataset
             tsDS.nMaxYears = tsDS.nDatasetNumYears(iDataset)
 
-            ' JS 20oct07: createRectangle should NOT do this; is responsibility of core logic
+            ' JS 20oct07: data source should NOT do this; is responsibility of core logic
             tsDS.nGroups = ecopathDS.NumGroups
 
             If (iDataset > 0) Then
@@ -6484,7 +6623,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds a time series to the createRectangle.
+        ''' Adds a time series to the data source.
         ''' </summary>
         ''' <param name="strName">Name of the new Time Series to add.</param>
         ''' <param name="timeSeriesType"><see cref="eTimeSeriesType">Type</see> of the time series.</param>
@@ -6578,7 +6717,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes a time series from the createRectangle.
+        ''' Removes a time series from the data source.
         ''' </summary>
         ''' <param name="iTimeSeriesID">Database ID of the time series to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -6690,15 +6829,15 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States if the createRectangle has unsaved changes for Ecospace.
+        ''' States if the data source has unsaved changes for Ecospace.
         ''' </summary>
-        ''' <returns>True if the createRectangle has pending changes for Ecospace.</returns>
+        ''' <returns>True if the data source has pending changes for Ecospace.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsEcospaceModified() As Boolean Implements DataSources.IEcospaceDatasource.IsEcospaceModified
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-            ' Hmm, maybe the createRectangle should have a better way to 'remember' whether a space scenario has been loaded.
+            ' Hmm, maybe the data source should have a better way to 'remember' whether a space scenario has been loaded.
             If Not Me.IsConnected() Then Return False
             If ecopathDS.ActiveEcospaceScenario < 0 Then Return False
 
@@ -6873,7 +7012,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Updates the active ecospace scenario under the given ID in the createRectangle.
+        ''' Updates the active ecospace scenario under the given ID in the data source.
         ''' This method is the one external interface to save an Ecospace scenario
         ''' and everything under it.
         ''' </summary>
@@ -6923,7 +7062,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Internal method; updates the active ecospace scenario in the createRectangle,
+        ''' Internal method; updates the active ecospace scenario in the data source,
         ''' optionally saving to a different scenario.
         ''' </summary>
         ''' <param name="idm"><see cref="cIDMappings">ID mapping</see> providing
@@ -7016,7 +7155,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an ecospace scenario to the createRectangle.
+        ''' Adds an ecospace scenario to the data source.
         ''' </summary>
         ''' <param name="strScenarioName">Name to assign to new scenario.</param>
         ''' <param name="strDescription">Description to assign to new scenario.</param>
@@ -7753,7 +7892,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an ecospace region to active scenario in the createRectangle.
+        ''' Adds an ecospace region to active scenario in the data source.
         ''' </summary>
         ''' <param name="strRegionName">Name to assign to new region.</param>
         ''' <param name="iRegionID">Database ID assigned to the new region.</param>
@@ -7775,7 +7914,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Internal call to actually add an ecospace region to a select
-        ''' scenario in the createRectangle.
+        ''' scenario in the data source.
         ''' </summary>
         ''' <param name="strRegionName">Name to assign to new region.</param>
         ''' <param name="iRegionID">Database ID assigned to the new region.</param>
@@ -7833,7 +7972,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes an ecospace region from the active scenario in the createRectangle.
+        ''' Removes an ecospace region from the active scenario in the data source.
         ''' </summary>
         ''' <param name="iRegionID">Database ID of the region to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -9026,7 +9165,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Adds an ecospace Importance Layer to the active scenario in the
-        ''' createRectangle.
+        ''' data source.
         ''' </summary>
         ''' <param name="strName"></param>
         ''' <param name="strDescription"></param>
@@ -9094,7 +9233,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Adds an ecospace Importance Layer from the active scenario in the
-        ''' createRectangle.
+        ''' data source.
         ''' </summary>
         ''' <param name="iLayerID">Database ID of the layer to remove.</param>
         ''' <returns>True if succesful.</returns>
@@ -9132,16 +9271,16 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States if the createRectangle has unsaved changes for Ecotracer.
+        ''' States if the data source has unsaved changes for Ecotracer.
         ''' </summary>
-        ''' <returns>True if the createRectangle has pending changes for Ecotracer.</returns>
+        ''' <returns>True if the data source has pending changes for Ecotracer.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsEcotracerModified() As Boolean _
                  Implements DataSources.IEcotracerDatasource.IsEcotracerModified
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-            ' Hmm, maybe the createRectangle should have a better way to 'remember' whether a tracer scenario has been loaded.
+            ' Hmm, maybe the data source should have a better way to 'remember' whether a tracer scenario has been loaded.
             If Not Me.IsConnected() Then Return False
             If ecopathDS.ActiveEcotracerScenario < 0 Then Return False
 
@@ -9155,7 +9294,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Loads an Ecotracer scenario from the createRectangle.
+        ''' Loads an Ecotracer scenario from the data source.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID of the scenario to load.</param>
         ''' <returns>True if succesful.</returns>
@@ -9210,7 +9349,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Load Ecotracer groups from the createRectangle.
+        ''' Load Ecotracer groups from the data source.
         ''' </summary>
         ''' <param name="iScenarioID">The Ecotracer scenario to load groups for.</param>
         ''' <returns>True if succesful.</returns>
@@ -9256,7 +9395,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Save the current active Ecotracer scenario in the createRectangle under
+        ''' Save the current active Ecotracer scenario in the data source under
         ''' a given database ID.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID to save the current scenario to.
@@ -9409,7 +9548,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an Ecotracer scenario to the createRectangle.
+        ''' Adds an Ecotracer scenario to the data source.
         ''' </summary>
         ''' <param name="strScenarioName">Name to assign to new scenario.</param>
         ''' <param name="strDescription">Description to assign to new scenario.</param>
@@ -9481,7 +9620,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes an Ecotracer scenario from the createRectangle.
+        ''' Removes an Ecotracer scenario from the data source.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID of the scenario to remove.</param>
         ''' <returns>True if succesful.</returns>

@@ -89,9 +89,10 @@ Public Class gridDefineTaxonomy
         Private m_iVulnerabilityIndex As Integer = 0
 
         ''' <summary>Index of the ecopath group that this taxon contributes to.</summary>
-        Private m_iGroup As Integer = Nothing
+        Private m_iGroup As Integer = 0
+        ''' <summary>Index of the stanza configuration that this taxon contributes to.</summary>
+        Private m_iStanza As Integer = 0
         Private m_sProportion As Single = 1.0!
-        Private m_sPropNorm As Single = 1.0!
 
         ''' <summary>The status of a Layer in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
@@ -105,8 +106,22 @@ Public Class gridDefineTaxonomy
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal group As cEcoPathGroupInput)
             Me.m_iGroup = group.Index
+            Me.m_iStanza = 0
             Me.m_sProportion = 1.0!
             Me.m_strCommon = group.Name
+            Me.m_status = eItemStatusTypes.Added
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create an new taxon administrative unit for an existing stanza.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal stanza As cStanzaGroup)
+            Me.m_iGroup = 0
+            Me.m_iStanza = stanza.Index
+            Me.m_sProportion = 1.0!
+            Me.m_strCommon = stanza.Name
             Me.m_status = eItemStatusTypes.Added
         End Sub
 
@@ -119,6 +134,7 @@ Public Class gridDefineTaxonomy
             Me.m_iDBIDTaxon = CInt(taxon.GetVariable(eVarNameFlags.DBID))
             Me.m_iTaxon = taxon.Index
             Me.m_iGroup = taxon.Group
+            Me.m_iStanza = taxon.Stanza
             Me.m_sProportion = taxon.Proportion
             Me.m_strCode3A = taxon.Code3A
             Me.m_strCodeISSCAAP = taxon.CodeISSCAAP
@@ -291,7 +307,7 @@ Public Class gridDefineTaxonomy
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the group of this administrative unit.
+        ''' Get/set the group index of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Group() As Integer
@@ -300,6 +316,20 @@ Public Class gridDefineTaxonomy
             End Get
             Set(ByVal value As Integer)
                 Me.m_iGroup = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the stanza index of this administrative unit.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property Stanza() As Integer
+            Get
+                Return Me.m_iStanza
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iStanza = value
             End Set
         End Property
 
@@ -743,6 +773,10 @@ Public Class gridDefineTaxonomy
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub FillData()
 
+        Dim stz As cStanzaGroup = Nothing
+        Dim grp As cEcoPathGroupInput = Nothing
+        Dim iRow As Integer = 0
+        Dim hgcParent As EwEHierarchyGridCell = Nothing
         Dim taxon As cTaxon = Nothing
         Dim ti As cTaxonInfo = Nothing
 
@@ -757,9 +791,61 @@ Public Class gridDefineTaxonomy
 
         Me.NormalizeProportions()
 
-        ' Brute-force update grid
-        Me.UpdateGrid()
+        ' Create rows
+        Me.RowsCount = 1
 
+        For iStanza As Integer = 0 To Me.Core.nStanzas - 1
+
+            iRow = Me.AddRow()
+            stz = Me.Core.StanzaGroups(iStanza)
+
+            hgcParent = New EwEHierarchyGridCell()
+            hgcParent.Tag = stz
+
+            Me(iRow, eColumnTypes.Hierarchy) = hgcParent
+            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, stz, eVarNameFlags.Name, Nothing, hgcParent)
+            For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
+                Me(iRow, iCol) = New EwERowHeaderCell("")
+            Next
+
+            For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
+
+                ti = Me.m_lTaxonInfo(iTaxon)
+                If ti.Stanza = stz.Index Then
+                    Me.AddTaxonRow(ti, iRow)
+                End If
+            Next
+        Next
+
+        For iGroup As Integer = 1 To Me.Core.nGroups
+
+            grp = Me.Core.EcoPathGroupInputs(iGroup)
+            If Not grp.isMultiStanza Then
+
+                iRow = Me.AddRow()
+
+                hgcParent = New EwEHierarchyGridCell()
+                hgcParent.Tag = grp
+
+                Me(iRow, eColumnTypes.Hierarchy) = hgcParent
+                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(String.Format(SharedResources.GENERIC_LABEL_INDEXED, grp.Index, grp.Name))
+                For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
+                    Me(iRow, iCol) = New EwERowHeaderCell("")
+                Next
+
+                For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
+                    ti = Me.m_lTaxonInfo(iTaxon)
+                    If ti.Group = grp.Index Then
+                        Me.AddTaxonRow(ti, iRow)
+                    End If
+                Next
+            End If
+        Next
+
+        ' Populate rows
+        For iRow = 1 To Me.RowsCount - 1
+            Me.UpdateRow(iRow)
+        Next iRow
     End Sub
 
     Protected Overrides Sub FinishStyle()
@@ -802,76 +888,6 @@ Public Class gridDefineTaxonomy
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Brute-force resize the gird if necessary, and repopulate with data from 
-    ''' the local administration.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub UpdateGrid()
-
-        Dim grp As cEcoPathGroupInput = Nothing
-        Dim ti As cTaxonInfo = Nothing
-        Dim iRow As Integer = 0
-        Dim hgcGroup As EwEHierarchyGridCell = Nothing
-        Dim dt As Date = Nothing
-
-        ' Create rows
-        Me.RowsCount = 1
-        For iGroup As Integer = 1 To Me.Core.nGroups
-
-            iRow = Me.AddRow()
-
-            grp = Me.Core.EcoPathGroupInputs(iGroup)
-
-            hgcGroup = New EwEHierarchyGridCell()
-            hgcGroup.Tag = grp
-
-            Me(iRow, eColumnTypes.Hierarchy) = hgcGroup
-            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, grp, eVarNameFlags.Name, Nothing, hgcGroup)
-            For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
-                Me(iRow, iCol) = New EwERowHeaderCell("")
-            Next
-
-            For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
-
-                ti = Me.m_lTaxonInfo(iTaxon)
-                If ti.Group = grp.Index Then
-
-                    iRow = Me.AddRow()
-
-                    hgcGroup.AddChildRow(iRow)
-                    Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell()
-                    Me(iRow, eColumnTypes.Hierarchy).Tag = ti
-                    Me(iRow, eColumnTypes.Name) = New EwECell(ti.Common, GetType(String))
-                    Me(iRow, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Species) = New EwECell(ti.Species, GetType(String), cStyleGuide.eStyleFlags.TaxonItalics)
-                    Me(iRow, eColumnTypes.Species).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Genus) = New EwECell(ti.Genus, GetType(String), cStyleGuide.eStyleFlags.TaxonItalics)
-                    Me(iRow, eColumnTypes.Genus).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Family) = New EwECell(ti.Family, GetType(String))
-                    Me(iRow, eColumnTypes.Family).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Order) = New EwECell(ti.Order, GetType(String))
-                    Me(iRow, eColumnTypes.Order).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Class) = New EwECell(ti.Class, GetType(String))
-                    Me(iRow, eColumnTypes.Class).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Phylum) = New EwECell(ti.Phylum, GetType(String))
-                    Me(iRow, eColumnTypes.Phylum).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
-                    Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-
-                End If
-            Next
-        Next
-
-        ' Populate rows
-        For iRow = 1 To Me.RowsCount - 1
-            Me.UpdateRow(iRow)
-        Next iRow
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Refresh the content of the Row with the given index.
     ''' </summary>
     ''' <param name="iRow">The index of the row to refresh.</param>
@@ -909,6 +925,56 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Status).VisualModel = vm
         Me(iRow, eColumnTypes.Status).Value = strText
 
+    End Sub
+
+    Private Function FindParentRow(ByVal iRow As Integer) As Integer
+        While (iRow > 0) And Not (TypeOf Me(iRow, eColumnTypes.Hierarchy) Is EwEHierarchyGridCell)
+            iRow -= 1
+        End While
+        Return iRow
+    End Function
+
+    Private Function AddTaxonRow(ByVal ti As cTaxonInfo, Optional ByVal iRow As Integer = -1) As Integer
+
+        If iRow = -1 Then
+            iRow = Me.FindParentRow(Me.SelectedRow)
+        End If
+        Dim hgcParent As EwEHierarchyGridCell = DirectCast(Me(iRow, eColumnTypes.Hierarchy), EwEHierarchyGridCell)
+        iRow += 1
+        Me.Rows.Insert(iRow)
+        Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell()
+        Me(iRow, eColumnTypes.Hierarchy).Tag = ti
+        Me(iRow, eColumnTypes.Name) = New EwECell(ti.Common, GetType(String))
+        Me(iRow, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
+        Me(iRow, eColumnTypes.Species) = New EwECell(ti.Species, GetType(String), cStyleGuide.eStyleFlags.TaxonItalics)
+        Me(iRow, eColumnTypes.Species).Behaviors.Add(Me.EwEEditHandler)
+        Me(iRow, eColumnTypes.Genus) = New EwECell(ti.Genus, GetType(String), cStyleGuide.eStyleFlags.TaxonItalics)
+        Me(iRow, eColumnTypes.Genus).Behaviors.Add(Me.EwEEditHandler)
+        Me(iRow, eColumnTypes.Family) = New EwECell(ti.Family, GetType(String))
+        Me(iRow, eColumnTypes.Family).Behaviors.Add(Me.EwEEditHandler)
+        Me(iRow, eColumnTypes.Order) = New EwECell(ti.Order, GetType(String))
+        Me(iRow, eColumnTypes.Order).Behaviors.Add(Me.EwEEditHandler)
+        Me(iRow, eColumnTypes.Class) = New EwECell(ti.Class, GetType(String))
+        Me(iRow, eColumnTypes.Class).Behaviors.Add(Me.EwEEditHandler)
+        Me(iRow, eColumnTypes.Phylum) = New EwECell(ti.Phylum, GetType(String))
+        Me(iRow, eColumnTypes.Phylum).Behaviors.Add(Me.EwEEditHandler)
+        Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
+        Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
+        Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+
+        hgcParent.AddChildRow(iRow)
+        Me.UpdateRow(iRow)
+
+    End Function
+
+    Private Sub RemoveTaxonRow(ByVal iRow As Integer)
+        If iRow <= 0 Then iRow = Me.SelectedRow
+        Dim iRowParent As Integer = Me.FindParentRow(iRow)
+        If iRowParent >= 1 Then
+            Dim hgcParent As EwEHierarchyGridCell = DirectCast(Me(iRowParent, eColumnTypes.Hierarchy), EwEHierarchyGridCell)
+            hgcParent.RemoveChildRow(iRow)
+            Me.Rows.Remove(iRow)
+        End If
     End Sub
 
     Public Sub UpdateProportions()
@@ -998,25 +1064,34 @@ Public Class gridDefineTaxonomy
         End Set
     End Property
 
-    Public Property SelectedGroup() As cEcoPathGroupInput
+    Public ReadOnly Property SelectedGroup() As cEcoPathGroupInput
         Get
-            Dim iRow As Integer = Me.SelectedRow
+            Dim iRowParent As Integer = Me.FindParentRow(Me.SelectedRow)
             Dim tag As Object = Nothing
 
-            If (iRow < 1) Then Return Nothing
-            tag = Me(iRow, eColumnTypes.Hierarchy).Tag
+            If (iRowParent < 1) Then Return Nothing
 
-            If (TypeOf tag Is cTaxonInfo) Then Return Me.Core.EcoPathGroupInputs(DirectCast(tag, cTaxonInfo).Group)
-            If (TypeOf tag Is cEcoPathGroupInput) Then Return DirectCast(tag, cEcoPathGroupInput)
+            tag = Me(iRowParent, eColumnTypes.Hierarchy).Tag
+            If (TypeOf tag Is cEcoPathGroupInput) Then
+                Return DirectCast(tag, cEcoPathGroupInput)
+            End If
             Return Nothing
         End Get
-        Set(ByVal value As cEcoPathGroupInput)
+    End Property
+
+    Public ReadOnly Property SelectedStanza() As cStanzaGroup
+        Get
+            Dim iRowParent As Integer = Me.FindParentRow(Me.SelectedRow)
             Dim tag As Object = Nothing
-            For iRow As Integer = 1 To RowsCount - 1
-                tag = Me(iRow, eColumnTypes.Hierarchy).Tag
-                If (TypeOf tag Is cEcoPathGroupInput) Then Me.SelectRow(iRow) : Return
-            Next
-        End Set
+
+            If (iRowParent < 1) Then Return Nothing
+
+            tag = Me(iRowParent, eColumnTypes.Hierarchy).Tag
+            If (TypeOf tag Is cStanzaGroup) Then
+                Return DirectCast(tag, cStanzaGroup)
+            End If
+            Return Nothing
+        End Get
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -1039,9 +1114,15 @@ Public Class gridDefineTaxonomy
 
         Dim ti As cTaxonInfo = Nothing
         Dim iRow As Integer = Nothing
+        Dim grp As cEcoPathGroupInput = Me.SelectedGroup
+        Dim stz As cStanzaGroup = Me.SelectedStanza
 
         If (taxon Is Nothing) Then
-            ti = New cTaxonInfo(Me.SelectedGroup)
+            If grp Is Nothing Then
+                ti = New cTaxonInfo(stz)
+            Else
+                ti = New cTaxonInfo(grp)
+            End If
             Me.m_lTaxonInfo.Add(ti)
         Else
             ti = New cTaxonInfo(taxon)
@@ -1049,23 +1130,9 @@ Public Class gridDefineTaxonomy
             Me.m_lTaxonInfo.Add(ti)
         End If
 
-        Me.UpdateGrid()
+        Me.AddTaxonRow(ti)
         Me.SelectedTaxon = ti
 
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Move a taxon to a different group.
-    ''' </summary>
-    ''' <param name="iDirection"></param>
-    ''' -----------------------------------------------------------------------
-    Public Sub MoveTaxon(ByVal iDirection As Integer)
-        Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
-        If (ti Is Nothing) Then Return
-        ti.Group += iDirection
-        Me.UpdateGrid()
-        Me.SelectedTaxon = ti
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1078,41 +1145,38 @@ Public Class gridDefineTaxonomy
         Dim sel As Selection = Me.Selection
         Dim ti As cTaxonInfo = Nothing
 
-        For iRow As Integer = 1 To Me.RowsCount - 1
-            If Me.Selection.ContainsRow(iRow) Then
-                ti = Me.TaxonInfo(iRow)
+        Dim iRow As Integer = Me.SelectedRow
+        ti = Me.TaxonInfo(iRow)
 
-                If (ti IsNot Nothing) Then
-                    ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
+        If (ti IsNot Nothing) Then
+            ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
 
-                    ' Check to see what is to happen to the MPA now
-                    Select Case ti.Status
+            ' Check to see what is to happen to the MPA now
+            Select Case ti.Status
 
-                        Case eItemStatusTypes.Original
-                            ' Clear removed status 
-                            Me.m_lTaxonInfoRemoved.Remove(ti)
-
-                        Case eItemStatusTypes.Added
-                            ' Remove new item
-                            Me.m_lTaxonInfo.Remove(ti)
-
-                        Case eItemStatusTypes.Removed
-                            ' Set removed status
-                            Me.m_lTaxonInfoRemoved.Add(ti)
-
-                        Case eItemStatusTypes.Invalid
-                            ' Set removed status
-                            Me.m_lTaxonInfo.Remove(ti)
-
-                    End Select
-
+                Case eItemStatusTypes.Original
+                    ' Clear removed status 
+                    Me.m_lTaxonInfoRemoved.Remove(ti)
                     Me.UpdateRow(iRow)
-                    Me.SelectedTaxon = ti
-                    Exit For
 
-                End If
-            End If
-        Next
+                Case eItemStatusTypes.Added
+                    ' Remove new item
+                    Me.m_lTaxonInfo.Remove(ti)
+                    Me.RemoveTaxonRow(iRow)
+
+                Case eItemStatusTypes.Removed
+                    ' Set removed status
+                    Me.m_lTaxonInfoRemoved.Add(ti)
+                    Me.UpdateRow(iRow)
+
+                Case eItemStatusTypes.Invalid
+                    ' Set removed status
+                    Me.m_lTaxonInfo.Remove(ti)
+                    Me.RemoveTaxonRow(iRow)
+
+            End Select
+
+        End If
 
     End Sub
 
@@ -1188,30 +1252,47 @@ Public Class gridDefineTaxonomy
 
     Public Sub NormalizeProportions()
 
-        Dim asTotal(Me.Core.nGroups) As Single
-        Dim aiTotal(Me.Core.nGroups) As Integer
+        Dim asTotalGroup(Me.Core.nGroups) As Single
+        Dim aiTotalGroup(Me.Core.nGroups) As Integer
+        Dim asTotalTaxon(Me.Core.nStanzas) As Single
+        Dim aiTotalTaxon(Me.Core.nStanzas) As Integer
+
         Dim ti As cTaxonInfo = Nothing
         Dim iTaxon As Integer = 0
 
         For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
             ti = Me.m_lTaxonInfo(iTaxon)
             If (ti.Status <> eItemStatusTypes.Removed) Then
-                asTotal(ti.Group) += ti.Proportion
-                aiTotal(ti.Group) += 1
+                If ti.Stanza > 0 Then
+                    asTotalTaxon(ti.Stanza) += ti.Proportion
+                    aiTotalTaxon(ti.Stanza) += 1
+                Else
+                    asTotalGroup(ti.Group) += ti.Proportion
+                    aiTotalGroup(ti.Group) += 1
+                End If
             End If
         Next
 
         For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
             ti = Me.m_lTaxonInfo(iTaxon)
             If (ti.Status <> eItemStatusTypes.Removed) Then
-                ' Has a total of 0?
-                If (asTotal(ti.Group) = 0.0!) Then
-                    ' #Yes: redistribute values
-                    ti.Proportion = 1.0! / aiTotal(ti.Group)
+                If ti.Stanza > 0 Then
+                    ' Has a total of 0?
+                    If (asTotalTaxon(ti.Stanza) = 0.0!) Then
+                        ' #Yes: redistribute values
+                        ti.Proportion = 1.0! / aiTotalTaxon(ti.Stanza)
+                    Else
+                        ti.Proportion = ti.Proportion / asTotalTaxon(ti.Stanza)
+                    End If
                 Else
-                    ti.Proportion = ti.Proportion / asTotal(ti.Group)
+                    ' Has a total of 0?
+                    If (asTotalGroup(ti.Group) = 0.0!) Then
+                        ' #Yes: redistribute values
+                        ti.Proportion = 1.0! / aiTotalGroup(ti.Group)
+                    Else
+                        ti.Proportion = ti.Proportion / asTotalGroup(ti.Group)
+                    End If
                 End If
-
             End If
         Next
         Me.UpdateProportions()
@@ -1273,8 +1354,7 @@ Public Class gridDefineTaxonomy
                 For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
                     ti = Me.m_lTaxonInfo(iTaxon)
                     If (ti.IsNew) Then
-                        Dim igt As Integer = iTaxon + 1
-                        bSuccess = bSuccess And Me.Core.AddTaxon(ti.Group, ti, ti.Proportion, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddTaxon(Math.Max(ti.Group, ti.Stanza), (ti.Stanza > 0), ti, ti.Proportion, iDBID)
                         ' Map this new ID during update
                         htTaxonID.Add(ti, iDBID)
                     End If

@@ -1332,6 +1332,7 @@ Namespace Core
         AreaName
 
         TaxonGroup
+        TaxonStanza
         TaxonProp
         Phylum
         [Class]

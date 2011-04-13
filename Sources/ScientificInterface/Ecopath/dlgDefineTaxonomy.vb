@@ -110,14 +110,11 @@ Public Class dlgDefineTaxa
     ''' Create a new instance of this class.
     ''' </summary>
     ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
-    ''' <param name="group">A group to select, if any.</param>
     ''' -------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, _
-                   Optional ByVal group As cEcoPathGroupInput = Nothing)
+    Public Sub New(ByVal uic As cUIContext)
 
         Me.InitializeComponent()
         Me.m_uic = uic
-        Me.m_groupStartup = group
         Me.m_gridGroups.UIContext = uic
         Me.m_gridResults.UIContext = uic
 
@@ -143,7 +140,6 @@ Public Class dlgDefineTaxa
         AddHandler Me.m_gridResults.OnResultSelected, AddressOf OnResultSelected
 
         If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
-        Me.m_gridGroups.SelectedGroup = Me.m_groupStartup
 
     End Sub
 
@@ -212,24 +208,6 @@ Public Class dlgDefineTaxa
         Handles m_btnKeep.Click
         Try
             Me.m_gridGroups.ToggleDeleteRow()
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-    End Sub
-
-    Private Sub m_btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnMoveUp.Click
-        Try
-            Me.m_gridGroups.MoveTaxon(-1)
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-    End Sub
-
-    Private Sub m_btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnMoveDown.Click
-        Try
-            Me.m_gridGroups.MoveTaxon(1)
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -324,8 +302,6 @@ Public Class dlgDefineTaxa
 
     Private Sub UpdateControls()
 
-        Dim taxon As ITaxonSearchData = Me.m_gridGroups.SelectedTaxon
-        Dim group As cEcoPathGroupInput = Me.m_gridGroups.SelectedGroup
         Dim bCanSearch As Boolean = False
         Dim bCanConfig As Boolean = False
 

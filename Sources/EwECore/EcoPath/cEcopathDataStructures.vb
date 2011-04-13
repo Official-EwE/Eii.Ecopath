@@ -305,10 +305,12 @@ Public Class cEcopathDataStructures
     Public NumTaxon As Integer = 0
     ''' <summary>Taxonomy code DBID (xNumTaxa).</summary>
     Public TaxonDBID() As Integer
-    ''' <summary>Group taxon assignments (xNumTaxa) -> iGroup</summary>
-    Public TaxonGroup() As Integer
-    ''' <summary>Group taxon proportions (xNumTaxa)</summary>
-    Public TaxonGroupProp() As Single
+    ''' <summary>Taxon assignments (xNumTaxa) -> iGroup</summary>
+    Public TaxonTarget() As Integer
+    ''' <summary>Taxon assignment proportions (xNumTaxa)</summary>
+    Public TaxonProp() As Single
+    ''' <summary>Flag stating whether TaxonTarget(i) refers to a stanza (true) or a group (false)</summary>
+    Public IsTaxonStanza() As Boolean
     ''' <summary>Taxonomy class names (xNumTaxa).</summary>
     Public TaxonClass() As String
     ''' <summary>Taxonomy order names (xNumTaxa).</summary>
@@ -612,8 +614,9 @@ Public Class cEcopathDataStructures
     Public Sub RedimTaxon()
 
         ReDim Me.TaxonDBID(Me.NumTaxon)
-        ReDim Me.TaxonGroup(Me.NumTaxon)
-        ReDim Me.TaxonGroupProp(Me.NumTaxon)
+        ReDim Me.TaxonTarget(Me.NumTaxon)
+        ReDim Me.IsTaxonStanza(Me.NumTaxon)
+        ReDim Me.TaxonProp(Me.NumTaxon)
         ReDim Me.TaxonClass(Me.NumTaxon)
         ReDim Me.TaxonCode3A(Me.NumTaxon)
         ReDim Me.TaxonCodeISCAAP(Me.NumTaxon)

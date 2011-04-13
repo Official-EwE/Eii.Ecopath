@@ -28,8 +28,6 @@ Partial Class dlgDefineTaxa
         Me.m_btnAdd = New System.Windows.Forms.Button
         Me.m_btnRemove = New System.Windows.Forms.Button
         Me.m_btnKeep = New System.Windows.Forms.Button
-        Me.m_btnMoveDown = New System.Windows.Forms.Button
-        Me.m_btnMoveUp = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
         Me.m_lbTerm = New System.Windows.Forms.Label
@@ -41,7 +39,6 @@ Partial Class dlgDefineTaxa
         Me.m_gridGroups = New ScientificInterface.gridDefineTaxonomy
         Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults
         Me.m_lblEngine = New System.Windows.Forms.Label
-        Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_btnProps = New System.Windows.Forms.Button
@@ -67,18 +64,6 @@ Partial Class dlgDefineTaxa
         resources.ApplyResources(Me.m_btnKeep, "m_btnKeep")
         Me.m_btnKeep.Name = "m_btnKeep"
         Me.m_btnKeep.UseVisualStyleBackColor = True
-        '
-        'm_btnMoveDown
-        '
-        resources.ApplyResources(Me.m_btnMoveDown, "m_btnMoveDown")
-        Me.m_btnMoveDown.Name = "m_btnMoveDown"
-        Me.m_btnMoveDown.UseVisualStyleBackColor = True
-        '
-        'm_btnMoveUp
-        '
-        resources.ApplyResources(Me.m_btnMoveUp, "m_btnMoveUp")
-        Me.m_btnMoveUp.Name = "m_btnMoveUp"
-        Me.m_btnMoveUp.UseVisualStyleBackColor = True
         '
         'Cancel_Button
         '
@@ -158,7 +143,6 @@ Partial Class dlgDefineTaxa
         Me.m_gridGroups.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridGroups.GridToolTipActive = True
         Me.m_gridGroups.Name = "m_gridGroups"
-        Me.m_gridGroups.SelectedGroup = Nothing
         Me.m_gridGroups.SelectedTaxon = Nothing
         Me.m_gridGroups.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                     Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -205,11 +189,6 @@ Partial Class dlgDefineTaxa
         resources.ApplyResources(Me.m_lblEngine, "m_lblEngine")
         Me.m_lblEngine.Name = "m_lblEngine"
         '
-        'm_hdrOrder
-        '
-        resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
-        Me.m_hdrOrder.Name = "m_hdrOrder"
-        '
         'm_hdrEdit
         '
         resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
@@ -237,11 +216,8 @@ Partial Class dlgDefineTaxa
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.m_hdrEdit)
         Me.Controls.Add(Me.m_hdrProps)
-        Me.Controls.Add(Me.m_hdrOrder)
         Me.Controls.Add(Me.m_btnKeep)
-        Me.Controls.Add(Me.m_btnMoveDown)
         Me.Controls.Add(Me.m_btnProps)
-        Me.Controls.Add(Me.m_btnMoveUp)
         Me.Controls.Add(Me.m_btnRemove)
         Me.Controls.Add(Me.m_btnAdd)
         Me.Name = "dlgDefineTaxa"
@@ -257,10 +233,7 @@ Partial Class dlgDefineTaxa
     End Sub
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
     Private WithEvents m_gridGroups As ScientificInterface.gridDefineTaxonomy
-    Private WithEvents m_hdrOrder As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_btnKeep As System.Windows.Forms.Button
-    Private WithEvents m_btnMoveDown As System.Windows.Forms.Button
-    Private WithEvents m_btnMoveUp As System.Windows.Forms.Button
     Private WithEvents m_hdrEdit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents Cancel_Button As System.Windows.Forms.Button
     Private WithEvents OK_Button As System.Windows.Forms.Button

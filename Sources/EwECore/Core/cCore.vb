@@ -3378,7 +3378,7 @@ Public Class cCore
             For iTaxon As Integer = 1 To m_EcoPathData.NumTaxon
                 Me.m_EcopathTaxon.Add(New cTaxon(Me, m_EcoPathData.TaxonDBID(iTaxon)))
             Next iTaxon
-            Me.LoadEcopathGroupTaxon()
+            Me.LoadEcopathTaxon()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".InitTaxa() Error: " & ex.Message)
@@ -3389,7 +3389,7 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadEcopathGroupTaxon() As Boolean
+    Private Function LoadEcopathTaxon() As Boolean
 
         Dim iTaxon As Integer = 0
 
@@ -3407,8 +3407,14 @@ Public Class cCore
 
                 taxon.Index = iTaxon
                 taxon.DBID = Me.m_EcoPathData.TaxonDBID(iTaxon)
-                taxon.Group = Me.m_EcoPathData.TaxonGroup(iTaxon)
-                taxon.Proportion = Me.m_EcoPathData.TaxonGroupProp(iTaxon)
+                If Me.m_EcoPathData.IsTaxonStanza(iTaxon) Then
+                    taxon.Stanza = Me.m_EcoPathData.TaxonTarget(iTaxon)
+                    taxon.Group = 0
+                Else
+                    taxon.Stanza = 0
+                    taxon.Group = Me.m_EcoPathData.TaxonTarget(iTaxon)
+                End If
+                taxon.Proportion = Me.m_EcoPathData.TaxonProp(iTaxon)
                 taxon.Name = Me.m_EcoPathData.TaxonName(iTaxon)
                 taxon.Class = Me.m_EcoPathData.TaxonClass(iTaxon)
                 taxon.Order = Me.m_EcoPathData.TaxonOrder(iTaxon)
@@ -3460,8 +3466,14 @@ Public Class cCore
 
         Dim taxon As cTaxon = Me.Taxon(iTaxon)
 
-        Me.m_EcoPathData.TaxonGroup(iTaxon) = taxon.Group
-        Me.m_EcoPathData.TaxonGroupProp(iTaxon) = taxon.Proportion
+        If taxon.Group > 0 Then
+            Me.m_EcoPathData.TaxonTarget(iTaxon) = taxon.Group
+            Me.m_EcoPathData.IsTaxonStanza(iTaxon) = False
+        Else
+            Me.m_EcoPathData.TaxonTarget(iTaxon) = taxon.Stanza
+            Me.m_EcoPathData.IsTaxonStanza(iTaxon) = True
+        End If
+        Me.m_EcoPathData.TaxonProp(iTaxon) = taxon.Proportion
         Me.m_EcoPathData.TaxonName(iTaxon) = taxon.Name
         Me.m_EcoPathData.TaxonClass(iTaxon) = taxon.Class
         Me.m_EcoPathData.TaxonOrder(iTaxon) = taxon.Order
@@ -3505,18 +3517,28 @@ Public Class cCore
     ''' <summary>
     ''' Add a taxonomy definition to an Ecopath group.
     ''' </summary>
-    ''' <param name="iGroup">Group index to add the taxonomy definition to.</param>
+    ''' <param name="iTarget">Target index to add the taxonomy definition to.</param>
+    ''' <param name="bIsStanza">Flag stating whether the index represents a 
+    ''' stanza (true) or a group (false).</param>
     ''' <param name="data">Taxonomy data to add.</param>
     ''' <param name="sProportion">Proportion that this taxonomy definition contributes to the entire group.</param>
     ''' <param name="iDBID">Database ID for the new taxonomy definition.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddTaxon(ByVal iGroup As Integer, _
+    Public Function AddTaxon(ByVal iTarget As Integer, _
+                             ByVal bIsStanza As Boolean, _
                              ByVal data As ITaxonSearchData, _
                              ByVal sProportion As Single, _
                              ByRef iDBID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
+        Dim iTargetDBID As Integer = 0
+
+        If bIsStanza Then
+            iTargetDBID = (Me.m_Stanza.StanzaDBID(iTarget))
+        Else
+            iTargetDBID = (Me.m_EcoPathData.GroupDBID(iTarget))
+        End If
 
         ' Sanity checks
         If DataSource Is Nothing Then Return False
@@ -3526,7 +3548,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ' Start the actual work. The data source will ensure the new fleet will be added througout models and scenarios
-        If (DirectCast(DataSource, IEcopathDataSource).AddTaxon(Me.m_EcoPathData.GroupDBID(iGroup), data, sProportion, iDBID)) Then
+        If (DirectCast(DataSource, IEcopathDataSource).AddTaxon(iTargetDBID, bIsStanza, data, sProportion, iDBID)) Then
             Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
             bSucces = True
         End If
