@@ -94,8 +94,9 @@ Namespace Ecopath.Input
 
             For iStanza As Integer = 0 To Me.Core.nStanzas - 1
 
-                iRow = Me.AddRow()
                 stanza = Me.Core.StanzaGroups(iStanza)
+                iRow = Me.AddRow()
+
                 hgcParent = New EwEHierarchyGridCell()
                 Me(iRow, eColumnTypes.Hierarchy) = hgcParent
                 Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, stanza, eVarNameFlags.Name, Nothing, hgcParent)
@@ -118,9 +119,10 @@ Namespace Ecopath.Input
                 If Not group.isMultiStanza Then
 
                     iRow = Me.AddRow()
+
                     hgcParent = New EwEHierarchyGridCell()
                     Me(iRow, eColumnTypes.Hierarchy) = hgcParent
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, group, eVarNameFlags.Name, Nothing, hgcParent)
+                    Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(String.Format(SharedResources.GENERIC_LABEL_INDEXED, group.Index, group.Name))
                     For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
                         Me(iRow, iCol) = New EwERowHeaderCell("")
                     Next
