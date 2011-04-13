@@ -1796,6 +1796,7 @@ Namespace DataSources
         Friend Function RemoveStanza(ByVal iStanzaID As Integer) As Boolean _
                 Implements IEcopathDataSource.RemoveStanza
             Try
+                Me.m_db.Execute(String.Format("DELETE FROM EcopathStanzaTaxon WHERE (StanzaID={0})", iStanzaID))
                 Me.m_db.Execute(String.Format("DELETE FROM Stanza WHERE (StanzaID={0})", iStanzaID))
                 Return True
             Catch ex As Exception
@@ -3412,9 +3413,11 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
+                Me.m_db.Execute(String.Format("DELETE FROM EcopathTaxon WHERE (TaxonID={0})", iTaxonID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (TaxonID={0})", iTaxonID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcopathStanzaTaxon WHERE (TaxonID={0})", iTaxonID))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace taxon {1}", ex.Message, iTaxonID))
+                Me.LogMessage(String.Format("Error {0} occurred while removing taxon {1}", ex.Message, iTaxonID))
                 bSucces = False
             End Try
             Return bSucces
