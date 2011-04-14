@@ -148,13 +148,13 @@ Namespace Controls
             End Get
             Private Set(ByVal uic As cUIContext)
                 If (Me.m_uic IsNot Nothing) Then
-                    Me.Items.Clear()
                     RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    Me.Items.Clear()
                 End If
                 Me.m_uic = uic
                 If (Me.m_uic IsNot Nothing) Then
-                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                     Me.Populate()
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 End If
             End Set
         End Property
