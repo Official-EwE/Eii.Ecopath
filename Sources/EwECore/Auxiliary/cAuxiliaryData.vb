@@ -107,7 +107,7 @@ Namespace Auxiliary
         ''' Get the key for this data.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend ReadOnly Property Key() As cValueID
+        Public ReadOnly Property Key() As cValueID
             Get
                 Return Me.m_key
             End Get

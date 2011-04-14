@@ -9832,7 +9832,7 @@ Namespace DataSources
                             ' Make new key
                             key = ad.Key
                             key = New cValueID(dt, idm.GetID(dt, iDBID), _
-                                               key.VarName, _
+                                               key.VarNameText, _
                                                key.DataTypeSec, idm.GetID(key.DataTypeSec, ad.Key.DBIDSec))
 
                             ' Start new row

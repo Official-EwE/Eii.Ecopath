@@ -27,7 +27,7 @@ Public Class cPedigreeManager
 
 #End Region ' Private vars
 
-#Region " Constructor and Cleanup"
+#Region " Constructor and Cleanup "
 
     Friend Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal iDBID As Integer)
         MyBase.New(core)
