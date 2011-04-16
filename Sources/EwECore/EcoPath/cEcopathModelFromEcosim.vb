@@ -209,3 +209,120 @@ Public Class cEcopathModelFromEcosim
     End Function
 
 End Class
+
+#Region " Original code "
+
+#If 0 Then ' From modSimEdit
+
+Public Sub SaveEcopathFromEcosim()
+Dim i As Integer
+Dim j As Integer
+Dim SaveRunFile As String
+Dim SBi() As Double
+Dim SBHi() As Double   'habitat biomass
+Dim SCatch() As Single
+Dim SEx() As Single
+Dim SPBi() As Double
+Dim SQBi() As Double
+Dim SDC() As Single
+Dim SEE() As Single
+Dim SBAi() As Single
+Dim SEmi() As Single
+Dim SImmi() As Single
+Dim SLandi() As Single
+Dim SDisci() As Single
+Dim titi As String
+Dim Response As Variant
+    ReDim SBi(NumGroups) As Double
+    ReDim SBHi(NumGroups) As Double   'habitat biomass
+    ReDim SCatch(NumGroups) As Single
+    ReDim SEx(NumGroups) As Single
+    ReDim SPBi(NumGroups) As Double
+    ReDim SQBi(NumGroups) As Double
+    ReDim SDC(NumGroups + 1, NumGroups + 1) As Single
+    ReDim SEE(NumGroups) As Single
+    ReDim SBAi(NumGroups) As Single
+    ReDim SEmi(NumGroups) As Single
+    ReDim SImmi(NumGroups) As Single
+    ReDim SLandi(NumGear, NumGroups) As Single
+    ReDim SDisci(NumGear, NumGroups) As Single
+    Dim t As Variant
+    For i = 1 To NumGroups
+        SBi(i) = Bi(i)
+        Bi(i) = DCPct(i, 1)
+        SCatch(i) = Catch(i)
+        Catch(i) = Bi(i) * FishTime(i)
+        SEx(i) = Ex(i)
+        Ex(i) = Catch(i)
+        SPBi(i) = PBi(i)
+        PBi(i) = loss(i) / Bi(i)
+        SQBi(i) = QBi(i)
+        QBi(i) = DCPct(i, 2) 'the following has been updated: Eatenby(i) / bb(i)
+        SEE(i) = EEi(i)
+        EEi(i) = -99
+        SBAi(i) = BAi(i)
+        BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
+        'BAi(i) = DCPct(i, 3) * StepsPerYear '/ TimeStep
+        SEmi(i) = Emigrationi(i)
+        Emigrationi(i) = Emig(i) * Bi(i) '
+        SBHi(i) = BHi(i)
+        BHi(i) = Bi(i) / Area(i)
+    Next
+    For i = 1 To NumGroups
+        For j = 1 To NumGroups
+            SDC(i, j) = DC(i, j)
+            DCi(i, j) = 0        'don't leave any dc leftovers
+            If QBi(i) > 0 Then DCi(i, j) = DCMean(i, j) '/ (QBi(i) * Bi(i))
+        Next
+    Next
+    'immigration is constant rate and is not changed by ecosim so no need to change
+    For i = 1 To NumGear
+        For j = 1 To NumGroups
+            SLandi(i, j) = Landing(i, j)
+            Landing(i, j) = DCMin(i, j)
+            SDisci(i, j) = Discard(i, j)
+            Discard(i, j) = DCMax(i, j)
+        Next j
+    Next i
+    titi = modelRemarks
+    modelRemarks = "Ecosim output file; " + CStr(Date) + "; " + CStr(time) + "; " + modelRemarks
+
+    GetValidFileName SaveRunFile
+    If Mid(dbFilepath, Len(dbFilepath), 1) <> "\" Then
+        SaveRunFile = dbFilepath + "\" + SaveRunFile + ".eii" 'Left(lastModel, 8) + ".txt"
+    Else
+        SaveRunFile = dbFilepath + SaveRunFile + ".eii"  'Left(lastModel, 8) + ".txt"
+    End If
+
+    'SaveEiiFile SaveRunFile
+    Response = "Ecopath file saved to " + SaveRunFile + vbNewLine + vbNewLine + "You can import the file as a text-file (eii) from the File menu" + vbNewLine + "Do you want to keep this file?"
+    Response = MsgBox(Response, vbInformation + vbYesNo, "Save Ecopath model from Ecosim")
+    If Response = vbYes Then SaveEiiFile SaveRunFile
+    modelRemarks = titi
+    Erase DCMin(), DCMean(), DCMax()
+    'Restore Ecopath parameters
+    For i = 1 To NumGroups
+        Bi(i) = SBi(i)
+        Catch(i) = SCatch(i)
+        Ex(i) = SEx(i)
+        PBi(i) = SPBi(i)
+        QBi(i) = SQBi(i)
+        EEi(i) = SEE(i)
+        BAi(i) = SBAi(i)
+        Emigrationi(i) = SEmi(i)
+        BHi(i) = SBHi(i)
+    Next
+    For i = 1 To NumGroups
+        For j = 1 To NumGroups
+            DCi(i, j) = SDC(i, j)
+        Next
+    Next
+    For i = 1 To NumGear
+        For j = 1 To NumGroups
+            Landing(i, j) = SLandi(i, j)
+            Discard(i, j) = SDisci(i, j)
+        Next j
+    Next i
+End Sub
+#End If
+#End Region ' Original code
