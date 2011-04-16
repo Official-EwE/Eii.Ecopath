@@ -5,7 +5,7 @@ Namespace Ecotracer
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmEcotracerInput
-        Inherits frmEwE
+        Inherits frmEwEGrid
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
@@ -28,24 +28,51 @@ Namespace Ecotracer
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcotracerInput))
-            Me.m_cmbEnvInflowFF = New System.Windows.Forms.ComboBox
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
+            Me.m_plAaargh = New System.Windows.Forms.Panel
+            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lbFFEnv = New System.Windows.Forms.Label
-            Me.m_tbCLossEnv = New System.Windows.Forms.TextBox
-            Me.m_hdrInit = New cEwEHeaderLabel
-            Me.m_tbCInflowEnv = New System.Windows.Forms.TextBox
-            Me.m_lblCDecay = New System.Windows.Forms.Label
-            Me.m_lblCInflowEnv = New System.Windows.Forms.Label
-            Me.m_hdrGroups = New cEwEHeaderLabel
-            Me.m_grid = New ScientificInterface.Ecotracer.EcotracerInputGrid
-            Me.m_tbCZeroEnv = New System.Windows.Forms.TextBox
-            Me.m_tbCDecayRateEnv = New System.Windows.Forms.TextBox
+            Me.m_cmbEnvInflowFF = New System.Windows.Forms.ComboBox
+            Me.m_tlp = New System.Windows.Forms.TableLayoutPanel
             Me.m_lbCZeroEnv = New System.Windows.Forms.Label
             Me.m_lbCDecayRateEnv = New System.Windows.Forms.Label
-            Me.m_tlp = New System.Windows.Forms.TableLayoutPanel
-            Me.m_plAaargh = New System.Windows.Forms.Panel
-            Me.m_tlp.SuspendLayout()
+            Me.m_lblCInflowEnv = New System.Windows.Forms.Label
+            Me.m_lblCDecay = New System.Windows.Forms.Label
+            Me.m_tbCDecayRateEnv = New System.Windows.Forms.TextBox
+            Me.m_tbCInflowEnv = New System.Windows.Forms.TextBox
+            Me.m_tbCLossEnv = New System.Windows.Forms.TextBox
+            Me.m_tbCZeroEnv = New System.Windows.Forms.TextBox
+            Me.m_grid = New ScientificInterface.Ecotracer.EcotracerInputGrid
+            Me.m_hdrInit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_plAaargh.SuspendLayout()
+            Me.m_tlp.SuspendLayout()
             Me.SuspendLayout()
+            '
+            'm_tsMain
+            '
+            resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+            Me.m_tsMain.Name = "m_tsMain"
+            '
+            'm_plAaargh
+            '
+            Me.m_plAaargh.Controls.Add(Me.m_hdrGroups)
+            Me.m_plAaargh.Controls.Add(Me.m_lbFFEnv)
+            Me.m_plAaargh.Controls.Add(Me.m_cmbEnvInflowFF)
+            Me.m_plAaargh.Controls.Add(Me.m_tlp)
+            Me.m_plAaargh.Controls.Add(Me.m_grid)
+            Me.m_plAaargh.Controls.Add(Me.m_hdrInit)
+            resources.ApplyResources(Me.m_plAaargh, "m_plAaargh")
+            Me.m_plAaargh.Name = "m_plAaargh"
+            '
+            'm_hdrGroups
+            '
+            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
+            Me.m_hdrGroups.Name = "m_hdrGroups"
+            '
+            'm_lbFFEnv
+            '
+            resources.ApplyResources(Me.m_lbFFEnv, "m_lbFFEnv")
+            Me.m_lbFFEnv.Name = "m_lbFFEnv"
             '
             'm_cmbEnvInflowFF
             '
@@ -54,48 +81,63 @@ Namespace Ecotracer
             resources.ApplyResources(Me.m_cmbEnvInflowFF, "m_cmbEnvInflowFF")
             Me.m_cmbEnvInflowFF.Name = "m_cmbEnvInflowFF"
             '
-            'm_lbFFEnv
+            'm_tlp
             '
-            resources.ApplyResources(Me.m_lbFFEnv, "m_lbFFEnv")
-            Me.m_lbFFEnv.Name = "m_lbFFEnv"
+            resources.ApplyResources(Me.m_tlp, "m_tlp")
+            Me.m_tlp.Controls.Add(Me.m_lbCZeroEnv, 0, 0)
+            Me.m_tlp.Controls.Add(Me.m_lbCDecayRateEnv, 0, 1)
+            Me.m_tlp.Controls.Add(Me.m_lblCInflowEnv, 3, 0)
+            Me.m_tlp.Controls.Add(Me.m_lblCDecay, 3, 1)
+            Me.m_tlp.Controls.Add(Me.m_tbCDecayRateEnv, 1, 1)
+            Me.m_tlp.Controls.Add(Me.m_tbCInflowEnv, 4, 0)
+            Me.m_tlp.Controls.Add(Me.m_tbCLossEnv, 4, 1)
+            Me.m_tlp.Controls.Add(Me.m_tbCZeroEnv, 1, 0)
+            Me.m_tlp.Name = "m_tlp"
             '
-            'm_tbCLossEnv
+            'm_lbCZeroEnv
             '
-            resources.ApplyResources(Me.m_tbCLossEnv, "m_tbCLossEnv")
-            Me.m_tbCLossEnv.Name = "m_tbCLossEnv"
+            resources.ApplyResources(Me.m_lbCZeroEnv, "m_lbCZeroEnv")
+            Me.m_lbCZeroEnv.Name = "m_lbCZeroEnv"
             '
-            'm_hdrInit
+            'm_lbCDecayRateEnv
             '
-            resources.ApplyResources(Me.m_hdrInit, "m_hdrInit")
-            Me.m_hdrInit.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_hdrInit.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_hdrInit.Name = "m_hdrInit"
-            '
-            'm_tbCInflowEnv
-            '
-            resources.ApplyResources(Me.m_tbCInflowEnv, "m_tbCInflowEnv")
-            Me.m_tbCInflowEnv.Name = "m_tbCInflowEnv"
-            '
-            'm_lblCDecay
-            '
-            resources.ApplyResources(Me.m_lblCDecay, "m_lblCDecay")
-            Me.m_lblCDecay.Name = "m_lblCDecay"
+            resources.ApplyResources(Me.m_lbCDecayRateEnv, "m_lbCDecayRateEnv")
+            Me.m_lbCDecayRateEnv.Name = "m_lbCDecayRateEnv"
             '
             'm_lblCInflowEnv
             '
             resources.ApplyResources(Me.m_lblCInflowEnv, "m_lblCInflowEnv")
             Me.m_lblCInflowEnv.Name = "m_lblCInflowEnv"
             '
-            'm_hdrGroups
+            'm_lblCDecay
             '
-            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
-            Me.m_hdrGroups.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_hdrGroups.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_hdrGroups.Name = "m_hdrGroups"
+            resources.ApplyResources(Me.m_lblCDecay, "m_lblCDecay")
+            Me.m_lblCDecay.Name = "m_lblCDecay"
+            '
+            'm_tbCDecayRateEnv
+            '
+            resources.ApplyResources(Me.m_tbCDecayRateEnv, "m_tbCDecayRateEnv")
+            Me.m_tbCDecayRateEnv.Name = "m_tbCDecayRateEnv"
+            '
+            'm_tbCInflowEnv
+            '
+            resources.ApplyResources(Me.m_tbCInflowEnv, "m_tbCInflowEnv")
+            Me.m_tbCInflowEnv.Name = "m_tbCInflowEnv"
+            '
+            'm_tbCLossEnv
+            '
+            resources.ApplyResources(Me.m_tbCLossEnv, "m_tbCLossEnv")
+            Me.m_tbCLossEnv.Name = "m_tbCLossEnv"
+            '
+            'm_tbCZeroEnv
+            '
+            resources.ApplyResources(Me.m_tbCZeroEnv, "m_tbCZeroEnv")
+            Me.m_tbCZeroEnv.Name = "m_tbCZeroEnv"
             '
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -106,7 +148,6 @@ Namespace Ecotracer
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
-            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
@@ -122,78 +163,41 @@ Namespace Ecotracer
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
-            'm_tbCZeroEnv
+            'm_hdrInit
             '
-            resources.ApplyResources(Me.m_tbCZeroEnv, "m_tbCZeroEnv")
-            Me.m_tbCZeroEnv.Name = "m_tbCZeroEnv"
-            '
-            'm_tbCDecayRateEnv
-            '
-            resources.ApplyResources(Me.m_tbCDecayRateEnv, "m_tbCDecayRateEnv")
-            Me.m_tbCDecayRateEnv.Name = "m_tbCDecayRateEnv"
-            '
-            'm_lbCZeroEnv
-            '
-            resources.ApplyResources(Me.m_lbCZeroEnv, "m_lbCZeroEnv")
-            Me.m_lbCZeroEnv.Name = "m_lbCZeroEnv"
-            '
-            'm_lbCDecayRateEnv
-            '
-            resources.ApplyResources(Me.m_lbCDecayRateEnv, "m_lbCDecayRateEnv")
-            Me.m_lbCDecayRateEnv.Name = "m_lbCDecayRateEnv"
-            '
-            'm_tlp
-            '
-            resources.ApplyResources(Me.m_tlp, "m_tlp")
-            Me.m_tlp.Controls.Add(Me.m_lbCZeroEnv, 0, 0)
-            Me.m_tlp.Controls.Add(Me.m_lbCDecayRateEnv, 0, 1)
-            Me.m_tlp.Controls.Add(Me.m_lblCInflowEnv, 3, 0)
-            Me.m_tlp.Controls.Add(Me.m_lblCDecay, 3, 1)
-            Me.m_tlp.Controls.Add(Me.m_tbCDecayRateEnv, 1, 1)
-            Me.m_tlp.Controls.Add(Me.m_tbCInflowEnv, 4, 0)
-            Me.m_tlp.Controls.Add(Me.m_tbCLossEnv, 4, 1)
-            Me.m_tlp.Controls.Add(Me.m_tbCZeroEnv, 1, 0)
-            Me.m_tlp.Name = "m_tlp"
-            '
-            'm_plAaargh
-            '
-            resources.ApplyResources(Me.m_plAaargh, "m_plAaargh")
-            Me.m_plAaargh.Controls.Add(Me.m_grid)
-            Me.m_plAaargh.Name = "m_plAaargh"
+            resources.ApplyResources(Me.m_hdrInit, "m_hdrInit")
+            Me.m_hdrInit.Name = "m_hdrInit"
             '
             'frmEcotracerInput
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_plAaargh)
-            Me.Controls.Add(Me.m_tlp)
-            Me.Controls.Add(Me.m_cmbEnvInflowFF)
-            Me.Controls.Add(Me.m_lbFFEnv)
-            Me.Controls.Add(Me.m_hdrGroups)
-            Me.Controls.Add(Me.m_hdrInit)
+            Me.Controls.Add(Me.m_tsMain)
             Me.Name = "frmEcotracerInput"
+            Me.m_plAaargh.ResumeLayout(False)
+            Me.m_plAaargh.PerformLayout()
             Me.m_tlp.ResumeLayout(False)
             Me.m_tlp.PerformLayout()
-            Me.m_plAaargh.ResumeLayout(False)
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_grid As EcotracerInputGrid
-        Private WithEvents m_tbCLossEnv As System.Windows.Forms.TextBox
-        Private WithEvents m_hdrInit As cEwEHeaderLabel
-        Private WithEvents m_tbCInflowEnv As System.Windows.Forms.TextBox
-        Private WithEvents m_lblCDecay As System.Windows.Forms.Label
-        Private WithEvents m_lblCInflowEnv As System.Windows.Forms.Label
-        Private WithEvents m_tbCZeroEnv As System.Windows.Forms.TextBox
-        Private WithEvents m_tbCDecayRateEnv As System.Windows.Forms.TextBox
+        Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
+        Private WithEvents m_plAaargh As System.Windows.Forms.Panel
+        Private WithEvents m_hdrGroups As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_lbFFEnv As System.Windows.Forms.Label
+        Private WithEvents m_cmbEnvInflowFF As System.Windows.Forms.ComboBox
+        Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lbCZeroEnv As System.Windows.Forms.Label
         Private WithEvents m_lbCDecayRateEnv As System.Windows.Forms.Label
-        Private WithEvents m_cmbEnvInflowFF As System.Windows.Forms.ComboBox
-        Private WithEvents m_lbFFEnv As System.Windows.Forms.Label
-        Private WithEvents m_hdrGroups As cEwEHeaderLabel
-        Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_plAaargh As System.Windows.Forms.Panel
+        Private WithEvents m_lblCInflowEnv As System.Windows.Forms.Label
+        Private WithEvents m_lblCDecay As System.Windows.Forms.Label
+        Private WithEvents m_tbCDecayRateEnv As System.Windows.Forms.TextBox
+        Private WithEvents m_tbCInflowEnv As System.Windows.Forms.TextBox
+        Private WithEvents m_tbCLossEnv As System.Windows.Forms.TextBox
+        Private WithEvents m_tbCZeroEnv As System.Windows.Forms.TextBox
+        Private WithEvents m_grid As ScientificInterface.Ecotracer.EcotracerInputGrid
+        Private WithEvents m_hdrInit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     End Class
 
 End Namespace

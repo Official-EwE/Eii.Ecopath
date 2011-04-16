@@ -32,6 +32,7 @@ Namespace Ecotracer
         Public Sub New()
             MyBase.New()
             Me.InitializeComponent()
+            Me.Grid = Me.m_grid
         End Sub
 
 #End Region ' Constructors
