@@ -142,7 +142,7 @@
     <value>m_sketchPadToolbar</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.0.5.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
     <value>tlpSketchPad</value>
@@ -169,7 +169,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationSketchPad, ScientificInterfaceShared, Version=6.0.5.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationSketchPad, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>tlpSketchPad</value>
@@ -267,61 +267,61 @@
   <data name="m_tlpBiopercent.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_biopercenttoolbar.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_assignmentsToolbar.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_biopercenttoolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_assignmentsToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_biopercenttoolbar.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_assignmentsToolbar.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_biopercenttoolbar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_assignmentsToolbar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_biopercenttoolbar.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_assignmentsToolbar.Size" type="System.Drawing.Size, System.Drawing">
     <value>697, 25</value>
   </data>
-  <data name="m_biopercenttoolbar.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_assignmentsToolbar.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_biopercenttoolbar.Name" xml:space="preserve">
-    <value>m_biopercenttoolbar</value>
+  <data name="&gt;&gt;m_assignmentsToolbar.Name" xml:space="preserve">
+    <value>m_assignmentsToolbar</value>
   </data>
-  <data name="&gt;&gt;m_biopercenttoolbar.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucBioPercentToolbar, EwE6, Version=6.0.5.7, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;m_assignmentsToolbar.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_biopercenttoolbar.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_assignmentsToolbar.Parent" xml:space="preserve">
     <value>m_tlpBiopercent</value>
   </data>
-  <data name="&gt;&gt;m_biopercenttoolbar.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_assignmentsToolbar.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_bioPercent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_assignments.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_bioPercent.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_assignments.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 25</value>
   </data>
-  <data name="m_bioPercent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_assignments.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_bioPercent.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_assignments.Size" type="System.Drawing.Size, System.Drawing">
     <value>697, 99</value>
   </data>
-  <data name="m_bioPercent.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_assignments.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_bioPercent.Name" xml:space="preserve">
-    <value>m_bioPercent</value>
+  <data name="&gt;&gt;m_assignments.Name" xml:space="preserve">
+    <value>m_assignments</value>
   </data>
-  <data name="&gt;&gt;m_bioPercent.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucBioPercent, EwE6, Version=6.0.5.7, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;m_assignments.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucMediationAssignments, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_bioPercent.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_assignments.Parent" xml:space="preserve">
     <value>m_tlpBiopercent</value>
   </data>
-  <data name="&gt;&gt;m_bioPercent.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_assignments.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tlpBiopercent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -355,7 +355,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpBiopercent.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_biopercenttoolbar" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_bioPercent" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_assignmentsToolbar" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_assignments" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;SplitContainer2.Panel2.Name" xml:space="preserve">
     <value>SplitContainer2.Panel2</value>
@@ -424,7 +424,7 @@
     <value>m_shapeToolBox</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.0.5.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -451,7 +451,7 @@
     <value>m_shapeToolboxToolbar</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.0.5.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -534,10 +534,13 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>703, 505</value>
   </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmMediationFunction</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.5.7, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

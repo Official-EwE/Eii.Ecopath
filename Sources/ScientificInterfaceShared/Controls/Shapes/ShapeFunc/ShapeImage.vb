@@ -243,7 +243,7 @@ Namespace Controls
 
                     ' Draw Ymark label, if any
                     If Not String.IsNullOrEmpty(strYMarkLabel) Then
-                        Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
+                        Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
                             Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
                                 ' Position label on the right end of the graph
                                 ptfTo.X -= g.MeasureString(strYMarkLabel, ft).Width
@@ -275,8 +275,10 @@ Namespace Controls
                     Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
                         Using br As New SolidBrush(Color.Blue)
                             Dim szfText As SizeF = g.MeasureString(strXMarkLabel, ft)
-                            ' Position label on the top of the graph, left of the line
-                            ptfFrom.X -= szfText.Width
+                            ' Position label on the top of the graph, on top of the line
+                            ptfFrom = cShapeImage.ToImagePoint(New PointF(sXMark, sYMark), rcImage, nPoints, sYMax)
+                            ptfFrom.Y = Math.Max(0, ptfFrom.Y - szfText.Height)
+                            ptfFrom.X -= szfText.Width / 2
                             g.DrawString(strXMarkLabel, ft, br, ptfFrom)
                         End Using
                     End Using

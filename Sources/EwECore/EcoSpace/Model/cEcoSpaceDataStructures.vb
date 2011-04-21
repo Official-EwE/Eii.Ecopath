@@ -59,7 +59,13 @@ Public Class cEcospaceDataStructures
     ''' <summary>Current Model time step.</summary>
     ''' <remarks>This is the time in years, not the array index</remarks>
     Public TimeNow As Single
+
+    ''' <summary>
+    ''' Length of the time step in year 1 month = 0.083333
+    ''' </summary>
+    ''' <remarks></remarks>
     Public TimeStep As Single
+
     ''' <summary>Current year that is being executed.</summary>
     Public YearNow As Integer = 0
     ''' <summary>Current month that is being executed.</summary>

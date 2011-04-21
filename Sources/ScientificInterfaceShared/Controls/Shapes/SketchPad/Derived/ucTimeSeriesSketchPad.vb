@@ -226,10 +226,6 @@ Namespace Controls
 
         End Function
 
-        Protected Overrides Sub OnShapeChanged()
-            MyBase.OnShapeChanged()
-        End Sub
-
         Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
             MyBase.OnResize(e)
             Me.OnShapeChanged()

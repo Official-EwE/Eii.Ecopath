@@ -252,15 +252,19 @@ Namespace Import
         ''' <param name="strStatus">Optional message attached to status.</param>
         ''' -------------------------------------------------------------------
         Private Sub SetImportStatus(ByVal bImporting As Boolean, ByVal strStatus As String)
-            If Me.InvokeRequired Then
-                Me.Invoke(New SetImportStatusDelegate(AddressOf Me.SetImportStatus), New Object() {bImporting, strStatus})
-            Else
-                Me.IsImporting = bImporting
+            Try
+                If Me.InvokeRequired Then
+                    Me.Invoke(New SetImportStatusDelegate(AddressOf Me.SetImportStatus), New Object() {bImporting, strStatus})
+                Else
+                    Me.IsImporting = bImporting
 
-                If Not String.IsNullOrEmpty(strStatus) Then
-                    Me.m_lbSummary.Items.Add(strStatus)
+                    If Not String.IsNullOrEmpty(strStatus) Then
+                        Me.m_lbSummary.Items.Add(strStatus)
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #End Region ' Threaded import

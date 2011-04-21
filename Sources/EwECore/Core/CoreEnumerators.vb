@@ -341,24 +341,6 @@ End Enum
 
 #End Region
 
-#Region "Forcing function Pred Prey Interation"
-
-''' ---------------------------------------------------------------------------
-''' <summary>
-''' Enumerator for forcing functions, describing to which Predator/Prey
-''' interaction a forcing function is applied.
-''' </summary>
-''' ---------------------------------------------------------------------------
-Public Enum eForcingFunctionApplication
-    ProductionRate = 1
-    SearchRate = 1
-    Vulnerability = 2
-    ArenaArea = 3
-    VulAndArea = 4
-End Enum
-
-#End Region
-
 #Region "Ecopath Parameter Estimation type"
 
 ''' ---------------------------------------------------------------------------

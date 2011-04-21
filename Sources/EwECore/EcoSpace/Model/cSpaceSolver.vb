@@ -140,7 +140,7 @@ Public Class cSpaceSolver
         ReDim pred(m_Data.NGroups)
         ReDim Eatenof(m_Data.NGroups)
         ReDim Eatenby(m_Data.NGroups)
-        ReDim MedVal(m_SimData.MediationShapes)
+        ReDim MedVal(m_SimData.BioMedData.MediationShapes)
 
         'thread copy of global sums
         ReDim BtimeLocal(m_Data.NGroups)
@@ -159,7 +159,7 @@ Public Class cSpaceSolver
         Array.Copy(m_SimData.pred, pred, m_Data.NGroups + 1)
         Array.Copy(m_SimData.Eatenof, Eatenof, m_Data.NGroups + 1)
         Array.Copy(m_SimData.Eatenby, Eatenby, m_Data.NGroups + 1)
-        Array.Copy(m_SimData.MedVal, MedVal, m_SimData.MediationShapes + 1)
+        Array.Copy(m_SimData.BioMedData.MedVal, MedVal, m_SimData.BioMedData.MediationShapes + 1)
 
         m_ConTracer.Init(m_TracerData, m_PathData, m_SimData, m_Stanza)
         m_ConTracer.CInitialize()
@@ -274,7 +274,7 @@ Public Class cSpaceSolver
 
     Private Function SolveCell(ByVal i As Integer, ByVal j As Integer) As Boolean
 
-        Dim ip As Integer
+        Dim iGrp As Integer
 
         Try
 
@@ -287,7 +287,7 @@ Public Class cSpaceSolver
                 'For ip = 0 To m_Data.NGroups : ConTotal(ip) = ConTotal(ip) + m_Data.Ccell(i, j, ip):Next
             End If
 
-            For ip = 1 To m_Data.NGroups
+            For iGrp = 1 To m_Data.NGroups
                 'abmpa: at this point (after having been in solvegrid) the BCell holds
                 'the long term equilibrium biomass or at least an approx to)
                 'ebb(ip) = m_Data.Bcell(i, j, ip)
@@ -305,40 +305,40 @@ Public Class cSpaceSolver
 
                 'm_Data.Blast(i, j, ip) = m_Data.Bcell(i, j, ip)
                 'end abmpa
-                If m_Data.Depth(i, j) = 0 Then m_Data.Bcell(i, j, ip) = 0
-                BB(ip) = m_Data.Bcell(i, j, ip)
+                If m_Data.Depth(i, j) = 0 Then m_Data.Bcell(i, j, iGrp) = 0
+                BB(iGrp) = m_Data.Bcell(i, j, iGrp)
 
-                If m_TracerData.EcoSpaceConSimOn Then m_ConTracer.ConcTr(ip) = m_Data.Ccell(i, j, ip)
+                If m_TracerData.EcoSpaceConSimOn Then m_ConTracer.ConcTr(iGrp) = m_Data.Ccell(i, j, iGrp)
 
                 'sum biomass over all the cells
                 'this is now done individually for each thread, then summed outside the threads
                 'Btime(ip) = Btime(ip) + BB(ip)
-                BtimeLocal(ip) = BB(ip) + BtimeLocal(ip)
+                BtimeLocal(iGrp) = BB(iGrp) + BtimeLocal(iGrp)
 
-                If (m_SimData.NoIntegrate(ip) = ip Or m_SimData.NoIntegrate(ip) < 0) And m_SimData.SimGE(ip) > 0 Then
-                    If (Cper(i, j, ip) > 0 And m_SimData.FtimeAdjust(ip) > 0) Then
-                        FtimeCell(i, j, ip) = FtimeCell(i, j, ip) * (0.7 + 0.3 * m_SimData.Cbase(ip) / Cper(i, j, ip))
+                If (m_SimData.NoIntegrate(iGrp) = iGrp Or m_SimData.NoIntegrate(iGrp) < 0) And m_SimData.SimGE(iGrp) > 0 Then
+                    If (Cper(i, j, iGrp) > 0 And m_SimData.FtimeAdjust(iGrp) > 0) Then
+                        FtimeCell(i, j, iGrp) = FtimeCell(i, j, iGrp) * (0.7 + 0.3 * m_SimData.Cbase(iGrp) / Cper(i, j, iGrp))
                     End If
                     '  FtimeCell(i, j, ip) = Cbase(ip) / Cper(i, j, ip)
-                    If FtimeCell(i, j, ip) > m_SimData.FtimeMax(ip) Then FtimeCell(i, j, ip) = m_SimData.FtimeMax(ip)
-                    If FtimeCell(i, j, ip) < 0.1 Then FtimeCell(i, j, ip) = 0.1
-                    Ftime(ip) = FtimeCell(i, j, ip)
+                    If FtimeCell(i, j, iGrp) > m_SimData.FtimeMax(iGrp) Then FtimeCell(i, j, iGrp) = m_SimData.FtimeMax(iGrp)
+                    If FtimeCell(i, j, iGrp) < 0.1 Then FtimeCell(i, j, iGrp) = 0.1
+                    Ftime(iGrp) = FtimeCell(i, j, iGrp)
                 End If
 
-                Hden(ip) = HdenCell(i, j, ip)
+                Hden(iGrp) = HdenCell(i, j, iGrp)
                 'VC20Aug98: This should consider fleets which can fish in the MPA
                 ' The variable MPAfishery(gear, habitattype)=true indicates that
                 ' the specific gear can fish in the specified habitattype
                 If m_Data.Depth(i, j) > 0 Then
                     If m_Data.PredictEffort Then
-                        FishTime(ip) = m_Data.Ftot(ip, i, j)
+                        FishTime(iGrp) = m_Data.Ftot(iGrp, i, j)
                         '****Following lines set fishrategear for Simdetritus
                         For ig = 1 To m_Data.nFleets
                             FishRateGear(ig, 0) = m_Data.EffortSpace(ig, i, j)
                             'effortspace should be 1.0 for cell with "average" effort by gear type ig
                         Next
                     Else
-                        FishTime(ip) = Fish1(ip)
+                        FishTime(iGrp) = Fish1(iGrp)
                         '****Following lines set fishrategear for Simdetritus
                         For ig = 1 To m_Data.nFleets
                             FishRateGear(ig, 0) = 1 ' 1 x FishMGear(ig, ip)
@@ -347,7 +347,7 @@ Public Class cSpaceSolver
 
                 Else
                     'depth<=0
-                    FishTime(ip) = 0
+                    FishTime(iGrp) = 0
                     '****Following line sets fishrategear for Simdetritus
                     For ig = 1 To m_Data.nFleets
                         FishRateGear(ig, 0) = 0
@@ -355,22 +355,23 @@ Public Class cSpaceSolver
 
                 End If 'If m_Data.Depth(i, j) > 0 Then
 
-                EatEff(ip) = 1
-                VulPred(ip) = 1
+                EatEff(iGrp) = 1
+                VulPred(iGrp) = 1
 
-                If m_Data.PrefHab(ip, m_Data.HabType(i, j)) = False And m_Data.PrefHab(ip, 0) = False Then
-                    VulPred(ip) = m_Data.RelVulBad(ip)
-                    EatEff(ip) = m_Data.EatEffBad(ip)
+                If m_Data.PrefHab(iGrp, m_Data.HabType(i, j)) = False And m_Data.PrefHab(iGrp, 0) = False Then
+                    VulPred(iGrp) = m_Data.RelVulBad(iGrp)
+                    EatEff(iGrp) = m_Data.EatEffBad(iGrp)
                 End If
 
-                If Search.bInSearch Then
-                    Search.calcEcoSpaceMonthlyCatch(ip, BB, m_Data.EffortSpace, i, j, iYear, m_Data.TimeStep)
-                End If
+                'jb moved to cEcoSpace.accumCatchData()
+                'If Search.bInSearch Then
+                '    Search.calcEcoSpaceMonthlyCatch(iGrp, BB, m_Data.EffortSpace, i, j, iYear, m_Data.TimeStep)
+                'End If
                 ' m_EcospaceModel.summarizeCatchData(Tn, itt, ip, BB, i, j)
 
-            Next ip
+            Next iGrp
 
-            m_EcospaceModel.accumCatchData(itt, BB, i, j)
+            m_EcospaceModel.accumCatchData(itt, iYear, BB, i, j)
 
             For isc = 1 To m_Data.Nvarsplit
                 ieco = Ecode(isc)
@@ -389,11 +390,7 @@ Public Class cSpaceSolver
 
             '  Debug.Assert(i <> 2)
             'jb compute Flowin() and FlowoutRate() for all groups for this row/col
-            'If NutFile = "" Then
             derivtRed(BB, Flowin, FlowoutRate, EatEff, VulPred, m_Data.RelPP(i, j) / PPScale * RelPPupwell, i, j)
-            'Else
-            '    derivtRed(BB(), Flowin(), FlowoutRate(), EatEff(), VulPred(), NutForce(i, j, Inutmonth))
-            'End If
 
             If m_TracerData.EcoSpaceConSimOn Then
                 m_ConTracer.loss = loss 'set loss to ecospace loss for this cell
@@ -401,48 +398,48 @@ Public Class cSpaceSolver
             End If
 
             'jb now populate the spatial matrixes with the data computed by derivtRed() for this cell across all groups
-            For ip = 1 To m_Data.NGroups
-                HdenCell(i, j, ip) = Hden(ip)
-                If pred(ip) > 1.0E-30 Then
-                    RelFitness(i, j, ip) = (m_SimData.SimGE(ip) * Eatenby(ip) - loss(ip)) / pred(ip) + FishTime(ip)
+            For iGrp = 1 To m_Data.NGroups
+                HdenCell(i, j, iGrp) = Hden(iGrp)
+                If pred(iGrp) > 1.0E-30 Then
+                    RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp) - loss(iGrp)) / pred(iGrp) + FishTime(iGrp)
                 Else
-                    RelFitness(i, j, ip) = -2.0# * m_PathData.PB(ip)
+                    RelFitness(i, j, iGrp) = -2.0# * m_PathData.PB(iGrp)
                 End If
             Next
 
-            For ip = 1 To m_Data.NGroups
+            For iGrp = 1 To m_Data.NGroups
 
-                Me.m_Data.GroupDetritus(i, j, ip) = GroupDetritus(ip)
+                Me.m_Data.GroupDetritus(i, j, iGrp) = GroupDetritus(iGrp)
 
-                F(i, j, ip) = Flowin(ip)
-                AMm(i, j, ip) = -FlowoutRate(ip) - Bcw(i + 1, j, ip) - C(i - 1, j, ip) - d(i, j, ip) - e(i, j, ip)
-                If AMm(i, j, ip) >= 0 Then AMm(i, j, ip) = -1.0E+30
+                F(i, j, iGrp) = Flowin(iGrp)
+                AMm(i, j, iGrp) = -FlowoutRate(iGrp) - Bcw(i + 1, j, iGrp) - C(i - 1, j, iGrp) - d(i, j, iGrp) - e(i, j, iGrp)
+                If AMm(i, j, iGrp) >= 0 Then AMm(i, j, iGrp) = -1.0E+30
                 'm_Data.deriv2(i, j, ip) = m_Data.deriv(i, j, ip)
                 'm_Data.deriv(i, j, ip) = AMm(i, j, ip) * m_Data.Bcell(i, j, ip) + F(i, j, ip) + Bcw(i, j, ip) * m_Data.Bcell(i - 1, j, ip) + C(i, j, ip) * m_Data.Bcell(i + 1, j, ip) + d(i, j - 1, ip) * m_Data.Bcell(i, j - 1, ip) + e(i, j + 1, ip) * m_Data.Bcell(i, j + 1, ip)
                 If m_Data.SpaceTime Then
-                    AMm(i, j, ip) = AMm(i, j, ip) - 1 / TimeStep2
+                    AMm(i, j, iGrp) = AMm(i, j, iGrp) - 1 / TimeStep2
                     'this is for new 2nd order BDF numerical sceme (replacing backwards euler)
-                    F(i, j, ip) = F(i, j, ip) + (1.3333 * m_Data.Bcell(i, j, ip) - 0.3333 * m_Data.Blast(i, j, ip)) / TimeStep2
-                    m_Data.Blast(i, j, ip) = m_Data.Bcell(i, j, ip)
+                    F(i, j, iGrp) = F(i, j, iGrp) + (1.3333 * m_Data.Bcell(i, j, iGrp) - 0.3333 * m_Data.Blast(i, j, iGrp)) / TimeStep2
+                    m_Data.Blast(i, j, iGrp) = m_Data.Bcell(i, j, iGrp)
                 End If
 
-                If m_SimData.SimGE(ip) > 0 Then
-                    Cper(i, j, ip) = Eatenby(ip) / (m_Data.Bcell(i, j, ip) + 1.0E-20)
+                If m_SimData.SimGE(iGrp) > 0 Then
+                    Cper(i, j, iGrp) = Eatenby(iGrp) / (m_Data.Bcell(i, j, iGrp) + 1.0E-20)
                 End If
-                If Cper(i, j, ip) < 0.001 * m_SimData.Cbase(ip) Then
-                    Cper(i, j, ip) = 0.001 * m_SimData.Cbase(ip)
+                If Cper(i, j, iGrp) < 0.001 * m_SimData.Cbase(iGrp) Then
+                    Cper(i, j, iGrp) = 0.001 * m_SimData.Cbase(iGrp)
                 End If
 
-            Next ip
+            Next iGrp
 
             If m_TracerData.EcoSpaceConSimOn Then
-                For ip = 0 To m_Data.NGroups
-                    m_Data.Ftr(i, j, ip) = Cintotal(ip)
-                    m_Data.AMmTr(i, j, ip) = -Closs(ip) - Bcw(i + 1, j, ip) - C(i - 1, j, ip) - d(i, j, ip) - e(i, j, ip)
-                    If m_Data.AMmTr(i, j, ip) >= 0 Then m_Data.AMmTr(i, j, ip) = -1.0E+30
+                For iGrp = 0 To m_Data.NGroups
+                    m_Data.Ftr(i, j, iGrp) = Cintotal(iGrp)
+                    m_Data.AMmTr(i, j, iGrp) = -Closs(iGrp) - Bcw(i + 1, j, iGrp) - C(i - 1, j, iGrp) - d(i, j, iGrp) - e(i, j, iGrp)
+                    If m_Data.AMmTr(i, j, iGrp) >= 0 Then m_Data.AMmTr(i, j, iGrp) = -1.0E+30
                     '   If m_Data.SpaceTime And FastIntegrate(ip) = False Then
-                    m_Data.Ftr(i, j, ip) = m_Data.Ftr(i, j, ip) + m_Data.Ccell(i, j, ip) / TimeStep2 '/ m_Data.TimeStep
-                    m_Data.AMmTr(i, j, ip) = m_Data.AMmTr(i, j, ip) - 1 / TimeStep2 '/ m_Data.TimeStep
+                    m_Data.Ftr(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) + m_Data.Ccell(i, j, iGrp) / TimeStep2 '/ m_Data.TimeStep
+                    m_Data.AMmTr(i, j, iGrp) = m_Data.AMmTr(i, j, iGrp) - 1 / TimeStep2 '/ m_Data.TimeStep
                     '  End If
                 Next
             End If
@@ -550,7 +547,7 @@ Public Class cSpaceSolver
 
         Try
 
-            If m_SimData.MedIsUsed(0) Then SetMedFunctions(Biomass)
+            If m_SimData.BioMedData.MedIsUsed(0) Then SetMedFunctions(Biomass)
 
             setpred(Biomass)
 
@@ -807,24 +804,26 @@ Public Class cSpaceSolver
         'current Y value of each active trophic mediation function
         Dim i As Integer, j As Integer, MedX As Single, ip As Long
 
-        For i = 1 To m_SimData.MediationShapes
-            If m_SimData.MedIsUsed(i) Then
+        Dim medData As cMediationData = Me.m_SimData.BioMedData
+
+        For i = 1 To medData.MediationShapes
+            If medData.MedIsUsed(i) Then
                 MedX = 0.0000000001
-                For j = 1 To m_SimData.NMedXused(i)
-                    If m_SimData.IMedUsed(j, i) <= m_Data.NGroups Then
-                        MedX = MedX + Biom(m_SimData.IMedUsed(j, i)) * m_SimData.MedWeights(m_SimData.IMedUsed(j, i), i)
+                For j = 1 To medData.NMedXused(i)
+                    If medData.IMedUsed(j, i) <= m_Data.NGroups Then
+                        MedX = MedX + Biom(medData.IMedUsed(j, i)) * medData.MedWeights(medData.IMedUsed(j, i), i)
                     Else    'a fleet
                         'ToDo_jb SetMedFunctions() uses timeNow as an array index for FishRateGear() this should be iMonth
-                        MedX = MedX + FishRateGear(m_SimData.IMedUsed(j, i) - m_Data.NGroups, m_Data.TimeNow) * m_SimData.MedWeights(m_SimData.IMedUsed(j, i), i)
+                        MedX = MedX + FishRateGear(medData.IMedUsed(j, i) - m_Data.NGroups, m_Data.TimeNow) * medData.MedWeights(medData.IMedUsed(j, i), i)
                     End If
                 Next
                 '060328 CJW found that without the +0.01 below it could be unstable when slope
                 'was large around Ecopath base point in mediation function, causing instability.
                 'This solves it. VC.
-                ip = Int(m_SimData.IMedBase(i) * MedX / m_SimData.MedXbase(i) + 0.01)
+                ip = Int(medData.IMedBase(i) * MedX / medData.MedXbase(i) + 0.01)
                 If ip < 1 Then ip = 1
-                If ip > m_SimData.NMedPoints Then ip = m_SimData.NMedPoints
-                MedVal(i) = m_SimData.Medpoints(ip, i) / m_SimData.MedYbase(i)
+                If ip > medData.NMedPoints Then ip = medData.NMedPoints
+                MedVal(i) = medData.Medpoints(ip, i) / medData.MedYbase(i)
             End If
         Next
 

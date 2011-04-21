@@ -28,15 +28,18 @@ Namespace Ecosim
         Private m_parms As cEcoSimModelParameters
         Private m_paneMaster As MasterPane = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
+        Private m_aiPlotPane([Enum].GetValues(GetType(eSimPlot)).Length) As Integer
+        Private m_abPlotVisible([Enum].GetValues(GetType(eSimPlot)).Length) As Boolean
 
-        Private Enum ePaneTypes As Integer
-            Biomass = 1
+        Private Enum eSimPlot As Integer
+            Biomass
             ConsumptionBiomass
             PredationMortality
             Mortality
             FeedingTime
             Prey
             Yield
+            Value
             AvgWeightOrProdCons
             FleetFishingMortality
         End Enum
@@ -46,9 +49,7 @@ Namespace Ecosim
 #Region " Constructors "
 
         Public Sub New()
-
             Me.InitializeComponent()
-
         End Sub
 
 #End Region ' Constructors
@@ -66,38 +67,33 @@ Namespace Ecosim
             Me.m_parms = Me.UIContext.Core.EcoSimModelParameters()
             Me.m_paneMaster = Me.m_graph.MasterPane
 
+            For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
+                Me.m_abPlotVisible(plot) = True
+            Next
+            Me.m_abPlotVisible(eSimPlot.Value) = False
+
             Me.m_zgh = New cZedGraphHelper()
-            Me.m_zgh.Attach(Me.UIContext, Me.m_graph, [Enum].GetValues(GetType(ePaneTypes)).Length)
+            Me.ConfigurePlots(True)
             Me.m_zgh.ShowPointValue = True
             Me.m_zgh.IsTrackVisiblity = False
-
-            Me.ConfigurePane(ePaneTypes.Biomass, SharedResources.HEADER_BIOMASS)
-            Me.ConfigurePane(ePaneTypes.ConsumptionBiomass, SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS)
-            Me.ConfigurePane(ePaneTypes.PredationMortality, SharedResources.HEADER_PREDMORT)
-            ' JS: EwE5 distinguishes between P/B (PP=1) and TotalMort (PP=0) for 
-            Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS)
-            Me.ConfigurePane(ePaneTypes.FeedingTime, SharedResources.HEADER_FEEDINGTIME)
-            Me.ConfigurePane(ePaneTypes.Prey, SharedResources.HEADER_PREY_PERCENTAGE)
-            Me.ConfigurePane(ePaneTypes.Yield, SharedResources.HEADER_YIELD)
-            Me.ConfigurePane(ePaneTypes.FleetFishingMortality, SharedResources.HEADER_FISHINGMORTALITY)
-            ' Need to test StanZaGroup..Sometimes displayed as Average weight
-            ' update it in the actual rendering.
-            Me.ConfigurePane(ePaneTypes.AvgWeightOrProdCons, SharedResources.HEADER_PRODCONS)
 
             Me.m_lbGroups.Attach(Me.UIContext)
             Me.m_lbPredators.Attach(Me.UIContext)
             Me.m_lbPrey.Attach(Me.UIContext)
             Me.m_lbFleets.Attach(Me.UIContext)
 
-            Me.m_lbGroups.SelectedIndex = 0
-
             Me.UpdateColors()
+            Me.AddCurves()
+            Me.ConfigureShowHidePlots()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
+            Me.m_lbGroups.SelectedIndex = 0
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+            Me.ConfigurePlots(False)
 
             Me.CoreComponents = Nothing
             Me.m_lbGroups.Detach()
@@ -106,7 +102,6 @@ Namespace Ecosim
             Me.m_lbFleets.Detach()
 
             Me.m_paneMaster = Nothing
-            Me.m_zgh.Detach()
             Me.m_zgh = Nothing
 
             MyBase.OnFormClosed(e)
@@ -122,7 +117,7 @@ Namespace Ecosim
         ''' <summary>
         ''' Event hander to display results for another group
         ''' </summary>
-        Private Sub lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnGroupSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_lbGroups.SelectedIndexChanged
 
             Me.AddCurves()
@@ -143,23 +138,85 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnShowHidePlot(ByVal sender As Object, ByVal args As EventArgs)
+
+            If Not TypeOf sender Is ToolStripMenuItem Then Return
+
+            Dim item As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
+            Dim plot As eSimPlot = CType(item.Tag, eSimPlot)
+
+            Me.m_abPlotVisible(plot) = Not Me.m_abPlotVisible(plot)
+            item.Checked = Me.m_abPlotVisible(plot)
+
+            Me.m_graph.Visible = False
+            Me.ConfigurePlots(True)
+            Me.AddCurves()
+            Me.m_graph.Visible = True
+
+        End Sub
+
 #End Region ' Event handlers
 
 #Region " Helper methods "
+
+        Private Sub ConfigureShowHidePlots()
+            For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
+                Dim item As New ToolStripMenuItem(Me.GetPlotTitle(plot), Nothing, AddressOf OnShowHidePlot)
+                Me.m_tsDDShowHidePlots.DropDownItems.Add(item)
+                item.Tag = plot
+                item.Checked = Me.m_abPlotVisible(plot)
+                Me.m_tsDDShowHidePlots.DropDownItems.Add(item)
+            Next
+        End Sub
+
+        Protected Sub ConfigurePlots(Optional ByVal bFormOpen As Boolean = True)
+
+            Dim iPane As Integer = 1
+            Dim iMaxPanes As Integer = [Enum].GetValues(GetType(eSimPlot)).Length - 1
+
+            ' Determine where panes will be placed
+            For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
+                If Me.m_abPlotVisible(plot) Then
+                    Me.m_aiPlotPane(plot) = iPane
+                    iPane += 1
+                Else
+                    Me.m_aiPlotPane(plot) = cCore.NULL_VALUE
+                End If
+            Next plot
+
+            If Me.m_zgh.IsAttached Then
+                Me.m_zgh.Detach()
+            End If
+
+            If Not bFormOpen Then Return
+
+            Me.m_zgh.Attach(Me.UIContext, Me.m_graph, iPane - 1)
+
+            For Each data As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
+                Dim strTitle As String = Me.GetPlotTitle(data)
+                Dim dAxisMax As Double = Me.GetPlotAxisMax(data)
+                Me.ConfigurePane(data, strTitle, dAxisMax)
+            Next
+
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Configure a plot on the main graph
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ConfigurePane(ByVal iPane As ePaneTypes, ByVal strTitle As String)
+        Private Sub ConfigurePane(ByVal plot As eSimPlot, ByVal strTitle As String, Optional ByVal dYAxisMax As Double = 0)
 
+            If Not Me.m_abPlotVisible(plot) Then Return
+            ' Sanity check
+            Debug.Assert(Me.m_aiPlotPane(plot) > 0)
+            ' Configure pane
             Me.m_zgh.ConfigurePane(strTitle, _
                        "", _
                        CDbl(Me.UIContext.Core.EcosimFirstYear), _
                        CDbl(Me.UIContext.Core.EcosimFirstYear + (Me.UIContext.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                       "", 0, 0, _
-                       False, LegendPos.Top, CInt(iPane))
+                       "", 0, dYAxisMax, _
+                       False, LegendPos.Top, Me.m_aiPlotPane(plot))
 
         End Sub
 
@@ -186,9 +243,6 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub AddCurves()
 
-            ' ToDo_JS: Find way to update colours in existing curves [CurveList.Item(x).Color = ...]
-            '          Use zedgraphhelper for this
-
             Dim iCount As Integer = 0
             Dim dXValue As Double = 0
             Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
@@ -204,23 +258,22 @@ Namespace Ecosim
             Dim pplMortTotal As New PointPairList()
             Dim pplMortPredation As New PointPairList()
             Dim pplMortFishing As New PointPairList()
+            Dim pplValue As New PointPairList()
 
             'Set the master pane title
             Me.m_zgh.Configure(groupSimOut.Name)
 
             ' Configure mort pane caption
             If group.IsConsumer Then
-                Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS)
+                Me.ConfigurePane(eSimPlot.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS)
             Else
-                Me.ConfigurePane(ePaneTypes.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_PROD)
+                Me.ConfigurePane(eSimPlot.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_PROD)
             End If
 
             ' Clear all panes
-            For Each pt As ePaneTypes In [Enum].GetValues(GetType(ePaneTypes))
-                With Me.m_zgh.GetPane(CInt(pt))
-                    .CurveList.Clear()
-                    .AxisChange()
-                End With
+            For Each pane As GraphPane In Me.m_graph.MasterPane.PaneList
+                pane.CurveList.Clear()
+                pane.AxisChange()
             Next
 
             ' Do not render when sim has not ran
@@ -228,10 +281,12 @@ Namespace Ecosim
 
             Dim applYieldFleet(Me.UIContext.Core.nFleets) As PointPairList
             Dim applFishMortFleet(Me.UIContext.Core.nFleets) As PointPairList
+            Dim applValueFleet(Me.UIContext.Core.nFleets) As PointPairList
 
             For i As Integer = 1 To Me.UIContext.Core.nFleets
                 applYieldFleet(i) = New PointPairList()
                 applFishMortFleet(i) = New PointPairList()
+                applValueFleet(i) = New PointPairList()
             Next
 
             For i As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
@@ -245,6 +300,7 @@ Namespace Ecosim
                 For iFleet As Integer = 1 To Me.UIContext.Core.nFleets
                     applYieldFleet(iFleet).Add(dXValue, CSng(groupSimOut.CatchByFleet(iFleet, i)))
                     applFishMortFleet(iFleet).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(iFleet, i)))
+                    applValueFleet(iFleet).Add(dXValue, CSng(groupSimOut.ValueByFleet(iFleet, i)))
                 Next
                 If groupSimOut.isMultiStanza() Then
                     pplAvgWorProdCons.Add(dXValue, groupSimOut.AvgWeight(i))
@@ -256,17 +312,17 @@ Namespace Ecosim
                 pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))
             Next
 
-            Me.AddCurveToGraphPane(ePaneTypes.Biomass, Me.m_zgh.CreateLineItem(group, pplB))
+            Me.AddCurveToGraphPane(eSimPlot.Biomass, Me.m_zgh.CreateLineItem(group, pplB))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassRel, iGroup, Color.Blue)
-                Me.AddCurveToGraphPane(ePaneTypes.Biomass, li)
+                Me.AddCurveToGraphPane(eSimPlot.Biomass, li)
             Next li
             ' Fixes issue 604:
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassAbs, iGroup, Color.Green)
-                Me.AddCurveToGraphPane(ePaneTypes.Biomass, li)
+                Me.AddCurveToGraphPane(eSimPlot.Biomass, li)
             Next li
 
-            Me.AddCurveToGraphPane(ePaneTypes.ConsumptionBiomass, Me.m_zgh.CreateLineItem(group, pplConsB))
-            Me.AddCurveToGraphPane(ePaneTypes.FeedingTime, Me.m_zgh.CreateLineItem(group, pplFeedTime))
+            Me.AddCurveToGraphPane(eSimPlot.ConsumptionBiomass, Me.m_zgh.CreateLineItem(group, pplConsB))
+            Me.AddCurveToGraphPane(eSimPlot.FeedingTime, Me.m_zgh.CreateLineItem(group, pplFeedTime))
 
             For i As Integer = 1 To Me.UIContext.Core.nFleets
 
@@ -274,42 +330,45 @@ Namespace Ecosim
                 Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Me.UIContext.Core, i)
 
                 If fleet.Landings(iGroup) > 0 Then
-                    Me.AddCurveToGraphPane(ePaneTypes.Yield, _
+                    Me.AddCurveToGraphPane(eSimPlot.Yield, _
                                            Me.m_zgh.CreateLineItem(fleet, applYieldFleet(i)), _
                                            True)
+                    Me.AddCurveToGraphPane(eSimPlot.Value, _
+                                           Me.m_zgh.CreateLineItem(fleet, applValueFleet(i)), _
+                                           True)
                 End If
-                Me.AddCurveToGraphPane(ePaneTypes.FleetFishingMortality, _
+                Me.AddCurveToGraphPane(eSimPlot.FleetFishingMortality, _
                                        Me.m_zgh.CreateLineItem(fleet, applFishMortFleet(i)), _
                                        True)
             Next
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
-                Me.AddCurveToGraphPane(ePaneTypes.Yield, li, True)
+                Me.AddCurveToGraphPane(eSimPlot.Yield, li, True)
             Next li
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroup, Color.Blue)
-                Me.AddCurveToGraphPane(ePaneTypes.Yield, li)
+                Me.AddCurveToGraphPane(eSimPlot.Yield, li)
             Next li
 
             If groupSimOut.isMultiStanza() Then
 
-                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, SharedResources.HEADER_AVGERAGEWEIGHT)
+                Me.UpdateGraphPaneTitle(eSimPlot.AvgWeightOrProdCons, SharedResources.HEADER_AVGERAGEWEIGHT)
 
-                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
+                Me.AddCurveToGraphPane(eSimPlot.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
                 For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.AverageWeight, iGroup, Color.Blue)
-                    Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, li)
+                    Me.AddCurveToGraphPane(eSimPlot.AvgWeightOrProdCons, li)
                 Next li
 
             Else
 
-                Me.UpdateGraphPaneTitle(ePaneTypes.AvgWeightOrProdCons, SharedResources.HEADER_PRODCONS)
-                Me.AddCurveToGraphPane(ePaneTypes.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
+                Me.UpdateGraphPaneTitle(eSimPlot.AvgWeightOrProdCons, SharedResources.HEADER_PRODCONS)
+                Me.AddCurveToGraphPane(eSimPlot.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
 
             End If
 
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_TOTAL, eLineType.ModelData, Color.Black, pplMortTotal))
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_PREDATION, eLineType.ModelData, Color.Red, pplMortPredation))
-            Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_FISHING, eLineType.ModelData, Color.Blue, pplMortFishing))
+            Me.AddCurveToGraphPane(eSimPlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_TOTAL, eLineType.ModelData, Color.Black, pplMortTotal))
+            Me.AddCurveToGraphPane(eSimPlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_PREDATION, eLineType.ModelData, Color.Red, pplMortPredation))
+            Me.AddCurveToGraphPane(eSimPlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_FISHING, eLineType.ModelData, Color.Blue, pplMortFishing))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroup, Color.Green)
-                Me.AddCurveToGraphPane(ePaneTypes.Mortality, li)
+                Me.AddCurveToGraphPane(eSimPlot.Mortality, li)
             Next li
 
             'VC 07apr09: F values (type = 4) should not be plotted as they are used to drive the model
@@ -327,7 +386,7 @@ Namespace Ecosim
                         dXValue = Me.UIContext.Core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.Predation(i, j))
                     Next
-                    Me.AddCurveToGraphPane(ePaneTypes.PredationMortality, Me.m_zgh.CreateLineItem(pred, ppl))
+                    Me.AddCurveToGraphPane(eSimPlot.PredationMortality, Me.m_zgh.CreateLineItem(pred, ppl))
                     iCount += 1
                 End If
             Next
@@ -342,7 +401,7 @@ Namespace Ecosim
                         dXValue = Me.UIContext.Core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.PreyPercentage(i, j) * 100)
                     Next
-                    Me.AddCurveToGraphPane(ePaneTypes.Prey, Me.m_zgh.CreateLineItem(prey, ppl))
+                    Me.AddCurveToGraphPane(eSimPlot.Prey, Me.m_zgh.CreateLineItem(prey, ppl))
                     iCount += 1
                 End If
             Next
@@ -490,9 +549,17 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub UpdateGraphPaneTitle(ByVal paneType As ePaneTypes, ByVal strTitle As String)
-            Dim gp As GraphPane = m_paneMaster.PaneList(CInt(paneType) - 1)
-            gp.Title.Text = strTitle
+        Private Sub UpdateGraphPaneTitle(ByVal paneType As eSimPlot, ByVal strTitle As String)
+            If Not Me.m_abPlotVisible(paneType) Then Return
+            ' Sanity check
+            Debug.Assert(Me.m_aiPlotPane(paneType) > 0)
+
+            Try
+                Dim gp As GraphPane = Me.m_zgh.GetPane(Me.m_aiPlotPane(paneType))
+                gp.Title.Text = strTitle
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -502,14 +569,12 @@ Namespace Ecosim
         ''' <param name="paneType">Index of the graph pane</param>
         ''' <param name="li">The curve</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, _
+        Private Sub AddCurveToGraphPane(ByVal paneType As eSimPlot, _
                                         ByVal li As LineItem, _
                                         Optional ByVal bCumulative As Boolean = False)
-
             Dim lli As New List(Of ZedGraph.LineItem)
             lli.Add(li)
             Me.AddCurvesToGraphPane(paneType, lli, bCumulative)
-
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -520,11 +585,18 @@ Namespace Ecosim
         ''' <param name="lli">The lists of data points for the multiple curves</param>
         ''' <remarks>Overloaded method with different color options.</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurvesToGraphPane(ByVal paneType As ePaneTypes, _
+        Private Sub AddCurvesToGraphPane(ByVal paneType As eSimPlot, _
                                          ByVal lli As List(Of LineItem), _
                                          Optional ByVal bCumulative As Boolean = False)
 
-            Me.m_zgh.PlotLines(lli.ToArray, CInt(paneType), True, False, bCumulative)
+            If Not Me.m_abPlotVisible(paneType) Then Return
+            ' Sanity check
+            Debug.Assert(Me.m_aiPlotPane(paneType) > 0)
+            Try
+                Me.m_zgh.PlotLines(lli.ToArray, Me.m_aiPlotPane(paneType), True, False, bCumulative)
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
@@ -534,6 +606,29 @@ Namespace Ecosim
                 p.Chart.Fill = New Fill(Me.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
             Next
         End Sub
+
+        Private Function GetPlotTitle(ByVal data As eSimPlot) As String
+            Select Case data
+                Case eSimPlot.AvgWeightOrProdCons : Return SharedResources.HEADER_PRODCONS
+                Case eSimPlot.Biomass : Return SharedResources.HEADER_BIOMASS
+                Case eSimPlot.ConsumptionBiomass : Return SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS
+                Case eSimPlot.FeedingTime : Return SharedResources.HEADER_FEEDINGTIME
+                Case eSimPlot.FleetFishingMortality : Return SharedResources.HEADER_FISHINGMORTALITY
+                Case eSimPlot.Mortality : Return My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS
+                Case eSimPlot.PredationMortality : Return SharedResources.HEADER_PREDMORT
+                Case eSimPlot.Prey : Return SharedResources.HEADER_PREY_PERCENTAGE
+                Case eSimPlot.Value : Return SharedResources.HEADER_VALUE
+                Case eSimPlot.Yield : Return SharedResources.HEADER_YIELD
+            End Select
+            Return ""
+        End Function
+
+        Private Function GetPlotAxisMax(ByVal data As eSimPlot) As Double
+            Select Case data
+                Case eSimPlot.Prey : Return 100
+            End Select
+            Return 0
+        End Function
 
 #End Region ' Helper methods
 

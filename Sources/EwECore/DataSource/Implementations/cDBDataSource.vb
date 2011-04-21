@@ -37,7 +37,7 @@ Namespace DataSources
         ''' <summary>Core components stored with Ecopath.</summary>
         Private Shared s_EcopathComponents() As eCoreComponentType = {eCoreComponentType.Core, eCoreComponentType.DataSource, eCoreComponentType.EcoPath}
         ''' <summary>Core components stored with Ecosim.</summary>
-        Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries, eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.PPIManager, eCoreComponentType.FishingPolicySearch, eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
+        Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries, eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.MediatedInteractionManager, eCoreComponentType.FishingPolicySearch, eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
         ''' <summary>Core components stored with Ecospace.</summary>
         Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization}
         ''' <summary>Core components stored with Ecotracer.</summary>
@@ -4773,12 +4773,15 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim PredPreyMedDS As cMediationData = Me.m_core.m_EcoSimData.BioMedData
+            Dim LandingsMedDS As cMediationData = Me.m_core.m_EcoSimData.PriceMedData
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim reader As IDataReader = Nothing
             Dim iShapeID As Integer = 0
             Dim shapeDataType As eDataTypes = eDataTypes.NotSet
             Dim iForcingShape As Integer = 0
-            Dim iMediationShape As Integer = 0
+            Dim iPredPreyMediationShape As Integer = 0
+            Dim iLandingsMediationShape As Integer = 0
             Dim iFishingMortShape As Integer = 0
             Dim iFishRateShape As Integer = 0
             Dim bSucces As Boolean = True
@@ -4789,11 +4792,15 @@ Namespace DataSources
             ecosimDS.ForcingShapes = CInt(Me.m_db.GetValue(strQuery))
 
             strQuery = String.Format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.Mediation))
-            ecosimDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery))
+            PredPreyMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery))
+
+            strQuery = String.Format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.PriceMediation))
+            LandingsMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery))
 
             ecosimDS.DimForcingShapes()
             ecosimDS.InitForcingShapes()
-            ecosimDS.ReDimMediation()
+            PredPreyMedDS.ReDimMediation(ecosimDS.nGroups, ecosimDS.nGear)
+            LandingsMedDS.ReDimMediation(ecosimDS.nGroups, ecosimDS.nGear)
 
             Try
 
@@ -4814,8 +4821,12 @@ Namespace DataSources
                             bSucces = bSucces And Me.LoadTimeShape(iShapeID, iForcingShape, CBool(reader("IsSeasonal")))
 
                         Case eDataTypes.Mediation
-                            iMediationShape += 1
-                            bSucces = bSucces And Me.LoadMediationShape(iShapeID, iMediationShape)
+                            iPredPreyMediationShape += 1
+                            bSucces = bSucces And Me.LoadMediationShape(iShapeID, iPredPreyMediationShape, PredPreyMedDS)
+
+                        Case eDataTypes.PriceMediation
+                            iLandingsMediationShape += 1
+                            bSucces = bSucces And Me.LoadMediationShape(iShapeID, iLandingsMediationShape, LandingsMedDS)
 
                         Case eDataTypes.FishingEffort
                             ' Shape type loaded from LoadEcosimFleets(); do not handle here
@@ -4860,7 +4871,8 @@ Namespace DataSources
             End Try
 
             bSucces = bSucces And Me.LoadEcosimVulnerabilities()
-            bSucces = bSucces And Me.LoadPredPreyInteraction()
+            bSucces = bSucces And Me.LoadPredPreyInteractions()
+            bSucces = bSucces And Me.LoadLandingInteractions()
             bSucces = bSucces And Me.LoadMediationWeights()
             bSucces = bSucces And Me.LoadStanzaShapeAssignments()
 
@@ -4966,7 +4978,9 @@ Namespace DataSources
 
         End Function
 
-        Private Function LoadMediationShape(ByVal iShapeID As Integer, ByVal iMediationShape As Integer) As Boolean
+        Private Function LoadMediationShape(ByVal iShapeID As Integer, _
+                                            ByVal iMediationShape As Integer, _
+                                            ByVal medData As cMediationData) As Boolean
 
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim shapeParms As New cEcosimDatastructures.ShapeParameters()
@@ -4975,6 +4989,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
+
                 readerShape = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
 
@@ -4989,17 +5004,17 @@ Namespace DataSources
                 ' Read z-scale
                 astrZScale = Me.SplitNumberString(CStr(readerShape("Zscale")))
                 ' Write points
-                For ipt As Integer = 1 To Math.Min(ecosimDS.NMedPoints, astrZScale.Length)
-                    ecosimDS.Medpoints(ipt, iMediationShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+                For ipt As Integer = 1 To Math.Min(medData.NMedPoints, astrZScale.Length)
+                    medData.Medpoints(ipt, iMediationShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
                 Next ipt
-                For ipt As Integer = Math.Min(ecosimDS.NMedPoints, astrZScale.Length) + 1 To ecosimDS.NMedPoints
-                    ecosimDS.Medpoints(ipt, iMediationShape) = 1.0
+                For ipt As Integer = Math.Min(medData.NMedPoints, astrZScale.Length) + 1 To medData.NMedPoints
+                    medData.Medpoints(ipt, iMediationShape) = 1.0
                 Next
 
-                ecosimDS.MediationShapeParams(iMediationShape) = shapeParms
-                ecosimDS.MediationDBIDs(iMediationShape) = iShapeID
-                ecosimDS.MediationTitles(iMediationShape) = CStr(readerShape("Title"))
-                ecosimDS.IMedBase(iMediationShape) = CInt(Me.m_db.ReadSafe(readerShape, "IMedBase", 1200 / 3))
+                medData.MediationShapeParams(iMediationShape) = shapeParms
+                medData.MediationDBIDs(iMediationShape) = iShapeID
+                medData.MediationTitles(iMediationShape) = CStr(readerShape("Title"))
+                medData.IMedBase(iMediationShape) = CInt(Me.m_db.ReadSafe(readerShape, "IMedBase", 1200 / 3))
 
                 Me.m_db.ReleaseReader(readerShape)
                 readerShape = Nothing
@@ -5008,7 +5023,6 @@ Namespace DataSources
                 Me.LogMessage(String.Format("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
-
 
             Return bSucces
 
@@ -5056,7 +5070,7 @@ Namespace DataSources
 
         End Function
 
-        Private Function LoadPredPreyInteraction() As Boolean
+        Private Function LoadPredPreyInteractions() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -5080,27 +5094,30 @@ Namespace DataSources
                     iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
                     ' Next shape
                     iFNo(iPrey, iPredator) += 1
-                    ' Resolve shape ID
-                    iShapeID = CInt(reader("ShapeID"))
-                    ' Determine shape type
-                    iShape = Array.IndexOf(ecosimDS.MediationDBIDs, iShapeID)
-                    ' Is a mediation shape?
-                    If iShape <> -1 Then
-                        ' #Yes: flag as mediation shape
-                        ecosimDS.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = True
-                    Else
-                        ' #No: flag as other shape
-                        ecosimDS.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = False
-                        ' Obtain forcing index
-                        iShape = Array.IndexOf(ecosimDS.ForcingDBIDs, iShapeID)
-                    End If
+                    ' Protect from data overflow
+                    If (iFNo(iPrey, iPredator) <= ecosimDS.MaxFunctions) Then
+                        ' Resolve shape ID
+                        iShapeID = CInt(reader("ShapeID"))
+                        ' Determine shape type
+                        iShape = Array.IndexOf(ecosimDS.BioMedData.MediationDBIDs, iShapeID)
+                        ' Is a mediation shape?
+                        If iShape <> -1 Then
+                            ' #Yes: flag as mediation shape
+                            ecosimDS.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = True
+                        Else
+                            ' #No: flag as other shape
+                            ecosimDS.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = False
+                            ' Obtain forcing index
+                            iShape = Array.IndexOf(ecosimDS.ForcingDBIDs, iShapeID)
+                        End If
 
-                    If iShape <> -1 Then
-                        ' Update sim fields
-                        ecosimDS.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
-                        ecosimDS.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = CType(reader("FunctionType"), eForcingFunctionApplication)
-                    Else
-                        Me.LogMessage(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
+                        If iShape <> -1 Then
+                            ' Update sim fields
+                            ecosimDS.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
+                            ecosimDS.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = CType(reader("FunctionType"), eForcingFunctionApplication)
+                        Else
+                            Me.LogMessage(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
+                        End If
                     End If
 
                 End While
@@ -5110,6 +5127,55 @@ Namespace DataSources
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading PredPreyInteraction", ex.Message))
+                bSucces = False
+            End Try
+
+            Return bSucces
+
+        End Function
+
+        Private Function LoadLandingInteractions() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+            Dim reader As IDataReader = Nothing
+            Dim iFleet As Integer = 0
+            Dim iGroup As Integer = 0
+            Dim iShapeID As Integer = 0
+            Dim iShape As Integer = 0
+            Dim bSucces As Boolean = True
+            Dim iFNo(ecosimDS.nGroups, ecosimDS.nGear) As Integer
+
+            Try
+
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioLandingsShape WHERE (ScenarioID={0})", iScenarioID))
+                While reader.Read()
+
+                    ' Find iFleet
+                    iFleet = Array.IndexOf(ecosimDS.FleetDBID, CInt(reader("FleetID")))
+                    ' Find iGroup
+                    iGroup = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("GroupID")))
+                    ' Next shape
+                    iFNo(iGroup, iFleet) += 1
+                    ' Resolve shape ID
+                    iShapeID = CInt(reader("ShapeID"))
+                    ' Resolve iShape
+                    iShape = Array.IndexOf(ecosimDS.PriceMedData.MediationDBIDs, iShapeID)
+
+                    If iShape > -1 Then
+                        ecosimDS.PriceMedFuncNum(iGroup, iFleet, iFNo(iGroup, iFleet)) = iShape
+                    Else
+                        Me.LogMessage(String.Format("Shape {0} cannot be used for landings interactions; assignment discarded", iShapeID))
+                    End If
+
+                End While
+
+                Me.m_db.ReleaseReader(reader)
+                reader = Nothing
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Landing interaction", ex.Message))
                 bSucces = False
             End Try
 
@@ -5127,6 +5193,7 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim medData As cMediationData = Nothing
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim readerGroup As IDataReader = Nothing
             Dim readerFleet As IDataReader = Nothing
@@ -5135,14 +5202,16 @@ Namespace DataSources
             Dim iShape As Integer = 0
             Dim bSucces As Boolean = True
 
+            ' === Pred/prey mediations ===
+            medData = ecosimDS.BioMedData
             Try
                 readerGroup = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioShapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
                 If (readerGroup IsNot Nothing) Then
                     While readerGroup.Read()
-                        iShape = Array.IndexOf(ecosimDS.MediationDBIDs, readerGroup("ShapeID"))
+                        iShape = Array.IndexOf(medData.MediationDBIDs, readerGroup("ShapeID"))
                         iGroup = Array.IndexOf(ecosimDS.GroupDBID, readerGroup("GroupID"))
                         If (iGroup <> -1 And iShape <> -1) Then
-                            ecosimDS.MedWeights(iGroup, iShape) = CSng(readerGroup("MedWeights"))
+                            medData.MedWeights(iGroup, iShape) = CSng(readerGroup("MedWeights"))
                         End If
                     End While
                     Me.m_db.ReleaseReader(readerGroup)
@@ -5157,9 +5226,12 @@ Namespace DataSources
                 readerFleet = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioShapeMedWeightsFleet WHERE (ScenarioID={0})", iScenarioID))
                 If (readerFleet IsNot Nothing) Then
                     While readerFleet.Read()
-                        iShape = Array.IndexOf(ecosimDS.MediationDBIDs, readerFleet("ShapeID"))
+                        iShape = Array.IndexOf(medData.MediationDBIDs, readerFleet("ShapeID"))
+                        ' Unfortunate legacy: fleet refers to Ecopath fleet, not Ecosim as it should have
                         iFleet = Array.IndexOf(ecopathDS.FleetDBID, readerFleet("FleetID"))
-                        If (iFleet <> -1 And iShape <> -1) Then ecosimDS.MedWeights(iFleet + ecosimDS.nGroups, iShape) = CSng(readerFleet("MedWeights"))
+                        If (iFleet <> -1 And iShape <> -1) Then
+                            medData.MedWeights(iFleet + ecosimDS.nGroups, iShape) = CSng(readerFleet("MedWeights"))
+                        End If
                     End While
                     Me.m_db.ReleaseReader(readerFleet)
                     readerFleet = Nothing
@@ -5169,7 +5241,30 @@ Namespace DataSources
                 bSucces = False
             End Try
 
+            ' === Landings mediations === 
+            medData = ecosimDS.PriceMedData
+            Try
+                readerGroup = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioshapeMedWeightsLandings WHERE (ScenarioID={0})", iScenarioID))
+                If (readerGroup IsNot Nothing) Then
+                    While readerGroup.Read()
+                        iShape = Array.IndexOf(medData.MediationDBIDs, readerGroup("ShapeID"))
+                        iGroup = Array.IndexOf(ecosimDS.GroupDBID, readerGroup("GroupID"))
+                        iFleet = Array.IndexOf(ecosimDS.FleetDBID, readerGroup("FleetID"))
+                        If (iGroup > 0 And iShape > 0) Then
+                            iFleet = Math.Max(0, iFleet)
+                            medData.MedPriceWeights(iGroup, iFleet, iShape) = CSng(readerGroup("MedWeights"))
+                        End If
+                    End While
+                    Me.m_db.ReleaseReader(readerGroup)
+                    readerGroup = Nothing
+                End If
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading group MediationWeights", ex.Message))
+                bSucces = False
+            End Try
+
             Return True
+
         End Function
 
         Private Function LoadStanzaShapeAssignments() As Boolean
@@ -5350,29 +5445,37 @@ Namespace DataSources
                     End If
                 Next iShape
 
-                For iShape = 1 To ecosimDS.MediationShapes
-                    If (ecosimDS.MediationDBIDs(iShape) > 0) Then
-                        drow = dt.Rows.Find(ecosimDS.MediationDBIDs(iShape))
-                        bNewRow = (drow Is Nothing)
+                For Each shapeDataType As eDataTypes In New eDataTypes() {eDataTypes.Mediation, eDataTypes.PriceMediation}
+                    Dim medData As cMediationData = Nothing
+                    Select Case shapeDataType
+                        Case eDataTypes.Mediation : medData = ecosimDS.BioMedData
+                        Case eDataTypes.PriceMediation : medData = ecosimDS.PriceMedData
+                    End Select
 
-                        If bNewRow Then
-                            drow = writer.NewRow()
-                            drow("ShapeID") = ecosimDS.MediationDBIDs(iShape)
-                        Else
-                            drow.BeginEdit()
+                    For iShape = 1 To medData.MediationShapes
+                        If (medData.MediationDBIDs(iShape) > 0) Then
+                            drow = dt.Rows.Find(medData.MediationDBIDs(iShape))
+                            bNewRow = (drow Is Nothing)
+
+                            If bNewRow Then
+                                drow = writer.NewRow()
+                                drow("ShapeID") = medData.MediationDBIDs(iShape)
+                            Else
+                                drow.BeginEdit()
+                            End If
+
+                            drow("ShapeType") = shapeDataType
+
+                            If bNewRow Then
+                                writer.AddRow(drow)
+                            Else
+                                drow.EndEdit()
+                            End If
+                            writer.Commit()
+                            bSucces = bSucces And SaveMediationShape(iShape, medData)
                         End If
-
-                        drow("ShapeType") = eDataTypes.Mediation
-
-                        If bNewRow Then
-                            writer.AddRow(drow)
-                        Else
-                            drow.EndEdit()
-                        End If
-                        writer.Commit()
-                        bSucces = bSucces And SaveMediationShape(iShape)
-                    End If
-                Next iShape
+                    Next iShape
+                Next
 
                 ' JS 01Jan10: duplicate effort shapes if duplicating a scenario
                 For iShape = 1 To ecosimDS.FishRateGearDBID.Length - 1
@@ -5439,7 +5542,8 @@ Namespace DataSources
             End Try
 
             bSucces = bSucces And SaveEcosimVulnerabilities(idm)
-            bSucces = bSucces And SavePredPreyInteraction(idm)
+            bSucces = bSucces And SavePredPreyInteractions(idm)
+            bSucces = bSucces And SaveLandingsInteractions(idm)
             bSucces = bSucces And SaveMediationWeights(idm)
             bSucces = bSucces And SaveStanzaShapeAssignments(idm)
 
@@ -5565,17 +5669,19 @@ Namespace DataSources
 
         End Function
 
-        Private Function SaveMediationShape(ByVal iShape As Integer) As Boolean
+        Private Function SaveMediationShape(ByVal iShape As Integer, ByVal medData As cMediationData) As Boolean
 
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim iShapeID As Integer = ecosimDS.MediationDBIDs(iShape)
-            Dim shapeParms As cEcosimDatastructures.ShapeParameters = ecosimDS.MediationShapeParams(iShape)
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim sbZScale As New Text.StringBuilder()
             Dim adrows() As DataRow = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
+
+            Dim iShapeID As Integer = medData.MediationDBIDs(iShape)
+            Dim shapeParms As cEcosimDatastructures.ShapeParameters = medData.MediationShapeParams(iShape)
+
 
             Try
                 writer = Me.m_db.GetWriter("EcosimShapeMediation")
@@ -5589,17 +5695,17 @@ Namespace DataSources
                     drow("ShapeID") = iShapeID
                 End If
 
-                drow("Title") = ecosimDS.MediationTitles(iShape)
+                drow("Title") = medData.MediationTitles(iShape)
                 drow("YZero") = shapeParms.YZero
                 drow("YBase") = shapeParms.YBase
                 drow("YEnd") = shapeParms.YEnd
                 drow("Steep") = shapeParms.Steep
-                drow("IMedBase") = ecosimDS.IMedBase(iShape)
+                drow("IMedBase") = medData.IMedBase(iShape)
                 drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
                 ' Assemble Zscale
-                For ipt As Integer = 1 To ecosimDS.NMedPoints
+                For ipt As Integer = 1 To medData.NMedPoints
                     If (ipt > 1) Then sbZScale.Append(" ")
-                    sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.Medpoints(ipt, iShape)))
+                    sbZScale.Append(cStringUtils.FormatSingle(medData.Medpoints(ipt, iShape)))
                 Next
                 drow("Zscale") = sbZScale.ToString()
 
@@ -5658,10 +5764,11 @@ Namespace DataSources
             Return bSucces
         End Function
 
-        Private Function SavePredPreyInteraction(ByVal idm As cIDMappings) As Boolean
+        Private Function SavePredPreyInteractions(ByVal idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim medData As cMediationData = ecosimDS.BioMedData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -5675,7 +5782,7 @@ Namespace DataSources
 
                 For iPredator As Integer = 1 To ecosimDS.nGroups
                     For iPrey As Integer = 1 To ecosimDS.nGroups
-                        For iShapeNo As Integer = 1 To ecosimDS.MaxFunctions - 1
+                        For iShapeNo As Integer = 1 To ecosimDS.MaxFunctions
 
                             Try
 
@@ -5689,7 +5796,7 @@ Namespace DataSources
                                     drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredator))
                                     drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
                                     If (ecosimDS.IsMedFunction(iPrey, iPredator, iShapeNo)) Then
-                                        drow("ShapeID") = ecosimDS.MediationDBIDs(iShape)
+                                        drow("ShapeID") = medData.MediationDBIDs(iShape)
                                     Else
                                         drow("ShapeID") = ecosimDS.ForcingDBIDs(iShape)
                                     End If
@@ -5715,10 +5822,63 @@ Namespace DataSources
 
         End Function
 
+        Private Function SaveLandingsInteractions(ByVal idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim medData As cMediationData = ecosimDS.PriceMedData
+            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iShape As Integer = 0
+            Dim bSucces As Boolean = True
+
+            Try
+
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioLandingsShape WHERE (ScenarioID={0})", iScenarioID))
+                writer = Me.m_db.GetWriter("EcosimScenarioLandingsShape")
+
+                For iFleet As Integer = 1 To ecosimDS.nGear
+                    For iGroup As Integer = 1 To ecosimDS.nGroups
+                        For iShapeNo As Integer = 1 To ecosimDS.MaxFunctions - 1
+
+                            Try
+                                ' Get shape assignment
+                                iShape = ecosimDS.PriceMedFuncNum(iGroup, iFleet, iShapeNo)
+                                ' Is an assignment?
+                                If (iShape > 0) Then
+                                    ' Save assignment
+                                    drow = writer.NewRow()
+                                    drow("ScenarioID") = iScenarioID
+                                    drow("FleetID") = idm.GetID(eDataTypes.EcosimFleetInput, ecopathDS.FleetDBID(iFleet))
+                                    drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
+                                    drow("ShapeID") = medData.MediationDBIDs(iShape)
+                                    drow("FunctionType") = CInt(eForcingFunctionApplication.OffVesselPrice)
+                                    writer.AddRow(drow)
+                                End If
+                            Catch ex As Exception
+                            End Try
+
+                        Next iShapeNo
+                    Next iGroup
+                Next iFleet
+
+                Me.m_db.ReleaseWriter(writer, True)
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving landings interaction", ex.Message))
+                bSucces = False
+            End Try
+
+            Return bSucces
+
+        End Function
+
         Private Function SaveMediationWeights(ByVal idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim medData As cMediationData = Nothing
             Dim iScenarioID As Integer = 0
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -5727,39 +5887,69 @@ Namespace DataSources
             ' Obtain mapped scenario ID
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
+            ' === Pred/prey mediations ===
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ScenarioID={0})", iScenarioID))
+
+            medData = ecosimDS.BioMedData
             Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
                 writer = Me.m_db.GetWriter("EcosimScenarioshapeMedWeightsGroup")
                 For iGroup As Integer = 1 To ecosimDS.nGroups
-                    For iShape As Integer = 1 To ecosimDS.MediationShapes
-                        If ecosimDS.MedWeights(iGroup, iShape) > 0 Then
+                    For iShape As Integer = 1 To medData.MediationShapes
+                        If medData.MedWeights(iGroup, iShape) > 0 Then
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
                             ' Ecosim groups unique per scenario: map this
                             drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
-                            drow("ShapeID") = ecosimDS.MediationDBIDs(iShape)
-                            drow("MedWeights") = ecosimDS.MedWeights(iGroup, iShape)
+                            drow("ShapeID") = medData.MediationDBIDs(iShape)
+                            drow("MedWeights") = medData.MedWeights(iGroup, iShape)
                             writer.AddRow(drow)
                         End If
                     Next iShape
                 Next iGroup
                 Me.m_db.ReleaseWriter(writer, True)
 
-                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ScenarioID={0})", iScenarioID))
                 writer = Me.m_db.GetWriter("EcosimScenarioShapeMedWeightsFleet")
                 For iFleet As Integer = 1 To ecosimDS.nGear
-                    For iShape As Integer = 1 To ecosimDS.MediationShapes
-                        If ecosimDS.MedWeights(iFleet + ecosimDS.nGroups, iShape) > 0 Then
+                    For iShape As Integer = 1 To medData.MediationShapes
+                        If medData.MedWeights(iFleet + ecosimDS.nGroups, iShape) > 0 Then
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
+                            ' Unfortunate legacy: FleetID refers to Ecopath fleet, NOT Ecosim as it should have
                             drow("FleetID") = ecopathDS.FleetDBID(iFleet)
-                            drow("ShapeID") = ecosimDS.MediationDBIDs(iShape)
-                            drow("MedWeights") = ecosimDS.MedWeights(iFleet + ecosimDS.nGroups, iShape)
+                            drow("ShapeID") = medData.MediationDBIDs(iShape)
+                            drow("MedWeights") = medData.MedWeights(iFleet + ecosimDS.nGroups, iShape)
                             writer.AddRow(drow)
                         End If
                     Next iShape
                 Next iFleet
                 Me.m_db.ReleaseWriter(writer, True)
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            ' === Landings mediations === 
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioshapeMedWeightsLandings WHERE (ScenarioID={0})", iScenarioID))
+            medData = ecosimDS.PriceMedData
+            Try
+                writer = Me.m_db.GetWriter("EcosimScenarioshapeMedWeightsLandings")
+                For iGroup As Integer = 1 To ecosimDS.nGroups
+                    For iFleet As Integer = 0 To ecosimDS.nGear
+                        For iShape As Integer = 1 To medData.MediationShapes
+                            If medData.MedPriceWeights(iGroup, iFleet, iShape) > 0 Then
+                                drow = writer.NewRow()
+                                drow("ScenarioID") = iScenarioID
+                                drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
+                                drow("FleetID") = Math.Max(0, idm.GetID(eDataTypes.EcosimFleetInput, ecopathDS.FleetDBID(iFleet)))
+                                drow("ShapeID") = medData.MediationDBIDs(iShape)
+                                drow("MedWeights") = medData.MedPriceWeights(iGroup, iFleet, iShape)
+                                writer.AddRow(drow)
+                            End If
+                        Next iShape
+                    Next iFleet
+                Next iGroup
+                bSucces = Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 bSucces = False
@@ -6010,7 +6200,7 @@ Namespace DataSources
                     Case eDataTypes.Forcing
                         writerShape = Me.m_db.GetWriter("EcosimShapeTime")
 
-                    Case eDataTypes.Mediation
+                    Case eDataTypes.Mediation, eDataTypes.PriceMediation
                         writerShape = Me.m_db.GetWriter("EcosimShapeMediation")
 
                     Case eDataTypes.FishingEffort

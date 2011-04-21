@@ -69,11 +69,8 @@ Namespace Controls
 
         End Function
 
-        Protected Overrides Sub OnShapeChanged()
-            MyBase.OnShapeChanged()
-        End Sub
-
-        Private Sub ForcingSketchPad_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+            MyBase.OnResize(e)
             Me.OnShapeChanged()
         End Sub
 
@@ -110,7 +107,7 @@ Namespace Controls
             ' Draw the axis when this mode is on
             If Me.m_bShowAxis Then
 
-                'Draw Axis
+                'Draw X and Y axises
                 g.DrawLine(Pens.Gray, New PointF(rcImage.Left, rcImage.Bottom), New PointF(rcImage.Right, rcImage.Bottom))
                 g.DrawLine(Pens.Gray, New PointF(rcImage.Left, rcImage.Top), New PointF(rcImage.Left, rcImage.Bottom))
 
@@ -155,7 +152,6 @@ Namespace Controls
                     For j As Integer = 0 To 2
                         Dim yPos As Integer = CInt(rcImage.Bottom - rcImage.Height * (3 - j) / 3)
 
-                        'strLabel = String.Format("{0:f3}", sYMax * (3 - j) / 3)
                         strLabel = sg.FormatNumber(sYMax * (3 - j) / 3)
 
                         If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then

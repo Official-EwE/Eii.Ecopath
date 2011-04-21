@@ -276,7 +276,7 @@ Public Class frmShapeValue
     Private Sub LoadForcingDataToGrid()
 
         Dim iOffset As Integer = 0
-        Dim bIsMediation As Boolean = (TypeOf (Me.m_shape) Is cMediationFunction)
+        Dim bIsMediation As Boolean = (TypeOf (Me.m_shape) Is cMediationBaseFunction)
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
@@ -303,7 +303,7 @@ Public Class frmShapeValue
         m_txtXBase.Visible = bIsMediation
 
         If bIsMediation Then
-            Me.m_txtXBase.Text = CStr(DirectCast(Me.m_shape, cMediationFunction).XBaseIndex)
+            Me.m_txtXBase.Text = CStr(DirectCast(Me.m_shape, cMediationBaseFunction).XBaseIndex)
         End If
 
         Me.IsSeasonal = Me.m_shape.IsSeasonal
@@ -451,9 +451,9 @@ Public Class frmShapeValue
         ff.Name = Me.m_txtName.Text
         ff.IsSeasonal = Me.IsSeasonal
 
-        If TypeOf (ff) Is cMediationFunction Then
+        If TypeOf (ff) Is cMediationBaseFunction Then
             ' Parse value using UI number settings
-            DirectCast(ff, cMediationFunction).XBaseIndex = Integer.Parse(Me.m_txtXBase.Text)
+            DirectCast(ff, cMediationBaseFunction).XBaseIndex = Integer.Parse(Me.m_txtXBase.Text)
         End If
 
         ' Update the shape
@@ -508,7 +508,7 @@ Public Class frmShapeValue
             ' Need a name to 'OK'
             bEnableOk = Not String.IsNullOrEmpty(Me.m_txtName.Text)
 
-            If (TypeOf (Me.m_shape) Is cMediationFunction) Then
+            If (TypeOf (Me.m_shape) Is cMediationBaseFunction) Then
                 Dim sDummy As Single = 42.0!
                 bEnableOk = bEnableOk And (Single.TryParse(Me.m_txtXBase.Text, sDummy) = True)
             End If

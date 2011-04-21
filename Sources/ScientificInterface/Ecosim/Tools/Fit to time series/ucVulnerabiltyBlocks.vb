@@ -151,10 +151,10 @@ Namespace Ecosim
 
             If (e.Button And Windows.Forms.MouseButtons.Right) > 0 Then
                 Dim ptClick As Point = Me.PointToPredPrey(e.Location)
-                Dim ppi As cPPIManager = Me.m_uic.Core.PPInteractionManager
+                Dim manager As cMediatedInteractionManager = Me.m_uic.Core.MediatedInteractionManager
 
                 If ptClick.X > 0 And ptClick.Y > 0 Then
-                    If ppi.isPredPrey(ptClick.X, ptClick.Y) Then
+                    If manager.isPredPrey(ptClick.X, ptClick.Y) Then
                         Me.SelectedBlockNum = Me.m_a2iVulBlocks(ptClick.X, ptClick.Y)
                         Try
                             RaiseEvent OnSelectedBlockChanged(Me, Me.m_iSelectedBlockCodeIndex)
@@ -223,7 +223,7 @@ Namespace Ecosim
                 If (Me.m_uic Is Nothing) Then Return
 
                 Dim szCell As SizeF = Me.CellSize()
-                Dim ppi As cPPIManager = Me.m_uic.Core.PPInteractionManager
+                Dim manager As cMediatedInteractionManager = Me.m_uic.Core.MediatedInteractionManager
                 Dim iBlock As Integer = 0
 
                 ' Clear the picture box
@@ -239,7 +239,7 @@ Namespace Ecosim
                             e.Graphics.FillRectangle(SystemBrushes.Control, i * szCell.Width, j * szCell.Height, szCell.Width, szCell.Height)
                         Else
                             ' Draw content cell
-                            If (ppi.isPredPrey(i, j)) Then
+                            If (manager.isPredPrey(i, j)) Then
                                 iBlock = Me.m_a2iVulBlocks(i, j)
                                 If iBlock < Me.m_acolors.Count - 1 Then
                                     ' Render solid block
@@ -369,7 +369,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub FillBlocks(ByVal iPred As Integer, ByVal iPrey As Integer, ByVal iBlockCode As Integer)
 
-            Dim ppi As cPPIManager = Me.m_uic.Core.PPInteractionManager
+            Dim manager As cMediatedInteractionManager = Me.m_uic.Core.MediatedInteractionManager
 
             ' Sanity check
             If iPrey < 0 Then Return
@@ -386,24 +386,24 @@ Namespace Ecosim
                         ' #Yes: fill entire grid
                         For iPred = 1 To Me.m_uic.Core.nLivingGroups
                             For iPrey = 1 To Me.m_uic.Core.nGroups
-                                If ppi.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
+                                If manager.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
                             Next iPrey
                         Next iPred
                     Else
                         ' #No: Fill entire prey column
                         For iPred = 1 To Me.m_uic.Core.nLivingGroups
-                            If ppi.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
+                            If manager.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
                         Next iPred
                     End If
                 Else
                     ' #No: Fill entire predator row
                     For iPrey = 1 To Me.m_uic.Core.nGroups
-                        If ppi.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
+                        If manager.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
                     Next iPrey
                 End If
             Else
                 ' #No: fill single cell
-                If ppi.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
+                If manager.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
             End If
 
             ' Redraw at your leasure

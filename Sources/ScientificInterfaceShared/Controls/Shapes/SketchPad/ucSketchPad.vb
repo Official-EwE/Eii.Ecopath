@@ -89,8 +89,8 @@ Namespace Controls
         Private m_bShowXMark As Boolean = False
         ''' <summary>Vertical mark line.</summary>
         Private m_sXMarkValue As Single = cCore.NULL_VALUE
-        ''' <summary>Vertical mark line label.</summary>
-        Private m_strXMarkLabel As String = ""
+        ''' <summary>Flag stating whether the value tool tip should be shown.</summary>
+        Private m_bShowTooltip As Boolean = True
         ''' <summary></summary>
         Private m_editMode As eMouseInteractionMode = eMouseInteractionMode.None
         ''' <summary>Style of the control.</summary>
@@ -394,16 +394,11 @@ Namespace Controls
         ''' Label for vertical (X mark) line.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Category("Sketchpad"), _
-         Description("Label for vertical (X mark) line.")> _
-        Public Property XMarkLabel() As String
+        <Browsable(False)> _
+        Public Overridable ReadOnly Property XMarkLabel() As String
             Get
-                Return Me.m_strXMarkLabel
+                Return ""
             End Get
-            Set(ByVal value As String)
-                Me.m_strXMarkLabel = value
-                Me.Invalidate()
-            End Set
         End Property
 
         ''' -------------------------------------------------------------------
@@ -450,6 +445,23 @@ Namespace Controls
                 Return m_shapeType
             End Get
 
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the sketch pad should display a value tool tip.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("Category of the shape.")> _
+        Public Property ShowValueTooltip() As Boolean
+            Get
+                Return Me.m_bShowTooltip
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowTooltip = value
+                Me.UpdateTooltip(Nothing)
+            End Set
         End Property
 
         ''' -------------------------------------------------------------------
@@ -545,6 +557,7 @@ Namespace Controls
 
 #Region " IUIElement implementation "
 
+        <Browsable(False)> _
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -664,17 +677,20 @@ Namespace Controls
 
             If (Me.Shape Is Nothing) Then Return
 
-            Dim sYMax As Single = Me.YAxisMaxValue
-            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
-            Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
-            Dim sValue As Single = 0.0!
             Dim strTooltip As String = ""
 
-            If Me.IsNearValue(ptCur) Then
-                sValue = Me.Shape.ShapeData(CInt(ptfCur.X))
-                strTooltip = cStringUtils.FormatSingle(sValue)
-            Else
-                ' No tip, sorry.
+            If Me.m_bShowTooltip And (ptCur <> Nothing) Then
+                Dim sYMax As Single = Me.YAxisMaxValue
+                Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
+                Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
+                Dim sValue As Single = 0.0!
+
+                If Me.IsNearValue(ptCur) Then
+                    sValue = Me.Shape.ShapeData(CInt(ptfCur.X))
+                    strTooltip = cStringUtils.FormatSingle(sValue)
+                Else
+                    ' No tip, sorry.
+                End If
             End If
             cToolTipShared.GetInstance().SetToolTip(Me, strTooltip)
 
@@ -820,6 +836,8 @@ Namespace Controls
         ''' </summary>
         Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
 
+            If (Me.Shape Is Nothing) Then Return
+
             ' Determine interaction mode only when not capturing input
             If (Me.Editable = True) And (Me.Capture = False) Then
 
@@ -844,7 +862,9 @@ Namespace Controls
         Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseDown(e)
 
-            Dim bShiftPressed As Boolean = (User32.GetAsyncKeyState(&H10) < 0)
+            If (Me.Shape Is Nothing) Then Return
+
+            Dim bShiftPressed As Boolean = (Control.ModifierKeys = Keys.Shift)
             If Not Me.Editable Then Return
 
             Me.Capture = True
@@ -866,6 +886,8 @@ Namespace Controls
         ''' </summary>
         Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseUp(e)
+
+            If (Me.Shape Is Nothing) Then Return
 
             If Not Me.Editable Then Return
             If Not Me.Capture Then Return

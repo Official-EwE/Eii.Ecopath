@@ -46,7 +46,7 @@ Namespace Ecosim
             End Get
             Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
                 MyBase.UIContext = value
-                Me.m_bioPercent.UIContext = value
+                Me.m_assignments.UIContext = value
             End Set
         End Property
 
@@ -64,7 +64,7 @@ Namespace Ecosim
             Me.m_shapeguihandler.Attach(Me.UIContext, _
                   Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                   Me.m_sketchPad, Me.m_sketchPadToolbar, _
-                  Me.m_bioPercent, Me.m_biopercenttoolbar)
+                  Me.m_assignments, Me.m_assignmentsToolbar)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 

@@ -212,7 +212,7 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
 
-            Dim bShiftPressed As Boolean = (User32.GetAsyncKeyState(&H10) < 0)
+            Dim bShiftPressed As Boolean = (Control.ModifierKeys = Keys.Shift)
             Dim ptCellCur As Point = Me.GetCellIndex(New Point(e.X, e.Y))
 
             If (Me.CanEdit = False) Then Return

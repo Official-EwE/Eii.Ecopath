@@ -661,6 +661,9 @@ Namespace Controls
 
 #End Region ' Helper methods
 
+        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+            Return New eDataTypes() {eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries}
+        End Function
     End Class
 
 End Namespace

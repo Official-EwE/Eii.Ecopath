@@ -58,7 +58,6 @@ Public Class AppLauncher
     Private m_FormStateHelper As cEwEFormStateHelper = Nothing
     ''' <summary>Style guide updater.</summary>
     Private m_styleguideupdater As StyleGuideUpdater = Nothing
-    Private m_applictionStatusNotifier As cApplicationStatusNotifier = Nothing
     Private m_MessageHistory As cMessageHistory = Nothing
     Private m_strLastSelectedPath As String = ""
 
@@ -561,10 +560,6 @@ Public Class AppLauncher
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
         Me.Core.Messages.AddMessageHandler(Me.m_mhEcotracer)
         Me.Core.Messages.AddMessageHandler(Me.m_mhTimeseries)
-
-        ' Ready for status messages. We'll stick with a shared application status notified 
-        ' as long as the shared deprecated method to set status text is used.
-        Me.m_applictionStatusNotifier = New cApplicationStatusNotifier(Me.Core)
 
         ' Create message history
         Me.m_MessageHistory = New cMessageHistory()

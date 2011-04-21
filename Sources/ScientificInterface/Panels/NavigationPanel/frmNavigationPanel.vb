@@ -155,6 +155,8 @@ Public Class frmNavigationPanel
             '.Add("ndSpeciesQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTargetFishingMortalityPolicy)) ' ToDo: connect to help
             .Add("ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(FisheryInputFleetSizeDynamicsEwEGrid), "Fleet size dynamics.htm")
             .Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality)) ' ToDo: connect to help
+            .Add("ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity)) ' ToDo: connect to help
+            .Add("ndApplyPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmApplyPriceElasticy)) ' ToDo: connect to help
 
             ' Ecosim Output
             .Add("ndRunEcosim", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.RunEcosim), "Run Ecosim.htm")

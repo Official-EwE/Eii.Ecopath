@@ -24,18 +24,13 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyFFPrimaryProducer))
-            Me.plApplyFFGrid = New System.Windows.Forms.Panel
             Me.m_ts = New System.Windows.Forms.ToolStrip
             Me.tsBtnClearAll = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.tsBtnSetAll = New System.Windows.Forms.ToolStripButton
+            Me.m_grid = New ScientificInterface.Ecosim.ApplyPredPreyShapeGrid
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
-            '
-            'plApplyFFGrid
-            '
-            resources.ApplyResources(Me.plApplyFFGrid, "plApplyFFGrid")
-            Me.plApplyFFGrid.Name = "plApplyFFGrid"
             '
             'm_ts
             '
@@ -62,27 +57,56 @@ Namespace Ecosim
             resources.ApplyResources(Me.tsBtnSetAll, "tsBtnSetAll")
             Me.tsBtnSetAll.Name = "tsBtnSetAll"
             '
+            'm_grid
+            '
+            Me.m_grid.AllowBlockSelect = True
+            Me.m_grid.ApplyShapeMode = ScientificInterfaceShared.Definitions.eApplyShapeTypes.Forcing
+            Me.m_grid.ApplyTargetMode = ScientificInterfaceShared.Definitions.eApplyTargetTypes.PrimaryProducer
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_grid.CustomSort = False
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.UIContext = Nothing
+            '
             'frmApplyFFPrimaryProducer
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_ts)
-            Me.Controls.Add(Me.plApplyFFGrid)
             Me.Name = "frmApplyFFPrimaryProducer"
             Me.TabText = "Apply shapes"
-            Me.Controls.SetChildIndex(Me.plApplyFFGrid, 0)
-            Me.Controls.SetChildIndex(Me.m_ts, 0)
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents plApplyFFGrid As System.Windows.Forms.Panel
-        Friend WithEvents tsBtnClearAll As System.Windows.Forms.ToolStripButton
-        Friend WithEvents tsBtnSetAll As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents tsBtnClearAll As System.Windows.Forms.ToolStripButton
+        Private WithEvents tsBtnSetAll As System.Windows.Forms.ToolStripButton
+        Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_ts As System.Windows.Forms.ToolStrip
+        Private WithEvents m_grid As ScientificInterface.Ecosim.ApplyPredPreyShapeGrid
 
     End Class
 End Namespace

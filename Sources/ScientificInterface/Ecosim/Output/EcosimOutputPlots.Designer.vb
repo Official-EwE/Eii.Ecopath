@@ -42,6 +42,8 @@ Namespace Ecosim
             Me.m_hdrPredators = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_plPrey = New System.Windows.Forms.Panel
             Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_tsMain = New System.Windows.Forms.ToolStrip
+            Me.m_tsDDShowHidePlots = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -50,6 +52,7 @@ Namespace Ecosim
             Me.m_plFleets.SuspendLayout()
             Me.m_plPredators.SuspendLayout()
             Me.m_plPrey.SuspendLayout()
+            Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_graph
@@ -74,6 +77,7 @@ Namespace Ecosim
             Me.m_lbGroups.FormattingEnabled = True
             Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
+            Me.m_lbGroups.IsAllGroupsItemSelected = False
             Me.m_lbGroups.Name = "m_lbGroups"
             Me.m_lbGroups.SelectedGroup = Nothing
             Me.m_lbGroups.SelectedGroupIndex = -1
@@ -97,6 +101,7 @@ Namespace Ecosim
             Me.m_lbPredators.FormattingEnabled = True
             Me.m_lbPredators.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             Me.m_lbPredators.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
+            Me.m_lbPredators.IsAllGroupsItemSelected = False
             Me.m_lbPredators.Name = "m_lbPredators"
             Me.m_lbPredators.SelectedGroup = Nothing
             Me.m_lbPredators.SelectedGroupIndex = -1
@@ -114,6 +119,7 @@ Namespace Ecosim
             Me.m_lbPrey.FormattingEnabled = True
             Me.m_lbPrey.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             Me.m_lbPrey.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
+            Me.m_lbPrey.IsAllGroupsItemSelected = False
             Me.m_lbPrey.Name = "m_lbPrey"
             Me.m_lbPrey.SelectedGroup = Nothing
             Me.m_lbPrey.SelectedGroupIndex = -1
@@ -138,11 +144,12 @@ Namespace Ecosim
             'm_tlpMain
             '
             resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
-            Me.m_tlpMain.Controls.Add(Me.m_btnSaveData, 0, 4)
-            Me.m_tlpMain.Controls.Add(Me.m_plGroups, 0, 0)
-            Me.m_tlpMain.Controls.Add(Me.m_plFleets, 0, 3)
-            Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 1)
-            Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 2)
+            Me.m_tlpMain.Controls.Add(Me.m_tsMain, 0, 0)
+            Me.m_tlpMain.Controls.Add(Me.m_btnSaveData, 0, 5)
+            Me.m_tlpMain.Controls.Add(Me.m_plGroups, 0, 1)
+            Me.m_tlpMain.Controls.Add(Me.m_plFleets, 0, 4)
+            Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 2)
+            Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 3)
             Me.m_tlpMain.Name = "m_tlpMain"
             '
             'm_plGroups
@@ -205,6 +212,19 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_hdrPrey, "m_hdrPrey")
             Me.m_hdrPrey.Name = "m_hdrPrey"
             '
+            'm_tsMain
+            '
+            resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsDDShowHidePlots})
+            Me.m_tsMain.Name = "m_tsMain"
+            '
+            'm_tsDDShowHidePlots
+            '
+            Me.m_tsDDShowHidePlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsDDShowHidePlots, "m_tsDDShowHidePlots")
+            Me.m_tsDDShowHidePlots.Name = "m_tsDDShowHidePlots"
+            '
             'EcosimOutputPlots
             '
             resources.ApplyResources(Me, "$this")
@@ -216,10 +236,13 @@ Namespace Ecosim
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
             Me.m_tlpMain.ResumeLayout(False)
+            Me.m_tlpMain.PerformLayout()
             Me.m_plGroups.ResumeLayout(False)
             Me.m_plFleets.ResumeLayout(False)
             Me.m_plPredators.ResumeLayout(False)
             Me.m_plPrey.ResumeLayout(False)
+            Me.m_tsMain.ResumeLayout(False)
+            Me.m_tsMain.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -239,6 +262,8 @@ Namespace Ecosim
         Private WithEvents m_hdrPrey As cEwEHeaderLabel
         Private WithEvents m_lbFleets As cFleetListBox
         Private WithEvents m_hdrFleets As cEwEHeaderLabel
+        Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsDDShowHidePlots As System.Windows.Forms.ToolStripDropDownButton
     End Class
 
 End Namespace

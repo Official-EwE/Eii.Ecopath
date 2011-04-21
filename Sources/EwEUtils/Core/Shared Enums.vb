@@ -661,6 +661,19 @@ Namespace Core
         EcosimYieldRel
 
         EcosimCatchGroupGear
+
+        ''' <summary>
+        ''' Ecosim value by group over time
+        ''' </summary>
+        ''' <remarks></remarks>
+        EcosimValueGroup
+
+        ''' <summary>
+        ''' Ecosim value by group fleet over time
+        ''' </summary>
+        ''' <remarks></remarks>
+        EcosimValueGroupFleet
+
         ''' <summary> Fishing mortality by group fleet </summary>
         EcosimFishingMortGroupGear
 
@@ -1442,17 +1455,17 @@ Namespace Core
         EggProd = 9
 
         ''' <summary>
-        ''' Data belongs to an Mediation Function.
+        ''' Data belongs to a Mediation Function.
         ''' </summary>
         Mediation = 10
 
         ''' <summary>
-        ''' Data belongs to an Fishing Rate shape.
+        ''' Data belongs to a Fishing Rate shape.
         ''' </summary>
         FishingEffort = 11
 
         ''' <summary>
-        ''' Data belongs to an Fishing Mortality shape.
+        ''' Data belongs to a Fishing Mortality shape.
         ''' </summary>
         FishMort = 12
 
@@ -1503,7 +1516,7 @@ Namespace Core
         EcospaceBasemap = 21
 
         ''' <summary>
-        ''' Data belongs to a ecospace importance layer instance.
+        ''' Data belongs to an ecospace importance layer instance.
         ''' </summary>
         ''' <remarks>The enum value </remarks>
         EcospaceLayerImportance = 22
@@ -1879,6 +1892,16 @@ Namespace Core
         Taxon = 95
 
         ''' <summary>
+        ''' Data belongs to landings mediation function (as opposed to a 'regular', Pred-Prey mediation function.
+        ''' </summary>
+        PriceMediation = 96
+
+        ''' <summary>
+        ''' Data belongs to a landings-mediated interaction.
+        ''' </summary>
+        LandingInteraction = 97
+
+        ''' <summary>
         ''' Data belongs to an external, unspecified source.
         ''' </summary>
         External = 777
@@ -2177,7 +2200,7 @@ Namespace Core
         ''' <summary>The message originated from a change in loaded Time Series.</summary>
         TimeSeries
         ''' <summary>The message originated from the pred/prey interaction.</summary>
-        PPIManager
+        MediatedInteractionManager
         ''' <summary>The message originated from Ecotracer.</summary>
         Ecotracer
         ''' <summary>The message originated from an external source (such as the user interface)</summary>
@@ -2211,6 +2234,26 @@ Namespace Core
     End Enum
 
 #End Region ' Forcing application types
+
+#Region " Forcing function application targets "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerator for forcing functions, describing to which Predator/Prey or 
+    ''' Fleet/Group interaction a forcing function is applied.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Enum eForcingFunctionApplication
+        NotSet = 0
+        ProductionRate = 6
+        SearchRate = 1
+        Vulnerability = 2
+        ArenaArea = 3
+        VulAndArea = 4
+        OffVesselPrice = 5
+    End Enum
+
+#End Region ' Forcing function application targets
 
 #Region " IUCN threat classifications "
 

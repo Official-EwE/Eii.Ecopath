@@ -403,6 +403,7 @@ Namespace Controls.EwEGrid
         ''' Get/set the <see cref="cUIContext">UI Context</see> for this grid.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -431,6 +432,7 @@ Namespace Controls.EwEGrid
         ''' Get the <see cref="cCore">core</see> that this grid connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property Core() As cCore
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -444,6 +446,7 @@ Namespace Controls.EwEGrid
         ''' connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property StyleGuide() As cStyleGuide
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -457,6 +460,7 @@ Namespace Controls.EwEGrid
         ''' this grid can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property PropertyManager() As cPropertyManager
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -470,6 +474,7 @@ Namespace Controls.EwEGrid
         ''' this grid can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Public ReadOnly Property ComandHandler() As cCommandHandler
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -491,6 +496,7 @@ Namespace Controls.EwEGrid
         ''' </list>
         ''' </remarks>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Protected ReadOnly Property EwEEditHandler() As BehaviorModels.IBehaviorModel
             Get
                 If (Me.m_bm Is Nothing) Then Me.m_bm = New cEwEGridBacklinkModel(Me)
@@ -503,6 +509,7 @@ Namespace Controls.EwEGrid
         ''' Visual model for reflecting 'Original' values.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Protected ReadOnly Property DefaultVisualOriginal() As VisualModels.IVisualModel
             Get
                 Dim vm As VisualModels.Common = New VisualModels.Common(False)
@@ -518,6 +525,7 @@ Namespace Controls.EwEGrid
         ''' Visual model for reflecting 'Added' values.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Protected ReadOnly Property DefaultVisualAdded() As VisualModels.IVisualModel
             Get
                 Dim vm As VisualModels.Common = New VisualModels.Common(False)
@@ -533,6 +541,7 @@ Namespace Controls.EwEGrid
         ''' Visual model for reflecting 'Removed' values.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Protected ReadOnly Property DefaultVisualRemoved() As VisualModels.IVisualModel
             Get
                 Dim vm As VisualModels.Common = New VisualModels.Common(False)
@@ -915,18 +924,21 @@ Namespace Controls.EwEGrid
         ''' Constant; returns the default text for 'value not available'.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Protected ReadOnly Property DataNotAvailable() As String
             Get
                 Return My.Resources.GENERIC_VALUE_NOTAVAILABLE
             End Get
         End Property
 
+        <Browsable(False)> _
         Public Overridable ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.NotSet
             End Get
         End Property
 
+        <Browsable(False)> _
         Public Overridable ReadOnly Property MessageSources() As eCoreComponentType()
             Get
                 Return New eCoreComponentType() {Me.MessageSource}
@@ -939,9 +951,12 @@ Namespace Controls.EwEGrid
             End If
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns a new local formula propery.
         ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(False)> _
         Protected Function Formula(ByVal exp As cExpression) As cFormulaProperty
             Dim fp As New cFormulaProperty(exp)
             If Me.m_lpropertyFormula Is Nothing Then
@@ -951,24 +966,30 @@ Namespace Controls.EwEGrid
             Return fp
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Method called when a mass change of cells is about to begin.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overridable Sub BeginBatchEdit()
             Me.m_bInBatchEdit = True
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Method called when a mass change of cells is done.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overridable Sub EndBatchEdit()
             Me.m_bInBatchEdit = False
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns whether a <see cref="BeginBatchEdit">Batch edit</see> is active.
         ''' </summary>
         ''' <returns>True if a batch edit is active, false otherwise.</returns>
+        ''' -------------------------------------------------------------------
         Public Function IsInBatchEdit() As Boolean
             Return Me.m_bInBatchEdit
         End Function

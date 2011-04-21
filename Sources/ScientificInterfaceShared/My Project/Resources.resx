@@ -192,9 +192,6 @@
   <data name="HEADER_VALUE" xml:space="preserve">
     <value>Value</value>
   </data>
-  <data name="MEDIATION_X_AXIS_LABEL" xml:space="preserve">
-    <value>Mediating group (weighted) biomass</value>
-  </data>
   <data name="UNIT_TIME_YEAR" xml:space="preserve">
     <value>year</value>
   </data>
@@ -333,9 +330,6 @@
   <data name="TS_TYPE_CATCHES" xml:space="preserve">
     <value>Catches</value>
     <comment>Time series type</comment>
-  </data>
-  <data name="ECOSIM_DEF_MED_X_AXIS" xml:space="preserve">
-    <value>Mediating group</value>
   </data>
   <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
     <value>You are about to delete {0} forcing or mediation functions'. This action cannot be undone. Are you sure you want to do this?</value>
@@ -922,8 +916,8 @@
   <data name="HEADER_FLEETS" xml:space="preserve">
     <value>Fleets</value>
   </data>
-  <data name="HEADER_FLEET_GEAR" xml:space="preserve">
-    <value>Fleet/gear</value>
+  <data name="HEADER_FLEET" xml:space="preserve">
+    <value>Fleet</value>
   </data>
   <data name="HEADER_FLEET_GROUP" xml:space="preserve">
     <value>Fleet\group</value>
@@ -1954,5 +1948,50 @@
   </data>
   <data name="CLIMATE_TROPICAL" xml:space="preserve">
     <value>Tropical|||Tropical (0 to 30 deg)</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWLANDINGSSHAPE" xml:space="preserve">
+    <value>Landings mediation shape {0}</value>
+  </data>
+  <data name="FFAPPLICATION_ARENAAREA" xml:space="preserve">
+    <value>Arena area (A)</value>
+  </data>
+  <data name="FFAPPLICATION_OFFVESSELPRICE" xml:space="preserve">
+    <value>Off-vessel price</value>
+  </data>
+  <data name="FFAPPLICATION_PRODUCTIONRATE" xml:space="preserve">
+    <value>Prod. rate</value>
+  </data>
+  <data name="FFAPPLICATION_SEARCHRATE" xml:space="preserve">
+    <value>Search rate (a)</value>
+  </data>
+  <data name="FFAPPLICATION_VULANDAREA" xml:space="preserve">
+    <value>Vul (v) and area (A)</value>
+  </data>
+  <data name="FFAPPLICATION_VULNERABILITY" xml:space="preserve">
+    <value>Vulnerability (v)</value>
+  </data>
+  <data name="HEADER_ASSIGNED_GROUPS_FLEETS" xml:space="preserve">
+    <value>Assigned groups and fleets</value>
+  </data>
+  <data name="HEADER_ASSIGNED_LANDINGS" xml:space="preserve">
+    <value>Assigned landings</value>
+  </data>
+  <data name="HEADER_AVAILABLE_GROUPS_FLEETS" xml:space="preserve">
+    <value>Available groups and fleets</value>
+  </data>
+  <data name="HEADER_AVAILABLE_LANDINGS" xml:space="preserve">
+    <value>Available landings</value>
+  </data>
+  <data name="CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS" xml:space="preserve">
+    <value>Define mediating groups and fleets</value>
+  </data>
+  <data name="CAPTION_DEFINE_MEDIATING_LANDINGS" xml:space="preserve">
+    <value>Define supply</value>
+  </data>
+  <data name="PROMPT_DEFINE_MEDIATING_GROUPSANDFLEETS" xml:space="preserve">
+    <value>Define mediating groups and fleets...</value>
+  </data>
+  <data name="PROMPT_DEFINE_MEDIATING_LANDINGS" xml:space="preserve">
+    <value>Define supply...</value>
   </data>
 </root>

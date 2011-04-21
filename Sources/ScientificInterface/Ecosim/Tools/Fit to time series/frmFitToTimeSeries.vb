@@ -82,10 +82,10 @@ Namespace Ecosim
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
             Protected Overrides Function IncludeShape(ByVal shape As EwECore.cShapeData) As Boolean
-                Dim ppi As cPPIManager = Me.Core.PPInteractionManager
+                Dim manager As cMediatedInteractionManager = Me.Core.MediatedInteractionManager
                 If Not (TypeOf shape Is cForcingFunction) Then Return False
-                If (ppi Is Nothing) Then Return False
-                Return ppi.IsApplied(DirectCast(shape, cForcingFunction))
+                If (manager Is Nothing) Then Return False
+                Return manager.IsApplied(DirectCast(shape, cForcingFunction))
             End Function
 
         End Class
@@ -152,7 +152,7 @@ Namespace Ecosim
             Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
             Me.IsRunning = Me.m_F2TSManager.IsRunning()
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.PPIManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
             Me.UpdateControls()
 
         End Sub
@@ -224,7 +224,7 @@ Namespace Ecosim
                         Me.ReloadControls()
                     End If
 
-                Case eCoreComponentType.PPIManager
+                Case eCoreComponentType.MediatedInteractionManager
                     ' Refresh on shape assignment changes
                     Me.m_shapeHandler.Refresh()
 

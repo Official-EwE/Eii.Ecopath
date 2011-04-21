@@ -122,6 +122,10 @@ Namespace Controls
 
 #Region " Baseclass overrides "
 
+        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+            Return New eDataTypes() {eDataTypes.Forcing, eDataTypes.EggProd}
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Public interface to ask whether a given command is supported by this handler.

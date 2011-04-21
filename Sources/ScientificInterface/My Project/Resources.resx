@@ -171,17 +171,11 @@
   <data name="ECOSIM_GROUPINFO_DENDEPCATCHABILITY" xml:space="preserve">
     <value>Density-dep. catchability: Qmax/Qo [&gt;=1]</value>
   </data>
-  <data name="SHAPE_MULTIPLIER_2" xml:space="preserve">
-    <value>Vulnerability (v)</value>
-  </data>
   <data name="PROMPT_INVALIDFILE" xml:space="preserve">
     <value>This type of file is not supported by EwE6</value>
   </data>
   <data name="OPTIONS_FEEDBACK_STATUS" xml:space="preserve">
     <value>In status panel</value>
-  </data>
-  <data name="SHAPE_MULTIPLIER_5" xml:space="preserve">
-    <value>Prod. rate</value>
   </data>
   <data name="FORCING_OPTIONS_MEDIATING_GROUPS" xml:space="preserve">
     <value>Mediation, rel, weighting</value>
@@ -229,9 +223,6 @@
     <value>Creating Ecospace scenario '{0}'...</value>
     <comment>{0}: scenario name</comment>
   </data>
-  <data name="SHAPE_MULTIPLIER_1" xml:space="preserve">
-    <value>Search rate (a)</value>
-  </data>
   <data name="Ecopath" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ecopath.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -273,8 +264,8 @@
     <comment>{0}: scenario name</comment>
   </data>
   <data name="ECOSIM_APPLYFF_FFTYPE_FORCING" xml:space="preserve">
-    <value>F</value>
-    <comment>Forcing Function FF type flag used in ECOSIM_APPLYFF_CELLFORMAT</comment>
+    <value>F{0}</value>
+    <comment>{0}: forcing function index</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_MIGRATING" xml:space="preserve">
     <value>Migrating?</value>
@@ -413,9 +404,6 @@
   </data>
   <data name="SR_PLOT_NO_STANZA_GROUP" xml:space="preserve">
     <value>No stanza groups</value>
-  </data>
-  <data name="SHAPE_MULTIPLIER_4" xml:space="preserve">
-    <value>Vul (v) and area (A)</value>
   </data>
   <data name="GENERIC_TEXT_NODATA" xml:space="preserve">
     <value>(no data)</value>
@@ -806,9 +794,6 @@
   <data name="glyph_blue6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_blue6.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SHAPE_MULTIPLIER_3" xml:space="preserve">
-    <value>Arena area (A)</value>
-  </data>
   <data name="SCENARIO_CONFIRMDELETE_CAPTION" xml:space="preserve">
     <value>Delete scenario</value>
   </data>
@@ -936,8 +921,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Are you sure you want to delete {0} MPA(s)? This action cannot be undone.</value>
   </data>
   <data name="ECOSIM_APPLYFF_FFTYPE_MEDIATION" xml:space="preserve">
-    <value>M</value>
-    <comment>Mediation Function FF type flag used in ECOSIM_APPLYFF_CELLFORMAT</comment>
+    <value>M{0}</value>
+    <comment>{0}: mediation function index</comment>
   </data>
   <data name="PSD_GRAPH_REGRESSION_LABEL_WO_STDERR" xml:space="preserve">
     <value>Slope = {0}, Y-intercept = {1}, Correlation = {2}Wt. class range (g) = {3} to {4}, N = {5}</value>
@@ -1002,7 +987,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ECOSIM_GROUPINFO_QBMAXQBO" xml:space="preserve">
     <value>QBmax/QBo (for handling time) [&gt;1]</value>
   </data>
-  <data name="ECOSIM_PROMPT_APPLY_SHAPES_ALL" xml:space="preserve">
+  <data name="ECOSIM_LABEL_APPLY_SHAPES_PREDPREY" xml:space="preserve">
     <value>For all prey predator pairs</value>
   </data>
   <data name="PROMPT_MODELNOTFOUND_REMOVEMRU" xml:space="preserve">
@@ -1067,7 +1052,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="HABITAT_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete habitat from {0} to {1}?</value>
   </data>
-  <data name="ECOSIM_PROMPT_APPLY_SHAPES_PREY" xml:space="preserve">
+  <data name="ECOSIM_LABEL_APPLY_SHAPES_PREY" xml:space="preserve">
     <value>For all pairs with group {0}: {1} as a prey</value>
     <comment>{0}:prey name, {1}:predator name</comment>
   </data>
@@ -1219,7 +1204,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>MPAs</value>
     <comment>Layer group 'MPAs'</comment>
   </data>
-  <data name="ECOSIM_PROMPT_APPLY_SHAPES_PRED" xml:space="preserve">
+  <data name="ECOSIM_LABEL_APPLY_SHAPES_PRED" xml:space="preserve">
     <value>For all pairs with group {0}: {1} as a predator</value>
     <comment>{0}:prey name, {1}:predator name</comment>
   </data>
@@ -1331,10 +1316,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOSPACE_BASEMAP_SHRINK_PROMPT" xml:space="preserve">
     <value>You are about to reduce the size of the map, values outside the new map area will be lost. This operation cannot be undone. Are you sure you want to proceed?</value>
-  </data>
-  <data name="ECOSIM_APPLYFF_CELLFORMAT" xml:space="preserve">
-    <value>{0}{1}</value>
-    <comment>{0}: FF type, {1}:FF index</comment>
   </data>
   <data name="GENERIC_DEFAULT_DESCRIPTION" xml:space="preserve">
     <value>Created: {0} {1}</value>
@@ -1616,5 +1597,27 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="STATUS_TIMESERIES_LOADING" xml:space="preserve">
     <value>Loading time series '{0}'...</value>
     <comment>{0}: time series dataset name</comment>
+  </data>
+  <data name="ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY" xml:space="preserve">
+    <value>${0}</value>
+    <comment>{0}: price elasticity function index</comment>
+  </data>
+  <data name="ECOSIM_CAPTION_APPLYPRICEELASTICITY" xml:space="preserve">
+    <value>Apply price elasticity</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_ALL" xml:space="preserve">
+    <value>Apply price elasticity to all landings</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_FLEET" xml:space="preserve">
+    <value>Apply price elasticity to all landings by fleet {0}: {1}</value>
+    <comment>{0}:prey name, {1}:predator name</comment>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_GROUP" xml:space="preserve">
+    <value>Apply price elasticity to all landings of {0}: {1}</value>
+    <comment>{0}:prey name, {1}:predator name</comment>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_LANDING" xml:space="preserve">
+    <value>Apply price elasticity to fleet {0}: {1} landing {2}: {3}</value>
+    <comment>{0}: fleet index, {1}: fleet name, {2} group index, {3}: group name</comment>
   </data>
 </root>

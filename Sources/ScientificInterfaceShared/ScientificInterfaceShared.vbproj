@@ -119,6 +119,7 @@
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridVisualizerBase.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridProportionVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridRowIndexVisualizer.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridShapeThumbnailVisualizer.vb" />
     <Compile Include="Controls\Format provider\cPropertyFormatProvider.vb" />
     <Compile Include="Controls\Graph renderers\ArrayGraph.vb" />
     <Compile Include="Controls\Format provider\cEwEFormatProvider.vb" />
@@ -201,11 +202,12 @@
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cFishingMortalityShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cFishingShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cForcingFunctionShapeGUIHandler.vb" />
+    <Compile Include="Controls\Shapes\ShapeGUIHandlers\cLandingsShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cTimeSerieShapeGUIHandler.vb" />
-    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineBioPercent.Designer.vb">
-      <DependentUpon>dlgDefineBioPercent.vb</DependentUpon>
+    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.Designer.vb">
+      <DependentUpon>dlgDefineMediationAssignments.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineBioPercent.vb">
+    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cMediationGUIHandler.vb" />
@@ -255,19 +257,19 @@
     <Compile Include="Controls\Shapes\SketchPad\ucSketchPadToolbar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\ucBioPercent.Designer.vb">
-      <DependentUpon>ucBioPercent.vb</DependentUpon>
+    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignments.Designer.vb">
+      <DependentUpon>ucMediationAssignments.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\ucBioPercent.vb">
+    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignments.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\ucBioPercentToolbar.Designer.vb">
-      <DependentUpon>ucBioPercentToolbar.vb</DependentUpon>
+    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignmentsToolbar.Designer.vb">
+      <DependentUpon>ucMediationAssignmentsToolbar.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\ucBioPercentToolbar.vb">
+    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignmentsToolbar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\ucDefBioPercentGrid.vb">
+    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignmentsGrid.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\TextBox\ucCharacterTextBox.vb">
@@ -384,6 +386,7 @@
     <Compile Include="Style\Type formatters\cIUCNConservationTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cOccurrenceTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cClimateTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cFFApplicationTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cOrganismTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cShapeDataFormatter.vb" />
     <Compile Include="Style\Type formatters\cTimeSeriesTypeFormatter.vb" />
@@ -411,8 +414,8 @@
       <DependentUpon>frmCustomMessageBox.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineBioPercent.resx">
-      <DependentUpon>dlgDefineBioPercent.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.resx">
+      <DependentUpon>dlgDefineMediationAssignments.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgChangeShape.resx">
@@ -443,12 +446,12 @@
       <DependentUpon>ucSketchPadToolbar.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\ucBioPercent.resx">
-      <DependentUpon>ucBioPercent.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\ucMediationAssignments.resx">
+      <DependentUpon>ucMediationAssignments.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\ucBioPercentToolbar.resx">
-      <DependentUpon>ucBioPercentToolbar.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\ucMediationAssignmentsToolbar.resx">
+      <DependentUpon>ucMediationAssignmentsToolbar.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Slider\ucSlider.resx">

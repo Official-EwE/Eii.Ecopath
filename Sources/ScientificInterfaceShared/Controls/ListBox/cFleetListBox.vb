@@ -506,7 +506,7 @@ Namespace Controls
 
                 Case eFleetTrackingType.Manual
                     If aiFleets IsNot Nothing Then
-                        For i As Integer = 1 To aiFleets.Length - 1
+                        For i As Integer = 0 To aiFleets.Length - 1
                             Me.Items.Add(New cFleetItem(Me.m_uic.Core.FleetInputs(aiFleets(i))))
                         Next
                     End If

@@ -1060,8 +1060,8 @@ Namespace MSECommandFile
                 End If
 
                 Dim bIsProducer As Boolean = False
-                If core.PPInteractionManager.isPredPrey(Me.m_GroupIndex, Me.m_GroupIndex) Then
-                    Dim PP As cPredPreyInteraction = core.PPInteractionManager.Interaction(Me.m_GroupIndex, Me.m_GroupIndex)
+                If core.MediatedInteractionManager.isPredPrey(Me.m_GroupIndex, Me.m_GroupIndex) Then
+                    Dim PP As cPredPreyInteraction = core.MediatedInteractionManager.PredPreyInteraction(Me.m_GroupIndex, Me.m_GroupIndex)
                     If PP.isProdRate Then
                         bIsProducer = True
                     End If

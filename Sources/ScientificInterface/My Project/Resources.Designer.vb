@@ -96,6 +96,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Apply price elasticity to all landings.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_PRICEELASTICITY_ALL() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_PRICEELASTICITY_ALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply price elasticity to all landings by fleet {0}: {1}.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_PRICEELASTICITY_FLEET() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_PRICEELASTICITY_FLEET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply price elasticity to all landings of {0}: {1}.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_PRICEELASTICITY_GROUP() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_PRICEELASTICITY_GROUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply price elasticity to fleet {0}: {1} landing {2}: {3}.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_PRICEELASTICITY_LANDING() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_PRICEELASTICITY_LANDING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Particle size distribution.
         '''</summary>
         Friend ReadOnly Property CAPTION_PSD() As String
@@ -275,16 +311,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}{1}.
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_APPLYFF_CELLFORMAT() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_APPLYFF_CELLFORMAT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to F.
+        '''  Looks up a localized string similar to F{0}.
         '''</summary>
         Friend ReadOnly Property ECOSIM_APPLYFF_FFTYPE_FORCING() As String
             Get
@@ -293,11 +320,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to M.
+        '''  Looks up a localized string similar to M{0}.
         '''</summary>
         Friend ReadOnly Property ECOSIM_APPLYFF_FFTYPE_MEDIATION() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_APPLYFF_FFTYPE_MEDIATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to ${0}.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY", resourceCulture)
             End Get
         End Property
         
@@ -316,6 +352,15 @@ Namespace My.Resources
         Friend ReadOnly Property ECOSIM_CAPTION_APPLYMED() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_CAPTION_APPLYMED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply price elasticity.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_CAPTION_APPLYPRICEELASTICITY() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_CAPTION_APPLYPRICEELASTICITY", resourceCulture)
             End Get
         End Property
         
@@ -464,6 +509,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to For all pairs with group {0}: {1} as a predator.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_LABEL_APPLY_SHAPES_PRED() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_LABEL_APPLY_SHAPES_PRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to For all prey predator pairs.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_LABEL_APPLY_SHAPES_PREDPREY() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_LABEL_APPLY_SHAPES_PREDPREY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to For all pairs with group {0}: {1} as a prey.
+        '''</summary>
+        Friend ReadOnly Property ECOSIM_LABEL_APPLY_SHAPES_PREY() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_LABEL_APPLY_SHAPES_PREY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Mortality: total, fish.(blue), pred.(red).
         '''</summary>
         Friend ReadOnly Property ECOSIM_PLOT_CAPTION_MORT_CONS() As String
@@ -478,33 +550,6 @@ Namespace My.Resources
         Friend ReadOnly Property ECOSIM_PLOT_CAPTION_MORT_PROD() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_PLOT_CAPTION_MORT_PROD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to For all prey predator pairs.
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_PROMPT_APPLY_SHAPES_ALL() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_PROMPT_APPLY_SHAPES_ALL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to For all pairs with group {0}: {1} as a predator.
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_PROMPT_APPLY_SHAPES_PRED() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_PROMPT_APPLY_SHAPES_PRED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to For all pairs with group {0}: {1} as a prey.
-        '''</summary>
-        Friend ReadOnly Property ECOSIM_PROMPT_APPLY_SHAPES_PREY() As String
-            Get
-                Return ResourceManager.GetString("ECOSIM_PROMPT_APPLY_SHAPES_PREY", resourceCulture)
             End Get
         End Property
         
@@ -3379,51 +3424,6 @@ Namespace My.Resources
         Friend ReadOnly Property SET_VUL_CAPTION() As String
             Get
                 Return ResourceManager.GetString("SET_VUL_CAPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Search rate (a).
-        '''</summary>
-        Friend ReadOnly Property SHAPE_MULTIPLIER_1() As String
-            Get
-                Return ResourceManager.GetString("SHAPE_MULTIPLIER_1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Vulnerability (v).
-        '''</summary>
-        Friend ReadOnly Property SHAPE_MULTIPLIER_2() As String
-            Get
-                Return ResourceManager.GetString("SHAPE_MULTIPLIER_2", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Arena area (A).
-        '''</summary>
-        Friend ReadOnly Property SHAPE_MULTIPLIER_3() As String
-            Get
-                Return ResourceManager.GetString("SHAPE_MULTIPLIER_3", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Vul (v) and area (A).
-        '''</summary>
-        Friend ReadOnly Property SHAPE_MULTIPLIER_4() As String
-            Get
-                Return ResourceManager.GetString("SHAPE_MULTIPLIER_4", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Prod. rate.
-        '''</summary>
-        Friend ReadOnly Property SHAPE_MULTIPLIER_5() As String
-            Get
-                Return ResourceManager.GetString("SHAPE_MULTIPLIER_5", resourceCulture)
             End Get
         End Property
         

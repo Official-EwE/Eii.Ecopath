@@ -989,7 +989,7 @@ Namespace Ecosim
         ''' <remarks>Uses <see cref="cEcoSimModel.CalcCatch"> CalcCatch to compute catch.</see></remarks>
         Private Sub CalcCatchForSearch(ByVal iTime As Integer, ByVal iYear As Integer, ByVal iMonth As Integer, ByVal biomass() As Single, ByVal Fgear() As Single, ByVal QYear() As Single)
             Dim iflt As Integer
-
+            Dim LandingsForValue(,) As Single
             If Not Me.m_search.bInSearch Then
                 'Not in a search so just bump out
                 Exit Sub
@@ -1013,21 +1013,43 @@ Namespace Ecosim
                 End If 'Me.m_MSEData.UseQuotaRegs 
             End If 'Me.m_search.SearchMode = eSearchModes.MSE 
 
+            ReDim LandingsForValue(Me.m_Data.nGroups, Me.m_Data.nGear)
+
             'Calculate the catch
-            Dim Ctemp As Single
+            Dim landings As Single
             For igrp As Integer = 1 To Me.m_EPData.NumLiving
                 For iflt = 1 To Me.m_Data.nGear
-                    'catch calculated by ecosim
-                    Ctemp = Me.CalcCatch(igrp, iflt, biomass(igrp), Fgear(iflt), Me.m_Data.relQ(iflt, igrp), QYear(iflt)) / 12
+                    'landings calculated by ecosim
+                    'discards are not included
+                    landings = Me.CalcCatch(igrp, iflt, biomass(igrp), Fgear(iflt), Me.m_Data.relQ(iflt, igrp), QYear(iflt)) / 12.0F
                     'sum into yearly value for searches
-                    Me.m_search.CatchYear(iflt, igrp) += Ctemp
-                    Me.m_search.CatchYearGroup(igrp) += Ctemp
-                    If iYear > m_search.BaseYear Then
-                        'Value of catch for the search includes discount factor
-                        Me.m_search.ValCatch(iflt, igrp) += Ctemp * Me.m_search.DF * Me.m_EPData.Market(iflt, igrp)
-                    End If
+                    Me.m_search.CatchYear(iflt, igrp) += landings
+                    Me.m_search.CatchYearGroup(igrp) += landings
+
+                    'Price Elasticity function are based on the yearly Ecopath Landings
+                    'Searches use average annual value so they sum the monthly values
+                    'so we need to convert this back to Ecopath yearly values for the Price Elasticity to return the correct value
+                    LandingsForValue(igrp, iflt) += landings * 12
                 Next
             Next
+
+            'Now get Value of the landings 
+            If iYear > m_search.BaseYear Then
+                'Value of catch for the search includes discount factor
+
+                'set PriceMedData.MedVal() as a function of landings(supply) for all applied price elasticity functions
+                Me.m_Data.PriceMedData.SetPriceMedFunctions(LandingsForValue)
+
+                'now get the value for all Group, Fleets based on the price elasticity function
+                For igrp As Integer = 1 To Me.nGroups
+                    For iflt = 1 To Me.m_Data.nGear
+                        'Value = Landings * [mediated price] * [Discount Factor]
+                        Me.m_search.ValCatch(iflt, igrp) += LandingsForValue(igrp, iflt) * Me.getElasticPrice(igrp, iflt) * Me.m_search.DF / 12.0F
+
+                    Next
+                Next
+
+            End If
 
         End Sub
 
@@ -1046,9 +1068,76 @@ Namespace Ecosim
                                     ByVal B As Single, ByVal Effort As Single, ByVal Fmort As Single, _
                                      ByVal QYear As Single) As Single
 
-            Return Me.m_Data.PropLandedTime(iFlt, iGrp) * B * Me.Qmult(iGrp) * QYear * Effort * Fmort
+            Return B * Fmort * Effort * Me.Qmult(iGrp) * Me.m_Data.PropLandedTime(iFlt, iGrp) * QYear
 
         End Function
+
+        ''' <summary>
+        ''' Calculate the Price Elasticity value of the landings from Ecosim Results for a time step
+        ''' </summary>
+        ''' <param name="iTime"></param>
+        ''' <remarks></remarks>
+        Public Sub CalcValueFromLandings(ByVal iTime As Integer)
+
+            'set PriceMedData.MedVal() for all applied price elasticity functions
+            'using landings at the current time step
+            Me.m_Data.PriceMedData.SetPriceMedFunctions(Me.m_Data.ResultsLandings)
+
+            'now get the value for all Group, Fleets based on the price elasticity function
+            For igrp As Integer = 1 To Me.nGroups
+                For iflt As Integer = 1 To Me.m_Data.nGear
+                    'Landings are the "Ecopath" landings (discards not included) which is the annual landings
+                    'Value is monthly so convert to monthly / 12
+                    'Value = Landings * [mediated price] / 12
+                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.getElasticPrice(igrp, iflt) / 12.0F
+
+                    Me.m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) += value
+                    Me.m_Data.ResultsSumValueByGear(iflt, iTime) += value
+
+                    'sum all value into the zero fleet index
+                    Me.m_Data.ResultsSumValueByGroupGear(igrp, 0, iTime) += value
+                    Me.m_Data.ResultsSumValueByGear(0, iTime) += value
+                Next
+            Next
+
+        End Sub
+
+
+
+        ''' <summary>
+        ''' Return market value (off vessel price) as a function of the applied price elasticity functions 
+        ''' </summary>
+        ''' <param name="iGrp">Index of the affected group. This is the group that the price function is applied to in the application grid.</param>
+        ''' <param name="iFlt">Index of the affected fleet. This is the fleet that the price function is applied to in the application grid.</param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function getElasticPrice(ByVal iGrp As Integer, ByVal iFlt As Integer) As Single
+            Dim pMult As Single
+            Dim bFoundMed As Boolean = False
+
+            'now sum the multiplier for all applied price med functions for this Group Fleet
+            For iFnt As Integer = 1 To m_Data.MaxFunctions
+
+                If m_Data.PriceMedFuncNum(iGrp, iFlt, iFnt) <= 0 Then
+                    Exit For
+                End If
+
+                pMult += m_Data.PriceMedData.MedVal(m_Data.PriceMedFuncNum(iGrp, iFlt, iFnt))
+                bFoundMed = True
+
+            Next
+
+            'If bFoundMed Then
+            '    System.Console.WriteLine("Market value=" & Me.m_EPData.Market(iFlt, iGrp).ToString & ", mediation=" & pMult.ToString)
+            'End If
+
+            'No price elasticity function found set the multiplier to 1
+            If Not bFoundMed Then pMult = 1
+            'apply the price elasticity multiplier to market value for this Group/Fleet
+            Return Me.m_EPData.Market(iFlt, iGrp) * pMult
+
+        End Function
+
 
 
         Private Sub setBiomassForcing(ByVal iYear As Integer)
@@ -1724,7 +1813,10 @@ Namespace Ecosim
                 Dim igrp As Integer
                 Dim totMort As Single
                 Dim startCatch As Single
+
+                'Clear out data from last timestep
                 Me.m_Results.clear()
+                Array.Clear(Me.m_Data.ResultsLandings, 0, Me.m_Data.ResultsLandings.Length)
 
                 m_Results.CurrentT = iTime
                 'increment the number of time steps in the summary data
@@ -1790,7 +1882,6 @@ Namespace Ecosim
 
                     If m_Data.FishTime(igrp) > 0 Then
                         Dim bioCatch As Single
-                        Dim valueCatch As Single
                         Dim FleetProp As Single
 
                         'Bug #817 When F time series is loaded the F is loaded directly into FishRateNo() and FishTime()
@@ -1798,16 +1889,18 @@ Namespace Ecosim
 
                         'If F time series is loaded then only F from the time series makes up the catch.
                         'Not the sum across all the fleets. This ignores the catch from the fleets and puts all the catch into the first fleet.
-                        'This is still sort of wrong but at least the Catch value is correct just not the fleet that caught it, which we cannot know from the time series data.
+                        'This is still sort of wrong but at least the Catch weight is correct just not the fleet that caught it, which we cannot know from the time series data.
 
                         For iflt = 1 To m_Data.nGear
                             If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
 
                                 FleetProp = m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
-                                'F is forced so assume (wrongly?) that all catch is from one fleet
+                                'F is forced so assume (possible wrongly?) that all catch is from the first fleet the exploits this group
                                 If Me.m_Data.FisForced(igrp) Then FleetProp = 1
 
                                 bioCatch = BB(igrp) * m_Data.FishTime(igrp) * FleetProp
+
+                                Me.m_Data.ResultsLandings(igrp, iflt) += bioCatch * Me.m_EPData.PropLanded(iflt, igrp)
 
                                 m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = bioCatch
                                 m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime) = bioCatch / BB(igrp)
@@ -1816,14 +1909,6 @@ Namespace Ecosim
 
                                 m_Data.ResultsSumCatchByGear(iflt, iTime) = m_Data.ResultsSumCatchByGear(iflt, iTime) + bioCatch
                                 m_Data.ResultsSumCatchByGear(0, iTime) = m_Data.ResultsSumCatchByGear(0, iTime) + bioCatch
-
-                                valueCatch = bioCatch * m_EPData.Market(iflt, igrp) * m_EPData.Landing(iflt, igrp) / (m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp))
-                                m_Data.ResultsSumValueByGear(iflt, iTime) += valueCatch
-                                m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) += valueCatch
-
-                                'combined fleets in zero index
-                                m_Data.ResultsSumValueByGear(0, iTime) = m_Data.ResultsSumValueByGear(0, iTime) + valueCatch
-                                m_Data.ResultsSumValueByGroupGear(igrp, 0, iTime) = m_Data.ResultsSumValueByGroupGear(igrp, 0, iTime) + valueCatch
 
                                 ' Catch by group, by fleet
                                 m_Results.BCatch(igrp, iflt) = bioCatch
@@ -1848,6 +1933,8 @@ Namespace Ecosim
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ProdConsump, igrp, iTime) = SimGEtemp(igrp)
 
                 Next igrp
+
+                Me.CalcValueFromLandings(iTime)
 
                 'effort
                 For iflt = 1 To m_Data.nGear
@@ -2200,7 +2287,7 @@ Namespace Ecosim
 
                 ReDim m_Data.ToDetritus(nGroups - m_EPData.NumLiving)
 
-                If m_Data.MedIsUsed(0) Then SetMedFunctions(Biomass)
+                If m_Data.BioMedData.MedIsUsed(0) Then SetMedFunctions(Biomass)
 
                 setpred(Biomass)
 
@@ -2555,6 +2642,9 @@ Namespace Ecosim
 
             'Mediation initialization:
             InitializeMedFunctions()
+
+            Me.InitializePriceFunctions()
+
             'multiple stanza initialize
             Dim B() As Single
             ReDim B(nGroups)
@@ -2814,13 +2904,14 @@ Namespace Ecosim
             Dim ii As Integer, i As Integer, j As Integer, jj As Integer ', MedX As Single
             Dim msg As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
+            Dim medData As cMediationData = Me.m_Data.BioMedData
 
             'Clear out the old data set all mediation functions to false
             'SetMedFunctions is only called from derivt if
             'MedIsUsed(0) is set to true
-            For i = 0 To m_Data.MediationShapes
-                m_Data.MedIsUsed(i) = False
-                m_Data.MedVal(i) = 1
+            For i = 0 To medData.MediationShapes
+                medData.MedIsUsed(i) = False
+                medData.MedVal(i) = 1
             Next
 
             'now set MedIsUsed() to True for all trophic links that have had IsMedFunction() set to True 
@@ -2828,8 +2919,8 @@ Namespace Ecosim
                 i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
                 For jj = 1 To m_Data.MaxFunctions
                     If m_Data.IsMedFunction(i, j, jj) Then        'MF() ranges from 0 to MediationShapes (=9)
-                        m_Data.MedIsUsed(0) = True
-                        m_Data.MedIsUsed(m_Data.FunctionNumber(i, j, jj)) = True
+                        medData.MedIsUsed(0) = True
+                        medData.MedIsUsed(m_Data.FunctionNumber(i, j, jj)) = True
                     End If
                 Next
             Next
@@ -2839,36 +2930,36 @@ Namespace Ecosim
                 If m_EPData.PP(ii) = 1 Then
                     For jj = 1 To m_Data.MaxFunctions
                         If m_Data.IsMedFunction(ii, ii, jj) Then
-                            m_Data.MedIsUsed(0) = True
-                            m_Data.MedIsUsed(m_Data.FunctionNumber(ii, ii, jj)) = True
+                            medData.MedIsUsed(0) = True
+                            medData.MedIsUsed(m_Data.FunctionNumber(ii, ii, jj)) = True
                         End If
                     Next
                 End If
             Next
 
-            For i = 1 To m_Data.MediationShapes
+            For i = 1 To medData.MediationShapes
                 'jb removed the MedIsUsed() so that all mediation functions get initialized
                 'this is for the Single Player Game it needs to use the mediation functions even if they have not been assigned e.g. MedIsUsed(SinglePlayerMedFunction) = false
                 'this should not matter as all operations on the med function have to check MedIsUsed() before use... I hope...
                 ' If m_Data.MedIsUsed(i) = True Then
 
-                m_Data.MedXbase(i) = 0
+                medData.MedXbase(i) = 0
                 jj = 0
                 For j = 1 To nGroups + m_EPData.NumFleet
-                    If m_Data.MedWeights(j, i) > 0 Then
+                    If medData.MedWeights(j, i) > 0 Then
                         jj = jj + 1
                         If j <= nGroups Then
-                            m_Data.MedXbase(i) = m_Data.MedXbase(i) + m_Data.MedWeights(j, i) * m_Data.StartBiomass(j)
+                            medData.MedXbase(i) = medData.MedXbase(i) + medData.MedWeights(j, i) * m_Data.StartBiomass(j)
                         Else
-                            m_Data.MedXbase(i) = m_Data.MedXbase(i) + m_Data.MedWeights(j, i) * m_Data.FishRateGear(j - nGroups, 0)
+                            medData.MedXbase(i) = medData.MedXbase(i) + medData.MedWeights(j, i) * m_Data.FishRateGear(j - nGroups, 0)
                         End If
-                        m_Data.IMedUsed(jj, i) = j
+                        medData.IMedUsed(jj, i) = j
                     End If
                 Next
 
-                m_Data.NMedXused(i) = jj
-                m_Data.MedYbase(i) = m_Data.Medpoints(m_Data.IMedBase(i), i)
-                If m_Data.MedYbase(i) = 0 Then
+                medData.NMedXused(i) = jj
+                medData.MedYbase(i) = medData.Medpoints(medData.IMedBase(i), i)
+                If medData.MedYbase(i) = 0 Then
 
                     ' Create base message
                     If (msg Is Nothing) Then
@@ -2878,17 +2969,99 @@ Namespace Ecosim
 
                     ' Add detail
                     vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                             String.Format(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, Me.m_Data.MediationTitles(i)), _
+                                             String.Format(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, medData.MediationTitles(i)), _
                                              eVarNameFlags.MedFunctNumber, eDataTypes.Mediation, eCoreComponentType.EcoSim, i)
                     msg.AddVariable(vs)
                     ' Flag med fn as unusable
-                    m_Data.MedIsUsed(i) = False
+                    medData.MedIsUsed(i) = False
                 End If
-                If jj = 0 Or m_Data.MedXbase(i) = 0 Then
-                    m_Data.MedIsUsed(i) = False
+                If jj = 0 Or medData.MedXbase(i) = 0 Then
+                    medData.MedIsUsed(i) = False
                 End If
                 ' End If
             Next
+
+        End Sub
+
+        Public Sub InitializePriceFunctions()
+
+            Dim iShp As Integer, iGrp As Integer, nGrps As Integer ', MedX As Single
+            Dim msg As cMessage = Nothing
+            Dim vs As cVariableStatus = Nothing
+            Dim PriceMedData As cMediationData = Me.m_Data.PriceMedData
+
+            Try
+
+                'PriceMedData.MedPriceWeights(5, 1, 1) = 1
+
+                'Clear out the old data set all mediation functions to false
+                'SetMedFunctions is only called from derivt if
+                'MedIsUsed(0) is set to true
+                For iShp = 0 To PriceMedData.MediationShapes
+                    PriceMedData.MedIsUsed(iShp) = False
+                    PriceMedData.MedVal(iShp) = 1
+                Next
+
+                For iGrp = 1 To Me.nGroups
+                    For iflt As Integer = 1 To Me.m_Data.nGear
+                        For iFnt As Integer = 1 To m_Data.MaxFunctions
+                            If m_Data.PriceMedFuncNum(iGrp, iflt, iFnt) Then        'MF() ranges from 0 to MediationShapes (=9)
+                                PriceMedData.MedIsUsed(m_Data.PriceMedFuncNum(iGrp, iflt, iFnt)) = True
+                            End If
+                        Next
+                    Next
+                Next
+
+                For iShp = 1 To PriceMedData.MediationShapes
+                    'jb removed the MedIsUsed() so that all mediation functions get initialized
+                    'this is for the Single Player Game it needs to use the mediation functions even if they have not been assigned e.g. MedIsUsed(SinglePlayerMedFunction) = false
+                    'this should not matter as all operations on the med function have to check MedIsUsed() before use... I hope...
+                    ' If m_Data.MedIsUsed(i) = True Then
+                    PriceMedData.MedXbase(iShp) = 0
+                    nGrps = 0
+                    For iGrp = 1 To nGroups
+                        For iflt As Integer = 1 To Me.m_EPData.NumFleet
+                            If PriceMedData.MedPriceWeights(iGrp, iflt, iShp) > 0 Then
+                                'sum the weighted landings across all the fleets on this group 
+                                'for baseline X on this price elasticity function
+
+                                nGrps = nGrps + 1
+                                PriceMedData.MedXbase(iShp) += Me.m_EPData.Landing(iflt, iGrp) * PriceMedData.MedPriceWeights(iGrp, iflt, iShp)
+                                PriceMedData.IMedUsed(nGrps, iShp) = iGrp
+                                PriceMedData.IMedFltUsed(nGrps, iShp) = iflt
+                            End If
+                        Next
+                    Next
+
+                    PriceMedData.NMedXused(iShp) = nGrps
+                    PriceMedData.MedYbase(iShp) = PriceMedData.Medpoints(PriceMedData.IMedBase(iShp), iShp)
+                    If PriceMedData.MedYbase(iShp) = 0 Then
+
+                        ' Create base message
+                        If (msg Is Nothing) Then
+                            msg = New cMessage(My.Resources.CoreMessages.MEDIATION_ZERO_BASE, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                            Me.m_publisher.AddMessage(msg)
+                        End If
+
+                        ' Add detail
+                        vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
+                                                 String.Format(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, PriceMedData.MediationTitles(iShp)), _
+                                                 eVarNameFlags.MedFunctNumber, eDataTypes.Mediation, eCoreComponentType.EcoSim, iShp)
+                        msg.AddVariable(vs)
+                        ' Flag med fn as unusable
+                        PriceMedData.MedIsUsed(iShp) = False
+                    End If
+
+                    If nGrps = 0 Or PriceMedData.MedXbase(iShp) = 0 Then
+                        PriceMedData.MedIsUsed(iShp) = False
+                    End If
+
+                Next
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".InitializePriceFunctions() Exception: " & ex.Message)
+            End Try
+
 
         End Sub
         '***********************
@@ -2898,33 +3071,35 @@ Namespace Ecosim
         Friend Sub SetMedFunctions(ByVal Biom() As Single)
             'called from derivt, derivtred if MedIsUsed(0)=true to set
             'current Y value of each active trophic mediation function
-            Dim i As Integer, j As Integer, MedX As Single, ip As Long
+            Me.m_Data.BioMedData.SetMedFunctions(Biom, TimeNow, Me.m_Data)
 
-            Try
+            'Dim i As Integer, j As Integer, MedX As Single, ip As Long
+            'Dim medData As cMediationData = Me.m_Data.BioMedData
+            'Try
 
-                For i = 1 To m_Data.MediationShapes
-                    If m_Data.MedIsUsed(i) Then
-                        MedX = 0.0000000001
-                        For j = 1 To m_Data.NMedXused(i)
-                            If m_Data.IMedUsed(j, i) <= nGroups Then
-                                MedX = MedX + Biom(m_Data.IMedUsed(j, i)) * m_Data.MedWeights(m_Data.IMedUsed(j, i), i)
-                            Else    'a fleet
-                                MedX = MedX + m_Data.FishRateGear(m_Data.IMedUsed(j, i) - nGroups, TimeNow) * m_Data.MedWeights(m_Data.IMedUsed(j, i), i)
-                            End If
-                        Next
-                        '060328 CJW found that without the +0.01 below it could be unstable when slope
-                        'was large around Ecopath base point in mediation function, causing instability.
-                        'This solves it. VC.
-                        ip = Int(m_Data.IMedBase(i) * MedX / m_Data.MedXbase(i) + 0.01)
-                        If ip < 1 Then ip = 1
-                        If ip > m_Data.NMedPoints Then ip = m_Data.NMedPoints
-                        m_Data.MedVal(i) = m_Data.Medpoints(ip, i) / m_Data.MedYbase(i)
-                    End If
-                Next
+            '    For i = 1 To medData.MediationShapes
+            '        If medData.MedIsUsed(i) Then
+            '            MedX = 0.0000000001
+            '            For j = 1 To medData.NMedXused(i)
+            '                If medData.IMedUsed(j, i) <= nGroups Then
+            '                    MedX = MedX + Biom(medData.IMedUsed(j, i)) * medData.MedWeights(medData.IMedUsed(j, i), i)
+            '                Else    'a fleet
+            '                    MedX = MedX + m_Data.FishRateGear(medData.IMedUsed(j, i) - nGroups, TimeNow) * medData.MedWeights(medData.IMedUsed(j, i), i)
+            '                End If
+            '            Next
+            '            '060328 CJW found that without the +0.01 below it could be unstable when slope
+            '            'was large around Ecopath base point in mediation function, causing instability.
+            '            'This solves it. VC.
+            '            ip = Int(medData.IMedBase(i) * MedX / medData.MedXbase(i) + 0.01)
+            '            If ip < 1 Then ip = 1
+            '            If ip > medData.NMedPoints Then ip = medData.NMedPoints
+            '            medData.MedVal(i) = medData.Medpoints(ip, i) / medData.MedYbase(i)
+            '        End If
+            '    Next
 
-            Catch ex As Exception
-                '  Debug.Assert(False)
-            End Try
+            'Catch ex As Exception
+            '    '  Debug.Assert(False)
+            'End Try
 
         End Sub
 
@@ -3985,7 +4160,7 @@ Namespace Ecosim
                 If m_Data.FunctionNumber(i, j, K) <= 0 Then Exit Sub
 
                 If m_Data.IsMedFunction(i, j, K) Then
-                    Mult = m_Data.MedVal(m_Data.FunctionNumber(i, j, K))
+                    Mult = m_Data.BioMedData.MedVal(m_Data.FunctionNumber(i, j, K))
                 Else
                     If UseTime = True Then Mult = m_Data.tval(m_Data.FunctionNumber(i, j, K)) Else Mult = 1
                 End If

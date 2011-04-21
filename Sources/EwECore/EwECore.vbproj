@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CDECE065-503A-4562-A955-06777B2F909E}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -128,7 +128,7 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceTimestep.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceScenario.vb" />
     <Compile Include="Monte Carlo\cMonteCarloThread.vb" />
-    <Compile Include="Shapes\Forcing Functions\cPPIManager.vb" />
+    <Compile Include="Shapes\Forcing Functions\cMediatedInteractionManager.vb" />
     <Compile Include="Core\cCore.vb" />
     <Compile Include="Core\cCoreStateMonitor.vb" />
     <Compile Include="Core\cEwEModel.vb" />
@@ -141,7 +141,7 @@
     <Compile Include="Core\cValue.vb" />
     <Compile Include="Core\cVariableMetaData.vb" />
     <Compile Include="Core\ICoreInputOutput.vb" />
-    <Compile Include="Shapes\Forcing Functions\cPredPreyInteraction.vb" />
+    <Compile Include="Shapes\Forcing Functions\cMediatedInteraction.vb" />
     <Compile Include="DataSource\IEcosimDatasource.vb" />
     <Compile Include="DataSource\IEcopathDataSource.vb" />
     <Compile Include="DataSource\IEcospaceDatasource.vb" />
@@ -236,6 +236,7 @@
     <Compile Include="Database\Updates\cDBUpdate6_01_01_005.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_01_006.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_01_010.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_01_01_011.vb" />
     <Compile Include="EcoPath\cEcopathModelFromEcosim.vb" />
     <Compile Include="HelperClasses\cPathUtility.vb" />
     <Compile Include="Pedigree\cPedigreeLevel.vb" />
@@ -362,6 +363,8 @@
     <Compile Include="Particle size distribution\Model\cPSDModel.vb" />
     <Compile Include="Search\SearchInputOutput.vb" />
     <Compile Include="Search\SearchManager.vb" />
+    <Compile Include="Shapes\Forcing Functions\cLandingsInteraction.vb" />
+    <Compile Include="Shapes\Forcing Functions\cPredPreyInteraction.vb" />
     <Compile Include="Shapes\TimeSeries\cFleetTimeSeries.vb" />
     <Compile Include="Shapes\TimeSeries\cGroupTimeSeries.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesFactory.vb" />

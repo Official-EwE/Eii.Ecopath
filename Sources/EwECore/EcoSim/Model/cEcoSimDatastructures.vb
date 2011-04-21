@@ -41,6 +41,17 @@ Public Class cEcosimDatastructures
         Consumption
     End Enum
 
+    ''' <summary>
+    ''' Mediation data for Biomass Mediation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public BioMedData As New cMediationData
+
+    ''' <summary>
+    ''' Mediation data for Price Elasticity (mediation function)
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public PriceMedData As New cMediationData
 
     ''' <summary>
     ''' Boolean flag set by the calling routine to tell Ecosim if it should process the output timestep data cEcoSImModel.ProcessTimeStep()
@@ -263,6 +274,11 @@ Public Class cEcosimDatastructures
     Public FunctionType(,,) As Integer
 
     ''' <summary>
+    ''' Price mediation function number(price elasticity), group x fleet x maxfn
+    ''' </summary>
+    Public PriceMedFuncNum(,,) As Integer
+
+    ''' <summary>
     ''' Feeding Time scaling value
     ''' </summary>
     ''' <remarks>Default value = one set in InitialState. Computed at the end of each time step in rk4()</remarks>
@@ -328,35 +344,35 @@ Public Class cEcosimDatastructures
     End Structure
 
     'there is one ShapeParameters array for each type of shape that has parameters Mediation and Forcing
-    Public MediationShapeParams() As ShapeParameters 'parameters that where used to create a curve from the Database Table and Fields i.e. EcoSimShapes.YZero
+    'Public MediationShapeParams() As ShapeParameters 'parameters that where used to create a curve from the Database Table and Fields i.e. EcoSimShapes.YZero
     Public ForcingShapeParams() As ShapeParameters 'Time and EggProd
 
     'jb April-25-06 added to hold titles of mediation shapes
-    Public MediationTitles() As String
+    'Public MediationTitles() As String
 
-    'jb May-09-2006 Database ID's Unique ID from the Database for each object
-    Public MediationDBIDs() As Integer
+    ''jb May-09-2006 Database ID's Unique ID from the Database for each object
+    'Public MediationDBIDs() As Integer
     Public ForcingDBIDs() As Integer 'because Time(Forcing) and EggProd shapes are stored in the same arrays and this is for both shape types
     'is this shape a seasonal forcing shape
     Public isSeasonal() As Boolean
 
-    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    'Mediation vars 
-    'these may get moved into their own class
-    Public MediationShapes As Integer
-    Public NMedPoints As Integer 'number of points per mediation function
-    Public Medpoints(,) As Single 'mediation function points
-    Public MedWeights(,) As Single 'defines biomass weights for med X
-    Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation
-    Public IMedUsed(,) As Integer 'groups used in med function X IMedUsed(nGroups + nGear, MediationShapes)
-    Public MedXbase() As Single 'ecopath base value of med function X
-    Public MedYbase() As Single 'value of med function at ecopath base X
-    Public MedIsUsed() As Boolean 'true if med function iMediation is used
-    Public MedVal() As Single 'current value of mediation function
+    ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    ''Mediation vars 
+    ''these may get moved into their own class
+    'Public MediationShapes As Integer
+    'Public NMedPoints As Integer 'number of points per mediation function
+    'Public Medpoints(,) As Single 'mediation function points
+    'Public MedWeights(,) As Single 'defines biomass weights for med X
+    'Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation
+    'Public IMedUsed(,) As Integer 'groups used in med function X IMedUsed(nGroups + nGear, MediationShapes)
+    'Public MedXbase() As Single 'ecopath base value of med function X
+    'Public MedYbase() As Single 'value of med function at ecopath base X
+    'Public MedIsUsed() As Boolean 'true if med function iMediation is used
+    'Public MedVal() As Single 'current value of mediation function
 
-    'IMedBase() index of ecopath base biomass vertical line on mediation plot
-    'integer X positions for ecopath base X
-    Public IMedBase() As Integer
+    ''IMedBase() index of ecopath base biomass vertical line on mediation plot
+    ''integer X positions for ecopath base X
+    'Public IMedBase() As Integer
 
     Public inlinks As Integer 'total number of links/flow between groups
     Public ilink() As Integer 'iPrey for inlinks 
@@ -401,6 +417,9 @@ Public Class cEcosimDatastructures
     Public ResultsSumCatchByGroupGear(,,) As Single
     ''' <summary>fleets x time</summary>
     Public ResultsSumCatchByGear(,) As Single
+
+    ''' <summary>Landings by Group, Fleet</summary>
+    Public ResultsLandings(,) As Single
 
     ''' <summary>
     ''' Fishing mortality by time
@@ -624,6 +643,8 @@ Public Class cEcosimDatastructures
         ReDim IsMedFunction(nGroups, nGroups, MaxFunctions)
         ReDim FunctionType(nGroups, nGroups, MaxFunctions)
 
+        ReDim PriceMedFuncNum(nGroups, nGear, MaxFunctions)
+
         ReDim TLSim(nGroups)
 
         ReDim GroupDetritus(nGroups)
@@ -669,20 +690,20 @@ Public Class cEcosimDatastructures
         Me.FishRateNo = Nothing ' (nGroups, nTimeSteps))  'was 1200
         Me.FishRateGear = Nothing '  (nGear + 1, nTimeSteps))  'was 1200
 
-        Me.Medpoints = Nothing ' (NMedPoints, MediationShapes)
-        Me.MedWeights = Nothing ' (nGroups + nGear, MediationShapes)
-        Me.NMedXused = Nothing ' (MediationShapes)
-        Me.IMedUsed = Nothing ' (nGroups + nGear, MediationShapes)
-        Me.MedXbase = Nothing ' (MediationShapes)
-        Me.MedYbase = Nothing ' (MediationShapes)
-        Me.MedIsUsed = Nothing ' (MediationShapes)
-        Me.MedVal = Nothing ' (MediationShapes)
-        Me.IMedBase = Nothing ' (MediationShapes)
+        'Me.Medpoints = Nothing ' (NMedPoints, MediationShapes)
+        'Me.MedWeights = Nothing ' (nGroups + nGear, MediationShapes)
+        'Me.NMedXused = Nothing ' (MediationShapes)
+        'Me.IMedUsed = Nothing ' (nGroups + nGear, MediationShapes)
+        'Me.MedXbase = Nothing ' (MediationShapes)
+        'Me.MedYbase = Nothing ' (MediationShapes)
+        'Me.MedIsUsed = Nothing ' (MediationShapes)
+        'Me.MedVal = Nothing ' (MediationShapes)
+        'Me.IMedBase = Nothing ' (MediationShapes)
 
-        'jb added
-        Me.MediationTitles = Nothing ' (MediationShapes)
-        Me.MediationShapeParams = Nothing ' (MediationShapes)
-        Me.MediationDBIDs = Nothing ' (MediationShapes)
+        ''jb added
+        'Me.MediationTitles = Nothing ' (MediationShapes)
+        'Me.MediationShapeParams = Nothing ' (MediationShapes)
+        'Me.MediationDBIDs = Nothing ' (MediationShapes)
 
         Me.FIB = Nothing ' (nTimesteps)
         Me.TLC = Nothing ' (nTimesteps)     'TL of catch in Ecosim
@@ -873,8 +894,8 @@ Public Class cEcosimDatastructures
 
             'set the new number of shapes this was decided by the database and passed in for robustness
             'this way the number of shapes is controlled by the datasource
-            MediationShapes = newNumberOfShapes
-            ReDimMediation()
+            Me.BioMedData.MediationShapes = newNumberOfShapes
+            Me.BioMedData.ReDimMediation(Me.nGroups, Me.nGear)
             Return True
 
         Catch ex As Exception
@@ -1000,50 +1021,50 @@ Public Class cEcosimDatastructures
     End Sub
 
 
-    ''' <summary>
-    ''' Redimension all variables by NMedPoints and/or MediationShapes
-    ''' </summary>
-    ''' <remarks>Call this any time the number of MediationShapes has changed. This will clear out any data that was in memory.
-    '''  Core.CoreForcingFunctionUpdater() will update all EcoSim Forcing and Mediation function data with the data held currently in memory by the Shape Managers.</remarks>
-    Public Sub ReDimMediation()
-        Dim i, j As Integer
-        'following is for Mediation:
-        NMedPoints = 1200
-        ' JS18apr09: spawning 9 dummy mediation shapes without any valid database IDS screws up the database
-        '            I tested Ecosim without mediation shapes and both core and GUI behave well
-        'If MediationShapes <= 0 Then MediationShapes = 9
-        ReDim Medpoints(NMedPoints, MediationShapes)
-        ReDim MedWeights(nGroups + nGear, MediationShapes)
-        ReDim NMedXused(MediationShapes)
-        ReDim IMedUsed(nGroups + nGear, MediationShapes)
-        ReDim MedXbase(MediationShapes)
-        ReDim MedYbase(MediationShapes)
-        ReDim MedIsUsed(MediationShapes)
-        ReDim MedVal(MediationShapes)
-        ReDim IMedBase(MediationShapes)
+    '''' <summary>
+    '''' Redimension all variables by NMedPoints and/or MediationShapes
+    '''' </summary>
+    '''' <remarks>Call this any time the number of MediationShapes has changed. This will clear out any data that was in memory.
+    ''''  Core.CoreForcingFunctionUpdater() will update all EcoSim Forcing and Mediation function data with the data held currently in memory by the Shape Managers.</remarks>
+    'Public Sub ReDimMediation()
+    '    Dim i, j As Integer
+    '    'following is for Mediation:
+    '    NMedPoints = 1200
+    '    ' JS18apr09: spawning 9 dummy mediation shapes without any valid database IDS screws up the database
+    '    '            I tested Ecosim without mediation shapes and both core and GUI behave well
+    '    'If MediationShapes <= 0 Then MediationShapes = 9
+    '    ReDim Medpoints(NMedPoints, MediationShapes)
+    '    ReDim MedWeights(nGroups + nGear, MediationShapes)
+    '    ReDim NMedXused(MediationShapes)
+    '    ReDim IMedUsed(nGroups + nGear, MediationShapes)
+    '    ReDim MedXbase(MediationShapes)
+    '    ReDim MedYbase(MediationShapes)
+    '    ReDim MedIsUsed(MediationShapes)
+    '    ReDim MedVal(MediationShapes)
+    '    ReDim IMedBase(MediationShapes)
 
-        'jb added
-        ReDim MediationTitles(MediationShapes)
-        ReDim MediationShapeParams(MediationShapes)
-        ReDim MediationDBIDs(MediationShapes)
+    '    'jb added
+    '    ReDim MediationTitles(MediationShapes)
+    '    ReDim MediationShapeParams(MediationShapes)
+    '    ReDim MediationDBIDs(MediationShapes)
 
-        'jb this is now handled by MedShapeParams() above
-        'If ForcingShapes > MediationShapes Then
-        '    ReDim Preserve Shapes(5, ForcingShapes)
-        'Else
-        '    ReDim Preserve Shapes(5, MediationShapes)
-        'End If
+    '    'jb this is now handled by MedShapeParams() above
+    '    'If ForcingShapes > MediationShapes Then
+    '    '    ReDim Preserve Shapes(5, ForcingShapes)
+    '    'Else
+    '    '    ReDim Preserve Shapes(5, MediationShapes)
+    '    'End If
 
-        'ToDo: Sort out XBaseLine()what is it used for
-        'ReDim XBaseLine(MediationShapes)
-        For i = 0 To MediationShapes
-            IMedBase(i) = NMedPoints \ 3
-            For j = 0 To NMedPoints
-                Medpoints(j, i) = 0.5
-            Next
-        Next
+    '    'ToDo: Sort out XBaseLine()what is it used for
+    '    'ReDim XBaseLine(MediationShapes)
+    '    For i = 0 To MediationShapes
+    '        IMedBase(i) = NMedPoints \ 3
+    '        For j = 0 To NMedPoints
+    '            Medpoints(j, i) = 0.5
+    '        Next
+    '    Next
 
-    End Sub
+    'End Sub
 
 
 
@@ -1221,6 +1242,8 @@ Public Class cEcosimDatastructures
 
         ReDim ProfitByFleet(Me.nGear)
         ReDim EmploymentValueByFleet(Me.nGear)
+
+        ReDim ResultsLandings(Me.nGroups, Me.nGear)
 
     End Sub
 
@@ -1421,25 +1444,25 @@ Public Class cEcosimDatastructures
             d.ForcingApplicationType = ForcingApplicationType.Clone
             'ShapeParameters = ShapeParameters.clone
 
-            d.MediationShapeParams = MediationShapeParams.Clone
+            '    d.MediationShapeParams = MediationShapeParams.Clone
             d.ForcingShapeParams = ForcingShapeParams.Clone
-            d.MediationTitles = MediationTitles.Clone
-            d.MediationDBIDs = MediationDBIDs.Clone
+            '   d.MediationTitles = MediationTitles.Clone
+            '   d.MediationDBIDs = MediationDBIDs.Clone
             d.ForcingDBIDs = ForcingDBIDs.Clone
             d.isSeasonal = isSeasonal.Clone
 
-            'Mediation vars 
-            d.MediationShapes = MediationShapes
-            d.NMedPoints = NMedPoints
-            d.Medpoints = Medpoints.Clone
-            d.MedWeights = MedWeights.Clone
-            d.NMedXused = NMedXused.Clone
-            d.IMedUsed = IMedUsed.Clone
-            d.MedXbase = MedXbase.Clone
-            d.MedYbase = MedYbase.Clone
-            d.MedIsUsed = MedIsUsed.Clone  '
-            d.MedVal = MedVal.Clone
-            d.IMedBase = IMedBase.Clone
+            ''Mediation vars 
+            'd.MediationShapes = MediationShapes
+            'd.NMedPoints = NMedPoints
+            'd.Medpoints = Medpoints.Clone
+            'd.MedWeights = MedWeights.Clone
+            'd.NMedXused = NMedXused.Clone
+            'd.IMedUsed = IMedUsed.Clone
+            'd.MedXbase = MedXbase.Clone
+            'd.MedYbase = MedYbase.Clone
+            'd.MedIsUsed = MedIsUsed.Clone  '
+            'd.MedVal = MedVal.Clone
+            'd.IMedBase = IMedBase.Clone
             d.inlinks = inlinks
             d.ilink = ilink.Clone
             d.jlink = jlink.Clone
@@ -1709,5 +1732,165 @@ Public Class cEcosimDatastructures
         Me.bMultiThreaded = False
     End Sub
 
+End Class
+
+
+Public Class cMediationData
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'Mediation vars 
+
+    ''' <summary>Number of functions</summary>
+    Public MediationShapes As Integer
+    ''' <summary>number of points per mediation function</summary>
+    Public NMedPoints As Integer
+    ''' <summary>mediation function points(iMedPt, iMedFn)</summary>
+    Public Medpoints(,) As Single
+    ''' <summary>defines biomass weights for med X (iMedGrp, iShp)</summary>
+    ''' <remarks>Only used for non-landings mediations</remarks>
+    Public MedWeights(,) As Single
+    ''' <summary>number of biomasses (mediation weights) in an iMediation</summary>
+    Public NMedXused() As Integer
+    ''' <summary>groups used in med function X IMedUsed(nGroups + nGear, MediationShapes)</summary>
+    Public IMedUsed(,) As Integer
+    ''' <summary>ecopath base value of med function(iMedFn)</summary>
+    Public MedXbase() As Single
+    ''' <summary>value of med function at ecopath base(iMedFn)</summary>
+    Public MedYbase() As Single
+    ''' <summary>true if med function iMediation is used(iMedFn)</summary>
+    Public MedIsUsed() As Boolean
+    ''' <summary>current value of mediation function(iMedFn)</summary>
+    Public MedVal() As Single
+
+    ''' <summary>IMedBase() index of ecopath base biomass vertical line on mediation plot</summary>
+    ''' <remarks>integer X positions for ecopath base X</remarks>
+    Public IMedBase() As Integer
+    ''' <summary>titles of mediation shapes</summary>
+    Public MediationTitles() As String
+    ''' <summary>Unique ID from the Database for each function(iMedFN)</summary>
+    Public MediationDBIDs() As Integer
+    ''' <summary>parameters that where used to create a curve from the Database Table and Fields i.e. EcoSimShapes.YZero</summary>
+    Public MediationShapeParams() As cEcosimDatastructures.ShapeParameters
+    ''' <summary>defines biomass weights for med XMedGFWeights(iMedGrp, iMedFlt, iShp)</summary>
+    ''' <remarks>Only used for Landings mediations</remarks>
+    Public MedPriceWeights(,,) As Single
+    ''' <summary>?</summary>
+    Public IMedFltUsed(,) As Integer
+
+    Public Sub ReDimMediation(ByVal nGroups As Integer, ByVal nFleets As Integer)
+        Dim i, j As Integer
+        'following is for Mediation:
+        NMedPoints = 1200
+        ' JS18apr09: spawning 9 dummy mediation shapes without any valid database IDS screws up the database
+        '            I tested Ecosim without mediation shapes and both core and GUI behave well
+        'If MediationShapes <= 0 Then MediationShapes = 9
+        ReDim Medpoints(NMedPoints, MediationShapes)
+        ReDim MedWeights(nGroups + nFleets, MediationShapes)
+        ReDim NMedXused(MediationShapes)
+        ReDim IMedUsed(nGroups + nFleets, MediationShapes)
+        ReDim MedXbase(MediationShapes)
+        ReDim MedYbase(MediationShapes)
+        ReDim MedIsUsed(MediationShapes)
+        ReDim MedVal(MediationShapes)
+        ReDim IMedBase(MediationShapes)
+
+        ReDim MedPriceWeights(nGroups, nFleets, MediationShapes)
+        ReDim IMedFltUsed(nGroups, MediationShapes)
+
+        'jb added
+        ReDim MediationTitles(MediationShapes)
+        ReDim MediationShapeParams(MediationShapes)
+        ReDim MediationDBIDs(MediationShapes)
+
+        'jb this is now handled by MedShapeParams() above
+        'If ForcingShapes > MediationShapes Then
+        '    ReDim Preserve Shapes(5, ForcingShapes)
+        'Else
+        '    ReDim Preserve Shapes(5, MediationShapes)
+        'End If
+
+        'ToDo: Sort out XBaseLine()what is it used for
+        'ReDim XBaseLine(MediationShapes)
+        For i = 0 To MediationShapes
+            IMedBase(i) = NMedPoints \ 3
+            For j = 0 To NMedPoints
+                Medpoints(j, i) = 0.5
+            Next
+        Next
+
+    End Sub
+
+
+    Friend Sub SetMedFunctions(ByVal Biom() As Single, ByVal iTime As Integer, ByVal EcosimData As cEcosimDatastructures)
+        'called from derivt, derivtred if MedIsUsed(0)=true to set
+        'current Y value of each active trophic mediation function
+        Dim iShp As Integer, iGrp As Integer, MedX As Single, ip As Long
+        Try
+
+            For iShp = 1 To Me.MediationShapes
+                If Me.MedIsUsed(iShp) Then
+                    MedX = 0.0000000001
+                    For iGrp = 1 To Me.NMedXused(iShp)
+                        If Me.IMedUsed(iGrp, iShp) <= EcosimData.nGroups Then
+                            MedX = MedX + Biom(Me.IMedUsed(iGrp, iShp)) * Me.MedWeights(Me.IMedUsed(iGrp, iShp), iShp)
+                        Else    'a fleet
+                            MedX = MedX + EcosimData.FishRateGear(Me.IMedUsed(iGrp, iShp) - EcosimData.nGroups, iTime) * Me.MedWeights(Me.IMedUsed(iGrp, iShp), iShp)
+                        End If
+                    Next
+                    '060328 CJW found that without the +0.01 below it could be unstable when slope
+                    'was large around Ecopath base point in mediation function, causing instability.
+                    'This solves it. VC.
+                    ip = Int(Me.IMedBase(iShp) * MedX / Me.MedXbase(iShp) + 0.01)
+                    If ip < 1 Then ip = 1
+                    If ip > Me.NMedPoints Then ip = Me.NMedPoints
+                    Me.MedVal(iShp) = Me.Medpoints(ip, iShp) / Me.MedYbase(iShp)
+                End If
+            Next
+
+        Catch ex As Exception
+            '  Debug.Assert(False)
+        End Try
+
+    End Sub
+
+    ''' <summary>
+    ''' Set MedVal() for the applied price elasticity function to the annual catch at the current time step
+    ''' </summary>
+    ''' <param name="LandingsGroupFleet">Catch by group, fleet</param>
+    ''' <remarks>Price mediation function are initialized to Ecopath base values which are annual. 
+    ''' This means that the catch must also be the Ecopath annual catch.
+    '''  </remarks>
+    Friend Sub SetPriceMedFunctions(ByVal LandingsGroupFleet(,) As Single)
+        Dim iShp As Integer, iGrp As Integer, MedX As Single, ip As Long
+        Dim iMedGrp As Integer
+        Dim iMedFlt As Integer
+
+        Try
+
+            For iShp = 1 To Me.MediationShapes
+                If Me.MedIsUsed(iShp) Then
+                    MedX = 0.0000000001
+                    For iGrp = 1 To Me.NMedXused(iShp)
+                        If Me.IMedUsed(iGrp, iShp) Then
+                            'Get the Group and Fleet index
+                            iMedGrp = Me.IMedUsed(iGrp, iShp)
+                            iMedFlt = Me.IMedFltUsed(iGrp, iShp)
+                            MedX = MedX + LandingsGroupFleet(iMedGrp, iMedFlt) * Me.MedPriceWeights(iMedGrp, iMedFlt, iShp)
+                        End If
+                    Next
+                    '060328 CJW found that without the +0.01 below it could be unstable when slope
+                    'was large around Ecopath base point in mediation function, causing instability.
+                    'This solves it. VC.
+                    ip = Int(Me.IMedBase(iShp) * MedX / Me.MedXbase(iShp) + 0.01)
+                    If ip < 1 Then ip = 1
+                    If ip > Me.NMedPoints Then ip = Me.NMedPoints
+                    Me.MedVal(iShp) = Me.Medpoints(ip, iShp) / Me.MedYbase(iShp)
+                End If
+            Next
+
+        Catch ex As Exception
+            '  Debug.Assert(False)
+        End Try
+
+    End Sub
 End Class
 

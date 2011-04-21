@@ -6,6 +6,7 @@ Option Strict On
 Imports EwECore
 Imports System.Drawing.Drawing2D
 Imports System.Drawing
+Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
 
@@ -20,14 +21,15 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     Public Class ucMediationSketchPad
 
+        Private m_strXAxisLabel As String
+
         Public Sub New()
             Me.InitializeComponent()
-            'No axis info in the mediation sketchpad right now. 
-            Me.m_tsmiShowMarks.Visible = False
+            ''No axis info in the mediation sketchpad right now. 
+            'Me.m_tsmiShowMarks.Visible = False
         End Sub
 
-        Private Sub MediationSketchPad_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-            Handles MyBase.Paint
+        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
             Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.ShapeColor, True, Me.SketchDrawMode, Me.YAxisMaxValue)
         End Sub
 
@@ -39,6 +41,15 @@ Namespace Controls
                 ByVal drawMode As eSketchDrawModeTypes, _
                 ByVal sYMax As Single)
 
+            If (Me.UIContext Is Nothing) Then Return
+
+            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
+
+            ' Sanity checks
+            If (shape Is Nothing) Then Return
+            If (Not TypeOf (shape) Is cMediationBaseFunction) Then Return
+            If (Not bDrawLabels) Then Return
+
             Dim iXMax As Integer = 0
             Dim sfmt As StringFormat = Nothing
             Dim strCaption As String = ""
@@ -47,12 +58,6 @@ Namespace Controls
             Dim iYPos As Integer = 0
             Dim sYScale As Single = 1
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-
-            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
-
-            ' Sanity checks
-            If Me.Shape Is Nothing Then Return
-            If Not bDrawLabels Then Return
 
             'sYMax = Me.YAxisMaxValue
             iXMax = Me.Shape.XMax
@@ -64,8 +69,9 @@ Namespace Controls
             sfmt.Alignment = StringAlignment.Center
             sfmt.LineAlignment = StringAlignment.Center
 
+            ' Write mediation caption
             strCaption = String.Format(My.Resources.GENERIC_LABEL_INDEXED, _
-                                       (DirectCast(Me.Shape, cMediationFunction).ID + 1), _
+                                       (DirectCast(Me.Shape, cMediationBaseFunction).ID + 1), _
                                        Me.Shape.Name)
 
             Using br As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
@@ -73,7 +79,7 @@ Namespace Controls
                     Using pn As New Pen(Color.FromArgb(128, 0, 0, 0))
 
                         g.DrawString(strCaption, ft, br, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
-                        g.DrawString(My.Resources.MEDIATION_X_AXIS_LABEL, ft, br, CSng(rcImage.Width / 2), rcImage.Bottom - 15, sfmt)
+                        g.DrawString(Me.XAxisLabel, ft, br, CSng(rcImage.Width / 2), rcImage.Bottom - 15, sfmt)
 
                         ' Scale sYMax to the value at XMark
                         sYMax /= sYScale
@@ -82,6 +88,7 @@ Namespace Controls
                         iYStep = CInt(sYMax / 3)
                         If iYStep = 0 Then iYStep = 1
 
+                        ' Draw Y-axis scale
                         For j As Double = 0 To sYMax Step iYStep * 0.5
                             iYPos = CInt(cShapeImage.ToImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
 
@@ -102,6 +109,25 @@ Namespace Controls
                 End Using
             End Using
         End Sub
+
+        <Browsable(True), _
+         Category("Mediation")> _
+        Public Property XAxisLabel() As String
+            Get
+                Return Me.m_strXAxisLabel
+            End Get
+            Set(ByVal value As String)
+                Me.m_strXAxisLabel = value
+            End Set
+        End Property
+
+        Public Overrides ReadOnly Property XMarkLabel() As String
+            Get
+                If (Not TypeOf (Shape) Is cMediationBaseFunction) Then Return MyBase.XMarkLabel
+                Dim medfn As cMediationBaseFunction = DirectCast(Me.Shape, cMediationBaseFunction)
+                Return Me.UIContext.StyleGuide.FormatNumber(medfn.XBase)
+            End Get
+        End Property
 
     End Class
 

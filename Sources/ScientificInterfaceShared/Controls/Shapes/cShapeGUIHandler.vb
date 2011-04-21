@@ -60,10 +60,12 @@ Namespace Controls
             SetToZero
             ''' <summary>Weight all time series.</summary>
             Weight
-            ''' <summary>Mediation define X-axis.</summary>
-            DefineXAxis
+            ''' <summary>Define mediation items.</summary>
+            DefineMediation
             ''' <summary>Filter display of shapes.</summary>
             Filter
+            <Obsolete("Use DefineMediation instead")> _
+            DefineXAxis = DefineMediation
         End Enum
 
 #Region " Private variables "
@@ -82,6 +84,8 @@ Namespace Controls
         Private m_color As Color = Nothing
         ''' <summary>Selected <see cref="cShapeData">shapes</see>.</summary>
         Private m_ashapeSelected() As cShapeData = Nothing
+
+        Private m_mhShapes As cMessageHandler = Nothing
 
 #End Region ' Private variables
 
@@ -109,9 +113,14 @@ Namespace Controls
             Me.SketchPad = sp
             Me.SketchPadToolbar = sptb
 
+            Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataModified, Me.m_uic.SyncObject)
+            Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
         End Sub
 
         Public Overridable Sub Detach()
+            Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhShapes)
+            Me.m_mhShapes = Nothing
+
             Me.ShapeToolBox = Nothing
             Me.ShapeToolBoxToolbar = Nothing
             Me.SketchPad = Nothing
@@ -135,6 +144,13 @@ Namespace Controls
 #End Region ' Constructor and destructor
 
 #Region " Obligatory overrides "
+
+        Protected Overridable Sub OnCoreMessage(ByRef mgs As cMessage)
+            If Me.Datatypes Is Nothing Then Return
+            If Array.IndexOf(Me.Datatypes, mgs.DataType) >= 0 Then
+                Me.Refresh()
+            End If
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -223,6 +239,8 @@ Namespace Controls
         ''' <returns>The lowest Y-scale limit that should be used to render shapes with.</returns>
         ''' -------------------------------------------------------------------
         Protected MustOverride Function MinYScale() As Single
+
+        Protected MustOverride Function Datatypes() As eDataTypes()
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -517,6 +535,46 @@ Namespace Controls
         End Property
 
 #End Region ' Public access
+
+#Region " Factory "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Factory method; build a shape gui handler for a given <see cref="eDataTypes">shape data type</see>.
+        ''' </summary>
+        ''' <param name="dt">The <see cref="eDataTypes"/> to build the handler for.</param>
+        ''' <returns>A shape gui handler, or nothing if the data type did not 
+        ''' denote a shape type.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetShapeUIHandler(ByVal dt As eDataTypes) As cShapeGUIHandler
+            Select Case dt
+                Case eDataTypes.Forcing : Return New cForcingShapeGUIHandler()
+                Case eDataTypes.FishingEffort : Return New cFishingEffortShapeGUIHandler()
+                Case eDataTypes.FishMort : Return New cFishingMortalityShapeGUIHandler()
+                Case eDataTypes.Mediation : Return New cMediationShapeGUIHandler()
+                Case eDataTypes.PriceMediation : Return New cLandingsShapeGUIHandler()
+                Case eDataTypes.GroupTimeSeries : Return New cTimeSeriesShapeGUIHandler()
+                Case eDataTypes.FleetTimeSeries : Return New cTimeSeriesShapeGUIHandler()
+            End Select
+            Return Nothing
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Factory method; build a shape gui handler for a given <see cref="cShapeData">shape</see>.
+        ''' </summary>
+        ''' <param name="shape">The <see cref="cShapeData"/> to build the handler for.</param>
+        ''' <returns>A shape gui handler, or nothing if the shape is of a new type
+        ''' that is not yet supported.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetShapeUIHandler(ByVal shape As cShapeData) As cShapeGUIHandler
+            If (shape Is Nothing) Then Return Nothing
+            Dim handler As cShapeGUIHandler = cShapeGUIHandler.GetShapeUIHandler(shape.DataType)
+            Debug.Assert(handler IsNot Nothing, "Unknown shape type")
+            Return handler
+        End Function
+
+#End Region ' Factory
 
     End Class
 

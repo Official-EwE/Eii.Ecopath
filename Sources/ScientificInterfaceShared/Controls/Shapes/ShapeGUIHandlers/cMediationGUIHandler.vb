@@ -7,6 +7,7 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -22,9 +23,9 @@ Namespace Controls
         Inherits cForcingShapeGUIHandler
 
         ''' <summary>Biomass percent control to handle.</summary>
-        Private m_bp As ucBioPercent = Nothing
+        Private m_bp As ucMediationAssignments = Nothing
         ''' <summary>Biomass percent control toolbar to handle.</summary>
-        Private m_bpt As ucBioPercentToolbar = Nothing
+        Private m_bpt As ucMediationAssignmentsToolbar = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -35,30 +36,41 @@ Namespace Controls
         ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
-        ''' <param name="bp"><see cref="ucBioPercent">Biomass percentage control</see> to handle, if any.</param>
+        ''' <param name="ma"><see cref="ucMediationAssignments">Mediation assignments control</see> to handle, if any.</param>
+        ''' <param name="mat"><see cref="ucMediationAssignmentsToolbar"/> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Shadows Sub Attach(ByVal uic As cUIContext, _
+        Public Overridable Shadows Sub Attach(ByVal uic As cUIContext, _
                                   ByVal stb As ucShapeToolbox, _
                                   ByVal stbtb As ucShapeToolboxToolbar, _
                                   ByVal sp As ucSketchPad, _
                                   ByVal sptb As ucSketchPadToolbar, _
-                                  ByVal bp As ucBioPercent, _
-                                  ByVal bpt As ucBioPercentToolbar)
+                                  ByVal ma As ucMediationAssignments, _
+                                  ByVal mat As ucMediationAssignmentsToolbar)
 
             MyBase.Attach(uic, stb, stbtb, sp, sptb)
 
             Me.SketchPad.ShowXMark = True
-            Me.BiomassPercent = bp
-            Me.BiomassPercentToolbar = bpt
+            ' Tooltip does not make much sense for mediation functions
+            Me.SketchPad.ShowValueTooltip = False
+
+            Me.MediationAssignments = ma
+            If (Me.MediationAssignments IsNot Nothing) Then
+                Me.MediationAssignments.XAxisLabel = My.Resources.HEADER_ASSIGNED_GROUPS_FLEETS
+            End If
+
+            Me.MediationAssignmentsToolbar = mat
+            If (Me.MediationAssignmentsToolbar IsNot Nothing) Then
+                Me.MediationAssignmentsToolbar.DefineMediationLabel = My.Resources.PROMPT_DEFINE_MEDIATING_GROUPSANDFLEETS
+            End If
 
             ' Manually update selection
-            Me.BiomassPercent.Shape = Me.SelectedShape
+            Me.MediationAssignments.Shape = DirectCast(Me.SelectedShape, cMediationBaseFunction)
 
         End Sub
 
         Public Overloads Sub Detach()
-            Me.BiomassPercent = Nothing
-            Me.BiomassPercentToolbar = Nothing
+            Me.MediationAssignments = Nothing
+            Me.MediationAssignmentsToolbar = Nothing
             MyBase.Detach()
         End Sub
 
@@ -77,11 +89,11 @@ Namespace Controls
             Return Me.Core.MediationShapeManager
         End Function
 
-        Public Overridable Property BiomassPercent() As ucBioPercent
+        Public Overridable Property MediationAssignments() As ucMediationAssignments
             Get
                 Return Me.m_bp
             End Get
-            Protected Set(ByVal value As ucBioPercent)
+            Protected Set(ByVal value As ucMediationAssignments)
 
                 If (Me.m_bp IsNot Nothing) Then
                     'Me.m_bp.Handler = Nothing
@@ -96,11 +108,11 @@ Namespace Controls
             End Set
         End Property
 
-        Public Overridable Property BiomassPercentToolbar() As ucBioPercentToolbar
+        Public Overridable Property MediationAssignmentsToolbar() As ucMediationAssignmentsToolbar
             Get
                 Return Me.m_bpt
             End Get
-            Protected Set(ByVal value As ucBioPercentToolbar)
+            Protected Set(ByVal value As ucMediationAssignmentsToolbar)
 
                 If (Me.m_bpt IsNot Nothing) Then
                     Me.m_bpt.Handler = Nothing
@@ -162,9 +174,14 @@ Namespace Controls
                 MyBase.SelectedShapes = value
 
                 ' Single selection
-                Dim shapeSelected As cShapeData = Nothing
+                Dim shapeSelected As cMediationBaseFunction = Nothing
+
                 If (value IsNot Nothing) Then
-                    If (value.Length = 1) Then shapeSelected = value(0)
+                    If (value.Length = 1) Then
+                        If (TypeOf value(0) Is cMediationBaseFunction) Then
+                            shapeSelected = DirectCast(value(0), cMediationBaseFunction)
+                        End If
+                    End If
                 End If
 
                 If (Me.SketchPad IsNot Nothing) Then
@@ -172,18 +189,17 @@ Namespace Controls
                         Me.SketchPad.XMarkValue = cCore.NULL_VALUE
                         Me.SketchPad.YMarkValue = cCore.NULL_VALUE
                     Else
-                        Dim mf As cMediationFunction = DirectCast(shapeSelected, cMediationFunction)
-                        Me.SketchPad.XMarkValue = CSng(mf.XBaseIndex)
-                        Me.SketchPad.YMarkValue = mf.ShapeData(Math.Max(0, Math.Min(mf.XBaseIndex, mf.ShapeData.Length - 1)))
+                        Me.SketchPad.XMarkValue = CSng(shapeSelected.XBaseIndex)
+                        Me.SketchPad.YMarkValue = shapeSelected.ShapeData(Math.Max(0, Math.Min(shapeSelected.XBaseIndex, shapeSelected.ShapeData.Length - 1)))
                     End If
                 End If
 
-                If (Me.BiomassPercentToolbar IsNot Nothing) Then
-                    Me.BiomassPercentToolbar.Refresh()
+                If (Me.MediationAssignmentsToolbar IsNot Nothing) Then
+                    Me.MediationAssignmentsToolbar.Refresh()
                 End If
 
-                If (Me.BiomassPercent IsNot Nothing) Then
-                    Me.BiomassPercent.Shape = shapeSelected
+                If (Me.MediationAssignments IsNot Nothing) Then
+                    Me.MediationAssignments.Shape = shapeSelected
                 End If
 
             End Set
@@ -198,7 +214,7 @@ Namespace Controls
             Select Case cmd
                 Case eShapeCommandTypes.Seasonal
                     Return False
-                Case eShapeCommandTypes.DefineXAxis
+                Case eShapeCommandTypes.DefineMediation
                     Return True
             End Select
             Return MyBase.SupportCommand(cmd)
@@ -206,7 +222,7 @@ Namespace Controls
 
         Public Overrides Function EnableCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
-                Case eShapeCommandTypes.DefineXAxis
+                Case eShapeCommandTypes.DefineMediation
                     Return (Me.SelectedShape IsNot Nothing)
             End Select
             Return MyBase.EnableCommand(cmd)
@@ -216,24 +232,33 @@ Namespace Controls
                                             Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
                                             Optional ByVal data As Object = Nothing)
 
-            Select Case cmd
+            Try
+                Select Case cmd
 
-                Case eShapeCommandTypes.DefineXAxis
-                    Dim dlgDefBP As New dlgDefineBioPercent(Me.UIContext, DirectCast(Me.SelectedShape, cMediationFunction))
-                    If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                        Me.BiomassPercent.LoadGraphData()
-                    End If
+                    Case eShapeCommandTypes.DefineMediation
+                        Dim dlgDefBP As New dlgDefineMediationAssignments(Me.UIContext, DirectCast(Me.SelectedShape, cMediationBaseFunction))
+                        If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                            Me.MediationAssignments.RefreshContent()
+                        End If
 
-                Case Else
-                    MyBase.ExecuteCommand(cmd, ashapes, data)
+                    Case Else
+                        MyBase.ExecuteCommand(cmd, ashapes, data)
 
-            End Select
+                End Select
+            Catch ex As Exception
+
+            End Try
+
         End Sub
 
         Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
-            DirectCast(shape, cMediationFunction).XBaseIndex = CInt(Math.Round(sketchpad.XMarkValue))
+            DirectCast(shape, cMediationBaseFunction).XBaseIndex = CInt(Math.Round(sketchpad.XMarkValue))
             MyBase.OnShapeFinalized(shape, sketchpad)
         End Sub
+
+        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+            Return New eDataTypes() {eDataTypes.mediation}
+        End Function
 
     End Class
 

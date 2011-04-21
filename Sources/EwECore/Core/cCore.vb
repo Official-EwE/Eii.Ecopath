@@ -2728,7 +2728,7 @@ Public Class cCore
                 pdMng.Clear()
             Next
             Me.m_PedigreeManagers.Clear()
-            Me.m_PPIManager.Clear()
+            Me.m_MediatedInteractionManager.Clear()
 
             ' Clear core data structures
             Me.m_EcoPathData.Clear()
@@ -5201,7 +5201,7 @@ Public Class cCore
     'Friend m_EcoSimGroupSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
     Friend m_EcosimFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFleetInput, 1)
     Friend m_EcosimFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
-    Private m_PPIManager As cPPIManager
+    Private m_MediatedInteractionManager As cMediatedInteractionManager
 
     Private m_EcopathStats As cEcoPathStats
     Private m_EcosimStats As cEcosimStats
@@ -5461,7 +5461,10 @@ Public Class cCore
             manager = New cFishingMortalityManger(m_EcoSimData, Me, eDataTypes.FishMort)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
-            Me.m_PPIManager = New cPPIManager(m_EcoPathData, m_EcoSimData, Me)
+            manager = New cLandingsMediationManager(m_EcoSimData, Me, eDataTypes.PriceMediation)
+            Me.m_ShapeManagers.Add(manager.DataType, manager)
+
+            Me.m_MediatedInteractionManager = New cMediatedInteractionManager(m_EcoPathData, m_EcoSimData, Me)
             Me.m_FitToTimeSeriesData = New cF2TSDataStructures()
             ' me.m_FitToTimeSeries = New cF2TSManager(Me)
 
@@ -5661,8 +5664,8 @@ Public Class cCore
                 manager.Init() 'init will rebuild and load all the shapes in the manager
             Next
 
-            m_PPIManager.Init()
-            m_PPIManager.Load()
+            m_MediatedInteractionManager.Init()
+            m_MediatedInteractionManager.Load()
 
             InitEcosimGroupOutput()
             InitEcosimFleetOutput()
@@ -6295,10 +6298,10 @@ Public Class cCore
 
 
 
-    Public ReadOnly Property PPInteractionManager() As cPPIManager
+    Public ReadOnly Property MediatedInteractionManager() As cMediatedInteractionManager
 
         Get
-            Return Me.m_PPIManager
+            Return Me.m_MediatedInteractionManager
         End Get
 
     End Property
@@ -6372,6 +6375,21 @@ Public Class cCore
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find mortality shape manager")
                 cLog.Write(Me.ToString & ".FishMortShapeManager() Error: " & ex.Message)
+                Return Nothing
+            End Try
+
+        End Get
+
+    End Property
+
+    Public ReadOnly Property LandingsShapeManager() As cLandingsMediationManager
+
+        Get
+            Try
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.PriceMediation), cLandingsMediationManager)
+            Catch ex As Exception
+                Debug.Assert(False, "Failed to find price elasticity shape manager")
+                cLog.Write(Me.ToString & ".PriceElasticityShapeManager() Error: " & ex.Message)
                 Return Nothing
             End Try
 
@@ -11785,8 +11803,8 @@ Public Class cCore
                             ' Sync the ecosim groups
                             LoadEcosimGroups()
 
-                            m_PPIManager.Init()
-                            m_PPIManager.Load()
+                            m_MediatedInteractionManager.Init()
+                            m_MediatedInteractionManager.Load()
 
                             Me.m_SearchManagers(eDataTypes.FitToTimeSeries).Load()
                             '  Me.m_FitToTimeSeries.Load()
@@ -11979,8 +11997,20 @@ Public Class cCore
         Try
             Select Case obj.DataType
 
+                Case eDataTypes.PriceMediation, eDataTypes.Mediation
+
+                    If obj.DataType = eDataTypes.PriceMediation Then
+                        Me.m_EcoSim.InitializePriceFunctions()
+                    ElseIf obj.DataType = eDataTypes.Mediation Then
+                        Me.m_EcoSim.InitializeMedFunctions()
+                    End If
+                    Me.m_publisher.AddMessage(New cMessage("Mediation shape has changed", eMessageType.DataModified, obj.CoreComponent, eMessageImportance.Maintenance, obj.DataType))
+
                 Case eDataTypes.PredPreyInteraction
-                    Me.m_publisher.AddMessage(New cMessage("Shape application changed.", eMessageType.DataModified, eCoreComponentType.PPIManager, eMessageImportance.Maintenance))
+                    Me.m_publisher.AddMessage(New cMessage("PredPrey interactions changed.", eMessageType.DataModified, eCoreComponentType.MediatedInteractionManager, eMessageImportance.Maintenance))
+
+                Case eDataTypes.LandingInteraction
+                    Me.m_publisher.AddMessage(New cMessage("Landings interactions changed.", eMessageType.DataModified, eCoreComponentType.MediatedInteractionManager, eMessageImportance.Maintenance))
 
                 Case eDataTypes.Forcing, eDataTypes.EggProd, eDataTypes.Mediation
 
@@ -12015,8 +12045,8 @@ Public Class cCore
                         'then the Pred/Prey interaction manager PPIManager needs to reload all its data
                         'this is brute force
                         If TypeOfChange = eMessageType.DataAddedOrRemoved Then
-                            m_PPIManager.Init()
-                            m_PPIManager.Load()
+                            m_MediatedInteractionManager.Init()
+                            m_MediatedInteractionManager.Load()
 
                             Me.m_publisher.AddMessage(New cMessage("PPI manager reloaded data.", eMessageType.DataModified, _
                                                 eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.PredPreyInteraction))

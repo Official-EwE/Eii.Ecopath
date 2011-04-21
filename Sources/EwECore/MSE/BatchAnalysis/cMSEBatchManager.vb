@@ -513,7 +513,7 @@ Namespace MSEBatchManager
             Dim shape As cForcingFunction = Me.m_core.ForcingShapeManager.Item(iShapeIndex)
             Debug.Assert(shape IsNot Nothing, "Invalid PP forcing index.")
 
-            Dim ppi As cPredPreyInteraction = Me.m_core.PPInteractionManager.Interaction(iPPGroupIndex, iPPGroupIndex)
+            Dim ppi As cMediatedInteraction = Me.m_core.MediatedInteractionManager.PredPreyInteraction(iPPGroupIndex, iPPGroupIndex)
             ppi.LockUpdates = True
             ' Clear all shapes
             For i As Integer = 1 To ppi.MaxNumShapes

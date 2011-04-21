@@ -323,6 +323,10 @@ Namespace Controls
 
 #Region " Public interfaces "
 
+        Public Function IsAttached() As Boolean
+            Return Me.m_zgc IsNot Nothing
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Attach a zedgraph helper to a zedgraph control.

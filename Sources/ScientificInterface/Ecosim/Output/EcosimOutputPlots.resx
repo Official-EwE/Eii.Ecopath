@@ -157,7 +157,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 225</value>
+    <value>193, 215</value>
   </data>
   <data name="m_lbGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -166,7 +166,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_plGroups</value>
@@ -205,7 +205,7 @@
     <value>m_tlpMain</value>
   </data>
   <data name="&gt;&gt;m_btnSaveData.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lbPredators.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -220,7 +220,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbPredators.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 106</value>
+    <value>193, 101</value>
   </data>
   <data name="m_lbPredators.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -229,7 +229,7 @@
     <value>m_lbPredators</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Parent" xml:space="preserve">
     <value>m_plPredators</value>
@@ -250,7 +250,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 103</value>
+    <value>193, 98</value>
   </data>
   <data name="m_lbPrey.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -259,7 +259,7 @@
     <value>m_lbPrey</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Parent" xml:space="preserve">
     <value>m_plPrey</value>
@@ -291,6 +291,57 @@
   <data name="m_tlpMain.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="m_tsMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tsDDShowHidePlots.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIISURBVDhPpZP7S1NxGMbPPxKaXVUkMEq8IpKUCoY/hGgI
+        ymqkDYYXcCjDZOANURSjCNGFQUTsl4GXVMxKk62YU4fXQpaIlygHQxBRH8/zwvyaIAYe+HLgnPN8nue9
+        HA3nvDTq63oW/jm13XOwvPTB3DYFY5MH+bXfcN8ygfTSMSSXfESicQDxBqdYHwH29g9w2tnZ3UcguIvN
+        rR3417exuBJE5N1n/wfwLgXEOc38Bc6xNRHb+/y4nm49G0Bnit2zf9H6bkliE/jKuYxrd6oVgDWfjB+K
+        TWeKMyrGEVfowITvD9re/9ABVQrAhh0HHK+ZselMMaN/mvwtDb+aVqkA7HYIwIj3ysfluPTorJnP6Ezx
+        oHsD1s5ZXEktUwCOioB5f1CEPR9+wTG6iuiserTo8dkwng7HT/R+XUPF8xlcTjErAOdMcW6NW8STiwG8
+        7vej8oUPN/PsEv3t8Ao0TZP3T1u8uJRkUgAuSYHtO97oLxmXd5t9Ho8aPTK+GzntqNfrLm2fFoihwYOI
+        xGIF4KjoGBLzY1OrF9k6OOFxnwDC4wxIMX1G0pMhgVyMNyoA13PAtS7OrJk1PrC69LUdQWxuF6IybHrX
+        LRI7JrtZdoDAo1XmbjMyD+tjSXxGcXRmnYg5ttD9QuxDhN0uUgDOmbvNTpPOJaGAo2K36cyaGZvOFIfd
+        KlSA8/zRh9ABIDUG+1JpAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_tsDDShowHidePlots.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsDDShowHidePlots.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 22</value>
+  </data>
+  <data name="m_tsDDShowHidePlots.Text" xml:space="preserve">
+    <value>Show or hide plots</value>
+  </data>
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 25</value>
+  </data>
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
+    <value>m_tlpMain</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_hdrGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -319,7 +370,7 @@
     <value>m_hdrGroup</value>
   </data>
   <data name="&gt;&gt;m_hdrGroup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroup.Parent" xml:space="preserve">
     <value>m_plGroups</value>
@@ -331,13 +382,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 25</value>
   </data>
   <data name="m_plGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 242</value>
+    <value>193, 232</value>
   </data>
   <data name="m_plGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -352,7 +403,7 @@
     <value>m_tlpMain</value>
   </data>
   <data name="&gt;&gt;m_plGroups.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lbFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -367,7 +418,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 76</value>
+    <value>193, 71</value>
   </data>
   <data name="m_lbFleets.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -376,7 +427,7 @@
     <value>m_lbFleets</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>
@@ -412,7 +463,7 @@
     <value>m_hdrFleets</value>
   </data>
   <data name="&gt;&gt;m_hdrFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>
@@ -424,13 +475,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 484</value>
+    <value>0, 489</value>
   </data>
   <data name="m_plFleets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 97</value>
+    <value>193, 92</value>
   </data>
   <data name="m_plFleets.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -445,7 +496,7 @@
     <value>m_tlpMain</value>
   </data>
   <data name="&gt;&gt;m_plFleets.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_hdrPredators.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -475,7 +526,7 @@
     <value>m_hdrPredators</value>
   </data>
   <data name="&gt;&gt;m_hdrPredators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPredators.Parent" xml:space="preserve">
     <value>m_plPredators</value>
@@ -487,13 +538,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plPredators.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 242</value>
+    <value>0, 257</value>
   </data>
   <data name="m_plPredators.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plPredators.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 121</value>
+    <value>193, 116</value>
   </data>
   <data name="m_plPredators.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -508,7 +559,7 @@
     <value>m_tlpMain</value>
   </data>
   <data name="&gt;&gt;m_plPredators.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_hdrPrey.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -538,7 +589,7 @@
     <value>m_hdrPrey</value>
   </data>
   <data name="&gt;&gt;m_hdrPrey.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPrey.Parent" xml:space="preserve">
     <value>m_plPrey</value>
@@ -550,13 +601,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plPrey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 363</value>
+    <value>0, 373</value>
   </data>
   <data name="m_plPrey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 121</value>
+    <value>193, 116</value>
   </data>
   <data name="m_plPrey.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -571,7 +622,7 @@
     <value>m_tlpMain</value>
   </data>
   <data name="&gt;&gt;m_plPrey.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -583,13 +634,13 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tlpMain.RowCount" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_tlpMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>193, 607</value>
   </data>
   <data name="m_tlpMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_tlpMain.Name" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -604,7 +655,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnSaveData" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plGroups" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plFleets" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPredators" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPrey" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,41.66667,Percent,20.83333,Percent,20.83333,Percent,16.66667,Absolute,25,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsMain" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnSaveData" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plGroups" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plFleets" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPredators" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPrey" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,41.66667,Percent,20.83333,Percent,20.83333,Percent,16.66667,Absolute,25" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -660,10 +711,16 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Ecosim group plots</value>
   </data>
+  <data name="&gt;&gt;m_tsDDShowHidePlots.Name" xml:space="preserve">
+    <value>m_tsDDShowHidePlots</value>
+  </data>
+  <data name="&gt;&gt;m_tsDDShowHidePlots.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>EcosimOutputPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.0.1123, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.413, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

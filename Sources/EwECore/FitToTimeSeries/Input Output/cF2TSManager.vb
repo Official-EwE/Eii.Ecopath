@@ -14,7 +14,7 @@ Public Class cF2TSManager
 
 #Region " Construction, Initialization and Destruction"
 
-    Private m_PPIs As New Dictionary(Of String, cPredPreyInteraction)
+    Private m_PPIs As New Dictionary(Of String, cMediatedInteraction)
     Private m_EPData As cEcopathDataStructures = Nothing
     Private m_ESData As cEcosimDatastructures = Nothing
     Private m_model As cF2TSModel = Nothing

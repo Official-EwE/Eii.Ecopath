@@ -964,49 +964,49 @@ Public Class cSearchDatastructures
     'End Sub
 
 
-    ''' <summary>
-    ''' Update monthly EcoSpace data ValCatch() and CatchYear()
-    ''' </summary>
-    ''' <param name="iGrp"></param>
-    ''' <param name="Biomass"></param>
-    ''' <param name="EffortMap"></param>
-    ''' <param name="iRow"></param>
-    ''' <param name="iCol"></param>
-    ''' <remarks>This is call from the multithreaded code in Ecospace by the worker threads so it is protected via a Semaphor</remarks>
-    Public Sub calcEcoSpaceMonthlyCatch(ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal EffortMap(,,) As Single, ByVal iRow As Integer, ByVal iCol As Integer, ByVal iYear As Integer, ByVal timestep As Single) ', ByVal PastBaseYear As Boolean
-        'this gets called by cSpaceSolver for each Group, row and col on the cSpaceSolvers's thread
-        Dim iFlt As Integer
-        Dim Cloc As Single
+    '''' <summary>
+    '''' Update monthly EcoSpace data ValCatch() and CatchYear()
+    '''' </summary>
+    '''' <param name="iGrp"></param>
+    '''' <param name="Biomass"></param>
+    '''' <param name="EffortMap"></param>
+    '''' <param name="iRow"></param>
+    '''' <param name="iCol"></param>
+    '''' <remarks>This is call from the multithreaded code in Ecospace by the worker threads so it is protected via a Semaphor</remarks>
+    'Public Sub calcEcoSpaceMonthlyCatch(ByVal iGrp As Integer, ByVal Biomass() As Single, ByVal EffortMap(,,) As Single, ByVal iRow As Integer, ByVal iCol As Integer, ByVal iYear As Integer, ByVal DeltaT As Single) ', ByVal PastBaseYear As Boolean
+    '    'this gets called by cSpaceSolver for each Group, row and col on the cSpaceSolvers's thread
+    '    Dim iFlt As Integer
+    '    Dim Cloc As Single
 
-        'Only one thread can use this code at a time
-        'block all others
-        Me.m_SearchCatchSemaphor.WaitOne()
+    '    'Only one thread can use this code at a time
+    '    'block all others
+    '    Me.m_SearchCatchSemaphor.WaitOne()
 
-        Try
+    '    Try
 
-            For iFlt = 1 To m_ecopathData.NumFleet
-                If m_ecopathData.Landing(iFlt, iGrp) + m_ecopathData.Discard(iFlt, iGrp) > 0 Then
-                    Cloc = m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) * EffortMap(iFlt, iRow, iCol) * m_ecosimData.relQ(iFlt, iGrp) * timestep
+    '        For iFlt = 1 To m_ecopathData.NumFleet
+    '            If m_ecopathData.Landing(iFlt, iGrp) + m_ecopathData.Discard(iFlt, iGrp) > 0 Then
+    '                Cloc = m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) * EffortMap(iFlt, iRow, iCol) * m_ecosimData.relQ(iFlt, iGrp) * DeltaT
 
-                    'ValCatch() is summed across all time steps, but only after base year has been reached
-                    If iYear > Me.BaseYear Then
-                        ValCatch(iFlt, iGrp) += Cloc * DF * m_ecopathData.Market(iFlt, iGrp)
-                    End If
-                    'CatchYear() is the sum for this year it is cleared out at the start of each year
-                    CatchYear(iFlt, iGrp) += Cloc
+    '                'ValCatch() is summed across all time steps, but only after base year has been reached
+    '                If iYear > Me.BaseYear Then
+    '                    ValCatch(iFlt, iGrp) += Cloc * DF * m_ecopathData.Market(iFlt, iGrp)
+    '                End If
+    '                'CatchYear() is the sum for this year it is cleared out at the start of each year
+    '                CatchYear(iFlt, iGrp) += Cloc
 
-                End If
-            Next iFlt
+    '            End If
+    '        Next iFlt
 
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False, Me.ToString & ".calcEcoSpaceMonthlyCatch() Error. " & ex.Message)
-        End Try
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '        Debug.Assert(False, Me.ToString & ".calcEcoSpaceMonthlyCatch() Error. " & ex.Message)
+    '    End Try
 
-        'make sure the semaphor gets released, even if an error has been thrown, or this will deadlock the Ecospace threads!!!!! 
-        Me.m_SearchCatchSemaphor.Release()
+    '    'make sure the semaphor gets released, even if an error has been thrown, or this will deadlock the Ecospace threads!!!!! 
+    '    Me.m_SearchCatchSemaphor.Release()
 
-    End Sub
+    'End Sub
 
 
     Public Sub calcBaseYearCost(ByVal iYear As Integer, ByVal nSpatialCells As Integer)

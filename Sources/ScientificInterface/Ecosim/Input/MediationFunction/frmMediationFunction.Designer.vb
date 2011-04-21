@@ -32,8 +32,8 @@ Namespace Ecosim
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
             Me.m_tlpBiopercent = New System.Windows.Forms.TableLayoutPanel
-            Me.m_biopercenttoolbar = New ucBioPercentToolbar
-            Me.m_bioPercent = New ucBioPercent
+            Me.m_assignmentsToolbar = New ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar
+            Me.m_assignments = New ScientificInterfaceShared.Controls.ucMediationAssignments
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
             Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
@@ -73,6 +73,7 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
+            Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.Handler = Nothing
@@ -80,10 +81,12 @@ Namespace Ecosim
             Me.m_sketchPad.Name = "m_sketchPad"
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowValueTooltip = True
             Me.m_sketchPad.ShowXMark = True
             Me.m_sketchPad.ShowYMark = True
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
-            Me.m_sketchPad.XMarkLabel = ""
+            Me.m_sketchPad.UIContext = Nothing
+            Me.m_sketchPad.XAxisLabel = "Mediating group (weighted) biomass"
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
@@ -122,22 +125,28 @@ Namespace Ecosim
             'm_tlpBiopercent
             '
             resources.ApplyResources(Me.m_tlpBiopercent, "m_tlpBiopercent")
-            Me.m_tlpBiopercent.Controls.Add(Me.m_biopercenttoolbar, 0, 0)
-            Me.m_tlpBiopercent.Controls.Add(Me.m_bioPercent, 0, 1)
+            Me.m_tlpBiopercent.Controls.Add(Me.m_assignmentsToolbar, 0, 0)
+            Me.m_tlpBiopercent.Controls.Add(Me.m_assignments, 0, 1)
             Me.m_tlpBiopercent.Name = "m_tlpBiopercent"
             '
-            'm_biopercenttoolbar
+            'm_assignmentsToolbar
             '
-            resources.ApplyResources(Me.m_biopercenttoolbar, "m_biopercenttoolbar")
-            Me.m_biopercenttoolbar.BackColor = System.Drawing.SystemColors.Control
-            Me.m_biopercenttoolbar.Handler = Nothing
-            Me.m_biopercenttoolbar.Name = "m_biopercenttoolbar"
+            resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
+            Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
+            Me.m_assignmentsToolbar.DefineMediationLabel = "<prompt>"
+            Me.m_assignmentsToolbar.Handler = Nothing
+            Me.m_assignmentsToolbar.IsMenuVisible = True
+            Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
             '
-            'm_bioPercent
+            'm_assignments
             '
-            resources.ApplyResources(Me.m_bioPercent, "m_bioPercent")
-            Me.m_bioPercent.Name = "m_bioPercent"
-            Me.m_bioPercent.Shape = Nothing
+            Me.m_assignments.Data = Nothing
+            resources.ApplyResources(Me.m_assignments, "m_assignments")
+            Me.m_assignments.Name = "m_assignments"
+            Me.m_assignments.Shape = Nothing
+            Me.m_assignments.UIContext = Nothing
+            Me.m_assignments.XAxisLabel = "Mediating group"
+            Me.m_assignments.YAxisLabel = "Relative weight"
             '
             'TableLayoutPanel1
             '
@@ -154,6 +163,8 @@ Namespace Ecosim
             Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
             Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
+            Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
             '
             'm_shapeToolboxToolbar
@@ -191,8 +202,8 @@ Namespace Ecosim
         Private WithEvents m_shapeToolBox As ucShapeToolbox
         Private WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
         Private WithEvents m_sketchPad As ucMediationSketchPad
-        Private WithEvents m_bioPercent As ucBioPercent
-        Private WithEvents m_biopercenttoolbar As ucBioPercentToolbar
+        Private WithEvents m_assignments As ucMediationAssignments
+        Private WithEvents m_assignmentsToolbar As ucMediationAssignmentsToolbar
         Private WithEvents m_tlpBiopercent As System.Windows.Forms.TableLayoutPanel
 
     End Class

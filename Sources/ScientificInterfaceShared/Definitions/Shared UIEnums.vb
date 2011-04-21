@@ -122,6 +122,7 @@ Namespace Definitions
         Effort
         BioEst
         FleetTotValue
+        Value
     End Enum
 
     ''' -----------------------------------------------------------------------

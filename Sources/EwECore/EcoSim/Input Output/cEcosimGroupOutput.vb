@@ -118,6 +118,13 @@ Public Class cEcosimGroupOutput
         m_coreData.Add(eVarNameFlags.EcosimElectivityTime, New c3DResultsWrapper(m_simData.Elect, Me.Index))
 
         m_coreData.Add(eVarNameFlags.EcosimCatchGroupGear, New c3DResultsWrapper(m_simData.ResultsSumCatchByGroupGear, Me.Index))
+
+        'ResultsSumValueByGroupGear(Groups,Fleets,Time) the Zero fleet index is the sum across all fleets
+        m_coreData.Add(eVarNameFlags.EcosimValueGroup, New c3DResultsWrapper2Fixed(m_simData.ResultsSumValueByGroupGear, Me.Index, 0))
+
+        'ResultsSumValueByGroupGear(Groups,Fleets,Time) the Zero fleet index is the sum across all fleets
+        m_coreData.Add(eVarNameFlags.EcosimValueGroupFleet, New c3DResultsWrapper(m_simData.ResultsSumValueByGroupGear, Me.Index))
+
         'Fishing Mortality by group/fleet
         m_coreData.Add(eVarNameFlags.EcosimFishingMortGroupGear, New c3DResultsWrapper(m_simData.ResultsSumFMortByGroupGear, Me.Index))
 
@@ -420,6 +427,22 @@ Public Class cEcosimGroupOutput
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimAvgPrey, igroup))
+        End Get
+
+    End Property
+
+    Public ReadOnly Property Value(ByVal iTime As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimValueGroup, iTime))
+        End Get
+
+    End Property
+
+    Public ReadOnly Property ValueByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimValueGroupFleet, iFleetIndex, iTime))
         End Get
 
     End Property

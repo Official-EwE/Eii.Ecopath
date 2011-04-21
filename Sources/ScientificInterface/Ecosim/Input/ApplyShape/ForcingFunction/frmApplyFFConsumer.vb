@@ -23,8 +23,13 @@ Namespace Ecosim
         Public Sub New()
             MyBase.New()
             Me.InitializeComponent()
-            Me.plApplyFFGrid.Controls.Add(Me.Grid())
         End Sub
+
+        Protected Overrides ReadOnly Property Grid() As ApplyShapeGrid
+            Get
+                Return Me.m_grid
+            End Get
+        End Property
 
 #End Region
 
@@ -41,18 +46,6 @@ Namespace Ecosim
         End Sub
 
 #End Region ' Event handlers
-
-#Region " Mandatory overrides "
-
-        Protected Overrides Function ApplyTargetMode() As eApplyTargetTypes
-            Return eApplyTargetTypes.Consumer
-        End Function
-
-        Protected Overrides Function ApplyShapeMode() As eApplyShapeTypes
-            Return eApplyShapeTypes.Forcing
-        End Function
-
-#End Region ' Mandatory overrides
 
     End Class
 

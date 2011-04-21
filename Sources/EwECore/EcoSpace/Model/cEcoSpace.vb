@@ -2316,7 +2316,7 @@ Public Class cEcoSpace
         ReDim ToDetritus(m_Data.NGroups)
 
 
-        If m_SimData.MedIsUsed(0) Then m_Ecosim.SetMedFunctions(Biomass)
+        If m_SimData.BioMedData.MedIsUsed(0) Then m_Ecosim.SetMedFunctions(Biomass)
 
         m_Ecosim.setpred(Biomass)
         ReDim m_SimData.Eatenof(m_Data.NGroups)
@@ -3249,18 +3249,17 @@ exitline:
     ''' <param name="iRow">Map row</param>
     ''' <param name="iCol">Map col</param>
     ''' <remarks></remarks>
-    Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal Biomass() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
-        Dim sum As Single, iFlt As Integer
+    Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
+        Dim sum As Single, iFlt As Integer, igrp As Integer
+        Dim Landings(,) As Single
+
+        ReDim Landings(Me.m_EPdata.NumGroups, Me.m_EPdata.NumFleet)
 
         'Only one thread can use this code at a time
         'block all others
         Me.m_SpaceCatchSemaphor.WaitOne()
 
         Try
-            '     iSumIndex = 0
-            'summarize the data if this timestep is part of the start or end time period
-            'iSumIndex will = -1 if this timestep is not being summarized
-            '     If iSumIndex >= 0 Then
 
             For iFlt = 1 To m_Data.nFleets
                 'Effort
@@ -3280,11 +3279,7 @@ exitline:
 
             Next
 
-            For igrp As Integer = 1 To Me.m_Data.NGroups
-
-                'If m_Data.NoRegions > 0 Then
-                '    m_Data.ResultsRegionGroup(m_Data.Region(iRow, iCol), igrp, iCumTime) += Biomass(igrp)
-                'End If
+            For igrp = 1 To Me.m_Data.NGroups
 
                 If m_EPdata.fCatch(igrp) > 0 Then
                     Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp)
@@ -3309,21 +3304,43 @@ exitline:
                             If m_Data.NoRegions > 0 Then
                                 m_Data.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += sum
                             End If
-                            'Then multily with marketvalue * prop landed
-                            sum = sum * m_EPdata.Market(iFlt, igrp) * m_EPdata.Landing(iFlt, igrp) / (m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp))
 
-                            'And add to group and to gear sums
-                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iFlt, igrp, iCumTime) += sum
-                            'sum of all fleets
-                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, 0, igrp, iCumTime) += sum
-
-                            m_Data.ResultsByFleet(eSpaceResultsFleets.Value, iFlt, iCumTime) += sum
-                            m_Data.ResultsByFleet(eSpaceResultsFleets.Value, 0, iCumTime) += sum
+                            Landings(igrp, iFlt) += sum * Me.m_EPdata.PropLanded(iFlt, igrp)
                         End If
                     Next iFlt
                 End If 'If m_EPdata.fCatch(igrp) > 0 Then
             Next igrp
-            '        End If
+
+            'set the price elasticity values for the landings in this cell
+            Me.m_SimData.PriceMedData.SetPriceMedFunctions(Landings)
+
+            'Value of landings
+            Dim ValLandings As Single
+            For igrp = 1 To Me.m_EPdata.NumGroups
+                For iFlt = 0 To Me.m_EPdata.NumFleet
+                    'Value = Landings *  [price elasticity market value]
+                    ValLandings = Landings(igrp, iFlt) * Me.m_Ecosim.getElasticPrice(igrp, iFlt)
+
+                    'And add to group and to gear sums
+                    m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iFlt, igrp, iCumTime) += ValLandings
+                    'sum of all fleets into zero index
+                    m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, 0, igrp, iCumTime) += ValLandings
+
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.Value, iFlt, iCumTime) += ValLandings
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.Value, 0, iCumTime) += ValLandings
+
+                    'Landings and Value for searches
+                    If Me.m_search.bInSearch Then
+                        'search Landings and Value are for the time step
+                        'that is summed and averaged at the end of the year
+                        Me.m_search.CatchYear(iFlt, igrp) += Landings(igrp, iFlt) * Me.m_Data.TimeStep
+                        If iYear > Me.m_search.BaseYear Then
+                            Me.m_search.ValCatch(iFlt, igrp) += ValLandings * Me.m_search.DF * Me.m_Data.TimeStep
+                        End If
+                    End If
+
+                Next
+            Next
 
         Catch ex As Exception
             cLog.Write(ex)
