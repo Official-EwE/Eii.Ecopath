@@ -3346,6 +3346,24 @@ Namespace DataSources
                 iDBID = 1
             End Try
 
+            If Not bIsStanza Then
+                writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+                drow = writer.NewRow()
+                drow("TaxonID") = iDBID
+                drow("EcopathGroupID") = iTargetDBID
+                drow("Proportion") = sProportion
+                writer.AddRow(drow)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+            Else
+                writer = Me.m_db.GetWriter("EcopathStanzaTaxon")
+                drow = writer.NewRow()
+                drow("TaxonID") = iDBID
+                drow("StanzaID") = iTargetDBID
+                drow("Proportion") = sProportion
+                writer.AddRow(drow)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+            End If
+
             writer = Me.m_db.GetWriter("EcopathTaxon")
 
             drow = writer.NewRow()
@@ -3380,24 +3398,6 @@ Namespace DataSources
 
             writer.AddRow(drow)
             bSucces = Me.m_db.ReleaseWriter(writer, bSucces)
-
-            If Not bIsStanza Then
-                writer = Me.m_db.GetWriter("EcopathGroupTaxon")
-                drow = writer.NewRow()
-                drow("TaxonID") = iDBID
-                drow("EcopathGroupID") = iTargetDBID
-                drow("Proportion") = sProportion
-                writer.AddRow(drow)
-                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
-            Else
-                writer = Me.m_db.GetWriter("EcopathStanzaTaxon")
-                drow = writer.NewRow()
-                drow("TaxonID") = iDBID
-                drow("StanzaID") = iTargetDBID
-                drow("Proportion") = sProportion
-                writer.AddRow(drow)
-                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
-            End If
 
             Return bSucces
 

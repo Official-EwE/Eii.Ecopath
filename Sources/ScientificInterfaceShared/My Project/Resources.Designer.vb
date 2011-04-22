@@ -3380,6 +3380,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Proportion of B.
+        '''</summary>
+        Public ReadOnly Property HEADER_PROPORTION_B() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PROPORTION_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Consumption / biomass (/{0}).
         '''</summary>
         Public ReadOnly Property HEADER_QB_UNIT() As String

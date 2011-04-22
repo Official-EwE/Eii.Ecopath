@@ -750,7 +750,7 @@ Public Class gridDefineTaxonomy
         ' Group index cell
         Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-        Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION)
+        Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_B)
         Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
         Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(SharedResources.HEADER_CLASS)
         Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell(SharedResources.HEADER_ORDER)

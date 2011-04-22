@@ -1994,4 +1994,7 @@
   <data name="PROMPT_DEFINE_MEDIATING_LANDINGS" xml:space="preserve">
     <value>Define supply...</value>
   </data>
+  <data name="HEADER_PROPORTION_B" xml:space="preserve">
+    <value>Proportion of B</value>
+  </data>
 </root>
