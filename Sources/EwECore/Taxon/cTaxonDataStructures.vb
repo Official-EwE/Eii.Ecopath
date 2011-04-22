@@ -128,7 +128,7 @@ Public Class cTaxonDataStructures
         Get
             If Me.m_alGroupTaxa Is Nothing Then Me.UpdateTaxonIndex()
             Try
-                Return Me.m_alGroupTaxa(iGroup)(iIndex)
+                Return Me.m_alGroupTaxa(iGroup)(iIndex - 1)
             Catch ex As Exception
                 Debug.Assert(False)
             End Try

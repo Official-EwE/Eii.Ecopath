@@ -2880,7 +2880,7 @@ Public Class cCore
             For i As Integer = 1 To nGroups
                 'creates an instance of both the input and output objects and adds it to the list
                 'the Input and Output objects have only been created they are not Loaded with the Ecopath data at this time
-                m_EcoPathInputs.Add(New cEcoPathGroupInput(Me, m_EcoPathData.GroupDBID(i)))
+                m_EcoPathInputs.Add(New cEcoPathGroupInput(Me, m_EcoPathData.GroupDBID(i), i))
                 m_EcoPathOutputs.Add(New cEcoPathGroupOutput(Me, m_EcoPathData.GroupDBID(i)))
             Next
 
@@ -2932,7 +2932,6 @@ Public Class cCore
 
                 Input.Resize()
 
-                Input.Index = iGroup
                 'get the public variables
                 'jb June-7-2006 DatabaseID is now set in the constructor so that an object always knows it DatabaseID
                 'Input.DBID = m_EcoPathData.GroupDBID(iGroup)
@@ -2978,7 +2977,7 @@ Public Class cCore
                 'stanza variables setting the stanza id will also set the isMultiStanza Flag
                 Input.iStanza = getStanzaIndexForGroup(iGroup)
 
-                ' === PSD ===
+                'PSD
                 Input.AinLWInput = m_PSDData.AinLWInput(iGroup)
                 Input.BinLWInput = m_PSDData.BinLWInput(iGroup)
                 Input.LooInput = m_PSDData.LooInput(iGroup)
@@ -2986,7 +2985,11 @@ Public Class cCore
                 Input.t0Input = m_PSDData.t0Input(iGroup)
                 Input.TcatchInput = m_PSDData.TcatchInput(iGroup)
                 Input.TmaxInput = m_PSDData.TmaxInput(iGroup)
-                ' === END PSD ===
+
+                'Taxa
+                For i As Integer = 1 To Me.m_TaxonData.NumGroupTaxa(iGroup)
+                    Input.iTaxon(i) = Me.m_TaxonData.GroupTaxa(iGroup, i)
+                Next
 
                 'set all the status flags to default value
                 Input.ResetStatusFlags()

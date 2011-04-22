@@ -36,7 +36,7 @@ Public Class cEcoPathGroupInput
 
 #Region "Constructor and Initialization"
 
-    Sub New(ByVal core As cCore, ByVal DBID As Integer)
+    Sub New(ByVal core As cCore, ByVal DBID As Integer, ByVal iIndex As Integer)
         MyBase.New(core)
 
         Dim val As cValue = Nothing
@@ -47,6 +47,7 @@ Public Class cEcoPathGroupInput
 
         Me.m_dataType = eDataTypes.EcoPathGroupInput
         Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.Index = iIndex
 
         'create and set the status object to this source and OK
         Me.m_ValidationStatus = New cVariableStatus
@@ -1197,10 +1198,13 @@ Public Class cEcoPathGroupInput
     ''' </code>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property iTaxon(ByVal iIndex As Integer) As Integer
+    Public Property iTaxon(ByVal iIndex As Integer) As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.GroupTaxa, iStanza))
+            Return CInt(GetVariable(eVarNameFlags.GroupTaxa, iIndex))
         End Get
+        Friend Set(ByVal value As Integer)
+            Me.SetVariable(eVarNameFlags.GroupTaxa, iIndex, value)
+        End Set
     End Property
 
 #End Region
