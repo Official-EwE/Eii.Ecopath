@@ -13,6 +13,9 @@ Public Class cEcoPathGroupInput
 
 #Region "Private stuff"
 
+    ''' <summary>Core Counter interface for group taxon</summary>
+    Private m_CoreCounter As CoreIndexedCounterDelegate
+
     ''' <summary>
     ''' Clear the Status/message (CurrentStatus) object for this group 
     ''' </summary>
@@ -39,12 +42,8 @@ Public Class cEcoPathGroupInput
         Dim val As cValue = Nothing
         Dim meta As cVariableMetaData = Nothing
 
-        ' JS Mar-29-07: Private vars not used outside constructor. No system is in place to updated these with core counter changes.
-        '               To prevent confusion later on it may be better to explicitly disable this logic until needed. If ever.
-        ''get the counters from the core via the CoreCounterDelegate() delegate
-        'm_ngroups = m_core.getCoreCounter(eCoreCounterTypes.nGroups)
-        ''jb June-09-06 added m_ndetritus to the constructor so that detritus fate could be dimensioned
-        'm_nDetritus = m_core.getCoreCounter(eCoreCounterTypes.nDetritus)
+        'get the core counter interface for the NTaxon (number of taxa) counter
+        Me.m_CoreCounter = AddressOf m_core.GetCoreCounter
 
         Me.m_dataType = eDataTypes.EcoPathGroupInput
         Me.m_coreComponent = eCoreComponentType.EcoPath
@@ -183,7 +182,6 @@ Public Class cEcoPathGroupInput
         val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.VBK))
         m_values.Add(val.varName, val)
 
-        'Joeh: PSD
         'Tcatch
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
         val = New cValue(New Single, eVarNameFlags.TCatchInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TCatchInput))
@@ -218,13 +216,16 @@ Public Class cEcoPathGroupInput
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
         val = New cValue(New Single, eVarNameFlags.TmaxInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TmaxInput))
         m_values.Add(val.varName, val)
-        'End Joeh: PSD
 
         ' IsFished
         meta = New cVariableMetaData()
         val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.IsFished))
         val.AffectsRunState = False
         val.Stored = False
+        m_values.Add(val.varName, val)
+
+        ' iTaxon dimensioned by nTaxa(iIndex)
+        val = New cValueArrayIndexed(eValueTypes.IntArray, eVarNameFlags.GroupTaxa, eStatusFlags.Null, eCoreCounterTypes.nTaxonForGroup, AddressOf m_core.GetCoreCounter, Me.Index, Me.DataType)
         m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
@@ -1151,6 +1152,56 @@ Public Class cEcoPathGroupInput
     End Property
 
 #End If ' #0
+
+#End Region
+
+#Region " Taxa "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the number of taxa assigned to this group = either directly
+    ''' via <see cref="cTaxon.Group"/>, or indirectly via <see cref="cTaxon.Stanza"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property NTaxon() As Integer
+        Get
+            Return m_CoreCounter(eCoreCounterTypes.nTaxonForGroup, Me.Index)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="cCoreInputOutputBase.Index">Index</see> of a taxon
+    ''' for this group. Taxa are stored in a one-based array.
+    ''' </summary>
+    ''' <param name="iIndex">The one-based index to obtain the taxon index for.</param>
+    ''' <returns>Index of a taxon that is assigned to this group - either directly
+    ''' via <see cref="cTaxon.Group"/>, or indirectly via <see cref="cTaxon.Stanza"/>.</returns>
+    ''' <remarks>
+    ''' <para>The returned index identifies the index of a particular taxon assigned
+    ''' to this group.</para>
+    ''' <code>
+    ''' Dim grp As cEcoPathGroupInputs = Nothing
+    ''' Dim taxon As cTaxon = Nothing
+    ''' 
+    ''' ' Get the first group
+    ''' grp = core.EcopathGroupInputs(1)
+    ''' 
+    ''' ' Iterate over the taxa that are assigned to this group
+    ''' For iIndex As Integer = 1 To grp.NTaxon
+    '''    taxon = core.Taxon(grp.iTaxon(iIndex))
+    '''    ' Do something with the taxon
+    '''    ' ..
+    '''    ' ..
+    ''' Next iIndex
+    ''' </code>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property iTaxon(ByVal iIndex As Integer) As Integer
+        Get
+            Return CInt(GetVariable(eVarNameFlags.GroupTaxa, iStanza))
+        End Get
+    End Property
 
 #End Region
 

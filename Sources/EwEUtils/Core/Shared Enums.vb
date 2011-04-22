@@ -1344,8 +1344,11 @@ Namespace Core
         East
         AreaName
 
+        ''' <summary>Group assigned to a given taxon.</summary>
         TaxonGroup
+        ''' <summary>Stanza assigned to a given taxon.</summary>
         TaxonStanza
+        ''' <summary>Taxon biomass proportion.</summary>
         TaxonProp
         Phylum
         [Class]
@@ -1369,6 +1372,9 @@ Namespace Core
         TaxonMaxLength
         TaxonMeanLifespan
         TaxonVulnerabilityIndex
+
+        ''' <summary>Taxa assigned to a given group</summary>
+        GroupTaxa
 
         Coriolis
         XVelocity
@@ -2007,6 +2013,8 @@ Namespace Core
 
         ''' <summary>The number of taxonomy groups.</summary>
         nTaxon
+        ''' <summary>The number of taxa assigned to a given group.</summary>
+        nTaxonForGroup
 
         ''' <summary>The number of supported pedigree variables.</summary>
         nPedigreeVariables

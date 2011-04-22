@@ -305,7 +305,7 @@
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
     <Compile Include="EcoPath\cEcoPathStats.vb" />
-    <Compile Include="EcoPath\cTaxon.vb" />
+    <Compile Include="Taxon\cTaxon.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimResultWriter.vb" />
@@ -371,6 +371,7 @@
     <Compile Include="Shapes\TimeSeries\cTimeSeriesImport.vb" />
     <Compile Include="Shapes\TimeSeries\Writers\cTimeSeriesCSVWriter.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesDataset.vb" />
+    <Compile Include="Taxon\cTaxonDataStructures.vb" />
     <None Include="Database\Compact\_compacters_.cd" />
     <None Include="Database\Import\_Importers_.cd" />
     <None Include="EwECore.snk" />

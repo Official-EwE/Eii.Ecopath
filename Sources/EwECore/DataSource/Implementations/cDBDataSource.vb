@@ -3068,11 +3068,12 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function LoadEcopathTaxon() As Boolean
 
+            Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
-            ecopathDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathTaxon"))
-            ecopathDS.RedimTaxon()
+            taxonDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathTaxon"))
+            taxonDS.RedimTaxon()
 
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathTaxon")
             Dim iTaxon As Integer = 1
@@ -3080,38 +3081,38 @@ Namespace DataSources
 
             Try
                 While reader.Read()
-                    ecopathDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
-                    ecopathDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeISCAAP", ""))
-                    ecopathDS.TaxonCodeTaxon(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeTaxon", ""))
-                    ecopathDS.TaxonCode3A(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "Code3A", ""))
-                    ecopathDS.TaxonClass(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "ClassName", ""))
-                    ecopathDS.TaxonOrder(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "OrderName", ""))
-                    ecopathDS.TaxonFamily(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "FamilyName", ""))
-                    ecopathDS.TaxonGenus(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "GenusName", ""))
-                    ecopathDS.TaxonSpecies(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SpeciesName", ""))
-                    ecopathDS.TaxonName(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CommonName", ""))
-                    ecopathDS.TaxonSource(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceName", ""))
-                    ecopathDS.TaxonSourceKey(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceKey", ""))
-                    ecopathDS.TaxonEcologyType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "EcologyType", eEcologyTypes.NotSet), eEcologyTypes)
-                    ecopathDS.TaxonOrganismType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OrganismType", eOrganismTypes.NotSet), eOrganismTypes)
-                    ecopathDS.TaxonExploited(iTaxon) = CBool(Me.m_db.ReadSafe(reader, "Exploited", False))
-                    ecopathDS.TaxonIUCNConservationStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "ConservationStatus", eIUCNConservationStatusTypes.NotSet), eIUCNConservationStatusTypes)
-                    ecopathDS.TaxonOccurrenceStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OccurenceStatus", eOccurrenceStatusTypes.NotSet), eOccurrenceStatusTypes)
-                    ecopathDS.TaxonMeanWeight(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanWeight", cCore.NULL_VALUE))
-                    ecopathDS.TaxonMeanLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLength", cCore.NULL_VALUE))
-                    ecopathDS.TaxonMaxLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MaxLength", cCore.NULL_VALUE))
-                    ecopathDS.TaxonMeanLifeSpan(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLifeSpan", cCore.NULL_VALUE))
-                    ecopathDS.TaxonVulnerabilityIndex(iTaxon) = CInt(Me.m_db.ReadSafe(reader, "VulnerabiltyIndex", cCore.NULL_VALUE))
-                    ecopathDS.TaxonLastUpdated(iTaxon) = CDbl(Me.m_db.ReadSafe(reader, "LastUpdated", -1))
+                    taxonDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
+                    taxonDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeISCAAP", ""))
+                    taxonDS.TaxonCodeTaxon(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeTaxon", ""))
+                    taxonDS.TaxonCode3A(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "Code3A", ""))
+                    taxonDS.TaxonClass(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "ClassName", ""))
+                    taxonDS.TaxonOrder(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "OrderName", ""))
+                    taxonDS.TaxonFamily(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "FamilyName", ""))
+                    taxonDS.TaxonGenus(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "GenusName", ""))
+                    taxonDS.TaxonSpecies(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SpeciesName", ""))
+                    taxonDS.TaxonName(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CommonName", ""))
+                    taxonDS.TaxonSource(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceName", ""))
+                    taxonDS.TaxonSourceKey(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceKey", ""))
+                    taxonDS.TaxonEcologyType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "EcologyType", eEcologyTypes.NotSet), eEcologyTypes)
+                    taxonDS.TaxonOrganismType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OrganismType", eOrganismTypes.NotSet), eOrganismTypes)
+                    taxonDS.TaxonExploited(iTaxon) = CBool(Me.m_db.ReadSafe(reader, "Exploited", False))
+                    taxonDS.TaxonIUCNConservationStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "ConservationStatus", eIUCNConservationStatusTypes.NotSet), eIUCNConservationStatusTypes)
+                    taxonDS.TaxonOccurrenceStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OccurenceStatus", eOccurrenceStatusTypes.NotSet), eOccurrenceStatusTypes)
+                    taxonDS.TaxonMeanWeight(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanWeight", cCore.NULL_VALUE))
+                    taxonDS.TaxonMeanLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLength", cCore.NULL_VALUE))
+                    taxonDS.TaxonMaxLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MaxLength", cCore.NULL_VALUE))
+                    taxonDS.TaxonMeanLifeSpan(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLifeSpan", cCore.NULL_VALUE))
+                    taxonDS.TaxonVulnerabilityIndex(iTaxon) = CInt(Me.m_db.ReadSafe(reader, "VulnerabiltyIndex", cCore.NULL_VALUE))
+                    taxonDS.TaxonLastUpdated(iTaxon) = CDbl(Me.m_db.ReadSafe(reader, "LastUpdated", -1))
                     iTaxon += 1
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, ecopathDS.TaxonName(iTaxon)))
+                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, taxonDS.TaxonName(iTaxon)))
                 bSucces = False
             End Try
 
-            Debug.Assert(iTaxon - 1 = ecopathDS.NumTaxon)
+            Debug.Assert(iTaxon - 1 = taxonDS.NumTaxon)
 
             Me.m_db.ReleaseReader(reader)
             reader = Nothing
@@ -3126,6 +3127,7 @@ Namespace DataSources
 
         Private Function LoadEcopathGroupTaxon() As Boolean
 
+            Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupTaxon")
             Dim iTaxon As Integer = 1
@@ -3134,13 +3136,13 @@ Namespace DataSources
 
             Try
                 While reader.Read()
-                    iTaxon = Array.IndexOf(ecopathDS.TaxonDBID, CInt(reader("TaxonID")))
+                    iTaxon = Array.IndexOf(taxonDS.TaxonDBID, CInt(reader("TaxonID")))
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("EcopathGroupID")))
 
                     If (iTaxon > 0 And iGroup > 0) Then
-                        ecopathDS.TaxonTarget(iTaxon) = iGroup
-                        ecopathDS.IsTaxonStanza(iTaxon) = False
-                        ecopathDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
+                        taxonDS.TaxonTarget(iTaxon) = iGroup
+                        taxonDS.IsTaxonStanza(iTaxon) = False
+                        taxonDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
                     End If
                 End While
 
@@ -3156,6 +3158,7 @@ Namespace DataSources
 
         Private Function LoadEcopathStanzaTaxon() As Boolean
 
+            Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathStanzaTaxon")
@@ -3165,13 +3168,13 @@ Namespace DataSources
 
             Try
                 While reader.Read()
-                    iTaxon = Array.IndexOf(ecopathDS.TaxonDBID, CInt(reader("TaxonID")))
+                    iTaxon = Array.IndexOf(taxonDS.TaxonDBID, CInt(reader("TaxonID")))
                     iStanza = Array.IndexOf(stanzaDS.StanzaDBID, CInt(reader("StanzaID")))
 
                     If (iTaxon > 0 And iStanza > 0) Then
-                        ecopathDS.TaxonTarget(iTaxon) = iStanza
-                        ecopathDS.IsTaxonStanza(iTaxon) = True
-                        ecopathDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
+                        taxonDS.TaxonTarget(iTaxon) = iStanza
+                        taxonDS.IsTaxonStanza(iTaxon) = True
+                        taxonDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
                     End If
                 End While
 
@@ -3197,6 +3200,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function SaveEcopathTaxon() As Boolean
 
+            Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -3207,32 +3211,32 @@ Namespace DataSources
             writer = Me.m_db.GetWriter("EcopathTaxon")
 
             Try
-                For iTaxon As Integer = 1 To ecopathDS.NumTaxon
+                For iTaxon As Integer = 1 To taxonDS.NumTaxon
 
                     drow = writer.NewRow()
-                    drow("TaxonID") = ecopathDS.TaxonDBID(iTaxon)
-                    drow("CodeISCAAP") = ecopathDS.TaxonCodeISCAAP(iTaxon)
-                    drow("CodeTaxon") = ecopathDS.TaxonCodeTaxon(iTaxon)
-                    drow("Code3A") = ecopathDS.TaxonCode3A(iTaxon)
-                    drow("ClassName") = ecopathDS.TaxonClass(iTaxon)
-                    drow("OrderName") = ecopathDS.TaxonOrder(iTaxon)
-                    drow("FamilyName") = ecopathDS.TaxonFamily(iTaxon)
-                    drow("GenusName") = ecopathDS.TaxonGenus(iTaxon)
-                    drow("SpeciesName") = ecopathDS.TaxonSpecies(iTaxon)
-                    drow("CommonName") = ecopathDS.TaxonName(iTaxon)
-                    drow("SourceName") = ecopathDS.TaxonSource(iTaxon)
-                    drow("SourceKey") = ecopathDS.TaxonSourceKey(iTaxon)
-                    drow("EcologyType") = ecopathDS.TaxonEcologyType(iTaxon)
-                    drow("OrganismType") = ecopathDS.TaxonOrganismType(iTaxon)
-                    drow("Exploited") = ecopathDS.TaxonExploited(iTaxon)
-                    drow("ConservationStatus") = ecopathDS.TaxonIUCNConservationStatus(iTaxon)
-                    drow("OccurenceStatus") = ecopathDS.TaxonOccurrenceStatus(iTaxon)
-                    drow("MeanWeight") = ecopathDS.TaxonMeanWeight(iTaxon)
-                    drow("MeanLength") = ecopathDS.TaxonMeanLength(iTaxon)
-                    drow("MaxLength") = ecopathDS.TaxonMaxLength(iTaxon)
-                    drow("MeanLifeSpan") = ecopathDS.TaxonMeanLifeSpan(iTaxon)
-                    drow("VulnerabiltyIndex") = ecopathDS.TaxonVulnerabilityIndex(iTaxon)
-                    drow("LastUpdated") = ecopathDS.TaxonLastUpdated(iTaxon)
+                    drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
+                    drow("CodeISCAAP") = taxonDS.TaxonCodeISCAAP(iTaxon)
+                    drow("CodeTaxon") = taxonDS.TaxonCodeTaxon(iTaxon)
+                    drow("Code3A") = taxonDS.TaxonCode3A(iTaxon)
+                    drow("ClassName") = taxonDS.TaxonClass(iTaxon)
+                    drow("OrderName") = taxonDS.TaxonOrder(iTaxon)
+                    drow("FamilyName") = taxonDS.TaxonFamily(iTaxon)
+                    drow("GenusName") = taxonDS.TaxonGenus(iTaxon)
+                    drow("SpeciesName") = taxonDS.TaxonSpecies(iTaxon)
+                    drow("CommonName") = taxonDS.TaxonName(iTaxon)
+                    drow("SourceName") = taxonDS.TaxonSource(iTaxon)
+                    drow("SourceKey") = taxonDS.TaxonSourceKey(iTaxon)
+                    drow("EcologyType") = taxonDS.TaxonEcologyType(iTaxon)
+                    drow("OrganismType") = taxonDS.TaxonOrganismType(iTaxon)
+                    drow("Exploited") = taxonDS.TaxonExploited(iTaxon)
+                    drow("ConservationStatus") = taxonDS.TaxonIUCNConservationStatus(iTaxon)
+                    drow("OccurenceStatus") = taxonDS.TaxonOccurrenceStatus(iTaxon)
+                    drow("MeanWeight") = taxonDS.TaxonMeanWeight(iTaxon)
+                    drow("MeanLength") = taxonDS.TaxonMeanLength(iTaxon)
+                    drow("MaxLength") = taxonDS.TaxonMaxLength(iTaxon)
+                    drow("MeanLifeSpan") = taxonDS.TaxonMeanLifeSpan(iTaxon)
+                    drow("VulnerabiltyIndex") = taxonDS.TaxonVulnerabilityIndex(iTaxon)
+                    drow("LastUpdated") = taxonDS.TaxonLastUpdated(iTaxon)
                     writer.AddRow(drow)
 
                     nTaxonSaved += 1
@@ -3243,7 +3247,7 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-            Debug.Assert(nTaxonSaved = ecopathDS.NumTaxon)
+            Debug.Assert(nTaxonSaved = taxonDS.NumTaxon)
 
             Me.m_db.ReleaseWriter(writer, bSucces)
 
@@ -3256,6 +3260,7 @@ Namespace DataSources
 
         Private Function SaveEcopathGroupTaxon() As Boolean
 
+            Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -3265,12 +3270,12 @@ Namespace DataSources
             writer = Me.m_db.GetWriter("EcopathGroupTaxon")
 
             Try
-                For iTaxon As Integer = 1 To ecopathDS.NumTaxon
-                    If Not ecopathDS.IsTaxonStanza(iTaxon) Then
+                For iTaxon As Integer = 1 To taxonDS.NumTaxon
+                    If Not taxonDS.IsTaxonStanza(iTaxon) Then
                         drow = writer.NewRow()
-                        drow("TaxonID") = ecopathDS.TaxonDBID(iTaxon)
-                        drow("EcopathGroupID") = ecopathDS.GroupDBID(ecopathDS.TaxonTarget(iTaxon))
-                        drow("Proportion") = ecopathDS.TaxonProp(iTaxon)
+                        drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
+                        drow("EcopathGroupID") = ecopathDS.GroupDBID(taxonDS.TaxonTarget(iTaxon))
+                        drow("Proportion") = taxonDS.TaxonProp(iTaxon)
                         writer.AddRow(drow)
                     End If
                 Next iTaxon
@@ -3288,6 +3293,7 @@ Namespace DataSources
 
         Private Function SaveEcopathStanzaTaxon() As Boolean
 
+            Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -3298,12 +3304,12 @@ Namespace DataSources
             writer = Me.m_db.GetWriter("EcopathGroupTaxon")
 
             Try
-                For iTaxon As Integer = 1 To ecopathDS.NumTaxon
-                    If ecopathDS.IsTaxonStanza(iTaxon) Then
+                For iTaxon As Integer = 1 To taxonDS.NumTaxon
+                    If taxonDS.IsTaxonStanza(iTaxon) Then
                         drow = writer.NewRow()
-                        drow("TaxonID") = ecopathDS.TaxonDBID(iTaxon)
-                        drow("StanzaID") = stanzaDS.StanzaDBID(ecopathDS.TaxonTarget(iTaxon))
-                        drow("Proportion") = ecopathDS.TaxonProp(iTaxon)
+                        drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
+                        drow("StanzaID") = stanzaDS.StanzaDBID(taxonDS.TaxonTarget(iTaxon))
+                        drow("Proportion") = taxonDS.TaxonProp(iTaxon)
                         writer.AddRow(drow)
                     End If
                 Next iTaxon

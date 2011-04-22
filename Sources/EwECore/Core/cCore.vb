@@ -266,6 +266,12 @@ Public Class cCore
                     Return 0 '?
                 End Try
 
+            Case eCoreCounterTypes.nTaxonForGroup
+                Try
+                    Return Me.m_TaxonData.NumGroupTaxa(iIndex)
+                Catch ex As Exception
+
+                End Try
             Case Else
                 Debug.Assert(False, "Invalid Counter passed to getCoreCounter(SizeType,iIndex)")
         End Select
@@ -502,7 +508,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nTaxon() As Integer
         Get
-            Return Me.m_EcoPathData.NumTaxon
+            Return Me.m_TaxonData.NumTaxon
         End Get
     End Property
 
@@ -541,7 +547,7 @@ Public Class cCore
         Me.m_MPAOptData = New cMPAOptDataStructures
         'Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
         Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
-
+        Me.m_TaxonData = New cTaxonDataStructures(Me.m_EcoPathData, Me.m_Stanza)
         ' Create core state monitor and manager
         Me.m_StateMonitor = New cCoreStateMonitor(Me)
         Me.m_StateManager = New cCoreStateManager(Me)
@@ -2445,6 +2451,7 @@ Public Class cCore
     Friend m_PSDData As cPSDDatastructures
     Private m_PSDParameters As cPSDParameters
     Private m_psdModel As cPSDModel
+    Friend m_TaxonData As cTaxonDataStructures = Nothing
 
 #End Region ' Variables
 
@@ -2733,6 +2740,7 @@ Public Class cCore
             ' Clear core data structures
             Me.m_EcoPathData.Clear()
             Me.m_Stanza.Clear()
+            Me.m_TaxonData.Clear()
             Me.m_EcoSimData.Clear()
             Me.m_EcoSpaceData.Clear()
             Me.m_tracerData.Clear()
@@ -3375,8 +3383,8 @@ Public Class cCore
         Try
 
             Me.m_EcopathTaxon.Clear()
-            For iTaxon As Integer = 1 To m_EcoPathData.NumTaxon
-                Me.m_EcopathTaxon.Add(New cTaxon(Me, m_EcoPathData.TaxonDBID(iTaxon)))
+            For iTaxon As Integer = 1 To Me.m_TaxonData.NumTaxon
+                Me.m_EcopathTaxon.Add(New cTaxon(Me, Me.m_TaxonData.TaxonDBID(iTaxon)))
             Next iTaxon
             Me.LoadEcopathTaxon()
 
@@ -3399,49 +3407,49 @@ Public Class cCore
 
                 taxon.AllowValidation = False
 
-                iTaxon = Array.IndexOf(Me.m_EcoPathData.TaxonDBID, taxon.DBID)
+                iTaxon = Array.IndexOf(Me.m_TaxonData.TaxonDBID, taxon.DBID)
 
-                Debug.Assert(iTaxon > 0 And iTaxon <= m_EcoPathData.NumTaxon, "Failed to find Taxon index for database ID " & taxon.DBID)
+                Debug.Assert(iTaxon > 0 And iTaxon <= Me.m_TaxonData.NumTaxon, "Failed to find Taxon index for database ID " & taxon.DBID)
 
                 taxon.Resize()
 
                 taxon.Index = iTaxon
-                taxon.DBID = Me.m_EcoPathData.TaxonDBID(iTaxon)
-                If Me.m_EcoPathData.IsTaxonStanza(iTaxon) Then
-                    taxon.Stanza = Me.m_EcoPathData.TaxonTarget(iTaxon)
+                taxon.DBID = Me.m_TaxonData.TaxonDBID(iTaxon)
+                If Me.m_TaxonData.IsTaxonStanza(iTaxon) Then
+                    taxon.Stanza = Me.m_TaxonData.TaxonTarget(iTaxon)
                     taxon.Group = 0
                 Else
                     taxon.Stanza = 0
-                    taxon.Group = Me.m_EcoPathData.TaxonTarget(iTaxon)
+                    taxon.Group = Me.m_TaxonData.TaxonTarget(iTaxon)
                 End If
-                taxon.Proportion = Me.m_EcoPathData.TaxonProp(iTaxon)
-                taxon.Name = Me.m_EcoPathData.TaxonName(iTaxon)
-                taxon.Class = Me.m_EcoPathData.TaxonClass(iTaxon)
-                taxon.Order = Me.m_EcoPathData.TaxonOrder(iTaxon)
-                taxon.Family = Me.m_EcoPathData.TaxonFamily(iTaxon)
-                taxon.Genus = Me.m_EcoPathData.TaxonGenus(iTaxon)
-                taxon.Species = Me.m_EcoPathData.TaxonSpecies(iTaxon)
-                taxon.Code3A = Me.m_EcoPathData.TaxonCode3A(iTaxon)
-                taxon.CodeISSCAAP = Me.m_EcoPathData.TaxonCodeISCAAP(iTaxon)
-                taxon.CodeTaxon = Me.m_EcoPathData.TaxonCodeTaxon(iTaxon)
-                taxon.Source = Me.m_EcoPathData.TaxonSource(iTaxon)
-                taxon.SourceKey = Me.m_EcoPathData.TaxonSourceKey(iTaxon)
-                taxon.North = Me.m_EcoPathData.TaxonNorth(iTaxon)
-                taxon.South = Me.m_EcoPathData.TaxonSouth(iTaxon)
-                taxon.East = Me.m_EcoPathData.TaxonEast(iTaxon)
-                taxon.West = Me.m_EcoPathData.TaxonWest(iTaxon)
-                taxon.EcologyType = Me.m_EcoPathData.TaxonEcologyType(iTaxon)
-                taxon.Exploited = Me.m_EcoPathData.TaxonExploited(iTaxon)
-                taxon.IUCNConservationStatus = Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon)
-                taxon.OrganismType = Me.m_EcoPathData.TaxonOrganismType(iTaxon)
-                taxon.OccurrenceStatus = Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon)
-                taxon.MeanLength = Me.m_EcoPathData.TaxonMeanLength(iTaxon)
-                taxon.MaxLength = Me.m_EcoPathData.TaxonMaxLength(iTaxon)
-                taxon.MeanWeight = Me.m_EcoPathData.TaxonMeanWeight(iTaxon)
-                taxon.MeanLifespan = Me.m_EcoPathData.TaxonMeanLifeSpan(iTaxon)
-                taxon.VulnerabilityIndex = Me.m_EcoPathData.TaxonVulnerabilityIndex(iTaxon)
+                taxon.Proportion = Me.m_TaxonData.TaxonProp(iTaxon)
+                taxon.Name = Me.m_TaxonData.TaxonName(iTaxon)
+                taxon.Class = Me.m_TaxonData.TaxonClass(iTaxon)
+                taxon.Order = Me.m_TaxonData.TaxonOrder(iTaxon)
+                taxon.Family = Me.m_TaxonData.TaxonFamily(iTaxon)
+                taxon.Genus = Me.m_TaxonData.TaxonGenus(iTaxon)
+                taxon.Species = Me.m_TaxonData.TaxonSpecies(iTaxon)
+                taxon.Code3A = Me.m_TaxonData.TaxonCode3A(iTaxon)
+                taxon.CodeISSCAAP = Me.m_TaxonData.TaxonCodeISCAAP(iTaxon)
+                taxon.CodeTaxon = Me.m_TaxonData.TaxonCodeTaxon(iTaxon)
+                taxon.Source = Me.m_TaxonData.TaxonSource(iTaxon)
+                taxon.SourceKey = Me.m_TaxonData.TaxonSourceKey(iTaxon)
+                taxon.North = Me.m_TaxonData.TaxonNorth(iTaxon)
+                taxon.South = Me.m_TaxonData.TaxonSouth(iTaxon)
+                taxon.East = Me.m_TaxonData.TaxonEast(iTaxon)
+                taxon.West = Me.m_TaxonData.TaxonWest(iTaxon)
+                taxon.EcologyType = Me.m_TaxonData.TaxonEcologyType(iTaxon)
+                taxon.Exploited = Me.m_TaxonData.TaxonExploited(iTaxon)
+                taxon.IUCNConservationStatus = Me.m_TaxonData.TaxonIUCNConservationStatus(iTaxon)
+                taxon.OrganismType = Me.m_TaxonData.TaxonOrganismType(iTaxon)
+                taxon.OccurrenceStatus = Me.m_TaxonData.TaxonOccurrenceStatus(iTaxon)
+                taxon.MeanLength = Me.m_TaxonData.TaxonMeanLength(iTaxon)
+                taxon.MaxLength = Me.m_TaxonData.TaxonMaxLength(iTaxon)
+                taxon.MeanWeight = Me.m_TaxonData.TaxonMeanWeight(iTaxon)
+                taxon.MeanLifespan = Me.m_TaxonData.TaxonMeanLifeSpan(iTaxon)
+                taxon.VulnerabilityIndex = Me.m_TaxonData.TaxonVulnerabilityIndex(iTaxon)
 
-                taxon.LastUpdated = Me.m_EcoPathData.TaxonLastUpdated(iTaxon)
+                taxon.LastUpdated = Me.m_TaxonData.TaxonLastUpdated(iTaxon)
 
                 taxon.ResetStatusFlags()
                 taxon.AllowValidation = True
@@ -3461,41 +3469,41 @@ Public Class cCore
 
     Private Function UpdateEcopathGroupTaxon(ByVal iDBID As Integer) As Boolean
 
-        Dim iTaxon As Integer = Array.IndexOf(Me.m_EcoPathData.TaxonDBID, iDBID)
-        Debug.Assert(iTaxon > 0 And iTaxon <= m_EcoPathData.NumTaxon, "Failed to find Taxon index for database ID " & iDBID)
+        Dim iTaxon As Integer = Array.IndexOf(Me.m_TaxonData.TaxonDBID, iDBID)
+        Debug.Assert(iTaxon > 0 And iTaxon <= m_TaxonData.NumTaxon, "Failed to find Taxon index for database ID " & iDBID)
 
         Dim taxon As cTaxon = Me.Taxon(iTaxon)
 
         If taxon.Group > 0 Then
-            Me.m_EcoPathData.TaxonTarget(iTaxon) = taxon.Group
-            Me.m_EcoPathData.IsTaxonStanza(iTaxon) = False
+            Me.m_TaxonData.TaxonTarget(iTaxon) = taxon.Group
+            Me.m_TaxonData.IsTaxonStanza(iTaxon) = False
         Else
-            Me.m_EcoPathData.TaxonTarget(iTaxon) = taxon.Stanza
-            Me.m_EcoPathData.IsTaxonStanza(iTaxon) = True
+            Me.m_TaxonData.TaxonTarget(iTaxon) = taxon.Stanza
+            Me.m_TaxonData.IsTaxonStanza(iTaxon) = True
         End If
-        Me.m_EcoPathData.TaxonProp(iTaxon) = taxon.Proportion
-        Me.m_EcoPathData.TaxonName(iTaxon) = taxon.Name
-        Me.m_EcoPathData.TaxonClass(iTaxon) = taxon.Class
-        Me.m_EcoPathData.TaxonOrder(iTaxon) = taxon.Order
-        Me.m_EcoPathData.TaxonFamily(iTaxon) = taxon.Family
-        Me.m_EcoPathData.TaxonGenus(iTaxon) = taxon.Genus
-        Me.m_EcoPathData.TaxonSpecies(iTaxon) = taxon.Species
-        Me.m_EcoPathData.TaxonCode3A(iTaxon) = taxon.Code3A
-        Me.m_EcoPathData.TaxonCodeISCAAP(iTaxon) = taxon.CodeISSCAAP
-        Me.m_EcoPathData.TaxonCodeTaxon(iTaxon) = taxon.CodeTaxon
-        Me.m_EcoPathData.TaxonSource(iTaxon) = taxon.Source
-        Me.m_EcoPathData.TaxonSourceKey(iTaxon) = taxon.SourceKey
-        Me.m_EcoPathData.TaxonEcologyType(iTaxon) = taxon.EcologyType
-        Me.m_EcoPathData.TaxonExploited(iTaxon) = taxon.Exploited
-        Me.m_EcoPathData.TaxonIUCNConservationStatus(iTaxon) = taxon.IUCNConservationStatus
-        Me.m_EcoPathData.TaxonOrganismType(iTaxon) = taxon.OrganismType
-        Me.m_EcoPathData.TaxonOccurrenceStatus(iTaxon) = taxon.OccurrenceStatus
-        Me.m_EcoPathData.TaxonMeanLength(iTaxon) = taxon.MeanLength
-        Me.m_EcoPathData.TaxonMaxLength(iTaxon) = taxon.MaxLength
-        Me.m_EcoPathData.TaxonMeanWeight(iTaxon) = taxon.MeanWeight
-        Me.m_EcoPathData.TaxonMeanLifeSpan(iTaxon) = taxon.MeanLifespan
-        Me.m_EcoPathData.TaxonLastUpdated(iTaxon) = taxon.LastUpdated
-        Me.m_EcoPathData.TaxonVulnerabilityIndex(iTaxon) = taxon.VulnerabilityIndex
+        Me.m_TaxonData.TaxonProp(iTaxon) = taxon.Proportion
+        Me.m_TaxonData.TaxonName(iTaxon) = taxon.Name
+        Me.m_TaxonData.TaxonClass(iTaxon) = taxon.Class
+        Me.m_TaxonData.TaxonOrder(iTaxon) = taxon.Order
+        Me.m_TaxonData.TaxonFamily(iTaxon) = taxon.Family
+        Me.m_TaxonData.TaxonGenus(iTaxon) = taxon.Genus
+        Me.m_TaxonData.TaxonSpecies(iTaxon) = taxon.Species
+        Me.m_TaxonData.TaxonCode3A(iTaxon) = taxon.Code3A
+        Me.m_TaxonData.TaxonCodeISCAAP(iTaxon) = taxon.CodeISSCAAP
+        Me.m_TaxonData.TaxonCodeTaxon(iTaxon) = taxon.CodeTaxon
+        Me.m_TaxonData.TaxonSource(iTaxon) = taxon.Source
+        Me.m_TaxonData.TaxonSourceKey(iTaxon) = taxon.SourceKey
+        Me.m_TaxonData.TaxonEcologyType(iTaxon) = taxon.EcologyType
+        Me.m_TaxonData.TaxonExploited(iTaxon) = taxon.Exploited
+        Me.m_TaxonData.TaxonIUCNConservationStatus(iTaxon) = taxon.IUCNConservationStatus
+        Me.m_TaxonData.TaxonOrganismType(iTaxon) = taxon.OrganismType
+        Me.m_TaxonData.TaxonOccurrenceStatus(iTaxon) = taxon.OccurrenceStatus
+        Me.m_TaxonData.TaxonMeanLength(iTaxon) = taxon.MeanLength
+        Me.m_TaxonData.TaxonMaxLength(iTaxon) = taxon.MaxLength
+        Me.m_TaxonData.TaxonMeanWeight(iTaxon) = taxon.MeanWeight
+        Me.m_TaxonData.TaxonMeanLifeSpan(iTaxon) = taxon.MeanLifespan
+        Me.m_TaxonData.TaxonLastUpdated(iTaxon) = taxon.LastUpdated
+        Me.m_TaxonData.TaxonVulnerabilityIndex(iTaxon) = taxon.VulnerabilityIndex
         Return True
 
     End Function
@@ -3579,7 +3587,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcopathDataSource)
-        If ds.RemoveTaxon(Me.m_EcoPathData.TaxonDBID(iTaxon)) Then
+        If ds.RemoveTaxon(Me.m_TaxonData.TaxonDBID(iTaxon)) Then
             Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
             bSucces = True
         End If
