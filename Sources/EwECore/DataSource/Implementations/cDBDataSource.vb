@@ -3095,7 +3095,6 @@ Namespace DataSources
                     taxonDS.TaxonSourceKey(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "SourceKey", ""))
                     taxonDS.TaxonEcologyType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "EcologyType", eEcologyTypes.NotSet), eEcologyTypes)
                     taxonDS.TaxonOrganismType(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OrganismType", eOrganismTypes.NotSet), eOrganismTypes)
-                    taxonDS.TaxonExploited(iTaxon) = CBool(Me.m_db.ReadSafe(reader, "Exploited", False))
                     taxonDS.TaxonIUCNConservationStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "ConservationStatus", eIUCNConservationStatusTypes.NotSet), eIUCNConservationStatusTypes)
                     taxonDS.TaxonOccurrenceStatus(iTaxon) = DirectCast(Me.m_db.ReadSafe(reader, "OccurrenceStatus", eOccurrenceStatusTypes.NotSet), eOccurrenceStatusTypes)
                     taxonDS.TaxonMeanWeight(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanWeight", cCore.NULL_VALUE))
@@ -3143,6 +3142,7 @@ Namespace DataSources
                         taxonDS.TaxonTarget(iTaxon) = iGroup
                         taxonDS.IsTaxonStanza(iTaxon) = False
                         taxonDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
+                        taxonDS.TaxonPropCatch(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "PropCatch", 0))
                     End If
                 End While
 
@@ -3175,6 +3175,7 @@ Namespace DataSources
                         taxonDS.TaxonTarget(iTaxon) = iStanza
                         taxonDS.IsTaxonStanza(iTaxon) = True
                         taxonDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
+                        taxonDS.TaxonPropCatch(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "PropCatch", 0))
                     End If
                 End While
 
@@ -3228,7 +3229,6 @@ Namespace DataSources
                     drow("SourceKey") = taxonDS.TaxonSourceKey(iTaxon)
                     drow("EcologyType") = taxonDS.TaxonEcologyType(iTaxon)
                     drow("OrganismType") = taxonDS.TaxonOrganismType(iTaxon)
-                    drow("Exploited") = taxonDS.TaxonExploited(iTaxon)
                     drow("ConservationStatus") = taxonDS.TaxonIUCNConservationStatus(iTaxon)
                     drow("OccurrenceStatus") = taxonDS.TaxonOccurrenceStatus(iTaxon)
                     drow("MeanWeight") = taxonDS.TaxonMeanWeight(iTaxon)
@@ -3276,6 +3276,7 @@ Namespace DataSources
                         drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
                         drow("EcopathGroupID") = ecopathDS.GroupDBID(taxonDS.TaxonTarget(iTaxon))
                         drow("Proportion") = taxonDS.TaxonProp(iTaxon)
+                        drow("PropCatch") = taxonDS.TaxonPropCatch(iTaxon)
                         writer.AddRow(drow)
                     End If
                 Next iTaxon
@@ -3300,8 +3301,8 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            bSucces = Me.m_db.Execute("DELETE FROM EcopathGroupTaxon")
-            writer = Me.m_db.GetWriter("EcopathGroupTaxon")
+            bSucces = Me.m_db.Execute("DELETE FROM EcopathStanzaTaxon")
+            writer = Me.m_db.GetWriter("EcopathStanzaTaxon")
 
             Try
                 For iTaxon As Integer = 1 To taxonDS.NumTaxon
@@ -3310,12 +3311,13 @@ Namespace DataSources
                         drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
                         drow("StanzaID") = stanzaDS.StanzaDBID(taxonDS.TaxonTarget(iTaxon))
                         drow("Proportion") = taxonDS.TaxonProp(iTaxon)
+                        drow("PropCatch") = taxonDS.TaxonPropCatch(iTaxon)
                         writer.AddRow(drow)
                     End If
                 Next iTaxon
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathGroupTaxon", ex.Message))
+                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathStanzaTaxon", ex.Message))
                 bSucces = False
             End Try
 
@@ -3358,6 +3360,7 @@ Namespace DataSources
                 drow("TaxonID") = iDBID
                 drow("EcopathGroupID") = iTargetDBID
                 drow("Proportion") = sProportion
+                drow("PropCatch") = 0
                 writer.AddRow(drow)
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
             Else
@@ -3392,7 +3395,6 @@ Namespace DataSources
                 Dim dataDetails As ITaxonDetailsData = DirectCast(data, ITaxonDetailsData)
                 drow("EcologyType") = dataDetails.EcologyType
                 drow("OrganismType") = dataDetails.OrganismType
-                drow("Exploited") = dataDetails.Exploited
                 drow("ConservationStatus") = dataDetails.IUCNConservationStatus
                 drow("OccurrenceStatus") = dataDetails.OccurrenceStatus
                 drow("MeanWeight") = dataDetails.MeanWeight
@@ -3419,9 +3421,9 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcopathTaxon WHERE (TaxonID={0})", iTaxonID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (TaxonID={0})", iTaxonID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcopathStanzaTaxon WHERE (TaxonID={0})", iTaxonID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcopathTaxon WHERE (TaxonID={0})", iTaxonID))
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing taxon {1}", ex.Message, iTaxonID))
                 bSucces = False

@@ -69,7 +69,7 @@ Friend Class cDBUpdate6_01_01_010
 
     Private Function CreateTaxonStanzaAssignmentTable(ByVal db As cEwEDatabase) As Boolean
         Dim bSucces As Boolean = True
-        bSucces = bSucces And db.Execute("CREATE TABLE EcopathStanzaTaxon (TaxonID LONG, StanzaID LONG, Proportion SINGLE)")
+        bSucces = bSucces And db.Execute("CREATE TABLE EcopathStanzaTaxon (TaxonID LONG, StanzaID LONG, Proportion SINGLE, PropCatch SINGLE)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathStanzaTaxon ADD CONSTRAINT PK_INDEX PRIMARY KEY (TaxonID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathStanzaTaxon ADD CONSTRAINT FkTaxon FOREIGN KEY (TaxonID) REFERENCES EcopathTaxon(TaxonID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathStanzaTaxon ADD CONSTRAINT FkStanza FOREIGN KEY (StanzaID) REFERENCES Stanza(StanzaID)")
@@ -112,6 +112,7 @@ Friend Class cDBUpdate6_01_01_010
         For Each strColumn As String In astrColumns
             db.Execute("ALTER TABLE EcopathGroupTaxon DROP COLUMN " & strColumn)
         Next
+        db.Execute("ALTER TABLE EcopathGroupTaxon ADD COLUMN PropCatch SINGLE")
         Return bSucces
 
     End Function

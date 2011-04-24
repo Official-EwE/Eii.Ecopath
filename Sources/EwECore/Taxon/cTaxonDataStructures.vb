@@ -11,8 +11,10 @@ Public Class cTaxonDataStructures
     Public TaxonDBID() As Integer
     ''' <summary>Taxon assignments (xNumTaxa) -> iGroup / iStanza</summary>
     Public TaxonTarget() As Integer
-    ''' <summary>Taxon assignment proportions (xNumTaxa)</summary>
+    ''' <summary>Taxon proportion of biomass (xNumTaxa)</summary>
     Public TaxonProp() As Single
+    ''' <summary>Taxa proportion of catch (xNumTaxa)</summary>
+    Public TaxonPropCatch() As Single
     ''' <summary>Flag stating whether TaxonTarget(i) refers to a stanza (true) or a group (false)</summary>
     Public IsTaxonStanza() As Boolean
     ''' <summary>Taxonomy class names (xNumTaxa).</summary>
@@ -51,8 +53,6 @@ Public Class cTaxonDataStructures
     Public TaxonEcologyType() As eEcologyTypes
     ''' <summary>Organism types for taxa</summary>
     Public TaxonOrganismType() As eOrganismTypes
-    ''' <summary>Taxa exploited status</summary>
-    Public TaxonExploited() As Boolean
     ''' <summary>Taxa IUCN csonservation status</summary>
     Public TaxonIUCNConservationStatus() As eIUCNConservationStatusTypes
     ''' <summary>Taxa occurrence status</summary>
@@ -81,6 +81,7 @@ Public Class cTaxonDataStructures
         ReDim Me.TaxonTarget(Me.NumTaxon)
         ReDim Me.IsTaxonStanza(Me.NumTaxon)
         ReDim Me.TaxonProp(Me.NumTaxon)
+        ReDim Me.TaxonPropCatch(Me.NumTaxon)
         ReDim Me.TaxonClass(Me.NumTaxon)
         ReDim Me.TaxonCode3A(Me.NumTaxon)
         ReDim Me.TaxonCodeISCAAP(Me.NumTaxon)
@@ -98,7 +99,6 @@ Public Class cTaxonDataStructures
         ReDim Me.TaxonWest(Me.NumTaxon)
         ReDim Me.TaxonEcologyType(Me.NumTaxon)
         ReDim Me.TaxonOrganismType(Me.NumTaxon)
-        ReDim Me.TaxonExploited(Me.NumTaxon)
         ReDim Me.TaxonIUCNConservationStatus(Me.NumTaxon)
         ReDim Me.TaxonOccurrenceStatus(Me.NumTaxon)
         ReDim Me.TaxonMeanWeight(Me.NumTaxon)

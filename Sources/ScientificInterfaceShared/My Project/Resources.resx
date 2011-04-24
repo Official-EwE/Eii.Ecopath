@@ -1995,6 +1995,37 @@
     <value>Define supply...</value>
   </data>
   <data name="HEADER_PROPORTION_B" xml:space="preserve">
-    <value>Proportion of B</value>
+    <value>Proportion of biomass</value>
+  </data>
+  <data name="HEADER_ECOLOGY" xml:space="preserve">
+    <value>Ecology</value>
+  </data>
+  <data name="HEADER_IUCN_CONSERVATION_STATUS" xml:space="preserve">
+    <value>IUCN conservation status</value>
+  </data>
+  <data name="HEADER_MAX_LENGTH" xml:space="preserve">
+    <value>Max length (cm)</value>
+  </data>
+  <data name="HEADER_MEAN_LENGTH" xml:space="preserve">
+    <value>Mean length (cm)</value>
+  </data>
+  <data name="HEADER_MEAN_LIFESPAN_UNIT" xml:space="preserve">
+    <value>Mean life span ({0})</value>
+    <comment>{0}: unit time</comment>
+  </data>
+  <data name="HEADER_MEAN_WEIGHT" xml:space="preserve">
+    <value>Mean weight (kg)</value>
+  </data>
+  <data name="HEADER_OCCURRENCE_STATUS" xml:space="preserve">
+    <value>Occurrence status</value>
+  </data>
+  <data name="HEADER_ORGANISM" xml:space="preserve">
+    <value>Organism</value>
+  </data>
+  <data name="HEADER_PROPORTION_CATCH" xml:space="preserve">
+    <value>Proportion of catch</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_INDEX" xml:space="preserve">
+    <value>Vulnerability index [0, 100]</value>
   </data>
 </root>

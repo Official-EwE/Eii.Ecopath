@@ -2003,6 +2003,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecology.
+        '''</summary>
+        Public ReadOnly Property HEADER_ECOLOGY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOLOGY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath area.
         '''</summary>
         Public ReadOnly Property HEADER_ECOPATH_AREA() As String
@@ -2678,6 +2687,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to IUCN conservation status.
+        '''</summary>
+        Public ReadOnly Property HEADER_IUCN_CONSERVATION_STATUS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_IUCN_CONSERVATION_STATUS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to K in VBGF (/year).
         '''</summary>
         Public ReadOnly Property HEADER_K_VBGF_UNIT() As String
@@ -2804,6 +2822,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Max length (cm).
+        '''</summary>
+        Public ReadOnly Property HEADER_MAX_LENGTH() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MAX_LENGTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Max. recruitment.
         '''</summary>
         Public ReadOnly Property HEADER_MAX_RECRUITMENT() As String
@@ -2890,6 +2917,33 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_MEAN_CATCH_TL() As String
             Get
                 Return ResourceManager.GetString("HEADER_MEAN_CATCH_TL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mean length (cm).
+        '''</summary>
+        Public ReadOnly Property HEADER_MEAN_LENGTH() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MEAN_LENGTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mean life span ({0}).
+        '''</summary>
+        Public ReadOnly Property HEADER_MEAN_LIFESPAN_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MEAN_LIFESPAN_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mean weight (kg).
+        '''</summary>
+        Public ReadOnly Property HEADER_MEAN_WEIGHT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MEAN_WEIGHT", resourceCulture)
             End Get
         End Property
         
@@ -3119,6 +3173,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Occurrence status.
+        '''</summary>
+        Public ReadOnly Property HEADER_OCCURRENCE_STATUS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_OCCURRENCE_STATUS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Omnivory index.
         '''</summary>
         Public ReadOnly Property HEADER_OMNIVORYINDEX() As String
@@ -3133,6 +3196,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_ORDER() As String
             Get
                 Return ResourceManager.GetString("HEADER_ORDER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Organism.
+        '''</summary>
+        Public ReadOnly Property HEADER_ORGANISM() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ORGANISM", resourceCulture)
             End Get
         End Property
         
@@ -3380,11 +3452,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Proportion of B.
+        '''  Looks up a localized string similar to Proportion of biomass.
         '''</summary>
         Public ReadOnly Property HEADER_PROPORTION_B() As String
             Get
                 Return ResourceManager.GetString("HEADER_PROPORTION_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Proportion of catch.
+        '''</summary>
+        Public ReadOnly Property HEADER_PROPORTION_CATCH() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PROPORTION_CATCH", resourceCulture)
             End Get
         End Property
         
@@ -4240,6 +4321,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_VULNERABILITY() As String
             Get
                 Return ResourceManager.GetString("HEADER_VULNERABILITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Vulnerability index [0, 100].
+        '''</summary>
+        Public ReadOnly Property HEADER_VULNERABILITY_INDEX() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VULNERABILITY_INDEX", resourceCulture)
             End Get
         End Property
         

@@ -141,6 +141,7 @@ Public Class dlgDefineTaxa
 
         If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
 
+        Me.UpdateControls()
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -306,6 +307,17 @@ Public Class dlgDefineTaxa
         Dim bCanConfig As Boolean = False
 
         Me.m_bInUpdate = True
+
+        ' == Manipulation controls ==
+        Try
+            Me.m_btnAdd.Enabled = Me.m_gridGroups.CanAddTaxon(DirectCast(Me.m_gridResults.SelectedResult, ITaxonSearchData))
+            Me.m_btnRemove.Enabled = Me.m_gridGroups.CanDeleteTaxon() And Not Me.m_gridGroups.IsFlaggedForDeletionRow()
+            Me.m_btnKeep.Enabled = Me.m_gridGroups.IsFlaggedForDeletionRow()
+        Catch ex As Exception
+
+        End Try
+
+        ' == SEARCH ==
 
         If (Me.m_bHasSearchEngines) Then
             Dim prod As IDataProducerPlugin = Me.SelectedDataProducer

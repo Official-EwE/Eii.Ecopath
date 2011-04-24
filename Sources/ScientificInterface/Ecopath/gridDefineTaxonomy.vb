@@ -42,6 +42,7 @@ Public Class gridDefineTaxonomy
         Order
         [Class]
         Phylum
+        Code
         Status
     End Enum
 
@@ -76,7 +77,6 @@ Public Class gridDefineTaxonomy
         Private m_sSouth As Single = cCore.NULL_VALUE
         Private m_sWest As Single = cCore.NULL_VALUE
         Private m_sEast As Single = cCore.NULL_VALUE
-        Private m_bExploited As Boolean = False
         Private m_ecology As eEcologyTypes = eEcologyTypes.NotSet
         Private m_conservation As eIUCNConservationStatusTypes = eIUCNConservationStatusTypes.NotSet
         Private m_occurrence As eOccurrenceStatusTypes = eOccurrenceStatusTypes.NotSet
@@ -149,7 +149,6 @@ Public Class gridDefineTaxonomy
             Me.m_sSouth = taxon.South
             Me.m_sEast = taxon.East
             Me.m_sWest = taxon.West
-            Me.m_bExploited = taxon.Exploited
             Me.m_ecology = taxon.EcologyType
             Me.m_occurrence = taxon.OccurrenceStatus
             Me.m_organism = taxon.OrganismType
@@ -191,7 +190,6 @@ Public Class gridDefineTaxonomy
             Me.m_sWest = taxon.West
             If TypeOf (taxon) Is ITaxonDetailsData Then
                 Dim details As ITaxonDetailsData = DirectCast(taxon, ITaxonDetailsData)
-                Me.m_bExploited = details.Exploited
                 Me.m_ecology = details.EcologyType
                 Me.m_occurrence = details.OccurrenceStatus
                 Me.m_organism = details.OrganismType
@@ -304,6 +302,14 @@ Public Class gridDefineTaxonomy
                 End If
             End Set
         End Property
+
+        Public Overrides Function Equals(ByVal obj As Object) As Boolean
+            If (obj Is Nothing) Then Return False
+            If (TypeOf obj Is cTaxon) Then
+                Return DirectCast(obj, cTaxon).CodeTaxon = Me.CodeTaxon
+            End If
+            Return MyBase.Equals(obj)
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -584,7 +590,6 @@ Public Class gridDefineTaxonomy
                     .MeanLength = Me.m_sMeanLength
                     .MeanWeight = Me.m_sMeanWeight
                     .MeanLifespan = Me.m_sMeanLifespan
-                    .Exploited = Me.m_bExploited
                     .LastUpdated = cDateUtils.DateToJulian()
                 End With
             End If
@@ -598,17 +603,6 @@ Public Class gridDefineTaxonomy
             End Get
             Set(ByVal value As eEcologyTypes)
                 Me.m_ecology = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.Exploited"/>
-        Public Property Exploited() As Boolean _
-            Implements ITaxonDetailsData.Exploited
-            Get
-                Return Me.m_bExploited
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bExploited = value
             End Set
         End Property
 
@@ -757,6 +751,7 @@ Public Class gridDefineTaxonomy
         Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(SharedResources.HEADER_FAMILY)
         Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
         Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
+        Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         Me.FixedColumns = 1
@@ -775,6 +770,7 @@ Public Class gridDefineTaxonomy
 
         Dim stz As cStanzaGroup = Nothing
         Dim grp As cEcoPathGroupInput = Nothing
+        Dim abStanzaHandled(Me.Core.nStanzas) As Boolean
         Dim iRow As Integer = 0
         Dim hgcParent As EwEHierarchyGridCell = Nothing
         Dim taxon As cTaxon = Nothing
@@ -794,32 +790,34 @@ Public Class gridDefineTaxonomy
         ' Create rows
         Me.RowsCount = 1
 
-        For iStanza As Integer = 0 To Me.Core.nStanzas - 1
-
-            iRow = Me.AddRow()
-            stz = Me.Core.StanzaGroups(iStanza)
-
-            hgcParent = New EwEHierarchyGridCell()
-            hgcParent.Tag = stz
-
-            Me(iRow, eColumnTypes.Hierarchy) = hgcParent
-            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, stz, eVarNameFlags.Name, Nothing, hgcParent)
-            For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
-                Me(iRow, iCol) = New EwERowHeaderCell("")
-            Next
-
-            For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
-                ti = Me.m_lTaxonInfo(iTaxon)
-                If ti.Stanza = stz.Index Then
-                    Me.AddTaxonRow(ti, iRow)
-                End If
-            Next
-        Next
-
         For iGroup As Integer = 1 To Me.Core.nGroups
 
             grp = Me.Core.EcoPathGroupInputs(iGroup)
-            If Not grp.isMultiStanza Then
+            If grp.isMultiStanza Then
+
+                If Not abStanzaHandled(grp.iStanza) Then
+                    iRow = Me.AddRow()
+                    stz = Me.Core.StanzaGroups(grp.iStanza)
+
+                    hgcParent = New EwEHierarchyGridCell()
+                    hgcParent.Tag = stz
+
+                    Me(iRow, eColumnTypes.Hierarchy) = hgcParent
+                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, stz, eVarNameFlags.Name, Nothing, hgcParent)
+                    For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
+                        Me(iRow, iCol) = New EwERowHeaderCell("")
+                    Next
+
+                    For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
+                        ti = Me.m_lTaxonInfo(iTaxon)
+                        If ti.Stanza = stz.Index Then
+                            Me.AddTaxonRow(ti, iRow)
+                        End If
+                    Next
+                    abStanzaHandled(grp.iStanza) = True
+
+                End If
+            Else
 
                 iRow = Me.AddRow()
 
@@ -856,7 +854,7 @@ Public Class gridDefineTaxonomy
                     Me.Columns(iCol).Width = 20
                 Case Else
                     Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                    Me.AutoSizeColumn(iCol, 100)
+                    Me.AutoSizeColumn(iCol, 80)
             End Select
         Next
 
@@ -927,6 +925,7 @@ Public Class gridDefineTaxonomy
     End Sub
 
     Private Function FindParentRow(ByVal iRow As Integer) As Integer
+        If iRow < 1 Then Return -1
         While (iRow > 0) And Not (TypeOf Me(iRow, eColumnTypes.Hierarchy) Is EwEHierarchyGridCell)
             iRow -= 1
         End While
@@ -935,9 +934,12 @@ Public Class gridDefineTaxonomy
 
     Private Function AddTaxonRow(ByVal ti As cTaxonInfo, Optional ByVal iRow As Integer = -1) As Integer
 
+        Dim cell As EwECell = Nothing
+
         If iRow = -1 Then
             iRow = Me.FindParentRow(Me.SelectedRow)
         End If
+
         Dim hgcParent As EwEHierarchyGridCell = DirectCast(Me(iRow, eColumnTypes.Hierarchy), EwEHierarchyGridCell)
         iRow += 1
         Me.Rows.Insert(iRow)
@@ -961,6 +963,16 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
         Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
+        ' == CODE cell
+        ' Allow custom taxon code when not obtained from external source, e.g. when no source key provided
+        If String.IsNullOrEmpty(ti.SourceKey) Then
+            cell = New EwECell(ti.CodeTaxon, GetType(String))
+            cell.Behaviors.Add(Me.EwEEditHandler)
+        Else
+            cell = New EwECell(ti.CodeTaxon, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+        End If
+        Me(iRow, eColumnTypes.Code) = cell
+
         hgcParent.AddChildRow(iRow)
         Me.UpdateRow(iRow)
 
@@ -977,14 +989,12 @@ Public Class gridDefineTaxonomy
     End Sub
 
     Public Sub UpdateProportions()
-
         For iRow As Integer = 1 To Me.RowsCount - 1
             Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)
             If ti IsNot Nothing Then
                 Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
             End If
         Next
-
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1017,6 +1027,7 @@ Public Class gridDefineTaxonomy
             Case eColumnTypes.Species : ti.Species = CStr(val)
             Case eColumnTypes.Phylum : ti.Phylum = CStr(val)
             Case eColumnTypes.Proportion : ti.Proportion = CSng(val)
+            Case eColumnTypes.Code : ti.CodeTaxon = CStr(val)
         End Select
 
         ' Perhaps redundant but hey
@@ -1111,13 +1122,15 @@ Public Class gridDefineTaxonomy
     ''' -----------------------------------------------------------------------
     Public Sub AddTaxon(Optional ByVal taxon As ITaxonSearchData = Nothing)
 
+        If Not Me.CanAddTaxon(taxon) Then Return
+
         Dim ti As cTaxonInfo = Nothing
         Dim iRow As Integer = Nothing
         Dim grp As cEcoPathGroupInput = Me.SelectedGroup
         Dim stz As cStanzaGroup = Me.SelectedStanza
 
         If (taxon Is Nothing) Then
-            If grp Is Nothing Then
+            If (grp Is Nothing) Then
                 ti = New cTaxonInfo(stz)
             Else
                 ti = New cTaxonInfo(grp)
@@ -1133,6 +1146,40 @@ Public Class gridDefineTaxonomy
         Me.SelectedTaxon = ti
 
     End Sub
+
+    ''' <summary>
+    ''' States whether a taxon can be added to the current selected row.
+    ''' </summary>
+    ''' <param name="taxon"></param>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' <para>The following rules are checked:</para>
+    ''' <list type="bullet">
+    ''' <item><description>A row must be selected</description></item>
+    ''' <item><description>A stanza group can have only ONE taxon assigned</description></item>
+    ''' <item><description>A taxon code can be used multiple times</description></item>
+    ''' </list>
+    ''' </remarks>
+    Public Function CanAddTaxon(Optional ByVal taxon As ITaxonSearchData = Nothing) As Boolean
+
+        Dim grp As cEcoPathGroupInput = Me.SelectedGroup
+        Dim stz As cStanzaGroup = Me.SelectedStanza
+
+        Dim bIsTaxonUsed As Boolean = False
+        Dim bStanzaHasTaxon As Boolean = False
+
+        If (grp Is Nothing) And (stz Is Nothing) Then Return False
+
+        For Each ti As cTaxonInfo In Me.m_lTaxonInfo
+            'bIsTaxonUsed = bIsTaxonUsed Or (ti.Equals(taxon))
+            If (stz IsNot Nothing) Then
+                bStanzaHasTaxon = bStanzaHasTaxon Or (stz.Index = ti.Stanza)
+            End If
+        Next
+
+        Return (Not bIsTaxonUsed) And (Not bStanzaHasTaxon)
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1178,6 +1225,10 @@ Public Class gridDefineTaxonomy
         End If
 
     End Sub
+
+    Public Function CanDeleteTaxon() As Boolean
+        Return (Me.SelectedTaxon IsNot Nothing)
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

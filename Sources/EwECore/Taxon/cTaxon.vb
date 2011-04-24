@@ -115,9 +115,9 @@ Public Class cTaxon
         val = New cValue(New Integer, eVarNameFlags.OrganismType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.OrganismType))
         m_values.Add(val.varName, val)
 
-        ' Exploited
-        meta = New cVariableMetaData(False)
-        val = New cValue(New Boolean, eVarNameFlags.Exploited, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.Exploited))
+        ' TaxonPropCatch
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Single, eVarNameFlags.TaxonPropCatch, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonPropCatch))
         m_values.Add(val.varName, val)
 
         ' IUCNConservationStatus
@@ -458,13 +458,12 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set whether the taxon is exploited.
     ''' </summary>
-    Public Property Exploited() As Boolean _
-        Implements ITaxonDetailsData.Exploited
+    Public Property ProportionCatch() As Single
         Get
-            Return CBool(Me.GetVariable(eVarNameFlags.Exploited))
+            Return CSng(Me.GetVariable(eVarNameFlags.TaxonPropCatch))
         End Get
-        Set(ByVal value As Boolean)
-            Me.SetVariable(eVarNameFlags.Exploited, value)
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.TaxonPropCatch, value)
         End Set
     End Property
 

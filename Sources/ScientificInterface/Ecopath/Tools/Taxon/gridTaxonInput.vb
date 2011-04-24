@@ -29,16 +29,16 @@ Namespace Ecopath.Input
         Enum eColumnTypes As Integer
             Hierarchy = 0
             Name
-            Ecology
             Organism
-            Exploited
-            Conservation
+            Ecology
             Occurrence
+            PropCatch
+            Conservation
+            VulIndex
             MeanLen
             MaxLen
             MeanWeight
             MeanLifeSpan
-            VulIndex
         End Enum
 
         Public Sub New()
@@ -54,8 +54,6 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub InitStyle()
 
-            ' ToDo_JS: globalize this
-
             MyBase.InitStyle()
 
             If (Me.UIContext Is Nothing) Then Return
@@ -63,17 +61,17 @@ Namespace Ecopath.Input
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell("Common name")
-            Me(0, eColumnTypes.Ecology) = New EwEColumnHeaderCell("Ecology")
-            Me(0, eColumnTypes.Organism) = New EwEColumnHeaderCell("Organism")
-            Me(0, eColumnTypes.Exploited) = New EwEColumnHeaderCell("Exploited")
-            Me(0, eColumnTypes.Conservation) = New EwEColumnHeaderCell("Conservation status")
-            Me(0, eColumnTypes.Occurrence) = New EwEColumnHeaderCell("Occurrence status")
-            Me(0, eColumnTypes.MeanLen) = New EwEColumnHeaderCell("Mean length (cm)")
-            Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell("Max length (cm)")
-            Me(0, eColumnTypes.MeanWeight) = New EwEColumnHeaderCell("Mean weight (kg)")
-            Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell("Mean life span ({0})", cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.VulIndex) = New EwEColumnHeaderCell("Vulnerability index [0, 100]")
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_COMMON_NAME)
+            Me(0, eColumnTypes.Ecology) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOLOGY)
+            Me(0, eColumnTypes.Organism) = New EwEColumnHeaderCell(SharedResources.HEADER_ORGANISM)
+            Me(0, eColumnTypes.PropCatch) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_CATCH)
+            Me(0, eColumnTypes.Conservation) = New EwEColumnHeaderCell(SharedResources.HEADER_IUCN_CONSERVATION_STATUS)
+            Me(0, eColumnTypes.Occurrence) = New EwEColumnHeaderCell(SharedResources.HEADER_OCCURRENCE_STATUS)
+            Me(0, eColumnTypes.MeanLen) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_LENGTH)
+            Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell(SharedResources.HEADER_MAX_LENGTH)
+            Me(0, eColumnTypes.MeanWeight) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_WEIGHT)
+            Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_LIFESPAN_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.VulIndex) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_INDEX)
 
             Me.FixedColumns = 2
 
@@ -88,36 +86,38 @@ Namespace Ecopath.Input
             Dim taxon As cTaxon = Nothing
             Dim hgcParent As EwEHierarchyGridCell = Nothing
             Dim iRow As Integer = -1
+            Dim abStanzaHandled(Me.Core.nStanzas) As Boolean
 
             ' Remove existing rows
             Me.RowsCount = 1
 
-            For iStanza As Integer = 0 To Me.Core.nStanzas - 1
-
-                stanza = Me.Core.StanzaGroups(iStanza)
-                iRow = Me.AddRow()
-
-                hgcParent = New EwEHierarchyGridCell()
-                Me(iRow, eColumnTypes.Hierarchy) = hgcParent
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, stanza, eVarNameFlags.Name, Nothing, hgcParent)
-                For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
-                    Me(iRow, iCol) = New EwERowHeaderCell("")
-                Next
-
-                For iTaxon As Integer = 1 To Me.Core.nTaxon
-                    taxon = Me.Core.Taxon(iTaxon)
-                    If taxon.Stanza = stanza.Index Then
-                        iRow += 1
-                        Me.AddTaxonRow(taxon, iRow, hgcParent)
-                    End If
-                Next
-            Next
-
             For iGroup As Integer = 1 To Me.Core.nGroups
 
                 group = Me.Core.EcoPathGroupInputs(iGroup)
-                If Not group.isMultiStanza Then
+                If group.isMultiStanza Then
 
+                    If Not abStanzaHandled(group.iStanza) Then
+                        stanza = Me.Core.StanzaGroups(group.iStanza)
+                        iRow = Me.AddRow()
+
+                        hgcParent = New EwEHierarchyGridCell()
+                        Me(iRow, eColumnTypes.Hierarchy) = hgcParent
+                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, stanza, eVarNameFlags.Name, Nothing, hgcParent)
+                        For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
+                            Me(iRow, iCol) = New EwERowHeaderCell("")
+                        Next
+
+                        For iTaxon As Integer = 1 To Me.Core.nTaxon
+                            taxon = Me.Core.Taxon(iTaxon)
+                            If taxon.Stanza = stanza.Index Then
+                                iRow += 1
+                                Me.AddTaxonRow(taxon, iRow, hgcParent)
+                            End If
+                        Next
+                        abStanzaHandled(group.iStanza) = True
+                    End If
+
+                Else
                     iRow = Me.AddRow()
 
                     hgcParent = New EwEHierarchyGridCell()
@@ -162,8 +162,8 @@ Namespace Ecopath.Input
                     taxon.IUCNConservationStatus = CType(cell.GetValue(p), eIUCNConservationStatusTypes)
                 Case eColumnTypes.Ecology
                     taxon.EcologyType = CType(cell.GetValue(p), eEcologyTypes)
-                Case eColumnTypes.Exploited
-                    taxon.Exploited = CBool(cell.GetValue(p))
+                Case eColumnTypes.PropCatch
+                    taxon.ProportionCatch = CSng(cell.GetValue(p))
                 Case eColumnTypes.Occurrence
                     taxon.OccurrenceStatus = CType(cell.GetValue(p), eOccurrenceStatusTypes)
                 Case eColumnTypes.Organism
@@ -188,13 +188,15 @@ Namespace Ecopath.Input
             Me(iRow, eColumnTypes.Ecology).Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.Organism) = New SourceGrid2.Cells.Real.Cell(taxon.OrganismType, Me.m_editorOrganism)
             Me(iRow, eColumnTypes.Organism).Behaviors.Add(Me.EwEEditHandler)
+
             Me(iRow, eColumnTypes.Conservation) = New SourceGrid2.Cells.Real.Cell(taxon.IUCNConservationStatus, Me.m_editorConservation)
             Me(iRow, eColumnTypes.Conservation).Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.Occurrence) = New SourceGrid2.Cells.Real.Cell(taxon.OccurrenceStatus, Me.m_editorOccurrence)
             Me(iRow, eColumnTypes.Occurrence).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iRow, eColumnTypes.Exploited) = New SourceGrid2.Cells.Real.CheckBox(taxon.Exploited)
-            Me(iRow, eColumnTypes.Exploited).Behaviors.Add(Me.EwEEditHandler)
+            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonPropCatch)
+            cell.SuppressZero = True
+            Me(iRow, eColumnTypes.PropCatch) = cell
 
             cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLength)
             cell.SuppressZero = True

@@ -1350,6 +1350,8 @@ Namespace Core
         TaxonStanza
         ''' <summary>Taxon biomass proportion.</summary>
         TaxonProp
+        ''' <summary>Taxon catch proportion.</summary>
+        TaxonPropCatch
         Phylum
         [Class]
         Order
@@ -1364,7 +1366,6 @@ Namespace Core
         LastUpdated
         OrganismType
         EcologyType
-        Exploited
         IUCNConservationStatus
         OccurrenceStatus
         TaxonMeanWeight

@@ -2554,7 +2554,6 @@ Public Class cCore
 
                 'build input and output objects
                 bsuccess = bsuccess And InitEcoPathGroups()
-                bsuccess = bsuccess And InitTaxa()
 
                 'build the Stanza Groups for the interface
                 bsuccess = bsuccess And InitStanzas()
@@ -2567,6 +2566,9 @@ Public Class cCore
 
                 'build the fleets
                 bsuccess = bsuccess And InitFleets()
+
+                'buil taxa when groups and fishing are in place
+                bsuccess = bsuccess And InitTaxa()
 
                 ' Initialize scenarios
                 bsuccess = bsuccess And InitEcosimScenarios()
@@ -3420,9 +3422,9 @@ Public Class cCore
                 taxon.DBID = Me.m_TaxonData.TaxonDBID(iTaxon)
                 If Me.m_TaxonData.IsTaxonStanza(iTaxon) Then
                     taxon.Stanza = Me.m_TaxonData.TaxonTarget(iTaxon)
-                    taxon.Group = 0
+                    taxon.Group = NULL_VALUE
                 Else
-                    taxon.Stanza = 0
+                    taxon.Stanza = NULL_VALUE
                     taxon.Group = Me.m_TaxonData.TaxonTarget(iTaxon)
                 End If
                 taxon.Proportion = Me.m_TaxonData.TaxonProp(iTaxon)
@@ -3442,7 +3444,7 @@ Public Class cCore
                 taxon.East = Me.m_TaxonData.TaxonEast(iTaxon)
                 taxon.West = Me.m_TaxonData.TaxonWest(iTaxon)
                 taxon.EcologyType = Me.m_TaxonData.TaxonEcologyType(iTaxon)
-                taxon.Exploited = Me.m_TaxonData.TaxonExploited(iTaxon)
+                taxon.ProportionCatch = Me.m_TaxonData.TaxonPropCatch(iTaxon)
                 taxon.IUCNConservationStatus = Me.m_TaxonData.TaxonIUCNConservationStatus(iTaxon)
                 taxon.OrganismType = Me.m_TaxonData.TaxonOrganismType(iTaxon)
                 taxon.OccurrenceStatus = Me.m_TaxonData.TaxonOccurrenceStatus(iTaxon)
@@ -3485,6 +3487,7 @@ Public Class cCore
             Me.m_TaxonData.IsTaxonStanza(iTaxon) = True
         End If
         Me.m_TaxonData.TaxonProp(iTaxon) = taxon.Proportion
+        Me.m_TaxonData.TaxonPropCatch(iTaxon) = taxon.ProportionCatch
         Me.m_TaxonData.TaxonName(iTaxon) = taxon.Name
         Me.m_TaxonData.TaxonClass(iTaxon) = taxon.Class
         Me.m_TaxonData.TaxonOrder(iTaxon) = taxon.Order
@@ -3497,7 +3500,6 @@ Public Class cCore
         Me.m_TaxonData.TaxonSource(iTaxon) = taxon.Source
         Me.m_TaxonData.TaxonSourceKey(iTaxon) = taxon.SourceKey
         Me.m_TaxonData.TaxonEcologyType(iTaxon) = taxon.EcologyType
-        Me.m_TaxonData.TaxonExploited(iTaxon) = taxon.Exploited
         Me.m_TaxonData.TaxonIUCNConservationStatus(iTaxon) = taxon.IUCNConservationStatus
         Me.m_TaxonData.TaxonOrganismType(iTaxon) = taxon.OrganismType
         Me.m_TaxonData.TaxonOccurrenceStatus(iTaxon) = taxon.OccurrenceStatus
@@ -3622,6 +3624,7 @@ Public Class cCore
             Next iFleet
 
             LoadFleetInput()
+            Me.Update_IsFished(False)
 
             Return True
 
@@ -4764,15 +4767,10 @@ Public Class cCore
 
     Friend Function Set_Tcatch_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
-        Dim iGroup As Integer
+        Dim iGroup As Integer = group.Index
         Dim bIsFished As Boolean = False
 
         group.AllowValidation = False
-
-        'convert the Database ID into an iGroup
-        iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, group.DBID)
-        ' haha
-        Debug.Assert(group.Index = iGroup)
 
         ' Is multi-stanza?
         If group.isMultiStanza Then
@@ -4878,23 +4876,55 @@ Public Class cCore
 
     Friend Function Set_Taxon_Flags(ByVal t As cTaxon, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
-        Dim bLockVI As Boolean = False
+        Dim bIsNotFish As Boolean = False
+        Dim bIshigherOrganism As Boolean = False
+        Dim bIsFished As Boolean = True
         Dim bClearVI As Boolean = False
-        Dim iVI As Integer = t.VulnerabilityIndex
 
         ' Cheung Vulnerability index is only available for fish (per FishBase)
-        bLockVI = (t.OrganismType <> eOrganismTypes.Fishes)
-        bClearVI = (bLockVI Or (iVI < 0))
+        bIsNotFish = (t.OrganismType <> eOrganismTypes.Fishes)
+        bIshigherOrganism = (t.OrganismType <> eOrganismTypes.Bacteria And t.OrganismType <> eOrganismTypes.Fungi)
 
         t.AllowValidation = False
 
-        If bLockVI Then
+        ' ToDo: update bIsFished
+        bIsFished = True
+
+        If bIshigherOrganism Then
+            t.ClearStatusFlags(eVarNameFlags.IUCNConservationStatus, eStatusFlags.NotEditable)
+            t.ClearStatusFlags(eVarNameFlags.TaxonMaxLength, eStatusFlags.NotEditable)
+            t.ClearStatusFlags(eVarNameFlags.TaxonMeanLength, eStatusFlags.NotEditable)
+            t.ClearStatusFlags(eVarNameFlags.TaxonMeanLifespan, eStatusFlags.NotEditable)
+            t.ClearStatusFlags(eVarNameFlags.TaxonMeanWeight, eStatusFlags.NotEditable)
+        Else
+            t.SetStatusFlags(eVarNameFlags.IUCNConservationStatus, eStatusFlags.NotEditable)
+            t.SetStatusFlags(eVarNameFlags.TaxonMaxLength, eStatusFlags.NotEditable)
+            t.SetStatusFlags(eVarNameFlags.TaxonMeanLength, eStatusFlags.NotEditable)
+            t.SetStatusFlags(eVarNameFlags.TaxonMeanLifespan, eStatusFlags.NotEditable)
+            t.SetStatusFlags(eVarNameFlags.TaxonMeanWeight, eStatusFlags.NotEditable)
+        End If
+
+        ' == Prop of catch
+        If bIsFished Then
+            t.ClearStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.NotEditable)
+        Else
+            t.SetStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.NotEditable)
+        End If
+
+        If (Not bIsFished) Or (t.ProportionCatch <= 0) Then
+            t.SetStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.Null)
+        Else
+            t.ClearStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.Null)
+        End If
+
+        ' == VI ==
+        If bIsNotFish Then
             t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable)
         Else
             t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable)
         End If
 
-        If bClearVI Then
+        If (bIsNotFish Or (t.VulnerabilityIndex < 0)) Then
             t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null)
         Else
             t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null)
@@ -5104,6 +5134,17 @@ Public Class cCore
             If (group.isMultiStanza) Then
                 Me.Set_Tcatch_Flags(group, True)
             End If
+        Next
+
+    End Sub
+
+    Private Sub Update_Taxon_Catches()
+
+        Dim taxon As cTaxon = Nothing
+
+        For iTaxon As Integer = 1 To Me.nTaxon
+            taxon = Me.Taxon(iTaxon)
+            Me.Set_Taxon_Flags(taxon)
         Next
 
     End Sub
@@ -6528,8 +6569,6 @@ Public Class cCore
             Return False
 
         End Try
-
-        Me.Update_IsFished(False)
 
         Return True
 
@@ -11860,6 +11899,7 @@ Public Class cCore
                     Case eVarNameFlags.Landings, eVarNameFlags.Discards
                         'Me.Update_IsFished(True)
                         Me.Update_Stanza_Catches()
+                        Me.Update_Taxon_Catches()
                         Me.Set_DiscardMort_Flags(flt, True)
                         Me.Set_MarketPrice_Flags(flt, True)
 

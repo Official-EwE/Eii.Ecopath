@@ -15,8 +15,6 @@ Namespace Core
     Public Interface ITaxonDetailsData
         Inherits ITaxonSearchData
 
-        ''' <summary>Exploited state</summary>
-        Property Exploited() As Boolean
         ''' <summary></summary>
         Property EcologyType() As eEcologyTypes
         ''' <summary></summary>
