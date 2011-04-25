@@ -4887,8 +4887,11 @@ Public Class cCore
 
         t.AllowValidation = False
 
-        ' ToDo: update bIsFished
-        bIsFished = True
+        If t.Stanza > 0 Then
+            bIsFished = Me.StanzaGroups(t.Stanza - 1).IsFished
+        Else
+            bIsFished = Me.EcoPathGroupInputs(t.Group).IsFished
+        End If
 
         If bIshigherOrganism Then
             t.ClearStatusFlags(eVarNameFlags.IUCNConservationStatus, eStatusFlags.NotEditable)
@@ -5153,6 +5156,7 @@ Public Class cCore
 
         Dim group As cEcoPathGroupInput = Nothing
         Dim fleet As cFleetInput = Nothing
+        Dim stanza As cStanzaGroup = Nothing
         Dim bIsFished As Boolean = False
         Dim msg As cMessage = Nothing
         Dim vs As cVariableStatus = Nothing
@@ -5180,6 +5184,32 @@ Public Class cCore
                     msg.AddVariable(vs)
                 End If
                 group.AllowValidation = True
+            End If
+        Next
+
+        For iStanza As Integer = 0 To Me.nStanzas - 1
+            stanza = Me.StanzaGroups(iStanza)
+            bIsFished = False
+            For iIndex As Integer = 1 To stanza.NStanzas
+                Dim iGroup As Integer = stanza.iGroups(iIndex)
+                group = Me.EcoPathGroupInputs(iGroup)
+                If group.IsFished Then
+                    bIsFished = True
+                    Exit For
+                End If
+            Next
+
+            If (bIsFished <> stanza.IsFished) Then
+                stanza.AllowValidation = False
+                stanza.IsFished = bIsFished
+                If bSendMessage Then
+                    If msg Is Nothing Then
+                        msg = New cMessage("Stanza fished state has changed", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.Stanza)
+                    End If
+                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Stanza " & stanza.Name & " is " & CStr(IIf(bIsFished, "", "not ")) & "fished", eVarNameFlags.IsFished, eDataTypes.Stanza, eCoreComponentType.EcoPath, iStanza)
+                    msg.AddVariable(vs)
+                End If
+                stanza.AllowValidation = True
             End If
         Next
 
@@ -11897,7 +11927,7 @@ Public Class cCore
                 Select Case value.varName
 
                     Case eVarNameFlags.Landings, eVarNameFlags.Discards
-                        'Me.Update_IsFished(True)
+                        Me.Update_IsFished(True)
                         Me.Update_Stanza_Catches()
                         Me.Update_Taxon_Catches()
                         Me.Set_DiscardMort_Flags(flt, True)

@@ -160,7 +160,6 @@ Public Class cTaxon
         val = New cValue(New Single, eVarNameFlags.LastUpdated, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastUpdated))
         m_values.Add(val.varName, val)
 
-        Me.ResetStatusFlags()
         Me.AllowValidation = True
 
     End Sub

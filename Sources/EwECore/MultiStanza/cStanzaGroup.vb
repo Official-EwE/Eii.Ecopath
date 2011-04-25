@@ -96,6 +96,13 @@ Public Class cStanzaGroup
         val = New cValue(New Boolean, eVarNameFlags.FixedFecundity, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
+        ' IsFished
+        meta = New cVariableMetaData()
+        val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.IsFished))
+        val.AffectsRunState = False
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
         ' === Array variables for groups within a stanza config ===
 
         ' Bat
@@ -382,6 +389,22 @@ Public Class cStanzaGroup
         End Get
         Set(ByVal iValue As Integer)
             Me.SetVariable(eVarNameFlags.StartAge, iValue, iStanzaGroup)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get whether a group is being fished. This value is kept up to date by 
+    ''' the core.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property IsFished() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.IsFished))
+        End Get
+
+        Friend Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.IsFished, value)
         End Set
     End Property
 

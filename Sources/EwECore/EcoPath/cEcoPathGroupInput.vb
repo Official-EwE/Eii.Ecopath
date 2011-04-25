@@ -723,7 +723,7 @@ Public Class cEcoPathGroupInput
         End Get
 
         Friend Set(ByVal value As Boolean)
-            Me.SetVariable(eVarNameFlags.TmaxInput, value)
+            Me.SetVariable(eVarNameFlags.IsFished, value)
         End Set
     End Property
 
