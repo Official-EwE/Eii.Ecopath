@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6385C388-96F0-40F5-90A6-2B4838E0610E}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -124,6 +124,9 @@
     <Compile Include="Controls\ucPlot.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\ucPlotOfMTIOptions.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Interface\modUtility.vb" />
     <Compile Include="Interface\PrimaryProdRequired\cForConsumpOfAllGp.vb" />
     <Compile Include="Interface\PrimaryProdRequired\cForHarvestOfAllGp.vb" />
@@ -213,6 +216,10 @@
     <EmbeddedResource Include="Interface\frmNetworkAnalysis.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmNetworkAnalysis.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\MixedTrophicImpact\SummaryImpactData\ucPlotOfMTIOptions.resx">
+      <DependentUpon>ucPlotOfMTIOptions.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

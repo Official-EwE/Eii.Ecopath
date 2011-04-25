@@ -185,6 +185,10 @@ Public MustInherit Class cContentManager
         End Get
     End Property
 
+    Public Overridable Function OptionsControl() As UserControl
+        Return Nothing
+    End Function
+
 #End Region ' Overrides
 
 #Region " Properties "
@@ -364,6 +368,13 @@ Public MustInherit Class cContentManager
 
     Protected Sub ToolstripShowOptionEMF(Optional ByVal bShow As Boolean = True)
         Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsbtnOutputGraphEMF")
+        If (tsi IsNot Nothing) Then
+            tsi.Visible = bShow
+        End If
+    End Sub
+
+    Protected Sub ToolstripShowOptionOptions(Optional ByVal bShow As Boolean = True)
+        Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsbtnOptions")
         If (tsi IsNot Nothing) Then
             tsi.Visible = bShow
         End If

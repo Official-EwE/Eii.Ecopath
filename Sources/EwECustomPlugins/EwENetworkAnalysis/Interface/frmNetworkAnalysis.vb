@@ -303,6 +303,12 @@ Public Class frmNetworkAnalysis
 
     End Sub
 
+    Private Sub tsbtnOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles tsbtnOptions.Click
+        Me.ShowOptions(tsbtnOptions.Checked)
+    End Sub
+
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event handler, triggered before 'DisplayGroups' command has been invoked.
@@ -352,6 +358,7 @@ Public Class frmNetworkAnalysis
         Me.SuspendLayout()
 
         If (Me.m_contentmanager IsNot Nothing) Then
+            Me.ShowOptions(False)
             Me.m_contentmanager.Detach()
             Me.m_contentmanager = Nothing
         End If
@@ -533,20 +540,36 @@ Public Class frmNetworkAnalysis
         End If
 
         ' Position content
-        If Me.m_toolstrip.Visible Then
-            Me.m_graph.Top = Me.m_toolstrip.Height
-            Me.m_tlpInfo.Top = Me.m_toolstrip.Height
-            Me.m_datagrid.Top = Me.m_toolstrip.Height
-            Me.m_plot.Top = Me.m_toolstrip.Height
-        Else
-            Me.m_graph.Top = 0
-            Me.m_tlpInfo.Top = 0
-            Me.m_datagrid.Top = 0
-            Me.m_plot.Top = 0
-        End If
+        Me.m_graph.Top = 0
+        Me.m_tlpInfo.Top = 0
+        Me.m_datagrid.Top = 0
+        Me.m_plot.Top = 0
 
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         Me.ResumeLayout()
+
+    End Sub
+
+    Private Sub ShowOptions(ByVal bShow As Boolean)
+
+        Dim ctrlOptions As Control = Nothing
+
+        Me.m_scMain.Panel2.Controls.Clear()
+
+        If (bShow = True) And (Me.m_contentmanager IsNot Nothing) Then
+            ctrlOptions = Me.m_contentmanager.OptionsControl
+        End If
+
+        If (ctrlOptions IsNot Nothing) Then
+            Me.m_scMain.Panel2Collapsed = False
+            Me.m_scMain.SplitterDistance = Me.m_scMain.Width - Me.m_scMain.SplitterWidth - ctrlOptions.Width
+            Me.m_scMain.Panel2.Controls.Add(ctrlOptions)
+            ctrlOptions.Dock = DockStyle.Fill
+            Me.tsbtnOptions.Checked = True
+        Else
+            Me.m_scMain.Panel2Collapsed = True
+            Me.tsbtnOptions.Checked = False
+        End If
 
     End Sub
 

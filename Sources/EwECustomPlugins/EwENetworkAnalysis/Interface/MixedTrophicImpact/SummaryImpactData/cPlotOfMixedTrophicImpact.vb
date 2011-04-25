@@ -26,6 +26,9 @@ Public Class cPlotOfMixedTrophicImpact
     Private m_asData(,) As Single
     Private m_astrLabelsX() As String
     Private m_astrLabelsY() As String
+    Private m_style As ArrayGraph.eRenderStyle = ArrayGraph.eRenderStyle.Circles
+    Private m_bDrawGrid As Boolean = False
+    Private m_bDrawSlanted As Boolean = False
 
     Public Sub New()
         '
@@ -45,6 +48,7 @@ Public Class cPlotOfMixedTrophicImpact
         Me.Plot.Visible = bSucces
         Me.Toolstrip.Visible = bSucces
         Me.ToolstripShowOptionEMF()
+        Me.ToolstripShowOptionOptions()
 
         AddHandler Me.Plot.Paint, AddressOf PaintUC
         AddHandler Me.Plot.Resize, AddressOf ResizeUC
@@ -59,18 +63,18 @@ Public Class cPlotOfMixedTrophicImpact
 
     Public Overrides Sub DisplayData()
 
-        ReDim m_asData(NetworkManager.nGroups + NetworkManager.nFleets, NetworkManager.nGroups + NetworkManager.nFleets)
-        ReDim m_astrLabelsX(NetworkManager.nGroups + NetworkManager.nFleets)
-        ReDim m_astrLabelsY(NetworkManager.nGroups + NetworkManager.nFleets)
+        ReDim m_asData(NetworkManager.nGroups + NetworkManager.nFleets - 1, NetworkManager.nGroups + NetworkManager.nFleets - 1)
+        ReDim m_astrLabelsX(NetworkManager.nGroups + NetworkManager.nFleets - 1)
+        ReDim m_astrLabelsY(NetworkManager.nGroups + NetworkManager.nFleets - 1)
         For i As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
             For j As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
                 If j <= NetworkManager.nGroups Then
-                    m_astrLabelsX(j) = NetworkManager.GroupName(j)
+                    m_astrLabelsX(j - 1) = NetworkManager.GroupName(j)
                 Else
-                    m_astrLabelsX(j) = NetworkManager.FleetName(j - NetworkManager.nGroups)
+                    m_astrLabelsX(j - 1) = NetworkManager.FleetName(j - NetworkManager.nGroups)
                 End If
-                m_astrLabelsY(j) = m_astrLabelsX(j)
-                m_asData(i, j) = NetworkManager.MixedTrophicImpacts(j, i)
+                m_astrLabelsY(j - 1) = m_astrLabelsX(j - 1)
+                m_asData(i - 1, j - 1) = NetworkManager.MixedTrophicImpacts(j, i)
             Next j
         Next i
 
@@ -105,6 +109,10 @@ Public Class cPlotOfMixedTrophicImpact
         mf.Dispose()
     End Sub
 
+    Public Overrides Function OptionsControl() As UserControl
+        Return New ucPlotOfMTIOptions(Me)
+    End Function
+
     Private Sub PaintUC(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
         PlotToScreen(e.Graphics)
     End Sub
@@ -123,8 +131,13 @@ Public Class cPlotOfMixedTrophicImpact
         r.Y = 0
         r.Width = Me.Plot.ClientRectangle.Width
         r.Height = Me.Plot.ClientRectangle.Height - r.Y
-        ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
-                astrLegends)
+        ag.Draw(Me.UIContext.StyleGuide, g, r, Me.m_style, _
+                Me.m_asData, _
+                My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, _
+                My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
+                astrLegends, _
+                Me.m_bDrawGrid, _
+                CSng(IIf(Me.m_bDrawSlanted, 30, 0)))
     End Sub
 
     Private Sub PlotToEMF(ByVal g As Graphics)
@@ -138,8 +151,54 @@ Public Class cPlotOfMixedTrophicImpact
         r.Width = Me.Plot.ClientRectangle.Width ' * 3
         r.Height = (Me.Plot.ClientRectangle.Height - r.Y) ' * 3
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
-        ag.Draw(g, r, m_asData, My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
-                astrLegends)
+        ag.Draw(Me.UIContext.StyleGuide, g, r, Me.m_style, _
+                Me.m_asData, _
+                My.Resources.LBL_IMPACTED_GP, Me.m_astrLabelsX, _
+                My.Resources.LBL_IMPACTING_GP, Me.m_astrLabelsY, _
+                astrLegends, _
+                Me.m_bDrawGrid, _
+                CSng(IIf(Me.m_bDrawSlanted, 30, 0)))
+
     End Sub
+
+    Public Property DrawCircles() As Boolean
+        Get
+            Return Me.m_style = ArrayGraph.eRenderStyle.Circles
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_style = ArrayGraph.eRenderStyle.Circles
+            Me.Plot.Invalidate()
+        End Set
+    End Property
+
+    Public Property DrawRectangles() As Boolean
+        Get
+            Return Me.m_style = ArrayGraph.eRenderStyle.Bars
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_style = ArrayGraph.eRenderStyle.Bars
+            Me.Plot.Invalidate()
+        End Set
+    End Property
+
+    Public Property DrawGrid() As Boolean
+        Get
+            Return Me.m_bDrawGrid
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bDrawGrid = value
+            Me.Plot.Invalidate()
+        End Set
+    End Property
+
+    Public Property DrawSlanted() As Boolean
+        Get
+            Return Me.m_bDrawSlanted
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bDrawSlanted = value
+            Me.Plot.Invalidate()
+        End Set
+    End Property
 
 End Class
