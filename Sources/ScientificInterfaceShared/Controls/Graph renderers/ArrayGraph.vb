@@ -67,7 +67,7 @@ Public Class ArrayGraph
         Dim szLabelSideMaxSize As Size = Me.CalcLabelMaxSize(g, ftScale, astrLabelsY)
         Dim szLegendTop As Size = Me.CalcLegendMaxSize(g, ftLegend, strTitleX)
         Dim szLegendSide As Size = Me.CalcLegendMaxSize(g, ftLegend, strTitleY)
-        Dim szCellSize As Size
+        Dim szCellSize As SizeF
 
         ' Graph layout explanation:
         '
@@ -82,21 +82,15 @@ Public Class ArrayGraph
         Dim iArea3Width As Integer = szLabelSideMaxSize.Width + szLegendSide.Height * 2
         Dim iArea1Height As Integer = szLabelTopMaxSize.Width + szLegendTop.Height * 2
         Dim iArea3Height As Integer = rcRender.Height - iArea1Height
-        Dim iArea2Width As Integer = rcRender.Width - iArea3Width
-        Dim iArea1Width As Integer = iArea2Width
-        Dim iArea2Height As Integer = iArea3Height
+        Dim iArea1Width As Integer = rcRender.Width - iArea3Width
 
-        Dim rcArea1 As Rectangle = New Rectangle(rcRender.X, rcRender.Y, _
-                                                 iArea1Width, iArea1Height)
-        Dim rcArea2 As Rectangle = New Rectangle(rcRender.X, rcRender.Y + iArea1Height, _
-                                                 iArea2Width, iArea2Height)
-        Dim rcArea3 As Rectangle = New Rectangle(rcRender.Width - iArea3Width, iArea1Height, _
-                                                 iArea3Width, iArea3Height)
-        Dim rcArea4 As Rectangle = New Rectangle(rcRender.Width - iArea3Width, rcRender.Y, _
-                                                 iArea3Width, iArea1Height)
+        Dim rcArea1 As Rectangle = New Rectangle(0, 0, iArea1Width, iArea1Height)
+        Dim rcArea2 As Rectangle = New Rectangle(0, iArea1Height, rcArea1.Width, iArea3Height)
+        Dim rcArea3 As Rectangle = New Rectangle(rcArea1.Width, rcArea1.Height, iArea3Width, iArea3Height)
+        Dim rcArea4 As Rectangle = New Rectangle(rcArea1.Width, 0, rcArea1.Height, rcArea3.Width)
 
         ' Figure out where to draw the graphs
-        szCellSize = CalcGridSize(rcArea2, asData.GetUpperBound(0) - 1, asData.GetUpperBound(1) - 1)
+        szCellSize = CalcGridSize(rcArea2, asData.GetUpperBound(0) + 1, asData.GetUpperBound(1) + 1)
         ' Top text
         DrawLabelsTop(g, ftScale, ftSubtitle, rcArea1, szCellSize, strTitleX, astrLabelsX, szLabelTopMaxSize, -90 + sLabelAngle)
         ' Side text
@@ -104,7 +98,7 @@ Public Class ArrayGraph
         ' Graph legends
         DrawLegends(g, ftLegend, rcArea4, szCellSize, astrLegends, style)
         ' Grid
-        If bShowGrid Then DrawGrid(g, rcArea2, szCellSize, asData)
+        If bShowGrid Then DrawGrid(g, rcArea2, szCellSize, asData, style)
         ' Graph
         DrawGraph(g, rcArea2, szCellSize, asData, style)
 
@@ -130,10 +124,10 @@ Public Class ArrayGraph
     ''' -----------------------------------------------------------------------
     Private Function CalcGridSize(ByVal rect As Rectangle, _
                                   ByVal iNumItemsOnXAxis As Integer, _
-                                  ByVal iNumItemsOnYAxis As Integer) As Size
+                                  ByVal iNumItemsOnYAxis As Integer) As SizeF
 
-        Return New Size(CInt(rect.Width / (iNumItemsOnXAxis + (1 / cCELL_PADDING_RATIO))), _
-                        CInt(rect.Height / (iNumItemsOnYAxis + (1 / cCELL_PADDING_RATIO))))
+        Return New SizeF(CSng(rect.Width / Math.Max(1, iNumItemsOnXAxis)), _
+                         CSng(rect.Height / Math.Max(1, iNumItemsOnYAxis)))
 
     End Function
 
@@ -224,7 +218,7 @@ Public Class ArrayGraph
     ''' <param name="sAngle">Text rotation angle.</param>
     ''' -----------------------------------------------------------------------
     Private Sub DrawLabelsTop(ByVal g As Graphics, ByVal ftScale As Font, ByVal ftSubtitle As Font, _
-                              ByVal rect As Rectangle, ByVal szCellSize As Size, _
+                              ByVal rect As Rectangle, ByVal szCellSize As SizeF, _
                               ByVal strLegend As String, ByVal astrLabels As String(), ByVal szLabelMaxSize As Size, _
                               Optional ByVal sAngle As Single = 0.0!)
         Dim szLegendTop As Size = Me.CalcLegendMaxSize(g, ftScale, strLegend)
@@ -274,7 +268,7 @@ Public Class ArrayGraph
     ''' <param name="sAngle">Text rotation angle.</param>
     ''' -----------------------------------------------------------------------
     Private Sub DrawLabelsSide(ByVal g As Graphics, ByVal ftScale As Font, ByVal ftSubtitle As Font, _
-                               ByVal rect As Rectangle, ByVal szCellSize As Size, _
+                               ByVal rect As Rectangle, ByVal szCellSize As SizeF, _
                                ByVal strLegend As String, ByVal astrLabels As String(), _
                                Optional ByVal sAngle As Single = 0.0!)
         Dim szLegendSide As Size = Me.CalcLegendMaxSize(g, ftScale, strLegend)
@@ -290,7 +284,7 @@ Public Class ArrayGraph
     End Sub
 
     Private Sub DrawLegends(ByVal g As Graphics, ByVal ft As Font, ByVal rect As Rectangle, _
-                            ByVal szCellSize As Size, _
+                            ByVal szCellSize As SizeF, _
                             ByVal astrLegends As String(), _
                             ByVal style As eRenderStyle, _
                             Optional ByVal sAngle As Single = 0.0!)
@@ -324,23 +318,43 @@ Public Class ArrayGraph
 
     Private Sub DrawGrid(ByVal g As Graphics, _
                           ByVal rect As Rectangle, _
-                          ByVal szCellSize As Size, _
-                          ByVal asData As Single(,))
-        For y As Integer = 0 To asData.GetUpperBound(1)
-            g.DrawLine(Pens.LightGray, _
-                       rect.X, rect.Y + CInt(y * szCellSize.Height), _
-                       rect.X + rect.Width, rect.Y + CInt(y * szCellSize.Height))
-        Next y
-        For x As Integer = 0 To asData.GetUpperBound(0)
-            g.DrawLine(Pens.LightGray, _
-                       rect.X + CInt(x * szCellSize.Width), rect.Y, _
-                       rect.X + CInt(x * szCellSize.Width), rect.Y + rect.Height)
-        Next x
+                          ByVal szCellSize As SizeF, _
+                          ByVal asData As Single(,), _
+                          ByVal style As eRenderStyle)
+
+        Select Case style
+            Case eRenderStyle.Circles
+                For y As Integer = 0 To asData.GetUpperBound(1)
+                    g.DrawLine(Pens.LightGray, _
+                               rect.X, rect.Y + CInt(y * szCellSize.Height), _
+                               rect.X + rect.Width, rect.Y + CInt(y * szCellSize.Height))
+                Next y
+                For x As Integer = 0 To asData.GetUpperBound(0)
+                    g.DrawLine(Pens.LightGray, _
+                               rect.X + CInt(x * szCellSize.Width), rect.Y, _
+                               rect.X + CInt(x * szCellSize.Width), rect.Y + rect.Height)
+                Next x
+
+            Case eRenderStyle.Bars
+                Using brVeryLightGray As New SolidBrush(Color.FromArgb(255, 240, 240, 240))
+                    For x As Integer = 0 To asData.GetUpperBound(0) Step 2
+                        g.FillRectangle(brVeryLightGray, _
+                                        rect.X + x * szCellSize.Width, rect.Y, _
+                                        CInt(szCellSize.Width), rect.Height)
+                    Next x
+                End Using
+                For y As Integer = 0 To asData.GetUpperBound(1)
+                    g.DrawLine(Pens.LightGray, _
+                               rect.X, rect.Y + CInt((y + 0.5) * szCellSize.Height), _
+                               rect.X + rect.Width, rect.Y + CInt((y + 0.5) * szCellSize.Height))
+                Next y
+        End Select
+
     End Sub
 
     Private Sub DrawGraph(ByVal g As Graphics, _
                           ByVal rect As Rectangle, _
-                          ByVal szCellSize As Size, _
+                          ByVal szCellSize As SizeF, _
                           ByVal asData As Single(,), _
                           ByVal style As eRenderStyle)
 
@@ -349,16 +363,6 @@ Public Class ArrayGraph
 
         ' Render the graph
         For y As Integer = 0 To asData.GetUpperBound(1)
-
-            Select Case style
-                Case eRenderStyle.Circles
-                    ' NOP
-                Case eRenderStyle.Bars
-                    g.DrawLine(Pens.Black, rect.X, rect.Y + CInt((y + 0.5) * szCellSize.Height), _
-                               rect.X + rect.Width, rect.Y + CInt((y + 0.5) * szCellSize.Height))
-
-            End Select
-
             For x As Integer = 0 To asData.GetUpperBound(0)
                 Select Case style
 
@@ -376,9 +380,9 @@ Public Class ArrayGraph
 
                     Case eRenderStyle.Bars
                         Dim iBarHeight As Integer = Math.Abs(CInt(asData(x, y) * szCellSize.Height / 2))
-                        Dim rcRect As New Rectangle(rect.X + CInt(x * szCellSize.Width), _
+                        Dim rcRect As New Rectangle(rect.X + CInt(x * szCellSize.Width) + 1, _
                                                     rect.Y + CInt((y + 0.5) * szCellSize.Height), _
-                                                    CInt(szCellSize.Width), _
+                                                    CInt(szCellSize.Width) - 3, _
                                                     iBarHeight)
                         If asData(x, y) > 0.0 Then
                             rcRect.Y -= iBarHeight

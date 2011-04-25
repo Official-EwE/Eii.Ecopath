@@ -80,6 +80,7 @@ Public Class ucPlotOfMTIOptions
         Me.m_cbSlantingLabels.TabIndex = 2
         Me.m_cbSlantingLabels.Text = "Draw slanting &labels"
         Me.m_cbSlantingLabels.UseVisualStyleBackColor = True
+        Me.m_cbSlantingLabels.Visible = False
         '
         'ucPlotOfMTIOptions
         '

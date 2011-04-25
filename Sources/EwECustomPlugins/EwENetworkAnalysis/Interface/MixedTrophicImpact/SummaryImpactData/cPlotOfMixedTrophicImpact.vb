@@ -124,14 +124,9 @@ Public Class cPlotOfMixedTrophicImpact
     Private Sub PlotToScreen(ByVal g As Graphics)
 
         Dim ag As New ArrayGraph()
-        Dim r As Rectangle
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
-        r.X = Me.Plot.ClientRectangle.X
-        r.Y = 0
-        r.Width = Me.Plot.ClientRectangle.Width
-        r.Height = Me.Plot.ClientRectangle.Height - r.Y
-        ag.Draw(Me.UIContext.StyleGuide, g, r, Me.m_style, _
+        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.ClientRectangle, Me.m_style, _
                 Me.m_asData, _
                 My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, _
                 My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
@@ -143,15 +138,10 @@ Public Class cPlotOfMixedTrophicImpact
     Private Sub PlotToEMF(ByVal g As Graphics)
 
         Dim ag As New ArrayGraph()
-        Dim r As Rectangle
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
-        r.X = Me.Plot.ClientRectangle.X
-        r.Y = 0
-        r.Width = Me.Plot.ClientRectangle.Width ' * 3
-        r.Height = (Me.Plot.ClientRectangle.Height - r.Y) ' * 3
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
-        ag.Draw(Me.UIContext.StyleGuide, g, r, Me.m_style, _
+        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.ClientRectangle, Me.m_style, _
                 Me.m_asData, _
                 My.Resources.LBL_IMPACTED_GP, Me.m_astrLabelsX, _
                 My.Resources.LBL_IMPACTING_GP, Me.m_astrLabelsY, _
