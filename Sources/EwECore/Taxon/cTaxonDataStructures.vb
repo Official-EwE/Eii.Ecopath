@@ -10,14 +10,17 @@ Public Class cTaxonDataStructures
     ''' <summary>Taxonomy code DBID (xNumTaxa).</summary>
     Public TaxonDBID() As Integer
     ''' <summary>Taxon assignments (xNumTaxa) -> iGroup / iStanza</summary>
+    ''' <remarks>This number should be interpreted as a group index if
+    ''' <see cref="IsTaxonStanza">IsTaxonStanza(i)</see> is set to False,
+    ''' or denotes a stanza index otherwise.</remarks>
     Public TaxonTarget() As Integer
+    ''' <summary>Flag stating whether TaxonTarget(i) refers to a stanza (true) or a group (false)</summary>
+    Public IsTaxonStanza() As Boolean
     ''' <summary>Taxon proportion of biomass (xNumTaxa)</summary>
     Public TaxonProp() As Single
     ''' <summary>Taxa proportion of catch (xNumTaxa)</summary>
     Public TaxonPropCatch() As Single
-    ''' <summary>Flag stating whether TaxonTarget(i) refers to a stanza (true) or a group (false)</summary>
-    Public IsTaxonStanza() As Boolean
-    ''' <summary>Taxonomy class names (xNumTaxa).</summary>
+     ''' <summary>Taxonomy class names (xNumTaxa).</summary>
     Public TaxonClass() As String
     ''' <summary>Taxonomy order names (xNumTaxa).</summary>
     Public TaxonOrder() As String
@@ -66,15 +69,26 @@ Public Class cTaxonDataStructures
     ''' <summary>Group taxon index - may be used by model, initially designed for quick taxon access code.</summary>
     Private m_alGroupTaxa() As List(Of Integer)
 
+    ''' <summary>
+    ''' Create a new instance of cTaxonDataStructures
+    ''' </summary>
+    ''' <param name="ecopathDS"><see cref="cEcopathDataStructures"/> to use for base data.</param>
+    ''' <param name="stanzaDS"><see cref="cStanzaDatastructures"/> to use for base data.</param>
     Public Sub New(ByVal ecopathDS As cEcopathDataStructures, ByVal stanzaDS As cStanzaDatastructures)
         Me.m_ecopathDS = ecopathDS
         Me.m_stanzaDS = stanzaDS
     End Sub
 
+    ''' <summary>
+    ''' 'Forget' internal data.
+    ''' </summary>
     Public Sub Clear()
         Me.NumTaxon = 0
     End Sub
 
+    ''' <summary>
+    ''' Allocate memory for data.
+    ''' </summary>
     Public Sub RedimTaxon()
 
         ReDim Me.TaxonDBID(Me.NumTaxon)
@@ -112,6 +126,14 @@ Public Class cTaxonDataStructures
 
 #Region " Taxon index "
 
+    ''' <summary>
+    ''' Get the number of taxa assigned to a given group.
+    ''' </summary>
+    ''' <param name="iGroup">The one-based group index to get the number of taxa for.</param>
+    ''' <remarks>Taxa can be <see cref="TaxonTarget">assigned</see> directly to a group
+    ''' or indirectly via a multi-stanza configuration, determined by the state of the 
+    ''' <see cref="IsTaxonStanza"/> field. Regardless, this method returns the number of
+    ''' taxa assigned to a group - directly or indirectly.</remarks>
     Public ReadOnly Property NumGroupTaxa(ByVal iGroup As Integer) As Integer
         Get
             If Me.m_alGroupTaxa Is Nothing Then Me.UpdateTaxonIndex()
@@ -124,6 +146,15 @@ Public Class cTaxonDataStructures
         End Get
     End Property
 
+    ''' <summary>
+    ''' Get a taxon for a given group.
+    ''' </summary>
+    ''' <param name="iGroup">The one-based group index to get the taxon information for.</param>
+    ''' <param name="iIndex">The one-based index [1, <see cref="NumGroupTaxa"/>] of the taxon to obtain.</param>
+    ''' <remarks>Taxa can be <see cref="TaxonTarget">assigned</see> directly to a group
+    ''' or indirectly via a multi-stanza configuration, determined by the state of the 
+    ''' <see cref="IsTaxonStanza"/> field. Regardless, this method returns the number of
+    ''' taxa assigned to a group - directly or indirectly.</remarks>
     Public ReadOnly Property GroupTaxa(ByVal iGroup As Integer, ByVal iIndex As Integer) As Integer
         Get
             If Me.m_alGroupTaxa Is Nothing Then Me.UpdateTaxonIndex()
@@ -136,7 +167,10 @@ Public Class cTaxonDataStructures
         End Get
     End Property
 
-    Public Sub UpdateTaxonIndex()
+    ''' <summary>
+    ''' Rebuild the taxon / group index.
+    ''' </summary>
+    Private Sub UpdateTaxonIndex()
 
         ReDim Me.m_alGroupTaxa(Me.m_ecopathDS.NumGroups)
         For iGroup As Integer = 0 To Me.m_ecopathDS.NumGroups
