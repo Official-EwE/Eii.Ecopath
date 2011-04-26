@@ -32,11 +32,14 @@ Public MustInherit Class cBaseShapeManager
 
 #Region "Protected Variables"
 
-    Protected m_Data As cEcosimDatastructures ' underlying EcoSim data 
-    ' Protected m_ngroups As Integer 'Number of Groups from EocSim. This is used to dimension the PredPrey matrix
-    Protected m_shapes As New List(Of cForcingFunction) 'List of shapes owned by this manager
-    Protected m_core As cCore 'reference to the core
-    Protected m_DataType As eDataTypes 'type of shape passed in when the object was created
+    ''' <summary>underlying <see cref="cEcosimDatastructures">EcoSim data</see></summary>
+    Protected m_Data As cEcosimDatastructures
+    ''' <summary>List of shapes owned by this manager.</summary>
+    Protected m_shapes As New List(Of cForcingFunction)
+    ''' <summary>Reference to the <see cref="cCore">core</see>.</summary>
+    Protected m_core As cCore = Nothing
+    ''' <summary><see cref="eDataTypes">Type of shape</see> this manager operates on.</summary>
+    Protected m_DataType As eDataTypes = eDataTypes.NotSet
 
 #End Region
 
@@ -138,7 +141,6 @@ Public MustInherit Class cBaseShapeManager
         End Get
     End Property
 
-
     ''' <summary>
     ''' Implementation of IEnumerable.GetEnumerator provides access to the For Each statment
     ''' </summary>
@@ -147,7 +149,6 @@ Public MustInherit Class cBaseShapeManager
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
         Return m_shapes.GetEnumerator
     End Function
-
 
     ''' <summary>
     ''' Does this ShapeManager contain this cForcingFunction
@@ -317,7 +318,6 @@ Public MustInherit Class cBaseShapeManager
 
 
 #End Region ' Protected methods
-
 
 #Region "Public Properties"
 
