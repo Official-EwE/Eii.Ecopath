@@ -1,12 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cSmoothListView.vb,v $
-' Revision 1.1  2009/03/20 18:00:44  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 
@@ -14,12 +6,19 @@ Option Strict On
 
 Namespace Controls
 
+    ''' <summary>
+    ''' <see cref="ListView"/>-derived class for rendering without flickering.
+    ''' </summary>
     Public Class cSmoothListView
         : Inherits ListView
 
+        ''' <summary>
+        ''' Constructor.
+        ''' </summary>
+        ''' <remarks></remarks>
         Public Sub New()
             MyBase.New()
-            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer Or ControlStyles.AllPaintingInWmPaint Or ControlStyles.UserPaint, True)
         End Sub
 
     End Class

@@ -10,6 +10,12 @@ Imports EwEUtils.Utilities
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
+    ''' handling fishing effort <see cref="cForcingFunction">forcing shapes</see>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public MustInherit Class cFishingBaseShapeGUIHandler
         : Inherits cForcingShapeGUIHandler

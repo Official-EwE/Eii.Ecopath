@@ -16,6 +16,7 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Helper class for rendering <see cref="cShapeData"/> as a graph.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cShapeImage
