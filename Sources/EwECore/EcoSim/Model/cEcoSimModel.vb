@@ -677,11 +677,6 @@ Namespace Ecosim
             'Ecosim is about to be initialized for a run
             If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimPreRunInitialized(Me.m_Data)
 
-
-            ' Me.m_search.InitForYear()
-
-            'Dim sumBio As Single, sumCatch As Single' sum of biomass and catch for debugging only
-
             If m_Data.bTimestepOutput Then
                 Me.redimTime(NumberOfYears + ExtraTime, True)
                 m_Data.dimResults(NumberOfYears + ExtraTime)
@@ -772,10 +767,11 @@ Namespace Ecosim
             ' START OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For iyr = 1 To NumberOfYears + ExtraTime
+                'Constrain the Ecosim year index to the run length passed in as the arguement NumberOfYears
                 iyf = IIf(iyr <= NumberOfYears, iyr, NumberOfYears)
 
                 'set Fgear() fishing effort at timestep that can be modified by a search routine
-                Me.SetFGear(Fgear, RelFopt, QYear, iyr, NumberOfYears)
+                Me.SetFGear(Fgear, RelFopt, QYear, iyr)
 
                 'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
                 '*
@@ -962,7 +958,7 @@ Namespace Ecosim
             '*
             If m_search.bInSearch Then
                 'only go in here if searching
-                m_search.EcosimSummarizeIndicators(biomeq, Fgear, NumberOfYears, NumberOfYears + ExtraTime - m_search.BaseYear)
+                m_search.EcosimSummarizeIndicators(biomeq, Fgear, NumberOfYears, NumberOfYears + ExtraTime - m_search.BaseYear, Me.m_Data.PriceMedData)
             End If
             '*
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
@@ -1014,7 +1010,6 @@ Namespace Ecosim
             End If 'Me.m_search.SearchMode = eSearchModes.MSE 
 
             ReDim LandingsForValue(Me.m_Data.nGroups, Me.m_Data.nGear)
-
             'Calculate the catch
             Dim landings As Single
             For igrp As Integer = 1 To Me.m_EPData.NumLiving
@@ -1043,8 +1038,8 @@ Namespace Ecosim
                 'now get the value for all Group, Fleets based on the price elasticity function
                 For igrp As Integer = 1 To Me.nGroups
                     For iflt = 1 To Me.m_Data.nGear
-                        'Value = Landings * [mediated price] * [Discount Factor]
-                        Me.m_search.ValCatch(iflt, igrp) += LandingsForValue(igrp, iflt) * Me.getElasticPrice(igrp, iflt) * Me.m_search.DF / 12.0F
+                        'Monthly Value = Landings * [mediated price] * [Discount Factor]
+                        Me.m_search.ValCatch(iflt, igrp) += LandingsForValue(igrp, iflt) * Me.PESValue(igrp, iflt) * Me.m_search.DF / 12.0F
 
                     Next
                 Next
@@ -1080,7 +1075,7 @@ Namespace Ecosim
         Public Sub CalcValueFromLandings(ByVal iTime As Integer)
 
             'set PriceMedData.MedVal() for all applied price elasticity functions
-            'using landings at the current time step
+            'using landings at the current time step Me.m_Data.ResultsLandings(groups,fleets)
             Me.m_Data.PriceMedData.SetPriceMedFunctions(Me.m_Data.ResultsLandings)
 
             'now get the value for all Group, Fleets based on the price elasticity function
@@ -1089,7 +1084,7 @@ Namespace Ecosim
                     'Landings are the "Ecopath" landings (discards not included) which is the annual landings
                     'Value is monthly so convert to monthly / 12
                     'Value = Landings * [mediated price] / 12
-                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.getElasticPrice(igrp, iflt) / 12.0F
+                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.PESValue(igrp, iflt) / 12.0F
 
                     Me.m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) += value
                     Me.m_Data.ResultsSumValueByGear(iflt, iTime) += value
@@ -1111,30 +1106,9 @@ Namespace Ecosim
         ''' <param name="iFlt">Index of the affected fleet. This is the fleet that the price function is applied to in the application grid.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function getElasticPrice(ByVal iGrp As Integer, ByVal iFlt As Integer) As Single
-            Dim pMult As Single
-            Dim bFoundMed As Boolean = False
-
-            'now sum the multiplier for all applied price med functions for this Group Fleet
-            For iFnt As Integer = 1 To m_Data.MaxFunctions
-
-                If m_Data.PriceMedFuncNum(iGrp, iFlt, iFnt) <= 0 Then
-                    Exit For
-                End If
-
-                pMult += m_Data.PriceMedData.MedVal(m_Data.PriceMedFuncNum(iGrp, iFlt, iFnt))
-                bFoundMed = True
-
-            Next
-
-            'If bFoundMed Then
-            '    System.Console.WriteLine("Market value=" & Me.m_EPData.Market(iFlt, iGrp).ToString & ", mediation=" & pMult.ToString)
-            'End If
-
-            'No price elasticity function found set the multiplier to 1
-            If Not bFoundMed Then pMult = 1
+        Public Function PESValue(ByVal iGrp As Integer, ByVal iFlt As Integer) As Single
             'apply the price elasticity multiplier to market value for this Group/Fleet
-            Return Me.m_EPData.Market(iFlt, iGrp) * pMult
+            Return Me.m_EPData.Market(iFlt, iGrp) * Me.m_Data.PriceMedData.getPESMult(iGrp, iFlt)
 
         End Function
 
@@ -1242,24 +1216,30 @@ Namespace Ecosim
         ''' <param name="Fgear">Fishing Effort</param>
         ''' <param name="RelFopt"></param>
         ''' <param name="iYear"></param>
-        ''' <param name="NumberOfYears"></param>
         ''' <remarks>At the start of a year Fgear(nFleets)(fishing effort) is set to a user entered value FishRateGear(nFleets,nTime) or effort set by a search. 
         ''' If in a search Fgear() is then used to compute FishYear() which is used to set FishRateNo() and compute FishTime(). FishTime() is what is used by Derivt() Confused yet???? </remarks>
-        Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByRef QYear() As Single, ByVal iYear As Integer, ByVal NumberOfYears As Integer)
+        Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByRef QYear() As Single, ByVal iYear As Integer)
 
-            'not in the search so get Fgear() from user-entered fishing rate shape
-            Dim iyf As Integer = CInt(IIf(iYear <= NumberOfYears, iYear, NumberOfYears))
+
+            'Constrain the year index to the Ecosim run length
+            'When run for the Fishing Policy Search Ecosim is run past the end of the run length
+            'This makes sure the iYear index is not out of bounds
+            Dim iyf As Integer = CInt(IIf(iYear <= Me.m_Data.NumYears, iYear, Me.m_Data.NumYears))
+
+            'Set Fgear() to values entered by the user
             For iFlt As Integer = 1 To Me.m_EPData.NumFleet
                 Fgear(iFlt) = Me.m_Data.FishRateGear(iFlt, 12 * iyf - 11)
             Next iFlt
 
+
+            'If in some kind of a search overwrite the Fgear() with the values from the search routine
             If Me.m_search.SearchMode = eSearchModes.FishingPolicy Then
                 'xxxxxxxxxxxxxxxx
                 'Fishing Policy search
                 'xxxxxxxxxxxxxxxxxxxxxx
 
                 'get the Fgear values set by the optimization routine
-                Me.m_search.SetFGear(Fgear, RelFopt, iYear, NumberOfYears)
+                Me.m_search.SetFGear(Fgear, RelFopt, iYear)
 
             ElseIf m_search.SearchMode = eSearchModes.MSE Then
                 'xxxxxxxxxxxxxxxxxxxxxx
@@ -2904,7 +2884,7 @@ Namespace Ecosim
             Dim ii As Integer, i As Integer, j As Integer, jj As Integer ', MedX As Single
             Dim msg As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
-            Dim medData As cMediationData = Me.m_Data.BioMedData
+            Dim medData As cMediationDataStructures = Me.m_Data.BioMedData
 
             'Clear out the old data set all mediation functions to false
             'SetMedFunctions is only called from derivt if
@@ -2917,10 +2897,10 @@ Namespace Ecosim
             'now set MedIsUsed() to True for all trophic links that have had IsMedFunction() set to True 
             For ii = 1 To m_Data.inlinks
                 i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
-                For jj = 1 To m_Data.MaxFunctions
-                    If m_Data.IsMedFunction(i, j, jj) Then        'MF() ranges from 0 to MediationShapes (=9)
+                For jj = 1 To cMediationDataStructures.MAXFUNCTIONS
+                    If m_Data.BioMedData.IsMedFunction(i, j, jj) Then        'MF() ranges from 0 to MediationShapes (=9)
                         medData.MedIsUsed(0) = True
-                        medData.MedIsUsed(m_Data.FunctionNumber(i, j, jj)) = True
+                        medData.MedIsUsed(m_Data.BioMedData.FunctionNumber(i, j, jj)) = True
                     End If
                 Next
             Next
@@ -2928,10 +2908,10 @@ Namespace Ecosim
             'now check all the Primary Producers they where not included in the inlinks loop above
             For ii = 1 To m_Data.nGroups
                 If m_EPData.PP(ii) = 1 Then
-                    For jj = 1 To m_Data.MaxFunctions
-                        If m_Data.IsMedFunction(ii, ii, jj) Then
+                    For jj = 1 To cMediationDataStructures.MAXFUNCTIONS
+                        If m_Data.BioMedData.IsMedFunction(ii, ii, jj) Then
                             medData.MedIsUsed(0) = True
-                            medData.MedIsUsed(m_Data.FunctionNumber(ii, ii, jj)) = True
+                            medData.MedIsUsed(m_Data.BioMedData.FunctionNumber(ii, ii, jj)) = True
                         End If
                     Next
                 End If
@@ -2988,7 +2968,7 @@ Namespace Ecosim
             Dim iShp As Integer, iGrp As Integer, nGrps As Integer ', MedX As Single
             Dim msg As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
-            Dim PriceMedData As cMediationData = Me.m_Data.PriceMedData
+            Dim PriceMedData As cMediationDataStructures = Me.m_Data.PriceMedData
 
             Try
 
@@ -3004,9 +2984,9 @@ Namespace Ecosim
 
                 For iGrp = 1 To Me.nGroups
                     For iflt As Integer = 1 To Me.m_Data.nGear
-                        For iFnt As Integer = 1 To m_Data.MaxFunctions
-                            If m_Data.PriceMedFuncNum(iGrp, iflt, iFnt) Then        'MF() ranges from 0 to MediationShapes (=9)
-                                PriceMedData.MedIsUsed(m_Data.PriceMedFuncNum(iGrp, iflt, iFnt)) = True
+                        For iFnt As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
+                            If m_Data.PriceMedData.PriceMedFuncNum(iGrp, iflt, iFnt) Then        'MF() ranges from 0 to MediationShapes (=9)
+                                PriceMedData.MedIsUsed(m_Data.PriceMedData.PriceMedFuncNum(iGrp, iflt, iFnt)) = True
                             End If
                         Next
                     Next
@@ -4155,17 +4135,17 @@ Namespace Ecosim
                 ApplySalinityModifier(A, m_Data.tval(m_Data.TemperatureForceNo), m_Data.TempOpt(j), m_Data.TempLeft(j), m_Data.TempRight(j))
             End If
 
-            For K = 1 To m_Data.MaxFunctions
+            For K = 1 To cMediationDataStructures.MAXFUNCTIONS
 
-                If m_Data.FunctionNumber(i, j, K) <= 0 Then Exit Sub
+                If m_Data.BioMedData.FunctionNumber(i, j, K) <= 0 Then Exit Sub
 
-                If m_Data.IsMedFunction(i, j, K) Then
-                    Mult = m_Data.BioMedData.MedVal(m_Data.FunctionNumber(i, j, K))
+                If m_Data.BioMedData.IsMedFunction(i, j, K) Then
+                    Mult = m_Data.BioMedData.MedVal(m_Data.BioMedData.FunctionNumber(i, j, K))
                 Else
-                    If UseTime = True Then Mult = m_Data.tval(m_Data.FunctionNumber(i, j, K)) Else Mult = 1
+                    If UseTime = True Then Mult = m_Data.tval(m_Data.BioMedData.FunctionNumber(i, j, K)) Else Mult = 1
                 End If
 
-                Select Case m_Data.FunctionType(i, j, K)
+                Select Case m_Data.BioMedData.FunctionType(i, j, K)
                     Case 1 'multiply rate of search
                         A = A * Mult
                     Case 2 'multiply vulnerability

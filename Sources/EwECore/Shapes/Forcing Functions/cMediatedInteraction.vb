@@ -111,9 +111,9 @@ Public MustInherit Class cMediatedInteraction
         Try
 
             ' Sanity checks
-            Debug.Assert(ItemIndex > 0 And ItemIndex <= esdata.MaxFunctions, Me.ToString & ".getShape() ItemIndex out of bounds.")
+            Debug.Assert(ItemIndex > 0 And ItemIndex <= cMediationDataStructures.MAXFUNCTIONS, Me.ToString & ".getShape() ItemIndex out of bounds.")
 
-            If ItemIndex > esdata.MaxFunctions Or ItemIndex < 1 Then
+            If ItemIndex > cMediationDataStructures.MAXFUNCTIONS Or ItemIndex < 1 Then
                 Shape = Nothing
                 Return False
             End If
@@ -163,7 +163,7 @@ Public MustInherit Class cMediatedInteraction
 
         Try
 
-            If (ItemIndex > esdata.MaxFunctions) Or (ItemIndex < 1) Then
+            If (ItemIndex > cMediationDataStructures.MAXFUNCTIONS) Or (ItemIndex < 1) Then
                 shape = Nothing
                 Debug.Assert(False, Me.ToString & ".setShape() ShapeIndex out of bounds.")
                 Return False

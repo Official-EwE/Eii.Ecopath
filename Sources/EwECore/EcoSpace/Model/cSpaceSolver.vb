@@ -804,7 +804,7 @@ Public Class cSpaceSolver
         'current Y value of each active trophic mediation function
         Dim i As Integer, j As Integer, MedX As Single, ip As Long
 
-        Dim medData As cMediationData = Me.m_SimData.BioMedData
+        Dim medData As cMediationDataStructures = Me.m_SimData.BioMedData
 
         For i = 1 To medData.MediationShapes
             If medData.MedIsUsed(i) Then
@@ -862,18 +862,18 @@ Public Class cSpaceSolver
         End If
 
 
-        For K = 1 To m_SimData.MaxFunctions
+        For K = 1 To cMediationDataStructures.MAXFUNCTIONS
 
-            If m_SimData.FunctionNumber(i, j, K) = 0 Then Exit Sub
+            If m_SimData.BioMedData.FunctionNumber(i, j, K) = 0 Then Exit Sub
 
-            If m_SimData.IsMedFunction(i, j, K) Then
-                Mult = MedVal(m_SimData.FunctionNumber(i, j, K))
+            If m_SimData.BioMedData.IsMedFunction(i, j, K) Then
+                Mult = MedVal(m_SimData.BioMedData.FunctionNumber(i, j, K))
             Else
                 Mult = 1
                 'If UseTime = True Then Mult = m_ESData.tval(m_ESData.FunctionNumber(i, j, K)) Else Mult = 1
             End If
 
-            Select Case m_SimData.FunctionType(i, j, K)
+            Select Case m_SimData.BioMedData.FunctionType(i, j, K)
                 Case 1 'multiply rate of search
                     A = A * Mult
                 Case 2 'multiply vulnerability

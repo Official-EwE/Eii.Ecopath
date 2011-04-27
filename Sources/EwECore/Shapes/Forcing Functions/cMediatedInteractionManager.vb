@@ -164,7 +164,7 @@ Public Class cMediatedInteractionManager
     ''' </summary>
     Public ReadOnly Property MaxNShapes() As Integer
         Get
-            Return Me.getEcoSimData.MaxFunctions
+            Return cMediationDataStructures.MAXFUNCTIONS
         End Get
     End Property
 

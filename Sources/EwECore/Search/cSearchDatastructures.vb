@@ -51,41 +51,6 @@ Public Class cSearchDatastructures
     Public DiscountFactor As Single
     Public GenDiscountFactor As Single
 
-    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    'For Closed Loop simulation
-    'parameters set by the interface for Closed Loop simulation
-
-    'Public Fweight(,) As Single 'Fishing weight set by user. Weight/importance of a fleet
-    'Public Fwc(,) As Single 'weighted relative catchablility for closed loop FWeight * RelQ
-    'Public Wftot() As Single 'sum of fishing weight for all species caught by a fleet  Wftot(iflt) = Wftot(iflt) + Fweight(iflt, igrp)
-
-    'Public Qgrow() As Single 'Max catchability increase. Catchability increase over time due to improved fishing efficiency
-    'Public BioRiskValue(,) As Single 'Min Max risk
-    'Public CVbiomEst() As Single 'Biomass coefficient of variation
-    'Public CVFest() As Single 'Fishing effort coefficient of variation
-
-    'Public VarQest() As Single 'Estimated variation in the estimation of fishing effort. Use in the first year of the simulation to vary effort. See InitForClosedLoop
-    'Public KalGainQ() As Single
-    'Public VarQyear() As Single
-    'Public VarQgrow() As Single 'variation in catchability
-
-    'Public BioR0() As Boolean
-    'Public BioR1() As Boolean
-    'Public BioRiskCount(,) As Integer
-
-    'Public AssessPower As Single
-    'Public GstockPred() As Single
-    'Public RstockPred() As Single
-    'Public KalmanGain() As Single
-
-    '''' <summary>
-    '''' Use for Closed Loop Fishing Rate Assesment method
-    '''' </summary>
-    '''' <remarks></remarks>
-    'Public AssessMethod As Integer
-    'Public nTrials As Integer
-
-    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     'jb in EwE5 these are defined in Fletch.bas
     Public Ecodistance As Single
@@ -208,6 +173,22 @@ Public Class cSearchDatastructures
 
     Private m_ExtraYears As Integer
 
+    ''' <summary>Conventional discount rate for intergeneration discount rate computations</summary>
+    ''' <remarks>Drate = 1/(1+DiscountFactor)</remarks>
+    Private Drate As Single
+
+    ''' <summary>Intergenerational discount rate for computations</summary>
+    ''' <remarks>Dfgrate = 1/(1+GenDiscountFactor)</remarks>
+    Private Dfgrate As Single
+
+    ''' <summary>Ratio of intergenerational to standard discount rate </summary>
+    '''  <remarks>deltaDDfg = Dfgrate/Drate</remarks>
+    Private deltaDDfg As Single
+
+    ''' <summary>Number of years for one generation </summary>
+    '''<remarks>GenT = 20</remarks>
+    Private GenT As Single
+
     Private Din As Single, Dgen As Single, Dratio As Single
     Private Dalpha As Single
     Private m_ecopathData As cEcopathDataStructures
@@ -230,8 +211,9 @@ Public Class cSearchDatastructures
         Me.RedimGroups()
 
         'set some default values
-        DiscountFactor = 0.04
-        'GenDiscountFactor = 0.1
+        DiscountFactor = 0.04F
+        GenDiscountFactor = 0.0F
+        GenT = 20
         nRuns = 1
         nInterations = 2000
 
@@ -745,12 +727,19 @@ Public Class cSearchDatastructures
             CatchYearGroup(igrp) = EcoPathData.fCatch(igrp)
         Next
 
-
         m_ecopathData = EcoPathData
         m_ecosimData = EcosimData
 
         Din = 1 - DiscountFactor 'jb DiscountFactor was set to a default of 0.01 in setDefaultParamaters
         If GenDiscountFactor > 0 Then
+
+            Me.Dfgrate = 1.0F / (1 + GenDiscountFactor)
+            Me.Drate = 1.0F / (1 + DiscountFactor)
+            'if Dfgrate = Drate then tweak Dfgrate so calcDiscoutRate(t) can use the same equation for both cases
+            If Dfgrate = Drate Then Dfgrate += CSng(0.0000001)
+            Me.deltaDDfg = Dfgrate / Drate
+            Me.GenT = 20.0F
+
             Dgen = 1 - GenDiscountFactor / 20
             If Din <> 0 Then Dratio = Dgen / Din Else Dratio = CSng(Dgen / 0.01)
             If Dratio = 1 Then Dratio = 0.9999
@@ -789,7 +778,7 @@ Public Class cSearchDatastructures
         'I'm making the DF its inverse 
 
         If iYear > BaseYear Then
-            DF = calcDiscountFactor(iYear - BaseYear)
+            DF = calcDiscountRate(iYear - BaseYear)
         Else
             DF = 1
         End If
@@ -811,11 +800,12 @@ Public Class cSearchDatastructures
     ''' <param name="Fgear"></param>
     ''' <param name="RelFopt"></param>
     ''' <param name="iYear"></param>
-    ''' <param name="NumberOfYears"></param>
     ''' <remarks></remarks>
-    Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByVal iYear As Integer, ByVal NumberOfYears As Integer)
+    Public Sub SetFGear(ByRef Fgear() As Single, ByVal RelFopt() As Single, ByVal iYear As Integer)
 
-        Dim iyf As Integer = CInt(IIf(iYear <= NumberOfYears, iYear, NumberOfYears))
+        'When Ecosim is run for a Fishing Policy Search it is run for 20 years past the end of the regular run length(cSearchDataStructures.ExtraYearsForSearch)
+        'Constrain the year index to the Ecosim run length so the effort set by the FPS for the last year is used for the extra years
+        Dim iyf As Integer = CInt(IIf(iYear <= m_ecosimData.NumYears, iYear, m_ecosimData.NumYears))
 
         Debug.Assert(Me.SearchMode = eSearchModes.FishingPolicy, "Ecosim BUG warning: setting fishing effort to values computed by Fishing Policy Search when not in search!")
 
@@ -863,7 +853,7 @@ Public Class cSearchDatastructures
 
                 'calculate discount factor DF
                 If iYear > BaseYear Then
-                    DF = calcDiscountFactor(iYear - BaseYear)
+                    DF = calcDiscountRate(iYear - BaseYear)
                 Else
                     DF = 1
                 End If
@@ -1046,11 +1036,11 @@ Public Class cSearchDatastructures
     End Sub
 
     Public Sub EcosimSummarizeIndicators(ByVal Biomass() As Single, ByVal Fgear() As Single, _
-                                         ByVal ModelRunLength As Integer, _
-                                         ByVal ModelRunLengthPostBaseYear As Integer)
+                                            ByVal ModelRunLength As Integer, ByVal ModelRunLengthPostBaseYear As Integer, _
+                                            ByVal PriceMedData As cMediationDataStructures)
         Dim LTV As Single 'Long term value
         Dim CV As Single
-        Dim i As Integer, j As Integer
+        Dim iFlt As Integer, iGrp As Integer
         Dim CostPenalty As Single
         Dim CostPenaltyConstant As Integer = 1
 
@@ -1063,7 +1053,7 @@ Public Class cSearchDatastructures
         KemptonQ = KemptonQ / ModelRunLength
 
         ' calculate last year incomes and costs by gear
-        For i = 1 To m_ecopathData.NumFleet
+        For iFlt = 1 To m_ecopathData.NumFleet
             'If BaseYearCost(i) > 0 Then
             'LastYearCost(i) = Fgear(i) * BaseYearCost(i) / BaseYearEffort(i)
             'Else
@@ -1071,65 +1061,68 @@ Public Class cSearchDatastructures
             'End If
 
             CV = 0
-            For j = 1 To m_ecopathData.NumLiving
-                If CatchYear(i, j) > 0 Then
-                    LastYearIncomeSpecies(i, j) = CatchYear(i, j) * m_ecopathData.Market(i, j) * m_ecopathData.PropLanded(i, j)
-                    CV = CV + LastYearIncomeSpecies(i, j)
+            For iGrp = 1 To m_ecopathData.NumLiving
+                If CatchYear(iFlt, iGrp) > 0 Then
+                    LastYearIncomeSpecies(iFlt, iGrp) = CatchYear(iFlt, iGrp) * m_ecopathData.Market(iFlt, iGrp) * m_ecopathData.PropLanded(iFlt, iGrp)
+                    CV = CV + LastYearIncomeSpecies(iFlt, iGrp)
                 End If
             Next
-            LastYearIncome(i) = CV
+            LastYearIncome(iFlt) = CV
         Next
 
         ExistValue = ExistValue / (m_ecopathData.NumLiving * ModelRunLengthPostBaseYear)
 
         LTV = CalcLTV(ModelRunLengthPostBaseYear)
 
-        For i = 1 To m_ecopathData.NumFleet
-            For j = 1 To m_ecopathData.NumLiving
-                If ValCatch(i, j) > 0 Then
+        For iFlt = 1 To m_ecopathData.NumFleet
+            For iGrp = 1 To m_ecopathData.NumLiving
+                If ValCatch(iFlt, iGrp) > 0 Then
                     'Was done using end biomass:
                     'Vlocal = (ValCatch(i, j) + bb(j) * Fgear(i) * relQ(i, j) * LTV) * Market(i, j)
                     'In connection with including discounting during run changed the long term
                     'addition to be based on equilibrium biomass
                     'If Abs((bb(j) - biomeq(j)) / m_data.StartBiomass(j)) > 1 Then Stop
-                    Dim Vlocal As Single = ValCatch(i, j) + (m_ecopathData.PropLanded(i, j) * Biomass(j) _
-                                * Fgear(i) * m_ecosimData.relQ(i, j) * LTV) * m_ecopathData.Market(i, j)
+
+                    'Dim Vlocal As Single = ValCatch(iFlt, iGrp) + (m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) _
+                    '* Fgear(iFlt) * m_ecosimData.relQ(iFlt, iGrp) * LTV) * m_ecopathData.Market(iFlt, iGrp)
+
+                    'jb 27-Apr-2011 changed again to include Price Elasticity of Supply
+                    'Assumes 
+                    'PriceMedData.SetPriceMedFunctions() was called with the landings from the last timestep in Ecosim
+                    'Both ValCatch(fleets,groups) and CatchYear(fleets,groups) are from the last Ecosim timestep 
+                    Dim Vlocal As Single = ValCatch(iFlt, iGrp) + CatchYear(iFlt, iGrp) * m_ecopathData.Market(iFlt, iGrp) * PriceMedData.getPESMult(iGrp, iFlt) * LTV
 
                     totval = totval + Vlocal
-                    ValCatchGear(i) = ValCatchGear(i) + Vlocal
-
-                    ' System.Console.Write(CSng(ValCatch(i, j) / ModelRunLengthPostBaseYear).ToString & ", ")
-                    'employ = employ + Vlocal * Jobs(i)
+                    ValCatchGear(iFlt) = ValCatchGear(iFlt) + Vlocal
                 End If
             Next
-            'System.Console.WriteLine()
         Next
 
-        For i = 1 To m_ecopathData.NumFleet
+        For iFlt = 1 To m_ecopathData.NumFleet
 
             'NetCost() = [Sum of NetCost] + [long term value of the last time step]
             'totval includes the same accounting
-            If BaseYearCost(i) > 0 And BaseYearEffort(i) > 0 Then
-                NetCost(i) += Fgear(i) * BaseYearCost(i) / BaseYearEffort(i) * LTV
+            If BaseYearCost(iFlt) > 0 And BaseYearEffort(iFlt) > 0 Then
+                NetCost(iFlt) += Fgear(iFlt) * BaseYearCost(iFlt) / BaseYearEffort(iFlt) * LTV
             End If
 
             CostPenalty = 0
-            If ValCatchGear(i) > 0 And UseCostPenalty Then
-                CostRatio(i) = NetCost(i) / ValCatchGear(i)
-                If CostRatio(i) < 3.0# Then
-                    CostPenalty = CSng(CostPenaltyConstant * CostRatio(i) ^ 7)
-                    If CostRatio(i) < 3 Then
-                        CostPenalty = CSng(CostPenaltyConstant * CostRatio(i) ^ 7)
+            If ValCatchGear(iFlt) > 0 And UseCostPenalty Then
+                CostRatio(iFlt) = NetCost(iFlt) / ValCatchGear(iFlt)
+                If CostRatio(iFlt) < 3.0# Then
+                    CostPenalty = CSng(CostPenaltyConstant * CostRatio(iFlt) ^ 7)
+                    If CostRatio(iFlt) < 3 Then
+                        CostPenalty = CSng(CostPenaltyConstant * CostRatio(iFlt) ^ 7)
                     Else
-                        CostPenalty = CSng(CostPenaltyConstant * 3 ^ 7 + 1000 * (CostRatio(i) - 3))
+                        CostPenalty = CSng(CostPenaltyConstant * 3 ^ 7 + 1000 * (CostRatio(iFlt) - 3))
                     End If
                 End If ' If ValCatchGear(i) > 0 And UseCostPenalty Then
                 '      System.Console.WriteLine("Cost R and P = " & CostRatio(i).ToString & ", " & CostPenalty)
             End If
-            totval = totval - NetCost(i) - CostPenalty
+            totval = totval - NetCost(iFlt) - CostPenalty
 
-            Employ = Employ + (ValCatchGear(i) - CostPenalty) * Jobs(i)
-            ValCatchGear(i) = ValCatchGear(i) - NetCost(i) - CostPenalty
+            Employ = Employ + (ValCatchGear(iFlt) - CostPenalty) * Jobs(iFlt)
+            ValCatchGear(iFlt) = ValCatchGear(iFlt) - NetCost(iFlt) - CostPenalty
 
         Next
 
@@ -1215,23 +1208,31 @@ Public Class cSearchDatastructures
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function CalcLTV(ByVal YearPastBaseYear As Integer) As Single
-        Dim LTV As Double
+        Dim LTV As Single
         If GenDiscountFactor > 0 Then
+
+            ''Intergenerational discount rate on the 
+            'For iyr As Integer = Me.m_ecosimData.NumYears To Me.m_ecosimData.NumYears + ExtraYearsForSearch
+            '    LTV += calcDiscountRate(iyr)
+            'Next
+
             If DiscountFactor > 0 Then
                 'LTV = DF / DiscountFactor
-                LTV = (1 + Dalpha) / DiscountFactor * Din ^ YearPastBaseYear - Dalpha * (Dgen) ^ YearPastBaseYear / (1 - Dgen)
+                LTV = CSng((1 + Dalpha) / DiscountFactor * Din ^ YearPastBaseYear - Dalpha * (Dgen) ^ YearPastBaseYear / (1 - Dgen))
             Else
-                If Dgen <> 1 Then LTV = (1 + Dalpha) / 0.01 * Din ^ YearPastBaseYear - Dalpha * Dgen ^ YearPastBaseYear / (1 - Dgen)
+                If Dgen <> 1 Then LTV = CSng((1 + Dalpha) / 0.01 * Din ^ YearPastBaseYear - Dalpha * Dgen ^ YearPastBaseYear / (1 - Dgen))
             End If
         Else
             'using standard discounting, take last years catch and discount it for 20 years, multiplying it with this factor:
             LTV = 0
             For i As Integer = 0 To 19
-                LTV += (1 + DiscountFactor) ^ -i
+                LTV += CSng((1 + DiscountFactor) ^ -i)
             Next
 
         End If
-        Return CSng(LTV)
+
+        System.Console.WriteLine("LTV = " & LTV.ToString)
+        Return LTV
     End Function
 
 
@@ -1246,29 +1247,41 @@ Public Class cSearchDatastructures
     ''' <param name="iYear"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function calcDiscountFactor(ByVal iYear As Integer) As Single
+    Private Function calcDiscountRate(ByVal iYear As Integer) As Single
         'jb 3-Nov-2010 Change this to traditional present value of future cash flow
-        'Present Value = [Value at t] / (1 + [Interest rate]) ^ t
         Dim df As Single
-        df = CSng(1.0F / (1 + DiscountFactor) ^ iYear)
-        Return df
-        'Carls original generational discount returns an increasing DF (from EwE5)
-        'DF in Year 1 = 1.0 , year 2 = 1.009...
-        'Return 1-(DF-1)'would return the DF multiplier decreasing over time
 
-        ' dim DF as single
-        'If GenDiscountFactor > 0 Then
-        '    If Dgen = Din Then
-        '        DF = CSng(Din ^ (iYear - 1) + (Dgen * (Din ^ (iYear - 2)) / 20) * (iYear - 1))
-        '    Else
-        '        DF = CSng((1 + Dalpha) * Din ^ (iYear - 1) - Dalpha * (Din * Dratio) ^ (iYear - 1))
-        '    End If
-        '  df = 1-(df-1)
-        '   
-        'Else    'traditional discounting
-        'Villy's discount factor always returns 1
-        '    df = CSng(1 ^ -(iYear - 1))
-        'End If
+        If GenDiscountFactor > 0 Then
+
+            'From 
+            'Intergenerational discounting: a new intuitive approach
+            'Ussif R. Sumaila, Carl Walters
+
+            'If Dfgrate = Drate then Dfgrate should have been altered by a small amount 
+            'so we can use the same equation for both cases
+            Debug.Assert(deltaDDfg <> 1, Me.ToString & ".calcDiscountRate() Dfgrate and Drate can not be equal. Check cSearchDataStructures.InitForRun()")
+
+            df = CSng(Drate ^ iYear + Dfgrate * Drate ^ (iYear - 1) / GenT * ((1 - deltaDDfg ^ iYear) / (1 - deltaDDfg)))
+
+            'Carls original generational discount returns an increasing DF (from EwE5)
+            'DF in Year 1 = 1.0 , year 2 = 1.009...
+            'If Dgen = Din Then
+            '    df = CSng(Din ^ (iYear - 1) + (Dgen * (Din ^ (iYear - 2)) / 20) * (iYear - 1))
+            'Else
+            '    df = CSng((1 + Dalpha) * Din ^ (iYear - 1) - Dalpha * (Din * Dratio) ^ (iYear - 1))
+            'End If
+            'df = 1 - (df - 1)
+
+        Else    'traditional discounting
+
+            'Present Value = [Value at t] / (1 + [Interest rate]) ^ t
+            df = CSng(1.0F / (1 + DiscountFactor) ^ iYear)
+            ' Villy's discount factor always returns 1
+            'df = CSng(1 ^ -(iYear - 1))
+        End If
+
+        'System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
+
         Return df
     End Function
 

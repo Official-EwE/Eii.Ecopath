@@ -49,12 +49,12 @@ Public Class cLandingsInteraction
         Dim man As cLandingsMediationManager = Me.m_manager.getCore.LandingsShapeManager
         Dim bSucces As Boolean = True
 
-        For i As Integer = 1 To esdata.MaxFunctions
-            If esdata.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, i) = 0 Then Exit For
+        For i As Integer = 1 To esdata.PriceMedData.MAXFUNCTIONS
+            If esdata.PriceMedData.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, i) = 0 Then Exit For
 
             SFPair = m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
             SFPair.FunctionType = eForcingFunctionApplication.OffVesselPrice
-            SFPair.Shape = Me.getShapeFromEcosimIndex(man, esdata.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, i))
+            SFPair.Shape = Me.getShapeFromEcosimIndex(man, esdata.PriceMedData.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, i))
         Next i
 
         Return bSucces
@@ -102,9 +102,9 @@ Public Class cLandingsInteraction
             For Each sfPair As cShapeFunctionTypePair In m_SFPairs
                 ishp += 1
                 If sfPair.Shape IsNot Nothing Then
-                    esdata.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, ishp) = sfPair.Shape.Index
+                    esdata.PriceMedData.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, ishp) = sfPair.Shape.Index
                 Else
-                    esdata.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, ishp) = 0
+                    esdata.PriceMedData.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, ishp) = 0
                 End If
             Next
             Me.m_manager.getCore.onChanged(Me)

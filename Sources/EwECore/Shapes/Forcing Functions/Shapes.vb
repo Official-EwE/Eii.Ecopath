@@ -450,13 +450,13 @@ Public MustInherit Class cMediationBaseFunction
     Inherits cForcingFunction
 
     Protected m_iMedXBase As Integer
-    Protected m_medData As cMediationData
+    Protected m_medData As cMediationDataStructures
 
 #Region " Constructors "
 
 
     Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
-                   ByVal data As cMediationData, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+                   ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
         'mediation data arrays from EcoSim
         'Public MedWeights(nGroups + nGear, MediationShapes) As Single 'defines biomass weights for med X
         'Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation
@@ -676,7 +676,7 @@ Public Class cMediationFunction
 #Region " Constructors "
 
     Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
-                   ByVal data As cMediationData, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+                   ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
         'mediation data arrays from EcoSim
         'Public MedWeights(nGroups + nGear, MediationShapes) As Single 'defines biomass weights for med X
         'Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation
@@ -934,7 +934,7 @@ Public Class cLandingsMediationFunction
 
 
     Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
-                   ByVal data As cMediationData, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+                   ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
         'mediation data arrays from EcoSim
         'Public MedWeights(nGroups + nGear, MediationShapes) As Single 'defines biomass weights for med X
         'Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation

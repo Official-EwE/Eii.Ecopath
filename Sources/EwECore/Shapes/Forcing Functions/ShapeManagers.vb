@@ -537,7 +537,7 @@ End Class
 Public Class cMediationManager
     Inherits cBaseShapeManager
 
-    Private m_medData As cMediationData
+    Private m_medData As cMediationDataStructures
 
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
@@ -623,7 +623,7 @@ End Class
 Public Class cLandingsMediationManager
     Inherits cBaseShapeManager
 
-    Private m_medData As cMediationData
+    Private m_medData As cMediationDataStructures
 
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)

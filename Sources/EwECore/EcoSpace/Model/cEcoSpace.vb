@@ -3319,7 +3319,7 @@ exitline:
             For igrp = 1 To Me.m_EPdata.NumGroups
                 For iFlt = 0 To Me.m_EPdata.NumFleet
                     'Value = Landings *  [price elasticity market value]
-                    ValLandings = Landings(igrp, iFlt) * Me.m_Ecosim.getElasticPrice(igrp, iFlt)
+                    ValLandings = Landings(igrp, iFlt) * Me.m_Ecosim.PESValue(igrp, iFlt)
 
                     'And add to group and to gear sums
                     m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iFlt, igrp, iCumTime) += ValLandings

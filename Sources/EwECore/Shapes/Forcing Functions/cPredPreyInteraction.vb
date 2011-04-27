@@ -56,18 +56,18 @@ Public Class cPredPreyInteraction
         Dim SFPair As cShapeFunctionTypePair
         Dim bSucces As Boolean = True
 
-        For i As Integer = 1 To esdata.MaxFunctions
+        For i As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
 
-            If esdata.FunctionNumber(m_prey, m_pred, i) = 0 Then Exit For
+            If esdata.BioMedData.FunctionNumber(m_prey, m_pred, i) = 0 Then Exit For
 
             'get the cShapeFunctionTypePair object for this index
             SFPair = m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
-            SFPair.FunctionType = DirectCast(esdata.FunctionType(m_prey, m_pred, i), eForcingFunctionApplication)
+            SFPair.FunctionType = DirectCast(esdata.BioMedData.FunctionType(m_prey, m_pred, i), eForcingFunctionApplication)
             ' Retrieve shape
-            If esdata.IsMedFunction(m_prey, m_pred, i) Then
-                SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.MediationShapeManager, esdata.FunctionNumber(Me.m_prey, Me.m_pred, i))
+            If esdata.BioMedData.IsMedFunction(m_prey, m_pred, i) Then
+                SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.MediationShapeManager, esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, i))
             Else
-                SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.ForcingShapeManager, esdata.FunctionNumber(Me.m_prey, Me.m_pred, i))
+                SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.ForcingShapeManager, esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, i))
             End If
 
         Next i
@@ -130,17 +130,17 @@ Public Class cPredPreyInteraction
             For Each sfPair As cShapeFunctionTypePair In m_SFPairs
                 ishp += 1
                 If sfPair.Shape IsNot Nothing Then
-                    esdata.FunctionNumber(m_prey, m_pred, ishp) = sfPair.Shape.Index 'Index to data arrays in Ecosim zscale()
-                    esdata.FunctionType(m_prey, m_pred, ishp) = sfPair.FunctionType
+                    esdata.BioMedData.FunctionNumber(m_prey, m_pred, ishp) = sfPair.Shape.Index 'Index to data arrays in Ecosim zscale()
+                    esdata.BioMedData.FunctionType(m_prey, m_pred, ishp) = sfPair.FunctionType
                     If TypeOf sfPair.Shape Is cMediationFunction Then
-                        esdata.IsMedFunction(m_prey, m_pred, ishp) = True
+                        esdata.BioMedData.IsMedFunction(m_prey, m_pred, ishp) = True
                     Else
-                        esdata.IsMedFunction(m_prey, m_pred, ishp) = False
+                        esdata.BioMedData.IsMedFunction(m_prey, m_pred, ishp) = False
                     End If
                 Else
-                    esdata.FunctionNumber(m_prey, m_pred, ishp) = 0
-                    esdata.FunctionType(m_prey, m_pred, ishp) = 0
-                    esdata.IsMedFunction(m_prey, m_pred, ishp) = False 'this probable doesn't matter
+                    esdata.BioMedData.FunctionNumber(m_prey, m_pred, ishp) = 0
+                    esdata.BioMedData.FunctionType(m_prey, m_pred, ishp) = 0
+                    esdata.BioMedData.IsMedFunction(m_prey, m_pred, ishp) = False 'this probable doesn't matter
                 End If
 
             Next

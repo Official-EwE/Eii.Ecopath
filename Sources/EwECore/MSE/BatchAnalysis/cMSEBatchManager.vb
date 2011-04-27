@@ -117,13 +117,13 @@ Namespace MSEBatchManager
             Dim iGrp As Integer = Me.BatchData.ForcingGroup(Me.m_curForceIter)
             Dim simData As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
-            For ifn As Integer = 1 To simData.MaxFunctions
+            For ifn As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
                 'are there any forcing functions set
-                If simData.FunctionNumber(iGrp, iGrp, ifn) = 0 Then Exit For
+                If simData.BioMedData.FunctionNumber(iGrp, iGrp, ifn) = 0 Then Exit For
 
                 'is this the same function as the command file loaded
-                If simData.FunctionNumber(iGrp, iGrp, ifn) = Me.BatchData.ForcingIndexes(Me.m_curForceIter) Then
-                    Dim iforce As Integer = simData.FunctionNumber(iGrp, iGrp, ifn)
+                If simData.BioMedData.FunctionNumber(iGrp, iGrp, ifn) = Me.BatchData.ForcingIndexes(Me.m_curForceIter) Then
+                    Dim iforce As Integer = simData.BioMedData.FunctionNumber(iGrp, iGrp, ifn)
                     'Yes vary the forcing data for this timestep
                     'System.Console.Write("tval=" & tval(iforce).ToString & ", ")
                     ForcingMultTime(iforce) = Me.m_MSE.RandNormDist(Me.BatchData.STDevForcing, ForcingMultTime(iforce))

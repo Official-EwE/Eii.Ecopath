@@ -4781,8 +4781,8 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim PredPreyMedDS As cMediationData = Me.m_core.m_EcoSimData.BioMedData
-            Dim LandingsMedDS As cMediationData = Me.m_core.m_EcoSimData.PriceMedData
+            Dim PredPreyMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.BioMedData
+            Dim LandingsMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.PriceMedData
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim reader As IDataReader = Nothing
             Dim iShapeID As Integer = 0
@@ -4988,7 +4988,7 @@ Namespace DataSources
 
         Private Function LoadMediationShape(ByVal iShapeID As Integer, _
                                             ByVal iMediationShape As Integer, _
-                                            ByVal medData As cMediationData) As Boolean
+                                            ByVal medData As cMediationDataStructures) As Boolean
 
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim shapeParms As New cEcosimDatastructures.ShapeParameters()
@@ -5103,7 +5103,7 @@ Namespace DataSources
                     ' Next shape
                     iFNo(iPrey, iPredator) += 1
                     ' Protect from data overflow
-                    If (iFNo(iPrey, iPredator) <= ecosimDS.MaxFunctions) Then
+                    If (iFNo(iPrey, iPredator) <= cMediationDataStructures.MAXFUNCTIONS) Then
                         ' Resolve shape ID
                         iShapeID = CInt(reader("ShapeID"))
                         ' Determine shape type
@@ -5111,18 +5111,18 @@ Namespace DataSources
                         ' Is a mediation shape?
                         If iShape <> -1 Then
                             ' #Yes: flag as mediation shape
-                            ecosimDS.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = True
+                            ecosimDS.BioMedData.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = True
                         Else
                             ' #No: flag as other shape
-                            ecosimDS.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = False
+                            ecosimDS.BioMedData.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = False
                             ' Obtain forcing index
                             iShape = Array.IndexOf(ecosimDS.ForcingDBIDs, iShapeID)
                         End If
 
                         If iShape <> -1 Then
                             ' Update sim fields
-                            ecosimDS.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
-                            ecosimDS.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = CType(reader("FunctionType"), eForcingFunctionApplication)
+                            ecosimDS.BioMedData.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
+                            ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = CType(reader("FunctionType"), eForcingFunctionApplication)
                         Else
                             Me.LogMessage(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
                         End If
@@ -5172,7 +5172,7 @@ Namespace DataSources
                     iShape = Array.IndexOf(ecosimDS.PriceMedData.MediationDBIDs, iShapeID)
 
                     If iShape > -1 Then
-                        ecosimDS.PriceMedFuncNum(iGroup, iFleet, iFNo(iGroup, iFleet)) = iShape
+                        ecosimDS.PriceMedData.PriceMedFuncNum(iGroup, iFleet, iFNo(iGroup, iFleet)) = iShape
                     Else
                         Me.LogMessage(String.Format("Shape {0} cannot be used for landings interactions; assignment discarded", iShapeID))
                     End If
@@ -5201,7 +5201,7 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim medData As cMediationData = Nothing
+            Dim medData As cMediationDataStructures = Nothing
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim readerGroup As IDataReader = Nothing
             Dim readerFleet As IDataReader = Nothing
@@ -5454,7 +5454,7 @@ Namespace DataSources
                 Next iShape
 
                 For Each shapeDataType As eDataTypes In New eDataTypes() {eDataTypes.Mediation, eDataTypes.PriceMediation}
-                    Dim medData As cMediationData = Nothing
+                    Dim medData As cMediationDataStructures = Nothing
                     Select Case shapeDataType
                         Case eDataTypes.Mediation : medData = ecosimDS.BioMedData
                         Case eDataTypes.PriceMediation : medData = ecosimDS.PriceMedData
@@ -5677,7 +5677,7 @@ Namespace DataSources
 
         End Function
 
-        Private Function SaveMediationShape(ByVal iShape As Integer, ByVal medData As cMediationData) As Boolean
+        Private Function SaveMediationShape(ByVal iShape As Integer, ByVal medData As cMediationDataStructures) As Boolean
 
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -5776,7 +5776,7 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim medData As cMediationData = ecosimDS.BioMedData
+            Dim medData As cMediationDataStructures = ecosimDS.BioMedData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -5790,12 +5790,12 @@ Namespace DataSources
 
                 For iPredator As Integer = 1 To ecosimDS.nGroups
                     For iPrey As Integer = 1 To ecosimDS.nGroups
-                        For iShapeNo As Integer = 1 To ecosimDS.MaxFunctions
+                        For iShapeNo As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
 
                             Try
 
                                 ' Get shape assignment
-                                iShape = ecosimDS.FunctionNumber(iPrey, iPredator, iShapeNo)
+                                iShape = ecosimDS.BioMedData.FunctionNumber(iPrey, iPredator, iShapeNo)
                                 ' Is an assignment?
                                 If (iShape > 0) Then
                                     ' Save assignment
@@ -5803,12 +5803,12 @@ Namespace DataSources
                                     drow("ScenarioID") = iScenarioID
                                     drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredator))
                                     drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
-                                    If (ecosimDS.IsMedFunction(iPrey, iPredator, iShapeNo)) Then
+                                    If (ecosimDS.BioMedData.IsMedFunction(iPrey, iPredator, iShapeNo)) Then
                                         drow("ShapeID") = medData.MediationDBIDs(iShape)
                                     Else
                                         drow("ShapeID") = ecosimDS.ForcingDBIDs(iShape)
                                     End If
-                                    drow("FunctionType") = ecosimDS.FunctionType(iPrey, iPredator, iShapeNo)
+                                    drow("FunctionType") = ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iShapeNo)
                                     writer.AddRow(drow)
                                 End If
                             Catch ex As Exception
@@ -5834,7 +5834,7 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim medData As cMediationData = ecosimDS.PriceMedData
+            Dim medData As cMediationDataStructures = ecosimDS.PriceMedData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -5848,11 +5848,11 @@ Namespace DataSources
 
                 For iFleet As Integer = 1 To ecosimDS.nGear
                     For iGroup As Integer = 1 To ecosimDS.nGroups
-                        For iShapeNo As Integer = 1 To ecosimDS.MaxFunctions - 1
+                        For iShapeNo As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS - 1
 
                             Try
                                 ' Get shape assignment
-                                iShape = ecosimDS.PriceMedFuncNum(iGroup, iFleet, iShapeNo)
+                                iShape = ecosimDS.PriceMedData.PriceMedFuncNum(iGroup, iFleet, iShapeNo)
                                 ' Is an assignment?
                                 If (iShape > 0) Then
                                     ' Save assignment
@@ -5886,7 +5886,7 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim medData As cMediationData = Nothing
+            Dim medData As cMediationDataStructures = Nothing
             Dim iScenarioID As Integer = 0
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
