@@ -19,14 +19,14 @@
     <HtmlHelpName>EwE6_API</HtmlHelpName>
     <CopyrightText>Copyright %28c%29 UBC Fisheries Centre 2007 - 2011</CopyrightText>
     <HelpTitle>EwE6 API documentation</HelpTitle>
-    <HelpFileVersion>6.1.2</HelpFileVersion>
+    <HelpFileVersion>6.1.2.0615</HelpFileVersion>
     <SandcastlePath>C:\Program Files (x86)\Sandcastle\</SandcastlePath>
     <WorkingPath>Temp\</WorkingPath>
     <HtmlHelp1xCompilerPath>..\..\..\..\..\..\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\EwECore\bin\x86\Release\EwECore.dll" configuration="Release" platform="x86" />
-<DocumentationSource sourceFile="..\EwEPlugin\bin\x86\Release\EwEPlugin.dll" configuration="Release" platform="x86" />
-<DocumentationSource sourceFile="..\EwEUtils\bin\x86\Release\EwEUtils.dll" configuration="Release" platform="x86" />
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwECore.dll" configuration="Release" platform="x86" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEPlugin.dll" configuration="Release" platform="x86" />
+<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEUtils.dll" configuration="Release" platform="x86" />
 <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\ScientificInterfaceShared.dll" configuration="Release" platform="x86" /></DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True">EwE API Code Documentation</NamespaceSummaryItem>
@@ -67,8 +67,9 @@
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <IncludeFavorites>True</IncludeFavorites>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
-    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
-    <MSHelpViewerSdkLinkType>None</MSHelpViewerSdkLinkType>
+    <HelpFileFormat>MSHelp2, Website</HelpFileFormat>
+    <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
+    <FrameworkVersion>.NET 3.5</FrameworkVersion>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
