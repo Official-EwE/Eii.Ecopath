@@ -18,7 +18,8 @@ Namespace Controls
         ''' <remarks></remarks>
         Public Sub New()
             MyBase.New()
-            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer Or ControlStyles.AllPaintingInWmPaint Or ControlStyles.UserPaint, True)
+            ' Do NOT set the styles WMPaint, UserPaint unless the derived listview is entirely ownerdrawn
+            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         End Sub
 
     End Class
