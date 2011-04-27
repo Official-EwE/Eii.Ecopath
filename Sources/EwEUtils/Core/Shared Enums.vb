@@ -2267,12 +2267,13 @@ Namespace Core
 #Region " IUCN threat classifications "
 
     ''' <summary>
-    ''' IUCN Red List of Threatened Species threat types.
+    ''' IUCN Red List of Threatened Species conservation categories.
     ''' </summary>
     ''' <remarks>
     ''' http://www.eoearth.org/article/IUCN_Red_List_Criteria_for_Endangered
     ''' </remarks>
     Public Enum eIUCNConservationStatusTypes As Integer
+        ''' <summary>Conservation status has not been specified.</summary>
         NotSet = 0
         ''' <summary>Not Evaluated (NE).</summary>
         NotEvaluated
@@ -2299,12 +2300,13 @@ Namespace Core
 #Region " Ecology types "
 
     ''' <summary>
-    ''' 
+    ''' Habitat classifications where taxa prefer to dwell. Not necessarily related to Ecospace habitats.
     ''' </summary>
     ''' <remarks>
-    ''' http://www.fishbase.org
+    ''' As defined in FishBase (http://www.fishbase.org)
     ''' </remarks>
     Public Enum eEcologyTypes As Integer
+        ''' <summary>Ecology type has not been specified.</summary>
         NotSet = 0
         BathyDemersal
         BathyPelagic
@@ -2315,8 +2317,8 @@ Namespace Core
         PelagicNeritic
         BelagicOceanic
         ReefAssociated
-        ''' <summary></summary>
-        ''' <remarks>To be specified further</remarks>
+        ''' <summary>Taxon occurs on land.</summary>
+        ''' <remarks>To be specified further. Where on land? In a tree? A cave? A sub-urban dwelling made of clay?</remarks>
         LandBased
     End Enum
 
@@ -2325,12 +2327,13 @@ Namespace Core
 #Region " Occurrence status types "
 
     ''' <summary>
-    ''' Habitat classifications where taxa prefer to dwell. Not necessarily related to Ecospace habitats.
+    ''' Occurrence classifications.
     ''' </summary>
     ''' <remarks>
-    ''' http://www.fishbase.org
+    ''' As defined in FishBase (http://www.fishbase.org)
     ''' </remarks>
     Public Enum eOccurrenceStatusTypes As Integer
+        ''' <summary>Occurrence status has not been specified.</summary>
         NotSet = 0
         Native
         Introduced
@@ -2343,12 +2346,10 @@ Namespace Core
 #Region " Organism types "
 
     ''' <summary>
-    ''' 
+    ''' Organism category types.
     ''' </summary>
-    ''' <remarks>
-    ''' 
-    ''' </remarks>
     Public Enum eOrganismTypes As Integer
+        ''' <summary>Organism type has not been specified.</summary>
         NotSet = 0
         Bacteria
         Fungi
@@ -2359,6 +2360,7 @@ Namespace Core
         Birds
         Mammals
         Reptiles
+        ''' <summary>Organism type does not fit existing classifications.</summary>
         Other
     End Enum
 
