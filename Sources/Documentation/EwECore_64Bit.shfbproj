@@ -20,14 +20,16 @@
     <CopyrightText>Copyright %28c%29 UBC Fisheries Centre 2007 - 2011</CopyrightText>
     <HelpTitle>EwE6 API documentation</HelpTitle>
     <HelpFileVersion>6.1.2.0615</HelpFileVersion>
-    <SandcastlePath>C:\Program Files (x86)\Sandcastle\</SandcastlePath>
+    <SandcastlePath>
+    </SandcastlePath>
     <WorkingPath>Temp\</WorkingPath>
-    <HtmlHelp1xCompilerPath>..\..\..\..\..\..\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
+    <HtmlHelp1xCompilerPath>C:\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwECore.dll" configuration="Release" platform="x86" />
-<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEPlugin.dll" configuration="Release" platform="x86" />
-<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEUtils.dll" configuration="Release" platform="x86" />
-<DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\ScientificInterfaceShared.dll" configuration="Release" platform="x86" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEPlugin.dll" configuration="Release" platform="x86" />
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\EwEUtils.dll" configuration="Release" platform="x86" />
+      <DocumentationSource sourceFile="..\ScientificInterface\bin\x86\Release\ScientificInterfaceShared.dll" configuration="Release" platform="x86" />
+    </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True">EwE API Code Documentation</NamespaceSummaryItem>
       <NamespaceSummaryItem name="EwECore" isDocumented="True">Namespace containing all elements essential to the functioning of the EwE computing engine.</NamespaceSummaryItem>
@@ -67,7 +69,7 @@
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <IncludeFavorites>True</IncludeFavorites>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
-    <HelpFileFormat>MSHelp2, Website</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
     <FrameworkVersion>.NET 3.5</FrameworkVersion>
   </PropertyGroup>
