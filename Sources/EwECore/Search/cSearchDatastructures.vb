@@ -1256,7 +1256,7 @@ Public Class cSearchDatastructures
             'Intergenerational discounting: a new intuitive approach
             'Ussif R. Sumaila, Carl Walters
 
-            'If Dfgrate = Drate then Dfgrate should have been altered by a small amount 
+            'If Dfgrate = Drate then Dfgrate should have been altered by a small amount see cSearchDataStructures.initForRun()
             'so we can use the same equation for both cases
             Debug.Assert(deltaDDfg <> 1, Me.ToString & ".calcDiscountRate() Dfgrate and Drate can not be equal. Check cSearchDataStructures.InitForRun()")
 

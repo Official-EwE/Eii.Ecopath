@@ -26,6 +26,7 @@ Namespace Ecosim
         Private m_gridFleetValue As gridFPSResultFleetValue = Nothing
 
         Private m_fpDiscRate As cPropertyFormatProvider = Nothing
+        Private m_fpGenDiscRate As cPropertyFormatProvider = Nothing
         Private m_fpUsePlugin As cPropertyFormatProvider = Nothing
 
         Private m_propBaseYear As cProperty = Nothing
@@ -78,6 +79,7 @@ Namespace Ecosim
             Me.m_gridFleetValue.Dock = DockStyle.Fill
 
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
+            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_txtGenDiscount, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
             Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUsePlugin, Me.Core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
 
@@ -126,9 +128,11 @@ Namespace Ecosim
             Me.m_propBaseYear = Nothing
 
             Me.m_fpDiscRate.Release()
+            Me.m_fpGenDiscRate.Release()
             Me.m_fpUsePlugin.Release()
             Me.m_fpDiscRate = Nothing
             Me.m_fpUsePlugin = Nothing
+            Me.m_fpGenDiscRate = Nothing
 
             Me.m_zghResults.Detach()
             Me.m_zghResults = Nothing

@@ -22,46 +22,49 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_scTopBits = New System.Windows.Forms.SplitContainer()
-            Me.m_scTop = New System.Windows.Forms.SplitContainer()
-            Me.m_plRunParams = New System.Windows.Forms.Panel()
-            Me.m_chkIncludeCCosts = New System.Windows.Forms.CheckBox()
-            Me.m_chkMaxPortUl = New System.Windows.Forms.CheckBox()
-            Me.m_chkUsePlugin = New System.Windows.Forms.CheckBox()
-            Me.m_chkPrevCE = New System.Windows.Forms.CheckBox()
-            Me.m_lblDiscRate = New System.Windows.Forms.Label()
-            Me.m_txtDiscountRate = New System.Windows.Forms.TextBox()
-            Me.m_nudMaxEffChg = New System.Windows.Forms.NumericUpDown()
-            Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown()
-            Me.m_lblBaseYear = New System.Windows.Forms.Label()
-            Me.m_cmbOptmApproach = New System.Windows.Forms.ComboBox()
-            Me.m_lblMaxEffChg = New System.Windows.Forms.Label()
-            Me.m_lblOptmApproach = New System.Windows.Forms.Label()
-            Me.m_cmbSearchUsing = New System.Windows.Forms.ComboBox()
-            Me.m_lblSearchUsing = New System.Windows.Forms.Label()
-            Me.m_cmbInitUsing = New System.Windows.Forms.ComboBox()
-            Me.m_lblInitUsing = New System.Windows.Forms.Label()
-            Me.m_nudMaxNumEval = New System.Windows.Forms.NumericUpDown()
-            Me.m_nudNumberOfRuns = New System.Windows.Forms.NumericUpDown()
-            Me.m_lblMaxNumEval = New System.Windows.Forms.Label()
-            Me.m_lblNumOfRuns = New System.Windows.Forms.Label()
-            Me.m_hdrParms = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_tlpRunStop = New System.Windows.Forms.TableLayoutPanel()
-            Me.btnStop = New System.Windows.Forms.Button()
-            Me.btnSearch = New System.Windows.Forms.Button()
-            Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks()
-            Me.m_tcMain = New System.Windows.Forms.TabControl()
-            Me.m_tabObjectives = New System.Windows.Forms.TabPage()
-            Me.m_scObjectives = New System.Windows.Forms.SplitContainer()
-            Me.m_gridObjWeights = New ScientificInterface.Ecosim.gridSearchObjectivesWeight()
-            Me.m_scAarghArghAaargh = New System.Windows.Forms.SplitContainer()
-            Me.m_gridObjFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet()
-            Me.m_gridObjGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup()
-            Me.m_tabResultTable = New System.Windows.Forms.TabPage()
-            Me.m_scIterResult = New System.Windows.Forms.SplitContainer()
-            Me.m_scIterResultMultiRun = New System.Windows.Forms.SplitContainer()
-            Me.m_tpPlots = New System.Windows.Forms.TabPage()
-            Me.m_graphResults = New ZedGraph.ZedGraphControl()
+            Me.components = New System.ComponentModel.Container
+            Me.m_scTopBits = New System.Windows.Forms.SplitContainer
+            Me.m_scTop = New System.Windows.Forms.SplitContainer
+            Me.m_plRunParams = New System.Windows.Forms.Panel
+            Me.m_lbGenDiscount = New System.Windows.Forms.Label
+            Me.m_txtGenDiscount = New System.Windows.Forms.TextBox
+            Me.m_chkIncludeCCosts = New System.Windows.Forms.CheckBox
+            Me.m_chkMaxPortUl = New System.Windows.Forms.CheckBox
+            Me.m_chkUsePlugin = New System.Windows.Forms.CheckBox
+            Me.m_chkPrevCE = New System.Windows.Forms.CheckBox
+            Me.m_lblDiscRate = New System.Windows.Forms.Label
+            Me.m_txtDiscountRate = New System.Windows.Forms.TextBox
+            Me.m_nudMaxEffChg = New System.Windows.Forms.NumericUpDown
+            Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown
+            Me.m_lblBaseYear = New System.Windows.Forms.Label
+            Me.m_cmbOptmApproach = New System.Windows.Forms.ComboBox
+            Me.m_lblMaxEffChg = New System.Windows.Forms.Label
+            Me.m_lblOptmApproach = New System.Windows.Forms.Label
+            Me.m_cmbSearchUsing = New System.Windows.Forms.ComboBox
+            Me.m_lblSearchUsing = New System.Windows.Forms.Label
+            Me.m_cmbInitUsing = New System.Windows.Forms.ComboBox
+            Me.m_lblInitUsing = New System.Windows.Forms.Label
+            Me.m_nudMaxNumEval = New System.Windows.Forms.NumericUpDown
+            Me.m_nudNumberOfRuns = New System.Windows.Forms.NumericUpDown
+            Me.m_lblMaxNumEval = New System.Windows.Forms.Label
+            Me.m_lblNumOfRuns = New System.Windows.Forms.Label
+            Me.m_hdrParms = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_tlpRunStop = New System.Windows.Forms.TableLayoutPanel
+            Me.btnStop = New System.Windows.Forms.Button
+            Me.btnSearch = New System.Windows.Forms.Button
+            Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
+            Me.m_tcMain = New System.Windows.Forms.TabControl
+            Me.m_tabObjectives = New System.Windows.Forms.TabPage
+            Me.m_scObjectives = New System.Windows.Forms.SplitContainer
+            Me.m_gridObjWeights = New ScientificInterface.Ecosim.gridSearchObjectivesWeight
+            Me.m_scAarghArghAaargh = New System.Windows.Forms.SplitContainer
+            Me.m_gridObjFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet
+            Me.m_gridObjGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup
+            Me.m_tabResultTable = New System.Windows.Forms.TabPage
+            Me.m_scIterResult = New System.Windows.Forms.SplitContainer
+            Me.m_scIterResultMultiRun = New System.Windows.Forms.SplitContainer
+            Me.m_tpPlots = New System.Windows.Forms.TabPage
+            Me.m_graphResults = New ZedGraph.ZedGraphControl
             Me.m_scTopBits.Panel1.SuspendLayout()
             Me.m_scTopBits.Panel2.SuspendLayout()
             Me.m_scTopBits.SuspendLayout()
@@ -108,7 +111,7 @@ Namespace Ecosim
             '
             Me.m_scTopBits.Panel2.Controls.Add(Me.m_tcMain)
             Me.m_scTopBits.Size = New System.Drawing.Size(993, 687)
-            Me.m_scTopBits.SplitterDistance = 355
+            Me.m_scTopBits.SplitterDistance = 386
             Me.m_scTopBits.TabIndex = 0
             '
             'm_scTop
@@ -127,7 +130,7 @@ Namespace Ecosim
             'm_scTop.Panel2
             '
             Me.m_scTop.Panel2.Controls.Add(Me.m_blocks)
-            Me.m_scTop.Size = New System.Drawing.Size(989, 351)
+            Me.m_scTop.Size = New System.Drawing.Size(989, 382)
             Me.m_scTop.SplitterDistance = 250
             Me.m_scTop.TabIndex = 3
             '
@@ -135,6 +138,8 @@ Namespace Ecosim
             '
             Me.m_plRunParams.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_plRunParams.Controls.Add(Me.m_lbGenDiscount)
+            Me.m_plRunParams.Controls.Add(Me.m_txtGenDiscount)
             Me.m_plRunParams.Controls.Add(Me.m_chkIncludeCCosts)
             Me.m_plRunParams.Controls.Add(Me.m_chkMaxPortUl)
             Me.m_plRunParams.Controls.Add(Me.m_chkUsePlugin)
@@ -159,13 +164,29 @@ Namespace Ecosim
             Me.m_plRunParams.Location = New System.Drawing.Point(0, 0)
             Me.m_plRunParams.Margin = New System.Windows.Forms.Padding(0)
             Me.m_plRunParams.Name = "m_plRunParams"
-            Me.m_plRunParams.Size = New System.Drawing.Size(250, 319)
+            Me.m_plRunParams.Size = New System.Drawing.Size(250, 359)
             Me.m_plRunParams.TabIndex = 0
+            '
+            'm_lbGenDiscount
+            '
+            Me.m_lbGenDiscount.AutoSize = True
+            Me.m_lbGenDiscount.Location = New System.Drawing.Point(5, 52)
+            Me.m_lbGenDiscount.Name = "m_lbGenDiscount"
+            Me.m_lbGenDiscount.Size = New System.Drawing.Size(79, 13)
+            Me.m_lbGenDiscount.TabIndex = 22
+            Me.m_lbGenDiscount.Text = "&Gen. disc. rate:"
+            '
+            'm_txtGenDiscount
+            '
+            Me.m_txtGenDiscount.Location = New System.Drawing.Point(121, 48)
+            Me.m_txtGenDiscount.Name = "m_txtGenDiscount"
+            Me.m_txtGenDiscount.Size = New System.Drawing.Size(60, 20)
+            Me.m_txtGenDiscount.TabIndex = 23
             '
             'm_chkIncludeCCosts
             '
             Me.m_chkIncludeCCosts.AutoSize = True
-            Me.m_chkIncludeCCosts.Location = New System.Drawing.Point(8, 299)
+            Me.m_chkIncludeCCosts.Location = New System.Drawing.Point(7, 333)
             Me.m_chkIncludeCCosts.Name = "m_chkIncludeCCosts"
             Me.m_chkIncludeCCosts.Size = New System.Drawing.Size(133, 17)
             Me.m_chkIncludeCCosts.TabIndex = 21
@@ -175,7 +196,7 @@ Namespace Ecosim
             'm_chkMaxPortUl
             '
             Me.m_chkMaxPortUl.AutoSize = True
-            Me.m_chkMaxPortUl.Location = New System.Drawing.Point(8, 276)
+            Me.m_chkMaxPortUl.Location = New System.Drawing.Point(7, 310)
             Me.m_chkMaxPortUl.Name = "m_chkMaxPortUl"
             Me.m_chkMaxPortUl.Size = New System.Drawing.Size(135, 17)
             Me.m_chkMaxPortUl.TabIndex = 20
@@ -185,7 +206,7 @@ Namespace Ecosim
             'm_chkUsePlugin
             '
             Me.m_chkUsePlugin.AutoSize = True
-            Me.m_chkUsePlugin.Location = New System.Drawing.Point(8, 230)
+            Me.m_chkUsePlugin.Location = New System.Drawing.Point(6, 265)
             Me.m_chkUsePlugin.Name = "m_chkUsePlugin"
             Me.m_chkUsePlugin.Size = New System.Drawing.Size(152, 17)
             Me.m_chkUsePlugin.TabIndex = 18
@@ -195,7 +216,7 @@ Namespace Ecosim
             'm_chkPrevCE
             '
             Me.m_chkPrevCE.AutoSize = True
-            Me.m_chkPrevCE.Location = New System.Drawing.Point(8, 253)
+            Me.m_chkPrevCE.Location = New System.Drawing.Point(7, 287)
             Me.m_chkPrevCE.Name = "m_chkPrevCE"
             Me.m_chkPrevCE.Size = New System.Drawing.Size(138, 17)
             Me.m_chkPrevCE.TabIndex = 19
@@ -205,7 +226,7 @@ Namespace Ecosim
             'm_lblDiscRate
             '
             Me.m_lblDiscRate.AutoSize = True
-            Me.m_lblDiscRate.Location = New System.Drawing.Point(5, 25)
+            Me.m_lblDiscRate.Location = New System.Drawing.Point(5, 26)
             Me.m_lblDiscRate.Name = "m_lblDiscRate"
             Me.m_lblDiscRate.Size = New System.Drawing.Size(73, 13)
             Me.m_lblDiscRate.TabIndex = 0
@@ -213,21 +234,21 @@ Namespace Ecosim
             '
             'm_txtDiscountRate
             '
-            Me.m_txtDiscountRate.Location = New System.Drawing.Point(122, 22)
+            Me.m_txtDiscountRate.Location = New System.Drawing.Point(121, 22)
             Me.m_txtDiscountRate.Name = "m_txtDiscountRate"
             Me.m_txtDiscountRate.Size = New System.Drawing.Size(60, 20)
             Me.m_txtDiscountRate.TabIndex = 1
             '
             'm_nudMaxEffChg
             '
-            Me.m_nudMaxEffChg.Location = New System.Drawing.Point(122, 127)
+            Me.m_nudMaxEffChg.Location = New System.Drawing.Point(121, 152)
             Me.m_nudMaxEffChg.Name = "m_nudMaxEffChg"
             Me.m_nudMaxEffChg.Size = New System.Drawing.Size(60, 20)
             Me.m_nudMaxEffChg.TabIndex = 11
             '
             'm_nudBaseYear
             '
-            Me.m_nudBaseYear.Location = New System.Drawing.Point(122, 100)
+            Me.m_nudBaseYear.Location = New System.Drawing.Point(121, 126)
             Me.m_nudBaseYear.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
             Me.m_nudBaseYear.Name = "m_nudBaseYear"
             Me.m_nudBaseYear.Size = New System.Drawing.Size(60, 20)
@@ -236,7 +257,7 @@ Namespace Ecosim
             'm_lblBaseYear
             '
             Me.m_lblBaseYear.AutoSize = True
-            Me.m_lblBaseYear.Location = New System.Drawing.Point(5, 102)
+            Me.m_lblBaseYear.Location = New System.Drawing.Point(5, 130)
             Me.m_lblBaseYear.Name = "m_lblBaseYear"
             Me.m_lblBaseYear.Size = New System.Drawing.Size(57, 13)
             Me.m_lblBaseYear.TabIndex = 8
@@ -249,7 +270,7 @@ Namespace Ecosim
             Me.m_cmbOptmApproach.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbOptmApproach.FormattingEnabled = True
             Me.m_cmbOptmApproach.Items.AddRange(New Object() {"Maximize system objective", "Maximize by fleet values"})
-            Me.m_cmbOptmApproach.Location = New System.Drawing.Point(122, 203)
+            Me.m_cmbOptmApproach.Location = New System.Drawing.Point(121, 232)
             Me.m_cmbOptmApproach.Name = "m_cmbOptmApproach"
             Me.m_cmbOptmApproach.Size = New System.Drawing.Size(125, 21)
             Me.m_cmbOptmApproach.TabIndex = 17
@@ -257,7 +278,7 @@ Namespace Ecosim
             'm_lblMaxEffChg
             '
             Me.m_lblMaxEffChg.AutoSize = True
-            Me.m_lblMaxEffChg.Location = New System.Drawing.Point(5, 129)
+            Me.m_lblMaxEffChg.Location = New System.Drawing.Point(5, 156)
             Me.m_lblMaxEffChg.Name = "m_lblMaxEffChg"
             Me.m_lblMaxEffChg.Size = New System.Drawing.Size(96, 13)
             Me.m_lblMaxEffChg.TabIndex = 10
@@ -265,7 +286,7 @@ Namespace Ecosim
             '
             'm_lblOptmApproach
             '
-            Me.m_lblOptmApproach.Location = New System.Drawing.Point(5, 198)
+            Me.m_lblOptmApproach.Location = New System.Drawing.Point(5, 226)
             Me.m_lblOptmApproach.Name = "m_lblOptmApproach"
             Me.m_lblOptmApproach.Size = New System.Drawing.Size(105, 32)
             Me.m_lblOptmApproach.TabIndex = 16
@@ -278,7 +299,7 @@ Namespace Ecosim
             Me.m_cmbSearchUsing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbSearchUsing.FormattingEnabled = True
             Me.m_cmbSearchUsing.Items.AddRange(New Object() {"Fletch", "DFPmin"})
-            Me.m_cmbSearchUsing.Location = New System.Drawing.Point(122, 176)
+            Me.m_cmbSearchUsing.Location = New System.Drawing.Point(121, 205)
             Me.m_cmbSearchUsing.Name = "m_cmbSearchUsing"
             Me.m_cmbSearchUsing.Size = New System.Drawing.Size(125, 21)
             Me.m_cmbSearchUsing.TabIndex = 15
@@ -286,7 +307,7 @@ Namespace Ecosim
             'm_lblSearchUsing
             '
             Me.m_lblSearchUsing.AutoSize = True
-            Me.m_lblSearchUsing.Location = New System.Drawing.Point(5, 179)
+            Me.m_lblSearchUsing.Location = New System.Drawing.Point(5, 209)
             Me.m_lblSearchUsing.Name = "m_lblSearchUsing"
             Me.m_lblSearchUsing.Size = New System.Drawing.Size(72, 13)
             Me.m_lblSearchUsing.TabIndex = 14
@@ -299,7 +320,7 @@ Namespace Ecosim
             Me.m_cmbInitUsing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbInitUsing.FormattingEnabled = True
             Me.m_cmbInitUsing.Items.AddRange(New Object() {"Ecopath base F's", "Current F's", "Random F's"})
-            Me.m_cmbInitUsing.Location = New System.Drawing.Point(122, 153)
+            Me.m_cmbInitUsing.Location = New System.Drawing.Point(121, 178)
             Me.m_cmbInitUsing.Name = "m_cmbInitUsing"
             Me.m_cmbInitUsing.Size = New System.Drawing.Size(125, 21)
             Me.m_cmbInitUsing.TabIndex = 13
@@ -307,7 +328,7 @@ Namespace Ecosim
             'm_lblInitUsing
             '
             Me.m_lblInitUsing.AutoSize = True
-            Me.m_lblInitUsing.Location = New System.Drawing.Point(5, 156)
+            Me.m_lblInitUsing.Location = New System.Drawing.Point(5, 182)
             Me.m_lblInitUsing.Name = "m_lblInitUsing"
             Me.m_lblInitUsing.Size = New System.Drawing.Size(75, 13)
             Me.m_lblInitUsing.TabIndex = 12
@@ -315,7 +336,7 @@ Namespace Ecosim
             '
             'm_nudMaxNumEval
             '
-            Me.m_nudMaxNumEval.Location = New System.Drawing.Point(122, 74)
+            Me.m_nudMaxNumEval.Location = New System.Drawing.Point(121, 100)
             Me.m_nudMaxNumEval.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
             Me.m_nudMaxNumEval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudMaxNumEval.Name = "m_nudMaxNumEval"
@@ -325,7 +346,7 @@ Namespace Ecosim
             '
             'm_nudNumberOfRuns
             '
-            Me.m_nudNumberOfRuns.Location = New System.Drawing.Point(122, 48)
+            Me.m_nudNumberOfRuns.Location = New System.Drawing.Point(121, 74)
             Me.m_nudNumberOfRuns.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudNumberOfRuns.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudNumberOfRuns.Name = "m_nudNumberOfRuns"
@@ -336,7 +357,7 @@ Namespace Ecosim
             'm_lblMaxNumEval
             '
             Me.m_lblMaxNumEval.AutoSize = True
-            Me.m_lblMaxNumEval.Location = New System.Drawing.Point(5, 76)
+            Me.m_lblMaxNumEval.Location = New System.Drawing.Point(5, 104)
             Me.m_lblMaxNumEval.Name = "m_lblMaxNumEval"
             Me.m_lblMaxNumEval.Size = New System.Drawing.Size(85, 13)
             Me.m_lblMaxNumEval.TabIndex = 6
@@ -345,7 +366,7 @@ Namespace Ecosim
             'm_lblNumOfRuns
             '
             Me.m_lblNumOfRuns.AutoSize = True
-            Me.m_lblNumOfRuns.Location = New System.Drawing.Point(5, 50)
+            Me.m_lblNumOfRuns.Location = New System.Drawing.Point(5, 78)
             Me.m_lblNumOfRuns.Name = "m_lblNumOfRuns"
             Me.m_lblNumOfRuns.Size = New System.Drawing.Size(82, 13)
             Me.m_lblNumOfRuns.TabIndex = 4
@@ -375,7 +396,7 @@ Namespace Ecosim
             Me.m_tlpRunStop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpRunStop.Controls.Add(Me.btnStop, 3, 0)
             Me.m_tlpRunStop.Controls.Add(Me.btnSearch, 1, 0)
-            Me.m_tlpRunStop.Location = New System.Drawing.Point(0, 324)
+            Me.m_tlpRunStop.Location = New System.Drawing.Point(0, 359)
             Me.m_tlpRunStop.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tlpRunStop.Name = "m_tlpRunStop"
             Me.m_tlpRunStop.RowCount = 1
@@ -413,7 +434,7 @@ Namespace Ecosim
             Me.m_blocks.Name = "m_blocks"
             Me.m_blocks.ParmBlockCodes = Nothing
             Me.m_blocks.ShowTooltip = True
-            Me.m_blocks.Size = New System.Drawing.Size(735, 351)
+            Me.m_blocks.Size = New System.Drawing.Size(735, 382)
             Me.m_blocks.TabIndex = 3
             Me.m_blocks.UIContext = Nothing
             '
@@ -426,7 +447,7 @@ Namespace Ecosim
             Me.m_tcMain.Location = New System.Drawing.Point(0, 0)
             Me.m_tcMain.Name = "m_tcMain"
             Me.m_tcMain.SelectedIndex = 0
-            Me.m_tcMain.Size = New System.Drawing.Size(989, 324)
+            Me.m_tcMain.Size = New System.Drawing.Size(989, 293)
             Me.m_tcMain.TabIndex = 0
             '
             'm_tabObjectives
@@ -435,7 +456,7 @@ Namespace Ecosim
             Me.m_tabObjectives.Location = New System.Drawing.Point(4, 22)
             Me.m_tabObjectives.Name = "m_tabObjectives"
             Me.m_tabObjectives.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tabObjectives.Size = New System.Drawing.Size(981, 298)
+            Me.m_tabObjectives.Size = New System.Drawing.Size(981, 267)
             Me.m_tabObjectives.TabIndex = 0
             Me.m_tabObjectives.Text = "Objectives"
             Me.m_tabObjectives.UseVisualStyleBackColor = True
@@ -453,7 +474,7 @@ Namespace Ecosim
             'm_scObjectives.Panel2
             '
             Me.m_scObjectives.Panel2.Controls.Add(Me.m_scAarghArghAaargh)
-            Me.m_scObjectives.Size = New System.Drawing.Size(975, 292)
+            Me.m_scObjectives.Size = New System.Drawing.Size(975, 261)
             Me.m_scObjectives.SplitterDistance = 319
             Me.m_scObjectives.TabIndex = 0
             '
@@ -479,7 +500,7 @@ Namespace Ecosim
             Me.m_gridObjWeights.Name = "m_gridObjWeights"
             Me.m_gridObjWeights.ShowMaxPortUtil = False
             Me.m_gridObjWeights.ShowMPAOptParams = False
-            Me.m_gridObjWeights.Size = New System.Drawing.Size(319, 292)
+            Me.m_gridObjWeights.Size = New System.Drawing.Size(319, 261)
             Me.m_gridObjWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -505,7 +526,7 @@ Namespace Ecosim
             'm_scAarghArghAaargh.Panel2
             '
             Me.m_scAarghArghAaargh.Panel2.Controls.Add(Me.m_gridObjGroup)
-            Me.m_scAarghArghAaargh.Size = New System.Drawing.Size(652, 292)
+            Me.m_scAarghArghAaargh.Size = New System.Drawing.Size(652, 261)
             Me.m_scAarghArghAaargh.SplitterDistance = 212
             Me.m_scAarghArghAaargh.TabIndex = 0
             '
@@ -530,7 +551,7 @@ Namespace Ecosim
             Me.m_gridObjFleet.Location = New System.Drawing.Point(0, 0)
             Me.m_gridObjFleet.Manager = Nothing
             Me.m_gridObjFleet.Name = "m_gridObjFleet"
-            Me.m_gridObjFleet.Size = New System.Drawing.Size(212, 292)
+            Me.m_gridObjFleet.Size = New System.Drawing.Size(212, 261)
             Me.m_gridObjFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -563,7 +584,7 @@ Namespace Ecosim
             Me.m_gridObjGroup.Location = New System.Drawing.Point(0, 0)
             Me.m_gridObjGroup.Manager = Nothing
             Me.m_gridObjGroup.Name = "m_gridObjGroup"
-            Me.m_gridObjGroup.Size = New System.Drawing.Size(436, 292)
+            Me.m_gridObjGroup.Size = New System.Drawing.Size(436, 261)
             Me.m_gridObjGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -582,7 +603,7 @@ Namespace Ecosim
             Me.m_tabResultTable.Location = New System.Drawing.Point(4, 22)
             Me.m_tabResultTable.Name = "m_tabResultTable"
             Me.m_tabResultTable.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tabResultTable.Size = New System.Drawing.Size(981, 298)
+            Me.m_tabResultTable.Size = New System.Drawing.Size(981, 267)
             Me.m_tabResultTable.TabIndex = 1
             Me.m_tabResultTable.Text = "Iteration results"
             Me.m_tabResultTable.UseVisualStyleBackColor = True
@@ -596,7 +617,7 @@ Namespace Ecosim
             'm_scIterResult.Panel1
             '
             Me.m_scIterResult.Panel1.Controls.Add(Me.m_scIterResultMultiRun)
-            Me.m_scIterResult.Size = New System.Drawing.Size(975, 292)
+            Me.m_scIterResult.Size = New System.Drawing.Size(975, 261)
             Me.m_scIterResult.SplitterDistance = 541
             Me.m_scIterResult.TabIndex = 0
             '
@@ -606,8 +627,8 @@ Namespace Ecosim
             Me.m_scIterResultMultiRun.Location = New System.Drawing.Point(0, 0)
             Me.m_scIterResultMultiRun.Name = "m_scIterResultMultiRun"
             Me.m_scIterResultMultiRun.Orientation = System.Windows.Forms.Orientation.Horizontal
-            Me.m_scIterResultMultiRun.Size = New System.Drawing.Size(541, 292)
-            Me.m_scIterResultMultiRun.SplitterDistance = 147
+            Me.m_scIterResultMultiRun.Size = New System.Drawing.Size(541, 261)
+            Me.m_scIterResultMultiRun.SplitterDistance = 131
             Me.m_scIterResultMultiRun.TabIndex = 0
             '
             'm_tpPlots
@@ -616,7 +637,7 @@ Namespace Ecosim
             Me.m_tpPlots.Location = New System.Drawing.Point(4, 22)
             Me.m_tpPlots.Name = "m_tpPlots"
             Me.m_tpPlots.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tpPlots.Size = New System.Drawing.Size(981, 298)
+            Me.m_tpPlots.Size = New System.Drawing.Size(981, 267)
             Me.m_tpPlots.TabIndex = 2
             Me.m_tpPlots.Text = "Plot results"
             Me.m_tpPlots.UseVisualStyleBackColor = True
@@ -627,14 +648,14 @@ Namespace Ecosim
             Me.m_graphResults.IsAutoScrollRange = True
             Me.m_graphResults.Location = New System.Drawing.Point(3, 3)
             Me.m_graphResults.Name = "m_graphResults"
-            Me.m_graphResults.ScrollGrace = 0.0R
-            Me.m_graphResults.ScrollMaxX = 0.0R
-            Me.m_graphResults.ScrollMaxY = 0.0R
-            Me.m_graphResults.ScrollMaxY2 = 0.0R
-            Me.m_graphResults.ScrollMinX = 0.0R
-            Me.m_graphResults.ScrollMinY = 0.0R
-            Me.m_graphResults.ScrollMinY2 = 0.0R
-            Me.m_graphResults.Size = New System.Drawing.Size(975, 292)
+            Me.m_graphResults.ScrollGrace = 0
+            Me.m_graphResults.ScrollMaxX = 0
+            Me.m_graphResults.ScrollMaxY = 0
+            Me.m_graphResults.ScrollMaxY2 = 0
+            Me.m_graphResults.ScrollMinX = 0
+            Me.m_graphResults.ScrollMinY = 0
+            Me.m_graphResults.ScrollMinY2 = 0
+            Me.m_graphResults.Size = New System.Drawing.Size(975, 261)
             Me.m_graphResults.TabIndex = 8
             '
             'frmFishingPolicySearch
@@ -716,5 +737,7 @@ Namespace Ecosim
         Private WithEvents m_hdrParms As cEwEHeaderLabel
         Private WithEvents m_scTop As System.Windows.Forms.SplitContainer
         Private WithEvents m_blocks As ScientificInterface.Ecosim.ucPolicyColorBlocks
+        Private WithEvents m_lbGenDiscount As System.Windows.Forms.Label
+        Private WithEvents m_txtGenDiscount As System.Windows.Forms.TextBox
     End Class
 End Namespace
