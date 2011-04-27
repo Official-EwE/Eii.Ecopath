@@ -1248,7 +1248,6 @@ Public Class cSearchDatastructures
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function calcDiscountRate(ByVal iYear As Integer) As Single
-        'jb 3-Nov-2010 Change this to traditional present value of future cash flow
         Dim df As Single
 
         If GenDiscountFactor > 0 Then
@@ -1275,14 +1274,15 @@ Public Class cSearchDatastructures
         Else    'traditional discounting
 
             'Present Value = [Value at t] / (1 + [Interest rate]) ^ t
+            'this returns the multiplier
             df = CSng(1.0F / (1 + DiscountFactor) ^ iYear)
             ' Villy's discount factor always returns 1
             'df = CSng(1 ^ -(iYear - 1))
         End If
 
         'System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
-
         Return df
+
     End Function
 
 
