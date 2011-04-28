@@ -353,13 +353,20 @@ Public Class frmNetworkAnalysis
 
     Public Sub ShowPage(ByVal page As eNetworkAnalysisPageTypes)
 
+        If Me.m_bInUpdate Then Return
+        Me.m_bInUpdate = True
+
         Me.m_pageCurrent = page
 
         Me.SuspendLayout()
 
         If (Me.m_contentmanager IsNot Nothing) Then
             Me.ShowOptions(False)
-            Me.m_contentmanager.Detach()
+            Try
+                Me.m_contentmanager.Detach()
+            Catch ex As Exception
+                ' Hmm
+            End Try
             Me.m_contentmanager = Nothing
         End If
 
@@ -501,8 +508,6 @@ Public Class frmNetworkAnalysis
                 ' Need to populate group combos?
                 If Me.m_toolstrip.Visible Then
 
-                    Me.m_bInUpdate = True
-
                     Me.tscmbSelection1.Items.Clear()
                     Me.tscmbSelection2.Items.Clear()
                     For iGroup As Integer = 1 To Me.m_networkmanager.nGroups
@@ -519,8 +524,6 @@ Public Class frmNetworkAnalysis
 
                     Me.tscmbSelection1.SelectedIndex = 0
                     Me.tscmbSelection2.SelectedIndex = 0
-
-                    Me.m_bInUpdate = False
 
                     Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
 
@@ -547,6 +550,8 @@ Public Class frmNetworkAnalysis
 
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         Me.ResumeLayout()
+
+        Me.m_bInUpdate = False
 
     End Sub
 

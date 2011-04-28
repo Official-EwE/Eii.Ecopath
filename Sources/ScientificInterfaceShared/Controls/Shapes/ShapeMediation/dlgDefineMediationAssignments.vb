@@ -111,10 +111,11 @@ Namespace Controls
                     Dim fleet As cFleetInput = Nothing
                     If (medGrp.iGroupIndex > 0) Then
                         grp = Me.m_uic.Core.EcoPathGroupInputs(medGrp.iGroupIndex)
-                        If (medGrp.iFleetIndex > 0) Then
-                            fleet = Me.m_uic.Core.FleetInputs(medGrp.iFleetIndex)
+                        fleet = Me.m_uic.Core.FleetInputs(medGrp.iFleetIndex)
+
+                        If grp IsNot Nothing And fleet IsNot Nothing Then
+                            Me.Add(grp, fleet, medGrp.Weight)
                         End If
-                        Me.Add(grp, fleet, medGrp.Weight)
                     End If
                 Next
             End If
@@ -168,7 +169,7 @@ Namespace Controls
                     If (itemParent IsNot Nothing) Then
                         ' Could be just s decorative node, let's check
                         If (itemParent.Source IsNot Nothing) Then
-                            ' Add parent as src, child as srcSec
+                            ' Add parent as srcc, child as sec
                             srcSec = src
                             src = itemParent.Source
                         End If
@@ -295,15 +296,15 @@ Namespace Controls
                     Next
                     Me.m_tvAvailable.Nodes.Add(New cCoreInputOutputControlItem(My.Resources.HEADER_FLEETS, lChildren.ToArray))
                 Else
-                    ' Landings: show as landings PER GROUP
-                    For iGroup As Integer = 1 To m_uic.Core.nGroups
-                        group = m_uic.Core.EcoPathGroupInputs(iGroup)
-                        lChildren = New List(Of cCoreInputOutputControlItem)
+                    ' Landings: show as landings per fleet, per group
+                    For iFleet As Integer = 1 To m_uic.Core.nFleets
+                        fleet = m_uic.Core.FleetInputs(iFleet)
 
-                        For iFleet As Integer = 1 To m_uic.Core.nFleets
-                            fleet = m_uic.Core.FleetInputs(iFleet)
-
+                        For iGroup As Integer = 1 To m_uic.Core.nGroups
                             If fleet.Landings(iGroup) > 0 Then
+                                group = m_uic.Core.EcoPathGroupInputs(iGroup)
+                                lChildren = New List(Of cCoreInputOutputControlItem)
+
                                 Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(fleet)
                                 If Object.ReferenceEquals(fleet, objSelected) Then nodeSelected = node
                                 lChildren.Add(node)
@@ -358,6 +359,11 @@ Namespace Controls
         Private Sub Add(ByVal obj As cCoreInputOutputBase, _
                         Optional ByVal objSec As cCoreInputOutputBase = Nothing, _
                         Optional ByVal sWeight As Single = 1.0)
+            ' Can only define landings for both group and fleet
+            If Me.m_bIsLandingsInteractions Then
+                If objSec Is Nothing Or obj Is Nothing Then Return
+            End If
+
             If Me.m_grid.Add(obj, objSec, sWeight) Then
                 Me.UpdateGraph()
             End If

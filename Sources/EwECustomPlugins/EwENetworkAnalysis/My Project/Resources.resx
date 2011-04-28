@@ -842,4 +842,7 @@
   <data name="COL_HDR_KEMPTONS" xml:space="preserve">
     <value>Kemptons Q (relative)</value>
   </data>
+  <data name="COL_HDR_FIB" xml:space="preserve">
+    <value>FiB index</value>
+  </data>
 </root>

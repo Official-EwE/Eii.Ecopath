@@ -107,7 +107,7 @@ Public Class cResultWriter
 
     Private Function GetIndicesWithoutPPRData(ByVal bAnnualAverage As Boolean) As String
 
-        Const cNUMCOLS As Integer = 25
+        Const cNUMCOLS As Integer = 26
 
         Dim sb As New StringBuilder()
         Dim asValues(cNUMCOLS) As Single
@@ -166,6 +166,8 @@ Public Class cResultWriter
         sb.Append(My.Resources.COL_HDR_TLc)             ' 24
         sb.Append(", ")
         sb.Append(My.Resources.COL_HDR_KEMPTONS)        ' 25
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_FIB)             ' 26
         sb.AppendLine("")
 
         For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
@@ -211,6 +213,7 @@ Public Class cResultWriter
                     Case 23 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
                     Case 24 : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
                     Case 25 : asValues(j) += Me.NetworkManager.RelativeKemptonsPlot(i)
+                    Case 26 : asValues(j) += Me.NetworkManager.FIB(i)
 
                 End Select
 
@@ -254,7 +257,7 @@ Public Class cResultWriter
 
     Private Function GetIndicesWithPPRData(ByVal bAnnualAverage As Boolean) As String
 
-        Const cNUMCOLS As Integer = 27
+        Const cNUMCOLS As Integer = 28
 
         Dim sb As New StringBuilder()
         Dim asValues(cNUMCOLS) As Single
@@ -317,6 +320,8 @@ Public Class cResultWriter
         sb.Append(My.Resources.COL_HDR_TLc)
         sb.Append(", ")
         sb.Append(My.Resources.COL_HDR_KEMPTONS)
+        sb.Append(", ")
+        sb.Append(My.Resources.COL_HDR_FIB)
         sb.AppendLine("")
 
         For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
@@ -364,6 +369,7 @@ Public Class cResultWriter
                     Case 25 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
                     Case 26 : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
                     Case 27 : asValues(j) += Me.NetworkManager.RelativeKemptonsPlot(i)
+                    Case 27 : asValues(j) += Me.NetworkManager.FIB(i)
 
                 End Select
 
