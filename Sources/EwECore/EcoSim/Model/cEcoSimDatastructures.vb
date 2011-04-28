@@ -268,16 +268,6 @@ Public Class cEcosimDatastructures
     Public FishRateGearDBID() As Integer
     Public FishRateGearTitle() As String
 
-    '   Public MaxFunctions As Integer
-    'Public FunctionNumber(,,) As Integer
-    'Public IsMedFunction(,,) As Boolean
-    'Public FunctionType(,,) As Integer
-
-    ''' <summary>
-    ''' Price mediation function number(price elasticity), group x fleet x maxfn
-    ''' </summary>
-    'Public PriceMedFuncNum(,,) As Integer
-
     ''' <summary>
     ''' Feeding Time scaling value
     ''' </summary>
