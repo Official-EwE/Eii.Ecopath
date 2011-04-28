@@ -490,7 +490,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Landings mediation shape {0}.
+        '''  Looks up a localized string similar to Price elasticity of supply {0}.
         '''</summary>
         Public ReadOnly Property ECOSIM_DEFAULT_NEWLANDINGSSHAPE() As String
             Get

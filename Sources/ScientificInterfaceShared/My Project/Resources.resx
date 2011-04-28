@@ -1950,7 +1950,7 @@
     <value>Tropical|||Tropical (0 to 30 deg)</value>
   </data>
   <data name="ECOSIM_DEFAULT_NEWLANDINGSSHAPE" xml:space="preserve">
-    <value>Landings mediation shape {0}</value>
+    <value>Price elasticity of supply {0}</value>
   </data>
   <data name="FFAPPLICATION_ARENAAREA" xml:space="preserve">
     <value>Arena area (A)</value>
