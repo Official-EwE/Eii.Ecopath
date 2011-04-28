@@ -16,18 +16,19 @@
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>EwE6_API</HtmlHelpName>
-    <CopyrightText>Copyright %28c%29 UBC Fisheries Centre 2007 - 2010</CopyrightText>
+    <CopyrightText>Copyright %28c%29 UBC Fisheries Centre 2007 - 2011</CopyrightText>
     <HelpTitle>EwE6 API documentation</HelpTitle>
-    <HelpFileVersion>6.0.7.0310</HelpFileVersion>
-    <SandcastlePath>C:\Program Files (x86)\Sandcastle\</SandcastlePath>
+    <HelpFileVersion>6.1.2.0615</HelpFileVersion>
+    <SandcastlePath>
+    </SandcastlePath>
     <WorkingPath>Temp\</WorkingPath>
-    <HtmlHelp1xCompilerPath>..\..\..\..\..\..\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
+    <HtmlHelp1xCompilerPath>
+    </HtmlHelp1xCompilerPath>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\EwECore\bin\x86\Release\EwECore.dll" />
-      <DocumentationSource sourceFile="..\EwEPlugin\bin\x86\Release\EwEPlugin.dll" />
-      <DocumentationSource sourceFile="..\EwEUtils\bin\x86\Release\EwEUtils.dll" />
-      <DocumentationSource sourceFile="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="..\EwECore\EwECore.vbproj" platform="x86" />
+<DocumentationSource sourceFile="..\EwEPlugin\EwEPlugin.vbproj" platform="x86" />
+<DocumentationSource sourceFile="..\EwEUtils\EwEUtils.vbproj" platform="x86" />
+<DocumentationSource sourceFile="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" platform="x86" /></DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True">EwE API Code Documentation</NamespaceSummaryItem>
       <NamespaceSummaryItem name="EwECore" isDocumented="True">Namespace containing all elements essential to the functioning of the EwE computing engine.</NamespaceSummaryItem>
@@ -65,9 +66,12 @@
     <FeedbackEMailAddress>ewedevteam%40gmail.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>EwE development support</FeedbackEMailLinkText>
     <RootNamespaceContainer>False</RootNamespaceContainer>
-    <IncludeFavorites>True</IncludeFavorites>
+    <IncludeFavorites>False</IncludeFavorites>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
+    <IncludeStopWordList>True</IncludeStopWordList>
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
+    <FooterText>EwE6 API documentation</FooterText>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
