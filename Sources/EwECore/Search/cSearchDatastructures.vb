@@ -1211,11 +1211,12 @@ Public Class cSearchDatastructures
         Dim LTV As Single
         If GenDiscountFactor > 0 Then
 
-            ''Intergenerational discount rate on the 
+            'Use the Intergenerational discount for the extra years of the run
             'For iyr As Integer = Me.m_ecosimData.NumYears To Me.m_ecosimData.NumYears + ExtraYearsForSearch
             '    LTV += calcDiscountRate(iyr)
             'Next
 
+            'Long term value using the Intergenerational discount rate from EwE5
             If DiscountFactor > 0 Then
                 'LTV = DF / DiscountFactor
                 LTV = CSng((1 + Dalpha) / DiscountFactor * Din ^ YearPastBaseYear - Dalpha * (Dgen) ^ YearPastBaseYear / (1 - Dgen))
@@ -1280,7 +1281,7 @@ Public Class cSearchDatastructures
             'df = CSng(1 ^ -(iYear - 1))
         End If
 
-        'System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
+        System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
         Return df
 
     End Function
