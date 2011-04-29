@@ -165,16 +165,33 @@ Namespace Controls
 
                 If (item IsNot Nothing) Then
                     src = item.Source
-                    itemParent = DirectCast(item.Parent, cCoreInputOutputControlItem)
-                    If (itemParent IsNot Nothing) Then
-                        ' Could be just s decorative node, let's check
-                        If (itemParent.Source IsNot Nothing) Then
-                            ' Add parent as srcc, child as sec
-                            srcSec = src
-                            src = itemParent.Source
+                    If Not m_bIsLandingsInteractions Then
+                        itemParent = DirectCast(item.Parent, cCoreInputOutputControlItem)
+                        If (itemParent IsNot Nothing) Then
+                            ' Could be just a decorative node, let's check
+                            If (itemParent.Source IsNot Nothing) Then
+                                ' Add parent as src, child as sec
+                                srcSec = src
+                                src = itemParent.Source
+                            End If
+                        End If
+                        Me.Add(src, srcSec)
+                    Else ' landings
+                        If TypeOf src Is cFleetInput Then
+                            ' Add an entry for each landing of this fleet
+                            For Each nd As TreeNode In item.Nodes
+                                Me.Add(DirectCast(nd, cCoreInputOutputControlItem).Source, src)
+                            Next
+                        Else
+                            ' Add as group, fleet
+                            itemParent = DirectCast(item.Parent, cCoreInputOutputControlItem)
+                            If (itemParent IsNot Nothing) Then
+                                srcSec = itemParent.Source
+                            End If
+                            Me.Add(src, srcSec)
                         End If
                     End If
-                    Me.Add(src, srcSec)
+
                 End If
             Catch ex As Exception
 
@@ -299,20 +316,20 @@ Namespace Controls
                     ' Landings: show as landings per fleet, per group
                     For iFleet As Integer = 1 To m_uic.Core.nFleets
                         fleet = m_uic.Core.FleetInputs(iFleet)
+                        lChildren = New List(Of cCoreInputOutputControlItem)
 
                         For iGroup As Integer = 1 To m_uic.Core.nGroups
                             If fleet.Landings(iGroup) > 0 Then
                                 group = m_uic.Core.EcoPathGroupInputs(iGroup)
-                                lChildren = New List(Of cCoreInputOutputControlItem)
 
-                                Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(fleet)
+                                Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(group)
                                 If Object.ReferenceEquals(fleet, objSelected) Then nodeSelected = node
                                 lChildren.Add(node)
                             End If
                         Next
 
                         If lChildren.Count > 0 Then
-                            Dim nodeParent As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(group, lChildren.ToArray)
+                            Dim nodeParent As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(fleet, lChildren.ToArray)
                             Me.m_tvAvailable.Nodes.Add(nodeParent)
                             If Object.ReferenceEquals(group, objSelected) Then nodeSelected = nodeParent
                         End If
