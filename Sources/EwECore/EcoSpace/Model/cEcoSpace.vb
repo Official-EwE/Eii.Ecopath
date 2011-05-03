@@ -2539,10 +2539,14 @@ Public Class cEcoSpace
         Dim GearNo As Integer
 
         ReDim m_Data.SailScale(m_Data.nFleets)
-        Factor = 0
         m_Data.SailScale(0) = 1
 
         For GearNo = 1 To m_Data.nFleets
+            'jb 3-May-1011 Clear Count and Factor for each fleet
+            'This was not happening and SailScale() 
+            'would contain the average off all fleets with a lower fleet index
+            Count = 0
+            Factor = 0
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     If m_Data.Depth(i, j) > 0 Then 'Water
@@ -5187,11 +5191,21 @@ exitline:
             Next i
         Next iFleet
 
+        'Cell size in degress at the equator
+        Dim CellDegrees As Single = m_Data.CellLength / (40007.862917 / 360.0F)
+
         For iPort = 1 To Ports      'go port by port
             ix = PortX(iPort)
             iy = PortY(iPort)
-            LonPort = CSng(m_Data.Lon1 + (ix * m_Data.CellLength))
-            LatPort = CSng(m_Data.Lat1 - (iy * m_Data.CellLength))
+
+            'jb 3-May-2011 Changed to use cell size in degrees
+            'LonPort = CSng(m_Data.Lon1 + (ix * m_Data.CellLength))
+            'LatPort = CSng(m_Data.Lat1 - (iy * m_Data.CellLength))
+
+            'Cell location in degrees
+            LonPort = CSng(m_Data.Lon1 + (ix * CellDegrees))
+            LatPort = CSng(m_Data.Lat1 - (iy * CellDegrees))
+
             For iFleet = 0 To Me.m_Data.nFleets
                 ' Is this fleet based in a this port?
                 If Me.m_Data.Port(iFleet, ix, iy) Then
@@ -5201,11 +5215,20 @@ exitline:
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
                             If Me.EcoSpaceData.Depth(i, j) > 0 Then 'water cell
-                                Longi = CSng(m_Data.Lon1 + (i * m_Data.CellLength))
-                                Lati = CSng(m_Data.Lat1 - (j * m_Data.CellLength))
+                                'From EwE5
                                 'Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / 2.0!)
                                 'Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / 2.0!)
-                                Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.NauticalMiles)
+
+                                'jb 3-May-2011 CalDistance() needs distance to be in decimal degrees 
+                                'Lon1 and Lat1 are degrees CellLength is KM 
+                                'Longi = CSng(m_Data.Lon1 + (i * m_Data.CellLength))
+                                'Lati = CSng(m_Data.Lat1 - (j * m_Data.CellLength))
+
+                                'cell location in degrees
+                                Longi = CSng(m_Data.Lon1 + (i * CellDegrees))
+                                Lati = CSng(m_Data.Lat1 - (j * CellDegrees))
+
+                                Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.Kilometers)
                                 minD(iFleet, i, j) = Math.Min(Dist, minD(iFleet, i, j))
                             Else
                                 minD(iFleet, i, j) = 0
