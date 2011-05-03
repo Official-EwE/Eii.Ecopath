@@ -45,16 +45,19 @@ Public Class cMediationDataStructures
 
     Public PriceMedFuncNum(,,) As Integer
 
-
     Public FunctionNumber(,,) As Integer
     Public IsMedFunction(,,) As Boolean
     Public FunctionType(,,) As Integer
 
+    Private m_nGroups As Integer
+    Private m_nFleets As Integer
 
     Public Sub ReDimMediation(ByVal nGroups As Integer, ByVal nFleets As Integer)
         Dim i, j As Integer
         'following is for Mediation:
         NMedPoints = 1200
+        Me.m_nGroups = nGroups
+        Me.m_nFleets = nFleets
         ' JS18apr09: spawning 9 dummy mediation shapes without any valid database IDS screws up the database
         '            I tested Ecosim without mediation shapes and both core and GUI behave well
         'If MediationShapes <= 0 Then MediationShapes = 9
@@ -76,23 +79,12 @@ Public Class cMediationDataStructures
         ReDim MediationShapeParams(MediationShapes)
         ReDim MediationDBIDs(MediationShapes)
 
-
         ReDim PriceMedFuncNum(nGroups, nFleets, MAXFUNCTIONS)
 
         ReDim FunctionNumber(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
         ReDim IsMedFunction(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
         ReDim FunctionType(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
 
-
-        'jb this is now handled by MedShapeParams() above
-        'If ForcingShapes > MediationShapes Then
-        '    ReDim Preserve Shapes(5, ForcingShapes)
-        'Else
-        '    ReDim Preserve Shapes(5, MediationShapes)
-        'End If
-
-        'ToDo: Sort out XBaseLine()what is it used for
-        'ReDim XBaseLine(MediationShapes)
         For i = 0 To MediationShapes
             IMedBase(i) = NMedPoints \ 3
             For j = 0 To NMedPoints
@@ -102,8 +94,18 @@ Public Class cMediationDataStructures
 
     End Sub
 
-
-    Friend Sub SetMedFunctions(ByVal Biom() As Single, ByVal iTime As Integer, ByVal EcosimData As cEcosimDatastructures)
+    ''' <summary>
+    ''' Set Mediation function multiplier for the current Biomass and/or Effort
+    ''' </summary>
+    ''' <param name="Biom">Biomass at the current time step</param>
+    ''' <param name="FishingEffort">Fishing Effort by fleet, time</param>
+    ''' <param name="iEffortTime">Time index in the effort array to get effort for the time step </param>
+    ''' <param name="MedVal">Mediation function multiplier calculated by this call</param>
+    ''' <remarks>
+    ''' Populates MedVal() argument with the current multiplier. This does NOT populate cMediationDataStructures.MedVal() with the values.
+    ''' Used by Ecospace threads so each thread can set MedVal() independently.
+    '''   </remarks>
+    Friend Sub SetMedFunctions(ByVal Biom() As Single, ByVal FishingEffort(,) As Single, ByVal iEffortTime As Integer, ByVal MedVal() As Single)
         'called from derivt, derivtred if MedIsUsed(0)=true to set
         'current Y value of each active trophic mediation function
         Dim iShp As Integer, iGrp As Integer, MedX As Single, ip As Long
@@ -113,10 +115,10 @@ Public Class cMediationDataStructures
                 If Me.MedIsUsed(iShp) Then
                     MedX = 0.0000000001
                     For iGrp = 1 To Me.NMedXused(iShp)
-                        If Me.IMedUsed(iGrp, iShp) <= EcosimData.nGroups Then
+                        If Me.IMedUsed(iGrp, iShp) <= Me.m_nGroups Then
                             MedX = MedX + Biom(Me.IMedUsed(iGrp, iShp)) * Me.MedWeights(Me.IMedUsed(iGrp, iShp), iShp)
                         Else    'a fleet
-                            MedX = MedX + EcosimData.FishRateGear(Me.IMedUsed(iGrp, iShp) - EcosimData.nGroups, iTime) * Me.MedWeights(Me.IMedUsed(iGrp, iShp), iShp)
+                            MedX = MedX + FishingEffort(Me.IMedUsed(iGrp, iShp) - Me.m_nGroups, iEffortTime) * Me.MedWeights(Me.IMedUsed(iGrp, iShp), iShp)
                         End If
                     Next
                     '060328 CJW found that without the +0.01 below it could be unstable when slope
@@ -125,13 +127,30 @@ Public Class cMediationDataStructures
                     ip = Int(Me.IMedBase(iShp) * MedX / Me.MedXbase(iShp) + 0.01)
                     If ip < 1 Then ip = 1
                     If ip > Me.NMedPoints Then ip = Me.NMedPoints
-                    Me.MedVal(iShp) = Me.Medpoints(ip, iShp) / Me.MedYbase(iShp)
+                    MedVal(iShp) = Me.Medpoints(ip, iShp) / Me.MedYbase(iShp)
                 End If
             Next
-
         Catch ex As Exception
-            '  Debug.Assert(False)
+            Debug.Assert(False, Me.ToString & ".SetMedFunctions() Exception: " & ex.Message)
         End Try
+    End Sub
+
+    ''' <summary>
+    ''' Set Mediation function multiplier in <see cref="cMediationDataStructures.MedVal"> cMediationDataStructures.MedVal()</see> for the current Biomass and/or Effort
+    ''' </summary>
+    ''' <param name="Biom">Biomass at the current time step</param>
+    ''' <param name="FishingEffort">Fishing Effort by fleet, time</param>
+    ''' <param name="iEffortTime">Time index in the effort array to get effort for the time step </param>
+    ''' <remarks>
+    ''' Called be Ecosim to set the mediation function multiplier in cMediationDataStructures.
+    ''' SetMedFunctions(...) has overloaded function definition so it can be called by both Ecosim and on multiple threads from Ecospace.
+    ''' </remarks>
+    Friend Sub SetMedFunctions(ByVal Biom() As Single, ByVal FishingEffort(,) As Single, ByVal iEffortTime As Integer)
+        'called from derivt, derivtred if MedIsUsed(0)=true to set
+        'current Y value of each active trophic mediation function
+
+        'Pass cMediationDataStructures.MedVal() in as an argument
+        Me.SetMedFunctions(Biom, FishingEffort, iEffortTime, Me.MedVal)
 
     End Sub
 
@@ -181,8 +200,8 @@ Public Class cMediationDataStructures
     ''' </summary>
     ''' <param name="iGroup"></param>
     ''' <param name="iFleet"></param>
-    ''' <returns>Value = cEcopathDataStructures.Market(Fleet,Group) * getPESMult(Group,Fleet)</returns>
-    ''' <remarks></remarks>
+    ''' <returns>Returns only the PES multiplier</returns>
+    ''' <remarks>Value = cEcopathDataStructures.Market(Fleet,Group) * getPESMult(Group,Fleet)</remarks>
     Public Function getPESMult(ByVal iGroup As Integer, ByVal iFleet As Integer) As Single
         Dim pMult As Single
         Dim bFoundMed As Boolean = False

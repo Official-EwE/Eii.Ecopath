@@ -159,7 +159,7 @@ Public Class cSpaceSolver
         Array.Copy(m_SimData.pred, pred, m_Data.NGroups + 1)
         Array.Copy(m_SimData.Eatenof, Eatenof, m_Data.NGroups + 1)
         Array.Copy(m_SimData.Eatenby, Eatenby, m_Data.NGroups + 1)
-        Array.Copy(m_SimData.BioMedData.MedVal, MedVal, m_SimData.BioMedData.MediationShapes + 1)
+        '  Array.Copy(m_SimData.BioMedData.MedVal, MedVal, m_SimData.BioMedData.MediationShapes + 1)
 
         m_ConTracer.Init(m_TracerData, m_PathData, m_SimData, m_Stanza)
         m_ConTracer.CInitialize()
@@ -547,7 +547,8 @@ Public Class cSpaceSolver
 
         Try
 
-            If m_SimData.BioMedData.MedIsUsed(0) Then SetMedFunctions(Biomass)
+            'populate MedVal(nMedFunctions) with the Mediation Function multiplier for this Timestep
+            SetMedFunctions(Biomass)
 
             setpred(Biomass)
 
@@ -802,30 +803,9 @@ Public Class cSpaceSolver
     Sub SetMedFunctions(ByVal Biom() As Single)
         'called from derivt, derivtred if MedIsUsed(0)=true to set
         'current Y value of each active trophic mediation function
-        Dim i As Integer, j As Integer, MedX As Single, ip As Long
-
-        Dim medData As cMediationDataStructures = Me.m_SimData.BioMedData
-
-        For i = 1 To medData.MediationShapes
-            If medData.MedIsUsed(i) Then
-                MedX = 0.0000000001
-                For j = 1 To medData.NMedXused(i)
-                    If medData.IMedUsed(j, i) <= m_Data.NGroups Then
-                        MedX = MedX + Biom(medData.IMedUsed(j, i)) * medData.MedWeights(medData.IMedUsed(j, i), i)
-                    Else    'a fleet
-                        'ToDo_jb SetMedFunctions() uses timeNow as an array index for FishRateGear() this should be iMonth
-                        MedX = MedX + FishRateGear(medData.IMedUsed(j, i) - m_Data.NGroups, m_Data.TimeNow) * medData.MedWeights(medData.IMedUsed(j, i), i)
-                    End If
-                Next
-                '060328 CJW found that without the +0.01 below it could be unstable when slope
-                'was large around Ecopath base point in mediation function, causing instability.
-                'This solves it. VC.
-                ip = Int(medData.IMedBase(i) * MedX / medData.MedXbase(i) + 0.01)
-                If ip < 1 Then ip = 1
-                If ip > medData.NMedPoints Then ip = medData.NMedPoints
-                MedVal(i) = medData.Medpoints(ip, i) / medData.MedYbase(i)
-            End If
-        Next
+        If m_SimData.BioMedData.MedIsUsed(0) Then
+            Me.m_SimData.BioMedData.SetMedFunctions(Biom, Me.FishRateGear, 0, Me.MedVal)
+        End If
 
     End Sub
     '***********************

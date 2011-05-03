@@ -2931,7 +2931,9 @@ Namespace Ecosim
                         If j <= nGroups Then
                             medData.MedXbase(i) = medData.MedXbase(i) + medData.MedWeights(j, i) * m_Data.StartBiomass(j)
                         Else
-                            medData.MedXbase(i) = medData.MedXbase(i) + medData.MedWeights(j, i) * m_Data.FishRateGear(j - nGroups, 0)
+                            'medData.MedXbase(i) = medData.MedXbase(i) + medData.MedWeights(j, i) * m_Data.FishRateGear(j - nGroups, 0)
+                            'Ecosim effort at Ecopath base effort is always one
+                            medData.MedXbase(i) = medData.MedXbase(i) + medData.MedWeights(j, i) * 1
                         End If
                         medData.IMedUsed(jj, i) = j
                     End If
@@ -2955,10 +2957,11 @@ Namespace Ecosim
                     ' Flag med fn as unusable
                     medData.MedIsUsed(i) = False
                 End If
+
                 If jj = 0 Or medData.MedXbase(i) = 0 Then
                     medData.MedIsUsed(i) = False
                 End If
-                ' End If
+
             Next
 
         End Sub
@@ -3051,35 +3054,7 @@ Namespace Ecosim
         Friend Sub SetMedFunctions(ByVal Biom() As Single)
             'called from derivt, derivtred if MedIsUsed(0)=true to set
             'current Y value of each active trophic mediation function
-            Me.m_Data.BioMedData.SetMedFunctions(Biom, TimeNow, Me.m_Data)
-
-            'Dim i As Integer, j As Integer, MedX As Single, ip As Long
-            'Dim medData As cMediationData = Me.m_Data.BioMedData
-            'Try
-
-            '    For i = 1 To medData.MediationShapes
-            '        If medData.MedIsUsed(i) Then
-            '            MedX = 0.0000000001
-            '            For j = 1 To medData.NMedXused(i)
-            '                If medData.IMedUsed(j, i) <= nGroups Then
-            '                    MedX = MedX + Biom(medData.IMedUsed(j, i)) * medData.MedWeights(medData.IMedUsed(j, i), i)
-            '                Else    'a fleet
-            '                    MedX = MedX + m_Data.FishRateGear(medData.IMedUsed(j, i) - nGroups, TimeNow) * medData.MedWeights(medData.IMedUsed(j, i), i)
-            '                End If
-            '            Next
-            '            '060328 CJW found that without the +0.01 below it could be unstable when slope
-            '            'was large around Ecopath base point in mediation function, causing instability.
-            '            'This solves it. VC.
-            '            ip = Int(medData.IMedBase(i) * MedX / medData.MedXbase(i) + 0.01)
-            '            If ip < 1 Then ip = 1
-            '            If ip > medData.NMedPoints Then ip = medData.NMedPoints
-            '            medData.MedVal(i) = medData.Medpoints(ip, i) / medData.MedYbase(i)
-            '        End If
-            '    Next
-
-            'Catch ex As Exception
-            '    '  Debug.Assert(False)
-            'End Try
+            Me.m_Data.BioMedData.SetMedFunctions(Biom, Me.m_Data.FishRateGear, TimeNow)
 
         End Sub
 
