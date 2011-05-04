@@ -3322,10 +3322,10 @@ exitline:
             Dim ValLandings As Single
             For igrp = 1 To Me.m_EPdata.NumGroups
                 For iFlt = 0 To Me.m_EPdata.NumFleet
-                    'Value = Landings *  [price elasticity market value]
-                    ValLandings = Landings(igrp, iFlt) * Me.m_Ecosim.PESValue(igrp, iFlt)
+                    'Value = Landings * [market value] * [price elasticity multiplier]
+                    ValLandings = Landings(igrp, iFlt) * Me.m_EPdata.Market(iFlt, igrp) * Me.m_SimData.PriceMedData.getPESMult(igrp, iFlt)
 
-                    'And add to group and to gear sums
+                    'Add to group and to gear sums
                     m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iFlt, igrp, iCumTime) += ValLandings
                     'sum of all fleets into zero index
                     m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, 0, igrp, iCumTime) += ValLandings
@@ -3335,10 +3335,11 @@ exitline:
 
                     'Landings and Value for searches
                     If Me.m_search.bInSearch Then
-                        'search Landings and Value are for the time step
-                        'that is summed and averaged at the end of the year
+                        'Search CatchYear() is the sum of monthly catch over one year 
+                        'Landings(igrp, iFlt) is the yearly Ecopath landings so convert it to monthly for Search CatchYear()
                         Me.m_search.CatchYear(iFlt, igrp) += Landings(igrp, iFlt) * Me.m_Data.TimeStep
                         If iYear > Me.m_search.BaseYear Then
+                            'Search value = Landings * [market value] * [price elasticity multiplier] * [discount factor] * [monthly conversion]
                             Me.m_search.ValCatch(iFlt, igrp) += ValLandings * Me.m_search.DF * Me.m_Data.TimeStep
                         End If
                     End If
