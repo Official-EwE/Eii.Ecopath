@@ -136,11 +136,17 @@ Public Class cSpaceSolver
         ReDim Ftime(m_Data.NGroups)
         ReDim Fish1(m_Data.NGroups)
         ReDim FishTime(m_Data.NGroups)
-        ReDim FishRateGear(m_Data.nFleets, m_Data.NGroups)
         ReDim pred(m_Data.NGroups)
         ReDim Eatenof(m_Data.NGroups)
         ReDim Eatenby(m_Data.NGroups)
         ReDim MedVal(m_SimData.BioMedData.MediationShapes)
+
+        'FishRateGear(nFleets,nTime) used to pass Effort in the current cell at the current timestep to both SimDeritusMT and SetMedFunctions()
+        'Effort from the current cell time step is stored in the zero index i.e. FishRateGear(fleet,0) = EffortSpace(fleet,row,col)
+        'this allows cSpaceSolver.FishRateGear(fleet,time) to remain compatible with cEcosimDataStructures.FishRateGear(fleet,time)
+        'and both Sim and Space can use the same methods... 
+        ReDim FishRateGear(m_Data.nFleets, 0)
+
 
         'thread copy of global sums
         ReDim BtimeLocal(m_Data.NGroups)
