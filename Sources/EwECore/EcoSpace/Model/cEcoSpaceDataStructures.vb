@@ -61,9 +61,9 @@ Public Class cEcospaceDataStructures
     Public TimeNow As Single
 
     ''' <summary>
-    ''' Length of the time step in year 1 month = 0.083333
+    ''' Length of the time step in years 
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>1 month = 0.083333</remarks>
     Public TimeStep As Single
 
     ''' <summary>Current year that is being executed.</summary>
