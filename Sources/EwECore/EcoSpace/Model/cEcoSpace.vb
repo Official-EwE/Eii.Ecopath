@@ -5137,10 +5137,10 @@ exitline:
             End If
         End If
 
-        Dim i As Integer
-        Dim ix As Integer
-        Dim iy As Integer
-        Dim j As Integer
+        Dim iRow As Integer
+        Dim iColPortX As Integer
+        Dim iRowPortY As Integer
+        Dim iCol As Integer
         Dim iPort As Integer
         Dim iFleet As Integer
         Dim Ports As Integer
@@ -5157,13 +5157,13 @@ exitline:
         ' This calculation does NOT take the shape of land into account
 
         Ports = 0
-        For i = 1 To m_Data.InRow
-            For j = 1 To m_Data.InCol
-                Me.m_Data.Port(0, i, j) = False
+        For iRow = 1 To m_Data.InRow
+            For iCol = 1 To m_Data.InCol
+                Me.m_Data.Port(0, iRow, iCol) = False
                 For iFleet = 1 To Me.m_Data.nFleets
-                    If Me.m_Data.Port(iFleet, i, j) = True Then
+                    If Me.m_Data.Port(iFleet, iRow, iCol) = True Then
                         Ports += 1
-                        Me.m_Data.Port(0, i, j) = True
+                        Me.m_Data.Port(0, iRow, iCol) = True
                         Exit For
                     End If
                 Next
@@ -5172,69 +5172,77 @@ exitline:
         ReDim PortX(Ports)
         ReDim PortY(Ports)
         Ports = 0
-        For i = 1 To m_Data.InRow
-            For j = 1 To m_Data.InCol
-                If Me.m_Data.Port(0, i, j) = True Then
+
+        For iRow = 1 To m_Data.InRow
+            For iCol = 1 To m_Data.InCol
+                If Me.m_Data.Port(0, iRow, iCol) = True Then
                     Ports += 1
-                    PortX(Ports) = i
-                    PortY(Ports) = j
+                    'PortX(Ports) = i
+                    'PortY(Ports) = j
+
+                    'm_Data.InRow = Y = Lat
+                    'm_Data.InCol = X = Lon
+                    PortX(Ports) = iCol
+                    PortY(Ports) = iRow
                 End If
             Next
         Next
 
         ReDim minD(Me.m_Data.nFleets, Me.m_Data.InRow, Me.m_Data.InCol)
         For iFleet = 0 To Me.m_Data.nFleets
-            For i = 1 To m_Data.InRow
-                For j = 1 To m_Data.InCol
-                    minD(iFleet, i, j) = Single.MaxValue
-                Next j
-            Next i
+            For iRow = 1 To m_Data.InRow
+                For iCol = 1 To m_Data.InCol
+                    minD(iFleet, iRow, iCol) = Single.MaxValue
+                Next iCol
+            Next iRow
         Next iFleet
 
         'Cell size in degress at the equator
         Dim CellDegrees As Single = m_Data.CellLength / (40007.862917 / 360.0F)
 
         For iPort = 1 To Ports      'go port by port
-            ix = PortX(iPort)
-            iy = PortY(iPort)
+            iColPortX = PortX(iPort)
+            iRowPortY = PortY(iPort)
 
-            'jb 3-May-2011 Changed to use cell size in degrees
-            'LonPort = CSng(m_Data.Lon1 + (ix * m_Data.CellLength))
-            'LatPort = CSng(m_Data.Lat1 - (iy * m_Data.CellLength))
-
-            'Cell location in degrees
-            LonPort = CSng(m_Data.Lon1 + (ix * CellDegrees))
-            LatPort = CSng(m_Data.Lat1 - (iy * CellDegrees))
+            'Port location in degrees
+            'm_Data.InRow = Y = Lat
+            'm_Data.InCol = X = Lon
+            LonPort = CSng(m_Data.Lon1 + (iColPortX * CellDegrees))
+            LatPort = CSng(m_Data.Lat1 - (iRowPortY * CellDegrees))
 
             For iFleet = 0 To Me.m_Data.nFleets
                 ' Is this fleet based in a this port?
-                If Me.m_Data.Port(iFleet, ix, iy) Then
-                    'LonPort = CSng(m_Data.Lon1 + (ix / m_Data.IDH_SS) / 2.0!)
-                    'LatPort = CSng(m_Data.Lat1 - (iy / m_Data.IDH_SS) / 2.0!)
-                    'Sail(AF, ix, iy) = 0
-                    For i = 1 To m_Data.InRow
-                        For j = 1 To m_Data.InCol
-                            If Me.EcoSpaceData.Depth(i, j) > 0 Then 'water cell
+                If Me.m_Data.Port(iFleet, iRowPortY, iColPortX) Then
+
+                    For iRow = 1 To m_Data.InRow
+                        For iCol = 1 To m_Data.InCol
+                            If Me.EcoSpaceData.Depth(iRow, iCol) > 0 Then 'water cell
                                 'From EwE5
                                 'Longi = CSng(m_Data.Lon1 + (i / m_Data.IDH_SS) / 2.0!)
                                 'Lati = CSng(m_Data.Lat1 - (j / m_Data.IDH_SS) / 2.0!)
 
                                 'jb 3-May-2011 CalDistance() needs distance to be in decimal degrees 
-                                'Lon1 and Lat1 are degrees CellLength is KM 
+                                'Lon1 and Lat1 are degrees CellLength is KM wtf is Longi
                                 'Longi = CSng(m_Data.Lon1 + (i * m_Data.CellLength))
                                 'Lati = CSng(m_Data.Lat1 - (j * m_Data.CellLength))
 
                                 'cell location in degrees
-                                Longi = CSng(m_Data.Lon1 + (i * CellDegrees))
-                                Lati = CSng(m_Data.Lat1 - (j * CellDegrees))
+                                'Longi = CSng(m_Data.Lon1 + (iRow * CellDegrees))
+                                'Lati = CSng(m_Data.Lat1 - (iCol * CellDegrees))
+
+                                'jb confused by the indexing yet...
+                                'm_Data.InRow = Y = Lat
+                                'm_Data.InCol = X = Lon
+                                Longi = CSng(m_Data.Lon1 + (iCol * CellDegrees))
+                                Lati = CSng(m_Data.Lat1 - (iRow * CellDegrees))
 
                                 Dist = CalDistance(LonPort, LatPort, Longi, Lati, eDistanceType.Kilometers)
-                                minD(iFleet, i, j) = Math.Min(Dist, minD(iFleet, i, j))
+                                minD(iFleet, iRow, iCol) = Math.Min(Dist, minD(iFleet, iRow, iCol))
                             Else
-                                minD(iFleet, i, j) = 0
+                                minD(iFleet, iRow, iCol) = 0
                             End If
-                        Next j
-                    Next i
+                        Next iCol
+                    Next iRow
                     'test the neighboring cells
                     'Calc8Dist i, j
                     'FindMinDistFor8Neighbors i, j
@@ -5243,12 +5251,12 @@ exitline:
         Next iPort
 
         For iFleet = 0 To Me.m_Data.nFleets
-            For i = 1 To m_Data.InRow
-                For j = 1 To m_Data.InCol
-                    If minD(iFleet, i, j) < Single.MaxValue Then Disti = minD(iFleet, i, j) Else Disti = 0.0!
-                    Me.m_Data.Sail(iFleet, i, j) = Disti
-                Next j
-            Next i
+            For iRow = 1 To m_Data.InRow
+                For iCol = 1 To m_Data.InCol
+                    If minD(iFleet, iRow, iCol) < Single.MaxValue Then Disti = minD(iFleet, iRow, iCol) Else Disti = 0.0!
+                    Me.m_Data.Sail(iFleet, iRow, iCol) = Disti
+                Next iCol
+            Next iRow
         Next iFleet
 
     End Sub
