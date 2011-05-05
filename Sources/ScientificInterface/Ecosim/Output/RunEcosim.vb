@@ -260,6 +260,11 @@ Namespace Ecosim
             Me.ShowData(ePlotData.Value, True)
         End Sub
 
+        Private Sub m_tsmiValueRel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiValueRel.Click
+            Me.ShowData(ePlotData.Value, False)
+        End Sub
+
         Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiAutoscale.Click
             Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly
@@ -823,7 +828,7 @@ Namespace Ecosim
                 Case ePlotData.GroupCatch
                     Return CSng(IIf(Me.m_bIsCumulative, src.Yield(iTimeStep), src.YieldRel(iTimeStep)))
                 Case ePlotData.Value
-                    Return src.Value(iTimeStep)
+                    Return CSng(IIf(Me.m_bIsCumulative, src.Value(iTimeStep), src.ValueRel(iTimeStep)))
             End Select
 
             Return cCore.NULL_VALUE
@@ -1031,6 +1036,7 @@ Namespace Ecosim
 
 #End Region ' Internal implementation
 
+     
     End Class
 
 End Namespace

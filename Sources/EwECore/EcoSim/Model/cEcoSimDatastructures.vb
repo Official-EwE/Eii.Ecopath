@@ -420,6 +420,8 @@ Public Class cEcosimDatastructures
     Public ResultsSumValueByGear(,) As Single
     Public ResultsEffort(,) As Single
 
+    Public ResultsSumRelValueByGroup(,) As Single
+
     ''' <summary>Summarized Profit from results </summary>
     Public ProfitByFleet() As Single
     ''' <summary>Summarized Jobs from results </summary>
@@ -1204,6 +1206,8 @@ Public Class cEcosimDatastructures
         Erase ResultsEffort
         Erase Elect
 
+        Erase ResultsSumRelValueByGroup
+
         GC.Collect()
 
         ReDim ResultsOverTime([Enum].GetValues(GetType(eEcosimResults)).Length - 1, nGroups, nt)
@@ -1223,6 +1227,8 @@ Public Class cEcosimDatastructures
         ReDim EmploymentValueByFleet(Me.nGear)
 
         ReDim ResultsLandings(Me.nGroups, Me.nGear)
+        ReDim ResultsSumRelValueByGroup(nGroups, nt)
+
 
     End Sub
 

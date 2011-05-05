@@ -123,6 +123,9 @@ Public Class cEcosimGroupOutput
         m_coreData.Add(eVarNameFlags.EcosimValueGroup, New c3DResultsWrapper2Fixed(m_simData.ResultsSumValueByGroupGear, Me.Index, 0))
 
         'ResultsSumValueByGroupGear(Groups,Fleets,Time) the Zero fleet index is the sum across all fleets
+        m_coreData.Add(eVarNameFlags.EcosimValueGroupRel, New c2DResultsWrapper(m_simData.ResultsSumRelValueByGroup, Me.Index))
+
+        'ResultsSumValueByGroupGear(Groups,Fleets,Time) the Zero fleet index is the sum across all fleets
         m_coreData.Add(eVarNameFlags.EcosimValueGroupFleet, New c3DResultsWrapper(m_simData.ResultsSumValueByGroupGear, Me.Index))
 
         'Fishing Mortality by group/fleet
@@ -435,6 +438,15 @@ Public Class cEcosimGroupOutput
 
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimValueGroup, iTime))
+        End Get
+
+    End Property
+
+
+    Public ReadOnly Property ValueRel(ByVal iTime As Integer) As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimValueGroupRel, iTime))
         End Get
 
     End Property

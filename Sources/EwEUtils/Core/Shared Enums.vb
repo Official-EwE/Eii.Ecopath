@@ -669,6 +669,12 @@ Namespace Core
         EcosimValueGroup
 
         ''' <summary>
+        ''' Ecosim relative value by group, time
+        ''' </summary>
+        ''' <remarks></remarks>
+        EcosimValueGroupRel
+
+        ''' <summary>
         ''' Ecosim value by group fleet over time
         ''' </summary>
         ''' <remarks></remarks>

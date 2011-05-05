@@ -1073,6 +1073,7 @@ Namespace Ecosim
         ''' <param name="iTime"></param>
         ''' <remarks></remarks>
         Public Sub CalcValueFromLandings(ByVal iTime As Integer)
+            Dim baseGroupVal As Single
 
             'set PriceMedData.MedVal() for all applied price elasticity functions
             'using landings at the current time step Me.m_Data.ResultsLandings(groups,fleets)
@@ -1080,11 +1081,12 @@ Namespace Ecosim
 
             'now get the value for all Group, Fleets based on the price elasticity function
             For igrp As Integer = 1 To Me.nGroups
+                baseGroupVal = 0
                 For iflt As Integer = 1 To Me.m_Data.nGear
                     'Landings are the "Ecopath" landings (discards not included) which is the annual landings
-                    'Value is monthly so convert to monthly / 12
-                    'Value = Landings * [mediated price] / 12
-                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.PESValue(igrp, iflt) / 12.0F
+                    'Value is monthly so convert to monthly
+                    'Value = Landings * [mediated price] * [timestep in years]
+                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.PESValue(igrp, iflt) * Me.DeltaT
 
                     Me.m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) += value
                     Me.m_Data.ResultsSumValueByGear(iflt, iTime) += value
@@ -1092,7 +1094,14 @@ Namespace Ecosim
                     'sum all value into the zero fleet index
                     Me.m_Data.ResultsSumValueByGroupGear(igrp, 0, iTime) += value
                     Me.m_Data.ResultsSumValueByGear(0, iTime) += value
+
+                    'Ecopath value of this group for relative value
+                    baseGroupVal += Me.m_EPData.Landing(iflt, igrp) * Me.m_EPData.Market(iflt, igrp) * Me.DeltaT
                 Next
+                If baseGroupVal > 0 Then
+                    'Zero index contains the sum of landing across all fleets
+                    Me.m_Data.ResultsSumRelValueByGroup(igrp, iTime) = Me.m_Data.ResultsSumValueByGroupGear(igrp, 0, iTime) / baseGroupVal
+                End If
             Next
 
         End Sub
