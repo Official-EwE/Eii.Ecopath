@@ -229,43 +229,109 @@ Namespace Controls
             Dim medFlt As cMediatingFleet = Nothing
             Dim list As PointPairList = Nothing
             Dim pane As GraphPane = Me.m_zgh.GetPane(1)
-            Dim source As cCoreInputOutputBase = Nothing
+            Dim valSource As cCoreInputOutputBase = Nothing
             Dim strLabel As String = ""
             Dim fmt As New cCoreInputOutputBaseFormatter()
             Dim clr As Color = Color.Transparent
             Dim myCurve As BarItem = Nothing
+            Dim varname As EwEUtils.Core.eVarNameFlags
+            Dim index As Integer
+            Dim titleText As String
 
             pane.CurveList.Clear()
+
+            pane.Legend.Position = LegendPos.InsideBotLeft
+            pane.Legend.IsHStack = False
 
             If (data IsNot Nothing) Then
 
                 For i As Integer = 0 To data.Groups.Length - 1
-                    list = New PointPairList()
+                    'list = New PointPairList()
                     medGrp = data.Groups(i)
-                    list.Add(i + 1, medGrp.Weight)
 
                     ' Get the group
-                    source = Me.m_uic.Core.EcoPathGroupInputs(medGrp.iGroupIndex)
-                    clr = sg.GroupColor(Me.m_uic.Core, medGrp.iGroupIndex)
+                    valSource = Me.m_uic.Core.EcoPathGroupOutputs(medGrp.iGroupIndex)
 
                     If (TypeOf medGrp Is cLandingsMediatingGroup) Then
-                        Dim medLandings As cLandingsMediatingGroup = DirectCast(medGrp, cLandingsMediatingGroup)
                         ' Is a landings interaction?
+                        Dim medLandings As cLandingsMediatingGroup = DirectCast(medGrp, cLandingsMediatingGroup)
+
+                        'Group index and VarName for the landings of this group by this fleet
+                        index = medLandings.iGroupIndex
+                        varname = EwEUtils.Core.eVarNameFlags.Landings
+
                         If (medLandings.iFleetIndex > 0) Then
-                            Dim sourceSec As cCoreInputOutputBase = Me.m_uic.Core.FleetInputs(medLandings.iFleetIndex)
+                            Dim FleetSource As cCoreInputOutputBase = Me.m_uic.Core.FleetInputs(medLandings.iFleetIndex)
                             strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAILED, _
-                                                     fmt.GetDescriptor(source), _
-                                                     fmt.GetDescriptor(sourceSec))
+                                                     fmt.GetDescriptor(valSource), _
+                                                     fmt.GetDescriptor(FleetSource))
+
+                            'Ok this is a little strange
+                            'set the source of the values to the FleetInput 
+                            valSource = FleetSource
+
+                            'set the title
+                            titleText = "Weighted percentage of landings"
+
+
                         Else
                             strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
-                                                     fmt.GetDescriptor(source), _
+                                                     fmt.GetDescriptor(valSource), _
                                                      My.Resources.GENERIC_VALUE_ALL)
                         End If
                     Else
-                        strLabel = fmt.GetDescriptor(source)
+                        'Biomass 
+                        strLabel = fmt.GetDescriptor(valSource)
+                        index = cCore.NULL_VALUE
+                        varname = EwEUtils.Core.eVarNameFlags.Biomass
+
+                        titleText = "Weighted percentage of biomass"
                     End If
-                    myCurve = pane.AddBar(strLabel, list, clr)
-                    myCurve.Bar.Fill = New Fill(clr)
+
+                    pane.Title.Text = titleText
+                    pane.Title.IsVisible = True
+                    pane.TitleGap = 0
+
+                    clr = sg.GroupColor(Me.m_uic.Core, medGrp.iGroupIndex)
+                    Dim sliceVal As Double = CDbl(valSource.GetVariable(varname, index)) * medGrp.Weight
+                    Dim slice As PieItem = pane.AddPieSlice(sliceVal, clr, 0.05, strLabel)
+                    slice.ValueDecimalDigits = 3
+                    slice.LabelType = PieLabelType.Name_Value_Percent
+
+
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'Original code to draw bar graph
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'Dim li As LineItem = pane.AddCurve(strLabel, list, clr, SymbolType.None)
+                    'li.Line.Fill = New Fill(clr)
+
+                    'list = New PointPairList()
+                    'medGrp = data.Groups(i)
+                    'list.Add(i + 1, medGrp.Weight)
+
+                    '' Get the group
+                    'source = Me.m_uic.Core.EcoPathGroupInputs(medGrp.iGroupIndex)
+                    'clr = sg.GroupColor(Me.m_uic.Core, medGrp.iGroupIndex)
+
+                    'If (TypeOf medGrp Is cLandingsMediatingGroup) Then
+                    '    Dim medLandings As cLandingsMediatingGroup = DirectCast(medGrp, cLandingsMediatingGroup)
+                    '    ' Is a landings interaction?
+                    '    If (medLandings.iFleetIndex > 0) Then
+                    '        Dim sourceSec As cCoreInputOutputBase = Me.m_uic.Core.FleetInputs(medLandings.iFleetIndex)
+                    '        strLabel = String.Format(My.Resources.GENERIC_LABEL_DETAILED, _
+                    '                                 fmt.GetDescriptor(source), _
+                    '                                 fmt.GetDescriptor(sourceSec))
+                    '    Else
+                    '        strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
+                    '                                 fmt.GetDescriptor(source), _
+                    '                                 My.Resources.GENERIC_VALUE_ALL)
+                    '    End If
+                    'Else
+                    '    strLabel = fmt.GetDescriptor(source)
+                    'End If
+                    'myCurve = pane.AddBar(strLabel, list, clr)
+                    'myCurve.Bar.Fill = New Fill(clr)
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 Next
 
@@ -275,9 +341,9 @@ Namespace Controls
                     list.Add(i + 1 + data.Groups.Length, medFlt.Weight)
 
                     ' Get the fleet
-                    source = Me.m_uic.Core.FleetInputs(medFlt.iFleetIndex)
+                    valSource = Me.m_uic.Core.FleetInputs(medFlt.iFleetIndex)
                     clr = sg.FleetColor(Me.m_uic.Core, medFlt.iFleetIndex)
-                    strLabel = fmt.GetDescriptor(source)
+                    strLabel = fmt.GetDescriptor(valSource)
 
                     myCurve = pane.AddBar(strLabel, list, clr)
                     myCurve.Bar.Fill = New Fill(clr)
