@@ -11,7 +11,7 @@ Friend Class cMSECSVOutputWriter
     Implements IMSEOutputWriter
 
     Private m_core As cCore
-    Private m_dataDir As String
+    'Private m_dataDir As String
     Private m_MSEdata As cMSEDataStructures
 
 
@@ -24,24 +24,24 @@ Friend Class cMSECSVOutputWriter
         Return Path.Combine(Me.DataDir, cFileUtils.ToValidFileName(strDataType & strDataName & ".csv", False))
     End Function
 
-    Private Function getOutputDirectory() As String
+    'Private Function getOutputDirectory() As String
 
-        Try
+    '    Try
 
-            Dim modelPath As String = DirectCast(Me.m_core.DataSource.Connection, Database.cEwEAccessDatabase).Name
-            If File.Exists(modelPath) Then
-                Return Path.Combine(Path.GetDirectoryName(modelPath), "MSE\")
-            Else
-                System.Console.WriteLine("MSE Failed to find database directory from the currently loaded model.")
-                Return (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\"))
-            End If
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".getOutputDirectory() Exception: " & ex.Message)
-        End Try
+    '        Dim modelPath As String = DirectCast(Me.m_core.DataSource.Connection, Database.cEwEAccessDatabase).Name
+    '        If File.Exists(modelPath) Then
+    '            Return Path.Combine(Path.GetDirectoryName(modelPath), "MSE\")
+    '        Else
+    '            System.Console.WriteLine("MSE Failed to find database directory from the currently loaded model.")
+    '            Return (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\"))
+    '        End If
+    '    Catch ex As Exception
+    '        Debug.Assert(False, Me.ToString & ".getOutputDirectory() Exception: " & ex.Message)
+    '    End Try
 
-        Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\")
+    '    Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\")
 
-    End Function
+    'End Function
 
     Public Sub saveIteration(ByVal ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
 
@@ -195,21 +195,22 @@ Friend Class cMSECSVOutputWriter
 
     Public ReadOnly Property DataDir() As String
         Get
-            Return Me.m_dataDir
+            'Return Me.m_dataDir
+            Return Path.Combine(Me.m_core.OutputPath, "MSE")
         End Get
     End Property
 
     Public Sub Init() Implements IMSEOutputWriter.Init
 
-        Me.m_dataDir = Me.getOutputDirectory
+        '  Me.m_dataDir = Me.getOutputDirectory
 
         If Not Me.m_MSEdata.SaveOutput Then Exit Sub
 
         Try
             Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-            If Not Directory.Exists(Me.m_dataDir) Then
-                Directory.CreateDirectory(Me.m_dataDir)
+            If Not Directory.Exists(Me.DataDir) Then
+                Directory.CreateDirectory(Me.DataDir)
             End If
 
             'clear out any existing data files
