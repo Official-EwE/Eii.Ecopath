@@ -11,7 +11,6 @@ Friend Class cMSECSVOutputWriter
     Implements IMSEOutputWriter
 
     Private m_core As cCore
-    'Private m_dataDir As String
     Private m_MSEdata As cMSEDataStructures
 
 
@@ -195,14 +194,11 @@ Friend Class cMSECSVOutputWriter
 
     Public ReadOnly Property DataDir() As String
         Get
-            'Return Me.m_dataDir
             Return Path.Combine(Me.m_core.OutputPath, "MSE")
         End Get
     End Property
 
     Public Sub Init() Implements IMSEOutputWriter.Init
-
-        '  Me.m_dataDir = Me.getOutputDirectory
 
         If Not Me.m_MSEdata.SaveOutput Then Exit Sub
 
