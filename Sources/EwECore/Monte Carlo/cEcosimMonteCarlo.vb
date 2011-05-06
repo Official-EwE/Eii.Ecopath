@@ -74,6 +74,11 @@ Public Class cEcosimMonteCarlo
 
     Public SSorg As Single
 
+    ''' <summary>
+    ''' Save output to file
+    ''' </summary>
+    Public bSaveOutput As Boolean
+
     Private m_core As cCore
     Private m_ecopath As cEcoPathModel
     Private m_ecosim As cEcoSimModel
@@ -107,6 +112,8 @@ Public Class cEcosimMonteCarlo
 
     Dim orgVul(,) As Single
 
+    Dim m_ouputWriter As cMonteCarloResultsWriter
+
 
     Public Sub New(ByRef theCore As cCore)
 
@@ -121,6 +128,9 @@ Public Class cEcosimMonteCarlo
         m_tracerData = m_ecosim.TracerData
 
         Ntrials = 20 'default number of trials
+
+        Me.bSaveOutput = True
+        Me.m_ouputWriter = New cMonteCarloResultsWriter(Me, Me.m_core)
 
     End Sub
 
@@ -327,6 +337,8 @@ Public Class cEcosimMonteCarlo
         Try
             initForRun()
 
+            Me.m_ouputWriter.Init()
+
             'nThreads = System.Environment.ProcessorCount
             'nThreads = 1
             'NtrialsPerThread = (Ntrials + nThreads - 1) \ nThreads
@@ -438,6 +450,8 @@ Public Class cEcosimMonteCarlo
                 'TrialProgress(itrial * nThreads, iter)
                 TrialProgress(iTrial, iter)
                 EcopathIterationsProgress(iter)
+
+                Me.m_ouputWriter.SaveIteration(iTrial)
 
                 If RunsSinceLastWithLowerSS > 2000 Then Exit For
             Next iTrial

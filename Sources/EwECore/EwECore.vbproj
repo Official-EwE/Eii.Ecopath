@@ -240,6 +240,7 @@
     <Compile Include="EcoPath\cEcopathModelFromEcosim.vb" />
     <Compile Include="EcoSim\Model\cMediationDataStructures.vb" />
     <Compile Include="HelperClasses\cPathUtility.vb" />
+    <Compile Include="Monte Carlo\cMonteCarloResultsWriter.vb" />
     <Compile Include="Pedigree\cPedigreeLevel.vb" />
     <Compile Include="Pedigree\cPedigreeManager.vb" />
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerGroupInput.vb" />
