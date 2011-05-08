@@ -57,6 +57,8 @@ Public Class frmRemarkPanel
         Me.m_sm = Me.m_uic.Core.StateMonitor
         AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
 
+        Me.Icon = SharedResources.Info
+
         ' Init panel
         Me.UpdateControls()
 
