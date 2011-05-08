@@ -50,6 +50,17 @@ Namespace Ecosim
 
         Public Sub New()
             Me.InitializeComponent()
+
+            ' Provide default plot visibility settings. This is done in the 
+            ' constructor to ensure that defaults do not override possible 
+            ' alternate values provided in the 'Settings' property.
+
+            ' Defaults: only hide 'value' pane by default
+            For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
+                Me.m_abPlotVisible(plot) = True
+            Next
+            Me.m_abPlotVisible(eSimPlot.Value) = False
+
         End Sub
 
 #End Region ' Constructors
@@ -66,11 +77,6 @@ Namespace Ecosim
 
             Me.m_parms = Me.UIContext.Core.EcoSimModelParameters()
             Me.m_paneMaster = Me.m_graph.MasterPane
-
-            For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
-                Me.m_abPlotVisible(plot) = True
-            Next
-            Me.m_abPlotVisible(eSimPlot.Value) = False
 
             Me.m_zgh = New cZedGraphHelper()
             Me.ConfigurePlots(True)
@@ -158,6 +164,25 @@ Namespace Ecosim
 #End Region ' Event handlers
 
 #Region " Helper methods "
+
+        Public Overrides Property Settings() As String
+            Get
+                Dim strSettings As String = ""
+                For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
+                    strSettings = strSettings & CChar(IIf(Me.m_abPlotVisible(plot), "1", "0"))
+                Next
+                Return strSettings
+            End Get
+            Set(ByVal strSettings As String)
+                If String.IsNullOrEmpty(strSettings) Then Return
+
+                For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
+                    If plot <= strSettings.Length Then
+                        Me.m_abPlotVisible(plot) = (strSettings.Substring(plot, 1) = "1"c)
+                    End If
+                Next
+            End Set
+        End Property
 
         Private Sub ConfigureShowHidePlots()
             For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))

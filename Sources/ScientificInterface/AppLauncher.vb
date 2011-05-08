@@ -534,7 +534,7 @@ Public Class AppLauncher
         Dim sg As New cStyleGuide()
         Dim cmdh As New cCommandHandler()
         Dim pm As New cPropertyManager(core, sg, so)
-        Dim fps As New cFormPositionSettings()
+        Dim fps As New cFormSettings()
         Dim help As New cHelp(Me, "UserGuide\EwE6_userguide.chm", "User Interface.htm", "EWE_UsersGuide")
 
         core.InitCore()
@@ -1285,9 +1285,9 @@ Public Class AppLauncher
         ' Save the user settings when EwE exits
         My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
 
-        Me.UIContext.FormPositionSettings.Store(Me, False)
+        Me.UIContext.FormSettings.Store(Me, False)
         Me.m_styleguideupdater.Save()
-        My.Settings.FormPositions = Me.UIContext.FormPositionSettings.Setting
+        My.Settings.FormPositions = Me.UIContext.FormSettings.Setting
         Me.SaveSettings()
 
     End Sub
@@ -3743,11 +3743,11 @@ Public Class AppLauncher
             End If
 
             ' Read form positions
-            Me.UIContext.FormPositionSettings.Setting = My.Settings.FormPositions
+            Me.UIContext.FormSettings.Setting = My.Settings.FormPositions
 
             ' Get the form position from user settings
             Me.StartPosition = FormStartPosition.Manual
-            Me.UIContext.FormPositionSettings.Apply(Me, False)
+            Me.UIContext.FormSettings.Apply(Me, False)
 
             ' Kick the core
             Me.Core.BackupFileMask = My.Settings.BackupFileMask
@@ -3791,23 +3791,20 @@ Public Class AppLauncher
 
     Private Sub UpdateCorePaths()
 
-        If Me.Core.StateMonitor.HasEcopathLoaded Then
-            Dim strPath As String = ""
+        Dim strPath As String = ""
 
-            If cPathUtility.ResolvePath(My.Settings.BackupFileMask, Me.Core, strPath) Then
-                If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath)) Then
-                    ' Pass MASK in because the core will need to substitute fields into the mask
-                    Me.Core.BackupFileMask = My.Settings.BackupFileMask
-                End If
+        If cPathUtility.ResolvePath(My.Settings.BackupFileMask, Me.Core, strPath) Then
+            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath)) Then
+                ' Pass MASK in because the core will need to substitute fields into the mask
+                Me.Core.BackupFileMask = My.Settings.BackupFileMask
             End If
+        End If
 
-            If cPathUtility.ResolvePath(My.Settings.OutputPathMask, Me.Core, strPath) Then
-                If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath)) Then
-                    ' Pass actual formatted path because the core will not change this further.
-                    Me.Core.OutputPath = strPath
-                End If
+        If cPathUtility.ResolvePath(My.Settings.OutputPathMask, Me.Core, strPath) Then
+            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath)) Then
+                ' Pass actual formatted path because the core will not change this further.
+                Me.Core.OutputPath = strPath
             End If
-
         End If
 
     End Sub
