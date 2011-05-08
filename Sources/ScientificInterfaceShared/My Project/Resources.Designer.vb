@@ -4775,6 +4775,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property PieChart() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PieChart", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property PointerHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("PointerHS", resourceCulture)

@@ -61,6 +61,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3729.14004, Culture=neutral, PublicKeyToken=de94e906589de6fe, processorArchitecture=x86" />
@@ -378,7 +379,7 @@
     <Compile Include="Settings\cEwESettingsProvider.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Settings\cFormPositionSetting.vb" />
+    <Compile Include="Settings\cFormSetting.vb" />
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
     <Compile Include="Style\Type formatters\cCoreInputOutputBaseFormatter.vb" />
@@ -530,6 +531,7 @@
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
+    <None Include="Resources\PieChart.bmp" />
     <None Include="Resources\ani_loader.gif" />
     <None Include="Resources\PasteHS.png" />
     <None Include="Resources\CopyHS.png" />

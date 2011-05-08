@@ -146,21 +146,6 @@
   <data name="m_tsbnViewAsBar.Text" xml:space="preserve">
     <value>View as bar graph</value>
   </data>
-  <data name="m_tsbnViewAsPie.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAInSURBVDhPzdPdS9MBFMZx/45uTG+EurHI7CJqgRpZiGIv
-        pFsuX9M0Al0MW1EyF1v90m3NzFLS6XQ52Kot0plisVkZ2TRm6RBErRnNtjB02PYt6EomUned++fDA+ec
-        uLj/boLBIC6XC6vVhlZnQKUWaGkz8mr0LYuLX9i0sNfrxWTqwOEwMznRh8PeSmOHm27nJ1TNfTTom/H5
-        fBsjgUAAY1cPC/ODrK1OEg3a6H8ooDZYaB9a48ZjqG6aQXWzhVAoFIvYHQ5GXjoJL4/C1w7wKRh9WodC
-        aeBK709kRsgVImRWD9HebY8FjMZO/H4PLNlguhY8RUzb86mt01HYtMpBZZSd5xZILXvBWbluPRCJRNDr
-        9YT95j/h8UI+D+TwujODmosasuu/k1rlY/upfnZJbaQeKo9t0CAo+fFRRXRMjH8wB/ddEbfkUi6UySnO
-        q6bgeCWlJypQZBWzJzklFritVTI/IMbTlYFJthdLRQnfLg2yXOMkIOllJqeVN/s1mJPOUJ6dSyQSXY88
-        sj2gW5Byv+oIH062ESi2slRmZVFixptpYCxN4FmKgjuJYrRqTWyD2dlZ1OeLMG2rxL37Kh6RwERaI+/S
-        GxjZV8+TZBltiQVczzvG3Nzcxrfw3NlPr+Q097bkYU4oxRRfREu8mMatR1EnZKE9IGH497o3vcYpzwQ9
-        GoHW/BKu7UhHk3QYrUiC5bKaqfH3hMPhzYGN9PDKyr+H/vbLfwHoMYKK9U1KogAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="m_tsbnViewAsPie.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>

@@ -35,7 +35,7 @@ Namespace Controls
         ''' <summary>The EwE main form.</summary>
         Private m_frmMain As Form = Nothing
         ''' <summary>The form positions settings that a UI can interact with.</summary>
-        Private m_formpos As cFormPositionSettings = Nothing
+        Private m_formsettings As cFormSettings = Nothing
         ''' <summary>Application help.</summary>
         Private m_help As cHelp = Nothing
         ''' <summary>UI thread sync object.</summary>
@@ -57,7 +57,7 @@ Namespace Controls
                        ByVal propman As cPropertyManager, _
                        ByVal cmdhandler As cCommandHandler, _
                        ByVal frmMain As Form, _
-                       ByVal formpos As cFormPositionSettings, _
+                       ByVal formpos As cFormSettings, _
                        ByVal help As cHelp, _
                        ByVal syncObj As SynchronizationContext)
 
@@ -66,7 +66,7 @@ Namespace Controls
             Me.m_propman = propman
             Me.m_cmdhandler = cmdhandler
             Me.m_frmMain = frmMain
-            Me.m_formpos = formpos
+            Me.m_formsettings = formpos
             Me.m_help = help
             Me.m_syncObj = syncObj
 
@@ -133,13 +133,13 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="cFormPositionSettings">form position settings manager</see> that a 
+        ''' Get the <see cref="cFormSettings">form settings manager</see> that a 
         ''' UI can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property FormPositionSettings() As cFormPositionSettings
+        Public ReadOnly Property FormSettings() As cFormSettings
             Get
-                Return Me.m_formpos
+                Return Me.m_formsettings
             End Get
         End Property
 

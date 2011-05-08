@@ -50,6 +50,7 @@ Namespace Controls
             'm_tsbnViewAsPie
             '
             Me.m_tsbnViewAsPie.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnViewAsPie.Image = Global.ScientificInterfaceShared.My.Resources.Resources.PieChart
             resources.ApplyResources(Me.m_tsbnViewAsPie, "m_tsbnViewAsPie")
             Me.m_tsbnViewAsPie.Name = "m_tsbnViewAsPie"
             '

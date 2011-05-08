@@ -12,6 +12,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Properties
+Imports System.Xml
 
 #End Region ' Imports
 
@@ -221,6 +222,8 @@ Namespace Forms
         ''' <summary>States whether the form is running. Only valid for forms 
         ''' that are flagged as <see cref="IsRunForm"/>.</summary>
         Private m_bIsRunning As Boolean = False
+        ''' <summary>Misc. form settings.</summary>
+        Private m_strSettings As String = ""
 
 #End Region ' Private variables
 
@@ -252,7 +255,7 @@ Namespace Forms
                 AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
                 If (Me.DesignMode = False) Then
-                    Me.UIContext.FormPositionSettings.Apply(Me)
+                    Me.UIContext.FormSettings.Apply(Me)
                 End If
             End If
 
@@ -268,7 +271,7 @@ Namespace Forms
             If (Me.UIContext IsNot Nothing) Then
                 If (Me.DesignMode = False) Then
                     ' Store form position
-                    Me.UIContext.FormPositionSettings.Store(Me)
+                    Me.UIContext.FormSettings.Store(Me)
                 End If
 
                 ' Release style guide event
@@ -409,6 +412,20 @@ Namespace Forms
         Protected Overridable Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
             ' NOP
         End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set local settings for this form.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Overridable Property Settings() As String
+            Get
+                Return Me.m_strSettings
+            End Get
+            Set(ByVal value As String)
+                Me.m_strSettings = value
+            End Set
+        End Property
 
 #End Region ' Overrides
 

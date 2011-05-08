@@ -5,25 +5,30 @@ Imports System.Text
 Imports System.Windows.Forms
 Imports System.Collections.Specialized
 Imports EwEUtils.Win32Api
+Imports ScientificInterfaceShared.Forms
+Imports System.Web
 
 #End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>
-''' Handy-dandy class that maintains and applies form position information, and
-''' allows these settings to be stored and read from Application settings.
+''' <para>Handy-dandy class that maintains and applies form information such as 
+''' position, dock state, min/max state and a miscellaneous string of arbitrary
+''' settings proprietary to individual forms classes.</para>
+''' <para>The EwE framework makes this information persistent using the Application 
+''' settings.</para>
 ''' </summary>
 ''' ===========================================================================
-Public Class cFormPositionSettings
+Public Class cFormSettings
 
 #Region " Helper classes "
 
     ''' =======================================================================
     ''' <summary>
-    ''' Helper class, holds and applies form position information for a single form.
+    ''' Helper class, holds and applies settings information for a single form.
     ''' </summary>
     ''' =======================================================================
-    Private Class cFormPosition
+    Private Class cFormSetting
 
 #Region " Private vars "
 
@@ -33,6 +38,7 @@ Public Class cFormPositionSettings
         Private m_iHeight As Integer = 0
         Private m_dockState As DockStyle = DockStyle.None
         Private m_formState As FormWindowState = FormWindowState.Normal
+        Private m_strMisc As String = ""
 
 #End Region ' Private vars
 
@@ -47,7 +53,7 @@ Public Class cFormPositionSettings
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Position the form according to this setting.
+        ''' Configure the form according to this setting.
         ''' </summary>
         ''' <param name="frm">The form to position.</param>
         ''' -------------------------------------------------------------------
@@ -80,6 +86,14 @@ Public Class cFormPositionSettings
             frm.Dock = Me.m_dockState
             frm.WindowState = Me.m_formState
 
+            If TypeOf frm Is frmewe Then
+                Try
+                    DirectCast(frm, frmEwE).Settings = Me.m_strMisc
+                Catch ex As Exception
+
+                End Try
+            End If
+
             frm.ResumeLayout()
 
         End Sub
@@ -107,6 +121,14 @@ Public Class cFormPositionSettings
             Me.m_iHeight = rc.Height
             Me.m_dockState = frm.Dock
             Me.m_formState = frm.WindowState
+
+            If TypeOf frm Is frmEwE Then
+                Try
+                    Me.m_strMisc = DirectCast(frm, frmEwE).Settings
+                Catch ex As Exception
+
+                End Try
+            End If
             Return True
         End Function
 
@@ -126,6 +148,7 @@ Public Class cFormPositionSettings
                 Me.m_iHeight = CInt(Val(asValue(3)))
                 Me.m_dockState = CType(Val(asValue(4)), DockStyle)
                 Me.m_formState = CType(Val(asValue(5)), FormWindowState)
+                Me.m_strMisc = HttpUtility.UrlDecode(CStr(asValue(6)))
             Catch ex As Exception
                 Return False
             End Try
@@ -139,7 +162,10 @@ Public Class cFormPositionSettings
         ''' <returns>A settings string.</returns>
         ''' -------------------------------------------------------------------
         Public Overrides Function ToString() As String
-            Return CStr(Me.m_iPosX) & "," & CStr(Me.m_iPosY) & "," & CStr(Me.m_iWidth) & "," & CStr(Me.m_iHeight) & "," & CStr(CInt(Me.m_dockState)) & "," & CStr(CInt(Me.m_formState))
+            Return CStr(Me.m_iPosX) & "," & CStr(Me.m_iPosY) & "," & _
+                   CStr(Me.m_iWidth) & "," & CStr(Me.m_iHeight) & "," & _
+                   CStr(CInt(Me.m_dockState)) & "," & CStr(CInt(Me.m_formState)) & ", " & _
+                   CStr(HttpUtility.UrlEncode(Me.m_strMisc))
         End Function
 
 #End Region ' Public bits
@@ -151,7 +177,7 @@ Public Class cFormPositionSettings
 #Region " Private vars "
 
     ''' <summary>All maintained form positions.</summary>
-    Private m_dictFormPositions As New Dictionary(Of String, cFormPosition)
+    Private m_dictFormPositions As New Dictionary(Of String, cFormSetting)
 
 #End Region ' Private vars
 
@@ -189,7 +215,7 @@ Public Class cFormPositionSettings
     ''' -----------------------------------------------------------------------
     Public Sub Store(ByVal frm As Form, Optional ByVal bIncludeFormText As Boolean = True)
 
-        Dim fs As cFormPosition = Nothing
+        Dim fs As cFormSetting = Nothing
         Dim strFormType As String = ""
 
         ' Sanity check
@@ -203,7 +229,7 @@ Public Class cFormPositionSettings
         End If
 
         ' Create form state
-        fs = New cFormPosition()
+        fs = New cFormSetting()
         ' Able to read from form?
         If fs.Initialize(frm) Then
             ' #Yes: store it
@@ -243,7 +269,7 @@ Public Class cFormPositionSettings
     ''' -----------------------------------------------------------------------
     Private Sub Initialize(ByVal sc As StringCollection)
 
-        Dim fp As cFormPosition = Nothing
+        Dim fp As cFormSetting = Nothing
         Dim astrSetting() As String = Nothing
 
         ' Clear!
@@ -262,7 +288,7 @@ Public Class cFormPositionSettings
                     ' Split in {formname}={{position} bits
                     astrSetting = strFormSetting.Split("="c)
                     ' 
-                    fp = New cFormPosition()
+                    fp = New cFormSetting()
                     ' Can read form position data?
                     If fp.Initialize(astrSetting(1)) Then
                         ' #Yes: store in local admin!
