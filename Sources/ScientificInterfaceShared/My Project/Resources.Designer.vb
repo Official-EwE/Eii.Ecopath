@@ -4455,6 +4455,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Info() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Info", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
         Public ReadOnly Property InsertPictureHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("InsertPictureHS", resourceCulture)

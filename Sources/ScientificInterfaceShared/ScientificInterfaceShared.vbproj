@@ -531,6 +531,7 @@
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
+    <Content Include="Resources\Info.ico" />
     <None Include="Resources\PieChart.bmp" />
     <None Include="Resources\ani_loader.gif" />
     <None Include="Resources\PasteHS.png" />
