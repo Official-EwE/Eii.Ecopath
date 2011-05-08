@@ -81,6 +81,7 @@ Namespace Controls
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+            Me.m_tscmbShowAs.SelectedIndex = 0
             Me.UpdateControls()
         End Sub
 
@@ -93,8 +94,14 @@ Namespace Controls
             MyBase.Dispose(disposing)
         End Sub
 
-        Private Sub OnDefineXAxis(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnDefineMediatingItems.Click
+        Private Sub OnDefineXAxis(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnDefineMediatingItems.Click
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DefineMediation)
+        End Sub
+
+        Private Sub OnShowAs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tscmbShowAs.SelectedIndexChanged
+            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode, Nothing, Me.m_tscmbShowAs.SelectedIndex)
         End Sub
 
 #End Region ' Event handlers

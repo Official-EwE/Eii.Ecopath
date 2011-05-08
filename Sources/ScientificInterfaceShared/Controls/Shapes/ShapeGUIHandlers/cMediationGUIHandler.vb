@@ -22,10 +22,10 @@ Namespace Controls
     Public Class cMediationShapeGUIHandler
         Inherits cForcingShapeGUIHandler
 
-        ''' <summary>Biomass percent control to handle.</summary>
-        Private m_bp As ucMediationAssignments = Nothing
-        ''' <summary>Biomass percent control toolbar to handle.</summary>
-        Private m_bpt As ucMediationAssignmentsToolbar = Nothing
+        ''' <summary>Mediation assignment control to handle.</summary>
+        Private m_medass As ucMediationAssignments = Nothing
+        ''' <summary>Mediation assignment toolbar to handle.</summary>
+        Private m_medasstoolbar As ucMediationAssignmentsToolbar = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -91,17 +91,17 @@ Namespace Controls
 
         Public Overridable Property MediationAssignments() As ucMediationAssignments
             Get
-                Return Me.m_bp
+                Return Me.m_medass
             End Get
             Protected Set(ByVal value As ucMediationAssignments)
 
-                If (Me.m_bp IsNot Nothing) Then
+                If (Me.m_medass IsNot Nothing) Then
                     'Me.m_bp.Handler = Nothing
                 End If
 
-                Me.m_bp = value
+                Me.m_medass = value
 
-                If (Me.m_bp IsNot Nothing) Then
+                If (Me.m_medass IsNot Nothing) Then
                     'Me.m_bp.Handler = Me
                 End If
 
@@ -110,18 +110,18 @@ Namespace Controls
 
         Public Overridable Property MediationAssignmentsToolbar() As ucMediationAssignmentsToolbar
             Get
-                Return Me.m_bpt
+                Return Me.m_medasstoolbar
             End Get
             Protected Set(ByVal value As ucMediationAssignmentsToolbar)
 
-                If (Me.m_bpt IsNot Nothing) Then
-                    Me.m_bpt.Handler = Nothing
+                If (Me.m_medasstoolbar IsNot Nothing) Then
+                    Me.m_medasstoolbar.Handler = Nothing
                 End If
 
-                Me.m_bpt = value
+                Me.m_medasstoolbar = value
 
-                If (Me.m_bpt IsNot Nothing) Then
-                    Me.m_bpt.Handler = Me
+                If (Me.m_medasstoolbar IsNot Nothing) Then
+                    Me.m_medasstoolbar.Handler = Me
                 End If
 
             End Set
@@ -240,6 +240,9 @@ Namespace Controls
                         If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
                             Me.MediationAssignments.RefreshContent()
                         End If
+
+                    Case eShapeCommandTypes.ViewMode
+                        Me.m_medass.ViewMode = DirectCast(data, ucMediationAssignments.eViewModeTypes)
 
                     Case Else
                         MyBase.ExecuteCommand(cmd, ashapes, data)

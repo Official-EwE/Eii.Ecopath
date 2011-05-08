@@ -64,8 +64,8 @@ Namespace Controls
             DefineMediation
             ''' <summary>Filter display of shapes.</summary>
             Filter
-            <Obsolete("Use DefineMediation instead")> _
-            DefineXAxis = DefineMediation
+            ''' <summary>Set view mode.</summary>
+            ViewMode
         End Enum
 
 #Region " Private variables "
