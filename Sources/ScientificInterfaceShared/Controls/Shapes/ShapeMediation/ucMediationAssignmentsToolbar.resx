@@ -137,20 +137,38 @@
   <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
-  <data name="m_tslShowAs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 22</value>
+  <data name="m_tsbnViewAsBar.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="m_tslShowAs.Text" xml:space="preserve">
-    <value>&amp;Show as</value>
+  <data name="m_tsbnViewAsBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
   </data>
-  <data name="m_tscmbShowAs.Items" xml:space="preserve">
-    <value>Pie chart</value>
+  <data name="m_tsbnViewAsBar.Text" xml:space="preserve">
+    <value>View as bar graph</value>
   </data>
-  <data name="m_tscmbShowAs.Items1" xml:space="preserve">
-    <value>Bars</value>
+  <data name="m_tsbnViewAsPie.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAInSURBVDhPzdPdS9MBFMZx/45uTG+EurHI7CJqgRpZiGIv
+        pFsuX9M0Al0MW1EyF1v90m3NzFLS6XQ52Kot0plisVkZ2TRm6RBErRnNtjB02PYt6EomUned++fDA+ec
+        uLj/boLBIC6XC6vVhlZnQKUWaGkz8mr0LYuLX9i0sNfrxWTqwOEwMznRh8PeSmOHm27nJ1TNfTTom/H5
+        fBsjgUAAY1cPC/ODrK1OEg3a6H8ooDZYaB9a48ZjqG6aQXWzhVAoFIvYHQ5GXjoJL4/C1w7wKRh9WodC
+        aeBK709kRsgVImRWD9HebY8FjMZO/H4PLNlguhY8RUzb86mt01HYtMpBZZSd5xZILXvBWbluPRCJRNDr
+        9YT95j/h8UI+D+TwujODmosasuu/k1rlY/upfnZJbaQeKo9t0CAo+fFRRXRMjH8wB/ddEbfkUi6UySnO
+        q6bgeCWlJypQZBWzJzklFritVTI/IMbTlYFJthdLRQnfLg2yXOMkIOllJqeVN/s1mJPOUJ6dSyQSXY88
+        sj2gW5Byv+oIH062ESi2slRmZVFixptpYCxN4FmKgjuJYrRqTWyD2dlZ1OeLMG2rxL37Kh6RwERaI+/S
+        GxjZV8+TZBltiQVczzvG3Nzcxrfw3NlPr+Q097bkYU4oxRRfREu8mMatR1EnZKE9IGH497o3vcYpzwQ9
+        GoHW/BKu7UhHk3QYrUiC5bKaqfH3hMPhzYGN9PDKyr+H/vbLfwHoMYKK9U1KogAAAABJRU5ErkJggg==
+</value>
   </data>
-  <data name="m_tscmbShowAs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 25</value>
+  <data name="m_tsbnViewAsPie.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnViewAsPie.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="m_tsbnViewAsPie.Text" xml:space="preserve">
+    <value>View as pie chart</value>
   </data>
   <data name="tsMenus.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -198,17 +216,17 @@
   <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tslShowAs.Name" xml:space="preserve">
-    <value>m_tslShowAs</value>
+  <data name="&gt;&gt;m_tsbnViewAsBar.Name" xml:space="preserve">
+    <value>m_tsbnViewAsBar</value>
   </data>
-  <data name="&gt;&gt;m_tslShowAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tsbnViewAsBar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tscmbShowAs.Name" xml:space="preserve">
-    <value>m_tscmbShowAs</value>
+  <data name="&gt;&gt;m_tsbnViewAsPie.Name" xml:space="preserve">
+    <value>m_tsbnViewAsPie</value>
   </data>
-  <data name="&gt;&gt;m_tscmbShowAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tsbnViewAsPie.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucMediationAssignmentsToolbar</value>

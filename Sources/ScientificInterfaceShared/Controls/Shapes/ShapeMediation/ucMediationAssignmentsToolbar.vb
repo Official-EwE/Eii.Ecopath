@@ -81,7 +81,7 @@ Namespace Controls
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
-            Me.m_tscmbShowAs.SelectedIndex = 0
+            Me.m_tsbnViewAsPie.Checked = True
             Me.UpdateControls()
         End Sub
 
@@ -99,9 +99,22 @@ Namespace Controls
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DefineMediation)
         End Sub
 
-        Private Sub OnShowAs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tscmbShowAs.SelectedIndexChanged
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode, Nothing, Me.m_tscmbShowAs.SelectedIndex)
+        Private Sub OnViewAsBar(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnViewAsBar.Click
+            If Me.Handler IsNot Nothing Then
+                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode, Nothing, ucMediationAssignments.eViewModeTypes.Bar)
+                Me.m_tsbnViewAsBar.Checked = True
+                Me.m_tsbnViewAsPie.Checked = False
+            End If
+        End Sub
+
+        Private Sub OnViewAsPie(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnViewAsPie.Click
+            If Me.Handler IsNot Nothing Then
+                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode, Nothing, ucMediationAssignments.eViewModeTypes.Pie)
+                Me.m_tsbnViewAsBar.Checked = False
+                Me.m_tsbnViewAsPie.Checked = True
+            End If
         End Sub
 
 #End Region ' Event handlers

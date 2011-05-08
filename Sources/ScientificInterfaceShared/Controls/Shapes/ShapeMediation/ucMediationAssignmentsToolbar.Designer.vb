@@ -16,8 +16,8 @@ Namespace Controls
             Me.tsMenus = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_tsbnDefineMediatingItems = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tslShowAs = New System.Windows.Forms.ToolStripLabel
-            Me.m_tscmbShowAs = New System.Windows.Forms.ToolStripComboBox
+            Me.m_tsbnViewAsBar = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbnViewAsPie = New System.Windows.Forms.ToolStripButton
             Me.tsMenus.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -25,7 +25,7 @@ Namespace Controls
             '
             resources.ApplyResources(Me.tsMenus, "tsMenus")
             Me.tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMediatingItems, Me.ToolStripSeparator1, Me.m_tslShowAs, Me.m_tscmbShowAs})
+            Me.tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMediatingItems, Me.ToolStripSeparator1, Me.m_tsbnViewAsBar, Me.m_tsbnViewAsPie})
             Me.tsMenus.Name = "tsMenus"
             Me.tsMenus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
@@ -40,17 +40,18 @@ Namespace Controls
             Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
             resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
             '
-            'm_tslShowAs
+            'm_tsbnViewAsBar
             '
-            Me.m_tslShowAs.Name = "m_tslShowAs"
-            resources.ApplyResources(Me.m_tslShowAs, "m_tslShowAs")
+            Me.m_tsbnViewAsBar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnViewAsBar.Image = Global.ScientificInterfaceShared.My.Resources.Resources.graphhs
+            resources.ApplyResources(Me.m_tsbnViewAsBar, "m_tsbnViewAsBar")
+            Me.m_tsbnViewAsBar.Name = "m_tsbnViewAsBar"
             '
-            'm_tscmbShowAs
+            'm_tsbnViewAsPie
             '
-            Me.m_tscmbShowAs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_tscmbShowAs.Items.AddRange(New Object() {resources.GetString("m_tscmbShowAs.Items"), resources.GetString("m_tscmbShowAs.Items1")})
-            Me.m_tscmbShowAs.Name = "m_tscmbShowAs"
-            resources.ApplyResources(Me.m_tscmbShowAs, "m_tscmbShowAs")
+            Me.m_tsbnViewAsPie.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnViewAsPie, "m_tsbnViewAsPie")
+            Me.m_tsbnViewAsPie.Name = "m_tsbnViewAsPie"
             '
             'ucMediationAssignmentsToolbar
             '
@@ -68,8 +69,8 @@ Namespace Controls
         Private WithEvents m_tsbnDefineMediatingItems As System.Windows.Forms.ToolStripButton
         Private WithEvents tsMenus As cEwEToolstrip
         Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents m_tslShowAs As System.Windows.Forms.ToolStripLabel
-        Private WithEvents m_tscmbShowAs As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents m_tsbnViewAsBar As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnViewAsPie As System.Windows.Forms.ToolStripButton
 
     End Class
 
