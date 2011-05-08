@@ -369,7 +369,7 @@ Public Class cResultWriter
                     Case 25 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
                     Case 26 : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
                     Case 27 : asValues(j) += Me.NetworkManager.RelativeKemptonsPlot(i)
-                    Case 27 : asValues(j) += Me.NetworkManager.FIB(i)
+                    Case 28 : asValues(j) += Me.NetworkManager.FIB(i)
 
                 End Select
 
