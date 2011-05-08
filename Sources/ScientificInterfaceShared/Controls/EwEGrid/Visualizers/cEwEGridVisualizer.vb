@@ -22,9 +22,14 @@ Namespace Controls.EwEGrid
     Public Class cEwECellVisualizer
         : Inherits cEwEGridVisualizerBase
 
-        Public Sub New()
+        ''' <summary>
+        ''' Create a new visualizer.
+        ''' </summary>
+        ''' <param name="alignment">Alignment to choose. If not specified content will
+        ''' be aligned <see cref="ContentAlignment.MiddleCenter"/>.</param>
+        Public Sub New(Optional ByVal alignment As ContentAlignment = ContentAlignment.MiddleCenter)
             MyBase.New()
-            Me.TextAlignment = ContentAlignment.MiddleCenter
+            Me.TextAlignment = alignment
             Me.WordWrap = False
             Me.AlignTextToImage = True
         End Sub
