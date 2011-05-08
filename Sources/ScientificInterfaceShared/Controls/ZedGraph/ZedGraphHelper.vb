@@ -1139,7 +1139,7 @@ Namespace Controls
                                      Me.StyleGuide.FormatNumber(pp.Y))
             ElseIf curve.IsPie Then
                 Dim slice As PieItem = DirectCast(curve, PieItem)
-                Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, _
+                Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, _
                                      slice.Label.Text, _
                                      Me.StyleGuide.FormatNumber(slice.Value))
 
