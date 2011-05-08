@@ -2126,11 +2126,8 @@ Public Class cCore
             Return Me.m_strOutputPath
         End Get
         Set(ByVal value As String)
-            ' Make dummy-proof
-            ' - Eliminate all invalid path characters
-            Dim strValidPath As String = cFileUtils.ToValidFileName(value, True)
-            ' - Extract directory part in case a file name was mistakenly included
-            Me.m_strOutputPath = Path.GetDirectoryName(strValidPath)
+            ' Eliminate all invalid path characters
+            Me.m_strOutputPath = cFileUtils.ToValidFileName(value, True)
         End Set
     End Property
 
