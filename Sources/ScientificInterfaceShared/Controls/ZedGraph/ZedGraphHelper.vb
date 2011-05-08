@@ -1131,11 +1131,20 @@ Namespace Controls
         End Property
 
         Private Function OnPointValueEvent(ByVal sender As Object, ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
-            Dim pp As PointPair = curve(iPoint)
-            Return String.Format(My.Resources.GENERIC_LABEL_POINT, _
-                                 curve.Label.Text, _
-                                 Me.StyleGuide.FormatNumber(pp.X), _
-                                 Me.StyleGuide.FormatNumber(pp.Y))
+            If curve.IsLine Then
+                Dim pp As PointPair = curve(iPoint)
+                Return String.Format(My.Resources.GENERIC_LABEL_POINT, _
+                                     curve.Label.Text, _
+                                     Me.StyleGuide.FormatNumber(pp.X), _
+                                     Me.StyleGuide.FormatNumber(pp.Y))
+            ElseIf curve.IsPie Then
+                Dim slice As PieItem = DirectCast(curve, PieItem)
+                Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, _
+                                     slice.Label.Text, _
+                                     Me.StyleGuide.FormatNumber(slice.Value))
+
+            End If
+            Return ""
         End Function
 
 #End Region ' Tooltip
