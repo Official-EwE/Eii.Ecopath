@@ -24,19 +24,19 @@ Partial Class dlgGraphDisplayOptions
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgGraphDisplayOptions))
             Me.m_rbLine = New System.Windows.Forms.RadioButton
             Me.m_rbFill = New System.Windows.Forms.RadioButton
-            Me.cbRightClickAutoScale = New System.Windows.Forms.CheckBox
-            Me.nupYMax = New System.Windows.Forms.NumericUpDown
-            Me.cbAutoScale = New System.Windows.Forms.CheckBox
-            Me.lbYMax = New System.Windows.Forms.Label
+            Me.m_cbRightClickAutoScale = New System.Windows.Forms.CheckBox
+            Me.m_nudMax = New System.Windows.Forms.NumericUpDown
+            Me.m_cbAutoScale = New System.Windows.Forms.CheckBox
+            Me.m_lblYMax = New System.Windows.Forms.Label
             Me.m_cbShowScaleAndTitle = New System.Windows.Forms.CheckBox
-            Me.m_lblCapInformation = New System.Windows.Forms.Label
+            Me.m_hdrShow = New cEwEHeaderLabel
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.Label2 = New System.Windows.Forms.Label
+            Me.m_hdrDrawAs = New cEwEHeaderLabel
+            Me.m_hdrScaling = New cEwEHeaderLabel
             Me.m_rbDots = New System.Windows.Forms.RadioButton
-            CType(Me.nupYMax, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudMax, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -54,27 +54,27 @@ Partial Class dlgGraphDisplayOptions
             Me.m_rbFill.TabStop = True
             Me.m_rbFill.UseVisualStyleBackColor = True
             '
-            'cbRightClickAutoScale
+            'm_cbRightClickAutoScale
             '
-            resources.ApplyResources(Me.cbRightClickAutoScale, "cbRightClickAutoScale")
-            Me.cbRightClickAutoScale.Name = "cbRightClickAutoScale"
-            Me.cbRightClickAutoScale.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbRightClickAutoScale, "m_cbRightClickAutoScale")
+            Me.m_cbRightClickAutoScale.Name = "m_cbRightClickAutoScale"
+            Me.m_cbRightClickAutoScale.UseVisualStyleBackColor = True
             '
-            'nupYMax
+            'm_nudMax
             '
-            resources.ApplyResources(Me.nupYMax, "nupYMax")
-            Me.nupYMax.Name = "nupYMax"
+            resources.ApplyResources(Me.m_nudMax, "m_nudMax")
+            Me.m_nudMax.Name = "m_nudMax"
             '
-            'cbAutoScale
+            'm_cbAutoScale
             '
-            resources.ApplyResources(Me.cbAutoScale, "cbAutoScale")
-            Me.cbAutoScale.Name = "cbAutoScale"
-            Me.cbAutoScale.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbAutoScale, "m_cbAutoScale")
+            Me.m_cbAutoScale.Name = "m_cbAutoScale"
+            Me.m_cbAutoScale.UseVisualStyleBackColor = True
             '
-            'lbYMax
+            'm_lblYMax
             '
-            resources.ApplyResources(Me.lbYMax, "lbYMax")
-            Me.lbYMax.Name = "lbYMax"
+            resources.ApplyResources(Me.m_lblYMax, "m_lblYMax")
+            Me.m_lblYMax.Name = "m_lblYMax"
             '
             'm_cbShowScaleAndTitle
             '
@@ -82,12 +82,12 @@ Partial Class dlgGraphDisplayOptions
             Me.m_cbShowScaleAndTitle.Name = "m_cbShowScaleAndTitle"
             Me.m_cbShowScaleAndTitle.UseVisualStyleBackColor = True
             '
-            'm_lblCapInformation
+            'm_hdrShow
             '
-            resources.ApplyResources(Me.m_lblCapInformation, "m_lblCapInformation")
-            Me.m_lblCapInformation.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lblCapInformation.ForeColor = System.Drawing.SystemColors.Window
-            Me.m_lblCapInformation.Name = "m_lblCapInformation"
+            resources.ApplyResources(Me.m_hdrShow, "m_hdrShow")
+            Me.m_hdrShow.BackColor = System.Drawing.SystemColors.ControlDark
+            Me.m_hdrShow.ForeColor = System.Drawing.SystemColors.Window
+            Me.m_hdrShow.Name = "m_hdrShow"
             '
             'TableLayoutPanel1
             '
@@ -107,19 +107,19 @@ Partial Class dlgGraphDisplayOptions
             Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Cancel_Button.Name = "Cancel_Button"
             '
-            'Label1
+            'm_hdrDrawAs
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.Label1.ForeColor = System.Drawing.SystemColors.Window
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_hdrDrawAs, "m_hdrDrawAs")
+            Me.m_hdrDrawAs.BackColor = System.Drawing.SystemColors.ControlDark
+            Me.m_hdrDrawAs.ForeColor = System.Drawing.SystemColors.Window
+            Me.m_hdrDrawAs.Name = "m_hdrDrawAs"
             '
-            'Label2
+            'm_hdrScaling
             '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.Label2.ForeColor = System.Drawing.SystemColors.Window
-            Me.Label2.Name = "Label2"
+            resources.ApplyResources(Me.m_hdrScaling, "m_hdrScaling")
+            Me.m_hdrScaling.BackColor = System.Drawing.SystemColors.ControlDark
+            Me.m_hdrScaling.ForeColor = System.Drawing.SystemColors.Window
+            Me.m_hdrScaling.Name = "m_hdrScaling"
             '
             'm_rbDots
             '
@@ -135,13 +135,13 @@ Partial Class dlgGraphDisplayOptions
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
             Me.Controls.Add(Me.TableLayoutPanel1)
-            Me.Controls.Add(Me.Label2)
-            Me.Controls.Add(Me.Label1)
-            Me.Controls.Add(Me.m_lblCapInformation)
-            Me.Controls.Add(Me.nupYMax)
-            Me.Controls.Add(Me.lbYMax)
-            Me.Controls.Add(Me.cbRightClickAutoScale)
-            Me.Controls.Add(Me.cbAutoScale)
+            Me.Controls.Add(Me.m_hdrScaling)
+            Me.Controls.Add(Me.m_hdrDrawAs)
+            Me.Controls.Add(Me.m_hdrShow)
+            Me.Controls.Add(Me.m_nudMax)
+            Me.Controls.Add(Me.m_lblYMax)
+            Me.Controls.Add(Me.m_cbRightClickAutoScale)
+            Me.Controls.Add(Me.m_cbAutoScale)
             Me.Controls.Add(Me.m_rbDots)
             Me.Controls.Add(Me.m_rbLine)
             Me.Controls.Add(Me.m_rbFill)
@@ -150,26 +150,26 @@ Partial Class dlgGraphDisplayOptions
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "dlgGraphDisplayOptions"
-            CType(Me.nupYMax, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudMax, System.ComponentModel.ISupportInitialize).EndInit()
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents m_rbLine As System.Windows.Forms.RadioButton
-        Friend WithEvents m_rbFill As System.Windows.Forms.RadioButton
-        Friend WithEvents cbRightClickAutoScale As System.Windows.Forms.CheckBox
-        Friend WithEvents nupYMax As System.Windows.Forms.NumericUpDown
-        Friend WithEvents cbAutoScale As System.Windows.Forms.CheckBox
-        Friend WithEvents lbYMax As System.Windows.Forms.Label
-        Friend WithEvents m_cbShowScaleAndTitle As System.Windows.Forms.CheckBox
-        Friend WithEvents m_lblCapInformation As System.Windows.Forms.Label
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents OK_Button As System.Windows.Forms.Button
-        Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-        Friend WithEvents Label1 As System.Windows.Forms.Label
-        Friend WithEvents Label2 As System.Windows.Forms.Label
-        Friend WithEvents m_rbDots As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbLine As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbFill As System.Windows.Forms.RadioButton
+        Private WithEvents m_cbShowScaleAndTitle As System.Windows.Forms.CheckBox
+        Private WithEvents m_hdrShow As cEwEHeaderLabel
+        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents OK_Button As System.Windows.Forms.Button
+        Private WithEvents Cancel_Button As System.Windows.Forms.Button
+        Private WithEvents m_rbDots As System.Windows.Forms.RadioButton
+        Private WithEvents m_hdrDrawAs As cEwEHeaderLabel
+        Private WithEvents m_hdrScaling As cEwEHeaderLabel
+        Private WithEvents m_cbAutoScale As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbRightClickAutoScale As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblYMax As System.Windows.Forms.Label
+        Private WithEvents m_nudMax As System.Windows.Forms.NumericUpDown
 
     End Class
 

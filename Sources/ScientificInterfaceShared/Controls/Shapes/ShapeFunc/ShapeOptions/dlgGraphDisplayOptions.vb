@@ -62,7 +62,7 @@ Namespace Controls
             Me.m_sketchpad.DisplayAxis = Me.m_cbShowScaleAndTitle.Checked
 
             ' Do we need auto scale? 
-            If Me.cbAutoScale.Checked Then
+            If Me.m_cbAutoScale.Checked Then
                 Me.m_sketchpad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto
             Else
                 Me.m_sketchpad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Fixed
@@ -99,7 +99,7 @@ Namespace Controls
             MyBase.OnLoad(e)
 
             'Initialization of the interface controls
-            Me.m_fbYMax = New cEwEFormatProvider(Me.m_uic, Me.nupYMax, GetType(Single))
+            Me.m_fbYMax = New cEwEFormatProvider(Me.m_uic, Me.m_nudMax, GetType(Single))
 
             Me.m_cbShowScaleAndTitle.Checked = Me.m_sketchpad.DisplayAxis
 
@@ -116,12 +116,12 @@ Namespace Controls
             ' Is mediation sketch pad?
             If (Me.m_sketchpad.ShapeCategory = eShapeCategoryTypes.Mediation) Then
                 ' #Yes: not allowed to rescale
-                Me.cbAutoScale.Enabled = False
+                Me.m_cbAutoScale.Enabled = False
                 'Me.cbRightClickAutoScale.Enabled = False
                 Me.m_fbYMax.Enabled = False
             Else
                 ' #No: scale ahead, Wanda!
-                Me.cbAutoScale.Checked = (Me.m_sketchpad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto)
+                Me.m_cbAutoScale.Checked = (Me.m_sketchpad.YAxisAutoScaleMode = eAxisAutoScaleModeTypes.Auto)
                 'Me.cbRightClickAutoScale.Checked = (m_SketchPad.RightClickAutoScaleMode = eRightClickAutoScaleModeTypes.Auto)
             End If
 
