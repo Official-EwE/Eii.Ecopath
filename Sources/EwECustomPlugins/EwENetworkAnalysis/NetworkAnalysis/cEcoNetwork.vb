@@ -2381,7 +2381,7 @@ EndOfImp:
         Dim Answer As Object = Nothing
         Dim Cnt As Integer
 
-        Dim iProg As Integer
+        'Dim iProg As Integer
 
         bStopNetworkAnnalysis = False
 
