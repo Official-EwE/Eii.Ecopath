@@ -4838,6 +4838,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to You cannot assign a mix of groups and fleets.
+        '''</summary>
+        Public ReadOnly Property PROMPT_MEDIATION_CANNOTMIX() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_MEDIATION_CANNOTMIX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You are about to delete forcing or mediation function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
         Public ReadOnly Property PROMPT_SHAPE_DELETE() As String

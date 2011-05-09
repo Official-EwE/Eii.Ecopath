@@ -2047,4 +2047,7 @@
   <data name="VARIABLE_NAME" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="PROMPT_MEDIATION_CANNOTMIX" xml:space="preserve">
+    <value>You cannot assign a mix of groups and fleets</value>
+  </data>
 </root>

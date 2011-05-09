@@ -131,7 +131,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOkidoki(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnOK.Click
             If Not Me.Apply() Then Return
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -143,7 +143,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnCancel.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
@@ -376,9 +376,14 @@ Namespace Controls
         Private Sub Add(ByVal obj As cCoreInputOutputBase, _
                         Optional ByVal objSec As cCoreInputOutputBase = Nothing, _
                         Optional ByVal sWeight As Single = 1.0)
-            ' Can only define landings for both group and fleet
+
+            ' Is landings?
             If Me.m_bIsLandingsInteractions Then
+                ' #Yes: can only define landings for both group and fleet
                 If objSec Is Nothing Or obj Is Nothing Then Return
+            Else
+                ' #No: can only add groups OR fleets, not both
+
             End If
 
             If Me.m_grid.Add(obj, objSec, sWeight) Then

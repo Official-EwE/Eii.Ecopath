@@ -67,6 +67,26 @@ Namespace Controls
                             ByVal sWeight As Single) As Boolean
             If (Me.FindRow(obj, objSec) <> -1) Then Return False
 
+            ' =====================
+            ' Validate data
+            ' =====================
+
+            ' Is landings?
+            If (Me.m_bLandings) Then
+                ' #Yes: need both fleet and group
+                If (obj Is Nothing) Or (objSec Is Nothing) Then Return False
+            Else
+                ' #No: cannot add mixed entries
+                Dim t As Type = obj.GetType
+                For i As Integer = 1 To Me.RowsCount - 1
+                    If Not t.Equals(Me.RowItemPrim(i).GetType) Then
+                        Dim msg As New cMessage(My.Resources.PROMPT_MEDIATION_CANNOTMIX, eMessageType.Any, EwEUtils.Core.eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                        Me.Core.Messages.SendMessage(msg)
+                        Return False
+                    End If
+                Next
+            End If
+
             Dim fmt As New cCoreInputOutputBaseFormatter()
             Dim ewec As EwECellBase = Nothing
             Dim iCol As Integer = 0
@@ -76,12 +96,9 @@ Namespace Controls
             Me(iRow, iCol) = ewec
             iCol += 1
 
+            ' Is landings?
             If Me.m_bLandings Then
-                If objSec Is Nothing Then
-                    ewec = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
-                Else
-                    ewec = New EwERowHeaderCell(fmt.GetDescriptor(objSec))
-                End If
+                ewec = New EwERowHeaderCell(fmt.GetDescriptor(objSec))
                 Me(iRow, iCol) = ewec
                 iCol += 1
             End If
