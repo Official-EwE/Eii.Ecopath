@@ -162,7 +162,7 @@ Namespace Ecosim
                 Me.Rows.Insert(iRow)
                 sg = Me.Core.StanzaGroups(pair.iStanzaGroup)
 
-                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(iRow)
+                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iRow))
                 Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, sg, eVarNameFlags.Name)
 
                 ' Combo box with strings, no text box

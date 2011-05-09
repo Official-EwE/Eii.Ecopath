@@ -29,8 +29,8 @@ Namespace Controls.EwEGrid
 
 #Region " Construction / destruction "
 
-        Public Sub New(Optional ByVal objValue As Object = Nothing)
-            MyBase.New(objValue)
+        Public Sub New(Optional ByVal strValue As String = "")
+            MyBase.New(strValue)
             Me.m_vizDefault = Me.VisualModel
             Me.VisualModel = g_visualizer
         End Sub
@@ -43,6 +43,24 @@ Namespace Controls.EwEGrid
         Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
             Me.New("")
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
+        End Sub
+
+        Public Sub New(ByVal varname As eVarNameFlags)
+            Me.New(New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name))
+        End Sub
+
+        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+            Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
+                                 New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name), _
+                                 strUnitMask), _
+                   New cStyleGuide.eUnitType() {unitType})
+        End Sub
+
+        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+            Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
+                                 New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name), _
+                                 strUnitMask), _
+                   aUnitTypes)
         End Sub
 
         Public Overrides Sub Dispose()

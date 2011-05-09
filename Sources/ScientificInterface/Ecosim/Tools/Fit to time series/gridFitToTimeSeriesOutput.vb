@@ -118,7 +118,7 @@ Namespace Ecosim
         Protected Overrides Sub FillData()
             For i As Integer = 0 To Me.m_lData.Count - 1
                 Dim out As cOutput = Me.m_lData(i)
-                Me(i + 1, eColumnTypes.Index) = New EwERowHeaderCell(i + 1)
+                Me(i + 1, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i + 1))
                 Me(i + 1, eColumnTypes.NoParams) = New EwECell(out.NumParams, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
                 Me(i + 1, eColumnTypes.NoAICPoints) = New EwECell(Me.m_iNumAICPoints, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
                 Me(i + 1, eColumnTypes.SS) = New EwECell(out.SS, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)

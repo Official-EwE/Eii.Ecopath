@@ -46,7 +46,7 @@ Namespace Ecopath.Output
                 Me.Columns.Insert(columnIndex)
                 Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                 ' Define row header cell
-                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 Me(i, 1) = New EwERowHeaderCell(source.Name)
                 columnIndex = columnIndex + 1
             Next

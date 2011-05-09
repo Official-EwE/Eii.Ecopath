@@ -92,7 +92,7 @@ Namespace Ecosim
             For iGroup As Integer = 1 To Core.nLivingGroups
                 group = Core.EcoPathGroupInputs(iGroup)
                 ' # Group name row header cells
-                Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
+                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_RowColClick)
 
                 ' # Group name row header cells

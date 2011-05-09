@@ -78,7 +78,7 @@ Namespace Ecosim
 
                 Me.AddRow()
 
-                Me(iFleet, eColumnTypes.Index) = New EwERowHeaderCell(iFleet)
+                Me(iFleet, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iFleet))
                 Me(iFleet, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, fleetMSE, eVarNameFlags.Name)
 
                 Me(iFleet, eColumnTypes.OptionNotUsed) = New SourceGrid2.Cells.Real.CheckBox(True)

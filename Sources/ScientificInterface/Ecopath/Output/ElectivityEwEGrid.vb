@@ -139,7 +139,7 @@ Namespace Ecopath.Output
                 ' Column displays mixed consumer/producer groups ( PP < 1)
                 source = core.EcoPathGroupOutputs(i)
                 ' Group index header cell
-                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 

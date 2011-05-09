@@ -41,7 +41,7 @@ Public Class gridBioCV
 
                 Me.AddRow()
 
-                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.Name)
                 '  Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.MSEBioCV)
                 '

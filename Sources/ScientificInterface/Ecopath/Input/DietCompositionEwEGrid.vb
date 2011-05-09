@@ -49,7 +49,7 @@ Namespace Ecopath.Input
             For i As Integer = 1 To Core.nGroups
                 source = Core.EcoPathGroupInputs(i)
                 ' Group index header cell
-                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 If source.PP < 1 Then
@@ -61,15 +61,15 @@ Namespace Ecopath.Input
             Next
 
             ' # DietImport header cell
-            Me(rowCnt - 3, 0) = New EwERowHeaderCell(rowCnt - 3)
+            Me(rowCnt - 3, 0) = New EwERowHeaderCell(CStr(rowCnt - 3))
             Me(rowCnt - 3, 1) = New EwERowHeaderCell(SharedResources.HEADER_IMPORT)
 
             ' # Sum header cell
-            Me(rowCnt - 2, 0) = New EwERowHeaderCell(rowCnt - 2)
+            Me(rowCnt - 2, 0) = New EwERowHeaderCell(CStr(rowCnt - 2))
             Me(rowCnt - 2, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
 
             ' # Sum - 1 header cell
-            Me(rowCnt - 1, 0) = New EwERowHeaderCell(rowCnt - 1)
+            Me(rowCnt - 1, 0) = New EwERowHeaderCell(CStr(rowCnt - 1))
             Me(rowCnt - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_1_MINUS_SUM)
 
             Me.FixedColumns = 2

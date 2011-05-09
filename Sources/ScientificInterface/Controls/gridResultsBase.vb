@@ -63,7 +63,7 @@ Namespace Controls
                 'Insert a new row
                 Me.Rows.Insert(rowIndex)
 
-                Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
+                Me(rowIndex, 0) = New EwERowHeaderCell(CStr(rowIndex))
                 Me(rowIndex, 1) = New EwERowHeaderCell(astrNames(rowIndex - cnt))
 
                 For columnIndex As Integer = 2 To Me.ColumnsCount - 1

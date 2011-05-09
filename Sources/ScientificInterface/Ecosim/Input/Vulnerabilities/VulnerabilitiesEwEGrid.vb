@@ -47,7 +47,7 @@ Namespace Ecosim
             For i As Integer = 1 To Me.Core.nGroups
                 source = Me.Core.EcoPathGroupInputs(i)
                 ' Group index header cell
-                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 'Me(i, 0).Behaviors.Add(m_RowColClick)
 
                 ' # Group name row header cells

@@ -73,14 +73,14 @@ Namespace Ecopath.Input
             Dim propExport As cFormulaProperty = Nothing
 
             ' For each fleet
-            For rowIndex As Integer = 1 To core.nFleets
+            For iRow As Integer = 1 To core.nFleets
                 'Get the fleet info
-                source = core.FleetInputs(rowIndex)
+                source = core.FleetInputs(iRow)
                 ' Clear the arrayList for the sum of new row
                 alSumAll.Clear()
                 ' Fleet name As row header
-                Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
-                Me(rowIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 For columnIndex As Integer = 2 To core.nDetritusGroups + 1
                     ' Get the ecopath input
                     sourceSec = Me.Core.EcoPathGroupInputs(columnIndex - 1)
@@ -89,7 +89,7 @@ Namespace Ecopath.Input
                     ' Add prop to the arraylist
                     alSumAll.Add(prop)
                     'assigned it to destined cell
-                    Me(rowIndex, columnIndex) = New PropertyCell(prop)
+                    Me(iRow, columnIndex) = New PropertyCell(prop)
                 Next
 
                 ' Get the sum of discard fate of all detritus groups
@@ -102,9 +102,9 @@ Namespace Ecopath.Input
                 ' Get the export property
                 propExport = Me.Formula(opMinus)
 
-                Me(rowIndex, Me.ColumnsCount - 2) = New PropertyCell(propExport)
+                Me(iRow, Me.ColumnsCount - 2) = New PropertyCell(propExport)
                 ' The property cell for the sum column, which is not editable and equal to 1
-                Me(rowIndex, Me.ColumnsCount - 1) = New PropertyCell(sum)
+                Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(sum)
             Next
 
         End Sub

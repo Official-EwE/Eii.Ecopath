@@ -140,7 +140,7 @@ Namespace Ecopath.Input
 
             ' Sum row
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell(iRow)
+            Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
             Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
             For fleetIndex As Integer = 1 To Core.nFleets
                 source = Core.FleetInputs(fleetIndex)

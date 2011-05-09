@@ -63,7 +63,7 @@ Public Class gridFishingWeights
                 group = Core.EcoPathGroupInputs(iGroup)
 
                 ' Fleet name As row header
-                Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
+                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 ' Fleet cells

@@ -56,30 +56,30 @@ Namespace Ecopath.Input
             propTotal.SetValue(100.0)
             propTotal.SetStyle(cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 
-            For rowIndex As Integer = 1 To Core.nFleets
+            For iRow As Integer = 1 To Core.nFleets
 
-                Me.Rows.Insert(rowIndex)
+                Me.Rows.Insert(iRow)
                 ' Clear the arrayList for the new row
                 alSumAll.Clear()
 
-                source = Core.FleetInputs(rowIndex)
-                Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
+                source = Core.FleetInputs(iRow)
+                Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
                 ' Fleet name column
-                Me(rowIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
                 'Fixed cost column
                 prop = pm.GetProperty(source, eVarNameFlags.FixedCost)
-                Me(rowIndex, 2) = New PropertyCell(prop)
+                Me(iRow, 2) = New PropertyCell(prop)
                 alSumAll.Add(prop)
 
                 'Effort related cost
                 prop = pm.GetProperty(source, eVarNameFlags.CPUECost)
-                Me(rowIndex, 3) = New PropertyCell(prop)
+                Me(iRow, 3) = New PropertyCell(prop)
                 alSumAll.Add(prop)
 
                 'Sailing related cost
                 prop = pm.GetProperty(source, eVarNameFlags.SailCost)
-                Me(rowIndex, 4) = New PropertyCell(prop)
+                Me(iRow, 4) = New PropertyCell(prop)
                 alSumAll.Add(prop)
 
                 ' Get the dynamic profit cell by using MultiOperation and binaryOperation
@@ -88,10 +88,10 @@ Namespace Ecopath.Input
                 opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, propTotal, propSumAll)
                 propProfit = Me.Formula(opMinus)
 
-                Me(rowIndex, 5) = New PropertyCell(propProfit)
+                Me(iRow, 5) = New PropertyCell(propProfit)
 
                 ' Set the constant total 100.0
-                Me(rowIndex, 6) = New PropertyCell(propTotal)
+                Me(iRow, 6) = New PropertyCell(propTotal)
             Next
 
         End Sub

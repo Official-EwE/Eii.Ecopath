@@ -71,7 +71,7 @@ Namespace Ecosim
                 source = m_manager.GroupObjectives(i)
 
                 Me.Rows.Insert(i)
-                Me(i, eColumnTypes.Index) = New EwERowHeaderCell(i)
+                Me(i, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i))
                 Me(i, eColumnTypes.Group) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 Me(i, eColumnTypes.ManRB) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSGroupMandRelBiom)
                 Me(i, eColumnTypes.StructureW) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSGroupStrucRelWeight)

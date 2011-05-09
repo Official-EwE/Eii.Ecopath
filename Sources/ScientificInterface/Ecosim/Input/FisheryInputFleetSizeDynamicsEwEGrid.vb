@@ -39,15 +39,15 @@ Namespace Ecosim
 
             Dim source As cCoreInputOutputBase = Nothing
 
-            For rowIndex As Integer = 1 To core.nFleets
-                source = core.EcosimFleetInputs(rowIndex)
-                Me.Rows.Insert(rowIndex)
-                Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
-                Me(rowIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                Me(rowIndex, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EPower)
-                Me(rowIndex, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PcapBase)
-                Me(rowIndex, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.CapDepreciate)
-                Me(rowIndex, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.CapBaseGrowth)
+            For iRow As Integer = 1 To core.nFleets
+                source = core.EcosimFleetInputs(iRow)
+                Me.Rows.Insert(iRow)
+                Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
+                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EPower)
+                Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PcapBase)
+                Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.CapDepreciate)
+                Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.CapBaseGrowth)
             Next
 
         End Sub

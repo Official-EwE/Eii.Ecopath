@@ -80,13 +80,13 @@ Namespace Ecospace
             'Dynamic row header - group name 
             For i As Integer = 1 To Me.Core.nGroups
                 source = Me.Core.EcospaceGroups(i)
-                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             'Row header cell - Habitat area
-            Me(Me.Core.nGroups + 1, 0) = New EwERowHeaderCell(Me.Core.nGroups + 1)
+            Me(Me.Core.nGroups + 1, 0) = New EwERowHeaderCell(CStr(Me.Core.nGroups + 1))
             Me(Me.Core.nGroups + 1, 1) = New EwERowHeaderCell(My.Resources.ECOSPACE_HEADER_HABITAT_AREA)
 
             'Dynamic column header - Habitat name

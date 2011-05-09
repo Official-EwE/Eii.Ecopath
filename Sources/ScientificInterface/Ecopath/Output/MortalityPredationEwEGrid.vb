@@ -123,7 +123,7 @@ Namespace Ecopath.Output
             If (Me.UIContext Is Nothing) Then Return
 
             Dim source As cCoreGroupBase = Nothing
-            Dim groupIndex As Integer
+            Dim iGroup As Integer
 
             Me.Redim(core.nLivingGroups + 1, 2)
 
@@ -134,11 +134,11 @@ Namespace Ecopath.Output
 
             Dim columnIndex As Integer = 2
 
-            For groupIndex = 1 To core.nLivingGroups
+            For iGroup = 1 To core.nLivingGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
-                source = core.EcoPathGroupOutputs(groupIndex)
-                Me(groupIndex, 0) = New EwERowHeaderCell(groupIndex)
-                Me(groupIndex, 1) = New EwERowHeaderCell(source.Name)
+                source = core.EcoPathGroupOutputs(iGroup)
+                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, 1) = New EwERowHeaderCell(source.Name)
 
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)

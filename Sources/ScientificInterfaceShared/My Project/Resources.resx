@@ -367,7 +367,7 @@
     <value>QB|Q/B||Consumption over biomass</value>
   </data>
   <data name="VARIABLE_TCATCHINPUT" xml:space="preserve">
-    <value>Catches</value>
+    <value>Catch</value>
   </data>
   <data name="VARIABLE_EEINPUT" xml:space="preserve">
     <value>EE|||Ecotrophic Efficiency</value>
@@ -683,13 +683,6 @@
   <data name="HEADER_BIOMACCURATE_UNIT" xml:space="preserve">
     <value>+ Biomass accum. rate (/{0})</value>
   </data>
-  <data name="HEADER_BIOMASS" xml:space="preserve">
-    <value>Biomass</value>
-  </data>
-  <data name="HEADER_BIOMASSAREA_UNIT" xml:space="preserve">
-    <value>Biomass in habitat area ({0})</value>
-    <comment>{0}: ??? unit</comment>
-  </data>
   <data name="HEADER_BIOMASSEND" xml:space="preserve">
     <value>Biomass (end)</value>
   </data>
@@ -722,10 +715,6 @@
   </data>
   <data name="HEADER_BIOMASS_START" xml:space="preserve">
     <value>Biomass (start)</value>
-  </data>
-  <data name="HEADER_BIOMASS_UNIT" xml:space="preserve">
-    <value>Biomass ({0})</value>
-    <comment>{0}: ??? unit</comment>
   </data>
   <data name="HEADER_BIOMASS_UPPER" xml:space="preserve">
     <value>Biomass upper</value>
@@ -1798,6 +1787,7 @@
   </data>
   <data name="TS_TYPE_FISHMORTREL" xml:space="preserve">
     <value>Relative fishing mortality</value>
+    <comment>Time series type</comment>
   </data>
   <data name="ECOLOGY_BATHYDEMERSAL" xml:space="preserve">
     <value>Bathydemersal</value>
@@ -2033,5 +2023,28 @@
   </data>
   <data name="Info" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Info.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GENERIC_LABEL_PERUNIT" xml:space="preserve">
+    <value>(/{0})</value>
+    <comment>{0}: single unit</comment>
+  </data>
+  <data name="GENERIC_LABEL_UNIT" xml:space="preserve">
+    <value>({0})</value>
+    <comment>{0}: single unit</comment>
+  </data>
+  <data name="HEADER_BIOMASS" xml:space="preserve">
+    <value>Biomass</value>
+  </data>
+  <data name="HEADER_LEADING" xml:space="preserve">
+    <value>Leading</value>
+  </data>
+  <data name="VARIABLE_BIOMASS" xml:space="preserve">
+    <value>B||Biomass</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAREAINPUT" xml:space="preserve">
+    <value>B(a)|B area|Biomass in habitat area</value>
+  </data>
+  <data name="VARIABLE_NAME" xml:space="preserve">
+    <value>Name</value>
   </data>
 </root>

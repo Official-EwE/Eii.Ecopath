@@ -136,7 +136,7 @@ Namespace Ecosim
             For i As Integer = 1 To Core.nGroups
                 source = Core.EcoPathGroupInputs(i)
                 ' # Group name row header cells
-                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 Me(i, 0).Behaviors.Add(m_RowColClick)
 
                 ' # Group name row header cells

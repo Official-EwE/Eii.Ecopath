@@ -159,12 +159,12 @@ Public Class gridRiskResults
         Dim cell As EwECell = Nothing
         Dim cnt As Integer = Me.RowsCount '- 1
 
-        For rowIndex As Integer = cnt To iRow
+        For iIndex As Integer = cnt To iRow
             'Insert a new row
-            Me.Rows.Insert(rowIndex)
+            Me.Rows.Insert(iIndex)
 
-            Me(rowIndex, 0) = New EwERowHeaderCell(rowIndex)
-            Me(rowIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, aSources(rowIndex - 1), eVarNameFlags.Name)
+            Me(iIndex, 0) = New EwERowHeaderCell(CStr(iIndex))
+            Me(iIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, aSources(iIndex - 1), eVarNameFlags.Name)
 
             'not the best way to do this 
             'set the Style of the cell base on its column index not its contents
@@ -177,7 +177,7 @@ Public Class gridRiskResults
                 If Me.m_type = eGridType.Group And columnIndex > 8 Then
                     Dim noCatch As Boolean = True
                     For iflt As Integer = 1 To Me.Core.nFleets
-                        If Me.Core.FleetInputs(iflt).Landings(rowIndex) + Me.Core.FleetInputs(iflt).Discards(rowIndex) > 0 Then
+                        If Me.Core.FleetInputs(iflt).Landings(iIndex) + Me.Core.FleetInputs(iflt).Discards(iIndex) > 0 Then
                             noCatch = False
                             Exit For
                         End If
@@ -188,7 +188,7 @@ Public Class gridRiskResults
                     End If
                 End If
 
-                Me(rowIndex, columnIndex) = cell
+                Me(iIndex, columnIndex) = cell
 
             Next
         Next

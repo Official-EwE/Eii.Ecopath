@@ -41,7 +41,7 @@ Namespace Ecopath.Output
             For i As Integer = 1 To core.nGroups
                 source = core.EcoPathGroupOutputs(i)
                 'Group name row header cell
-                Me(i, 0) = New EwERowHeaderCell(i)
+                Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 Me(i, 1) = New EwERowHeaderCell(source.Name)
 
                 If source.PP < 1 Or source.PP = 2 Then
@@ -52,11 +52,11 @@ Namespace Ecopath.Output
             Next
 
             ' Import cell
-            Me(rowCnt - 2, 0) = New EwERowHeaderCell(rowCnt - 2)
+            Me(rowCnt - 2, 0) = New EwERowHeaderCell(CStr(rowCnt - 2))
             Me(rowCnt - 2, 1) = New EwERowHeaderCell(SharedResources.HEADER_IMPORT)
 
             ' Sum cell
-            Me(rowCnt - 1, 0) = New EwERowHeaderCell(rowCnt - 1)
+            Me(rowCnt - 1, 0) = New EwERowHeaderCell(CStr(rowCnt - 1))
             Me(rowCnt - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2

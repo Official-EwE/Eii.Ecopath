@@ -22,7 +22,7 @@ Public Class gridEditMultiStanza
         Name
         StartAge
         Leading
-        BiomassAreaInput
+        Biomass
         PBInput
         QBInput
     End Enum
@@ -63,8 +63,8 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STARTAGE)
-        Me(0, eColumnTypes.Leading) = New EwEColumnHeaderCell("Leading")
-        Me(0, eColumnTypes.BiomassAreaInput) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_UNIT, cStyleGuide.eUnitType.Currency)
+        Me(0, eColumnTypes.Leading) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
+        Me(0, eColumnTypes.Biomass) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
         Me(0, eColumnTypes.PBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
         Me(0, eColumnTypes.QBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
 
@@ -110,8 +110,8 @@ Public Class gridEditMultiStanza
             ewec = New EwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.Biomass(iStanza)
-            Me(iRow, eColumnTypes.BiomassAreaInput) = ewec
-            Me(iRow, eColumnTypes.BiomassAreaInput).Behaviors.Add(Me.EwEEditHandler)
+            Me(iRow, eColumnTypes.Biomass) = ewec
+            Me(iRow, eColumnTypes.Biomass).Behaviors.Add(Me.EwEEditHandler)
 
             'Total Mortality
             ewec = New EwECell(0, GetType(Single))
@@ -149,7 +149,7 @@ Public Class gridEditMultiStanza
             ''Start age
             'Me.m_stanzagroup.SetVariable(eVarNameFlags.StartAge, Me(iStanza, eColumnTypes.StartAge).Value, iStanza)
             'Biomass
-            Me.m_stanzagroup.Biomass(iStanza) = CSng(Me(iStanza, eColumnTypes.BiomassAreaInput).Value)
+            Me.m_stanzagroup.Biomass(iStanza) = CSng(Me(iStanza, eColumnTypes.Biomass).Value)
             'Total Mortality
             Me.m_stanzagroup.Mortality(iStanza) = CSng(Me(iStanza, eColumnTypes.PBInput).Value)
             'Consumption/Biomass
@@ -183,7 +183,7 @@ Public Class gridEditMultiStanza
             bLeading = (iRow = iStanza)
             If bLeading Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable
             Me(iStanza, eColumnTypes.Leading).Value = (iRow = iStanza)
-            DirectCast(Me(iStanza, eColumnTypes.BiomassAreaInput), EwECell).Style = style
+            DirectCast(Me(iStanza, eColumnTypes.Biomass), EwECell).Style = style
             DirectCast(Me(iStanza, eColumnTypes.QBInput), EwECell).Style = style
         Next
 

@@ -48,7 +48,7 @@ Public Class gridFixedEscapement
             group = Me.Core.EcoPathGroupInputs(iGroup)
             MSEGrp = Me.Core.MSEManager.GroupInputs(iGroup)
 
-            Me(iGroup, 0) = New EwERowHeaderCell(iGroup)
+            Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
 
             'Group name as row header
             Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, MSEGrp, eVarNameFlags.Name)

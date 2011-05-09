@@ -100,7 +100,7 @@ Namespace Ecosim
 
                 Me.AddRow()
 
-                Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(iGroup)
+                Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 Me(iGroup, eColumnTypes.RHalfB) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.RHalfB0Ratio)

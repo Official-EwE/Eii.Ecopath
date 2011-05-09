@@ -925,6 +925,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (/{0}).
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_PERUNIT() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_PERUNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} ({1}, {2}).
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_POINT() As String
@@ -966,6 +975,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_LABEL_STEP_SIZE() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_STEP_SIZE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to ({0}).
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_UNIT() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -1535,29 +1553,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass ({0}).
-        '''</summary>
-        Public ReadOnly Property HEADER_BIOMASS_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_BIOMASS_UNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Biomass upper.
         '''</summary>
         Public ReadOnly Property HEADER_BIOMASS_UPPER() As String
             Get
                 Return ResourceManager.GetString("HEADER_BIOMASS_UPPER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Biomass in habitat area ({0}).
-        '''</summary>
-        Public ReadOnly Property HEADER_BIOMASSAREA_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_BIOMASSAREA_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -2737,6 +2737,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_LAYER_INDEXED() As String
             Get
                 Return ResourceManager.GetString("HEADER_LAYER_INDEXED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Leading.
+        '''</summary>
+        Public ReadOnly Property HEADER_LEADING() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LEADING", resourceCulture)
             End Get
         End Property
         
@@ -5284,6 +5293,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to B||Biomass.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to B(a)|B area|Biomass in habitat area.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_BIOMASSAREAINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOMASSAREAINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to DC|Diet||Diet composition.
         '''</summary>
         Public ReadOnly Property VARIABLE_DIETCOMP() As String
@@ -5298,6 +5325,15 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_EEINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_EEINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Name.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_NAME() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_NAME", resourceCulture)
             End Get
         End Property
         
@@ -5320,7 +5356,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catches.
+        '''  Looks up a localized string similar to Catch.
         '''</summary>
         Public ReadOnly Property VARIABLE_TCATCHINPUT() As String
             Get

@@ -178,7 +178,7 @@ Namespace Ecosim
                 Me.Core.EstimateVulnerabilities(iGroup, sPotGrowth, sFMax, estimates)
 
                 Me.AddRow()
-                Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(iGroup)
+                Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 If sPotGrowth >= 0 Then style = eStyleFlags.OK Else style = eStyleFlags.Null Or eStyleFlags.NotEditable
