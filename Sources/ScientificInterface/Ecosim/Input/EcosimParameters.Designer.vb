@@ -34,8 +34,8 @@ Namespace Ecosim
             Me.m_lblNutForcing = New System.Windows.Forms.Label
             Me.m_lblNutBaseFreeProp = New System.Windows.Forms.Label
             Me.m_lblNumberYears = New System.Windows.Forms.Label
-            Me.m_lblInitializationHeader = New System.Windows.Forms.Label
-            Me.m_lblScenario = New System.Windows.Forms.Label
+            Me.m_hdrInitialization = New cEwEHeaderLabel
+            Me.m_hdrScenario = New cEwEHeaderLabel
             Me.m_tbContact = New System.Windows.Forms.TextBox
             Me.m_tbAuthor = New System.Windows.Forms.TextBox
             Me.m_lbContact = New System.Windows.Forms.Label
@@ -107,19 +107,19 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblNumberYears, "m_lblNumberYears")
             Me.m_lblNumberYears.Name = "m_lblNumberYears"
             '
-            'm_lblInitializationHeader
+            'm_hdrInitialization
             '
-            resources.ApplyResources(Me.m_lblInitializationHeader, "m_lblInitializationHeader")
-            Me.m_lblInitializationHeader.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblInitializationHeader.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblInitializationHeader.Name = "m_lblInitializationHeader"
+            resources.ApplyResources(Me.m_hdrInitialization, "m_hdrInitialization")
+            Me.m_hdrInitialization.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_hdrInitialization.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_hdrInitialization.Name = "m_hdrInitialization"
             '
-            'm_lblScenario
+            'm_hdrScenario
             '
-            resources.ApplyResources(Me.m_lblScenario, "m_lblScenario")
-            Me.m_lblScenario.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblScenario.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblScenario.Name = "m_lblScenario"
+            resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
+            Me.m_hdrScenario.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_hdrScenario.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Me.m_hdrScenario.Name = "m_hdrScenario"
             '
             'm_tbContact
             '
@@ -189,11 +189,11 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_tbContact)
             Me.Controls.Add(Me.m_nudNumberYears)
             Me.Controls.Add(Me.m_tbAuthor)
-            Me.Controls.Add(Me.m_lblScenario)
+            Me.Controls.Add(Me.m_hdrScenario)
             Me.Controls.Add(Me.m_cmbSalinityForcing)
             Me.Controls.Add(Me.m_lbContact)
             Me.Controls.Add(Me.m_cmbNutForcing)
-            Me.Controls.Add(Me.m_lblInitializationHeader)
+            Me.Controls.Add(Me.m_hdrInitialization)
             Me.Controls.Add(Me.m_chkPredictEffort)
             Me.Controls.Add(Me.m_lbAuthor)
             Me.Controls.Add(Me.m_chkUseVarPQ)
@@ -213,11 +213,11 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents m_tbDescription As System.Windows.Forms.TextBox
-        Friend WithEvents m_tbName As System.Windows.Forms.TextBox
-        Friend WithEvents m_tbContact As System.Windows.Forms.TextBox
-        Friend WithEvents m_tbAuthor As System.Windows.Forms.TextBox
-        Friend WithEvents m_nudNutBaseFreeProp As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
+        Private WithEvents m_tbName As System.Windows.Forms.TextBox
+        Private WithEvents m_tbContact As System.Windows.Forms.TextBox
+        Private WithEvents m_tbAuthor As System.Windows.Forms.TextBox
+        Private WithEvents m_nudNutBaseFreeProp As System.Windows.Forms.NumericUpDown
         Private WithEvents m_chkUseVarPQ As System.Windows.Forms.CheckBox
         Private WithEvents m_lbScenarioName As System.Windows.Forms.Label
         Private WithEvents m_lbContact As System.Windows.Forms.Label
@@ -234,8 +234,8 @@ Namespace Ecosim
         Private WithEvents m_lblTempLoading As System.Windows.Forms.Label
         Private WithEvents m_chkPredictEffort As System.Windows.Forms.CheckBox
         Private WithEvents m_chkConTracing As System.Windows.Forms.CheckBox
-        Private WithEvents m_lblScenario As System.Windows.Forms.Label
-        Private WithEvents m_lblInitializationHeader As System.Windows.Forms.Label
+        Private WithEvents m_hdrScenario As cEwEHeaderLabel
+        Private WithEvents m_hdrInitialization As cEwEHeaderLabel
 
     End Class
 End Namespace

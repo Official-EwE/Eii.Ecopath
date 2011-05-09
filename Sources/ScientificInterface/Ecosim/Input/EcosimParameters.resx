@@ -369,76 +369,70 @@
   <data name="&gt;&gt;m_lblNumberYears.ZOrder" xml:space="preserve">
     <value>22</value>
   </data>
-  <data name="m_lblInitializationHeader.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrInitialization.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblInitializationHeader.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="m_lblInitializationHeader.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrInitialization.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblInitializationHeader.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrInitialization.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 279</value>
   </data>
-  <data name="m_lblInitializationHeader.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrInitialization.Size" type="System.Drawing.Size, System.Drawing">
     <value>773, 18</value>
   </data>
-  <data name="m_lblInitializationHeader.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrInitialization.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_lblInitializationHeader.Text" xml:space="preserve">
+  <data name="m_hdrInitialization.Text" xml:space="preserve">
     <value>Initialization</value>
   </data>
-  <data name="m_lblInitializationHeader.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrInitialization.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblInitializationHeader.Name" xml:space="preserve">
-    <value>m_lblInitializationHeader</value>
+  <data name="&gt;&gt;m_hdrInitialization.Name" xml:space="preserve">
+    <value>m_hdrInitialization</value>
   </data>
-  <data name="&gt;&gt;m_lblInitializationHeader.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrInitialization.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblInitializationHeader.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrInitialization.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblInitializationHeader.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrInitialization.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="m_lblScenario.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrScenario.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblScenario.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="m_lblScenario.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrScenario.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblScenario.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrScenario.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 9</value>
   </data>
-  <data name="m_lblScenario.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrScenario.Size" type="System.Drawing.Size, System.Drawing">
     <value>773, 18</value>
   </data>
-  <data name="m_lblScenario.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrScenario.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_lblScenario.Text" xml:space="preserve">
+  <data name="m_hdrScenario.Text" xml:space="preserve">
     <value>Scenario</value>
   </data>
-  <data name="m_lblScenario.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrScenario.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblScenario.Name" xml:space="preserve">
-    <value>m_lblScenario</value>
+  <data name="&gt;&gt;m_hdrScenario.Name" xml:space="preserve">
+    <value>m_hdrScenario</value>
   </data>
-  <data name="&gt;&gt;m_lblScenario.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrScenario.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblScenario.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrScenario.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblScenario.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrScenario.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="m_tbContact.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -763,6 +757,6 @@
     <value>EcosimParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.919, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.508, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
