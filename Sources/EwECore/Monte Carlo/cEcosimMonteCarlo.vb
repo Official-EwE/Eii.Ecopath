@@ -129,7 +129,6 @@ Public Class cEcosimMonteCarlo
 
         Ntrials = 20 'default number of trials
 
-        Me.bSaveOutput = True
         Me.m_ouputWriter = New cMonteCarloResultsWriter(Me, Me.m_core)
 
     End Sub
@@ -451,7 +450,7 @@ Public Class cEcosimMonteCarlo
                 TrialProgress(iTrial, iter)
                 EcopathIterationsProgress(iter)
 
-                Me.m_ouputWriter.SaveIteration(iTrial)
+                Me.m_ouputWriter.Save(False)
 
                 If RunsSinceLastWithLowerSS > 2000 Then Exit For
             Next iTrial
@@ -526,6 +525,7 @@ Public Class cEcosimMonteCarlo
         Try
             Me.nTrialIterations = iTrial
             Me.nEcopathIterations = iEcopathIterations
+            Me.SSCurrent = Me.m_core.m_EcoSimData.SS
             If dlgTrialStepHandler IsNot Nothing Then
                 Me.dlgTrialStepHandler()
             End If

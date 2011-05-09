@@ -103,6 +103,10 @@ Namespace Ecosim
             ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
             Me.m_mcmanager.bRetainFits = m_cbRetainEstimates.Checked
 
+            'Set the interface checkbox with the value from the core
+            Me.m_cbSave.Checked = Me.m_mcmanager.bSaveOutput
+
+
             Me.m_plothelper = New cEcosimOutputPlotHelper()
             Me.m_plothelper.Attach(Me.UIContext, Me.m_graph)
             Me.m_plothelper.ShowMultipleRuns = True
@@ -192,9 +196,14 @@ Namespace Ecosim
 
         Private Sub cbRetainEstimates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbRetainEstimates.CheckedChanged
+
             If Not Me.m_mcmanager Is Nothing Then
-                Me.m_mcmanager.bRetainFits = m_cbRetainEstimates.Checked
+                Try
+                    Me.m_mcmanager.nTrials = CInt(Me.m_nudNumTrials.Value)
+                Catch ex As Exception
+                End Try
             End If
+
         End Sub
 
         Private Sub nudNumTrials_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
@@ -205,6 +214,18 @@ Namespace Ecosim
                 Catch ex As Exception
                 End Try
             End If
+        End Sub
+
+        Private Sub m_cbSave_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+                    Handles m_cbSave.CheckedChanged
+
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.bSaveOutput = Me.m_cbSave.Checked
+                Catch ex As Exception
+                End Try
+            End If
+
         End Sub
 
         Private Sub OnLoadFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -474,6 +495,7 @@ Namespace Ecosim
 
 #End Region ' Internals
 
+        
     End Class
 
 End Namespace

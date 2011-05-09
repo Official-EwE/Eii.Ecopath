@@ -65,6 +65,7 @@ Namespace Ecosim
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel
             Me.m_btnFromPedigree = New System.Windows.Forms.Button
+            Me.m_cbSave = New System.Windows.Forms.CheckBox
             Me.m_tcOutput.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
             Me.m_tbpBP.SuspendLayout()
@@ -300,6 +301,7 @@ Namespace Ecosim
             Me.m_lbGroups.FormattingEnabled = True
             Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
+            Me.m_lbGroups.IsAllGroupsItemSelected = False
             Me.m_lbGroups.Name = "m_lbGroups"
             Me.m_lbGroups.SelectedGroup = Nothing
             Me.m_lbGroups.SelectedGroupIndex = -1
@@ -468,10 +470,17 @@ Namespace Ecosim
             Me.m_btnFromPedigree.Name = "m_btnFromPedigree"
             Me.m_btnFromPedigree.UseVisualStyleBackColor = True
             '
+            'm_cbSave
+            '
+            resources.ApplyResources(Me.m_cbSave, "m_cbSave")
+            Me.m_cbSave.Name = "m_cbSave"
+            Me.m_cbSave.UseVisualStyleBackColor = True
+            '
             'MCRun
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_cbSave)
             Me.Controls.Add(Me.m_tlpOutputs)
             Me.Controls.Add(Me.m_hdrOutputParam)
             Me.Controls.Add(Me.m_hdrInputOpt)
@@ -544,6 +553,7 @@ Namespace Ecosim
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents m_lblGroups As System.Windows.Forms.Label
         Private WithEvents m_btnFromPedigree As System.Windows.Forms.Button
+        Friend WithEvents m_cbSave As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace

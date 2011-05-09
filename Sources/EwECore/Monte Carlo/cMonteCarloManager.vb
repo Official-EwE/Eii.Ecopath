@@ -572,6 +572,15 @@ Public Class cMonteCarloManager
         End Get
     End Property
 
+    Public Property bSaveOutput() As Boolean
+        Get
+            Return Me.m_mc.bSaveOutput
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_mc.bSaveOutput = value
+        End Set
+    End Property
+
     Public Sub LoadFromPedigree()
 
         Try
