@@ -11066,6 +11066,19 @@ Public Class cCore
 
 #End Region ' Pedigree
 
+#Region " Meta data "
+
+    Public Function GetDataDescription(ByVal dt As eDataTypes, ByVal iDBID As Integer) As String
+        If (Me.m_DataSource IsNot Nothing) Then
+            If (TypeOf Me.DataSource Is IEwEDatasourceMetadata) Then
+                Return DirectCast(Me.DataSource, IEwEDatasourceMetadata).GetDescription(dt, iDBID)
+            End If
+        End If
+        Return ""
+    End Function
+
+#End Region ' Meta data
+
 #End Region ' Auxillary data
 
 #Region " Variable validation "

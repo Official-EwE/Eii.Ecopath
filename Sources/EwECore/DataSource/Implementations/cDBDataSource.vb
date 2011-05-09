@@ -31,6 +31,7 @@ Namespace DataSources
         Implements IEcosimDatasource
         Implements IEcospaceDatasource
         Implements IEcotracerDatasource
+        Implements IEwEDatasourceMetadata
 
 #Region " Internal definitions "
 
@@ -10063,6 +10064,79 @@ Namespace DataSources
         End Function
 
 #End Region ' Auxillary data
+
+#Region " Meta data "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IEwEDatasourceMetadata.GetDescription"/>
+        ''' -------------------------------------------------------------------
+        Public Function GetDescription(ByVal dt As EwEUtils.Core.eDataTypes, ByVal iDBID As Integer) As String _
+            Implements IEwEDatasourceMetadata.GetDescription
+
+            Dim strTable As String = ""
+            Dim strDBIDField As String = ""
+            Dim strNameField As String = ""
+
+            Select Case dt
+
+                Case eDataTypes.EwEModel
+                    strTable = "EcopathModel"
+                    strNameField = "Name"
+
+                Case eDataTypes.EcoPathGroupInput, eDataTypes.EcoPathGroupOutput
+                    strTable = "EcopathGroup"
+                    strDBIDField = "GroupID"
+                    strNameField = "GroupName"
+
+                Case eDataTypes.EcosimFleetInput
+                    strTable = "EcopathFleet"
+                    strDBIDField = "FleetID"
+                    strNameField = "FleetName"
+
+                Case eDataTypes.EcoSimScenario
+                    strTable = "EcosimScenario"
+                    strDBIDField = "ScenarioID"
+                    strNameField = "ScenarioName"
+
+                Case eDataTypes.EcoSimGroupInput, eDataTypes.EcoSimGroupOutput
+                    ' Link to Ecopath group
+                    Return Me.GetDescription(eDataTypes.EcoPathGroupInput, CInt(Me.m_db.GetValue("SELECT EcopathGroupID FROM EcoSimScenarioGroup WHERE GroupID=" & iDBID)))
+
+                Case eDataTypes.EcosimFleetInput, eDataTypes.EcosimFleetOutput
+                    ' Link to Ecopath fleet
+                    Return Me.GetDescription(eDataTypes.EcoPathGroupInput, CInt(Me.m_db.GetValue("SELECT EcopathFleetID FROM EcoSimScenarioFleet WHERE FleetID=" & iDBID)))
+
+                Case eDataTypes.EcoSpaceScenario
+                    strTable = "EcospaceScenario"
+                    strDBIDField = "ScenarioID"
+                    strNameField = "ScenarioName"
+
+                Case eDataTypes.EcospaceGroup, eDataTypes.EcospaceGroupOuput
+                    ' Link to Ecopath group
+                    Return Me.GetDescription(eDataTypes.EcoPathGroupInput, CInt(Me.m_db.GetValue("SELECT EcopathGroupID FROM EcospaceScenarioGroup WHERE GroupID=" & iDBID)))
+
+                Case eDataTypes.EcospaceFleet, eDataTypes.EcospaceFleetOuput
+                    ' Link to Ecopath fleet
+                    Return Me.GetDescription(eDataTypes.EcoPathGroupInput, CInt(Me.m_db.GetValue("SELECT EcopathFleetID FROM EcospaceScenarioFleet WHERE FleetID=" & iDBID)))
+
+                Case eDataTypes.EcotracerScenario
+                    strTable = "EcospaceScenario"
+                    strDBIDField = "ScenarioID"
+                    strNameField = "ScenarioName"
+
+                Case Else
+                    Return ""
+
+            End Select
+
+            Dim strSQL As String = "SELECT " & strNameField & " FROM " & strTable
+            If Not String.IsNullOrEmpty(strDBIDField) Then strSQL &= " WHERE " & strDBIDField & "=" & iDBID
+
+            Return CStr(Me.m_db.GetValue(strSQL))
+
+        End Function
+
+#End Region ' Meta data
 
     End Class
 
