@@ -49,7 +49,7 @@ Public Class cLandingsInteraction
         Dim man As cLandingsMediationManager = Me.m_manager.getCore.LandingsShapeManager
         Dim bSucces As Boolean = True
 
-        For i As Integer = 1 To esdata.PriceMedData.MAXFUNCTIONS
+        For i As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
             If esdata.PriceMedData.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, i) = 0 Then Exit For
 
             SFPair = m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
