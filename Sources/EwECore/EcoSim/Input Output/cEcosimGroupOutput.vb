@@ -70,6 +70,10 @@ Public Class cEcosimGroupOutput
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimGroupValueEnd, eStatusFlags.OK, eCoreCounterTypes.nFleets, AddressOf TheCore.GetCoreCounter)
         m_values.Add(val.varName, val)
 
+        'no validators
+        val = New cValue(False, eVarNameFlags.EcosimIsCatchAggregated, eStatusFlags.OK, eValueTypes.Bool)
+        m_values.Add(val.varName, val)
+
 
     End Sub
 
@@ -193,6 +197,23 @@ Public Class cEcosimGroupOutput
 #End Region
 
 #Region "Properties via dot operator"
+
+
+    ''' <summary>
+    ''' Is the catch on this group aggregated across all the fleets.
+    ''' </summary>
+    Public Property isCatchAggregated() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcosimIsCatchAggregated))
+        End Get
+
+        Friend Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcosimIsCatchAggregated, value)
+        End Set
+
+    End Property
+
 
     ''' <summary>
     ''' Get whether this group is predated on by <paramref name="iGroup">group index</paramref>.

@@ -1873,22 +1873,17 @@ Namespace Ecosim
                         Dim bioCatch As Single
                         Dim FleetProp As Single
 
-                        'Bug #817 When F time series is loaded the F is loaded directly into FishRateNo() and FishTime()
-                        'FishRateGear() and FishMGear() are never affected by the time series so catch calculation using them will be wrong
-
-                        'If F time series is loaded then only F from the time series makes up the catch.
-                        'Not the sum across all the fleets. This ignores the catch from the fleets and puts all the catch into the first fleet.
-                        'This is still sort of wrong but at least the Catch weight is correct just not the fleet that caught it, which we cannot know from the time series data.
-
+                        'If F time series is loaded then the fleet proportions are not known
+                        'In that case the correct Catch is in the zero fleet index
+                        'And IsCatchAggregated(group) = True
                         For iflt = 1 To m_Data.nGear
                             If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
 
                                 FleetProp = m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
-                                'F is forced so assume (possible wrongly?) that all catch is from the first fleet the exploits this group
-                                If Me.m_Data.FisForced(igrp) Then FleetProp = 1
 
                                 bioCatch = BB(igrp) * m_Data.FishTime(igrp) * FleetProp
 
+                                'Remove the discards ResultsLandings(group,fleet) contains only landings
                                 Me.m_Data.ResultsLandings(igrp, iflt) += bioCatch * Me.m_EPData.PropLanded(iflt, igrp)
 
                                 m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = bioCatch
@@ -1902,13 +1897,10 @@ Namespace Ecosim
                                 ' Catch by group, by fleet
                                 m_Results.BCatch(igrp, iflt) = bioCatch
 
-                                'F is forced so just do the first fleet
-                                If Me.m_Data.FisForced(igrp) Then Exit For
                             End If
-                        Next
+                        Next iflt
 
-
-                    Else
+                    Else 'If m_Data.FishTime(igrp) > 0 Then
 
                         For iflt = 1 To m_Data.nGear
                             m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = 0

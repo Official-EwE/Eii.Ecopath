@@ -702,6 +702,9 @@ Namespace Core
 
         EcosimEcoSystemStruct
 
+        ''' <summary>Is the catch for this group aggregated across all the fleet.</summary>
+        EcosimIsCatchAggregated
+
         'Joeh
         ''' <summary>Ecopath ouput data over time</summary>
         EcopathWeight

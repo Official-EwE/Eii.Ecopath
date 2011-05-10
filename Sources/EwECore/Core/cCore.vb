@@ -6356,6 +6356,7 @@ Public Class cCore
             group.BiomassStart = sBio
             group.BiomassEnd = EndBio
             group.PP = m_EcoPathData.PP(iGroup)
+            group.isCatchAggregated = Me.m_EcoSimData.FisForced(iGroup)
 
             'catch by group
             For iFlt As Integer = 0 To nFleets 'Zero is the combined fleets 
