@@ -258,7 +258,12 @@ Namespace Controls
                 If Not Me.m_bInUpdate Then
                     Me.m_bInUpdate = True
                     Me.UpdateControls()
-                    RaiseEvent OnSelectionChanged(lShapes.ToArray())
+                    ' JS 10May11: event try/caught
+                    Try
+                        RaiseEvent OnSelectionChanged(lShapes.ToArray())
+                    Catch ex As Exception
+                        Debug.Assert(False, ex.Message)
+                    End Try
                     Me.m_bInUpdate = False
                 End If
 
