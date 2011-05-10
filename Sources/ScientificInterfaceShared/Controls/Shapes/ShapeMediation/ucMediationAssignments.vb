@@ -363,7 +363,6 @@ Namespace Controls
             pane.XAxis.Scale.IsVisible = False
             pane.CurveList.Clear()
 
-
             For i As Integer = 0 To Data.Groups.Length - 1
 
                 ' Get the group
@@ -410,16 +409,18 @@ Namespace Controls
                 Dim sliceVal As Double = CDbl(valSource.GetVariable(varname, iGroup)) * medGrp.Weight
                 Dim slice As PieItem = pane.AddPieSlice(sliceVal, clr, 0.05, strLabel)
                 slice.ValueDecimalDigits = sg.NumDigits
-                slice.LabelType = PieLabelType.Name_Value_Percent
+                slice.LabelType = PieLabelType.Value
 
             Next
 
             ' Configure pane
+            pane.Legend.IsVisible = True
             pane.Legend.Position = LegendPos.Right
             pane.Legend.IsHStack = False
 
-            pane.Title.Text = strTitle
-            pane.Title.IsVisible = True
+            'jb removed the title to make a little more room
+            '  pane.Title.Text = strTitle
+            '  pane.Title.IsVisible = True
             pane.Rect = Me.ClientRectangle
 
         End Sub

@@ -31,10 +31,9 @@ Namespace Ecosim
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucMediationSketchPad
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
-            Me.m_tlpBiopercent = New System.Windows.Forms.TableLayoutPanel
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.m_assignmentsToolbar = New ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar
             Me.m_assignments = New ScientificInterfaceShared.Controls.ucMediationAssignments
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
             Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
             Me.plSketchPad.SuspendLayout()
@@ -43,9 +42,7 @@ Namespace Ecosim
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
             Me.SplitContainer2.Panel1.SuspendLayout()
-            Me.SplitContainer2.Panel2.SuspendLayout()
             Me.SplitContainer2.SuspendLayout()
-            Me.m_tlpBiopercent.SuspendLayout()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -117,17 +114,16 @@ Namespace Ecosim
             'SplitContainer2.Panel1
             '
             Me.SplitContainer2.Panel1.Controls.Add(Me.plSketchPad)
+            Me.SplitContainer2.Panel2Collapsed = True
             '
-            'SplitContainer2.Panel2
+            'TableLayoutPanel1
             '
-            Me.SplitContainer2.Panel2.Controls.Add(Me.m_tlpBiopercent)
-            '
-            'm_tlpBiopercent
-            '
-            resources.ApplyResources(Me.m_tlpBiopercent, "m_tlpBiopercent")
-            Me.m_tlpBiopercent.Controls.Add(Me.m_assignmentsToolbar, 0, 0)
-            Me.m_tlpBiopercent.Controls.Add(Me.m_assignments, 0, 1)
-            Me.m_tlpBiopercent.Name = "m_tlpBiopercent"
+            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+            Me.TableLayoutPanel1.Controls.Add(Me.m_assignmentsToolbar, 1, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_assignments, 1, 1)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_shapeToolBox, 0, 1)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_shapeToolboxToolbar, 0, 0)
+            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
             '
             'm_assignmentsToolbar
             '
@@ -145,15 +141,9 @@ Namespace Ecosim
             Me.m_assignments.Name = "m_assignments"
             Me.m_assignments.Shape = Nothing
             Me.m_assignments.UIContext = Nothing
+            Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Pie
             Me.m_assignments.XAxisLabel = "Landings"
             Me.m_assignments.YAxisLabel = "Relative weight"
-            '
-            'TableLayoutPanel1
-            '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.m_shapeToolBox, 0, 1)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_shapeToolboxToolbar, 0, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
             '
             'm_shapeToolBox
             '
@@ -185,26 +175,23 @@ Namespace Ecosim
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             Me.SplitContainer1.ResumeLayout(False)
             Me.SplitContainer2.Panel1.ResumeLayout(False)
-            Me.SplitContainer2.Panel2.ResumeLayout(False)
             Me.SplitContainer2.ResumeLayout(False)
-            Me.m_tlpBiopercent.ResumeLayout(False)
-            Me.m_tlpBiopercent.PerformLayout()
             Me.TableLayoutPanel1.ResumeLayout(False)
+            Me.TableLayoutPanel1.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents plSketchPad As System.Windows.Forms.Panel
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Private WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
-        Private WithEvents tlpSketchPad As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_sketchPadToolbar As ucSketchPadToolbar
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_shapeToolBox As ucShapeToolbox
         Private WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
-        Private WithEvents m_sketchPad As ucMediationSketchPad
-        Private WithEvents m_assignments As ucMediationAssignments
-        Private WithEvents m_assignmentsToolbar As ucMediationAssignmentsToolbar
-        Private WithEvents m_tlpBiopercent As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_assignmentsToolbar As ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar
+        Private WithEvents m_assignments As ScientificInterfaceShared.Controls.ucMediationAssignments
+        Private WithEvents tlpSketchPad As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_sketchPadToolbar As ScientificInterfaceShared.Controls.ucSketchPadToolbar
+        Private WithEvents m_sketchPad As ScientificInterfaceShared.Controls.ucMediationSketchPad
 
     End Class
 End Namespace
