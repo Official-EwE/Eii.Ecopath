@@ -2120,7 +2120,7 @@ Public Class cCore
         Get
             If String.IsNullOrEmpty(Me.m_strOutputPath) Then
                 If Me.DataSource IsNot Nothing Then
-                    Return Path.Combine(Me.DataSource.Directory, cFileUtils.ToValidFileName("EwEoutput " & Me.m_EwEModel.Name, False))
+                    Return Path.Combine(Me.DataSource.Directory, cFileUtils.ToValidFileName("EwEoutput " & Me.DataSource.FileName, False))
                 End If
             End If
             Return Me.m_strOutputPath

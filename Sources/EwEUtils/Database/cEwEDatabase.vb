@@ -654,10 +654,24 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get a directory assicoated with this database.
+        ''' Get a directory associated with this database.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public MustOverride ReadOnly Property Directory() As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a file name associated with this database.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public MustOverride ReadOnly Property FileName() As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a file extension associated with this database.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public MustOverride ReadOnly Property Extension() As String
 
 #End Region ' Connection
 

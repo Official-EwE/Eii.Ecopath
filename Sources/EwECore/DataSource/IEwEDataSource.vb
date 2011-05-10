@@ -123,10 +123,24 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the directory assicoated with a data source.
+        ''' Get the directory associated with a data source.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Function Directory() As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the file name associated with a data source.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Function FileName() As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the file extension associated with a data source.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Function Extension() As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>

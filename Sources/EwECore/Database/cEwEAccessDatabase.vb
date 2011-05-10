@@ -513,13 +513,37 @@ Namespace Database
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cEwEDatabase.MaxDBVersion"/>
+        ''' -------------------------------------------------------------------
         Public Overrides Function MaxDBVersion() As Single
             Return cDatabaseUpdater.MaxSupportedVersion
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cEwEDatabase.Directory"/>
+        ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property Directory() As String
             Get
                 Return Path.GetDirectoryName(Me.m_strFileName)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cEwEDatabase.FileName"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides ReadOnly Property FileName() As String
+            Get
+                Return Path.GetFileNameWithoutExtension(Me.m_strFileName)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cEwEDatabase.Extension"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides ReadOnly Property Extension() As String
+            Get
+                Return Path.GetExtension(Me.m_strFileName)
             End Get
         End Property
 

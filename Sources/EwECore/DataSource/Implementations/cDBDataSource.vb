@@ -212,13 +212,27 @@ Namespace DataSources
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns a string representation of the data source.
-        ''' </summary>
+        ''' <inheritdocs cref="IEwEDataSource.Directory"/>
         ''' -------------------------------------------------------------------
         Public Function Directory() As String _
             Implements IEwEDataSource.Directory
             Return Me.m_db.Directory
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IEwEDataSource.FileName"/>
+        ''' -------------------------------------------------------------------
+        Public Function FileName() As String _
+            Implements IEwEDataSource.FileName
+            Return Me.m_db.FileName
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IEwEDataSource.Extension"/>
+        ''' -------------------------------------------------------------------
+        Public Function Extension() As String _
+            Implements IEwEDataSource.Extension
+            Return Me.m_db.Extension
         End Function
 
         ''' -------------------------------------------------------------------

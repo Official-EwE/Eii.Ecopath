@@ -64,7 +64,7 @@ Public Class cPathUtility
         If (core Is Nothing) Then Return False
         If (Not core.StateMonitor.HasEcopathLoaded) Then Return False
         Dim strVersion As String = core.DataSource.Version.ToString
-        Return cPathUtility.ResolvePath(strMask, core.DataSource.ToString, strVersion, strPathOut)
+        Return cPathUtility.ResolvePath(strMask, core.DataSource.Directory, core.DataSource.FileName, core.DataSource.Extension, strVersion, strPathOut)
     End Function
 
     ''' -----------------------------------------------------------------------

@@ -138,7 +138,7 @@
       <Value Profile="(Default)">{ModelPath}\{ModelFile}_{Date}-{Time}_backup</Value>
     </Setting>
     <Setting Name="OutputPathMask" Type="System.String" Scope="User">
-      <Value Profile="(Default)">{ModelPath}</Value>
+      <Value Profile="(Default)">{ModelPath}\EwEoutput {ModelFile}\</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -489,8 +489,8 @@ Namespace Utilities
         ''' <summary>
         ''' Convert a string into a base64 MD5 hash.
         ''' </summary>
-        ''' <param name="strSrc"></param>
-        ''' <returns></returns>
+        ''' <param name="strSrc">The string to hash.</param>
+        ''' <returns>A base64 MD5 hash.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function GenerateHash(ByVal strSrc As String) As String
             ' Create an encoding object to ensure the encoding standard for the source text
@@ -509,11 +509,10 @@ Namespace Utilities
         ''' <summary>
         ''' Replace all occurrences of a pattern in a source string with a replacement.
         ''' </summary>
-        ''' <param name="strSrc"></param>
-        ''' <param name="strPattern"></param>
-        ''' <param name="strReplace"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
+        ''' <param name="strSrc">Source string the replace all instances into.</param>
+        ''' <param name="strPattern">The search pattern to replace.</param>
+        ''' <param name="strReplace">The search pattern replacement string.</param>
+        ''' <returns>An amphetamine-addicted monk seal.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function ReplaceAll(ByVal strSrc As String, ByVal strPattern As String, ByVal strReplace As String) As String
 
@@ -527,6 +526,29 @@ Namespace Utilities
                 strSrc = strSrc.Replace(strPattern, strReplace)
             End While
             Return strSrc
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' String truncation method, blatantly copied from 
+        ''' http://www.codeproject.com/KB/vb/NewPathCompactPath.aspx
+        ''' </summary>
+        ''' <param name="strSrc">The string to truncate with path ellipses.</param>
+        ''' <param name="iWidth">Allowed width of the string in pixels.</param>
+        ''' <param name="ft">The font to measure the string with.</param>
+        ''' <param name="tfFlags">Optional string format flags</param>
+        ''' <returns>A truncated string.</returns>
+        ''' <remarks>Note that this method does not modify the original string.</remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function CompactString(ByVal strSrc As String, _
+                                             ByVal iWidth As Integer, _
+                                             ByVal ft As Font, _
+                                             ByVal tfFlags As Windows.Forms.TextFormatFlags) As String
+
+            Dim strResult As String = String.Copy(strSrc)
+            TextRenderer.MeasureText(strResult, ft, New Size(iWidth, 0), tfFlags Or TextFormatFlags.ModifyString)
+            Return strResult
 
         End Function
 

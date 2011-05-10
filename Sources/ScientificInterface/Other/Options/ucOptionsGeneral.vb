@@ -8,6 +8,7 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports WeifenLuo.WinFormsUI
 Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -62,11 +63,8 @@ Namespace Other
 
             ' Output path
             Me.m_fieldpickOutput.UIContext = Me.m_uic
-            Me.m_fieldpickOutput.Fields = New Object() {cPathUtility.ePathPlaceholderTypes.Desktop, _
-                                                        cPathUtility.ePathPlaceholderTypes.ModelPath, _
-                                                        cPathUtility.ePathPlaceholderTypes.MyAppData, _
-                                                        cPathUtility.ePathPlaceholderTypes.MyDocuments}
-            Me.m_tbOutput.Text = My.Settings.OutputPathMask
+            Me.m_fieldpickOutput.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
+            Me.m_tbOutputMask.Text = My.Settings.OutputPathMask
 
             ' Backup path masks
             Me.m_fieldpickBackup.UIContext = Me.m_uic
@@ -95,7 +93,7 @@ Namespace Other
             My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
             My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
             My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
-            My.Settings.OutputPathMask = Me.m_tbOutput.Text
+            My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
 
             If bRestart Then Return IOptionsPage.eApplyResultType.Success_restart
             Return IOptionsPage.eApplyResultType.Success
@@ -119,18 +117,20 @@ Namespace Other
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnOutputDirPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal strDirectory As String) _
-            Handles m_fieldpickOutput.OnDirectoryPicked
+        Private Sub OnOutputFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
+            Handles m_fieldpickOutput.OnFieldPicked
 
-            Me.ReplaceText(Me.m_tbOutput, strDirectory)
+            Me.InsertText(Me.m_tbOutputMask, "{" & value.ToString & "}")
             Me.UpdateControls()
 
         End Sub
 
-        Private Sub OnOutputFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
-            Handles m_fieldpickOutput.OnFieldPicked
+        Private Sub OnOutputDirectoryPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal strDirectory As String) _
+            Handles m_fieldpickOutput.OnDirectoryPicked
 
-            Me.ReplaceText(Me.m_tbOutput, "{" & value.ToString & "}")
+            Me.m_tbOutputMask.SelectionStart = 0
+            Me.m_tbOutputMask.SelectionLength = Math.Max(0, Me.m_tbOutputMask.Text.LastIndexOf("\"c))
+            Me.InsertText(Me.m_tbOutputMask, strDirectory)
             Me.UpdateControls()
 
         End Sub
@@ -145,7 +145,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
+        Private Sub OnBackupFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
             Handles m_fieldpickBackup.OnFieldPicked
 
             Me.InsertText(Me.m_tbBackupMask, "{" & value.ToString & "}")
@@ -153,9 +153,15 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnBackupMaskChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tbBackupMask.TextChanged, m_tbOutput.TextChanged
+        Private Sub OnMaskChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tbBackupMask.TextChanged, m_tbOutputMask.TextChanged
             Me.UpdateControls()
+        End Sub
+
+        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnDefaults.Click
+            Me.m_nudMRU.Value = Settings.Default.MdbRecentlyUsedCount
+            Me.m_tbOutputMask.Text = Settings.Default.OutputPathMask
+            Me.m_tbBackupMask.Text = Settings.Default.BackupFileMask
         End Sub
 
 #End Region ' Event handlers
@@ -181,6 +187,9 @@ Namespace Other
             Dim bHasSuppressedPrompts As Boolean = (Not String.IsNullOrEmpty(My.Settings.SuppressedOverwritePrompts))
             Dim bCanCheckExEUpdate As Boolean = False
             Dim bHasMRU As Boolean = (My.Settings.MdbRecentlyUsedList.Count > 0)
+            Dim strSample As String = ""
+            Dim strVersion As String = Application.ProductVersion.ToString
+            Dim strDocDir As String = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
 
             Me.m_btnResetOverwritePrompts.Enabled = bHasSuppressedPrompts
             Me.m_lblResetOverwritePrompts.Enabled = bHasSuppressedPrompts
@@ -189,11 +198,15 @@ Namespace Other
 
             Me.m_btnClearMRU.Enabled = bHasMRU
 
-            Dim strSample As String = ""
-            If Not cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, Me.m_uic.Core, strSample) Then
-                cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, "model", "C:\models", ".ext", "6.version", strSample)
+            If Not cPathUtility.ResolvePath(Me.m_tbOutputMask.Text, Me.m_uic.Core, strSample) Then
+                cPathUtility.ResolvePath(Me.m_tbOutputMask.Text, "model", strDocDir, ".eweaccdb", strVersion, strSample)
             End If
-            Me.m_lblSample.Text = strSample
+            Me.m_lblSampleOutput.Text = cStringUtils.CompactString(strSample, Me.m_lblSampleOutput.Width, Me.m_lblSampleOutput.Font, TextFormatFlags.PathEllipsis)
+
+            If Not cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, Me.m_uic.Core, strSample) Then
+                cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, "model", strDocDir, ".eweaccdb", strVersion, strSample)
+            End If
+            Me.m_lblSampleBackup.Text = cStringUtils.CompactString(strSample, Me.m_lblSampleBackup.Width, Me.m_lblSampleBackup.Font, TextFormatFlags.PathEllipsis)
 
         End Sub
 

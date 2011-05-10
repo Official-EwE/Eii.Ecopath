@@ -126,10 +126,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_fieldpickOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 48</value>
+    <value>412, 46</value>
   </data>
   <data name="m_fieldpickOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 21</value>
+    <value>72, 21</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_fieldpickOutput.TabIndex" type="System.Int32, mscorlib">
@@ -139,7 +139,7 @@
     <value>m_fieldpickOutput</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.1.1.330, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -151,7 +151,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_fieldpickBackup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 75</value>
+    <value>409, 99</value>
   </data>
   <data name="m_fieldpickBackup.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 21</value>
@@ -163,7 +163,7 @@
     <value>m_fieldpickBackup</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.1.1.330, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -171,68 +171,92 @@
   <data name="&gt;&gt;m_fieldpickBackup.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_lblSample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lblSampleOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblSample.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Italic</value>
-  </data>
-  <data name="m_lblSample.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblSampleOutput.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblSample.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 101</value>
+  <data name="m_lblSampleOutput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>118, 69</value>
   </data>
-  <data name="m_lblSample.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 20</value>
+  <data name="m_lblSampleOutput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>366, 20</value>
   </data>
-  <data name="m_lblSample.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblSampleOutput.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_lblSample.Name" xml:space="preserve">
-    <value>m_lblSample</value>
+  <data name="&gt;&gt;m_lblSampleOutput.Name" xml:space="preserve">
+    <value>m_lblSampleOutput</value>
   </data>
-  <data name="&gt;&gt;m_lblSample.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblSampleOutput.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblSample.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblSampleOutput.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
   </data>
-  <data name="&gt;&gt;m_lblSample.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblSampleOutput.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_tbOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lblSampleBackup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_tbOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 48</value>
+  <data name="m_lblSampleBackup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="m_tbOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 20</value>
+  <data name="m_lblSampleBackup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>118, 121</value>
   </data>
-  <data name="m_tbOutput.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="m_lblSampleBackup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>366, 20</value>
   </data>
-  <data name="&gt;&gt;m_tbOutput.Name" xml:space="preserve">
-    <value>m_tbOutput</value>
+  <data name="m_lblSampleBackup.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="&gt;&gt;m_tbOutput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_lblSampleBackup.Name" xml:space="preserve">
+    <value>m_lblSampleBackup</value>
   </data>
-  <data name="&gt;&gt;m_tbOutput.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblSampleBackup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblSampleBackup.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
   </data>
-  <data name="&gt;&gt;m_tbOutput.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblSampleBackup.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="m_tbOutputMask.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbOutputMask.Location" type="System.Drawing.Point, System.Drawing">
+    <value>118, 46</value>
+  </data>
+  <data name="m_tbOutputMask.Size" type="System.Drawing.Size, System.Drawing">
+    <value>288, 20</value>
+  </data>
+  <data name="m_tbOutputMask.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_tbOutputMask.Name" xml:space="preserve">
+    <value>m_tbOutputMask</value>
+  </data>
+  <data name="&gt;&gt;m_tbOutputMask.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbOutputMask.Parent" xml:space="preserve">
+    <value>m_gpMRU</value>
+  </data>
+  <data name="&gt;&gt;m_tbOutputMask.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="m_tbBackupMask.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbBackupMask.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 74</value>
+    <value>118, 98</value>
   </data>
   <data name="m_tbBackupMask.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 20</value>
+    <value>288, 20</value>
   </data>
   <data name="m_tbBackupMask.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -247,36 +271,6 @@
     <value>m_gpMRU</value>
   </data>
   <data name="&gt;&gt;m_tbBackupMask.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_lblExample.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblExample.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblExample.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 101</value>
-  </data>
-  <data name="m_lblExample.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 13</value>
-  </data>
-  <data name="m_lblExample.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_lblExample.Text" xml:space="preserve">
-    <value>Example:</value>
-  </data>
-  <data name="&gt;&gt;m_lblExample.Name" xml:space="preserve">
-    <value>m_lblExample</value>
-  </data>
-  <data name="&gt;&gt;m_lblExample.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblExample.Parent" xml:space="preserve">
-    <value>m_gpMRU</value>
-  </data>
-  <data name="&gt;&gt;m_lblExample.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="m_lblOutput.AutoSize" type="System.Boolean, mscorlib">
@@ -286,16 +280,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 51</value>
+    <value>12, 49</value>
   </data>
   <data name="m_lblOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 13</value>
+    <value>82, 13</value>
   </data>
   <data name="m_lblOutput.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="m_lblOutput.Text" xml:space="preserve">
-    <value>Write output to:</value>
+    <value>Output location:</value>
   </data>
   <data name="&gt;&gt;m_lblOutput.Name" xml:space="preserve">
     <value>m_lblOutput</value>
@@ -309,38 +303,38 @@
   <data name="&gt;&gt;m_lblOutput.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="m_lblBackup.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblBackupFolder.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblBackup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblBackupFolder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblBackup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 77</value>
+  <data name="m_lblBackupFolder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 101</value>
   </data>
-  <data name="m_lblBackup.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblBackupFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
   </data>
-  <data name="m_lblBackup.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblBackupFolder.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_lblBackup.Text" xml:space="preserve">
+  <data name="m_lblBackupFolder.Text" xml:space="preserve">
     <value>Back-up models as:</value>
   </data>
-  <data name="&gt;&gt;m_lblBackup.Name" xml:space="preserve">
-    <value>m_lblBackup</value>
+  <data name="&gt;&gt;m_lblBackupFolder.Name" xml:space="preserve">
+    <value>m_lblBackupFolder</value>
   </data>
-  <data name="&gt;&gt;m_lblBackup.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblBackupFolder.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblBackup.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblBackupFolder.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
   </data>
-  <data name="&gt;&gt;m_lblBackup.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblBackupFolder.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <data name="m_nudMRU.Location" type="System.Drawing.Point, System.Drawing">
-    <value>183, 20</value>
+    <value>118, 20</value>
   </data>
   <data name="m_nudMRU.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 20</value>
@@ -360,6 +354,36 @@
   <data name="&gt;&gt;m_nudMRU.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <data name="m_btnDefaults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnDefaults.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnDefaults.Location" type="System.Drawing.Point, System.Drawing">
+    <value>409, 148</value>
+  </data>
+  <data name="m_btnDefaults.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnDefaults.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_btnDefaults.Text" xml:space="preserve">
+    <value>&amp;Defaults</value>
+  </data>
+  <data name="&gt;&gt;m_btnDefaults.Name" xml:space="preserve">
+    <value>m_btnDefaults</value>
+  </data>
+  <data name="&gt;&gt;m_btnDefaults.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnDefaults.Parent" xml:space="preserve">
+    <value>m_gpMRU</value>
+  </data>
+  <data name="&gt;&gt;m_btnDefaults.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
   <data name="m_btnClearMRU.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -367,7 +391,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnClearMRU.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 17</value>
+    <value>409, 17</value>
   </data>
   <data name="m_btnClearMRU.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -388,7 +412,7 @@
     <value>m_gpMRU</value>
   </data>
   <data name="&gt;&gt;m_btnClearMRU.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_lblMRU.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -400,13 +424,13 @@
     <value>12, 22</value>
   </data>
   <data name="m_lblMRU.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 13</value>
+    <value>96, 13</value>
   </data>
   <data name="m_lblMRU.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_lblMRU.Text" xml:space="preserve">
-    <value>Number of files in &amp;recent used list:</value>
+    <value>No. &amp;recent models:</value>
   </data>
   <data name="&gt;&gt;m_lblMRU.Name" xml:space="preserve">
     <value>m_lblMRU</value>
@@ -418,13 +442,13 @@
     <value>m_gpMRU</value>
   </data>
   <data name="&gt;&gt;m_lblMRU.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_gpMRU.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 126</value>
   </data>
   <data name="m_gpMRU.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 127</value>
+    <value>490, 177</value>
   </data>
   <data name="m_gpMRU.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -529,10 +553,10 @@
     <value>2</value>
   </data>
   <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 259</value>
+    <value>0, 308</value>
   </data>
   <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 71</value>
+    <value>490, 71</value>
   </data>
   <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -595,7 +619,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnResetOverwritePrompts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 61</value>
+    <value>409, 61</value>
   </data>
   <data name="m_btnResetOverwritePrompts.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -685,7 +709,7 @@
     <value>0, 25</value>
   </data>
   <data name="m_gbStartup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 92</value>
+    <value>490, 92</value>
   </data>
   <data name="m_gbStartup.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -715,7 +739,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrCaption.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 18</value>
+    <value>490, 18</value>
   </data>
   <data name="m_hdrCaption.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -730,7 +754,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.330, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
@@ -745,7 +769,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 333</value>
+    <value>490, 381</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucOptionsGeneral</value>

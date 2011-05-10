@@ -18,13 +18,14 @@ Partial Class ucOptionsGeneral
             Me.m_gpMRU = New System.Windows.Forms.GroupBox
             Me.m_fieldpickOutput = New ScientificInterfaceShared.Controls.ucFieldPicker
             Me.m_fieldpickBackup = New ScientificInterfaceShared.Controls.ucFieldPicker
-            Me.m_lblSample = New System.Windows.Forms.Label
-            Me.m_tbOutput = New System.Windows.Forms.TextBox
+            Me.m_lblSampleOutput = New System.Windows.Forms.Label
+            Me.m_lblSampleBackup = New System.Windows.Forms.Label
+            Me.m_tbOutputMask = New System.Windows.Forms.TextBox
             Me.m_tbBackupMask = New System.Windows.Forms.TextBox
-            Me.m_lblExample = New System.Windows.Forms.Label
             Me.m_lblOutput = New System.Windows.Forms.Label
-            Me.m_lblBackup = New System.Windows.Forms.Label
+            Me.m_lblBackupFolder = New System.Windows.Forms.Label
             Me.m_nudMRU = New System.Windows.Forms.NumericUpDown
+            Me.m_btnDefaults = New System.Windows.Forms.Button
             Me.m_btnClearMRU = New System.Windows.Forms.Button
             Me.m_lblMRU = New System.Windows.Forms.Label
             Me.m_gpMsg = New System.Windows.Forms.GroupBox
@@ -49,13 +50,14 @@ Partial Class ucOptionsGeneral
             resources.ApplyResources(Me.m_gpMRU, "m_gpMRU")
             Me.m_gpMRU.Controls.Add(Me.m_fieldpickOutput)
             Me.m_gpMRU.Controls.Add(Me.m_fieldpickBackup)
-            Me.m_gpMRU.Controls.Add(Me.m_lblSample)
-            Me.m_gpMRU.Controls.Add(Me.m_tbOutput)
+            Me.m_gpMRU.Controls.Add(Me.m_lblSampleOutput)
+            Me.m_gpMRU.Controls.Add(Me.m_lblSampleBackup)
+            Me.m_gpMRU.Controls.Add(Me.m_tbOutputMask)
             Me.m_gpMRU.Controls.Add(Me.m_tbBackupMask)
-            Me.m_gpMRU.Controls.Add(Me.m_lblExample)
             Me.m_gpMRU.Controls.Add(Me.m_lblOutput)
-            Me.m_gpMRU.Controls.Add(Me.m_lblBackup)
+            Me.m_gpMRU.Controls.Add(Me.m_lblBackupFolder)
             Me.m_gpMRU.Controls.Add(Me.m_nudMRU)
+            Me.m_gpMRU.Controls.Add(Me.m_btnDefaults)
             Me.m_gpMRU.Controls.Add(Me.m_btnClearMRU)
             Me.m_gpMRU.Controls.Add(Me.m_lblMRU)
             Me.m_gpMRU.Name = "m_gpMRU"
@@ -65,7 +67,7 @@ Partial Class ucOptionsGeneral
             '
             resources.ApplyResources(Me.m_fieldpickOutput, "m_fieldpickOutput")
             Me.m_fieldpickOutput.Fields = Nothing
-            Me.m_fieldpickOutput.Label = "Folder"
+            Me.m_fieldpickOutput.Label = "Fields"
             Me.m_fieldpickOutput.Name = "m_fieldpickOutput"
             Me.m_fieldpickOutput.ShowDirectoryPicker = True
             Me.m_fieldpickOutput.TypeFormatter = Nothing
@@ -81,35 +83,40 @@ Partial Class ucOptionsGeneral
             Me.m_fieldpickBackup.TypeFormatter = Nothing
             Me.m_fieldpickBackup.UIContext = Nothing
             '
-            'm_lblSample
+            'm_lblSampleOutput
             '
-            resources.ApplyResources(Me.m_lblSample, "m_lblSample")
-            Me.m_lblSample.Name = "m_lblSample"
+            resources.ApplyResources(Me.m_lblSampleOutput, "m_lblSampleOutput")
+            Me.m_lblSampleOutput.BackColor = System.Drawing.SystemColors.Control
+            Me.m_lblSampleOutput.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_lblSampleOutput.ForeColor = System.Drawing.SystemColors.GrayText
+            Me.m_lblSampleOutput.Name = "m_lblSampleOutput"
             '
-            'm_tbOutput
+            'm_lblSampleBackup
             '
-            resources.ApplyResources(Me.m_tbOutput, "m_tbOutput")
-            Me.m_tbOutput.Name = "m_tbOutput"
+            resources.ApplyResources(Me.m_lblSampleBackup, "m_lblSampleBackup")
+            Me.m_lblSampleBackup.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_lblSampleBackup.ForeColor = System.Drawing.SystemColors.GrayText
+            Me.m_lblSampleBackup.Name = "m_lblSampleBackup"
+            '
+            'm_tbOutputMask
+            '
+            resources.ApplyResources(Me.m_tbOutputMask, "m_tbOutputMask")
+            Me.m_tbOutputMask.Name = "m_tbOutputMask"
             '
             'm_tbBackupMask
             '
             resources.ApplyResources(Me.m_tbBackupMask, "m_tbBackupMask")
             Me.m_tbBackupMask.Name = "m_tbBackupMask"
             '
-            'm_lblExample
-            '
-            resources.ApplyResources(Me.m_lblExample, "m_lblExample")
-            Me.m_lblExample.Name = "m_lblExample"
-            '
             'm_lblOutput
             '
             resources.ApplyResources(Me.m_lblOutput, "m_lblOutput")
             Me.m_lblOutput.Name = "m_lblOutput"
             '
-            'm_lblBackup
+            'm_lblBackupFolder
             '
-            resources.ApplyResources(Me.m_lblBackup, "m_lblBackup")
-            Me.m_lblBackup.Name = "m_lblBackup"
+            resources.ApplyResources(Me.m_lblBackupFolder, "m_lblBackupFolder")
+            Me.m_lblBackupFolder.Name = "m_lblBackupFolder"
             '
             'm_nudMRU
             '
@@ -117,6 +124,12 @@ Partial Class ucOptionsGeneral
             Me.m_nudMRU.Maximum = New Decimal(New Integer() {42, 0, 0, 0})
             Me.m_nudMRU.Name = "m_nudMRU"
             Me.m_nudMRU.Value = New Decimal(New Integer() {10, 0, 0, 0})
+            '
+            'm_btnDefaults
+            '
+            resources.ApplyResources(Me.m_btnDefaults, "m_btnDefaults")
+            Me.m_btnDefaults.Name = "m_btnDefaults"
+            Me.m_btnDefaults.UseVisualStyleBackColor = True
             '
             'm_btnClearMRU
             '
@@ -228,14 +241,15 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_btnResetOverwritePrompts As System.Windows.Forms.Button
         Private WithEvents m_hdrCaption As cEwEHeaderLabel
         Private WithEvents m_cbShowTime As System.Windows.Forms.CheckBox
-        Private WithEvents m_lblBackup As System.Windows.Forms.Label
+        Private WithEvents m_lblBackupFolder As System.Windows.Forms.Label
         Private WithEvents m_tbBackupMask As System.Windows.Forms.TextBox
-        Private WithEvents m_lblSample As System.Windows.Forms.Label
-        Private WithEvents m_lblExample As System.Windows.Forms.Label
-        Private WithEvents m_tbOutput As System.Windows.Forms.TextBox
+        Private WithEvents m_lblSampleBackup As System.Windows.Forms.Label
+        Private WithEvents m_tbOutputMask As System.Windows.Forms.TextBox
         Private WithEvents m_lblOutput As System.Windows.Forms.Label
         Private WithEvents m_fieldpickBackup As ScientificInterfaceShared.Controls.ucFieldPicker
         Private WithEvents m_fieldpickOutput As ScientificInterfaceShared.Controls.ucFieldPicker
+        Private WithEvents m_btnDefaults As System.Windows.Forms.Button
+        Private WithEvents m_lblSampleOutput As System.Windows.Forms.Label
 
     End Class
 
