@@ -687,7 +687,7 @@ Namespace Controls
 
                 If Me.IsNearValue(ptCur) Then
                     sValue = Me.Shape.ShapeData(CInt(ptfCur.X))
-                    strTooltip = cStringUtils.FormatSingle(sValue)
+                    strTooltip = Me.UIContext.StyleGuide.FormatNumber(sValue)
                 Else
                     ' No tip, sorry.
                 End If
