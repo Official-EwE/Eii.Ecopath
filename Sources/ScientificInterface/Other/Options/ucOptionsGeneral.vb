@@ -207,12 +207,12 @@ Namespace Other
             If Not cPathUtility.ResolvePath(Me.m_tbOutputMask.Text, Me.m_uic.Core, strSample) Then
                 cPathUtility.ResolvePath(Me.m_tbOutputMask.Text, "model", strDocDir, ".eweaccdb", strVersion, strSample)
             End If
-            Me.m_lblSampleOutput.Text = cStringUtils.CompactString(strSample, Me.m_lblSampleOutput.Width, Me.m_lblSampleOutput.Font, TextFormatFlags.PathEllipsis)
+            Me.m_lblSampleOutput.Text = cStringUtils.CompactString(strSample, Me.m_lblSampleOutput.ClientRectangle.Width, Me.m_lblSampleOutput.Font, TextFormatFlags.PathEllipsis)
 
             If Not cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, Me.m_uic.Core, strSample) Then
                 cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, "model", strDocDir, ".eweaccdb", strVersion, strSample)
             End If
-            Me.m_lblSampleBackup.Text = cStringUtils.CompactString(strSample, Me.m_lblSampleBackup.Width, Me.m_lblSampleBackup.Font, TextFormatFlags.PathEllipsis)
+            Me.m_lblSampleBackup.Text = cStringUtils.CompactString(strSample, Me.m_lblSampleBackup.ClientRectangle.Width, Me.m_lblSampleBackup.Font, TextFormatFlags.PathEllipsis)
 
         End Sub
 
