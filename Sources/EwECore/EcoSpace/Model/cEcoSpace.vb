@@ -1367,6 +1367,12 @@ Public Class cEcoSpace
             m_StopRun = False
             nvar2 = m_Data.NGroups
 
+            If Me.m_Data.TotalTime > Me.m_SimData.NumYears Then
+                'Ecospace uses Ecosim.FishRateGear(fleet,EcosimYears) for fishing effort
+                'so the Space run length must be less then Ecosim run length
+                Me.m_Data.TotalTime = Me.m_SimData.NumYears
+            End If
+
             '*******************
             'readAdvectFile()
             '*****************

@@ -8188,6 +8188,8 @@ Public Class cCore
             '             The commetned-out line below caused any changed number of years to be lost.
             'set the time steps is Ecospace to be the same as ecosim
             'If m_EcoSpaceData.TotalTime <> m_EcoSimData.NumYears Then m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
+            'JB sorry Space can not run longer than Sim
+            If m_EcoSpaceData.TotalTime > m_EcoSimData.NumYears Then m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
 
             m_Ecospace.SearchData = m_SearchData
 
