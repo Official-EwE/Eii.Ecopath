@@ -1265,11 +1265,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Groups and fleets assigned to {0}.
+        '''</summary>
+        Public ReadOnly Property HEADER_ASSIGNED_GROUPS_FLEETS_SHAPE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ASSIGNED_GROUPS_FLEETS_SHAPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Assigned landings.
         '''</summary>
         Public ReadOnly Property HEADER_ASSIGNED_LANDINGS() As String
             Get
                 Return ResourceManager.GetString("HEADER_ASSIGNED_LANDINGS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Assigned supply for {0}.
+        '''</summary>
+        Public ReadOnly Property HEADER_ASSIGNED_LANDINGS_SHAPE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ASSIGNED_LANDINGS_SHAPE", resourceCulture)
             End Get
         End Property
         

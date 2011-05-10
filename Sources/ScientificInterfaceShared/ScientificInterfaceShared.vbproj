@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -382,7 +382,7 @@
     <Compile Include="Settings\cFormSetting.vb" />
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
-    <Compile Include="Style\Type formatters\cCoreInputOutputBaseFormatter.vb" />
+    <Compile Include="Style\Type formatters\cCoreInterfaceFormatter.vb" />
     <Compile Include="Style\Type formatters\cEcologyTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cIUCNConservationTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cOccurrenceTypeFormatter.vb" />

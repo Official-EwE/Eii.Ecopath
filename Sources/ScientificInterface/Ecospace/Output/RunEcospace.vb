@@ -114,7 +114,7 @@ Namespace Ecospace
 
         Private Sub InitUIParams()
 
-            Dim desc As New cCoreInputOutputBaseFormatter()
+            Dim desc As New cCoreInterfaceFormatter()
 
             Me.m_iTimeStepCur = 0
             Me.m_iTimeStepPrev = 0

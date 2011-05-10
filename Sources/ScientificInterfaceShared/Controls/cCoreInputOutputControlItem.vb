@@ -23,7 +23,7 @@ Namespace Controls
         ''' <summary>Alternative display string if the object is not present.</summary>
         Private m_strLabel As String = ""
         ''' <summary>Pretty thing</summary>
-        Private m_fmt As New cCoreInputOutputBaseFormatter()
+        Private m_fmt As New cCoreInterfaceFormatter()
 
         ''' ---------------------------------------------------------------
         ''' <summary>

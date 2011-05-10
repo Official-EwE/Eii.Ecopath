@@ -8,6 +8,7 @@ Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -55,6 +56,7 @@ Namespace Controls
 
             Me.MediationAssignments = ma
             If (Me.MediationAssignments IsNot Nothing) Then
+                Me.MediationAssignments.Title = ""
                 Me.MediationAssignments.XAxisLabel = My.Resources.HEADER_ASSIGNED_GROUPS_FLEETS
             End If
 
@@ -259,8 +261,22 @@ Namespace Controls
             MyBase.OnShapeFinalized(shape, sketchpad)
         End Sub
 
+        Public Overrides Sub OnShapeSelected(ByVal shape() As EwECore.cShapeData)
+            MyBase.OnShapeSelected(shape)
+            If (Me.MediationAssignments IsNot Nothing) Then
+                Dim strTitle As String = ""
+                If shape IsNot Nothing Then
+                    If shape.Length > 0 Then
+                        Dim fmt As New cCoreInterfaceFormatter()
+                        strTitle = String.Format(My.Resources.HEADER_ASSIGNED_LANDINGS_SHAPE, fmt.GetDescriptor(shape(0), eDescriptorTypes.Name))
+                    End If
+                End If
+                Me.MediationAssignments.Title = strTitle
+            End If
+        End Sub
+
         Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
-            Return New eDataTypes() {eDataTypes.mediation}
+            Return New eDataTypes() {eDataTypes.Mediation}
         End Function
 
     End Class

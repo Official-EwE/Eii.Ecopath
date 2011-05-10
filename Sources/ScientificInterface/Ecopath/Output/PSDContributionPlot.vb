@@ -92,7 +92,7 @@ Namespace Ecopath.Output
             Dim group As cEcoPathGroupOutput = Nothing
             Dim sSystemPSD(Me.Core.nWeightClasses) As Single
             Dim curve As BarItem = Nothing
-            Dim fmt As New cCoreInputOutputBaseFormatter()
+            Dim fmt As New cCoreInterfaceFormatter()
             Dim iNumSelected As Integer = Me.m_lbGroups.SelectedIndices.Count
 
             InitLists(resultLists, Me.Core.nLivingGroups) '3)

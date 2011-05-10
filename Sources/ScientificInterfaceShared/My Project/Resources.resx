@@ -2050,4 +2050,12 @@
   <data name="PROMPT_MEDIATION_CANNOTMIX" xml:space="preserve">
     <value>You cannot assign a mix of groups and fleets</value>
   </data>
+  <data name="HEADER_ASSIGNED_GROUPS_FLEETS_SHAPE" xml:space="preserve">
+    <value>Groups and fleets assigned to {0}</value>
+    <comment>{0}: shape name</comment>
+  </data>
+  <data name="HEADER_ASSIGNED_LANDINGS_SHAPE" xml:space="preserve">
+    <value>Assigned supply for {0}</value>
+    <comment>{0}: shape name</comment>
+  </data>
 </root>

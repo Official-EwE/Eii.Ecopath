@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
@@ -66,6 +67,21 @@ Namespace Controls
         Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.PriceMediation}
         End Function
+
+        Public Overrides Sub OnShapeSelected(ByVal shape() As EwECore.cShapeData)
+            MyBase.OnShapeSelected(shape)
+            If (Me.MediationAssignments IsNot Nothing) Then
+                Dim strTitle As String = ""
+                If shape IsNot Nothing Then
+                    If shape.Length > 0 Then
+                        Dim fmt As New cCoreInterfaceFormatter()
+                        strTitle = String.Format(My.Resources.HEADER_ASSIGNED_LANDINGS_SHAPE, fmt.GetDescriptor(shape(0), eDescriptorTypes.Name))
+                    End If
+                End If
+                Me.MediationAssignments.Title = strTitle
+            End If
+        End Sub
+
     End Class
 
 End Namespace

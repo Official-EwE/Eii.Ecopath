@@ -31,11 +31,11 @@ Namespace Ecosim
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucMediationSketchPad
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
             Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.m_assignmentsToolbar = New ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar
-            Me.m_assignments = New ScientificInterfaceShared.Controls.ucMediationAssignments
-            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
+            Me.m_scBottom = New System.Windows.Forms.SplitContainer
             Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
+            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
+            Me.m_assignments = New ScientificInterfaceShared.Controls.ucMediationAssignments
+            Me.m_assignmentsToolbar = New ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar
             Me.plSketchPad.SuspendLayout()
             Me.tlpSketchPad.SuspendLayout()
             Me.SplitContainer1.Panel1.SuspendLayout()
@@ -43,7 +43,9 @@ Namespace Ecosim
             Me.SplitContainer1.SuspendLayout()
             Me.SplitContainer2.Panel1.SuspendLayout()
             Me.SplitContainer2.SuspendLayout()
-            Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_scBottom.Panel1.SuspendLayout()
+            Me.m_scBottom.Panel2.SuspendLayout()
+            Me.m_scBottom.SuspendLayout()
             Me.SuspendLayout()
             '
             'plSketchPad
@@ -103,7 +105,7 @@ Namespace Ecosim
             '
             'SplitContainer1.Panel2
             '
-            Me.SplitContainer1.Panel2.Controls.Add(Me.TableLayoutPanel1)
+            Me.SplitContainer1.Panel2.Controls.Add(Me.m_scBottom)
             '
             'SplitContainer2
             '
@@ -116,14 +118,51 @@ Namespace Ecosim
             Me.SplitContainer2.Panel1.Controls.Add(Me.plSketchPad)
             Me.SplitContainer2.Panel2Collapsed = True
             '
-            'TableLayoutPanel1
+            'm_scBottom
             '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.m_assignmentsToolbar, 1, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_assignments, 1, 1)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_shapeToolBox, 0, 1)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_shapeToolboxToolbar, 0, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            Me.m_scBottom.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            resources.ApplyResources(Me.m_scBottom, "m_scBottom")
+            Me.m_scBottom.Name = "m_scBottom"
+            '
+            'm_scBottom.Panel1
+            '
+            Me.m_scBottom.Panel1.Controls.Add(Me.m_shapeToolboxToolbar)
+            Me.m_scBottom.Panel1.Controls.Add(Me.m_shapeToolBox)
+            '
+            'm_scBottom.Panel2
+            '
+            Me.m_scBottom.Panel2.Controls.Add(Me.m_assignments)
+            Me.m_scBottom.Panel2.Controls.Add(Me.m_assignmentsToolbar)
+            '
+            'm_shapeToolboxToolbar
+            '
+            resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
+            Me.m_shapeToolboxToolbar.Handler = Nothing
+            Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
+            '
+            'm_shapeToolBox
+            '
+            Me.m_shapeToolBox.AllowCheckboxes = False
+            resources.ApplyResources(Me.m_shapeToolBox, "m_shapeToolBox")
+            Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
+            Me.m_shapeToolBox.Handler = Nothing
+            Me.m_shapeToolBox.Name = "m_shapeToolBox"
+            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
+            Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_shapeToolBox.UIContext = Nothing
+            Me.m_shapeToolBox.YAxisMinValue = -9999.0!
+            '
+            'm_assignments
+            '
+            resources.ApplyResources(Me.m_assignments, "m_assignments")
+            Me.m_assignments.Data = Nothing
+            Me.m_assignments.Name = "m_assignments"
+            Me.m_assignments.Shape = Nothing
+            Me.m_assignments.Title = ""
+            Me.m_assignments.UIContext = Nothing
+            Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Pie
+            Me.m_assignments.XAxisLabel = "Landings"
+            Me.m_assignments.YAxisLabel = "Relative weight"
             '
             'm_assignmentsToolbar
             '
@@ -133,35 +172,6 @@ Namespace Ecosim
             Me.m_assignmentsToolbar.Handler = Nothing
             Me.m_assignmentsToolbar.IsMenuVisible = True
             Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
-            '
-            'm_assignments
-            '
-            Me.m_assignments.Data = Nothing
-            resources.ApplyResources(Me.m_assignments, "m_assignments")
-            Me.m_assignments.Name = "m_assignments"
-            Me.m_assignments.Shape = Nothing
-            Me.m_assignments.UIContext = Nothing
-            Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Pie
-            Me.m_assignments.XAxisLabel = "Landings"
-            Me.m_assignments.YAxisLabel = "Relative weight"
-            '
-            'm_shapeToolBox
-            '
-            Me.m_shapeToolBox.AllowCheckboxes = False
-            Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
-            resources.ApplyResources(Me.m_shapeToolBox, "m_shapeToolBox")
-            Me.m_shapeToolBox.Handler = Nothing
-            Me.m_shapeToolBox.Name = "m_shapeToolBox"
-            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
-            Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
-            Me.m_shapeToolBox.UIContext = Nothing
-            Me.m_shapeToolBox.YAxisMinValue = -9999.0!
-            '
-            'm_shapeToolboxToolbar
-            '
-            resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
-            Me.m_shapeToolboxToolbar.Handler = Nothing
-            Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
             '
             'frmPriceElasticity
             '
@@ -176,15 +186,16 @@ Namespace Ecosim
             Me.SplitContainer1.ResumeLayout(False)
             Me.SplitContainer2.Panel1.ResumeLayout(False)
             Me.SplitContainer2.ResumeLayout(False)
-            Me.TableLayoutPanel1.ResumeLayout(False)
-            Me.TableLayoutPanel1.PerformLayout()
+            Me.m_scBottom.Panel1.ResumeLayout(False)
+            Me.m_scBottom.Panel2.ResumeLayout(False)
+            Me.m_scBottom.Panel2.PerformLayout()
+            Me.m_scBottom.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents plSketchPad As System.Windows.Forms.Panel
         Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Private WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
-        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_shapeToolBox As ucShapeToolbox
         Private WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
         Private WithEvents m_assignmentsToolbar As ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar
@@ -192,6 +203,7 @@ Namespace Ecosim
         Private WithEvents tlpSketchPad As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_sketchPadToolbar As ScientificInterfaceShared.Controls.ucSketchPadToolbar
         Private WithEvents m_sketchPad As ScientificInterfaceShared.Controls.ucMediationSketchPad
+        Private WithEvents m_scBottom As System.Windows.Forms.SplitContainer
 
     End Class
 End Namespace

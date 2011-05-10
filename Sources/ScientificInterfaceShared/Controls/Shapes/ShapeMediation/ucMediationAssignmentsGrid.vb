@@ -87,7 +87,7 @@ Namespace Controls
                 Next
             End If
 
-            Dim fmt As New cCoreInputOutputBaseFormatter()
+            Dim fmt As New cCoreInterfaceFormatter()
             Dim ewec As EwECellBase = Nothing
             Dim iCol As Integer = 0
             Dim iRow As Integer = Me.AddRow()

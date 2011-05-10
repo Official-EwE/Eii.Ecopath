@@ -25,6 +25,7 @@ Namespace Controls
         Private m_zgh As cZedGraphHelper = Nothing
         Private m_strXAxisLabel As String = ""
         Private m_strYAxisLabel As String = ""
+        Private m_strTitle As String = ""
         Private m_data As cBioPercentData = Nothing
         Private m_viewmode As eViewModeTypes = eViewModeTypes.Pie
 
@@ -204,6 +205,30 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the title for the control.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         Category("Mediation"), _
+         Description("Graph title")> _
+        Public Property Title() As String
+            Get
+                Return Me.m_strTitle
+            End Get
+            Set(ByVal value As String)
+                Me.m_strTitle = value
+                If Me.m_zgh IsNot Nothing Then
+                    With Me.m_zgh.GetPane(1)
+                        .Title.Text = Me.m_strTitle
+                        .Title.IsVisible = Not String.IsNullOrEmpty(Me.m_strTitle)
+                    End With
+                    Me.m_zedgraph.Invalidate()
+                End If
+            End Set
+        End Property
+
 #End Region ' Public interfaces
 
 #Region " Internals "
@@ -213,7 +238,7 @@ Namespace Controls
         ''' Extract <see cref="cBioPercentData"/> from the current attached <see cref="Shape"/>.
         ''' </summary>
         ''' <param name="fn"></param>
-        ''' -------------------------------------------------------------------
+
         Private Function ExtractData(ByVal fn As cMediationBaseFunction) As cBioPercentData
 
             Dim d As New cBioPercentData()
@@ -251,7 +276,7 @@ Namespace Controls
                     Case eViewModeTypes.Bar
                         Me.LoadAsBar()
                 End Select
-                m_zedgraph.Visible = True
+                Me.m_zedgraph.Visible = True
             Else
                 m_zedgraph.Visible = False
             End If
@@ -275,19 +300,19 @@ Namespace Controls
             Dim pane As GraphPane = Nothing
             Dim source As cCoreInputOutputBase = Nothing
             Dim strLabel As String = ""
-            Dim fmt As New cCoreInputOutputBaseFormatter()
+            Dim fmt As New cCoreInterfaceFormatter()
             Dim clr As Color = Color.Transparent
             Dim myCurve As BarItem = Nothing
 
-            Me.m_zgh.ConfigurePane("", Me.m_strXAxisLabel, Me.m_strYAxisLabel, True)
+            Me.m_zgh.ConfigurePane(Me.m_strTitle, Me.m_strXAxisLabel, Me.m_strYAxisLabel, True)
             pane = Me.m_zgh.GetPane(1)
 
             pane.XAxis.Scale.IsVisible = False
             pane.CurveList.Clear()
 
-            For i As Integer = 0 To data.Groups.Length - 1
+            For i As Integer = 0 To Data.Groups.Length - 1
                 list = New PointPairList()
-                medGrp = data.Groups(i)
+                medGrp = Data.Groups(i)
                 list.Add(i + 1, medGrp.Weight)
 
                 ' Get the group
@@ -315,10 +340,10 @@ Namespace Controls
 
             Next
 
-            For i As Integer = 0 To data.Fleets.Length - 1
+            For i As Integer = 0 To Data.Fleets.Length - 1
                 list = New PointPairList()
-                medFlt = data.Fleets(i)
-                list.Add(i + 1 + data.Groups.Length, medFlt.Weight)
+                medFlt = Data.Fleets(i)
+                list.Add(i + 1 + Data.Groups.Length, medFlt.Weight)
 
                 ' Get the fleet
                 source = Me.m_uic.Core.FleetInputs(medFlt.iFleetIndex)
@@ -329,15 +354,9 @@ Namespace Controls
                 myCurve.Bar.Fill = New Fill(clr)
             Next
 
-            ' Configure pane
-            pane.Title.Text = ""
-            pane.Title.IsVisible = False
-
         End Sub
 
         Private Sub LoadAsPie()
-
-            ' ToDo_JS: globalize this
 
             ' Sanity checks
             If (Me.m_uic Is Nothing) Then Return
@@ -350,14 +369,13 @@ Namespace Controls
             Dim pane As GraphPane = Nothing
             Dim valSource As cCoreInputOutputBase = Nothing
             Dim strLabel As String = ""
-            Dim fmt As New cCoreInputOutputBaseFormatter()
+            Dim fmt As New cCoreInterfaceFormatter()
             Dim clr As Color = Color.Transparent
             Dim myCurve As BarItem = Nothing
             Dim varname As EwEUtils.Core.eVarNameFlags
             Dim iGroup As Integer
-            Dim strTitle As String = ""
 
-            Me.m_zgh.ConfigurePane("", "", "", True)
+            Me.m_zgh.ConfigurePane(Me.m_strTitle, "", "", True)
             pane = Me.m_zgh.GetPane(1)
 
             pane.XAxis.Scale.IsVisible = False
@@ -373,8 +391,6 @@ Namespace Controls
                 If (TypeOf medGrp Is cLandingsMediatingGroup) Then
                     ' #Yes
                     Dim medLandings As cLandingsMediatingGroup = DirectCast(medGrp, cLandingsMediatingGroup)
-                    'set the title
-                    strTitle = "Weighted percentage of landings"
 
                     ' Group index and VarName for the landings of this group by this fleet
                     iGroup = medLandings.iGroupIndex
@@ -401,7 +417,6 @@ Namespace Controls
                     iGroup = cCore.NULL_VALUE
                     varname = EwEUtils.Core.eVarNameFlags.Biomass
 
-                    strTitle = "Weighted percentage of biomass"
                 End If
 
                 clr = sg.GroupColor(Me.m_uic.Core, medGrp.iGroupIndex)
@@ -417,11 +432,6 @@ Namespace Controls
             pane.Legend.IsVisible = True
             pane.Legend.Position = LegendPos.Right
             pane.Legend.IsHStack = False
-
-            'jb removed the title to make a little more room
-            '  pane.Title.Text = strTitle
-            '  pane.Title.IsVisible = True
-            pane.Rect = Me.ClientRectangle
 
         End Sub
 
