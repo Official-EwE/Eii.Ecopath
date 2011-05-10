@@ -168,6 +168,12 @@ Namespace ValueWrapper
             Return False
         End Function
 
+        Public Overridable ReadOnly Property IsArray() As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
         ''' <summary>
         ''' Get/set the status flag for a Value.
         ''' </summary>
@@ -637,6 +643,12 @@ Namespace ValueWrapper
         Public ReadOnly Property CoreCounterType() As eCoreCounterTypes
             Get
                 Return Me.m_Countertype
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property IsArray() As Boolean
+            Get
+                Return True
             End Get
         End Property
 

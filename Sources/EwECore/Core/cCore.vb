@@ -4154,18 +4154,33 @@ Public Class cCore
                     Case eDataTypes.EcoPathGroupInput
 
                         Dim inputGrp As cEcoPathGroupInput = Me.EcoPathGroupInputs(var.Index)
+                        Dim val As cValue = inputGrp.ValueDescriptor(var.VarName)
 
-                        'DietComp needs to be handled differently
-                        If var.VarName = eVarNameFlags.DietComp Then
-                            For i = 1 To nGroups
-                                inputGrp.SetStatus(var.VarName, var.Status, var.Index)
+                        If val.IsArray Then
+                            For i = 1 To val.Length
+                                inputGrp.SetStatus(var.VarName, var.Status, i)
                             Next
-
                         Else
                             Dim tmpstatus As eStatusFlags = inputGrp.GetStatus(var.VarName)
                             inputGrp.SetStatus(var.VarName, tmpstatus, var.iArrayIndex)
                             tmpstatus = tmpstatus Or var.Status
                         End If
+
+                        ' JS: Above block replaces case-specific logic
+                        'Select Case var.VarName
+                        '    Case eVarNameFlags.DietComp
+                        '        For i = 1 To nGroups
+                        '            inputGrp.SetStatus(var.VarName, var.Status, var.Index)
+                        '        Next
+                        '    Case eVarNameFlags.DetritusFate
+                        '        For i = 1 To nDetritusGroups
+                        '            inputGrp.SetStatus(var.VarName, var.Status, var.Index)
+                        '        Next
+                        '    Case Else
+                        '        Dim tmpstatus As eStatusFlags = inputGrp.GetStatus(var.VarName)
+                        '        inputGrp.SetStatus(var.VarName, tmpstatus, var.iArrayIndex)
+                        '        tmpstatus = tmpstatus Or var.Status
+                        'End Select
 
                         'set the reference to the parent object of this variable
                         'this could not be set by EcoPath because it has no idea what this is
