@@ -122,6 +122,8 @@ Public Class cTaxonDataStructures
         ReDim Me.TaxonVulnerabilityIndex(Me.NumTaxon)
         ReDim Me.TaxonLastUpdated(Me.NumTaxon)
 
+        Me.m_alGroupTaxa = Nothing
+
     End Sub
 
 #Region " Taxon index "
