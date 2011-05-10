@@ -8,7 +8,6 @@ Imports EwEUtils.Utilities
 'Error handling could set the bSaveOutput flag to false if there is an error
 'this is problematic as the interface now has to be updated but the MonteCarlo is not a proper CoreInputOutput object...
 
-
 Public Class cMonteCarloResultsWriter
 
     Private m_MC As cEcosimMonteCarlo
@@ -46,6 +45,7 @@ Public Class cMonteCarloResultsWriter
             Dim msg As New cMessage("Error saving Monte Carlo data to file. " & ex.Message, eMessageType.ErrorEncountered, _
                                     eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo)
             Me.Core.Messages.SendMessage(msg)
+            cLog.Write(ex)
         End Try
     End Sub
 
@@ -108,7 +108,7 @@ Public Class cMonteCarloResultsWriter
             strm.Close()
 
         Catch ex As Exception
-
+            Debug.Assert(False, Me.ToString & ".WriteHeader() Exception: " & ex.Message)
         End Try
 
     End Sub
@@ -176,9 +176,19 @@ Public Class cMonteCarloResultsWriter
             Next
 
             strm.Close()
+            strm = Nothing
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".SaveIteration(...) Exception: " & ex.Message)
+        End Try
+
+        'Make sure the stream did not get left open somehow
+        Try
+            If strm IsNot Nothing Then
+                strm.Close()
+            End If
+        Catch ex As Exception
+
         End Try
 
     End Sub
