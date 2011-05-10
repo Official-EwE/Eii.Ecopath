@@ -1883,21 +1883,25 @@ Namespace Ecosim
 
                                 bioCatch = BB(igrp) * m_Data.FishTime(igrp) * FleetProp
 
-                                'Remove the discards ResultsLandings(group,fleet) contains only landings
+                                'Remove the discards for ResultsLandings(group,fleet) contains only landings
                                 Me.m_Data.ResultsLandings(igrp, iflt) += bioCatch * Me.m_EPData.PropLanded(iflt, igrp)
 
+                                'sum catch across all the groups into this fleet
+                                m_Data.ResultsSumCatchByGear(iflt, iTime) += bioCatch
+
+                                'By group gear
                                 m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = bioCatch
                                 m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime) = bioCatch / BB(igrp)
+
                                 'sum all fleets into zero index
-                                m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) = m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) + bioCatch
+                                m_Data.ResultsSumCatchByGear(0, iTime) += m_Data.ResultsSumCatchByGear(iflt, iTime)
+                                m_Data.ResultsSumFMortByGroupGear(igrp, 0, iTime) += m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime)
+                                m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) += m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime)
 
-                                m_Data.ResultsSumCatchByGear(iflt, iTime) = m_Data.ResultsSumCatchByGear(iflt, iTime) + bioCatch
-                                m_Data.ResultsSumCatchByGear(0, iTime) = m_Data.ResultsSumCatchByGear(0, iTime) + bioCatch
-
-                                ' Catch by group, by fleet
+                                'Results for this time step by group gear
                                 m_Results.BCatch(igrp, iflt) = bioCatch
 
-                            End If
+                            End If ' If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
                         Next iflt
 
                     Else 'If m_Data.FishTime(igrp) > 0 Then
