@@ -155,13 +155,19 @@ Namespace Other
 
         Private Sub OnMaskChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_tbBackupMask.TextChanged, m_tbOutputMask.TextChanged
+
             Me.UpdateControls()
+
         End Sub
 
-        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnDefaults.Click
-            Me.m_nudMRU.Value = Settings.Default.MdbRecentlyUsedCount
-            Me.m_tbOutputMask.Text = Settings.Default.OutputPathMask
-            Me.m_tbBackupMask.Text = Settings.Default.BackupFileMask
+        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDefaults.Click
+
+            ' There must be a better way to do this...?
+            Me.m_nudMRU.Value = 16
+            Me.m_tbOutputMask.Text = "{ModelPath}\EwEoutput {ModelFile}\"
+            Me.m_tbBackupMask.Text = "{ModelPath}\{ModelFile}_{Date}-{Time}_backup"
+
         End Sub
 
 #End Region ' Event handlers
