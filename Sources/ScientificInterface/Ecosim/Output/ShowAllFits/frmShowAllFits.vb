@@ -618,14 +618,12 @@ Namespace Ecosim
         Private Sub OnSaveAsCSVClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiSaveAsCSV.Click
 
-            Dim dlg As New FolderBrowserDialog()
+            Dim cmd As cDirectoryOpenCommand = DirectCast(Me.CommandHandler.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
 
-            dlg.SelectedPath = My.Settings.LastSelectedDirectory
-            dlg.ShowNewFolderButton = True
-            dlg.Description = My.Resources.PROMPT_FOLDER_SELECTION
+            cmd.Invoke()
 
-            If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Me.SaveToCSV(dlg.SelectedPath)
+            If cmd.Result = Windows.Forms.DialogResult.OK Then
+                Me.SaveToCSV(cmd.Directory)
             End If
 
         End Sub
@@ -638,7 +636,7 @@ Namespace Ecosim
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(SharedResources.FILEFILTER_IMAGE)
+            cmdFS.Invoke(Me.Core.EcosimOutputFileName("all_fits"), SharedResources.FILEFILTER_IMAGE)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 
                 Select Case cmdFS.FilterIndex
