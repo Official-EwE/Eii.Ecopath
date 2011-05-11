@@ -2,9 +2,11 @@
 
 Option Strict On
 Imports System
-Imports System.Collections.Generic
 Imports System.IO
+Imports System.Text
+Imports System.Collections.Generic
 Imports System.Security.AccessControl
+Imports System.Diagnostics
 
 #End Region ' Imports
 
@@ -77,7 +79,17 @@ Namespace Utilities
             Return strText
         End Function
 
-        Public Shared Function FindFile(ByVal strFile As String, ByVal strStartDir As String, _
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Find a file in a directory.
+        ''' </summary>
+        ''' <param name="strFile">Name of the file to locate.</param>
+        ''' <param name="strStartDir">Directory to search.</param>
+        ''' <param name="bRecursive">Flag stating if subdirectories should be searched recursively.</param>
+        ''' <returns>The full path to the file if found, or an empty string if the file could not be located.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FindFile(ByVal strFile As String, _
+                                        ByVal strStartDir As String, _
                                         Optional ByVal bRecursive As Boolean = False) As String
 
             Dim strFullPath As String = Path.Combine(strStartDir, strFile)
@@ -115,7 +127,7 @@ Namespace Utilities
         ''' destination file name.</param>
         ''' <param name="attributes"><see cref="FileAttributes">Attributes</see> to
         ''' assign to the backup file.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' <remarks>
         ''' If <paramref name="strDest"/> is left empty, a backup file name will be
         ''' created that looks like '[original name].[original ext].[short date]'.
@@ -150,14 +162,20 @@ Namespace Utilities
 
         End Function
 
-        Public Shared Function MakeTempFile(ByVal strFileName As String) As String
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a zero-byte file in the %TEMP% folder, and return the path to the file.
+        ''' </summary>
+        ''' <param name="strFileName">An optional file name to use.</param>
+        ''' <returns>The full path to the file.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function MakeTempFile(Optional ByVal strFileName As String = "") As String
 
             If String.IsNullOrEmpty(strFileName) Then
-                strFileName = System.IO.Path.GetTempFileName()
+                strFileName = Path.GetTempFileName()
             End If
 
             ' TODO: Check if file is writeable!!!
-
             Return Path.Combine(System.IO.Path.GetTempPath(), strFileName)
 
         End Function
@@ -166,24 +184,31 @@ Namespace Utilities
         Private Const cCHARS_STRING As String = "-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$."
         Private cSeparator As Char = CChar(" ")
 
-        Public Shared Function ReadNumber(ByRef sr As System.IO.TextReader) As Single
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Read a number from a <see cref="TextReader"/> and advances the read pointer.
+        ''' </summary>
+        ''' <param name="reader">The reader to read the number from.</param>
+        ''' <returns>The read number in the form of a <see cref="Single"/></returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function ReadNumber(ByRef reader As TextReader) As Single
             Dim ch(255) As Char ' Should be enough to hold one single number
             Dim readCh(1) As Char
             Dim nChar As Integer = 0
 
             ' Read leading spaces
             Do
-                sr.Read(readCh, 0, 1)
-            Loop Until (cCHARS_NUMBER.IndexOfAny(readCh) > -1) Or (sr.Peek() < 0)
+                reader.Read(readCh, 0, 1)
+            Loop Until (cCHARS_NUMBER.IndexOfAny(readCh) > -1) Or (reader.Peek() < 0)
 
-            If (sr.Peek() = -1) Then Throw New Exception("Unexpected end of file found while reading body")
+            If (reader.Peek() = -1) Then Throw New Exception("Unexpected end of file found while reading body")
 
             ' Read digits
             Do
                 ch(nChar) = readCh(0)
                 nChar += 1
-                sr.Read(readCh, 0, 1)
-            Loop Until (cCHARS_NUMBER.IndexOfAny(readCh) = -1) Or (sr.Peek() < 0)
+                reader.Read(readCh, 0, 1)
+            Loop Until (cCHARS_NUMBER.IndexOfAny(readCh) = -1) Or (reader.Peek() < 0)
 
             Return Single.Parse(ch)
 
@@ -213,19 +238,58 @@ Namespace Utilities
 
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Creates a standard file name for EwE output files.
+        ''' </summary>
+        ''' <param name="ModelName">Name of the model for which the output file is created.</param>
+        ''' <param name="ComponentName">Name of the component for which the output file is created.</param>
+        ''' <param name="Filter">Optional filter to specify an optional subcomponent for which the file is created.</param>
+        ''' <param name="ScenarioName">Optional scenario name for which the file is created.</param>
+        ''' <param name="Ext">Optional extension to add.</param>
+        ''' <returns>A file name of the form {<paramref name="ModelName"/>}-{<paramref name="ComponentName"/>}[-{<paramref name="Scenario"/>}][-{<paramref name="Filter"/>}][.{<paramref name="Ext"/>}].</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function ToOutputFilename(ByVal ModelName As String, _
+                                                ByVal ComponentName As String, _
+                                                Optional ByVal Filter As String = "", _
+                                                Optional ByVal ScenarioName As String = "", _
+                                                Optional ByVal Ext As String = ".csv") As String
 
-        Public Shared Function ToOutputFilename(ByVal ModelName As String, ByVal ComponentName As String, Optional ByVal Filter As String = "") As String
-            Dim seperator As String = "-"
-            Dim ext As String = ".csv"
-            Dim filename As String
-            If Filter = String.Empty Then
-                filename = cFileUtils.ToValidFileName(ModelName & seperator & ComponentName & ext, False)
-            Else
-                filename = cFileUtils.ToValidFileName(ModelName & seperator & ComponentName & seperator & Filter & ext, False)
+            ' Sanity checks
+            Debug.Assert(Not String.IsNullOrEmpty(ModelName), "Model Name required")
+            Debug.Assert(Not String.IsNullOrEmpty(ComponentName), "Component Name required")
+
+            Dim cPART_MAXSIZE As Integer = 10
+            Dim separator As String = "-"
+            Dim sb As New StringBuilder()
+
+            ' Add 'cPART_MAXSIZE' model name characters
+            sb.Append(ModelName.Substring(0, Math.Min(ModelName.Length, cPART_MAXSIZE)))
+            ' Add entire component name
+            sb.Append(separator)
+            sb.Append(ComponentName)
+            ' Add 'cPART_MAXSIZE' scenario name characters, if provided
+            If (Not String.IsNullOrEmpty(ScenarioName)) Then
+                sb.Append(separator)
+                sb.Append(ScenarioName.Substring(0, Math.Min(ScenarioName.Length, cPART_MAXSIZE)))
             End If
-            Return filename
-        End Function
+            ' Add entire filter, if provided
+            If (Not String.IsNullOrEmpty(Filter)) Then
+                sb.Append(separator)
+                sb.Append(Filter)
+            End If
+            ' Add extension, if provided
+            If (Not String.IsNullOrEmpty(Ext)) Then
+                ' Add a dot ('.') if the extension is provided without
+                If Not cStringUtils.BeginsWith(Ext, ".") Then
+                    sb.Append(".")
+                End If
+                sb.Append(Ext)
+            End If
 
+            Return cFileUtils.ToValidFileName(sb.ToString, False)
+
+        End Function
 
     End Class
 
