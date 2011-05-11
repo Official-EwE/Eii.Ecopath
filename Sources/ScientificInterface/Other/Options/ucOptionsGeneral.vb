@@ -9,6 +9,7 @@ Imports EwEUtils.Commands
 Imports WeifenLuo.WinFormsUI
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
+Imports System.Configuration
 
 #End Region
 
@@ -163,10 +164,9 @@ Namespace Other
         Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnDefaults.Click
 
-            ' There must be a better way to do this...?
-            Me.m_nudMRU.Value = 16
-            Me.m_tbOutputMask.Text = "{ModelPath}\EwEoutput {ModelFile}\"
-            Me.m_tbBackupMask.Text = "{ModelPath}\{ModelFile}_{Date}-{Time}_backup"
+            Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
+            Me.m_tbOutputMask.Text = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
+            Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
 
         End Sub
 
