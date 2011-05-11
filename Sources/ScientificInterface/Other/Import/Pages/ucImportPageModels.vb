@@ -6,6 +6,8 @@ Imports ScientificInterfaceShared.Controls.Wizard
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore.DataSources
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -179,13 +181,13 @@ Namespace Import
                                   ByVal e As EventArgs) _
              Handles m_btnBrowse.Click
 
-            Dim fd As New FolderBrowserDialog()
-            fd.Description = My.Resources.PROMPT_FOLDER_SELECTION
-            fd.ShowNewFolderButton = True
-            fd.SelectedPath = Me.m_tbxOutputFolder.Text
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
 
-            If fd.ShowDialog(Me) = DialogResult.OK Then
-                Me.m_tbxOutputFolder.Text = fd.SelectedPath
+            cmd.Invoke()
+
+            If cmd.Result = DialogResult.OK Then
+                Me.m_tbxOutputFolder.Text = cmd.Directory
             End If
 
         End Sub
