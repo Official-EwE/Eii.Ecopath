@@ -17,6 +17,20 @@ Imports EwECore
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' <para>Custom <see cref="SettingsProvider"/> to affect a few of the default
+''' and messy .NET settings behaviours:</para>
+''' <list type="bullet">
+''' <item>All EwE settings are stored in the local roaming profile of the current
+''' user. There is no distiunction between application and user settings which
+''' traditionally end up in different directories on a system.</item>
+''' </list>
+''' <item>All EwE settings are stored in one diretory, in one file only. This
+''' class stops the proliferation of standard .NET versioned settings directories 
+''' that become impossible to manage.</item>
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cEwESettingsProvider
     Inherits SettingsProvider
 
