@@ -20,27 +20,13 @@ Friend Class cMSECSVOutputWriter
     End Sub
 
     Public Function getOutputFileName(ByVal strDataType As String, ByVal strDataName As String) As String
-        Return Path.Combine(Me.DataDir, cFileUtils.ToValidFileName(strDataType & strDataName & ".csv", False))
+        Return Path.Combine(Me.DataDir, cFileUtils.ToOutputFilename(Me.ModelName, strDataType, strDataName))
     End Function
 
-    'Private Function getOutputDirectory() As String
+    Private Function ModelName() As String
+        Return Me.m_core.DataSource.FileName
+    End Function
 
-    '    Try
-
-    '        Dim modelPath As String = DirectCast(Me.m_core.DataSource.Connection, Database.cEwEAccessDatabase).Name
-    '        If File.Exists(modelPath) Then
-    '            Return Path.Combine(Path.GetDirectoryName(modelPath), "MSE\")
-    '        Else
-    '            System.Console.WriteLine("MSE Failed to find database directory from the currently loaded model.")
-    '            Return (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\"))
-    '        End If
-    '    Catch ex As Exception
-    '        Debug.Assert(False, Me.ToString & ".getOutputDirectory() Exception: " & ex.Message)
-    '    End Try
-
-    '    Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MSE\")
-
-    'End Function
 
     Public Sub saveIteration(ByVal ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
 
@@ -194,7 +180,7 @@ Friend Class cMSECSVOutputWriter
 
     Public ReadOnly Property DataDir() As String
         Get
-            Return Path.Combine(Me.m_core.OutputPath, "MSE")
+            Return Me.m_core.OutputPath
         End Get
     End Property
 

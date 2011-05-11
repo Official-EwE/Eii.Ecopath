@@ -33,6 +33,8 @@ Public Class cEcosimResultWriter
         TL
     End Enum
 
+    Private Const OUPUT_NAME As String = "EcosimOuput"
+
 #End Region ' Private vars
 
 #Region " Public interfaces "
@@ -238,47 +240,52 @@ Public Class cEcosimResultWriter
         If bSaveAnnual Then
             Select Case outputtype
                 Case eResultTypes.Biomass
-                    strFileName = "EwE6-Ecosim_annual_biomass.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_biomass") '"EwE6-Ecosim_annual_biomass.csv"
                 Case eResultTypes.Mortality
-                    strFileName = "EwE6-Ecosim_annual_mortality.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_mortality") '"EwE6-Ecosim_annual_mortality.csv"
                 Case eResultTypes.Yield
-                    strFileName = "EwE6-Ecosim_annual_yield.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_yield") '"EwE6-Ecosim_annual_yield.csv"
                 Case eResultTypes.ConsumptionBiomass
-                    strFileName = "EwE6-Ecosim_annual_cons_biom.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_cons_biom") '"EwE6-Ecosim_annual_cons_biom.csv"
                 Case eResultTypes.FeedingTime
-                    strFileName = "EwE6-Ecosim_annual_feedingtime.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_feedingtime") '"EwE6-Ecosim_annual_feedingtime.csv"
                 Case eResultTypes.AvgWeightOrProdCons
-                    strFileName = "EwE6-Ecosim_annual_weight.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_weight") '"EwE6-Ecosim_annual_weight.csv"
                 Case eResultTypes.PredationMortality
-                    strFileName = "EwE6-Ecosim_annual_predation.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_predation") '"EwE6-Ecosim_annual_predation.csv"
                 Case eResultTypes.Prey
-                    strFileName = "EwE6-Ecosim_annual_prey.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_prey") '"EwE6-Ecosim_annual_prey.csv"
                 Case eResultTypes.TL
-                    strFileName = "EwE6-Ecosim_annual_TL.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_TL") '"EwE6-Ecosim_annual_TL.csv"
             End Select
         Else
             Select Case outputtype
                 Case eResultTypes.Biomass
-                    strFileName = "EwE6-Ecosim_biomass.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "biomass") '"EwE6-Ecosim_biomass.csv"
                 Case eResultTypes.Mortality
-                    strFileName = "EwE6-Ecosim_mortality.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "mortality") '"EwE6-Ecosim_mortality.csv"
                 Case eResultTypes.Yield
-                    strFileName = "EwE6-Ecosim_yield.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "yield") '"EwE6-Ecosim_yield.csv"
                 Case eResultTypes.ConsumptionBiomass
-                    strFileName = "EwE6-Ecosim_cons_biom.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "cons_biom") '"EwE6-Ecosim_cons_biom.csv"
                 Case eResultTypes.FeedingTime
-                    strFileName = "EwE6-Ecosim_feedingtime.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "feedingtime") '"EwE6-Ecosim_feedingtime.csv"
                 Case eResultTypes.AvgWeightOrProdCons
-                    strFileName = "EwE6-Ecosim_weight.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "weight") '"EwE6-Ecosim_weight.csv"
                 Case eResultTypes.PredationMortality
-                    strFileName = "EwE6-Ecosim_predation.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "predation") '"EwE6-Ecosim_predation.csv"
                 Case eResultTypes.Prey
-                    strFileName = "EwE6-Ecosim_prey.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "prey") '"EwE6-Ecosim_prey.csv"
                 Case eResultTypes.TL
-                    strFileName = "EwE6-Ecosim_TL.csv"
+                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "TL") '"EwE6-Ecosim_TL.csv"
             End Select
         End If
         Return Path.Combine(strPath, strFileName)
+    End Function
+
+
+    Private Function ModelName() As String
+        Return Me.m_core.DataSource.filename
     End Function
 
     Private Function SaveDataToFile(ByVal strFileName As String, _

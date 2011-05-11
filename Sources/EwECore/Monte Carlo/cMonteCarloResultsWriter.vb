@@ -51,14 +51,14 @@ Public Class cMonteCarloResultsWriter
 
     Private ReadOnly Property OuputFilename() As String
         Get
-            Return Path.Combine(Me.DataDir, cFileUtils.ToValidFileName(Me.ModelName & "-MonteCarlo.csv", False))
+            Return Path.Combine(Me.DataDir, cFileUtils.ToOutputFilename(Me.ModelName, "MonteCarlo", "IterationData"))
         End Get
     End Property
 
 
     Private ReadOnly Property ModelName() As String
         Get
-            Return Me.Core.EwEModel.Name
+            Return Me.Core.DataSource.Filename
         End Get
     End Property
 
@@ -66,7 +66,7 @@ Public Class cMonteCarloResultsWriter
     Private ReadOnly Property DataDir() As String
         Get
             'For now 
-            Return Path.Combine(Me.m_core.OutputPath, "MonteCarlo")
+            Return Me.m_core.OutputPath
         End Get
     End Property
 

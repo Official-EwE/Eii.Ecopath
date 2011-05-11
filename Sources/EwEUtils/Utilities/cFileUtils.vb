@@ -212,6 +212,21 @@ Namespace Utilities
             Return True
 
         End Function
+
+
+        Public Shared Function ToOutputFilename(ByVal ModelName As String, ByVal ComponentName As String, Optional ByVal Filter As String = "") As String
+            Dim seperator As String = "-"
+            Dim ext As String = ".csv"
+            Dim filename As String
+            If Filter = String.Empty Then
+                filename = cFileUtils.ToValidFileName(ModelName & seperator & ComponentName & ext, False)
+            Else
+                filename = cFileUtils.ToValidFileName(ModelName & seperator & ComponentName & seperator & Filter & ext, False)
+            End If
+            Return filename
+        End Function
+
+
     End Class
 
 End Namespace

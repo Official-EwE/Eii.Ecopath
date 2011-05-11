@@ -92,11 +92,11 @@ Namespace MSE
         'ToDo_jb 27-Oct-2010 Moved PropdiscardTime and PropLandedTime() to Ecosim make sure this works.
 
         'Filenames prefixes for output file
-        Public Const BIOMASS_DATA As String = "MSE_Biomass_"
-        Public Const CATCH_DATA As String = "MSE_CatchByGroup_"
-        Public Const EFFORT_DATA As String = "MSE_Effort_"
-        Public Const FLEETCATCH_DATA As String = "MSE_CatchByFleet_"
-        Public Const QUOTAGROUP_DATA As String = "MSE_QuotaByGroup_"
+        Public Const BIOMASS_DATA As String = "MSE_Biomass"
+        Public Const CATCH_DATA As String = "MSE_CatchByGroup"
+        Public Const EFFORT_DATA As String = "MSE_Effort"
+        Public Const FLEETCATCH_DATA As String = "MSE_CatchByFleet"
+        Public Const QUOTAGROUP_DATA As String = "MSE_QuotaByGroup"
 
 
         Public Enum eResultsData
