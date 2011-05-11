@@ -193,9 +193,6 @@ Namespace Other
             Dim bHasSuppressedPrompts As Boolean = (Not String.IsNullOrEmpty(My.Settings.SuppressedOverwritePrompts))
             Dim bCanCheckExEUpdate As Boolean = False
             Dim bHasMRU As Boolean = (My.Settings.MdbRecentlyUsedList.Count > 0)
-            Dim strSample As String = ""
-            Dim strVersion As String = Application.ProductVersion.ToString
-            Dim strDocDir As String = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
 
             Me.m_btnResetOverwritePrompts.Enabled = bHasSuppressedPrompts
             Me.m_lblResetOverwritePrompts.Enabled = bHasSuppressedPrompts
@@ -204,15 +201,21 @@ Namespace Other
 
             Me.m_btnClearMRU.Enabled = bHasMRU
 
-            If Not cPathUtility.ResolvePath(Me.m_tbOutputMask.Text, Me.m_uic.Core, strSample) Then
-                cPathUtility.ResolvePath(Me.m_tbOutputMask.Text, "model", strDocDir, ".eweaccdb", strVersion, strSample)
-            End If
-            Me.m_lblSampleOutput.Text = cStringUtils.CompactString(strSample, Me.m_lblSampleOutput.ClientRectangle.Width, Me.m_lblSampleOutput.Font, TextFormatFlags.PathEllipsis)
+            Me.UpdateSample(Me.m_lblSampleOutput, Me.m_tbOutputMask.Text)
+            Me.UpdateSample(Me.m_lblSampleBackup, Me.m_tbBackupMask.Text)
 
-            If Not cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, Me.m_uic.Core, strSample) Then
-                cPathUtility.ResolvePath(Me.m_tbBackupMask.Text, "model", strDocDir, ".eweaccdb", strVersion, strSample)
+        End Sub
+
+        Private Sub UpdateSample(ByVal lbl As Label, ByVal strMask As String)
+
+            Dim strVersion As String = Application.ProductVersion.ToString
+            Dim strDocDir As String = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
+            Dim strSample As String = ""
+
+            If Not cPathUtility.ResolvePath(strMask, Me.m_uic.Core, strSample) Then
+                cPathUtility.ResolvePath(strMask, "model", strDocDir, ".eweaccdb", strVersion, strSample)
             End If
-            Me.m_lblSampleBackup.Text = cStringUtils.CompactString(strSample, Me.m_lblSampleBackup.ClientRectangle.Width, Me.m_lblSampleBackup.Font, TextFormatFlags.PathEllipsis)
+            lbl.Text = cStringUtils.CompactString(strSample, lbl.ClientRectangle.Width, lbl.Font, TextFormatFlags.PathEllipsis)
 
         End Sub
 
