@@ -164,9 +164,14 @@ Namespace Other
         Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnDefaults.Click
 
-            Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
-            Me.m_tbOutputMask.Text = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
-            Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
+            ' Better protect this code in case settings property names change
+            Try
+                Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
+                Me.m_tbOutputMask.Text = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
+                Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
