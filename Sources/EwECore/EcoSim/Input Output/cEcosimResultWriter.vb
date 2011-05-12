@@ -287,8 +287,8 @@ Public Class cEcosimResultWriter
             Using sw As StreamWriter = New StreamWriter(strFileName, False)
                 sw.WriteLine(strModelDetails)
                 sw.WriteLine(strDataDetails)
-                sw.WriteLine(strGroupNames)
                 sw.WriteLine()
+                sw.WriteLine(strGroupNames)
                 If bSaveYearly Then
                     Dim simYears As Integer = CInt((data.GetLength(1) - 1) / cCore.N_MONTHS)
                     Dim nGroups As Integer = data.GetLength(0) - 1
