@@ -324,8 +324,16 @@ Namespace Ecosim
                 pplYield.Add(dXValue, groupSimOut.Yield(i))
                 For iFleet As Integer = 1 To Me.UIContext.Core.nFleets
                     applYieldFleet(iFleet).Add(dXValue, CSng(groupSimOut.CatchByFleet(iFleet, i)))
-                    applFishMortFleet(iFleet).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(iFleet, i)))
                     applValueFleet(iFleet).Add(dXValue, CSng(groupSimOut.ValueByFleet(iFleet, i)))
+                    ' Special case: is aggregated?
+                    If groupSimOut.isCatchAggregated() Then
+                        If (iFleet = 1) Then
+                            ' Report F from fleet 1 for all fleets only
+                            applFishMortFleet(0).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(1, i)))
+                        End If
+                    Else
+                        applFishMortFleet(iFleet).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(iFleet, i)))
+                    End If
                 Next
                 If groupSimOut.isMultiStanza() Then
                     pplAvgWorProdCons.Add(dXValue, groupSimOut.AvgWeight(i))
