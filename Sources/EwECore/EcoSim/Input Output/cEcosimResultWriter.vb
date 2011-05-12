@@ -350,7 +350,7 @@ Public Class cEcosimResultWriter
         If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
             sb.Append(Chr(34) & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Chr(34))
         Else
-            sb.Append("")
+            sb.Append("(none)")
         End If
 
         Return sb.ToString()
