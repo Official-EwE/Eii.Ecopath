@@ -99,8 +99,8 @@ Public Class cLindemanSpine
         Me.UpdateControls()
     End Sub
 
-    Public Overrides Function Filename(ByVal bAnnual As Boolean) As String
-        Return "EwE6-NA_lindeman-spine"
+    Public Overrides Function Filename(ByVal strFilter As String) As String
+        Return MyBase.Filename("lindeman-spine")
     End Function
 
     Public Overrides Sub SaveToEMF(ByVal strFileName As String)

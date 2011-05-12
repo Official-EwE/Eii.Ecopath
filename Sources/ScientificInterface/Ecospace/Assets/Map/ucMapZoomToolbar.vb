@@ -218,7 +218,7 @@ Namespace Ecospace
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             Dim strFileName As String = ""
 
-            cmdFS.Invoke(cFileUtils.ToValidFileName(String.Format("{0}_{1}", model.Name, scenario.Name), False), "", SharedResources.FILEFILTER_IMAGE)
+            cmdFS.Invoke(cFileUtils.ToValidFileName(String.Format("{0}_{1}", model.Name, scenario.Name), False), SharedResources.FILEFILTER_IMAGE)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 
                 Select Case cmdFS.FilterIndex

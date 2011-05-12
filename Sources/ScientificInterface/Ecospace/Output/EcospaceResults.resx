@@ -399,9 +399,6 @@
   <data name="&gt;&gt;m_rbFleet.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_hdrYear.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
   <data name="m_hdrYear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -434,9 +431,6 @@
   </data>
   <data name="m_hdrShow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="m_hdrShow.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
   <data name="m_hdrShow.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>

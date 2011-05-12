@@ -202,12 +202,11 @@ Public Class frmNetworkAnalysis
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-            Dim bAnnual As Boolean = False
 
             If (Me.m_contentmanager Is Nothing) Then Return
             If (cmdFS Is Nothing) Then Return
 
-            cmdFS.Invoke(Me.m_contentmanager.Filename(bAnnual), _
+            cmdFS.Invoke(Me.m_contentmanager.Filename(""), _
                          My.Resources.FILEFILTER_EMF, _
                          1)
 

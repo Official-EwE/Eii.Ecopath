@@ -31,7 +31,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Dim m_tssView1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcosim1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcosim2 As System.Windows.Forms.ToolStripSeparator
-        Dim m_tssEcosim3 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcospace1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcospace2 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcospace3 As System.Windows.Forms.ToolStripSeparator
@@ -101,8 +100,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiTimeSeriesExport = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesLoad = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiTimeSeriesEditWeights = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiExportBiomassToCSV = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiEcosimEstimateVs = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuTools = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuEcotracer = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcotracerNew = New System.Windows.Forms.ToolStripMenuItem
@@ -126,7 +123,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         m_tssView1 = New System.Windows.Forms.ToolStripSeparator
         m_tssEcosim1 = New System.Windows.Forms.ToolStripSeparator
         m_tssEcosim2 = New System.Windows.Forms.ToolStripSeparator
-        m_tssEcosim3 = New System.Windows.Forms.ToolStripSeparator
         m_tssEcospace1 = New System.Windows.Forms.ToolStripSeparator
         m_tssEcospace2 = New System.Windows.Forms.ToolStripSeparator
         m_tssEcospace3 = New System.Windows.Forms.ToolStripSeparator
@@ -179,11 +175,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         m_tssEcosim2.Name = "m_tssEcosim2"
         resources.ApplyResources(m_tssEcosim2, "m_tssEcosim2")
-        '
-        'm_tssEcosim3
-        '
-        m_tssEcosim3.Name = "m_tssEcosim3"
-        resources.ApplyResources(m_tssEcosim3, "m_tssEcosim3")
         '
         'm_tssEcospace1
         '
@@ -503,7 +494,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'MenuEcosim
         '
-        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, Me.m_tsmiEcosimDelete, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesExport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights, m_tssEcosim3, Me.m_tsmiExportBiomassToCSV, Me.m_tsmiEcosimEstimateVs})
+        Me.MenuEcosim.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcosimNew, Me.m_tsmiEcosimLoad, m_tssEcosim1, Me.m_tsmiEcosimSave, Me.m_tsmiEcosimSaveAs, Me.m_tsmiEcosimDelete, m_tssEcosim2, Me.m_tsmiTimeSeriesImport, Me.m_tsmiTimeSeriesExport, Me.m_tsmiTimeSeriesLoad, Me.m_tsmiTimeSeriesEditWeights})
         Me.MenuEcosim.Name = "MenuEcosim"
         resources.ApplyResources(Me.MenuEcosim, "MenuEcosim")
         '
@@ -551,16 +542,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         Me.m_tsmiTimeSeriesEditWeights.Name = "m_tsmiTimeSeriesEditWeights"
         resources.ApplyResources(Me.m_tsmiTimeSeriesEditWeights, "m_tsmiTimeSeriesEditWeights")
-        '
-        'm_tsmiExportBiomassToCSV
-        '
-        Me.m_tsmiExportBiomassToCSV.Name = "m_tsmiExportBiomassToCSV"
-        resources.ApplyResources(Me.m_tsmiExportBiomassToCSV, "m_tsmiExportBiomassToCSV")
-        '
-        'm_tsmiEcosimEstimateVs
-        '
-        Me.m_tsmiEcosimEstimateVs.Name = "m_tsmiEcosimEstimateVs"
-        resources.ApplyResources(Me.m_tsmiEcosimEstimateVs, "m_tsmiEcosimEstimateVs")
         '
         'MenuTools
         '
@@ -708,7 +689,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents m_tsmiEcospaceImportLayers As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceDefineImportanceLayers As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiHelpBugReport As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiExportBiomassToCSV As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuEcopath As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcopathDefineGroups As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcopathDefineMultiStanza As System.Windows.Forms.ToolStripMenuItem
@@ -731,7 +711,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents m_tsmiFileCompact As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuEcosim As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_ssMain As ScientificInterface.cEwEStatusBar
-    Private WithEvents m_tsmiEcosimEstimateVs As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiTimeSeriesExport As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewItems As System.Windows.Forms.ToolStripMenuItem

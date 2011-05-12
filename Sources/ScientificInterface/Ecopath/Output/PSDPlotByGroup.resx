@@ -171,9 +171,6 @@
   <data name="m_hdrGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_hdrGroups.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
   <data name="m_hdrGroups.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>

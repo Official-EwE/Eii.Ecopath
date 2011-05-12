@@ -263,7 +263,7 @@ Namespace Ecospace.Basemap
             If String.IsNullOrEmpty(Me.m_tbTarget.Text) Then
                 fsc.Invoke(strFileFilter)
             Else
-                fsc.Invoke(Path.GetFileName(Me.m_tbTarget.Text), Path.GetDirectoryName(Me.m_tbTarget.Text), strFileFilter)
+                fsc.Invoke(Me.m_tbTarget.Text, strFileFilter)
             End If
 
             If (fsc.Result = Windows.Forms.DialogResult.OK) Then

@@ -488,7 +488,7 @@ Namespace Forms
                 Dim fs As Stream = Nothing
                 Dim sr As StreamReader = Nothing
 
-                cmdOF.Invoke(Me.GetCSVFileName(), ".\", My.Resources.FILEFILTER_CSV)
+                cmdOF.Invoke(Me.GetCSVFileName(), My.Resources.FILEFILTER_CSV)
                 If cmdOF.Result <> Windows.Forms.DialogResult.OK Then Return
 
                 Try
@@ -514,7 +514,7 @@ Namespace Forms
                 Dim fs As Stream = Nothing
                 Dim sw As StreamWriter = Nothing
 
-                cmdSF.Invoke(Me.GetCSVFileName(), ".\", My.Resources.FILEFILTER_CSV)
+                cmdSF.Invoke(Me.GetCSVFileName(), My.Resources.FILEFILTER_CSV)
                 If cmdSF.Result <> Windows.Forms.DialogResult.OK Then Return
 
                 Try

@@ -222,7 +222,7 @@ Public Class dlgManageTimeSeries
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-        cmdFO.Invoke(Me.m_strImportFileName, "", SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_TEXT)
+        cmdFO.Invoke(Me.m_strImportFileName, SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_TEXT)
 
         If (cmdFO.Result = DialogResult.OK) Then
             Me.m_strImportFileName = cmdFO.FileName

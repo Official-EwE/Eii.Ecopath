@@ -353,7 +353,7 @@ Namespace Ecospace
             Dim g As Graphics = Nothing
             Dim br As SolidBrush = Nothing
 
-            cmdFS.Invoke(SharedResources.FILEFILTER_IMAGE)
+            cmdFS.Invoke(Me.Core.EcospaceOutputFileName("map"), SharedResources.FILEFILTER_IMAGE)
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 

@@ -308,7 +308,7 @@ Namespace Ecospace.Basemap
             If String.IsNullOrEmpty(Me.m_tbInput.Text) Then
                 foc.Invoke(strFileFilter)
             Else
-                foc.Invoke(Path.GetFileName(Me.m_tbInput.Text), Path.GetDirectoryName(Me.m_tbInput.Text), strFileFilter)
+                foc.Invoke(Me.m_tbInput.Text, strFileFilter)
             End If
 
             If (foc.Result = Windows.Forms.DialogResult.OK) Then

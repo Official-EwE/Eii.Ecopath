@@ -1,6 +1,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports EwEUtils.Commands
 
 #End Region ' Imports
@@ -63,20 +64,47 @@ Namespace Commands
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
         ''' <param name="strTitle">
-        ''' Optional dialog title. If left empty, the Visual Studio default is used.
+        ''' Optional dialog title. If left empty, the .NET default is used.
         ''' </param>
         ''' -----------------------------------------------------------------------
+        <Obsolete("Directory management has changed. Please use Invoke(str, str, int, str) instead.")> _
         Public Overloads Sub Invoke(ByVal strFileName As String, _
                                     ByVal strDirectory As String, _
                                     ByVal strFileFilter As String, _
                                     Optional ByVal iFilter As Integer = 0, _
                                     Optional ByVal strTitle As String = "")
+            Me.Invoke(Path.Combine(strDirectory, strFileName), strFileFilter, iFilter, strTitle)
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' </summary>
+        ''' <param name="strFileName"></param>
+        ''' <param name="strFileFilter"></param>
+        ''' <param name="iFilter"></param>
+        ''' <param name="strTitle">
+        ''' Optional dialog title. If left empty, the the .NET default is used.
+        ''' </param>
+        ''' -----------------------------------------------------------------------
+        Public Overloads Sub Invoke(ByVal strFileName As String, _
+                                    ByVal strFileFilter As String, _
+                                    Optional ByVal iFilter As Integer = 0, _
+                                    Optional ByVal strTitle As String = "")
+
+            Dim strPath As String = ""
 
             Me.m_strTitle = strTitle
             Me.m_strFileName = strFileName
-            Me.m_strDirectory = strDirectory
             Me.m_strFileFilters = strFileFilter
             Me.m_iFilter = iFilter
+
+            Try
+                ' Only update directory if a diretory has been specified
+                strPath = Path.GetDirectoryName(strFileName)
+                If Not String.IsNullOrEmpty(strPath) Then Me.m_strDirectory = strPath
+            Catch ex As Exception
+            End Try
+
             Me.Invoke()
 
         End Sub
@@ -87,14 +115,14 @@ Namespace Commands
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
         ''' <param name="strTitle">
-        ''' Optional dialog title. If left empty, the Visual Studio default is used.
+        ''' Optional dialog title. If left empty, the the .NET default is used.
         ''' </param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strFileFilter As String, _
                                     Optional ByVal iFilter As Integer = 0, _
                                     Optional ByVal strTitle As String = "")
 
-            Me.Invoke("", "", strFileFilter, iFilter, strTitle)
+            Me.Invoke("", strFileFilter, iFilter, strTitle)
 
         End Sub
 
@@ -152,10 +180,13 @@ Namespace Commands
         ''' Get the directory that the command was invoked with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Directory() As String
+        Public Property Directory() As String
             Get
                 Return Me.m_strDirectory
             End Get
+            Set(ByVal strDirectory As String)
+                Me.m_strDirectory = strDirectory
+            End Set
         End Property
 
         ''' -------------------------------------------------------------------

@@ -147,8 +147,8 @@ Public MustInherit Class cContentManager
     ''' Default implementation does not return a file name.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Filename(ByVal bAnnual As Boolean) As String
-        Return ""
+    Public Overridable Function Filename(ByVal strFilter As String) As String
+        Return Me.UIContext.Core.EcopathOutputFileName("NA", strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------

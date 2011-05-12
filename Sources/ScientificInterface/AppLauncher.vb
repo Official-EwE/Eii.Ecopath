@@ -59,7 +59,8 @@ Public Class AppLauncher
     ''' <summary>Style guide updater.</summary>
     Private m_styleguideupdater As StyleGuideUpdater = Nothing
     Private m_MessageHistory As cMessageHistory = Nothing
-    Private m_strLastSelectedPath As String = ""
+    ''' <summary>Last used model directory.</summary>
+    Private m_strLastModelPath As String = ""
 
     ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
@@ -490,10 +491,8 @@ Public Class AppLauncher
         Me.m_cmdEnableEcotracer = New cCommand(cmdh, "EnableEcotracer")
 
         Me.m_cmdEstimateVs = New cCommand(cmdh, "EstimateVs")
-        Me.m_cmdEstimateVs.AddControl(Me.m_tsmiEcosimEstimateVs)
 
         Me.m_cmdExportEcosimResultsToCSV = New cCommand(cmdh, "ExportEcosimResultsToCSV")
-        Me.m_cmdExportEcosimResultsToCSV.AddControl(Me.m_tsmiExportBiomassToCSV)
 
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
@@ -1283,9 +1282,6 @@ Public Class AppLauncher
 
     Private Sub SaveMainFormSettings()
 
-        ' Save the user settings when EwE exits
-        My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
-
         Me.UIContext.FormSettings.Store(Me, False)
         Me.m_styleguideupdater.Save()
         My.Settings.FormPositions = Me.UIContext.FormSettings.Setting
@@ -1744,7 +1740,9 @@ Public Class AppLauncher
         ' Ok, now let's see if the core can work with this
         If Me.Core.LoadModel(ds) Then
             ' Set core paths
-            Me.UpdateCorePaths()
+            Me.UpdateCorePaths(True)
+            ' Remember last used model directory
+            My.Settings.LastSelectedDirectory = Path.GetDirectoryName(strFileName)
             Return True
         Else
             Dim message As String = String.Format(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName)
@@ -1764,6 +1762,9 @@ Public Class AppLauncher
 
         If (Me.Core.Save(strFileName)) Then
             Me.AddRecentFilesSetting(strFileName)
+            ' Remember last used model directory
+            My.Settings.LastSelectedDirectory = Path.GetDirectoryName(strFileName)
+            ' Update
             Me.UpdateModelControls()
             Return True
         End If
@@ -1885,8 +1886,6 @@ Public Class AppLauncher
                 Return False
             End If
 
-            ' Store last directory
-            My.Settings.LastSelectedDirectory = Me.m_strLastSelectedPath
             ' Save form settings
             Me.SaveMainFormSettings()
             ' Close all open documents
@@ -2232,8 +2231,6 @@ Public Class AppLauncher
         Dim foc As cFileOpenCommand = DirectCast(cmd, cFileOpenCommand)
         Dim strPath As String = foc.Directory
 
-        If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
-
         dlgLoad = cEwEFileDialogHelper.OpenFileDialog(foc.Title, foc.FileName, foc.Filters, foc.FilterIndex, strPath, foc.AllowMultiple)
 
         foc.Result = dlgLoad.ShowDialog()
@@ -2242,7 +2239,6 @@ Public Class AppLauncher
         If (foc.Result = Windows.Forms.DialogResult.OK) Then
             foc.FileName = dlgLoad.FileName
             foc.FileNames = dlgLoad.FileNames
-            Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgLoad.FileName)
         End If
 
     End Sub
@@ -2253,15 +2249,12 @@ Public Class AppLauncher
         Dim fsc As cFileSaveCommand = DirectCast(cmd, cFileSaveCommand)
         Dim strPath As String = fsc.Directory
 
-        If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
-
         dlgSave = cEwEFileDialogHelper.SaveFileDialog(fsc.Title, fsc.FileName, fsc.Filters, fsc.FilterIndex, strPath)
 
         fsc.Result = dlgSave.ShowDialog()
         If (fsc.Result = Windows.Forms.DialogResult.OK) Then
             fsc.FileName = dlgSave.FileName
             fsc.FilterIndex = dlgSave.FilterIndex
-            Me.m_strLastSelectedPath = Path.GetDirectoryName(dlgSave.FileName)
             Me.SaveSettings()
         End If
 
@@ -2273,15 +2266,12 @@ Public Class AppLauncher
         Dim doc As cDirectoryOpenCommand = DirectCast(cmd, cDirectoryOpenCommand)
         Dim strPath As String = doc.Directory
 
-        If String.IsNullOrEmpty(strPath) Then strPath = Me.m_strLastSelectedPath
-
         dlgLoad = cEwEFileDialogHelper.FolderBrowserDialog(doc.Description, strPath)
 
         doc.Result = dlgLoad.ShowDialog()
 
         If (doc.Result = Windows.Forms.DialogResult.OK) Then
             doc.Directory = dlgLoad.SelectedPath
-            Me.m_strLastSelectedPath = Path.GetDirectoryName(doc.Directory)
         End If
 
     End Sub
@@ -2441,7 +2431,7 @@ Public Class AppLauncher
         Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-        cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, "", SharedResources.FILEFILTER_MODEL_SAVE, 1)
+        cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, SharedResources.FILEFILTER_MODEL_SAVE, 1)
 
         If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
             ' #Yes: able to create model at selected location?
@@ -2470,11 +2460,15 @@ Public Class AppLauncher
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
         Dim strFilter As String = SharedResources.FILEFILTER_MODEL_OPEN
 
+        ' Special case: invoke load model command on last used model path
+        Dim strPathTmp As String = cmdFO.Directory
+        cmdFO.Directory = My.Settings.LastSelectedDirectory
         If cmd.Tag IsNot Nothing Then
-            cmdFO.Invoke(Path.GetFileName(CStr(cmd.Tag)), Path.GetDirectoryName(CStr(cmd.Tag)), strFilter, 1)
+            cmdFO.Invoke(CStr(cmd.Tag), strFilter, 1)
         Else
             cmdFO.Invoke(strFilter, 1)
         End If
+        cmdFO.Directory = strPathTmp
 
         If (cmdFO.Result = DialogResult.OK) Then
 
@@ -2532,7 +2526,11 @@ Public Class AppLauncher
                 Return
         End Select
 
-        cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, "", strFileFilter)
+        ' Special case: invoke save model command on last used model path
+        Dim strPathTmp As String = cmdFS.Directory
+        cmdFS.Directory = My.Settings.LastSelectedDirectory
+        cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, strFileFilter)
+        cmdFS.Directory = strPathTmp
 
         If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
 
@@ -3717,10 +3715,10 @@ Public Class AppLauncher
 
         Try
 
-            Me.m_strLastSelectedPath = My.Settings.LastSelectedDirectory
-            If Not Directory.Exists(Me.m_strLastSelectedPath) Then
+            Me.m_strLastModelPath = My.Settings.LastSelectedDirectory
+            If Not Directory.Exists(Me.m_strLastModelPath) Then
                 'the last selected directory is not a valid directory; set it to My documents by default
-                Me.m_strLastSelectedPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+                Me.m_strLastModelPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments
             End If
 
             ' Read form positions
@@ -3731,8 +3729,7 @@ Public Class AppLauncher
             Me.UIContext.FormSettings.Apply(Me, False)
 
             ' Kick the core
-            Me.Core.BackupFileMask = My.Settings.BackupFileMask
-            Me.Core.OutputPath = My.Settings.OutputPathMask
+            Me.UpdateCorePaths(True)
 
         Catch ex As Exception
 
@@ -3760,7 +3757,7 @@ Public Class AppLauncher
                     Me.PopulateMRUDropdown()
 
                 Case "BackupFileMask", "OutputPathMask"
-                    Me.UpdateCorePaths()
+                    Me.UpdateCorePaths(False)
 
             End Select
 
@@ -3770,7 +3767,16 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub UpdateCorePaths()
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Update the directories in the Core to match any regular expressions.
+    ''' </summary>
+    ''' <remarks>
+    ''' Note that this will also reset the base directory for commands 
+    ''' <see cref="m_cmdFileOpen"/> and <see cref="m_cmdDirectoryOpen"/>.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Sub UpdateCorePaths(Optional ByVal bResetUI As Boolean = False)
 
         Dim strPath As String = ""
 
@@ -3785,6 +3791,13 @@ Public Class AppLauncher
             If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath)) Then
                 ' Pass actual formatted path because the core will not change this further.
                 Me.Core.OutputPath = strPath
+
+                If (bResetUI) Then
+                    ' Also reset file and directory commands to use output dir by default
+                    Me.m_cmdFileOpen.Directory = strPath
+                    Me.m_cmdFileSave.Directory = strPath
+                    Me.m_cmdDirectoryOpen.Directory = strPath
+                End If
             End If
         End If
 

@@ -360,9 +360,6 @@
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="m_hdrSearch.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
   <data name="m_hdrSearch.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 12</value>
   </data>
@@ -392,9 +389,6 @@
   </data>
   <data name="&gt;&gt;m_hdrSearch.ZOrder" xml:space="preserve">
     <value>6</value>
-  </data>
-  <data name="m_hdrTransfer.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
   <data name="m_hdrTransfer.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>

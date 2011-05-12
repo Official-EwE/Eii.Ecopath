@@ -82,8 +82,8 @@ Public Class cPlotOfMixedTrophicImpact
 
     End Sub
 
-    Public Overrides Function Filename(ByVal bAnnual As Boolean) As String
-        Return "EwE6-NA_mixed-trophic-impact"
+    Public Overloads Function Filename(ByVal strFilter As String) As String
+        Return MyBase.Filename("MTI")
     End Function
 
     Public Overrides Sub SaveToEMF(ByVal strFileName As String)
