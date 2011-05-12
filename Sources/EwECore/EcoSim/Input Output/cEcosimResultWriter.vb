@@ -170,7 +170,7 @@ Public Class cEcosimResultWriter
                         Next
 
                         strModelDetails = String.Format("{0}, Prey:, {1}, (predation mortality rates)", strModelDetails, grpOutput.Name)
-                        bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, iGroup), _
+                        bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                                                   bSaveAnnual, predData, strModelDetails, predNames.ToString)
                     End If
                 Next
@@ -207,7 +207,7 @@ Public Class cEcosimResultWriter
                         Next
 
                         strModelDetails = String.Format("{0}, predator:, {1}, (diets as proportions)", strModelDetails, grpOutput.Name)
-                        bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, iGroup), _
+                        bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                               bSaveAnnual, preyData, strModelDetails, preyNames.ToString)
                     End If
                 Next
@@ -220,7 +220,7 @@ Public Class cEcosimResultWriter
     Private Function GetOutputFileName(ByVal strPath As String, _
                                       ByVal bSaveAnnual As Boolean, _
                                       ByVal outputtype As eResultTypes, _
-                                      Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As String
+                                      Optional ByVal GroupName As String = "") As String
 
         Dim strFileName As String = ""
         Dim strExt As String = ".csv"
@@ -228,44 +228,44 @@ Public Class cEcosimResultWriter
         If bSaveAnnual Then
             Select Case outputtype
                 Case eResultTypes.Biomass
-                    strFileName = Me.m_core.EcosimOutputFileName("annual_biomass", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_biomass", "", strExt)
                 Case eResultTypes.Mortality
-                    strFileName = Me.m_core.EcosimOutputFileName("annual_mortality", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_mortality")
                 Case eResultTypes.Yield
-                    strFileName = Me.m_core.EcosimOutputFileName("annual_yield", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_yield", "", strExt)
                 Case eResultTypes.ConsumptionBiomass
-                    strFileName = Me.m_core.EcosimOutputFileName("annual_cons_biom", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_cons_biom", "", strExt)
                 Case eResultTypes.FeedingTime
-                    strFileName = Me.m_core.EcosimOutputFileName("annual_feedingtime", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_feedingtime", "", strExt)
                 Case eResultTypes.AvgWeightOrProdCons
-                    strFileName = Me.m_core.EcosimOutputFileName("annual_weight", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_weight", "", strExt)
                 Case eResultTypes.PredationMortality
-                    strFileName = Me.m_core.EcosimOutputFileName("annual_predation_" & iGroup, strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_predation", GroupName, strExt)
                 Case eResultTypes.Prey
-                    strFileName = Me.m_core.EcosimOutputFileName("annual_prey_" & iGroup, strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_prey", GroupName, strExt)
                 Case eResultTypes.TL
-                    strFileName = Me.m_core.EcosimOutputFileName("annual_TL", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_TL", "", strExt)
             End Select
         Else
             Select Case outputtype
                 Case eResultTypes.Biomass
-                    strFileName = Me.m_core.EcosimOutputFileName("biomass", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("biomass", "", strExt)
                 Case eResultTypes.Mortality
-                    strFileName = Me.m_core.EcosimOutputFileName("mortality", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("mortality", "", strExt)
                 Case eResultTypes.Yield
-                    strFileName = Me.m_core.EcosimOutputFileName("yield", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("yield", "", strExt)
                 Case eResultTypes.ConsumptionBiomass
-                    strFileName = Me.m_core.EcosimOutputFileName("cons_biom", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("cons_biom", "", strExt)
                 Case eResultTypes.FeedingTime
-                    strFileName = Me.m_core.EcosimOutputFileName("feedingtime", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("feedingtime", "", strExt)
                 Case eResultTypes.AvgWeightOrProdCons
                     strFileName = Me.m_core.EcosimOutputFileName("weight", strExt)
                 Case eResultTypes.PredationMortality
-                    strFileName = Me.m_core.EcosimOutputFileName("predation_" & iGroup, strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("predation", GroupName, strExt)
                 Case eResultTypes.Prey
-                    strFileName = Me.m_core.EcosimOutputFileName("prey_" & iGroup, strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("prey", GroupName, strExt)
                 Case eResultTypes.TL
-                    strFileName = Me.m_core.EcosimOutputFileName("TL", strExt)
+                    strFileName = Me.m_core.EcosimOutputFileName("TL", "", strExt)
             End Select
         End If
         Return Path.Combine(strPath, strFileName)
