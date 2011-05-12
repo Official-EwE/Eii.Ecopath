@@ -322,27 +322,31 @@ Namespace Ecosim
                 pplConsB.Add(dXValue, groupSimOut.ConsumpBiomass(i))
                 pplFeedTime.Add(dXValue, groupSimOut.FeedingTime(i))
                 pplYield.Add(dXValue, groupSimOut.Yield(i))
-                For iFleet As Integer = 1 To Me.UIContext.Core.nFleets
-                    applYieldFleet(iFleet).Add(dXValue, CSng(groupSimOut.CatchByFleet(iFleet, i)))
-                    applValueFleet(iFleet).Add(dXValue, CSng(groupSimOut.ValueByFleet(iFleet, i)))
-                    ' Special case: is aggregated?
-                    If groupSimOut.isCatchAggregated() Then
-                        If (iFleet = 1) Then
-                            ' Report F from fleet 1 for all fleets only
-                            applFishMortFleet(0).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(1, i)))
-                        End If
-                    Else
+                pplMortTotal.Add(dXValue, groupSimOut.TotalMort(i))
+                pplMortPredation.Add(dXValue, groupSimOut.PredMort(i))
+                pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))
+
+                ' Special case: is catch aggregated?
+                If groupSimOut.isCatchAggregated() Then
+                    ' Report F from fleet 1 for all fleets only
+                    applFishMortFleet(1).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(0, i)))
+                    applYieldFleet(1).Add(dXValue, CSng(groupSimOut.CatchByFleet(0, i)))
+                    applValueFleet(1).Add(dXValue, CSng(groupSimOut.ValueByFleet(0, i)))
+                Else
+                    For iFleet As Integer = 1 To Me.UIContext.Core.nFleets
                         applFishMortFleet(iFleet).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(iFleet, i)))
-                    End If
-                Next
+                        applYieldFleet(iFleet).Add(dXValue, CSng(groupSimOut.CatchByFleet(iFleet, i)))
+                        applValueFleet(iFleet).Add(dXValue, CSng(groupSimOut.ValueByFleet(iFleet, i)))
+                    Next
+                End If
+
+                ' Special case: is mutli-stanza?
                 If groupSimOut.isMultiStanza() Then
                     pplAvgWorProdCons.Add(dXValue, groupSimOut.AvgWeight(i))
                 Else
                     pplAvgWorProdCons.Add(dXValue, groupSimOut.ProdConsump(i))
                 End If
-                pplMortTotal.Add(dXValue, groupSimOut.TotalMort(i))
-                pplMortPredation.Add(dXValue, groupSimOut.PredMort(i))
-                pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))
+
             Next
 
             Me.AddCurveToGraphPane(eSimPlot.Biomass, Me.m_zgh.CreateLineItem(group, pplB))
