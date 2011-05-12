@@ -288,7 +288,7 @@ Public Class cEcosimResultWriter
                 sw.WriteLine(strModelDetails)
                 sw.WriteLine(strDataDetails)
                 sw.WriteLine(strGroupNames)
-
+                sw.WriteLine()
                 If bSaveYearly Then
                     Dim simYears As Integer = CInt((data.GetLength(1) - 1) / cCore.N_MONTHS)
                     Dim nGroups As Integer = data.GetLength(0) - 1
@@ -348,9 +348,9 @@ Public Class cEcosimResultWriter
         ' Append time series name to scenario, if any
         sb.Append("TimeSeries,")
         If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
-            sb.AppendLine(Chr(34) & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Chr(34))
+            sb.Append(Chr(34) & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Chr(34))
         Else
-            sb.AppendLine("")
+            sb.Append("")
         End If
 
         Return sb.ToString()
