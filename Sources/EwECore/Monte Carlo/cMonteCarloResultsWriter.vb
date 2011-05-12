@@ -132,7 +132,7 @@ Public Class cMonteCarloResultsWriter
             strm.WriteLine("")
 
             If isBaseLineData Then
-                strm.WriteLine(Me.getCVValues)
+                strm.WriteLine(Me.getParameterVariance)
             End If
 
             If isBaseLineData Then
@@ -198,12 +198,40 @@ Public Class cMonteCarloResultsWriter
 
     End Sub
 
-    Private Function getCVValues()
+    Private Function getParameterVariance() As String
         Dim buff As New StringBuilder
+        Dim igrp As Integer
 
-        For igrp As Integer = 1 To Me.Core.nGroups
+        'Group name
+        buff.AppendLine("Group Name," & Me.ToCSVString(Core.m_EcoPathData.GroupName))
 
-        Next
+        'CV's
+        buff.AppendLine("CV Biomass," & Me.ToCSVString(Me.MC.CVpar, eMCParams.Biomass))
+        buff.AppendLine("CV P/B," & Me.ToCSVString(Me.MC.CVpar, eMCParams.PB))
+        buff.AppendLine("CV EE," & Me.ToCSVString(Me.MC.CVpar, eMCParams.EE))
+        buff.AppendLine("CV QB," & Me.ToCSVString(Me.MC.CVpar, eMCParams.QB))
+        buff.AppendLine("CV BA," & Me.ToCSVString(Me.MC.CVpar, eMCParams.BA))
+
+        Return buff.ToString
+
+    End Function
+
+
+
+    Private Function ToCSVString(ByVal Values(,) As Single, ByVal FixedIndex As Integer) As String
+        Dim buff As String
+        Try
+
+            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+                If igrp > 1 Then buff = buff & ","
+                buff = buff & cStringUtils.FormatSingle(Values(FixedIndex, igrp))
+            Next
+
+        Catch ex As Exception
+            Debug.Assert("ArrayToString() Exception: " & ex.Message)
+        End Try
+
+        Return buff
 
     End Function
 
