@@ -170,7 +170,7 @@ Public Class cEcosimResultWriter
                                 iNumPred += 1
                             End If
                         Next
-                        strDataDetails = "Data, " & resulttype.ToString & " of " & Chr(34) & grpOutput.Name & Chr(34)
+                        strDataDetails = "Data, " & Chr(34) & resulttype.ToString & " of " & grpOutput.Name & Chr(34)
 
                         bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                                                   bSaveAnnual, predData, _
@@ -209,7 +209,7 @@ Public Class cEcosimResultWriter
                             End If
                         Next
 
-                        strDataDetails = "Data, " & resulttype.ToString & " of " & Chr(34) & grpOutput.Name & Chr(34)
+                        strDataDetails = "Data, " & Chr(34) & resulttype.ToString & " of " & grpOutput.Name & Chr(34)
                         bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                               bSaveAnnual, preyData, _
                                               strModelDetails, strDataDetails, preyNames.ToString)
