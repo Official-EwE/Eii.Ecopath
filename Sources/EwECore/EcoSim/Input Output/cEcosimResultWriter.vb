@@ -67,7 +67,7 @@ Public Class cEcosimResultWriter
             Try
                 If Not Me.WriteResults(outputtype, strPath, True) Or Not Me.WriteResults(outputtype, strPath, False) Then
                     bSucces = False
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath, outputtype.ToString), eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                    msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
                     Me.m_core.Messages.SendMessage(msg)
                 End If
             Catch ex As Exception
@@ -93,6 +93,7 @@ Public Class cEcosimResultWriter
                                   ByVal bSaveAnnual As Boolean) As Boolean
 
         Dim strModelDetails As String = Me.GetModelDetails()
+        Dim strDataDetails As String = ""
         Dim astrGroupNames As String = Me.GetAllGroupNames()
         Dim grpOutput As cEcosimGroupOutput = Nothing
         Dim bSuccess As Boolean = True
@@ -134,9 +135,10 @@ Public Class cEcosimResultWriter
                     Next
 
                 Next
-
+                strDataDetails = "Data, " & resulttype.ToString
                 bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype), _
-                                             bSaveAnnual, data, strModelDetails, astrGroupNames)
+                                             bSaveAnnual, data, _
+                                             strModelDetails, strDataDetails, astrGroupNames)
 
             Case eResultTypes.PredationMortality
 
@@ -168,10 +170,11 @@ Public Class cEcosimResultWriter
                                 iNumPred += 1
                             End If
                         Next
+                        strDataDetails = "Data, " & resulttype.ToString & " of " & Chr(34) & grpOutput.Name & Chr(34)
 
-                        strModelDetails = String.Format("{0}, Prey:, {1}, (predation mortality rates)", strModelDetails, grpOutput.Name)
                         bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
-                                                                  bSaveAnnual, predData, strModelDetails, predNames.ToString)
+                                                                  bSaveAnnual, predData, _
+                                                                  strModelDetails, strDataDetails, predNames.ToString)
                     End If
                 Next
 
@@ -206,9 +209,10 @@ Public Class cEcosimResultWriter
                             End If
                         Next
 
-                        strModelDetails = String.Format("{0}, predator:, {1}, (diets as proportions)", strModelDetails, grpOutput.Name)
+                        strDataDetails = "Data, " & resulttype.ToString & " of " & Chr(34) & grpOutput.Name & Chr(34)
                         bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
-                                              bSaveAnnual, preyData, strModelDetails, preyNames.ToString)
+                                              bSaveAnnual, preyData, _
+                                              strModelDetails, strDataDetails, preyNames.ToString)
                     End If
                 Next
         End Select
@@ -275,12 +279,14 @@ Public Class cEcosimResultWriter
                                     ByVal bSaveYearly As Boolean, _
                                     ByVal data As Single(,), _
                                     ByVal strModelDetails As String, _
+                                    ByVal strDataDetails As String, _
                                     ByVal strGroupNames As String) As Boolean
 
         Try
             'Overwritten the file
             Using sw As StreamWriter = New StreamWriter(strFileName, False)
                 sw.WriteLine(strModelDetails)
+                sw.WriteLine(strDataDetails)
                 sw.WriteLine(strGroupNames)
 
                 If bSaveYearly Then
@@ -293,8 +299,8 @@ Public Class cEcosimResultWriter
                             For k As Integer = 1 To cCore.N_MONTHS
                                 sum(i) = sum(i) + data(i, (j - 1) * cCore.N_MONTHS + k)
                             Next
+                            If i > 1 Then sw.Write(", ")
                             sw.Write(cStringUtils.FormatSingle(sum(i) / cCore.N_MONTHS))
-                            sw.Write(", ")
                         Next
                         sw.WriteLine()
                     Next
@@ -303,8 +309,8 @@ Public Class cEcosimResultWriter
                     For j As Integer = 1 To data.GetLength(1) - 1
                         'For every group
                         For i As Integer = 1 To data.GetLength(0) - 1
+                            If i > 1 Then sw.Write(", ")
                             sw.Write(cStringUtils.FormatSingle(data(i, j)))
-                            sw.Write(", ")
                         Next
                         sw.WriteLine()
                     Next
@@ -330,19 +336,21 @@ Public Class cEcosimResultWriter
         Dim sb As New StringBuilder()
 
         ' File
-        sb.Append(Me.m_core.DataSource.ToString)
-        sb.Append(", ")
+        sb.Append("ModelFile,")
+        sb.AppendLine(Me.m_core.DataSource.ToString)
         'Add the model name
-        sb.Append(Me.m_core.EwEModel.Name)
-        sb.Append(", ")
+        sb.Append("ModelName, ")
+        sb.AppendLine(Me.m_core.EwEModel.Name)
         'Add the active scenario name
-        sb.Append(Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
+        sb.Append("EcosimScenario,")
+        sb.AppendLine(Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
 
         ' Append time series name to scenario, if any
+        sb.Append("TimeSeries,")
         If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
-            sb.Append(" (")
-            sb.Append(Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name)
-            sb.Append(" )")
+            sb.AppendLine(Chr(34) & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Chr(34))
+        Else
+            sb.AppendLine("")
         End If
 
         Return sb.ToString()
