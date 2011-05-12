@@ -2690,10 +2690,6 @@ Namespace Ecosim
                 Next
             Next
 
-            'cLog.WriteMatrixToFile("EwE6 A.csv", A, "Search Rates dump")
-            'cLog.WriteMatrixToFile("EwE6 V.csv", m_Data.vulrate, "Vulrate")
-            'cLog.WriteMatrixToFile("EwE6 Comsup.csv", m_Data.Consumption, "Consumption")
-
         End Sub
 
         Private Sub MakeAMatrixCell(ByVal i As Integer, ByVal j As Integer) 'here prey is first
@@ -2915,6 +2911,7 @@ Namespace Ecosim
                 If m_EPData.PP(ii) = 1 Then
                     For jj = 1 To cMediationDataStructures.MAXFUNCTIONS
                         If m_Data.BioMedData.IsMedFunction(ii, ii, jj) Then
+                            'The zero index = True if any mediation funtion has been applied
                             medData.MedIsUsed(0) = True
                             medData.MedIsUsed(m_Data.BioMedData.FunctionNumber(ii, ii, jj)) = True
                         End If
