@@ -263,21 +263,25 @@ Namespace Utilities
             Dim separator As String = "-"
             Dim sb As New StringBuilder()
 
+            ' Add entire component name
+            'sb.Append(separator)
+            sb.Append(ComponentName)
+
+            ' Add entire filter, if provided
+            If (Not String.IsNullOrEmpty(Filter)) Then
+                sb.Append(separator)
+                sb.Append(Filter)
+            End If
+
             ' Add 'cPART_MAXSIZE' model name characters
+            sb.Append(separator)
             sb.Append(ModelName.Substring(0, Math.Min(ModelName.Length, cPART_MAXSIZE)))
             ' Add 'cPART_MAXSIZE' scenario name characters, if provided
             If (Not String.IsNullOrEmpty(ScenarioName)) Then
                 sb.Append(separator)
                 sb.Append(ScenarioName.Substring(0, Math.Min(ScenarioName.Length, cPART_MAXSIZE)))
             End If
-            ' Add entire component name
-            sb.Append(separator)
-            sb.Append(ComponentName)
-            ' Add entire filter, if provided
-            If (Not String.IsNullOrEmpty(Filter)) Then
-                sb.Append(separator)
-                sb.Append(Filter)
-            End If
+
             ' Add extension, if provided
             If (Not String.IsNullOrEmpty(Ext)) Then
                 ' Add a dot ('.') if the extension is provided without
