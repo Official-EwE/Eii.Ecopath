@@ -99,10 +99,10 @@ Public Class cMonteCarloResultsWriter
 
             'save a bunch of crap here....
             'model name blaaaaaa
-            header.AppendLine("EwE Monte Carlo version number, " & ver) 'version number
-            header.AppendLine("Model name, " & Chr(34) & Me.ModelName & Chr(34))
-            header.AppendLine("Ecosim scenario, " & Chr(34) & Me.ScenarioName & Chr(34))
-            header.AppendLine("Run Date, " & Chr(34) & d.ToShortDateString & " " & d.ToShortTimeString & Chr(34))
+            header.AppendLine("EwE Monte Carlo version number," & ver) 'version number
+            header.AppendLine("Model name," & Chr(34) & Me.ModelName & Chr(34))
+            header.AppendLine("Ecosim scenario," & Chr(34) & Me.ScenarioName & Chr(34))
+            header.AppendLine("Run Date," & Chr(34) & d.ToShortDateString & " " & d.ToShortTimeString & Chr(34))
 
             strm = New StreamWriter(Me.OuputFilename, True)
             strm.WriteLine(header)
@@ -206,13 +206,42 @@ Public Class cMonteCarloResultsWriter
         buff.AppendLine("Group Name," & Me.ToCSVString(Core.m_EcoPathData.GroupName))
 
         'CV's
-        buff.AppendLine("CV Biomass," & Me.ToCSVString(Me.MC.CVpar, eMCParams.Biomass))
-        buff.AppendLine("CV P/B," & Me.ToCSVString(Me.MC.CVpar, eMCParams.PB))
-        buff.AppendLine("CV EE," & Me.ToCSVString(Me.MC.CVpar, eMCParams.EE))
-        buff.AppendLine("CV QB," & Me.ToCSVString(Me.MC.CVpar, eMCParams.QB))
-        buff.AppendLine("CV BA," & Me.ToCSVString(Me.MC.CVpar, eMCParams.BA))
+        buff.AppendLine("Biomass CV," & Me.ToCSVString(Me.MC.CVpar, eMCParams.Biomass))
+        buff.AppendLine("Biomass lower limit," & Me.ToCSVString(Me.MC.ParLimit, 0, eMCParams.Biomass))
+        buff.AppendLine("Biomass upper limit," & Me.ToCSVString(Me.MC.ParLimit, 1, eMCParams.Biomass))
+
+        buff.AppendLine("P/B CV," & Me.ToCSVString(Me.MC.CVpar, eMCParams.PB))
+        buff.AppendLine("P/B lower limit," & Me.ToCSVString(Me.MC.ParLimit, 0, eMCParams.PB))
+        buff.AppendLine("P/B upper limit," & Me.ToCSVString(Me.MC.ParLimit, 1, eMCParams.PB))
+
+        buff.AppendLine("QB CV," & Me.ToCSVString(Me.MC.CVpar, eMCParams.QB))
+        buff.AppendLine("QB lower limit," & Me.ToCSVString(Me.MC.ParLimit, 0, eMCParams.QB))
+        buff.AppendLine("QB upper limit," & Me.ToCSVString(Me.MC.ParLimit, 1, eMCParams.QB))
+
+        buff.AppendLine("EE CV," & Me.ToCSVString(Me.MC.CVpar, eMCParams.EE))
+        buff.AppendLine("EE lower limit," & Me.ToCSVString(Me.MC.ParLimit, 0, eMCParams.EE))
+        buff.AppendLine("EE upper limit," & Me.ToCSVString(Me.MC.ParLimit, 1, eMCParams.EE))
 
         Return buff.ToString
+
+    End Function
+
+
+
+    Private Function ToCSVString(ByVal Values(,,) As Single, ByVal FirstFixedIndex As Integer, ByVal SecondFixedIndex As Integer) As String
+        Dim buff As String
+        Try
+
+            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+                If igrp > 1 Then buff = buff & ","
+                buff = buff & cStringUtils.FormatSingle(Values(FirstFixedIndex, SecondFixedIndex, igrp))
+            Next
+
+        Catch ex As Exception
+            Debug.Assert("ArrayToString() Exception: " & ex.Message)
+        End Try
+
+        Return buff
 
     End Function
 
@@ -261,7 +290,7 @@ Public Class cMonteCarloResultsWriter
 
             For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
                 If igrp > 1 Then buff = buff & ","
-                buff = buff & Values(igrp)
+                buff = buff & Chr(34) & Values(igrp) & Chr(34)
             Next
 
         Catch ex As Exception
