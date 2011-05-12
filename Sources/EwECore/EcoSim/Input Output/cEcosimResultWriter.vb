@@ -234,7 +234,7 @@ Public Class cEcosimResultWriter
                 Case eResultTypes.Biomass
                     strFileName = Me.m_core.EcosimOutputFileName("Biomass_annual", "", strExt)
                 Case eResultTypes.Mortality
-                    strFileName = Me.m_core.EcosimOutputFileName("Mortality_annual")
+                    strFileName = Me.m_core.EcosimOutputFileName("Mortality_annual", "", strExt)
                 Case eResultTypes.Yield
                     strFileName = Me.m_core.EcosimOutputFileName("Yield_annual", "", strExt)
                 Case eResultTypes.ConsumptionBiomass
