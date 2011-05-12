@@ -471,8 +471,7 @@ Namespace Controls
 
                     If ts.ValidationStatus <> eStatusFlags.OK Then
                         e.Item.Checked = False
-                        ' ToDo: Globalize this
-                        Me.m_uic.Core.Messages.SendMessage(New cMessage("This time series cannot be enabled: " & ts.ValidationMessage, _
+                        Me.m_uic.Core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_TIMESERIES_NOTUSABLE, ts.Name, ts.ValidationMessage), _
                                                                         eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.TimeSeries, eMessageImportance.Warning))
                         Return
                     End If

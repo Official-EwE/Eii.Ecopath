@@ -2058,4 +2058,8 @@
     <value>Assigned supply for {0}</value>
     <comment>{0}: shape name</comment>
   </data>
+  <data name="PROMPT_TIMESERIES_NOTUSABLE" xml:space="preserve">
+    <value>Time series '{0}' cannot be enabled. {1}</value>
+    <comment>{0}: time series name. {1}: time series status</comment>
+  </data>
 </root>

@@ -4900,6 +4900,15 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Time series &apos;{0}&apos; cannot be enabled. {1}.
+        '''</summary>
+        Public ReadOnly Property PROMPT_TIMESERIES_NOTUSABLE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_TIMESERIES_NOTUSABLE", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property Properties() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Properties", resourceCulture)
