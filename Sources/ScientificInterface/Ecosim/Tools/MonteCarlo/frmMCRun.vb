@@ -286,6 +286,7 @@ Namespace Ecosim
                 Me.m_cbShowBioTraj.Enabled = True
                 Me.m_nudNumTrials.Enabled = True
                 Me.m_btnTS.Enabled = True
+                Me.m_cbSave.Enabled = True
 
                 'populate the grid with new values (biomass....)
                 Me.m_gridBestFit.RefreshContent()
@@ -342,6 +343,7 @@ Namespace Ecosim
             Me.m_cbShowBioTraj.Enabled = False
             Me.m_nudNumTrials.Enabled = False
             Me.m_btnTS.Enabled = False
+            Me.m_cbSave.Enabled = False
 
             If Me.m_mcmanager.bShowPlot Then
                 ' Select biomass plot page.
