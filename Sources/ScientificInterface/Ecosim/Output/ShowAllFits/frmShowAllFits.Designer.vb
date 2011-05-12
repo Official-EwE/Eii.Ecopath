@@ -39,12 +39,13 @@ Namespace Ecosim
             Me.m_chkScaleForPrinter = New System.Windows.Forms.CheckBox
             Me.m_lblTBMargin = New System.Windows.Forms.Label
             Me.m_lblMarginLR = New System.Windows.Forms.Label
-            Me.m_hdrDisplayOptions = New cEwEHeaderLabel
-            Me.m_hdrGeneral = New cEwEHeaderLabel
+            Me.m_hdrDisplayOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrGeneral = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lblRowNum = New System.Windows.Forms.Label
             Me.m_lblLineWidth = New System.Windows.Forms.Label
             Me.m_lblDotSize = New System.Windows.Forms.Label
-            Me.m_tsMain = New System.Windows.Forms.ToolStrip
+            Me.m_pbPlots = New System.Windows.Forms.PictureBox
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_tsmiOptions = New System.Windows.Forms.ToolStripButton
             Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsmiChoosePlots = New System.Windows.Forms.ToolStripButton
@@ -57,7 +58,6 @@ Namespace Ecosim
             Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem
             Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument
-            Me.m_pbPlots = New System.Windows.Forms.PictureBox
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -66,8 +66,8 @@ Namespace Ecosim
             CType(Me.m_nudDotSize, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudLineWidth, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudRowNum, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_tsMain.SuspendLayout()
             CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_scMain
@@ -222,6 +222,13 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblDotSize, "m_lblDotSize")
             Me.m_lblDotSize.Name = "m_lblDotSize"
             '
+            'm_pbPlots
+            '
+            Me.m_pbPlots.BackColor = System.Drawing.Color.White
+            resources.ApplyResources(Me.m_pbPlots, "m_pbPlots")
+            Me.m_pbPlots.Name = "m_pbPlots"
+            Me.m_pbPlots.TabStop = False
+            '
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -293,13 +300,6 @@ Namespace Ecosim
             'm_printdocAllFits
             '
             '
-            'm_pbPlots
-            '
-            Me.m_pbPlots.BackColor = System.Drawing.Color.White
-            resources.ApplyResources(Me.m_pbPlots, "m_pbPlots")
-            Me.m_pbPlots.Name = "m_pbPlots"
-            Me.m_pbPlots.TabStop = False
-            '
             'frmShowAllFits
             '
             resources.ApplyResources(Me, "$this")
@@ -318,9 +318,9 @@ Namespace Ecosim
             CType(Me.m_nudDotSize, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudLineWidth, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudRowNum, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
-            CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
@@ -334,7 +334,7 @@ Namespace Ecosim
         Private WithEvents m_hdrGeneral As cEwEHeaderLabel
         Private WithEvents m_nudRowNum As System.Windows.Forms.NumericUpDown
         Private WithEvents m_nudLineWidth As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tsmiChoosePlots As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnScale As System.Windows.Forms.ToolStripButton
         Private WithEvents m_nudDotSize As System.Windows.Forms.NumericUpDown
