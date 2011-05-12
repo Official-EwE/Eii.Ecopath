@@ -51,9 +51,14 @@ Public Class cMonteCarloResultsWriter
 
     Private ReadOnly Property OuputFilename() As String
         Get
-            Return Me.Core.EcosimOutputFileName("MonteCarlo", "IterationData", ".csv")
+            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileName("MonteCarlo", "IterationData", ".csv"))
         End Get
     End Property
+
+
+    Private Function DataDir() As String
+        Return Me.Core.OutputPath
+    End Function
 
 
     Private ReadOnly Property ModelName() As String
@@ -127,6 +132,10 @@ Public Class cMonteCarloResultsWriter
             strm.WriteLine("")
 
             If isBaseLineData Then
+                strm.WriteLine(Me.getCVValues)
+            End If
+
+            If isBaseLineData Then
                 strm.WriteLine("Base line data")
             Else
                 strm.WriteLine("Trial number," & Me.MC.nTrialIterations.ToString)
@@ -188,6 +197,15 @@ Public Class cMonteCarloResultsWriter
         End Try
 
     End Sub
+
+    Private Function getCVValues()
+        Dim buff As New StringBuilder
+
+        For igrp As Integer = 1 To Me.Core.nGroups
+
+        Next
+
+    End Function
 
 
     Private Function ToCSVString(ByVal Values(,,) As Single, ByVal Variable As cEcosimDatastructures.eEcosimResults, ByVal iGroup As Integer) As String
