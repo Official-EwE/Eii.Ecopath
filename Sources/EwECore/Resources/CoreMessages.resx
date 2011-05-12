@@ -734,20 +734,12 @@ System Error: {0}</value>
     <value>Diet for predator '{0}' does not sum to 1</value>
     <comment>{0}=group name</comment>
   </data>
-  <data name="ECOSIM_RESULTSANNUAL_SAVE_FAILED" xml:space="preserve">
-    <value>Ecosim annual average results failed to saved to '{0}</value>
-    <comment>{0}=path</comment>
+  <data name="ECOSIM_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Failed to save Ecosim results '{1}' to '{0}'</value>
+    <comment>{0}=path, {1}=details</comment>
   </data>
-  <data name="ECOSIM_RESULTSANNUAL_SAVE_SUCCESS" xml:space="preserve">
-    <value>Ecosim annual average results have been saved to '{0}'</value>
-    <comment>{0}=path</comment>
-  </data>
-  <data name="ECOSIM_RESULTSMONTHLY_SAVE_FAILED" xml:space="preserve">
-    <value>Ecosim monthly results failed to save to '{0}'</value>
-    <comment>{0}=path</comment>
-  </data>
-  <data name="ECOSIM_RESULTSMONTHLY_SAVE_SUCCESS" xml:space="preserve">
-    <value>Ecosim monthly results have been saved to '{0}'</value>
+  <data name="ECOSIM_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Ecosim results saved to '{0}'</value>
     <comment>{0}=path</comment>
   </data>
   <data name="VARIABLE_VALIDATION_FAILED_EVEN" xml:space="preserve">

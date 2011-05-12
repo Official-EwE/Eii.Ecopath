@@ -33,8 +33,6 @@ Public Class cEcosimResultWriter
         TL
     End Enum
 
-    Private Const OUPUT_NAME As String = "EcosimOuput"
-
 #End Region ' Private vars
 
 #Region " Public interfaces "
@@ -49,20 +47,10 @@ Public Class cEcosimResultWriter
     ''' </summary>
     ''' <param name="strPath">The path to write to. If not specified, output is
     ''' written to <see cref="cCore.OutputPath">the core output path</see>.</param>
-    ''' <param name="bSaveAnnual">States whether to save annual averages (true)
-    ''' or monthly values (false). True by default.</param>
-    ''' <param name="iGroup">The group to save results for. This parameter only
-    ''' applies to <see cref="eResultTypes.PredationMortality">prediation mortality</see>
-    ''' and <see cref="eResultTypes.PredationMortality">prey</see> outputs. If
-    ''' no group value is specified (i.e. iGroup equals <see cref="cCore.NULL_VALUE">core NULL</see>),
-    ''' these two Ecosim outputs will not be saved.</param>
     ''' <returns>True if saved successfully.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteResults(Optional ByVal strPath As String = "", _
-                                 Optional ByVal bSaveAnnual As Boolean = True, _
-                                 Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As Boolean
+    Public Function WriteResults(Optional ByVal strPath As String = "") As Boolean
 
-        Dim strMessageText As String = ""
         Dim msg As cMessage = Nothing
         Dim bSucces As Boolean = True
 
@@ -77,7 +65,11 @@ Public Class cEcosimResultWriter
 
         For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(eResultTypes))
             Try
-                bSucces = bSucces And Me.WriteResults(outputtype, strPath, bSaveAnnual, iGroup)
+                If Not Me.WriteResults(outputtype, strPath, True) Or Not Me.WriteResults(outputtype, strPath, False) Then
+                    bSucces = False
+                    msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath, outputtype.ToString), eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                    Me.m_core.Messages.SendMessage(msg)
+                End If
             Catch ex As Exception
                 bSucces = False
                 cLog.Write(String.Format("Exception in cEcosimResultWriter: {0}", ex.Message))
@@ -85,25 +77,10 @@ Public Class cEcosimResultWriter
         Next
 
         If bSucces Then
-            If bSaveAnnual Then
-                strMessageText = String.Format(My.Resources.CoreMessages.ECOSIM_RESULTSANNUAL_SAVE_SUCCESS, _
-                                               strPath)
-            Else
-                strMessageText = String.Format(My.Resources.CoreMessages.ECOSIM_RESULTSMONTHLY_SAVE_SUCCESS, _
-                                               strPath)
-            End If
-        Else
-            If bSaveAnnual Then
-                strMessageText = String.Format(My.Resources.CoreMessages.ECOSIM_RESULTSANNUAL_SAVE_FAILED, _
-                                               strPath)
-            Else
-                strMessageText = String.Format(My.Resources.CoreMessages.ECOSIM_RESULTSMONTHLY_SAVE_FAILED, _
-                                               strPath)
-            End If
+            msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath), eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+            Me.m_core.Messages.SendMessage(msg)
         End If
-
-        msg = New cMessage(strMessageText, eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Information)
-        Me.m_core.Messages.SendMessage(msg)
+        Return bSucces
 
     End Function
 
@@ -113,13 +90,12 @@ Public Class cEcosimResultWriter
 
     Private Function WriteResults(ByVal resulttype As eResultTypes, _
                                   ByVal strPath As String, _
-                                  ByVal bSaveAnnual As Boolean, _
-                                  Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As Boolean
+                                  ByVal bSaveAnnual As Boolean) As Boolean
 
-        Dim strFileName As String = Me.GetOutputFileName(strPath, bSaveAnnual, resulttype)
         Dim strModelDetails As String = Me.GetModelDetails()
         Dim astrGroupNames As String = Me.GetAllGroupNames()
         Dim grpOutput As cEcosimGroupOutput = Nothing
+        Dim bSuccess As Boolean = True
 
         Select Case resulttype
 
@@ -159,133 +135,140 @@ Public Class cEcosimResultWriter
 
                 Next
 
-                Return Me.SaveDataToFile(strFileName, bSaveAnnual, data, strModelDetails, astrGroupNames)
+                bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype), _
+                                             bSaveAnnual, data, strModelDetails, astrGroupNames)
 
             Case eResultTypes.PredationMortality
 
-                If iGroup < 0 Then Return True
+                For iGroup As Integer = 1 To Me.m_core.nGroups
 
-                grpOutput = m_core.EcoSimGroupOutputs(iGroup)
+                    grpOutput = m_core.EcoSimGroupOutputs(iGroup)
 
-                Dim iNumPred As Integer = 0
-                Dim predNames As New StringBuilder
+                    Dim iNumPred As Integer = 0
+                    Dim predNames As New StringBuilder
 
-                For i As Integer = 1 To m_core.nLivingGroups
-                    If grpOutput.isPred(i) Then
-                        iNumPred += 1
-                        predNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
-                        predNames.Append(",")
-                    End If
-                Next
+                    For i As Integer = 1 To m_core.nLivingGroups
+                        If grpOutput.isPred(i) Then
+                            iNumPred += 1
+                            predNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
+                            predNames.Append(",")
+                        End If
+                    Next
 
-                Dim predData(iNumPred, m_core.nEcosimTimeSteps) As Single
-                iNumPred = 1
+                    If (predNames.Length > 0) Then
 
-                For i As Integer = 1 To m_core.nLivingGroups
-                    If grpOutput.isPred(i) Then
-                        For j As Integer = 1 To m_core.nEcosimTimeSteps
-                            predData(iNumPred, j) = grpOutput.Predation(i, j)
+                        Dim predData(iNumPred, m_core.nEcosimTimeSteps) As Single
+                        iNumPred = 1
+
+                        For i As Integer = 1 To m_core.nLivingGroups
+                            If grpOutput.isPred(i) Then
+                                For j As Integer = 1 To m_core.nEcosimTimeSteps
+                                    predData(iNumPred, j) = grpOutput.Predation(i, j)
+                                Next
+                                iNumPred += 1
+                            End If
                         Next
-                        iNumPred += 1
+
+                        strModelDetails = String.Format("{0}, Prey:, {1}, (predation mortality rates)", strModelDetails, grpOutput.Name)
+                        bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, iGroup), _
+                                                                  bSaveAnnual, predData, strModelDetails, predNames.ToString)
                     End If
                 Next
-
-                strModelDetails = String.Format("{0}, Prey:, {1}, (predation mortality rates)", strModelDetails, grpOutput.Name)
-                Return Me.SaveDataToFile(strFileName, bSaveAnnual, predData, strModelDetails, predNames.ToString)
 
             Case eResultTypes.Prey
 
-                If iGroup < 0 Then Return True
+                For iGroup As Integer = 1 To Me.m_core.nGroups
 
-                grpOutput = m_core.EcoSimGroupOutputs(iGroup)
+                    grpOutput = m_core.EcoSimGroupOutputs(iGroup)
 
-                Dim iNumPrey As Integer = 0
-                Dim preyNames As New StringBuilder
+                    Dim iNumPrey As Integer = 0
+                    Dim preyNames As New StringBuilder
 
-                For i As Integer = 1 To m_core.nLivingGroups
-                    If grpOutput.isPrey(i) Then
-                        iNumPrey += 1
-                        preyNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
-                        preyNames.Append(",")
-                    End If
-                Next
+                    For i As Integer = 1 To m_core.nLivingGroups
+                        If grpOutput.isPrey(i) Then
+                            iNumPrey += 1
+                            preyNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
+                            preyNames.Append(",")
+                        End If
+                    Next
 
-                Dim preyData(iNumPrey, m_core.nEcosimTimeSteps) As Single
-                iNumPrey = 1
+                    If (preyNames.Length > 0) Then
 
-                For i As Integer = 1 To m_core.nLivingGroups
-                    If grpOutput.isPrey(i) Then
-                        For j As Integer = 1 To m_core.nEcosimTimeSteps
-                            preyData(iNumPrey, j) = grpOutput.PreyPercentage(i, j)
+                        Dim preyData(iNumPrey, m_core.nEcosimTimeSteps) As Single
+                        iNumPrey = 1
+
+                        For i As Integer = 1 To m_core.nLivingGroups
+                            If grpOutput.isPrey(i) Then
+                                For j As Integer = 1 To m_core.nEcosimTimeSteps
+                                    preyData(iNumPrey, j) = grpOutput.PreyPercentage(i, j)
+                                Next
+                                iNumPrey += 1
+                            End If
                         Next
-                        iNumPrey += 1
+
+                        strModelDetails = String.Format("{0}, predator:, {1}, (diets as proportions)", strModelDetails, grpOutput.Name)
+                        bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, iGroup), _
+                                              bSaveAnnual, preyData, strModelDetails, preyNames.ToString)
                     End If
                 Next
-
-                strModelDetails = String.Format("{0}, predator:, {1}, (diets as proportions)", strModelDetails, grpOutput.Name)
-                Return Me.SaveDataToFile(strFileName, bSaveAnnual, preyData, strModelDetails, preyNames.ToString)
-
         End Select
 
-        Return False
+        Return bSuccess
 
     End Function
 
-
     Private Function GetOutputFileName(ByVal strPath As String, _
                                       ByVal bSaveAnnual As Boolean, _
-                                      ByVal outputtype As eResultTypes) As String
+                                      ByVal outputtype As eResultTypes, _
+                                      Optional ByVal iGroup As Integer = cCore.NULL_VALUE) As String
 
         Dim strFileName As String = ""
+        Dim strExt As String = ".csv"
+
         If bSaveAnnual Then
             Select Case outputtype
                 Case eResultTypes.Biomass
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_biomass") '"EwE6-Ecosim_annual_biomass.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_biomass", strExt)
                 Case eResultTypes.Mortality
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_mortality") '"EwE6-Ecosim_annual_mortality.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_mortality", strExt)
                 Case eResultTypes.Yield
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_yield") '"EwE6-Ecosim_annual_yield.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_yield", strExt)
                 Case eResultTypes.ConsumptionBiomass
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_cons_biom") '"EwE6-Ecosim_annual_cons_biom.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_cons_biom", strExt)
                 Case eResultTypes.FeedingTime
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_feedingtime") '"EwE6-Ecosim_annual_feedingtime.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_feedingtime", strExt)
                 Case eResultTypes.AvgWeightOrProdCons
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_weight") '"EwE6-Ecosim_annual_weight.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_weight", strExt)
                 Case eResultTypes.PredationMortality
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_predation") '"EwE6-Ecosim_annual_predation.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_predation_" & iGroup, strExt)
                 Case eResultTypes.Prey
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_prey") '"EwE6-Ecosim_annual_prey.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_prey_" & iGroup, strExt)
                 Case eResultTypes.TL
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "annual_TL") '"EwE6-Ecosim_annual_TL.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("annual_TL", strExt)
             End Select
         Else
             Select Case outputtype
                 Case eResultTypes.Biomass
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "biomass") '"EwE6-Ecosim_biomass.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("biomass", strExt)
                 Case eResultTypes.Mortality
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "mortality") '"EwE6-Ecosim_mortality.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("mortality", strExt)
                 Case eResultTypes.Yield
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "yield") '"EwE6-Ecosim_yield.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("yield", strExt)
                 Case eResultTypes.ConsumptionBiomass
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "cons_biom") '"EwE6-Ecosim_cons_biom.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("cons_biom", strExt)
                 Case eResultTypes.FeedingTime
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "feedingtime") '"EwE6-Ecosim_feedingtime.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("feedingtime", strExt)
                 Case eResultTypes.AvgWeightOrProdCons
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "weight") '"EwE6-Ecosim_weight.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("weight", strExt)
                 Case eResultTypes.PredationMortality
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "predation") '"EwE6-Ecosim_predation.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("predation_" & iGroup, strExt)
                 Case eResultTypes.Prey
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "prey") '"EwE6-Ecosim_prey.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("prey_" & iGroup, strExt)
                 Case eResultTypes.TL
-                    strFileName = cFileUtils.ToOutputFilename(Me.ModelName, OUPUT_NAME, "TL") '"EwE6-Ecosim_TL.csv"
+                    strFileName = Me.m_core.EcosimOutputFileName("TL", strExt)
             End Select
         End If
         Return Path.Combine(strPath, strFileName)
-    End Function
-
-
-    Private Function ModelName() As String
-        Return Me.m_core.DataSource.filename
     End Function
 
     Private Function SaveDataToFile(ByVal strFileName As String, _

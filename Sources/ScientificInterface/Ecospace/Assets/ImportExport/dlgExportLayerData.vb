@@ -232,7 +232,7 @@ Namespace Ecospace.Basemap
             End If
 
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
-
+            Me.m_tbTarget.Text = Me.m_uic.Core.EcospaceOutputFileName("layer")
             Me.UpdateControls()
 
         End Sub

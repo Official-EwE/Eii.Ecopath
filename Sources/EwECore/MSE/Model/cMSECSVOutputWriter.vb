@@ -6,13 +6,14 @@ Imports EwEUtils.Core
 Imports EwECore.MSE
 Imports EwEUtils.Utilities
 
-
+''' <summary>
+''' Helper class for writing MSE interations to file.
+''' </summary>
 Friend Class cMSECSVOutputWriter
     Implements IMSEOutputWriter
 
     Private m_core As cCore
     Private m_MSEdata As cMSEDataStructures
-
 
     Public Sub New(ByVal theCore As cCore, ByVal MSEData As cMSEDataStructures)
         Me.m_core = theCore
@@ -20,13 +21,14 @@ Friend Class cMSECSVOutputWriter
     End Sub
 
     Public Function getOutputFileName(ByVal strDataType As String, ByVal strDataName As String) As String
-        Return Path.Combine(Me.DataDir, cFileUtils.ToOutputFilename(Me.ModelName, strDataType, strDataName))
+        Return Path.Combine(Me.DataDir, Me.m_core.EcosimOutputFileName(strDataType, strDataName, ".csv"))
     End Function
 
-    Private Function ModelName() As String
-        Return Me.m_core.DataSource.FileName
-    End Function
-
+    Public ReadOnly Property DataDir() As String
+        Get
+            Return Me.m_core.OutputPath
+        End Get
+    End Property
 
     Public Sub saveIteration(ByVal ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
 
@@ -178,12 +180,6 @@ Friend Class cMSECSVOutputWriter
 
     End Sub
 
-    Public ReadOnly Property DataDir() As String
-        Get
-            Return Me.m_core.OutputPath
-        End Get
-    End Property
-
     Public Sub Init() Implements IMSEOutputWriter.Init
 
         If Not Me.m_MSEdata.SaveOutput Then Exit Sub
@@ -191,9 +187,7 @@ Friend Class cMSECSVOutputWriter
         Try
             Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-            If Not Directory.Exists(Me.DataDir) Then
-                Directory.CreateDirectory(Me.DataDir)
-            End If
+            If Not cFileUtils.IsDirectoryAvailable(Me.DataDir, True) Then Exit Sub
 
             'clear out any existing data files
             For igrp As Integer = 1 To Me.m_MSEdata.NGroups

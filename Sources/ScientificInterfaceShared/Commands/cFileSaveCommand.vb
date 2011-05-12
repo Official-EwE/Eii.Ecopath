@@ -59,7 +59,7 @@ Namespace Commands
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
         ''' <param name="strTitle">
-        ''' Optional dialog title. If left empty, the Visual Studio default is used.
+        ''' Optional dialog title. If left empty, the .NET default is used.
         ''' </param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strFileName As String, _
@@ -194,6 +194,7 @@ Namespace Commands
                 Me.m_iFilter = value
             End Set
         End Property
+
 
     End Class
 

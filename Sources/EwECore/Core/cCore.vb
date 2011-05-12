@@ -2104,6 +2104,16 @@ Public Class cCore
 
     End Function
 
+    ''' -------------------------------------------------------------------------
+    ''' <summary>
+    ''' Discard any unsaved data change flags.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' <remarks>
+    ''' Although data is not physically discarded, the core will no longer attempt 
+    ''' to <see cref="SaveChanges">save changes</see> until a new data edit is made.
+    ''' </remarks>
+    ''' -------------------------------------------------------------------------
     Public Function DiscardChanges() As Boolean
 
         ' Hang on, can we do this at all?
@@ -2113,9 +2123,11 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the path for core processes to write output information to.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property OutputPath() As String
         Get
             If String.IsNullOrEmpty(Me.m_strOutputPath) Then
@@ -2126,10 +2138,92 @@ Public Class cCore
             Return Me.m_strOutputPath
         End Get
         Set(ByVal value As String)
-            ' Eliminate all invalid path characters
             Me.m_strOutputPath = cFileUtils.ToValidFileName(value, True)
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get an output file name for Ecopath.
+    ''' </summary>
+    ''' <param name="strComponent">The component name to create the output file for.</param>
+    ''' <param name="strFilter">An optional filter to create the output file for.</param>
+    ''' <param name="strExt">Optional file extension to use.</param>
+    ''' <returns>A standardized output file.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function EcopathOutputFileName(ByVal strComponent As String, _
+                                          Optional ByVal strFilter As String = "", _
+                                          Optional ByVal strExt As String = "") As String
+        Return Me.OutputFileName("", strComponent, strFilter, strExt)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get an output file name for Ecosim.
+    ''' </summary>
+    ''' <param name="strComponent">The component name to create the output file for.</param>
+    ''' <param name="strFilter">An optional filter to create the output file for.</param>
+    ''' <param name="strExt">Optional file extension to use.</param>
+    ''' <returns>A standardized output file.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function EcosimOutputFileName(ByVal strComponent As String, _
+                                         Optional ByVal strFilter As String = "", _
+                                         Optional ByVal strExt As String = "") As String
+        If Me.ActiveEcosimScenarioIndex = -1 Then Return ""
+        Return Me.OutputFileName(Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name, strComponent, strFilter, strExt)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get an output file name for Ecospace.
+    ''' </summary>
+    ''' <param name="strComponent">The component name to create the output file for.</param>
+    ''' <param name="strFilter">An optional filter to create the output file for.</param>
+    ''' <param name="strExt">Optional file extension to use.</param>
+    ''' <returns>A standardized output file.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function EcospaceOutputFileName(ByVal strComponent As String, _
+                                             Optional ByVal strFilter As String = "", _
+                                             Optional ByVal strExt As String = "") As String
+        If Me.ActiveEcospaceScenarioIndex = -1 Then Return ""
+        Return Me.OutputFileName(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name, strComponent, strFilter, strExt)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get an output file name for Ecotracer.
+    ''' </summary>
+    ''' <param name="strComponent">The component name to create the output file for.</param>
+    ''' <param name="strFilter">An optional filter to create the output file for.</param>
+    ''' <param name="strExt">Optional file extension to use.</param>
+    ''' <returns>A standardized output file.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function EcotracerOutputFileName(ByVal strComponent As String, _
+                                               Optional ByVal strFilter As String = "", _
+                                               Optional ByVal strExt As String = "") As String
+        If Me.ActiveEcotracerScenarioIndex = -1 Then Return ""
+        Return Me.OutputFileName(Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name, strComponent, strFilter, strExt)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get an output file name.
+    ''' </summary>
+    ''' <param name="strScenario">Optional scenario name to use.</param>
+    ''' <param name="strComponent">The component name to create the output file for.</param>
+    ''' <param name="strFilter">An optional filter to create the output file for.</param>
+    ''' <param name="strExt">Optional file extension to use.</param>
+    ''' <returns>A standardized output file.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function OutputFileName(ByVal strScenario As String, _
+                                    ByVal strComponent As String, _
+                                    Optional ByVal strFilter As String = "", _
+                                    Optional ByVal strExt As String = "") As String
+
+        If Me.DataSource Is Nothing Then Return ""
+        Return cFileUtils.ToOutputFilename(Me.DataSource.FileName, strComponent, strFilter, strScenario, strExt)
+
+    End Function
 
 #End Region ' Generic helper methods
 

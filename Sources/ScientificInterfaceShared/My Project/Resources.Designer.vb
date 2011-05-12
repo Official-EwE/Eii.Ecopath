@@ -697,7 +697,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to FlowDiagram files|*.fd|All files (*.*)|*.*.
+        '''  Looks up a localized string similar to FlowDiagram files|*.ewefd,*.fd|All files (*.*)|*.*.
         '''</summary>
         Public ReadOnly Property FILEFILTER_FLOWDIAGRAM() As String
             Get

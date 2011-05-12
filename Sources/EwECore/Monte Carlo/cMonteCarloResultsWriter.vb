@@ -27,18 +27,18 @@ Public Class cMonteCarloResultsWriter
 
         Try
 
-            If Not Directory.Exists(Me.DataDir) Then
-                Directory.CreateDirectory(Me.DataDir)
+            If cFileUtils.IsDirectoryAvailable(Me.Core.OutputPath, True) Then
+
+                If File.Exists(OuputFilename) Then
+                    File.Delete(Me.OuputFilename)
+                End If
+
+                Me.WriteHeader()
+
+                'save the baseline data
+                Me.Save(True)
+
             End If
-
-            If File.Exists(OuputFilename) Then
-                File.Delete(Me.OuputFilename)
-            End If
-
-            Me.WriteHeader()
-
-            'save the baseline data
-            Me.Save(True)
 
         Catch ex As Exception
             'Me.MC.bSaveOutput = False
@@ -51,7 +51,7 @@ Public Class cMonteCarloResultsWriter
 
     Private ReadOnly Property OuputFilename() As String
         Get
-            Return Path.Combine(Me.DataDir, cFileUtils.ToOutputFilename(Me.ModelName, "MonteCarlo", "IterationData"))
+            Return Me.Core.EcosimOutputFileName("MonteCarlo", "IterationData", ".csv")
         End Get
     End Property
 
@@ -63,12 +63,9 @@ Public Class cMonteCarloResultsWriter
     End Property
 
 
-    Private ReadOnly Property DataDir() As String
-        Get
-            'For now 
-            Return Me.m_core.OutputPath
-        End Get
-    End Property
+    Private Function ScenarioName() As String
+        Return Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
+    End Function
 
     Private ReadOnly Property MC() As cEcosimMonteCarlo
         Get
@@ -90,18 +87,17 @@ Public Class cMonteCarloResultsWriter
 
             Dim header As StringBuilder
             Dim strm As StreamWriter
+            Dim ver As String = System.Reflection.Assembly.GetAssembly(GetType(cCore)).GetName.Version.ToString
+            Dim d As Date = Date.Now
 
             header = New StringBuilder()
-            Dim d As Date = Date.Now
 
             'save a bunch of crap here....
             'model name blaaaaaa
-            Dim ver As String = System.Reflection.Assembly.GetAssembly(GetType(cCore)).GetName.Version.ToString
-            header.Append("EwE Monte Carlo version number," & ver & vbCrLf) 'version number
-            header.Append("Model name, " & Me.ModelName & vbCrLf)
-            header.Append("Ecosim scenario, " & Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name & vbCrLf)
-
-            header.Append("Run Date, '" & d.ToShortDateString & " " & d.ToShortTimeString & "'")
+            header.AppendLine("EwE Monte Carlo version number, " & ver) 'version number
+            header.AppendLine("Model name, " & Chr(34) & Me.ModelName & Chr(34))
+            header.AppendLine("Ecosim scenario, " & Chr(34) & Me.ScenarioName & Chr(34))
+            header.AppendLine("Run Date, " & Chr(34) & d.ToShortDateString & " " & d.ToShortTimeString & Chr(34))
 
             strm = New StreamWriter(Me.OuputFilename, True)
             strm.WriteLine(header)

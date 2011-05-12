@@ -284,6 +284,7 @@ Public Class AppLauncher
 
         ' Create and configure Directory Open command
         Me.m_cmdDirectoryOpen = New cDirectoryOpenCommand(cmdh)
+        Me.m_cmdDirectoryOpen.Directory = Me.Core.OutputPath
 
         ' Create and configure Execute command
         Me.m_cmdExecute = New cExecuteCommand(cmdh)
@@ -3142,36 +3143,16 @@ Public Class AppLauncher
     Private Sub OnExportEcosimResultsToCSV(ByVal cmd As cCommand) _
         Handles m_cmdExportEcosimResultsToCSV.OnInvoke
 
-        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-        Dim cmdOD As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         Dim iGroup As Integer = cCore.NULL_VALUE
         Dim bSaveAnnual As Boolean = False
         Dim writer As cEcosimResultWriter = Nothing
+        Dim strPath As String = Me.Core.OutputPath
 
-        cmdOD.Invoke("", My.Resources.ECOSIM_PROMPT_SAVEDESTINATION)
-
-        If (cmdOD.Result <> Windows.Forms.DialogResult.OK) Then Return
-        If (String.IsNullOrEmpty(cmdOD.Directory)) Then Return
-
-        Select Case MsgBox(My.Resources.ECOSIM_PROMPT_SAVEANNUAL, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-            Case MsgBoxResult.Yes
-                bSaveAnnual = True
-            Case MsgBoxResult.No
-                bSaveAnnual = False
-            Case MsgBoxResult.Cancel
-                Return
-        End Select
-
-        Try
-            If cmd.Tag IsNot Nothing Then
-                iGroup = CInt(cmd.Tag)
-            End If
-        Catch ex As Exception
-        End Try
-
-        writer = New cEcosimResultWriter(Me.UIContext.Core)
-        writer.WriteResults(cmdOD.Directory, bSaveAnnual, iGroup)
-        writer = Nothing
+        If cFileUtils.IsDirectoryAvailable(strPath, True) Then
+            writer = New cEcosimResultWriter(Me.UIContext.Core)
+            writer.WriteResults(strPath)
+            writer = Nothing
+        End If
 
     End Sub
 

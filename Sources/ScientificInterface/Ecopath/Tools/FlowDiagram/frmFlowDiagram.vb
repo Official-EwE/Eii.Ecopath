@@ -5,6 +5,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
+Imports EwEUtils.Utilities
 Imports EwEUtils.Win32Api
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
@@ -200,7 +201,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
+            cmdFS.Invoke(Me.Core.EcopathOutputFileName("flow_diagram", strExt:=".ewefd"), SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
                 Try
@@ -233,7 +234,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
 
-            cmdFS.Invoke("EwE6-flow_diagram", SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
+            cmdFS.Invoke(Me.Core.EcopathOutputFileName("flow_diagram"), SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
             If cmdFS.Result = DialogResult.OK Then
                 Select Case cmdFS.FilterIndex
                     Case 2
