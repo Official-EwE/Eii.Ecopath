@@ -38,8 +38,9 @@ Public MustInherit Class cTimeSeries
 
     ''' <summary>The core this TS belongs to.</summary>
     Protected m_core As cCore = Nothing
-    ''' <summary>Time series validity flag.</summary>
-    Private m_bIsValid As Boolean = True
+
+    Protected m_status As eStatusFlags = eStatusFlags.Null
+    Protected m_strStatus As String = ""
 
 #End Region ' Protected variables
 
@@ -138,7 +139,7 @@ Public MustInherit Class cTimeSeries
     ''' -----------------------------------------------------------------------
     Public Property Enabled() As Boolean
         Get
-            Return (Me.m_bEnabled) And Me.CanEnable
+            Return (Me.m_bEnabled) And (Me.m_status = eStatusFlags.OK)
         End Get
 
         Set(ByVal bEnable As Boolean)
@@ -210,17 +211,31 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set whether this TS can be applied, e.g. is has all required data to
-    ''' be applied.
+    ''' Get/set whether this time series can be used.
     ''' </summary>
-    ''' <returns>True if a TS can be enabled.</returns>
+    ''' <returns>A <see cref="eStatusFlags"/> stating whether the time series
+    ''' can be used.</returns>
     ''' -----------------------------------------------------------------------
-    Public Property CanEnable() As Boolean
+    Public Property ValidationStatus() As eStatusFlags
         Get
-            Return (Me.m_iDatPool > 0) And Me.m_bIsValid
+            Return Me.m_status
         End Get
-        Friend Set(ByVal value As Boolean)
-            Me.m_bIsValid = value
+        Friend Set(ByVal value As eStatusFlags)
+            Me.m_status = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set a textual message explaining the time series <see cref="ValidationStatus"/>
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ValidationMessage() As String
+        Get
+            Return Me.m_strStatus
+        End Get
+        Friend Set(ByVal value As String)
+            Me.m_strStatus = value
         End Set
     End Property
 

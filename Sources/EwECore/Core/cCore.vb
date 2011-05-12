@@ -1339,7 +1339,6 @@ Public Class cCore
             tsd.Clear()
         Next
 
-
         Try
             If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
                 tsd = Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex)
@@ -1367,17 +1366,9 @@ Public Class cCore
                     ts.DatVal(iYear) = Me.m_TSData.sValues(iYear, ts.Index)
                 Next iYear
 
+                Me.ValidateTimeSeries(ts)
+
                 ts.Enabled = Me.m_TSData.bEnable(ts.Index)
-
-                ' Special case
-                If (ts.TimeSeriesType = eTimeSeriesType.FishingMortality) Or (ts.TimeSeriesType = eTimeSeriesType.FishingMortalityRef) Then
-                    Dim bIsValid As Boolean = False
-                    If ts.DatPool > 0 And ts.DatPool <= nGroups Then
-                        bIsValid = Me.EcoPathGroupInputs(ts.DatPool).IsFished
-                    End If
-                    ts.CanEnable = bIsValid
-                End If
-
                 ts.UnlockUpdates(False)
 
                 tsd.Add(ts)
@@ -1403,6 +1394,8 @@ Public Class cCore
                 For iYear As Integer = 1 To iNumYears
                     ts.DatVal(iYear) = Me.m_TSData.sValues(iYear, ts.Index)
                 Next iYear
+
+                Me.ValidateTimeSeries(ts)
 
                 ts.Enabled = Me.m_TSData.bEnable(ts.Index)
                 ts.UnlockUpdates(False)
@@ -1456,6 +1449,7 @@ Public Class cCore
                 Next iYear
 
                 Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+                Me.ValidateTimeSeries(ts)
 
             Next
 
@@ -1493,6 +1487,7 @@ Public Class cCore
                 Next iYear
 
                 Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+                Me.ValidateTimeSeries(ts)
 
             Next
 
@@ -1506,6 +1501,42 @@ Public Class cCore
     End Function
 
 #End Region ' Update
+
+#Region " Validation "
+
+    Private Sub ValidateTimeSeries(ByVal ts As cTimeSeries)
+
+        Dim status As eStatusFlags = eStatusFlags.OK
+        Dim strStatus As String = ""
+
+        If TypeOf ts Is cGroupTimeSeries Then
+            If (ts.DatPool <= 0 Or ts.DatPool > nGroups) Then
+                status = eStatusFlags.ErrorEncountered
+                strStatus = String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, ts.DatPool)
+            Else
+                If (ts.TimeSeriesType = eTimeSeriesType.FishingMortality) Or (ts.TimeSeriesType = eTimeSeriesType.FishingMortalityRef) Then
+                    ' JS 12May11: Allow F for groups that are not fished
+                    'If Not Me.EcoPathGroupInputs(ts.DatPool).IsFished Then
+                    '    status = eStatusFlags.ErrorEncountered
+                    '    strStatus = String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_GROUP_NOTFISHED, Me.m_EcoPathData.GroupName(ts.DatPool))
+                    'End If
+                End If
+            End If
+        End If
+
+        If TypeOf ts Is cFleetTimeSeries Then
+            If (ts.DatPool <= 0 Or ts.DatPool > nFleets) Then
+                status = eStatusFlags.ErrorEncountered
+                strStatus = String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, ts.DatPool)
+            End If
+        End If
+
+        ts.ValidationStatus = status
+        ts.ValidationMessage = strStatus
+
+    End Sub
+
+#End Region ' Validation
 
 #Region " Public interfaces "
 

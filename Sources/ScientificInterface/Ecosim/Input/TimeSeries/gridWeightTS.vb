@@ -100,7 +100,7 @@ Public Class gridWeightTS
 
         Dim iRow As Integer = Me.AddRow()
         Dim cell As SourceGrid2.Cells.ICell = Nothing
-        Dim bCanEnable As Boolean = ts.CanEnable
+        Dim bCanEnable As Boolean = (ts.ValidationStatus = eStatusFlags.OK)
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         If Not bCanEnable Then style = cStyleGuide.eStyleFlags.NotEditable

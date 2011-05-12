@@ -298,7 +298,8 @@ Namespace Controls
             Dim bShowWarning As Boolean = False
 
             If TypeOf shape Is cTimeSeries Then
-                bShowWarning = Not DirectCast(shape, cTimeSeries).CanEnable
+                Dim ts As cTimeSeries = DirectCast(shape, cTimeSeries)
+                bShowWarning = Not (ts.ValidationStatus = eStatusFlags.OK)
             End If
 
             Return cShapeImage.IconImage(Me.m_uic, shape, Me.m_clr, Me.SketchDrawMode, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning)
@@ -468,10 +469,11 @@ Namespace Controls
                 ts = DirectCast(shape, cTimeSeries)
                 If (ts.Enabled <> e.Item.Checked) Then
 
-                    If Not ts.CanEnable Then
+                    If ts.ValidationStatus <> eStatusFlags.OK Then
                         e.Item.Checked = False
-                        ' ToDo_JS: The core should really validate TS enabled state!
-                        Me.m_uic.Core.Messages.SendMessage(New cMessage("This time series cannot be enabled because it is targeting an invalid group or fleet", eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.TimeSeries, eMessageImportance.Warning))
+                        ' ToDo: Globalize this
+                        Me.m_uic.Core.Messages.SendMessage(New cMessage("This time series cannot be enabled: " & ts.ValidationMessage, _
+                                                                        eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.TimeSeries, eMessageImportance.Warning))
                         Return
                     End If
 

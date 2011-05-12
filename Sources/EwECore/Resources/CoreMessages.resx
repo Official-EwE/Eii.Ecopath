@@ -558,12 +558,12 @@ System Error: {0}</value>
     <value>Decimal and column separator cannot be the same.</value>
   </data>
   <data name="TIMESERIES_ERROR_INVALIDFLEET" xml:space="preserve">
-    <value>Invalid fleet number {0} in series '{1}'</value>
-    <comment>{0}=erroneous fleet number, {1} name of series</comment>
+    <value>Invalid fleet number {0}</value>
+    <comment>{0}=erroneous fleet number</comment>
   </data>
   <data name="TIMESERIES_ERROR_INVALIDGROUP" xml:space="preserve">
-    <value>Invalid group number {0} in series '{1}'</value>
-    <comment>{0}=erroneous group number, {1} name of series</comment>
+    <value>Invalid group number {0}</value>
+    <comment>{0}=erroneous group number</comment>
   </data>
   <data name="TIMESERIES_ERROR_POOLFORMAT" xml:space="preserve">
     <value>One or more pool code values cannot be read</value>
@@ -973,5 +973,9 @@ System Error: {0}</value>
   </data>
   <data name="GENERIC_ABORTING_EDIT_DATA" xml:space="preserve">
     <value>Aborting, please edit your data.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_GROUP_NOTFISHED" xml:space="preserve">
+    <value>Group '{0}' is not fished</value>
+    <comment>{0}=group name</comment>
   </data>
 </root>

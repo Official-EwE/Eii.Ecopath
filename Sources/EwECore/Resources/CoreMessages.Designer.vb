@@ -1950,6 +1950,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Group &apos;{0}&apos; is not fished.
+        '''</summary>
+        Friend Shared ReadOnly Property TIMESERIES_ERROR_GROUP_NOTFISHED() As String
+            Get
+                Return ResourceManager.GetString("TIMESERIES_ERROR_GROUP_NOTFISHED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Decimal and column separator cannot be the same..
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_IDENTICALSEPARATORS() As String
@@ -1959,7 +1968,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Invalid fleet number {0} in series &apos;{1}&apos;.
+        '''  Looks up a localized string similar to Invalid fleet number {0}.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_INVALIDFLEET() As String
             Get
@@ -1968,7 +1977,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Invalid group number {0} in series &apos;{1}&apos;.
+        '''  Looks up a localized string similar to Invalid group number {0}.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_INVALIDGROUP() As String
             Get
