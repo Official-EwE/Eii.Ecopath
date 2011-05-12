@@ -33,7 +33,7 @@ Namespace Ecosim
             Me.m_rbFMaxM = New System.Windows.Forms.RadioButton
             Me.m_rbBuBo = New System.Windows.Forms.RadioButton
             Me.m_rbBoBu = New System.Windows.Forms.RadioButton
-            Me.m_hdrMethodology = New System.Windows.Forms.Label
+            Me.m_hdrMethodology = New cEwEHeaderLabel
             Me.m_graph = New ZedGraph.ZedGraphControl
             Me.m_btnCancel = New System.Windows.Forms.Button
             Me.m_btnOK = New System.Windows.Forms.Button
@@ -183,7 +183,7 @@ Namespace Ecosim
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_grid As gridEstimateVs
         Private WithEvents m_graph As ZedGraphControl
-        Private WithEvents m_hdrMethodology As System.Windows.Forms.Label
+        Private WithEvents m_hdrMethodology As cEwEHeaderLabel
         Private WithEvents m_rbBoBu As System.Windows.Forms.RadioButton
         Private WithEvents m_rbBuBo As System.Windows.Forms.RadioButton
         Private WithEvents m_rbFMaxM As System.Windows.Forms.RadioButton

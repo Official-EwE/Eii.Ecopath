@@ -37,15 +37,13 @@ Namespace Ecosim
             Me.m_nudLineWidth = New System.Windows.Forms.NumericUpDown
             Me.m_nudRowNum = New System.Windows.Forms.NumericUpDown
             Me.m_chkScaleForPrinter = New System.Windows.Forms.CheckBox
-            Me.lblTBMargin = New System.Windows.Forms.Label
+            Me.m_lblTBMargin = New System.Windows.Forms.Label
             Me.m_lblMarginLR = New System.Windows.Forms.Label
-            Me.m_lblDisplayOptions = New System.Windows.Forms.Label
-            Me.m_lblGeneral = New System.Windows.Forms.Label
+            Me.m_hdrDisplayOptions = cEwEHeaderLabel
+            Me.m_hdrGeneral = New cEwEHeaderLabel
             Me.m_lblRowNum = New System.Windows.Forms.Label
             Me.m_lblLineWidth = New System.Windows.Forms.Label
             Me.m_lblDotSize = New System.Windows.Forms.Label
-            Me.plPlots = New System.Windows.Forms.Panel
-            Me.m_pbPlots = New System.Windows.Forms.PictureBox
             Me.m_tsMain = New System.Windows.Forms.ToolStrip
             Me.m_tsmiOptions = New System.Windows.Forms.ToolStripButton
             Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
@@ -59,7 +57,7 @@ Namespace Ecosim
             Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem
             Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument
-            Me.dlgPV = New System.Windows.Forms.PrintPreviewDialog
+            Me.m_pbPlots = New System.Windows.Forms.PictureBox
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -68,9 +66,8 @@ Namespace Ecosim
             CType(Me.m_nudDotSize, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudLineWidth, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudRowNum, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.plPlots.SuspendLayout()
-            CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tsMain.SuspendLayout()
+            CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_scMain
@@ -93,10 +90,10 @@ Namespace Ecosim
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudLineWidth)
             Me.m_scMain.Panel1.Controls.Add(Me.m_nudRowNum)
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkScaleForPrinter)
-            Me.m_scMain.Panel1.Controls.Add(Me.lblTBMargin)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_lblTBMargin)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblMarginLR)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDisplayOptions)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblGeneral)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_hdrDisplayOptions)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_hdrGeneral)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblRowNum)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblLineWidth)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblDotSize)
@@ -104,7 +101,7 @@ Namespace Ecosim
             'm_scMain.Panel2
             '
             resources.ApplyResources(Me.m_scMain.Panel2, "m_scMain.Panel2")
-            Me.m_scMain.Panel2.Controls.Add(Me.plPlots)
+            Me.m_scMain.Panel2.Controls.Add(Me.m_pbPlots)
             Me.m_scMain.Panel2.Controls.Add(Me.m_tsMain)
             '
             'm_chkShowYear
@@ -190,29 +187,25 @@ Namespace Ecosim
             Me.m_chkScaleForPrinter.Name = "m_chkScaleForPrinter"
             Me.m_chkScaleForPrinter.UseVisualStyleBackColor = True
             '
-            'lblTBMargin
+            'm_lblTBMargin
             '
-            resources.ApplyResources(Me.lblTBMargin, "lblTBMargin")
-            Me.lblTBMargin.Name = "lblTBMargin"
+            resources.ApplyResources(Me.m_lblTBMargin, "m_lblTBMargin")
+            Me.m_lblTBMargin.Name = "m_lblTBMargin"
             '
             'm_lblMarginLR
             '
             resources.ApplyResources(Me.m_lblMarginLR, "m_lblMarginLR")
             Me.m_lblMarginLR.Name = "m_lblMarginLR"
             '
-            'm_lblDisplayOptions
+            'm_hdrDisplayOptions
             '
-            resources.ApplyResources(Me.m_lblDisplayOptions, "m_lblDisplayOptions")
-            Me.m_lblDisplayOptions.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblDisplayOptions.ForeColor = System.Drawing.SystemColors.Window
-            Me.m_lblDisplayOptions.Name = "m_lblDisplayOptions"
+            resources.ApplyResources(Me.m_hdrDisplayOptions, "m_hdrDisplayOptions")
+            Me.m_hdrDisplayOptions.Name = "m_hdrDisplayOptions"
             '
-            'm_lblGeneral
+            'm_hdrGeneral
             '
-            resources.ApplyResources(Me.m_lblGeneral, "m_lblGeneral")
-            Me.m_lblGeneral.BackColor = System.Drawing.SystemColors.ButtonShadow
-            Me.m_lblGeneral.ForeColor = System.Drawing.SystemColors.Window
-            Me.m_lblGeneral.Name = "m_lblGeneral"
+            resources.ApplyResources(Me.m_hdrGeneral, "m_hdrGeneral")
+            Me.m_hdrGeneral.Name = "m_hdrGeneral"
             '
             'm_lblRowNum
             '
@@ -229,20 +222,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblDotSize, "m_lblDotSize")
             Me.m_lblDotSize.Name = "m_lblDotSize"
             '
-            'plPlots
-            '
-            Me.plPlots.BackColor = System.Drawing.SystemColors.Control
-            Me.plPlots.Controls.Add(Me.m_pbPlots)
-            resources.ApplyResources(Me.plPlots, "plPlots")
-            Me.plPlots.Name = "plPlots"
-            '
-            'm_pbPlots
-            '
-            Me.m_pbPlots.BackColor = System.Drawing.Color.White
-            resources.ApplyResources(Me.m_pbPlots, "m_pbPlots")
-            Me.m_pbPlots.Name = "m_pbPlots"
-            Me.m_pbPlots.TabStop = False
-            '
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -255,7 +234,6 @@ Namespace Ecosim
             Me.m_tsmiOptions.Checked = True
             Me.m_tsmiOptions.CheckOnClick = True
             Me.m_tsmiOptions.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_tsmiOptions.Image = SharedResources.OptionsHS
             resources.ApplyResources(Me.m_tsmiOptions, "m_tsmiOptions")
             Me.m_tsmiOptions.Name = "m_tsmiOptions"
             '
@@ -266,7 +244,6 @@ Namespace Ecosim
             '
             'm_tsmiChoosePlots
             '
-            Me.m_tsmiChoosePlots.Image = SharedResources.Eye_open
             resources.ApplyResources(Me.m_tsmiChoosePlots, "m_tsmiChoosePlots")
             Me.m_tsmiChoosePlots.Name = "m_tsmiChoosePlots"
             '
@@ -284,48 +261,44 @@ Namespace Ecosim
             'm_tsddSave
             '
             Me.m_tsddSave.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSaveAsImage, Me.m_tsmiSaveAsCSV})
-            Me.m_tsddSave.Image = SharedResources.saveHS
             resources.ApplyResources(Me.m_tsddSave, "m_tsddSave")
             Me.m_tsddSave.Name = "m_tsddSave"
             '
             'm_tsmiSaveAsImage
             '
-            Me.m_tsmiSaveAsImage.Image = SharedResources.InsertPictureHS
-            Me.m_tsmiSaveAsImage.Name = "m_tsmiSaveAsImage"
             resources.ApplyResources(Me.m_tsmiSaveAsImage, "m_tsmiSaveAsImage")
+            Me.m_tsmiSaveAsImage.Name = "m_tsmiSaveAsImage"
             '
             'm_tsmiSaveAsCSV
             '
-            Me.m_tsmiSaveAsCSV.Image = SharedResources.ExportXMLHS
-            Me.m_tsmiSaveAsCSV.Name = "m_tsmiSaveAsCSV"
             resources.ApplyResources(Me.m_tsmiSaveAsCSV, "m_tsmiSaveAsCSV")
+            Me.m_tsmiSaveAsCSV.Name = "m_tsmiSaveAsCSV"
             '
             'm_tsddPrint
             '
             Me.m_tsddPrint.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiPrint, Me.m_tsmiPrintPreview})
-            Me.m_tsddPrint.Image = SharedResources.PrintHS
             resources.ApplyResources(Me.m_tsddPrint, "m_tsddPrint")
             Me.m_tsddPrint.Name = "m_tsddPrint"
             '
             'm_tsmiPrint
             '
-            Me.m_tsmiPrint.Image = SharedResources.PrintHS
-            Me.m_tsmiPrint.Name = "m_tsmiPrint"
             resources.ApplyResources(Me.m_tsmiPrint, "m_tsmiPrint")
+            Me.m_tsmiPrint.Name = "m_tsmiPrint"
             '
             'm_tsmiPrintPreview
             '
-            Me.m_tsmiPrintPreview.Image = SharedResources.PrintPreviewHS
-            Me.m_tsmiPrintPreview.Name = "m_tsmiPrintPreview"
             resources.ApplyResources(Me.m_tsmiPrintPreview, "m_tsmiPrintPreview")
+            Me.m_tsmiPrintPreview.Name = "m_tsmiPrintPreview"
             '
             'm_printdocAllFits
             '
             '
-            'dlgPV
+            'm_pbPlots
             '
-            resources.ApplyResources(Me.dlgPV, "dlgPV")
-            Me.dlgPV.Name = "dlgPV"
+            Me.m_pbPlots.BackColor = System.Drawing.Color.White
+            resources.ApplyResources(Me.m_pbPlots, "m_pbPlots")
+            Me.m_pbPlots.Name = "m_pbPlots"
+            Me.m_pbPlots.TabStop = False
             '
             'frmShowAllFits
             '
@@ -345,24 +318,20 @@ Namespace Ecosim
             CType(Me.m_nudDotSize, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudLineWidth, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudRowNum, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.plPlots.ResumeLayout(False)
-            CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
+            CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents lblTBMargin As System.Windows.Forms.Label
+        Private WithEvents m_lblTBMargin As System.Windows.Forms.Label
         Private WithEvents m_lblMarginLR As System.Windows.Forms.Label
         Private WithEvents m_lblDotSize As System.Windows.Forms.Label
         Private WithEvents m_lblLineWidth As System.Windows.Forms.Label
-        Private WithEvents plPlots As System.Windows.Forms.Panel
         Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_printdocAllFits As System.Drawing.Printing.PrintDocument
-        Private WithEvents dlgPV As System.Windows.Forms.PrintPreviewDialog
-        Private WithEvents m_lblDisplayOptions As System.Windows.Forms.Label
-        Private WithEvents m_lblGeneral As System.Windows.Forms.Label
-        Private WithEvents m_pbPlots As System.Windows.Forms.PictureBox
+        Private WithEvents m_hdrDisplayOptions As cEwEHeaderLabel
+        Private WithEvents m_hdrGeneral As cEwEHeaderLabel
         Private WithEvents m_nudRowNum As System.Windows.Forms.NumericUpDown
         Private WithEvents m_nudLineWidth As System.Windows.Forms.NumericUpDown
         Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
@@ -387,6 +356,7 @@ Namespace Ecosim
         Private WithEvents m_chkShowCatch As System.Windows.Forms.CheckBox
         Private WithEvents m_chkShowZ As System.Windows.Forms.CheckBox
         Private WithEvents m_chkShowB As System.Windows.Forms.CheckBox
+        Private WithEvents m_pbPlots As System.Windows.Forms.PictureBox
     End Class
 
 End Namespace

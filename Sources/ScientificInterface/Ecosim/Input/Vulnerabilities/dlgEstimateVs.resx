@@ -249,9 +249,6 @@
   <data name="&gt;&gt;m_rbBoBu.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_hdrMethodology.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
   <data name="m_hdrMethodology.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
