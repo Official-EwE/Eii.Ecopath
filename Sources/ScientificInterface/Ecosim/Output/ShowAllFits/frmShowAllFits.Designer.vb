@@ -39,7 +39,7 @@ Namespace Ecosim
             Me.m_chkScaleForPrinter = New System.Windows.Forms.CheckBox
             Me.m_lblTBMargin = New System.Windows.Forms.Label
             Me.m_lblMarginLR = New System.Windows.Forms.Label
-            Me.m_hdrDisplayOptions = cEwEHeaderLabel
+            Me.m_hdrDisplayOptions = New cEwEHeaderLabel
             Me.m_hdrGeneral = New cEwEHeaderLabel
             Me.m_lblRowNum = New System.Windows.Forms.Label
             Me.m_lblLineWidth = New System.Windows.Forms.Label
