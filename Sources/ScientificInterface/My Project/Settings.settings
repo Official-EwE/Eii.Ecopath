@@ -135,10 +135,10 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="BackupFileMask" Type="System.String" Scope="User">
-      <Value Profile="(Default)">{MyDocuments}\EwE6 backup\{ModelFile}_{Date}-{Time}.{ModelExt}</Value>
+      <Value Profile="(Default)">{ModelPath}\EwE6 backup\{ModelFile}_{Date}-{Time}.{ModelExt}</Value>
     </Setting>
     <Setting Name="OutputPathMask" Type="System.String" Scope="User">
-      <Value Profile="(Default)">{MyDocuments}\EwE6 output\{ModelFile}\</Value>
+      <Value Profile="(Default)">{ModelPath}\EwE6 output\{ModelFile}\</Value>
     </Setting>
   </Settings>
 </SettingsFile>
