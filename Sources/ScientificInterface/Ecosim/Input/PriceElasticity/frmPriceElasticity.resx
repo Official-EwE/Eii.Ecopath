@@ -142,7 +142,7 @@
     <value>m_sketchPadToolbar</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
     <value>tlpSketchPad</value>
@@ -169,7 +169,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationSketchPad, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationSketchPad, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>tlpSketchPad</value>
@@ -325,7 +325,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_shapeToolboxToolbar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>549, 25</value>
+    <value>342, 25</value>
   </data>
   <data name="m_shapeToolboxToolbar.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -334,7 +334,7 @@
     <value>m_shapeToolboxToolbar</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
     <value>m_scBottom.Panel1</value>
@@ -352,7 +352,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_shapeToolBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>549, 186</value>
+    <value>342, 186</value>
   </data>
   <data name="m_shapeToolBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -361,7 +361,7 @@
     <value>m_shapeToolBox</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Parent" xml:space="preserve">
     <value>m_scBottom.Panel1</value>
@@ -391,7 +391,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_assignments.Size" type="System.Drawing.Size, System.Drawing">
-    <value>304, 186</value>
+    <value>511, 186</value>
   </data>
   <data name="m_assignments.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -400,7 +400,7 @@
     <value>m_assignments</value>
   </data>
   <data name="&gt;&gt;m_assignments.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationAssignments, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationAssignments, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_assignments.Parent" xml:space="preserve">
     <value>m_scBottom.Panel2</value>
@@ -421,7 +421,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_assignmentsToolbar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>304, 25</value>
+    <value>511, 25</value>
   </data>
   <data name="m_assignmentsToolbar.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -430,7 +430,7 @@
     <value>m_assignmentsToolbar</value>
   </data>
   <data name="&gt;&gt;m_assignmentsToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_assignmentsToolbar.Parent" xml:space="preserve">
     <value>m_scBottom.Panel2</value>
@@ -454,7 +454,7 @@
     <value>865, 215</value>
   </data>
   <data name="m_scBottom.SplitterDistance" type="System.Int32, mscorlib">
-    <value>553</value>
+    <value>346</value>
   </data>
   <data name="m_scBottom.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -520,6 +520,6 @@
     <value>frmPriceElasticity</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
