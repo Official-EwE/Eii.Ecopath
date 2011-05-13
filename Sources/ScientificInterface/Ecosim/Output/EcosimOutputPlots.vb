@@ -308,7 +308,7 @@ Namespace Ecosim
             Dim applFishMortFleet(Me.UIContext.Core.nFleets) As PointPairList
             Dim applValueFleet(Me.UIContext.Core.nFleets) As PointPairList
 
-            For i As Integer = 1 To Me.UIContext.Core.nFleets
+            For i As Integer = 0 To Me.UIContext.Core.nFleets
                 applYieldFleet(i) = New PointPairList()
                 applFishMortFleet(i) = New PointPairList()
                 applValueFleet(i) = New PointPairList()
@@ -329,9 +329,9 @@ Namespace Ecosim
                 ' Special case: is catch aggregated?
                 If groupSimOut.isCatchAggregated() Then
                     ' Report F from fleet 1 for all fleets only
-                    applFishMortFleet(1).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(0, i)))
-                    applYieldFleet(1).Add(dXValue, CSng(groupSimOut.CatchByFleet(0, i)))
-                    applValueFleet(1).Add(dXValue, CSng(groupSimOut.ValueByFleet(0, i)))
+                    applFishMortFleet(0).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(0, i)))
+                    applYieldFleet(0).Add(dXValue, CSng(groupSimOut.CatchByFleet(0, i)))
+                    applValueFleet(0).Add(dXValue, CSng(groupSimOut.ValueByFleet(0, i)))
                 Else
                     For iFleet As Integer = 1 To Me.UIContext.Core.nFleets
                         applFishMortFleet(iFleet).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(iFleet, i)))
@@ -361,23 +361,44 @@ Namespace Ecosim
             Me.AddCurveToGraphPane(eSimPlot.ConsumptionBiomass, Me.m_zgh.CreateLineItem(group, pplConsB))
             Me.AddCurveToGraphPane(eSimPlot.FeedingTime, Me.m_zgh.CreateLineItem(group, pplFeedTime))
 
-            For i As Integer = 1 To Me.UIContext.Core.nFleets
+            'Add the fleet curves to the graph
+            If Not groupSimOut.isCatchAggregated() Then
+                'Catch is by fleet
+                'so add a curve for each fleet
+                For i As Integer = 1 To Me.UIContext.Core.nFleets
 
-                Dim fleet As cFleetInput = Me.UIContext.Core.FleetInputs(i)
-                Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Me.UIContext.Core, i)
+                    Dim fleet As cFleetInput = Me.UIContext.Core.FleetInputs(i)
+                    Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Me.UIContext.Core, i)
 
-                If fleet.Landings(iGroup) > 0 Then
-                    Me.AddCurveToGraphPane(eSimPlot.Yield, _
-                                           Me.m_zgh.CreateLineItem(fleet, applYieldFleet(i)), _
+                    If fleet.Landings(iGroup) > 0 Then
+                        Me.AddCurveToGraphPane(eSimPlot.Yield, _
+                                               Me.m_zgh.CreateLineItem(fleet, applYieldFleet(i)), _
+                                               True)
+                        Me.AddCurveToGraphPane(eSimPlot.Value, _
+                                               Me.m_zgh.CreateLineItem(fleet, applValueFleet(i)), _
+                                               True)
+                    End If
+                    Me.AddCurveToGraphPane(eSimPlot.FleetFishingMortality, _
+                                           Me.m_zgh.CreateLineItem(fleet, applFishMortFleet(i)), _
                                            True)
-                    Me.AddCurveToGraphPane(eSimPlot.Value, _
-                                           Me.m_zgh.CreateLineItem(fleet, applValueFleet(i)), _
-                                           True)
-                End If
+
+                Next i
+
+            Else
+
+                'Agggregate Catch
+                'All the catch data is in the zero fleet index so only add one curve for the zero fleet
+                'HACK there is still issues with this ShowGroup can not find the name of the zero index fleet
+                Me.AddCurveToGraphPane(eSimPlot.Yield, _
+                           Me.m_zgh.CreateLineItem("All Fleets", eLineType.ModelData, Color.Gray, applYieldFleet(0)), True)
+                Me.AddCurveToGraphPane(eSimPlot.Value, _
+                                       Me.m_zgh.CreateLineItem("All Fleets", eLineType.ModelData, Color.Gray, applValueFleet(0)), True)
                 Me.AddCurveToGraphPane(eSimPlot.FleetFishingMortality, _
-                                       Me.m_zgh.CreateLineItem(fleet, applFishMortFleet(i)), _
-                                       True)
-            Next
+                                       Me.m_zgh.CreateLineItem("All Fleets", eLineType.ModelData, Color.Gray, applFishMortFleet(0)), True)
+
+
+            End If 'If Not groupSimOut.isCatchAggregated() Then
+
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
                 Me.AddCurveToGraphPane(eSimPlot.Yield, li, True)
             Next li
@@ -527,15 +548,30 @@ Namespace Ecosim
 
             Next
 
+            'Addding Fleets went F time series loaded isCatchAggregated = True
+            'PopulateFleetListBox() can not find the name of the fleet because there is no zero index fleet!!!
             For i As Integer = 1 To Me.UIContext.Core.nFleets
                 If Me.UIContext.Core.FleetInputs(i).Landings(iGroup) > 0 Then
-                    Dim sCatch As Single = 0
-                    For j As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
-                        sCatch += grpOutput.CatchByFleet(i, j)
-                    Next
-                    lCatch.Add(sCatch)
-                    lFleetIndex.Add(i)
-                End If
+                    Dim sCatch As Single
+                    If Not grpOutput.isCatchAggregated Then
+                        sCatch = 0
+                        For j As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
+                            sCatch += grpOutput.CatchByFleet(i, j)
+                        Next
+                        lCatch.Add(sCatch)
+                        lFleetIndex.Add(i)
+
+                    Else
+                        'Catch is aggragated into the zero index fleet
+                        For j As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
+                            sCatch += grpOutput.CatchByFleet(0, j)
+                        Next
+                        lCatch.Add(sCatch)
+                        'PopulateFleetListBox() will not be able to find the zero index fleet because it does not exist in the core
+                        lFleetIndex.Add(0)
+                        Exit For
+                    End If 'If Not grpOutput.isCatchAggregated Then
+                End If ' If Me.UIContext.Core.FleetInputs(i).Landings(iGroup) > 0 Then
             Next
 
             Me.PopulateGroupListBox(Me.m_lbPredators, lAvgPredIndex.ToArray(), lAvgPredConsumption.ToArray())
