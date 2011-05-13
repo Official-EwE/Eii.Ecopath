@@ -1900,6 +1900,7 @@ Namespace Ecosim
 
                                 'Results for this time step by group gear
                                 m_Results.BCatch(igrp, iflt) = bioCatch
+                                m_Results.Landings(igrp, iflt) = Me.m_Data.ResultsLandings(igrp, iflt)
 
                             End If ' If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
                         Next iflt

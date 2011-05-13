@@ -19,6 +19,9 @@ Public Class cEcoSimResults
     ''' <summary>Catch {group x fleet}</summary>
     Public BCatch(,) As Single ' by group, by fleet
 
+    ''' <summary>Landings discards not included {group x fleet}</summary>
+    Public Landings(,) As Single
+
     Public nStanza As Integer
     Public nMaxLifeStages As Integer
 
@@ -73,6 +76,7 @@ Public Class cEcoSimResults
         ReDim Biomass(nGroups)
         ReDim Yield(nGroups)
         ReDim BCatch(nGroups, nFleets)
+        ReDim Landings(nGroups, nFleets)
 
         ReDim m_hasSRData(nStanza, nMaxLifeStages)
         ReDim BStock(nStanza, nMaxLifeStages)
@@ -90,6 +94,8 @@ Public Class cEcoSimResults
         Array.Clear(Me.FishCount, 0, nGroups)
 
         Array.Clear(Me.BCatch, 0, BCatch.Length)
+
+        Array.Clear(Me.Landings, 0, Landings.Length)
         Array.Clear(Me.m_hasSRData, 0, m_hasSRData.Length)
         Array.Clear(Me.BRecruitment, 0, BRecruitment.Length)
         Array.Clear(Me.BStock, 0, BStock.Length)
