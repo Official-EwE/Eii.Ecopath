@@ -266,7 +266,7 @@ Public Class plUnitControl
     Public Function Center() As Point
         Dim pt As Point = Me.Location
         Dim sz As Size = Me.Size
-        Return New Point(CInt((pt.X + sz.Width / 2) / m_sScale), CInt((pt.Y + sz.Height / 2) / m_sScale))
+        Return New Point(CInt((pt.X + sz.Width / 2)), CInt((pt.Y + sz.Height / 2)))
     End Function
 
     Public Property ZoomFactor() As Single
