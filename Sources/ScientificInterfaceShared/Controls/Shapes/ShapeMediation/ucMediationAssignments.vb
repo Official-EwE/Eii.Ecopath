@@ -13,7 +13,7 @@ Imports ScientificInterfaceShared.Style
 Namespace Controls
 
     ''' <summary>
-    ''' User control for showing the percentages for mediation effects.
+    ''' User control for showing mediation effect assignments.
     ''' </summary>
     Public Class ucMediationAssignments
         Implements IUIElement
@@ -81,6 +81,7 @@ Namespace Controls
                 Me.m_data = Me.ExtractData(Me.m_medfn)
             End If
             Me.LoadGraphData(Me.m_data)
+            Me.UpdateControls()
 
         End Sub
 
@@ -163,6 +164,7 @@ Namespace Controls
                 If Me.m_zgh IsNot Nothing Then
                     Me.m_zgh.GetPane(1).XAxis.Title.Text = Me.m_strXAxisLabel
                 End If
+                Me.UpdateControls()
             End Set
         End Property
 
@@ -183,6 +185,7 @@ Namespace Controls
                 If Me.m_zgh IsNot Nothing Then
                     Me.m_zgh.GetPane(1).YAxis.Title.Text = Me.m_strYAxisLabel
                 End If
+                Me.UpdateControls()
             End Set
         End Property
 
@@ -220,11 +223,10 @@ Namespace Controls
             Set(ByVal value As String)
                 Me.m_strTitle = value
                 If Me.m_zgh IsNot Nothing Then
-                    With Me.m_zgh.GetPane(1)
-                        .Title.Text = Me.m_strTitle
-                        .Title.IsVisible = Not String.IsNullOrEmpty(Me.m_strTitle)
-                    End With
+                    Me.m_zgh.GetPane(1).Title.Text = Me.m_strTitle
+                    Me.m_zgh.GetPane(1).Title.IsVisible = Not String.IsNullOrEmpty(Me.m_strTitle)
                     Me.m_zedgraph.Invalidate()
+                    Me.UpdateControls()
                 End If
             End Set
         End Property
@@ -432,6 +434,17 @@ Namespace Controls
             pane.Legend.IsVisible = True
             pane.Legend.Position = LegendPos.Right
             pane.Legend.IsHStack = False
+
+        End Sub
+
+        Private Sub UpdateControls()
+
+            ' Only show graph when it has data
+            If (Me.m_zedgraph IsNot Nothing) And (Me.m_zgh IsNot Nothing) Then
+                Dim p As GraphPane = Me.m_zgh.GetPane(1)
+                Dim bHasData As Boolean = (p.CurveList.Count > 0)
+                Me.m_zedgraph.Visible = bHasData
+            End If
 
         End Sub
 

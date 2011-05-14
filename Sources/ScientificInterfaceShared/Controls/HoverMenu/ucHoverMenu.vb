@@ -278,6 +278,7 @@ Namespace Controls
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Private Function IsMouseOverTarget() As Boolean
+            'If Not Me.m_ctrlTarget.Focused Then Return False
             Dim pt As Point = Me.m_ctrlTarget.PointToClient(MousePosition)
             Return Me.m_ctrlTarget.ClientRectangle.Contains(pt)
         End Function
