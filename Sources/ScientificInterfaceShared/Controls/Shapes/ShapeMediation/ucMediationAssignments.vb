@@ -396,7 +396,6 @@ Namespace Controls
 
                     ' Group index and VarName for the landings of this group by this fleet
                     iGroup = medLandings.iGroupIndex
-                    varname = EwEUtils.Core.eVarNameFlags.Landings
 
                     If (medLandings.iFleetIndex > 0) Then
                         Dim FleetSource As cCoreInputOutputBase = Me.m_uic.Core.FleetInputs(medLandings.iFleetIndex)
@@ -407,6 +406,7 @@ Namespace Controls
                         'Ok this is a little strange
                         'set the source of the values to the FleetInput 
                         valSource = FleetSource
+                        varname = EwEUtils.Core.eVarNameFlags.Landings
 
                     Else
                         strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
