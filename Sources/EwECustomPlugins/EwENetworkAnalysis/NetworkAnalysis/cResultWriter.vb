@@ -6,6 +6,7 @@ Imports System.Text
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
+Imports EwECore.DataSources
 
 #End Region ' Imports
 
@@ -22,20 +23,16 @@ Public Class cResultWriter
         Me.m_manager = manager
     End Sub
 
-    Public Function WriteCurrentResults(ByVal strPath As String, _
-                                        ByVal bAnnualAverage As Boolean) As Boolean
+    Public Function WriteCurrentResults(ByVal strPath As String) As Boolean
         If Me.m_manager.EcosimPPROn Then
-            Return Me.WriteIndicesWithPPR(strPath, bAnnualAverage)
+            Return Me.WriteIndicesWithPPR(strPath)
         Else
-            Return Me.WriteIndicesWithoutPPR(strPath, bAnnualAverage)
+            Return Me.WriteIndicesWithoutPPR(strPath)
         End If
     End Function
 
-    Public Function WriteIndicesWithPPR(ByVal strPath As String, _
-                                        ByVal bAnnualAverage As Boolean) As Boolean
+    Public Function WriteIndicesWithPPR(ByVal strPath As String) As Boolean
 
-        Dim strFileName As String = ""
-        Dim strData As String = ""
         Dim bSucces As Boolean = False
 
         bSucces = Me.NetworkManager.RunRequiredPrimaryProd()
@@ -47,23 +44,15 @@ Public Class cResultWriter
         Me.NetworkManager.UseEcosimNetwork = False
 
         If (bSucces) Then
-            strData = Me.GetIndicesWithPPRData(bAnnualAverage)
-            If bAnnualAverage Then
-                strFileName = "EwE6-NA_annual_IndicesPPR.csv"
-            Else
-                strFileName = "EwE6-NA_monthly_IndicesPPR.csv"
-            End If
-            Return Me.WriteData(Path.Combine(strPath, strFileName), strData)
+            bSucces = Me.WriteData(Me.GetResultFileName(strPath, True, True), Me.GetIndicesWithoutPPRData(True)) Or _
+                      Me.WriteData(Me.GetResultFileName(strPath, True, False), Me.GetIndicesWithoutPPRData(False))
         End If
-        Return False
+        Return bSucces
 
     End Function
 
-    Public Function WriteIndicesWithoutPPR(ByVal strPath As String, _
-                                        ByVal bAnnualAverage As Boolean) As Boolean
+    Public Function WriteIndicesWithoutPPR(ByVal strPath As String) As Boolean
 
-        Dim strFileName As String = ""
-        Dim strData As String = ""
         Dim bSucces As Boolean = False
 
         bSucces = Me.NetworkManager.RunMainNetwork()
@@ -77,16 +66,18 @@ Public Class cResultWriter
         Me.NetworkManager.UseEcosimNetwork = False
 
         If (bSucces) Then
-            strData = Me.GetIndicesWithoutPPRData(bAnnualAverage)
-            If bAnnualAverage Then
-                strFileName = "EwE6-NA_annual_IndicesWithoutPPR.csv"
-            Else
-                strFileName = "EwE6-NA_monthly_IndicesWithoutPPR.csv"
-            End If
-            Return Me.WriteData(Path.Combine(strPath, strFileName), strData)
+            bSucces = Me.WriteData(Me.GetResultFileName(strPath, False, True), Me.GetIndicesWithoutPPRData(True)) Or _
+                      Me.WriteData(Me.GetResultFileName(strPath, False, False), Me.GetIndicesWithoutPPRData(False))
         End If
-        Return False
+        Return bSucces
 
+    End Function
+
+    Private Function GetResultFileName(ByVal strPath As String, ByVal bWithPPR As Boolean, ByVal bAnnual As Boolean) As String
+        Dim ds As IEwEDataSource = Me.m_manager.Core.DataSource
+        Return Path.Combine(strPath, cFileUtils.ToOutputFilename(ds.FileName, "NA", _
+                                                                 CStr(IIf(bAnnual, "annual", "monthly")), _
+                                                                 CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR"))))
     End Function
 
     Friend ReadOnly Property NetworkManager() As cNetworkManager

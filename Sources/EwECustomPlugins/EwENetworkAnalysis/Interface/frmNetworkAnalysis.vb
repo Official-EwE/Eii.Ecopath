@@ -9,6 +9,7 @@ Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore
 
 #End Region ' Imports
 
@@ -152,32 +153,17 @@ Public Class frmNetworkAnalysis
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdDOC As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
             Dim strFileName As String = ""
-            Dim bAnnual As Boolean = False
 
             If (Me.m_contentmanager Is Nothing) Then Return
             If (cmdDOC Is Nothing) Then Return
 
-            If (Me.m_contentmanager.IsDataOverTime) Then
-                Select Case MsgBox(My.Resources.PROMPT_SAVE_ANNUAL_AVERAGES, MsgBoxStyle.YesNoCancel Or MsgBoxStyle.Question)
-
-                    Case MsgBoxResult.Yes
-                        bAnnual = True
-
-                    Case MsgBoxResult.No
-                        bAnnual = False
-
-                    Case Else
-                        Return
-
-                End Select
-            End If
-
-            cmdDOC.Invoke("", My.Resources.PROMPT_SAVE_DESTINATION)
+            cmdDOC.Invoke(My.Resources.PROMPT_SAVE_DESTINATION)
 
             If (cmdDOC.Result = DialogResult.OK) Then
                 Try
                     Dim writer As New cResultWriter(Me.m_networkmanager)
-                    writer.WriteCurrentResults(cmdDOC.Directory, bAnnual)
+                    Dim strData As String = ""
+                    writer.WriteCurrentResults(cmdDOC.Directory)
                 Catch ex As Exception
                     ' Woops
                 End Try
@@ -344,6 +330,14 @@ Public Class frmNetworkAnalysis
 
         Me.tsmiRun.Enabled = (Me.m_networkmanager.IsMainNetworkRun = False) Or _
                              ((Me.m_networkmanager.IsEcosimNetworkRun = False) And (Me.m_contentmanager.UsesEcosim = True))
+
+        Dim bClosePage As Boolean = False
+        Dim csm As cCoreStateMonitor = Me.m_uic.Core.StateMonitor
+
+        If (Me.m_contentmanager.UsesEcosim And Not csm.HasEcosimLoaded) Then bClosePage = True
+        If (Not csm.HasEcopathLoaded) Then bClosePage = True
+
+        If bClosePage Then Me.m_pageCurrent = Nothing
 
         ' Fixes bug 937
         Me.ShowPage(Me.m_pageCurrent)

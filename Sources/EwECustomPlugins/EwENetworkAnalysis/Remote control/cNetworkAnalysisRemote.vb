@@ -61,9 +61,9 @@ Public Class cNetworkAnalysisRemote
         Select Case cmdX.Command.ToLower
             Case "na_save_indices"
                 Try
-                    Me.SaveIndices(cmdX.Parameter("path"), _
-                                   Convert.ToBoolean(cmdX.Parameter("annual")), _
-                                   Convert.ToBoolean(cmdX.Parameter("ppr")))
+                    If Not Me.SaveIndices(cmdX.Parameter("path"), Convert.ToBoolean(cmdX.Parameter("ppr"))) Then
+                        'cmd.Status = "Failed"
+                    End If
                 Catch ex As Exception
 
                 End Try
@@ -71,22 +71,16 @@ Public Class cNetworkAnalysisRemote
 
     End Sub
 
-    Private Sub SaveIndices(ByVal strPath As String, _
-                            ByVal bAnnualAverages As Boolean, _
-                            ByVal bWithPPR As Boolean)
+    Private Function SaveIndices(ByVal strPath As String, ByVal bWithPPR As Boolean) As Boolean
 
         Dim writer As New cResultWriter(Me.m_manager)
-
-        ' ToDo: provide succes info to command
-
-        ' Fix path
-        If String.IsNullOrEmpty(strPath) Then strPath = ".\"
+        If String.IsNullOrEmpty(strPath) Then strPath = Me.m_uic.Core.OutputPath
 
         If bWithPPR Then
-            writer.WriteIndicesWithPPR(strPath, bAnnualAverages)
+            Return writer.WriteIndicesWithPPR(strPath)
         Else
-            writer.WriteIndicesWithoutPPR(strPath, bAnnualAverages)
+            Return writer.WriteIndicesWithoutPPR(strPath)
         End If
+    End Function
 
-    End Sub
 End Class
