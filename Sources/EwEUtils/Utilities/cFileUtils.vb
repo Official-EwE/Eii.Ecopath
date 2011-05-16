@@ -263,8 +263,10 @@ Namespace Utilities
             Dim separator As String = "-"
             Dim sb As New StringBuilder()
 
+            sb.Append("EwE6")
+
             ' Add entire component name
-            'sb.Append(separator)
+            sb.Append(separator)
             sb.Append(ComponentName)
 
             ' Add entire filter, if provided
