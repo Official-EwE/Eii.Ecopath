@@ -180,7 +180,8 @@ Namespace Controls
                         If TypeOf src Is cFleetInput Then
                             ' Add an entry for each landing of this fleet
                             For Each nd As TreeNode In item.Nodes
-                                Me.Add(DirectCast(nd, cCoreInputOutputControlItem).Source, src)
+                                Dim group As cCoreInputOutputBase = DirectCast(nd, cCoreInputOutputControlItem).Source
+                                Me.Add(group, src, DirectCast(src, cFleetInput).OffVesselPrice(group.Index))
                             Next
                         Else
                             ' Add as group, fleet
@@ -188,7 +189,7 @@ Namespace Controls
                             If (itemParent IsNot Nothing) Then
                                 srcSec = itemParent.Source
                             End If
-                            Me.Add(src, srcSec)
+                            Me.Add(src, srcSec, DirectCast(srcSec, cFleetInput).OffVesselPrice(src.Index))
                         End If
                     End If
 
