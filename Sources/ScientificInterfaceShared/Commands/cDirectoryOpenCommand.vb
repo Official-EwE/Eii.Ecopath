@@ -41,6 +41,11 @@ Namespace Commands
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Invoke the 'Directory open' command with default parameters.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Public Overrides Sub Invoke()
             Me.m_iResult = DialogResult.Cancel
             MyBase.Invoke()
@@ -48,15 +53,27 @@ Namespace Commands
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Invoke the 'Directory open' command with default path and a custom
+        ''' description.
         ''' </summary>
-        ''' <param name="strDirectory"></param>
+        ''' <param name="strDescription">The description to show in the dialog.</param>
+        ''' -----------------------------------------------------------------------
+        Public Overloads Sub Invoke(ByVal strDescription As String)
+            Me.m_strDescription = strDescription
+            Me.Invoke()
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Invoke the 'Directory open' command.
+        ''' </summary>
+        ''' <param name="strDirectory">Initial directory to open the dialog at.</param>
+        ''' <param name="strDescription">The description to show in the dialog.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strDirectory As String, ByVal strDescription As String)
-
             Me.m_strDescription = strDescription
             Me.m_strDirectory = strDirectory
             Me.Invoke()
-
         End Sub
 
         ''' -------------------------------------------------------------------
