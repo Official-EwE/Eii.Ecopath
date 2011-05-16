@@ -193,11 +193,6 @@ Public Class AppLauncher
         Debug.Assert(AppLauncher.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
         AppLauncher.__inst__ = Me
 
-#If Not Debug Then
-        ' Remove estimate V's from release version while under development
-        Me.m_tsmiEcosimEstimateVs.Visible = False
-#End If
-
     End Sub
 
 #End Region ' Constructors
