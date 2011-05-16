@@ -3614,7 +3614,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Realtive value.
+        '''  Looks up a localized string similar to Relative value.
         '''</summary>
         Public ReadOnly Property HEADER_RELATIVE_VALUE() As String
             Get

@@ -53,6 +53,7 @@ Namespace Ecosim
             Me.m_tsmiCatchRel = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsmiValueAbs = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiValueRel = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsddGraphOptions = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_tsmiAutoscale = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiCustomScaleLabel = New System.Windows.Forms.ToolStripMenuItem
@@ -75,7 +76,6 @@ Namespace Ecosim
             Me.m_lbRuns = New System.Windows.Forms.ListBox
             Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
-            Me.m_tsmiValueRel = New System.Windows.Forms.ToolStripMenuItem
             ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
             ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
             ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
@@ -277,6 +277,11 @@ Namespace Ecosim
             Me.m_tsmiValueAbs.Name = "m_tsmiValueAbs"
             resources.ApplyResources(Me.m_tsmiValueAbs, "m_tsmiValueAbs")
             '
+            'm_tsmiValueRel
+            '
+            Me.m_tsmiValueRel.Name = "m_tsmiValueRel"
+            resources.ApplyResources(Me.m_tsmiValueRel, "m_tsmiValueRel")
+            '
             'm_tsddGraphOptions
             '
             Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, ToolStripSeparator4, Me.m_tsmiShowAnnualOutput, Me.m_tsmShowMultipleRuns, Me.m_tsmiShowLegend})
@@ -442,11 +447,6 @@ Namespace Ecosim
             Me.m_lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
-            '
-            'm_tsmiValueRel
-            '
-            Me.m_tsmiValueRel.Name = "m_tsmiValueRel"
-            resources.ApplyResources(Me.m_tsmiValueRel, "m_tsmiValueRel")
             '
             'RunEcosim
             '

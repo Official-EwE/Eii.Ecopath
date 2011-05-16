@@ -1036,7 +1036,6 @@ Namespace Ecosim
 
 #End Region ' Internal implementation
 
-     
     End Class
 
 End Namespace
