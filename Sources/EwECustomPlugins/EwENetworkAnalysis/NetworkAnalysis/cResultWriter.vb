@@ -74,10 +74,13 @@ Public Class cResultWriter
     End Function
 
     Private Function GetResultFileName(ByVal strPath As String, ByVal bWithPPR As Boolean, ByVal bAnnual As Boolean) As String
-        Dim ds As IEwEDataSource = Me.m_manager.Core.DataSource
+        Dim core As cCore = Me.m_manager.Core
+        Dim ds As IEwEDataSource = core.DataSource
+        Dim scen As cEcoSimScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
+
         Return Path.Combine(strPath, cFileUtils.ToOutputFilename(ds.FileName, "NA", _
-                                                                 CStr(IIf(bAnnual, "annual", "monthly")), _
-                                                                 CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR"))))
+                                                                 CStr(IIf(bAnnual, "annual", "monthly")) & "_" & CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR")), _
+                                                                 scen.Name))
     End Function
 
     Friend ReadOnly Property NetworkManager() As cNetworkManager
