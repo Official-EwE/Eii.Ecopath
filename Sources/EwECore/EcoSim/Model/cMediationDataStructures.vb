@@ -95,7 +95,7 @@ Public Class cMediationDataStructures
     End Sub
 
     ''' <summary>
-    ''' Set Mediation function multiplier for the current Biomass and/or Effort
+    ''' Populate the meditation multiplier MedVal() passed in as an argument using the current Biomass and/or Effort
     ''' </summary>
     ''' <param name="Biom">Biomass at the current time step</param>
     ''' <param name="FishingEffort">Fishing Effort by fleet, time</param>
