@@ -423,10 +423,14 @@ Namespace Controls
 
                 clr = sg.GroupColor(Me.m_uic.Core, medGrp.iGroupIndex)
 
-                Dim sliceVal As Double = CDbl(valSource.GetVariable(varname, iGroup)) * medGrp.Weight
-                Dim slice As PieItem = pane.AddPieSlice(sliceVal, clr, 0.05, strLabel)
-                slice.ValueDecimalDigits = sg.NumDigits
-                slice.LabelType = PieLabelType.Value
+                If varname <> EwEUtils.Core.eVarNameFlags.NotSet Then
+
+                    Dim sliceVal As Double = CDbl(valSource.GetVariable(varname, iGroup)) * medGrp.Weight
+                    Dim slice As PieItem = pane.AddPieSlice(sliceVal, clr, 0.05, strLabel)
+                    slice.ValueDecimalDigits = sg.NumDigits
+                    slice.LabelType = PieLabelType.Value
+
+                End If
 
             Next
 
