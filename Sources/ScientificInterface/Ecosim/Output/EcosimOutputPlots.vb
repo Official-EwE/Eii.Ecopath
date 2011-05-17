@@ -38,7 +38,7 @@ Namespace Ecosim
             Mortality
             FeedingTime
             Prey
-            Yield
+            [Catch]
             Value
             AvgWeightOrProdCons
             FleetFishingMortality
@@ -304,12 +304,12 @@ Namespace Ecosim
             ' Do not render when sim has not ran
             If Not Me.UIContext.Core.StateMonitor.HasEcosimRan Then Return
 
-            Dim applYieldFleet(Me.UIContext.Core.nFleets) As PointPairList
+            Dim applCatchFleet(Me.UIContext.Core.nFleets) As PointPairList
             Dim applFishMortFleet(Me.UIContext.Core.nFleets) As PointPairList
             Dim applValueFleet(Me.UIContext.Core.nFleets) As PointPairList
 
             For i As Integer = 0 To Me.UIContext.Core.nFleets
-                applYieldFleet(i) = New PointPairList()
+                applCatchFleet(i) = New PointPairList()
                 applFishMortFleet(i) = New PointPairList()
                 applValueFleet(i) = New PointPairList()
             Next
@@ -330,12 +330,12 @@ Namespace Ecosim
                 If groupSimOut.isCatchAggregated() Then
                     ' Report F from fleet 1 for all fleets only
                     applFishMortFleet(0).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(0, i)))
-                    applYieldFleet(0).Add(dXValue, CSng(groupSimOut.CatchByFleet(0, i)))
+                    applCatchFleet(0).Add(dXValue, CSng(groupSimOut.CatchByFleet(0, i)))
                     applValueFleet(0).Add(dXValue, CSng(groupSimOut.ValueByFleet(0, i)))
                 Else
                     For iFleet As Integer = 1 To Me.UIContext.Core.nFleets
                         applFishMortFleet(iFleet).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(iFleet, i)))
-                        applYieldFleet(iFleet).Add(dXValue, CSng(groupSimOut.CatchByFleet(iFleet, i)))
+                        applCatchFleet(iFleet).Add(dXValue, CSng(groupSimOut.CatchByFleet(iFleet, i)))
                         applValueFleet(iFleet).Add(dXValue, CSng(groupSimOut.ValueByFleet(iFleet, i)))
                     Next
                 End If
@@ -371,8 +371,8 @@ Namespace Ecosim
                     Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Me.UIContext.Core, i)
 
                     If fleet.Landings(iGroup) > 0 Then
-                        Me.AddCurveToGraphPane(eSimPlot.Yield, _
-                                               Me.m_zgh.CreateLineItem(fleet, applYieldFleet(i)), _
+                        Me.AddCurveToGraphPane(eSimPlot.[Catch], _
+                                               Me.m_zgh.CreateLineItem(fleet, applCatchFleet(i)), _
                                                True)
                         Me.AddCurveToGraphPane(eSimPlot.Value, _
                                                Me.m_zgh.CreateLineItem(fleet, applValueFleet(i)), _
@@ -389,8 +389,8 @@ Namespace Ecosim
                 'Agggregate Catch
                 'All the catch data is in the zero fleet index so only add one curve for the zero fleet
                 'HACK there is still issues with this ShowGroup can not find the name of the zero index fleet
-                Me.AddCurveToGraphPane(eSimPlot.Yield, _
-                           Me.m_zgh.CreateLineItem("All Fleets", eLineType.ModelData, Color.Gray, applYieldFleet(0)), True)
+                Me.AddCurveToGraphPane(eSimPlot.[Catch], _
+                           Me.m_zgh.CreateLineItem("All Fleets", eLineType.ModelData, Color.Gray, applCatchFleet(0)), True)
                 Me.AddCurveToGraphPane(eSimPlot.Value, _
                                        Me.m_zgh.CreateLineItem("All Fleets", eLineType.ModelData, Color.Gray, applValueFleet(0)), True)
                 Me.AddCurveToGraphPane(eSimPlot.FleetFishingMortality, _
@@ -400,10 +400,10 @@ Namespace Ecosim
             End If 'If Not groupSimOut.isCatchAggregated() Then
 
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
-                Me.AddCurveToGraphPane(eSimPlot.Yield, li, True)
+                Me.AddCurveToGraphPane(eSimPlot.[Catch], li, True)
             Next li
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroup, Color.Blue)
-                Me.AddCurveToGraphPane(eSimPlot.Yield, li)
+                Me.AddCurveToGraphPane(eSimPlot.[Catch], li)
             Next li
 
             If groupSimOut.isMultiStanza() Then
@@ -691,7 +691,7 @@ Namespace Ecosim
                 Case eSimPlot.PredationMortality : Return SharedResources.HEADER_PREDMORT
                 Case eSimPlot.Prey : Return SharedResources.HEADER_PREY_PERCENTAGE
                 Case eSimPlot.Value : Return SharedResources.HEADER_VALUE
-                Case eSimPlot.Yield : Return SharedResources.HEADER_YIELD
+                Case eSimPlot.[Catch] : Return SharedResources.HEADER_CATCH
             End Select
             Return ""
         End Function

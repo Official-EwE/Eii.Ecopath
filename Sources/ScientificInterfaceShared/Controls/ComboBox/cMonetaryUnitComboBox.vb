@@ -6,7 +6,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
 Imports System.Globalization
 
-#End Region
+#End Region ' Imports
 
 Namespace Controls
 
@@ -74,14 +74,19 @@ Namespace Controls
 
         Private Sub Populate()
 
+            Dim fmt As New cMonetaryTypeFormatter()
+
             If Me.m_uic Is Nothing Then Return
 
             Me.SuspendLayout()
 
             For Each ci As CultureInfo In CultureInfo.GetCultures(CultureTypes.SpecificCultures)
                 Dim ri As New RegionInfo(ci.LCID)
-                If Me.GetUnitIndex(ri.ISOCurrencySymbol) = -1 Then
-                    Me.Items.Add(New MonetaryUnitItem(ri.ISOCurrencySymbol, ri.CurrencyEnglishName))
+                Dim strAbbr As String = fmt.GetDescriptor(ri, eDescriptorTypes.Abbreviation)
+                Dim strName As String = fmt.GetDescriptor(ri, eDescriptorTypes.Name)
+
+                If Me.GetUnitIndex(strAbbr) = -1 Then
+                    Me.Items.Add(New MonetaryUnitItem(strAbbr, strName))
                 End If
             Next
 

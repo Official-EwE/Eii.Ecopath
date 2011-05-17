@@ -1464,8 +1464,8 @@
   <data name="HEADER_YES" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="HEADER_YIELD" xml:space="preserve">
-    <value>Yield</value>
+  <data name="HEADER_CATCH" xml:space="preserve">
+    <value>Catch</value>
   </data>
   <data name="HEADER_COUNT" xml:space="preserve">
     <value>Count</value>

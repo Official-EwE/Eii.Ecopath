@@ -10,6 +10,9 @@ Imports ScientificInterface.Other
 
 Namespace Ecosim
 
+    ''' <summary>
+    ''' Main form for the 'Apply Price Elasticity' interface.
+    ''' </summary>
     <CLSCompliant(False)> _
     Public Class frmApplyPriceElasticy
         Inherits frmApplyShapeBase
@@ -18,6 +21,7 @@ Namespace Ecosim
             MyBase.New()
             Me.InitializeComponent()
         End Sub
+
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then

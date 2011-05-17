@@ -385,6 +385,7 @@
     <Compile Include="Style\Type formatters\cCoreInterfaceFormatter.vb" />
     <Compile Include="Style\Type formatters\cEcologyTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cIUCNConservationTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cMonetaryTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cOccurrenceTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cClimateTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cFFApplicationTypeFormatter.vb" />

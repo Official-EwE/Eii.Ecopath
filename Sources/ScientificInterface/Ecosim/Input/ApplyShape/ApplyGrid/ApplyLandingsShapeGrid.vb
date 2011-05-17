@@ -4,6 +4,7 @@ Option Explicit On
 Option Strict On
 
 Imports System.Text
+Imports System.Globalization
 Imports EwECore
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -60,8 +61,7 @@ Namespace Ecosim
         End Sub
 
         Public Overrides Sub SetAllPairs()
-            'Dim dlg As New dlgApplyShape(Me.UIContext, Me.m_applyShapeMode, Me.m_applyTargetMode)
-            'dlg.ShowDialog()
+            ' NOP
         End Sub
 
 #End Region ' Public properties
@@ -107,6 +107,9 @@ Namespace Ecosim
             Dim ff As cForcingFunction = Nothing
             Dim interaction As cMediatedInteraction = Nothing
             Dim cellBlocked As EwECell = Nothing
+            Dim fmt As New cMonetaryTypeFormatter()
+            Dim ri As New RegionInfo(CultureInfo.CurrentUICulture.LCID)
+            Dim strSymbol As String = fmt.GetDescriptor(ri, eDescriptorTypes.Symbol)
 
             If (Me.m_InteractionManager Is Nothing) Then Return
 
@@ -125,7 +128,8 @@ Namespace Ecosim
                                 interaction.getShape(i, shape, aplType)
                                 If shape IsNot Nothing Then
                                     If sb.Length > 0 Then sb.Append(" ")
-                                    sb.Append(String.Format(My.Resources.ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY, shape.Index))
+                                    'sb.Append(String.Format(My.Resources.ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY, shape.Index))
+                                    sb.Append(String.Format(strSymbol, shape.Index))
                                 End If
                             Next
                         Else

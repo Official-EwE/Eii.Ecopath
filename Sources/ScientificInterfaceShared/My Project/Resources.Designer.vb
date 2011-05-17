@@ -1625,6 +1625,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Catch.
+        '''</summary>
+        Public ReadOnly Property HEADER_CATCH() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATCH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Cumulative catch.
         '''</summary>
         Public ReadOnly Property HEADER_CATCH_CUMULATIVE() As String
@@ -4456,15 +4465,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_YES() As String
             Get
                 Return ResourceManager.GetString("HEADER_YES", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Yield.
-        '''</summary>
-        Public ReadOnly Property HEADER_YIELD() As String
-            Get
-                Return ResourceManager.GetString("HEADER_YIELD", resourceCulture)
             End Get
         End Property
         
