@@ -249,6 +249,9 @@ Public Class cEcospaceDataStructures
 
     Public ResultsSummaryByFleet(,) As Single 'vars, fleets
 
+    ''' <summary> Sum of landings across all cells by Group/Fleet for the current timestep </summary>
+    Public Landings(,) As Single
+
     ''' <summary>Number of variables in ResultsXXX arrays </summary>
     Public Const N_RESULTS_GROUPS As Integer = 2
     Public Const N_RESULTS_FLEETS As Integer = 3

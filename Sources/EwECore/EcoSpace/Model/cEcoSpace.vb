@@ -896,6 +896,8 @@ Public Class cEcoSpace
 
                 summarizeTimeStepData(itt, m_Data.MonthNow)
 
+                Me.calcValue(itt, m_Data.YearNow)
+
                 If m_search.bInSearch And m_Data.YearNow = m_search.BaseYear And m_Data.MonthNow = 12 Then
                     m_search.calcBaseYearCost(m_Data.YearNow, m_Data.nWaterCells)
                 End If
@@ -903,7 +905,7 @@ Public Class cEcoSpace
                 Dim slvET3 As Single = Microsoft.VisualBasic.Timer
 
                 'post notification that a time step has been completed
-                onTimeStep(itt)
+                fireOnTimeStep(itt)
                 timeStepTimer = timeStepTimer + (Microsoft.VisualBasic.Timer - slvET3)
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_Data, itt)
@@ -974,8 +976,9 @@ Public Class cEcoSpace
         Try
             Dim nYears As Integer = CInt(m_Data.TotalTime)
 
-            'clear out catch data for each time step
+            'clear out catch and landings data for each time step
             Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
+            Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
 
             If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceBeginTimeStep(m_Data, itt)
 
@@ -1927,6 +1930,8 @@ Public Class cEcoSpace
             ReDim PconSplit(m_Data.Nvarsplit)
             ReDim Tstanza(m_Data.Nvarsplit)
             ReDim NstanzaBase(m_Data.Nvarsplit)
+
+            ReDim Me.m_Data.Landings(m_Data.NGroups, m_Data.nFleets)
 
             nEcospaceTimeSteps = CInt(m_Data.TotalTime * (1.0 / m_Data.TimeStep))
             success = success And m_Data.redimTimeStepResults(nEcospaceTimeSteps)
@@ -3261,9 +3266,9 @@ exitline:
     ''' <remarks></remarks>
     Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
         Dim sum As Single, iFlt As Integer, igrp As Integer
-        Dim Landings(,) As Single
+        'Dim Landings(,) As Single
 
-        ReDim Landings(Me.m_EPdata.NumGroups, Me.m_EPdata.NumFleet)
+        'ReDim Landings(Me.m_EPdata.NumGroups, Me.m_EPdata.NumFleet)
 
         'Only one thread can use this code at a time
         'block all others
@@ -3315,43 +3320,12 @@ exitline:
                                 m_Data.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += sum
                             End If
 
-                            Landings(igrp, iFlt) += sum * Me.m_EPdata.PropLanded(iFlt, igrp)
+                            m_Data.Landings(igrp, iFlt) += sum * Me.m_EPdata.PropLanded(iFlt, igrp)
                         End If
                     Next iFlt
                 End If 'If m_EPdata.fCatch(igrp) > 0 Then
             Next igrp
 
-            'set the price elasticity values for the landings in this cell
-            Me.m_SimData.PriceMedData.SetPriceMedFunctions(Landings)
-
-            'Value of landings
-            Dim ValLandings As Single
-            For igrp = 1 To Me.m_EPdata.NumGroups
-                For iFlt = 0 To Me.m_EPdata.NumFleet
-                    'Value = Landings * [market value] * [price elasticity multiplier]
-                    ValLandings = Landings(igrp, iFlt) * Me.m_EPdata.Market(iFlt, igrp) * Me.m_SimData.PriceMedData.getPESMult(igrp, iFlt)
-
-                    'Add to group and to gear sums
-                    m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iFlt, igrp, iCumTime) += ValLandings
-                    'sum of all fleets into zero index
-                    m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, 0, igrp, iCumTime) += ValLandings
-
-                    m_Data.ResultsByFleet(eSpaceResultsFleets.Value, iFlt, iCumTime) += ValLandings
-                    m_Data.ResultsByFleet(eSpaceResultsFleets.Value, 0, iCumTime) += ValLandings
-
-                    'Landings and Value for searches
-                    If Me.m_search.bInSearch Then
-                        'Search CatchYear() is the sum of monthly catch over one year 
-                        'Landings(igrp, iFlt) is the yearly Ecopath landings so convert it to monthly for Search CatchYear()
-                        Me.m_search.CatchYear(iFlt, igrp) += Landings(igrp, iFlt) * Me.m_Data.TimeStep
-                        If iYear > Me.m_search.BaseYear Then
-                            'Search value = Landings * [market value] * [price elasticity multiplier] * [discount factor] * [monthly conversion]
-                            Me.m_search.ValCatch(iFlt, igrp) += ValLandings * Me.m_search.DF * Me.m_Data.TimeStep
-                        End If
-                    End If
-
-                Next
-            Next
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -3392,6 +3366,60 @@ exitline:
         '                            If Shadow(iGrp) > 0 Then Ecoseed.CalcBioValSeed(iRow, iCol, ebb(), iGrp, En1)
         '                    If Catch(iGrp) > 0 Then Ecoseed.CalcGearValSeed iRow, iCol, ebb(), iGrp, En1
         '                        End If
+
+    End Sub
+
+
+    Private Sub calcValue(ByVal iCumTime As Integer, ByVal iYear As Integer)
+        Dim igrp As Integer
+        Dim iflt As Integer
+        Dim AvgLandings(,) As Single
+        ReDim AvgLandings(Me.m_Data.NGroups, Me.m_Data.nFleets)
+
+        'landings is the sum of landing across all cells for a timestep
+        'SetPriceMedFunctions(landings) sets the PES multiplier based on Ecopath landings
+        'which is just one cell so average the landing across cells for SetPriceMedFunctions(landings)
+        For igrp = 1 To Me.m_EPdata.NumGroups
+            For iflt = 0 To Me.m_EPdata.NumFleet
+                AvgLandings(igrp, iflt) = Me.m_Data.Landings(igrp, iflt) / Me.m_Data.nWaterCells
+            Next
+        Next
+
+        'set the price elasticity values for the landings in this cell
+        Me.m_SimData.PriceMedData.SetPriceMedFunctions(AvgLandings)
+
+        'Value of landings
+        Dim ValLandings As Single
+        For igrp = 1 To Me.m_EPdata.NumGroups
+            For iflt = 0 To Me.m_EPdata.NumFleet
+
+                If Me.m_Data.Landings(igrp, iflt) > 0.0 Then
+                    'Value = Landings * [market value] * [price elasticity multiplier]
+                    ValLandings = Me.m_Data.Landings(igrp, iflt) * Me.m_EPdata.Market(iflt, igrp) * Me.m_SimData.PriceMedData.getPESMult(igrp, iflt)
+
+                    'Add to group and to gear sums
+                    m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iflt, igrp, iCumTime) += ValLandings
+                    'sum of all fleets into zero index
+                    m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, 0, igrp, iCumTime) += ValLandings
+
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.Value, iflt, iCumTime) += ValLandings
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.Value, 0, iCumTime) += ValLandings
+
+                    'Landings and Value for searches
+                    If Me.m_search.bInSearch Then
+                        'Search CatchYear() is the sum of monthly catch over one year 
+                        'Landings(igrp, iFlt) is the yearly Ecopath landings so convert it to monthly for Search CatchYear()
+                        Me.m_search.CatchYear(iflt, igrp) += Me.m_Data.Landings(igrp, iflt) * Me.m_Data.TimeStep
+                        If iYear > Me.m_search.BaseYear Then
+                            'Search value = Landings * [market value] * [price elasticity multiplier] * [discount factor] * [monthly conversion]
+                            Me.m_search.ValCatch(iflt, igrp) += ValLandings * Me.m_search.DF * Me.m_Data.TimeStep
+                        End If
+                    End If
+
+                End If '  If Landings(igrp, iFlt) > 0.0 Then
+
+            Next
+        Next
 
     End Sub
 
@@ -3541,7 +3569,7 @@ exitline:
 
     End Sub
 
-    Private Sub onTimeStep(ByVal iTime As Integer)
+    Private Sub fireOnTimeStep(ByVal iTime As Integer)
 
         Try
             If Me.m_TimestepDelegate IsNot Nothing Then
