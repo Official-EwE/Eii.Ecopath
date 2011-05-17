@@ -128,8 +128,7 @@ Namespace Ecosim
                                 interaction.getShape(i, shape, aplType)
                                 If shape IsNot Nothing Then
                                     If sb.Length > 0 Then sb.Append(" ")
-                                    'sb.Append(String.Format(My.Resources.ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY, shape.Index))
-                                    sb.Append(String.Format(strSymbol, shape.Index))
+                                    sb.Append(String.Format("{0}{1}", strSymbol, shape.Index))
                                 End If
                             Next
                         Else
