@@ -66,6 +66,8 @@ Namespace Controls
 
             ''' <summary>A value to sort by.</summary>
             Private m_sValue As Single = 0.0
+            ''' <summary>Optional color for an item.</summary>
+            Private m_color As Color = Color.Transparent
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -75,6 +77,18 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Sub New(ByVal fleet As cFleetInput)
                 MyBase.New(fleet)
+            End Sub
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Creates a new item for usage in the list box.
+            ''' </summary>
+            ''' <param name="strLabel">Name to display for a non-fleet item.</param>
+            ''' <param name="color">Color for this item, if any.</param>
+            ''' ---------------------------------------------------------------
+            Public Sub New(ByVal strLabel As String, ByVal color As Color)
+                MyBase.New(strLabel)
+                Me.m_color = color
             End Sub
 
             ''' ---------------------------------------------------------------
@@ -102,6 +116,20 @@ Namespace Controls
                 End Set
             End Property
 
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Hard-coded color for an item.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property Color() As Color
+                Get
+                    Return Me.m_color
+                End Get
+                Set(ByVal value As Color)
+                    Me.m_color = value
+                End Set
+            End Property
+
         End Class
 
 #End Region ' cFleetItem
@@ -112,6 +140,9 @@ Namespace Controls
         Private m_sortType As eSortType = eSortType.FleetIndexAsc
         Private m_sSortThreshold As Single = cCore.NULL_VALUE
         Private m_fleettrackingtype As eFleetTrackingType = eFleetTrackingType.AllFleets
+        Private m_bShowAllFleetsItem As Boolean = True
+        Private m_strAllFleetsItem As String = My.Resources.GENERIC_VALUE_ALL
+        Private m_clrAllFleetsItem As Color = Color.Black
 
 #End Region ' Privates
 
@@ -281,6 +312,62 @@ Namespace Controls
 
 #Region " Behaviour "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the listbox should include an 'all fleets' item.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         Description("State whether an 'all Fleets' item should be included in the list box"), _
+         Category("EwE6"), _
+         DefaultValue(True)> _
+        Public Property ShowAllFleetsItem() As Boolean
+            Get
+                Return Me.m_bShowAllFleetsItem
+            End Get
+            Set(ByVal value As Boolean)
+                If value <> Me.m_bShowAllFleetsItem Then
+                    Me.m_bShowAllFleetsItem = value
+                    Me.Populate()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the text for the 'all Fleets' item.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         Description("The text for the 'all Fleets' item"), _
+         Category("EwE6"), _
+         DefaultValue(True)> _
+      Public Property AllFleetsItemText() As String
+            Get
+                Return Me.m_strAllFleetsItem
+            End Get
+            Set(ByVal value As String)
+                Me.m_strAllFleetsItem = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the colour for the 'all Fleets' item.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(True), _
+         Description("The colour for the 'all Fleets' item"), _
+         Category("EwE6"), _
+         DefaultValue(True)> _
+      Public Property AllFleetsItemColor() As Color
+            Get
+                Return Me.m_clrAllFleetsItem
+            End Get
+            Set(ByVal value As Color)
+                Me.m_clrAllFleetsItem = value
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -501,6 +588,11 @@ Namespace Controls
             ' Clear items
             Me.Items.Clear()
 
+            ' Add 'all Fleets' item
+            If Me.m_bShowAllFleetsItem Then
+                Me.Items.Add(New cFleetItem(Me.m_strAllFleetsItem, Me.m_clrAllFleetsItem))
+            End If
+
             ' (Re)populate listbox
             Select Case Me.m_fleettrackingtype
 
@@ -564,19 +656,21 @@ Namespace Controls
             If Me.UIContext Is Nothing Then Return
 
             Dim item As Object = Me.Items(e.Index)
-            Dim gi As cFleetListBox.cFleetItem = Nothing
+            Dim li As cFleetListBox.cFleetItem = Nothing
             Dim clrFleet As Color = Color.Transparent
             Dim clrText As Color = e.ForeColor
 
             ' Attempt to get item colour if it is a cFleetItem
             If (TypeOf item Is cFleetListBox.cFleetItem) Then
                 ' Get item fleet
-                gi = DirectCast(item, cFleetListBox.cFleetItem)
+                li = DirectCast(item, cFleetListBox.cFleetItem)
                 ' Has a fleet attached?
-                If (gi.Source IsNot Nothing) Then
-                    ' #Yes: use dimmed colours
-                    clrFleet = Me.m_uic.StyleGuide.FleetColor(Me.m_uic.Core, gi.Source.Index)
-                    clrText = e.ForeColor
+                If (li.Source IsNot Nothing) Then
+                    ' #Yes: use styled colour
+                    clrFleet = Me.m_uic.StyleGuide.FleetColor(Me.m_uic.Core, li.Source.Index)
+                Else
+                    ' #NO: use item colour
+                    clrFleet = li.Color
                 End If
             End If
 
