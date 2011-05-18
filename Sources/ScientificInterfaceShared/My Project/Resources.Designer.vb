@@ -4937,24 +4937,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        '''<summary>
-        '''  Looks up a localized string similar to Change F.
-        '''</summary>
-        Public ReadOnly Property RUN_ECOSIM_F_VALUE_CAPTION() As String
-            Get
-                Return ResourceManager.GetString("RUN_ECOSIM_F_VALUE_CAPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Enter F~value (or enter a string of comma separated F&apos;s for all fleets).
-        '''</summary>
-        Public ReadOnly Property RUN_ECOSIM_F_VALUE_MSG() As String
-            Get
-                Return ResourceManager.GetString("RUN_ECOSIM_F_VALUE_MSG", resourceCulture)
-            End Get
-        End Property
-        
         Public ReadOnly Property SaveAllHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("SaveAllHS", resourceCulture)
@@ -4973,6 +4955,24 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("SaveModified", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Set to value.
+        '''</summary>
+        Public ReadOnly Property SHAPE_HEADER_SET_TO_VALUE() As String
+            Get
+                Return ResourceManager.GetString("SHAPE_HEADER_SET_TO_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Enter one or more values, separated by commas, to repeat across the shape..
+        '''</summary>
+        Public ReadOnly Property SHAPE_PROMPT_SET_TO_VALUE() As String
+            Get
+                Return ResourceManager.GetString("SHAPE_PROMPT_SET_TO_VALUE", resourceCulture)
             End Get
         End Property
         

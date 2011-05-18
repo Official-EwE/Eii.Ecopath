@@ -159,66 +159,6 @@ Namespace Controls
             End Set
         End Property
 
-#Region " Internals "
-
-        Private Sub ResetShapePrompted(ByVal ashapes As cShapeData())
-
-            Dim strCaption As String = My.Resources.RUN_ECOSIM_F_VALUE_CAPTION
-            Dim strMessage As String = My.Resources.RUN_ECOSIM_F_VALUE_MSG
-            Dim strDefault As String = "1"
-            Dim strValue As String = String.Empty
-
-            ' Sanity check
-            If ashapes Is Nothing Then Return
-
-            strValue = Interaction.InputBox(strMessage, strCaption, strDefault)
-
-            'User clicks OK
-            If strValue.Length <> 0 Then
-
-                Dim astrEntered As String() = strValue.Split(CChar(" "))
-
-                ' One character entered?
-                If astrEntered.Length = 1 Then
-                    ' #Yes: duplicate this char over the entire shape
-                    Try
-                        Me.ResetShapes(ashapes, CSng(Val(astrEntered(0))))
-                    Catch ex As Exception
-                        Me.Core.Messages.SendMessage(New cMessage(String.Format("Failed to set value {0}", astrEntered(0)), _
-                                eMessageType.NotSet, eCoreComponentType.ShapesManager, eMessageImportance.Warning))
-                    End Try
-
-                ElseIf astrEntered.Length > 1 Then
-
-                    For Each shape As cShapeData In ashapes
-
-                        ' Translate individual values
-                        Dim asValues(shape.XMax) As Single
-                        Dim sValue As Single = 0.0!
-
-                        For i As Integer = 0 To shape.XMax
-                            If (i < (astrEntered.Length - 1)) Then
-                                Try
-                                    sValue = CSng(Val(astrEntered(i)))
-                                Catch ex As Exception
-                                    sValue = -1
-                                End Try
-                            End If
-                            asValues(i) = sValue
-                        Next
-
-                        shape.LockUpdates()
-                        shape.ShapeData = asValues
-                        shape.UnlockUpdates()
-
-                    Next
-
-                End If
-            End If
-        End Sub
-
-#End Region ' Internals
-
     End Class
 
 End Namespace

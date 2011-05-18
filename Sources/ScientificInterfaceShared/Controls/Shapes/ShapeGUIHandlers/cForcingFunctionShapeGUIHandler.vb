@@ -244,6 +244,9 @@ Namespace Controls
                 Case eShapeCommandTypes.Seasonal
                     Me.SetSeasonal(ashapes(0), CBool(data))
 
+                Case eShapeCommandTypes.SetValue
+                    Me.ResetShapePrompted(Me.SelectedShapes)
+
                 Case Else
                     'Debug.Assert(False, String.Format("Command {0} not supported", cmd))
             End Select
@@ -468,6 +471,55 @@ Namespace Controls
                 Me.m_bInUpdate = True
                 shape.Update()
                 Me.m_bInUpdate = False
+
+            End If
+
+        End Sub
+
+        Protected Sub ResetShapePrompted(ByVal ashapes As cShapeData())
+
+            Dim strCaption As String = My.Resources.SHAPE_HEADER_SET_TO_VALUE
+            Dim strMessage As String = My.Resources.SHAPE_PROMPT_SET_TO_VALUE
+            Dim strDefault As String = "1"
+            Dim strValue As String = String.Empty
+            Dim sValue As Single = 0.0!
+
+            If (ashapes Is Nothing) Then Return
+            If (ashapes.Length = 0) Then Return
+
+            strValue = Interaction.InputBox(strMessage, strCaption, strDefault)
+
+            'User clicks OK
+            If Not String.IsNullOrEmpty(strValue) Then
+
+                ' Process entered values
+                Dim astrEntered As String() = strValue.Split(CChar(","))
+                Dim lsEntered As New List(Of Single)
+
+                Try
+                    For i As Integer = 0 To astrEntered.Length - 1
+                        If Not String.IsNullOrEmpty(astrEntered(i)) Then
+                            If Single.TryParse(astrEntered(i), sValue) Then
+                                lsEntered.Add(sValue)
+                            End If
+                        End If
+                    Next
+                    If lsEntered.Count = 0 Then lsEntered.Add(-1.0!)
+                Catch ex As Exception
+                    ' Whoah!
+                    Return
+                End Try
+
+                For Each shape As cShapeData In ashapes
+                    ' Repeat values across shape
+                    Dim asValues(shape.XMax) As Single
+                    For iTime As Integer = 0 To shape.XMax
+                        asValues(iTime) = lsEntered(iTime Mod lsEntered.Count)
+                    Next
+                    shape.LockUpdates()
+                    shape.ShapeData = asValues
+                    shape.UnlockUpdates()
+                Next
 
             End If
 

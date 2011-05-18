@@ -152,11 +152,11 @@
   <data name="HEADER_RELATIVEWEIGHT" xml:space="preserve">
     <value>Relative weight</value>
   </data>
-  <data name="RUN_ECOSIM_F_VALUE_CAPTION" xml:space="preserve">
-    <value>Change F</value>
+  <data name="SHAPE_HEADER_SET_TO_VALUE" xml:space="preserve">
+    <value>Set to value</value>
   </data>
-  <data name="RUN_ECOSIM_F_VALUE_MSG" xml:space="preserve">
-    <value>Enter F~value (or enter a string of comma separated F's for all fleets)</value>
+  <data name="SHAPE_PROMPT_SET_TO_VALUE" xml:space="preserve">
+    <value>Enter one or more values, separated by commas, to repeat across the shape.</value>
   </data>
   <data name="UNIT_CURRENCY_JOULES" xml:space="preserve">
     <value>J/m²</value>
