@@ -32,9 +32,8 @@ Namespace Other
 
             If (Me.m_uic Is Nothing) Then Return
 
-            ' Report CORE assembly
             Dim an As AssemblyName = Assembly.GetAssembly(GetType(cCore)).GetName
-            Dim strTitle As String = My.Application.Info.Title
+            Dim strTitle As String = My.Resources.GENERIC_CAPTION
 
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
@@ -43,7 +42,7 @@ Namespace Other
             Me.m_lbCopyright.Text = String.Format(My.Resources.GENERIC_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format technical page
-            Me.m_lblNetVersion.Text = String.Format(m_lblNetVersion.Text, System.Environment.Version.ToString())
+            Me.m_lblNetVersion.Text = String.Format(Me.m_lblNetVersion.Text, System.Environment.Version.ToString())
 
             ' Format team page
             Me.m_rtbTeam.Rtf = My.Resources.team
