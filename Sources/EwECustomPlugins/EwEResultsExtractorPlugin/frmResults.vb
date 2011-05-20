@@ -11,6 +11,9 @@ Imports System.Windows.Forms
 Imports System.Collections
 Imports Microsoft.Office.Interop
 Imports EwECore.MSE
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Commands
 
 #End Region
 
@@ -41,7 +44,7 @@ Public Class frmResults
 
     Private m_PluginInterface As frmResults
     Private m_bInitOK As Boolean
-    Private m_core As cCore
+    Private m_uic As cUIContext = Nothing
     Private APredPreySelection As List(Of cPredatorPreySelection)
     Private Shared m_NumberTicked As Integer
     Private PredatorPreySelection As cSelectionData
@@ -86,6 +89,15 @@ Public Class frmResults
 
 #End Region
 
+#Region "Overrides"
+
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
+        If (Me.m_uic Is Nothing) Then Return
+    End Sub
+
+#End Region
+
     Public Sub StartForm(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form, ByRef log2diff(,) As Single, ByRef TimeSeries As cTimeSeriesDataStructures, ByVal EcosimModel As Ecosim.cEcoSimModel)
 
         Dim GroupNames As String() = Me.GetAllGroupNamesArray()
@@ -102,13 +114,13 @@ Public Class frmResults
         'JS 04 March 2011: Do not show yet; let form populate itself and let the framework do the showing after the plugin is fully prepared
         'Me.Show()
 
-        nDataRows = m_core.nEcosimTimeSteps
+        nDataRows = Core.nEcosimTimeSteps
 
         'Get all group names for predators to create PredatorPreySelection & PreyPredSelection
         'Remember that EcoSimGroupOutputs are indexed from 1!!!
-        Dim str(Me.m_core.nGroups - 1) As String
-        For i As Integer = 1 To Me.m_core.nGroups
-            str(i - 1) = Me.m_core.EcoSimGroupOutputs(i).Name
+        Dim str(Me.Core.nGroups - 1) As String
+        For i As Integer = 1 To Me.Core.nGroups
+            str(i - 1) = Me.Core.EcoSimGroupOutputs(i).Name
         Next
         'Create PredPreySelection object
         PredatorPreySelection = New cSelectionData("Predator to many prey", str)
@@ -119,9 +131,9 @@ Public Class frmResults
 
         'Get all groups names for fleet to create FleetPreySelection
         'Remember that EcosimFleetOutput is referenced from 0!!!
-        Dim str2(Me.m_core.nFleets) As String
-        For i As Integer = 0 To Me.m_core.nFleets
-            str2(i) = Me.m_core.EcosimFleetOutput(i).Name
+        Dim str2(Me.Core.nFleets) As String
+        For i As Integer = 0 To Me.Core.nFleets
+            str2(i) = Me.Core.EcosimFleetOutput(i).Name
         Next
         ' Create FleetPreySelection
         FleetPreySelection = New cSelectionData("Fleet to many prey", str2)
@@ -139,18 +151,12 @@ Public Class frmResults
 
     End Sub
 
-    Public Sub Initialize(ByVal core As Object)
-        Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
+    Public Sub Initialize(ByVal uic As cUIContext)
         m_bInitOK = False
         Try
-            If TypeOf core Is EwECore.cCore Then
-                m_core = DirectCast(core, EwECore.cCore)
-                m_bInitOK = True
-                System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
-            Else
-                System.Console.WriteLine(Me.ToString & ".Initialize() Failed.")
-                Return
-            End If
+            Me.m_uic = uic
+            m_bInitOK = True
+            System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
         Catch ex As Exception
             cLog.Write(ex)
             System.Console.WriteLine(Me.ToString & ".Initialize() Error: " & ex.Message)
@@ -160,6 +166,12 @@ Public Class frmResults
     End Sub
 
 #Region "Properties"
+
+    Public ReadOnly Property Core() As cCore
+        Get
+            Return Me.m_uic.Core
+        End Get
+    End Property
 
     Public WriteOnly Property DataStructure() As cEcosimDatastructures
         Set(ByVal value As cEcosimDatastructures)
@@ -171,15 +183,26 @@ Public Class frmResults
 
 #Region "Event Handlers"
 
-
     Private Sub btnSaveResults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveResults.Click
 
         Dim NumberChecks As Integer = 0
         Dim CurrentPredator As cCreatedObjects
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmd As cCommand = Nothing
+        Dim cmdDir As cDirectoryOpenCommand = Nothing
 
+        If (cmdh Is Nothing) Then Return
+        cmd = cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME)
+        If (cmd Is Nothing) Then Return
+        If (Not TypeOf cmd Is cDirectoryOpenCommand) Then Return
+        cmdDir = DirectCast(cmd, cDirectoryOpenCommand)
 
-        If FolderBrowserDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            DataOutputter.PPath = FolderBrowserDialog1.SelectedPath
+        ' Let EwE framework do the folder browsing
+        cmdDir.Invoke("Select folder for saving results")
+
+        If (cmdDir.Result = Windows.Forms.DialogResult.OK) Or (cmdDir.Result = Windows.Forms.DialogResult.Yes) Then
+
+            DataOutputter.PPath = cmdDir.Directory
 
             'Count how many dataselections have been checked
             If chkBiomass.Checked Then NumberChecks += 1
@@ -366,7 +389,7 @@ Public Class frmResults
         Dim a As frmSelectParentOnly
         If FireChecked = False Then Exit Sub
         If chkBiomass.Checked = True And ParentOnlySelection.CountSelected = 0 Then
-            a = frmSelectParentOnly.GetInstance(ParentOnlySelection, m_core)
+            a = frmSelectParentOnly.GetInstance(ParentOnlySelection, Core)
             'Dim a As New frmSelectParentOnly(ParentOnlySelection, m_core)
             a.Show()
             'When form is closed call this validation sub
@@ -379,7 +402,7 @@ Public Class frmResults
     Private Sub chkBiomassInteg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkBiomassInteg.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkBiomassInteg.Checked = True And ParentOnlySelection.CountSelected = 0 Then
-            Dim a As New frmSelectParentOnly(ParentOnlySelection, m_core)
+            Dim a As New frmSelectParentOnly(ParentOnlySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -391,7 +414,7 @@ Public Class frmResults
     Private Sub chkConsumptionBiomass_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkConsumption.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkConsumption.Checked = True And PredatorPreySelection.CountSelected = 0 Then
-            Dim a As New frmSelectPredatorPrey(PredatorPreySelection, m_core)
+            Dim a As New frmSelectPredatorPrey(PredatorPreySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -403,7 +426,7 @@ Public Class frmResults
     Private Sub chkPredationMortality_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPredationMortality.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkPredationMortality.Checked = True And ParentOnlySelection.CountSelected = 0 Then
-            Dim a As New frmSelectParentOnly(ParentOnlySelection, m_core)
+            Dim a As New frmSelectParentOnly(ParentOnlySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -415,7 +438,7 @@ Public Class frmResults
     Private Sub chkFishingMortality_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFishingMortality.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkFishingMortality.Checked = True And ParentOnlySelection.CountSelected = 0 Then
-            Dim a As New frmSelectParentOnly(ParentOnlySelection, m_core)
+            Dim a As New frmSelectParentOnly(ParentOnlySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -427,7 +450,7 @@ Public Class frmResults
     Private Sub chkPredationPerPredator_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPredationPerPredator.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkPredationPerPredator.Checked = True And PreyPredatorSelection.CountSelected = 0 Then
-            Dim a As New frmSelectPreyPredator(PreyPredatorSelection, m_core)
+            Dim a As New frmSelectPreyPredator(PreyPredatorSelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -439,7 +462,7 @@ Public Class frmResults
     Private Sub chkFishMortFleetToPrey_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFishMortFleetToPrey.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkFishMortFleetToPrey.Checked = True And FleetPreySelection.CountSelected = 0 Then
-            Dim a As New frmSelectFleetPrey(FleetPreySelection, m_core)
+            Dim a As New frmSelectFleetPrey(FleetPreySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -451,7 +474,7 @@ Public Class frmResults
     Private Sub chkEffort_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEffort.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkEffort.Checked = True And FleetOnlySelection.CountSelected = 0 Then
-            Dim a As New frmSelectFleetOnly(FleetOnlySelection, m_core)
+            Dim a As New frmSelectFleetOnly(FleetOnlySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -463,7 +486,7 @@ Public Class frmResults
     Private Sub chkCatch_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCatch.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkCatch.Checked = True And ParentOnlySelection.CountSelected = 0 Then
-            Dim a As New frmSelectParentOnly(ParentOnlySelection, m_core)
+            Dim a As New frmSelectParentOnly(ParentOnlySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -475,7 +498,7 @@ Public Class frmResults
     Private Sub chkDietProportions_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDietProportions.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkDietProportions.Checked = True And PredatorPreySelection.CountSelected = 0 Then
-            Dim a As New frmSelectPredatorPrey(PredatorPreySelection, m_core)
+            Dim a As New frmSelectPredatorPrey(PredatorPreySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -487,7 +510,7 @@ Public Class frmResults
     Private Sub chkCatchFleet_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCatchFleet.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkCatchFleet.Checked = True And FleetPreySelection.CountSelected = 0 Then
-            Dim a As New frmSelectFleetPrey(FleetPreySelection, m_core)
+            Dim a As New frmSelectFleetPrey(FleetPreySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -499,7 +522,7 @@ Public Class frmResults
     Private Sub chkValue_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFleetValue.CheckedChanged
         If FireChecked = False Then Exit Sub
         If chkFleetValue.Checked = True And FleetOnlySelection.CountSelected = 0 Then
-            Dim a As New frmSelectFleetOnly(FleetOnlySelection, m_core)
+            Dim a As New frmSelectFleetOnly(FleetOnlySelection, Core)
             a.Show()
             'When form is closed call this validation sub
             AddHandler a.FormExited, AddressOf ValidateObjectCreated
@@ -509,36 +532,36 @@ Public Class frmResults
     End Sub
 
     Private Sub btnSetPredPrey_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPredPrey.Click
-        Dim a As New frmSelectPredatorPrey(PredatorPreySelection, m_core)
+        Dim a As New frmSelectPredatorPrey(PredatorPreySelection, Core)
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
     End Sub
 
     Private Sub btnSetFeetPrey_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Dim a As New frmSelectFleetPrey(FleetPreySelection, m_core)
+        Dim a As New frmSelectFleetPrey(FleetPreySelection, Core)
         a.Show()
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
     End Sub
 
     Private Sub btnSetPreyPred_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPreyPred.Click
-        Dim a As New frmSelectPreyPredator(PreyPredatorSelection, m_core)
+        Dim a As New frmSelectPreyPredator(PreyPredatorSelection, Core)
         a.Show()
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
     End Sub
 
     Private Sub btnSetParentOnly_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetParentOnly.Click
-        Dim a As New frmSelectParentOnly(ParentOnlySelection, m_core)
+        Dim a As New frmSelectParentOnly(ParentOnlySelection, Core)
         a.Show()
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
     End Sub
 
     Private Sub btnSetCatchFleet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFleetPrey.Click
-        Dim a As New frmSelectFleetPrey(FleetPreySelection, m_core)
+        Dim a As New frmSelectFleetPrey(FleetPreySelection, Core)
         a.Show()
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
     End Sub
 
     Private Sub btnSetFleetOnly_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFleetOnly.Click
-        Dim a As New frmSelectFleetOnly(FleetOnlySelection, m_core)
+        Dim a As New frmSelectFleetOnly(FleetOnlySelection, Core)
         a.Show()
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
     End Sub
@@ -548,7 +571,7 @@ Public Class frmResults
         NextAction = New NextActionTickAll(AddressOf Me.PredatorPreyStage)
 
         'First stage is do parent only section
-        Dim a As New frmSelectParentOnly(ParentOnlySelection, m_core)
+        Dim a As New frmSelectParentOnly(ParentOnlySelection, Core)
         a.Show()
 
     End Sub
@@ -607,9 +630,9 @@ Public Class frmResults
 
     Private Sub chkYearly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYearly.CheckedChanged
         If chkYearly.Checked Then
-            nDataRows = CInt(Math.Floor(m_core.nEcosimTimeSteps / 12))
+            nDataRows = CInt(Math.Floor(Core.nEcosimTimeSteps / 12))
         Else
-            nDataRows = m_core.nEcosimTimeSteps
+            nDataRows = Core.nEcosimTimeSteps
         End If
     End Sub
 
@@ -648,20 +671,20 @@ Public Class frmResults
     End Function
 
     Public Function GetAllGroupNamesArray() As String()
-        Dim str(Me.m_core.nGroups - 1) As String
+        Dim str(Me.Core.nGroups - 1) As String
 
-        For i As Integer = 1 To Me.m_core.nGroups
-            str(i - 1) = Me.m_core.EcoSimGroupOutputs(i).Name
+        For i As Integer = 1 To Me.Core.nGroups
+            str(i - 1) = Me.Core.EcoSimGroupOutputs(i).Name
         Next
         Return str
 
     End Function
 
     Public Function GetAllFleetNamesArray() As String()
-        Dim str(Me.m_core.nFleets) As String
+        Dim str(Me.Core.nFleets) As String
 
-        For i As Integer = 0 To Me.m_core.nFleets
-            str(i) = Me.m_core.EcosimFleetOutput(i).Name
+        For i As Integer = 0 To Me.Core.nFleets
+            str(i) = Me.Core.EcosimFleetOutput(i).Name
         Next
         Return str
 
@@ -695,10 +718,10 @@ Public Class frmResults
 
         'Find out what the index number is for a given group in m_core.EcosimGroupOutputs
         Dim i As Integer = 1
-        While i <= m_core.nGroups And m_core.EcoSimGroupOutputs(i).Name <> Group
+        While i <= Core.nGroups And Core.EcoSimGroupOutputs(i).Name <> Group
             i += 1
         End While
-        If i > m_core.nGroups Then
+        If i > Core.nGroups Then
             Return -1
         Else
             Return i
@@ -710,13 +733,13 @@ Public Class frmResults
 
         'Find out what the index number is for a given fleet in m_core.EcosimGroupOutputs
         Dim i As Integer = 0
-        While i <= m_core.nFleets
-            If m_core.EcosimFleetOutput(i).Name = Fleet Then
+        While i <= Core.nFleets
+            If Core.EcosimFleetOutput(i).Name = Fleet Then
                 Exit While
             End If
             i += 1
         End While
-        If i > m_core.nFleets Then
+        If i > Core.nFleets Then
             Return -1
         Else
             Return i
@@ -739,7 +762,7 @@ Public Class frmResults
         Dim ABiomass(,) As Object = Nothing
 
         If chkYearly.Checked Then
-            ReDim ABiomass(ParentOnlySelection.CountSelected, m_core.nEcosimYears)
+            ReDim ABiomass(ParentOnlySelection.CountSelected, Core.nEcosimYears)
         Else
             ReDim ABiomass(ParentOnlySelection.CountSelected, nDataRows)
         End If
@@ -759,16 +782,16 @@ Public Class frmResults
 
             'Loop through EwE datastructure getting biomass for current group at each timestep
             If chkYearly.Checked Then
-                For Year As Integer = 1 To m_core.nEcosimYears
+                For Year As Integer = 1 To Core.nEcosimYears
                     For Month As Integer = 1 To 12
                         YearlyBiomass = 0
-                        YearlyBiomass += m_core.EcoSimGroupOutputs(EwEIndex).Biomass((Year - 1) * 12 + Month)
+                        YearlyBiomass += Core.EcoSimGroupOutputs(EwEIndex).Biomass((Year - 1) * 12 + Month)
                     Next
                     ABiomass(ParentIndex, Year) = YearlyBiomass / 12
                 Next
             Else
                 For TimeStep As Integer = 1 To nDataRows
-                    ABiomass(ParentIndex + 1, TimeStep) = m_core.EcoSimGroupOutputs(EwEIndex).Biomass(TimeStep)
+                    ABiomass(ParentIndex + 1, TimeStep) = Core.EcoSimGroupOutputs(EwEIndex).Biomass(TimeStep)
                 Next
             End If
 
@@ -809,13 +832,13 @@ Public Class frmResults
             'IntegStep holds cummulative total of integrated biomass for calculated final total integ
             IntegStep = 0
 
-            For TimeStep As Integer = 2 To m_core.nEcosimTimeSteps
+            For TimeStep As Integer = 2 To Core.nEcosimTimeSteps
 
                 'Remember that Biomass is changed to difference from initial biomass
-                StartStepBiomass = m_core.EcoSimGroupOutputs(EwEIndex).Biomass(TimeStep - 1) _
-                    - m_core.EcoPathGroupOutputs(EwEIndex).Biomass
-                EndStepBiomass = m_core.EcoSimGroupOutputs(EwEIndex).Biomass(TimeStep) _
-                    - m_core.EcoPathGroupOutputs(EwEIndex).Biomass
+                StartStepBiomass = Core.EcoSimGroupOutputs(EwEIndex).Biomass(TimeStep - 1) _
+                    - Core.EcoPathGroupOutputs(EwEIndex).Biomass
+                EndStepBiomass = Core.EcoSimGroupOutputs(EwEIndex).Biomass(TimeStep) _
+                    - Core.EcoPathGroupOutputs(EwEIndex).Biomass
 
                 'Calc. Integ. for step
                 IntegStep += (StartStepBiomass + EndStepBiomass) / (2 * 12) 'Gives units tons*year
@@ -879,12 +902,12 @@ Public Class frmResults
 
                 'Calculate consumption values for each prey of each predator for each year
                 If chkYearly.Checked Then
-                    For Year As Integer = 1 To m_core.nEcosimYears
+                    For Year As Integer = 1 To Core.nEcosimYears
                         ConsumpCumul = 0
                         For Month As Integer = 1 To 12
-                            ConsumpCumul += m_core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (Year - 1) * 12 + Month) _
-                                * m_core.EcoSimGroupOutputs(PredatorIndexEcosim).Biomass((Year - 1) * 12 + Month) _
-                                * m_core.EcoSimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass((Year - 1) * 12 + Month)
+                            ConsumpCumul += Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (Year - 1) * 12 + Month) _
+                                * Core.EcoSimGroupOutputs(PredatorIndexEcosim).Biomass((Year - 1) * 12 + Month) _
+                                * Core.EcoSimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass((Year - 1) * 12 + Month)
 
 
                         Next
@@ -893,9 +916,9 @@ Public Class frmResults
                 Else
                     For TimeStep As Integer = 1 To nDataRows
                         AConsPerPrey(PreyIndex, TimeStep) = _
-                            m_core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, TimeStep) _
-                            * m_core.EcoSimGroupOutputs(PredatorIndexEcosim).Biomass(TimeStep) _
-                            * m_core.EcoSimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass(TimeStep)
+                            Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, TimeStep) _
+                            * Core.EcoSimGroupOutputs(PredatorIndexEcosim).Biomass(TimeStep) _
+                            * Core.EcoSimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass(TimeStep)
                     Next
                 End If
 
@@ -935,13 +958,13 @@ Public Class frmResults
 
             If chkYearly.Checked Then
 
-                For Year As Integer = 1 To m_core.nEcosimYears
+                For Year As Integer = 1 To Core.nEcosimYears
                     CumulFishingMortality = 0
                     For Month As Integer = 1 To 12
                         'Retrieve Fishing mortality for parent
                         CumulFishingMortality += _
-                                        m_core.EcoSimGroupOutputs(EwEIndex).FishMort((Year - 1) * 12 + Month) - _
-                                        m_core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * 12 + Month)
+                                        Core.EcoSimGroupOutputs(EwEIndex).FishMort((Year - 1) * 12 + Month) - _
+                                        Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * 12 + Month)
                     Next
                     AFishingMortality(ParentIndex, Year) = CumulFishingMortality / 12
                 Next
@@ -950,8 +973,8 @@ Public Class frmResults
 
                     'Retrieve Fishing mortality for parent
                     AFishingMortality(ParentIndex, TimeStep) = _
-                                    m_core.EcoSimGroupOutputs(EwEIndex).FishMort(TimeStep) - _
-                                    m_core.EcoSimGroupOutputs(EwEIndex).PredMort(TimeStep)
+                                    Core.EcoSimGroupOutputs(EwEIndex).FishMort(TimeStep) - _
+                                    Core.EcoSimGroupOutputs(EwEIndex).PredMort(TimeStep)
                 Next
             End If
 
@@ -989,12 +1012,12 @@ Public Class frmResults
                 'Get Index of Parent in EwE
                 EwEIndex = GetIndexGroup(ParentOnlySelection.SelectedNames(PredatorIndex))
 
-                For Year As Integer = 1 To m_core.nEcosimYears
+                For Year As Integer = 1 To Core.nEcosimYears
                     CumulPredationMortality = 0
                     For Month As Integer = 1 To 12
                         'Retrieve Predation mortality for parent
                         CumulPredationMortality += _
-                                            m_core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * 12 + Month)
+                                            Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * 12 + Month)
 
                     Next
                     APredationMortality(PredatorIndex, Year) = CumulPredationMortality / 12
@@ -1008,7 +1031,7 @@ Public Class frmResults
                     EwEIndex = GetIndexGroup(ParentOnlySelection.SelectedNames(PredatorIndex))
                     'retrieve mortality for current predator at current timestep
                     APredationMortality(PredatorIndex, TimeStep) = _
-                    m_core.EcoSimGroupOutputs(EwEIndex).PredMort(TimeStep)
+                    Core.EcoSimGroupOutputs(EwEIndex).PredMort(TimeStep)
 
                 Next
             Next
@@ -1067,25 +1090,25 @@ Public Class frmResults
                 EwEIndexPredator = GetIndexGroup(CurrentPrey.ChildNames(PredatorIndex))
 
                 If chkYearly.Checked Then
-                    For nYear As Integer = 1 To m_core.nEcosimYears
+                    For nYear As Integer = 1 To Core.nEcosimYears
                         CumPredMort = 0
                         For nMonth As Integer = 1 To 12
                             Consumption = _
-                                m_core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, (nYear - 1) * 12 + nMonth) _
-                                * m_core.EcoSimGroupOutputs(EwEIndexPredator).Biomass((nYear - 1) * 12 + nMonth) _
-                                * m_core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass((nYear - 1) * 12 + nMonth)
-                            CumPredMort += Consumption / m_core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * 12 + nMonth)
+                                Core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, (nYear - 1) * 12 + nMonth) _
+                                * Core.EcoSimGroupOutputs(EwEIndexPredator).Biomass((nYear - 1) * 12 + nMonth) _
+                                * Core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass((nYear - 1) * 12 + nMonth)
+                            CumPredMort += Consumption / Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * 12 + nMonth)
                         Next
                         APredationMortality(ColPointer, nYear + 1) = CumPredMort / 12
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
                         Consumption = _
-                            m_core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, TimeStep) _
-                            * m_core.EcoSimGroupOutputs(EwEIndexPredator).Biomass(TimeStep) _
-                            * m_core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass(TimeStep)
+                            Core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, TimeStep) _
+                            * Core.EcoSimGroupOutputs(EwEIndexPredator).Biomass(TimeStep) _
+                            * Core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass(TimeStep)
 
-                        APredationMortality(ColPointer, TimeStep + 1) = Consumption / m_core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
+                        APredationMortality(ColPointer, TimeStep + 1) = Consumption / Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
                     Next
                 End If
 
@@ -1141,8 +1164,8 @@ Public Class frmResults
             CurrentFleet = FleetPreySelection.GetSelected(FleetIndex)
 
             'Get Index of fleet in EwE
-            For i = 0 To m_core.nFleets - 1
-                If m_core.EcosimFleetOutput(i).Name = CurrentFleet.ParentName Then
+            For i = 0 To Core.nFleets - 1
+                If Core.EcosimFleetOutput(i).Name = CurrentFleet.ParentName Then
                     EwEIndexFleet = i
                     Exit For
                 End If
@@ -1151,11 +1174,11 @@ Public Class frmResults
             For PreyIndex As Integer = 0 To CurrentFleet.CountChild - 1
                 EwEIndexPrey = GetIndexGroup(CurrentFleet.ChildNames(PreyIndex))
                 If chkYearly.Checked Then
-                    For nYear As Integer = 1 To m_core.nEcosimYears
+                    For nYear As Integer = 1 To Core.nEcosimYears
                         CumulFishingMort = 0
                         For nMonth As Integer = 1 To 12
-                            FleetCatch = m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
-                            Biomass = m_core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * 12 + nMonth)
+                            FleetCatch = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
+                            Biomass = Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * 12 + nMonth)
                             CumulFishingMort += FleetCatch / Biomass
                         Next
                         AFishingMortality(ColPointer, nYear + 1) = CumulFishingMort / 12
@@ -1163,8 +1186,8 @@ Public Class frmResults
                 Else
                     For TimeStep As Integer = 1 To nDataRows
                         'Get Catch Biomass
-                        FleetCatch = m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
-                        Biomass = m_core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
+                        FleetCatch = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
+                        Biomass = Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
                         AFishingMortality(ColPointer, TimeStep + 1) = FleetCatch / Biomass
                     Next
                 End If
@@ -1208,8 +1231,8 @@ Public Class frmResults
 
             'Get Index of fleet in EwE
             EwEIndexFleet = 0
-            For i = 0 To m_core.nFleets
-                If m_core.EcosimFleetOutput(i).Name = FleetOnlySelection.SelectedNames(FleetIndex) Then
+            For i = 0 To Core.nFleets
+                If Core.EcosimFleetOutput(i).Name = FleetOnlySelection.SelectedNames(FleetIndex) Then
                     EwEIndexFleet = i
                     Exit For
                 End If
@@ -1219,33 +1242,33 @@ Public Class frmResults
 
                 'Find a functional group that is caught by fleet
                 EwEIndexPrey = 1
-                While m_core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) = 0 Or EwEIndexFleet > m_core.nGroups
+                While Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) = 0 Or EwEIndexFleet > Core.nGroups
                     EwEIndexPrey += 1
                 End While
 
-                If EwEIndexFleet > m_core.nGroups Then Exit Sub
+                If EwEIndexFleet > Core.nGroups Then Exit Sub
 
                 'Calculate initial partialF
-                InitialPartialF = (m_core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) + _
-                                    m_core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)) _
-                                    / m_core.EcoPathGroupOutputs(EwEIndexPrey).Biomass
+                InitialPartialF = (Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) + _
+                                    Core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)) _
+                                    / Core.EcoPathGroupOutputs(EwEIndexPrey).Biomass
 
                 'Calculate efforts
                 AEffort(FleetIndex, 1) = 1
                 If chkYearly.Checked Then
-                    For nYear As Integer = 1 To m_core.nEcosimYears
+                    For nYear As Integer = 1 To Core.nEcosimYears
                         CumulEffort = 0
                         For nMonth As Integer = 1 To 12
-                            PartialF = m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth) / _
-                                        m_core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * 12 + nMonth)
+                            PartialF = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth) / _
+                                        Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * 12 + nMonth)
                             CumulEffort += PartialF
                         Next
                         AEffort(FleetIndex, nYear + 1) = CumulEffort / (12 * InitialPartialF)
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
-                        PartialF = m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep) / _
-                                    m_core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
+                        PartialF = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep) / _
+                                    Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
                         AEffort(FleetIndex, TimeStep + 1) = PartialF / InitialPartialF
                     Next
                 End If
@@ -1292,16 +1315,16 @@ Public Class frmResults
 
             'Loop through EwE datastructure getting Catch for current group at each timestep
             If chkYearly.Checked Then
-                For nYear As Integer = 1 To m_core.nEcosimYears
+                For nYear As Integer = 1 To Core.nEcosimYears
                     CumulCatch = 0
                     For nMonth = 1 To 12
-                        CumulCatch += m_core.EcoSimGroupOutputs(EwEIndex).Yield((nYear - 1) * 12 + nMonth)
+                        CumulCatch += Core.EcoSimGroupOutputs(EwEIndex).Yield((nYear - 1) * 12 + nMonth)
                     Next
                     ACatch(ParentIndex, nYear) = CumulCatch / 12
                 Next
             Else
                 For TimeStep As Integer = 1 To nDataRows
-                    ACatch(ParentIndex, TimeStep) = m_core.EcoSimGroupOutputs(EwEIndex).Yield(TimeStep)
+                    ACatch(ParentIndex, TimeStep) = Core.EcoSimGroupOutputs(EwEIndex).Yield(TimeStep)
                 Next
             End If
 
@@ -1355,16 +1378,16 @@ Public Class frmResults
 
                 'Loop through EwE datastructure getting biomass for current group at each timestep
                 If chkYearly.Checked Then
-                    For nYear As Integer = 1 To m_core.nEcosimYears
+                    For nYear As Integer = 1 To Core.nEcosimYears
                         CumulCatch = 0
                         For nMonth = 1 To 12
-                            CumulCatch += m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
+                            CumulCatch += Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
                         Next
                         ACatchByFleet(ColPointer, nYear + 1) = CumulCatch / 12
                     Next
                 Else
-                    For TimeStep As Integer = 1 To m_core.nEcosimTimeSteps
-                        ACatchByFleet(ColPointer, TimeStep + 1) = m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
+                    For TimeStep As Integer = 1 To Core.nEcosimTimeSteps
+                        ACatchByFleet(ColPointer, TimeStep + 1) = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
                     Next
                 End If
 
@@ -1428,27 +1451,27 @@ Public Class frmResults
                 Landings = 0
                 Discards = 0
                 If EwEIndexFleet = 0 Then
-                    For i = 1 To m_core.nFleets
-                        Landings += m_core.FleetInputs(i).Landings(EwEIndexPrey)
-                        Discards += m_core.FleetInputs(i).Discards(EwEIndexPrey)
+                    For i = 1 To Core.nFleets
+                        Landings += Core.FleetInputs(i).Landings(EwEIndexPrey)
+                        Discards += Core.FleetInputs(i).Discards(EwEIndexPrey)
                     Next
                 Else
-                    Landings = m_core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey)
-                    Discards = m_core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)
+                    Landings = Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey)
+                    Discards = Core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)
                 End If
                 PropLandings = Landings / (Landings + Discards)
 
                 'Loop through EwE datastructure getting biomass for current group at each timestep
                 If chkYearly.Checked Then
-                    For nYear As Integer = 1 To m_core.nEcosimYears
+                    For nYear As Integer = 1 To Core.nEcosimYears
                         For nMonth As Integer = 1 To 12
-                            ACatchByFleet(ColPointer, nYear - 1) += m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
+                            ACatchByFleet(ColPointer, nYear - 1) += Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
                         Next
                         ALandingsByFleet(ColPointer, nYear + 1) = ACatchByFleet(ColPointer, nYear - 1) * PropLandings / 12
                     Next
                 Else
-                    For TimeStep As Integer = 1 To m_core.nEcosimTimeSteps
-                        ACatchByFleet(ColPointer, TimeStep - 1) = m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
+                    For TimeStep As Integer = 1 To Core.nEcosimTimeSteps
+                        ACatchByFleet(ColPointer, TimeStep - 1) = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
                         ALandingsByFleet(ColPointer, TimeStep + 1) = ACatchByFleet(ColPointer, TimeStep - 1) * PropLandings
                     Next
                 End If
@@ -1513,28 +1536,28 @@ Public Class frmResults
                 Landings = 0
                 Discards = 0
                 If EwEIndexFleet = 0 Then
-                    For i = 1 To m_core.nFleets
-                        Landings += m_core.FleetInputs(i).Landings(EwEIndexPrey)
-                        Discards += m_core.FleetInputs(i).Discards(EwEIndexPrey)
+                    For i = 1 To Core.nFleets
+                        Landings += Core.FleetInputs(i).Landings(EwEIndexPrey)
+                        Discards += Core.FleetInputs(i).Discards(EwEIndexPrey)
                     Next
                 Else
-                    Landings = m_core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey)
-                    Discards = m_core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)
+                    Landings = Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey)
+                    Discards = Core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)
                 End If
                 PropLandings = Landings / (Landings + Discards)
                 PropDiscards = Discards / (Landings + Discards)
 
                 'Loop through EwE datastructure getting discards for current group at each timestep
                 If chkYearly.Checked Then
-                    For nYear As Integer = 1 To m_core.nEcosimYears
+                    For nYear As Integer = 1 To Core.nEcosimYears
                         For nMonth As Integer = 1 To 12
-                            ACatchByFleet(ColPointer, nYear - 1) += m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
+                            ACatchByFleet(ColPointer, nYear - 1) += Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
                         Next
                         ADiscardsByFleet(ColPointer, nYear + 1) = ACatchByFleet(ColPointer, nYear - 1) * PropDiscards / 12
                     Next
                 Else
-                    For TimeStep As Integer = 1 To m_core.nEcosimTimeSteps
-                        ACatchByFleet(ColPointer, TimeStep - 1) = m_core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
+                    For TimeStep As Integer = 1 To Core.nEcosimTimeSteps
+                        ACatchByFleet(ColPointer, TimeStep - 1) = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
                         ADiscardsByFleet(ColPointer, TimeStep + 1) = ACatchByFleet(ColPointer, TimeStep - 1) * PropDiscards
                     Next
                 End If
@@ -1573,7 +1596,7 @@ Public Class frmResults
             'Dim array for holding consumption values for each predprey
             ADietOfPredator = Nothing
             If chkYearly.Checked Then
-                ReDim ADietOfPredator(CurrentPredator.CountChild - 1, m_core.nEcosimYears)
+                ReDim ADietOfPredator(CurrentPredator.CountChild - 1, Core.nEcosimYears)
             Else
                 ReDim ADietOfPredator(CurrentPredator.CountChild - 1, nDataRows)
             End If
@@ -1590,16 +1613,16 @@ Public Class frmResults
 
                 'Calculate consumption values for each prey of each predator for each year
                 If chkYearly.Checked Then
-                    For nYear As Integer = 1 To m_core.nEcosimYears
+                    For nYear As Integer = 1 To Core.nEcosimYears
                         CumulDiet = 0
                         For nMonth As Integer = 1 To 12
-                            CumulDiet += m_core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (nYear - 1) * 12 + nMonth)
+                            CumulDiet += Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (nYear - 1) * 12 + nMonth)
                         Next
                         ADietOfPredator(PreyIndex, nYear) = CumulDiet / 12
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
-                        ADietOfPredator(PreyIndex, TimeStep) = m_core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, TimeStep)
+                        ADietOfPredator(PreyIndex, TimeStep) = Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, TimeStep)
                     Next
                 End If
 
@@ -1645,17 +1668,17 @@ Public Class frmResults
 
             'Loop through EwE datastructure getting Value for current group at each timestep
             If chkYearly.Checked Then
-                For nYear As Integer = 1 To m_core.nEcosimYears
+                For nYear As Integer = 1 To Core.nEcosimYears
                     CumValue = 0
                     For nMonth As Integer = 1 To 12
-                        CumValue += m_core.EcosimFleetOutput(EwEIndexFleet).Value((nYear - 1) * 12 + nMonth)
+                        CumValue += Core.EcosimFleetOutput(EwEIndexFleet).Value((nYear - 1) * 12 + nMonth)
                     Next
                     AValue(FleetIndex, nYear) = CumValue / 12
                 Next
 
             Else
                 For TimeStep As Integer = 1 To nDataRows
-                    AValue(FleetIndex, TimeStep) = m_core.EcosimFleetOutput(EwEIndexFleet).Value(TimeStep)
+                    AValue(FleetIndex, TimeStep) = Core.EcosimFleetOutput(EwEIndexFleet).Value(TimeStep)
                 Next
             End If
 
@@ -1673,7 +1696,7 @@ Public Class frmResults
 
     Private Sub CreateBasicEstimatesCSV()
 
-        Dim ABasicEstimates(10, m_core.nGroups) As Object
+        Dim ABasicEstimates(10, Core.nGroups) As Object
         Dim BasicEstimates As New cDataSheet
 
         'Setup titles
@@ -1689,17 +1712,17 @@ Public Class frmResults
         ABasicEstimates(9, 0) = "Production/Consumption"
 
         'Fill out core data
-        For Row = 1 To m_core.nGroups
-            ABasicEstimates(0, Row) = m_core.EcoPathGroupOutputs(Row).Index
-            ABasicEstimates(1, Row) = m_core.EcoPathGroupOutputs(Row).Name
-            ABasicEstimates(2, Row) = m_core.EcoPathGroupOutputs(Row).TTLX
-            ABasicEstimates(3, Row) = m_core.EcoPathGroupOutputs(Row).Area
-            ABasicEstimates(4, Row) = m_core.EcoPathGroupOutputs(Row).BiomassArea
-            ABasicEstimates(5, Row) = m_core.EcoPathGroupOutputs(Row).Biomass
-            ABasicEstimates(6, Row) = m_core.EcoPathGroupOutputs(Row).PBOutput
-            ABasicEstimates(7, Row) = m_core.EcoPathGroupOutputs(Row).QBOutput
-            ABasicEstimates(8, Row) = m_core.EcoPathGroupOutputs(Row).EEOutput
-            ABasicEstimates(9, Row) = m_core.EcoPathGroupOutputs(Row).GEOutput
+        For Row = 1 To Core.nGroups
+            ABasicEstimates(0, Row) = Core.EcoPathGroupOutputs(Row).Index
+            ABasicEstimates(1, Row) = Core.EcoPathGroupOutputs(Row).Name
+            ABasicEstimates(2, Row) = Core.EcoPathGroupOutputs(Row).TTLX
+            ABasicEstimates(3, Row) = Core.EcoPathGroupOutputs(Row).Area
+            ABasicEstimates(4, Row) = Core.EcoPathGroupOutputs(Row).BiomassArea
+            ABasicEstimates(5, Row) = Core.EcoPathGroupOutputs(Row).Biomass
+            ABasicEstimates(6, Row) = Core.EcoPathGroupOutputs(Row).PBOutput
+            ABasicEstimates(7, Row) = Core.EcoPathGroupOutputs(Row).QBOutput
+            ABasicEstimates(8, Row) = Core.EcoPathGroupOutputs(Row).EEOutput
+            ABasicEstimates(9, Row) = Core.EcoPathGroupOutputs(Row).GEOutput
         Next
 
         'Setup datasheet and send to dataoutputter
@@ -1710,7 +1733,7 @@ Public Class frmResults
     End Sub
 
     Private Sub CreateKeyIndicesCSV()
-        Dim AKeyIndices(7, m_core.nGroups) As Object
+        Dim AKeyIndices(7, Core.nGroups) As Object
         Dim KeyIndices As New cDataSheet
 
         'Setup titles
@@ -1724,15 +1747,15 @@ Public Class frmResults
         AKeyIndices(7, 0) = "Omnivory Index"
 
         'Fill out main data
-        For Row = 1 To m_core.nGroups
-            AKeyIndices(0, Row) = m_core.EcoPathGroupOutputs(Row).Index
-            AKeyIndices(1, Row) = m_core.EcoPathGroupOutputs(Row).Name
-            AKeyIndices(2, Row) = m_core.EcoPathGroupOutputs(Row).BioAccum
-            AKeyIndices(3, Row) = m_core.EcoPathGroupOutputs(Row).BioAccumRatePerYear
-            AKeyIndices(4, Row) = m_core.EcoPathGroupOutputs(Row).NetMigration
-            AKeyIndices(5, Row) = m_core.EcoPathGroupOutputs(Row).FlowToDet
-            AKeyIndices(6, Row) = m_core.EcoPathGroupOutputs(Row).NetEfficiency
-            AKeyIndices(7, Row) = m_core.EcoPathGroupOutputs(Row).OmnivoryIndex
+        For Row = 1 To Core.nGroups
+            AKeyIndices(0, Row) = Core.EcoPathGroupOutputs(Row).Index
+            AKeyIndices(1, Row) = Core.EcoPathGroupOutputs(Row).Name
+            AKeyIndices(2, Row) = Core.EcoPathGroupOutputs(Row).BioAccum
+            AKeyIndices(3, Row) = Core.EcoPathGroupOutputs(Row).BioAccumRatePerYear
+            AKeyIndices(4, Row) = Core.EcoPathGroupOutputs(Row).NetMigration
+            AKeyIndices(5, Row) = Core.EcoPathGroupOutputs(Row).FlowToDet
+            AKeyIndices(6, Row) = Core.EcoPathGroupOutputs(Row).NetEfficiency
+            AKeyIndices(7, Row) = Core.EcoPathGroupOutputs(Row).OmnivoryIndex
         Next
 
         'Setup datasheet and send to dataoutputer
@@ -1743,7 +1766,7 @@ Public Class frmResults
     End Sub
 
     Private Sub CreateInitMortCoeffsCSV()
-        Dim AInitMortCoef(9, m_core.nLivingGroups) As Object
+        Dim AInitMortCoef(9, Core.nLivingGroups) As Object
         Dim InitMortCoef As New cDataSheet
 
         'Setup titles
@@ -1758,17 +1781,17 @@ Public Class frmResults
         AInitMortCoef(8, 0) = "Fishing mort./Total mort"
         AInitMortCoef(9, 0) = "Proportion nat. mort."
 
-        For Row = 1 To m_core.nLivingGroups
-            AInitMortCoef(0, Row) = m_core.EcoPathGroupOutputs(Row).Index
-            AInitMortCoef(1, Row) = m_core.EcoPathGroupOutputs(Row).Name
-            AInitMortCoef(2, Row) = m_core.EcoPathGroupOutputs(Row).PBOutput
-            AInitMortCoef(3, Row) = m_core.EcoPathGroupOutputs(Row).MortCoFishRate
-            AInitMortCoef(4, Row) = m_core.EcoPathGroupOutputs(Row).MortCoPredMort
-            AInitMortCoef(5, Row) = m_core.EcoPathGroupOutputs(Row).BioAccumRatePerYear
-            AInitMortCoef(6, Row) = m_core.EcoPathGroupOutputs(Row).MortCoNetMig
-            AInitMortCoef(7, Row) = m_core.EcoPathGroupOutputs(Row).MortCoOtherMort
-            AInitMortCoef(8, Row) = m_core.EcoPathGroupOutputs(Row).FishMortPerTotMort
-            AInitMortCoef(9, Row) = m_core.EcoPathGroupOutputs(Row).NatMortPerTotMort
+        For Row = 1 To Core.nLivingGroups
+            AInitMortCoef(0, Row) = Core.EcoPathGroupOutputs(Row).Index
+            AInitMortCoef(1, Row) = Core.EcoPathGroupOutputs(Row).Name
+            AInitMortCoef(2, Row) = Core.EcoPathGroupOutputs(Row).PBOutput
+            AInitMortCoef(3, Row) = Core.EcoPathGroupOutputs(Row).MortCoFishRate
+            AInitMortCoef(4, Row) = Core.EcoPathGroupOutputs(Row).MortCoPredMort
+            AInitMortCoef(5, Row) = Core.EcoPathGroupOutputs(Row).BioAccumRatePerYear
+            AInitMortCoef(6, Row) = Core.EcoPathGroupOutputs(Row).MortCoNetMig
+            AInitMortCoef(7, Row) = Core.EcoPathGroupOutputs(Row).MortCoOtherMort
+            AInitMortCoef(8, Row) = Core.EcoPathGroupOutputs(Row).FishMortPerTotMort
+            AInitMortCoef(9, Row) = Core.EcoPathGroupOutputs(Row).NatMortPerTotMort
         Next
 
         'setup datasheet and send to data outputter
@@ -1782,15 +1805,15 @@ Public Class frmResults
 
         Dim ColPoint As Integer
         Dim Pred As cCoreGroupBase
-        Dim PredIndex(m_core.nGroups) As Integer
-        Dim AInitPredMort(m_core.nGroups, m_core.nLivingGroups) As Object
+        Dim PredIndex(Core.nGroups) As Integer
+        Dim AInitPredMort(Core.nGroups, Core.nLivingGroups) As Object
         Dim InitPredMort As New cDataSheet
 
         'Write column headings
         AInitPredMort(1, 0) = "Prey\Predator"
         ColPoint = 3
-        For x = 1 To m_core.nGroups
-            Pred = m_core.EcoSimGroupOutputs(x)
+        For x = 1 To Core.nGroups
+            Pred = Core.EcoSimGroupOutputs(x)
             If Pred.PP < 1 Then
                 AInitPredMort(ColPoint - 1, 0) = x
                 PredIndex(ColPoint - 3) = x
@@ -1799,15 +1822,15 @@ Public Class frmResults
         Next
 
         'Write row titles
-        For y = 1 To m_core.nLivingGroups
-            AInitPredMort(0, y) = m_core.EcoSimGroupOutputs(y).Index
-            AInitPredMort(1, y) = m_core.EcoSimGroupOutputs(y).Name
+        For y = 1 To Core.nLivingGroups
+            AInitPredMort(0, y) = Core.EcoSimGroupOutputs(y).Index
+            AInitPredMort(1, y) = Core.EcoSimGroupOutputs(y).Name
         Next
 
         'Fill out consumption values
         For x = 3 To ColPoint - 1
-            For y = 1 To m_core.nLivingGroups
-                AInitPredMort(x - 1, y) = m_core.EcoPathGroupOutputs(y).PredMort(PredIndex(x - 3))
+            For y = 1 To Core.nLivingGroups
+                AInitPredMort(x - 1, y) = Core.EcoPathGroupOutputs(y).PredMort(PredIndex(x - 3))
             Next
         Next
 
@@ -1822,23 +1845,23 @@ Public Class frmResults
         Dim slandings As Single
         Dim sDiscards As Single
         Dim sBiomass As Single
-        Dim AInitFishingMort(1 + m_core.nFleets, m_core.nLivingGroups) As Object
+        Dim AInitFishingMort(1 + Core.nFleets, Core.nLivingGroups) As Object
         Dim InitFishingMort As New cDataSheet
 
         'Fill column titles row
         AInitFishingMort(1, 0) = "Group\Fleet"
-        For x = 1 To m_core.nFleets
-            AInitFishingMort(1 + x, 0) = m_core.FleetInputs(x).Name
+        For x = 1 To Core.nFleets
+            AInitFishingMort(1 + x, 0) = Core.FleetInputs(x).Name
         Next
 
         'Fill main data
-        For y = 1 To m_core.nLivingGroups
-            AInitFishingMort(0, y) = m_core.EcoPathGroupOutputs(y).Index
-            AInitFishingMort(1, y) = m_core.EcoPathGroupOutputs(y).Name
-            For x = 1 To m_core.nFleets
-                slandings = m_core.FleetInputs(x).Landings(y)
-                sDiscards = m_core.FleetInputs(x).Discards(y)
-                sBiomass = m_core.EcoPathGroupOutputs(y).Biomass
+        For y = 1 To Core.nLivingGroups
+            AInitFishingMort(0, y) = Core.EcoPathGroupOutputs(y).Index
+            AInitFishingMort(1, y) = Core.EcoPathGroupOutputs(y).Name
+            For x = 1 To Core.nFleets
+                slandings = Core.FleetInputs(x).Landings(y)
+                sDiscards = Core.FleetInputs(x).Discards(y)
+                sBiomass = Core.EcoPathGroupOutputs(y).Biomass
                 If sBiomass > 0 Then
                     AInitFishingMort(1 + x, y) = (slandings + sDiscards) / sBiomass
                 Else
@@ -1859,15 +1882,15 @@ Public Class frmResults
         Dim ColPoint As Integer
         Dim Pred As cCoreGroupBase
         Dim TotalConsumption As Single
-        Dim PredIndex(m_core.nGroups) As Integer
-        Dim AInitCons(m_core.nGroups, m_core.nGroups + 2) As Object
+        Dim PredIndex(Core.nGroups) As Integer
+        Dim AInitCons(Core.nGroups, Core.nGroups + 2) As Object
         Dim InitCons As New cDataSheet
 
         'Write column headings
         AInitCons(1, 0) = "Prey\Predator"
         ColPoint = 3
-        For x = 1 To m_core.nGroups
-            Pred = m_core.EcoSimGroupOutputs(x)
+        For x = 1 To Core.nGroups
+            Pred = Core.EcoSimGroupOutputs(x)
             If Pred.PP < 1 Or Pred.PP = 2 Then
                 AInitCons(ColPoint - 1, 0) = x
                 PredIndex(ColPoint - 3) = x
@@ -1876,27 +1899,27 @@ Public Class frmResults
         Next
 
         'Write row headings
-        For y = 1 To m_core.nGroups
-            AInitCons(0, y) = m_core.EcoSimGroupOutputs(y).Index
-            AInitCons(1, y) = m_core.EcoSimGroupOutputs(y).Name
+        For y = 1 To Core.nGroups
+            AInitCons(0, y) = Core.EcoSimGroupOutputs(y).Index
+            AInitCons(1, y) = Core.EcoSimGroupOutputs(y).Name
         Next
         'Add Import row
-        AInitCons(0, m_core.nGroups + 1) = m_core.nGroups + 1
-        AInitCons(1, m_core.nGroups + 1) = "Import"
+        AInitCons(0, Core.nGroups + 1) = Core.nGroups + 1
+        AInitCons(1, Core.nGroups + 1) = "Import"
         'Add Sum row
-        AInitCons(0, m_core.nGroups + 2) = m_core.nGroups + 2
-        AInitCons(1, m_core.nGroups + 2) = "Sum"
+        AInitCons(0, Core.nGroups + 2) = Core.nGroups + 2
+        AInitCons(1, Core.nGroups + 2) = "Sum"
 
         'Fill out consumption values
         For x = 3 To ColPoint - 1
             TotalConsumption = 0
-            For y = 1 To m_core.nGroups
-                AInitCons(x - 1, y) = m_core.EcoPathGroupOutputs(y).Consumption(PredIndex(x - 3))
-                TotalConsumption += m_core.EcoPathGroupOutputs(y).Consumption(PredIndex(x - 3))
+            For y = 1 To Core.nGroups
+                AInitCons(x - 1, y) = Core.EcoPathGroupOutputs(y).Consumption(PredIndex(x - 3))
+                TotalConsumption += Core.EcoPathGroupOutputs(y).Consumption(PredIndex(x - 3))
             Next
-            AInitCons(x - 1, m_core.nGroups + 1) = m_core.EcoPathGroupOutputs(PredIndex(x - 3)).ImportedConsumption
-            TotalConsumption += m_core.EcoPathGroupOutputs(PredIndex(x - 3)).ImportedConsumption
-            AInitCons(x - 1, m_core.nGroups + 2) = TotalConsumption
+            AInitCons(x - 1, Core.nGroups + 1) = Core.EcoPathGroupOutputs(PredIndex(x - 3)).ImportedConsumption
+            TotalConsumption += Core.EcoPathGroupOutputs(PredIndex(x - 3)).ImportedConsumption
+            AInitCons(x - 1, Core.nGroups + 2) = TotalConsumption
         Next
 
         'Setup datasheet and send to dataoutputter
@@ -1907,7 +1930,7 @@ Public Class frmResults
     End Sub
 
     Private Sub CreateRespirationCSV()
-        Dim ARespiration(6, m_core.nGroups) As Object
+        Dim ARespiration(6, Core.nGroups) As Object
         Dim Respiration As New cDataSheet
 
         'Set up titles
@@ -1918,14 +1941,14 @@ Public Class frmResults
         ARespiration(5, 0) = "Production/respiration"
         ARespiration(6, 0) = "Respiration/biomass(/year)"
 
-        For Row = 1 To m_core.nGroups
-            ARespiration(0, Row) = m_core.EcoPathGroupOutputs(Row).Index
-            ARespiration(1, Row) = m_core.EcoPathGroupOutputs(Row).Name
-            ARespiration(2, Row) = m_core.EcoPathGroupOutputs(Row).Respiration
-            ARespiration(3, Row) = m_core.EcoPathGroupOutputs(Row).Assimilation
-            ARespiration(4, Row) = m_core.EcoPathGroupOutputs(Row).RespAssim
-            ARespiration(5, Row) = m_core.EcoPathGroupOutputs(Row).ProdResp
-            ARespiration(6, Row) = m_core.EcoPathGroupOutputs(Row).RespBiom
+        For Row = 1 To Core.nGroups
+            ARespiration(0, Row) = Core.EcoPathGroupOutputs(Row).Index
+            ARespiration(1, Row) = Core.EcoPathGroupOutputs(Row).Name
+            ARespiration(2, Row) = Core.EcoPathGroupOutputs(Row).Respiration
+            ARespiration(3, Row) = Core.EcoPathGroupOutputs(Row).Assimilation
+            ARespiration(4, Row) = Core.EcoPathGroupOutputs(Row).RespAssim
+            ARespiration(5, Row) = Core.EcoPathGroupOutputs(Row).ProdResp
+            ARespiration(6, Row) = Core.EcoPathGroupOutputs(Row).RespBiom
         Next
 
         'Setup datasheet and send to data outputter
@@ -1936,20 +1959,20 @@ Public Class frmResults
     End Sub
 
     Private Sub CreateOverlapPreyCSV()
-        Dim AOverlapPrey(m_core.nLivingGroups + 1, m_core.nLivingGroups) As Object
+        Dim AOverlapPrey(Core.nLivingGroups + 1, Core.nLivingGroups) As Object
         Dim OverlapPrey As New cDataSheet
 
         AOverlapPrey(1, 0) = "Group Name"
-        For x = 1 To m_core.nLivingGroups
+        For x = 1 To Core.nLivingGroups
             AOverlapPrey(1 + x, 0) = x
         Next
 
         'Write body of data
-        For Row = 1 To m_core.nLivingGroups
-            AOverlapPrey(0, Row) = m_core.EcoPathGroupOutputs(Row).Index
-            AOverlapPrey(1, Row) = m_core.EcoPathGroupOutputs(Row).Name
+        For Row = 1 To Core.nLivingGroups
+            AOverlapPrey(0, Row) = Core.EcoPathGroupOutputs(Row).Index
+            AOverlapPrey(1, Row) = Core.EcoPathGroupOutputs(Row).Name
             For Col = 1 To Row
-                AOverlapPrey(1 + Col, Row) = m_core.EcoPathGroupOutputs(Row).Plap(Col)
+                AOverlapPrey(1 + Col, Row) = Core.EcoPathGroupOutputs(Row).Plap(Col)
             Next
         Next
 
@@ -1962,21 +1985,21 @@ Public Class frmResults
 
     Private Sub CreateOverlapPredCSV()
 
-        Dim AOverlapPred(m_core.nLivingGroups + 1, m_core.nLivingGroups) As Object
+        Dim AOverlapPred(Core.nLivingGroups + 1, Core.nLivingGroups) As Object
         Dim OverlapPred As New cDataSheet
 
         'Write column headings
         AOverlapPred(1, 0) = "Group Name"
-        For x = 1 To m_core.nLivingGroups
+        For x = 1 To Core.nLivingGroups
             AOverlapPred(1 + x, 0) = CStr(x)
         Next
 
         'Write body of data
-        For Row = 1 To m_core.nLivingGroups
-            AOverlapPred(0, Row) = m_core.EcoPathGroupOutputs(Row).Index
-            AOverlapPred(1, Row) = m_core.EcoPathGroupOutputs(Row).Name
+        For Row = 1 To Core.nLivingGroups
+            AOverlapPred(0, Row) = Core.EcoPathGroupOutputs(Row).Index
+            AOverlapPred(1, Row) = Core.EcoPathGroupOutputs(Row).Name
             For Col = 1 To Row
-                AOverlapPred(1 + Col, Row) = m_core.EcoPathGroupOutputs(Row).Hlap(Col)
+                AOverlapPred(1 + Col, Row) = Core.EcoPathGroupOutputs(Row).Hlap(Col)
             Next
         Next
 
@@ -1988,28 +2011,28 @@ Public Class frmResults
     End Sub
 
     Private Sub CreateElectivityCSV()
-        Dim AElectivity(m_core.nGroups + 1, m_core.nGroups) As Object
+        Dim AElectivity(Core.nGroups + 1, Core.nGroups) As Object
         Dim Electivity As New cDataSheet
         Dim ColPoint As Integer
 
         'Write column headings
         AElectivity(1, 0) = "Prey\Predator"
         ColPoint = 1
-        For x = 1 To m_core.nGroups
-            If m_core.EcoPathGroupOutputs(x).PP < 1 Then
-                AElectivity(1 + ColPoint, 0) = m_core.EcoPathGroupOutputs(x).Index
+        For x = 1 To Core.nGroups
+            If Core.EcoPathGroupOutputs(x).PP < 1 Then
+                AElectivity(1 + ColPoint, 0) = Core.EcoPathGroupOutputs(x).Index
                 ColPoint += 1
             End If
         Next
 
         'Write body of data
-        For Row = 1 To m_core.nGroups
-            AElectivity(0, Row) = m_core.EcoPathGroupOutputs(Row).Index
-            AElectivity(1, Row) = m_core.EcoPathGroupOutputs(Row).Name
+        For Row = 1 To Core.nGroups
+            AElectivity(0, Row) = Core.EcoPathGroupOutputs(Row).Index
+            AElectivity(1, Row) = Core.EcoPathGroupOutputs(Row).Name
 
-            For Col = 1 To m_core.nGroups
-                If m_core.EcoPathGroupOutputs(Col).PP < 1 Then
-                    AElectivity(1 + Col, Row) = m_core.EcoPathGroupOutputs(Col).Alpha(Row)
+            For Col = 1 To Core.nGroups
+                If Core.EcoPathGroupOutputs(Col).PP < 1 Then
+                    AElectivity(1 + Col, Row) = Core.EcoPathGroupOutputs(Col).Alpha(Row)
                 End If
             Next
         Next
@@ -2024,10 +2047,10 @@ Public Class frmResults
     Private Sub CreateInitFishingQuantitiesCSV()
 
         Dim TotalCatchGroup As Single
-        Dim TotalCatchFleet(m_core.nFleets - 1) As Single
+        Dim TotalCatchFleet(Core.nFleets - 1) As Single
         Dim TotalTotalCatch As Single = 0
         Dim TTCatch As Single = 0
-        Dim RowVals(m_core.nFleets - 1) As Single
+        Dim RowVals(Core.nFleets - 1) As Single
         Dim RowPoint As Integer = 1
         Dim sourceGrpIntput As cCoreInputOutputBase = Nothing
         Dim sourceGrpIntputSec As cCoreInputOutputBase = Nothing
@@ -2042,31 +2065,31 @@ Public Class frmResults
         Dim AllQuantities As Single = 0
         Dim AllQuantitiesTTLX As Single = 0
 
-        Dim AInitFishQuant(2 + m_core.nFleets, m_core.nGroups + 1) As Object
+        Dim AInitFishQuant(2 + Core.nFleets, Core.nGroups + 1) As Object
         Dim InitFishQuant As New cDataSheet
 
         'Write column headings
         AInitFishQuant(1, 0) = "Group Name"
-        For x = 1 To m_core.nFleets
-            AInitFishQuant(1 + x, 0) = m_core.FleetInputs(x).Name
+        For x = 1 To Core.nFleets
+            AInitFishQuant(1 + x, 0) = Core.FleetInputs(x).Name
         Next
-        AInitFishQuant(2 + m_core.nFleets, 0) = "Total catch"
+        AInitFishQuant(2 + Core.nFleets, 0) = "Total catch"
 
         'Write body of data
-        For xGroup = 1 To m_core.nGroups
+        For xGroup = 1 To Core.nGroups
             TotalCatchGroup = 0
-            For Col = 1 To m_core.nFleets
-                RowVals(Col - 1) = m_core.FleetInputs(Col).Landings(xGroup) + m_core.FleetInputs(Col).Discards(xGroup)
-                TotalCatchGroup += m_core.FleetInputs(Col).Landings(xGroup) + m_core.FleetInputs(Col).Discards(xGroup)
-                TotalCatchFleet(Col - 1) += m_core.FleetInputs(Col).Landings(xGroup) + m_core.FleetInputs(Col).Discards(xGroup)
+            For Col = 1 To Core.nFleets
+                RowVals(Col - 1) = Core.FleetInputs(Col).Landings(xGroup) + Core.FleetInputs(Col).Discards(xGroup)
+                TotalCatchGroup += Core.FleetInputs(Col).Landings(xGroup) + Core.FleetInputs(Col).Discards(xGroup)
+                TotalCatchFleet(Col - 1) += Core.FleetInputs(Col).Landings(xGroup) + Core.FleetInputs(Col).Discards(xGroup)
             Next
             If TotalCatchGroup > 0 Then
-                AInitFishQuant(0, RowPoint) = m_core.EcoPathGroupOutputs(xGroup).Index
-                AInitFishQuant(1, RowPoint) = m_core.EcoPathGroupOutputs(xGroup).Name
-                For Col = 0 To m_core.nFleets - 1
+                AInitFishQuant(0, RowPoint) = Core.EcoPathGroupOutputs(xGroup).Index
+                AInitFishQuant(1, RowPoint) = Core.EcoPathGroupOutputs(xGroup).Name
+                For Col = 0 To Core.nFleets - 1
                     AInitFishQuant(2 + Col, RowPoint) = RowVals(Col)
                 Next
-                AInitFishQuant(2 + m_core.nFleets, RowPoint) = TotalCatchGroup
+                AInitFishQuant(2 + Core.nFleets, RowPoint) = TotalCatchGroup
                 RowPoint += 1
             End If
 
@@ -2074,34 +2097,34 @@ Public Class frmResults
 
         'Write the total line on the bottom
         AInitFishQuant(1, RowPoint) = "Total catch"
-        For Col = 0 To m_core.nFleets - 1
+        For Col = 0 To Core.nFleets - 1
             AInitFishQuant(2 + Col, RowPoint) = TotalCatchFleet(Col)
             TTCatch += TotalCatchFleet(Col)
         Next
-        AInitFishQuant(2 + m_core.nFleets, RowPoint) = TTCatch
+        AInitFishQuant(2 + Core.nFleets, RowPoint) = TTCatch
         RowPoint += 1
 
         'Write the trophic level line at bottom
         AInitFishQuant(1, RowPoint) = "Trophic Level"
 
-        For fleetIndex As Integer = 1 To m_core.nFleets
+        For fleetIndex As Integer = 1 To Core.nFleets
 
             FleetQuantities = 0
             FleetQuantitiesTTLX = 0
 
-            For GrpIndex As Integer = 1 To m_core.nGroups
+            For GrpIndex As Integer = 1 To Core.nGroups
 
                 'Reset for each row
                 Quantities = 0
                 QuantitiesTTLX = 0
 
                 'Calculate Quantity for each group
-                propLandings = m_core.FleetInputs(fleetIndex).Landings(GrpIndex)
-                propDiscards = m_core.FleetInputs(fleetIndex).Discards(GrpIndex)
+                propLandings = Core.FleetInputs(fleetIndex).Landings(GrpIndex)
+                propDiscards = Core.FleetInputs(fleetIndex).Discards(GrpIndex)
                 Quantities = (propLandings + propDiscards)
 
                 'Get trophic level of group and multiply by quanity
-                propTTLX = m_core.EcoPathGroupOutputs(GrpIndex).TTLX
+                propTTLX = Core.EcoPathGroupOutputs(GrpIndex).TTLX
                 QuantitiesTTLX = Quantities * propTTLX
 
                 'Keep running total of quanities and quantities*TTLX for each column
@@ -2116,7 +2139,7 @@ Public Class frmResults
 
         Next
 
-        AInitFishQuant(2 + m_core.nFleets, RowPoint) = AllQuantitiesTTLX / AllQuantities
+        AInitFishQuant(2 + Core.nFleets, RowPoint) = AllQuantitiesTTLX / AllQuantities
 
         'Setup data sheet and send to data outputter
         InitFishQuant.Name = "InitFishingQuantities"
@@ -2128,7 +2151,7 @@ Public Class frmResults
 
     Private Sub CreateInitFishingValuesCSV()
         Dim y As Integer = 0
-        Dim AInitFishVals(4 + m_core.nFleets, m_core.nGroups + 3) As Object
+        Dim AInitFishVals(4 + Core.nFleets, Core.nGroups + 3) As Object
         Dim InitFishVals As New cDataSheet
 
         Dim ValueFleetGroup As Single
@@ -2138,91 +2161,91 @@ Public Class frmResults
         Dim NonMarketValueSum As Single
         Dim TotalValueSum As Single
 
-        Dim TotalValueFleet(m_core.nFleets) As Single
-        Dim TotalCostFleet(m_core.nFleets) As Single
+        Dim TotalValueFleet(Core.nFleets) As Single
+        Dim TotalCostFleet(Core.nFleets) As Single
         Dim TotalProfitFleet As Single
 
         'Write column headings for fleets
         AInitFishVals(1, y) = "Group Names"
-        For x = 1 To m_core.nFleets
-            AInitFishVals(1 + x, y) = m_core.FleetInputs(x).Name
+        For x = 1 To Core.nFleets
+            AInitFishVals(1 + x, y) = Core.FleetInputs(x).Name
         Next
 
-        AInitFishVals(2 + m_core.nFleets, y) = "Catch Value"
-        AInitFishVals(3 + m_core.nFleets, y) = "Non-market value(" & m_core.EwEModel.UnitMonetary.ToString & ")"
-        AInitFishVals(4 + m_core.nFleets, y) = "Total Value(" & m_core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(2 + Core.nFleets, y) = "Catch Value"
+        AInitFishVals(3 + Core.nFleets, y) = "Non-market value(" & Core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(4 + Core.nFleets, y) = "Total Value(" & Core.EwEModel.UnitMonetary.ToString & ")"
 
         'Write body of data
-        For Row = 1 To m_core.nGroups
+        For Row = 1 To Core.nGroups
             y += 1
 
             'Write Group Name
-            AInitFishVals(0, y) = m_core.EcoPathGroupOutputs(Row).Index
-            AInitFishVals(1, y) = m_core.EcoPathGroupOutputs(Row).Name
+            AInitFishVals(0, y) = Core.EcoPathGroupOutputs(Row).Index
+            AInitFishVals(1, y) = Core.EcoPathGroupOutputs(Row).Name
 
             'Reset totals(last 3 columns) to zero for start of each row
             MarketValueSum = 0
             NonMarketValueSum = 0
             TotalValueSum = 0
 
-            For Col = 1 To m_core.nFleets
-                ValueFleetGroup = m_core.FleetInputs(Col).Landings(Row) * m_core.FleetInputs(Col).OffVesselPrice(Row)
+            For Col = 1 To Core.nFleets
+                ValueFleetGroup = Core.FleetInputs(Col).Landings(Row) * Core.FleetInputs(Col).OffVesselPrice(Row)
                 AInitFishVals(1 + Col, y) = ValueFleetGroup
                 MarketValueSum += ValueFleetGroup
                 TotalValueFleet(Col) += ValueFleetGroup
             Next
 
             'Calculate the sum for all fleets of the Non-market value
-            NonMarketValueSum = m_core.EcoPathGroupInputs(Row).NonMarketValue * _
-                m_core.EcoPathGroupOutputs(m_core.EcoPathGroupInputs(Row).Index).Biomass
+            NonMarketValueSum = Core.EcoPathGroupInputs(Row).NonMarketValue * _
+                Core.EcoPathGroupOutputs(Core.EcoPathGroupInputs(Row).Index).Biomass
             'Calculate the value total value for all fleets
             TotalValueSum = MarketValueSum + NonMarketValueSum
 
             'Fill last three columns of row
-            AInitFishVals(2 + m_core.nFleets, y) = MarketValueSum
-            AInitFishVals(3 + m_core.nFleets, y) = NonMarketValueSum
-            AInitFishVals(4 + m_core.nFleets, y) = TotalValueSum
+            AInitFishVals(2 + Core.nFleets, y) = MarketValueSum
+            AInitFishVals(3 + Core.nFleets, y) = NonMarketValueSum
+            AInitFishVals(4 + Core.nFleets, y) = TotalValueSum
 
         Next
 
         y += 1
 
         'Output total value for each fleet
-        AInitFishVals(1, y) = "Total Value(" & m_core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(1, y) = "Total Value(" & Core.EwEModel.UnitMonetary.ToString & ")"
         MarketValueSum = 0
-        For col = 1 To m_core.nFleets
+        For col = 1 To Core.nFleets
             AInitFishVals(1 + col, y) = TotalValueFleet(col)
             MarketValueSum += TotalValueFleet(col)
         Next
-        AInitFishVals(2 + m_core.nFleets, y) = MarketValueSum
+        AInitFishVals(2 + Core.nFleets, y) = MarketValueSum
 
         y += 1
 
         'Output total cost for each fleet
-        AInitFishVals(1, y) = "Total Cost(" & m_core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(1, y) = "Total Cost(" & Core.EwEModel.UnitMonetary.ToString & ")"
         MarketValueSum = 0
-        For Col = 1 To m_core.nFleets
-            SumFixedCPUESailCost = m_core.FleetInputs(Col).FixedCost + _
-                                    m_core.FleetInputs(Col).CPUECost + _
-                                    m_core.FleetInputs(Col).SailCost
+        For Col = 1 To Core.nFleets
+            SumFixedCPUESailCost = Core.FleetInputs(Col).FixedCost + _
+                                    Core.FleetInputs(Col).CPUECost + _
+                                    Core.FleetInputs(Col).SailCost
             TotalCostFleet(Col) = SumFixedCPUESailCost * TotalValueFleet(Col) * CSng(0.01)
             MarketValueSum += TotalCostFleet(Col)
             AInitFishVals(1 + Col, y) = TotalCostFleet(Col)
 
         Next
-        AInitFishVals(2 + m_core.nFleets, y) = MarketValueSum
+        AInitFishVals(2 + Core.nFleets, y) = MarketValueSum
 
         y += 1
 
         'Output profit row
-        AInitFishVals(1, y) = "Total Profit(" & m_core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(1, y) = "Total Profit(" & Core.EwEModel.UnitMonetary.ToString & ")"
         MarketValueSum = 0
-        For Col = 1 To m_core.nFleets
+        For Col = 1 To Core.nFleets
             TotalProfitFleet = TotalValueFleet(Col) - TotalCostFleet(Col)
             MarketValueSum += TotalProfitFleet
             AInitFishVals(1 + Col, y) = TotalProfitFleet
         Next
-        AInitFishVals(2 + m_core.nFleets, y) = MarketValueSum
+        AInitFishVals(2 + Core.nFleets, y) = MarketValueSum
 
         'Setup datasheet and send to data outputter
         InitFishVals.Name = "InitFishingValues"
@@ -2232,27 +2255,27 @@ Public Class frmResults
     End Sub
 
     Private Sub CreateSearchRatesCSV()
-        Dim ASearchRates(1 + m_core.nGroups, m_core.nGroups) As Object
+        Dim ASearchRates(1 + Core.nGroups, Core.nGroups) As Object
         Dim SearchRates As New cDataSheet
         Dim ColPointer As Integer = 1
 
         'Write column headings
         ASearchRates(1, 0) = "Prey \ predator"
-        For x = 1 To m_core.nGroups
-            If m_core.EcoPathGroupOutputs(x).PP < 1 Then
-                ASearchRates(ColPointer + 1, 0) = m_core.EcoPathGroupOutputs(x).Index
+        For x = 1 To Core.nGroups
+            If Core.EcoPathGroupOutputs(x).PP < 1 Then
+                ASearchRates(ColPointer + 1, 0) = Core.EcoPathGroupOutputs(x).Index
                 ColPointer += 1
             End If
         Next
 
         'Write body of data
-        For Row = 1 To m_core.nGroups
+        For Row = 1 To Core.nGroups
             ColPointer = 1
-            ASearchRates(0, Row) = m_core.EcoPathGroupOutputs(Row).Index
-            ASearchRates(1, Row) = m_core.EcoPathGroupOutputs(Row).Name
-            For x = 1 To m_core.nGroups
-                If m_core.EcoPathGroupOutputs(x).PP < 1 Then
-                    ASearchRates(1 + ColPointer, Row) = m_core.EcoPathGroupOutputs(Row).SearchRate(x)
+            ASearchRates(0, Row) = Core.EcoPathGroupOutputs(Row).Index
+            ASearchRates(1, Row) = Core.EcoPathGroupOutputs(Row).Name
+            For x = 1 To Core.nGroups
+                If Core.EcoPathGroupOutputs(x).PP < 1 Then
+                    ASearchRates(1 + ColPointer, Row) = Core.EcoPathGroupOutputs(Row).SearchRate(x)
                     ColPointer += 1
                 End If
             Next
@@ -2509,7 +2532,7 @@ Public Class frmResults
 
         'set delegate to next stage and load next form
         NextAction = AddressOf Me.PreyPredStage
-        Dim a As New frmSelectPredatorPrey(PredatorPreySelection, m_core)
+        Dim a As New frmSelectPredatorPrey(PredatorPreySelection, Core)
         a.Show()
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
 
@@ -2535,7 +2558,7 @@ Public Class frmResults
 
         'set delegate to next stage and load next form
         NextAction = AddressOf Me.FleetPreyStage
-        Dim a As New frmSelectPreyPredator(PreyPredatorSelection, m_core)
+        Dim a As New frmSelectPreyPredator(PreyPredatorSelection, Core)
         a.Show()
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
 
@@ -2561,7 +2584,7 @@ Public Class frmResults
 
         'set delegate to next stage and load next form
         NextAction = AddressOf Me.FleetOnlyStage
-        Dim a As New frmSelectFleetPrey(FleetPreySelection, m_core)
+        Dim a As New frmSelectFleetPrey(FleetPreySelection, Core)
         a.Show()
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
 
@@ -2588,7 +2611,7 @@ Public Class frmResults
 
         'set delegate to next stage and load next form
         NextAction = AddressOf Me.EcoPathValuesStage
-        Dim a As New frmSelectFleetOnly(FleetOnlySelection, m_core)
+        Dim a As New frmSelectFleetOnly(FleetOnlySelection, Core)
         a.Show()
         AddHandler a.FormExited, AddressOf ValidateObjectCreated
 

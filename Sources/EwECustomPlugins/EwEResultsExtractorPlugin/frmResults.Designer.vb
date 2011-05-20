@@ -1,7 +1,7 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmResults
-
     Inherits WeifenLuo.WinFormsUI.Docking.DockContent
+
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -23,7 +23,6 @@ Partial Class frmResults
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmResults))
-        Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.chkBiomass = New System.Windows.Forms.CheckBox
         Me.chkConsumption = New System.Windows.Forms.CheckBox
         Me.chkBiomassInteg = New System.Windows.Forms.CheckBox
@@ -754,7 +753,6 @@ Partial Class frmResults
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents FolderBrowserDialog1 As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents chkBiomass As System.Windows.Forms.CheckBox
     Friend WithEvents chkConsumption As System.Windows.Forms.CheckBox
     Friend WithEvents chkBiomassInteg As System.Windows.Forms.CheckBox

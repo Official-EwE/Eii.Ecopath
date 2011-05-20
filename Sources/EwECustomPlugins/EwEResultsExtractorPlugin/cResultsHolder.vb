@@ -1,4 +1,5 @@
 ﻿Imports EwECore
+Imports ScientificInterfaceShared.Controls
 
 
 Public Class cResultsHolder
@@ -11,19 +12,20 @@ Public Class cResultsHolder
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.ICorePlugin
 
-    Private ResultsForm As frmResults
-    Private m_core As cCore
-    Private mTimeSeries As cTimeSeriesDataStructures
-    Private mDataStructure As cEcosimDatastructures
+    Implements EwEPlugin.IUIContextPlugin
+
+    Private ResultsForm As frmResults = Nothing
+    Private m_core As cCore = Nothing
+    Private m_uic As cUIContext = Nothing
+    Private mTimeSeries As cTimeSeriesDataStructures = Nothing
+    Private mDataStructure As cEcosimDatastructures = Nothing
     Private ZStat(,) As Single
     Private DatSumZ() As Single
     Private DatNobs() As Single
     Private DataQ() As Single
     Private logdiff(,) As Single
     Private sumSS() As Single
-    Private mEcosimModel As Ecosim.cEcoSimModel
-
-
+    Private mEcosimModel As Ecosim.cEcoSimModel = Nothing
 
     Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
@@ -49,16 +51,18 @@ Public Class cResultsHolder
         End Get
     End Property
 
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+        Implements EwEPlugin.IGUIPlugin.OnControlClick
 
-        If ResultsForm Is Nothing Then
-            ResultsForm = New frmResults
-            ResultsForm.Initialize(m_core)
-            ResultsForm.StartForm(sender, e, frmPlugin, logdiff, mTimeSeries, mEcosimModel)
+        Dim bHasForm As Boolean = False
+
+        If ResultsForm IsNot Nothing Then
+            bHasForm = Not ResultsForm.IsDisposed
         End If
-        If ResultsForm IsNot Nothing And ResultsForm.IsDisposed Then
+
+        If Not bHasForm Then
             ResultsForm = New frmResults
-            ResultsForm.Initialize(m_core)
+            ResultsForm.Initialize(m_uic)
             ResultsForm.StartForm(sender, e, frmPlugin, logdiff, mTimeSeries, mEcosimModel)
         End If
 
@@ -201,6 +205,10 @@ Public Class cResultsHolder
 
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         mEcosimModel = objEcoSim
+    End Sub
+
+    Public Sub UIContext(ByVal uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+        Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
 End Class
