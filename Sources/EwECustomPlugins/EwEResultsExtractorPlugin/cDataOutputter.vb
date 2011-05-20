@@ -101,7 +101,7 @@ Public Class cDataOutputer
         If mFunctionalGroupData.Count > 0 Then
             For Each i In mFunctionalGroupData
                 fileName = i.Name & CurrentTime & ".csv"
-                Dim sw As StreamWriter = New StreamWriter(mStrPath & "\" & fileName, False)
+                Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Array)
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
@@ -119,7 +119,7 @@ Public Class cDataOutputer
         If mFisheriesData.Count > 0 Then
             For Each i In mFisheriesData
                 fileName = i.Name & CurrentTime & ".csv"
-                Dim sw As StreamWriter = New StreamWriter(mStrPath & "\" & fileName, False)
+                Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Array)
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
@@ -137,7 +137,7 @@ Public Class cDataOutputer
         If mIndicators.Count > 0 Then
             For Each i In mIndicators
                 fileName = i.Name & CurrentTime & ".csv"
-                Dim sw As StreamWriter = New StreamWriter(mStrPath & "\" & fileName, False)
+                Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Array)
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
@@ -155,7 +155,7 @@ Public Class cDataOutputer
         If mDiagnostics.Count > 0 Then
             For Each i In mDiagnostics
                 fileName = i.Name & CurrentTime & ".csv"
-                Dim sw As StreamWriter = New StreamWriter(mStrPath & "\" & fileName, False)
+                Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Array)
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
@@ -205,7 +205,7 @@ Public Class cDataOutputer
                     Next
                 Next
             Next
-            FunctionalWB.SaveAs(mStrPath & "\" & fileName)
+            FunctionalWB.SaveAs(Path.Combine(mStrPath, fileName))
 
         End If
 
@@ -222,7 +222,7 @@ Public Class cDataOutputer
                     Next
                 Next
             Next
-            FisheriesWB.SaveAs(mStrPath & "\" & fileName)
+            FisheriesWB.SaveAs(Path.Combine(mStrPath, fileName))
         End If
 
         If mIndicators.Count > 0 Then
@@ -238,7 +238,7 @@ Public Class cDataOutputer
                     Next
                 Next
             Next
-            IndicatorsWB.SaveAs(mStrPath & "\" & fileName)
+            IndicatorsWB.SaveAs(Path.Combine(mStrPath, fileName))
         End If
 
         If mDiagnostics.Count > 0 Then
@@ -254,7 +254,7 @@ Public Class cDataOutputer
                     Next
                 Next
             Next
-            DiagnosticsWB.SaveAs(mStrPath & "\" & fileName)
+            DiagnosticsWB.SaveAs(Path.Combine(mStrPath, fileName))
         End If
 
         FunctionalWB = Nothing
