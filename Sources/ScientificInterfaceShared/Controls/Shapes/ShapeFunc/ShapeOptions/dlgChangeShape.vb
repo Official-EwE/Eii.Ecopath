@@ -66,15 +66,15 @@ Namespace Controls
             Handles MyBase.Load
 
             Me.CenterToParent()
-
+            'jb 24-May-11 removed data validation to fix ticket 975
             Me.m_fpYZero = New cEwEFormatProvider(Me.m_uic, Me.m_txbYZero, GetType(Single))
-            Me.m_fpYZero.Value = Math.Max(0, Me.m_shape.YZero)
+            Me.m_fpYZero.Value = Me.m_shape.YZero 'Math.Max(0, Me.m_shape.YZero)
 
             Me.m_fpYBase = New cEwEFormatProvider(Me.m_uic, Me.m_txbYBase, GetType(Single))
-            Me.m_fpYBase.Value = CSng(IIf(Me.m_shape.YBase <= 0, 0.5!, Me.m_shape.YBase))
+            Me.m_fpYBase.Value = Me.m_shape.YBase 'CSng(IIf(Me.m_shape.YBase <= 0, 0.5!, Me.m_shape.YBase))
 
             Me.m_fpYEnd = New cEwEFormatProvider(Me.m_uic, Me.m_txbYEnd, GetType(Single))
-            Me.m_fpYEnd.Value = CSng(IIf(Me.m_shape.YEnd <= 0, 1.0!, Me.m_shape.YEnd))
+            Me.m_fpYEnd.Value = Me.m_shape.YEnd 'CSng(IIf(Me.m_shape.YEnd < 0, 1.0!, Me.m_shape.YEnd))
 
             Me.m_fpSteep = New cEwEFormatProvider(Me.m_uic, Me.m_txbSteep, GetType(Single))
             Me.m_fpSteep.Value = CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
