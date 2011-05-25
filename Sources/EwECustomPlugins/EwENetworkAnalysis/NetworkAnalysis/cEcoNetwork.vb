@@ -3950,10 +3950,10 @@ NextPivot:
                 SimCatch(i) = BB(i) * m_esdata.FishTime(i)
                 BEmig = m_epdata.Emig(i) * BB(i)
 
-                ' SimEE(i) = 1 - (m_esdata.loss(i) - m_esdata.Eatenof(i) - SimCatch(i)) / (SimPB(i) * BB(i))
                 'ToDo_jb 5-Jan-2010 NetworkAnalysis PrepareUlanowForCallFromEcosim calculation of simEE uses fishtime() as catch
                 'm_esdata.FishTime(i) is a rate not an amount it should use SimCatch() BB(i) * m_esdata.FishTime(i)
-                SimEE(i) = 1 - (m_esdata.loss(i) - m_esdata.Eatenof(i) - m_esdata.FishTime(i)) / (SimPB(i) * BB(i))
+                ' SimEE(i) = 1 - (m_esdata.loss(i) - m_esdata.Eatenof(i) - m_esdata.FishTime(i)) / (SimPB(i) * BB(i))
+                SimEE(i) = 1 - (m_esdata.loss(i) - m_esdata.Eatenof(i) - SimCatch(i)) / (SimPB(i) * BB(i))
 
                 If m_epdata.PP(i) < 1 Then 'only for consumers
                     If m_epdata.GE(i) > 0 Then SimQB(i) = SimPB(i) / m_epdata.GE(i)
