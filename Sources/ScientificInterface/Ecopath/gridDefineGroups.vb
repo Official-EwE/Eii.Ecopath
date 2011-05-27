@@ -1526,15 +1526,17 @@ Public Class gridDefineGroups
     ''' -----------------------------------------------------------------------
     Private Function GetStanzaNames() As String()
 
-        Dim astrStanzaNames(Me.m_lsiStanza.Count) As String
+        Dim lstrStanzaNames As New List(Of String)
         Dim si As cStanzaInfo = Nothing
 
-        astrStanzaNames(0) = sNO_STANZA
+        lstrStanzaNames.Add(sNO_STANZA)
         For i As Integer = 0 To Me.m_lsiStanza.Count - 1
             si = DirectCast(Me.m_lsiStanza(i), cStanzaInfo)
-            astrStanzaNames(i + 1) = si.Name
+            If lstrStanzaNames.IndexOf(si.Name) = -1 Then
+                lstrStanzaNames.Add(si.Name)
+            End If
         Next
-        Return astrStanzaNames
+        Return lstrStanzaNames.ToArray
 
     End Function
 
@@ -1922,11 +1924,11 @@ Public Class gridDefineGroups
                 iStanza += 1
             End While
 
-            ' Add new stanza configurations
+            ' Add new stanza configurations that have groups assigned
             iStanza = 0
             While (bSuccess = True) And (iStanza < Me.m_lsiStanza.Count)
                 si = DirectCast(Me.m_lsiStanza(iStanza), cStanzaInfo)
-                If (si.IsNew()) Then
+                If (si.IsNew() And si.NumGroups > 0) Then
                     Dim iStanzaID As Integer = -1
                     Dim aiGroupID() As Integer
                     Dim aiStartAge() As Integer
