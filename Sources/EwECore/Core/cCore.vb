@@ -5361,7 +5361,6 @@ Public Class cCore
         Dim groupCascade As cEcoPathGroupInput = Nothing
         Dim bAllowValidationOrg As Boolean = False
         Dim iStanza As Integer = Me.getStanzaIndexForGroup(group.Index)
-        Dim bIsFished As Boolean
 
         Debug.Assert(iStanza = group.iStanza)
 
@@ -5369,21 +5368,11 @@ Public Class cCore
         If (iStanza < 0) Then Return
 
         For iGroup As Integer = 1 To Me.nGroups
-            bIsFished = False
 
             groupCascade = Me.EcoPathGroupInputs(iGroup)
-
             Debug.Assert(Me.getStanzaIndexForGroup(iGroup) = groupCascade.iStanza)
 
-            For iFleet As Integer = 1 To Me.nFleets
-                If (Me.m_EcoPathData.Landing(iFleet, iGroup) + _
-                    Me.m_EcoPathData.Discard(iFleet, iGroup)) > 0 Then
-                    bIsFished = True
-                    Exit For
-                End If
-            Next
-
-            If (iGroup <> group.Index) And (Me.getStanzaIndexForGroup(iGroup) = iStanza) And bIsFished Then
+            If (iGroup <> group.Index) And (Me.getStanzaIndexForGroup(iGroup) = iStanza) And groupCascade.IsFished Then
 
                 bAllowValidationOrg = groupCascade.AllowValidation
                 groupCascade.AllowValidation = False
