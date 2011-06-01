@@ -78,7 +78,7 @@ Friend Class cMSEPlotter
     Private m_Data As List(Of cCoreGroupBase)
     Private m_RefPoints As List(Of cMSERefPoint)
     Private m_nLines As Integer
-    Private m_isFished() As Boolean
+    'Private m_isFished() As Boolean
 
 #End Region
 
@@ -100,7 +100,7 @@ Friend Class cMSEPlotter
         Me.m_zdGraph = ZedGraph
         Me.m_manager = MSEManager
 
-        Me.getIsFished()
+        'Me.getIsFished()
 
         Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, Me.nVisPanes)
 
@@ -152,16 +152,16 @@ Friend Class cMSEPlotter
         End Set
     End Property
 
-    Private ReadOnly Property isFished(ByVal GroupIndex As Integer) As Boolean
-        Get
-            Try
-                Return Me.m_isFished(GroupIndex)
-            Catch ex As Exception
-                'swallow it...
-            End Try
-            Return False
-        End Get
-    End Property
+    'Private ReadOnly Property isFished(ByVal GroupIndex As Integer) As Boolean
+    '    Get
+    '        Try
+    '            Return Me.m_isFished(GroupIndex)
+    '        Catch ex As Exception
+    '            'swallow it...
+    '        End Try
+    '        Return False
+    '    End Get
+    'End Property
 
 
     Public Sub Clear()
@@ -399,7 +399,8 @@ Friend Class cMSEPlotter
                 Return True
             End If
 
-            If Me.m_dataType = ePlotData.GroupCatch And Me.isFished(GroupIndex) Then
+            Dim grp As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(GroupIndex)
+            If Me.m_dataType = ePlotData.GroupCatch And grp.IsFished Then
                 'For ePlotData.GroupCatch only fished groups are visible
                 Return True
             End If
@@ -849,34 +850,34 @@ Friend Class cMSEPlotter
 
     End Function
 
-    Private Sub getIsFished()
+    'Private Sub getIsFished()
 
-        Try
+    '    Try
 
-            Dim core As cCore = Me.m_uic.Core
-            Dim ngrps As Integer = core.GetCoreCounter(eCoreCounterTypes.nGroups)
-            Dim nflts As Integer = core.GetCoreCounter(eCoreCounterTypes.nFleets)
-            Dim fleetIO As cFleetInput
-            Dim tc As Single
+    '        Dim core As cCore = Me.m_uic.Core
+    '        Dim ngrps As Integer = core.GetCoreCounter(eCoreCounterTypes.nGroups)
+    '        Dim nflts As Integer = core.GetCoreCounter(eCoreCounterTypes.nFleets)
+    '        Dim fleetIO As cFleetInput
+    '        Dim tc As Single
 
-            ReDim Me.m_isFished(ngrps)
-            For iflt As Integer = 1 To nflts
-                fleetIO = core.FleetInputs(iflt)
-                For igrp As Integer = 1 To ngrps
-                    tc = fleetIO.Discards(igrp) + fleetIO.Landings(igrp)
-                    If tc > 0 Then
-                        Me.m_isFished(igrp) = True
-                        Exit For
-                    End If
-                Next
-            Next
+    '        ReDim Me.m_isFished(ngrps)
+    '        For iflt As Integer = 1 To nflts
+    '            fleetIO = core.FleetInputs(iflt)
+    '            For igrp As Integer = 1 To ngrps
+    '                tc = fleetIO.Discards(igrp) + fleetIO.Landings(igrp)
+    '                If tc > 0 Then
+    '                    Me.m_isFished(igrp) = True
+    '                    Exit For
+    '                End If
+    '            Next
+    '        Next
 
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".getIsFished() Exception: " & ex.Message)
-            cLog.Write(ex)
-        End Try
+    '    Catch ex As Exception
+    '        Debug.Assert(False, Me.ToString & ".getIsFished() Exception: " & ex.Message)
+    '        cLog.Write(ex)
+    '    End Try
 
-    End Sub
+    'End Sub
 
 #End Region
 
