@@ -2263,12 +2263,13 @@ Namespace Core
     ''' ---------------------------------------------------------------------------
     Public Enum eForcingFunctionApplication
         NotSet = 0
-        ProductionRate = 6
         SearchRate = 1
         Vulnerability = 2
         ArenaArea = 3
         VulAndArea = 4
         OffVesselPrice = 5
+        ''' <summary>Production rate and search rate are synonymous</summary>
+        ProductionRate = SearchRate
     End Enum
 
 #End Region ' Forcing function application targets
