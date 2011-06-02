@@ -12227,21 +12227,21 @@ Public Class cCore
                     ElseIf obj.DataType = eDataTypes.Mediation Then
                         Me.m_EcoSim.InitializeMedFunctions()
                     End If
-                    Me.m_publisher.AddMessage(New cMessage("Mediation shape has changed", eMessageType.DataModified, obj.CoreComponent, eMessageImportance.Maintenance, obj.DataType))
+                    Me.m_publisher.AddMessage(New cMessage("Mediation shape has changed", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
 
                 Case eDataTypes.PredPreyInteraction
-                    Me.m_publisher.AddMessage(New cMessage("PredPrey interactions changed.", eMessageType.DataModified, eCoreComponentType.MediatedInteractionManager, eMessageImportance.Maintenance))
+                    Me.m_publisher.AddMessage(New cMessage("PredPrey interactions changed.", TypeOfChange, eCoreComponentType.MediatedInteractionManager, eMessageImportance.Maintenance))
 
                 Case eDataTypes.LandingInteraction
-                    Me.m_publisher.AddMessage(New cMessage("Landings interactions changed.", eMessageType.DataModified, eCoreComponentType.MediatedInteractionManager, eMessageImportance.Maintenance))
+                    Me.m_publisher.AddMessage(New cMessage("Landings interactions changed.", TypeOfChange, eCoreComponentType.MediatedInteractionManager, eMessageImportance.Maintenance))
 
-                Case eDataTypes.Forcing, eDataTypes.EggProd, eDataTypes.Mediation
+                Case eDataTypes.Forcing, eDataTypes.EggProd
 
                     If (obj.DataType = eDataTypes.Forcing Or obj.DataType = eDataTypes.EggProd) Then
 
-                        If TypeOfChange = eMessageType.DataAddedOrRemoved Then
-                            'If a Forcing or EggProd object was added/removed then both these managers need to reload their data 
-                            'as they share the same array data
+                        If (TypeOfChange = eMessageType.DataAddedOrRemoved) Then
+                            ' Special case: If a Forcing or EggProd object was added/removed then both these 
+                            '               managers need to reload their data as they share the same array data
                             manager = m_ShapeManagers.Item(eDataTypes.EggProd)
                             manager.Load()
 
@@ -12260,21 +12260,6 @@ Public Class cCore
                         ' Only send out ONE message
                         Me.m_publisher.AddMessage(New cMessage("Shape modified.", eMessageType.DataModified, _
                                      eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
-                    End If
-
-                    If (obj.DataType = eDataTypes.Forcing Or obj.DataType = eDataTypes.Mediation) Then
-
-                        'if the mediation or forcing manager has added or removed a shape
-                        'then the Pred/Prey interaction manager PPIManager needs to reload all its data
-                        'this is brute force
-                        If TypeOfChange = eMessageType.DataAddedOrRemoved Then
-                            m_MediatedInteractionManager.Init()
-                            m_MediatedInteractionManager.Load()
-
-                            Me.m_publisher.AddMessage(New cMessage("PPI manager reloaded data.", eMessageType.DataModified, _
-                                                eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.PredPreyInteraction))
-                        End If
-
                     End If
 
                 Case eDataTypes.FishMort
