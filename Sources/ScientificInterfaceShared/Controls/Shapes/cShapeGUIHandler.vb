@@ -227,7 +227,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>Well, what do YOU think?</returns>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function SketchDrawMode() As eSketchDrawModeTypes
+        Public MustOverride Function SketchDrawMode() As eSketchDrawModeTypes
 
         ''' -------------------------------------------------------------------
         ''' <summary>

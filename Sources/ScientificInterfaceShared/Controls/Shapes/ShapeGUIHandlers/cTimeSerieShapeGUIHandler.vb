@@ -326,7 +326,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The default sketch mode for Time Series shapes.</returns>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function SketchDrawMode() As eSketchDrawModeTypes
+        Public Overrides Function SketchDrawMode() As eSketchDrawModeTypes
             Return eSketchDrawModeTypes.Dots
         End Function
 

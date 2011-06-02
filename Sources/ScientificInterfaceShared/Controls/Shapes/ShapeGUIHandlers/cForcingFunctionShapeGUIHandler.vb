@@ -342,7 +342,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The default sketch mode for forcing functions.</returns>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function SketchDrawMode() As eSketchDrawModeTypes
+        Public Overrides Function SketchDrawMode() As eSketchDrawModeTypes
             Return eSketchDrawModeTypes.Fill
         End Function
 
