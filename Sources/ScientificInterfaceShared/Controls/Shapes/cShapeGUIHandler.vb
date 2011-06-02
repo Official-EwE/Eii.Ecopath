@@ -85,8 +85,6 @@ Namespace Controls
         ''' <summary>Selected <see cref="cShapeData">shapes</see>.</summary>
         Private m_ashapeSelected() As cShapeData = Nothing
 
-        Private m_mhShapes As cMessageHandler = Nothing
-
 #End Region ' Private variables
 
 #Region " Constructor and destructor "
@@ -113,19 +111,13 @@ Namespace Controls
             Me.SketchPad = sp
             Me.SketchPadToolbar = sptb
 
-            Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataModified, Me.m_uic.SyncObject)
-            Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
         End Sub
 
         Public Overridable Sub Detach()
-            Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhShapes)
-            Me.m_mhShapes = Nothing
-
             Me.ShapeToolBox = Nothing
             Me.ShapeToolBoxToolbar = Nothing
             Me.SketchPad = Nothing
             Me.SketchPadToolbar = Nothing
-            'Me.UIContext = Nothing
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -148,7 +140,12 @@ Namespace Controls
         Protected Overridable Sub OnCoreMessage(ByRef mgs As cMessage)
             If Me.Datatypes Is Nothing Then Return
             If Array.IndexOf(Me.Datatypes, mgs.DataType) >= 0 Then
-                Me.Refresh()
+                Try
+                    Me.Refresh()
+                    RaiseEvent OnRefreshed(Me)
+                Catch ex As Exception
+                    cLog.Write(ex)
+                End Try
             End If
         End Sub
 
@@ -240,6 +237,11 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Protected MustOverride Function MinYScale() As Single
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Override to specify the datatypes to respond to in core messages.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Protected MustOverride Function Datatypes() As eDataTypes()
 
         ''' -------------------------------------------------------------------
@@ -412,6 +414,8 @@ Namespace Controls
 #End Region ' Tools
 
 #Region " Public access "
+
+        Public Event OnRefreshed(ByVal sender As cShapeGUIHandler)
 
         Public ReadOnly Property UIContext() As cUIContext
             Get

@@ -30,6 +30,8 @@ Namespace Controls
         Private m_iTSTypeFilter As Integer = 0
         ''' <summary>List of available time series types.</summary>
         Private m_types() As eTimeSeriesType = Nothing
+        ''' <summary>Shape changed core message handler.</summary>
+        Private m_mhShapes As cMessageHandler = Nothing
 
 #Region " Time series type filter "
 
@@ -110,6 +112,19 @@ Namespace Controls
             End If
 
             Me.UpdateShapeList(New cShapeData() {sp.Shape}, eAutoSelectMode.SelectFirstShape)
+
+            Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.DataModified, Me.UIContext.SyncObject)
+            Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.Detach"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub Detach()
+            Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhShapes)
+            Me.m_mhShapes = Nothing
+            MyBase.Detach()
         End Sub
 
         ''' -------------------------------------------------------------------

@@ -24,6 +24,8 @@ Namespace Controls
         Private m_bInUpdate As Boolean = False
         ''' <summary>The FF to distribute.</summary>
         Private m_lShapes As New List(Of cShapeData)
+        ''' <summary>Shape changed core message handler.</summary>
+        Private m_mhShapes As cMessageHandler = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -42,6 +44,19 @@ Namespace Controls
                                     ByVal sptb As ucSketchPadToolbar)
             MyBase.Attach(uic, stb, stbtb, sp, sptb)
             Me.UpdateShapeList()
+
+            Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.DataModified, Me.UIContext.SyncObject)
+            Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.Detach"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub Detach()
+            Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhShapes)
+            Me.m_mhShapes = Nothing
+            MyBase.Detach()
         End Sub
 
 #Region " Forcing overrides "
@@ -122,6 +137,9 @@ Namespace Controls
 
 #Region " Baseclass overrides "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.Datatypes"/>
+        ''' -------------------------------------------------------------------
         Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.Forcing, eDataTypes.EggProd}
         End Function
