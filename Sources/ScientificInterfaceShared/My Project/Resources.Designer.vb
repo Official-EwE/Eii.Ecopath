@@ -81,6 +81,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Annual() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Annual", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property BreakpointHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("BreakpointHS", resourceCulture)
@@ -4954,6 +4961,13 @@ Namespace My.Resources
         Public ReadOnly Property SaveModified() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("SaveModified", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Seasonal() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Seasonal", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
