@@ -5035,6 +5035,15 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Updating, please wait....
+        '''</summary>
+        Public ReadOnly Property STATUS_UPDATING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATING", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property TableHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("TableHS", resourceCulture)

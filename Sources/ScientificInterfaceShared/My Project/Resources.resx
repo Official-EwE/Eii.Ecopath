@@ -2062,4 +2062,7 @@
     <value>Time series '{0}' cannot be enabled. {1}</value>
     <comment>{0}: time series name. {1}: time series status</comment>
   </data>
+  <data name="STATUS_UPDATING" xml:space="preserve">
+    <value>Updating, please wait...</value>
+  </data>
 </root>
