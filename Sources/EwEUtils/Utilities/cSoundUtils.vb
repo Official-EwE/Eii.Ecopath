@@ -1,11 +1,10 @@
 ﻿#Region " Imports "
 
 Imports System.Threading
-Imports Microsoft.Win32
 Imports Microsoft.VisualBasic
-Imports EwEUtils.Win32Api
 Imports EwEUtils.Utilities
 Imports System.Windows.Forms
+Imports Microsoft.Win32
 
 #End Region ' Imports
 
@@ -73,7 +72,7 @@ Namespace Utilities
             End If
 
             If Not String.IsNullOrEmpty(strFileName) Then
-                Winmm.PlaySound(strFileName, 0, Winmm.PlaySoundFlags.SND_FILENAME)
+                My.Computer.Audio.Play(strFileName, AudioPlayMode.Background)
             Else
                 Beep()
             End If
