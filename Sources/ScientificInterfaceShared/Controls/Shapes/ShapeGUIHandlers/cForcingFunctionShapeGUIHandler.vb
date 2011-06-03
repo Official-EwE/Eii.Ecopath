@@ -45,7 +45,7 @@ Namespace Controls
             MyBase.Attach(uic, stb, stbtb, sp, sptb)
             Me.UpdateShapeList()
 
-            Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.DataModified, Me.UIContext.SyncObject)
+            Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.Any, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
 
         End Sub
