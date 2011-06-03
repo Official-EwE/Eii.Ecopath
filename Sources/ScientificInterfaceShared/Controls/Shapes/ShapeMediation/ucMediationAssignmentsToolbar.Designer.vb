@@ -13,21 +13,21 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucMediationAssignmentsToolbar))
-            Me.tsMenus = New ScientificInterfaceShared.Controls.cEwEToolstrip
+            Me.m_tsMenus = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_tsbnDefineMediatingItems = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsbnViewAsBar = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnViewAsPie = New System.Windows.Forms.ToolStripButton
-            Me.tsMenus.SuspendLayout()
+            Me.m_tsMenus.SuspendLayout()
             Me.SuspendLayout()
             '
-            'tsMenus
+            'm_tsMenus
             '
-            resources.ApplyResources(Me.tsMenus, "tsMenus")
-            Me.tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMediatingItems, Me.ToolStripSeparator1, Me.m_tsbnViewAsBar, Me.m_tsbnViewAsPie})
-            Me.tsMenus.Name = "tsMenus"
-            Me.tsMenus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            Me.m_tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMediatingItems, Me.ToolStripSeparator1, Me.m_tsbnViewAsBar, Me.m_tsbnViewAsPie})
+            resources.ApplyResources(Me.m_tsMenus, "m_tsMenus")
+            Me.m_tsMenus.Name = "m_tsMenus"
+            Me.m_tsMenus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbnDefineMediatingItems
             '
@@ -58,17 +58,16 @@ Namespace Controls
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.BackColor = System.Drawing.SystemColors.Control
-            Me.Controls.Add(Me.tsMenus)
+            Me.Controls.Add(Me.m_tsMenus)
             Me.Name = "ucMediationAssignmentsToolbar"
-            Me.tsMenus.ResumeLayout(False)
-            Me.tsMenus.PerformLayout()
+            Me.m_tsMenus.ResumeLayout(False)
+            Me.m_tsMenus.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
         Private WithEvents m_tsbnDefineMediatingItems As System.Windows.Forms.ToolStripButton
-        Private WithEvents tsMenus As cEwEToolstrip
+        Private WithEvents m_tsMenus As cEwEToolstrip
         Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsbnViewAsBar As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnViewAsPie As System.Windows.Forms.ToolStripButton

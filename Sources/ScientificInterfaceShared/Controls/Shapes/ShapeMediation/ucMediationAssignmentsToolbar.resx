@@ -117,13 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="tsMenus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 0</value>
+  <metadata name="m_tsMenus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
   </metadata>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tsMenus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_tsbnDefineMediatingItems.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -155,26 +151,26 @@
   <data name="m_tsbnViewAsPie.Text" xml:space="preserve">
     <value>View as pie chart</value>
   </data>
-  <data name="tsMenus.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tsMenus.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tsMenus.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsMenus.Size" type="System.Drawing.Size, System.Drawing">
     <value>280, 25</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tsMenus.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="m_tsMenus.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;tsMenus.Name" xml:space="preserve">
-    <value>tsMenus</value>
+  <data name="&gt;&gt;m_tsMenus.Name" xml:space="preserve">
+    <value>m_tsMenus</value>
   </data>
-  <data name="&gt;&gt;tsMenus.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.1.1.506, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  <data name="&gt;&gt;m_tsMenus.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.2.0.531, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;tsMenus.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tsMenus.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;tsMenus.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tsMenus.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

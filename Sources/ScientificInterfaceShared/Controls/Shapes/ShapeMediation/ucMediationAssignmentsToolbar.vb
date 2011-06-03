@@ -50,10 +50,10 @@ Namespace Controls
 
         Public Property IsMenuVisible() As Boolean
             Get
-                Return Me.tsMenus.Visible
+                Return Me.m_tsMenus.Visible
             End Get
             Set(ByVal value As Boolean)
-                Me.tsMenus.Visible = value
+                Me.m_tsMenus.Visible = value
             End Set
         End Property
 
