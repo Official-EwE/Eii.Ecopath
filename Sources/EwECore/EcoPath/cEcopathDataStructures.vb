@@ -195,27 +195,27 @@ Public Class cEcopathDataStructures
     Public DetEaten() As Single                 ' For multiple detritus
     Public DetPassedOn() As Single              ' For multiple detritus
     Public DetPassedProp() As Single              ' For multiple detritus
+    ''' <summary>Flow to detritus (x (group + fleet)).</summary>
     Public FlowToDet() As Single
+    ''' <summary>Input to detritus (x group).</summary>
     Public InputToDet() As Single
 
     ''' <summary>Migration into the area covered by the model (t/km²/year)</summary>
     ''' <remarks>Note that migration is not the same as import, refer to the manual for details.</remarks>
     Public Immig() As Single
-    ''' <summary>Emigration out of the area covered by the model (t/km²/year)</summary>
+    ''' <summary>Emigration (per group) out of the area covered by the model (t/km²/year)</summary>
     Public Emigration() As Single
-    ''' <summary>Emigration relative to biomass (ratio)</summary>
+    ''' <summary>Emigration (per group) relative to biomass (ratio)</summary>
     Public Emig() As Single    'relative to biomass, used in Ecosim
     Public Shadow() As Single
-    ''' <summary>States which groups are fishes.</summary>
+    ''' <summary>States which groups are fishes. There is no interface in EwE for this flag, and its function should be replaced by the taxonomy logic</summary>
     Public GroupIsFish() As Boolean
-    ''' <summary>States which groups are invertebrates.</summary>
+    ''' <summary>States which groups are invertebrates. There is no interface in EwE for this flag, and its function should be replaced by the taxonomy logic</summary>
     Public GroupIsInvert() As Boolean
-    ' Public GrpsToShow() As Boolean
     Public PropLanded(,) As Single
-    Public TTLX() As Single    'Trophic levels in Ecopath
+    ''' <summary>Trophic levels in Ecopath.</summary>
+    Public TTLX() As Single
     'Public TLSim() As Single    'These TL's are recalculated for each time step in Ecosim
-    'JS 08Jan09: LHS was a global scratch variable, changed to local scope
-    'Public LHS(,) As Single
     Public NumCatchCodes As Integer = 30
     Public CatchCode(,) As Integer
     Public CVpar(,) As Single
@@ -237,44 +237,52 @@ Public Class cEcopathDataStructures
     ''' <summary> discarded biomass by fleet group </summary>
     Public Discard(,) As Single
     Public DiscardFate(,) As Single
+    ''' <summary>Names of fleets.</summary>
     Public FleetName() As String
+    ''' <summary>Database IDs per fleet.</summary>
     Friend FleetDBID() As Integer
 
-    ''' <summary> landings biomass by fleet group </summary>
+    ''' <summary>Landinged biomass (by fleet x group)</summary>
     Public Landing(,) As Single
+    ''' <summary>Market valye of landings (fleet x group)</summary>
     Public Market(,) As Single
+    ''' <summary>Proportion of discards (fleet x group)</summary>
     Public PropDiscard(,) As Single
-    ''' <summary>Proportion of regulated discards that die (by gear group)</summary>
+    ''' <summary>Proportion of regulated discards that die (fleet x group)</summary>
     Public PropDiscardMort(,) As Single ' gear group 0-1
 
-    'summary stats
-    'populated after parameters have been estimated in EcoPath
-    'by the routines
-    'ComputeFisheriesStats()
-    'Compute_M2_Resp_and_Stats()
-    'ComputeMoreStats()
 
     Public RTZ As Single 'sum of respiration
     Public Consum As Single
     Public SumBio As Single
-    Public CatchSum As Single 'sum of catch
-    Public GEff As Single 'gross efficiency
+    ''' <summary>Sum of catch.</summary>
+    Public CatchSum As Single
+    ''' <summary>Gross efficiency.</summary>
+    Public GEff As Single
     Public Totpp As Single
+    ''' <summary>Tropic level of the catch.</summary>
     Public TLcatch As Single
-    Public Dt As Single 'total flow of detritus
-    Public SumEx As Single 'sum of exports
-    Public SumP As Single 'Sum of all production
-    Public Conn As Single 'Connectance Index
+    ''' <summary>Total flow of detritus</summary>
+    Public Dt As Single
+    ''' <summary>Sum of exports.</summary>
+    Public SumEx As Single
+    ''' <summary>Sum of all production.</summary>
+    Public SumP As Single
+    ''' <summary>Connectance Index.</summary>
+    Public Conn As Single
     Public SysOm As Single
     Public LandingValue As Single
     Public ShadowValue As Single
     Public Fixed As Single
     Public Variab As Single
 
-    Public vbK() As Single 'VBGF curvature parameter K (/year)
+    ''' <summary>VBGF curvature parameter K (/year).</summary>
+    Public vbK() As Single
     Public Hlap(,) As Single
     Public Plap(,) As Single
+    ''' <summary>Colours for groups in an interface (x group).</summary>
     Public GroupColor() As Integer
+    ''' <summary>Colours for fleets in an interface (x fleet).</summary>
     Public FleetColor() As Integer
     Public Host(,) As Single  'last is for fishery (combined only)
 
