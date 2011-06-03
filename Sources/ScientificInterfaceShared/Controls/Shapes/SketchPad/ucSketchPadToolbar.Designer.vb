@@ -20,53 +20,76 @@ Namespace Controls
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim ts1 As System.Windows.Forms.ToolStripSeparator
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucSketchPadToolbar))
-            Me.tsMenus = New cEwEToolstrip
-            Me.tsBtnSave = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-            Me.tslbShapeView = New System.Windows.Forms.ToolStripLabel
-            Me.tscbbShapeView = New System.Windows.Forms.ToolStripComboBox
+            Dim ts3 As System.Windows.Forms.ToolStripSeparator
+            Dim ts4 As System.Windows.Forms.ToolStripSeparator
+            Dim ts2 As System.Windows.Forms.ToolStripSeparator
+            Me.m_tsMenus = New ScientificInterfaceShared.Controls.cEwEToolstrip
+            Me.m_tsbnSaveAsImage = New System.Windows.Forms.ToolStripButton
+            Me.m_tslConvertTo = New System.Windows.Forms.ToolStripLabel
+            Me.m_tsbnLongTerm = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbnSeasonal = New System.Windows.Forms.ToolStripButton
             Me.m_tslWeight = New System.Windows.Forms.ToolStripLabel
             Me.m_tstbWeight = New System.Windows.Forms.ToolStripTextBox
-            Me.tsBtnValue = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsbChangeShape = New System.Windows.Forms.ToolStripButton
-            Me.tsBtnReset = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsBtnOptions = New System.Windows.Forms.ToolStripButton
-            Me.tsMenus.SuspendLayout()
+            Me.m_tsbnValues = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbnChangeShape = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbnReset = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbnOptions = New System.Windows.Forms.ToolStripButton
+            ts1 = New System.Windows.Forms.ToolStripSeparator
+            ts3 = New System.Windows.Forms.ToolStripSeparator
+            ts4 = New System.Windows.Forms.ToolStripSeparator
+            ts2 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsMenus.SuspendLayout()
             Me.SuspendLayout()
             '
-            'tsMenus
+            'ts1
             '
-            resources.ApplyResources(Me.tsMenus, "tsMenus")
-            Me.tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsBtnSave, Me.ToolStripSeparator4, Me.tslbShapeView, Me.tscbbShapeView, Me.m_tslWeight, Me.m_tstbWeight, Me.tsBtnValue, Me.ToolStripSeparator1, Me.tsbChangeShape, Me.tsBtnReset, Me.ToolStripSeparator5, Me.tsBtnOptions})
-            Me.tsMenus.Name = "tsMenus"
-            Me.tsMenus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            ts1.Name = "ts1"
+            resources.ApplyResources(ts1, "ts1")
             '
-            'tsBtnSave
+            'ts3
             '
-            Me.tsBtnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnSave, "tsBtnSave")
-            Me.tsBtnSave.Name = "tsBtnSave"
+            ts3.Name = "ts3"
+            resources.ApplyResources(ts3, "ts3")
             '
-            'ToolStripSeparator4
+            'ts4
             '
-            Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-            resources.ApplyResources(Me.ToolStripSeparator4, "ToolStripSeparator4")
+            ts4.Name = "ts4"
+            resources.ApplyResources(ts4, "ts4")
             '
-            'tslbShapeView
+            'ts2
             '
-            Me.tslbShapeView.Name = "tslbShapeView"
-            resources.ApplyResources(Me.tslbShapeView, "tslbShapeView")
+            ts2.Name = "ts2"
+            resources.ApplyResources(ts2, "ts2")
             '
-            'tscbbShapeView
+            'm_tsMenus
             '
-            Me.tscbbShapeView.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.tscbbShapeView.Items.AddRange(New Object() {resources.GetString("tscbbShapeView.Items"), resources.GetString("tscbbShapeView.Items1")})
-            Me.tscbbShapeView.Name = "tscbbShapeView"
-            resources.ApplyResources(Me.tscbbShapeView, "tscbbShapeView")
+            resources.ApplyResources(Me.m_tsMenus, "m_tsMenus")
+            Me.m_tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSaveAsImage, ts1, Me.m_tslConvertTo, Me.m_tsbnLongTerm, Me.m_tsbnSeasonal, ts2, Me.m_tslWeight, Me.m_tstbWeight, Me.m_tsbnValues, ts3, Me.m_tsbnChangeShape, Me.m_tsbnReset, ts4, Me.m_tsbnOptions})
+            Me.m_tsMenus.Name = "m_tsMenus"
+            '
+            'm_tsbnSaveAsImage
+            '
+            Me.m_tsbnSaveAsImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnSaveAsImage, "m_tsbnSaveAsImage")
+            Me.m_tsbnSaveAsImage.Name = "m_tsbnSaveAsImage"
+            '
+            'm_tslConvertTo
+            '
+            Me.m_tslConvertTo.Name = "m_tslConvertTo"
+            resources.ApplyResources(Me.m_tslConvertTo, "m_tslConvertTo")
+            '
+            'm_tsbnLongTerm
+            '
+            resources.ApplyResources(Me.m_tsbnLongTerm, "m_tsbnLongTerm")
+            Me.m_tsbnLongTerm.Name = "m_tsbnLongTerm"
+            '
+            'm_tsbnSeasonal
+            '
+            resources.ApplyResources(Me.m_tsbnSeasonal, "m_tsbnSeasonal")
+            Me.m_tsbnSeasonal.Name = "m_tsbnSeasonal"
             '
             'm_tslWeight
             '
@@ -79,66 +102,54 @@ Namespace Controls
             resources.ApplyResources(Me.m_tstbWeight, "m_tstbWeight")
             Me.m_tstbWeight.Name = "m_tstbWeight"
             '
-            'tsBtnValue
+            'm_tsbnValues
             '
-            Me.tsBtnValue.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnValue, "tsBtnValue")
-            Me.tsBtnValue.Name = "tsBtnValue"
+            Me.m_tsbnValues.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnValues, "m_tsbnValues")
+            Me.m_tsbnValues.Name = "m_tsbnValues"
             '
-            'ToolStripSeparator1
+            'm_tsbnChangeShape
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            Me.m_tsbnChangeShape.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnChangeShape, "m_tsbnChangeShape")
+            Me.m_tsbnChangeShape.Name = "m_tsbnChangeShape"
             '
-            'tsbChangeShape
+            'm_tsbnReset
             '
-            Me.tsbChangeShape.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsbChangeShape, "tsbChangeShape")
-            Me.tsbChangeShape.Name = "tsbChangeShape"
+            Me.m_tsbnReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnReset, "m_tsbnReset")
+            Me.m_tsbnReset.Name = "m_tsbnReset"
             '
-            'tsBtnReset
+            'm_tsbnOptions
             '
-            Me.tsBtnReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnReset, "tsBtnReset")
-            Me.tsBtnReset.Name = "tsBtnReset"
-            '
-            'ToolStripSeparator5
-            '
-            Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-            resources.ApplyResources(Me.ToolStripSeparator5, "ToolStripSeparator5")
-            '
-            'tsBtnOptions
-            '
-            Me.tsBtnOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsBtnOptions, "tsBtnOptions")
-            Me.tsBtnOptions.Name = "tsBtnOptions"
+            Me.m_tsbnOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnOptions, "m_tsbnOptions")
+            Me.m_tsbnOptions.Name = "m_tsbnOptions"
             '
             'ucSketchPadToolbar
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.BackColor = System.Drawing.SystemColors.Control
-            Me.Controls.Add(Me.tsMenus)
+            Me.Controls.Add(Me.m_tsMenus)
             Me.Name = "ucSketchPadToolbar"
-            Me.tsMenus.ResumeLayout(False)
-            Me.tsMenus.PerformLayout()
+            Me.m_tsMenus.ResumeLayout(False)
+            Me.m_tsMenus.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents tsMenus As cEwEToolstrip
-        Private WithEvents tsBtnReset As System.Windows.Forms.ToolStripButton
-        Private WithEvents tsBtnValue As System.Windows.Forms.ToolStripButton
-        Private WithEvents tsBtnSave As System.Windows.Forms.ToolStripButton
-        Private WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents tsBtnOptions As System.Windows.Forms.ToolStripButton
-        Private WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents tscbbShapeView As System.Windows.Forms.ToolStripComboBox
-        Private WithEvents tslbShapeView As System.Windows.Forms.ToolStripLabel
-        Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents tsbChangeShape As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsMenus As cEwEToolstrip
+        Private WithEvents m_tsbnReset As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnValues As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnSaveAsImage As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnOptions As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tslConvertTo As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tsbnChangeShape As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tslWeight As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tstbWeight As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tsbnLongTerm As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnSeasonal As System.Windows.Forms.ToolStripButton
 
     End Class
 

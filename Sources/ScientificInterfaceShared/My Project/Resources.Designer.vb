@@ -1220,6 +1220,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Yes.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_YES() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_YES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Run {0}.
         '''</summary>
         Public ReadOnly Property GENERIC_VAUE_RUN_X() As String
@@ -2685,6 +2694,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Image.
+        '''</summary>
+        Public ReadOnly Property HEADER_IMAGE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_IMAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Immigration ({0}/{1}).
         '''</summary>
         Public ReadOnly Property HEADER_IMMIGRATION_UNIT() As String
@@ -3212,24 +3230,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_NETMIGRATION_UNIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_NETMIGRATION_UNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to No.
-        '''</summary>
-        Public ReadOnly Property HEADER_NO() As String
-            Get
-                Return ResourceManager.GetString("HEADER_NO", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to None.
-        '''</summary>
-        Public ReadOnly Property HEADER_NONE() As String
-            Get
-                Return ResourceManager.GetString("HEADER_NONE", resourceCulture)
             End Get
         End Property
         
@@ -4143,6 +4143,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Target.
+        '''</summary>
+        Public ReadOnly Property HEADER_TARGET() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TARGET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Target fishing mortality.
         '''</summary>
         Public ReadOnly Property HEADER_TFM() As String
@@ -4310,6 +4319,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_TROPHICLEVEL() As String
             Get
                 Return ResourceManager.GetString("HEADER_TROPHICLEVEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Type.
+        '''</summary>
+        Public ReadOnly Property HEADER_TYPE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TYPE", resourceCulture)
             End Get
         End Property
         
@@ -4535,15 +4553,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_YEAR() As String
             Get
                 Return ResourceManager.GetString("HEADER_YEAR", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Yes.
-        '''</summary>
-        Public ReadOnly Property HEADER_YES() As String
-            Get
-                Return ResourceManager.GetString("HEADER_YES", resourceCulture)
             End Get
         End Property
         

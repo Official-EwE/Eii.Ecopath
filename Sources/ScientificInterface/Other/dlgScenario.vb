@@ -335,7 +335,7 @@ Namespace Wizard
             astrColumns(eColumnTypes.Name) = scenario.Name
             ' - Loaded
             If scenario.IsLoaded Then
-                astrColumns(eColumnTypes.Loaded) = SharedResources.HEADER_YES
+                astrColumns(eColumnTypes.Loaded) = SharedResources.GENERIC_VALUE_YES
             Else
                 astrColumns(eColumnTypes.Loaded) = ""
             End If

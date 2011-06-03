@@ -50,7 +50,7 @@ Namespace Controls
 
         Public WriteOnly Property IsMenuVisible() As Boolean
             Set(ByVal value As Boolean)
-                tsMenus.Visible = value
+                m_tsMenus.Visible = value
             End Set
         End Property
 
@@ -80,11 +80,11 @@ Namespace Controls
             Me.Handler = Nothing
         End Sub
 
-        Private Sub ResetShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnReset.Click
+        Private Sub ResetShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnReset.Click
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
         End Sub
 
-        Private Sub ShapeValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnValue.Click
+        Private Sub ShapeValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnValues.Click
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
         End Sub
 
@@ -92,23 +92,33 @@ Namespace Controls
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Load)
         End Sub
 
-        Private Sub SaveShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsBtnSave.Click
+        Private Sub SaveShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnSaveAsImage.Click
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
         End Sub
 
-        Private Sub tsbChangeShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbChangeShape.Click
+        Private Sub tsbChangeShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnChangeShape.Click
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape)
         End Sub
 
         Private Sub ShapeOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles tsBtnOptions.Click
+            Handles m_tsbnOptions.Click
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
         End Sub
 
-        Private Sub tscbbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles tscbbShapeView.SelectedIndexChanged
+        Private Sub OnConvertToLongTerm(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnLongTerm.Click
             If Me.m_bInUpdate Then Return
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Nothing, (tscbbShapeView.SelectedIndex = 1))
+            If Me.Handler IsNot Nothing Then
+                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Nothing, False)
+            End If
+        End Sub
+
+        Private Sub OnConvertToSeasonal(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnSeasonal.Click
+            If Me.m_bInUpdate Then Return
+            If Me.Handler IsNot Nothing Then
+                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Nothing, True)
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -145,34 +155,27 @@ Namespace Controls
 
             Dim shapeSelected As cShapeData = Me.Handler.SelectedShape
 
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions, Me.tsBtnOptions)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage, Me.tsBtnSave)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape, Me.tsbChangeShape)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.tsBtnReset)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Modify, Me.tsBtnValue)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.tscbbShapeView)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.tslbShapeView)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions, Me.m_tsbnOptions)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage, Me.m_tsbnSaveAsImage)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape, Me.m_tsbnChangeShape)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, Me.m_tsbnReset)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Modify, Me.m_tsbnValues)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.m_tsbnLongTerm)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.m_tsbnSeasonal)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tslWeight)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tstbWeight)
 
-            If ((shapeSelected IsNot Nothing) And (Me.tscbbShapeView.Visible = True)) Then
-
+            If (shapeSelected IsNot Nothing) Then
                 Me.m_bInUpdate = True
-                If shapeSelected.IsSeasonal Then
-                    Me.tscbbShapeView.SelectedIndex = 1 'Seasonal
-                Else
-                    Me.tscbbShapeView.SelectedIndex = 0 'Long term
-                End If
+                Me.m_tsbnSeasonal.Checked = shapeSelected.IsSeasonal
+                Me.m_tsbnLongTerm.Checked = Not shapeSelected.IsSeasonal
                 Me.m_bInUpdate = False
-
             End If
 
             If ((shapeSelected IsNot Nothing) And (TypeOf shapeSelected Is cTimeSeries)) Then
-
                 Me.m_bInUpdate = True
                 Me.m_tstbWeight.Text = CStr(DirectCast(shapeSelected, cTimeSeries).WtType)
                 Me.m_bInUpdate = False
-
             End If
 
         End Sub
@@ -188,6 +191,7 @@ Namespace Controls
         End Sub
 
 #End Region ' Internal implementation
+
 
     End Class
 
