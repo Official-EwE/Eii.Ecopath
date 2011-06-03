@@ -4199,7 +4199,7 @@ Public Class cCore
                 End If
 
                 If Me.PluginManager IsNot Nothing Then
-                    Me.PluginManager.EcopathRunCompleted(m_EcoPathData)
+                    Me.PluginManager.EcopathRunCompleted(m_EcoPathData, m_TaxonData, m_Stanza)
                 End If
                 bSuccessEcopath = True
 
