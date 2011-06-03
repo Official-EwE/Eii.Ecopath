@@ -959,13 +959,19 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcopathRunCompleted(ByVal EcoPathDataStructures As Object) As Boolean
+    Public Function EcopathRunCompleted(ByVal EcoPathDataStructures As Object, _
+                                        ByVal TaxonDataStructures As Object, _
+                                        ByVal StanzaDataStructures As Object) As Boolean
 
         ' Invoke IEcopathRunCompletedPlugin.EcopathRunCompleted(EcoPathDataStructures)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcopathRunCompletedPlugin), _
                                                     "EcopathRunCompleted", _
                                                     New Object() {EcoPathDataStructures})
 
+        ' Invoke IEcopathRunCompletedPlugin.EcopathRunCompleted(EcoPathDataStructures)
+        bSucces = bSucces = Me.TryInvokeMethod(GetType(IEcopathRunCompleted2Plugin), _
+                                               "EcopathRunCompleted", _
+                                               New Object() {EcoPathDataStructures, TaxonDataStructures, StanzaDataStructures})
 
         ' Invoke IEcopathRunCompletedPostPlugin.EcopathRunCompletedPost(EcoPathDataStructures)
         bSucces = bSucces And Me.TryInvokeMethod(GetType(IEcopathRunCompletedPostPlugin), _
