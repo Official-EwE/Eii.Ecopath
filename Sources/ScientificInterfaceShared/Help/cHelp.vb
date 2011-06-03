@@ -4,7 +4,6 @@ Option Strict On
 
 Imports System.IO
 Imports System.Windows.Forms
-Imports EwEUtils.Win32Api
 
 #End Region ' Imports
 
@@ -184,7 +183,7 @@ Public Class cHelp
 
         Select Case CInt(message.Msg)
 
-            Case Win32.WM.WM_KEYDOWN
+            Case &H100 ' Key down
                 If CInt(message.WParam) = CInt(Keys.F1) Then
                     Me.ShowHelp(HelpNavigator.Topic)
                 End If

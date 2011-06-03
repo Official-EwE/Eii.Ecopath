@@ -89,9 +89,9 @@ Namespace Controls.Wizard
             Me.m_btnNext.Enabled = bCanNavForward
 
             If bCanFinish Then
-                Me.m_btnClose.Text = cResourceUtils.GetButtonText(DialogResult.OK)
+                Me.m_btnClose.Text = My.Resources.BUTTON_OK
             Else
-                Me.m_btnClose.Text = cResourceUtils.GetButtonText(DialogResult.Cancel)
+                Me.m_btnClose.Text = My.Resources.BUTTON_CANCEL
             End If
             Me.m_btnClose.Enabled = bCanClose
 

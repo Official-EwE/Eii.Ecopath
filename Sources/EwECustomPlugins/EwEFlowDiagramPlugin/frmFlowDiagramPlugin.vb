@@ -137,6 +137,8 @@ Public Class frmFlowDiagramPlugin
             writer.Close()
         End If
 
+        ' Todo_JS: Reprogram old FD logic as a .NET control, and get rid of the 16 bit apps once and for all.
+
         'Execute the external application through the general function on EwEUtils
         If Not EwEUtils.SystemUtilities.cSystemUtils.AppExec("fd.exe", strFileName, strError, "") Then
             Dim msg As New cMessage("Unable to run application 'fd.exe': " & strError, _

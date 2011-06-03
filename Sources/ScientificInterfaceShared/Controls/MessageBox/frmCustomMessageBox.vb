@@ -276,7 +276,16 @@ Namespace Controls
         Private Sub ConfigureButton(ByVal btn As Button, ByVal result As DialogResult)
 
             ' Set text
-            btn.Text = cResourceUtils.GetButtonText(result)
+            Select Case result
+                Case Windows.Forms.DialogResult.Abort : btn.Text = My.Resources.BUTTON_ABORT
+                Case Windows.Forms.DialogResult.Cancel : btn.Text = My.Resources.BUTTON_CANCEL
+                Case Windows.Forms.DialogResult.Ignore : btn.Text = My.Resources.BUTTON_IGNORE
+                Case Windows.Forms.DialogResult.No : btn.Text = My.Resources.BUTTON_NO
+                Case Windows.Forms.DialogResult.None : btn.Text = My.Resources.BUTTON_NONE
+                Case Windows.Forms.DialogResult.OK : btn.Text = My.Resources.BUTTON_OK
+                Case Windows.Forms.DialogResult.Retry : btn.Text = My.Resources.BUTTON_RETRY
+                Case Windows.Forms.DialogResult.Yes : btn.Text = My.Resources.BUTTON_YES
+            End Select
             ' Store tag
             btn.Tag = result
             ' Show/hide button

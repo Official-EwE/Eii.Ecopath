@@ -58,6 +58,7 @@ Public MustInherit Class cPyramid
             Return
         End If
 
+        ' Todo_JS: Reprogram pyramid logic as a .NET control, and get rid of the 16 bit apps once and for all.
         Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
 
         If Not cSystemUtils.AppExec("pyramid.exe", strOutputFile83, strError, "") Then

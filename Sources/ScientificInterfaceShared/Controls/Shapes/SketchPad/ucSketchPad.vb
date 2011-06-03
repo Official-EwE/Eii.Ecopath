@@ -11,7 +11,6 @@ Imports System.Globalization
 Imports System.Threading
 Imports System.Drawing.Imaging
 Imports EwECore
-Imports EwEUtils.Win32Api
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style

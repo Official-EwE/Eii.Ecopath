@@ -2062,6 +2062,30 @@
     <value>Time series '{0}' cannot be enabled. {1}</value>
     <comment>{0}: time series name. {1}: time series status</comment>
   </data>
+  <data name="BUTTON_CANCEL" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="BUTTON_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="BUTTON_ABORT" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="BUTTON_IGNORE" xml:space="preserve">
+    <value>Ignore</value>
+  </data>
+  <data name="BUTTON_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="BUTTON_NONE" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="BUTTON_RETRY" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="BUTTON_YES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
   <data name="STATUS_UPDATING" xml:space="preserve">
     <value>Updating, please wait...</value>
   </data>

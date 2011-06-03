@@ -95,6 +95,78 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Abort.
+        '''</summary>
+        Public ReadOnly Property BUTTON_ABORT() As String
+            Get
+                Return ResourceManager.GetString("BUTTON_ABORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cancel.
+        '''</summary>
+        Public ReadOnly Property BUTTON_CANCEL() As String
+            Get
+                Return ResourceManager.GetString("BUTTON_CANCEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ignore.
+        '''</summary>
+        Public ReadOnly Property BUTTON_IGNORE() As String
+            Get
+                Return ResourceManager.GetString("BUTTON_IGNORE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No.
+        '''</summary>
+        Public ReadOnly Property BUTTON_NO() As String
+            Get
+                Return ResourceManager.GetString("BUTTON_NO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to None.
+        '''</summary>
+        Public ReadOnly Property BUTTON_NONE() As String
+            Get
+                Return ResourceManager.GetString("BUTTON_NONE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to OK.
+        '''</summary>
+        Public ReadOnly Property BUTTON_OK() As String
+            Get
+                Return ResourceManager.GetString("BUTTON_OK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Retry.
+        '''</summary>
+        Public ReadOnly Property BUTTON_RETRY() As String
+            Get
+                Return ResourceManager.GetString("BUTTON_RETRY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Yes.
+        '''</summary>
+        Public ReadOnly Property BUTTON_YES() As String
+            Get
+                Return ResourceManager.GetString("BUTTON_YES", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property CalculatorHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("CalculatorHS", resourceCulture)

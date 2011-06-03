@@ -116,6 +116,8 @@ Public Class cGraphOfMixedTrophicImpact
         Next i
         FileClose(FileNumber)
 
+        ' Todo_JS: Reprogram impacts logic as a .NET control, and get rid of the 16 bit apps once and for all.
+
         ' Convert text file location to a 8.3 file
         Dim strPath As String = Path.Combine(strOutputFileDir, strOutputFileName)
         Dim strPath83 As String = Space(255)

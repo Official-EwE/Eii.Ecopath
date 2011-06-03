@@ -9,6 +9,8 @@ Imports SAUPUtil.Misc.Colours
 
 #End Region ' Imports
 
+' ToDo_JS: Remove INI file, use XML instead
+
 Namespace Ecopath.Controls.FlowDiagram
 
     Public Class cFlowDiagramRenderer

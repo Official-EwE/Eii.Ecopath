@@ -126,24 +126,9 @@ Namespace SystemUtilities
         ''' -----------------------------------------------------------------------
         Public Shared Function Is64Bit() As Boolean
 
-            ' ToDo_JS: solve this with .NET calls, does not need Win32 API calls.
-
-            Dim hFN As Long = 0L
-            Dim bIs64Bit As Boolean = False
-
-            ' Assume initially that this is not a Wow64 process
-            bIs64Bit = False
-
-            ' Now check to see if IsWow64Process function exists
-            hFN = Kernel32.GetProcAddress(Kernel32.GetModuleHandle("kernel32"), "IsWow64Process")
-
-            ' Does IsWow64Process function exist?
-            If (hFN > 0) Then
-                ' #Yes: Use the function to determine if running under Wow64
-                Kernel32.IsWow64Process(Kernel32.GetCurrentProcess(), bIs64Bit)
-            End If
-
-            Return bIs64Bit
+            ' ToDo: activate .NET framework 4 test
+            'Return System.Environment.Is64BitOperatingSystem
+            Return (IntPtr.Size = 8)
 
         End Function
 

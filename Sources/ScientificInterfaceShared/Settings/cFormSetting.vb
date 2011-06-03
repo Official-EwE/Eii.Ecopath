@@ -4,7 +4,6 @@ Option Strict On
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Collections.Specialized
-Imports EwEUtils.Win32Api
 Imports ScientificInterfaceShared.Forms
 Imports System.Web
 
