@@ -1203,7 +1203,7 @@ Public Class cEcoPathGroupInput
             Return CInt(GetVariable(eVarNameFlags.GroupTaxa, iIndex))
         End Get
         Friend Set(ByVal value As Integer)
-            Me.SetVariable(eVarNameFlags.GroupTaxa, iIndex, value)
+            Me.SetVariable(eVarNameFlags.GroupTaxa, value, iIndex)
         End Set
     End Property
 
