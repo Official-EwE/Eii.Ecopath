@@ -159,7 +159,7 @@ Namespace Controls
             Me.m_tscmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_tscmbFilter.MaxDropDownItems = 12
             Me.m_tscmbFilter.Name = "m_tscmbFilter"
-            Me.m_tscmbFilter.Size = New System.Drawing.Size(150, 23)
+            Me.m_tscmbFilter.Size = New System.Drawing.Size(150, 25)
             Me.m_tscmbFilter.Sorted = True
             '
             'ucShapeToolboxToolbar
