@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports EwEUtils.Utilities
+Imports System.ComponentModel
 
 #End Region ' Imports
 
@@ -57,6 +58,20 @@ Namespace Controls
 #End Region ' Overrides
 
 #Region " Internals "
+
+        <Browsable(False)> _
+        Public Shadows ReadOnly Property RenderMode() As Windows.Forms.ToolStripRenderMode
+            Get
+                Return ToolStripRenderMode.System
+            End Get
+        End Property
+
+        <Browsable(False)> _
+        Public Shadows ReadOnly Property GripStyle() As Windows.Forms.ToolStripGripStyle
+            Get
+                Return ToolStripGripStyle.Hidden
+            End Get
+        End Property
 
         Private Sub ShowHideRepeatingSeparators()
 

@@ -66,7 +66,6 @@ Namespace Controls
             'm_tsMenus
             '
             resources.ApplyResources(Me.m_tsMenus, "m_tsMenus")
-            Me.m_tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSaveAsImage, ts1, Me.m_tslConvertTo, Me.m_tsbnLongTerm, Me.m_tsbnSeasonal, ts2, Me.m_tslWeight, Me.m_tstbWeight, Me.m_tsbnValues, ts3, Me.m_tsbnChangeShape, Me.m_tsbnReset, ts4, Me.m_tsbnOptions})
             Me.m_tsMenus.Name = "m_tsMenus"
             '

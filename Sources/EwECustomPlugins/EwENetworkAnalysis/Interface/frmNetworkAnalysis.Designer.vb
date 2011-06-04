@@ -155,7 +155,6 @@ Partial Class frmNetworkAnalysis
         '
         'm_toolstrip
         '
-        Me.m_toolstrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiRun, ts3, Me.tsbtnOptions, Me.tsmiDisplayGroups, ts1, Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, ts2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF})
         resources.ApplyResources(Me.m_toolstrip, "m_toolstrip")
         Me.m_toolstrip.Name = "m_toolstrip"

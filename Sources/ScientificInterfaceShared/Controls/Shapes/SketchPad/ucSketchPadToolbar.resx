@@ -189,9 +189,9 @@
   <data name="m_tsbnSeasonal.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB9SURBVDhPY2CgFERERHyiyIyoqKj/g9eAYwwM/2AYpytx
-        eQGoUQik+SwDw38YxmoYugFAxX9gCpE1I7NRXAMyoLu7+//MmTNJxl1dXT8ZsLgA7mSiXYDsJFya8HoB
-        ObSJMQAldkBeIEYTTu8MCgP+gFxBDi5xc6MsH4FiDwAVdxHDSeJfBgAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB+SURBVDhPY2CgFERERHyiyIyoqKj/g9eAowwM/2AYpytx
+        eeEYA4MQSPNZBob/MIzVMHQDgIr/wBQia0Zmo7gGZEB3d/f/mTNnkoy7urp+MmBxAdzJRLsA2Um4NOH1
+        AnJoE2MASuyAvECMJpzeGRQG/AG5ghxc4uZGWT4CxR4A930RtVmMsAUAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="m_tsbnSeasonal.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">

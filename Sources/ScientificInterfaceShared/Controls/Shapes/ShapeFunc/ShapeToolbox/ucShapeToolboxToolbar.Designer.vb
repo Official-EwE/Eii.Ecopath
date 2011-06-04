@@ -44,11 +44,9 @@ Namespace Controls
             '
             'm_ts
             '
-            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
-            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             Me.m_ts.Size = New System.Drawing.Size(903, 25)
             Me.m_ts.TabIndex = 0
             Me.m_ts.Text = "ToolStrip1"

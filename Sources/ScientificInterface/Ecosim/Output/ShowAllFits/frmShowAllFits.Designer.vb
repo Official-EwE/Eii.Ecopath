@@ -231,7 +231,6 @@ Namespace Ecosim
             '
             'm_tsMain
             '
-            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiOptions, Me.m_sep1, Me.m_tsmiChoosePlots, Me.m_tsbnScale, Me.m_sep2, Me.m_tsddSave, Me.m_tsddPrint})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"

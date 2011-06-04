@@ -46,13 +46,11 @@ Namespace Ecopath.Tools
             '
             'm_tsMain
             '
-            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditPedigree})
             Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.Size = New System.Drawing.Size(724, 25)
             Me.m_tsMain.TabIndex = 0
-            Me.m_tsMain.Text = "ToolStrip1"
             '
             'm_tsbnEditPedigree
             '

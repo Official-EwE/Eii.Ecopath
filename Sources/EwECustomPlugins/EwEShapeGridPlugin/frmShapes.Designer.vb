@@ -46,11 +46,9 @@ Partial Class frmShapes
         '
         'm_tsMain
         '
-        Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnTimeSeries, Me.m_tsSep1, Me.m_tsbnLongTerm, Me.m_tsbnSeasonal})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
-        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'm_tsbnTimeSeries
         '

@@ -51,7 +51,6 @@ Partial Class ucResults
         '
         'm_tsResults
         '
-        Me.m_tsResults.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblData, Me.m_tscmbGraphData, Me.m_tssSep3, Me.m_tslFleets, Me.m_tscmbFleets, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium})
         Me.m_tsResults.Location = New System.Drawing.Point(0, 0)
         Me.m_tsResults.Name = "m_tsResults"

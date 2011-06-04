@@ -97,7 +97,6 @@ Partial Class Basemap
             'm_tsEditBasemapThingies
             '
             resources.ApplyResources(Me.m_tsEditBasemapThingies, "m_tsEditBasemapThingies")
-            Me.m_tsEditBasemapThingies.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsEditBasemapThingies.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbEditBasemap, Me.m_tsbDefineHabitats, Me.m_tsbDefineMPA, Me.m_tsbDefineRegion})
             Me.m_tsEditBasemapThingies.Name = "m_tsEditBasemapThingies"
             '

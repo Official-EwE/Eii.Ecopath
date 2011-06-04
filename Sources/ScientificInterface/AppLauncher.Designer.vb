@@ -590,12 +590,10 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
-        Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, m_tssModel1})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
-        Me.m_tsModel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.m_tsModel.Stretch = True
         '
         'm_tsbSave

@@ -23,11 +23,9 @@ Namespace Controls
             '
             'm_tsMenus
             '
-            Me.m_tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMediatingItems, Me.ToolStripSeparator1, Me.m_tsbnViewAsBar, Me.m_tsbnViewAsPie})
             resources.ApplyResources(Me.m_tsMenus, "m_tsMenus")
             Me.m_tsMenus.Name = "m_tsMenus"
-            Me.m_tsMenus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbnDefineMediatingItems
             '
