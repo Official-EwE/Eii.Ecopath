@@ -10,6 +10,7 @@ Imports WeifenLuo.WinFormsUI
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
 Imports System.Configuration
+Imports EwEUtils.SystemUtilities
 
 #End Region
 
@@ -87,17 +88,30 @@ Namespace Other
         Public Function Apply() As IOptionsPage.eApplyResultType _
             Implements IOptionsPage.Apply
 
-            Dim bRestart As Boolean = (My.Settings.AutoUpdatePlugins <> Me.m_cbDownloadUpdates.Checked)
+            Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
 
-            My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
-            My.Settings.StatusMaxMessages = CInt(Me.m_nudMaxNumMessages.Value)
-            My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
-            My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
-            My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
-            My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
+            If (Me.m_cbDownloadUpdates.Checked) Then
+                If (Not cSystemUtils.IsAdministrator()) Then
+                    result = IOptionsPage.eApplyResultType.Success_administrator
+                Else
+                    result = IOptionsPage.eApplyResultType.Success_restart
+                End If
+            End If
 
-            If bRestart Then Return IOptionsPage.eApplyResultType.Success_restart
-            Return IOptionsPage.eApplyResultType.Success
+            Try
+
+                My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
+                My.Settings.StatusMaxMessages = CInt(Me.m_nudMaxNumMessages.Value)
+                My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
+                My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
+                My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
+                My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
+
+            Catch ex As Exception
+                result = IOptionsPage.eApplyResultType.Failed
+            End Try
+
+            Return result
 
         End Function
 

@@ -2098,4 +2098,16 @@
   <data name="HEADER_TYPE" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="PROMPT_OPTIONS_APPLIED_FAILED" xml:space="preserve">
+    <value>Options failed to apply.</value>
+  </data>
+  <data name="PROMPT_OPTIONS_APPLIED_SUCCESS" xml:space="preserve">
+    <value>Options applied successfully.</value>
+  </data>
+  <data name="PROMPT_REQUIRES_ADMINISTRATOR" xml:space="preserve">
+    <value>EwE will need to run with Administrator privileges to make your changes effective.</value>
+  </data>
+  <data name="PROMPT_REQUIRES_RESTART" xml:space="preserve">
+    <value>You will need to restart EwE to make your changes effective.</value>
+  </data>
 </root>

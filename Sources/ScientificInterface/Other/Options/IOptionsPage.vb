@@ -16,10 +16,10 @@ Public Interface IOptionsPage
         Success
         ''' <summary>Application was successful but requires a restart.</summary>
         Success_restart
+        ''' <summary>Application successful, but need administrator privileges to work.</summary>
+        Success_administrator
         ''' <summary>Application failed.</summary>
         Failed
-        ''' <summary>No comment.</summary>
-        ScrewedUpBeyondBeliefNowWeHaveToBloodyStartAllOverAgain
     End Enum
 
     ''' -----------------------------------------------------------------------

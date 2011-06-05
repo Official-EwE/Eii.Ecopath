@@ -5,6 +5,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -21,20 +22,13 @@ Namespace Other
 
         ''' <summary></summary>
         Private m_uic As cUIContext = Nothing
-        ''' <summary></summary>
-        Private m_ucOptionsColors As ucOptionsColors
-        ''' <summary></summary>
-        Private m_ucOptionsGeneral As ucOptionsGeneral
-        ''' <summary></summary>
-        Private m_ucOptionsPresentation As ucOptionsPresentation
-        ''' <summary></summary>
-        Private m_ucOptionsPlugins As ucOptionsPlugins
-        ''' <summary></summary>
-        Private m_ucOptionsGraphsCharts As ucOptionsGraphs
+        ''' <summary>List of active pages.</summary>
+        Private m_lPages As New List(Of IOptionsPage)
         ''' <summary>Current page.</summary>
-        Private m_ucCurrent As UserControl = Nothing
+        Private m_pageCurrent As IOptionsPage = Nothing
 
-        Private m_bHasFiredRestartPrompt As Boolean = False
+        ' ToDo: track changes in pages, and only show prompts after changes occurred. Not very important right now.
+        Private m_bHasFiredPrompt As Boolean = False
 
 #End Region ' Private variables
 
@@ -53,21 +47,11 @@ Namespace Other
 
             Me.m_tvOptions.ExpandAll()
 
-            Me.m_ucOptionsColors = New ucOptionsColors(uic)
-            Me.m_ucOptionsColors.Dock = DockStyle.Fill
-
-            Me.m_ucOptionsGeneral = New ucOptionsGeneral(uic)
-            Me.m_ucOptionsGeneral.Dock = DockStyle.Fill
-
-            Me.m_ucOptionsPresentation = New ucOptionsPresentation(uic)
-            Me.m_ucOptionsPresentation.Dock = DockStyle.Fill
-
-            Me.m_ucOptionsPlugins = New ucOptionsPlugins(uic)
-            Me.m_ucOptionsPlugins.Dock = DockStyle.Fill
-
-            Me.m_ucOptionsGraphsCharts = New ucOptionsGraphs(uic)
-            Me.m_ucOptionsGraphsCharts.Dock = DockStyle.Fill
-
+            Me.AddPage(GetType(ucOptionsGeneral))
+            Me.AddPage(GetType(ucOptionsPresentation))
+            Me.AddPage(GetType(ucOptionsColors))
+            Me.AddPage(GetType(ucOptionsPresentation))
+            Me.AddPage(GetType(ucOptionsPlugins))
             Me.SelectPage("")
 
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
@@ -78,53 +62,89 @@ Namespace Other
 
 #Region " Internals "
 
+        Private Sub AddPage(ByVal t As Type)
+
+            ' Sanity check
+            Debug.Assert(GetType(IOptionsPage).IsAssignableFrom(t))
+            Debug.Assert(GetType(Control).IsAssignableFrom(t))
+
+            Dim optionspage As IOptionsPage = DirectCast(Activator.CreateInstance(t, New Object() {Me.m_uic}), IOptionsPage)
+            DirectCast(optionspage, Control).Dock = DockStyle.Fill
+
+            Me.m_lPages.Add(optionspage)
+
+        End Sub
+
+        Private Function GetPage(ByVal t As Type) As IOptionsPage
+
+            For Each optionspage As IOptionsPage In Me.m_lPages
+                If optionspage.GetType().Equals(t) Then
+                    Return optionspage
+                End If
+            Next
+            Return Nothing
+
+        End Function
+
         Private Sub Apply()
 
-            Dim bRestart As Boolean = False
+            Dim msg As cMessage = Nothing
+            Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
 
-            bRestart = bRestart Or (Me.m_ucOptionsGeneral.Apply() = IOptionsPage.eApplyResultType.Success_restart)
-            bRestart = bRestart Or (Me.m_ucOptionsPlugins.Apply() = IOptionsPage.eApplyResultType.Success_restart)
-            bRestart = bRestart Or (Me.m_ucOptionsColors.Apply() = IOptionsPage.eApplyResultType.Success_restart)
-            bRestart = bRestart Or (Me.m_ucOptionsPresentation.Apply() = IOptionsPage.eApplyResultType.Success_restart)
-            bRestart = bRestart Or (Me.m_ucOptionsGraphsCharts.Apply() = IOptionsPage.eApplyResultType.Success_restart)
+            For Each optionspage As IOptionsPage In Me.m_lPages
+                result = DirectCast(Math.Max(result, optionspage.Apply()), IOptionsPage.eApplyResultType)
+            Next
 
-            ' Need to restart for changes to be effective?
-            If bRestart And Not Me.m_bHasFiredRestartPrompt Then
-                ' #Yeah: notify user
-                MsgBox(My.Resources.PROMPT_CHANGES_RESTART, MsgBoxStyle.Information)
-                Me.m_bHasFiredRestartPrompt = True
+            Select Case result
+                Case IOptionsPage.eApplyResultType.Success
+                    msg = New cMessage(SharedResources.PROMPT_OPTIONS_APPLIED_SUCCESS, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
+                    Me.m_bHasFiredPrompt = False
+                Case IOptionsPage.eApplyResultType.Success_restart
+                    msg = New cMessage(SharedResources.PROMPT_REQUIRES_RESTART, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+                Case IOptionsPage.eApplyResultType.Success_administrator
+                    msg = New cMessage(SharedResources.PROMPT_REQUIRES_ADMINISTRATOR, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+                Case IOptionsPage.eApplyResultType.Failed
+                    msg = New cMessage(SharedResources.PROMPT_OPTIONS_APPLIED_FAILED, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
+                    Me.m_bHasFiredPrompt = False
+            End Select
+
+            ' Need to send message?
+            If (msg IsNot Nothing) And (Me.m_bHasFiredPrompt = False) Then
+                ' #Yes: notify user
+                Me.m_uic.Core.Messages.SendMessage(msg)
+                Me.m_bHasFiredPrompt = True
             End If
 
         End Sub
 
         Private Sub SelectPage(ByVal strPage As String)
-            Dim ucPage As UserControl = Me.m_ucOptionsGeneral
+
+            Dim page As IOptionsPage = Me.GetPage(GetType(ucOptionsGeneral))
 
             Me.SuspendLayout()
 
             Select Case strPage
                 Case "", "ndGeneral"
-                    ucPage = Me.m_ucOptionsGeneral
+                    ' NOP
                 Case "ndPresentation"
-                    ucPage = Me.m_ucOptionsPresentation
+                    page = Me.GetPage(GetType(ucOptionsPresentation))
                 Case "ndDisplay", "ndColors"
-                    ucPage = Me.m_ucOptionsColors
+                    page = Me.GetPage(GetType(ucOptionsColors))
                 Case "ndGraphCharts"
-                    ucPage = Me.m_ucOptionsGraphsCharts
+                    page = Me.GetPage(GetType(ucOptionsGraphs))
                 Case "ndPlugins"
-                    ucPage = Me.m_ucOptionsPlugins
-
+                    page = Me.GetPage(GetType(ucOptionsPlugins))
                 Case Else
                     Debug.Assert(False, "Invalid node selected")
             End Select
 
             ' Optimization
-            If Object.ReferenceEquals(ucPage, Me.m_ucCurrent) Then Return
+            If Object.ReferenceEquals(page, Me.m_pageCurrent) Then Return
             ' Set new page
-            Me.m_ucCurrent = ucPage
+            Me.m_pageCurrent = page
             ' Yo
             Me.m_scContent.Panel2.Controls.Clear()
-            Me.m_scContent.Panel2.Controls.Add(ucPage)
+            Me.m_scContent.Panel2.Controls.Add(DirectCast(Me.m_pageCurrent, Control))
 
             Me.ResumeLayout()
         End Sub
@@ -176,13 +196,13 @@ Namespace Other
 
             ' Bye
             Me.m_scContent.Panel2.Controls.Clear()
+            Me.m_pageCurrent = Nothing
+
             ' Manually dispose
-            Me.m_ucCurrent = Nothing
-            Me.m_ucOptionsColors.Dispose()
-            Me.m_ucOptionsGeneral.Dispose()
-            Me.m_ucOptionsPresentation.Dispose()
-            Me.m_ucOptionsPlugins.Dispose()
-            Me.m_ucOptionsGraphsCharts.Dispose()
+            For Each optionspage As IOptionsPage In Me.m_lPages
+                DirectCast(optionspage, Control).Dispose()
+            Next
+            Me.m_lPages.Clear()
 
         End Sub
 

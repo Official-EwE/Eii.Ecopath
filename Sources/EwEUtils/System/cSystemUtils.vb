@@ -120,15 +120,32 @@ Namespace SystemUtilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Returns whether this application is executing in 64 bit mode.
+        ''' Returns whether this application is running in 64 bit mode.
         ''' </summary>
-        ''' <returns>True if executing in 64 bit mode.</returns>
+        ''' <returns>True if running in 64 bit mode.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function Is64Bit() As Boolean
 
             ' ToDo: activate .NET framework 4 test
             'Return System.Environment.Is64BitOperatingSystem
             Return (IntPtr.Size = 8)
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether this application is running with administrator privileges.
+        ''' </summary>
+        ''' <returns>True if running with administrator privileges.</returns>
+        ''' <remarks>
+        ''' http://www.codekeep.net/snippets/16758a1f-6186-47a7-98ba-30449fe74cda.aspx
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsAdministrator() As Boolean
+
+            Dim identity As WindowsIdentity = WindowsIdentity.GetCurrent()
+            Dim principal As New WindowsPrincipal(identity)
+            Return principal.IsInRole(WindowsBuiltInRole.Administrator)
 
         End Function
 

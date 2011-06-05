@@ -4953,6 +4953,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Options failed to apply..
+        '''</summary>
+        Public ReadOnly Property PROMPT_OPTIONS_APPLIED_FAILED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_OPTIONS_APPLIED_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Options applied successfully..
+        '''</summary>
+        Public ReadOnly Property PROMPT_OPTIONS_APPLIED_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_OPTIONS_APPLIED_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE will need to run with Administrator privileges to make your changes effective..
+        '''</summary>
+        Public ReadOnly Property PROMPT_REQUIRES_ADMINISTRATOR() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_REQUIRES_ADMINISTRATOR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You will need to restart EwE to make your changes effective..
+        '''</summary>
+        Public ReadOnly Property PROMPT_REQUIRES_RESTART() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_REQUIRES_RESTART", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You are about to delete forcing or mediation function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
         Public ReadOnly Property PROMPT_SHAPE_DELETE() As String
