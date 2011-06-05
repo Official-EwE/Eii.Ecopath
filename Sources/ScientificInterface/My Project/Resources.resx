@@ -1170,13 +1170,12 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="STATUS_UPDATE_CHECKING" xml:space="preserve">
     <value>Checking for updated components...</value>
-    <comment>{0}: component name</comment>
   </data>
   <data name="STATUS_DATA_SAVING" xml:space="preserve">
     <value>Saving data, please wait...</value>
   </data>
   <data name="STATUS_UPDATE_DOWNLOADING" xml:space="preserve">
-    <value>Downloading update for '{0}'...</value>
+    <value>Downloading '{0}'...</value>
     <comment>{0}: component name</comment>
   </data>
   <data name="ECOSIM_SUITABILITY_PLOT_FUNCT_RESP" xml:space="preserve">
@@ -1619,6 +1618,9 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="CAPTION_PRICEELASTICITY_LANDING" xml:space="preserve">
     <value>Apply price elasticity to fleet {0}: {1} landing {2}: {3}</value>
     <comment>{0}: fleet index, {1}: fleet name, {2} group index, {3}: group name</comment>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_CONNECTION" xml:space="preserve">
+    <value>Error connection to update server</value>
   </data>
   <data name="STATUS_UPDATE_ERROR_DOWNLOAD" xml:space="preserve">
     <value>Unable to download update for '{0}'</value>

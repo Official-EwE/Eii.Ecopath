@@ -126,7 +126,7 @@
     <value>12, 9</value>
   </data>
   <data name="m_lblInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>268, 13</value>
+    <value>304, 13</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_lblInfo.TabIndex" type="System.Int32, mscorlib">
@@ -154,7 +154,7 @@
     <value>12, 33</value>
   </data>
   <data name="m_pbProgress.Size" type="System.Drawing.Size, System.Drawing">
-    <value>268, 23</value>
+    <value>304, 23</value>
   </data>
   <data name="m_pbProgress.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -175,7 +175,7 @@
     <value>Fill</value>
   </data>
   <data name="m_btnAbort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 0</value>
+    <value>114, 0</value>
   </data>
   <data name="m_btnAbort.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -217,7 +217,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpButtons.Size" type="System.Drawing.Size, System.Drawing">
-    <value>268, 23</value>
+    <value>304, 23</value>
   </data>
   <data name="m_tlpButtons.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -244,7 +244,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>292, 100</value>
+    <value>328, 100</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -5206,7 +5206,7 @@
     <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Ecopath with Ecosim 6</value>
+    <value>Updating components</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmUpdateComponents</value>

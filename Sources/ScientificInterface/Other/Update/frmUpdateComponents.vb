@@ -46,7 +46,6 @@ Public Class frmUpdateComponents
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal uic As cUIContext, ByVal pm As cPluginManager)
         Me.InitializeComponent()
-        Me.Text = My.Resources.GENERIC_CAPTION
         Me.m_pm = pm
         Me.m_uic = uic
     End Sub
@@ -201,7 +200,9 @@ Public Class frmUpdateComponents
 
             Case eAutoUpdateResultTypes.Error_Connection
                 If Me.m_lvs.Count = 0 Then
-                    vs = New cVariableStatus(eStatusFlags.NotEditable, "Error connection to update server", eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+                    vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                                             My.Resources.STATUS_UPDATE_ERROR_CONNECTION, _
+                                             eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
                 End If
             Case eAutoUpdateResultTypes.Error_Download
                 vs = New cVariableStatus(eStatusFlags.NotEditable, _

@@ -3912,11 +3912,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Downloading update for &apos;{0}&apos;....
+        '''  Looks up a localized string similar to Downloading &apos;{0}&apos;....
         '''</summary>
         Friend ReadOnly Property STATUS_UPDATE_DOWNLOADING() As String
             Get
                 Return ResourceManager.GetString("STATUS_UPDATE_DOWNLOADING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Error connection to update server.
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_ERROR_CONNECTION() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_ERROR_CONNECTION", resourceCulture)
             End Get
         End Property
         
