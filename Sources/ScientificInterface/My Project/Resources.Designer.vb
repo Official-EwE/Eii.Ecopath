@@ -3921,6 +3921,69 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Unable to download update for &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_ERROR_DOWNLOAD() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_ERROR_DOWNLOAD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to An unknown error occurred while trying to update &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_ERROR_GENERIC() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_ERROR_GENERIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cannot write the update for &apos;{0}&apos; to its destination. Either the target file is in use, or you do not have sufficient privileges.
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_ERROR_WRITE() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_ERROR_WRITE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Components update check failed.
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Component &apos;{0}&apos; is up to date.
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_NO_ACTION() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_NO_ACTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Components updated successfully.
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Component &apos;{0}&apos; has been updated.
+        '''</summary>
+        Friend ReadOnly Property STATUS_UPDATE_UPDATED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_UPDATED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath model{0}Name: {1}{0}Path: {2}.
         '''</summary>
         Friend ReadOnly Property STATUSSTRIP_ECOPATH_TOOLTIP() As String

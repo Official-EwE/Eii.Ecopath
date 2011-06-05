@@ -3,6 +3,8 @@
 Option Strict On
 Imports System.Threading
 Imports EwEPlugin
+Imports EwEUtils.Core
+Imports EwECore
 
 #End Region ' Imports
 
@@ -21,8 +23,15 @@ Public Class frmUpdateComponents
 
     ''' <summary>The plug-in manager used to updates components.</summary>
     Private m_pm As cPluginManager = Nothing
+    ''' <summary>The ui context to operate on.</summary>
+    Private m_uic As cUIContext = Nothing
     ''' <summary>The update thread.</summary>
     Private m_thrd As Thread = Nothing
+
+    ''' <summary>Overall update result status.</summary>
+    Private m_bSuccess As Boolean = True
+    ''' <summary>The update result message.</summary>
+    Private m_lvs As New List(Of cVariableStatus)
 
 #End Region ' Private vars
 
@@ -33,11 +42,13 @@ Public Class frmUpdateComponents
     ''' Constructor; initializes a new instance of the update form.
     ''' </summary>
     ''' <param name="pm">The plug-in manager used to updates components.</param>
+    ''' <param name="uic">The ui context to operate on.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal pm As cPluginManager)
+    Public Sub New(ByVal uic As cUIContext, ByVal pm As cPluginManager)
         Me.InitializeComponent()
         Me.Text = My.Resources.GENERIC_CAPTION
         Me.m_pm = pm
+        Me.m_uic = uic
     End Sub
 
 #End Region ' Constructor
@@ -49,6 +60,7 @@ Public Class frmUpdateComponents
         MyBase.OnLoad(e)
         ' Start listening to update events
         AddHandler Me.m_pm.AssemblyUpdating, AddressOf OnAssemblyUpdating
+        AddHandler Me.m_pm.AssemblyUpdated, AddressOf OnAssemblyUpdated
         ' Set initial message
         Me.UpdateControls("", 0)
 
@@ -58,6 +70,11 @@ Public Class frmUpdateComponents
 
         ' Stop listening to update events
         RemoveHandler Me.m_pm.AssemblyUpdating, AddressOf OnAssemblyUpdating
+        RemoveHandler Me.m_pm.AssemblyUpdated, AddressOf OnAssemblyUpdated
+
+        ' Send summary message
+        Me.SendSummaryMessage()
+
         ' Done
         MyBase.OnFormClosed(e)
 
@@ -112,6 +129,23 @@ Public Class frmUpdateComponents
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Assembly updated event handler.
+    ''' </summary>
+    ''' <param name="strName">Name of the component that is updated.</param>
+    ''' <param name="result">Updateresult.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnAssemblyUpdated(ByVal strName As String, ByVal result As eAutoUpdateResultTypes)
+
+        If Me.InvokeRequired Then
+            Me.Invoke(New UpdateStatusDelegate(AddressOf UpdateStatus), New Object() {strName, result})
+        Else
+            Me.UpdateStatus(strName, result)
+        End If
+
+    End Sub
+
 #End Region ' Events
 
 #Region " Internals "
@@ -140,6 +174,76 @@ Public Class frmUpdateComponents
             Me.m_lblInfo.Text = String.Format(My.Resources.STATUS_UPDATE_DOWNLOADING, strName)
         End If
         Me.m_pbProgress.Value = CInt(100 * sProgress)
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Delegate to marshall updates from the update thread to the form.
+    ''' </summary>
+    ''' <param name="strName">Name of the component that is updated.</param>
+    ''' <param name="result">Update <see cref="eAutoUpdateResultTypes">result</see>.</param>
+    ''' -----------------------------------------------------------------------
+    Private Delegate Sub UpdateStatusDelegate(ByVal strName As String, ByVal result As eAutoUpdateResultTypes)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Reflect updates from the update thread to the controls in the form.
+    ''' </summary>
+    ''' <param name="strName">Name of the component that is updated.</param>
+    ''' <param name="result">Update <see cref="eAutoUpdateResultTypes">result</see>.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub UpdateStatus(ByVal strName As String, ByVal result As eAutoUpdateResultTypes)
+
+        Dim vs As cVariableStatus = Nothing
+
+        Select Case result
+
+            Case eAutoUpdateResultTypes.Error_Connection
+                If Me.m_lvs.Count = 0 Then
+                    vs = New cVariableStatus(eStatusFlags.NotEditable, "Error connection to update server", eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+                End If
+            Case eAutoUpdateResultTypes.Error_Download
+                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                                        String.Format(My.Resources.STATUS_UPDATE_ERROR_DOWNLOAD, strName), _
+                                        eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+            Case eAutoUpdateResultTypes.Error_Generic
+                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                                        String.Format(My.Resources.STATUS_UPDATE_ERROR_GENERIC, strName), _
+                                        eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+            Case eAutoUpdateResultTypes.Error_Replace
+                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                                         String.Format(My.Resources.STATUS_UPDATE_ERROR_WRITE, strName), _
+                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+            Case eAutoUpdateResultTypes.Success_NoActionRequired
+                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                                        String.Format(My.Resources.STATUS_UPDATE_NO_ACTION, strName), _
+                                        eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+            Case eAutoUpdateResultTypes.Success_Updated
+                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                                        String.Format(".", strName), _
+                                        eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+
+        End Select
+        If (vs IsNot Nothing) Then Me.m_lvs.Add(vs)
+
+    End Sub
+
+    Private Sub SendSummaryMessage()
+
+        Dim msg As cMessage = Nothing
+
+        ' Create final message
+        If (Me.m_bSuccess) Then
+            msg = New cMessage(My.Resources.STATUS_UPDATE_SUCCESS, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
+        Else
+            msg = New cMessage(My.Resources.STATUS_UPDATE_SUCCESS, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+        End If
+        For Each vs As cVariableStatus In Me.m_lvs
+            msg.AddVariable(vs)
+        Next
+
+        Me.m_uic.Core.Messages.SendMessage(msg)
 
     End Sub
 

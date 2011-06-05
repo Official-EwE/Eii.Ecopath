@@ -9,6 +9,7 @@ Imports System.Diagnostics
 Imports EwEUtils.Utilities
 Imports System.Security.Cryptography
 Imports System.Windows.Forms
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -70,29 +71,6 @@ Friend Class cAutoUpdate
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Enumerated type stating update status results.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Enum eUpdateStatusTypes As Integer
-
-        ''' <summary>All good. Blue skies, happy children, money in the bank; the works.</summary>
-        Success = 0
-        ''' <summary>A migration is available.</summary>
-        Info_CanMigrate
-        ''' <summary>An update is available.</summary>
-        Info_CanUpdate
-        ''' <summary>Update webservice could not be connected.</summary>
-        Error_Connection
-        ''' <summary>File failed to download.</summary>
-        Error_Download
-        ''' <summary>Failed to replace a plug-in on the system.</summary>
-        Error_Replace
-        ''' <summary>A generic error occurred.</summary>
-        Error_Generic
-    End Enum
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Attach a file to the updater.
     ''' </summary>
     ''' <param name="strFile"></param>
@@ -136,41 +114,45 @@ Friend Class cAutoUpdate
     ''' <summary>
     ''' Check for updates on the attached assembly.
     ''' </summary>
-    ''' <para>An <see cref="eUpdateStatusTypes">update status</see>flag, which 
+    ''' <para>An <see cref="eAutoUpdateResultTypes">update status</see>flag, which 
     ''' is to be interpreted as follows:</para>
     ''' <list type="table">
     ''' <listheader><term>Flag</term><description>Description</description></listheader>
     ''' <item>
-    ''' <term><see cref="eUpdateStatusTypes.Success">Success</see></term>
+    ''' <term><see cref="eAutoUpdateResultTypes.Success_NoActionRequired"/></term>
     ''' <description>Server was contacted successfully and no action is required.</description>
     ''' </item>
     ''' <item>
-    ''' <term><see cref="eUpdateStatusTypes.Info_CanMigrate">Info_CanMigrate</see></term>
+    ''' <term><see cref="eAutoUpdateResultTypes.Success_Updated"/></term>
+    ''' <description>Server was contacted successfully and no action is required.</description>
+    ''' </item>
+    ''' <item>
+    ''' <term><see cref="eAutoUpdateResultTypes.Info_CanMigrate"/></term>
     ''' <description>A migration from a weak-named to a strong-named assembly is available.</description>
     ''' </item>
     ''' <item>
-    ''' <term><see cref="eUpdateStatusTypes.Info_CanUpdate">Info_CanUpdate</see></term>
+    ''' <term><see cref="eAutoUpdateResultTypes.Info_CanUpdate"/></term>
     ''' <description>An update is available.</description>
     ''' </item>
     ''' <item>
-    ''' <term><see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see></term>
+    ''' <term><see cref="eAutoUpdateResultTypes.Error_Connection"/></term>
     ''' <description>Connection to update server could not be established.</description>
     ''' </item>
     ''' <item>
-    ''' <term><see cref="eUpdateStatusTypes.Error_Generic">Error_Generic</see></term>
+    ''' <term><see cref="eAutoUpdateResultTypes.Error_Generic"/></term>
     ''' <description>Something else went wrong.</description>
     ''' </item>
     ''' </list>
     ''' -----------------------------------------------------------------------
-    Public Function CheckForUpdate() As eUpdateStatusTypes
+    Public Function CheckForUpdate() As eAutoUpdateResultTypes
 
         If String.IsNullOrEmpty(Me.m_strPluginName) Then
-            Return eUpdateStatusTypes.Error_Generic
+            Return eAutoUpdateResultTypes.Error_Generic
         End If
 
         ' Perform local version check first
         If Me.m_verPlugin.CompareTo(Me.m_verCore) >= 0 Then
-            Return eUpdateStatusTypes.Success
+            Return eAutoUpdateResultTypes.Success_NoActionRequired
         End If
 
         ' For weak-named assemblies check for a likely migration
@@ -188,26 +170,26 @@ Friend Class cAutoUpdate
     ''' Download an update for a file.
     ''' </summary>
     ''' <returns>
-    ''' <para>An <see cref="eUpdateStatusTypes">update result indicator</see>,
+    ''' <para>An <see cref="eAutoUpdateResultTypes">update result indicator</see>,
     ''' which are to be interpreted as follows:</para>
     ''' <list type="table">
     ''' <listheader><term>Flag</term><description>Description</description></listheader>
     ''' <item>
-    ''' <term><see cref="eUpdateStatusTypes.Success">Success</see></term>
+    ''' <term><see cref="eAutoUpdateResultTypes.Success_Updated"/></term>
     ''' <description>Update was downloaded and copied succesfully.</description>
     ''' </item>
     ''' <item>
-    ''' <term><see cref="eUpdateStatusTypes.Error_Download">Error_Download</see></term>
+    ''' <term><see cref="eAutoUpdateResultTypes.Error_Download"/></term>
     ''' <description>Failed to correctly download the update.</description>
     ''' </item>
     ''' <item>
-    ''' <term><see cref="eUpdateStatusTypes.Error_Replace">Error_Replace</see></term>
+    ''' <term><see cref="eAutoUpdateResultTypes.Error_Replace"/></term>
     ''' <description>Failed to replace the local plug-in file with the downloaded file.</description>
     ''' </item>
     ''' </list>
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function DownloadUpdate() As eUpdateStatusTypes
+    Public Function DownloadUpdate() As eAutoUpdateResultTypes
 
         Dim abPlugin() As Byte = Nothing
         Dim fsPlugin As FileStream = Nothing
@@ -215,9 +197,8 @@ Friend Class cAutoUpdate
         Dim md5Hash As MD5 = MD5.Create()
         Dim strHashLocal As String = ""
 
-
         If String.IsNullOrEmpty(Me.m_strPluginName) Then
-            Return eUpdateStatusTypes.Error_Generic
+            Return eAutoUpdateResultTypes.Error_Generic
         End If
 
         Try
@@ -229,7 +210,7 @@ Friend Class cAutoUpdate
             fsPlugin = Nothing
         Catch ex As Exception
             ' Error downloading update
-            Return eUpdateStatusTypes.Error_Download
+            Return eAutoUpdateResultTypes.Error_Download
         End Try
 
         Try
@@ -239,11 +220,11 @@ Friend Class cAutoUpdate
             ' Does checksum match the service checksum?
             If Not String.Compare(strHashLocal, Me.m_service.GetPluginHash(), True) = 0 Then
                 ' #No: download failed
-                Return eUpdateStatusTypes.Error_Download
+                Return eAutoUpdateResultTypes.Error_Download
             End If
         Catch ex As Exception
             ' Error downloading hash
-            Return eUpdateStatusTypes.Error_Download
+            Return eAutoUpdateResultTypes.Error_Download
         End Try
 
         Try
@@ -251,7 +232,7 @@ Friend Class cAutoUpdate
             File.Copy(strTemp, Me.m_strFile, True)
         Catch ex As Exception
             ' Unable to overwrite plug-in dll, maybe it's in use?
-            Return eUpdateStatusTypes.Error_Replace
+            Return eAutoUpdateResultTypes.Error_Replace
         End Try
 
         Try
@@ -262,7 +243,7 @@ Friend Class cAutoUpdate
         End Try
 
         ' Yippee
-        Return eUpdateStatusTypes.Success
+        Return eAutoUpdateResultTypes.Success_Updated
 
     End Function
 
@@ -291,16 +272,16 @@ Friend Class cAutoUpdate
     ''' <returns>
     ''' <para>This method will return one of the following values:</para>
     ''' <list type="table">
-    ''' <item><term><see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see></term><description>Server could not be connected.</description></item>
-    ''' <item><term><see cref="eUpdateStatusTypes.Success">Info_CanUpdate</see></term><description>Server was contacted and a migration is available.</description></item>
-    ''' <item><term><see cref="eUpdateStatusTypes.Success">Success</see></term><description>Server was contacted but no migration is available.</description></item>
+    ''' <item><term><see cref="eAutoUpdateResultTypes.Error_Connection"/></term><description>Server could not be connected.</description></item>
+    ''' <item><term><see cref="eAutoUpdateResultTypes.Info_CanUpdate"/></term><description>Server was contacted and a migration is available.</description></item>
+    ''' <item><term><see cref="eAutoUpdateResultTypes.Success_NoActionRequired"/></term><description>Server was contacted but no migration is available.</description></item>
     ''' </list>
     ''' </returns>
     ''' <remarks>
     ''' Note that this check should only be performed on weak-named assemblies.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Function HasMigration() As eUpdateStatusTypes
+    Private Function HasMigration() As eAutoUpdateResultTypes
 
         Debug.Assert(String.IsNullOrEmpty(Me.m_strPluginToken), "Assembly is not weak-named")
         Debug.Assert(Me.m_verCore IsNot Nothing, "Something is VERY wrong")
@@ -310,16 +291,16 @@ Friend Class cAutoUpdate
             Me.m_strPluginToken = Me.m_service.GetPluginMigrationToken(Me.m_verCore.ToString, Me.m_strPluginName, Me.m_verPlugin.ToString)
 
             If Not String.IsNullOrEmpty(Me.m_strPluginToken) Then
-                Return eUpdateStatusTypes.Info_CanMigrate
+                Return eAutoUpdateResultTypes.Info_CanMigrate
             End If
 
-            Return eUpdateStatusTypes.Success
+            Return eAutoUpdateResultTypes.Success_NoActionRequired
 
         Catch ex As Exception
             ' Unable to connect to server
         End Try
 
-        Return eUpdateStatusTypes.Error_Connection
+        Return eAutoUpdateResultTypes.Error_Connection
 
     End Function
 
@@ -330,25 +311,25 @@ Friend Class cAutoUpdate
     ''' <returns>
     ''' <para>This method will return one of the following values:</para>
     ''' <list type="table">
-    ''' <item><term><see cref="eUpdateStatusTypes.Error_Connection">Error_Connection</see></term><description>Server could not be connected.</description></item>
-    ''' <item><term><see cref="eUpdateStatusTypes.Success">Info_CanUpdate</see></term><description>Server was contacted and an update is available.</description></item>
-    ''' <item><term><see cref="eUpdateStatusTypes.Success">Success</see></term><description>Server was contacted but no update is available.</description></item>
+    ''' <item><term><see cref="eAutoUpdateResultTypes.Error_Connection"/></term><description>Server could not be connected.</description></item>
+    ''' <item><term><see cref="eAutoUpdateResultTypes.Info_CanUpdate"/></term><description>Server was contacted and an update is available.</description></item>
+    ''' <item><term><see cref="eAutoUpdateResultTypes.Success_NoActionRequired"/></term><description>Server was contacted but no update is available.</description></item>
     ''' </list>
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Private Function HasUpdate() As eUpdateStatusTypes
+    Private Function HasUpdate() As eAutoUpdateResultTypes
 
         Debug.Assert(Me.m_verCore IsNot Nothing, "Something is VERY wrong")
         Debug.Assert(Me.m_verPlugin IsNot Nothing, "Something is VERY wrong")
 
         Try
             If Me.m_service.CheckPluginUpdate(Me.m_verCore.ToString, Me.m_strPluginName, Me.m_strPluginToken, Me.m_verPlugin.ToString) Then
-                Return eUpdateStatusTypes.Info_CanUpdate
+                Return eAutoUpdateResultTypes.Info_CanUpdate
             End If
-            Return eUpdateStatusTypes.Success
+            Return eAutoUpdateResultTypes.Success_NoActionRequired
         Catch ex As Exception
             ' Unable to connect to server
-            Return eUpdateStatusTypes.Error_Connection
+            Return eAutoUpdateResultTypes.Error_Connection
         End Try
 
     End Function

@@ -1620,4 +1620,30 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Apply price elasticity to fleet {0}: {1} landing {2}: {3}</value>
     <comment>{0}: fleet index, {1}: fleet name, {2} group index, {3}: group name</comment>
   </data>
+  <data name="STATUS_UPDATE_ERROR_DOWNLOAD" xml:space="preserve">
+    <value>Unable to download update for '{0}'</value>
+    <comment>{0}: component name</comment>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_GENERIC" xml:space="preserve">
+    <value>An unknown error occurred while trying to update '{0}'</value>
+    <comment>{0}: component name</comment>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_WRITE" xml:space="preserve">
+    <value>Cannot write the update for '{0}' to its destination. Either the target file is in use, or you do not have sufficient privileges</value>
+    <comment>{0}: component name</comment>
+  </data>
+  <data name="STATUS_UPDATE_FAILED" xml:space="preserve">
+    <value>Components update check failed</value>
+  </data>
+  <data name="STATUS_UPDATE_NO_ACTION" xml:space="preserve">
+    <value>Component '{0}' is up to date</value>
+    <comment>{0}: component name</comment>
+  </data>
+  <data name="STATUS_UPDATE_SUCCESS" xml:space="preserve">
+    <value>Components updated successfully</value>
+  </data>
+  <data name="STATUS_UPDATE_UPDATED" xml:space="preserve">
+    <value>Component '{0}' has been updated</value>
+    <comment>{0}: component name</comment>
+  </data>
 </root>

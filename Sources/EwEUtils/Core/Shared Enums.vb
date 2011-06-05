@@ -2376,4 +2376,33 @@ Namespace Core
 
 #End Region ' Organism types
 
+#Region " Automated update result types "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating possible automated update results.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eAutoUpdateResultTypes As Integer
+
+        ''' <summary>All good. Blue skies, happy children, money in the bank; the works - no need to leave the couch.</summary>
+        Success_NoActionRequired = 0
+        ''' <summary>Component successfully updated.</summary>
+        Success_Updated
+        ''' <summary>A migration is available.</summary>
+        Info_CanMigrate
+        ''' <summary>An update is available.</summary>
+        Info_CanUpdate
+        ''' <summary>Update webservice could not be connected.</summary>
+        Error_Connection
+        ''' <summary>File failed to download.</summary>
+        Error_Download
+        ''' <summary>Failed to replace a plug-in on the system.</summary>
+        Error_Replace
+        ''' <summary>A generic error occurred.</summary>
+        Error_Generic
+    End Enum
+
+#End Region ' Automated update result types
+
 End Namespace ' Core

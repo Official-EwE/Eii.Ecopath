@@ -736,7 +736,7 @@ Public Class AppLauncher
 
         ' Update plug-ins first, if required
         If My.Settings.AutoUpdatePlugins Then
-            Dim frm As New frmUpdateComponents(Me.m_pluginManager)
+            Dim frm As New frmUpdateComponents(Me.UIContext, Me.m_pluginManager)
             frm.ShowDialog()
         End If
 

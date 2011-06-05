@@ -15,6 +15,7 @@ Imports EwEPlugin.Data
 Imports System.Xml
 Imports System.Text
 Imports System.Collections
+Imports EwEPlugin.cAutoUpdate
 
 #End Region ' Imports
 
@@ -381,6 +382,7 @@ Public Class cPluginManager
         Dim updater As cAutoUpdate = New cAutoUpdate(Me.m_core)
         Dim pluginAssembly As Assembly = Nothing
         Dim strPluginPath As String = ""
+        Dim result As eAutoUpdateResultTypes = eAutoUpdateResultTypes.Success_NoActionRequired
 
         Dim di As DirectoryInfo = Nothing
         Dim fi As FileInfo = Nothing
@@ -424,7 +426,7 @@ Public Class cPluginManager
                     ' Check for update type
                     Select Case updater.CheckForUpdate()
 
-                        Case cAutoUpdate.eUpdateStatusTypes.Info_CanMigrate
+                        Case eAutoUpdateResultTypes.Info_CanMigrate
                             ' #Migration: not a simple update but a possibly risky migration.
                             ' Can ask user for confirmation?
                             If (dlgOverwrite IsNot Nothing) Then
@@ -435,11 +437,11 @@ Public Class cPluginManager
                                 bDownload = False
                             End If
 
-                        Case cAutoUpdate.eUpdateStatusTypes.Info_CanUpdate
+                        Case eAutoUpdateResultTypes.Info_CanUpdate
                             ' #Update: ready to download
                             bDownload = True
 
-                        Case cAutoUpdate.eUpdateStatusTypes.Error_Connection
+                        Case eAutoUpdateResultTypes.Error_Connection
                             ' #No connection: abort process to save time
                             Return False
 
@@ -453,15 +455,29 @@ Public Class cPluginManager
 
                     ' Need to download?
                     If bDownload Then
+
                         ' #Yes: go at it
-                        RaiseEvent AssemblyUpdating(strPluginName, sProgress)
-                        ' ToDo: handle update result
-                        updater.DownloadUpdate()
+                        Try
+                            RaiseEvent AssemblyUpdating(strPluginName, sProgress)
+                        Catch ex As Exception
+                            ' Hmm, wish we could write to the log here...
+                        End Try
+                        result = updater.DownloadUpdate()
                     Else
                         ' #No: just reflect progress
-                        RaiseEvent AssemblyUpdating("", sProgress)
+                        Try
+                            RaiseEvent AssemblyUpdating("", sProgress)
+                        Catch ex As Exception
+
+                        End Try
+                        result = eAutoUpdateResultTypes.Success_NoActionRequired
                     End If
 
+                    Try
+                        RaiseEvent AssemblyUpdated(strPluginName, result)
+                    Catch ex As Exception
+
+                    End Try
                 End If
             Next
 
@@ -728,9 +744,27 @@ Public Class cPluginManager
 
     End Function
 
+#Region " Updates "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Assembly update in progress handler
+    ''' Assembly update finished delegate.
+    ''' </summary>
+    ''' <param name="strName">The name of the plugin that was  updated.</param>
+    ''' <param name="result">Update <see cref="eAutoUpdateResultTypes">result</see>.</param>
+    ''' -----------------------------------------------------------------------
+    Public Delegate Sub AssemblyUpdatedHandler(ByVal strName As String, ByVal result As eAutoUpdateResultTypes)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Assembly update finished handler.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Event AssemblyUpdated As AssemblyUpdatedHandler
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Assembly update in progress delegate.
     ''' </summary>
     ''' <param name="strName">The name of the plugin that is being updated.</param>
     ''' <param name="sProgress">Update progress.</param>
@@ -739,10 +773,12 @@ Public Class cPluginManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Assembly update in progress handler
+    ''' Assembly update in progress handler.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Event AssemblyUpdating As AssemblyUpdatingHandler
+
+#End Region ' Updates
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
