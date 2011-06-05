@@ -26,7 +26,7 @@ Partial Class frmStartPanel
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStartPanel))
         Me.m_tlp = New System.Windows.Forms.TableLayoutPanel
         Me.m_browser = New System.Windows.Forms.WebBrowser
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
+        Me.ToolStrip1 = New cEwEToolStrip
         Me.m_tsbnHome = New System.Windows.Forms.ToolStripButton
         Me.m_tsbnBack = New System.Windows.Forms.ToolStripButton
         Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton
@@ -107,7 +107,7 @@ Partial Class frmStartPanel
 
     End Sub
     Private WithEvents m_browser As System.Windows.Forms.WebBrowser
-    Private WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
+    Private WithEvents ToolStrip1 As cEwEToolStrip
     Private WithEvents m_tsbnBack As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_tsbnForward As System.Windows.Forms.ToolStripButton

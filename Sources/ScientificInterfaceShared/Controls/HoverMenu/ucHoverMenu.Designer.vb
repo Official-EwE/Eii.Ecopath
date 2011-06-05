@@ -12,7 +12,7 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_ts = New System.Windows.Forms.ToolStrip
+            Me.m_ts = New cEwEToolStrip
             Me.m_tsbnZoomIn = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnZoomOut = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnZoomReset = New System.Windows.Forms.ToolStripButton
@@ -22,7 +22,6 @@
             'm_ts
             '
             Me.m_ts.CanOverflow = False
-            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnZoomIn, Me.m_tsbnZoomOut, Me.m_tsbnZoomReset})
             Me.m_ts.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
@@ -70,7 +69,7 @@
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_ts As System.Windows.Forms.ToolStrip
+        Private WithEvents m_ts As cEwEToolStrip
         Private WithEvents m_tsbnZoomIn As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnZoomOut As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnZoomReset As System.Windows.Forms.ToolStripButton

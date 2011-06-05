@@ -33,7 +33,7 @@ Namespace Ecosim
             Me.m_lbPrey = New ScientificInterfaceShared.Controls.cGroupListBox
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
-            Me.m_tsMain = New System.Windows.Forms.ToolStrip
+            Me.m_tsMain = New cEwEToolstrip
             Me.m_tsDDShowHidePlots = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_plGroups = New System.Windows.Forms.Panel
             Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -155,7 +155,6 @@ Namespace Ecosim
             'm_tsMain
             '
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
-            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsDDShowHidePlots})
             Me.m_tsMain.Name = "m_tsMain"
             '
@@ -262,7 +261,7 @@ Namespace Ecosim
         Private WithEvents m_hdrPrey As cEwEHeaderLabel
         Private WithEvents m_lbFleets As cFleetListBox
         Private WithEvents m_hdrFleets As cEwEHeaderLabel
-        Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tsDDShowHidePlots As System.Windows.Forms.ToolStripDropDownButton
     End Class
 

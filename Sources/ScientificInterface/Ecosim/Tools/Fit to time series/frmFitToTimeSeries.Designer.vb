@@ -49,7 +49,7 @@ Namespace Ecosim
             Me.m_tabSearchOptions = New System.Windows.Forms.TabControl()
             Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage()
             Me.m_nudVariance = New System.Windows.Forms.NumericUpDown()
-            Me.m_tsVulSearchTools = New System.Windows.Forms.ToolStrip()
+            Me.m_tsVulSearchTools = New cEwEToolStrip()
             Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbSearchGroup = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
@@ -469,7 +469,6 @@ Namespace Ecosim
             '
             'm_tsVulSearchTools
             '
-            Me.m_tsVulSearchTools.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsVulSearchTools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSensOfSS2V, Me.m_tsbSearchGroup, Me.ToolStripButton1})
             Me.m_tsVulSearchTools.Location = New System.Drawing.Point(3, 3)
             Me.m_tsVulSearchTools.Name = "m_tsVulSearchTools"
@@ -795,7 +794,7 @@ Namespace Ecosim
         Private WithEvents m_nudLastYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_nudFirstYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_hdrSearchTypes As cEwEHeaderLabel
-        Private WithEvents m_tsVulSearchTools As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsVulSearchTools As cEwEToolStrip
         Private WithEvents m_tsbSensOfSS2V As System.Windows.Forms.ToolStripButton
         Private WithEvents m_hdrAppliedFF As cEwEHeaderLabel
         Private WithEvents m_grid As gridFitToTimeSeriesGroup

@@ -27,7 +27,7 @@ Namespace Ecopath.Input
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_ts = New System.Windows.Forms.ToolStrip
+            Me.m_ts = New cEwEToolstrip
             Me.m_tsbnEditFleets = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecopath.Input.FisheryInputFleetDefinitionEwEGrid
             Me.m_ts.SuspendLayout()
@@ -35,7 +35,6 @@ Namespace Ecopath.Input
             '
             'm_ts
             '
-            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditFleets})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
@@ -100,7 +99,7 @@ Namespace Ecopath.Input
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_ts As System.Windows.Forms.ToolStrip
+        Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_tsbnEditFleets As System.Windows.Forms.ToolStripButton
         Private WithEvents m_grid As ScientificInterface.Ecopath.Input.FisheryInputFleetDefinitionEwEGrid
     End Class

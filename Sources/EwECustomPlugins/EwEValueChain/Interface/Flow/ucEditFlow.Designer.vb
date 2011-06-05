@@ -1,4 +1,5 @@
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Controls
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class ucEditFlow
@@ -26,7 +27,7 @@ Partial Class ucEditFlow
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucEditFlow))
-        Me.tsMain = New System.Windows.Forms.ToolStrip
+        Me.tsMain = New cEwEToolStrip
         Me.m_tsbSave = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsmiSave = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiExportToImage = New System.Windows.Forms.ToolStripMenuItem
@@ -338,7 +339,7 @@ Partial Class ucEditFlow
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents tsMain As System.Windows.Forms.ToolStrip
+    Private WithEvents tsMain As cEwEToolStrip
     Private WithEvents m_tsbCreateProducer As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbCreateProcessing As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbCreateDistribution As System.Windows.Forms.ToolStripMenuItem

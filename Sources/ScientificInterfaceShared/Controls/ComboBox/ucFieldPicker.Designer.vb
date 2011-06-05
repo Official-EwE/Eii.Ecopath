@@ -25,7 +25,7 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucFieldPicker))
-            Me.m_tsBogus = New System.Windows.Forms.ToolStrip
+            Me.m_tsBogus = New cEwEToolStrip
             Me.m_tsddFields = New System.Windows.Forms.ToolStripSplitButton
             Me.m_tsBogus.SuspendLayout()
             Me.SuspendLayout()
@@ -37,12 +37,10 @@
             Me.m_tsBogus.CanOverflow = False
             Me.m_tsBogus.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tsBogus.GripMargin = New System.Windows.Forms.Padding(0)
-            Me.m_tsBogus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsBogus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddFields})
             Me.m_tsBogus.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table
             Me.m_tsBogus.Location = New System.Drawing.Point(0, 0)
             Me.m_tsBogus.Name = "m_tsBogus"
-            Me.m_tsBogus.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
             Me.m_tsBogus.Size = New System.Drawing.Size(62, 21)
             Me.m_tsBogus.TabIndex = 6
             '
@@ -68,7 +66,7 @@
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_tsBogus As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsBogus As cEwEToolStrip
         Private WithEvents m_tsddFields As System.Windows.Forms.ToolStripSplitButton
 
     End Class

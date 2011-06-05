@@ -24,7 +24,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyFFPrimaryProducer))
-            Me.m_ts = New System.Windows.Forms.ToolStrip
+            Me.m_ts = New cEwEToolstrip
             Me.tsBtnClearAll = New System.Windows.Forms.ToolStripButton
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
             Me.tsBtnSetAll = New System.Windows.Forms.ToolStripButton
@@ -34,11 +34,9 @@ Namespace Ecosim
             '
             'm_ts
             '
-            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsBtnClearAll, Me.ToolStripSeparator1, Me.tsBtnSetAll})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
-            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'tsBtnClearAll
             '
@@ -105,7 +103,7 @@ Namespace Ecosim
         Private WithEvents tsBtnClearAll As System.Windows.Forms.ToolStripButton
         Private WithEvents tsBtnSetAll As System.Windows.Forms.ToolStripButton
         Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents m_ts As System.Windows.Forms.ToolStrip
+        Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_grid As ScientificInterface.Ecosim.ApplyPredPreyShapeGrid
 
     End Class

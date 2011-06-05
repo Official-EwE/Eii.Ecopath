@@ -28,14 +28,13 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmGroupRefLevels))
-            Me.m_ts = New System.Windows.Forms.ToolStrip
+            Me.m_ts = New cEwEToolStrip
             Me.m_tsbnReset = New System.Windows.Forms.ToolStripButton
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
-            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnReset})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
@@ -62,7 +61,7 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_ts As System.Windows.Forms.ToolStrip
+        Private WithEvents m_ts As cEwEToolStrip
         Private WithEvents m_tsbnReset As System.Windows.Forms.ToolStripButton
 
     End Class

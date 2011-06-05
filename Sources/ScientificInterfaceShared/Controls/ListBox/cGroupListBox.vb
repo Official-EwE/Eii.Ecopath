@@ -576,7 +576,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public ReadOnly Property GetGroupAt(ByVal iIndex As Integer) As cCoreGroupBase
             Get
-                If (iIndex <= 0 Or iIndex >= Me.Items.Count) Then Return Nothing
+                If (iIndex < 0 Or iIndex >= Me.Items.Count) Then Return Nothing
                 Return DirectCast(Me.Items(iIndex), cGroupItem).Source
             End Get
         End Property

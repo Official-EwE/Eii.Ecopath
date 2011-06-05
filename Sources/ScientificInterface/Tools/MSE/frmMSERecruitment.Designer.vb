@@ -29,7 +29,7 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSERecruitment))
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.tsToolStrip = New System.Windows.Forms.ToolStrip
+            Me.tsToolStrip = New cEwEToolStrip
             Me.tsbtDefaults = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecosim.gridMSERecruitment
             Me.m_scMain.Panel1.SuspendLayout()
@@ -69,7 +69,6 @@ Namespace Ecosim
             '
             'tsToolStrip
             '
-            Me.tsToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.tsToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbtDefaults})
             resources.ApplyResources(Me.tsToolStrip, "tsToolStrip")
             Me.tsToolStrip.Name = "tsToolStrip"
@@ -129,7 +128,7 @@ Namespace Ecosim
         Private WithEvents m_grid As Ecosim.gridMSERecruitment
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
-        Friend WithEvents tsToolStrip As System.Windows.Forms.ToolStrip
+        Friend WithEvents tsToolStrip As cEwEToolStrip
         Friend WithEvents tsbtDefaults As System.Windows.Forms.ToolStripButton
 
     End Class

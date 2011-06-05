@@ -24,14 +24,13 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmVulnerabilities))
-            Me.m_tsVUlnerabilities = New System.Windows.Forms.ToolStrip
+            Me.m_tsVUlnerabilities = New cEwEToolstrip
             Me.m_tsbEstimateVs = New System.Windows.Forms.ToolStripButton
             Me.m_tsVUlnerabilities.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsVUlnerabilities
             '
-            Me.m_tsVUlnerabilities.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsVUlnerabilities.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEstimateVs})
             resources.ApplyResources(Me.m_tsVUlnerabilities, "m_tsVUlnerabilities")
             Me.m_tsVUlnerabilities.Name = "m_tsVUlnerabilities"
@@ -54,7 +53,7 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_tsVUlnerabilities As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsVUlnerabilities As cEwEToolstrip
         Private WithEvents m_tsbEstimateVs As System.Windows.Forms.ToolStripButton
 
     End Class

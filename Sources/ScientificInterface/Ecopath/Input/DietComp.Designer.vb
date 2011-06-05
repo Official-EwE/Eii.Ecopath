@@ -85,7 +85,6 @@ Namespace Ecopath.Input
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
         Private WithEvents m_grid As DietCompositionEwEGrid
         Private WithEvents tsSumtoOneBtn As System.Windows.Forms.ToolStripButton
         Private WithEvents m_ts As ScientificInterfaceShared.Controls.cEwEToolstrip

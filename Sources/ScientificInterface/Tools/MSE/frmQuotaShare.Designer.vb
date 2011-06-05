@@ -28,7 +28,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmQuotaShare))
-            Me.m_tss = New System.Windows.Forms.ToolStrip
+            Me.m_tss = New cEwEToolStrip
             Me.m_tsbnDefaults = New System.Windows.Forms.ToolStripButton
             Me.m_tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecosim.gridQuotaShare
@@ -37,7 +37,6 @@ Namespace Ecosim
             '
             'm_tss
             '
-            Me.m_tss.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tss.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefaults, Me.m_tsSumtoOneBtn})
             resources.ApplyResources(Me.m_tss, "m_tss")
             Me.m_tss.Name = "m_tss"
@@ -97,7 +96,7 @@ Namespace Ecosim
 
         End Sub
         Private WithEvents m_grid As gridQuotaShare
-        Private WithEvents m_tss As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tss As cEwEToolStrip
         Private WithEvents m_tsSumtoOneBtn As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnDefaults As System.Windows.Forms.ToolStripButton
     End Class

@@ -28,7 +28,7 @@ Namespace Ecospace
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucMapZoomToolbar))
-            Me.m_tsZoom = New System.Windows.Forms.ToolStrip
+            Me.m_tsZoom = New cEwEToolStrip
             Me.m_tsbSaveImage = New System.Windows.Forms.ToolStripButton
             Me.m_ts1 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsddbPosition = New System.Windows.Forms.ToolStripDropDownButton
@@ -52,7 +52,6 @@ Namespace Ecospace
             '
             'm_tsZoom
             '
-            Me.m_tsZoom.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSaveImage, Me.m_ts1, Me.m_tsddbPosition, Me.m_ts2, Me.m_tsbZoomIn, Me.m_tsbZoomOut, Me.m_tscbZoomPercent, Me.m_tsbZoomReset})
             Me.m_tsZoom.Location = New System.Drawing.Point(0, 0)
             Me.m_tsZoom.Name = "m_tsZoom"
@@ -196,7 +195,7 @@ Namespace Ecospace
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_tsZoom As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsZoom As cEwEToolStrip
         Private WithEvents m_cmsZoom As System.Windows.Forms.ContextMenuStrip
         Private WithEvents m_tsbSaveImage As System.Windows.Forms.ToolStripButton
         Private WithEvents m_ts1 As System.Windows.Forms.ToolStripSeparator

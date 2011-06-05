@@ -56,7 +56,7 @@ Namespace Ecospace.Advection
             Me.m_sliderCursor = New ScientificInterfaceShared.Controls.ucSlider
             Me.m_hdrEditing = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_hdrCompute = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tsControls = New System.Windows.Forms.ToolStrip
+            Me.m_tsControls = New cEwEToolStrip
             Me.m_tsmiToggleOptions = New System.Windows.Forms.ToolStripButton
             Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tslMonth = New System.Windows.Forms.ToolStripLabel
@@ -503,7 +503,7 @@ Namespace Ecospace.Advection
         Private WithEvents m_ucUpwelling As ScientificInterface.Ecospace.Advection.ucUpwelling
         Private WithEvents m_ucWind As ScientificInterface.Ecospace.Advection.ucWind
         Private WithEvents m_ucMap As ScientificInterface.Ecospace.Advection.ucMap
-        Private WithEvents m_tsControls As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsControls As cEwEToolStrip
         Private WithEvents m_tsmiToggleOptions As System.Windows.Forms.ToolStripButton
         Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tslMonth As System.Windows.Forms.ToolStripLabel

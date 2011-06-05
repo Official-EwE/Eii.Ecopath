@@ -28,7 +28,7 @@ Namespace Ecospace
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMPAOptimizations))
             Me.m_btnRun = New System.Windows.Forms.Button
             Me.m_btnStop = New System.Windows.Forms.Button
-            Me.m_tsMap = New System.Windows.Forms.ToolStrip
+            Me.m_tsMap = New cEwEToolStrip
             Me.m_tsbMPA = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_tsmClearMPA = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmSetAllMPA = New System.Windows.Forms.ToolStripMenuItem
@@ -142,7 +142,6 @@ Namespace Ecospace
             '
             'm_tsMap
             '
-            Me.m_tsMap.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMap.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbMPA, Me.m_tsbSeed, Me.m_tsbEditLayers})
             resources.ApplyResources(Me.m_tsMap, "m_tsMap")
             Me.m_tsMap.Name = "m_tsMap"
@@ -783,7 +782,7 @@ Namespace Ecospace
         End Sub
         Private WithEvents m_tlbLayers As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_hdrLayers As cEwEHeaderLabel
-        Private WithEvents m_tsMap As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsMap As cEwEToolStrip
         Private WithEvents m_tsbMPA As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents m_tsmClearMPA As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmSetAllMPA As System.Windows.Forms.ToolStripMenuItem

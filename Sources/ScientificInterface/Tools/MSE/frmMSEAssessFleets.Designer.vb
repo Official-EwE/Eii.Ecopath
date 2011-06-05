@@ -27,7 +27,7 @@ Partial Class frmMSEAssessFleets
         Me.m_split = New System.Windows.Forms.SplitContainer
         Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
         Me.m_grid = New ScientificInterface.gridFishingCV
-        Me.m_tsMain = New System.Windows.Forms.ToolStrip
+        Me.m_tsMain = New cEwEToolStrip
         Me.m_split.Panel1.SuspendLayout()
         Me.m_split.Panel2.SuspendLayout()
         Me.m_split.SuspendLayout()
@@ -89,7 +89,6 @@ Partial Class frmMSEAssessFleets
         '
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
-        Me.m_tsMain.GripStyle = ToolStripGripStyle.Hidden
         '
         'frmMSEAssessFleets
         '
@@ -107,5 +106,5 @@ Partial Class frmMSEAssessFleets
     Private WithEvents m_blocks As ScientificInterface.Ecosim.ucPolicyColorBlocks
     Private WithEvents m_grid As ScientificInterface.gridFishingCV
     Private WithEvents m_split As System.Windows.Forms.SplitContainer
-    Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
+    Private WithEvents m_tsMain As cEwEToolStrip
 End Class
