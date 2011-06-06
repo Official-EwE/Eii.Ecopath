@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EwEShapeGridPlugin")> 
-<Assembly: AssemblyDescription("Plug-in for Ecopath with Ecosim 6 to display shapes (forcing functions, mediation functions and time series) in a gridded format")> 
+<Assembly: AssemblyDescription("Plug-in for the Ecopath with Ecosim 6 Scientific Interface. Creates displays of shapes (forcing functions, mediation functions and time series) in a gridded format")> 
 <Assembly: AssemblyCompany("UBC Fisheries Centre")> 
 <Assembly: AssemblyProduct("EwEShapeGridPlugin")> 
 <Assembly: AssemblyCopyright("Copyright © 2011")> 
