@@ -138,11 +138,11 @@ Public Class cEcosimDatastructures
     Public CapBaseGrowth() As Single
 
     ' JS 08Jan10: Moved here from Network Analysis plug-in
-    ''' <summary>TL of catch</summary>
+    ''' <summary>TL of catch (x time)</summary>
     Public TLC() As Single
-    ''' <summary>FIB index</summary>
+    ''' <summary>FIB index (x time)</summary>
     Public FIB() As Single
-    ''' <summary>TL based on Ecosim diets</summary>
+    ''' <summary>TL based on Ecosim diets (x group)</summary>
     Public TLSim() As Single
     ''' <summary>Total catch per timestep</summary>
     ''' <remarks>JS: moved 08Jan10 from Network Analysis. Ecosim may already have this value, but I could not find it</remarks>
