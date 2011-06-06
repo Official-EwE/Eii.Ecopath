@@ -5,8 +5,8 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
