@@ -36,11 +36,17 @@ Namespace Ecosim
             Me.m_rbIndices = New System.Windows.Forms.RadioButton
             Me.m_rbGear = New System.Windows.Forms.RadioButton
             Me.m_plResultsGrid = New System.Windows.Forms.Panel
-            Me.m_hdrYear = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_hdrSummary = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_hdrShow = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel
+            Me.m_plContent = New System.Windows.Forms.Panel
+            Me.m_plSummary = New System.Windows.Forms.Panel
             CType(Me.udNumTimeSteps, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSumEnd, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSumStart, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tlpControls.SuspendLayout()
+            Me.m_plContent.SuspendLayout()
+            Me.m_plSummary.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_lblNumTimeSteps
@@ -106,41 +112,63 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_plResultsGrid, "m_plResultsGrid")
             Me.m_plResultsGrid.Name = "m_plResultsGrid"
             '
-            'm_hdrYear
+            'm_hdrSummary
             '
-            resources.ApplyResources(Me.m_hdrYear, "m_hdrYear")
-            Me.m_hdrYear.Name = "m_hdrYear"
+            resources.ApplyResources(Me.m_hdrSummary, "m_hdrSummary")
+            Me.m_hdrSummary.Name = "m_hdrSummary"
             '
             'm_hdrShow
             '
             resources.ApplyResources(Me.m_hdrShow, "m_hdrShow")
             Me.m_hdrShow.Name = "m_hdrShow"
             '
+            'm_tlpControls
+            '
+            resources.ApplyResources(Me.m_tlpControls, "m_tlpControls")
+            Me.m_tlpControls.Controls.Add(Me.m_plContent, 1, 1)
+            Me.m_tlpControls.Controls.Add(Me.m_plSummary, 0, 1)
+            Me.m_tlpControls.Name = "m_tlpControls"
+            '
+            'm_plContent
+            '
+            Me.m_plContent.Controls.Add(Me.m_hdrShow)
+            Me.m_plContent.Controls.Add(Me.m_rbGear)
+            Me.m_plContent.Controls.Add(Me.m_rbIndices)
+            Me.m_plContent.Controls.Add(Me.m_cmbFleets)
+            Me.m_plContent.Controls.Add(Me.m_rbGroup)
+            resources.ApplyResources(Me.m_plContent, "m_plContent")
+            Me.m_plContent.Name = "m_plContent"
+            '
+            'm_plSummary
+            '
+            Me.m_plSummary.Controls.Add(Me.udNumTimeSteps)
+            Me.m_plSummary.Controls.Add(Me.m_hdrSummary)
+            Me.m_plSummary.Controls.Add(Me.m_nudSumStart)
+            Me.m_plSummary.Controls.Add(Me.m_lblNumTimeSteps)
+            Me.m_plSummary.Controls.Add(Me.m_lblBegin)
+            Me.m_plSummary.Controls.Add(Me.m_lblEnd)
+            Me.m_plSummary.Controls.Add(Me.m_nudSumEnd)
+            resources.ApplyResources(Me.m_plSummary, "m_plSummary")
+            Me.m_plSummary.Name = "m_plSummary"
+            '
             'EcosimResults
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_hdrShow)
-            Me.Controls.Add(Me.m_cmbFleets)
-            Me.Controls.Add(Me.m_lblNumTimeSteps)
-            Me.Controls.Add(Me.m_rbGroup)
-            Me.Controls.Add(Me.m_hdrYear)
-            Me.Controls.Add(Me.m_rbIndices)
-            Me.Controls.Add(Me.udNumTimeSteps)
-            Me.Controls.Add(Me.m_rbGear)
-            Me.Controls.Add(Me.m_nudSumEnd)
-            Me.Controls.Add(Me.m_nudSumStart)
+            Me.Controls.Add(Me.m_tlpControls)
             Me.Controls.Add(Me.m_plResultsGrid)
-            Me.Controls.Add(Me.m_lblBegin)
-            Me.Controls.Add(Me.m_lblEnd)
             Me.Name = "EcosimResults"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             CType(Me.udNumTimeSteps, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudSumEnd, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudSumStart, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tlpControls.ResumeLayout(False)
+            Me.m_plContent.ResumeLayout(False)
+            Me.m_plContent.PerformLayout()
+            Me.m_plSummary.ResumeLayout(False)
+            Me.m_plSummary.PerformLayout()
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_lblBegin As System.Windows.Forms.Label
@@ -153,9 +181,12 @@ Namespace Ecosim
         Private WithEvents m_lblNumTimeSteps As System.Windows.Forms.Label
         Private WithEvents udNumTimeSteps As System.Windows.Forms.NumericUpDown
         Private WithEvents m_cmbFleets As System.Windows.Forms.ComboBox
-        Private WithEvents m_hdrYear As cEwEHeaderLabel
+        Private WithEvents m_hdrSummary As cEwEHeaderLabel
         Private WithEvents m_hdrShow As cEwEHeaderLabel
         Protected WithEvents m_plResultsGrid As System.Windows.Forms.Panel
+        Private WithEvents m_tlpControls As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents m_plSummary As System.Windows.Forms.Panel
+        Private WithEvents m_plContent As System.Windows.Forms.Panel
     End Class
 
 End Namespace
