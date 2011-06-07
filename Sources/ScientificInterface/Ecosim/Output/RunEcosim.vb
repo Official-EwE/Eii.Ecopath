@@ -300,12 +300,13 @@ Namespace Ecosim
         End Sub
 
         Private Sub m_tsmiSortMostChanged_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiSortMostChanged.Click, m_tssbExplore.Click
+            Handles m_tsbnExplore.Click, m_tsmiSort.Click
 
             If Me.m_bInUpdate Then Return
 
-            Me.m_tsmiSortMostChanged.Checked = Not Me.m_tsmiSortMostChanged.Checked
-            Me.IsExploring = Me.m_tsmiSortMostChanged.Checked
+            Me.m_tsmiSort.Checked = Not Me.m_tsmiSort.Checked
+            Me.m_tsbnExplore.Checked = Me.m_tsmiSort.Checked
+            Me.IsExploring = Me.m_tsmiSort.Checked
 
         End Sub
 
@@ -967,11 +968,13 @@ Namespace Ecosim
             If Me.IsExploring Then
                 Me.m_lbGroups.SortThreshold = Me.m_sChangeTrackSize
                 Me.m_lbGroups.SortType = cGroupListBox.eSortType.ValueDesc
-                Me.m_tsmiSortMostChanged.Checked = True
+                Me.m_tsmiSort.Checked = True
+                Me.m_tsbnExplore.Checked = True
             Else
                 Me.m_lbGroups.SortThreshold = cCore.NULL_VALUE
                 Me.m_lbGroups.SortType = cGroupListBox.eSortType.GroupIndexAsc
-                Me.m_tsmiSortMostChanged.Checked = False
+                Me.m_tsmiSort.Checked = False
+                Me.m_tsbnExplore.Checked = False
             End If
 
             Me.m_scOptions.Panel1Collapsed = Not Me.m_tsmShowMultipleRuns.Checked

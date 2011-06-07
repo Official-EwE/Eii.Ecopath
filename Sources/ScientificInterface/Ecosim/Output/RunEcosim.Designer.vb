@@ -31,7 +31,7 @@ Namespace Ecosim
             Dim ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
             Dim ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
             Me.btnRunOrStop = New System.Windows.Forms.Button
-            Me.m_tsMain = New cEwEToolStrip
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.tslTarget = New System.Windows.Forms.ToolStripLabel
             Me.m_tscbTarget = New ScientificInterfaceShared.Controls.cCustomToolstripComboBox
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
@@ -41,7 +41,7 @@ Namespace Ecosim
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad
             Me.m_spContainer = New System.Windows.Forms.SplitContainer
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
-            Me.m_ts = New cEwEToolStrip
+            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton
             Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel
             Me.tsblbSS = New System.Windows.Forms.ToolStripLabel
@@ -54,6 +54,8 @@ Namespace Ecosim
             Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsmiValueAbs = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiValueRel = New System.Windows.Forms.ToolStripMenuItem
+            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsbnExplore = New System.Windows.Forms.ToolStripButton
             Me.m_tsddGraphOptions = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_tsmiAutoscale = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiCustomScaleLabel = New System.Windows.Forms.ToolStripMenuItem
@@ -64,10 +66,9 @@ Namespace Ecosim
             Me.m_tsmiShowAnnualOutput = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmShowMultipleRuns = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiShowLegend = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tssbExplore = New System.Windows.Forms.ToolStripSplitButton
-            Me.m_tsmiSortMostChanged = New System.Windows.Forms.ToolStripMenuItem
-            Me.ChangeAmountToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+            Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsmiSort = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tslChangeAmount = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tstbChangeAmount = New System.Windows.Forms.ToolStripTextBox
             Me.m_scGraph = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
@@ -117,9 +118,11 @@ Namespace Ecosim
             '
             'm_tsMain
             '
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslTarget, Me.m_tscbTarget, Me.ToolStripSeparator1, Me.tsbSetTo0, Me.tsbSetToValue, Me.tsbResetFs})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
+            Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'tslTarget
             '
@@ -207,9 +210,11 @@ Namespace Ecosim
             '
             'm_ts
             '
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.tslblSSValue, Me.tsblbSS, ToolStripSeparator5, Me.m_tsdrpdnbtnContent, ToolStripSeparator2, Me.m_tsddGraphOptions, Me.ToolStripSeparator3, Me.m_tssbExplore})
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.tslblSSValue, Me.tsblbSS, ToolStripSeparator5, Me.m_tsdrpdnbtnContent, ToolStripSeparator2, Me.ToolStripSeparator3, Me.m_tsbnExplore, Me.m_tsddGraphOptions})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
+            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbtnShowHideGroups
             '
@@ -280,9 +285,19 @@ Namespace Ecosim
             Me.m_tsmiValueRel.Name = "m_tsmiValueRel"
             resources.ApplyResources(Me.m_tsmiValueRel, "m_tsmiValueRel")
             '
+            'ToolStripSeparator3
+            '
+            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+            resources.ApplyResources(Me.ToolStripSeparator3, "ToolStripSeparator3")
+            '
+            'm_tsbnExplore
+            '
+            resources.ApplyResources(Me.m_tsbnExplore, "m_tsbnExplore")
+            Me.m_tsbnExplore.Name = "m_tsbnExplore"
+            '
             'm_tsddGraphOptions
             '
-            Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, ToolStripSeparator4, Me.m_tsmiShowAnnualOutput, Me.m_tsmShowMultipleRuns, Me.m_tsmiShowLegend})
+            Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, ToolStripSeparator4, Me.m_tsmiShowAnnualOutput, Me.m_tsmShowMultipleRuns, Me.m_tsmiShowLegend, Me.ToolStripSeparator8, Me.m_tsmiSort, Me.m_tslChangeAmount, Me.m_tstbChangeAmount})
             resources.ApplyResources(Me.m_tsddGraphOptions, "m_tsddGraphOptions")
             Me.m_tsddGraphOptions.Name = "m_tsddGraphOptions"
             '
@@ -341,27 +356,21 @@ Namespace Ecosim
             Me.m_tsmiShowLegend.Name = "m_tsmiShowLegend"
             resources.ApplyResources(Me.m_tsmiShowLegend, "m_tsmiShowLegend")
             '
-            'ToolStripSeparator3
+            'ToolStripSeparator8
             '
-            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-            resources.ApplyResources(Me.ToolStripSeparator3, "ToolStripSeparator3")
+            Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
+            resources.ApplyResources(Me.ToolStripSeparator8, "ToolStripSeparator8")
             '
-            'm_tssbExplore
+            'm_tsmiSort
             '
-            Me.m_tssbExplore.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSortMostChanged, Me.ChangeAmountToolStripMenuItem, Me.m_tstbChangeAmount})
-            resources.ApplyResources(Me.m_tssbExplore, "m_tssbExplore")
-            Me.m_tssbExplore.Name = "m_tssbExplore"
+            Me.m_tsmiSort.Name = "m_tsmiSort"
+            resources.ApplyResources(Me.m_tsmiSort, "m_tsmiSort")
             '
-            'm_tsmiSortMostChanged
+            'm_tslChangeAmount
             '
-            Me.m_tsmiSortMostChanged.Name = "m_tsmiSortMostChanged"
-            resources.ApplyResources(Me.m_tsmiSortMostChanged, "m_tsmiSortMostChanged")
-            '
-            'ChangeAmountToolStripMenuItem
-            '
-            Me.ChangeAmountToolStripMenuItem.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
-            Me.ChangeAmountToolStripMenuItem.Name = "ChangeAmountToolStripMenuItem"
-            resources.ApplyResources(Me.ChangeAmountToolStripMenuItem, "ChangeAmountToolStripMenuItem")
+            Me.m_tslChangeAmount.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
+            Me.m_tslChangeAmount.Name = "m_tslChangeAmount"
+            resources.ApplyResources(Me.m_tslChangeAmount, "m_tslChangeAmount")
             '
             'm_tstbChangeAmount
             '
@@ -505,10 +514,6 @@ Namespace Ecosim
         Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_hdrGroups As cEwEHeaderLabel
         Private WithEvents m_hdrRuns As cEwEHeaderLabel
-        Private WithEvents m_tssbExplore As System.Windows.Forms.ToolStripSplitButton
-        Private WithEvents m_tsmiSortMostChanged As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents ChangeAmountToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tstbChangeAmount As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tsdrpdnbtnContent As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents m_tsmiBiomassAbs As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiCatchAbs As System.Windows.Forms.ToolStripMenuItem
@@ -518,6 +523,11 @@ Namespace Ecosim
         Private WithEvents m_tsmiCatchRel As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiValueAbs As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents m_tsmiValueRel As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsbnExplore As System.Windows.Forms.ToolStripButton
+        Friend WithEvents ToolStripSeparator8 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsmiSort As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tstbChangeAmount As System.Windows.Forms.ToolStripTextBox
+        Private WithEvents m_tslChangeAmount As System.Windows.Forms.ToolStripMenuItem
 
     End Class
 End Namespace

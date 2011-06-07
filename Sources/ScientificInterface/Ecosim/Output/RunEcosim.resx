@@ -134,7 +134,7 @@
     <value>False</value>
   </metadata>
   <data name="ToolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 6</value>
+    <value>191, 6</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnRunOrStop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -280,7 +280,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.2.0.603, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_spContainer.Panel2</value>
@@ -304,7 +304,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.1.1.516, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.2.0.603, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_spContainer.Panel2</value>
@@ -408,20 +408,51 @@
   <data name="m_tsdrpdnbtnContent.ToolTipText" xml:space="preserve">
     <value>Data to plot</value>
   </data>
+  <data name="ToolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="m_tsbnExplore.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIwSURBVDhPpdPdT1JhHAdwav0JXXXdXeui1svW2mq40abB
+        EdLUra2tETNrJRjZ1uoAq6iMaflaTUKQWpZFiG5FiQwtE0NTTGSGMyYU8iJwOATYvh266uIorX7bc/O8
+        fJ7n+2w/DocpkrRtmpv3lwwMOe+3GSyOG209c7VXO5YuNegHdSa3IL9n3Xpln1C06kyTL16Opq3Oz7C6
+        fegwO3ChyQiRmAyXn1EfWxOoPH1zS5PW9OGtbeRniKIRoDPwJWi4QhTM7iUotP3gEfVZXpl0Kytidbi0
+        D02WpH95BVQ2h3gmh1Aqi9lICraFOLqdAVRf02K/6JyKFWjRmWcGhieYQxkks6ugcquI0jl4IzTsvhU8
+        mQjjsn4Ie4W1MVZAqmzHsNcPXzyNZTqL6I8cAskMpr9TGJyPwTgWhOrROA6UycAKKBq7vnS/+YjxbxRm
+        ozS8sTSmmPwjXxPomwmj0+GHrKUfe0pqXKwAqTHopY296dcLCdgXk8xIwMo83eyJwOAMQt07jYq6uxAe
+        l1CsgIS8t1koVsUbntrR8ymM51NRPGZya98HccvswQllF7hHZTA2i9kj5NUjp67z+FXK1EllJ67obcyt
+        k6hrtaBK3oyDZWdxR0Eg5lEXQKrVOy5qnj3glstHdxfXJosq61FRc3ux+PAhOXfXdrxr31YYYcm4IT/H
+        L+WLiFL+PyO/3f9CSJKz8U+kT7MT5yVFa3/qep1HEMQ+guCPCQQlwkJN+lfrvwAeBXQgpDm+wwAAAABJ
+        RU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsbnExplore.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnExplore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 22</value>
+  </data>
+  <data name="m_tsbnExplore.Text" xml:space="preserve">
+    <value>&amp;Explore results</value>
+  </data>
+  <data name="m_tsbnExplore.ToolTipText" xml:space="preserve">
+    <value>Check to explore the Ecosim results graph with a cursor</value>
+  </data>
   <data name="m_tsmiAutoscale.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 22</value>
+    <value>194, 22</value>
   </data>
   <data name="m_tsmiAutoscale.Text" xml:space="preserve">
     <value>&amp;Auto scale</value>
   </data>
   <data name="m_tsmiCustomScaleLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 22</value>
+    <value>194, 22</value>
   </data>
   <data name="m_tsmiCustomScaleLabel.Text" xml:space="preserve">
     <value>Custom &amp;scale</value>
   </data>
   <data name="m_tsmiMax.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 22</value>
+    <value>194, 22</value>
   </data>
   <data name="m_tsmiMax.Text" xml:space="preserve">
     <value>M&amp;ax:</value>
@@ -433,7 +464,7 @@
     <value>50, 23</value>
   </data>
   <data name="m_tsmiMin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 22</value>
+    <value>194, 22</value>
   </data>
   <data name="m_tsmiMin.Text" xml:space="preserve">
     <value>M&amp;in:</value>
@@ -445,22 +476,43 @@
     <value>50, 23</value>
   </data>
   <data name="m_tsmiShowAnnualOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 22</value>
+    <value>194, 22</value>
   </data>
   <data name="m_tsmiShowAnnualOutput.Text" xml:space="preserve">
     <value>&amp;Annual output</value>
   </data>
   <data name="m_tsmShowMultipleRuns.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 22</value>
+    <value>194, 22</value>
   </data>
   <data name="m_tsmShowMultipleRuns.Text" xml:space="preserve">
     <value>Show &amp;multiple runs</value>
   </data>
   <data name="m_tsmiShowLegend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 22</value>
+    <value>194, 22</value>
   </data>
   <data name="m_tsmiShowLegend.Text" xml:space="preserve">
     <value>Show &amp;legend</value>
+  </data>
+  <data name="ToolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 6</value>
+  </data>
+  <data name="m_tsmiSort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 22</value>
+  </data>
+  <data name="m_tsmiSort.Text" xml:space="preserve">
+    <value>&amp;Sort by relative change</value>
+  </data>
+  <data name="m_tslChangeAmount.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 22</value>
+  </data>
+  <data name="m_tslChangeAmount.Text" xml:space="preserve">
+    <value>&amp;Change amount:</value>
+  </data>
+  <data name="m_tstbChangeAmount.MaxLength" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_tstbChangeAmount.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 23</value>
   </data>
   <data name="m_tsddGraphOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -484,55 +536,6 @@
   <data name="m_tsddGraphOptions.Text" xml:space="preserve">
     <value>&amp;Options</value>
   </data>
-  <data name="ToolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="m_tsmiSortMostChanged.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
-  </data>
-  <data name="m_tsmiSortMostChanged.Text" xml:space="preserve">
-    <value>&amp;Sort by relative change</value>
-  </data>
-  <data name="ChangeAmountToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
-  </data>
-  <data name="ChangeAmountToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Change amount:</value>
-  </data>
-  <data name="m_tstbChangeAmount.MaxLength" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_tstbChangeAmount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 23</value>
-  </data>
-  <data name="m_tssbExplore.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIwSURBVDhPpdPdT1JhHAdwav0JXXXdXeui1svW2mq40SbB
-        EdS01tbWiJm1Qoxsa3WAVVTGtHytJiFILcti+LIVJTKsVAxMMZEZzphYyIvA4RBg+3boqoujtPptz83z
-        8nme77P9OBymSNK2aXYuwB8Ycj5oNfY5brZ2z8qutS9erjcM6s0eYX7PuvXK7la26M0TL/tH0lbnZ1g9
-        frRbHLjYaIJYQobLz2qOrwlUnrm1pVFnHn1rG/0ZomgE6Qz8CRquEAWLZxFKXT94pXVZXlnNVlbE6nDp
-        HpkHkoHlFVDZHOKZHEKpLGYiKdjm4+hyBlF1XYf94vNqVqBZb5keGHYzhzJIZldB5VYRpXPwRWjY/St4
-        6g7jimEIe0WyGCtQo2rDsC8AfzyNZTqL6I8cgskMpr5TGJyLwTS2BPXjcRwok4MVUDZ0ful68xHj3yjM
-        RGn4YmlMMvnffU2gdzqMDkcA8uZ+7OFXu1gBUms0KBp60q/nE7AvJJmRgJV5usUbgdG5BE3PFCpq70F0
-        QkqxAlLy/maRRB2vf2ZH96cwXkxG8YTJrfuwhNsWL06qOsE9IoepScIeIa+Wnr7BExxTpU6pOnDVYGNu
-        nUBtSx+OKppwsOwc7ioJxLyaAkiVZscl7fOH3HLFyO5iWbKosg4V1XcWig8fUnB3bcf7tm2FEZaMG/Jz
-        ghKBmCgR/DPy2/0vhCQ5G/9EerU7cUFatPanrtd5BEHsIwjBmFDIFxVq0r9a/wVaDnQzDYJs/wAAAABJ
-        RU5ErkJggg==
-</value>
-  </data>
-  <data name="m_tssbExplore.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tssbExplore.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 22</value>
-  </data>
-  <data name="m_tssbExplore.Text" xml:space="preserve">
-    <value>&amp;Explore</value>
-  </data>
-  <data name="m_tssbExplore.ToolTipText" xml:space="preserve">
-    <value>Check to explore the Ecosim results graph with a cursor</value>
-  </data>
   <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -549,7 +552,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.2.0.603, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -633,7 +636,7 @@
     <value>m_hdrRuns</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.516, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.603, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Parent" xml:space="preserve">
     <value>m_scOptions.Panel1</value>
@@ -708,7 +711,7 @@
     <value>m_hdrGroups</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.516, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.603, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
     <value>m_scOptions.Panel2</value>
@@ -738,7 +741,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.1.516, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.2.0.603, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_scOptions.Panel2</value>
@@ -927,7 +930,7 @@
     <value>m_tscbTarget</value>
   </data>
   <data name="&gt;&gt;m_tscbTarget.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cCustomToolstripComboBox, ScientificInterfaceShared, Version=6.1.1.516, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cCustomToolstripComboBox, ScientificInterfaceShared, Version=6.2.0.603, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
     <value>ToolStripSeparator1</value>
@@ -1025,6 +1028,18 @@
   <data name="&gt;&gt;m_tsmiValueRel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;ToolStripSeparator3.Name" xml:space="preserve">
+    <value>ToolStripSeparator3</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnExplore.Name" xml:space="preserve">
+    <value>m_tsbnExplore</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnExplore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsddGraphOptions.Name" xml:space="preserve">
     <value>m_tsddGraphOptions</value>
   </data>
@@ -1085,28 +1100,22 @@
   <data name="&gt;&gt;m_tsmiShowLegend.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ToolStripSeparator3.Name" xml:space="preserve">
-    <value>ToolStripSeparator3</value>
+  <data name="&gt;&gt;ToolStripSeparator8.Name" xml:space="preserve">
+    <value>ToolStripSeparator8</value>
   </data>
-  <data name="&gt;&gt;ToolStripSeparator3.Type" xml:space="preserve">
+  <data name="&gt;&gt;ToolStripSeparator8.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tssbExplore.Name" xml:space="preserve">
-    <value>m_tssbExplore</value>
+  <data name="&gt;&gt;m_tsmiSort.Name" xml:space="preserve">
+    <value>m_tsmiSort</value>
   </data>
-  <data name="&gt;&gt;m_tssbExplore.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSortMostChanged.Name" xml:space="preserve">
-    <value>m_tsmiSortMostChanged</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSortMostChanged.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsmiSort.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ChangeAmountToolStripMenuItem.Name" xml:space="preserve">
-    <value>ChangeAmountToolStripMenuItem</value>
+  <data name="&gt;&gt;m_tslChangeAmount.Name" xml:space="preserve">
+    <value>m_tslChangeAmount</value>
   </data>
-  <data name="&gt;&gt;ChangeAmountToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tslChangeAmount.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tstbChangeAmount.Name" xml:space="preserve">
@@ -1119,6 +1128,6 @@
     <value>RunEcosim</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.516, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.2.0.603, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
