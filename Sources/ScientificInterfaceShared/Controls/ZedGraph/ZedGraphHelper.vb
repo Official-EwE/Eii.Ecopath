@@ -1131,6 +1131,52 @@ Namespace Controls
         End Property
 
         Private Function OnPointValueEvent(ByVal sender As Object, ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
+            Dim strTooltip As String = ""
+            Try
+                strTooltip = Me.FormatTooltip(pane, curve, iPoint)
+            Catch ex As Exception
+                ' Whoa!
+            End Try
+            Return strTooltip
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Format the text for the point value tool tip for a given hover 
+        ''' location. The tooltip text includes the title of the given pane and 
+        ''' a value for a point in the graph.
+        ''' </summary>
+        ''' <param name="pane">The <see cref="GraphPane"/> that contains the mouse location.</param>
+        ''' <param name="curve">The <see cref="CurveItem"/> that the mouse is hovering over.</param>
+        ''' <param name="iPoint">The point on the curve that the mouse is hovering over.</param>
+        ''' <returns>A formatted tooltip text.</returns>
+        ''' <remarks>Override this method to alter the entire tooltip. If you
+        ''' are only want to customize the value component of the tooltip (but 
+        ''' want to leave the pane title component intact) just override 
+        ''' <see cref="FormatTooltipValue"/>.</remarks>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function FormatTooltip(ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
+            Dim sb As New StringBuilder()
+            If Not String.IsNullOrEmpty(pane.Title.Text) Then
+                sb.AppendLine(pane.Title.Text)
+            End If
+            sb.AppendLine(Me.FormatTooltipValue(pane, curve, iPoint))
+            Return sb.ToString
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' For the the value component of the tooltip for a given hover location.
+        ''' </summary>
+        ''' <param name="pane">The <see cref="GraphPane"/> that contains the mouse location.</param>
+        ''' <param name="curve">The <see cref="CurveItem"/> that the mouse is hovering over.</param>
+        ''' <param name="iPoint">The point on the curve that the mouse is hovering over.</param>
+        ''' <returns>A formatted tooltip value text.</returns>
+        ''' <remarks>Override this method to customize the value component of the 
+        ''' tooltip text. If you want to modify the entire tooltip you should
+        ''' override <see cref="FormatTooltip"/> instead.</remarks>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function FormatTooltipValue(ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
             If curve.IsLine Then
                 Dim pp As PointPair = curve(iPoint)
                 Return String.Format(My.Resources.GENERIC_LABEL_POINT, _
@@ -1378,7 +1424,7 @@ Namespace Controls
                 Return bSequential
             End Get
         End Property
-   
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Extract the data in the graph to text. The format that data is extracted
