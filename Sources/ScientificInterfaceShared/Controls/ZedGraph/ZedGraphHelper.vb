@@ -486,6 +486,22 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Returns one-based index of a pane.
+        ''' </summary>
+        ''' <param name="pane">The pane to obtain the index for.</param>
+        ''' <returns>The one-based index of a pane.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function GetPaneIndex(ByVal pane As ZedGraph.GraphPane) As Integer
+
+            For i As Integer = 1 To Me.m_zgc.MasterPane.PaneList.Count
+                If Object.Equals(pane, Me.GetPane(i)) Then Return i
+            Next
+            Return 1
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Configure main panel
         ''' </summary>
         ''' <param name="strTitle">The title to set to the master pane.</param>
@@ -1121,15 +1137,6 @@ Namespace Controls
 
 #Region " Tooltip "
 
-        Public Property ShowPointValue() As Boolean
-            Get
-                Return Me.m_zgc.IsShowPointValues
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_zgc.IsShowPointValues = value
-            End Set
-        End Property
-
         Private Function OnPointValueEvent(ByVal sender As Object, ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
             Dim strTooltip As String = ""
             Try
@@ -1139,6 +1146,21 @@ Namespace Controls
             End Try
             Return strTooltip
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the graph should display a value tooltip when 
+        ''' hovering with the mouse over a pane.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowPointValue() As Boolean
+            Get
+                Return Me.m_zgc.IsShowPointValues
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_zgc.IsShowPointValues = value
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1156,12 +1178,14 @@ Namespace Controls
         ''' <see cref="FormatTooltipValue"/>.</remarks>
         ''' -------------------------------------------------------------------
         Protected Overridable Function FormatTooltip(ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
+
             Dim sb As New StringBuilder()
             If Not String.IsNullOrEmpty(pane.Title.Text) Then
                 sb.AppendLine(pane.Title.Text)
             End If
             sb.AppendLine(Me.FormatTooltipValue(pane, curve, iPoint))
             Return sb.ToString
+
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1177,7 +1201,14 @@ Namespace Controls
         ''' override <see cref="FormatTooltip"/> instead.</remarks>
         ''' -------------------------------------------------------------------
         Protected Overridable Function FormatTooltipValue(ByVal pane As GraphPane, ByVal curve As CurveItem, ByVal iPoint As Integer) As String
+
             If curve.IsLine Then
+
+                ' Suppress default tooltip for cumulative panes
+                If Me.IsPaneCumulative(Me.GetPaneIndex(pane)) Then
+                    Return curve.Label.Text
+                End If
+
                 Dim pp As PointPair = curve(iPoint)
                 Return String.Format(My.Resources.GENERIC_LABEL_POINT, _
                                      curve.Label.Text, _
@@ -1188,9 +1219,9 @@ Namespace Controls
                 Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, _
                                      slice.Label.Text, _
                                      Me.StyleGuide.FormatNumber(slice.Value))
-
             End If
             Return ""
+
         End Function
 
 #End Region ' Tooltip
