@@ -1204,7 +1204,7 @@ Namespace Controls
 
             If curve.IsLine Then
 
-                ' Suppress default tooltip for cumulative panes
+                ' Suppress value part for cumulative panes
                 If Me.IsPaneCumulative(Me.GetPaneIndex(pane)) Then
                     Return curve.Label.Text
                 End If
