@@ -151,7 +151,7 @@
     <value>Top, Right</value>
   </data>
   <data name="udNumTimeSteps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 73</value>
+    <value>221, 73</value>
   </data>
   <data name="udNumTimeSteps.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 20</value>
@@ -175,7 +175,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_nudSumEnd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 47</value>
+    <value>221, 47</value>
   </data>
   <data name="m_nudSumEnd.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 20</value>
@@ -199,7 +199,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_nudSumStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 21</value>
+    <value>221, 21</value>
   </data>
   <data name="m_nudSumStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 20</value>
@@ -385,7 +385,7 @@
     <value>12, 114</value>
   </data>
   <data name="m_plResultsGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>536, 441</value>
+    <value>589, 458</value>
   </data>
   <data name="m_plResultsGrid.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -415,7 +415,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrSummary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 18</value>
+    <value>291, 18</value>
   </data>
   <data name="m_hdrSummary.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -451,7 +451,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrShow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 18</value>
+    <value>292, 18</value>
   </data>
   <data name="m_hdrShow.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -484,13 +484,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plContent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>271, 0</value>
+    <value>297, 0</value>
   </data>
   <data name="m_plContent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 0</value>
   </data>
   <data name="m_plContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 96</value>
+    <value>292, 96</value>
   </data>
   <data name="m_plContent.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -517,7 +517,7 @@
     <value>0, 0, 3, 0</value>
   </data>
   <data name="m_plSummary.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 96</value>
+    <value>291, 96</value>
   </data>
   <data name="m_plSummary.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -541,7 +541,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpControls.Size" type="System.Drawing.Size, System.Drawing">
-    <value>536, 96</value>
+    <value>589, 96</value>
   </data>
   <data name="m_tlpControls.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -559,7 +559,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpControls.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plContent" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_plSummary" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plContent" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_plSummary" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -568,7 +568,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>560, 567</value>
+    <value>613, 584</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
