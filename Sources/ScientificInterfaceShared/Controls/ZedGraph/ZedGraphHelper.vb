@@ -309,7 +309,15 @@ Namespace Controls
         End Sub
 
         Protected Overrides Sub Finalize()
-            Me.Detach()
+            ' Check proper usage
+            If (Me.IsAttached) Then
+                Try
+                    Me.Detach()
+                Catch ex As Exception
+
+                End Try
+            End If
+            ' Go ahead
             MyBase.Finalize()
         End Sub
 
@@ -390,7 +398,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overridable Sub Detach()
 
-            If Me.m_zgc Is Nothing Then Return
+            If (Me.m_zgc Is Nothing) Then Return
 
             RemoveHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             RemoveHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
