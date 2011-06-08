@@ -2898,8 +2898,12 @@ Public Class AppLauncher
 
     Private Sub OnEditPedigreeLevels(ByVal cmd As cCommand) _
         Handles m_cmdEditPedigree.OnInvoke
-        Dim dlg As New dlgEditPedigree(Me.UIContext, DirectCast(cmd, cEditPedigreeCommand).Variable)
-        dlg.ShowDialog(Me)
+        Try
+            Dim dlg As New dlgEditPedigree(Me.UIContext, DirectCast(cmd, cEditPedigreeCommand).Variable)
+            dlg.ShowDialog(Me)
+        Catch ex As Exception
+            cLog.Write(ex, "AppLauncher::OnEditPedigreeLevels")
+        End Try
     End Sub
 
     Private Sub OnUpdateEditPedigreeLevels(ByVal cmd As cCommand) _

@@ -81,9 +81,10 @@ Public Class cLog
     ''' Write exception messages to the log
     ''' </summary>
     ''' <param name="theException">Exception to log </param>
-    ''' <remarks>Used to log all the messages in an exception.  This is potentially hazardous as it assumes the xml file ends with the doc tag, which may not be the case.
+    ''' <param name="strMsg">Optional message to add</param>
+    ''' <remarks>Used to log all the messages in an exception. This is potentially hazardous as it assumes the xml file ends with the doc tag, which may not be the case.
     '''</remarks>
-    Public Shared Sub Write(ByVal theException As Exception)
+    Public Shared Sub Write(ByVal theException As Exception, Optional ByVal strMsg As String = "")
         Dim xmlStrm As cXMLLogWriter
 
         Try
@@ -102,7 +103,9 @@ Public Class cLog
                 'now the message
                 xmlStrm.WriteStartElement("Exception_Messages")
                 xmlStrm.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
-
+                If Not String.IsNullOrEmpty(strMsg) Then
+                    xmlStrm.WriteElementString("Message", strMsg)
+                End If
                 Dim thisEx As Exception = theException
                 Do While thisEx IsNot Nothing
                     xmlStrm.WriteStartElement("Exception")

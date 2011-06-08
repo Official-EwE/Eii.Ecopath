@@ -177,7 +177,7 @@ Public Class dlgDefineTaxa
                 Me.Close()
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "dlgDefineTaxa::OnOK")
         End Try
     End Sub
 
@@ -192,7 +192,7 @@ Public Class dlgDefineTaxa
         Try
             Me.m_gridGroups.AddTaxon()
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "dlgDefineTaxa::m_btnAdd_Click")
         End Try
     End Sub
 
@@ -201,7 +201,7 @@ Public Class dlgDefineTaxa
         Try
             Me.m_gridGroups.ToggleDeleteRow()
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "dlgDefineTaxa::m_btnRemove_Click")
         End Try
     End Sub
 
@@ -210,7 +210,7 @@ Public Class dlgDefineTaxa
         Try
             Me.m_gridGroups.ToggleDeleteRow()
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "dlgDefineTaxa::m_btnKeep_Click")
         End Try
     End Sub
 
@@ -219,7 +219,7 @@ Public Class dlgDefineTaxa
         Try
             Me.m_gridGroups.NormalizeProportions()
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "dlgDefineTaxa::m_btnProps_Click")
         End Try
     End Sub
 
@@ -238,7 +238,7 @@ Public Class dlgDefineTaxa
         Try
             Me.RefreshSearch()
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "dlgDefineTaxa::OnSearchTextChanged")
         End Try
     End Sub
 
@@ -247,7 +247,7 @@ Public Class dlgDefineTaxa
         Try
             Me.RefreshSearch()
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "dlgDefineTaxa::m_cbIncludeExtent_CheckedChanged")
         End Try
     End Sub
 
@@ -256,7 +256,7 @@ Public Class dlgDefineTaxa
         Try
             Me.ConnectSelectedDataProducer()
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "dlgDefineTaxa::OnConnect")
         End Try
     End Sub
 

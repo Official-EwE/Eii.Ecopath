@@ -452,7 +452,7 @@ Namespace Ecosim
                 End Select
 
             Catch ex As Exception
-                cLog.Write(ex)
+                cLog.Write(ex, "RunEcosim::EcosimMessageHandler")
             End Try
 
         End Sub

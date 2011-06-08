@@ -62,7 +62,7 @@ Namespace Ecopath
                 ' Add to combo
                 Me.m_cmbVariable.Items.Add(descr.GetDescriptor(var, eDescriptorTypes.Name))
 
-                If (var = Me.m_varInitial) Then iSelection = iVariable
+                If (var = Me.m_varInitial) Then iSelection = iVariable - 1
             Next
             ' Select 
             Me.m_cmbVariable.SelectedIndex = iSelection
