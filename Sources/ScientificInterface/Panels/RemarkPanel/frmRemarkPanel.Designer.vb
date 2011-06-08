@@ -53,6 +53,8 @@ Partial Class frmRemarkPanel
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.CloseButtonVisible = False
+        Me.HideOnClose = True
         Me.TabText = "Remarks"
         Me.ResumeLayout(False)
         Me.PerformLayout()

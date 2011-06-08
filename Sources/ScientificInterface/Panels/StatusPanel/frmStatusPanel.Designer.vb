@@ -39,6 +39,8 @@ Imports ScientificInterfaceShared.Forms
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockBottom
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.HideOnClose = True
+        Me.CloseButtonVisible = False
         Me.TabText = "Status"
         Me.ResumeLayout(False)
 
