@@ -101,6 +101,7 @@ Namespace Controls
             Me.m_runCurrent = Nothing
             Me.m_graphPane.CurveList.Clear()
             Me.m_curvelistTimeSeries.Clear()
+            Me.RescaleAndRedraw()
         End Sub
 
         Public Sub ClearTimeSeries()
