@@ -408,22 +408,46 @@
   <data name="m_tsdrpdnbtnContent.ToolTipText" xml:space="preserve">
     <value>Data to plot</value>
   </data>
+  <data name="m_tsbnShowMultipleRuns.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIISURBVDhPpZP7S1NxGMbPPxKaXVUkMEq8IpKUCoY/hGgI
+        ymqkDYYXcCjDZOANURSjCNGFQUTsl4GXVMxKk62YU4fXQpaIlygHQxBRH8/zwvyaIAYe+HLgnPN8nue9
+        HA3nvDTq63oW/jm13XOwvPTB3DYFY5MH+bXfcN8ygfTSMSSXfESicQDxBqdYHwH29g9w2tnZ3UcguIvN
+        rR3417exuBJE5N1n/wfwLgXEOc38Bc6xNRHb+/y4nm49G0Bnit2zf9H6bkliE/jKuYxrd6oVgDWfjB+K
+        TWeKMyrGEVfowITvD9re/9ABVQrAhh0HHK+ZselMMaN/mvwtDb+aVqkA7HYIwIj3ysfluPTorJnP6Ezx
+        oHsD1s5ZXEktUwCOioB5f1CEPR9+wTG6iuiserTo8dkwng7HT/R+XUPF8xlcTjErAOdMcW6NW8STiwG8
+        7vej8oUPN/PsEv3t8Ao0TZP3T1u8uJRkUgAuSYHtO97oLxmXd5t9Ho8aPTK+GzntqNfrLm2fFoihwYOI
+        xGIF4KjoGBLzY1OrF9k6OOFxnwDC4wxIMX1G0pMhgVyMNyoA13PAtS7OrJk1PrC69LUdQWxuF6IybHrX
+        LRI7JrtZdoDAo1XmbjMyD+tjSXxGcXRmnYg5ttD9QuxDhN0uUgDOmbvNTpPOJaGAo2K36cyaGZvOFIfd
+        KlSA8/zRh9ABIDUG+1JpAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_tsbnShowMultipleRuns.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnShowMultipleRuns.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 22</value>
+  </data>
+  <data name="m_tsbnShowMultipleRuns.Text" xml:space="preserve">
+    <value>&amp;Show multiple runs</value>
+  </data>
   <data name="ToolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
   <data name="m_tsbnExplore.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIwSURBVDhPpdPdT1JhHAdwav0JXXXdXeui1svW2mq40abB
-        EdLUra2tETNrJRjZ1uoAq6iMaflaTUKQWpZFiG5FiQwtE0NTTGSGMyYU8iJwOATYvh266uIorX7bc/O8
-        fJ7n+2w/DocpkrRtmpv3lwwMOe+3GSyOG209c7VXO5YuNegHdSa3IL9n3Xpln1C06kyTL16Opq3Oz7C6
-        fegwO3ChyQiRmAyXn1EfWxOoPH1zS5PW9OGtbeRniKIRoDPwJWi4QhTM7iUotP3gEfVZXpl0Kytidbi0
-        D02WpH95BVQ2h3gmh1Aqi9lICraFOLqdAVRf02K/6JyKFWjRmWcGhieYQxkks6ugcquI0jl4IzTsvhU8
-        mQjjsn4Ie4W1MVZAqmzHsNcPXzyNZTqL6I8cAskMpr9TGJyPwTgWhOrROA6UycAKKBq7vnS/+YjxbxRm
-        ozS8sTSmmPwjXxPomwmj0+GHrKUfe0pqXKwAqTHopY296dcLCdgXk8xIwMo83eyJwOAMQt07jYq6uxAe
-        l1CsgIS8t1koVsUbntrR8ymM51NRPGZya98HccvswQllF7hHZTA2i9kj5NUjp67z+FXK1EllJ67obcyt
-        k6hrtaBK3oyDZWdxR0Eg5lEXQKrVOy5qnj3glstHdxfXJosq61FRc3ux+PAhOXfXdrxr31YYYcm4IT/H
-        L+WLiFL+PyO/3f9CSJKz8U+kT7MT5yVFa3/qep1HEMQ+guCPCQQlwkJN+lfrvwAeBXQgpDm+wwAAAABJ
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIwSURBVDhPpdPdT1JhHAdwa/0JXXXdXeui1svW2mq40SYd
+        jhCmbm1tjZhZS8TMtlYHWEVlTMvXahKC1LJMhuhWlMiwMjE1xURnOGNCIS8Ch0OA7duhqy6O0uq3PTfP
+        y+d5vs/2Kyhgi6LsW+YWfIKBIdeDVqPVebO1e05+rX35cr1hUG92C3N7NqyXjglli9482ds7krK5PsPm
+        9qLd4sTFRhPEUipUck5zYl2g7OytbY0684c3dufPIM3Az6ThjTMYD9KwuJeh1PWDT9Rl+JLq7ZyIzTmu
+        e2S2Jnwrq6AzWcTSWQSTGcyGk7AvxtDl8qPiug4HxVVqTqBZb5kZGJ5gD6WRyKyBzq4hwmQxH2bg8K7i
+        6UQIVwxD2C+SRzmBalUbhud98MZSWGEyiPzIwp9IY/o7jcGFKEyjAagfj+GQRAFOQNnQ+aXr9UeMfaMx
+        G2EwH01his3/9mscfTMhdDh9UDT3Y5+gcpwToLRGQ1VDT+rVYhyOpQQ74rCxT7d4wjC6AtD0TKO05h5E
+        J2U0JyCj7m8VSdWx+mcOdH8K4cVUBE/Y3Lr3Ady2eHBK1QnecQVMTVLuCDn12JkbfKJclTyt6sBVg529
+        dRI1LVaU1zbhsOQ87ipJRD2aPEiFZtcl7fOHvJLakb1F8kRhWR1KK+8sFR09UsvbsxPv2nbkRzgybsrN
+        EcWEmCwm/hn57f4XQlEFm/9E+rS7cUFWuP6nbtR5JEkeIEliVCgUiPI16V+t/wIEJXQYlh3HpwAAAABJ
         RU5ErkJggg==
 </value>
   </data>
@@ -480,12 +504,6 @@
   </data>
   <data name="m_tsmiShowAnnualOutput.Text" xml:space="preserve">
     <value>&amp;Annual output</value>
-  </data>
-  <data name="m_tsmShowMultipleRuns.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 22</value>
-  </data>
-  <data name="m_tsmShowMultipleRuns.Text" xml:space="preserve">
-    <value>Show &amp;multiple runs</value>
   </data>
   <data name="m_tsmiShowLegend.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 22</value>
@@ -1088,12 +1106,6 @@
   <data name="&gt;&gt;m_tsmiShowAnnualOutput.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsmShowMultipleRuns.Name" xml:space="preserve">
-    <value>m_tsmShowMultipleRuns</value>
-  </data>
-  <data name="&gt;&gt;m_tsmShowMultipleRuns.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_tsmiShowLegend.Name" xml:space="preserve">
     <value>m_tsmiShowLegend</value>
   </data>
@@ -1123,6 +1135,12 @@
   </data>
   <data name="&gt;&gt;m_tstbChangeAmount.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnShowMultipleRuns.Name" xml:space="preserve">
+    <value>m_tsbnShowMultipleRuns</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnShowMultipleRuns.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>RunEcosim</value>

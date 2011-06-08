@@ -64,7 +64,6 @@ Namespace Ecosim
             Me.m_tsmiMin = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tstbMin = New System.Windows.Forms.ToolStripTextBox
             Me.m_tsmiShowAnnualOutput = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmShowMultipleRuns = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmiShowLegend = New System.Windows.Forms.ToolStripMenuItem
             Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsmiSort = New System.Windows.Forms.ToolStripMenuItem
@@ -77,6 +76,7 @@ Namespace Ecosim
             Me.m_lbRuns = New System.Windows.Forms.ListBox
             Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
+            Me.m_tsbnShowMultipleRuns = New System.Windows.Forms.ToolStripButton
             ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
             ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
             ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
@@ -211,7 +211,7 @@ Namespace Ecosim
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.tslblSSValue, Me.tsblbSS, ToolStripSeparator5, Me.m_tsdrpdnbtnContent, ToolStripSeparator2, Me.ToolStripSeparator3, Me.m_tsbnExplore, Me.m_tsddGraphOptions})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.tslblSSValue, Me.tsblbSS, ToolStripSeparator5, Me.m_tsdrpdnbtnContent, Me.m_tsbnShowMultipleRuns, ToolStripSeparator2, Me.ToolStripSeparator3, Me.m_tsbnExplore, Me.m_tsddGraphOptions})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -297,7 +297,7 @@ Namespace Ecosim
             '
             'm_tsddGraphOptions
             '
-            Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, ToolStripSeparator4, Me.m_tsmiShowAnnualOutput, Me.m_tsmShowMultipleRuns, Me.m_tsmiShowLegend, Me.ToolStripSeparator8, Me.m_tsmiSort, Me.m_tslChangeAmount, Me.m_tstbChangeAmount})
+            Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, ToolStripSeparator4, Me.m_tsmiShowAnnualOutput, Me.m_tsmiShowLegend, Me.ToolStripSeparator8, Me.m_tsmiSort, Me.m_tslChangeAmount, Me.m_tstbChangeAmount})
             resources.ApplyResources(Me.m_tsddGraphOptions, "m_tsddGraphOptions")
             Me.m_tsddGraphOptions.Name = "m_tsddGraphOptions"
             '
@@ -345,11 +345,6 @@ Namespace Ecosim
             '
             Me.m_tsmiShowAnnualOutput.Name = "m_tsmiShowAnnualOutput"
             resources.ApplyResources(Me.m_tsmiShowAnnualOutput, "m_tsmiShowAnnualOutput")
-            '
-            'm_tsmShowMultipleRuns
-            '
-            Me.m_tsmShowMultipleRuns.Name = "m_tsmShowMultipleRuns"
-            resources.ApplyResources(Me.m_tsmShowMultipleRuns, "m_tsmShowMultipleRuns")
             '
             'm_tsmiShowLegend
             '
@@ -455,6 +450,12 @@ Namespace Ecosim
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
             '
+            'm_tsbnShowMultipleRuns
+            '
+            Me.m_tsbnShowMultipleRuns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnShowMultipleRuns, "m_tsbnShowMultipleRuns")
+            Me.m_tsbnShowMultipleRuns.Name = "m_tsbnShowMultipleRuns"
+            '
             'RunEcosim
             '
             resources.ApplyResources(Me, "$this")
@@ -504,7 +505,6 @@ Namespace Ecosim
         Private WithEvents m_tsmiMin As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tstbMin As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tsmiShowAnnualOutput As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tsmShowMultipleRuns As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiShowLegend As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
         Private WithEvents m_scOptions As System.Windows.Forms.SplitContainer
@@ -528,6 +528,7 @@ Namespace Ecosim
         Private WithEvents m_tsmiSort As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tstbChangeAmount As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tslChangeAmount As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsbnShowMultipleRuns As System.Windows.Forms.ToolStripButton
 
     End Class
 End Namespace

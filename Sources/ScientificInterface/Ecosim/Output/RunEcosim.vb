@@ -94,7 +94,7 @@ Namespace Ecosim
             Me.m_zgp.Attach(Me.UIContext, Me.m_graph)
 
             Me.m_zgp.ConfigurePane(SharedResources.HEADER_RELATIVEBIOMASS, SharedResources.HEADER_YEAR, SharedResources.HEADER_RELATIVEBIOMASS, False)
-            Me.m_zgp.ShowMultipleRuns = Me.m_tsmShowMultipleRuns.Selected
+            Me.m_zgp.ShowMultipleRuns = Me.m_tsbnShowMultipleRuns.Checked
 
             Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly
 
@@ -207,14 +207,19 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_tsmShowMultipleRuns_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmShowMultipleRuns.Click
+        Private Sub OnShowMultipleRuns(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnShowMultipleRuns.Click
 
-            Me.m_tsmShowMultipleRuns.Checked = Not Me.m_tsmShowMultipleRuns.Checked
-            Me.m_zgp.ShowMultipleRuns = Me.m_tsmShowMultipleRuns.Checked
+            Me.m_tsbnShowMultipleRuns.Checked = Not Me.m_tsbnShowMultipleRuns.Checked
+            Me.m_zgp.ShowMultipleRuns = Me.m_tsbnShowMultipleRuns.Checked
+
+            ' Multiple runs cannot show cumulative data (#992)
+            If Me.m_zgp.ShowMultipleRuns Then Me.ShowData(Me.m_plotData, False)
+
             Me.PopulateRunsBox()
             Me.m_zgp.RescaleAndRedraw()
             Me.UpdateControls()
+
         End Sub
 
         Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -606,8 +611,12 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub ShowData(ByVal data As ePlotData, ByVal bCumulative As Boolean)
+            ' Store props
             Me.m_plotData = data
             Me.m_bIsCumulative = bCumulative
+            ' Cumulative graphs cannot show multiple runs (#991)
+            If bCumulative Then Me.m_zgp.ShowMultipleRuns = False
+            ' Update
             Me.UpdateControls()
             Me.PopulateGraph()
         End Sub
@@ -669,7 +678,7 @@ Namespace Ecosim
 
             ' Safety checks
             If (Me.m_zgp Is Nothing) Then Return
-            If (Not Me.m_zgp.isReady) Then Return
+            If (Not Me.m_zgp.isReady) Then Me.m_zgp.Clear() : Return
             If (Not Me.Core.StateMonitor.HasEcosimRan) Then Return
 
             ' Clear curves out of current run, if applicable
@@ -977,7 +986,8 @@ Namespace Ecosim
                 Me.m_tsbnExplore.Checked = False
             End If
 
-            Me.m_scOptions.Panel1Collapsed = Not Me.m_tsmShowMultipleRuns.Checked
+            Me.m_scOptions.Panel1Collapsed = Not Me.m_zgp.ShowMultipleRuns
+            Me.m_tsbnShowMultipleRuns.Checked = Me.m_zgp.ShowMultipleRuns
             Me.m_tstbChangeAmount.Text = CStr(Me.m_sChangeTrackSize)
 
             Me.tsbSetToValue.Enabled = Me.m_bIsEffortSelected
