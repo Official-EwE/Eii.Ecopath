@@ -3122,7 +3122,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, taxonDS.TaxonName(iTaxon)))
+                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, iTaxon))
                 bSucces = False
             End Try
 
