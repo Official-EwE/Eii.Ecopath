@@ -35,7 +35,7 @@ Public Class cCustomComboBoxFleetGroupTree
     End Sub
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        If Me.m_core IsNot Nothing Then
+        If (Me.m_core IsNot Nothing) Then
             Me.Clear()
             Me.m_core = Nothing
             Me.m_tscb = Nothing
@@ -117,7 +117,7 @@ Public Class cCustomComboBoxFleetGroupTree
             Me.Nodes.Clear()
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
+            'Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
         End Try
 
     End Sub
