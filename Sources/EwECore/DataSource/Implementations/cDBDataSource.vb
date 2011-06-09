@@ -2225,7 +2225,8 @@ Namespace DataSources
                 ' Oh, now wait until we need to do this for Ecospace...
 
                 ' Now Ecosim is clean, delete the group from Ecopath
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (GroupID={0})", iGroupID))
+                ' Delete taxa
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID={0})", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iGroupID))
 
             Catch ex As Exception

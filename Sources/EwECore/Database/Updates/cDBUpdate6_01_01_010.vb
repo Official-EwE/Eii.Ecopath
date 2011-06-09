@@ -105,7 +105,7 @@ Friend Class cDBUpdate6_01_01_010
         Dim bSucces As Boolean = True
 
         ' Precaution
-        db.Execute("DELETE FROM EcopathGroupTaxon WHERE (GroupID<1)")
+        db.Execute("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID<1)")
         db.Execute("ALTER TABLE EcopathGroupTaxon ADD CONSTRAINT FkTaxon FOREIGN KEY (TaxonID) REFERENCES EcopathTaxon(TaxonID)")
 
         ' Thrash obsolete columns
