@@ -190,15 +190,23 @@ Namespace Ecosim
         End Sub
 
         Private Sub ReloadControls()
-            'set the max number of year to the same as the time series data
-            Me.m_nudFirstYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
-            Me.m_nudLastYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
 
-            Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
-            Me.m_nudFirstYear.Value = Math.Max(0, Me.m_F2TSManager.FirstYear - 1)
-            Me.m_nudLastYear.Value = Me.m_F2TSManager.LastYear
-            Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
-            Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
+            Try
+
+                'set the max number of year to the same as the time series data
+                Me.m_nudFirstYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
+                Me.m_nudFirstYear.Value = Math.Max(0, Math.Min(Me.m_F2TSManager.FirstYear - 1, Me.m_F2TSManager.nTimeSeriesYears))
+
+                Me.m_nudLastYear.Maximum = Me.m_F2TSManager.nTimeSeriesYears
+                Me.m_nudLastYear.Value = Math.Min(Me.m_F2TSManager.LastYear, Me.m_F2TSManager.nTimeSeriesYears)
+
+                Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
+                Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
+                Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
 
             Me.UpdateControls()
         End Sub
