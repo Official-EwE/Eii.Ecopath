@@ -1159,11 +1159,14 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Private Sub UpdateModelControls()
 
+        Dim an As AssemblyName = Assembly.GetAssembly(GetType(cCore)).GetName
+        Dim strCaption As String = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, an.Version.ToString)
+
         Me.m_tsModel.Path = Me.SelectedFileName
         If String.IsNullOrEmpty(Me.SelectedFileName) Then
-            Me.Text = String.Format(My.Resources.GENERIC_CAPTION)
+            Me.Text = strCaption
         Else
-            Me.Text = String.Format(My.Resources.GENERIC_CAPTION_OPENMODEL, Me.SelectedFileName(False))
+            Me.Text = String.Format(SharedResources.GENERIC_LABEL_CAPTION, strCaption, Me.SelectedFileName(False))
         End If
 
     End Sub

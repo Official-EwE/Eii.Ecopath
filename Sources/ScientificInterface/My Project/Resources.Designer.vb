@@ -1515,20 +1515,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath with Ecosim 6.2 BETA.
+        '''  Looks up a localized string similar to Ecopath with Ecosim BETA.
         '''</summary>
         Friend ReadOnly Property GENERIC_CAPTION() As String
             Get
                 Return ResourceManager.GetString("GENERIC_CAPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecopath with Ecosim 6.2 BETA - {0}.
-        '''</summary>
-        Friend ReadOnly Property GENERIC_CAPTION_OPENMODEL() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_CAPTION_OPENMODEL", resourceCulture)
             End Get
         End Property
         
