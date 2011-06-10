@@ -2110,4 +2110,8 @@
   <data name="PROMPT_REQUIRES_RESTART" xml:space="preserve">
     <value>You will need to restart EwE to make your changes effective.</value>
   </data>
+  <data name="GENERIC_LABEL_CAPTION" xml:space="preserve">
+    <value>{1} - {0}</value>
+    <comment>{0}: EwE title, {1}: model name</comment>
+  </data>
 </root>

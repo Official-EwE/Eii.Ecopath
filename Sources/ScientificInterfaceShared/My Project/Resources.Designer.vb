@@ -959,6 +959,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {1} - {0}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} ({1}).
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_DETAILED() As String
