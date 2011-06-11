@@ -183,6 +183,8 @@ Namespace Ecosim
         Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseMove(e)
 
+            If (Me.m_uic Is Nothing) Then Return
+
             ' Process mouse hover info
             Me.UpdateToolTip(e.Location)
 
@@ -200,6 +202,8 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseUp(e)
+
+            If (Me.m_uic Is Nothing) Then Return
 
             If Not Me.Capture Then Return
             Me.Capture = False
