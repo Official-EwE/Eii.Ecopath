@@ -96,11 +96,11 @@ Public Class gridEditMultiStanza
 
             'Start age
             ewec = New EwECell(0, GetType(Integer))
-            ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.GetVariable(eVarNameFlags.StartAge, iStanza)
-            ' JS 27jun07: start ages only editable from EditGroups interface
-            ewec.Style = cStyleGuide.eStyleFlags.NotEditable
+            ' First group start age cannot be edited
+            If (iStanza = 1) Then ewec.Style = cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.StartAge) = ewec
+            Me(iRow, eColumnTypes.StartAge).Behaviors.Add(Me.EwEEditHandler)
 
             ' Leading
             Me(iRow, eColumnTypes.Leading) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingB = iStanza)
@@ -145,9 +145,8 @@ Public Class gridEditMultiStanza
 
         For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
 
-            ' JS 27jun07: stanza ages only editable from EditGroups interface
-            ''Start age
-            'Me.m_stanzagroup.SetVariable(eVarNameFlags.StartAge, Me(iStanza, eColumnTypes.StartAge).Value, iStanza)
+            'Start age
+            Me.m_stanzagroup.SetVariable(eVarNameFlags.StartAge, CInt(Me(iStanza, eColumnTypes.StartAge).Value), iStanza)
             'Biomass
             Me.m_stanzagroup.Biomass(iStanza) = CSng(Me(iStanza, eColumnTypes.Biomass).Value)
             'Total Mortality
@@ -191,6 +190,27 @@ Public Class gridEditMultiStanza
         Me.m_bInUpdate = False
 
     End Sub
+
+    Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+        Dim bOK As Boolean = MyBase.OnCellEdited(p, cell)
+
+        If Me.m_bInUpdate Then Return True
+
+        Select Case DirectCast(p.Column, eColumnTypes)
+            Case eColumnTypes.StartAge
+                Dim iStanza As Integer = p.Row - 1
+                Dim iAge As Integer = CInt(Me(p.Row, eColumnTypes.StartAge).Value)
+                If iStanza > 0 Then
+                    bOK = bOK And (iAge > CInt(Me(p.Row - 1, eColumnTypes.StartAge).Value))
+                End If
+                If iStanza < Me.m_stanzagroup.NStanzas - 1 Then
+                    bOK = bOK And (iAge < CInt(Me(p.Row + 1, eColumnTypes.StartAge).Value))
+                End If
+        End Select
+        Return bOK
+
+    End Function
 
     Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
