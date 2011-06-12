@@ -114,46 +114,52 @@ Namespace Ecosim
 
             If Me.UIContext Is Nothing Then Return
 
-            Me.m_F2TSManager = Me.Core.EcosimFitToTimeSeries
+            Try
 
-            Me.m_grid.Manager = Me.Core.FishingPolicyManager
-            Me.m_grid.UIContext = Me.UIContext
-            Me.m_gridOutput.UIContext = Me.UIContext
+                Me.m_F2TSManager = Me.Core.EcosimFitToTimeSeries
 
-            Me.m_shapeHandler = New AppliedFFGUIHandler()
-            Me.m_shapeHandler.Attach(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
+                Me.m_grid.Manager = Me.Core.FishingPolicyManager
+                Me.m_grid.UIContext = Me.UIContext
+                Me.m_gridOutput.UIContext = Me.UIContext
 
-            Me.m_cmdTSWeights = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
-            If (Me.m_cmdTSWeights IsNot Nothing) Then
-                AddHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
-            End If
+                Me.m_shapeHandler = New AppliedFFGUIHandler()
+                Me.m_shapeHandler.Attach(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
 
-            If Me.m_F2TSManager.LastYear > Me.m_F2TSManager.FirstYear Then
-                Me.ReloadControls()
-            End If
+                Me.m_cmdTSWeights = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
+                If (Me.m_cmdTSWeights IsNot Nothing) Then
+                    AddHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
+                End If
 
-            Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
-            Me.m_fpUseDefaultVs = New cPropertyFormatProvider(Me.UIContext, Me.m_cbResetVs, Me.m_F2TSManager, eVarNameFlags.F2TSUseDefaultV)
+                If Me.m_F2TSManager.LastYear > Me.m_F2TSManager.FirstYear Then
+                    Me.ReloadControls()
+                End If
 
-            Me.m_cbAnomalySearch.Checked = Me.m_F2TSManager.AnomalySearch
-            Me.m_cbVulnerabilitySearch.Checked = Me.m_F2TSManager.VulnerabilitySearch
+                Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
+                Me.m_fpUseDefaultVs = New cPropertyFormatProvider(Me.UIContext, Me.m_cbResetVs, Me.m_F2TSManager, eVarNameFlags.F2TSUseDefaultV)
 
-            Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
-            Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
-            Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
-            Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 1
-            Me.m_vulnerabilityBlockMatrix.UIContext = Me.UIContext
-            Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
-            Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlock
-            Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
-            Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
-            Me.m_sketchPad.NumTSYears = Me.Core.nTimeSeriesYears
+                Me.m_cbAnomalySearch.Checked = Me.m_F2TSManager.AnomalySearch
+                Me.m_cbVulnerabilitySearch.Checked = Me.m_F2TSManager.VulnerabilitySearch
 
-            Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
-            Me.IsRunning = Me.m_F2TSManager.IsRunning()
+                Me.m_nudSplinePts.Value = Me.m_F2TSManager.NumSplinePoints
+                Me.m_nudVariance.Value = CDec(Me.m_F2TSManager.VulnerabilityVariance)
+                Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
+                Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 1
+                Me.m_vulnerabilityBlockMatrix.UIContext = Me.UIContext
+                Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
+                Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlock
+                Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
+                Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
+                Me.m_sketchPad.NumTSYears = Me.Core.nTimeSeriesYears
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
-            Me.UpdateControls()
+                Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
+                Me.IsRunning = Me.m_F2TSManager.IsRunning()
+
+                Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
+                Me.UpdateControls()
+
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
@@ -161,29 +167,35 @@ Namespace Ecosim
 
             If Me.UIContext Is Nothing Then Return
 
-            Me.m_fpNoAICPts.Release()
-            Me.m_fpNoAICPts = Nothing
+            Try
 
-            Me.m_fpUseDefaultVs.Release()
-            Me.m_fpUseDefaultVs = Nothing
+                Me.m_fpNoAICPts.Release()
+                Me.m_fpNoAICPts = Nothing
 
-            Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
-                                        AddressOf OnRunStopped, AddressOf Me.OnModelRun)
+                Me.m_fpUseDefaultVs.Release()
+                Me.m_fpUseDefaultVs = Nothing
 
-            ' Detach from event handlers
-            Me.m_vulnerabilityBlockCodeSelector = Nothing
-            Me.m_F2TSManager = Nothing
+                Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
+                                            AddressOf OnRunStopped, AddressOf Me.OnModelRun)
 
-            Me.m_shapeHandler.Detach()
-            Me.m_shapeHandler = Nothing
+                ' Detach from event handlers
+                Me.m_vulnerabilityBlockCodeSelector = Nothing
+                Me.m_F2TSManager = Nothing
 
-            If (Me.m_cmdTSWeights IsNot Nothing) Then
-                RemoveHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
-                Me.m_cmdTSWeights = Nothing
-            End If
+                Me.m_shapeHandler.Detach()
+                Me.m_shapeHandler = Nothing
 
-            Me.m_grid.UIContext = Nothing
-            Me.m_gridOutput.UIContext = Nothing
+                If (Me.m_cmdTSWeights IsNot Nothing) Then
+                    RemoveHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
+                    Me.m_cmdTSWeights = Nothing
+                End If
+
+                Me.m_grid.UIContext = Nothing
+                Me.m_gridOutput.UIContext = Nothing
+
+            Catch ex As Exception
+
+            End Try
 
             MyBase.OnFormClosed(e)
 

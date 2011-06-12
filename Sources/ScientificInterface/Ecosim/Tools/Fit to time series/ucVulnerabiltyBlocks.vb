@@ -45,6 +45,17 @@ Namespace Ecosim
 
         End Sub
 
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                End If
+                Me.UIContext = Nothing
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
+        End Sub
+
 #End Region ' Constructor
 
 #Region " Public Interfaces "
