@@ -4767,7 +4767,7 @@ Namespace DataSources
                         drow = writer.NewRow()
                         ' Populate key
                         drow("ScenarioID") = iScenarioID
-                        drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
+                        drow("FleetID") = ecopathDS.FleetDBID(iFleet)
                         drow("EcosimGroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                         ' Write dynamic bit
                         drow("QuotaShare") = mseDS.Quotashare(iFleet, iGroup)
