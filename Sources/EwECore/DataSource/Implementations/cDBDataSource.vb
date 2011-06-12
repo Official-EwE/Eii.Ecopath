@@ -5514,22 +5514,12 @@ Namespace DataSources
                     If (iShapeID > 0) Then
 
                         drow = dt.Rows.Find(iShapeID)
-                        bNewRow = (drow Is Nothing)
-
-                        If bNewRow Then
+                        If (drow Is Nothing) Then
                             drow = writer.NewRow()
                             drow("ShapeID") = iShapeID
-                        Else
-                            drow.BeginEdit()
-                        End If
-
-                        drow("ShapeType") = eDataTypes.FishingEffort
-
-                        If bNewRow Then
+                            drow("ShapeType") = eDataTypes.FishingEffort
                             writer.AddRow(drow)
                             writer.Commit()
-                        Else
-                            drow.EndEdit()
                         End If
 
                         bSucces = bSucces And Me.SaveFishingRateShape(iShape, idm)
@@ -5544,22 +5534,12 @@ Namespace DataSources
                     If (iShapeID > 0) Then
 
                         drow = dt.Rows.Find(iShapeID)
-                        bNewRow = (drow Is Nothing)
-
-                        If bNewRow Then
+                        If (drow Is Nothing) Then
                             drow = writer.NewRow()
                             drow("ShapeID") = iShapeID
-                        Else
-                            drow.BeginEdit()
-                        End If
-
-                        drow("ShapeType") = eDataTypes.FishMort
-
-                        If bNewRow Then
+                            drow("ShapeType") = eDataTypes.FishMort
                             writer.AddRow(drow)
                             writer.Commit()
-                        Else
-                            drow.EndEdit()
                         End If
                         'bSucces = bSucces And Me.SaveFishMortShape(iShape, idm)
                     End If
