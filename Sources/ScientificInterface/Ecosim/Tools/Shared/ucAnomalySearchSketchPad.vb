@@ -18,10 +18,17 @@ Namespace Ecosim
 
 #Region " Private bits "
 
-        Private m_iYearStartDragPos As Integer = -1
-        Private m_iYearEndDragPos As Integer = -1
-        Private m_iFirstYear As Integer = 0
-        Private m_iLastYear As Integer = 0
+        Private Enum eDragModeTypes As Integer
+            None
+            FirstYear
+            EndYear
+        End Enum
+
+        Private m_dragMode As eDragModeTypes = eDragModeTypes.None
+        Private m_iYearFirstDragPos As Integer = -1
+        Private m_iYearLastDragPos As Integer = -1
+        Private m_iYearFirst As Integer = 0
+        Private m_iYearLast As Integer = 0
         Private m_iNumSplinePoints As Integer = 0
         Private m_iNumTSYears As Integer = 0
 
@@ -29,7 +36,7 @@ Namespace Ecosim
 
 #Region " Public properties "
 
-        Public Overrides Property Editable As Boolean
+        Public Overrides Property Editable() As Boolean
             Get
                 Return False
             End Get
@@ -40,20 +47,20 @@ Namespace Ecosim
 
         Public Property FirstYear() As Integer
             Get
-                Return Me.m_iFirstYear
+                Return Me.m_iYearFirst
             End Get
             Set(ByVal value As Integer)
-                Me.m_iFirstYear = value
+                Me.m_iYearFirst = value
                 Me.Invalidate()
             End Set
         End Property
 
         Public Property LastYear() As Integer
             Get
-                Return Me.m_iLastYear
+                Return Me.m_iYearLast
             End Get
             Set(ByVal value As Integer)
-                Me.m_iLastYear = value
+                Me.m_iYearLast = value
                 Me.Invalidate()
             End Set
         End Property
@@ -108,20 +115,15 @@ Namespace Ecosim
             ' Draw gray area to block out areas past TS
             Me.DrawYearLimit(g, Me.YearToX(Me.NumTSYears, rcImage.Width))
 
-            ' Draw year line 1
-            If (Me.m_iYearStartDragPos >= 0) Then
-                iYear1 = Me.m_iYearStartDragPos
+            If Me.m_dragMode = eDragModeTypes.None Then
+                iYear1 = Me.YearToX(Me.m_iYearFirst, rcImage.Width)
+                iYear2 = Me.YearToX(Me.m_iYearLast, rcImage.Width)
             Else
-                iYear1 = Me.YearToX(Me.m_iFirstYear, rcImage.Width)
+                iYear1 = Me.m_iYearFirstDragPos
+                iYear2 = Me.m_iYearLastDragPos
             End If
-            Me.DrawYearLine(g, iYear1)
 
-            ' Draw year line 2
-            If (Me.m_iYearEndDragPos >= 0) Then
-                iYear2 = Me.m_iYearEndDragPos
-            Else
-                iYear2 = Me.YearToX(Me.m_iLastYear, rcImage.Width)
-            End If
+            Me.DrawYearLine(g, iYear1)
             Me.DrawYearLine(g, iYear2)
 
             ' Draw spline points
@@ -166,32 +168,50 @@ Namespace Ecosim
 
         Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
 
+            Dim w As Integer = Me.ClientRectangle.Width
+
             If Me.Shape Is Nothing Then Return
 
-            If (Math.Abs(e.X - Me.YearToX(Me.m_iFirstYear, Me.ClientRectangle.Width)) <= cMOUSE_TOLERANCE) Then
-                Me.m_iYearStartDragPos = e.X
+            If (Math.Abs(e.X - Me.YearToX(Me.m_iYearFirst, w)) <= cMOUSE_TOLERANCE) Then
+                Me.m_dragMode = eDragModeTypes.FirstYear
+                Me.m_iYearFirstDragPos = e.X
+                Me.m_iYearLastDragPos = Me.YearToX(Me.m_iYearLast, w)
                 Me.Capture = True
-            ElseIf (Math.Abs(e.X - Me.YearToX(Me.m_iLastYear, Me.ClientRectangle.Width)) <= cMOUSE_TOLERANCE) Then
-                Me.m_iYearEndDragPos = e.X
+            ElseIf (Math.Abs(e.X - Me.YearToX(Me.m_iYearLast, w)) <= cMOUSE_TOLERANCE) Then
+                Me.m_dragMode = eDragModeTypes.EndYear
+                Me.m_iYearFirstDragPos = Me.YearToX(Me.m_iYearFirst, w)
+                Me.m_iYearLastDragPos = e.X
                 Me.Capture = True
             End If
         End Sub
 
         Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
 
+            Dim w As Integer = Me.ClientRectangle.Width
+
             If Me.Shape Is Nothing Then Return
 
             If Me.Capture Then
-                If (Me.m_iYearStartDragPos >= 0) Then
-                    Me.m_iYearStartDragPos = e.X
-                    Me.Invalidate()
-                ElseIf (Me.m_iYearEndDragPos >= 0) Then
-                    Me.m_iYearEndDragPos = e.X
-                    Me.Invalidate()
+
+                Select Case Me.m_dragMode
+                    Case eDragModeTypes.FirstYear
+                        Me.m_iYearFirstDragPos = Math.Max(0, Math.Min(w, e.X))
+                    Case eDragModeTypes.EndYear
+                        Me.m_iYearLastDragPos = Math.Max(0, Math.Min(w, e.X))
+                End Select
+
+                ' switch drag mode if first passed last
+                If (Me.m_iYearFirstDragPos > Me.m_iYearLastDragPos) Then
+                    Dim iSwitch As Integer = Me.m_iYearFirstDragPos
+                    Me.m_iYearFirstDragPos = Me.m_iYearLastDragPos
+                    Me.m_iYearLastDragPos = iSwitch
+                    Me.m_dragMode = DirectCast(IIf(Me.m_dragMode = eDragModeTypes.FirstYear, eDragModeTypes.EndYear, eDragModeTypes.FirstYear), eDragModeTypes)
                 End If
+                Me.Invalidate()
+
             Else
-                If (Math.Abs(e.X - Me.YearToX(Me.m_iFirstYear, Me.ClientRectangle.Width)) <= cMOUSE_TOLERANCE) Or _
-                   (Math.Abs(e.X - Me.YearToX(Me.m_iLastYear, Me.ClientRectangle.Width)) <= cMOUSE_TOLERANCE) Then
+                If (Math.Abs(e.X - Me.YearToX(Me.m_iYearFirst, w)) <= cMOUSE_TOLERANCE) Or _
+                   (Math.Abs(e.X - Me.YearToX(Me.m_iYearLast, w)) <= cMOUSE_TOLERANCE) Then
                     Me.Cursor = Cursors.SizeWE
                 Else
                     Me.Cursor = Cursors.Default
@@ -201,22 +221,14 @@ Namespace Ecosim
 
         Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
 
+            Dim w As Integer = Me.ClientRectangle.Width
+
             If Me.Shape Is Nothing Then Return
 
             If Me.Capture Then
                 ' Calc resulting years
-                If (Me.m_iYearStartDragPos >= 0) Then
-                    Me.m_iFirstYear = Math.Max(0, Me.XToYear(Me.m_iYearStartDragPos, Me.ClientRectangle.Width))
-                ElseIf (Me.m_iYearEndDragPos >= 0) Then
-                    Me.m_iLastYear = Math.Min(Me.NumTSYears, Me.XToYear(Me.m_iYearEndDragPos, Me.ClientRectangle.Width))
-                End If
-
-                ' Sort resulting years
-                If (Me.m_iFirstYear > Me.m_iLastYear) Then
-                    Dim i As Integer = Me.m_iFirstYear
-                    Me.m_iFirstYear = Me.m_iLastYear
-                    Me.m_iLastYear = i
-                End If
+                Me.m_iYearFirst = Math.Max(0, Me.XToYear(Me.m_iYearFirstDragPos, w))
+                Me.m_iYearLast = Math.Min(Me.NumTSYears, Me.XToYear(Me.m_iYearLastDragPos, w))
 
                 ' Notify the world
                 RaiseEvent OnYearRangeChanged(Me)
@@ -226,8 +238,7 @@ Namespace Ecosim
 
                 ' Stop drag
                 Me.Capture = False
-                Me.m_iYearStartDragPos = -1
-                Me.m_iYearEndDragPos = -1
+                Me.m_dragMode = eDragModeTypes.None
 
             End If
 
