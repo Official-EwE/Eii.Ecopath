@@ -5449,11 +5449,14 @@ Namespace DataSources
                         If bNewRow Then
                             drow = writer.NewRow()
                             drow("ShapeID") = ecosimDS.ForcingDBIDs(iShape)
+                            drow("ShapeType") = ecosimDS.ForcingShapeType(iShape)
                         Else
                             drow.BeginEdit()
                         End If
-                        drow("ShapeType") = ecosimDS.ForcingShapeType(iShape)
+
+                        ' Shape type does not change
                         drow("IsSeasonal") = ecosimDS.isSeasonal(iShape)
+
                         If bNewRow Then
                             writer.AddRow(drow)
                         Else
@@ -6086,52 +6089,52 @@ Namespace DataSources
 
         End Function
 
-        Private Function SaveFishMortShape(ByVal iShape As Integer, ByVal idm As cIDMappings) As Boolean
+        'Private Function SaveFishMortShape(ByVal iShape As Integer, ByVal idm As cIDMappings) As Boolean
 
-            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim iDBID As Integer = idm.GetID(eDataTypes.FishMort, ecosimDS.FishRateNoDBID(iShape))
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim dt As DataTable = Nothing
-            Dim sbZScale As New Text.StringBuilder()
-            Dim adrows() As DataRow = Nothing
-            Dim drow As DataRow = Nothing
-            Dim bSucces As Boolean = True
+        '    Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        '    Dim iDBID As Integer = idm.GetID(eDataTypes.FishMort, ecosimDS.FishRateNoDBID(iShape))
+        '    Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        '    Dim dt As DataTable = Nothing
+        '    Dim sbZScale As New Text.StringBuilder()
+        '    Dim adrows() As DataRow = Nothing
+        '    Dim drow As DataRow = Nothing
+        '    Dim bSucces As Boolean = True
 
-            Debug.Assert(iDBID > 0, String.Format("Invalid ID for FishMortShape shape {0}", iDBID))
+        '    Debug.Assert(iDBID > 0, String.Format("Invalid ID for FishMortShape shape {0}", iDBID))
 
-            Try
-                writer = Me.m_db.GetWriter("EcosimShapeFishMort")
-                dt = writer.GetDataTable()
-                adrows = dt.Select(String.Format("ShapeID={0}", iDBID))
-                If adrows.Length = 1 Then
-                    drow = adrows(0)
-                    drow.BeginEdit()
-                Else
-                    drow = writer.NewRow()
-                    drow("ShapeID") = iDBID
-                End If
+        '    Try
+        '        writer = Me.m_db.GetWriter("EcosimShapeFishMort")
+        '        dt = writer.GetDataTable()
+        '        adrows = dt.Select(String.Format("ShapeID={0}", iDBID))
+        '        If adrows.Length = 1 Then
+        '            drow = adrows(0)
+        '            drow.BeginEdit()
+        '        Else
+        '            drow = writer.NewRow()
+        '            drow("ShapeID") = iDBID
+        '        End If
 
-                drow("Title") = ecosimDS.FishRateNoTitle(iShape)
-                For ipt As Integer = 1 To ecosimDS.NTimes
-                    If (ipt > 1) Then sbZScale.Append(" ")
-                    sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.FishRateNo(iShape, ipt)))
-                Next
-                drow("Zscale") = sbZScale.ToString()
+        '        drow("Title") = ecosimDS.FishRateNoTitle(iShape)
+        '        For ipt As Integer = 1 To ecosimDS.NTimes
+        '            If (ipt > 1) Then sbZScale.Append(" ")
+        '            sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.FishRateNo(iShape, ipt)))
+        '        Next
+        '        drow("Zscale") = sbZScale.ToString()
 
-                If adrows.Length = 1 Then
-                    drow.EndEdit()
-                Else
-                    writer.AddRow(drow)
-                End If
-                Me.m_db.ReleaseWriter(writer, True)
+        '        If adrows.Length = 1 Then
+        '            drow.EndEdit()
+        '        Else
+        '            writer.AddRow(drow)
+        '        End If
+        '        Me.m_db.ReleaseWriter(writer, True)
 
-            Catch ex As Exception
-                bSucces = False
-            End Try
+        '    Catch ex As Exception
+        '        bSucces = False
+        '    End Try
 
-            Return bSucces
+        '    Return bSucces
 
-        End Function
+        'End Function
 
 #End Region ' Shape save helpers
 
