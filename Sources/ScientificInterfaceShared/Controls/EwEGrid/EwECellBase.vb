@@ -34,8 +34,35 @@ Namespace Controls.EwEGrid
 
             Public Overrides Sub OnKeyUp(ByVal e As SourceGrid2.PositionKeyEventArgs)
                 If (e.KeyEventArgs.KeyCode = Keys.Enter) Then
-                    Dim p As New Position((e.Position.Row + 1) Mod e.Grid.RowsCount, e.Position.Column)
-                    e.Grid.SetFocusCell(p)
+
+                    Dim dm As DataModels.IDataModel = e.Cell.DataModel
+                    Dim bAdvance As Boolean = True
+
+                    ' Check if last edit was successful. In EwE, this can be done checking the
+                    ' style of a cell: focus is not allowed to progress on a failed validation.
+                    If (dm.EditableMode <> SourceGrid2.EditableMode.None) Then
+                        If (TypeOf e.Cell Is EwECellBase) Then
+                            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+                            style = DirectCast(e.Cell, EwECellBase).Style
+                            ' Do not advance if validation failed
+                            bAdvance = (style And cStyleGuide.eStyleFlags.FailedValidation) = 0
+                        End If
+                    End If
+
+                    ' Allowed to advance?
+                    If bAdvance Then
+                        ' #Yes: advance to next row
+                        Dim iRow As Integer = e.Position.Row + 1
+                        ' Past last row?
+                        If iRow > e.Grid.RowsCount Then
+                            ' #Yes: switch to the first top row that is not frozen (e.g. skip headers)
+                            iRow = e.Grid.FixedRows
+                        End If
+                        ' Perform Mod operation as a safety catch in case the number of frozen rows is misconfigured.
+                        Dim p As New Position(iRow Mod e.Grid.RowsCount, e.Position.Column)
+                        ' Advance focus
+                        e.Grid.SetFocusCell(p)
+                    End If
                 End If
             End Sub
 
