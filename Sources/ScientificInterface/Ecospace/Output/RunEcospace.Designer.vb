@@ -158,6 +158,7 @@ Namespace Ecospace
             Me.m_scMain.Panel1.Controls.Add(Me.m_plLabelOptions)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblProgress)
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDistribution)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_cbMPA)
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDisplayOptions)
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
             '
@@ -253,7 +254,6 @@ Namespace Ecospace
             Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowAll)
             Me.m_plDisplayOptions.Controls.Add(Me.m_hdrDispOpt)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_cbMPA)
             Me.m_plDisplayOptions.Controls.Add(Me.m_cbOverlay)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowSingle)

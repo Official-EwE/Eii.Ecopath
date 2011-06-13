@@ -175,7 +175,7 @@
     <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_cmbDisplayGroup.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="m_rbShowSingle.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -202,7 +202,7 @@
     <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_rbShowSingle.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_rbShowNonHidden.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -229,7 +229,7 @@
     <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_rbShowNonHidden.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_rbShowAll.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -289,7 +289,7 @@
     <value>m_plDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_cbOverlay.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_btnStop.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -571,7 +571,7 @@
     <value>m_hdrLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.715, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.608, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Parent" xml:space="preserve">
     <value>m_plLabelOptions</value>
@@ -742,7 +742,7 @@
     <value>m_hdrDist</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.715, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.608, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Parent" xml:space="preserve">
     <value>m_plDistribution</value>
@@ -800,6 +800,36 @@
   </data>
   <data name="&gt;&gt;m_plDistribution.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="m_cbMPA.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbMPA.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbMPA.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 267</value>
+  </data>
+  <data name="m_cbMPA.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 17</value>
+  </data>
+  <data name="m_cbMPA.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_cbMPA.Text" xml:space="preserve">
+    <value>Show &amp;MPAs</value>
+  </data>
+  <data name="&gt;&gt;m_cbMPA.Name" xml:space="preserve">
+    <value>m_cbMPA</value>
+  </data>
+  <data name="&gt;&gt;m_cbMPA.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbMPA.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_cbMPA.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="m_plDisplayOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -862,7 +892,7 @@
     <value>m_hdrDispOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.0.715, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.608, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Parent" xml:space="preserve">
     <value>m_plDisplayOptions</value>
@@ -870,41 +900,11 @@
   <data name="&gt;&gt;m_hdrDispOpt.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_cbMPA.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbMPA.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbMPA.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 142</value>
-  </data>
-  <data name="m_cbMPA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 17</value>
-  </data>
-  <data name="m_cbMPA.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_cbMPA.Text" xml:space="preserve">
-    <value>Show &amp;MPAs</value>
-  </data>
-  <data name="&gt;&gt;m_cbMPA.Name" xml:space="preserve">
-    <value>m_cbMPA</value>
-  </data>
-  <data name="&gt;&gt;m_cbMPA.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbMPA.Parent" xml:space="preserve">
-    <value>m_plDisplayOptions</value>
-  </data>
-  <data name="&gt;&gt;m_cbMPA.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_plDisplayOptions.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 126</value>
   </data>
   <data name="m_plDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 164</value>
+    <value>189, 137</value>
   </data>
   <data name="m_plDisplayOptions.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -919,7 +919,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_plDisplayOptions.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_tlpRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -949,7 +949,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_tlpRun.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_tlpRun.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnRun" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnStop" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -1129,6 +1129,6 @@
     <value>RunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.715, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.2.0.608, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -329,6 +329,8 @@ Namespace Ecospace
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
         Private Sub OnDisplayGroupsInvoked(ByVal cmd As cCommand)
+            Me.m_showGroupMode = eShowGroupType.ShowNonHidden
+            Me.UpdateControls()
             Me.RefreshMap()
         End Sub
 
@@ -600,6 +602,10 @@ Namespace Ecospace
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
             Dim cScaler As Single = cColourBins / Me.m_sMaxEffort
+            Dim brCell As Brush = Nothing
+            Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
+            Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
+            Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
 
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
@@ -626,6 +632,22 @@ Namespace Ecospace
                                             CSng(rcPos.Height() / m_iInRow))
                     g.FillRectangle(tmpBrush, tmpRect)
                     tmpBrush.Dispose()
+
+                    ' Draw MPA
+                    If Me.m_bShowMPA Then
+                        Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA.Cell(i, j))
+                        ' Is MPA cell?
+                        If iMPA > 0 Then
+                            If Me.Core.EcospaceMPAs(iMPA).MPAMonth(iMonth) Then
+                                brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
+                            Else
+                                brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                            End If
+                            g.FillRectangle(brCell, tmpRect)
+                            brCell.Dispose()
+                        End If
+                    End If
+
                 Next
             Next
 
@@ -974,7 +996,7 @@ Namespace Ecospace
             Me.m_btnStop.Enabled = (Me.IsRunning = True)
 
             ' Enable display options for non-fleet maps
-            Me.m_plDisplayOptions.Enabled = (m_rbDisplayFishingEffort.Checked = False)
+            Me.m_plDisplayOptions.Enabled = (Me.m_rbDisplayFishingEffort.Checked = False)
 
             ' Enable contaminant options based on space tracer enabled state
             Me.m_rbDisplayContaminantC.Enabled = CBool(Me.m_bpConTracing.GetValue())
@@ -993,6 +1015,7 @@ Namespace Ecospace
             Me.m_cbOverlay.Enabled = Me.Core.StateMonitor.IsEcospaceRunning
 
             Me.m_cbMPA.Checked = Me.m_bShowMPA
+            Me.m_cbMPA.Enabled = (Me.m_rbDisplayFishingEffort.Checked Or Me.m_rbDisplayRelBiomass.Checked)
 
             Me.m_bInUpdate = False
 
