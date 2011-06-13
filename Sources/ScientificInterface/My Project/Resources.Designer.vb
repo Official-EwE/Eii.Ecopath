@@ -2887,7 +2887,7 @@ Namespace My.Resources
         '''
         '''Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
         '''
-        '''Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links..
+        '''Ecopath 5 can be downloaded from http://ecopath.org/previousversions..
         '''</summary>
         Friend ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_OLD() As String
             Get

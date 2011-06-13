@@ -869,7 +869,7 @@
 
 Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
 
-Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.</value>
+Ecopath 5 can be downloaded from http://ecopath.org/previousversions.</value>
   </data>
   <data name="ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED" xml:space="preserve">
     <value>The start age for stanza '{0}' has been corrected.</value>
