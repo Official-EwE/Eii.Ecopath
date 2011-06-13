@@ -97,7 +97,6 @@ Namespace Ecospace
             '
             'dlgEditHabitats
             '
-            Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button

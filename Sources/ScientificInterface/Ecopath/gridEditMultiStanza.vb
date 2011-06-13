@@ -57,6 +57,9 @@ Public Class gridEditMultiStanza
     End Sub
 
     Protected Overrides Sub InitStyle()
+
+        If (Me.UIContext Is Nothing) Then Return
+
         MyBase.InitStyle()
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
@@ -72,6 +75,8 @@ Public Class gridEditMultiStanza
     End Sub
 
     Protected Overrides Sub FillData()
+
+        If (Me.UIContext Is Nothing) Then Return
 
         Dim source As cEcoPathGroupInput = Nothing
         Dim ewec As EwECell = Nothing

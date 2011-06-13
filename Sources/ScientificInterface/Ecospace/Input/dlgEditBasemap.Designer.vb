@@ -23,150 +23,80 @@ Partial Class dlgEditBasemap
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditBasemap))
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.OK_Button = New System.Windows.Forms.Button()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.lblRowCount = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.nudRowCount = New System.Windows.Forms.NumericUpDown()
-        Me.nudColCount = New System.Windows.Forms.NumericUpDown()
-        Me.lblCellLength = New System.Windows.Forms.Label()
-        Me.gbDimensions = New System.Windows.Forms.GroupBox()
-        Me.gbSpatialRef = New System.Windows.Forms.GroupBox()
-        Me.lblLonTL = New System.Windows.Forms.Label()
-        Me.nudCellSize = New System.Windows.Forms.NumericUpDown()
-        Me.nudCellLength = New System.Windows.Forms.NumericUpDown()
-        Me.nudLonTL = New System.Windows.Forms.NumericUpDown()
-        Me.nudLatTL = New System.Windows.Forms.NumericUpDown()
-        Me.lblLatTL = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.m_pbLink = New System.Windows.Forms.PictureBox()
-        Me.TableLayoutPanel1.SuspendLayout()
-        CType(Me.nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.gbDimensions.SuspendLayout()
-        Me.gbSpatialRef.SuspendLayout()
-        CType(Me.nudCellSize, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.nudCellLength, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.nudLonTL, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.nudLatTL, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel
+        Me.m_btnOk = New System.Windows.Forms.Button
+        Me.m_btnCancel = New System.Windows.Forms.Button
+        Me.m_NumRows = New System.Windows.Forms.Label
+        Me.m_lblNumCols = New System.Windows.Forms.Label
+        Me.m_nudRowCount = New System.Windows.Forms.NumericUpDown
+        Me.m_nudColCount = New System.Windows.Forms.NumericUpDown
+        Me.m_lblCellLength = New System.Windows.Forms.Label
+        Me.m_pbLink = New System.Windows.Forms.PictureBox
+        Me.m_lblLonTL = New System.Windows.Forms.Label
+        Me.m_nudCellSize = New System.Windows.Forms.NumericUpDown
+        Me.m_nudCellLength = New System.Windows.Forms.NumericUpDown
+        Me.m_nudLonTL = New System.Windows.Forms.NumericUpDown
+        Me.m_nudLatTL = New System.Windows.Forms.NumericUpDown
+        Me.m_lblLatTL = New System.Windows.Forms.Label
+        Me.m_lblCellSize = New System.Windows.Forms.Label
+        Me.m_hdrDimensions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrSpatialReference = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_tlpButtons.SuspendLayout()
+        CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudCellLength, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudLonTL, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudLatTL, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'TableLayoutPanel1
+        'm_tlpButtons
         '
-        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        resources.ApplyResources(Me.m_tlpButtons, "m_tlpButtons")
+        Me.m_tlpButtons.Controls.Add(Me.m_btnOk, 0, 0)
+        Me.m_tlpButtons.Controls.Add(Me.m_btnCancel, 1, 0)
+        Me.m_tlpButtons.Name = "m_tlpButtons"
         '
-        'OK_Button
+        'm_btnOk
         '
-        resources.ApplyResources(Me.OK_Button, "OK_Button")
-        Me.OK_Button.Name = "OK_Button"
+        resources.ApplyResources(Me.m_btnOk, "m_btnOk")
+        Me.m_btnOk.Name = "m_btnOk"
         '
-        'Cancel_Button
+        'm_btnCancel
         '
-        resources.ApplyResources(Me.Cancel_Button, "Cancel_Button")
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Name = "Cancel_Button"
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
         '
-        'lblRowCount
+        'm_NumRows
         '
-        resources.ApplyResources(Me.lblRowCount, "lblRowCount")
-        Me.lblRowCount.Name = "lblRowCount"
+        resources.ApplyResources(Me.m_NumRows, "m_NumRows")
+        Me.m_NumRows.Name = "m_NumRows"
         '
-        'Label1
+        'm_lblNumCols
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_lblNumCols, "m_lblNumCols")
+        Me.m_lblNumCols.Name = "m_lblNumCols"
         '
-        'nudRowCount
+        'm_nudRowCount
         '
-        resources.ApplyResources(Me.nudRowCount, "nudRowCount")
-        Me.nudRowCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudRowCount.Name = "nudRowCount"
-        Me.nudRowCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        resources.ApplyResources(Me.m_nudRowCount, "m_nudRowCount")
+        Me.m_nudRowCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudRowCount.Name = "m_nudRowCount"
+        Me.m_nudRowCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
-        'nudColCount
+        'm_nudColCount
         '
-        resources.ApplyResources(Me.nudColCount, "nudColCount")
-        Me.nudColCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudColCount.Name = "nudColCount"
-        Me.nudColCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        resources.ApplyResources(Me.m_nudColCount, "m_nudColCount")
+        Me.m_nudColCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudColCount.Name = "m_nudColCount"
+        Me.m_nudColCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
-        'lblCellLength
+        'm_lblCellLength
         '
-        resources.ApplyResources(Me.lblCellLength, "lblCellLength")
-        Me.lblCellLength.Name = "lblCellLength"
-        '
-        'gbDimensions
-        '
-        resources.ApplyResources(Me.gbDimensions, "gbDimensions")
-        Me.gbDimensions.Controls.Add(Me.lblRowCount)
-        Me.gbDimensions.Controls.Add(Me.nudRowCount)
-        Me.gbDimensions.Controls.Add(Me.Label1)
-        Me.gbDimensions.Controls.Add(Me.nudColCount)
-        Me.gbDimensions.Name = "gbDimensions"
-        Me.gbDimensions.TabStop = False
-        '
-        'gbSpatialRef
-        '
-        resources.ApplyResources(Me.gbSpatialRef, "gbSpatialRef")
-        Me.gbSpatialRef.Controls.Add(Me.m_pbLink)
-        Me.gbSpatialRef.Controls.Add(Me.lblLonTL)
-        Me.gbSpatialRef.Controls.Add(Me.nudCellSize)
-        Me.gbSpatialRef.Controls.Add(Me.nudCellLength)
-        Me.gbSpatialRef.Controls.Add(Me.nudLonTL)
-        Me.gbSpatialRef.Controls.Add(Me.nudLatTL)
-        Me.gbSpatialRef.Controls.Add(Me.lblLatTL)
-        Me.gbSpatialRef.Controls.Add(Me.Label2)
-        Me.gbSpatialRef.Controls.Add(Me.lblCellLength)
-        Me.gbSpatialRef.Name = "gbSpatialRef"
-        Me.gbSpatialRef.TabStop = False
-        '
-        'lblLonTL
-        '
-        resources.ApplyResources(Me.lblLonTL, "lblLonTL")
-        Me.lblLonTL.Name = "lblLonTL"
-        '
-        'nudCellSize
-        '
-        resources.ApplyResources(Me.nudCellSize, "nudCellSize")
-        Me.nudCellSize.Minimum = New Decimal(New Integer() {1, 0, 0, 196608})
-        Me.nudCellSize.Name = "nudCellSize"
-        Me.nudCellSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'nudCellLength
-        '
-        resources.ApplyResources(Me.nudCellLength, "nudCellLength")
-        Me.nudCellLength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudCellLength.Name = "nudCellLength"
-        Me.nudCellLength.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'nudLonTL
-        '
-        resources.ApplyResources(Me.nudLonTL, "nudLonTL")
-        Me.nudLonTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudLonTL.Name = "nudLonTL"
-        Me.nudLonTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'nudLatTL
-        '
-        resources.ApplyResources(Me.nudLatTL, "nudLatTL")
-        Me.nudLatTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudLatTL.Name = "nudLatTL"
-        Me.nudLatTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'lblLatTL
-        '
-        resources.ApplyResources(Me.lblLatTL, "lblLatTL")
-        Me.lblLatTL.Name = "lblLatTL"
-        '
-        'Label2
-        '
-        resources.ApplyResources(Me.Label2, "Label2")
-        Me.Label2.Name = "Label2"
+        resources.ApplyResources(Me.m_lblCellLength, "m_lblCellLength")
+        Me.m_lblCellLength.Name = "m_lblCellLength"
         '
         'm_pbLink
         '
@@ -175,52 +105,114 @@ Partial Class dlgEditBasemap
         Me.m_pbLink.Name = "m_pbLink"
         Me.m_pbLink.TabStop = False
         '
+        'm_lblLonTL
+        '
+        resources.ApplyResources(Me.m_lblLonTL, "m_lblLonTL")
+        Me.m_lblLonTL.Name = "m_lblLonTL"
+        '
+        'm_nudCellSize
+        '
+        resources.ApplyResources(Me.m_nudCellSize, "m_nudCellSize")
+        Me.m_nudCellSize.Minimum = New Decimal(New Integer() {1, 0, 0, 196608})
+        Me.m_nudCellSize.Name = "m_nudCellSize"
+        Me.m_nudCellSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_nudCellLength
+        '
+        resources.ApplyResources(Me.m_nudCellLength, "m_nudCellLength")
+        Me.m_nudCellLength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudCellLength.Name = "m_nudCellLength"
+        Me.m_nudCellLength.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_nudLonTL
+        '
+        resources.ApplyResources(Me.m_nudLonTL, "m_nudLonTL")
+        Me.m_nudLonTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudLonTL.Name = "m_nudLonTL"
+        Me.m_nudLonTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_nudLatTL
+        '
+        resources.ApplyResources(Me.m_nudLatTL, "m_nudLatTL")
+        Me.m_nudLatTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudLatTL.Name = "m_nudLatTL"
+        Me.m_nudLatTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_lblLatTL
+        '
+        resources.ApplyResources(Me.m_lblLatTL, "m_lblLatTL")
+        Me.m_lblLatTL.Name = "m_lblLatTL"
+        '
+        'm_lblCellSize
+        '
+        resources.ApplyResources(Me.m_lblCellSize, "m_lblCellSize")
+        Me.m_lblCellSize.Name = "m_lblCellSize"
+        '
+        'm_hdrDimensions
+        '
+        resources.ApplyResources(Me.m_hdrDimensions, "m_hdrDimensions")
+        Me.m_hdrDimensions.Name = "m_hdrDimensions"
+        '
+        'm_hdrSpatialReference
+        '
+        resources.ApplyResources(Me.m_hdrSpatialReference, "m_hdrSpatialReference")
+        Me.m_hdrSpatialReference.Name = "m_hdrSpatialReference"
+        '
         'dlgEditBasemap
         '
-        Me.AcceptButton = Me.OK_Button
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.Cancel_Button
-        Me.Controls.Add(Me.gbSpatialRef)
-        Me.Controls.Add(Me.gbDimensions)
-        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_pbLink)
+        Me.Controls.Add(Me.m_hdrSpatialReference)
+        Me.Controls.Add(Me.m_lblLonTL)
+        Me.Controls.Add(Me.m_hdrDimensions)
+        Me.Controls.Add(Me.m_nudCellSize)
+        Me.Controls.Add(Me.m_NumRows)
+        Me.Controls.Add(Me.m_nudCellLength)
+        Me.Controls.Add(Me.m_nudLonTL)
+        Me.Controls.Add(Me.m_nudRowCount)
+        Me.Controls.Add(Me.m_nudLatTL)
+        Me.Controls.Add(Me.m_lblLatTL)
+        Me.Controls.Add(Me.m_lblNumCols)
+        Me.Controls.Add(Me.m_lblCellSize)
+        Me.Controls.Add(Me.m_tlpButtons)
+        Me.Controls.Add(Me.m_lblCellLength)
+        Me.Controls.Add(Me.m_nudColCount)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgEditBasemap"
         Me.ShowInTaskbar = False
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        CType(Me.nudRowCount, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.nudColCount, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.gbDimensions.ResumeLayout(False)
-        Me.gbDimensions.PerformLayout()
-        Me.gbSpatialRef.ResumeLayout(False)
-        Me.gbSpatialRef.PerformLayout()
-        CType(Me.nudCellSize, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.nudCellLength, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.nudLonTL, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.nudLatTL, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tlpButtons.ResumeLayout(False)
+        CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudCellLength, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudLonTL, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudLatTL, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents lblRowCount As System.Windows.Forms.Label
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents nudRowCount As System.Windows.Forms.NumericUpDown
-    Friend WithEvents nudColCount As System.Windows.Forms.NumericUpDown
-    Friend WithEvents lblCellLength As System.Windows.Forms.Label
-    Friend WithEvents gbDimensions As System.Windows.Forms.GroupBox
-    Friend WithEvents gbSpatialRef As System.Windows.Forms.GroupBox
-    Friend WithEvents lblLonTL As System.Windows.Forms.Label
-    Friend WithEvents lblLatTL As System.Windows.Forms.Label
-    Friend WithEvents nudCellLength As System.Windows.Forms.NumericUpDown
-    Friend WithEvents nudLonTL As System.Windows.Forms.NumericUpDown
-    Friend WithEvents nudLatTL As System.Windows.Forms.NumericUpDown
-    Private WithEvents nudCellSize As System.Windows.Forms.NumericUpDown
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Private WithEvents m_btnOk As System.Windows.Forms.Button
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_NumRows As System.Windows.Forms.Label
+    Private WithEvents m_lblNumCols As System.Windows.Forms.Label
+    Private WithEvents m_nudRowCount As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudColCount As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_lblCellLength As System.Windows.Forms.Label
+    Private WithEvents m_lblLonTL As System.Windows.Forms.Label
+    Private WithEvents m_lblLatTL As System.Windows.Forms.Label
+    Private WithEvents m_nudCellLength As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudLonTL As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudLatTL As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_nudCellSize As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_lblCellSize As System.Windows.Forms.Label
     Private WithEvents m_pbLink As System.Windows.Forms.PictureBox
+    Private WithEvents m_hdrDimensions As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrSpatialReference As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_tlpButtons As System.Windows.Forms.TableLayoutPanel
 
 End Class

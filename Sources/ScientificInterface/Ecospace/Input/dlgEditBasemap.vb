@@ -44,22 +44,22 @@ Public Class dlgEditBasemap
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_fpInCol = New cEwEFormatProvider(Me.m_uic, Me.nudColCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InCol))
+        Me.m_fpInCol = New cEwEFormatProvider(Me.m_uic, Me.m_nudColCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InCol))
         Me.m_fpInCol.Value = Me.m_basemap.InCol
 
-        Me.m_fpInRow = New cEwEFormatProvider(Me.m_uic, Me.nudRowCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InRow))
+        Me.m_fpInRow = New cEwEFormatProvider(Me.m_uic, Me.m_nudRowCount, GetType(Integer), Me.m_basemap.GetVariableMetadata(eVarNameFlags.InRow))
         Me.m_fpInRow.Value = Me.m_basemap.InRow
 
-        Me.m_fpLat = New cEwEFormatProvider(Me.m_uic, Me.nudLatTL, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.Latitude))
+        Me.m_fpLat = New cEwEFormatProvider(Me.m_uic, Me.m_nudLatTL, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.Latitude))
         Me.m_fpLat.Value = Me.m_basemap.Latitude
 
-        Me.m_fpLon = New cEwEFormatProvider(Me.m_uic, Me.nudLonTL, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.Longitude))
+        Me.m_fpLon = New cEwEFormatProvider(Me.m_uic, Me.m_nudLonTL, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.Longitude))
         Me.m_fpLon.Value = Me.m_basemap.Longitude
 
-        Me.m_fpCellLength = New cEwEFormatProvider(Me.m_uic, Me.nudCellLength, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellLength))
+        Me.m_fpCellLength = New cEwEFormatProvider(Me.m_uic, Me.m_nudCellLength, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellLength))
         Me.m_fpCellLength.Value = Me.m_basemap.CellLength
 
-        Me.m_fpCellSize = New cEwEFormatProvider(Me.m_uic, Me.nudCellSize, GetType(Single))
+        Me.m_fpCellSize = New cEwEFormatProvider(Me.m_uic, Me.m_nudCellSize, GetType(Single))
         Me.m_fpCellSize.Value = Me.m_basemap.CellSize
 
         Me.UpdateControls()
@@ -80,36 +80,36 @@ Public Class dlgEditBasemap
 
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
         Me.Apply()
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
     Private Sub OnCellLengthChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles nudCellLength.ValueChanged
+            Handles m_nudCellLength.ValueChanged
 
         If Not Me.m_bInitialized Or Me.m_bInUpdate Then Return
 
         Me.m_bInUpdate = True
-        Dim sLen As Single = CSng(Me.nudCellLength.Value)
+        Dim sLen As Single = CSng(Me.m_nudCellLength.Value)
         Me.m_fpCellSize.Value = cEcospaceBasemap.ToCellSize(sLen)
         Me.m_bInUpdate = False
 
     End Sub
 
     Private Sub OnCellSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles nudCellSize.ValueChanged
+        Handles m_nudCellSize.ValueChanged
 
         If Not Me.m_bInitialized Or Me.m_bInUpdate Then Return
 
         Me.m_bInUpdate = True
-        Dim sSize As Single = CSng(Me.nudCellSize.Value)
+        Dim sSize As Single = CSng(Me.m_nudCellSize.Value)
         Me.m_fpCellLength.Value = cEcospaceBasemap.ToCellLength(sSize)
         Me.m_bInUpdate = False
 
@@ -120,7 +120,7 @@ Public Class dlgEditBasemap
 #Region " Implementation "
 
     Private Sub UpdateControls()
-        Me.OK_Button.Enabled = True
+        Me.m_btnOk.Enabled = True
     End Sub
 
     Private Sub Apply()

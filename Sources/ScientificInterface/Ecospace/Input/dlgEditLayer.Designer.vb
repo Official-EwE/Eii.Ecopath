@@ -36,6 +36,7 @@ Partial Class dlgEditLayer
             Me.m_plEditVisualStyle = New System.Windows.Forms.Panel
             Me.m_tcLayerView = New System.Windows.Forms.TabControl
             Me.m_tbAppearance = New System.Windows.Forms.TabPage
+            Me.m_zoommap = New ScientificInterface.Ecospace.ucMapZoom
             Me.m_scDetails = New System.Windows.Forms.SplitContainer
             Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel
@@ -47,7 +48,6 @@ Partial Class dlgEditLayer
             Me.m_tpData = New System.Windows.Forms.TabPage
             Me.m_hdrStaticData = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_grid = New ScientificInterface.gridLayerData
-            Me.m_zoommap = New ScientificInterface.Ecospace.ucMapZoom
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tbAppearance.SuspendLayout()
@@ -136,6 +136,14 @@ Partial Class dlgEditLayer
             resources.ApplyResources(Me.m_tbAppearance, "m_tbAppearance")
             Me.m_tbAppearance.Name = "m_tbAppearance"
             Me.m_tbAppearance.UseVisualStyleBackColor = True
+            '
+            'm_zoommap
+            '
+            resources.ApplyResources(Me.m_zoommap, "m_zoommap")
+            Me.m_zoommap.Name = "m_zoommap"
+            Me.m_zoommap.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
+            Me.m_zoommap.UIContext = Nothing
+            Me.m_zoommap.ZoomPercentage = 100.0!
             '
             'm_scDetails
             '
@@ -237,17 +245,8 @@ Partial Class dlgEditLayer
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
             '
-            'm_zoommap
-            '
-            resources.ApplyResources(Me.m_zoommap, "m_zoommap")
-            Me.m_zoommap.Name = "m_zoommap"
-            Me.m_zoommap.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
-            Me.m_zoommap.UIContext = Nothing
-            Me.m_zoommap.ZoomPercentage = 100.0!
-            '
             'dlgEditLayer
             '
-            Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
