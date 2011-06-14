@@ -7,6 +7,7 @@ Imports EwECore
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Core
 
 #End Region
 
@@ -713,18 +714,62 @@ Namespace Ecospace
         ''' Helper method; validates the content of the grid.
         ''' </summary>
         ''' <returns>True when the content of the grid depicts a valid
-        ''' MPA configuration for a model.</returns>
+        ''' Habitat configuration for a model.</returns>
         ''' -----------------------------------------------------------------------
         Public Function ValidateContent() As Boolean
 
-            '' Check if the user is about to delete all fleets - one should remain
-            'If Me.m_alMPAsRemoved.Count = Me.m_alMPAs.Count Then
-            '    MsgBox(My.Resources.ECOPATH_EDITMPA_PROMPT_CANNOTDELETEALL, _
-            '            MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, _
-            '            My.Resources.ECOPATH_EDITMPA_CONFIRMDELETE_CAPTION)
-            '    Return False
-            'End If
+            Return Me.ValidateNames
 
+        End Function
+
+        Private Function ValidateNames() As Boolean
+
+            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+            Dim bHasDuplicates As Boolean = False
+            Dim bHasBlank As Boolean = False
+            Dim lstrHandled As New List(Of String)
+
+            For Each hi As cMPAInfo In Me.m_alMPAs
+                If String.IsNullOrEmpty(hi.Name) Then
+                    bHasBlank = True
+                ElseIf Not Me.IsNameUnique(hi.Name, hi) Then
+                    If Not lstrHandled.Contains(hi.Name) Then
+                        fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
+                                                             String.Format(My.Resources.PROMPT_DUPLICATE_NAME, hi.Name), _
+                                                             eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
+                        lstrHandled.Add(hi.Name)
+                    End If
+                    bHasDuplicates = True
+                End If
+            Next
+
+            If bHasBlank Then
+                Me.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_EMPTY_NAMES, eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
+                Return False
+            End If
+
+            If bHasDuplicates Then
+                Me.Core.Messages.SendMessage(fmsg)
+                Return fmsg.Reply = cFeedbackMessage.eReply.YES
+            End If
+
+            Return True
+
+        End Function
+
+        Private Function IsNameUnique(ByVal strName As String, ByVal hi As cMPAInfo) As Boolean
+
+            ' Check if name is unique
+            For i As Integer = 0 To Me.m_alMPAs.Count - 1
+                Dim giTemp As cMPAInfo = DirectCast(Me.m_alMPAs(i), cMPAInfo)
+                ' Does name already exist?
+                If (Not Object.ReferenceEquals(giTemp, hi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                    ' Change is not allowed
+                    Me.UpdateRow(p.Row)
+                    ' Report failure
+                    Return False
+                End If
+            Next
             Return True
 
         End Function

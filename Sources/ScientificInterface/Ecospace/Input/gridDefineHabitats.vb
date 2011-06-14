@@ -7,6 +7,7 @@ Imports EwECore
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Core
 
 #End Region
 
@@ -23,9 +24,9 @@ Namespace Ecospace
         Private Const iFIRSTHABITATROW As Integer = 1
 
         ''' <summary>List of active Habitats.</summary>
-        Private m_alHabitats As New List(Of HabitatInfo)
+        Private m_alHabitats As New List(Of cHabitatInfo)
         ''' <summary>List of removed Habitats.</summary>
-        Private m_alHabitatsRemoved As New List(Of HabitatInfo)
+        Private m_alHabitatsRemoved As New List(Of cHabitatInfo)
 
         ''' <summary>Update lock, used to distinguish between code updates and
         ''' user updates of grid cells. When grid cells are updated from within
@@ -51,7 +52,7 @@ Namespace Ecospace
         ''' This class can represent existing and new Habitats.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Class HabitatInfo
+        Private Class cHabitatInfo
 
             ''' <summary>DBID of associated habitat.</summary>
             Private m_iHabitatDBID As Integer = cCore.NULL_VALUE
@@ -266,7 +267,7 @@ Namespace Ecospace
 
             ' Get the core reference
             Dim Habitat As cEcospaceHabitat = Nothing
-            Dim hi As HabitatInfo = Nothing
+            Dim hi As cHabitatInfo = Nothing
 
             ' Populate local administration from a snapshot of the live data
 
@@ -274,7 +275,7 @@ Namespace Ecospace
             ' SKIP ALL HABITAT HERE!
             For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
                 Habitat = Me.Core.EcospaceHabitats(iHabitat)
-                hi = New HabitatInfo(Habitat)
+                hi = New cHabitatInfo(Habitat)
                 Me.m_alHabitats.Add(hi)
             Next
 
@@ -291,7 +292,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Public Sub UpdateGrid()
 
-            Dim hi As HabitatInfo = Nothing
+            Dim hi As cHabitatInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
@@ -341,7 +342,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Private Sub UpdateRow(ByVal iRow As Integer)
 
-            Dim hi As HabitatInfo = Nothing
+            Dim hi As cHabitatInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
@@ -350,7 +351,7 @@ Namespace Ecospace
 
             Me.AllowUpdates = False
 
-            hi = DirectCast(Me.m_alHabitats(iRow - iFIRSTHABITATROW), HabitatInfo)
+            hi = DirectCast(Me.m_alHabitats(iRow - iFIRSTHABITATROW), cHabitatInfo)
             ri = Me.Rows(iRow)
 
             ri.Tag = hi
@@ -400,7 +401,7 @@ Namespace Ecospace
 
             If Not Me.AllowUpdates Then Return True
 
-            Dim hi As HabitatInfo = DirectCast(Me.m_alHabitats(p.Row - 1), HabitatInfo)
+            Dim hi As cHabitatInfo = DirectCast(Me.m_alHabitats(p.Row - 1), cHabitatInfo)
 
             Select Case DirectCast(p.Column, eColumnTypes)
                 Case eColumnTypes.HabitatIndex
@@ -410,7 +411,7 @@ Namespace Ecospace
                     Dim strName As String = CStr(cell.GetValue(p))
                     ' Check if name is unique
                     For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
-                        Dim giTemp As HabitatInfo = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+                        Dim giTemp As cHabitatInfo = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
                         ' Does name already exist?
                         If (Not Object.ReferenceEquals(giTemp, hi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                             ' Change is not allowed
@@ -455,13 +456,13 @@ Namespace Ecospace
             If iRow = -1 Then iRow = Me.SelectedRow
 
             Dim iHabitat As Integer = iRow - iFIRSTHABITATROW
-            Dim hi As HabitatInfo = Nothing
+            Dim hi As cHabitatInfo = Nothing
             Dim strPrompt As String = ""
 
             ' Validate
             If iHabitat < 0 Then Return
 
-            hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+            hi = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
             ' Toggle 'flagged for deletion' flag
             hi.FlaggedForDeletion = Not hi.FlaggedForDeletion
 
@@ -508,10 +509,10 @@ Namespace Ecospace
             If Not IsHabitatRow(iRow) Then Return False
 
             Dim iHabitat As Integer = iRow - iFIRSTHABITATROW
-            Dim hi As HabitatInfo = Nothing
+            Dim hi As cHabitatInfo = Nothing
             Dim strPrompt As String = ""
 
-            hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+            hi = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
             Return hi.FlaggedForDeletion
         End Function
 
@@ -529,7 +530,7 @@ Namespace Ecospace
         Private Sub CreateHabitat()
             Dim iRow As Integer = -1
             Dim iHabitat As Integer = -1
-            Dim hi As HabitatInfo = Nothing
+            Dim hi As cHabitatInfo = Nothing
             Dim lstrHabitats As New List(Of String)
 
             ' Make fit
@@ -545,7 +546,7 @@ Namespace Ecospace
             Next
 
             ' Format new hab with an autonumber value based on existing names
-            hi = New HabitatInfo(String.Format(SharedResources.DEFAULT_NEWHABITAT_NUM, _
+            hi = New cHabitatInfo(String.Format(SharedResources.DEFAULT_NEWHABITAT_NUM, _
                     cStringUtils.GetNextNumber(lstrHabitats.ToArray(), SharedResources.DEFAULT_NEWHABITAT_NUM)))
             Me.m_alHabitats.Insert(iHabitat, hi)
 
@@ -590,7 +591,7 @@ Namespace Ecospace
 
 #Region " Selection extension "
 
-        Private Overloads Sub SelectRow(ByVal hi As HabitatInfo)
+        Private Overloads Sub SelectRow(ByVal hi As cHabitatInfo)
             For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
                 If Object.ReferenceEquals(Me.m_alHabitats(iHabitat), hi) Then
                     Me.SelectRow(iHabitat + iFIRSTHABITATROW)
@@ -613,14 +614,58 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Public Function ValidateContent() As Boolean
 
-            '' Check if the user is about to delete all fleets - one should remain
-            'If Me.m_alHabitatsRemoved.Count = Me.m_alHabitats.Count Then
-            '    MsgBox(My.Resources.ECOPATH_EDITHABITAT_PROMPT_CANNOTDELETEALL, _
-            '            MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, _
-            '            My.Resources.ECOPATH_EDITHABITAT_CONFIRMDELETE_CAPTION)
-            '    Return False
-            'End If
+            Return Me.ValidateNames
 
+        End Function
+
+        Private Function ValidateNames() As Boolean
+
+            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+            Dim bHasDuplicates As Boolean = False
+            Dim bHasBlank As Boolean = False
+            Dim lstrHandled As New List(Of String)
+
+            For Each hi As cHabitatInfo In Me.m_alHabitats
+                If String.IsNullOrEmpty(hi.Name) Then
+                    bHasBlank = True
+                ElseIf Not Me.IsNameUnique(hi.Name, hi) Then
+                    If Not lstrHandled.Contains(hi.Name) Then
+                        fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
+                                                             String.Format(My.Resources.PROMPT_DUPLICATE_NAME, hi.Name), _
+                                                             eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
+                        lstrHandled.Add(hi.Name)
+                    End If
+                    bHasDuplicates = True
+                End If
+            Next
+
+            If bHasBlank Then
+                Me.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_EMPTY_NAMES, eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
+                Return False
+            End If
+
+            If bHasDuplicates Then
+                Me.Core.Messages.SendMessage(fmsg)
+                Return fmsg.Reply = cFeedbackMessage.eReply.YES
+            End If
+
+            Return True
+
+        End Function
+
+        Private Function IsNameUnique(ByVal strName As String, ByVal hi As cHabitatInfo) As Boolean
+
+            ' Check if name is unique
+            For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
+                Dim giTemp As cHabitatInfo = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
+                ' Does name already exist?
+                If (Not Object.ReferenceEquals(giTemp, hi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                    ' Change is not allowed
+                    Me.UpdateRow(p.Row)
+                    ' Report failure
+                    Return False
+                End If
+            Next
             Return True
 
         End Function
@@ -634,7 +679,7 @@ Namespace Ecospace
             Dim strPrompt As String = ""
             Dim bConfigurationChanged As Boolean = False
             Dim bHabitatsChanged As Boolean = False
-            Dim hi As HabitatInfo = Nothing
+            Dim hi As cHabitatInfo = Nothing
             Dim iDBID As Integer = Nothing
             Dim hab As cEcospaceHabitat = Nothing
             Dim iHabitat As Integer = 0
@@ -645,7 +690,7 @@ Namespace Ecospace
 
             ' Assess Habitat changes
             For iHabitat = 0 To Me.m_alHabitats.Count - 1
-                hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+                hi = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
 
                 If hi.IsNew Then
                     bConfigurationChanged = True
@@ -677,7 +722,7 @@ Namespace Ecospace
             Else
                 ' Assess Habitats to remove
                 For iHabitat = 0 To Me.m_alHabitatsRemoved.Count - 1
-                    hi = DirectCast(Me.m_alHabitatsRemoved(iHabitat), HabitatInfo)
+                    hi = DirectCast(Me.m_alHabitatsRemoved(iHabitat), cHabitatInfo)
                     If (Not hi.IsNew()) Then
 
                         strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT, hi.Name)
@@ -711,7 +756,7 @@ Namespace Ecospace
 
                 ' Add new Habitats
                 For iHabitat = 0 To Me.m_alHabitats.Count - 1
-                    hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+                    hi = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
                     If (hi.IsNew()) Then
                         bSuccess = bSuccess And Me.Core.AddEcospaceHabitat(hi.Name, iDBID)
                     End If
@@ -720,7 +765,7 @@ Namespace Ecospace
                 ' Remove deleted (and confirmed) Habitats
                 Dim iHabitatRemove As Integer = 0
                 For iHabitat = 0 To Me.m_alHabitatsRemoved.Count - 1
-                    hi = DirectCast(Me.m_alHabitatsRemoved(iHabitatRemove), HabitatInfo)
+                    hi = DirectCast(Me.m_alHabitatsRemoved(iHabitatRemove), cHabitatInfo)
 
                     ' Sanity check
                     Debug.Assert(Not hi.IsNew())
@@ -758,7 +803,7 @@ Namespace Ecospace
                 ' For each local habitat admin unit
                 For iHabitat = 0 To Me.m_alHabitats.Count - 1
                     ' Get local admin unit
-                    hi = DirectCast(Me.m_alHabitats(iHabitat), HabitatInfo)
+                    hi = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
                     If Not hi.IsNew() Then
                         hab = dtHabs(hi.HabitatDBID)
                         ' Has it changed?
