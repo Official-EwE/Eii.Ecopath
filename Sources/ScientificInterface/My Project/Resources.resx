@@ -1644,4 +1644,13 @@ Ecopath 5 can be downloaded from http://ecopath.org/previousversions.</value>
     <value>Component '{0}' has been updated</value>
     <comment>{0}: component name</comment>
   </data>
+  <data name="PROMPT_DUPLICATE_NAME" xml:space="preserve">
+    <value>Name '{0}' is defined more than once</value>
+  </data>
+  <data name="PROMPT_DUPLICATE_NAMES" xml:space="preserve">
+    <value>Your data contains duplicate names. Do you wish to use these duplicates?</value>
+  </data>
+  <data name="PROMPT_EMPTY_NAMES" xml:space="preserve">
+    <value>Your data contains blank names. This is not allowed.</value>
+  </data>
 </root>

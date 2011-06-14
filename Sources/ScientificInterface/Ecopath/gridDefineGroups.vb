@@ -1067,12 +1067,7 @@ Public Class gridDefineGroups
         Select Case DirectCast(p.Column, eColumnTypes)
 
             Case eColumnTypes.GroupName
-                Dim strName As String = CStr(cell.GetValue(p))
-                ' Check if name is unique
-                If Me.IsNameUnique(strName, gi) Then
-                    ' Allow name change
-                    gi.Name = strName
-                End If
+                gi.Name = CStr(cell.GetValue(p))
                 Me.UpdateRow(p.Row)
 
             Case eColumnTypes.GroupPPConsumer
@@ -1143,16 +1138,7 @@ Public Class gridDefineGroups
                 ' Not possible
 
             Case eColumnTypes.GroupName
-                Dim strName As String = CStr(cell.GetValue(p))
-                ' Check if name is unique
-                If Not Me.IsNameUnique(strName, gi) Then
-                    ' Change is not allowed
-                    Me.UpdateRow(p.Row)
-                    ' Report failure
-                    Return False
-                End If
-                ' Allow name change
-                gi.Name = strName
+                gi.Name = CStr(cell.GetValue(p))
 
             Case eColumnTypes.StanzaName
                 Dim strStanzaName As String = CStr(cell.GetValue(p))
@@ -1609,11 +1595,47 @@ Public Class gridDefineGroups
         Dim bSucces As Boolean = True
 
         ' Perform all validation
+        bSucces = bSucces And Me.ValidateNames()
         bSucces = bSucces And Me.ValidateStanzaAssignments()
         bSucces = bSucces And Me.ValidateStanzaAges()
         bSucces = bSucces And Me.ValidateDetritusContent()
 
         Return bSucces
+
+    End Function
+
+    Private Function ValidateNames() As Boolean
+
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+        Dim bHasDuplicates As Boolean = False
+        Dim bHasBlank As Boolean = False
+        Dim lstrHandled As New List(Of String)
+
+        For Each gi As cGroupInfo In Me.m_lgiGroups
+            If String.IsNullOrEmpty(gi.Name) Then
+                bHasBlank = True
+            ElseIf Not Me.IsNameUnique(gi.Name, gi) Then
+                If Not lstrHandled.Contains(gi.Name) Then
+                    fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
+                                                         String.Format(My.Resources.PROMPT_DUPLICATE_NAME, gi.Name), _
+                                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
+                    lstrHandled.Add(gi.Name)
+                End If
+                bHasDuplicates = True
+            End If
+        Next
+
+        If bHasBlank Then
+            Me.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_EMPTY_NAMES, eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
+            Return False
+        End If
+
+        If bHasDuplicates Then
+            Me.Core.Messages.SendMessage(fmsg)
+            Return fmsg.Reply = cFeedbackMessage.eReply.YES
+        End If
+
+        Return True
 
     End Function
 
