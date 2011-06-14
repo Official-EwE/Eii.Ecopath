@@ -7,6 +7,7 @@ Imports ScientificInterface.Other
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.VisualModels
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -462,20 +463,7 @@ Imports SourceGrid2.VisualModels
                 ' Not possible
 
             Case eColumnTypes.FleetName
-                Dim strName As String = CStr(cell.GetValue(p))
-                ' Check if name is unique
-                For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
-                    Dim giTemp As cFleetInfo = DirectCast(Me.m_lfiFleets(iFleet), cFleetInfo)
-                    ' Does name already exist?
-                    If (Not Object.ReferenceEquals(giTemp, fi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
-                        ' Change is not allowed
-                        Me.UpdateRow(p.Row)
-                        ' Report failure
-                        Return False
-                    End If
-                Next
-                ' Allow name change
-                fi.Name = strName
+                fi.Name = CStr(cell.GetValue(p))
 
         End Select
 
@@ -798,14 +786,56 @@ Imports SourceGrid2.VisualModels
     ''' -----------------------------------------------------------------------
     Public Function ValidateContent() As Boolean
 
-        '' Check if the user is about to delete all fleets - one should remain
-        'If Me.m_alFleetsRemoved.Count = Me.m_alFleets.Count Then
-        '    MsgBox(My.Resources.ECOPATH_EDITFLEET_PROMPT_CANNOTDELETEALL, _
-        '            MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, _
-        '            My.Resources.ECOPATH_EDITFLEET_CONFIRMDELETE_CAPTION)
-        '    Return False
-        'End If
+        Return Me.ValidateNames
 
+    End Function
+
+    Private Function ValidateNames() As Boolean
+
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+        Dim bHasDuplicates As Boolean = False
+        Dim bHasBlank As Boolean = False
+        Dim lstrHandled As New List(Of String)
+
+        For Each fi As cFleetInfo In Me.m_lfiFleets
+            If String.IsNullOrEmpty(fi.Name) Then
+                bHasBlank = True
+            ElseIf Not Me.IsNameUnique(fi.Name, fi) Then
+                If Not lstrHandled.Contains(fi.Name) Then
+                    fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
+                                                         String.Format(My.Resources.PROMPT_DUPLICATE_NAME, fi.Name), _
+                                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
+                    lstrHandled.Add(fi.Name)
+                End If
+                bHasDuplicates = True
+            End If
+        Next
+
+        If bHasBlank Then
+            Me.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_EMPTY_NAMES, eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
+            Return False
+        End If
+
+        If bHasDuplicates Then
+            Me.Core.Messages.SendMessage(fmsg)
+            Return fmsg.Reply = cFeedbackMessage.eReply.YES
+        End If
+
+        Return True
+
+    End Function
+
+    Private Function IsNameUnique(ByVal strName As String, ByVal fi As cFleetInfo) As Boolean
+
+        ' Check if name is unique
+        For i As Integer = 0 To Me.m_lfiFleets.Count - 1
+            Dim fiTmp As cFleetInfo = DirectCast(Me.m_lfiFleets(i), cFleetInfo)
+            ' Does name already exist?
+            If (Not Object.ReferenceEquals(fiTmp, fi)) And (String.Compare(strName, fiTmp.Name, True) = 0) Then
+                ' Report failure
+                Return False
+            End If
+        Next
         Return True
 
     End Function
