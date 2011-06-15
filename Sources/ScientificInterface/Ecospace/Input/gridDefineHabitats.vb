@@ -653,15 +653,13 @@ Namespace Ecospace
 
         End Function
 
-        Private Function IsNameUnique(ByVal strName As String, ByVal hi As cHabitatInfo) As Boolean
+        Private Function IsNameUnique(ByVal strName As String, ByVal info As cHabitatInfo) As Boolean
 
             ' Check if name is unique
-            For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
-                Dim giTemp As cHabitatInfo = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
+            For i As Integer = 0 To Me.m_alHabitats.Count - 1
+                Dim infoTmp As cHabitatInfo = DirectCast(Me.m_alHabitats(i), cHabitatInfo)
                 ' Does name already exist?
-                If (Not Object.ReferenceEquals(giTemp, hi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
-                    ' Change is not allowed
-                    Me.UpdateRow(p.Row)
+                If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
                     ' Report failure
                     Return False
                 End If

@@ -757,15 +757,13 @@ Namespace Ecospace
 
         End Function
 
-        Private Function IsNameUnique(ByVal strName As String, ByVal hi As cMPAInfo) As Boolean
+        Private Function IsNameUnique(ByVal strName As String, ByVal info As cMPAInfo) As Boolean
 
             ' Check if name is unique
             For i As Integer = 0 To Me.m_alMPAs.Count - 1
-                Dim giTemp As cMPAInfo = DirectCast(Me.m_alMPAs(i), cMPAInfo)
+                Dim infoTmp As cMPAInfo = DirectCast(Me.m_alMPAs(i), cMPAInfo)
                 ' Does name already exist?
-                If (Not Object.ReferenceEquals(giTemp, hi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
-                    ' Change is not allowed
-                    Me.UpdateRow(p.Row)
+                If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
                     ' Report failure
                     Return False
                 End If
