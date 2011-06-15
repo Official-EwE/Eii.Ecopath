@@ -222,7 +222,6 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
- 
   <data name="$this.Text" xml:space="preserve">
     <value>Remarks</value>
   </data>
@@ -230,6 +229,6 @@
     <value>frmRemarkPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.1.0.1116, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.2.0.614, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

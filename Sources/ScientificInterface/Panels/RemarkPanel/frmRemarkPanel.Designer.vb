@@ -23,6 +23,8 @@ Partial Class frmRemarkPanel
         '
         'm_tbRemark
         '
+        Me.m_tbRemark.AcceptsReturn = True
+        Me.m_tbRemark.AcceptsTab = True
         resources.ApplyResources(Me.m_tbRemark, "m_tbRemark")
         Me.m_tbRemark.Name = "m_tbRemark"
         '
@@ -42,6 +44,7 @@ Partial Class frmRemarkPanel
         Me.AcceptButton = Me.m_btnApply
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CloseButtonVisible = False
         Me.Controls.Add(Me.m_btnApply)
         Me.Controls.Add(Me.m_lbVarName)
         Me.Controls.Add(Me.m_tbRemark)
@@ -53,8 +56,6 @@ Partial Class frmRemarkPanel
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.CloseButtonVisible = False
-        Me.HideOnClose = True
         Me.TabText = "Remarks"
         Me.ResumeLayout(False)
         Me.PerformLayout()
