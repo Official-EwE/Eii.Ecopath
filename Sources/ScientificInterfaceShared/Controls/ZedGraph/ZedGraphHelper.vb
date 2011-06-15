@@ -1189,9 +1189,13 @@ Namespace Controls
 
             Dim sb As New StringBuilder()
             If Not String.IsNullOrEmpty(pane.Title.Text) Then
-                sb.AppendLine(pane.Title.Text)
+                sb.Append(pane.Title.Text)
             End If
-            sb.AppendLine(Me.FormatTooltipValue(pane, curve, iPoint))
+            Dim strValueBit As String = Me.FormatTooltipValue(pane, curve, iPoint)
+            If Not String.IsNullOrEmpty(strValueBit) Then
+                If sb.Length > 0 Then sb.AppendLine("")
+                sb.Append(strValueBit)
+            End If
             Return sb.ToString
 
         End Function
