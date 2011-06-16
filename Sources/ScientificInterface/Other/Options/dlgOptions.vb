@@ -48,7 +48,7 @@ Namespace Other
             Me.m_tvOptions.ExpandAll()
 
             Me.AddPage(GetType(ucOptionsGeneral))
-            Me.AddPage(GetType(ucOptionsPresentation))
+            Me.AddPage(GetType(ucOptionsGraphs))
             Me.AddPage(GetType(ucOptionsColors))
             Me.AddPage(GetType(ucOptionsPresentation))
             Me.AddPage(GetType(ucOptionsPlugins))
