@@ -202,10 +202,16 @@ Namespace Ecospace
         ''' Event handler; called when the IBM mode radio button is checked.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub rbIBM_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbIBM.Validated
-            ' Set the value, let property value cascades do the rest
-            Me.m_bpUseNewStanza.SetValue(False)
-            Me.m_bpUseIBM.SetValue(True)
+        Private Sub OnRunIBM(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_rbIBM.CheckedChanged
+
+            If Me.UIContext Is Nothing Then Return
+
+            If Me.m_rbIBM.Checked Then
+                ' Set the value, let property value cascades do the rest
+                Me.m_bpUseNewStanza.SetValue(False)
+                Me.m_bpUseIBM.SetValue(True)
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -213,10 +219,16 @@ Namespace Ecospace
         ''' Event handler; called when the New Stanza mode radio button is checked.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub rbNewStanzaModel_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbNewStanzaModel.Validated
-            ' Set the value, let property value cascades do the rest
-            Me.m_bpUseIBM.SetValue(False)
-            Me.m_bpUseNewStanza.SetValue(True)
+        Private Sub OnRunNewStanza(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_rbNewStanzaModel.CheckedChanged
+
+            If Me.UIContext Is Nothing Then Return
+
+            If Me.m_rbNewStanzaModel.Checked Then
+                ' Set the value, let property value cascades do the rest
+                Me.m_bpUseIBM.SetValue(False)
+                Me.m_bpUseNewStanza.SetValue(True)
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -224,10 +236,16 @@ Namespace Ecospace
         ''' Event handler; called when the 'Old School' radio button is checked.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub rbOldSchool_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbOldSchool.Validated
-            ' Set the value, let property value cascades do the rest
-            Me.m_bpUseNewStanza.SetValue(False)
-            Me.m_bpUseIBM.SetValue(False)
+        Private Sub OnRunOldSchool(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_rbOldSchool.CheckedChanged
+
+            If Me.UIContext Is Nothing Then Return
+
+            If Me.m_rbOldSchool.Checked Then
+                ' Set the value, let property value cascades do the rest
+                Me.m_bpUseNewStanza.SetValue(False)
+                Me.m_bpUseIBM.SetValue(False)
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
