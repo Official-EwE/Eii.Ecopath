@@ -2114,4 +2114,7 @@
     <value>{1} - {0}</value>
     <comment>{0}: EwE title, {1}: model name</comment>
   </data>
+  <data name="rss_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rss_icon.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

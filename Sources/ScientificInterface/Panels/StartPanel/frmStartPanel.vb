@@ -151,6 +151,15 @@ Public Class frmStartPanel
         End If
     End Sub
 
+    Private Sub OnViewRSS(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsbnRSS.Click
+        Try
+            Me.m_browser.Navigate("http://www.ecopath.org/aggregator/categories/1")
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
 #End Region ' Events
 
 #Region " Internals "

@@ -56,6 +56,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiHelpBugReport = New System.Windows.Forms.ToolStripMenuItem
+        Me.m_tsmiForums = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiHelpAbout = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuWindows = New System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiWindowsClose = New System.Windows.Forms.ToolStripMenuItem
@@ -288,7 +289,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpBugReport, m_tssHelp2, Me.m_tsmiHelpAbout})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpBugReport, Me.m_tsmiForums, m_tssHelp2, Me.m_tsmiHelpAbout})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
         '
@@ -306,6 +307,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         Me.m_tsmiHelpBugReport.Name = "m_tsmiHelpBugReport"
         resources.ApplyResources(Me.m_tsmiHelpBugReport, "m_tsmiHelpBugReport")
+        '
+        'm_tsmiForums
+        '
+        Me.m_tsmiForums.Name = "m_tsmiForums"
+        resources.ApplyResources(Me.m_tsmiForums, "m_tsmiForums")
         '
         'm_tsmiHelpAbout
         '
@@ -590,10 +596,12 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
+        Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, m_tssModel1})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
+        Me.m_tsModel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.m_tsModel.Stretch = True
         '
         'm_tsbSave
@@ -724,6 +732,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents m_tsmiPresentation As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewMenu As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiForums As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

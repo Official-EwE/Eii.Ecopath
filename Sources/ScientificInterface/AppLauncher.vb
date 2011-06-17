@@ -125,7 +125,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdNavigate As cNavigationCommand = Nothing
     Private WithEvents m_cmdViewNavPane As cCommand = Nothing
     Private WithEvents m_cmdViewStatusPane As cCommand = Nothing
-    Private WithEvents m_cmdViewStartPanel As cCommand = Nothing
+    Private WithEvents m_cmdViewStartPanel As cBrowserCommand = Nothing
     Private WithEvents m_cmdViewRemarkPane As cCommand = Nothing
     Private WithEvents m_cmdViewMenu As cCommand = Nothing
     Private WithEvents m_cmdViewModelBar As cCommand = Nothing
@@ -389,7 +389,7 @@ Public Class AppLauncher
         Me.m_cmdViewNavPane.AddControl(Me.m_tsmiViewNavigation)
 
         'Create and configure 'view start page' command
-        Me.m_cmdViewStartPanel = New cCommand(cmdh, "ViewStartPage")
+        Me.m_cmdViewStartPanel = New cBrowserCommand(cmdh)
         Me.m_cmdViewStartPanel.AddControl(Me.m_tsmiViewStartPage)
 
         'Create and configure 'view status pane' command
@@ -2687,13 +2687,15 @@ Public Class AppLauncher
     Private Sub OnViewStartPage(ByVal cmd As cCommand) Handles m_cmdViewStartPanel.OnInvoke
 
         Dim panel As frmStartPanel = DirectCast(Me.Panel(cPANEL_START), frmStartPanel)
+        Dim bcmd As cBrowserCommand = DirectCast(cmd, cBrowserCommand)
 
-        If Not cmd.Checked Then
+        If Not cmd.Checked Or Not String.IsNullOrEmpty(bcmd.URL) Then
             If panel.IsDisposed() Then
                 panel = New frmStartPanel(Me.UIContext)
                 Me.m_dtPanels(cPANEL_START) = panel
             End If
             panel.Show(Me.m_DockPanel, DockState.Document)
+            panel.URL = bcmd.URL
         Else
             If Not panel.IsDisposed Then
                 panel.Close()
@@ -2821,6 +2823,10 @@ Public Class AppLauncher
                                     eMessageImportance.Warning)
             Me.Core.Messages.SendMessage(msg)
         End If
+    End Sub
+
+    Private Sub OnVisitForums(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiForums.Click
+        Me.m_cmdViewStartPanel.Invoke("http://www.ecopath.org/forum")
     End Sub
 
 #End Region ' Main Menu - Help

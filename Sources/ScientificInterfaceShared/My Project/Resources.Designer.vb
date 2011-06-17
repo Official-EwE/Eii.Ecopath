@@ -5063,6 +5063,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property rss_icon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("rss_icon", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property RulerHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("RulerHS", resourceCulture)

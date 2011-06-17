@@ -26,22 +26,23 @@ Partial Class frmStartPanel
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStartPanel))
         Me.m_tlp = New System.Windows.Forms.TableLayoutPanel
         Me.m_browser = New System.Windows.Forms.WebBrowser
-        Me.ToolStrip1 = New cEwEToolStrip
+        Me.m_ts1 = New ScientificInterfaceShared.Controls.cEwEToolstrip
         Me.m_tsbnHome = New System.Windows.Forms.ToolStripButton
+        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsbnBack = New System.Windows.Forms.ToolStripButton
         Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton
         Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator
         Me.m_tsbnRefresh = New System.Windows.Forms.ToolStripButton
-        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
+        Me.m_tsbnRSS = New System.Windows.Forms.ToolStripButton
         Me.m_tlp.SuspendLayout()
-        Me.ToolStrip1.SuspendLayout()
+        Me.m_ts1.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_tlp
         '
         resources.ApplyResources(Me.m_tlp, "m_tlp")
         Me.m_tlp.Controls.Add(Me.m_browser, 0, 1)
-        Me.m_tlp.Controls.Add(Me.ToolStrip1, 0, 0)
+        Me.m_tlp.Controls.Add(Me.m_ts1, 0, 0)
         Me.m_tlp.Name = "m_tlp"
         '
         'm_browser
@@ -51,28 +52,32 @@ Partial Class frmStartPanel
         Me.m_browser.MinimumSize = New System.Drawing.Size(20, 20)
         Me.m_browser.Name = "m_browser"
         '
-        'ToolStrip1
+        'm_ts1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnHome, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_sep2, Me.m_tsbnRefresh})
-        resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
-        Me.ToolStrip1.Name = "ToolStrip1"
+        Me.m_ts1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnHome, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_sep2, Me.m_tsbnRefresh, Me.m_tsbnRSS})
+        resources.ApplyResources(Me.m_ts1, "m_ts1")
+        Me.m_ts1.Name = "m_ts1"
+        Me.m_ts1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'm_tsbnHome
         '
         Me.m_tsbnHome.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsbnHome.Image = SharedResources.HomeHS
         resources.ApplyResources(Me.m_tsbnHome, "m_tsbnHome")
         Me.m_tsbnHome.Name = "m_tsbnHome"
         '
+        'm_sep1
+        '
+        Me.m_sep1.Name = "m_sep1"
+        resources.ApplyResources(Me.m_sep1, "m_sep1")
+        '
         'm_tsbnBack
         '
-        Me.m_tsbnBack.Image = SharedResources.NavBack
         resources.ApplyResources(Me.m_tsbnBack, "m_tsbnBack")
         Me.m_tsbnBack.Name = "m_tsbnBack"
         '
         'm_tsbnForward
         '
-        Me.m_tsbnForward.Image = SharedResources.NavForward
         resources.ApplyResources(Me.m_tsbnForward, "m_tsbnForward")
         Me.m_tsbnForward.Name = "m_tsbnForward"
         '
@@ -86,28 +91,30 @@ Partial Class frmStartPanel
         resources.ApplyResources(Me.m_tsbnRefresh, "m_tsbnRefresh")
         Me.m_tsbnRefresh.Name = "m_tsbnRefresh"
         '
-        'm_sep1
+        'm_tsbnRSS
         '
-        Me.m_sep1.Name = "m_sep1"
-        resources.ApplyResources(Me.m_sep1, "m_sep1")
+        Me.m_tsbnRSS.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tsbnRSS.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnRSS, "m_tsbnRSS")
+        Me.m_tsbnRSS.Name = "m_tsbnRSS"
         '
-        'frmWebBrowser
+        'frmStartPanel
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_tlp)
         Me.HideOnClose = True
-        Me.Name = "frmWebBrowser"
+        Me.Name = "frmStartPanel"
         Me.TabText = "Home"
         Me.m_tlp.ResumeLayout(False)
         Me.m_tlp.PerformLayout()
-        Me.ToolStrip1.ResumeLayout(False)
-        Me.ToolStrip1.PerformLayout()
+        Me.m_ts1.ResumeLayout(False)
+        Me.m_ts1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Private WithEvents m_browser As System.Windows.Forms.WebBrowser
-    Private WithEvents ToolStrip1 As cEwEToolStrip
+    Private WithEvents m_ts1 As cEwEToolStrip
     Private WithEvents m_tsbnBack As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_tsbnForward As System.Windows.Forms.ToolStripButton
@@ -115,6 +122,7 @@ Partial Class frmStartPanel
     Private WithEvents m_tsbnHome As System.Windows.Forms.ToolStripButton
     Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbnRSS As System.Windows.Forms.ToolStripButton
 
 
 End Class
