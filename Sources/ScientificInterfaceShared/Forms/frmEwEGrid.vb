@@ -110,11 +110,7 @@ Namespace Forms
 
                 ' Attempt to find toolstrip
                 If Me.m_ts Is Nothing Then
-                    For Each c As Control In Me.m_form.Controls
-                        If TypeOf c Is ToolStrip Then
-                            m_ts = DirectCast(c, ToolStrip)
-                        End If
-                    Next
+                    Me.m_ts = Me.FindToolstripRecursive(Me.m_form.Controls)
 
                     ' Not found?
                     If m_ts Is Nothing Then
@@ -530,6 +526,17 @@ Namespace Forms
                 fs.Close()
 
             End Sub
+
+            Private Function FindToolstripRecursive(ByVal controls As Control.ControlCollection) As ToolStrip
+                If controls IsNot Nothing Then
+                    For Each c As Control In controls
+                        If TypeOf c Is ToolStrip Then Return DirectCast(c, ToolStrip)
+                        Dim ts As ToolStrip = Me.FindToolstripRecursive(c.Controls)
+                        If ts IsNot Nothing Then Return ts
+                    Next
+                End If
+                Return Nothing
+            End Function
 
 #End Region ' Internal implementation
 
