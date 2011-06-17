@@ -69,7 +69,7 @@ Friend Class cMSEPlotter
     Private Const UB_TAG As String = "UB"
 
     Private m_uic As cUIContext = Nothing
-    Private m_zgh As cZedGraphHelper = Nothing
+    Private m_zgh As cZedGraphHelper = New cZedGraphHelper()
     Private m_zdGraph As ZedGraphControl
     Private m_manager As cMSEManager
     Private m_nvis As Integer
@@ -88,14 +88,11 @@ Friend Class cMSEPlotter
     ''' Initialize to ZedGraphHelper and a Zedgraph control
     ''' </summary>
     ''' <param name="uic"></param>
-    ''' <param name="ZedGraphHelper"></param>
     ''' <param name="ZedGraph"></param>
     ''' <remarks></remarks>
     Public Sub Init(ByVal uic As cUIContext, _
                     ByVal MSEManager As cMSEManager, _
-                    ByVal ZedGraphHelper As cZedGraphHelper, _
                     ByVal ZedGraph As ZedGraphControl)
-        Me.m_zgh = ZedGraphHelper
         Me.m_uic = uic
         Me.m_zdGraph = ZedGraph
         Me.m_manager = MSEManager

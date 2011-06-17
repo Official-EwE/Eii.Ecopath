@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 0</value>
+    <value>0, 114</value>
   </metadata>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tsMain.AutoSize" type="System.Boolean, mscorlib">
@@ -138,15 +138,78 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.1.1.415, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.2.0.614, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpGroups</value>
   </data>
   <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_tlpGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_tlpGroups.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_grid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="m_grid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>724, 375</value>
+  </data>
+  <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
+    <value>m_grid</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecotracer.EcotracerInputGrid, EwE6, Version=6.2.0.614, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+  </data>
+  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
+    <value>m_tlpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 114</value>
+  </data>
+  <data name="m_tlpGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpGroups.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_tlpGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>724, 400</value>
+  </data>
+  <data name="m_tlpGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_tlpGroups.Name" xml:space="preserve">
+    <value>m_tlpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_tlpGroups.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpGroups.Parent" xml:space="preserve">
+    <value>m_plAaargh</value>
+  </data>
+  <data name="&gt;&gt;m_tlpGroups.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpGroups.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsMain" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_grid" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
   <data name="m_hdrGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -172,13 +235,13 @@
     <value>m_hdrGroups</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.415, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.614, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
     <value>m_plAaargh</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lbFFEnv.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -208,7 +271,7 @@
     <value>m_plAaargh</value>
   </data>
   <data name="&gt;&gt;m_lbFFEnv.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_cmbEnvInflowFF.Location" type="System.Drawing.Point, System.Drawing">
     <value>191, 72</value>
@@ -229,7 +292,7 @@
     <value>m_plAaargh</value>
   </data>
   <data name="&gt;&gt;m_cmbEnvInflowFF.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_tlp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -499,37 +562,10 @@
     <value>m_plAaargh</value>
   </data>
   <data name="&gt;&gt;m_tlp.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_tlp.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lbCZeroEnv" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbCDecayRateEnv" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCInflowEnv" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCDecay" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCDecayRateEnv" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCInflowEnv" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCLossEnv" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCZeroEnv" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,Absolute,20,AutoSize,0,Percent,50" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 118</value>
-  </data>
-  <data name="m_grid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 371</value>
-  </data>
-  <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecotracer.EcotracerInputGrid, EwE6, Version=6.1.1.415, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>m_plAaargh</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_hdrInit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -556,7 +592,7 @@
     <value>m_hdrInit</value>
   </data>
   <data name="&gt;&gt;m_hdrInit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.415, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.614, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInit.Parent" xml:space="preserve">
     <value>m_plAaargh</value>
@@ -568,10 +604,10 @@
     <value>Fill</value>
   </data>
   <data name="m_plAaargh.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
+    <value>0, 0</value>
   </data>
   <data name="m_plAaargh.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 489</value>
+    <value>724, 514</value>
   </data>
   <data name="m_plAaargh.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -606,9 +642,6 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Ecotracer input</value>
   </data>
@@ -616,6 +649,6 @@
     <value>frmEcotracerInput</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.1.1.415, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.2.0.614, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

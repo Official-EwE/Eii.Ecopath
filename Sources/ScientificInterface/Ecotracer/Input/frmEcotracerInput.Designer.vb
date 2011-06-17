@@ -44,22 +44,26 @@ Namespace Ecotracer
             Me.m_tbCZeroEnv = New System.Windows.Forms.TextBox
             Me.m_grid = New ScientificInterface.Ecotracer.EcotracerInputGrid
             Me.m_hdrInit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_tlpGroups = New System.Windows.Forms.TableLayoutPanel
             Me.m_plAaargh.SuspendLayout()
             Me.m_tlp.SuspendLayout()
+            Me.m_tlpGroups.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsMain
             '
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Name = "m_tsMain"
+            Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_plAaargh
             '
+            Me.m_plAaargh.Controls.Add(Me.m_tlpGroups)
             Me.m_plAaargh.Controls.Add(Me.m_hdrGroups)
             Me.m_plAaargh.Controls.Add(Me.m_lbFFEnv)
             Me.m_plAaargh.Controls.Add(Me.m_cmbEnvInflowFF)
             Me.m_plAaargh.Controls.Add(Me.m_tlp)
-            Me.m_plAaargh.Controls.Add(Me.m_grid)
             Me.m_plAaargh.Controls.Add(Me.m_hdrInit)
             resources.ApplyResources(Me.m_plAaargh, "m_plAaargh")
             Me.m_plAaargh.Name = "m_plAaargh"
@@ -137,7 +141,6 @@ Namespace Ecotracer
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
-            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -148,6 +151,7 @@ Namespace Ecotracer
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
@@ -168,17 +172,24 @@ Namespace Ecotracer
             resources.ApplyResources(Me.m_hdrInit, "m_hdrInit")
             Me.m_hdrInit.Name = "m_hdrInit"
             '
+            'm_tlpGroups
+            '
+            resources.ApplyResources(Me.m_tlpGroups, "m_tlpGroups")
+            Me.m_tlpGroups.Controls.Add(Me.m_tsMain, 0, 0)
+            Me.m_tlpGroups.Controls.Add(Me.m_grid, 0, 1)
+            Me.m_tlpGroups.Name = "m_tlpGroups"
+            '
             'frmEcotracerInput
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_plAaargh)
-            Me.Controls.Add(Me.m_tsMain)
             Me.Name = "frmEcotracerInput"
             Me.m_plAaargh.ResumeLayout(False)
             Me.m_plAaargh.PerformLayout()
             Me.m_tlp.ResumeLayout(False)
             Me.m_tlp.PerformLayout()
+            Me.m_tlpGroups.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -198,6 +209,7 @@ Namespace Ecotracer
         Private WithEvents m_tbCZeroEnv As System.Windows.Forms.TextBox
         Private WithEvents m_grid As ScientificInterface.Ecotracer.EcotracerInputGrid
         Private WithEvents m_hdrInit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_tlpGroups As System.Windows.Forms.TableLayoutPanel
     End Class
 
 End Namespace

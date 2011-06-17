@@ -39,7 +39,6 @@ Public Class frmMSE
     Private m_fpSave As cPropertyFormatProvider
 
     Private m_paneMaster As MasterPane = Nothing
-    Private m_zgh As cZedGraphHelper = Nothing
     Private m_curState As eMSEStates
 
     Private m_plotter As cMSEPlotter
@@ -107,10 +106,9 @@ Public Class frmMSE
         AddHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
         Me.m_paneMaster = Me.m_zgc.MasterPane
-        Me.m_zgh = New cZedGraphHelper()
 
         Me.m_plotter = New cMSEPlotter
-        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_zgh, Me.m_zgc)
+        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_zgc)
         Me.m_plotter.PlotType = ePlotTypes.Line
         Me.m_plotter.DataType = ePlotData.Biomass
 

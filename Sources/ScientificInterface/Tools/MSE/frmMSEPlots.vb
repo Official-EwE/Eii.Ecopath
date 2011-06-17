@@ -23,7 +23,6 @@ Public Class frmMSEPlots
 
     Private m_MSE As cMSEManager
     Private m_paneMaster As MasterPane = Nothing
-    Private m_zgh As cZedGraphHelper = Nothing
     Private m_plotter As cMSEPlotter
     Private m_MSEEvents As cMSEEventSource
     Private m_curPlotType As ePlotTypes
@@ -36,9 +35,8 @@ Public Class frmMSEPlots
         Debug.Assert(Me.UIContext IsNot Nothing)
 
         Me.m_MSE = Me.UIContext.Core.MSEManager
-        Me.m_zgh = New cZedGraphHelper()
         Me.m_plotter = New cMSEPlotter()
-        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_zgh, Me.ZedGraph)
+        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.ZedGraph)
 
         Me.m_MSEEvents = New cMSEEventSource
         AddHandler Me.m_MSEEvents.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
@@ -79,7 +77,6 @@ Public Class frmMSEPlots
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.m_plotter.Detach()
-        Me.m_zgh.Detach()
 
         RemoveHandler Me.m_MSEEvents.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
         RemoveHandler Me.m_MSEEvents.onRunCompleted, AddressOf Me.onRunCompleted
