@@ -82,6 +82,7 @@ Public Class frmEcotracerOutput
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_zgc)
+        'Me.m_zgc.
         Me.m_lbGroups.Attach(Me.UIContext)
 
         Me.RefreshData()
@@ -448,9 +449,7 @@ Public Class frmEcotracerOutput
             Next
 
             ' Plot all encountered lines
-            'jb 11-Jan-2011 plot all lines as cumulative even if there is only one line
-            'this simplifies the interface there does not need to be toggle to turn On/Off cumulative graphs
-            Me.m_zgh.PlotLines(lLinesPlot.ToArray, , , , True)
+            Me.m_zgh.PlotLines(lLinesPlot.ToArray, , , , False)
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
