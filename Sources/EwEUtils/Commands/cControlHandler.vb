@@ -3,6 +3,9 @@ Imports System
 Imports System.Windows.Forms
 Imports System.Diagnostics
 
+' ToDo_JS: Make classes dispose correctly
+' ToDo_JS: Make menu items toggle automatically
+
 Namespace Commands
 
 #Region " ControlHandler base class "
