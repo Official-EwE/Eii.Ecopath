@@ -1515,7 +1515,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath with Ecosim .
+        '''  Looks up a localized string similar to Ecopath with Ecosim.
         '''</summary>
         Friend ReadOnly Property GENERIC_CAPTION() As String
             Get
