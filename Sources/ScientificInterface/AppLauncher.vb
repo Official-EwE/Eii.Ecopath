@@ -1161,12 +1161,13 @@ Public Class AppLauncher
 
         Dim an As AssemblyName = Assembly.GetAssembly(GetType(cCore)).GetName
         Dim strCaption As String = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, an.Version.ToString)
+        Dim model As cEwEModel = Me.Core.EwEModel
 
         Me.m_tsModel.Path = Me.SelectedFileName
-        If String.IsNullOrEmpty(Me.SelectedFileName) Then
+        If Not Me.Core.StateMonitor.HasEcopathLoaded Then
             Me.Text = strCaption
         Else
-            Me.Text = String.Format(SharedResources.GENERIC_LABEL_CAPTION, strCaption, Me.SelectedFileName(False))
+            Me.Text = String.Format(SharedResources.GENERIC_LABEL_CAPTION, strCaption, model.Name)
         End If
 
     End Sub
