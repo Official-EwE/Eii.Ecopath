@@ -329,7 +329,6 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerMPASeed.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerRelCin.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerSingle.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerIBMPackets.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerPort.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerSail.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerWind.vb" />

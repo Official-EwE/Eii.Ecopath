@@ -18,8 +18,8 @@ Public Class cEcospaceBasemap
     Private m_dictLayers As New Dictionary(Of eVarNameFlags, cEcospaceLayer)
     ''' <summary>Importance layers maintained in a basemap.</summary>
     Private m_lstLayerImportance As New List(Of cEcospaceLayerImportance)
-    ''' <summary>IBM layers maintained in a basemap.</summary>
-    Private m_lstLayerIBM As New List(Of cEcospaceLayerIBMPackets)
+    '''' <summary>IBM layers maintained in a basemap.</summary>
+    'Private m_lstLayerIBM As New List(Of cEcospaceLayerIBMPackets)
 
     ''' <summary>Equator length in km.</summary>
     ''' <remarks>http://en.wikipedia.org/wiki/Equator#Exact_length_of_the_Equator</remarks>
@@ -47,13 +47,13 @@ Public Class cEcospaceBasemap
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' InRow
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(0, eVarNameFlags.InRow, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' InCol
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(0, eVarNameFlags.InCol, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
@@ -81,12 +81,12 @@ Public Class cEcospaceBasemap
             ' *************************************************************************************** '
 
             ' LayerRelPP
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerRelPP, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' LayerRelCin
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerRelCin, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -116,7 +116,7 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' LayerDistribution
-            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerDistribution, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -125,9 +125,9 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            ' IBMPackets
-            val = New cValueArray(eValueTypes.LayerArray, eVarNameFlags.LayerIBMPackets, eStatusFlags.OK, eCoreCounterTypes.nStanzas, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            '' IBMPackets
+            'val = New cValueArray(eValueTypes.LayerArray, eVarNameFlags.LayerIBMPackets, eStatusFlags.OK, eCoreCounterTypes.nStanzas, AddressOf m_core.GetCoreCounter)
+            'm_values.Add(val.varName, val)
 
             ' LayerPort
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
@@ -212,10 +212,10 @@ Public Class cEcospaceBasemap
             layer = New cEcospaceLayerSail(theCore, Me)
             Me.Layers(layer.VarName) = layer
 
-            ' IBM layers
-            For i As Integer = 1 To Me.m_core.nStanzas
-                Me.m_lstLayerIBM.Add(New cEcospaceLayerIBMPackets(theCore, Me, i))
-            Next
+            '' IBM layers
+            'For i As Integer = 1 To Me.m_core.nStanzas
+            '    Me.m_lstLayerIBM.Add(New cEcospaceLayerIBMPackets(theCore, Me, i))
+            'Next
 
             layer = New cEcospaceLayerDistribution(theCore, Me)
             Me.Layers(layer.VarName) = layer
@@ -603,17 +603,17 @@ Public Class cEcospaceBasemap
         End Get
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="iStanza">Stanza group index</param>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerIBMPackets(ByVal iStanza As Integer) As cEcospaceLayerIBMPackets
-        Get
-            Return Me.m_lstLayerIBM(iStanza)
-        End Get
-    End Property
+    '''' -----------------------------------------------------------------------
+    '''' <summary>
+    '''' 
+    '''' </summary>
+    '''' <param name="iStanza">Stanza group index</param>
+    '''' -----------------------------------------------------------------------
+    'Public ReadOnly Property LayerIBMPackets(ByVal iStanza As Integer) As cEcospaceLayerIBMPackets
+    '    Get
+    '        Return Me.m_lstLayerIBM(iStanza)
+    '    End Get
+    'End Property
 
     Public ReadOnly Property LayerDistribution() As cEcospaceLayerDistribution
         Get
@@ -653,8 +653,8 @@ Public Class cEcospaceBasemap
                     Return Nothing
                 End If
                 Return Me.m_core.m_EcoSpaceData.ImportanceLayers(iIndex).Data
-            Case eVarNameFlags.LayerIBMPackets
-                Return Me.m_core.m_Stanza
+                'Case eVarNameFlags.LayerIBMPackets
+                '    Return Me.m_core.m_Stanza
             Case eVarNameFlags.LayerPort
                 Return Me.m_core.m_EcoSpaceData.Port
             Case eVarNameFlags.LayerSail
