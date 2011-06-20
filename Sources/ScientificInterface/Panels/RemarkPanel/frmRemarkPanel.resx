@@ -184,7 +184,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnApply.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnApply.Location" type="System.Drawing.Point, System.Drawing">
     <value>681, 4</value>

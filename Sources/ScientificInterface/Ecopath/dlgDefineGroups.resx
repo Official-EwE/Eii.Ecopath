@@ -136,7 +136,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefineGroups, EwE6, Version=6.2.0.609, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefineGroups, EwE6, Version=6.2.0.620, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -146,9 +146,6 @@
   </data>
   <data name="m_btnInsert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_btnInsert.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
   </data>
   <data name="m_btnInsert.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -184,7 +181,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnMoveUp.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnMoveUp.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -220,7 +217,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnMoveDown.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnMoveDown.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -256,7 +253,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDelete.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnDelete.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -292,7 +289,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnKeep.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnKeep.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -382,7 +379,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_bntColorDefaultAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_bntColorDefaultAll.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -421,7 +418,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnColorAlternateAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnColorAlternateAll.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -478,7 +475,7 @@
     <value>m_hdrColours</value>
   </data>
   <data name="&gt;&gt;m_hdrColours.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.608, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.620, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrColours.Parent" xml:space="preserve">
     <value>$this</value>
@@ -511,7 +508,7 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.608, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.620, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>$this</value>
@@ -544,7 +541,7 @@
     <value>m_hdrOrder</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.608, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.620, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Parent" xml:space="preserve">
     <value>$this</value>
@@ -556,7 +553,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnColourCustomCurrent.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnColourCustomCurrent.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -595,7 +592,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnColourDefaultCurrent.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnColourDefaultCurrent.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -634,7 +631,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnRandomAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnRandomAll.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>

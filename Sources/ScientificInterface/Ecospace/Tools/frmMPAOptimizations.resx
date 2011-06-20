@@ -676,7 +676,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnSave.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnSave.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -793,7 +793,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnResetMPAs.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnResetMPAs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -826,7 +826,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnConvertToMpa.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnConvertToMpa.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>

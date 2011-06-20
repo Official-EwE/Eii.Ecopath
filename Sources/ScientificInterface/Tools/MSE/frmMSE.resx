@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btRun.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btRun.Location" type="System.Drawing.Point, System.Drawing">
@@ -214,7 +214,7 @@
     <value>0</value>
   </data>
   <data name="m_btnStop.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
     <value>78, 0</value>
@@ -277,7 +277,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_btnShowHide.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnShowHide.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 138</value>

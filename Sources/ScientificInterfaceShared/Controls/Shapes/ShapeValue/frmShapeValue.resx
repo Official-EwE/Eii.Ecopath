@@ -463,7 +463,7 @@
     <value>Top</value>
   </data>
   <data name="m_btnSetNoOfYears.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnSetNoOfYears.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>

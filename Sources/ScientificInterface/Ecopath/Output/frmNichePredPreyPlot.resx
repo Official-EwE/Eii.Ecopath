@@ -211,7 +211,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_btnShowHideGroups.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnShowHideGroups.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 21</value>

@@ -346,7 +346,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_bntShowGroups.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_bntShowGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>

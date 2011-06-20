@@ -184,7 +184,7 @@
     <value>1</value>
   </data>
   <data name="btShowHide.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="btShowHide.Location" type="System.Drawing.Point, System.Drawing">
     <value>333, 21</value>

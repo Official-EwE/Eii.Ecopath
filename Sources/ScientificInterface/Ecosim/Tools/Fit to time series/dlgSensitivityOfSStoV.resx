@@ -178,7 +178,7 @@
     <value>7</value>
   </data>
   <data name="m_btnSearch.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnSearch.Location" type="System.Drawing.Point, System.Drawing">
     <value>120, 83</value>

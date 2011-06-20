@@ -151,7 +151,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnResetAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnResetAll.Location" type="System.Drawing.Point, System.Drawing">
     <value>237, 284</value>
@@ -268,7 +268,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnCustomForeColor.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnCustomForeColor.Location" type="System.Drawing.Point, System.Drawing">
     <value>361, 43</value>
@@ -325,7 +325,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnCustomBackColor.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnCustomBackColor.Location" type="System.Drawing.Point, System.Drawing">
     <value>361, 87</value>

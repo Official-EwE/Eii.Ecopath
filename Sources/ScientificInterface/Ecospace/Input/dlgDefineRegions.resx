@@ -148,7 +148,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnAddRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnAddRegion.Location" type="System.Drawing.Point, System.Drawing">
     <value>280, 148</value>
@@ -178,7 +178,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnRemoveRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnRemoveRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -310,7 +310,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnKeep.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnKeep.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -349,7 +349,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnHabToRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnHabToRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -382,7 +382,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnFromCells.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnFromCells.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -481,7 +481,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnMPAtoRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnMPAtoRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -514,7 +514,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnSelectEmpty.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnSelectEmpty.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -586,7 +586,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnSelectAll.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnSelectAll.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -625,7 +625,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnSelectNone.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnSelectNone.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>

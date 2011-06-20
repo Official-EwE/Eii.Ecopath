@@ -922,7 +922,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnTS.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnTS.Location" type="System.Drawing.Point, System.Drawing">
     <value>371, 26</value>
@@ -1267,7 +1267,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnFromPedigree.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
+    <value>Standard</value>
   </data>
   <data name="m_btnFromPedigree.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
