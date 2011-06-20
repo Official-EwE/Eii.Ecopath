@@ -63,6 +63,10 @@ Namespace Ecospace.Basemap.Layers
                 Me.m_nudValue.Minimum = Convert.ToDecimal(Me.Editor.CellValueMin)
             End If
 
+            ' Set increment
+            If (Me.m_nudValue.Maximum - Me.m_nudValue.Minimum) <= 1000 Then
+                Me.m_nudValue.Increment = (Me.m_nudValue.Maximum - Me.m_nudValue.Minimum) / 100
+            End If
         End Sub
 
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
@@ -77,6 +81,7 @@ Namespace Ecospace.Basemap.Layers
                                             CSng(Me.m_nudValue.Minimum))
 
             Me.m_nudValue.Value = Convert.ToDecimal(sValue)
+            Me.m_btnSmooth.Enabled = Me.Editor.CanSmooth
 
             Dim bmp As New Bitmap(Me.m_pbPreview.Width, Me.m_pbPreview.Height, Imaging.PixelFormat.Format32bppArgb)
             Dim g As Graphics = Graphics.FromImage(bmp)
@@ -124,6 +129,11 @@ Namespace Ecospace.Basemap.Layers
             If ((cf And cStyleGuide.eChangeType.NumberFormatting) > 0) Then
                 Me.UpdateContent(Me.Editor)
             End If
+        End Sub
+
+        Private Sub m_btnSmooth_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSmooth.Click
+            Me.Editor.Smooth()
         End Sub
 
 #End Region ' Events

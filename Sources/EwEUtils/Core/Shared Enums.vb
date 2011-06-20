@@ -411,8 +411,9 @@ Namespace Core
         WmatWinf
         ''' <summary>Forcing function number for hathery stocking (scalar)</summary>
         HatchCode
-        ''' <summary>To document</summary>
+        ''' <summary>Stanza use fixed fecundity</summary>
         FixedFecundity
+        EggAtSpawn
 
         ''' <summary>Stanza parameter; used to indicate the group that leads 
         ''' <see cref="eVarNameFlags.Biomass">biomass</see> in a multi-stanza
@@ -484,6 +485,8 @@ Namespace Core
         LayerDepth
         ''' <summary>Ecospace cell habitat assignments</summary>
         LayerHabitat
+        ''' <summary>Ecospace cell habitat capacity.</summary>
+        LayerHabitatCapacity
         ''' <summary>Ecospace cell MPA assignments</summary>
         LayerMPA
         LayerMPAPM
@@ -517,6 +520,7 @@ Namespace Core
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type.</summary>
         HabAreaProportion
+        LayerIBMPackets
         ''' <summary>Total Eff, Muiltiplier.</summary>
         ''' <remarks>Summary taken from EwE5 code, not overly helpful I'm afraid...</remarks>
         SEmult
@@ -1327,8 +1331,6 @@ Namespace Core
         ClimateType
         NumPtsMovAvg
 
-        LayerIBMPackets
-
         ' JS 11Jan10: added for NA variables that migrated to Ecosim
         ''' <summary>Trophic level of catch.</summary>
         TLCatch
@@ -1916,6 +1918,8 @@ Namespace Core
         ''' Data belongs to a landings-mediated interaction.
         ''' </summary>
         LandingInteraction = 97
+
+        EcospaceLayerHabitatCapacity = 98
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

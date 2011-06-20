@@ -18,9 +18,7 @@ Public Class cEcospaceBasemap
     Private m_dictLayers As New Dictionary(Of eVarNameFlags, cEcospaceLayer)
     ''' <summary>Importance layers maintained in a basemap.</summary>
     Private m_lstLayerImportance As New List(Of cEcospaceLayerImportance)
-    '''' <summary>IBM layers maintained in a basemap.</summary>
-    'Private m_lstLayerIBM As New List(Of cEcospaceLayerIBMPackets)
-
+ 
     ''' <summary>Equator length in km.</summary>
     ''' <remarks>http://en.wikipedia.org/wiki/Equator#Exact_length_of_the_Equator</remarks>
     Private Shared c_sEquatorLength As Single = 40007.862917
@@ -100,6 +98,11 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerHabitat, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' LayerHabitatCapacity
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerHabitatCapacity, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' LayerMPA
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nMPAs), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             val = New cValue(0, eVarNameFlags.LayerMPA, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -169,8 +172,10 @@ Public Class cEcospaceBasemap
             layer = New cEcospaceLayerDepth(theCore, Me, meta)
             Me.Layers(layer.VarName) = layer
 
-            ' Habitat layer
+            ' Habitat layers
             layer = New cEcospaceLayerHabitat(theCore, Me)
+            Me.Layers(layer.VarName) = layer
+            layer = New cEcospaceLayerHabitatCapacity(theCore, Me)
             Me.Layers(layer.VarName) = layer
 
             ' MPA layer
@@ -474,6 +479,12 @@ Public Class cEcospaceBasemap
         End Get
     End Property
 
+    Public ReadOnly Property LayerHabitatCapacity() As cEcospaceLayerHabitatCapacity
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerHabitatCapacity), cEcospaceLayerHabitatCapacity)
+        End Get
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the Ecospace MPA layer.
@@ -627,6 +638,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Depth
             Case eVarNameFlags.LayerHabitat
                 Return Me.m_core.m_EcoSpaceData.HabType
+            Case eVarNameFlags.LayerHabitatCapacity
+                Return Me.m_core.m_EcoSpaceData.HabCapInput
             Case eVarNameFlags.LayerMPA
                 Return Me.m_core.m_EcoSpaceData.MPA
             Case eVarNameFlags.LayerRegion
@@ -653,8 +666,6 @@ Public Class cEcospaceBasemap
                     Return Nothing
                 End If
                 Return Me.m_core.m_EcoSpaceData.ImportanceLayers(iIndex).Data
-                'Case eVarNameFlags.LayerIBMPackets
-                '    Return Me.m_core.m_Stanza
             Case eVarNameFlags.LayerPort
                 Return Me.m_core.m_EcoSpaceData.Port
             Case eVarNameFlags.LayerSail

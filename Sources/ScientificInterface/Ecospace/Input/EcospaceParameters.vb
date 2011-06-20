@@ -93,9 +93,9 @@ Namespace Ecospace
             Dim pm As cPropertyManager = Me.PropertyManager
 
             ' Start listening to props
-            Me.m_bpUseIBM = CType(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
-            Me.m_bpUseNewStanza = CType(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
-            Me.m_bpAdjustSpace = CType(pm.GetProperty(ecospaceModelParams, eVarNameFlags.AdjustSpace), cBooleanProperty)
+            Me.m_bpUseIBM = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
+            Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
+            Me.m_bpAdjustSpace = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.AdjustSpace), cBooleanProperty)
 
             Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
 
@@ -155,8 +155,6 @@ Namespace Ecospace
             Dim threadingModel As eThreadingModelType = eThreadingModelType.OldSchool
             Dim bUseIBM As Boolean = CBool(Me.m_bpUseIBM.GetValue())
             Dim bUseNewStanza As Boolean = CBool(Me.m_bpUseNewStanza.GetValue())
-
-            Debug.Assert(Not (bUseIBM And bUseNewStanza), "Mutually exclusive options are both set, something is wrong in the Ecospace core")
 
             If bUseIBM Then threadingModel = eThreadingModelType.UseIBM
             If bUseNewStanza Then threadingModel = eThreadingModelType.UseNewStanza

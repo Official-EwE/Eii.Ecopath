@@ -391,7 +391,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub btnStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStop.Click
-            m_manager.StopRun()
+            m_manager.StopRun(0)
         End Sub
 
 #End Region ' Event handlers

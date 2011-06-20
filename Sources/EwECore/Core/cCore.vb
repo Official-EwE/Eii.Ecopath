@@ -135,6 +135,12 @@ Public Class cCore
     Friend m_FitToTimeSeriesData As cF2TSDataStructures = Nothing
     Friend m_tracerData As cContaminantTracerDataStructures = Nothing
 
+    ''' <summary>
+    ''' List of all multi threaded models/processes <see cref="IThreadedProcess">IThreadedProcess</see> that the core can run.
+    ''' </summary>
+    ''' <remarks>This list is used by the core to stop all running models when something major happens. </remarks>
+    Private m_ThreadedProcesses As New List(Of IThreadedProcess)
+
 #End Region ' Generic variables
 
 #Region " Private Initialization Flags "
@@ -1050,6 +1056,8 @@ Public Class cCore
         m_ConTracer = New cContaminantTracer
         m_gameManager = New cGameServerInterface(Me)
 
+        InitThreadedProcesses()
+
         If bsuccess Then
             m_bCoreIsInit = True
             Return True
@@ -1059,6 +1067,32 @@ Public Class cCore
         End If
 
     End Function
+
+
+    Private Sub InitThreadedProcesses()
+        Try
+
+            Me.m_ThreadedProcesses.Clear()
+            'add all the search managers that are IThreadedProcesses 
+            'to the list of threaded core processes Me.m_ThreadedProcesses
+            For Each manager As ISearchObjective In Me.m_SearchManagers.Values
+                If TypeOf manager Is IThreadedProcess Then
+                    Me.m_ThreadedProcesses.Add(DirectCast(manager, IThreadedProcess))
+                End If
+            Next
+
+            'EcoSpace implements the IThreadedProcess 
+            Me.m_ThreadedProcesses.Add(Me.m_Ecospace)
+
+            'MonteCarlo does not implement ISearchObjective so it is not in the SearchManager list me.m_SearchManagers
+            'but does implements the IThreadedProcess 
+            Me.m_ThreadedProcesses.Add(Me.m_MonteCarlo)
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, ex.Message)
+        End Try
+    End Sub
 
     Private Function InitEcopath() As Boolean
 
@@ -2814,6 +2848,18 @@ Public Class cCore
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function CloseModel() As Boolean
+
+        'Stop any running search
+        For Each tp As IThreadedProcess In Me.m_ThreadedProcesses
+            'wait 10 seconds
+            If Not tp.StopRun(10000) Then
+                cLog.Write(tp.ToString & " Failed to stop run when loading new model.")
+                'not really a lot of point in sending out an error message
+                'this is more of a developement error
+                'Debug.Assert(False, manager.ToString & " Failed to stop run when loading new model.")
+            End If
+        Next
+
 
         If Not Me.SaveChanges() Then Return False
 #If PROFILE Then
@@ -7644,6 +7690,15 @@ Public Class cCore
 
         Debug.Assert(Me.m_StateMonitor.HasEcospaceLoaded, "RunEcospace() You must load an Ecospace scenario first.")
 
+        If Me.m_StateMonitor.IsEcospaceRunning Then
+            'EcoSpace is already running
+            'Send a message and return False
+            Me.m_publisher.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUNNING, _
+                                      eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+            Return False
+
+        End If
+
         If Me.m_StateMonitor.HasEcosimLoaded Then
             If Not Me.m_StateMonitor.HasEcosimInitialized Then
                 'Ecosim is loaded but not initialized do a full initialization
@@ -7651,7 +7706,7 @@ Public Class cCore
                     Me.StateMonitor.SetEcoSimInitialized()
                 Else
                     'Failed to init Ecosim, post a message and return
-                    Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_SIM_INIT_FAILED, _
+                    Me.m_publisher.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_SIM_INIT_FAILED, _
                                               eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
                     Return False
                 End If
@@ -7679,15 +7734,10 @@ Public Class cCore
 
                     Me.m_StateMonitor.SetEcospaceRun()
 
-                    breturn = m_Ecospace.Run()
-                    If breturn Then
-                        'only load the results if the run was successful
-                        LoadEcospaceResults()
-                        loadEcoTracerResults()
-                    End If
-
-                    Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
-                                  eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
+                    Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
+                    'make sure Ecospace is not paused
+                    Me.m_Ecospace.isPaused = False
+                    breturn = m_Ecospace.RunThreaded()
 
                 End If 'If GroupsMissingHabitat() Then
 
@@ -7696,13 +7746,6 @@ Public Class cCore
                                           eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
             End If 'If Me.m_StateMonitor.HasEcospaceLoaded Then
 
-            System.Console.WriteLine("cCore.RunEcospace() Run Time = " & CDbl(Timer - t))
-            System.Console.WriteLine("----------cCore.RunEcospace() End------------")
-
-            Me.m_StateMonitor.SetEcospaceCompleted()
-            Me.m_publisher.sendAllMessages()
-
-            If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
 
             Return breturn
 
@@ -7715,6 +7758,38 @@ Public Class cCore
         End Try
 
     End Function
+
+    Private Sub onEcoSpaceRunCompleted(ByVal Succeeded As Boolean)
+
+        If succeeded Then
+            LoadEcospaceResults()
+            loadEcoTracerResults()
+        End If
+
+        Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
+                      eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
+
+        'System.Console.WriteLine("cCore.RunEcospace() Run Time = " & CDbl(Timer - t))
+        'System.Console.WriteLine("----------cCore.RunEcospace() End------------")
+
+        Me.m_StateMonitor.SetEcospaceCompleted()
+        Me.m_publisher.sendAllMessages()
+
+
+    End Sub
+
+
+    Public Property EcospacePaused() As Boolean
+
+        Get
+            Return Me.m_Ecospace.isPaused
+        End Get
+
+        Set(ByVal value As Boolean)
+            Me.m_Ecospace.isPaused = value
+        End Set
+
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -7745,7 +7820,8 @@ Public Class cCore
                 'Determine area
                 bHasArea = False
                 For ihab As Integer = 0 To Me.nHabitats
-                    If Me.m_EcoSpaceData.PrefHab(igrp, ihab) Then
+                    ' ToDo: reevaluate
+                    If (Me.m_EcoSpaceData.PrefHab(igrp, ihab) > 0) Then  ' If Me.m_EcoSpaceData.PrefHab(igrp, ihab)
                         If Me.m_EcoSpaceData.HabAreaProportion(ihab) > 0 Then
                             bHasArea = True
                             Exit For
@@ -7790,7 +7866,7 @@ Public Class cCore
             If Not m_Ecospace Is Nothing Then
                 'ToDo_jb: there needs to be some kind of a distinction between a model run that was stopped and one that completed on it's own
                 'right now all the statemanager knows is that Ecospace has completed not why
-                m_Ecospace.StopRun = True
+                m_Ecospace.StopRun() ' = True
             End If
         Catch ex As Exception
             cLog.Write(Me.ToString & ".StopEcospace() Error: & " & ex.Message)
@@ -9947,6 +10023,7 @@ Public Class cCore
             stanza.BiomassAccumulationRate = m_Stanza.BABsplit(iStanza)
             stanza.HatchCode = m_Stanza.HatchCode(iStanza)
             stanza.FixedFecundity = m_Stanza.FixedFecundity(iStanza)
+            stanza.EggAtSpawn = m_Stanza.EggAtSpawn(iStanza)
 
             'stanza.VBGF = m_EcoPathData.vbKInput(m_Stanza.EcopathCode(iStanza, m_Stanza.BaseStanza(iStanza)))
 
@@ -10136,6 +10213,7 @@ Public Class cCore
         m_Stanza.BABsplit(iStanza) = stanza.BiomassAccumulationRate
         m_Stanza.HatchCode(iStanza) = stanza.HatchCode
         m_Stanza.FixedFecundity(iStanza) = stanza.FixedFecundity
+        m_Stanza.EggAtSpawn(iStanza) = stanza.EggAtSpawn
 
         m_Stanza.Nstanza(iStanza) = stanza.NStanzas
         For iLifeStage As Integer = 1 To stanza.NStanzas
@@ -11779,7 +11857,7 @@ Public Class cCore
 
             Case eDataTypes.EcospaceGroup
 
-                Dim esg As cEcospaceGroup = DirectCast(obj, cEcospaceGroup)
+                Dim grp As cEcospaceGroup = DirectCast(obj, cEcospaceGroup)
 
                 Select Case value.varName
 
@@ -11788,12 +11866,12 @@ Public Class cCore
                         ' If 'All' habitat is set, all other preferred habitat assignments must be cleared.
                         ' If any other habitat is set, the 'All' habitat assignment must be cleared.
 
-                        esg.AllowValidation = False
+                        grp.AllowValidation = False
 
                         ' Setting a value?
-                        If Object.Equals(value.Value(esg.ValidationStatus.iArrayIndex), True) Then
+                        If CSng(value.Value(grp.ValidationStatus.iArrayIndex)) > 0 Then
                             ' 'All' habitat set? Clear all other preferred habitats
-                            If esg.ValidationStatus.iArrayIndex = 0 Then
+                            If grp.ValidationStatus.iArrayIndex = 0 Then
                                 For iHabitat As Integer = 0 To Me.nHabitats - 1
                                     value.Value(iHabitat) = (iHabitat = 0)
                                     ' Add to msg
@@ -11806,7 +11884,7 @@ Public Class cCore
                                 msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.PreferredHabitat, 0))
                             End If
                         End If
-                        esg.AllowValidation = True
+                        grp.AllowValidation = True
 
                 End Select
 

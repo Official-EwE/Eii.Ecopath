@@ -1567,6 +1567,7 @@ Namespace DataSources
                         stanzaDS.WmatWinf(iStanza) = CSng(rdStanza("WMatWinf"))
                         ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
                         stanzaDS.FixedFecundity(iStanza) = CBool(rdStanza("FixedFecundity"))
+                        stanzaDS.EggAtSpawn(iStanza) = CBool(Me.m_db.ReadSafe(rdStanza, "EggAtSpawn", True))
 
                         ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
                         ' JS 23nov10: Hah, three and a half years later these values are stored again
@@ -1672,6 +1673,7 @@ Namespace DataSources
                         drow("BabSplit") = stanzaDS.BABsplit(iStanza)
                         drow("WMatWinf") = stanzaDS.WmatWinf(iStanza)
                         drow("FixedFecundity") = stanzaDS.FixedFecundity(iStanza)
+                        drow("EggAtSpawn") = stanzaDS.EggAtSpawn(iStanza)
 
                         ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
                         ' JS 23nov10: Leading B and QB stored again
@@ -2223,8 +2225,16 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
                 ' Oh, now wait until we need to do this for Ecospace...
+                ' JS 20Jun11: ...and yep, it happened
+                reader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcospaceScenarioGroup WHERE EcopathGroupID={0}", iGroupID))
+                If (reader IsNot Nothing) Then
+                    While reader.Read()
+                        bSucces = Me.RemoveEcospaceGroup(CInt(reader("GroupID")))
+                    End While
+                End If
+                Me.m_db.ReleaseReader(reader)
 
-                ' Now Ecosim is clean, delete the group from Ecopath
+                ' Now Ecosim and Ecospace are clean, delete the group from Ecopath
                 ' Delete taxa
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID={0})", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iGroupID))
@@ -8267,6 +8277,7 @@ Namespace DataSources
 
             ' Load habitat preferences
             bSucces = bSucces And Me.LoadEcospaceGroupHabitats(iScenarioID)
+            bSucces = bSucces And Me.LoadEcospaceGroupMap(iScenarioID)
             Return bSucces
 
         End Function
@@ -8278,6 +8289,7 @@ Namespace DataSources
             Dim iGroup As Integer = -1
             Dim iHabitatID As Integer = 0
             Dim iHabitat As Integer = -1
+            Dim sPreference As Single = 0.0!
             Dim bSucces As Boolean = True
 
             Try
@@ -8290,14 +8302,15 @@ Namespace DataSources
                     ' Get habitat index
                     iHabitatID = CInt(reader("HabitatID"))
                     iHabitat = Array.IndexOf(ecospaceDS.HabitatDBID, iHabitatID)
+                    sPreference = CSng(Me.m_db.ReadSafe(reader, "Preference", 1.0))
                     ' Sanity check
                     If (iGroup = -1) Or (iHabitat = -1) Then
                         If (iGroup = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
                         If (iHabitat = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Habitat ID {1} no longer exist", iHabitatID))
                     Else
                         ' Flag as preferred
-                        ecospaceDS.PrefHab(iGroup, 0) = False
-                        ecospaceDS.PrefHab(iGroup, iHabitat) = True
+                        ecospaceDS.PrefHab(iGroup, 0) = 0
+                        ecospaceDS.PrefHab(iGroup, iHabitat) = sPreference
                     End If
 
                 End While
@@ -8307,6 +8320,45 @@ Namespace DataSources
                 Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
                 bSucces = False
             End Try
+
+            Return bSucces
+        End Function
+
+        Private Function LoadEcospaceGroupMap(ByVal iScenarioID As Integer) As Boolean
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim reader As IDataReader = Nothing
+            Dim iGroup As Integer = 0
+            Dim iRow As Integer = 0
+            Dim iCol As Integer = 0
+            Dim sCapacity As Single = 0
+            Dim bSucces As Boolean = True
+
+            ' Clear
+            For iGroup = 1 To Me.m_core.nGroups
+                For iRow = 0 To ecospaceDS.InRow
+                    For iCol = 0 To ecospaceDS.InCol
+                        ecospaceDS.HabCapInput(iRow, iCol, iGroup) = 1.0
+                    Next iCol
+                Next iRow
+            Next iGroup
+
+            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioGroupMap WHERE (ScenarioID={0})", iScenarioID))
+            Try
+                While reader.Read()
+
+                    iGroup = Array.IndexOf(ecospaceDS.GroupDBID, CInt(reader("GroupID")))
+                    iRow = CInt(reader("InRow"))
+                    iCol = CInt(reader("InCol"))
+                    sCapacity = CSng(reader("Capacity"))
+                    ecospaceDS.HabCapInput(iRow, iCol, iGroup) = sCapacity
+
+                End While
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioGroupMap for group {1}, scenario ID {2}", ex.Message, iGroup, iScenarioID))
+                bSucces = False
+            End Try
+            Me.m_db.ReleaseReader(reader)
 
             Return bSucces
         End Function
@@ -8387,7 +8439,7 @@ Namespace DataSources
             ' Save changes
             Me.m_db.ReleaseWriter(writer, True)
 
-            Return bSucces And Me.SaveEcospaceGroupHabitats(idm)
+            Return bSucces And Me.SaveEcospaceGroupHabitats(idm) And Me.SaveEcospaceGroupMap(idm)
 
         End Function
 
@@ -8415,12 +8467,13 @@ Namespace DataSources
                     For iHabitat = 0 To ecospaceDS.NoHabitats
                         iHabitatID = idm.GetID(eDataTypes.EcospaceHabitat, ecospaceDS.HabitatDBID(iHabitat))
 
-                        If (ecospaceDS.PrefHab(iGroup, iHabitat) = True) Then
+                        If (ecospaceDS.PrefHab(iGroup, iHabitat) > 0) Then
 
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
                             drow("GroupID") = iGroupID
                             drow("HabitatID") = iHabitatID
+                            drow("Preference") = ecospaceDS.PrefHab(iGroup, iHabitat)
                             writer.AddRow(drow)
 
                         End If
@@ -8438,6 +8491,61 @@ Namespace DataSources
 
         End Function
 
+        Private Function SaveEcospaceGroupMap(ByVal idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim iGroup As Integer = 0
+            Dim iRow As Integer = 0
+            Dim iCol As Integer = 0
+            Dim iGroupID As Integer = 0
+            Dim bSucces As Boolean = True
+
+            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
+
+            Try
+                ' Erase
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMap WHERE ScenarioID={0}", iScenarioID))
+                writer = Me.m_db.GetWriter("EcospaceScenarioGroupMap")
+
+                For iGroup = 1 To ecospaceDS.nFleets
+
+                    iGroupID = idm.GetID(eDataTypes.EcospaceGroup, ecospaceDS.GroupDBID(iGroup))
+                    Debug.Assert(iGroupID <> 0)
+
+                    For iRow = 1 To ecospaceDS.InRow
+                        For iCol = 1 To ecospaceDS.InCol
+
+                            If (ecospaceDS.Depth(iRow, iCol) > 0) Then
+
+                                drow = writer.NewRow()
+                                drow("ScenarioID") = iScenarioID
+                                drow("GroupID") = iGroupID
+                                drow("InRow") = iRow
+                                drow("InCol") = iCol
+                                drow("Capacity") = ecospaceDS.HabCapInput(iRow, iCol, iGroup)
+                                writer.AddRow(drow)
+
+                            End If
+
+                        Next iCol
+                    Next iRow
+                Next iGroup
+
+                Me.m_db.ReleaseWriter(writer, True)
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while saving EcospaceScenarioFleetMap", ex.Message))
+                bSucces = False
+            End Try
+
+            ' Report outcome
+            Return bSucces
+
+        End Function
 #End Region ' Save
 
 #Region " Modify "
@@ -8509,6 +8617,30 @@ Namespace DataSources
                 bSucces = False
             End Try
 
+            Return bSucces
+        End Function
+
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' <para>
+        ''' Due to the limited capabilities of Microzork Access SQL, database 
+        ''' update-generated foreign keys to fleets and groups cannot cacading 
+        ''' delete. Hence, we need to eradicate linked groups and fleets via code.
+        ''' </para> 
+        ''' </summary>
+        ''' <param name="iGroupID">DBID of the Ecosim group to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -----------------------------------------------------------------------
+        Private Function RemoveEcospaceGroup(ByVal iGroupID As Integer) As Boolean
+            Dim bSucces As Boolean = True
+            Try
+
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMap WHERE GroupID={0}", iGroupID))
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
             Return bSucces
         End Function
 

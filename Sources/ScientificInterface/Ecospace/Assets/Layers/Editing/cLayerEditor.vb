@@ -340,6 +340,52 @@ Namespace Ecospace.Basemap.Layers
             Me.Layer.Value(ptSet.Y, ptSet.X) = value
         End Sub
 
+        Public ReadOnly Property CanSmooth() As Boolean
+            Get
+                Return Me.m_layer.ValueType Is GetType(Single)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Smooth layer data across water cells.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Smooth()
+
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
+            Dim cnew(,) As Single, i As Integer, j As Integer
+            Dim t As Single
+            Dim n As Integer
+
+            ReDim cnew(bm.InRow, bm.InCol)
+
+            For i = 1 To bm.InRow
+                For j = 1 To bm.InCol
+                    t = 0
+                    n = 0
+                    For ii As Integer = i - 1 To i + 1
+                        For jj As Integer = j - 1 To j + 1
+                            If Not (ii = 0 Or jj = 0 Or ii = bm.InRow + 1 Or jj = bm.InCol + 1) And layerDepth.IsWaterCell(ii, jj) Then
+                                t += CSng(Me.Layer.Value(ii, jj))
+                                n += 1
+                            End If
+                        Next jj
+                    Next ii
+                    If n > 0 Then cnew(i, j) = t / n
+                Next j
+            Next i
+
+            For i = 1 To bm.InRow
+                For j = 1 To bm.InCol
+                    Me.Layer.Value(i, j) = cnew(i, j)
+                Next
+            Next
+            Me.Layer.Update(cLayer.eChangeFlags.Map)
+
+        End Sub
+
 #End Region ' Editing
 
 #Region " Properties "

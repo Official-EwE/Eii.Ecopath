@@ -1685,6 +1685,8 @@ Namespace Ecosim
 
             Try
                 Dim msg As String
+                Me.bStopRunning = False
+
                 If Not checkOKToRun(msg) Then
                     m_publisher.AddMessage(New cMessage(msg, eMessageType.ErrorEncountered, _
                                             eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.NotSet))
@@ -1706,6 +1708,10 @@ Namespace Ecosim
                 End If
 
                 bsuccess = True
+                If Me.AbortRun Or Me.bStopRunning Then
+                    'Ecosim Failed or was stopped return False
+                    bsuccess = False
+                End If
 
             Catch ex As Exception
 

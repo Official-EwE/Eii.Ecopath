@@ -882,8 +882,10 @@ Namespace Controls.EwEGrid
                 Me.m_lpropertyFormula.Clear()
                 Me.m_lpropertyFormula = Nothing
             End If
-            ' Remove all rows
-            Me.RowsCount = 0
+            If Not Me.Disposing Then
+                ' Remove all rows
+                Me.RowsCount = 0
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -897,10 +899,10 @@ Namespace Controls.EwEGrid
                 cell = Me(iRow, iCol)
                 If cell IsNot Nothing Then
                     If TypeOf (cell) Is EwECellBase Then
-                        ' Clear the cell
-                        DirectCast(cell, EwECellBase).Dispose()
                         ' ..and get rid of it
                         Me(iRow, iCol) = Nothing
+                        ' Clear the cell
+                        DirectCast(cell, EwECellBase).Dispose()
                     End If
                 End If
             Next

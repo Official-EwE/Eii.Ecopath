@@ -3422,9 +3422,6 @@ Namespace Database
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 1
-            Dim writerFishMap As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim writerHabFish As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim writerMPAFish As cEwEDatabase.cEwEDbWriter = Nothing
             Dim strFlags As String = ""
             Dim astrPort As String()
             Dim astrSail As String()
@@ -3444,9 +3441,6 @@ Namespace Database
 
             ' Get writers
             writer = Me.m_dbEwE6.GetWriter("EcospaceScenarioFleet")
-            writerFishMap = Me.m_dbEwE6.GetWriter("EcospaceScenarioFleetMap")
-            writerHabFish = Me.m_dbEwE6.GetWriter("EcospaceScenarioHabitatFishery")
-            writerMPAFish = Me.m_dbEwE6.GetWriter("EcospaceScenarioMPAFishery")
 
             If dtEcospaceScenarios IsNot Nothing And dtEcopathFleets IsNot Nothing Then
 
@@ -3454,6 +3448,8 @@ Namespace Database
                 For Each strEcospaceScenario In dtEcospaceScenarios.Keys
                     ' ..and each ecopath fleet
                     For Each strEcopathFleet In dtEcopathFleets.Keys
+
+                        Me.LogProgress("Importing maps for scenario " & strEcospaceScenario & ", fleet " & strEcopathFleet)
 
                         ' Generate an Ecospace fleet entry
                         reader = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace Gear] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
@@ -3518,29 +3514,39 @@ Namespace Database
                                 End Try
                             End If
 
+                            Dim writerFishMap As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("EcospaceScenarioFleetMap")
                             iCell = 0
                             For iRow As Integer = 1 To nRows
                                 For iCol As Integer = 1 To nCols
 
-                                    drow = writerFishMap.NewRow()
-                                    drow("ScenarioID") = iScenarioID
-                                    drow("FleetID") = iFleetID
-                                    drow("InRow") = iRow
-                                    drow("InCol") = iCol
-                                    drow("PortID") = 0
+                                    Dim bPort As Boolean = False
+                                    Dim sCost As Single = 0.0!
+
                                     If (astrPort.Length > iCell) Then
                                         If (astrPort(iCell) = "1") Then
-                                            drow("PortID") = 1
+                                            bPort = True
                                         End If
                                     End If
                                     If (astrSail.Length > iCell) Then
-                                        drow("SailCost") = cStringUtils.ConvertToSingle(astrSail(iCell), 0)
+                                        sCost = cStringUtils.ConvertToSingle(astrSail(iCell), 0.0!)
                                     End If
-                                    writerFishMap.AddRow(drow)
+
+                                    If bPort And (sCost > 0.0!) Then
+                                        drow = writerFishMap.NewRow()
+                                        drow("ScenarioID") = iScenarioID
+                                        drow("FleetID") = iFleetID
+                                        drow("InRow") = iRow
+                                        drow("InCol") = iCol
+                                        drow("PortID") = IIf(bPort, 1, 0)
+                                        drow("SailCost") = sCost
+                                        writerFishMap.AddRow(drow)
+                                    End If
                                     iCell += 1
                                 Next
                             Next
+                            Me.m_dbEwE6.ReleaseWriter(writerFishMap)
 
+                            Dim writerHabFish As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("EcospaceScenarioHabitatFishery")
                             ' Write GearHab flag field to proper table combining (ScenarioID, FleetID, HabitatID)
                             strFlags = CStr(Me.FixValue(reader, "GearHab", ""))
                             ' For all habitats (including habitat '0')
@@ -3557,7 +3563,9 @@ Namespace Database
                                     End If
                                 End If
                             Next iHabitat
+                            Me.m_dbEwE6.ReleaseWriter(writerHabFish)
 
+                            Dim writerMPAFish As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("EcospaceScenarioMPAFishery")
                             ' Write MPAfish flag field to proper table combining (ScenarioID, FleetID, MPAID)
                             strFlags = CStr(Me.FixValue(reader, "MPAFish", ""))
                             ' For all MPAs
@@ -3574,6 +3582,7 @@ Namespace Database
                                     End If
                                 End If
                             Next iMPA
+                            Me.m_dbEwE6.ReleaseWriter(writerMPAFish)
 
                             ' Import Remarks
                             Me.AddRemark(reader("remark"), eDataTypes.EcospaceFleet, iFleetID, eVarNameFlags.Name)
@@ -3601,9 +3610,6 @@ Namespace Database
             End If
 
             Me.m_dbEwE6.ReleaseWriter(writer)
-            Me.m_dbEwE6.ReleaseWriter(writerFishMap)
-            Me.m_dbEwE6.ReleaseWriter(writerHabFish)
-            Me.m_dbEwE6.ReleaseWriter(writerMPAFish)
 
         End Sub
 

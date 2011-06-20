@@ -369,8 +369,6 @@ Namespace MSE
                     If Me.m_data.Bbase(igrp) < 0 Then Me.m_data.Bbase(igrp) = 0
                 Next
 
-
-
             Catch ex As Exception
                 cLog.Write(ex)
                 Throw New ApplicationException(Me.ToString & ".InitForRun() Error:" & ex.Message, ex)
@@ -667,6 +665,7 @@ Namespace MSE
                     'run ecosim
                     bSuccess = Me.m_Ecosim.Run()
                     If Not bSuccess Then Exit For
+                    'Threading.Thread.Sleep(2000)
 
                     Me.summarizeEcosimEconomicData()
 
@@ -676,9 +675,12 @@ Namespace MSE
 
                     Me.SumValues()
                     Me.resetEffort()
+                    System.Console.WriteLine("MSE PostMessage IterationCompleted " & itr.ToString)
                     Me.PostMessage(eMSERunStates.IterationCompleted)
 
-                    If Me.m_data.StopRun Then Exit For
+                    If Me.m_data.StopRun Then
+                        Exit For
+                    End If
 
                 Next itr
 
@@ -710,7 +712,6 @@ Namespace MSE
             For igrp As Integer = 1 To Me.m_epdata.NumLiving
                 Me.m_Search.CatchYearGroup(igrp) = Me.m_epdata.fCatch(igrp)
             Next
-
 
         End Sub
 
@@ -1013,7 +1014,7 @@ Namespace MSE
             Try
 
                 Try
-                    Me.m_ProgressDelegate(CurrentState)
+                    Me.m_ProgressDelegate.Invoke(CurrentState)
                 Catch ex As Exception
                     System.Console.WriteLine("MSE handled exception from progress delegate = " & ex.Message)
                     cLog.Write(ex)

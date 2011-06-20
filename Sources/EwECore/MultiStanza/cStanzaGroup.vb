@@ -96,6 +96,11 @@ Public Class cStanzaGroup
         val = New cValue(New Boolean, eVarNameFlags.FixedFecundity, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
+        ' Recruit where spawned (Ecospace)
+        meta = New cVariableMetaData(False)
+        val = New cValue(New Boolean, eVarNameFlags.EggAtSpawn, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
         ' IsFished
         meta = New cVariableMetaData()
         val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.IsFished))
@@ -378,6 +383,15 @@ Public Class cStanzaGroup
         End Get
         Set(ByVal value As Boolean)
             Me.SetVariable(eVarNameFlags.FixedFecundity, value)
+        End Set
+    End Property
+
+    Public Property EggAtSpawn() As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.EggAtSpawn))
+        End Get
+        Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.EggAtSpawn, value)
         End Set
     End Property
 

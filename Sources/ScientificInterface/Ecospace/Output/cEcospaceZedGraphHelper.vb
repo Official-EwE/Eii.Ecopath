@@ -36,12 +36,14 @@ Namespace Ecospace
             MyBase.Attach(uic, zgc, iNumPanels)
             For i As Integer = 0 To Me.NumPanes - 1
                 AddHandler Me.GetPane(i + 1).XAxis.ScaleFormatEvent, AddressOf XScaleFormatEvent
+                AddHandler Me.GetPane(i + 1).YAxis.ScaleFormatEvent, AddressOf YScaleFormatEvent
             Next
         End Sub
 
         Public Overrides Sub Detach()
             For i As Integer = 0 To Me.NumPanes - 1
                 RemoveHandler Me.GetPane(i + 1).XAxis.ScaleFormatEvent, AddressOf XScaleFormatEvent
+                RemoveHandler Me.GetPane(i + 1).YAxis.ScaleFormatEvent, AddressOf YScaleFormatEvent
             Next
             MyBase.Detach()
         End Sub
@@ -144,6 +146,13 @@ Namespace Ecospace
             sYear = Me.m_iFirstYear + CSng(dValue / sNumStepsPerYear)
             Return sYear.ToString
 
+        End Function
+
+        Private Function YScaleFormatEvent(ByVal pane As GraphPane, _
+                                           ByVal axis As Axis, _
+                                           ByVal dValue As Double, _
+                                           ByVal iIndex As Integer) As String
+            Return Me.StyleGuide.FormatNumber(Math.Pow(10, dValue))
         End Function
 
     End Class

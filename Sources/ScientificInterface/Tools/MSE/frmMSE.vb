@@ -54,6 +54,13 @@ Public Class frmMSE
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
+        If Me.m_MSE.isConnected Then
+            Dim bstopped As Boolean
+            bstopped = Me.m_MSE.StopRun(10000)
+            ' Debug.Assert(bstopped, "MSE interface failed to stop a running MSE Model!")
+            Me.onMSECompleted()
+        End If
+
         Me.m_plotter.Detach()
 
         Me.m_fpNTrials.Release()
@@ -166,6 +173,7 @@ Public Class frmMSE
                 Me.m_plotter.Clear()
 
                 Me.m_MSE.Run()
+
             End If
 
         Catch ex As Exception
@@ -184,6 +192,11 @@ Public Class frmMSE
 
     Private Sub onMSECallBack(ByVal CallBackType As MSE.eMSERunStates)
 
+        If Not Me.m_MSE.isConnected Then
+            System.Console.WriteLine("MSE Interface recieved message " & CallBackType.ToString & " when no longer running.")
+            Return
+        End If
+
         Dim state As eMSEStates
         Select Case CallBackType
 
@@ -194,6 +207,7 @@ Public Class frmMSE
                 state = eMSEStates.Running
 
             Case eMSERunStates.IterationCompleted
+                System.Console.WriteLine("MSE Interface Iteration recieved.")
                 Me.onMSEProgress()
                 Me.AddLineToGraph()
                 state = eMSEStates.Running
@@ -277,7 +291,7 @@ Public Class frmMSE
 
     Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnStop.Click
-        Me.m_MSE.ModelParameters.StopRun = True
+        Me.m_MSE.StopRun(0)
     End Sub
 
 #End Region

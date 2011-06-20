@@ -47,7 +47,6 @@
             'm_btnClear
             '
             Me.m_btnClear.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnClear.Location = New System.Drawing.Point(0, 0)
             Me.m_btnClear.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.m_btnClear.Name = "m_btnClear"
@@ -59,7 +58,6 @@
             'm_btnSet
             '
             Me.m_btnSet.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_btnSet.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnSet.Location = New System.Drawing.Point(77, 0)
             Me.m_btnSet.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_btnSet.Name = "m_btnSet"

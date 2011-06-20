@@ -437,7 +437,7 @@
     <Compile Include="Ecospace\Input\EcospaceParameters.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridAssignHabits.vb">
+    <Compile Include="Ecospace\Input\gridHabitatPreference.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\BasemapFromGIS.Designer.vb">
@@ -917,6 +917,10 @@
       <DependentUpon>frmPriceElasticity.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorHabitatCapacity.resx">
+      <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDepth.resx">
       <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1285,6 +1289,13 @@
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorDepth.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorVector.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorMLD.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\cLayerEditorGroup.vb" />
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorHabitatCapacity.Designer.vb">
+      <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorHabitatCapacity.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ILayerEditorGUI.vb" />
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorDepth.Designer.vb">
       <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>

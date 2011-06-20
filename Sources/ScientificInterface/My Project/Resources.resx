@@ -869,7 +869,7 @@
 
 Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
 
-Ecopath 5 can be downloaded from http://ecopath.org/previousversions.</value>
+Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.</value>
   </data>
   <data name="ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED" xml:space="preserve">
     <value>The start age for stanza '{0}' has been corrected.</value>
@@ -1643,6 +1643,12 @@ Ecopath 5 can be downloaded from http://ecopath.org/previousversions.</value>
   <data name="STATUS_UPDATE_UPDATED" xml:space="preserve">
     <value>Component '{0}' has been updated</value>
     <comment>{0}: component name</comment>
+  </data>
+  <data name="ECOSPACE_PAUSE" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="ECOSPACE_RESUME" xml:space="preserve">
+    <value>Resume</value>
   </data>
   <data name="PROMPT_DUPLICATE_NAME" xml:space="preserve">
     <value>Name '{0}' is defined more than once</value>

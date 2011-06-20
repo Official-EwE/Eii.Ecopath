@@ -1,14 +1,3 @@
-'==============================================================================
-'
-' $Log: cEcospaceStats.vb,v $
-' Revision 1.4  2009/05/06 12:41:07  jeroens
-' Renamed key datatype enum
-'
-' Revision 1.3  2009/01/29 17:40:54  jeroens
-' Fixed datatype
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core

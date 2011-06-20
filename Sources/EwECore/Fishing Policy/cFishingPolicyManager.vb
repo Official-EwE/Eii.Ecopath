@@ -423,10 +423,24 @@ Namespace FishingPolicy
         ''' Stop the Fishing Policy Search run
         ''' </summary>
         ''' <remarks>This will not do anything if the search is not running</remarks>
-        Public Sub StopRun()
-            Me.m_FPsearch.SearchFailed = True
-            Me.m_FPsearch.StopEstimation = True
-        End Sub
+        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean 'Implements SearchObjectives.ISearchObjective.StopRun
+
+            Dim result As Boolean = True
+            Try
+                If Me.m_FPsearch IsNot Nothing Then
+                    Me.m_FPsearch.SearchFailed = True
+                    Me.m_FPsearch.StopEstimation = True
+
+                    result = Me.Wait(WaitTimeInMillSec)
+
+                End If
+
+            Catch ex As Exception
+                result = False
+            End Try
+            Return result
+
+        End Function
 
 #End Region
 

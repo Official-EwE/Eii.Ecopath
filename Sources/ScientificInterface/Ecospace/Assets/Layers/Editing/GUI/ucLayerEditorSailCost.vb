@@ -7,9 +7,14 @@
             Me.m_btnCalculate.Enabled = Me.IsAttached
         End Sub
 
-        Private Sub m_btnCalculate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCalculate(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnCalculate.Click
             Me.UIContext.Core.CalcEcospaceCostOfSailing()
+        End Sub
+
+        Private Sub OnSmooth(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSmooth.Click
+            Me.Editor.Smooth()
         End Sub
 
     End Class

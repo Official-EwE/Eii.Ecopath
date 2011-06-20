@@ -1212,7 +1212,7 @@ Public Class cSearchDatastructures
             'df = CSng(1 ^ -(iYear - 1))
         End If
 
-        System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
+        'System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
         Return df
 
     End Function

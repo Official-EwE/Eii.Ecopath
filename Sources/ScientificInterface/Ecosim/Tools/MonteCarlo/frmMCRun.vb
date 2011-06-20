@@ -173,7 +173,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
-            Me.m_mcmanager.StopRun()
+            Me.m_mcmanager.StopRun(0)
         End Sub
 
         Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnApply.Click
@@ -394,7 +394,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub m_cmdStopMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdStopMonteCarlo.OnInvoke
-            m_mcmanager.StopRun()
+            m_mcmanager.StopRun(0)
         End Sub
 
         ''' -------------------------------------------------------------------

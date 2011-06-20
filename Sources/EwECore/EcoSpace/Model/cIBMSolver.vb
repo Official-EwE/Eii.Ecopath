@@ -191,10 +191,10 @@ Public Class cIBMSolver
 
                     Mrat = m_Data.Mrate(ieco)
                     Dmove = m_Stanza.IBMdistmove(isp, ia)
-                    dAllow = Dmove + 0.01
+                    dAllow = Dmove + 0.0001
                     i = Int(m_Stanza.iPacket(isp, iaa, ip)) : j = Int(m_Stanza.jPacket(isp, iaa, ip))
 
-                    If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
+                    If m_Data.HabCap(i, j, ieco) > 0.1 And m_Data.Depth(i, j) > 0 Then
                         Nmoves = m_Stanza.IBMMovesPerMonth(ieco)
                     Else
                         Dmove = m_Stanza.IBMdistmove(isp, ia) '* RelMoveBad(ieco)
@@ -206,10 +206,10 @@ Public Class cIBMSolver
                         i = Int(m_Stanza.iPacket(isp, iaa, ip)) : j = Int(m_Stanza.jPacket(isp, iaa, ip))
                         aa = Bcw(i + 1, j, ieco) 'south move
                         bb = C(i - 1, j, ieco) 'north move
-                        CC = d(i, j, ieco) 'east move
+                        cc = d(i, j, ieco) 'east move
                         dd = e(i, j, ieco) 'west move
 
-                        If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
+                        If m_Data.HabCap(i, j, ieco) > 0.1 And m_Data.Depth(i, j) > 0 Then
                             If imm > m_Stanza.IBMMovesPerMonth(ieco) Then Exit For
                             If m_Data.IsMigratory(ieco) = False Then
                                 'this changes movement if it's inside the box s.t. it can't get out in one move
@@ -225,7 +225,6 @@ Public Class cIBMSolver
                             Nmoves = m_Stanza.IBMMovesPerMonth(ieco) * m_Data.RelMoveBad(ieco)
                         End If
 
-
                         MoveThePacket(isp, ieco, iaa, ip, Dmove, aa, bb, cc, dd)
                         'i = Int(m_Stanza.iPacket(isp, ia, ip)) : j = Int(m_Stanza.jPacket(isp, ia, ip))
 
@@ -239,19 +238,16 @@ Public Class cIBMSolver
     End Sub
 
     Sub MoveThePacket(ByVal isp As Integer, ByVal ieco As Integer, ByVal ia As Integer, ByVal ip As Integer, ByVal Dmove As Single, ByVal aa As Single, ByVal bb As Single, ByVal cc As Single, ByVal dd As Single)
-        'Dim i As Integer = 0
-        'Dim j As Integer = 0
-        'Dim Tns As Single = 0.0!
-        'Dim Tew As Single = 0.0!
-        'aa As Single, bb As Single, CC As Single, dd As Single, 
 
-        'aa = aa + 0.0000000001
         bb = bb + aa '+ 0.0000000001
         cc = cc + bb '+ 0.0000000001
         dd = dd + cc '+ 0.0000000001
         Dim randMove As Single = Rnd() * dd
         'Tns = aa + bb + 0.0000000001 : Tew = cc + dd + 0.0000000001
         If randMove < aa Then 'move south
+            'If ieco = 2 And (m_Stanza.iPacket(isp, ia, ip) > 2.0 And m_Stanza.iPacket(isp, ia, ip) < 3.0) Then
+            '    Debug.Assert(False)
+            'End If
             m_Stanza.iPacket(isp, ia, ip) = m_Stanza.iPacket(isp, ia, ip) + Dmove
         ElseIf randMove < bb Then 'move north
             m_Stanza.iPacket(isp, ia, ip) = m_Stanza.iPacket(isp, ia, ip) - Dmove
@@ -261,7 +257,16 @@ Public Class cIBMSolver
             m_Stanza.jPacket(isp, ia, ip) = m_Stanza.jPacket(isp, ia, ip) - Dmove
         End If
 
-        'Tns = aa + bb + 0.0000000001 : Tew = CC + dd + 0.0000000001
+        'Code from EwE5
+        'Dim i As Integer = 0
+        'Dim j As Integer = 0
+        'Dim Tns As Single = 0.0!
+        'Dim Tew As Single = 0.0!
+        'aa As Single, bb As Single, CC As Single, dd As Single, 
+
+        'aa = aa + 0.0000000001
+
+        'Tns = aa + bb + 0.0000000001 : Tew = cc + dd + 0.0000000001
         'If Rnd() < Tns / (Tns + Tew) Then 'choose north-south move
         '    If Rnd() < aa / Tns Then 'move south
         '        m_Stanza.iPacket(isp, ia, ip) = m_Stanza.iPacket(isp, ia, ip) + Dmove
@@ -269,7 +274,7 @@ Public Class cIBMSolver
         '        m_Stanza.iPacket(isp, ia, ip) = m_Stanza.iPacket(isp, ia, ip) - Dmove
         '    End If
         'Else 'choose east-west move
-        '    If Rnd() < CC / Tew Then 'move east
+        '    If Rnd() < cc / Tew Then 'move east
         '        m_Stanza.jPacket(isp, ia, ip) = m_Stanza.jPacket(isp, ia, ip) + Dmove
         '    ElseIf dd > 0 Then 'move west
         '        m_Stanza.jPacket(isp, ia, ip) = m_Stanza.jPacket(isp, ia, ip) - Dmove
@@ -281,6 +286,7 @@ Public Class cIBMSolver
         'If jPacket(isp, ia, ip) > Incol + 0.9999 Then jPacket(isp, ia, ip) = Incol + 0.9
 
     End Sub
+
     Sub GrowSurvivePackets(ByVal isp As Integer)
         ' IBM model routine to update Npacket and Wpacket numbers and body sizes for multistanza spatial packets
         'this routine is same as SpaceSplitUpdate except for indices and disposition of new recruits
@@ -295,7 +301,7 @@ Public Class cIBMSolver
         Dim Egg As Single
         Dim Te(,) As Single, Xe As Single, XeT As Single
 
-        m_Stanza.EggAtSpawn = True
+        m_Stanza.EggAtSpawn(isp) = True
 
         'update numbers and body weights
         ieco = m_Stanza.EcopathCode(isp, m_Stanza.Nstanza(isp))
@@ -349,7 +355,8 @@ Public Class cIBMSolver
                 m_Stanza.Wpacket(isp, ia1, ip) = 0.0000000001
             Next
 
-            If m_Stanza.EggAtSpawn Then
+            m_Stanza.EggAtSpawn(isp) = False
+            If m_Stanza.EggAtSpawn(isp) Then
                 'distribute juvenile packets in proportion to eggcell distribution
                 ReDim Te(m_Data.InRow, m_Data.InCol)
                 XeT = 0
@@ -362,7 +369,7 @@ Public Class cIBMSolver
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
                             If Xe < Te(i, j) Then
-                                m_stanza.iPacket(isp, ia1, ip) = i + Rnd()
+                                m_Stanza.iPacket(isp, ia1, ip) = i + Rnd()
                                 m_Stanza.jPacket(isp, ia1, ip) = j + Rnd()
                                 Exit For 'have found the packet position
                             End If

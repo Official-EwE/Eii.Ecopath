@@ -57,6 +57,15 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Sub SetValue(ByVal p_Position As SourceGrid2.Position, ByVal p_Value As Object)
+            ' JS Jun 2011: Override this method to allow behaviour models to intercept a cell edit.
+            For Each bm As BehaviorModels.IBehaviorModel In Me.Behaviors
+                Dim args As New PositionCancelEventArgs(p_Position, Me)
+                Try
+                    bm.OnEditEnded(args)
+                Catch ex As Exception
+                End Try
+                If args.Cancel Then Return
+            Next
             Me.Value = p_Value
         End Sub
 

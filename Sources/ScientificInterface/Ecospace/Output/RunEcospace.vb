@@ -20,7 +20,7 @@ Namespace Ecospace
     Public Class RunEcospace
 
         ''' <summary>number of legend bins is arbitrary</summary>
-        Private Const cColourBins As Integer = 100
+        Private Const cColourBins As Integer = 200
 
         Public Enum eShowGroupType
             ShowAll = 0
@@ -67,6 +67,7 @@ Namespace Ecospace
 
         Private m_bOverlay As Boolean = False
         Private m_bShowMPA As Boolean = True
+        Private m_bShowIBM As Boolean = True
         Private m_bShowLabels As Boolean = True
         Private m_bInvertLabelColor As Boolean = False
         Private m_labelposHorz As StringAlignment = StringAlignment.Near
@@ -81,6 +82,10 @@ Namespace Ecospace
         ''' <summary>Exposing m_sMaxEffort to the interface would allow the user to set the Effort legend sensitivity.</summary>
         Private m_sMaxEffort As Single = 5
         Private m_cmdDisplayGroups As cCommand = Nothing
+
+        ' Properties to monitor for setting run mode states
+        Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
+        Private WithEvents m_bpUseNewStanza As cBooleanProperty = Nothing
 
 #End Region ' Variables
 
@@ -177,7 +182,7 @@ Namespace Ecospace
             For i As Integer = 1 To nThreads
                 drawer = New cMapDrawer(i, Me.Core)
                 drawer.Graphics = Graphics.FromImage(Me.m_bmpBiomassMap)
-                drawer.GroupColors = lColors
+                drawer.Colors = lColors
 
                 Me.m_drawers.Add(drawer)
             Next
@@ -215,7 +220,10 @@ Namespace Ecospace
             Dim pm As cPropertyManager = Me.PropertyManager
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
+            ' Start listening to props
             Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
+            Me.m_bpUseIBM = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
+            Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
 
             Me.InitCoreParams()
             Me.InitUIParams()
@@ -251,6 +259,9 @@ Namespace Ecospace
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+
+            Me.m_bpUseIBM = Nothing
+            Me.m_bpUseNewStanza = Nothing
 
             Try
 
@@ -291,17 +302,6 @@ Namespace Ecospace
             End Get
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler; called when either of the two model state properties changes.
-        ''' </summary>
-        ''' <param name="prop">The property that changed.</param>
-        ''' <param name="changeFlags">The extent of the change.</param>
-        ''' -------------------------------------------------------------------
-        Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
-            Me.UpdateControls()
-        End Sub
-
         Private Sub OnMapMouseDouble(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_pbMap.DoubleClick
             Me.SaveMapImage()
@@ -341,7 +341,7 @@ Namespace Ecospace
         Private Sub UpdateBiomassPlot()
             For iGroup As Integer = 1 To Core.nGroups
                 For iTimeStep As Integer = Me.m_iTimeStepPrev To Me.m_iTimeStepCur - 1
-                    Me.m_zgh.AddValue(iGroup, Me.m_iTimeStepCur, Me.m_as2RelBiomassResults(iGroup, iTimeStep + 1))
+                    Me.m_zgh.AddValue(iGroup, iTimeStep, Me.m_as2RelBiomassResults(iGroup, iTimeStep + 1))
                 Next
             Next
             Me.m_zgh.RescaleAndRedraw()
@@ -413,7 +413,8 @@ Namespace Ecospace
             ' Sanity check
             If Me.m_dataTimeStep Is Nothing Then Return
 
-            Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+            Dim sTSpy As Single = parms.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
             Dim drawer As cMapDrawer = Nothing
@@ -498,15 +499,17 @@ Namespace Ecospace
                         drawer.InvertLabelColors = Me.m_bInvertLabelColor
                         drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
 
+                        drawer.StanzaDS = Nothing
+
                         If Me.m_rbDisplayRelBiomass.Checked Then
                             drawer.Map = Me.m_dataTimeStep.BiomassMap
-                            drawer.MapIBMPackets = Me.m_dataTimeStep.IMBLocationsMap
+                            If parms.UseIBM And Me.m_bShowIBM Then
+                                drawer.StanzaDS = Me.m_dataTimeStep.StanzaDS
+                            End If
                         ElseIf Me.m_rbDisplayContaminantC.Checked Then
                             drawer.Map = Me.m_dataTimeStep.ContaminantMap
-                            drawer.MapIBMPackets = Nothing
                         ElseIf Me.m_rbDisplayCoverB.Checked Then
                             drawer.Map = Me.m_as2ConcOverB
-                            drawer.MapIBMPackets = Nothing
                         End If
 
                         drawer.InCol = Me.m_iInCol
@@ -781,6 +784,15 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub m_cbShowIBMPackets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbShowIBMPackets.CheckedChanged
+
+            Me.m_bShowIBM = m_cbShowIBMPackets.Checked
+            Me.UpdateControls()
+            Me.RefreshMap()
+
+        End Sub
+
         Private Sub OnShowLabelsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbShowLabels.CheckedChanged
 
@@ -809,7 +821,50 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub OnRunTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbRunType.SelectedIndexChanged
+
+            If Me.m_bInUpdate Then Return
+
+            Select Case Me.m_cmbRunType.SelectedIndex
+                Case 0
+                    Me.m_bpUseNewStanza.SetValue(True)
+                    Me.m_bpUseIBM.SetValue(False)
+                Case 1
+                    Me.m_bpUseNewStanza.SetValue(False)
+                    Me.m_bpUseIBM.SetValue(True)
+                Case 2
+                    Me.m_bpUseNewStanza.SetValue(False)
+                    Me.m_bpUseIBM.SetValue(False)
+            End Select
+        End Sub
+
+        Private Sub OnPause(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnPause.Click
+            If Me.Core.EcospacePaused() Then
+                Me.Core.EcospacePaused = False
+            Else
+                Me.Core.EcospacePaused = True
+            End If
+            Me.UpdateControls()
+        End Sub
+
 #End Region ' Events
+
+#Region " cProperty events "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler; called when either of the two model state properties changes.
+        ''' </summary>
+        ''' <param name="prop">The property that changed.</param>
+        ''' <param name="changeFlags">The extent of the change.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) _
+                Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged
+            Me.UpdateControls()
+        End Sub
+
+#End Region ' cProperty events
 
 #Region " Ecospace Events/Delegates "
 
@@ -830,14 +885,14 @@ Namespace Ecospace
                     m_asBaseBiomassResults(groupIndex) = TimeStepData.RelativeBiomass(groupIndex)
                     m_as2RelBiomassResults(groupIndex, 1) = 0
                 Else
-                    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = TimeStepData.RelativeBiomass(groupIndex)
-                    If TimeStepData.RelativeBiomass(groupIndex) < 0.1 * m_asBaseBiomassResults(groupIndex) Then
-                        m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(0.1))
-                    ElseIf m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) > 10 * m_asBaseBiomassResults(groupIndex) Then
-                        m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(10))
-                    Else
-                        m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex) / m_asBaseBiomassResults(groupIndex)))
-                    End If
+                    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex)))
+                    'If TimeStepData.RelativeBiomass(groupIndex) < 0.1 * m_asBaseBiomassResults(groupIndex) Then
+                    '    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(0.1))
+                    'ElseIf m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) > 10 * m_asBaseBiomassResults(groupIndex) Then
+                    '    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(10))
+                    'Else
+                    '    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex) / m_asBaseBiomassResults(groupIndex)))
+                    'End If
                 End If
             Next
 
@@ -890,8 +945,9 @@ Namespace Ecospace
             Me.UpdateControls()
 
             'Me.DumpIBMMap(TimeStepData)
-
-            Application.DoEvents()
+            'jb 26-May-11 Ecospace now runs on its own thread
+            'so there is no need to call DoEvents()
+            ' Application.DoEvents()
 
         End Sub
 
@@ -988,12 +1044,21 @@ Namespace Ecospace
             If Me.m_bInUpdate = True Then Return
 
             Dim csm As cCoreStateMonitor = Me.Core.StateMonitor
+            Dim bUseIBM As Boolean = CBool(Me.m_bpUseIBM.GetValue())
+            Dim bUseNewStanza As Boolean = CBool(Me.m_bpUseNewStanza.GetValue())
 
             Me.m_bInUpdate = True
 
             ' Enable run and stop buttons based on Ecospace run state
             Me.m_btnRun.Enabled = (Me.IsRunning = False)
             Me.m_btnStop.Enabled = (Me.IsRunning = True)
+
+            Me.m_btnPause.Enabled = (Me.IsRunning = True)
+            If Me.Core.EcospacePaused Then
+                Me.m_btnPause.Text = My.Resources.ECOSPACE_RESUME
+            Else
+                Me.m_btnPause.Text = My.Resources.ECOSPACE_PAUSE
+            End If
 
             ' Enable display options for non-fleet maps
             Me.m_plDisplayOptions.Enabled = (Me.m_rbDisplayFishingEffort.Checked = False)
@@ -1017,6 +1082,17 @@ Namespace Ecospace
             Me.m_cbMPA.Checked = Me.m_bShowMPA
             Me.m_cbMPA.Enabled = (Me.m_rbDisplayFishingEffort.Checked Or Me.m_rbDisplayRelBiomass.Checked)
 
+            Me.m_cbShowIBMPackets.Checked = Me.m_bShowIBM
+            Me.m_cbShowIBMPackets.Enabled = bUseIBM
+
+            Dim iIndex As Integer = 2
+
+            If bUseIBM Then iIndex = 1
+            If bUseNewStanza Then iIndex = 0
+
+            Me.m_cmbRunType.SelectedIndex = iIndex
+            Me.m_cmbRunType.Enabled = (Me.IsRunning = False)
+
             Me.m_bInUpdate = False
 
         End Sub
@@ -1039,52 +1115,6 @@ Namespace Ecospace
                 Me.m_zgh.Redraw()
 
             End If
-
-        End Sub
-
-        ''' <summary>
-        ''' Prints a map of the IMB movements to the console 
-        ''' </summary>
-        ''' <param name="SpaceData"></param>
-        ''' <remarks>FOR DEBUGGING</remarks>
-        Private Sub DumpIBMMap(ByVal SpaceData As cEcospaceTimestep)
-            Dim stanza As cStanzaGroup
-            Dim mapBuff As System.Text.StringBuilder
-            Dim sym As String, iGrp As Integer
-
-            Try
-
-                For isp As Integer = 0 To Me.Core.nStanzas - 1
-
-                    stanza = Me.Core.StanzaGroups(isp)
-                    For ist As Integer = 1 To stanza.NStanzas
-
-                        iGrp = stanza.iGroups(ist)
-                        mapBuff = New System.Text.StringBuilder
-
-                        For irow As Integer = 1 To Me.m_iInRow
-                            For icol As Integer = 1 To Me.m_iInCol
-                                sym = "0 "
-                                If SpaceData.IMBLocationsMap(irow, icol, iGrp) = True Then
-                                    sym = "1 "
-                                End If
-                                mapBuff.Append(sym)
-                            Next icol
-                            mapBuff.Append(vbCrLf)
-                        Next irow
-
-                        System.Console.WriteLine(Me.Core.EcoPathGroupInputs(iGrp).Name)
-                        System.Console.WriteLine(mapBuff.ToString)
-                        mapBuff = Nothing
-
-                    Next ist
-                Next isp
-
-
-            Catch ex As Exception
-                'this routine is just for debugging so don't worry to much about telling the world that it exploded
-                System.Console.WriteLine("Exception in Ecospace interface DumpIBMMap(cEcospaceTimestep)!")
-            End Try
 
         End Sub
 

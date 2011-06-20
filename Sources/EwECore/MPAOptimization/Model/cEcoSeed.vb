@@ -158,7 +158,7 @@ Namespace EcoSeed
 
         Public Sub StopRun() Implements IMPASearchModel.StopRun
             m_data.StopRun = True
-            Me.m_EcoSpace.StopRun = True
+            Me.m_EcoSpace.StopRun() ' = True
         End Sub
 
         Public Sub clearMPAs() Implements IMPASearchModel.clearMPAs
@@ -483,7 +483,7 @@ Namespace EcoSeed
                 KeepOrReloadCellValues(Biomass)
             ElseIf iYear = Me.m_data.EcoSpaceEndYear Then
                 iYear = CInt(m_EcoSpace.EcoSpaceData.TotalTime)
-                m_EcoSpace.StopRun = True
+                m_EcoSpace.StopRun() ' = True
             End If
 
 

@@ -200,7 +200,7 @@ Public Class cMonteCarloResultsWriter
 
     Private Function getParameterVariance() As String
         Dim buff As New StringBuilder
-        Dim igrp As Integer
+        ' Dim igrp As Integer
 
         'Group name
         buff.AppendLine("Group Name," & Me.ToCSVString(Core.m_EcoPathData.GroupName))

@@ -95,7 +95,7 @@ Public Class frmMSY
 
     Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles btStop.Click
-        Me.m_mse.ModelParameters.StopRun = True
+        Me.m_mse.StopRun(0)
     End Sub
 
     Private Sub btFleetTradeoffs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _

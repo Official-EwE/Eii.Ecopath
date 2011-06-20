@@ -1209,6 +1209,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Pause.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_PAUSE() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_PAUSE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Resume.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_RESUME() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_RESUME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} of {1} years.
         '''</summary>
         Friend ReadOnly Property ECOSPACE_RUN_PROGRESS() As String
@@ -2914,7 +2932,7 @@ Namespace My.Resources
         '''
         '''Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
         '''
-        '''Ecopath 5 can be downloaded from http://ecopath.org/previousversions..
+        '''Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links..
         '''</summary>
         Friend ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_OLD() As String
             Get

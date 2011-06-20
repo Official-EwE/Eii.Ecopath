@@ -320,7 +320,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
             'this will stop any running model Search or Sensitivity
-            Me.m_F2TSManager.StopRun()
+            Me.m_F2TSManager.StopRun(0)
         End Sub
 
         ''' -------------------------------------------------------------------

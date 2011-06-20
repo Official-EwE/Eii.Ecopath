@@ -367,9 +367,19 @@ Public Class cMonteCarloManager
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function StopRun() As Boolean
-        m_mc.StopTrial = True
-        Return True
+    Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
+        Dim result As Boolean = True
+        If (Me.m_core Is Nothing) Then Return True
+        Try
+            Me.m_core.StopEcoSim()
+            m_mc.StopTrial = True
+            result = Me.Wait(WaitTimeInMillSec)
+        Catch ex As Exception
+
+        End Try
+
+        Return result
+
     End Function
 
 

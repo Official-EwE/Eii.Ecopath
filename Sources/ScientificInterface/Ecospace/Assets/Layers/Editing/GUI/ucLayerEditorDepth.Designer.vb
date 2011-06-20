@@ -26,10 +26,10 @@
             'm_rbWater
             '
             Me.m_rbWater.AutoSize = True
-            Me.m_rbWater.Location = New System.Drawing.Point(3, 42)
+            Me.m_rbWater.Location = New System.Drawing.Point(3, 69)
             Me.m_rbWater.Name = "m_rbWater"
             Me.m_rbWater.Size = New System.Drawing.Size(54, 17)
-            Me.m_rbWater.TabIndex = 2
+            Me.m_rbWater.TabIndex = 1
             Me.m_rbWater.TabStop = True
             Me.m_rbWater.Text = "&Water"
             Me.m_rbWater.UseVisualStyleBackColor = True
@@ -37,10 +37,10 @@
             'm_rbLand
             '
             Me.m_rbLand.AutoSize = True
-            Me.m_rbLand.Location = New System.Drawing.Point(3, 67)
+            Me.m_rbLand.Location = New System.Drawing.Point(3, 43)
             Me.m_rbLand.Name = "m_rbLand"
             Me.m_rbLand.Size = New System.Drawing.Size(49, 17)
-            Me.m_rbLand.TabIndex = 4
+            Me.m_rbLand.TabIndex = 0
             Me.m_rbLand.TabStop = True
             Me.m_rbLand.Text = "&Land"
             Me.m_rbLand.UseVisualStyleBackColor = True
@@ -49,12 +49,12 @@
             '
             Me.m_nudDepth.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudDepth.Location = New System.Drawing.Point(65, 42)
+            Me.m_nudDepth.Location = New System.Drawing.Point(65, 69)
             Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudDepth.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudDepth.Name = "m_nudDepth"
             Me.m_nudDepth.Size = New System.Drawing.Size(99, 20)
-            Me.m_nudDepth.TabIndex = 3
+            Me.m_nudDepth.TabIndex = 2
             Me.m_nudDepth.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
             'm_pbPreviewWater
@@ -62,7 +62,7 @@
             Me.m_pbPreviewWater.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_pbPreviewWater.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_pbPreviewWater.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_pbPreviewWater.Location = New System.Drawing.Point(170, 42)
+            Me.m_pbPreviewWater.Location = New System.Drawing.Point(170, 69)
             Me.m_pbPreviewWater.Name = "m_pbPreviewWater"
             Me.m_pbPreviewWater.Size = New System.Drawing.Size(27, 20)
             Me.m_pbPreviewWater.TabIndex = 5
@@ -73,7 +73,7 @@
             Me.m_pbPreviewLand.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_pbPreviewLand.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_pbPreviewLand.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_pbPreviewLand.Location = New System.Drawing.Point(170, 68)
+            Me.m_pbPreviewLand.Location = New System.Drawing.Point(170, 42)
             Me.m_pbPreviewLand.Name = "m_pbPreviewLand"
             Me.m_pbPreviewLand.Size = New System.Drawing.Size(27, 21)
             Me.m_pbPreviewLand.TabIndex = 5
@@ -82,10 +82,12 @@
             'm_cbProtectCoastline
             '
             Me.m_cbProtectCoastline.AutoSize = True
+            Me.m_cbProtectCoastline.Checked = True
+            Me.m_cbProtectCoastline.CheckState = System.Windows.Forms.CheckState.Checked
             Me.m_cbProtectCoastline.Location = New System.Drawing.Point(65, 93)
             Me.m_cbProtectCoastline.Name = "m_cbProtectCoastline"
             Me.m_cbProtectCoastline.Size = New System.Drawing.Size(126, 17)
-            Me.m_cbProtectCoastline.TabIndex = 1
+            Me.m_cbProtectCoastline.TabIndex = 3
             Me.m_cbProtectCoastline.Text = "Do not edit coast line"
             Me.m_cbProtectCoastline.UseVisualStyleBackColor = True
             '

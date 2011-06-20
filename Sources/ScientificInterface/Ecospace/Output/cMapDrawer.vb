@@ -25,8 +25,8 @@ Public Class cMapDrawer
     Public SignalState As New ManualResetEvent(True)
 
     Private m_map(,,) As Single
-    Private m_mapIBMPackets(,,) As Boolean
     Private m_core As cCore = Nothing
+    Private m_stanzaDS As cStanzaDatastructures
 
     Private m_lGroups As New List(Of Integer)
     Private m_lLocations As New List(Of Integer)
@@ -90,12 +90,21 @@ Public Class cMapDrawer
         End Set
     End Property
 
-    Public Property MapIBMPackets() As Boolean(,,)
+    'Public Property MapIBMPackets() As Boolean(,,)
+    '    Get
+    '        Return Me.m_mapIBMPackets
+    '    End Get
+    '    Set(ByVal value As Boolean(,,))
+    '        Me.m_mapIBMPackets = value
+    '    End Set
+    'End Property
+
+    Public Property StanzaDS() As cStanzaDatastructures
         Get
-            Return Me.m_mapIBMPackets
+            Return Me.m_stanzaDS
         End Get
-        Set(ByVal value As Boolean(,,))
-            Me.m_mapIBMPackets = value
+        Set(ByVal value As cStanzaDatastructures)
+            Me.m_stanzaDS = value
         End Set
     End Property
 
@@ -126,7 +135,7 @@ Public Class cMapDrawer
         End Set
     End Property
 
-    Public Property GroupColors() As List(Of Color)
+    Public Property Colors() As List(Of Color)
         Get
             Return Me.m_lColors
         End Get
@@ -283,6 +292,7 @@ Public Class cMapDrawer
     ''' <remarks></remarks>
     Public Sub DrawBiomassBaseMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle)
         If m_map Is Nothing Then Return
+
         For i As Integer = 1 To m_iInRow
             For j As Integer = 1 To m_iInCol
                 Try
@@ -294,7 +304,6 @@ Public Class cMapDrawer
                                                                CSng(rcPos.Height() / m_iInRow))
                     Dim rcTemp As Rectangle = Nothing
                     Dim brCell As Brush = Nothing
-                    Dim brBlack As New SolidBrush(Color.Black)
                     'If ConShow And ConcMax(ip) > 0 Then
                     '    If ConShowType = 0 Then
                     '        MapValue = 11 * p_baseMap(i, j, ip) / ConcMax(ip)
@@ -305,22 +314,25 @@ Public Class cMapDrawer
                     '    MapValue = p_baseMap(i, j, ip) / StartBiomass(ip)
                     'End If
 
-                    sMapValue = m_map(i, j, iGroup) / m_core.StartBiomass(iGroup)
-                    If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
-                        icc = m_lColors.Count
-                    ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Then
-                        icc = 1
-                    Else
-                        'icc = m_ColorNum * 1 / (MapValue + 1)
-                        icc = m_lColors.Count * sMapValue / (sMapValue + 1)
-                    End If
-
-                    'Boundary check
-                    icc = Math.Max(Math.Min(m_lColors.Count - 1, icc), 1)
-
                     'If it is water
                     If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
                         ' #Water
+                        sMapValue = m_map(i, j, iGroup) / m_core.StartBiomass(iGroup)
+                        If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
+                            icc = m_lColors.Count
+                        ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Then
+                            icc = 1
+                        Else
+                            ' Old EwE5:    icc = m_ColorNum * 1 / (MapValue + 1)
+                            ' Latest EwE5: icc = MaxColorsInGrad * MapValue / (MaxColorsInGrad / ColorScaling - 1 + MapValue)
+                            '              ColorScaling is MaxColorsInGrad / 2
+                            icc = m_lColors.Count * sMapValue / (sMapValue + 1)
+                            'icc = CSng(Math.Log(sMapValue) * m_lColors.Count + m_lColors.Count / 2)
+                        End If
+
+                        'Boundary check
+                        icc = Math.Max(Math.Min(m_lColors.Count - 1, icc), 1)
+
                         brCell = New SolidBrush(m_lColors(CInt(icc)))
                     Else
                         ' #Land
@@ -346,20 +358,57 @@ Public Class cMapDrawer
                         End If
                     End If
 
-                    If Me.m_mapIBMPackets IsNot Nothing Then
-                        If Me.MapIBMPackets(i, j, iGroup) Then
-                            m_graphics.FillEllipse(brBlack, Rectangle.Inflate(rcTemp, -CInt(rcTemp.Width / 2.5), -CInt(rcTemp.Height / 2.5)))
-                            ' m_graphics.DrawEllipse(Pens.Black, _
-                            '                       Rectangle.Inflate(rcTemp, -CInt(rcTemp.Width / 2.5), -CInt(rcTemp.Height / 2.5)))
-                        End If
-                    End If
-
                 Catch ex As Exception
                     'Debug.Assert(False, ex.Message)
                     Exit Sub
                 End Try
+
             Next
         Next
+
+        If (Me.m_stanzaDS IsNot Nothing) Then
+
+            Dim isp As Integer = -1
+
+            For ispTmp As Integer = 1 To StanzaDS.Nsplit
+                For ist As Integer = 1 To StanzaDS.Nstanza(ispTmp)
+                    If iGroup = StanzaDS.EcopathCode(ispTmp, ist) Then
+                        If (isp = -1) Then isp = ispTmp
+                    End If
+                Next ist
+            Next ispTmp
+
+            Try
+                If isp > -1 Then
+
+                    For iaa As Integer = 0 To StanzaDS.MaxAgeSpecies(isp)
+                        Dim ia As Integer = StanzaDS.AgeIndex1(isp) + iaa : If ia > StanzaDS.MaxAgeSpecies(isp) Then ia = ia - StanzaDS.MaxAgeSpecies(isp) - 1
+                        Dim ist As Integer = StanzaDS.StanzaNo(isp, ia)
+                        Dim ieco As Integer = StanzaDS.EcopathCode(isp, ist)
+
+                        If ieco = iGroup Then
+                            For ipkt As Integer = 1 To StanzaDS.Npackets
+
+                                Dim sy As Single = StanzaDS.iPacket(isp, iaa, ipkt)
+                                Dim sx As Single = StanzaDS.jPacket(isp, iaa, ipkt)
+                                Dim ptfCell As New PointF(CSng(rcPos.Left + (sx - 1) * rcPos.Width() / m_iInCol), _
+                                                          CSng(rcPos.Top + (sy - 1) * rcPos.Height() / m_iInRow))
+                                Dim rcF As New RectangleF(ptfCell.X, ptfCell.Y, 1, 1)
+
+                                m_graphics.DrawEllipse(Pens.Black, rcF)
+
+                            Next ipkt
+
+                        End If
+                    Next iaa
+
+                End If
+
+            Catch ex As Exception
+
+            End Try
+
+        End If
 
         'Draw the black frame of base map
         m_graphics.DrawRectangle(Pens.Black, rcPos)

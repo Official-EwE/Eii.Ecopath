@@ -545,7 +545,7 @@ Public Class cMPARandomSearch
             KeepOrReloadCellValues(Biomass)
         ElseIf iYear = Me.m_data.EcoSpaceEndYear Then
             iYear = CInt(m_EcoSpace.EcoSpaceData.TotalTime)
-            m_EcoSpace.StopRun = True
+            m_EcoSpace.StopRun() ' = True
         End If
 
 

@@ -279,8 +279,8 @@ Public Class cSpaceSolver
 #End Region
 
     Private Function SolveCell(ByVal i As Integer, ByVal j As Integer) As Boolean
-
         Dim iGrp As Integer
+        Dim PopWt As Single
 
         Try
 
@@ -296,21 +296,7 @@ Public Class cSpaceSolver
             For iGrp = 1 To m_Data.NGroups
                 'abmpa: at this point (after having been in solvegrid) the BCell holds
                 'the long term equilibrium biomass or at least an approx to)
-                'ebb(ip) = m_Data.Bcell(i, j, ip)
-                '                        'in ecoseed the effort distribution needs to be calculated using ebb(),
-                '                        'not the Bcell (short term biomass)
-                'If m_Data.SpaceTime = False Then
-                '    If m_Data.TimeNow > 0 Then
-                '        m_Data.Bcell(i, j, ip) = (m_Data.Bcell(i, j, ip) + BEQLast(i, j, ip)) / 2.0#
-                '    End If
-                '    If m_Data.chkMPA And m_Data.EcoseedOn = False Then
-                '        m_Data.Bcell(i, j, ip) = (1 - WchangeVar(i, j, ip)) * m_Data.Bcell(i, j, ip) + WchangeVar(i, j, ip) * m_Data.Blast(i, j, ip)
-                '    End If
-                '    BEQLast(i, j, ip) = ebb(ip)
-                'End If
 
-                'm_Data.Blast(i, j, ip) = m_Data.Bcell(i, j, ip)
-                'end abmpa
                 If m_Data.Depth(i, j) = 0 Then m_Data.Bcell(i, j, iGrp) = 0
                 BB(iGrp) = m_Data.Bcell(i, j, iGrp)
 
@@ -319,7 +305,7 @@ Public Class cSpaceSolver
                 'sum biomass over all the cells
                 'this is now done individually for each thread, then summed outside the threads
                 'Btime(ip) = Btime(ip) + BB(ip)
-                BtimeLocal(iGrp) = BB(iGrp) + BtimeLocal(iGrp)
+                BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
 
                 If (m_SimData.NoIntegrate(iGrp) = iGrp Or m_SimData.NoIntegrate(iGrp) < 0) And m_SimData.SimGE(iGrp) > 0 Then
                     If (Cper(i, j, iGrp) > 0 And m_SimData.FtimeAdjust(iGrp) > 0) Then
@@ -364,10 +350,13 @@ Public Class cSpaceSolver
                 EatEff(iGrp) = 1
                 VulPred(iGrp) = 1
 
-                If m_Data.PrefHab(iGrp, m_Data.HabType(i, j)) = False And m_Data.PrefHab(iGrp, 0) = False Then
+                ' If m_Data.PrefHab(iGrp, m_Data.HabType(i, j)) = False And m_Data.PrefHab(iGrp, 0) = False Then
+                If m_Data.HabCap(i, j, iGrp) < 0.1 Then
                     VulPred(iGrp) = m_Data.RelVulBad(iGrp)
-                    EatEff(iGrp) = m_Data.EatEffBad(iGrp)
                 End If
+
+                EatEff(iGrp) = m_Data.HabCap(i, j, iGrp) 'm_Data.EatEffBad(iGrp)
+                ' End If
 
                 'jb moved to cEcoSpace.accumCatchData()
                 'If Search.bInSearch Then
@@ -453,7 +442,8 @@ Public Class cSpaceSolver
             isc = 0
             For isp = 1 To m_Stanza.Nsplit
                 ieco = m_Stanza.EcopathCode(isp, m_Stanza.Nstanza(isp))
-                RelR = m_Data.Bcell(i, j, ieco) * RelRepStanza(isp)
+
+                RelR = m_Data.Bcell(i, j, ieco) * RelRepStanza(isp) ' * m_Data.HabCap(i, j, ieco) * m_Data.nWaterCells / m_Data.TotHabCap(ieco) ' Added HabCap correction for recruitment rate
                 For ist = 1 To m_Stanza.Nstanza(isp)
                     isc = isc + 1
                     ieco = m_Stanza.EcopathCode(isp, ist)
@@ -462,13 +452,15 @@ Public Class cSpaceSolver
                         'these arrays are used in the new SpaceSplitUpdate subroutine for predicting mortality
                         'rate and growth rate averages over space by age in that update routine
                         'IFDweight is used to predict proportion of biomass of ieco stanza that will be on cell i,j
-                        If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
-                            TotLossThread(ieco) = TotLossThread(ieco) + loss(ieco)
-                            TotEatenByThread(ieco) = TotEatenByThread(ieco) + Eatenby(ieco)
-                            TotBiomThread(ieco) = TotBiomThread(ieco) + m_Data.Bcell(i, j, ieco)
-                            TotPredThread(ieco) = TotPredThread(ieco) + pred(ieco)
+                        'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
+                        If m_Data.Depth(i, j) > 0 And m_Data.HabCap(i, j, ieco) > 0.1 Then
+                            PopWt = m_Data.Bcell(i, j, nvar2 + isc)
+                            TotLossThread(ieco) = TotLossThread(ieco) + loss(ieco) * PopWt
+                            TotEatenByThread(ieco) = TotEatenByThread(ieco) + Eatenby(ieco) * PopWt
+                            TotBiomThread(ieco) = TotBiomThread(ieco) + m_Data.Bcell(i, j, ieco) * PopWt
+                            TotPredThread(ieco) = TotPredThread(ieco) + pred(ieco) * PopWt
                             'm_Data.IFDweight(i, j, ieco) = ((Eatenby(ieco) / pred(ieco)) / (loss(ieco) / m_Data.Bcell(i, j, ieco))) ^ m_Data.IFDPower
-                            m_Data.IFDweight(i, j, ieco) = m_Data.Bcell(i, j, nvar2 + isc)
+                            m_Data.IFDweight(i, j, ieco) = PopWt 'm_Data.Bcell(i, j, nvar2 + isc)
                             TotIFDweightThread(ieco) = TotIFDweightThread(ieco) + m_Data.IFDweight(i, j, ieco)
                         End If
                     ElseIf m_Data.UseIBM Then
@@ -594,10 +586,11 @@ Public Class cSpaceSolver
             For ii = 1 To m_SimData.inlinks
                 i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
 
-                aeff(ii) = m_Data.Aspace(ii) * Ftime(j) * RelaSwitch(ii) * EatEff(j) * VulPred(i)
+                'aeff(ii) = m_Data.Aspace(ii) * Ftime(j) * RelaSwitch(ii) * EatEff(j) * VulPred(i)
+                aeff(ii) = m_Data.Aspace(ii) * Ftime(j) * RelaSwitch(ii) * VulPred(i)
                 Veff(ia) = m_Data.Vspace(ia) * Ftime(i)
                 ApplyAVmodifiers(aeff(ii), Veff(ia), i, m_SimData.Jarena(ia), False, iRow, iCol)  '?not sure this will work right with multiple preds in arenas
-                Vdenom(ia) = Vdenom(ia) + aeff(ii) * pred(j) / Hden(j)
+                Vdenom(ia) = Vdenom(ia) + aeff(ii) * pred(j) / Hden(j) / EatEff(j)
             Next
 
             'then calculate first estimate using initial Hden estimates of vulnerable biomass in each arena
@@ -630,7 +623,7 @@ Public Class cSpaceSolver
             ReDim Vbiom(m_SimData.Narena), Vdenom(m_SimData.Narena)
             For ii = 1 To m_SimData.inlinks
                 i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
-                Vdenom(ia) = Vdenom(ia) + aeff(ii) * pred(j) / Hden(j)
+                Vdenom(ia) = Vdenom(ia) + aeff(ii) * pred(j) / Hden(j) / EatEff(j)
             Next
             For ia = 1 To m_SimData.Narena
                 i = m_SimData.Iarena(ia)
@@ -697,7 +690,8 @@ Public Class cSpaceSolver
                 If i <= m_Data.nLiving Then      'Living group
                     Pmult = 1.0#
                     ApplyAVmodifiers(Pmult, Veff(1), i, i, False, iRow, iCol)
-                    pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
+                    'pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
+                    pbb(i) = Pmult * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) * EatEff(i)
                     'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
                     loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
                     'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)

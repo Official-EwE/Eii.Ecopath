@@ -52,11 +52,9 @@ Namespace Ecospace.Basemap.Layers
             If (Me.UIContext Is Nothing) Then Return
 
             ' Set control value
-            Dim sValue As Single = CSng(Me.Editor.CellValue)
-            If sValue > 0 Then
-                Me.m_nudDepth.Value = Convert.ToDecimal(Math.Max(Math.Min(sValue, CSng(Me.m_nudDepth.Maximum)), CSng(Me.m_nudDepth.Minimum)))
-                Me.UpdatePreview(Me.m_pbPreviewWater, sValue)
-            End If
+            Dim sValue As Single = Math.Max(CSng(Me.Editor.CellValue), 1.0!)
+            Me.m_nudDepth.Value = Convert.ToDecimal(Math.Max(Math.Min(sValue, CSng(Me.m_nudDepth.Maximum)), CSng(Me.m_nudDepth.Minimum)))
+            Me.UpdatePreview(Me.m_pbPreviewWater, sValue)
 
             If (TypeOf Me.Editor Is cLayerEditorDepth) Then
                 Dim ed As cLayerEditorDepth = DirectCast(Me.Editor, cLayerEditorDepth)
@@ -78,11 +76,21 @@ Namespace Ecospace.Basemap.Layers
         Private Sub OnWaterSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbWater.CheckedChanged
             Me.UpdateValue()
+            If (TypeOf Me.Editor Is cLayerEditorDepth) Then
+                Dim ed As cLayerEditorDepth = DirectCast(Me.Editor, cLayerEditorDepth)
+                ed.ProtectCoastLine = True
+                Me.UpdateContent(ed)
+            End If
         End Sub
 
         Private Sub OnLandSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbLand.CheckedChanged
             Me.UpdateValue()
+            If (TypeOf Me.Editor Is cLayerEditorDepth) Then
+                Dim ed As cLayerEditorDepth = DirectCast(Me.Editor, cLayerEditorDepth)
+                ed.ProtectCoastLine = False
+                Me.UpdateContent(ed)
+            End If
         End Sub
 
         Private Sub OnValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _

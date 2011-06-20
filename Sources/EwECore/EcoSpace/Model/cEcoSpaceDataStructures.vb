@@ -91,8 +91,8 @@ Public Class cEcospaceDataStructures
     ''' <summary>Descriptive text of habitat type (name) </summary>
     Public HabitatText() As String
 
-    ''' <summary>States whether a group prefers a habitat.</summary>
-    Public PrefHab(,) As Boolean
+    ''' <summary>The proportion to which a group prefers a habitat.</summary>
+    Public PrefHab(,) As Single
 
     ''' <summary> Does this Fishing fleet use this habitat type </summary>
     Public GearHab(,) As Boolean
@@ -440,6 +440,18 @@ Public Class cEcospaceDataStructures
     ''' <remarks>Added for Model coupling</remarks>
     Public GroupDetritus(,,) As Single
 
+    Public HabCap(,,) As Single
+    Public HabCapInput(,,) As Single
+    Public TotHabCap() As Single
+    ''' <summary>
+    ''' Latiude of a cell by row
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Lat() As Single
+
+    Public Width() As Single
+
+
 #End Region
 
 #Region "Private Data"
@@ -679,7 +691,7 @@ Public Class cEcospaceDataStructures
 
 
             For i = 1 To NGroups                            'CJW had nvar not n1
-                PrefHab(i, 0) = True
+                PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
 
             For i = 1 To InRow
@@ -828,7 +840,7 @@ Public Class cEcospaceDataStructures
 
                 ' JS 15oct07: fix for bug 289 - By default, GearHab and PrefHab are True for 'All' habitat
                 For iGroup As Integer = 0 To NGroups
-                    PrefHab(iGroup, 0) = True
+                    PrefHab(iGroup, 0) = 1.0! ' True
                 Next
 
                 For iFleet As Integer = 0 To nFleets
@@ -926,7 +938,8 @@ Public Class cEcospaceDataStructures
             ReDim RelMoveBad(nvartot)
             ReDim RelVulBad(nvartot)
             '   ReDim VulPred(nvartot)
-            ReDim IsAdvected(nGroups)
+            ReDim IsAdvected(NGroups)
+            ReDim Me.TotHabCap(NGroups)
             'jb PrefHab() was redimed here and redimHabitatVariables()
             '        ReDim PrefHab(nGroups, NoHabitats)
 
@@ -1071,6 +1084,9 @@ Public Class cEcospaceDataStructures
             Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
             Me.allocate(GroupDetritus, InRow + 1, InCol + 1, nvartot)
 
+            Me.allocate(Me.HabCap, InRow + 1, InCol + 1, nvartot)
+            Me.allocate(Me.HabCapInput, InRow + 1, InCol + 1, nvartot)
+
             Me.allocate(CatchMap, InRow, InCol, nvartot)
 
             For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
@@ -1087,12 +1103,17 @@ Public Class cEcospaceDataStructures
             ReDim MPAfishery(nFleets, 1)
             ReDim MPAmonth(12, 1)
 
+            ReDim Lat(InRow)
+            ReDim Width(InRow)
+
             ''jb move this here to set a few defaults this will have to change
             For i = 1 To NGroups                            'CJW had nvar not n1
-                PrefHab(i, 0) = True
+                PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
 
             For i = 1 To InRow
+                Lat(i) = 0
+                Width(i) = CSng(Math.Cos(Lat(i) / 90.0 * Math.PI / 2.0))
                 For j = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
                     DepthA(i, j) = Depth(i, j)

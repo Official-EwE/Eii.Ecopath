@@ -34,6 +34,7 @@ Namespace MSE
         Implements ICoreInterface
         Implements ISearchObjective
 
+
 #Region "Private data"
 
         Private m_core As cCore
@@ -88,8 +89,8 @@ Namespace MSE
 
         Public Sub Disconnect()
 
-            m_MSECallback = Nothing
-            m_MSYCallback = Nothing
+            'm_MSECallback = Nothing
+            'm_MSYCallback = Nothing
             m_bConnected = False
 
         End Sub
@@ -249,6 +250,12 @@ Namespace MSE
             End Get
         End Property
 
+        Public ReadOnly Property isConnected() As Boolean
+            Get
+                Return Me.m_bConnected
+            End Get
+        End Property
+
 #End Region
 
 #Region "Construction Initialization and Running of the model"
@@ -322,9 +329,6 @@ Namespace MSE
                     Return False
                 End If
 
-                'set the wait object to block all calling threads
-                'this will set isRunning to True
-                Me.SetWait()
 
                 Try
                     Me.m_core.PluginManager.MSERunStarted()
@@ -334,6 +338,13 @@ Namespace MSE
 
 
                 m_thrdRunMSE = New Thread(AddressOf m_MSE.Run)
+                m_thrdRunMSE.Name = "MSE"
+
+                'set the wait object to block all calling threads
+                'this will set isRunning to True
+                Me.SetWait()
+
+                '  m_thrdRunMSE.Priority = ThreadPriority.Lowest
                 m_thrdRunMSE.Start()
 
             Catch ex As Exception
@@ -706,7 +717,7 @@ Namespace MSE
                 m_parameters.NTrials = Me.m_MSEdata.NTrials
                 m_parameters.RegulatoryMode = Me.m_MSEdata.RegulationMode
                 m_parameters.EffortSource = Me.m_MSEdata.EffortSource
-                m_parameters.StopRun = Me.m_MSEdata.StopRun
+                '  m_parameters.StopRun = Me.m_MSEdata.StopRun
                 m_parameters.Save = Me.m_MSEdata.SaveOutput
 
                 m_parameters.MSYStartTimeIndex = Me.m_MSEdata.MSYStartTimeIndex
@@ -852,7 +863,7 @@ Namespace MSE
                         Me.m_MSEdata.NTrials = Me.m_parameters.NTrials()
                         Me.m_MSEdata.RegulationMode = Me.m_parameters.RegulatoryMode
                         Me.m_MSEdata.EffortSource = Me.m_parameters.EffortSource
-                        Me.m_MSEdata.StopRun = Me.m_parameters.StopRun
+                        '         Me.m_MSEdata.StopRun = Me.m_parameters.StopRun
                         Me.m_MSEdata.SaveOutput = Me.m_parameters.Save
                         Me.m_MSEdata.StartYear = Me.m_parameters.MSEStartYear
                         Me.m_MSEdata.MSYStartTimeIndex = Me.m_parameters.MSYStartTimeIndex
@@ -971,6 +982,7 @@ Namespace MSE
                     Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
 
                     'Connected so call the interface
+                    'm_SyncOb.Post(New System.Threading.SendOrPostCallback(AddressOf fireCallBack), CallBackType)
                     m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf fireCallBack), CallBackType)
 
                 End If
@@ -984,9 +996,11 @@ Namespace MSE
 
         Private Sub fireCallBack(ByVal obj As Object)
             Try
-                Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
-                Dim cbType As eMSERunStates = DirectCast(obj, eMSERunStates)
-                m_MSECallback.Invoke(cbType)
+                'Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
+                If m_MSECallback IsNot Nothing Then
+                    Dim cbType As eMSERunStates = DirectCast(obj, eMSERunStates)
+                    m_MSECallback.Invoke(cbType)
+                End If
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & " Error sending message to interface.")
             End Try
@@ -1026,18 +1040,18 @@ Namespace MSE
                     Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSECatchByGroupStats))
                     Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEEffortStats))
 
-                    'Try
-                    '    Me.m_core.PluginManager.MSERunCompleted()
-                    'Catch ex As Exception
-                    '    System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
-                    'End Try
+                    Try
+                        Me.m_core.PluginManager.MSERunCompleted()
+                    Catch ex As Exception
+                        System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
+                    End Try
 
             End Select
 
             Try
                 'jb 20-Oct-09 the core message publisher now marshalls all messages to the handlers thread
                 'no need to do it here
-                Me.m_core.Messages.sendAllMessages()
+                'Me.m_core.Messages.sendAllMessages()
 
                 ''make sure something didn't screwup
                 'Debug.Assert(m_SyncOb IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
@@ -1066,7 +1080,7 @@ Namespace MSE
 
                     'make sure something didn't screwup
                     Debug.Assert(m_SyncOb IsNot Nothing And Me.m_MSYCallback IsNot Nothing, Me.ToString & ".OnMSYCallBack() not connected properly.")
-                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf fireMSYCallBack), MYSProgress)
+                    m_SyncOb.Post(New System.Threading.SendOrPostCallback(AddressOf fireMSYCallBack), MYSProgress)
 
                 End If
 
@@ -1221,6 +1235,25 @@ Namespace MSE
         Protected Overrides Sub Finalize()
             MyBase.Finalize()
         End Sub
+
+        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
+            Dim result As Boolean = True
+
+            If (Me.m_core Is Nothing) Then Return True
+
+            Try
+
+                If WaitTimeInMillSec <> 0 Then
+                    Me.m_core.StopEcoSim()
+                End If
+
+                Me.m_MSEdata.StopRun = True
+                result = Me.Wait(WaitTimeInMillSec)
+            Catch ex As Exception
+                result = False
+            End Try
+            Return result
+        End Function
     End Class
 
 End Namespace

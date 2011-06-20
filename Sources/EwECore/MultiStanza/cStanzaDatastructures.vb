@@ -5,7 +5,7 @@ Public Class cStanzaDatastructures
     Public NPacketsMultiplier As Single
 
     'These are new IBM variables
-    Public EggAtSpawn As Boolean
+    Public EggAtSpawn() As Boolean
     Public EggCell(,,) As Single 'eggs per cell and species
     Public AgeIndex1() As Integer ' index of the age one creatures of a species in Npacket and Wpacket
     Public StanzaNo(,) As Integer
@@ -61,9 +61,7 @@ Public Class cStanzaDatastructures
     Public Stanza_Z(,) As Single
     Public Stanza_Bio(,) As Single
     Public Stanza_CB(,) As Single
-    ' JS 200606: Disabled; GUI-only flag whose value can be deducted.
-    'Public LockedParameter() As Boolean
-    Public CurrentStanza As Integer
+
 
     Public WmatWinf() As Single ' weight at maturity/ weight at infinity (max weight) from EwE5 interface
     Public EggsStanza() As Single
@@ -126,6 +124,7 @@ Public Class cStanzaDatastructures
         ReDim EggProdShapeSplit(Nsplit)
         ReDim EggProdIsSeasonal(Nsplit)
         ReDim BABsplit(Nsplit)
+        ReDim EggAtSpawn(Nsplit)
 
         'variables by nGroups
         ReDim SpeciesCode(nGroups, 2) '0: Ecopath group no for this stanza, 1: Ecopath no for leading B stanza, 2: Ecopath no for leading QB stanza
@@ -248,7 +247,6 @@ Public Class cStanzaDatastructures
             d.EggProdIsSeasonal = EggProdIsSeasonal.Clone
             d.SpeciesCode = SpeciesCode.Clone
 
-            CurrentStanza = d.CurrentStanza
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try

@@ -512,7 +512,6 @@ Public Class cEcosimDatastructures
     ''' <summary>Proportion of regulated discards (by gear group) for the current time step</summary>
     Public Propdiscardtime(,) As Single
 
-
     Public Sub RedimVars()
 
         'jb I don't know why these where split up there may be some kind of a reason

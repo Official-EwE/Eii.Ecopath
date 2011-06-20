@@ -58,32 +58,26 @@ Namespace Ecospace.Basemap.Layers
             End If
 
             If Me.IsStyleValid Then
-                If Me.IsStyleValid() Then
-                    ' To move to another class
-                    Dim dY As Single = layer.MaxValue / rc.Height
+                ' To move to another class
+                Dim dY As Single = layer.MaxValue / rc.Height
 
-                    For i As Integer = 0 To rc.Height - 1
-                        Dim sValue As Single = CSng(sValMin + i * dY)
-                        Dim sValRange As Single = (sValMax - sValMin)
+                For i As Integer = 0 To rc.Height - 1
+                    Dim sValue As Single = CSng(sValMin + i * dY)
+                    Dim sValRange As Single = (sValMax - sValMin)
 
-                        ' Has a range? draw background
-                        If (sValRange > 0.0) Then
-                            ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
-                            ' not (0, sValueMax)!!!
-                            Using br As New SolidBrush(Me.m_colorRamp.GetColor(sValue - sValMin, sValMax))
-                                g.FillRectangle(br, New Rectangle(rc.X, rc.Y + rc.Height - i, rc.Width, 1))
-                            End Using
-                        Else
-                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue, sValMax))
-                                g.FillRectangle(br, New Rectangle(rc.X, rc.Y + rc.Height - i, rc.Width, 1))
-                            End Using
-                        End If
-                    Next
-                Else
-                    Me.RenderError(g, rc)
-                End If
-                'g.FillRectangle(Brushes.White, rc)
-                'g.DrawString("#", Me.m_ft, Me.m_brFore, rc)
+                    ' Has a range? draw background
+                    If (sValRange > 0.0) Then
+                        ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
+                        ' not (0, sValueMax)!!!
+                        Using br As New SolidBrush(Me.m_colorRamp.GetColor(sValue - sValMin, sValMax))
+                            g.FillRectangle(br, New Rectangle(rc.X, rc.Y + rc.Height - i, rc.Width, 1))
+                        End Using
+                    Else
+                        Using br As New SolidBrush(m_colorRamp.GetColor(sValue, sValMax))
+                            g.FillRectangle(br, New Rectangle(rc.X, rc.Y + rc.Height - i, rc.Width, 1))
+                        End Using
+                    End If
+                Next
             Else
                 Me.RenderError(g, rc)
             End If

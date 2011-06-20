@@ -9,6 +9,9 @@ Imports EwECore.SearchObjectives
 Public Class cF2TSManager
     Inherits cCoreInputOutputBase
     Implements SearchObjectives.ISearchObjective
+    Implements IThreadedProcess
+
+
 
     'ToDo_jb Firstyear and LastYear need to be set for the time series data
 
@@ -136,7 +139,7 @@ Public Class cF2TSManager
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.F2TSAppliedWeights, eStatusFlags.Null, eCoreCounterTypes.nTimeSeriesApplied, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
- 
+
         ' AIC N Data points
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Integer, eVarNameFlags.F2TSNAICData, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSNAICData))
@@ -277,7 +280,7 @@ Public Class cF2TSManager
 
         f2tsDS.nAICData = Me.NAICDataPoints
 
-        f2tsDS.useDefaultV = Me.UseDefaultV
+        f2tsDS.UseDefaultV = Me.UseDefaultV
 
     End Function
 
@@ -291,6 +294,18 @@ Public Class cF2TSManager
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
 
         f2tsDS.nAICData = tsDS.NdatType * 2
+
+    End Sub
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+
+        If Me.m_thrdRun IsNot Nothing Then
+            'I dont think this can happen
+            'the thread is kill when the form is unloaded but just in case
+            Me.m_thrdRun.Abort()
+            Me.m_thrdRun = Nothing
+        End If
 
     End Sub
 
@@ -411,7 +426,7 @@ Public Class cF2TSManager
         End Set
     End Property
 
-   
+
     ''' <summary>
     ''' Number of data points for the AIC indicator
     ''' </summary>
@@ -523,30 +538,44 @@ Public Class cF2TSManager
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsRunning() As Boolean
+    Public ReadOnly Property IsRunning() As Boolean Implements IThreadedProcess.IsRunning
+        Get
 
-        If (Me.m_thrdRun Is Nothing) Then
-            'the thread is not running!!!
-            Return False
-        End If
-        'this is for robustness
-        Return (Me.m_thrdRun.ThreadState = ThreadState.Running)
+            If (Me.m_thrdRun Is Nothing) Then
+                'the thread is not running!!!
+                Return False
+            End If
+            'this is for robustness
+            Return (Me.m_thrdRun.ThreadState = ThreadState.Running)
+        End Get
+    End Property
 
-    End Function
-
+     
     ''' <summary>
     ''' Block the calling thread until the model has finished running
     ''' </summary>
     ''' <remarks>This can be used by an interface to call the model then wait for results before continuing processing.</remarks>
-    Public Sub Wait()
+    Public Function Wait(Optional ByVal WaitTimeInMilSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
+        Dim result As Boolean
         System.Console.WriteLine("Fit to time series: Waiting.")
 
         'block until m_SignalState changes
-        Me.m_SignalState.WaitOne()
+        result = Me.m_SignalState.WaitOne(WaitTimeInMilSec)
 
         System.Console.WriteLine("Fit to time series: Finished waiting.")
+        Return result
+
+    End Function
+
+
+    Public Sub ReleaseWait() Implements IThreadedProcess.ReleaseWait
 
     End Sub
+
+    Public Sub SetWait() Implements IThreadedProcess.SetWait
+
+    End Sub
+
 
     Private Function isRefDataLoaded() As Boolean
 
@@ -566,17 +595,21 @@ Public Class cF2TSManager
     ''' Stops a running F2TS model
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function StopRun() As Boolean
-
+    Public Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.StopRun
+        Dim result As Boolean = True
         Try
             'the model will keep running until it hits the StopRun flag
             'at which point it will call the RunStoppedDelegate(eRunType)
             'this lets it die gracefully
             m_model.StopRun = True
-            Return True
-        Catch ex As Exception
 
+            result = Me.Wait(WaitTimeInMillSec)
+
+        Catch ex As Exception
+            result = False
         End Try
+
+        Return result
 
         'Try
         '    Me.m_thrdRun.Abort()
@@ -778,7 +811,7 @@ Public Class cF2TSManager
     ''' <summary>
     ''' Get whether a sensitivity search has been ran.
     ''' </summary>
-    Public ReadOnly Property HasRunSens As Boolean
+    Public ReadOnly Property HasRunSens() As Boolean
         Get
             Return Me.m_model.HasRunSens
         End Get
@@ -999,17 +1032,6 @@ Public Class cF2TSManager
 
 #End Region ' Internal model handling
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-
-        If Me.m_thrdRun IsNot Nothing Then
-            'I dont think this can happen
-            'the thread is kill when the form is unloaded but just in case
-            Me.m_thrdRun.Abort()
-            Me.m_thrdRun = Nothing
-        End If
-
-    End Sub
 
 #Region "ISearchObjective implementation"
 
@@ -1038,5 +1060,29 @@ Public Class cF2TSManager
     End Property
 
 #End Region
+
+    'Public ReadOnly Property IsRunning1() As Boolean Implements IThreadedProcess.IsRunning
+    '    Get
+
+    '    End Get
+    'End Property
+
+    'Public Sub ReleaseWait() Implements IThreadedProcess.ReleaseWait
+
+    'End Sub
+
+    'Public Sub SetWait() Implements IThreadedProcess.SetWait
+
+    'End Sub
+
+    'Public Function StopRun1(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.StopRun
+
+    'End Function
+
+    'Public Function Wait1(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
+
+    'End Function
+
+  
 
 End Class

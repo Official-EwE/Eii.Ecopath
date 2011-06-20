@@ -51,13 +51,17 @@ Namespace Ecospace
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton
             Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton
+            Me.m_hdrRunning = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox
+            Me.m_cbMPA = New System.Windows.Forms.CheckBox
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel
             Me.m_btnDisplayGroups = New System.Windows.Forms.Button
             Me.m_hdrDispOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_cbMPA = New System.Windows.Forms.CheckBox
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel
+            Me.m_btnPause = New System.Windows.Forms.Button
+            Me.m_cmbRunType = New System.Windows.Forms.ComboBox
             Me.m_tcOutputs = New System.Windows.Forms.TabControl
-            Me.m_tabSmallMultiples = New System.Windows.Forms.TabPage
+            Me.m_tabMap = New System.Windows.Forms.TabPage
             Me.m_tabPlot = New System.Windows.Forms.TabPage
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -70,7 +74,7 @@ Namespace Ecospace
             Me.m_plDisplayOptions.SuspendLayout()
             Me.m_tlpRun.SuspendLayout()
             Me.m_tcOutputs.SuspendLayout()
-            Me.m_tabSmallMultiples.SuspendLayout()
+            Me.m_tabMap.SuspendLayout()
             Me.m_tabPlot.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -121,9 +125,9 @@ Namespace Ecospace
             '
             'm_pbMap
             '
-            resources.ApplyResources(Me.m_pbMap, "m_pbMap")
             Me.m_pbMap.BackColor = System.Drawing.SystemColors.ControlDark
             Me.m_pbMap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            resources.ApplyResources(Me.m_pbMap, "m_pbMap")
             Me.m_pbMap.Name = "m_pbMap"
             Me.m_pbMap.TabStop = False
             '
@@ -158,6 +162,8 @@ Namespace Ecospace
             Me.m_scMain.Panel1.Controls.Add(Me.m_plLabelOptions)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblProgress)
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDistribution)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_hdrRunning)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_cbShowIBMPackets)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cbMPA)
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDisplayOptions)
             Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
@@ -248,6 +254,27 @@ Namespace Ecospace
             Me.m_rbDisplayCoverB.Name = "m_rbDisplayCoverB"
             Me.m_rbDisplayCoverB.UseVisualStyleBackColor = True
             '
+            'm_hdrRunning
+            '
+            resources.ApplyResources(Me.m_hdrRunning, "m_hdrRunning")
+            Me.m_hdrRunning.Name = "m_hdrRunning"
+            '
+            'm_cbShowIBMPackets
+            '
+            resources.ApplyResources(Me.m_cbShowIBMPackets, "m_cbShowIBMPackets")
+            Me.m_cbShowIBMPackets.Checked = True
+            Me.m_cbShowIBMPackets.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbShowIBMPackets.Name = "m_cbShowIBMPackets"
+            Me.m_cbShowIBMPackets.UseVisualStyleBackColor = True
+            '
+            'm_cbMPA
+            '
+            resources.ApplyResources(Me.m_cbMPA, "m_cbMPA")
+            Me.m_cbMPA.Checked = True
+            Me.m_cbMPA.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbMPA.Name = "m_cbMPA"
+            Me.m_cbMPA.UseVisualStyleBackColor = True
+            '
             'm_plDisplayOptions
             '
             resources.ApplyResources(Me.m_plDisplayOptions, "m_plDisplayOptions")
@@ -271,38 +298,46 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_hdrDispOpt, "m_hdrDispOpt")
             Me.m_hdrDispOpt.Name = "m_hdrDispOpt"
             '
-            'm_cbMPA
-            '
-            resources.ApplyResources(Me.m_cbMPA, "m_cbMPA")
-            Me.m_cbMPA.Checked = True
-            Me.m_cbMPA.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_cbMPA.Name = "m_cbMPA"
-            Me.m_cbMPA.UseVisualStyleBackColor = True
-            '
             'm_tlpRun
             '
             resources.ApplyResources(Me.m_tlpRun, "m_tlpRun")
             Me.m_tlpRun.Controls.Add(Me.m_btnRun, 0, 0)
-            Me.m_tlpRun.Controls.Add(Me.m_btnStop, 1, 0)
+            Me.m_tlpRun.Controls.Add(Me.m_btnPause, 0, 1)
+            Me.m_tlpRun.Controls.Add(Me.m_btnStop, 1, 1)
+            Me.m_tlpRun.Controls.Add(Me.m_cmbRunType, 1, 0)
             Me.m_tlpRun.Name = "m_tlpRun"
+            '
+            'm_btnPause
+            '
+            resources.ApplyResources(Me.m_btnPause, "m_btnPause")
+            Me.m_btnPause.Name = "m_btnPause"
+            Me.m_btnPause.UseVisualStyleBackColor = True
+            '
+            'm_cmbRunType
+            '
+            resources.ApplyResources(Me.m_cmbRunType, "m_cmbRunType")
+            Me.m_cmbRunType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbRunType.FormattingEnabled = True
+            Me.m_cmbRunType.Items.AddRange(New Object() {resources.GetString("m_cmbRunType.Items"), resources.GetString("m_cmbRunType.Items1"), resources.GetString("m_cmbRunType.Items2")})
+            Me.m_cmbRunType.Name = "m_cmbRunType"
             '
             'm_tcOutputs
             '
             resources.ApplyResources(Me.m_tcOutputs, "m_tcOutputs")
-            Me.m_tcOutputs.Controls.Add(Me.m_tabSmallMultiples)
+            Me.m_tcOutputs.Controls.Add(Me.m_tabMap)
             Me.m_tcOutputs.Controls.Add(Me.m_tabPlot)
             Me.m_tcOutputs.Name = "m_tcOutputs"
             Me.m_tcOutputs.SelectedIndex = 0
             '
-            'm_tabSmallMultiples
+            'm_tabMap
             '
-            Me.m_tabSmallMultiples.Controls.Add(Me.m_pbMap)
-            Me.m_tabSmallMultiples.Controls.Add(Me.m_pbColors)
-            Me.m_tabSmallMultiples.Controls.Add(Me.m_lblLow)
-            Me.m_tabSmallMultiples.Controls.Add(Me.m_lblHigh)
-            resources.ApplyResources(Me.m_tabSmallMultiples, "m_tabSmallMultiples")
-            Me.m_tabSmallMultiples.Name = "m_tabSmallMultiples"
-            Me.m_tabSmallMultiples.UseVisualStyleBackColor = True
+            Me.m_tabMap.Controls.Add(Me.m_pbMap)
+            Me.m_tabMap.Controls.Add(Me.m_pbColors)
+            Me.m_tabMap.Controls.Add(Me.m_lblLow)
+            Me.m_tabMap.Controls.Add(Me.m_lblHigh)
+            resources.ApplyResources(Me.m_tabMap, "m_tabMap")
+            Me.m_tabMap.Name = "m_tabMap"
+            Me.m_tabMap.UseVisualStyleBackColor = True
             '
             'm_tabPlot
             '
@@ -345,7 +380,7 @@ Namespace Ecospace
             Me.m_plDisplayOptions.PerformLayout()
             Me.m_tlpRun.ResumeLayout(False)
             Me.m_tcOutputs.ResumeLayout(False)
-            Me.m_tabSmallMultiples.ResumeLayout(False)
+            Me.m_tabMap.ResumeLayout(False)
             Me.m_tabPlot.ResumeLayout(False)
             Me.ResumeLayout(False)
 
@@ -363,7 +398,7 @@ Namespace Ecospace
         Private WithEvents m_cbOverlay As System.Windows.Forms.CheckBox
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_tcOutputs As System.Windows.Forms.TabControl
-        Private WithEvents m_tabSmallMultiples As System.Windows.Forms.TabPage
+        Private WithEvents m_tabMap As System.Windows.Forms.TabPage
         Private WithEvents m_tabPlot As System.Windows.Forms.TabPage
         Private WithEvents m_tlpRun As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_hdrDispOpt As cEwEHeaderLabel
@@ -383,6 +418,10 @@ Namespace Ecospace
         Private WithEvents m_cbShowLabels As System.Windows.Forms.CheckBox
         Private WithEvents m_plLabelOptions As System.Windows.Forms.Panel
         Private WithEvents m_cbInvertColor As System.Windows.Forms.CheckBox
+        Private WithEvents m_hdrRunning As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnPause As System.Windows.Forms.Button
+        Private WithEvents m_cmbRunType As System.Windows.Forms.ComboBox
+        Private WithEvents m_cbShowIBMPackets As System.Windows.Forms.CheckBox
 
  
     End Class

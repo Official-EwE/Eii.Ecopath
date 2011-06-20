@@ -2080,7 +2080,6 @@ Public Class cPluginManager
                                     Optional ByVal invocation As eInvocationType = eInvocationType.All, _
                                     Optional ByVal coll As ICollection(Of cPluginContext) = Nothing) As Boolean
 
-
         ' Fix arguments
         If (aArgs Is Nothing) Then aArgs = New Object() {}
 
@@ -2136,7 +2135,6 @@ Public Class cPluginManager
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub MarshallInvokeMethod(ByVal state As Object)
-
         ' Sanity check
         Debug.Assert(TypeOf (state) Is cInvokeMethodInfo)
 

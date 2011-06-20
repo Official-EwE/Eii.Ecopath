@@ -16,6 +16,7 @@
             Me.m_lbValue = New System.Windows.Forms.Label
             Me.m_nudValue = New System.Windows.Forms.NumericUpDown
             Me.m_pbPreview = New System.Windows.Forms.PictureBox
+            Me.m_btnSmooth = New System.Windows.Forms.Button
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -37,10 +38,17 @@
             Me.m_pbPreview.Name = "m_pbPreview"
             Me.m_pbPreview.TabStop = False
             '
+            'm_btnSmooth
+            '
+            resources.ApplyResources(Me.m_btnSmooth, "m_btnSmooth")
+            Me.m_btnSmooth.Name = "m_btnSmooth"
+            Me.m_btnSmooth.UseVisualStyleBackColor = True
+            '
             'ucLayerEditorRange
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_btnSmooth)
             Me.Controls.Add(Me.m_pbPreview)
             Me.Controls.Add(Me.m_nudValue)
             Me.Controls.Add(Me.m_lbValue)
@@ -48,6 +56,7 @@
             Me.Controls.SetChildIndex(Me.m_lbValue, 0)
             Me.Controls.SetChildIndex(Me.m_nudValue, 0)
             Me.Controls.SetChildIndex(Me.m_pbPreview, 0)
+            Me.Controls.SetChildIndex(Me.m_btnSmooth, 0)
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
@@ -57,6 +66,7 @@
         Private WithEvents m_lbValue As System.Windows.Forms.Label
         Private WithEvents m_nudValue As System.Windows.Forms.NumericUpDown
         Protected WithEvents m_pbPreview As System.Windows.Forms.PictureBox
+        Private WithEvents m_btnSmooth As System.Windows.Forms.Button
 
     End Class
 

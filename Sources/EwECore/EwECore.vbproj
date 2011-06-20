@@ -237,9 +237,11 @@
     <Compile Include="Database\Updates\cDBUpdate6_01_01_006.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_01_010.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_01_01_011.vb" />
+    <Compile Include="Database\Updates\cDBUpdate6_02_00_000.vb" />
     <Compile Include="DataSource\IEwEDatasourceMetadata.vb" />
     <Compile Include="EcoPath\cEcopathModelFromEcosim.vb" />
     <Compile Include="EcoSim\Model\cMediationDataStructures.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerHabitatCapacity.vb" />
     <Compile Include="HelperClasses\cPathUtility.vb" />
     <Compile Include="Monte Carlo\cMonteCarloResultsWriter.vb" />
     <Compile Include="Pedigree\cPedigreeLevel.vb" />

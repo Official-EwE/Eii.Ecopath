@@ -11,6 +11,8 @@ Imports EwEUtils.Utilities
 
 Namespace Controls
 
+#Const style = win7
+
     ''' ===========================================================================
     ''' <summary>
     ''' Label control for showing header labels on EwE forms.
@@ -54,7 +56,11 @@ Namespace Controls
         <Browsable(False)> _
         Public Overrides Property BackColor() As System.Drawing.Color
             Get
+#If Style = win7 Then
+                Return MyBase.BackColor
+#Else
                 Return SystemColors.ActiveCaption
+#End If
             End Get
             Set(ByVal value As System.Drawing.Color)
                 ' NOP
@@ -70,11 +76,11 @@ Namespace Controls
         <Browsable(False)> _
         Public Overrides Property ForeColor() As System.Drawing.Color
             Get
-                If Me.Enabled Then
-                    Return SystemColors.ActiveCaptionText
-                Else
-                    Return SystemColors.InactiveCaptionText
-                End If
+#If Style = win7 Then
+                Return MyBase.ForeColor
+#Else
+                Return SystemColors.ActiveCaptionText
+#End If
             End Get
             Set(ByVal value As System.Drawing.Color)
                 ' NOP
@@ -191,10 +197,12 @@ Namespace Controls
                     Debug.Assert(False)
             End Select
 
+            ' Draw background
             Using br As New SolidBrush(Me.BackColor)
                 e.Graphics.FillRectangle(br, Me.ClientRectangle)
             End Using
 
+            ' Draw image
             If (Me.Image IsNot Nothing) Then
                 rcImage.Width = Math.Min(Image.Width, Me.ClientRectangle.Width - Me.Padding.Horizontal)
                 rcText.Width -= rcImage.Width
@@ -207,9 +215,31 @@ Namespace Controls
                 Me.DrawImage(e.Graphics, Me.Image, rcImage, Me.ImageAlign)
             End If
 
-            Using br As New SolidBrush(Me.ForeColor)
-                fmt.Trimming = StringTrimming.None
-                e.Graphics.DrawString(Me.Text, Me.Font, br, rcText, fmt)
+            Using ft As New Font(MyBase.Font, FontStyle.Bold)
+
+                ' Draw label
+                Using br As New SolidBrush(Me.ForeColor)
+                    fmt.Trimming = StringTrimming.None
+                    e.Graphics.DrawString(Me.Text, ft, br, rcText, fmt)
+                End Using
+
+#If Style = win7 Then
+
+                ' Draw line
+                Dim x1 As Integer = rcText.X
+                Dim x2 As Integer = rcText.X + rcText.Width
+                Dim y As Integer = rcText.Y + CInt(rcText.Height / 2)
+                Dim i As Integer = CInt(e.Graphics.MeasureString(Me.Text, ft, rcText.Size).Width)
+
+                If Not bRightToLeft Then
+                    x1 += (i + 5)
+                Else
+                    x2 -= (i + 5)
+                End If
+
+                e.Graphics.DrawLine(SystemPens.ButtonShadow, x1, y, x2, y)
+                e.Graphics.DrawLine(SystemPens.ButtonHighlight, x1, y + 1, x2, y + 1)
+#End If
             End Using
 
         End Sub

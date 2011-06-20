@@ -100,6 +100,30 @@ Namespace Ecospace.Basemap.Layers
 
                     Next iHabitat
 
+                Case eVarNameFlags.LayerHabitatCapacity
+
+                    key = New cValueID(eDataTypes.EcospaceLayerHabitatCapacity, bmd.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
+
+                    ' Get or create Visual Style
+                    vs = ad.VisualStyle
+                    If vs Is Nothing Then
+                        vs = New cVisualStyle()
+                        vs.ForeColour = Color.Black
+                        vs.BackColour = Color.Transparent
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
+                    End If
+
+                    renderer = New cLayerRendererValue(vs)
+                    editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
+                    If layerData Is Nothing Then layerData = bmd.LayerHabitatCapacity
+                    layer = New cLayer(uic, layerData, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, bmd, eVarNameFlags.LayerHabitatCapacity)
+                    layer.Name = "Habitat capacity"
+
+                    lLayers.Add(layer)
+
                 Case eVarNameFlags.LayerRegion
 
                     ' This is screwed-up: one key (and one layer) for all regions
@@ -473,6 +497,9 @@ Namespace Ecospace.Basemap.Layers
 
                 Case eVarNameFlags.LayerHabitat
                     strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_HABITATS
+
+                Case eVarNameFlags.LayerHabitatCapacity
+                    strGroup = "HabCap"
 
                 Case eVarNameFlags.LayerRegion
                     strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_REGIONS

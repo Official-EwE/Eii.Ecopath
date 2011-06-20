@@ -27,7 +27,7 @@ Public Class cEcospaceTimestep
     Private m_relativebiomass() As Single 'biomass relative to start biomass by group
     Private m_biomassByRegion(,) As Single 'biomass by group region
 
-    Private m_IBMMap(,,) As Boolean
+    'Private m_IBMMap(,,) As Boolean
 
     Private m_spaceData As cEcospaceDataStructures
     Private m_simData As cEcosimDatastructures
@@ -53,7 +53,7 @@ Public Class cEcospaceTimestep
             ReDim m_relativebiomass(Me.m_simData.nGroups)
             ReDim m_ConMax(Me.m_simData.nGroups)
             ReDim m_biomassByRegion(Me.m_simData.nGroups, Me.m_spaceData.NoRegions)
-            ReDim m_IBMMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol, Me.m_simData.nGroups)
+            'ReDim m_IBMMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol, Me.m_simData.nGroups)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)
         End Try
@@ -65,24 +65,28 @@ Public Class cEcospaceTimestep
 
         Try
 
-            'clear out the data from the last timestep
-            'this will set all the cells to false
-            Array.Clear(m_IBMMap, 0, m_IBMMap.Length)
+            ''clear out the data from the last timestep
+            ''this will set all the cells to false
+            'Array.Clear(m_IBMMap, 0, m_IBMMap.Length)
 
-            Dim irow As Integer, jcol As Integer
-            Dim iGrp As Integer
-            For isp As Integer = 1 To Me.m_stanzaData.Nsplit
-                For ist As Integer = 1 To Me.m_stanzaData.Nstanza(isp)
-                    For iage As Integer = Me.m_stanzaData.Age1(isp, ist) To Me.m_stanzaData.Age2(isp, ist)
-                        For ipkt As Integer = 1 To Me.m_stanzaData.Npackets
-                            irow = Int(Me.m_stanzaData.iPacket(isp, iage, ipkt))
-                            jcol = Int(Me.m_stanzaData.jPacket(isp, iage, ipkt))
-                            iGrp = Me.m_stanzaData.EcopathCode(isp, ist)
-                            m_IBMMap(irow, jcol, iGrp) = True
-                        Next ipkt
-                    Next iage
-                Next ist
-            Next isp
+            'If Me.m_spaceData.UseIBM Then
+
+            '    Dim irow As Integer, jcol As Integer
+            '    Dim iGrp As Integer
+            '    For isp As Integer = 1 To Me.m_stanzaData.Nsplit
+            '        For ist As Integer = 1 To Me.m_stanzaData.Nstanza(isp)
+            '            For iage As Integer = Me.m_stanzaData.Age1(isp, ist) To Me.m_stanzaData.Age2(isp, ist)
+            '                For ipkt As Integer = 1 To Me.m_stanzaData.Npackets
+            '                    irow = Int(Me.m_stanzaData.iPacket(isp, iage, ipkt))
+            '                    jcol = Int(Me.m_stanzaData.jPacket(isp, iage, ipkt))
+            '                    iGrp = Me.m_stanzaData.EcopathCode(isp, ist)
+            '                    m_IBMMap(irow, jcol, iGrp) = True
+            '                Next ipkt
+            '            Next iage
+            '        Next ist
+            '    Next isp
+
+            'End If
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ComputeIBMMap() Exception: " & ex.Message)
@@ -333,15 +337,21 @@ Public Class cEcospaceTimestep
         End Get
     End Property
 
-    ''' <summary>
-    ''' Map of IMB packets by Row, Col, Group
-    ''' </summary>
-    ''' <value>True if cell contains IBM packet(s). False otherwise</value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public ReadOnly Property IMBLocationsMap() As Boolean(,,)
+    '''' <summary>
+    '''' Map of IMB packets by Row, Col, Group
+    '''' </summary>
+    '''' <value>True if cell contains IBM packet(s). False otherwise</value>
+    '''' <returns></returns>
+    '''' <remarks></remarks>
+    'Public ReadOnly Property IMBLocationsMap() As Boolean(,,)
+    '    Get
+    '        Return Me.m_IBMMap
+    '    End Get
+    'End Property
+
+    Public ReadOnly Property StanzaDS() As cStanzaDatastructures
         Get
-            Return Me.m_IBMMap
+            Return Me.m_stanzaData
         End Get
     End Property
 

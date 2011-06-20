@@ -241,15 +241,15 @@ Namespace Ecospace.Advection
             End Get
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Stop the Advection calculations run.
-        ''' </summary>
-        ''' <remarks>This will not do anything if the search is not running</remarks>
-        ''' -------------------------------------------------------------------
-        Public Sub StopRun()
-            Me.m_comp.Interrupted = True
-        End Sub
+        '''' -------------------------------------------------------------------
+        '''' <summary>
+        '''' Stop the Advection calculations run.
+        '''' </summary>
+        '''' <remarks>This will not do anything if the search is not running</remarks>
+        '''' -------------------------------------------------------------------
+        'Public Sub StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1)
+
+        'End Sub
 
 #End Region ' Public Properties
 
@@ -490,6 +490,11 @@ Namespace Ecospace.Advection
         End Property
 
 #End Region ' ICoreInterface implementation
+
+
+        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
+            Me.m_comp.Interrupted = True
+        End Function
 
     End Class
 

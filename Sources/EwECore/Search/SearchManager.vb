@@ -15,6 +15,14 @@ Namespace SearchObjectives
         Function Load() As Boolean
         Sub Clear()
 
+        '''' <summary>
+        '''' Stop a running process
+        '''' </summary>
+        '''' <param name="WaitTimeinMillSec">Length of time in milliseconds to wait for the process to complete, -1 wait indefinitely.  </param>
+        '''' <returns>True if the process was stop within the wait time, False if it timed out.</returns>
+        '''' <remarks></remarks>
+        'Function StopRun(Optional ByVal WaitTimeinMillSec As Integer = -1) As Boolean
+
         ReadOnly Property ValueWeights() As cSearchObjectiveWeights
         ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput
         ReadOnly Property FleetObjectives(ByVal iGroup As Integer) As cSearchObjectiveFleetInput
@@ -266,11 +274,29 @@ Namespace SearchObjectives
                 Return m_parameters
             End Get
         End Property
+
+
     End Class
 
 #End Region
 
 End Namespace
+
+
+Public Interface IThreadedProcess
+
+    Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
+
+    Function Wait(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
+
+    Sub SetWait()
+
+    Sub ReleaseWait()
+
+    ReadOnly Property IsRunning() As Boolean
+
+
+End Interface
 
 #Region "Thread Wait Base Class"
 
@@ -279,6 +305,7 @@ End Namespace
 ''' </summary>
 ''' <remarks>This in not in the SearchObjectives name space because it is used by class that are not part of the Search Objective interface</remarks>
 Public MustInherit Class cThreadWaitBase
+    Implements IThreadedProcess
 
     ''' <summary>
     ''' m_SignalState is use by an calling routine to block its thread until the model has completed
@@ -292,44 +319,69 @@ Public MustInherit Class cThreadWaitBase
         Me.m_SignalState = New System.Threading.ManualResetEvent(True)
     End Sub
 
+    Public MustOverride Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.StopRun
+
     ''' <summary>
     ''' Block the calling thread until the model has finished running
     ''' </summary>
+    ''' <param name="WaitTimeinMillSec">Length of time in milliseconds to wait for the process to complete, -1 wait indefinitely.  </param>
+    ''' <returns>True if the process was stop within the wait time, False if it timed out.</returns>
     ''' <remarks>This can be used by an interface to call the model then wait for results before continuing processing.</remarks>
-    Public Overridable Sub Wait()
+    Public Overridable Function Wait(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
+        Dim result As Boolean
+        Dim waitTime As Integer = WaitTimeInMillSec
+        Dim totTime As Integer
+        Dim processing As Boolean = True
+        Dim n As Integer
+        System.Console.WriteLine("Starting Waiting.")
 
-        System.Console.WriteLine("Waiting.")
+        'if WaitTimeInMillSec  = -1 wait until completed(WaitOne returns True) no matter how long
+        'if WaitTimeInMillSec = 0 then wait for zero time even if WaitOne returns False, process has not completed
+        'WaitTimeInMillSec > 0 (any positive integer) then wait for WaitTimeInMillSec or until WaitOne returns True
+        If waitTime > 0 Then waitTime = 100
+        Do
+            n += 1
 
-        'block the calling thread until m_SignalState changes
-        'ReleaseWait() must be called
-        Me.m_SignalState.WaitOne()
+            Windows.Forms.Application.DoEvents()
 
-        System.Console.WriteLine("Finished waiting.")
+            'WaitOne() will return False if it timed out, the process has not completed
+            'True if the wait was completed or there was no wait 
+            result = Me.m_SignalState.WaitOne(waitTime)
+            totTime += waitTime
+            'System.Console.WriteLine("Waited " & totTime.ToString)
 
-    End Sub
+            If result = True Then processing = False
+            If totTime >= WaitTimeInMillSec Then processing = False
+
+        Loop While processing
+
+        System.Console.WriteLine("Finished waiting " & totTime.ToString & " milliseconds, " & n.ToString & " iterations")
+        Return result
+
+    End Function
 
 
     ''' <summary>
     ''' Set the signaled state to non-signaled any thread the calls Wait() will be blocked until ReleaseWait() is called
     ''' </summary>
     ''' <remarks></remarks>
-    Protected Overridable Sub SetWait()
+    Protected Overridable Sub SetWait() Implements IThreadedProcess.SetWait
         'set the isRunning flag
         m_bIsRunning = True
         'puts the ManualResetEvent into a non-signaled state
-        'threads calling Wait() will block until ClearThread() is called
+        'threads calling Wait() will block until ReleaseWait() is called
         Me.m_SignalState.Reset()
     End Sub
 
 
-    Protected Overridable Sub ReleaseWait()
+    Protected Overridable Sub ReleaseWait() Implements IThreadedProcess.ReleaseWait
         m_bIsRunning = False
         'puts the ManualResetEvent into a signaled state
         'Threads that called Wait() will be signaled to proceed
         Me.m_SignalState.Set()
     End Sub
 
-    Public Overridable ReadOnly Property IsRunning() As Boolean
+    Public Overridable ReadOnly Property IsRunning() As Boolean Implements IThreadedProcess.IsRunning
         Get
             Return m_bIsRunning
         End Get

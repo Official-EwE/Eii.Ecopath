@@ -233,6 +233,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerRelCin, False)
             Me.AddData(eVarNameFlags.LayerRegion)
             Me.AddData(eVarNameFlags.LayerDepth)
+            Me.AddData(eVarNameFlags.LayerHabitatCapacity)
             Me.AddData(eVarNameFlags.LayerHabitat)
 
             Me.m_ucLayers.UnlockUpdates()

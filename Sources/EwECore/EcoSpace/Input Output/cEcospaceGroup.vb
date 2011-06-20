@@ -92,8 +92,8 @@ Public Class cEcospaceGroup
             m_values.Add(val.varName, val)
 
             'PreferredHabitat()
-            meta = New cVariableMetaData(False)
-            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.PreferredHabitat, eStatusFlags.Null, eCoreCounterTypes.nHabitats, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.PreferredHabitat, eStatusFlags.Null, eCoreCounterTypes.nHabitats, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             'set status flags to their default values
@@ -154,7 +154,6 @@ Public Class cEcospaceGroup
         End Set
     End Property
 
-
     Public Property IsAdvected() As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.IsAdvected))
@@ -185,12 +184,12 @@ Public Class cEcospaceGroup
         End Set
     End Property
 
-    Public Property PreferredHabitat(ByVal iHabitat As Integer) As Boolean
+    Public Property PreferredHabitat(ByVal iHabitat As Integer) As Single
         Get
-            Return CBool(GetVariable(eVarNameFlags.PreferredHabitat, iHabitat))
+            Return CSng(GetVariable(eVarNameFlags.PreferredHabitat, iHabitat))
         End Get
 
-        Set(ByVal value As Boolean)
+        Set(ByVal value As Single)
             SetVariable(eVarNameFlags.PreferredHabitat, value, iHabitat)
         End Set
     End Property

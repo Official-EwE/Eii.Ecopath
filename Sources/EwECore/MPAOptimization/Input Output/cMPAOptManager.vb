@@ -314,9 +314,20 @@ Public Class cMPAOptManager
         m_MPASearch.YearTimeStep(iYear, Biomass)
     End Sub
 
-    Public Sub StopRun()
-        m_MPASearch.StopRun()
-    End Sub
+    Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
+        Dim result As Boolean = True
+        Try
+            If Me.m_MPASearch IsNot Nothing Then
+                Me.m_MPASearch.StopRun()
+                result = Me.Wait(WaitTimeInMillSec)
+            End If
+        Catch ex As Exception
+            result = False
+        End Try
+
+        Return result
+
+    End Function
 
     Public Sub clearMPAs()
         Me.m_MPASearch.clearMPAs()

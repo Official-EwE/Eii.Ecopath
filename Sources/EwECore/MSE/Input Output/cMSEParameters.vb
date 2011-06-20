@@ -93,10 +93,11 @@ Namespace MSE
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.MSEStop, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEStop))
-            val.Stored = False
-            m_values.Add(val.varName, val)
+            'jb 30-May-2011 StopRun is not a property it is a Method (stop the run) so it has been moved to the MSEManager.StopRun()
+            'meta = New cVariableMetaData()
+            'val = New cValue(New Boolean, eVarNameFlags.MSEStop, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEStop))
+            'val.Stored = False
+            'm_values.Add(val.varName, val)
 
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.MSESave, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSESave))
@@ -211,15 +212,15 @@ Namespace MSE
             End Set
         End Property
 
-        Public Property StopRun() As Boolean
-            Get
-                Return CBool(GetVariable(eVarNameFlags.MSEStop))
-            End Get
+        'Public Property StopRun() As Boolean
+        '    Get
+        '        Return CBool(GetVariable(eVarNameFlags.MSEStop))
+        '    End Get
 
-            Set(ByVal value As Boolean)
-                SetVariable(eVarNameFlags.MSEStop, value)
-            End Set
-        End Property
+        '    Set(ByVal value As Boolean)
+        '        SetVariable(eVarNameFlags.MSEStop, value)
+        '    End Set
+        'End Property
 
         Public Property Save() As Boolean
             Get

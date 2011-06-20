@@ -978,4 +978,7 @@ System Error: {0}</value>
     <value>Group '{0}' is not fished</value>
     <comment>{0}=group name</comment>
   </data>
+  <data name="ECOSPACE_RUNNING" xml:space="preserve">
+    <value>Ecospace is already running you must either stop the current run or wait for it to complete before starting another run.</value>
+  </data>
 </root>

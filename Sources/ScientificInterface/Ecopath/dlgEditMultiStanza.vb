@@ -23,7 +23,7 @@ Namespace Ecopath
         Private m_fpRecPwr As cEwEFormatProvider = Nothing
         Private m_fpBab As cEwEFormatProvider = Nothing
         Private m_fpWmatWinf As cEwEFormatProvider = Nothing
-        Private m_fpFF As cEwEFormatProvider = Nothing
+        Private m_fpFFHatchStocking As cEwEFormatProvider = Nothing
         Private m_fpStanza As cEwEFormatProvider = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
         Private m_groupInitial As cEcoPathGroupInput = Nothing
@@ -54,6 +54,7 @@ Namespace Ecopath
             If (Me.m_uic Is Nothing) Then Return
 
             Dim bEcosimLoaded As Boolean = (Me.m_uic.Core.ActiveEcosimScenarioIndex > -1)
+            Dim bEcospaceLoaded As Boolean = (Me.m_uic.Core.ActiveEcospaceScenarioIndex > -1)
             Dim mgr As cForcingFunctionManager = Me.m_uic.Core.ForcingShapeManager
             Dim lItems As New List(Of Object)
 
@@ -88,13 +89,15 @@ Namespace Ecopath
             Else
                 lItems.Add(My.Resources.PROMPT_ECOSIM_REQUIRED)
             End If
-            Me.m_fpFF = New cEwEFormatProvider(Me.m_uic, Me.m_cmbFF, GetType(Integer), lItems.ToArray)
+            Me.m_fpFFHatchStocking = New cEwEFormatProvider(Me.m_uic, Me.m_cmbFF, GetType(Integer), lItems.ToArray)
             If bEcosimLoaded Then
-                Me.m_fpFF.Style = cStyleGuide.eStyleFlags.OK
+                Me.m_fpFFHatchStocking.Style = cStyleGuide.eStyleFlags.OK
             Else
-                Me.m_fpFF.Style = cStyleGuide.eStyleFlags.NotEditable
-                Me.m_fpFF.Value = 0
+                Me.m_fpFFHatchStocking.Style = cStyleGuide.eStyleFlags.NotEditable
+                Me.m_fpFFHatchStocking.Value = 0
             End If
+
+            Me.m_cbEggAtSpawn.Enabled = bEcospaceLoaded
 
             Me.m_grid.RefreshContent()
             Me.UpdateControls()
@@ -111,7 +114,7 @@ Namespace Ecopath
             Me.m_fpRecPwr.Release()
             Me.m_fpBab.Release()
             Me.m_fpWmatWinf.Release()
-            Me.m_fpFF.Release()
+            Me.m_fpFFHatchStocking.Release()
             Me.m_fpStanza.Release()
 
             MyBase.OnFormClosed(e)
@@ -267,10 +270,11 @@ Namespace Ecopath
 
             If bEcosimLoaded Then
                 ' Only sync FF when sim scenario is loaded
-                Me.m_fpFF.Value = stanza.HatchCode
+                Me.m_fpFFHatchStocking.Value = stanza.HatchCode
             End If
 
             Me.m_cbFFecun.Checked = stanza.FixedFecundity
+            Me.m_cbEggAtSpawn.Checked = stanza.EggAtSpawn
 
             Me.m_grid.CalculateStanzaParameters()
             Me.m_grid.RefreshContent()
@@ -299,10 +303,11 @@ Namespace Ecopath
 
             If bEcosimLoaded Then
                 ' Only update FF when scenario is loaded
-                Me.m_grid.StanzaGroup.HatchCode = CInt(Me.m_fpFF.Value)
+                Me.m_grid.StanzaGroup.HatchCode = CInt(Me.m_fpFFHatchStocking.Value)
             End If
 
             stanza.FixedFecundity = Me.m_cbFFecun.Checked
+            stanza.EggAtSpawn = Me.m_cbEggAtSpawn.Checked
 
             ' Make the grid apply its values
             Me.m_grid.SetStanzaGroupValues(bApplyToCore)
