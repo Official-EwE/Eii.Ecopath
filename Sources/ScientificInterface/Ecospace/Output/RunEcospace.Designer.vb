@@ -125,9 +125,9 @@ Namespace Ecospace
             '
             'm_pbMap
             '
+            resources.ApplyResources(Me.m_pbMap, "m_pbMap")
             Me.m_pbMap.BackColor = System.Drawing.SystemColors.ControlDark
             Me.m_pbMap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            resources.ApplyResources(Me.m_pbMap, "m_pbMap")
             Me.m_pbMap.Name = "m_pbMap"
             Me.m_pbMap.TabStop = False
             '
@@ -206,6 +206,9 @@ Namespace Ecospace
             'm_hdrLabelOptions
             '
             resources.ApplyResources(Me.m_hdrLabelOptions, "m_hdrLabelOptions")
+            Me.m_hdrLabelOptions.CanCollapseParent = False
+            Me.m_hdrLabelOptions.CollapsedParentHeight = 0
+            Me.m_hdrLabelOptions.IsCollapsed = False
             Me.m_hdrLabelOptions.Name = "m_hdrLabelOptions"
             '
             'm_lblProgress
@@ -246,6 +249,9 @@ Namespace Ecospace
             'm_hdrDist
             '
             resources.ApplyResources(Me.m_hdrDist, "m_hdrDist")
+            Me.m_hdrDist.CanCollapseParent = False
+            Me.m_hdrDist.CollapsedParentHeight = 0
+            Me.m_hdrDist.IsCollapsed = False
             Me.m_hdrDist.Name = "m_hdrDist"
             '
             'm_rbDisplayCoverB
@@ -257,6 +263,9 @@ Namespace Ecospace
             'm_hdrRunning
             '
             resources.ApplyResources(Me.m_hdrRunning, "m_hdrRunning")
+            Me.m_hdrRunning.CanCollapseParent = False
+            Me.m_hdrRunning.CollapsedParentHeight = 0
+            Me.m_hdrRunning.IsCollapsed = False
             Me.m_hdrRunning.Name = "m_hdrRunning"
             '
             'm_cbShowIBMPackets
@@ -296,6 +305,9 @@ Namespace Ecospace
             'm_hdrDispOpt
             '
             resources.ApplyResources(Me.m_hdrDispOpt, "m_hdrDispOpt")
+            Me.m_hdrDispOpt.CanCollapseParent = False
+            Me.m_hdrDispOpt.CollapsedParentHeight = 0
+            Me.m_hdrDispOpt.IsCollapsed = False
             Me.m_hdrDispOpt.Name = "m_hdrDispOpt"
             '
             'm_tlpRun
