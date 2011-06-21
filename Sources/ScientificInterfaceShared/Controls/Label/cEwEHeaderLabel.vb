@@ -25,6 +25,14 @@ Namespace Controls
     Public Class cEwEHeaderLabel
         Inherits Label
 
+#Region " Private vars "
+
+        Private m_bCanCollapseParent As Boolean = False
+        Private m_bIsCollapsed As Boolean = False
+        Private m_iExpandedParentHeight As Integer = 0
+        Private m_iCollapsedParentHeight As Integer = 0
+
+#End Region ' Private vars
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Constructor
@@ -170,6 +178,66 @@ Namespace Controls
             End Get
         End Property
 
+        <Browsable(True), _
+         Category("Expand/collapse")> _
+        Public Property CanCollapseParent() As Boolean
+            Get
+                Return Me.m_bCanCollapseParent
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bCanCollapseParent = value
+                Me.Invalidate()
+            End Set
+        End Property
+
+        <Browsable(True), _
+         Category("Expand/collapse")> _
+        Public Property CollapsedParentHeight() As Integer
+            Get
+                Return Me.m_iCollapsedParentHeight
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iCollapsedParentHeight = value
+            End Set
+        End Property
+
+        <Browsable(True), _
+         Category("Expand/collapse")> _
+        Public Property IsCollapsed() As Boolean
+            Get
+                Return Me.m_bIsCollapsed
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bIsCollapsed = value
+                If Me.m_bIsCollapsed Then
+                    Me.m_iExpandedParentHeight = Me.Parent.Height
+                    Me.Parent.Height = Math.Max(Me.Height, Me.m_iCollapsedParentHeight)
+                ElseIf (Me.m_iExpandedParentHeight > 0) Then
+                    Me.Parent.Height = Me.m_iExpandedParentHeight
+                End If
+                Me.Invalidate()
+            End Set
+        End Property
+
+#Region " Events "
+
+        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
+            ' ToDo: implement this properly, use right-to-left order into account
+            If e.X < 16 Then
+                If Me.CanCollapseParent Then Me.IsCollapsed = Not Me.IsCollapsed
+            End If
+            MyBase.OnMouseDown(e)
+        End Sub
+
+        Protected Overrides Sub OnMouseDoubleClick(ByVal e As System.Windows.Forms.MouseEventArgs)
+            MyBase.OnMouseDoubleClick(e)
+            If e.X >= 16 Then
+                If Me.CanCollapseParent Then Me.IsCollapsed = Not Me.IsCollapsed
+            End If
+        End Sub
+
+#End Region ' Events
+
 #Region " Internals "
 
         ''' -----------------------------------------------------------------------
@@ -183,6 +251,7 @@ Namespace Controls
             Dim rcImage As Rectangle = Me.ClientRectangle
             Dim bRightToLeft As Boolean = False
             Dim fmt As StringFormat = cDrawingUtils.ContentAlignmentToStringFormat(Me.TextAlign)
+            Dim img As Image = Me.Image
 
             Select Case Me.RightToLeft
                 Case RightToLeft.Inherit
@@ -202,9 +271,14 @@ Namespace Controls
                 e.Graphics.FillRectangle(br, Me.ClientRectangle)
             End Using
 
+            ' Get image
+            If Me.CanCollapseParent Then
+                img = DirectCast(IIf(Me.IsCollapsed, My.Resources.Collapsed, My.Resources.Expanded), Image)
+            End If
+
             ' Draw image
-            If (Me.Image IsNot Nothing) Then
-                rcImage.Width = Math.Min(Image.Width, Me.ClientRectangle.Width - Me.Padding.Horizontal)
+            If (img IsNot Nothing) Then
+                rcImage.Width = Math.Min(img.Width, Me.ClientRectangle.Width - Me.Padding.Horizontal)
                 rcText.Width -= rcImage.Width
 
                 If (bRightToLeft) Then
@@ -212,7 +286,7 @@ Namespace Controls
                 Else
                     rcText.X += (rcImage.Width + Me.Padding.Horizontal)
                 End If
-                Me.DrawImage(e.Graphics, Me.Image, rcImage, Me.ImageAlign)
+                Me.DrawImage(e.Graphics, img, rcImage, Me.ImageAlign)
             End If
 
             Using ft As New Font(MyBase.Font, FontStyle.Bold)

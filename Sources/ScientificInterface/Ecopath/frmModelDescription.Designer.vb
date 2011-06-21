@@ -85,6 +85,10 @@ Partial Class frmModelDescription
         Me.m_lblSouth = New System.Windows.Forms.Label
         Me.m_cmbModelAreaName = New ScientificInterfaceShared.Controls.cGeocodeLookupComboBox
         Me.m_pbSearching = New System.Windows.Forms.PictureBox
+        Me.m_plDescr = New System.Windows.Forms.Panel
+        Me.Panel2 = New System.Windows.Forms.Panel
+        Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel
+        Me.Panel1 = New System.Windows.Forms.Panel
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -98,6 +102,10 @@ Partial Class frmModelDescription
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_plDescr.SuspendLayout()
+        Me.Panel2.SuspendLayout()
+        Me.m_tlpContent.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_udNumDigits
@@ -113,7 +121,10 @@ Partial Class frmModelDescription
         '
         'm_lblOptions
         '
+        Me.m_lblOptions.CanCollapseParent = True
+        Me.m_lblOptions.CollapsedParentHeight = 0
         resources.ApplyResources(Me.m_lblOptions, "m_lblOptions")
+        Me.m_lblOptions.IsCollapsed = False
         Me.m_lblOptions.Name = "m_lblOptions"
         '
         'm_lbDescription
@@ -128,7 +139,10 @@ Partial Class frmModelDescription
         '
         'm_lblModel
         '
+        Me.m_lblModel.CanCollapseParent = True
+        Me.m_lblModel.CollapsedParentHeight = 0
         resources.ApplyResources(Me.m_lblModel, "m_lblModel")
+        Me.m_lblModel.IsCollapsed = False
         Me.m_lblModel.Name = "m_lblModel"
         '
         'm_tbName
@@ -372,7 +386,10 @@ Partial Class frmModelDescription
         '
         'm_hdrExecution
         '
+        Me.m_hdrExecution.CanCollapseParent = False
+        Me.m_hdrExecution.CollapsedParentHeight = 0
         resources.ApplyResources(Me.m_hdrExecution, "m_hdrExecution")
+        Me.m_hdrExecution.IsCollapsed = False
         Me.m_hdrExecution.Name = "m_hdrExecution"
         '
         'm_nudFirstYear
@@ -447,41 +464,65 @@ Partial Class frmModelDescription
         Me.m_pbSearching.Name = "m_pbSearching"
         Me.m_pbSearching.TabStop = False
         '
+        'm_plDescr
+        '
+        Me.m_plDescr.Controls.Add(Me.m_tbDescription)
+        Me.m_plDescr.Controls.Add(Me.m_pbSearching)
+        Me.m_plDescr.Controls.Add(Me.m_lbAuthor)
+        Me.m_plDescr.Controls.Add(Me.m_lblModel)
+        Me.m_plDescr.Controls.Add(Me.m_nudNumYears)
+        Me.m_plDescr.Controls.Add(Me.m_lbScenarioName)
+        Me.m_plDescr.Controls.Add(Me.m_nudEast)
+        Me.m_plDescr.Controls.Add(Me.m_lbDescription)
+        Me.m_plDescr.Controls.Add(Me.m_nudSouth)
+        Me.m_plDescr.Controls.Add(Me.m_lbContact)
+        Me.m_plDescr.Controls.Add(Me.m_nudWest)
+        Me.m_plDescr.Controls.Add(Me.m_tbName)
+        Me.m_plDescr.Controls.Add(Me.m_nudNorth)
+        Me.m_plDescr.Controls.Add(Me.m_tbAuthor)
+        Me.m_plDescr.Controls.Add(Me.m_nudFirstYear)
+        Me.m_plDescr.Controls.Add(Me.m_tbArea)
+        Me.m_plDescr.Controls.Add(Me.m_cmbModelAreaName)
+        Me.m_plDescr.Controls.Add(Me.m_tbContact)
+        Me.m_plDescr.Controls.Add(Me.m_lblFirstYear)
+        Me.m_plDescr.Controls.Add(Me.m_lblLocation)
+        Me.m_plDescr.Controls.Add(Me.m_lblNorth)
+        Me.m_plDescr.Controls.Add(Me.m_lblAreaUnit)
+        Me.m_plDescr.Controls.Add(Me.m_lblWest)
+        Me.m_plDescr.Controls.Add(Me.m_lblNumYears)
+        Me.m_plDescr.Controls.Add(Me.m_lblEast)
+        Me.m_plDescr.Controls.Add(Me.m_lblArea)
+        Me.m_plDescr.Controls.Add(Me.m_lblSouth)
+        resources.ApplyResources(Me.m_plDescr, "m_plDescr")
+        Me.m_plDescr.Name = "m_plDescr"
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.m_lblOptions)
+        Me.Panel2.Controls.Add(Me.m_tlpUnits)
+        resources.ApplyResources(Me.Panel2, "Panel2")
+        Me.Panel2.Name = "Panel2"
+        '
+        'm_tlpContent
+        '
+        resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
+        Me.m_tlpContent.Controls.Add(Me.Panel1, 0, 2)
+        Me.m_tlpContent.Controls.Add(Me.m_plDescr, 0, 0)
+        Me.m_tlpContent.Controls.Add(Me.Panel2, 0, 1)
+        Me.m_tlpContent.Name = "m_tlpContent"
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.m_hdrExecution)
+        Me.Panel1.Controls.Add(Me.m_chkPSD)
+        resources.ApplyResources(Me.Panel1, "Panel1")
+        Me.Panel1.Name = "Panel1"
+        '
         'frmModelDescription
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.m_pbSearching)
-        Me.Controls.Add(Me.m_nudNumYears)
-        Me.Controls.Add(Me.m_nudEast)
-        Me.Controls.Add(Me.m_nudSouth)
-        Me.Controls.Add(Me.m_nudWest)
-        Me.Controls.Add(Me.m_nudNorth)
-        Me.Controls.Add(Me.m_nudFirstYear)
-        Me.Controls.Add(Me.m_tbDescription)
-        Me.Controls.Add(Me.m_tbContact)
-        Me.Controls.Add(Me.m_chkPSD)
-        Me.Controls.Add(Me.m_tlpUnits)
-        Me.Controls.Add(Me.m_lblAreaUnit)
-        Me.Controls.Add(Me.m_lblNumYears)
-        Me.Controls.Add(Me.m_lblArea)
-        Me.Controls.Add(Me.m_lblSouth)
-        Me.Controls.Add(Me.m_lblEast)
-        Me.Controls.Add(Me.m_lblWest)
-        Me.Controls.Add(Me.m_lblNorth)
-        Me.Controls.Add(Me.m_lblLocation)
-        Me.Controls.Add(Me.m_lblFirstYear)
-        Me.Controls.Add(Me.m_cmbModelAreaName)
-        Me.Controls.Add(Me.m_tbArea)
-        Me.Controls.Add(Me.m_tbAuthor)
-        Me.Controls.Add(Me.m_lblModel)
-        Me.Controls.Add(Me.m_tbName)
-        Me.Controls.Add(Me.m_lbContact)
-        Me.Controls.Add(Me.m_hdrExecution)
-        Me.Controls.Add(Me.m_lblOptions)
-        Me.Controls.Add(Me.m_lbDescription)
-        Me.Controls.Add(Me.m_lbScenarioName)
-        Me.Controls.Add(Me.m_lbAuthor)
+        Me.Controls.Add(Me.m_tlpContent)
         Me.Name = "frmModelDescription"
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpUnits.ResumeLayout(False)
@@ -500,8 +541,13 @@ Partial Class frmModelDescription
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_plDescr.ResumeLayout(False)
+        Me.m_plDescr.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.m_tlpContent.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_udNumDigits As System.Windows.Forms.NumericUpDown
@@ -562,5 +608,9 @@ Partial Class frmModelDescription
     Private WithEvents m_cmbModelAreaName As cGeocodeLookupComboBox
     Private WithEvents m_lblNote As System.Windows.Forms.Label
     Private WithEvents m_pbSearching As System.Windows.Forms.PictureBox
+    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Private WithEvents m_plDescr As System.Windows.Forms.Panel
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
 
 End Class
