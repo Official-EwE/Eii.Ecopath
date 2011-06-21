@@ -8,15 +8,15 @@ Imports EwEUtils.Utilities
 
 ''' ===========================================================================
 ''' <summary>
-''' This class holds defaults for <see cref="cProducerUnit">producer units</see>
+''' This class holds defaults for <see cref="cWholesalerUnit">wholeseller units</see>
 ''' in the Ecost model. Defaults are used as blueprints for spawning their base 
 ''' class objects.
 ''' </summary>
 ''' ===========================================================================
 <TypeConverter(GetType(cPropertySorter)), _
     Serializable()> _
-Public Class cProducerUnitDefault
-    Inherits cProducerUnit
+Public Class cWholesalerUnitDefault
+    Inherits cWholesalerUnit
 
     <Browsable(False)> _
     Public Overrides Property Name() As String
@@ -32,23 +32,6 @@ Public Class cProducerUnitDefault
         Get
             Return ""
         End Get
-    End Property
-
-    <Browsable(False)> _
-    Public Overrides Property EcopathFleetID() As Integer
-        Get
-        End Get
-        Set(ByVal value As Integer)
-        End Set
-    End Property
-
-    <Browsable(False)> _
-    Public Overrides Property Fleet() As EwECore.cFleetInput
-        Get
-            Return Nothing
-        End Get
-        Friend Set(ByVal value As EwECore.cFleetInput)
-        End Set
     End Property
 
 End Class

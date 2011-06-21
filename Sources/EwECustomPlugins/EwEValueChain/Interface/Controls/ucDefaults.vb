@@ -50,16 +50,25 @@ Public Class ucDefaults
         Me.m_uic = uic
         Me.m_data = data
 
-        ' Init defaults
-        Me.AddControl(Me.m_lbProducer, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Producer), "Producer")
-        Me.AddControl(Me.m_lnkProd2Proc, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.ProducerToProcessing), "Producer to Processing")
-        Me.AddControl(Me.m_lbProcessing, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Processing), "Processing")
-        Me.AddControl(Me.m_lnkProc2Dist, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.ProcessingToDistribution), "Processing to Distribution")
-        Me.AddControl(Me.m_lbDistribution, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Distribution), "Distribution")
-        Me.AddControl(Me.m_lnkDist2Mkt, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.DistributionToMarket), "Distribution to Market")
-        Me.AddControl(Me.m_lbMarket, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Market), "Market")
-        Me.AddControl(Me.m_lnkMkt2Cons, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.MarketToConsumer), "Market to Consumer")
-        Me.AddControl(Me.m_lbConsumer, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Consumer), "Consumer")
+        Try
+
+            ' Init defaults
+            Me.AddControl(Me.m_lbProducer, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Producer), "Producer")
+            Me.AddControl(Me.m_lnkProd2Proc, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.ProducerToProcessing), "Producer to Processing")
+            Me.AddControl(Me.m_lbProcessing, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Processing), "Processing")
+            Me.AddControl(Me.m_lnkProc2Dist, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.ProcessingToDistribution), "Processing to Distribution")
+            Me.AddControl(Me.m_lbDistribution, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Distribution), "Distribution")
+            Me.AddControl(Me.m_lnkDist2Whole, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.DistributionToWholeseller), "Distribution to Wholeseller")
+            Me.AddControl(Me.m_lbWholeseller, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Wholesaler), "Wholeseller")
+            Me.AddControl(Me.m_lnkWhole2Ret, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.WholesellerToRetailer), "Wholeseller to Retailer")
+            Me.AddControl(Me.m_lbRetailer, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Retailer), "Retailer")
+            Me.AddControl(Me.m_lnkRet2Cons, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.RetailerToConsumer), "Retailer to Consumer")
+            Me.AddControl(Me.m_lbConsumer, Me.m_data.GetUnitDefault(cUnitFactory.eUnitType.Consumer), "Consumer")
+
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Sub ucDefaults_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -68,9 +77,11 @@ Public Class ucDefaults
         Me.RemoveControl(Me.m_lbProcessing)
         Me.RemoveControl(Me.m_lnkProc2Dist)
         Me.RemoveControl(Me.m_lbDistribution)
-        Me.RemoveControl(Me.m_lnkDist2Mkt)
-        Me.RemoveControl(Me.m_lbMarket)
-        Me.RemoveControl(Me.m_lnkMkt2Cons)
+        Me.RemoveControl(Me.m_lnkDist2Whole)
+        Me.RemoveControl(Me.m_lbWholeseller)
+        Me.RemoveControl(Me.m_lnkWhole2Ret)
+        Me.RemoveControl(Me.m_lbRetailer)
+        Me.RemoveControl(Me.m_lnkRet2Cons)
         Me.RemoveControl(Me.m_lbConsumer)
         Me.m_data = Nothing
     End Sub

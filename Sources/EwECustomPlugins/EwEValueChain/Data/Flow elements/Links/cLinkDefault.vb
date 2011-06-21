@@ -123,6 +123,10 @@ Public Class cLinkDefault
         End Set
     End Property
 
+    Public Overridable Function IsValid() As Boolean
+        Return True
+    End Function
+
 #End Region ' Properties
 
 End Class

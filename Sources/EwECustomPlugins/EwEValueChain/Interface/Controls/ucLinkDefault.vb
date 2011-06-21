@@ -42,7 +42,7 @@ Public Class ucLinkDefault
                 clr = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
             End If
         End If
-        cArrowIndicator.DrawArrow(e.Graphics, clr, Me.ClientRectangle, 180, 1.0)
+        cArrowIndicator.DrawArrow(e.Graphics, clr, Me.ClientRectangle, 0, 1.0)
 
     End Sub
 

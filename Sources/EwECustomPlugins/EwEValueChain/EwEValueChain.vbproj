@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E87E552B-C82F-4984-9249-631DAC727633}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -18,6 +18,10 @@
     <OptionInfer>On</OptionInfer>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwEValueChain.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,7 +30,7 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +39,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,7 +47,7 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -52,7 +56,7 @@
     <OutputPath>bin\x86\Release\</OutputPath>
     <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -94,13 +98,16 @@
     <Compile Include="Data\Flow elements\Inputs\cInput.vb" />
     <Compile Include="Data\Flow elements\Links\cLink.vb" />
     <Compile Include="Data\Flow elements\Links\cLinkDefault.vb" />
+    <Compile Include="Data\Flow elements\Links\cLinkLandings.vb" />
     <Compile Include="Data\Flow elements\Units\cConsumerUnit.vb" />
     <Compile Include="Data\Flow elements\Units\cConsumerUnitDefault.vb" />
     <Compile Include="Data\Flow elements\Units\cDistributionUnit.vb" />
     <Compile Include="Data\Flow elements\Units\cDistributionUnitDefault.vb" />
     <Compile Include="Data\Flow elements\Units\cEconomicUnit.vb" />
-    <Compile Include="Data\Flow elements\Units\cMarketUnit.vb" />
-    <Compile Include="Data\Flow elements\Units\cMarketUnitDefault.vb" />
+    <Compile Include="Data\Flow elements\Units\cRetailerUnitDefault.vb" />
+    <Compile Include="Data\Flow elements\Units\cRetailerUnit.vb" />
+    <Compile Include="Data\Flow elements\Units\cWholesalerUnit.vb" />
+    <Compile Include="Data\Flow elements\Units\cWholesalerUnitDefault.vb" />
     <Compile Include="Data\Flow elements\Units\cProcessingUnit.vb" />
     <Compile Include="Data\Flow elements\Units\cProcessingUnitDefault.vb" />
     <Compile Include="Data\Flow elements\Units\cProducerUnit.vb" />
@@ -153,7 +160,13 @@
     <Compile Include="Interface\Flow\ucEditFlow.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Interface\Flow\UnitConnector.vb" />
+    <Compile Include="Interface\Flow\ucSelector.Designer.vb">
+      <DependentUpon>ucSelector.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Flow\ucSelector.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Flow\LinkWrapper.vb" />
     <Compile Include="Interface\frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
@@ -206,12 +219,13 @@
     <Compile Include="Plugin\cPluginPoint.vb" />
     <Compile Include="Plugin\Input\cNTCPluginFlow.vb" />
     <Compile Include="Plugin\Input\cNTCPluginParameters.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabRetailer.vb" />
     <Compile Include="Plugin\Output\cNTCPluginRun.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTables.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTabProd.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTabProc.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTabDistr.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginTabMarket.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabWholeseller.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTabCons.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -243,6 +257,10 @@
       <DependentUpon>ucEditFlow.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Flow\ucSelector.resx">
+      <DependentUpon>ucSelector.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interface\frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -255,7 +273,7 @@
       <DependentUpon>ucResults.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Data\Flow elements\Flow elements overview.cd" />
+    <None Include="~Design~\Units.cd" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -312,9 +330,6 @@
     <None Include="Resources\eqgraphhs.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\market_mono.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
@@ -339,14 +354,23 @@
     <None Include="Resources\RelationshipsHS.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="~Design~\Data.cd" />
+    <None Include="~Design~\FlowDiagram.cd" />
+    <None Include="~Design~\Links.cd" />
     <None Include="EwEValueChain.snk" />
     <None Include="Resources\ThumbnailLoadingHS.png" />
     <None Include="UserGuide\ChristensenValueChainMS.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="~Design~\Plugin.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\producer.png" />
+    <None Include="Resources\retailer.png" />
+    <None Include="Resources\wholesaler.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\" />

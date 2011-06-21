@@ -25,15 +25,17 @@ Partial Class ucDefaults
         Me.m_pgDefaults = New System.Windows.Forms.PropertyGrid
         Me.m_scMain = New System.Windows.Forms.SplitContainer
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-        Me.m_lbProducer = New ucUnitDefault
-        Me.m_lbProcessing = New ucUnitDefault
-        Me.m_lbDistribution = New ucUnitDefault
-        Me.m_lbMarket = New ucUnitDefault
-        Me.m_lbConsumer = New ucUnitDefault
-        Me.m_lnkProd2Proc = New ucLinkDefault
-        Me.m_lnkProc2Dist = New ucLinkDefault
-        Me.m_lnkDist2Mkt = New ucLinkDefault
-        Me.m_lnkMkt2Cons = New ucLinkDefault
+        Me.m_lbProducer = New EwEValueChainPlugin.ucUnitDefault
+        Me.m_lbProcessing = New EwEValueChainPlugin.ucUnitDefault
+        Me.m_lbWholeseller = New EwEValueChainPlugin.ucUnitDefault
+        Me.m_lbRetailer = New EwEValueChainPlugin.ucUnitDefault
+        Me.m_lbConsumer = New EwEValueChainPlugin.ucUnitDefault
+        Me.m_lnkProd2Proc = New EwEValueChainPlugin.ucLinkDefault
+        Me.m_lnkProc2Dist = New EwEValueChainPlugin.ucLinkDefault
+        Me.m_lnkWhole2Ret = New EwEValueChainPlugin.ucLinkDefault
+        Me.m_lnkRet2Cons = New EwEValueChainPlugin.ucLinkDefault
+        Me.m_lbDistribution = New EwEValueChainPlugin.ucUnitDefault
+        Me.m_lnkDist2Whole = New EwEValueChainPlugin.ucLinkDefault
         Me.m_cbDefault = New System.Windows.Forms.ComboBox
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -79,28 +81,32 @@ Partial Class ucDefaults
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.m_lbProducer, 1, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lbProcessing, 1, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lbDistribution, 1, 5)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lbMarket, 1, 7)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lbConsumer, 1, 9)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lbWholeseller, 1, 7)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lbRetailer, 1, 9)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lbConsumer, 1, 11)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lnkProd2Proc, 1, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lnkProc2Dist, 1, 4)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lnkDist2Mkt, 1, 6)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lnkMkt2Cons, 1, 8)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lnkWhole2Ret, 1, 8)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lnkRet2Cons, 1, 10)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lbDistribution, 1, 5)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lnkDist2Whole, 1, 6)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 11
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5!))
+        Me.TableLayoutPanel1.RowCount = 13
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.7149!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.143264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.143264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.143264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.143264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.140407!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.140407!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.143264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.143264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.143264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.143264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.143264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.7149!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(177, 483)
         Me.TableLayoutPanel1.TabIndex = 0
         '
@@ -108,101 +114,134 @@ Partial Class ucDefaults
         '
         Me.m_lbProducer.BackColor = System.Drawing.SystemColors.Window
         Me.m_lbProducer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbProducer.Location = New System.Drawing.Point(38, 60)
+        Me.m_lbProducer.Location = New System.Drawing.Point(38, 51)
         Me.m_lbProducer.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lbProducer.Name = "m_lbProducer"
         Me.m_lbProducer.ObjDefault = Nothing
         Me.m_lbProducer.Selected = False
-        Me.m_lbProducer.Size = New System.Drawing.Size(100, 40)
+        Me.m_lbProducer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbProducer.TabIndex = 0
+        Me.m_lbProducer.UIContext = Nothing
         '
         'm_lbProcessing
         '
         Me.m_lbProcessing.BackColor = System.Drawing.SystemColors.Window
         Me.m_lbProcessing.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbProcessing.Location = New System.Drawing.Point(38, 140)
+        Me.m_lbProcessing.Location = New System.Drawing.Point(38, 119)
         Me.m_lbProcessing.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lbProcessing.Name = "m_lbProcessing"
         Me.m_lbProcessing.ObjDefault = Nothing
         Me.m_lbProcessing.Selected = False
-        Me.m_lbProcessing.Size = New System.Drawing.Size(100, 40)
+        Me.m_lbProcessing.Size = New System.Drawing.Size(100, 34)
         Me.m_lbProcessing.TabIndex = 0
+        Me.m_lbProcessing.UIContext = Nothing
         '
-        'm_lbDistribution
+        'm_lbWholeseller
         '
-        Me.m_lbDistribution.BackColor = System.Drawing.SystemColors.Window
-        Me.m_lbDistribution.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbDistribution.Location = New System.Drawing.Point(38, 220)
-        Me.m_lbDistribution.Margin = New System.Windows.Forms.Padding(0)
-        Me.m_lbDistribution.Name = "m_lbDistribution"
-        Me.m_lbDistribution.ObjDefault = Nothing
-        Me.m_lbDistribution.Selected = False
-        Me.m_lbDistribution.Size = New System.Drawing.Size(100, 40)
-        Me.m_lbDistribution.TabIndex = 0
+        Me.m_lbWholeseller.BackColor = System.Drawing.SystemColors.Window
+        Me.m_lbWholeseller.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lbWholeseller.Location = New System.Drawing.Point(38, 255)
+        Me.m_lbWholeseller.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_lbWholeseller.Name = "m_lbWholeseller"
+        Me.m_lbWholeseller.ObjDefault = Nothing
+        Me.m_lbWholeseller.Selected = False
+        Me.m_lbWholeseller.Size = New System.Drawing.Size(100, 34)
+        Me.m_lbWholeseller.TabIndex = 0
+        Me.m_lbWholeseller.UIContext = Nothing
         '
-        'm_lbMarket
+        'm_lbRetailer
         '
-        Me.m_lbMarket.BackColor = System.Drawing.SystemColors.Window
-        Me.m_lbMarket.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbMarket.Location = New System.Drawing.Point(38, 300)
-        Me.m_lbMarket.Margin = New System.Windows.Forms.Padding(0)
-        Me.m_lbMarket.Name = "m_lbMarket"
-        Me.m_lbMarket.ObjDefault = Nothing
-        Me.m_lbMarket.Selected = False
-        Me.m_lbMarket.Size = New System.Drawing.Size(100, 40)
-        Me.m_lbMarket.TabIndex = 0
+        Me.m_lbRetailer.BackColor = System.Drawing.SystemColors.Window
+        Me.m_lbRetailer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lbRetailer.Location = New System.Drawing.Point(38, 323)
+        Me.m_lbRetailer.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_lbRetailer.Name = "m_lbRetailer"
+        Me.m_lbRetailer.ObjDefault = Nothing
+        Me.m_lbRetailer.Selected = False
+        Me.m_lbRetailer.Size = New System.Drawing.Size(100, 34)
+        Me.m_lbRetailer.TabIndex = 0
+        Me.m_lbRetailer.UIContext = Nothing
         '
         'm_lbConsumer
         '
         Me.m_lbConsumer.BackColor = System.Drawing.SystemColors.Window
         Me.m_lbConsumer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbConsumer.Location = New System.Drawing.Point(38, 380)
+        Me.m_lbConsumer.Location = New System.Drawing.Point(38, 391)
         Me.m_lbConsumer.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lbConsumer.Name = "m_lbConsumer"
         Me.m_lbConsumer.ObjDefault = Nothing
         Me.m_lbConsumer.Selected = False
-        Me.m_lbConsumer.Size = New System.Drawing.Size(100, 40)
+        Me.m_lbConsumer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbConsumer.TabIndex = 0
+        Me.m_lbConsumer.UIContext = Nothing
         '
         'm_lnkProd2Proc
         '
         Me.m_lnkProd2Proc.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lnkProd2Proc.Location = New System.Drawing.Point(41, 103)
+        Me.m_lnkProd2Proc.Location = New System.Drawing.Point(41, 88)
         Me.m_lnkProd2Proc.Name = "m_lnkProd2Proc"
         Me.m_lnkProd2Proc.ObjDefault = Nothing
         Me.m_lnkProd2Proc.Selected = False
-        Me.m_lnkProd2Proc.Size = New System.Drawing.Size(94, 34)
+        Me.m_lnkProd2Proc.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkProd2Proc.TabIndex = 1
+        Me.m_lnkProd2Proc.UIContext = Nothing
         '
         'm_lnkProc2Dist
         '
         Me.m_lnkProc2Dist.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lnkProc2Dist.Location = New System.Drawing.Point(41, 183)
+        Me.m_lnkProc2Dist.Location = New System.Drawing.Point(41, 156)
         Me.m_lnkProc2Dist.Name = "m_lnkProc2Dist"
         Me.m_lnkProc2Dist.ObjDefault = Nothing
         Me.m_lnkProc2Dist.Selected = False
-        Me.m_lnkProc2Dist.Size = New System.Drawing.Size(94, 34)
+        Me.m_lnkProc2Dist.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkProc2Dist.TabIndex = 1
+        Me.m_lnkProc2Dist.UIContext = Nothing
         '
-        'm_lnkDist2Mkt
+        'm_lnkWhole2Ret
         '
-        Me.m_lnkDist2Mkt.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lnkDist2Mkt.Location = New System.Drawing.Point(41, 263)
-        Me.m_lnkDist2Mkt.Name = "m_lnkDist2Mkt"
-        Me.m_lnkDist2Mkt.ObjDefault = Nothing
-        Me.m_lnkDist2Mkt.Selected = False
-        Me.m_lnkDist2Mkt.Size = New System.Drawing.Size(94, 34)
-        Me.m_lnkDist2Mkt.TabIndex = 1
+        Me.m_lnkWhole2Ret.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lnkWhole2Ret.Location = New System.Drawing.Point(41, 292)
+        Me.m_lnkWhole2Ret.Name = "m_lnkWhole2Ret"
+        Me.m_lnkWhole2Ret.ObjDefault = Nothing
+        Me.m_lnkWhole2Ret.Selected = False
+        Me.m_lnkWhole2Ret.Size = New System.Drawing.Size(94, 28)
+        Me.m_lnkWhole2Ret.TabIndex = 1
+        Me.m_lnkWhole2Ret.UIContext = Nothing
         '
-        'm_lnkMkt2Cons
+        'm_lnkRet2Cons
         '
-        Me.m_lnkMkt2Cons.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lnkMkt2Cons.Location = New System.Drawing.Point(41, 343)
-        Me.m_lnkMkt2Cons.Name = "m_lnkMkt2Cons"
-        Me.m_lnkMkt2Cons.ObjDefault = Nothing
-        Me.m_lnkMkt2Cons.Selected = False
-        Me.m_lnkMkt2Cons.Size = New System.Drawing.Size(94, 34)
-        Me.m_lnkMkt2Cons.TabIndex = 1
+        Me.m_lnkRet2Cons.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lnkRet2Cons.Location = New System.Drawing.Point(41, 360)
+        Me.m_lnkRet2Cons.Name = "m_lnkRet2Cons"
+        Me.m_lnkRet2Cons.ObjDefault = Nothing
+        Me.m_lnkRet2Cons.Selected = False
+        Me.m_lnkRet2Cons.Size = New System.Drawing.Size(94, 28)
+        Me.m_lnkRet2Cons.TabIndex = 1
+        Me.m_lnkRet2Cons.UIContext = Nothing
+        '
+        'm_lbDistribution
+        '
+        Me.m_lbDistribution.BackColor = System.Drawing.SystemColors.Window
+        Me.m_lbDistribution.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lbDistribution.Location = New System.Drawing.Point(38, 187)
+        Me.m_lbDistribution.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_lbDistribution.Name = "m_lbDistribution"
+        Me.m_lbDistribution.ObjDefault = Nothing
+        Me.m_lbDistribution.Selected = False
+        Me.m_lbDistribution.Size = New System.Drawing.Size(100, 34)
+        Me.m_lbDistribution.TabIndex = 0
+        Me.m_lbDistribution.UIContext = Nothing
+        '
+        'm_lnkDist2Whole
+        '
+        Me.m_lnkDist2Whole.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lnkDist2Whole.Location = New System.Drawing.Point(41, 224)
+        Me.m_lnkDist2Whole.Name = "m_lnkDist2Whole"
+        Me.m_lnkDist2Whole.ObjDefault = Nothing
+        Me.m_lnkDist2Whole.Selected = False
+        Me.m_lnkDist2Whole.Size = New System.Drawing.Size(94, 28)
+        Me.m_lnkDist2Whole.TabIndex = 1
+        Me.m_lnkDist2Whole.UIContext = Nothing
         '
         'm_cbDefault
         '
@@ -229,17 +268,19 @@ Partial Class ucDefaults
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents m_pgDefaults As System.Windows.Forms.PropertyGrid
-    Friend WithEvents m_scMain As System.Windows.Forms.SplitContainer
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents m_lbProducer As ucUnitDefault
-    Friend WithEvents m_cbDefault As System.Windows.Forms.ComboBox
-    Friend WithEvents m_lbProcessing As ucUnitDefault
-    Friend WithEvents m_lbDistribution As ucUnitDefault
-    Friend WithEvents m_lbMarket As ucUnitDefault
-    Friend WithEvents m_lbConsumer As ucUnitDefault
-    Friend WithEvents m_lnkProd2Proc As ucLinkDefault
-    Friend WithEvents m_lnkProc2Dist As ucLinkDefault
-    Friend WithEvents m_lnkDist2Mkt As ucLinkDefault
-    Friend WithEvents m_lnkMkt2Cons As ucLinkDefault
+    Private WithEvents m_pgDefaults As System.Windows.Forms.PropertyGrid
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+    Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_lbProducer As ucUnitDefault
+    Private WithEvents m_cbDefault As System.Windows.Forms.ComboBox
+    Private WithEvents m_lbProcessing As ucUnitDefault
+    Private WithEvents m_lbWholeseller As ucUnitDefault
+    Private WithEvents m_lbRetailer As ucUnitDefault
+    Private WithEvents m_lbConsumer As ucUnitDefault
+    Private WithEvents m_lnkProd2Proc As ucLinkDefault
+    Private WithEvents m_lnkProc2Dist As ucLinkDefault
+    Private WithEvents m_lnkWhole2Ret As ucLinkDefault
+    Private WithEvents m_lnkRet2Cons As ucLinkDefault
+    Private WithEvents m_lnkDist2Whole As EwEValueChainPlugin.ucLinkDefault
+    Private WithEvents m_lbDistribution As EwEValueChainPlugin.ucUnitDefault
 End Class

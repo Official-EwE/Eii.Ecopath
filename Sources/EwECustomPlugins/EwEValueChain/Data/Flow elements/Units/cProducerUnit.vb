@@ -26,111 +26,6 @@ Public Class cProducerUnit
 
     ''' =======================================================================
     ''' <summary>
-    ''' Helper class; allows the property grid to pick a group DBID from a list 
-    ''' of group names
-    ''' </summary>
-    ''' =======================================================================
-    Public Class cGroupConverter
-        Inherits TypeConverter
-
-        Private Function GroupList() As List(Of cEcoPathGroupInput)
-            Dim lGroups As New List(Of cEcoPathGroupInput)
-            Dim core As cCore = cData.GetInstance().Core
-            For iGroup As Integer = 1 To core.nGroups
-                lGroups.Add(core.EcoPathGroupInputs(iGroup))
-            Next
-            Return lGroups
-        End Function
-
-        Public Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
-            ' Show combo
-            Return True
-        End Function
-
-        Public Overrides Function GetStandardValuesExclusive(ByVal context As ITypeDescriptorContext) As Boolean
-            ' Do not edit combo
-            Return True
-        End Function
-
-        ''' <summary>
-        ''' Override the GetStandardValues method and return a 
-        ''' StandardValuesCollection filled with your standard values
-        ''' </summary>
-        Public Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As TypeConverter.StandardValuesCollection
-            Dim lGroups As List(Of cEcoPathGroupInput) = Me.GroupList
-            Dim lGroupNames As New List(Of String)
-            Dim group As cEcoPathGroupInput = Nothing
-
-            lGroupNames.Add("<Any>")
-            For iGroup As Integer = 0 To lGroups.Count - 1
-                group = lGroups(iGroup)
-                lGroupNames.Add(group.Name)
-            Next
-            Return New StandardValuesCollection(lGroupNames)
-        End Function
-
-        Public Overrides Function CanConvertFrom(ByVal context As ITypeDescriptorContext, ByVal sourceType As System.Type) As Boolean
-            Return sourceType Is GetType(String)
-        End Function
-
-        Public Overrides Function CanConvertTo(ByVal context As ITypeDescriptorContext, ByVal destinationType As System.Type) As Boolean
-            Return destinationType Is GetType(Integer)
-        End Function
-
-        ''' <summary>
-        ''' Convert group name to DBID
-        ''' </summary>
-        Public Overrides Function ConvertFrom(ByVal context As ITypeDescriptorContext, _
-                ByVal culture As System.Globalization.CultureInfo, _
-                ByVal value As Object) As Object
-
-            If TypeOf value Is String Then
-                If Not String.IsNullOrEmpty(CStr(value)) Then
-                    Dim lGroups As List(Of cEcoPathGroupInput) = Me.GroupList
-                    Dim iDBID As Integer = 0
-
-                    For Each group As cEcoPathGroupInput In lGroups
-                        If (group.Name = CStr(value)) Then
-                            iDBID = CInt(group.GetVariable(eVarNameFlags.DBID))
-                            Exit For
-                        End If
-                    Next
-                    Return iDBID
-                End If
-            End If
-
-            Return MyBase.ConvertFrom(context, culture, value)
-        End Function
-
-        ''' <summary>
-        ''' Convert DBID to group name
-        ''' </summary>
-        Public Overrides Function ConvertTo(ByVal context As ITypeDescriptorContext, _
-                ByVal culture As System.Globalization.CultureInfo, _
-                ByVal value As Object, _
-                ByVal destinationType As System.Type) As Object
-
-            If TypeOf value Is Integer Then
-                Dim lGroups As List(Of cEcoPathGroupInput) = Me.GroupList
-                Dim strName As String = "<Any>"
-
-                For Each group As cEcoPathGroupInput In lGroups
-                    If (CInt(group.GetVariable(eVarNameFlags.DBID)) = CInt(value)) Then
-                        strName = group.Name
-                        Exit For
-                    End If
-                Next
-                Return strName
-            End If
-
-            Return MyBase.ConvertTo(context, culture, value, destinationType)
-
-        End Function
-
-    End Class
-
-    ''' =======================================================================
-    ''' <summary>
     ''' Helper class; allows the property grid to pick a fleet DBID from a list 
     ''' of group names
     ''' </summary>
@@ -243,7 +138,6 @@ Public Class cProducerUnit
     ''' <summary>Ecopath fleet that this metier fishes with.</summary>
     Private m_iEcopathFleetID As Integer = 0
 
-    Private m_group As cEcoPathGroupInput = Nothing
     Private m_fleet As cFleetInput = Nothing
 
     Private m_sObserverCost As Single = 0.0!
@@ -254,6 +148,8 @@ Public Class cProducerUnit
     Private m_bUseEffort As Boolean = False
 
     Private m_sTicketProducts As Single = 0
+    Private m_asLandings() As Single
+    Private m_asLandingsValue() As Single
 
 #End Region ' Public vars
 
@@ -270,6 +166,9 @@ Public Class cProducerUnit
         MyBase.InitRun(core, iSequence)
         ' Reset local vars for the next run
         Me.m_sOriginalOutputBiomass = 0.0!
+
+        ReDim Me.m_asLandings(core.nGroups)
+        ReDim Me.m_asLandingsValue(core.nGroups)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -282,6 +181,23 @@ Public Class cProducerUnit
         ' Reset effort to 1 at the beginning of every time step
         Me.m_sEffort = 1.0!
     End Sub
+
+    Public Shadows Function HasTarget(ByVal unit As cUnit, ByVal group As cEcoPathGroupInput) As Boolean
+
+        ' Follow each output link
+        For iLink As Integer = 0 To Me.LinkOutCount - 1
+            Dim link As cLink = Me.LinkOut(iLink)
+            If TypeOf link Is cLinkLandings Then
+                Dim linkSpec As cLinkLandings = DirectCast(link, cLinkLandings)
+                If Object.ReferenceEquals(linkSpec.Target, unit) And Object.ReferenceEquals(linkSpec.Group, group) Then Return True
+            Else
+                ' See the target link is the requesting unit
+                If Object.ReferenceEquals(link.Target, unit) Then Return True
+            End If
+        Next iLink
+        Return False
+
+    End Function
 
 #End Region ' Overrides
 
@@ -536,7 +452,7 @@ Public Class cProducerUnit
     <Browsable(False)> _
     Public Overrides ReadOnly Property HasError() As Boolean
         Get
-            Return (Me.m_fleet Is Nothing) Or (Me.m_group Is Nothing)
+            Return (Me.m_fleet Is Nothing)
         End Get
     End Property
 
@@ -554,21 +470,8 @@ Public Class cProducerUnit
 #Region " Alternate name "
 
     Private Function GenerateName() As String
-        Dim strName As String = ""
-        ' Has a fleet?
-        If (Me.m_fleet IsNot Nothing) Then
-            ' #Yes: define name
-            strName = Me.m_fleet.Name
-            ' Has a group?
-            If (Me.m_group IsNot Nothing) Then
-                ' #Yes: append group
-                strName += (": " + Me.m_group.Name)
-            End If
-        Else
-            ' #No: error!
-            strName = "! No fleet"
-        End If
-        Return strName
+        If (Me.m_fleet Is Nothing) Then Return "! No fleet"
+        Return Me.m_fleet.Name
     End Function
 
     Public Overrides Property Name() As String
@@ -595,14 +498,13 @@ Public Class cProducerUnit
 
 #Region " Properties "
 
-
     <Browsable(True), _
     Category(sPROPCAT_INPUTCOST), _
     DisplayName("Observer cost"), _
     Description("Cost for observers (if on board) per tonnes. Assumed to vary with effort"), _
     DefaultValue(0.0!), _
     cPropertySorter.PropertyOrder(20)> _
-Public Property ObserverCost() As Single
+    Public Property ObserverCost() As Single
         Get
             Return Me.m_sObserverCost
         End Get
@@ -618,7 +520,7 @@ Public Property ObserverCost() As Single
      Description("Observer coverage rate, (proportion of boats with observers onboard)"), _
      DefaultValue(0.0!), _
      cPropertySorter.PropertyOrder(21)> _
- Public Property ObserverRate() As Single
+    Public Property ObserverRate() As Single
         Get
             Return Me.m_sObserverRate
         End Get
@@ -628,15 +530,13 @@ Public Property ObserverCost() As Single
         End Set
     End Property
 
-
-
     <Browsable(True), _
      Category(sPROPCAT_REVENUE), _
      DisplayName("Ticket revenue"), _
      Description("Revenue from paying customers at Ecopath baseline effort (unity effort). Revenue assumed proportional to effort."), _
      DefaultValue(0.0!), _
      cPropertySorter.PropertyOrder(1)> _
- Public Property TicketProducts() As Single
+    Public Property TicketProducts() As Single
         Get
             Return m_sTicketProducts
         End Get
@@ -661,23 +561,6 @@ Public Property ObserverCost() As Single
     '        Me.SetChanged()
     '    End Set
     'End Property
-
-    <Browsable(True), _
-        Category(cUnit.sPROPCAT_GENERAL), _
-        DisplayName("Ecopath group"), _
-        Description("Ecopath group that this producer lands. Select <Any> to aggregate all landings for the attached fleet."), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(10), _
-        TypeConverter(GetType(cGroupConverter))> _
-    Public Overridable Property EcopathGroupID() As Integer
-        Get
-            Return Me.m_iEcopathGroupID
-        End Get
-        Set(ByVal value As Integer)
-            Me.m_iEcopathGroupID = value
-            Me.SetChanged()
-        End Set
-    End Property
 
     <Browsable(True), _
         Category(cUnit.sPROPCAT_GENERAL), _
@@ -719,21 +602,6 @@ Public Property ObserverCost() As Single
 #Region " Ecopath integration "
 
     <Browsable(False)> _
-    Public Overridable Property Group() As cEcoPathGroupInput
-        Get
-            Return Me.m_group
-        End Get
-        Friend Set(ByVal value As cEcoPathGroupInput)
-            Me.m_group = value
-            If (Group IsNot Nothing) Then
-                Me.m_iEcopathGroupID = CInt(Group.GetVariable(eVarNameFlags.DBID))
-            Else
-                Me.m_iEcopathGroupID = 0
-            End If
-        End Set
-    End Property
-
-    <Browsable(False)> _
     Public Overridable Property Fleet() As cFleetInput
         Get
             Return Me.m_fleet
@@ -751,5 +619,80 @@ Public Property ObserverCost() As Single
 #End Region ' Ecopath integration
 
 #End Region ' Properties
+
+#Region " Landings "
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="iGroup"></param>
+    ''' <param name="sBiomass">Total biomass landed in area</param>
+    ''' <param name="sPrice">Total price landed in area</param>
+    Public Sub SetLandings(ByVal iGroup As Integer, ByVal sBiomass As Single, ByVal sPrice As Single)
+        Me.m_asLandings(iGroup) = sBiomass
+        Me.m_asLandingsValue(iGroup) = sPrice
+    End Sub
+
+    Public Overloads Sub Process(ByVal results As cResults, _
+                                 ByVal iTimeStep As Integer, _
+                                 ByVal iFleet As Integer)
+
+        Dim sTotalOutputBiomass As Single = 0
+        Dim sTotalOutputValue As Single = 0
+
+        ' No fleet specified?
+        If iFleet = 0 Then
+            ' #Yes: make all calculations
+            Dim sBTot As Single = 0
+            Dim sValTot As Single = 0
+            For iGroup As Integer = 1 To Me.Core.nGroups
+                sBTot += Me.m_asLandings(iGroup)
+                sValTot += Me.m_asLandingsValue(iGroup)
+            Next
+            Me.Calculate(results, sBTot, sValTot, sBTot, sTotalOutputValue, iTimeStep)
+        End If
+
+        ' Determine outgoing biomass ratios for each group
+        Dim asTotalBGroup(Me.Core.nGroups) As Single
+        For Each link As cLink In Me.m_llinkOutput
+            ' Sanity check
+            If (TypeOf link Is cLinkLandings) Then
+                Dim ll As cLinkLandings = DirectCast(link, cLinkLandings)
+                If (ll.Group IsNot Nothing) Then
+                    asTotalBGroup(ll.Group.Index) += ll.BiomassRatio
+                End If
+            End If
+        Next
+
+        ' Quick fix to avoid divisions by zero later on
+        For iGroup As Integer = 1 To Me.Core.nGroups
+            If asTotalBGroup(iGroup) = 0.0! Then asTotalBGroup(iGroup) = 1.0!
+        Next
+
+        ' Determine outgoing biomass
+        For Each link As cLink In Me.m_llinkOutput
+
+            Dim sBiomass As Single = 0.0
+            Dim sPrice As Single = 0.0
+
+            If (TypeOf link Is cLinkLandings) Then
+                Dim ll As cLinkLandings = DirectCast(link, cLinkLandings)
+                If (ll.Group IsNot Nothing) Then
+                    Dim iGroup As Integer = ll.Group.Index
+                    sBiomass = Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                    sPrice = Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                End If
+            End If
+
+            link.Target.Process(results, New cInput(sBiomass, sPrice, sPrice), iTimeStep, iFleet)
+
+            sTotalOutputValue += sPrice * sBiomass
+        Next
+
+        results.StoreFleetContribution(iFleet, Me, iTimeStep, sTotalOutputValue)
+
+    End Sub
+
+#End Region ' Landings
 
 End Class

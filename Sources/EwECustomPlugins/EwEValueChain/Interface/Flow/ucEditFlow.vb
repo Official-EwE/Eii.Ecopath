@@ -96,15 +96,9 @@ Public Class ucEditFlow
 
 #Region " Creation buttons "
 
-    Private Sub OnCreateProducersByLandings(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsbCreateProducersByLandings.Click
-        Me.m_plFlow.CreateProducersByLandings()
-        Me.UpdateControls()
-    End Sub
-
-    Private Sub OnCreateProducersByFleet(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsbCreateProducersByFleets.Click
-        Me.m_plFlow.CreateProducersByFleet()
+    Private Sub OnCreateProducersForFleet(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsbCreateProducersForFleets.Click
+        Me.m_plFlow.CreateProducersForFleets()
         Me.UpdateControls()
     End Sub
 
@@ -126,9 +120,15 @@ Public Class ucEditFlow
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnCreateMarket(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsbCreateMarket.Click
-        Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Market)
+    Private Sub OnCreateWholesaler(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsbCreateWholesaler.Click
+        Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Wholesaler)
+        Me.UpdateControls()
+    End Sub
+
+    Private Sub OnCreateRetailer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsbCreateRetailer.Click
+        Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Retailer)
         Me.UpdateControls()
     End Sub
 
@@ -239,7 +239,8 @@ Public Class ucEditFlow
         Set(ByVal value As cFlowDiagram)
             If Object.ReferenceEquals(value, Me.m_diagram) Then Return
             Me.m_diagram = value
-            Me.m_plFlow.Init(Me.m_uic, Me.m_data, Me.m_diagram, Me.m_pgDetails)
+            Me.m_selector.PropertyGrid = Me.m_pgDetails
+            Me.m_plFlow.Init(Me.m_uic, Me.m_data, Me.m_diagram, Me.m_selector)
         End Set
     End Property
 

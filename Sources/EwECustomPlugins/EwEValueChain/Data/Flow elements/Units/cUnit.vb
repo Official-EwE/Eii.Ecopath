@@ -33,15 +33,22 @@ Public MustInherit Class cUnit
     ''' <summary>Index of the unit, which this unit needs to store its values in the Results object</summary>
     Private m_iSequence As Integer = 0
     ''' <summary>List of input variables that this unit needs in order to perform its calculations.</summary>
-    Private m_lReceivedInputs As New List(Of cInput)
+    Protected m_lReceivedInputs As New List(Of cInput)
     ''' <summary>Name of the unit</summary>
     Private m_strName As String
+    ''' <summary>Local name of the unit.</summary>
+    Private m_strNameLocal As String
     ''' <summary>Nationality of a unit.</summary>
     Private m_iNationality As Integer
     ''' <summary>Zhe ceur</summary>
     Private m_core As cCore = Nothing
 
     Private m_bCanCompute As Boolean = False
+
+    ''' <summary>Units that receive outputs from this unit.</summary>
+    Protected m_llinkOutput As New List(Of cLink)
+    ''' <summary>Units that provide inputs for this unit.</summary>
+    Protected m_llinkInput As New List(Of cLink)
 
 #Region " Constructor "
 
@@ -58,17 +65,27 @@ Public MustInherit Class cUnit
 
 #Region " Links "
 
-    ''' <summary>Units that receive outputs from this unit.</summary>
-    Private m_llinkOutput As New List(Of cLink)
-    ''' <summary>Units that provide inputs for this unit.</summary>
-    Private m_llinkInput As New List(Of cLink)
-
     Public Function LinkOutCount() As Integer
         Return Me.m_llinkOutput.Count
     End Function
 
     Public Function LinkOut(ByVal iIndex As Integer) As cLink
         Return Me.m_llinkOutput(iIndex)
+    End Function
+
+    ''' <summary>
+    ''' Get all links directly linking to a target.
+    ''' </summary>
+    ''' <param name="unitTarget"></param>
+    ''' <returns></returns>
+    Public Function Links(ByVal unitTarget As cUnit) As cLink()
+        Dim lLinks As New List(Of cLink)
+        For Each link As cLink In Me.m_llinkOutput
+            If Object.ReferenceEquals(link.Target, unitTarget) Then
+                lLinks.Add(link)
+            End If
+        Next
+        Return lLinks.ToArray
     End Function
 
     Public Sub AddLink(ByVal link As cLink)
@@ -128,7 +145,7 @@ Public MustInherit Class cUnit
 
     End Function
 
-    Public Function HasTarget(ByVal unit As cUnit) As Boolean
+    Public Overridable Function HasTarget(ByVal unit As cUnit) As Boolean
 
         ' Follow each output link
         For Each link As cLink In Me.m_llinkOutput
@@ -295,7 +312,7 @@ Public MustInherit Class cUnit
 
     End Sub
 
-#End Region ' Run
+#End Region ' Running
 
 #Region " Copy / paste "
 
@@ -339,6 +356,22 @@ Public MustInherit Class cUnit
         End Get
     End Property
 
+    <Browsable(False)> _
+    Public Overridable ReadOnly Property Style() As cStyleGuide.eStyleFlags
+        Get
+            Return cStyleGuide.eStyleFlags.OK
+        End Get
+    End Property
+
+    <Browsable(False)> _
+    Public Overridable ReadOnly Property CanCompute() As Boolean
+        Get
+            Return Me.m_bCanCompute
+        End Get
+    End Property
+
+#Region " General "
+
     <Browsable(True), _
         Category(sPROPCAT_GENERAL), _
         DisplayName("Name"), _
@@ -353,6 +386,13 @@ Public MustInherit Class cUnit
             Me.SetChanged()
         End Set
     End Property
+
+    <Browsable(True), _
+        Category(sPROPCAT_GENERAL), _
+        DisplayName("Category"), _
+        Description("Category to which this unit belongs"), _
+        cPropertySorter.PropertyOrder(2)> _
+    Public MustOverride ReadOnly Property Category() As String
 
     <Browsable(True), _
         Category(sPROPCAT_GENERAL), _
@@ -371,24 +411,20 @@ Public MustInherit Class cUnit
 
     <Browsable(True), _
         Category(sPROPCAT_GENERAL), _
-        DisplayName("Category"), _
-        Description("Category to which this unit belongs"), _
-        cPropertySorter.PropertyOrder(2)> _
-    Public MustOverride ReadOnly Property Category() As String
-
-    <Browsable(False)> _
-    Public Overridable ReadOnly Property Style() As cStyleGuide.eStyleFlags
+        DisplayName("Name (local)"), _
+        Description("Local name of this unit"), _
+        cPropertySorter.PropertyOrder(4)> _
+    Public Overridable Property NameLocal() As String
         Get
-            Return cStyleGuide.eStyleFlags.OK
+            Return m_strNameLocal
         End Get
+        Set(ByVal value As String)
+            Me.m_strNameLocal = value
+            Me.SetChanged()
+        End Set
     End Property
 
-    <Browsable(False)> _
-    Public Overridable ReadOnly Property CanCompute() As Boolean
-        Get
-            Return Me.m_bCanCompute
-        End Get
-    End Property
+#End Region ' General
 
 #End Region ' Properties
 

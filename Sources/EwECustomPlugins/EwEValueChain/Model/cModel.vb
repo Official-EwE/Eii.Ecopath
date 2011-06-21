@@ -228,13 +228,8 @@ Public Class cModel
                         Optional ByVal ecosimResults As cEcoSimResults = Nothing) As Boolean
 
         Dim prodUnit As cProducerUnit = Nothing
-        Dim input As cInput = Nothing
-        Dim sLandings As Single = 0.0
-        Dim sLandingPrice As Single = 0.0  'variable that was called marketprice in Ecopath up to now (i.e. is to be renamed to Landingprice
-        Dim sValuePerTon As Single = 1.0
-        Dim iGroupSrc As Integer = 0
-        Dim iFleetSrc As Integer = 0
         Dim iFleetRun As Integer = 0
+        Dim iFleetSrc As Integer = 0
         Dim iNumFleetRun As Integer = 0
         Dim iBaseYear As Integer = 0
         Dim bAllowedToRun As Boolean = False
@@ -288,50 +283,27 @@ Public Class cModel
                     ' For each producer
                     For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
 
-                        ' Get actual metier unit
+                        ' Get actual producer
                         prodUnit = DirectCast(unit, cProducerUnit)
-
-                        sLandings = 0.0
-                        sLandingPrice = 0.0
-                        sValuePerTon = 1.0
 
                         If (prodUnit.Fleet IsNot Nothing) Then
                             ' Get index
                             iFleetSrc = prodUnit.Fleet.Index
-                            ' Has a group?
-                            If (prodUnit.Group IsNot Nothing) Then
-                                ' #Yes: obtain data
-                                iGroupSrc = prodUnit.Group.Index
-                                sLandings = Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults)
-                                sLandingPrice = Me.GetLandingPrice(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults)
-                                sValuePerTon = prodUnit.Fleet.OffVesselPrice(iGroupSrc)
-
-                            Else
-                                ' #No: aggregate all data
-                                Dim sTotalValue As Single = 0.0
-                                For iGroupSrc = 1 To data.Core.nGroups
-                                    sLandings += Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults)
-                                    sLandingPrice += Me.GetLandingPrice(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults)
-                                    sTotalValue += (Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults) * prodUnit.Fleet.OffVesselPrice(iGroupSrc))
-                                Next iGroupSrc
-
-                                ' ToDo: figure out how to come to a reasonable value per ton
-                                If sLandings > 0 Then
-                                    sValuePerTon = sTotalValue / sLandings
+                            For iGroupSrc = 1 To data.Core.nGroups
+                                ' Need to clear landings?
+                                If (iFleetRun > 0) And (iFleetRun <> iFleetSrc) Then
+                                    prodUnit.SetLandings(iGroupSrc, 0, 0)
+                                Else
+                                    prodUnit.SetLandings(iGroupSrc, _
+                                                         Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults), _
+                                                         Me.GetLandingPrice(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults))
                                 End If
 
-                            End If
+                            Next iGroupSrc
                         End If
 
-                        ' Need to clear landings?
-                        If (iFleetRun > 0) And (iFleetRun <> iFleetSrc) Then
-                            sLandings = 0
-                        End If
-
-                        ' Create input from Ecopath values
-                        input = New cInput(sLandings, sLandingPrice, sValuePerTon)
                         ' Start calculating!
-                        prodUnit.Process(result, input, iTimeStep, iFleetRun)
+                        prodUnit.Process(result, iTimeStep, iFleetRun)
 
                     Next unit
 
@@ -372,6 +344,8 @@ Public Class cModel
             sLandings = fleet.Landings(iGroup) * sArea
         Else
             ' Yes: run for Ecosim
+            Debug.Assert(iTimeStep = ecosimresults.CurrentT)
+
             sLandings = ecosimresults.BCatch(iGroup, iFleet) * sArea
         End If
 

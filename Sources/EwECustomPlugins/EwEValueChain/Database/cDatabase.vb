@@ -65,13 +65,16 @@ Public Class cDatabase
             End If
 
             ' Load default units
+
             aObjects = Me.ReadObjects(GetType(cProducerUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
             aObjects = Me.ReadObjects(GetType(cProcessingUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
             aObjects = Me.ReadObjects(GetType(cDistributionUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
-            aObjects = Me.ReadObjects(GetType(cMarketUnitDefault), False)
+            aObjects = Me.ReadObjects(GetType(cWholesalerUnitDefault), False)
+            For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
+            aObjects = Me.ReadObjects(GetType(cRetailerUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
             aObjects = Me.ReadObjects(GetType(cConsumerUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
@@ -93,7 +96,11 @@ Public Class cDatabase
             For Each obj As cOOPStorable In aObjects
                 data.AddUnit(DirectCast(obj, cUnit))
             Next
-            aObjects = Me.ReadObjects(GetType(cMarketUnit), False)
+            aObjects = Me.ReadObjects(GetType(cWholesalerUnit), False)
+            For Each obj As cOOPStorable In aObjects
+                data.AddUnit(DirectCast(obj, cUnit))
+            Next
+            aObjects = Me.ReadObjects(GetType(cRetailerUnit), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddUnit(DirectCast(obj, cUnit))
             Next
@@ -104,6 +111,10 @@ Public Class cDatabase
 
             ' Load links
             aObjects = Me.ReadObjects(GetType(cLink), False)
+            For Each obj As cOOPStorable In aObjects
+                data.AddLink(DirectCast(obj, cLink))
+            Next
+            aObjects = Me.ReadObjects(GetType(cLinkLandings), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddLink(DirectCast(obj, cLink))
             Next
@@ -148,7 +159,8 @@ Public Class cDatabase
                 bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Producer))
                 bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Processing))
                 bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Distribution))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Market))
+                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Wholesaler))
+                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Retailer))
                 bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Consumer))
 
                 ' Store units
@@ -173,6 +185,8 @@ Public Class cDatabase
 
         End If
 
+        If bSucces = False Then Return False
+
         If Me.BeginTransaction() Then
 
             Try
@@ -180,8 +194,9 @@ Public Class cDatabase
                 ' Store default links
                 bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.ProducerToProcessing))
                 bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.ProcessingToDistribution))
-                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.DistributionToMarket))
-                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.MarketToConsumer))
+                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.DistributionToWholeseller))
+                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.WholesellerToRetailer))
+                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.RetailerToConsumer))
 
                 ' Store links
                 For i As Integer = 0 To data.LinkCount - 1

@@ -174,22 +174,25 @@ Public Class plUnitControl
             clrBackground = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
         End If
 
-        'Determine border color
-        If Me.Selected Then
-            clrBorder = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
-        Else
-            clrBorder = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
-        End If
 
         ' Paint background
         Using br As New SolidBrush(clrBackground)
             e.Graphics.FillRectangle(br, rc)
         End Using
 
-        ' Paint border
-        Using p As New Pen(clrBorder)
-            e.Graphics.DrawRectangle(p, rc)
-        End Using
+        'Determine border color
+        If Me.Selected Then
+            ' Paint border
+            Using p As New Pen(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
+                e.Graphics.DrawRectangle(p, rc)
+                rc.Inflate(-1, -1)
+                e.Graphics.DrawRectangle(p, rc)
+            End Using
+        Else
+            Using p As New Pen(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+                e.Graphics.DrawRectangle(p, rc)
+            End Using
+        End If
 
         ' Paint unit type image
         Select Case Me.Unit.UnitType
@@ -199,14 +202,16 @@ Public Class plUnitControl
                 img = My.Resources.processing
             Case cUnitFactory.eUnitType.Distribution
                 img = My.Resources.distribution
-            Case cUnitFactory.eUnitType.Market
-                img = My.Resources.market
+            Case cUnitFactory.eUnitType.Wholesaler
+                img = My.Resources.wholesaler
+            Case cUnitFactory.eUnitType.Retailer
+                img = My.Resources.retailer
             Case cUnitFactory.eUnitType.Consumer
                 img = My.Resources.consumer
         End Select
 
         If (img IsNot Nothing) Then
-            Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(16 * Me.ZoomFactor), CInt(16 * Me.ZoomFactor))
+            Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(24 * Me.ZoomFactor), CInt(24 * Me.ZoomFactor))
             If Me.m_uic.StyleGuide.IsRightToLeft Then
                 rcImage.Offset(2, Me.Height - rcImage.Height - 2)
             Else

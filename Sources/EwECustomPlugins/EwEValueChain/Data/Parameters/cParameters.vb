@@ -1,12 +1,4 @@
-﻿'==============================================================================
-'
-' $Log: cParameters.vb,v $
-' Revision 1.1  2009/04/13 17:41:12  jeroens
-' Initial version
-'
-'==============================================================================
-
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Strict On
 Imports System.ComponentModel
@@ -14,11 +6,11 @@ Imports System.Reflection
 
 #End Region ' Imports
 
-''' ---------------------------------------------------------------------------
+''' ===========================================================================
 ''' <summary>
 ''' Parameters that dictate the behaviour of the Value Chain plug-in.
 ''' </summary>
-''' ---------------------------------------------------------------------------
+''' ===========================================================================
 <Serializable()> _
 Public Class cParameters
     Inherits EwEUtils.Database.cEwEDatabase.cOOPStorable

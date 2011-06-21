@@ -10,20 +10,22 @@ Public Class cLinkFactory
         Unknown = 0
         ProducerToProcessing
         ProcessingToDistribution
-        DistributionToMarket
-        MarketToConsumer
+        DistributionToWholeseller
+        WholesellerToRetailer
+        RetailerToConsumer
     End Enum
 
     Public Shared Function GetLinkType(ByVal src As cUnit, ByVal tgt As cUnit) As eLinkType
         If TypeOf src Is cProducerUnit And TypeOf tgt Is cProcessingUnit Then Return eLinkType.ProducerToProcessing
         If TypeOf src Is cProcessingUnit And TypeOf tgt Is cDistributionUnit Then Return eLinkType.ProcessingToDistribution
-        If TypeOf src Is cDistributionUnit And TypeOf tgt Is cMarketUnit Then Return eLinkType.DistributionToMarket
-        If TypeOf src Is cMarketUnit And TypeOf tgt Is cConsumerUnit Then Return eLinkType.MarketToConsumer
+        If TypeOf src Is cDistributionUnit And TypeOf tgt Is cWholesalerUnit Then Return eLinkType.DistributionToWholeseller
+        If TypeOf src Is cWholesalerUnit And TypeOf tgt Is cRetailerUnit Then Return eLinkType.WholesellerToRetailer
+        If TypeOf src Is cRetailerUnit And TypeOf tgt Is cConsumerUnit Then Return eLinkType.RetailerToConsumer
         Return eLinkType.Unknown
     End Function
 
     Public Shared Function CanCreateLink(ByVal src As cUnit, ByVal tgt As cUnit) As Boolean
-        ' Cannot link to metier
+        ' Cannot link to producers
         If TypeOf (tgt) Is cProducerUnit Then Return False
         ' Cannot link from consumers
         If TypeOf (src) Is cConsumerUnit Then Return False

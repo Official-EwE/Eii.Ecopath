@@ -178,4 +178,8 @@ Public Class cLink
         End Get
     End Property
 
+    Public Overrides Function ToString() As String
+        Return Me.Name
+    End Function
+
 End Class

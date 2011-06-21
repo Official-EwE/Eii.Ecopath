@@ -15,6 +15,9 @@ Imports ScientificInterfaceShared.Controls
 ''' <summary>
 ''' Value chain central data storage.
 ''' </summary>
+''' <remarks>
+''' Inherited from cCoreInputOutputBase to be able to use cCore.OnChanged.
+''' </remarks>
 ''' ===========================================================================
 Public Class cData
     Inherits cCoreInputOutputBase
@@ -487,10 +490,9 @@ Public Class cData
             If (TypeOf unit Is cProducerUnitDefault) Or _
                 (TypeOf unit Is cProcessingUnitDefault) Or _
                 (TypeOf unit Is cDistributionUnitDefault) Or _
-                (TypeOf unit Is cMarketUnitDefault) Or _
+                (TypeOf unit Is cWholesalerUnitDefault) Or _
+                (TypeOf unit Is cRetailerUnitDefault) Or _
                 (TypeOf unit Is cConsumerUnitDefault) Then
-                ' (TypeOf unit Is cNonExtractiveUnitDefault) Or _
-
                 bAdd = False
             End If
 
@@ -586,12 +588,12 @@ Public Class cData
         Me.m_lUnits.Add(unit)
         Me.IsChanged = True
 
-        ' Perform the "Metier special"
+        ' Perform the "production unit special"
         If TypeOf unit Is cProducerUnit Then
-            ' Prepare metier
-            Me.OnProducerChanged(unit)
+            ' Prepare production unit
+            Me.OnChanged(unit)
             ' Start listening for further metier events
-            AddHandler unit.OnChanged, AddressOf OnProducerChanged
+            AddHandler unit.OnChanged, AddressOf OnChanged
         End If
 
         ' Start listening for generic change events
@@ -617,7 +619,7 @@ Public Class cData
             ' Perform the "Metier special"
             If TypeOf unit Is cProducerUnit Then
                 ' Stop listening for further metier events
-                RemoveHandler unit.OnChanged, AddressOf OnProducerChanged
+                RemoveHandler unit.OnChanged, AddressOf OnChanged
             End If
 
         Catch ex As Exception
@@ -645,11 +647,19 @@ Public Class cData
 
 #Region " Metier management "
 
-    Private Sub OnProducerChanged(ByVal unit As cOOPStorable)
-        If TypeOf unit Is cProducerUnit Then
-            Dim mu As cProducerUnit = DirectCast(unit, cProducerUnit)
-            mu.Group = Me.FindEcopathGroupByID(mu.EcopathGroupID)
-            mu.Fleet = Me.FindEcopathFleetByID(mu.EcopathFleetID)
+    ''' <summary>
+    ''' Helper: connect producer unit fleet from DBID
+    ''' </summary>
+    ''' <param name="obj"></param>
+    Private Sub OnChanged(ByVal obj As cOOPStorable)
+        If TypeOf obj Is cProducerUnit Then
+            Dim prod As cProducerUnit = DirectCast(obj, cProducerUnit)
+            prod.Fleet = Me.FindEcopathFleetByID(prod.EcopathFleetID)
+            Me.IsChanged = True
+        End If
+        If TypeOf obj Is cLinkLandings Then
+            Dim link As cLinkLandings = DirectCast(obj, cLinkLandings)
+            link.Group = Me.FindEcopathGroupByID(link.EcopathGroupID)
             Me.IsChanged = True
         End If
     End Sub
@@ -693,14 +703,58 @@ Public Class cData
         Return Me.m_lLinks(iIndex)
     End Function
 
+    Public Function CreateSpeciesLink(ByVal unitSource As cProducerUnit, ByVal unitTarget As cUnit, ByVal group As cEcoPathGroupInput) As cLinkLandings
+
+        ' ToDo: globalize this
+
+        ' Sanity check
+        If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
+            MsgBox("Need a source and a target", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Return Nothing
+        End If
+
+        ' Check if link is allowed
+        If Not cLinkFactory.CanCreateLink(unitSource, unitTarget) Then
+            MsgBox("This type of link is not allowed", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Return Nothing
+        End If
+
+        ' Check for loop
+        If unitTarget.IsLoop(unitSource) Then
+            MsgBox("This will create a loop which is not allowed", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Return Nothing
+        End If
+
+        ' Check for already present link
+        If unitSource.HasTarget(unitTarget, group) Then
+            MsgBox("Link already present for group " & group.Name, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Return Nothing
+        End If
+
+        Dim link As New cLinkLandings()
+
+        ' Provide link with defaults
+        link.CopyFrom(Me.GetLinkDefault(cLinkFactory.GetLinkType(unitSource, unitTarget)))
+
+        link.Source = unitSource
+        link.Target = unitTarget
+        link.Group = group
+        Me.IsChanged = True
+
+        Me.AddLink(link)
+
+        Return link
+    End Function
+
     ''' <summary>
     ''' Create a link in the database 
     ''' </summary>
     ''' <param name="unitSource"></param>
     ''' <param name="unitTarget"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function CreateLink(ByVal unitSource As cUnit, ByVal unitTarget As cUnit) As cLink
+
+        ' ToDo: globalize this
 
         ' Sanity check
         If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
@@ -767,6 +821,14 @@ Public Class cData
         Me.m_lLinks.Add(link)
         link.Source.AddLink(link)
 
+        ' Perform the "Species link special"
+        If TypeOf link Is cLinkLandings Then
+            ' Prepare link
+            Me.OnChanged(link)
+            ' Start listening for further link events
+            AddHandler link.OnChanged, AddressOf OnChanged
+        End If
+
         ' Start listening for link change events
         AddHandler link.OnChanged, AddressOf Me.OnElementChanged
 
@@ -784,8 +846,22 @@ Public Class cData
         ' Stop listening for link change events
         RemoveHandler link.OnChanged, AddressOf Me.OnElementChanged
 
+        ' Perform the "Species link special"
+        If TypeOf link Is cLinkLandings Then
+            ' Start listening for further link events
+            RemoveHandler link.OnChanged, AddressOf OnChanged
+        End If
+
         Me.m_lLinks.Remove(link)
         link.Source.RemoveLink(link)
+    End Sub
+
+    Public Sub OnGroupLinkChanged(ByVal unit As cOOPStorable)
+        If TypeOf unit Is cLinkLandings Then
+            Dim mu As cLinkLandings = DirectCast(unit, cLinkLandings)
+            mu.Group = Me.FindEcopathGroupByID(mu.EcopathGroupID)
+            Me.IsChanged = True
+        End If
     End Sub
 
 #End Region ' Links

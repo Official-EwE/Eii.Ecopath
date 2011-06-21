@@ -16,10 +16,13 @@ Public MustInherit Class cEconomicUnit
 
     Private m_WorkerFemale As Single = 0.0!
     Private m_WorkerMale As Single = 0.0!
+    Private m_WorkerOther As Single = 0.0!
     Private m_WorkerMalePay As Single = 0.0!
     Private m_WorkerFemalePay As Single = 0.0!
+    Private m_WorkerOtherPay As Single = 0.0!
     Private m_WorkerMaleShare As Single = 0.0!
     Private m_WorkerFemaleShare As Single = 0.0!
+    Private m_WorkerOtherShare As Single = 0.0!
     Private m_WorkerMaleDependents As Single = 0
     Private m_WorkerFemaleDependents As Single = 0
     Private m_OwnerMale As Single = 0.0!
@@ -41,6 +44,7 @@ Public MustInherit Class cEconomicUnit
     Private m_RoyaltyCost As Single = 0
     Private m_CertificationCost As Single = 0
     Private m_TaxesLicense As Single = 0
+    Private m_TaxesProfit As Single = 0
     Private m_TaxesVAT As Single = 0
     Private m_TaxesImport As Single = 0
     Private m_TaxesExport As Single = 0
@@ -467,6 +471,22 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
+    <Browsable(True), _
+        Category(sPROPCAT_PAY), _
+        DisplayName("Other worker pay"), _
+        Description("Other worker pay per tonnes of product"), _
+        DefaultValue(0.0!), _
+        cPropertySorter.PropertyOrder(10)> _
+    Public Property WorkerOtherPay() As Single
+        Get
+            Return Me.m_WorkerOtherPay
+        End Get
+        Set(ByVal value As Single)
+            Me.m_WorkerOtherPay = value
+            SetChanged()
+        End Set
+    End Property
+
 #End Region ' Pay
 
 #Region " Share "
@@ -536,7 +556,6 @@ Public MustInherit Class cEconomicUnit
     End Property
 
 #End Region ' Share
-
 
 #Region " Input cost "
 
@@ -725,7 +744,7 @@ Public Property CertificationCost() As Single
          DisplayName("VAT tax"), _
          Description("VAT tax per tonnes of product"), _
          DefaultValue(0.0!), _
-         cPropertySorter.PropertyOrder(5)> _
+         cPropertySorter.PropertyOrder(6)> _
      Public Property TaxVAT() As Single
         Get
             Return m_TaxesVAT
@@ -738,10 +757,26 @@ Public Property CertificationCost() As Single
 
     <Browsable(True), _
         Category(sPROPCAT_TAXES), _
+        DisplayName("Profit tax"), _
+        Description("Profit tax per tonnes of product"), _
+        DefaultValue(0.0!), _
+        cPropertySorter.PropertyOrder(6)> _
+    Public Property ProfitTax() As Single
+        Get
+            Return m_TaxesProfit
+        End Get
+        Set(ByVal value As Single)
+            m_TaxesProfit = value
+            SetChanged()
+        End Set
+    End Property
+
+    <Browsable(True), _
+        Category(sPROPCAT_TAXES), _
         DisplayName("License tax"), _
         Description("License tax per tonnes of product"), _
         DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(6)> _
+        cPropertySorter.PropertyOrder(7)> _
     Public Property LicenseTax() As Single
         Get
             Return m_TaxesLicense
@@ -751,7 +786,6 @@ Public Property CertificationCost() As Single
             SetChanged()
         End Set
     End Property
-
 
 #End Region ' Taxes
 
@@ -791,10 +825,26 @@ Public Property CertificationCost() As Single
 
     <Browsable(True), _
         Category(sPROPCAT_SOCIAL), _
+        DisplayName("No. other workers"), _
+        Description("Number of other workers per tonnes of product"), _
+        DefaultValue(0.0!), _
+        cPropertySorter.PropertyOrder(3)> _
+    Public Property WorkerOther() As Single
+        Get
+            Return Me.m_WorkerMale
+        End Get
+        Set(ByVal value As Single)
+            Me.m_WorkerMale = value
+            SetChanged()
+        End Set
+    End Property
+
+    <Browsable(True), _
+        Category(sPROPCAT_SOCIAL), _
         DisplayName("No. female owners"), _
         Description("Number of female owners per tonnes of product"), _
         DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(3)> _
+        cPropertySorter.PropertyOrder(10)> _
     Public Property OwnerFemale() As Single
         Get
             Return Me.m_OwnerFemale
@@ -810,7 +860,7 @@ Public Property CertificationCost() As Single
         DisplayName("No. male owners"), _
         Description("Number of male owners per tonnes of product"), _
         DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(4)> _
+        cPropertySorter.PropertyOrder(11)> _
     Public Property OwnerMale() As Single
         Get
             Return Me.m_OwnerMale
@@ -826,7 +876,7 @@ Public Property CertificationCost() As Single
         DisplayName("Female worker dependents"), _
         Description("Number of dependents per female worker"), _
         DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(5)> _
+        cPropertySorter.PropertyOrder(20)> _
     Public Property WorkerFemaleDependents() As Single
         Get
             Return Me.m_WorkerFemaleDependents
@@ -842,7 +892,7 @@ Public Property CertificationCost() As Single
         DisplayName("Male worker dependents"), _
         Description("Number of dependents per male worker"), _
         DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(6)> _
+        cPropertySorter.PropertyOrder(21)> _
     Public Property WorkerMaleDependents() As Single
         Get
             Return Me.m_WorkerMaleDependents
@@ -858,7 +908,7 @@ Public Property CertificationCost() As Single
         DisplayName("Female owner dependents"), _
         Description("Number of dependents per female owner"), _
         DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(7)> _
+        cPropertySorter.PropertyOrder(30)> _
     Public Property OwnerFemaleDependents() As Single
         Get
             Return Me.m_OwnerFemaleDependents
@@ -874,7 +924,7 @@ Public Property CertificationCost() As Single
         DisplayName("Male owner dependents"), _
         Description("Number of dependents per male owner"), _
         DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(8)> _
+        cPropertySorter.PropertyOrder(31)> _
     Public Property OwnerMaleDependents() As Single
         Get
             Return Me.m_OwnerMaleDependents

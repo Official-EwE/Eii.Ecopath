@@ -24,8 +24,9 @@ Public Class frmMain
         Defaults
         TableProducers
         TableProcessors
-        TableMarket
         TableDistributors
+        TableWholesellers
+        TableRetailer
         TableConsumers
         Run
     End Enum
@@ -80,8 +81,10 @@ Public Class frmMain
                 Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Processing))
             Case eValueChainPageTypes.TableDistributors
                 Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Distribution))
-            Case eValueChainPageTypes.TableMarket
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Market))
+            Case eValueChainPageTypes.TableWholesellers
+                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Wholesaler))
+            Case eValueChainPageTypes.TableRetailer
+                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Retailer))
             Case eValueChainPageTypes.TableConsumers
                 Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Consumer))
             Case eValueChainPageTypes.Flow

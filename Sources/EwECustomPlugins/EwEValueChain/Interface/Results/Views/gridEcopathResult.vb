@@ -20,7 +20,8 @@ Public Class gridEcopathResult
         Producer
         Processor
         Distributor
-        Market
+        Wholesaler
+        Retailer
         Total
     End Enum
 
@@ -49,7 +50,7 @@ Public Class gridEcopathResult
         Me.Dock = DockStyle.Fill
         Me.FixedColumnWidths = False
 
-        Me.Redim(22, 7)
+        Me.Redim(22, 8)
 
         ' Column headers
         Me(0, 0) = New EwEColumnHeaderCell("Categories")
@@ -57,8 +58,9 @@ Public Class gridEcopathResult
         Me(0, 2) = New EwEColumnHeaderCell("Producer")
         Me(0, 3) = New EwEColumnHeaderCell("Processor")
         Me(0, 4) = New EwEColumnHeaderCell("Distributor")
-        Me(0, 5) = New EwEColumnHeaderCell("Market")
-        Me(0, 6) = New EwEColumnHeaderCell("Total")
+        Me(0, 5) = New EwEColumnHeaderCell("Wholesaler")
+        Me(0, 6) = New EwEColumnHeaderCell("Retailer")
+        Me(0, 7) = New EwEColumnHeaderCell("Total")
 
         ' Row headers
         Me(1, 0) = CreateRowHeaderCell("Production")
@@ -124,8 +126,8 @@ Public Class gridEcopathResult
         Me(21, 0) = CreateRowHeaderCell("= Dependents, total", cStyleGuide.eStyleFlags.Sum)
         Me(21, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal, cStyleGuide.eStyleFlags.Sum)
 
-        ' Create data cells
-        For i As Integer = 0 To 3
+        ' Create data cells for unit cells
+        For i As Integer = 0 To 4
 
             Me(1, 2 + i) = Me.CreateDataCell()
             Me(2, 2 + i) = Me.CreateDataCell()
@@ -194,7 +196,7 @@ Public Class gridEcopathResult
                     alUnits(1).Add(unit)
                 Case cUnitFactory.eUnitType.Distribution
                     alUnits(2).Add(unit)
-                Case cUnitFactory.eUnitType.Market
+                Case cUnitFactory.eUnitType.Wholesaler
                     alUnits(3).Add(unit)
             End Select
         Next
@@ -233,7 +235,7 @@ Public Class gridEcopathResult
         ' Create total cells
         For iRow As Integer = 3 To Me.RowsCount - 1
             Dim sTotal As Single = 0.0!
-            For iCol As Integer = eColumnTypes.Producer To eColumnTypes.Market
+            For iCol As Integer = eColumnTypes.Producer To eColumnTypes.Wholesaler
                 Try
                     sTotal += CSng(Val(Me(iRow, iCol).Value))
                 Catch ex As Exception

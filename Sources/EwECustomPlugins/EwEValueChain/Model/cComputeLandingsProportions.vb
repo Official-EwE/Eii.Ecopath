@@ -44,15 +44,16 @@ Public Class cComputeLandingPortions
 
                 If (mu.Fleet IsNot Nothing) Then
                     ' Has a group?
-                    If (mu.Group IsNot Nothing) Then
-                        'ProducerReference(group, Fleet) = NoProducers
-                    Else
-                        ' #No: aggregate over all groups which are caught by fleet
-                        For iGroup As Integer = 1 To EwECore.nGroups
-                            'set the producerreference
+                    ' JS: Revise this with introduction of group links
+                    'If (mu.Group IsNot Nothing) Then
+                    '    'ProducerReference(group, Fleet) = NoProducers
+                    'Else
+                    '    ' #No: aggregate over all groups which are caught by fleet
+                    '    For iGroup As Integer = 1 To EwECore.nGroups
+                    '        'set the producerreference
 
-                        Next iGroup
-                    End If
+                    '    Next iGroup
+                    'End If
                 End If
 
             Next

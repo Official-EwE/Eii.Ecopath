@@ -9,10 +9,10 @@ Public Class cUnitFactory
     Public Enum eUnitType As Integer
         All = 0
         Producer
-        ' NonExtractive
         Processing
         Distribution
-        Market
+        Wholesaler
+        Retailer
         Consumer
     End Enum
 
@@ -29,10 +29,10 @@ Public Class cUnitFactory
         Dim t As Type = Nothing
         Select Case unitType
             Case eUnitType.Producer : t = GetType(cProducerUnit)
-                'Case eUnitType.NonExtractive : t = GetType(cNonExtractiveUnit)
             Case eUnitType.Processing : t = GetType(cProcessingUnit)
             Case eUnitType.Distribution : t = GetType(cDistributionUnit)
-            Case eUnitType.Market : t = GetType(cMarketUnit)
+            Case eUnitType.Wholesaler : t = GetType(cWholesalerUnit)
+            Case eUnitType.Retailer : t = GetType(cRetailerUnit)
             Case eUnitType.Consumer : t = GetType(cConsumerUnit)
         End Select
         Return t
@@ -42,10 +42,10 @@ Public Class cUnitFactory
         Dim t As Type = Nothing
         Select Case unitType
             Case eUnitType.Producer : t = GetType(cProducerUnitDefault)
-                'Case eUnitType.NonExtractive : t = GetType(cNonExtractiveUnitDefault)
             Case eUnitType.Processing : t = GetType(cProcessingUnitDefault)
             Case eUnitType.Distribution : t = GetType(cDistributionUnitDefault)
-            Case eUnitType.Market : t = GetType(cMarketUnitDefault)
+            Case eUnitType.Wholesaler : t = GetType(cWholesalerUnitDefault)
+            Case eUnitType.Retailer : t = GetType(cRetailerUnitDefault)
             Case eUnitType.Consumer : t = GetType(cConsumerUnitDefault)
         End Select
         Return CType(System.Activator.CreateInstance(t), cUnit)

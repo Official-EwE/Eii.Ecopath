@@ -35,21 +35,20 @@ Public Class plFlow
     Private m_bmpClickDetection As Bitmap = Nothing
     ''' <summary>List of cUnit representations.</summary>
     Private m_dtControls As New Dictionary(Of cUnit, plUnitControl)
-    ''' <summary>List of cOutputLink representations.</summary>
-    Private m_dtLinks As New Dictionary(Of cLink, UnitConnector)
+    ''' <summary>List of link wrappers.</summary>
+    Private m_lDiagramLinks As New List(Of LinkWrapper)
     ''' <summary>Current interaction mode.</summary>
     Private m_editMode As eEditMode = eEditMode.Move
-    ''' <summary>PropertyGrid</summary>
-    Private m_pg As PropertyGrid = Nothing
     ''' <summary>UI Context</summary>
     Private m_uic As cUIContext = Nothing
-
+    ''' <summary>Data selector</summary>
+    Private m_selector As ucSelector = Nothing
     ''' <summary>Fleet to filter for in the flow, if any.</summary>
     Private m_fleetFilter As cFleetInput = Nothing
 
     ''' <summary>Selected flow element.</summary>
     Private m_selection As Object = Nothing
-    Private m_hover As Object = Nothing
+    Private m_hover As LinkWrapper = Nothing
 
     '' ToDo: get rid of cUnitControl, render all in this graph
     '' ToDo: make graph scalable, zoomable.
@@ -117,11 +116,11 @@ Public Class plFlow
                 RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
             End If
 
-            Me.m_pg = Nothing
+            Me.m_selector = Nothing
             Me.m_data = Nothing
             Me.m_uic = Nothing
             Me.m_dtControls = Nothing
-            Me.m_dtLinks = Nothing
+            Me.m_lDiagramLinks = Nothing
             Me.m_bmpClickDetection.Dispose()
             Me.m_bmpClickDetection = Nothing
 
@@ -171,12 +170,11 @@ Public Class plFlow
     ''' Initialize the flow diagram with existing data.
     ''' </summary>
     ''' <param name="fd">The <see cref="cFlowDiagram">data</see> to connect the flow to.</param>
-    ''' <param name="pg">The <see cref="PropertyGrid">PropertyGrid</see> that will reflect unit values.</param>
     ''' -----------------------------------------------------------------------
     Public Sub Init(ByVal uic As cUIContext, _
                     ByVal data As cData, _
                     ByVal fd As cFlowDiagram, _
-                    ByVal pg As PropertyGrid)
+                    ByVal sel As ucSelector)
 
         If (Not Me.m_data Is Nothing) Then
             ' Init only once!
@@ -190,7 +188,7 @@ Public Class plFlow
         ' Store references
         Me.m_data = data
         Me.m_diagram = fd
-        Me.m_pg = pg
+        Me.m_selector = sel
         Me.m_uic = uic
 
         If Me.m_uic IsNot Nothing Then
@@ -333,8 +331,8 @@ Public Class plFlow
         Dim lunits As New List(Of cUnit)
 
         ' Get links
-        For Each l As cLink In Me.m_dtLinks.Keys
-            llinks.Add(l)
+        For Each w As LinkWrapper In Me.m_lDiagramLinks
+            llinks.AddRange(w.Links)
         Next
         ' Remove 'em all
         For Each l As cLink In llinks
@@ -352,7 +350,7 @@ Public Class plFlow
 
         Debug.Assert(Me.Controls.Count = 0)
         Debug.Assert(Me.m_dtControls.Count = 0)
-        Debug.Assert(Me.m_dtLinks.Count = 0)
+        Debug.Assert(Me.m_lDiagramLinks.Count = 0)
 
     End Sub
 
@@ -367,11 +365,8 @@ Public Class plFlow
     ''' Event handler, processes mouse clicks to operate on UnitConnectors.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub HandleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
-        Handles Me.MouseClick
-
+    Protected Overrides Sub OnMouseClick(ByVal e As System.Windows.Forms.MouseEventArgs)
         Me.ProcessConnectorClick(e.Location)
-
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -379,18 +374,15 @@ Public Class plFlow
     ''' Event handler, processes mouse movement to provide cursor feedback.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub HandleMouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
-        Handles Me.MouseMove
-
-        Dim uc As UnitConnector = ConnectorFromPoint(e.Location)
+    Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Dim uc As LinkWrapper = ConnectorFromPoint(e.Location)
         If (uc IsNot Nothing) Then
             Me.Cursor = Cursors.Hand
-            Me.Hover = uc.Link
+            Me.Hover = uc
         Else
             Me.Cursor = Cursors.Default
             Me.Hover = Nothing
         End If
-
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -431,30 +423,28 @@ Public Class plFlow
         ' Draw hit detection bitmap
         g.FillRectangle(Brushes.White, 0, 0, Me.Width, Me.Height)
 
-        For Each c As UnitConnector In Me.m_dtLinks.Values
+        For Each c As LinkWrapper In Me.m_lDiagramLinks
             Try
-                ctrlSource = Me.m_dtControls(c.Link.Source)
-                ctrlTarget = Me.m_dtControls(c.Link.Target)
+                ctrlSource = Me.m_dtControls(c.Source)
+                ctrlTarget = Me.m_dtControls(c.Target)
 
                 Dim ptT As Point = Me.FindIntersect(ctrlSource.Center, ctrlTarget.Center, ctrlTarget)
 
                 ' Paint link on visible canvas
                 If Object.ReferenceEquals(Me.Selection, c) Then
                     clrFore = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
-                ElseIf Object.ReferenceEquals(Hover, ctrlSource.Unit) Or _
-                       Object.ReferenceEquals(Hover, ctrlTarget.Unit) Or _
-                       Object.ReferenceEquals(Hover, c.Link) Then
+                ElseIf Object.ReferenceEquals(Hover, c) Then
                     clrFore = Color.RoyalBlue
                 Else
-                    Me.m_uic.StyleGuide.GetStyleColors(c.Link.Style, clrFore, clrBack)
+                    Me.m_uic.StyleGuide.GetStyleColors(c.Style, clrFore, clrBack)
                 End If
-                PaintLink(e.Graphics, ctrlSource.Center, ptT, clrFore, c.Link.BiomassRatio, c.Link.External)
+                PaintLink(e.Graphics, ctrlSource.Center, ptT, clrFore, c.Width, c.External)
 
                 ' Paint detection link on detection bitmap with a fixed width to make the link better clickable
                 PaintLink(g, ctrlSource.Center, ptT, c.Color, 5)
 
             Catch ex As Exception
-                Console.WriteLine("Link {0} not correctly configured", c.Link.Name)
+                Console.WriteLine("LinkWrapper {0} not correctly configured", c.ToString)
             End Try
         Next
 
@@ -463,8 +453,8 @@ Public Class plFlow
     Protected Overrides Sub OnPaintBackground(ByVal arg As PaintEventArgs)
     End Sub
 
-    Private Sub HandleResizeEnd(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.Resize
+    Protected Overrides Sub OnResize(ByVal eventargs As System.EventArgs)
+        MyBase.OnResize(eventargs)
         ' When panel is resized, the link detection bitmap needs to be resized accordingly
         Me.CreateClickDetectionBitmap()
     End Sub
@@ -495,27 +485,39 @@ Public Class plFlow
             ' Assign
             Me.m_selection = value
 
-            If TypeOf (Me.m_selection) Is UnitConnector Then
-                If Me.m_pg IsNot Nothing Then
+
+
+            If TypeOf (Me.m_selection) Is plUnitControl Then
+                If Me.m_selector IsNot Nothing Then
                     ' Update property grid
-                    Me.m_pg.SelectedObject = DirectCast(Me.m_selection, UnitConnector).Link
-                End If
-            ElseIf TypeOf (Me.m_selection) Is plUnitControl Then
-                If Me.m_pg IsNot Nothing Then
-                    ' Update property grid
-                    Me.m_pg.SelectedObject = DirectCast(Me.m_selection, plUnitControl).Unit
+                    Me.m_selector.Selection = DirectCast(Me.m_selection, plUnitControl).Unit
                 End If
                 ' Update selected state
                 DirectCast(Me.m_selection, plUnitControl).Selected = True
+            ElseIf TypeOf (Me.m_selection) Is LinkWrapper Then
+                If Me.m_selector IsNot Nothing Then
+                    ' Update property grid
+                    Me.m_selector.Selection = DirectCast(Me.m_selection, LinkWrapper).Links
+                End If
+            ElseIf TypeOf (Me.m_selection) Is Array Then
+                If Me.m_selector IsNot Nothing Then
+                    Dim lSel As New List(Of cLink)
+                    For Each conn As LinkWrapper In DirectCast(Me.m_selection, LinkWrapper())
+                        lSel.AddRange(conn.Links)
+                    Next
+                    ' Update property grid
+                    Me.m_selector.Selection = lSel.ToArray
+                End If
             End If
 
+            Me.UpdateControls()
             ' Redraw
             Me.Invalidate()
 
         End Set
     End Property
 
-    Private Property Hover() As Object
+    Private Property Hover() As LinkWrapper
         Get
             If Me.m_editMode = eEditMode.Link Then
                 Return Me.m_hover
@@ -523,7 +525,7 @@ Public Class plFlow
                 Return Nothing
             End If
         End Get
-        Set(ByVal value As Object)
+        Set(ByVal value As LinkWrapper)
             Me.m_hover = value
             Me.Invalidate()
         End Set
@@ -537,64 +539,12 @@ Public Class plFlow
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Create a producer for every Ecopath landing (fleet x group).
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub CreateProducersByLandings()
-
-        ' For all landings (in Ecopath fleet x group):
-        ' Find if metier exists
-        '    If not: create it, assign fleet and group
-
-        Dim lUnits As List(Of cUnit) = Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
-        Dim core As cCore = Me.m_data.Core
-        Dim fleet As cFleetInput = Nothing
-        Dim group As cEcoPathGroupInput = Nothing
-        Dim pu As cProducerUnit = Nothing
-        Dim bProducerExists As Boolean = False
-
-        For iFleet As Integer = 1 To core.nFleets
-            For iGroup As Integer = 1 To core.nGroups
-                fleet = core.FleetInputs(iFleet)
-                If fleet.Landings(iGroup) > 0 Then
-                    ' Get group
-                    group = core.EcoPathGroupInputs(iGroup)
-                    ' Find unit
-                    bProducerExists = False
-                    For Each unit As cUnit In lUnits
-                        pu = DirectCast(unit, cProducerUnit)
-                        ' Has fleet object?
-                        If (Object.ReferenceEquals(fleet, pu.Fleet)) Then
-                            If (Object.ReferenceEquals(group, pu.Group) Or (pu.Group Is Nothing)) Then
-                                bProducerExists = True
-                                Exit For
-                            End If
-                        End If
-                    Next unit
-                    ' Not found?
-                    If Not bProducerExists Then
-                        ' #Yes: create it
-                        pu = DirectCast(Me.CreateUnit(cUnitFactory.eUnitType.Producer), cProducerUnit)
-                        pu.AllowEvents = False
-                        pu.Fleet = fleet
-                        pu.Group = group
-                        pu.AllowEvents = True
-                    End If
-                End If
-            Next iGroup
-        Next iFleet
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Create a producer for every Ecopath fleet.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub CreateProducersByFleet()
+    Public Sub CreateProducersForFleets()
 
         ' For all Ecopath fleets:
-        ' Find if group linking to a fleet already exists
-        '    If not: create it, assign fleet and DO NOT assign group
 
         Dim lUnits As List(Of cUnit) = Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
         Dim core As cCore = Me.m_data.Core
@@ -619,7 +569,6 @@ Public Class plFlow
                 pu = DirectCast(Me.CreateUnit(cUnitFactory.eUnitType.Producer), cProducerUnit)
                 pu.AllowEvents = False
                 pu.Fleet = fleet
-                pu.Group = Nothing
                 pu.AllowEvents = True
             End If
         Next iFleet
@@ -645,8 +594,10 @@ Public Class plFlow
 
         ' Determine mask name
         Select Case unitType
-            Case cUnitFactory.eUnitType.Market
-                strMask = "Market {0}"
+            Case cUnitFactory.eUnitType.Wholesaler
+                strMask = "Wholeseller {0}"
+            Case cUnitFactory.eUnitType.Retailer
+                strMask = "Retailer {0}"
             Case cUnitFactory.eUnitType.Processing
                 strMask = "Processing {0}"
             Case cUnitFactory.eUnitType.Producer
@@ -655,8 +606,6 @@ Public Class plFlow
                 strMask = "Distribution {0}"
             Case cUnitFactory.eUnitType.Consumer
                 strMask = "Consumer {0}"
-                'Case cUnitFactory.eUnitType.NonExtractive
-                '    strMask = "Non-extractive {0}"
         End Select
 
         ' Has a mask?
@@ -811,14 +760,21 @@ Public Class plFlow
     ''' <param name="bRefresh"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddLink(ByVal link As cLink, Optional ByVal bRefresh As Boolean = True) As UnitConnector
+    Public Function AddLink(ByVal link As cLink, Optional ByVal bRefresh As Boolean = True) As LinkWrapper
+
         If link Is Nothing Then Return Nothing
         AddHandler link.OnChanged, AddressOf OnElementChanged
 
-        Dim uc As New UnitConnector(link)
-        Me.m_dtLinks(link) = uc
+        Dim w As LinkWrapper = Me.FindLinkWrapper(link)
+        If w Is Nothing Then
+            w = New LinkWrapper(link)
+            Me.m_lDiagramLinks.Add(w)
+        Else
+            w.AddLink(link)
+        End If
         Me.Invalidate(True)
-        Return uc
+        Return w
+
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -835,8 +791,15 @@ Public Class plFlow
         ' Clear selection if neccesary
         If Object.ReferenceEquals(Me.m_selection, link) Then Me.m_selection = Nothing
 
-        Me.m_dtLinks.Remove(link)
-        Me.Invalidate()
+        Dim w As LinkWrapper = Me.FindLinkWrapper(link)
+        If w IsNot Nothing Then
+            w.RemoveLink(link)
+            If w.LinkCount = 0 Then
+                Me.m_lDiagramLinks.Remove(w)
+            End If
+            Me.Invalidate()
+        End If
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -871,10 +834,24 @@ Public Class plFlow
 
             Case eEditMode.Link
                 If TypeOf Me.Selection Is plUnitControl Then
-                    Dim link As cLink = Me.m_data.CreateLink(DirectCast(Me.Selection, plUnitControl).Unit, uc.Unit)
-                    If link IsNot Nothing Then
-                        Me.AddLink(link)
-                        Me.CheckMissingParameters()
+                    Dim unitSelected As cUnit = DirectCast(Me.Selection, plUnitControl).Unit
+
+                    If TypeOf unitSelected Is cProducerUnit Then
+                        ' Create link for every group
+                        For iGroup As Integer = 1 To Me.m_data.Core.nGroups
+                            Dim group As cEcoPathGroupInput = Me.m_data.Core.EcoPathGroupInputs(iGroup)
+                            Dim link As cLinkLandings = Me.m_data.CreateSpeciesLink(DirectCast(unitSelected, cProducerUnit), uc.Unit, group)
+                            If link IsNot Nothing Then
+                                Me.AddLink(link)
+                                Me.CheckMissingParameters()
+                            End If
+                        Next
+                    Else
+                        Dim link As cLink = Me.m_data.CreateLink(unitSelected, uc.Unit)
+                        If link IsNot Nothing Then
+                            Me.AddLink(link)
+                            Me.CheckMissingParameters()
+                        End If
                     End If
                     ' Clear selection
                     Me.Selection = Nothing
@@ -896,13 +873,7 @@ Public Class plFlow
     End Sub
 
     Public Sub OnUnitMouseHover(ByVal uc As plUnitControl, ByVal bHover As Boolean)
-        If bHover Then
-            Me.Hover = uc.Unit
-        Else
-            If Object.ReferenceEquals(uc.Unit, Me.Hover) Then
-                Me.Hover = Nothing
-            End If
-        End If
+        Me.Hover = Nothing
     End Sub
 
 #End Region ' Units
@@ -953,9 +924,9 @@ Public Class plFlow
     ''' <param name="clr">The color to find the unit connector for.</param>
     ''' <returns>A unit connector instance, or nothing if this connector could not be found.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ConnectorFromColor(ByVal clr As Color) As UnitConnector
+    Private Function ConnectorFromColor(ByVal clr As Color) As LinkWrapper
         If IsLineColor(clr) Then
-            For Each uc As UnitConnector In Me.m_dtLinks.Values
+            For Each uc As LinkWrapper In Me.m_lDiagramLinks
                 If uc.Color = clr Then
                     Return uc
                 End If
@@ -971,7 +942,7 @@ Public Class plFlow
     ''' <param name="pt">The location to test.</param>
     ''' <returns>A unit connector instance, or nothing if this connector could not be found.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ConnectorFromPoint(ByVal pt As Point) As UnitConnector
+    Private Function ConnectorFromPoint(ByVal pt As Point) As LinkWrapper
         Return Me.ConnectorFromColor(Me.ColorAtPoint(pt))
     End Function
 
@@ -983,7 +954,7 @@ Public Class plFlow
     ''' <returns>True if there is a unit connector at (or very near to) this location.</returns>
     ''' -----------------------------------------------------------------------
     Private Function HasConnectorUnderCursor(ByVal pt As Point) As Boolean
-        Dim conn As UnitConnector = Me.ConnectorFromPoint(pt)
+        Dim conn As LinkWrapper = Me.ConnectorFromPoint(pt)
         Return (conn IsNot Nothing)
     End Function
 
@@ -995,16 +966,18 @@ Public Class plFlow
     ''' -----------------------------------------------------------------------
     Private Sub ProcessConnectorClick(ByVal pt As Point)
 
-        Dim conn As UnitConnector = Me.ConnectorFromColor(Me.ColorAtPoint(pt))
-        If (conn IsNot Nothing) Then
+        Dim w As LinkWrapper = Me.ConnectorFromColor(Me.ColorAtPoint(pt))
+        If (w IsNot Nothing) Then
+
+            Dim alinks As cLink() = w.Links
 
             Select Case Me.EditMode
                 Case eEditMode.Delete
-                    Me.DeleteLink(conn.Link)
+                    For Each link As cLink In alinks : Me.DeleteLink(link) : Next
                     Me.CheckMissingParameters()
                     Me.Refresh()
                 Case eEditMode.Move
-                    Me.Selection = conn
+                    Me.Selection = w
                 Case eEditMode.Link
                     Me.Selection = Nothing
             End Select
@@ -1014,6 +987,13 @@ Public Class plFlow
         End If
 
     End Sub
+
+    Private Function FindLinkWrapper(ByVal link As cLink) As LinkWrapper
+        For Each w As LinkWrapper In Me.m_lDiagramLinks
+            If w.HasLink(link) Then Return w
+        Next
+        Return Nothing
+    End Function
 
 #End Region ' Links
 
@@ -1083,6 +1063,16 @@ Public Class plFlow
         Me.Invalidate()
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Find the point where the line (<paramref name="ptFrom"/>-<paramref name="ptTo"/>)
+    ''' intersects with unit <paramref name="unitTo"/>.
+    ''' </summary>
+    ''' <param name="ptFrom"></param>
+    ''' <param name="ptTo"></param>
+    ''' <param name="unitTo"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Private Function FindIntersect(ByVal ptFrom As Point, ByVal ptTo As Point, ByVal unitTo As plUnitControl) As Point
         If (unitTo Is Nothing) Then Return ptTo
 
@@ -1108,14 +1098,12 @@ Public Class plFlow
                 Else
                     ptIntersect = New Point(rc.Right, CInt(ptTo.Y + rc.Height * (0.5 * sSlope)))
                 End If
-
             Else
                 If dy < 0 Then
                     ptIntersect = New Point(CInt(ptTo.X - rc.Width * (0.5 / sSlope)), rc.Top)
                 Else
                     ptIntersect = New Point(CInt(ptTo.X + rc.Width * (0.5 / sSlope)), rc.Bottom)
                 End If
-
             End If
         Else
             If dx = 0 Then
@@ -1123,7 +1111,6 @@ Public Class plFlow
             Else
                 ptIntersect = New Point(CInt(If(dx < 0, rc.Left, rc.Right)), ptTo.Y)
             End If
-
         End If
         Return ptIntersect
     End Function
@@ -1147,12 +1134,11 @@ Public Class plFlow
                           Optional ByVal bExternal As Boolean = False)
 
         Dim p As Pen = Nothing
-        Dim ptStartScaled As New Point(CInt(ptStart.X * Me.m_sScale), CInt(ptStart.Y * Me.m_sScale))
-        Dim ptEndScaled As New Point(CInt(ptEnd.X * Me.m_sScale), CInt(ptEnd.Y * Me.m_sScale))
+        Dim ptStartScaled As New Point(CInt(ptStart.X), CInt(ptStart.Y))
+        Dim ptEndScaled As New Point(CInt(ptEnd.X), CInt(ptEnd.Y))
 
         Dim dx As Integer = ptEndScaled.X - ptStartScaled.X
         Dim dy As Integer = ptEndScaled.Y - ptStartScaled.Y
-
 
         ' Get pen to draw with. Zero weight?
         If sWeight = 0 Then
@@ -1172,7 +1158,7 @@ Public Class plFlow
             p.DashStyle = Drawing2D.DashStyle.Dash
         End If
 
-        p.CustomEndCap = New AdjustableArrowCap(Me.m_sScale * 4, Me.m_sScale * 4)
+        p.CustomEndCap = New AdjustableArrowCap(4, 4)
         g.DrawLine(p, ptStartScaled, ptEndScaled)
 
         p.Dispose()
@@ -1253,6 +1239,10 @@ Public Class plFlow
     Private Sub CheckMissingParameters()
 
         If Me.EditMode = eEditMode.ReadOnly Then Return
+
+    End Sub
+
+    Private Sub UpdateControls()
 
     End Sub
 

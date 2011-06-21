@@ -69,25 +69,15 @@ Public Class cDistributionUnit
 
 #Region " Properties "
 
-    <Browsable(True), _
-        Category("Distribution"), _
-        DisplayName("<placeholder>"), _
-        Description("Distribution unit attribute, spare"), _
-        cPropertySorter.PropertyOrder(1)> _
-       Public Property DistributionAttribute1() As Single
-        Get
-            Return 0.0
-        End Get
-        Set(ByVal value As Single)
-            SetChanged()
-        End Set
-    End Property
+#Region " General "
 
     Public Overrides ReadOnly Property Category() As String
         Get
             Return "Distribution"
         End Get
     End Property
+
+#End Region ' General
 
     <Browsable(False)> _
     Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
