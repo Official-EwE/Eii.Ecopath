@@ -12,6 +12,7 @@ Public Class gridWeightTS
 
     Private Enum eColumnTypes As Integer
         Name = 0
+        [Type]
         Enabled
         Weight
     End Enum
@@ -61,6 +62,7 @@ Public Class gridWeightTS
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eColumnTypes.Type) = New EwEColumnHeaderCell(SharedResources.HEADER_TYPE)
         Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLE)
         Me(0, eColumnTypes.Weight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
 
@@ -102,16 +104,20 @@ Public Class gridWeightTS
         Dim cell As SourceGrid2.Cells.ICell = Nothing
         Dim bCanEnable As Boolean = (ts.ValidationStatus = eStatusFlags.OK)
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+        Dim fmt As New cTimeSeriesTypeFormatter()
 
         If Not bCanEnable Then style = cStyleGuide.eStyleFlags.NotEditable
+
+        cell = New EwERowHeaderCell(ts.Name)
+        Me(iRow, CInt(eColumnTypes.Name)) = cell
+
+        cell = New EwERowHeaderCell(fmt.GetDescriptor(ts.TimeSeriesType))
+        Me(iRow, CInt(eColumnTypes.Type)) = cell
 
         cell = New SourceGrid2.Cells.Real.CheckBox(ts.Enabled)
         cell.Tag = ts
         cell.DataModel.EnableEdit = bCanEnable
         Me(iRow, CInt(eColumnTypes.Enabled)) = cell
-
-        cell = New EwERowHeaderCell(ts.Name)
-        Me(iRow, CInt(eColumnTypes.Name)) = cell
 
         cell = New EwECell(ts.WtType, GetType(Single), style)
         Me(iRow, CInt(eColumnTypes.Weight)) = cell
