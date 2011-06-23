@@ -39,7 +39,7 @@ Namespace Ecopath.Output
             Me.m_rbOverlap = New System.Windows.Forms.RadioButton
             Me.m_rbPrey = New System.Windows.Forms.RadioButton
             Me.m_rbPredator = New System.Windows.Forms.RadioButton
-            Me.m_nudCutOff = New System.Windows.Forms.NumericUpDown
+            Me.m_nudCutOff = New cEwENumericUpDown
             Me.m_hdrDisplay = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_lblCutOff = New System.Windows.Forms.Label
             Me.m_scMain.Panel1.SuspendLayout()

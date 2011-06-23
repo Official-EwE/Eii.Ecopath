@@ -24,10 +24,10 @@ Namespace Controls
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.nudAlpha = New System.Windows.Forms.NumericUpDown
-            Me.nudBlue = New System.Windows.Forms.NumericUpDown
-            Me.nudGreen = New System.Windows.Forms.NumericUpDown
-            Me.nudRed = New System.Windows.Forms.NumericUpDown
+            Me.nudAlpha = New cEwENumericUpDown
+            Me.nudBlue = New cEwENumericUpDown
+            Me.nudGreen = New cEwENumericUpDown
+            Me.nudRed = New cEwENumericUpDown
             Me.tbAlpha = New ScientificInterfaceShared.Controls.ucSlider
             Me.tbBlue = New ScientificInterfaceShared.Controls.ucSlider
             Me.tbGreen = New ScientificInterfaceShared.Controls.ucSlider

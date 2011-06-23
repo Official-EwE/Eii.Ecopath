@@ -24,13 +24,13 @@ Partial Class ucOptionsGeneral
             Me.m_tbBackupMask = New System.Windows.Forms.TextBox
             Me.m_lblOutput = New System.Windows.Forms.Label
             Me.m_lblBackupFolder = New System.Windows.Forms.Label
-            Me.m_nudMRU = New System.Windows.Forms.NumericUpDown
+            Me.m_nudMRU = New cEwENumericUpDown
             Me.m_btnDefaults = New System.Windows.Forms.Button
             Me.m_btnClearMRU = New System.Windows.Forms.Button
             Me.m_lblMRU = New System.Windows.Forms.Label
             Me.m_gpMsg = New System.Windows.Forms.GroupBox
             Me.m_cbShowTime = New System.Windows.Forms.CheckBox
-            Me.m_nudMaxNumMessages = New System.Windows.Forms.NumericUpDown
+            Me.m_nudMaxNumMessages = New cEwENumericUpDown
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label
             Me.m_gbStartup = New System.Windows.Forms.GroupBox
             Me.m_lblResetOverwritePrompts = New System.Windows.Forms.Label

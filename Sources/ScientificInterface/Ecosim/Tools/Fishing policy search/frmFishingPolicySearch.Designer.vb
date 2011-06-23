@@ -34,8 +34,8 @@ Namespace Ecosim
             Me.m_chkPrevCE = New System.Windows.Forms.CheckBox
             Me.m_lblDiscRate = New System.Windows.Forms.Label
             Me.m_txtDiscountRate = New System.Windows.Forms.TextBox
-            Me.m_nudMaxEffChg = New System.Windows.Forms.NumericUpDown
-            Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown
+            Me.m_nudMaxEffChg = New cEwENumericUpDown
+            Me.m_nudBaseYear = New cEwENumericUpDown
             Me.m_lblBaseYear = New System.Windows.Forms.Label
             Me.m_cmbOptmApproach = New System.Windows.Forms.ComboBox
             Me.m_lblMaxEffChg = New System.Windows.Forms.Label
@@ -44,8 +44,8 @@ Namespace Ecosim
             Me.m_lblSearchUsing = New System.Windows.Forms.Label
             Me.m_cmbInitUsing = New System.Windows.Forms.ComboBox
             Me.m_lblInitUsing = New System.Windows.Forms.Label
-            Me.m_nudMaxNumEval = New System.Windows.Forms.NumericUpDown
-            Me.m_nudNumberOfRuns = New System.Windows.Forms.NumericUpDown
+            Me.m_nudMaxNumEval = New cEwENumericUpDown
+            Me.m_nudNumberOfRuns = New cEwENumericUpDown
             Me.m_lblMaxNumEval = New System.Windows.Forms.Label
             Me.m_lblNumOfRuns = New System.Windows.Forms.Label
             Me.m_hdrParms = New ScientificInterfaceShared.Controls.cEwEHeaderLabel

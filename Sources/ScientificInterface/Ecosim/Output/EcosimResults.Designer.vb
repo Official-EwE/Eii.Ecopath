@@ -26,9 +26,9 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimResults))
             Me.m_lblNumTimeSteps = New System.Windows.Forms.Label
-            Me.udNumTimeSteps = New System.Windows.Forms.NumericUpDown
-            Me.m_nudSumEnd = New System.Windows.Forms.NumericUpDown
-            Me.m_nudSumStart = New System.Windows.Forms.NumericUpDown
+            Me.udNumTimeSteps = New cEwENumericUpDown
+            Me.m_nudSumEnd = New cEwENumericUpDown
+            Me.m_nudSumStart = New cEwENumericUpDown
             Me.m_lblBegin = New System.Windows.Forms.Label
             Me.m_lblEnd = New System.Windows.Forms.Label
             Me.m_cmbFleets = New System.Windows.Forms.ComboBox

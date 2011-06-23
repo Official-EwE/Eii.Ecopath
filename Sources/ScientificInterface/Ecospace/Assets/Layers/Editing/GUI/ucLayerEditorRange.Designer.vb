@@ -14,7 +14,7 @@
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditorRange))
             Me.m_lbValue = New System.Windows.Forms.Label
-            Me.m_nudValue = New System.Windows.Forms.NumericUpDown
+            Me.m_nudValue = New cEwENumericUpDown
             Me.m_pbPreview = New System.Windows.Forms.PictureBox
             Me.m_btnSmooth = New System.Windows.Forms.Button
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).BeginInit()

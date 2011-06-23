@@ -35,14 +35,14 @@ Namespace Ecospace
             Me.m_rbAdjustedBiomass = New System.Windows.Forms.RadioButton
             Me.m_cbPredictEffort = New System.Windows.Forms.CheckBox
             Me.m_lbNumThreads = New System.Windows.Forms.Label
-            Me.m_nudNumThreads = New System.Windows.Forms.NumericUpDown
+            Me.m_nudNumThreads = New cEwENumericUpDown
             Me.lbPacketsMultiplier = New System.Windows.Forms.Label
             Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_hdrModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel
             Me.m_gbThreading = New System.Windows.Forms.GroupBox
             Me.m_tbNumPackets = New System.Windows.Forms.TextBox
-            Me.m_nudMaxIterations = New System.Windows.Forms.NumericUpDown
+            Me.m_nudMaxIterations = New cEwENumericUpDown
             Me.m_lbTotalTime = New System.Windows.Forms.Label
             Me.m_lblNumTimstepsPerYear = New System.Windows.Forms.Label
             Me.m_lbNumIterations = New System.Windows.Forms.Label

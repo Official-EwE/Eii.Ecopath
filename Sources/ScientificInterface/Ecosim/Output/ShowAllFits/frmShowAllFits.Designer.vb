@@ -31,11 +31,11 @@ Namespace Ecosim
             Me.m_chkShowCatch = New System.Windows.Forms.CheckBox
             Me.m_chkShowZ = New System.Windows.Forms.CheckBox
             Me.m_chkShowB = New System.Windows.Forms.CheckBox
-            Me.m_nudMarginTB = New System.Windows.Forms.NumericUpDown
-            Me.m_nudMarginLR = New System.Windows.Forms.NumericUpDown
-            Me.m_nudDotSize = New System.Windows.Forms.NumericUpDown
-            Me.m_nudLineWidth = New System.Windows.Forms.NumericUpDown
-            Me.m_nudRowNum = New System.Windows.Forms.NumericUpDown
+            Me.m_nudMarginTB = New cEwENumericUpDown
+            Me.m_nudMarginLR = New cEwENumericUpDown
+            Me.m_nudDotSize = New cEwENumericUpDown
+            Me.m_nudLineWidth = New cEwENumericUpDown
+            Me.m_nudRowNum = New cEwENumericUpDown
             Me.m_chkScaleForPrinter = New System.Windows.Forms.CheckBox
             Me.m_lblTBMargin = New System.Windows.Forms.Label
             Me.m_lblMarginLR = New System.Windows.Forms.Label

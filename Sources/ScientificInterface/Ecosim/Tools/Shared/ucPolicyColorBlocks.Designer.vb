@@ -15,11 +15,11 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Me.m_pbFishingBlocks = New System.Windows.Forms.PictureBox
             Me.m_lblBlockHeader = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_nudSeqEndYear = New System.Windows.Forms.NumericUpDown
+            Me.m_nudSeqEndYear = New cEwENumericUpDown
             Me.m_lblEndYear = New System.Windows.Forms.Label
-            Me.m_nudSeqStartYear = New System.Windows.Forms.NumericUpDown
+            Me.m_nudSeqStartYear = New cEwENumericUpDown
             Me.m_lblStartYear = New System.Windows.Forms.Label
-            Me.m_nudNumYearsPerBlock = New System.Windows.Forms.NumericUpDown
+            Me.m_nudNumYearsPerBlock = New cEwENumericUpDown
             Me.m_btnSetGear = New System.Windows.Forms.Button
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
             Me.m_hdrControls = New ScientificInterfaceShared.Controls.cEwEHeaderLabel

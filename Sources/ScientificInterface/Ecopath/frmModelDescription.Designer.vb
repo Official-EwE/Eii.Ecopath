@@ -27,7 +27,7 @@ Partial Class frmModelDescription
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmModelDescription))
         Dim CGoogleMapsLookup2 As SAUPUtil.Misc.GeoCode.cGoogleMapsLookup = New SAUPUtil.Misc.GeoCode.cGoogleMapsLookup
-        Me.m_udNumDigits = New System.Windows.Forms.NumericUpDown
+        Me.m_udNumDigits = New cEwENumericUpDown
         Me.lbNumDigits = New System.Windows.Forms.Label
         Me.m_lblOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_lbDescription = New System.Windows.Forms.Label
@@ -71,14 +71,14 @@ Partial Class frmModelDescription
         Me.m_tbContact = New System.Windows.Forms.RichTextBox
         Me.m_tbDescription = New System.Windows.Forms.RichTextBox
         Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_nudFirstYear = New System.Windows.Forms.NumericUpDown
+        Me.m_nudFirstYear = New cEwENumericUpDown
         Me.m_lblNumYears = New System.Windows.Forms.Label
-        Me.m_nudNumYears = New System.Windows.Forms.NumericUpDown
+        Me.m_nudNumYears = New cEwENumericUpDown
         Me.m_lblLocation = New System.Windows.Forms.Label
-        Me.m_nudNorth = New System.Windows.Forms.NumericUpDown
-        Me.m_nudSouth = New System.Windows.Forms.NumericUpDown
-        Me.m_nudWest = New System.Windows.Forms.NumericUpDown
-        Me.m_nudEast = New System.Windows.Forms.NumericUpDown
+        Me.m_nudNorth = New cEwENumericUpDown
+        Me.m_nudSouth = New cEwENumericUpDown
+        Me.m_nudWest = New cEwENumericUpDown
+        Me.m_nudEast = New cEwENumericUpDown
         Me.m_lblNorth = New System.Windows.Forms.Label
         Me.m_lblWest = New System.Windows.Forms.Label
         Me.m_lblEast = New System.Windows.Forms.Label

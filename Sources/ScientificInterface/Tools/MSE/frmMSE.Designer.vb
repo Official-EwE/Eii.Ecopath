@@ -36,8 +36,8 @@ Partial Class frmMSE
         Me.m_btnShowHide = New System.Windows.Forms.Button
         Me.m_ckSave = New System.Windows.Forms.CheckBox
         Me.m_lblStartYear = New System.Windows.Forms.Label
-        Me.m_nudStartYear = New System.Windows.Forms.NumericUpDown
-        Me.m_nudNumTrials = New System.Windows.Forms.NumericUpDown
+        Me.m_nudStartYear = New cEwENumericUpDown
+        Me.m_nudNumTrials = New cEwENumericUpDown
         Me.m_scMain = New System.Windows.Forms.SplitContainer
         Me.m_hdrParms = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_tlpRuns = New System.Windows.Forms.TableLayoutPanel

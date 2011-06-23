@@ -22,8 +22,8 @@ Namespace Ecosim
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.m_pbxBlockCodes = New System.Windows.Forms.PictureBox
-            Me.m_nudNumBlockCodes = New System.Windows.Forms.NumericUpDown
-            Me.m_nudSelectedBlockCode = New System.Windows.Forms.NumericUpDown
+            Me.m_nudNumBlockCodes = New cEwENumericUpDown
+            Me.m_nudSelectedBlockCode = New cEwENumericUpDown
             Me.m_lblNumBlocks = New System.Windows.Forms.Label
             Me.m_lblSelectedBlock = New System.Windows.Forms.Label
             Me.m_slSelectedBlockCode = New ScientificInterfaceShared.Controls.ucSlider

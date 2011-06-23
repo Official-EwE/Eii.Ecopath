@@ -53,7 +53,7 @@ Namespace Ecosim
             Me.lblBestSS = New System.Windows.Forms.Label
             Me.m_cbShowBioTraj = New System.Windows.Forms.CheckBox
             Me.m_btnApply = New System.Windows.Forms.Button
-            Me.m_nudNumTrials = New System.Windows.Forms.NumericUpDown
+            Me.m_nudNumTrials = New cEwENumericUpDown
             Me.m_btnTS = New System.Windows.Forms.Button
             Me.lblValueERun = New System.Windows.Forms.Label
             Me.lblValueSSBest = New System.Windows.Forms.Label

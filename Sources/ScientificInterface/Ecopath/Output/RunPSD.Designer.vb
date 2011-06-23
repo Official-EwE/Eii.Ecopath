@@ -39,9 +39,9 @@ Namespace Ecopath.Output
             Me.m_rbLorenzen = New System.Windows.Forms.RadioButton
             Me.m_rbGroupPB = New System.Windows.Forms.RadioButton
             Me.m_plInputs = New System.Windows.Forms.Panel
-            Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown
-            Me.m_nudLowestWtClass = New System.Windows.Forms.NumericUpDown
-            Me.m_nudNoWtClasses = New System.Windows.Forms.NumericUpDown
+            Me.NumericUpDown1 = New cEwENumericUpDown
+            Me.m_nudLowestWtClass = New cEwENumericUpDown
+            Me.m_nudNoWtClasses = New cEwENumericUpDown
             Me.m_lblNoPts = New System.Windows.Forms.Label
             Me.Label1 = New System.Windows.Forms.Label
             Me.m_lblNoWtClasses = New System.Windows.Forms.Label

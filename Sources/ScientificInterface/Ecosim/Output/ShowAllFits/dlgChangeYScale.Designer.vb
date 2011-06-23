@@ -29,7 +29,7 @@ Namespace Ecosim
             Me.m_txbSelPlotName = New System.Windows.Forms.TextBox
             Me.m_lblYScale = New System.Windows.Forms.Label
             Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.m_nudYScale = New System.Windows.Forms.NumericUpDown
+            Me.m_nudYScale = New cEwENumericUpDown
             CType(Me.m_nudYScale, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '

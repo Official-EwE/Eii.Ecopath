@@ -27,8 +27,8 @@
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditorAdvection))
             Me.m_lblAngle = New System.Windows.Forms.Label
             Me.m_lblVelocity = New System.Windows.Forms.Label
-            Me.m_nudAngle = New System.Windows.Forms.NumericUpDown
-            Me.m_nudVelocity = New System.Windows.Forms.NumericUpDown
+            Me.m_nudAngle = New cEwENumericUpDown
+            Me.m_nudVelocity = New cEwENumericUpDown
             Me.m_pbSample = New System.Windows.Forms.PictureBox
             CType(Me.m_nudAngle, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudVelocity, System.ComponentModel.ISupportInitialize).BeginInit()

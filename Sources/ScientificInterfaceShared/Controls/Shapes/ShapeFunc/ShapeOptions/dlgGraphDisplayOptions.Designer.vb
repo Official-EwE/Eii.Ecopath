@@ -25,7 +25,7 @@ Partial Class dlgGraphDisplayOptions
             Me.m_rbLine = New System.Windows.Forms.RadioButton
             Me.m_rbFill = New System.Windows.Forms.RadioButton
             Me.m_cbRightClickAutoScale = New System.Windows.Forms.CheckBox
-            Me.m_nudMax = New System.Windows.Forms.NumericUpDown
+            Me.m_nudMax = New cEwENumericUpDown
             Me.m_cbAutoScale = New System.Windows.Forms.CheckBox
             Me.m_lblYMax = New System.Windows.Forms.Label
             Me.m_cbShowScaleAndTitle = New System.Windows.Forms.CheckBox

@@ -14,7 +14,7 @@
         Private Sub InitializeComponent()
             Me.m_rbWater = New System.Windows.Forms.RadioButton
             Me.m_rbLand = New System.Windows.Forms.RadioButton
-            Me.m_nudDepth = New System.Windows.Forms.NumericUpDown
+            Me.m_nudDepth = New cEwENumericUpDown
             Me.m_pbPreviewWater = New System.Windows.Forms.PictureBox
             Me.m_pbPreviewLand = New System.Windows.Forms.PictureBox
             Me.m_cbProtectCoastline = New System.Windows.Forms.CheckBox

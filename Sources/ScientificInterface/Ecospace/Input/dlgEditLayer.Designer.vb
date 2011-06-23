@@ -43,7 +43,7 @@ Partial Class dlgEditLayer
             Me.m_tbDescription = New System.Windows.Forms.TextBox
             Me.m_lblWeight = New System.Windows.Forms.Label
             Me.m_lblDescription = New System.Windows.Forms.Label
-            Me.m_nudWeight = New System.Windows.Forms.NumericUpDown
+            Me.m_nudWeight = New cEwENumericUpDown
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tpData = New System.Windows.Forms.TabPage
             Me.m_hdrStaticData = New ScientificInterfaceShared.Controls.cEwEHeaderLabel

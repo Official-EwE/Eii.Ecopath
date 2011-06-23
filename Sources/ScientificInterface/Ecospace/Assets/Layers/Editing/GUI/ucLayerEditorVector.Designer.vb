@@ -25,7 +25,7 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.m_lblScale = New System.Windows.Forms.Label
-            Me.m_nudValue = New System.Windows.Forms.NumericUpDown
+            Me.m_nudValue = New cEwENumericUpDown
             Me.m_lblUnits = New System.Windows.Forms.Label
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()

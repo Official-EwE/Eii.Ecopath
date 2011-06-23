@@ -18,7 +18,7 @@ Partial Class ucParameters
         Me.m_pbEU = New System.Windows.Forms.PictureBox
         Me.m_lblSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_lblBaseYear = New System.Windows.Forms.Label
-        Me.m_nudBaseYear = New System.Windows.Forms.NumericUpDown
+        Me.m_nudBaseYear = New cEwENumericUpDown
         Me.m_hdrEcosimSettings = New cEwEHeaderLabel
         Me.m_hdrIntegration = New cEwEHeaderLabel
         Me.m_chkRunWithEcopath = New System.Windows.Forms.CheckBox
@@ -30,9 +30,9 @@ Partial Class ucParameters
         Me.m_lblEffortMin = New System.Windows.Forms.Label
         Me.m_lblEffortMax = New System.Windows.Forms.Label
         Me.m_lbEffortIncr = New System.Windows.Forms.Label
-        Me.m_nudEffortMin = New System.Windows.Forms.NumericUpDown
-        Me.m_nudEffortMax = New System.Windows.Forms.NumericUpDown
-        Me.m_nudEffortIncr = New System.Windows.Forms.NumericUpDown
+        Me.m_nudEffortMin = New cEwENumericUpDown
+        Me.m_nudEffortMax = New cEwENumericUpDown
+        Me.m_nudEffortIncr = New cEwENumericUpDown
         Me.m_chkResultsByFleet = New System.Windows.Forms.CheckBox
         Me.m_tlpSponsors.SuspendLayout()
         CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()

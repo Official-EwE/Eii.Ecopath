@@ -26,13 +26,13 @@ Namespace Other
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGraphs))
             Me.m_hdr1 = New cEwEHeaderLabel
             Me.m_lblThumbnailSize = New System.Windows.Forms.Label
-            Me.m_nudThumbnailSize = New System.Windows.Forms.NumericUpDown
+            Me.m_nudThumbnailSize = New cEwENumericUpDown
             Me.m_gbLegends = New System.Windows.Forms.GroupBox
             Me.m_rbLegendAlways = New System.Windows.Forms.RadioButton
             Me.m_rbLegendSelective = New System.Windows.Forms.RadioButton
             Me.m_gbThumbnails = New System.Windows.Forms.GroupBox
             Me.m_lblThumbnailUnit = New System.Windows.Forms.Label
-            Me.m_nudFontSize = New System.Windows.Forms.NumericUpDown
+            Me.m_nudFontSize = New cEwENumericUpDown
             Me.m_lblFontSize = New System.Windows.Forms.Label
             Me.m_lblExample = New System.Windows.Forms.Label
             Me.m_hdr2 = New cEwEHeaderLabel

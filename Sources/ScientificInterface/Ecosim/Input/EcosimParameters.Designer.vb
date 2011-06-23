@@ -24,8 +24,8 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimParameters))
-            Me.m_nudNutBaseFreeProp = New System.Windows.Forms.NumericUpDown
-            Me.m_nudNumberYears = New System.Windows.Forms.NumericUpDown
+            Me.m_nudNutBaseFreeProp = New cEwENumericUpDown
+            Me.m_nudNumberYears = New cEwENumericUpDown
             Me.m_cmbSalinityForcing = New System.Windows.Forms.ComboBox
             Me.m_cmbNutForcing = New System.Windows.Forms.ComboBox
             Me.m_chkPredictEffort = New System.Windows.Forms.CheckBox

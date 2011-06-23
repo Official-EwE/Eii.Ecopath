@@ -29,7 +29,7 @@ Partial Class dlgSensitivityOfSStoV
         Me.m_rbSearchPredPrey = New System.Windows.Forms.RadioButton
         Me.m_rbSearchPred = New System.Windows.Forms.RadioButton
         Me.m_lblNumCategories = New System.Windows.Forms.Label
-        Me.m_nudNumBlocks = New System.Windows.Forms.NumericUpDown
+        Me.m_nudNumBlocks = New cEwENumericUpDown
         Me.m_btnCancel = New System.Windows.Forms.Button
         Me.m_btnOk = New System.Windows.Forms.Button
         Me.m_hdrSearch = New cEwEHeaderLabel
