@@ -98,12 +98,18 @@ Public Class frmRemarkPanel
         ' Sanity check
         If Not (cmd Is m_cmd) Then Return
 
-        ' Get selected props
-        Me.m_aprop = m_cmd.Selection()
-        ' Update panel state
-        Me.UpdateControls()
-        ' Update panel content
-        Me.UpdateContents()
+        Try
+            ' Get selected props
+            Me.m_aprop = m_cmd.Selection()
+            ' Update panel state
+            Me.UpdateControls()
+            ' Update panel content
+            Me.UpdateContents()
+        Catch ex As Exception
+            Me.m_aprop = Nothing
+            cLog.Write(ex, "frmRemarkPanel::OnInvoke")
+        End Try
+
         ' Clear any changes
         Me.HasPendingChanges = False
 
@@ -162,9 +168,13 @@ Public Class frmRemarkPanel
         Me.HasPendingChanges = False
 
         Me.m_bInUpdate = True
-        For Each p As cProperty In Me.m_aprop
-            p.SetRemark(strRemark)
-        Next p
+        Try
+            For Each p As cProperty In Me.m_aprop
+                p.SetRemark(strRemark)
+            Next p
+        Catch ex As Exception
+            cLog.Write(ex, "frmRemarkPanel::Apply")
+        End Try
         Me.m_bInUpdate = False
 
         Me.UpdateContents()
