@@ -1097,6 +1097,8 @@ Namespace Controls.EwEGrid
             Dim strValue As String = ""
             Dim bIgnoreSelection As Boolean = False
             Dim cell As Cells.ICell = Nothing
+            Dim bHasRowData As Boolean
+            Dim bHasColData As Boolean
 
             ' Empty or near-empty range?
             If (r.IsEmpty) Then
@@ -1106,37 +1108,55 @@ Namespace Controls.EwEGrid
                 bIgnoreSelection = True
             End If
 
+            bHasRowData = False
             For iRow As Integer = r.Start.Row To r.End.Row
-                If iRow > r.Start.Row Then sbClipText.Append(vbCr + vbLf)
-                For iCol As Integer = r.Start.Column To r.End.Column
-                    pos = New Position(iRow, iCol)
-                    strValue = ""
+                ' Only process visible rows (#1012)
+                If Me.Rows(iRow).Visible Then
 
-                    If (Me.Selection.Contains(pos) Or bIgnoreSelection) Then
-                        cell = Me(iRow, iCol)
-                        If cell IsNot Nothing Then
-                            If TypeOf cell Is PropertyCell Then
-                                prop = DirectCast(cell, PropertyCell).GetProperty()
-                                strValue = CStr(prop.GetValue(False))
-                            Else
-                                Try
-                                    strValue = CStr(Me(iRow, iCol).GetValue(pos))
-                                Catch ex As InvalidCastException
-                                    ' Cell value holds an object that cannot be converted to string - handle graciously
-                                    strValue = ""
-                                Catch ex As Exception
-                                    Debug.Assert(False, ex.Message)
-                                End Try
+                    If bHasRowData Then sbClipText.Append(vbCr + vbLf)
+
+                    bHasColData = False
+                    For iCol As Integer = r.Start.Column To r.End.Column
+                        ' Only process visible columns (#1012)
+                        If Me.Columns(iCol).Visible Then
+
+                            pos = New Position(iRow, iCol)
+                            strValue = ""
+
+                            If bHasColData Then sbClipText.Append(vbTab)
+
+                            If (Me.Selection.Contains(pos) Or bIgnoreSelection) Then
+                                cell = Me(iRow, iCol)
+                                If cell IsNot Nothing Then
+                                    If TypeOf cell Is PropertyCell Then
+                                        prop = DirectCast(cell, PropertyCell).GetProperty()
+                                        strValue = CStr(prop.GetValue(False))
+                                    Else
+                                        Try
+                                            strValue = CStr(Me(iRow, iCol).GetValue(pos))
+                                        Catch ex As InvalidCastException
+                                            ' Cell value holds an object that cannot be converted to string - handle graciously
+                                            strValue = ""
+                                        Catch ex As Exception
+                                            Debug.Assert(False, ex.Message)
+                                        End Try
+                                    End If
+                                End If
                             End If
+
+                            If String.Compare(strValue, CStr(cCore.NULL_VALUE)) = 0 Then strValue = ""
+
+                            ' Add to clip text
+                            sbClipText.Append(strValue)
+                            bHasColData = True
+
                         End If
-                    End If
+                    Next iCol
 
-                    If String.Compare(strValue, CStr(cCore.NULL_VALUE)) = 0 Then strValue = ""
+                    ' Next
+                    bHasRowData = True
 
-                    ' Add to clip text
-                    If iCol > r.Start.Column Then sbClipText.Append(vbTab)
-                    sbClipText.Append(strValue)
-                Next iCol
+                End If
             Next iRow
 
             Dim dobj As New DataObject()
@@ -1173,6 +1193,8 @@ Namespace Controls.EwEGrid
             Dim r As Range = Me.Selection.GetRange()
             Dim pos As Position = Nothing
             Dim cell As SourceGrid2.Cells.ICell = Nothing
+            Dim iRowData As Integer = 0
+            Dim iColData As Integer = -1
             Dim strValue As String = ""
 
             Me.BeginBatchEdit()
@@ -1186,46 +1208,58 @@ Namespace Controls.EwEGrid
             ' JS 29aug09: paste behaviour changed to imitate Excel. Do not only paste in selected cells,
             '             but paste 'all the way through'
             For iRow As Integer = r.Start.Row To Math.Min(r.Start.Row + astrLines.Length - 1, Me.RowsCount - 1)
-                If Not String.IsNullOrEmpty(astrLines(iRow - r.Start.Row)) Then
-                    Dim astrCols() As String = astrLines(iRow - r.Start.Row).Split(CChar(vbTab))
 
-                    For iCol As Integer = r.Start.Column To Math.Min(r.Start.Column + astrCols.Length - 1, Me.ColumnsCount - 1)
-                        pos = New Position(iRow, iCol)
-                        cell = Me(iRow, iCol)
+                ' Only process visible rows (#1012)
+                If Me.Rows(iRow).Visible Then
 
-                        ' Prevent from crashing on irregular grids
-                        If cell IsNot Nothing Then
-                            ' Is cell enabled for editing?
-                            If (cell.DataModel.EnableEdit) Then
-                                ' #Yes: attempt to set value
-                                strValue = astrCols(iCol - r.Start.Column)
+                    If Not String.IsNullOrEmpty(astrLines(iRowData)) Then
+                        Dim astrCols() As String = astrLines(iRowData).Split(CChar(vbTab))
+                        iColData = 0
 
-                                If (String.Compare(strValue, "") = 0) And _
-                                    ((cell.DataModel.ValueType Is GetType(Single) Or cell.DataModel.ValueType Is GetType(Double) Or cell.DataModel.ValueType Is GetType(Integer))) Then
-                                    strValue = cCore.NULL_VALUE.ToString()
-                                End If
+                        For iCol As Integer = r.Start.Column To Me.ColumnsCount - 1
+                            ' Only process visible columns
+                            If Me.Columns(iCol).Visible And (iColData < astrCols.Length) Then
 
-                                ' Try to convert
-                                Dim objValue As Object = strValue
-                                Try
-                                    If (cell.DataModel.ValueType Is GetType(Single)) Then
-                                        objValue = Single.Parse(strValue)
-                                    ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
-                                        objValue = Double.Parse(strValue)
-                                    ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
-                                        objValue = Integer.Parse(strValue)
+                                pos = New Position(iRow, iCol)
+                                cell = Me(iRow, iCol)
+
+                                ' Prevent from crashing on irregular grids
+                                If cell IsNot Nothing Then
+                                    ' Is cell enabled for editing?
+                                    If (cell.DataModel.EnableEdit) Then
+                                        ' #Yes: attempt to set value
+                                        strValue = astrCols(iColData).Trim
+                                        If (String.Compare(strValue, "") = 0) And _
+                                            ((cell.DataModel.ValueType Is GetType(Single) Or cell.DataModel.ValueType Is GetType(Double) Or cell.DataModel.ValueType Is GetType(Integer))) Then
+                                            strValue = cCore.NULL_VALUE.ToString()
+                                        End If
+
+                                        ' Try to convert
+                                        Dim objValue As Object = strValue
+                                        Try
+                                            If (cell.DataModel.ValueType Is GetType(Single)) Then
+                                                objValue = Single.Parse(strValue)
+                                            ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
+                                                objValue = Double.Parse(strValue)
+                                            ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                                                objValue = Integer.Parse(strValue)
+                                            End If
+                                        Catch ex As Exception
+                                            ' Whoah
+                                        End Try
+                                        If cell.DataModel.IsValidValue(objValue) Then
+                                            cell.SetValue(pos, objValue)
+                                        End If
+
                                     End If
-                                Catch ex As Exception
-                                    ' Whoah
-                                End Try
-                                If cell.DataModel.IsValidValue(objValue) Then
-                                    cell.SetValue(pos, objValue)
                                 End If
-
-                            End If
-                        End If
-                    Next iCol
-                End If
+                                iColData += 1
+                            End If ' Column visible
+                        Next iCol
+                    End If
+                    ' Next data row
+                    iRowData += 1
+                End If ' Row visible
             Next iRow
             ' Redraw later
             Me.InvalidateCells()
