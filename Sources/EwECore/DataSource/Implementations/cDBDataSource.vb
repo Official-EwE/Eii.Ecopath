@@ -8344,15 +8344,17 @@ Namespace DataSources
 
             reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioGroupMap WHERE (ScenarioID={0})", iScenarioID))
             Try
-                While reader.Read()
+                If reader IsNot Nothing Then
+                    While reader.Read()
 
-                    iGroup = Array.IndexOf(ecospaceDS.GroupDBID, CInt(reader("GroupID")))
-                    iRow = CInt(reader("InRow"))
-                    iCol = CInt(reader("InCol"))
-                    sCapacity = CSng(reader("Capacity"))
-                    ecospaceDS.HabCapInput(iRow, iCol, iGroup) = sCapacity
+                        iGroup = Array.IndexOf(ecospaceDS.GroupDBID, CInt(reader("GroupID")))
+                        iRow = CInt(reader("InRow"))
+                        iCol = CInt(reader("InCol"))
+                        sCapacity = CSng(reader("Capacity"))
+                        ecospaceDS.HabCapInput(iRow, iCol, iGroup) = sCapacity
 
-                End While
+                    End While
+                End If
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioGroupMap for group {1}, scenario ID {2}", ex.Message, iGroup, iScenarioID))
