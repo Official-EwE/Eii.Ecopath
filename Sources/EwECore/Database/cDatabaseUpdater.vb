@@ -188,8 +188,9 @@ Namespace Database
             Dim aUpdates As cDBUpdate() = cDatabaseUpdater.GetUpdates()
             Dim bSucces As Boolean = True
 
-            ' Sanity check
+            ' Sanity checks
             If (db Is Nothing) Then Return False
+            If (db.IsReadOnly) Then Return True
 
             ' Get DB version
             sDBVersion = db.GetVersion()
