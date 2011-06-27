@@ -2361,6 +2361,9 @@ Public Class cCore
 
     Private Function UpdateDatasource(ByVal ds As IEwEDataSource) As Boolean
 
+        ' Do not update a read-only database
+        If (Not Me.CanSave()) Then Return True
+
         ' Run database updates
         If (TypeOf ds.Connection Is cEwEDatabase) Then
             Dim db As cEwEDatabase = DirectCast(ds.Connection, cEwEDatabase)
@@ -2843,8 +2846,8 @@ Public Class cCore
         If (Not Me.DataSource.IsReadOnly) Then Return True
 
         If bSendMessage Then
-            ' ToDo: localize this
-            Dim msg As New cMessage("The underlying model is read-only and cannot be modified", eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
+            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MODEL_READONLY, Me.EwEModel.Name), _
+                                    eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning)
             Me.Messages.SendMessage(msg)
         End If
 
