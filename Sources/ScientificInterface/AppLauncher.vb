@@ -1050,14 +1050,13 @@ Public Class AppLauncher
     ''' <param name="strFileName">File name of the Access database to convert. If a
     ''' conversion is necessary this parameter will receive the file name of the
     ''' converted file.</param>
-    ''' <returns>True if the database specified by <paramref name="fileName">filename</paramref>
-    ''' is already an EwE6 database, or if the conversion was succesful.</returns>
+    ''' <returns>One of the following <see cref="cEwEDatabase.eCompatibilityTypes"/>
+    ''' </returns>
     ''' ---------------------------------------------------------------------------
-    Private Function CovertToEwE6(ByRef strFileName As String) As Boolean
+    Private Function CovertToEwE6(ByRef strFileName As String) As cEwEDatabase.eCompatibilityTypes
 
         Dim dst As eDataSourceTypes = eDataSourceTypes.NotSet
         Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
-        Dim bSucces As Boolean = True
 
         ' Detect file type
         dst = cDataSourceFactory.GetSupportedType(strFileName)
@@ -1078,7 +1077,7 @@ Public Class AppLauncher
 
             Case eDataSourceTypes.NotSet
                 ' ?Que?
-                Return False
+                Return comp
 
         End Select
 
@@ -1086,44 +1085,43 @@ Public Class AppLauncher
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
                 Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD)
-                bSucces = False
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
-                AddRecentFilesSetting(strFileName)
+                Me.AddRecentFilesSetting(strFileName)
 
                 Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
                 If dlg.ShowDialog(Me) = DialogResult.OK Then
                     ' Update file name
                     strFileName = dlg.ImportedFileName
                     ' Report succes
-                    bSucces = True
-                Else
-                    bSucces = False
+                    comp = cEwEDatabase.eCompatibilityTypes.EwE6
                 End If
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
                 Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW)
-                bSucces = False
 
             Case cEwEDatabase.eCompatibilityTypes.EwE6
-                ' Moved to core
+                ' Yippee
 
             Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
-                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW)
-                bSucces = False
+                If Me.AskFeedback(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, _
+                                   eMessageImportance.Question, _
+                                   eCoreComponentType.DataSource, _
+                                   cFeedbackMessage.eReplyStyle.YES_NO) = cFeedbackMessage.eReply.NO Then
+                    comp = cEwEDatabase.eCompatibilityTypes.Unknown
+                End If
 
             Case cEwEDatabase.eCompatibilityTypes.Unknown
                 Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
-                bSucces = False
 
             Case Else
                 ' Unsupported enum value?!
                 Debug.Assert(False)
-                bSucces = False
+                comp = cEwEDatabase.eCompatibilityTypes.Unknown
 
         End Select
 
-        Return bSucces
+        Return comp
 
     End Function
 
@@ -1664,6 +1662,7 @@ Public Class AppLauncher
 
         Dim ds As IEwEDataSource = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
+        Dim bReadOnly As Boolean = False
 
         ' Check if target file exists at all before affecting anything
         If Not File.Exists(strFileName) Then
@@ -1696,10 +1695,16 @@ Public Class AppLauncher
             Return False
         End If
 
-        If Not CovertToEwE6(strFileName) Then
-            ' #No: EwE6 database? abort
-            Return False
-        End If
+        Select Case CovertToEwE6(strFileName)
+            Case cEwEDatabase.eCompatibilityTypes.EwE6
+                ' EwE6 database? OK
+            Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
+                ' Newer version: try to open
+                bReadOnly = True
+            Case Else
+                ' No EwE6 database? abort
+                Return False
+        End Select
 
         ' Abort if no new file name given
         If String.IsNullOrEmpty(strFileName) Then Return True
@@ -1729,7 +1734,7 @@ Public Class AppLauncher
         Me.AddRecentFilesSetting(strFileName)
 
         ' Open the datasource
-        atResult = ds.Open(strFileName, Me.Core)
+        atResult = ds.Open(strFileName, Me.Core, eDataSourceTypes.NotSet, bReadOnly)
 
         If (atResult <> eDatasourceAccessType.Success) Then
             Me.ReportFileAccessError(atResult, strFileName)

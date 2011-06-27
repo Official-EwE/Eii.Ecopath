@@ -253,8 +253,10 @@
     <value>Running Ecosim...</value>
   </data>
   <data name="STATUSSTRIP_ECOSPACE_TOOLTIP" xml:space="preserve">
-    <value>Ecospace scenario{0}Name: {1}{0}Description: {2}</value>
-    <comment>Ecospace scenario status tooltip. Fields: {0}=vbNewLine, {1}=scenario name, {2}=scenario description</comment>
+    <value>Ecospace scenario
+Name: {0}
+Description: {1}</value>
+    <comment>Ecospace scenario status tooltip. Fields: {0}=scenario name, {1}=scenario description</comment>
   </data>
   <data name="glyph_muddy_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_muddy_green.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -522,8 +524,10 @@
     <comment>Layer group 'Habitats'</comment>
   </data>
   <data name="STATUSSTRIP_ECOTRACER_TOOLTIP" xml:space="preserve">
-    <value>Ecotracer scenario{0}Name: {1}{0}Description: {2}</value>
-    <comment>Ecotracer scenario status tooltip. Fields: {0}=vbNewLine, {1}=scenario name, {2}=scenario description</comment>
+    <value>Ecotracer scenario
+Name: {0}
+Description: {1}</value>
+    <comment>Ecotracer scenario status tooltip. Fields: {0}=scenario name, {1}=scenario description</comment>
   </data>
   <data name="glyph_arrows_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_arrows_down.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -652,7 +656,9 @@
     <value>As popup message</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_EWE6_TOO_NEW" xml:space="preserve">
-    <value>This database was last accessed by a newer release of Ecopath with Ecosim. In order to load this model, please download and install a new version of EwE from http://www.ecopath.org and try again.</value>
+    <value>This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from http://www.ecopath.org and try again.
+
+EwE can attempt to continue and load the model in read-only mode, but this may not work. Do you wish to try this? You may need to grab a helmet.</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM" xml:space="preserve">
     <value>Missing parameter|Values that are required by the model to run correctly.</value>
@@ -708,10 +714,6 @@
   </data>
   <data name="TS_CONSTANTTOTALMORTALITY_REMARKS" xml:space="preserve">
     <value>Forced total mortality by group/pool, partial series are acceptable</value>
-  </data>
-  <data name="PROMPT_IMPORT_SUMMARY" xml:space="preserve">
-    <value>Selected database: {0}{1}{0}{0}Selected Ecopath model:{0}{2}{0}{0}Save model as:{0}{3}</value>
-    <comment>{0}: newline, {1}: database name, {2}: model name, {3} target file path</comment>
   </data>
   <data name="ECOSPACE_BASEMAP_SUMMARY_SIZE" xml:space="preserve">
     <value>{0} rows x {1} cols</value>
@@ -800,8 +802,10 @@
     <value>Fishing</value>
   </data>
   <data name="STATUSSTRIP_ECOPATH_TOOLTIP" xml:space="preserve">
-    <value>Ecopath model{0}Name: {1}{0}Path: {2}</value>
-    <comment>Ecopath model status tooltip. Fields: {0}=vbNewLine, {1}=model name, {2}=model path</comment>
+    <value>Ecopath model
+Name: {0}
+Location: {1}</value>
+    <comment>Ecopath model status tooltip. Fields: {0}=model name, {1}=model path</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_NAMES" xml:space="preserve">
     <value>Names|Colour scheme to use for name cells in grids</value>
@@ -1333,8 +1337,11 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Names cannot be empty.</value>
   </data>
   <data name="STATUSSTRIP_ECOSIM_TOOLTIP" xml:space="preserve">
-    <value>Ecosim scenario{0}Name: {1}{0}Time series: {2}{0}Description: {3}</value>
-    <comment>Ecosim scenario status tooltip. Fields: {0}=vbNewLine, {1}=scenario name, {2}=time series dataset name, {3}=scenario description</comment>
+    <value>Ecosim scenario
+Name: {0}
+Time series: {1}
+Description: {2}</value>
+    <comment>Ecosim scenario status tooltip. Fields: {0}=scenario name, {1}=time series dataset name, {2}=scenario description</comment>
   </data>
   <data name="SR_PLOT_X_AXIS" xml:space="preserve">
     <value>{0} Stock</value>

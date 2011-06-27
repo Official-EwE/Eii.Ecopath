@@ -109,7 +109,6 @@ Public Class cEwEStatusBar
             ' Datasource and Ecopath
             ' ----------------------
             strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP, _
-                                       vbNewLine, _
                                        eweModel.Name, _
                                        appl.SelectedFileName)
             Me.UpdateToolstripItem(Me.m_tsEcopathModel, eweModel.Name, strTooltip)
@@ -123,14 +122,12 @@ Public Class cEwEStatusBar
                 If Me.m_uic.Core.ActiveTimeSeriesDatasetIndex > 0 Then
                     tsds = Me.m_uic.Core.TimeSeriesDataset(Me.m_uic.Core.ActiveTimeSeriesDatasetIndex)
                     strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
-                                               vbNewLine, _
                                                simScenario.Name, _
                                                tsds.Name, _
                                                Me.ToTooltipLabel(simScenario.Description))
                     strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, simScenario.Name, tsds.Name)
                 Else
                     strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
-                                               vbNewLine, _
                                                simScenario.Name, _
                                                Me.ToTooltipLabel(""), _
                                                Me.ToTooltipLabel(simScenario.Description))
@@ -147,7 +144,6 @@ Public Class cEwEStatusBar
             If (Me.m_uic.Core.ActiveEcospaceScenarioIndex >= 0) Then
                 spaceScenario = Me.m_uic.Core.EcospaceScenarios(Me.m_uic.Core.ActiveEcospaceScenarioIndex)
                 strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP, _
-                                           vbNewLine, _
                                            spaceScenario.Name, _
                                            Me.ToTooltipLabel(spaceScenario.Description))
                 Me.UpdateToolstripItem(Me.m_tsEcospaceScenario, spaceScenario.Name, strTooltip)
