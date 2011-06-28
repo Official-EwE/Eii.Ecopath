@@ -1000,27 +1000,29 @@ Public Class cEcoSpace
                             '***WARNING**** FOLLOWING CALCULATION WILL FAIL IF ADJUSTSPACEPARS HAS NOT BEEN CALLED
                             'SINCE CALCTOTAREA WILL NOT HAVE BEEN CALLED AND NEITHER THABAREA OR HABAREAUSED WILL HAVE BEEN
                             'SET
-                            Tbiom = (ThabArea) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
-                            Tpred = (ThabArea) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
+                            Tbiom = ThabArea * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
+                            Tpred = ThabArea * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
 
                             'Tbiom = Me.m_Data.TotHabCap(ieco) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
                             'Tpred = Me.m_Data.TotHabCap(ieco) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
                             For i = 1 To m_Data.InRow
                                 System.Console.WriteLine()
                                 For j = 1 To m_Data.InCol
-                                    'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True _
-                                    '    Or m_Data.PrefHab(ieco, 0) = True) _
-                                    '    And m_Data.DistributionEnvelope(i, j, ieco) = True _
-                                    '    And m_Data.Depth(i, j) > 0 Then
-                                    Wcell = m_Data.IFDweight(i, j, ieco) / TotIFDweight(ieco)
-                                    m_Data.Bcell(i, j, ieco) = Tbiom * Wcell
-                                    tbio(ieco) = tbio(ieco) + m_Data.Bcell(i, j, ieco)
-                                    m_Data.PredCell(i, j, ieco) = Tpred * Wcell
-                                    'End If
-                                Next
-                            Next
-                        Next
-                    Next
+                                    'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) _ 
+                                    '   And m_Data.DistributionEnvelope(i, j, ieco) = True _
+                                    '   And m_Data.Depth(i, j) > 0 Then
+
+                                    If m_Data.Depth(i, j) > 0 Then
+                                        Wcell = m_Data.IFDweight(i, j, ieco) / TotIFDweight(ieco)
+                                        m_Data.Bcell(i, j, ieco) = Tbiom * Wcell
+                                        tbio(ieco) = tbio(ieco) + m_Data.Bcell(i, j, ieco)
+                                        m_Data.PredCell(i, j, ieco) = Tpred * Wcell
+                                    End If
+                                Next j
+                            Next i
+                        Next ist
+                    Next isp
+
                 ElseIf m_Data.UseIBM Then
                     slvET2 = Microsoft.VisualBasic.Timer
                     runIBMSolverThreads()
@@ -1482,9 +1484,9 @@ Public Class cEcoSpace
         ReDim TotPred(m_Data.NGroups)
         ReDim TotIFDweight(m_Data.NGroups)
 
-        'redims the Btime of each thread
+        'redims cumulative variable for each thread
         'this could be done inside the thread, but if solve gets run on the 
-        'same thread, (which it shouldn't), it will be deleted
+        'same thread, which it shouldn't, variables will be deleted
         For Each solver In m_spaceSolvers
             ReDim solver.BtimeLocal(m_Data.NGroups)
             ReDim solver.TotLossThread(m_Data.NGroups)
@@ -1546,25 +1548,14 @@ Public Class cEcoSpace
             If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
             spaceThreadWaitTimer = spaceThreadWaitTimer + (Microsoft.VisualBasic.Timer - timerTemp)
 
-            'this sums variables from all sums local to each thread
+            'Gather data from across all threads
             For Each solver In m_spaceSolvers
-                For ip As Integer = 1 To m_Data.NGroups
-                    Btime(ip) = solver.BtimeLocal(ip) + Btime(ip)
-                Next
-
-                'If m_search.bInSearch Then
-                '    'sum search data from threads
-                '    For iflt As Integer = 1 To m_EPdata.NumFleet
-                '        For igrp As Integer = 1 To m_EPdata.NumLiving
-                '            Me.m_search.ValCatch(iflt, igrp) = m_search.ValCatch(iflt, igrp) + solver.Search.ValCatch(iflt, igrp)
-                '            Me.m_search.CatchYear(iflt, igrp) = m_search.CatchYear(iflt, igrp) + solver.Search.CatchYear(iflt, igrp)
-                '        Next
-                '    Next
-                'End If
+                'For ip As Integer = 1 To m_Data.NGroups
+                '    Btime(ip) = solver.BtimeLocal(ip) + Btime(ip)
+                'Next
 
                 If m_Data.NewMultiStanza Then
                     For isp As Integer = 1 To m_Stanza.Nsplit
-                        'ieco = m_Stanza.EcopathCode(isp, m_Stanza.Nstanza(isp))
                         For ist As Integer = 1 To m_Stanza.Nstanza(isp)
                             ieco = m_Stanza.EcopathCode(isp, ist)
 
@@ -1583,13 +1574,11 @@ Public Class cEcoSpace
                 End If
             Next
 
-
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("Error in runSpaceSolverThreads() " & ex.Message, ex)
         End Try
-
 
     End Sub
 
@@ -1728,8 +1717,8 @@ Public Class cEcoSpace
             Me.m_Ecosim.Init(True)
 
             SetHabCap()
+            AdjustLowHapCaps()
             'first set density map for all pools to no movement equilibrium
-            'should be able to remove
             SetBiomassesEcospace()
             PPScale = ScaleRelativePrimaryProductivityToEcopathLevel()
             ScaleSailingToUnity()
@@ -1851,7 +1840,8 @@ Public Class cEcoSpace
                                 'And m_Data.DistributionEnvelope(i, j, ieco) = True Then
                                 ' NstanzaBase(isc) * Basebiomass(ieco) / m_SimData.StartBiomass(ieco)
                                 m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
-                                If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) '* Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco) '.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
+                                ' If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) '* Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco) '.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
+                                If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco) '.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
                                 'Else
                                 '    m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(i, j, ieco) ' / 10
                                 '    If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) ' / 1000
@@ -1860,10 +1850,10 @@ Public Class cEcoSpace
                                 m_Data.Bcell(i, j, nvar2 + isc) = 1.0E-20
                             End If
                             m_Data.Blast(i, j, nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
-                        Next
-                    Next
-                Next
-            Next
+                        Next j
+                    Next i
+                Next ist
+            Next isp
 
             'set dispersal rate arrays for solvegrid
             SetMovementParameters()
@@ -5320,7 +5310,6 @@ exitline:
                     TotEatenBy(ieco) = TotEatenBy(ieco) / TotIFDweight(ieco)
                     TotPred(ieco) = TotPred(ieco) / TotIFDweight(ieco)
                     TotBiom(ieco) = TotBiom(ieco) / TotIFDweight(ieco)
-                    System.Console.WriteLine(TotBiom(ieco).ToString("E"))
 
                     Su = Math.Exp(-TotLoss(ieco) / 12.0# / TotBiom(ieco))
                     Gf = TotEatenBy(ieco) / TotPred(ieco)  '(month factor here included in splitalpha scaling setup)
@@ -5852,7 +5841,7 @@ exitline:
         MaxDist = Math.Max(Me.m_Data.InRow, Me.m_Data.InCol)
         Maxiter = MaxDist / 2 : If Maxiter = 0 Then Maxiter = 1
 
-        For k = 1 To Me.m_Data.nvartot
+        For k = 1 To Me.m_Data.NGroups 'Me.m_Data.nvartot
 
             'initialize distmin for all cells for group k
             NumBad = 0
