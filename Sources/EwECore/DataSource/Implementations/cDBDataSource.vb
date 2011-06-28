@@ -7556,6 +7556,8 @@ Namespace DataSources
                             drow("InRow") = i
                             drow("InCol") = j
                             drow("Depth") = 1
+                            drow("XVel") = 0
+                            drow("YVel") = 0
                             writer.AddRow(drow)
                         End If
                     Next
