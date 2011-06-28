@@ -2388,7 +2388,7 @@ Public Class cCore
     Private Function UpdateDatasource(ByVal ds As IEwEDataSource) As Boolean
 
         ' Do not update a read-only database
-        If (Not Me.CanSave()) Then Return True
+        If (ds.IsReadOnly) Then Return True
 
         ' Run database updates
         If (TypeOf ds.Connection Is cEwEDatabase) Then
