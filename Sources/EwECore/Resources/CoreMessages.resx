@@ -981,4 +981,14 @@ System Error: {0}</value>
   <data name="ECOSPACE_RUNNING" xml:space="preserve">
     <value>Ecospace is already running you must either stop the current run or wait for it to complete before starting another run.</value>
   </data>
+  <data name="MODEL_READONLY" xml:space="preserve">
+    <value>The model '{0}' was opened in read-only mode and cannot be saved.</value>
+    <comment>{0}=model name</comment>
+  </data>
+  <data name="PROMPT_DISCARD_CHANGES" xml:space="preserve">
+    <value>Your model has changed but the database is read-only. If you continue your changes may be lost. Do you wish to proceed?</value>
+  </data>
+  <data name="STATUS_SAVING_CHANGES" xml:space="preserve">
+    <value>Saving changes, please wait...</value>
+  </data>
 </root>
