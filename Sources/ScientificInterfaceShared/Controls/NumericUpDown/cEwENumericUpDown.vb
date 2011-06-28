@@ -33,8 +33,7 @@ Namespace Controls
             ' Use control unaffected
             MyBase.OnMouseDown(e)
             Me.Capture = True
-            'Me.Cursor = Cursors.SizeAll
-            Me.m_ptLast = e.Location
+            Me.m_ptLast = Me.DistanceFromBounds(e.Location)
         End Sub
 
         ''' <summary>
@@ -42,11 +41,12 @@ Namespace Controls
         ''' </summary>
         Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
 
-            If Me.Capture Then
+            If Me.Capture And Not Me.ClientRectangle.Contains(e.Location) Then
 
-                Dim dx As Integer = (e.Location.X - Me.m_ptLast.X)
-                Dim dy As Integer = (Me.m_ptLast.Y - e.Location.Y)
-                Dim sDist As Single = (dx + dy) * Me.Increment
+                Dim ptCurr As Point = Me.DistanceFromBounds(e.Location)
+                Dim dx As Integer = (ptCurr.X - Me.m_ptLast.X)
+                Dim dy As Integer = (Me.m_ptLast.Y - ptCurr.Y)
+                Dim sDist As Single = (dx + dy) * (dx + dy) * Me.Increment * CSng(Math.Sign(dx + dy))
 
                 If My.Computer.Keyboard.CtrlKeyDown Then
                     sDist *= 10
@@ -56,7 +56,7 @@ Namespace Controls
                 End If
 
                 ' Remember last point
-                Me.m_ptLast = e.Location
+                Me.m_ptLast = ptCurr
 
                 Me.Value = Convert.ToDecimal(Math.Max(Me.Minimum, Math.Min(Me.Maximum, Me.Value + sDist)))
             Else
@@ -72,6 +72,30 @@ Namespace Controls
             'Me.Cursor = Cursors.Default
             MyBase.OnMouseUp(e)
         End Sub
+
+        Protected Function DistanceFromBounds(ByVal pt As Point) As Point
+            Dim rc As Rectangle = Me.ClientRectangle
+            Dim dx As Integer
+            Dim dy As Integer
+
+            If pt.X < 0 Then
+                dx = pt.X
+            ElseIf pt.X <= rc.Width Then
+                dx = 0
+            Else
+                dx = pt.X - rc.Width
+            End If
+
+            If pt.Y < 0 Then
+                dy = pt.Y
+            ElseIf pt.Y <= rc.Height Then
+                dy = 0
+            Else
+                dy = pt.Y - rc.Height
+            End If
+            Return New Point(dx, dy)
+
+        End Function
 
 #End Region ' Control overrides
 
