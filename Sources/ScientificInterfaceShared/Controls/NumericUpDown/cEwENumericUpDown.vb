@@ -46,19 +46,21 @@ Namespace Controls
                 Dim ptCurr As Point = Me.DistanceFromBounds(e.Location)
                 Dim dx As Integer = (ptCurr.X - Me.m_ptLast.X)
                 Dim dy As Integer = (Me.m_ptLast.Y - ptCurr.Y)
-                Dim sDist As Single = (dx + dy) * (dx + dy) * Me.Increment * CSng(Math.Sign(dx + dy))
-
+                Dim sIncrement As Single = Me.Increment
+                
                 If My.Computer.Keyboard.CtrlKeyDown Then
-                    sDist *= 10
+                    sIncrement *= 10
                 End If
+
                 If My.Computer.Keyboard.ShiftKeyDown Then
-                    sDist /= CSng(Math.Pow(10, Me.DecimalPlaces))
+                    sIncrement /= CSng(Math.Max(Math.Pow(10, Me.DecimalPlaces), 5))
                 End If
+
+                Dim sDist As Single = (dx + dy) * (dx + dy) * sIncrement * CSng(Math.Sign(dx + dy))
+                Me.Value = Convert.ToDecimal(Math.Max(Me.Minimum, Math.Min(Me.Maximum, Me.Value + sDist)))
 
                 ' Remember last point
                 Me.m_ptLast = ptCurr
-
-                Me.Value = Convert.ToDecimal(Math.Max(Me.Minimum, Math.Min(Me.Maximum, Me.Value + sDist)))
             Else
                 MyBase.OnMouseMove(e)
             End If
