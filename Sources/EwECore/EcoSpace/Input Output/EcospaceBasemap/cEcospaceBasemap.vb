@@ -639,7 +639,7 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerHabitat
                 Return Me.m_core.m_EcoSpaceData.HabType
             Case eVarNameFlags.LayerHabitatCapacity
-                Return Me.m_core.m_EcoSpaceData.HabCapInput
+                Return Me.m_core.m_EcoSpaceData.HabCap
             Case eVarNameFlags.LayerMPA
                 Return Me.m_core.m_EcoSpaceData.MPA
             Case eVarNameFlags.LayerRegion
