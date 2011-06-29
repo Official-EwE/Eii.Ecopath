@@ -218,9 +218,11 @@ Namespace Import
                         Me.SetImportStatus(True, String.Format(My.Resources.STATUS_IMPORTING_MODEL_SUCCESS, setting.ModelInfo.Name, setting.EwE6ModelName))
                     Else
                         ' #No: report failure
-                        ' ToDo_JS: if database was not created the log file entry will be empty
-                        '          this error message does not cater to that eventuality
-                        Me.SetImportStatus(True, String.Format(My.Resources.STATUS_IMPORTING_MODEL_FAILED, setting.ModelInfo.Name, setting.LogFile))
+                        If String.IsNullOrEmpty(setting.LogFile) Then
+                            Me.SetImportStatus(True, String.Format(My.Resources.STATUS_IMPORTING_MODEL_CANCELLED, setting.ModelInfo.Name))
+                        Else
+                            Me.SetImportStatus(True, String.Format(My.Resources.STATUS_IMPORTING_MODEL_FAILED, setting.ModelInfo.Name, setting.LogFile))
+                        End If
                     End If
 
                     ' Clear application status

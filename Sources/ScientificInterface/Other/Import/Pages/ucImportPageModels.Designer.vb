@@ -24,17 +24,17 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_btnBrowse = New System.Windows.Forms.Button()
-            Me.m_tbxOutputFolder = New System.Windows.Forms.TextBox()
-            Me.m_lblOutputFolder = New System.Windows.Forms.Label()
-            Me.m_lblModels = New System.Windows.Forms.Label()
-            Me.m_lblFormat = New System.Windows.Forms.Label()
-            Me.m_cmbDatabaseFormat = New System.Windows.Forms.ComboBox()
-            Me.m_scModels = New System.Windows.Forms.SplitContainer()
-            Me.m_lblComments = New System.Windows.Forms.Label()
-            Me.m_lblDetails = New System.Windows.Forms.Label()
-            Me.m_grid = New ScientificInterface.Import.cImportGrid()
-            Me.m_hdr = New ScientificInterface.Import.ucImportHeader()
+            Me.m_btnBrowse = New System.Windows.Forms.Button
+            Me.m_tbxOutputFolder = New System.Windows.Forms.TextBox
+            Me.m_lblOutputFolder = New System.Windows.Forms.Label
+            Me.m_hdrModels = New cEwEHeaderLabel
+            Me.m_lblFormat = New System.Windows.Forms.Label
+            Me.m_cmbDatabaseFormat = New System.Windows.Forms.ComboBox
+            Me.m_scModels = New System.Windows.Forms.SplitContainer
+            Me.m_grid = New ScientificInterface.Import.cImportGrid
+            Me.m_lblComments = New System.Windows.Forms.Label
+            Me.m_hdrDetails = New cEwEHeaderLabel
+            Me.m_hdr = New ScientificInterface.Import.ucImportHeader
             Me.m_scModels.Panel1.SuspendLayout()
             Me.m_scModels.Panel2.SuspendLayout()
             Me.m_scModels.SuspendLayout()
@@ -73,16 +73,18 @@
             Me.m_lblOutputFolder.TabIndex = 3
             Me.m_lblOutputFolder.Text = "&Destination folder:"
             '
-            'm_lblModels
+            'm_hdrModels
             '
-            Me.m_lblModels.AutoSize = True
-            Me.m_lblModels.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-            Me.m_lblModels.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblModels.Location = New System.Drawing.Point(3, 75)
-            Me.m_lblModels.Name = "m_lblModels"
-            Me.m_lblModels.Size = New System.Drawing.Size(178, 13)
-            Me.m_lblModels.TabIndex = 1
-            Me.m_lblModels.Text = "&Select one or more models to import:"
+            Me.m_hdrModels.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrModels.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+            Me.m_hdrModels.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_hdrModels.Location = New System.Drawing.Point(0, 71)
+            Me.m_hdrModels.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_hdrModels.Name = "m_hdrModels"
+            Me.m_hdrModels.Size = New System.Drawing.Size(507, 18)
+            Me.m_hdrModels.TabIndex = 1
+            Me.m_hdrModels.Text = "Select one or more models to import:"
             '
             'm_lblFormat
             '
@@ -122,33 +124,10 @@
             'm_scModels.Panel2
             '
             Me.m_scModels.Panel2.Controls.Add(Me.m_lblComments)
-            Me.m_scModels.Panel2.Controls.Add(Me.m_lblDetails)
+            Me.m_scModels.Panel2.Controls.Add(Me.m_hdrDetails)
             Me.m_scModels.Size = New System.Drawing.Size(510, 332)
             Me.m_scModels.SplitterDistance = 189
             Me.m_scModels.TabIndex = 8
-            '
-            'm_lblComments
-            '
-            Me.m_lblComments.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_lblComments.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_lblComments.Location = New System.Drawing.Point(0, 18)
-            Me.m_lblComments.Name = "m_lblComments"
-            Me.m_lblComments.Size = New System.Drawing.Size(510, 120)
-            Me.m_lblComments.TabIndex = 0
-            Me.m_lblComments.Text = "<comments>"
-            '
-            'm_lblDetails
-            '
-            Me.m_lblDetails.AutoSize = True
-            Me.m_lblDetails.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
-            Me.m_lblDetails.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblDetails.Location = New System.Drawing.Point(3, 2)
-            Me.m_lblDetails.Name = "m_lblDetails"
-            Me.m_lblDetails.Size = New System.Drawing.Size(134, 13)
-            Me.m_lblDetails.TabIndex = 1
-            Me.m_lblDetails.Text = "Selected model comments:"
             '
             'm_grid
             '
@@ -184,6 +163,31 @@
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
             '
+            'm_lblComments
+            '
+            Me.m_lblComments.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                        Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblComments.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_lblComments.Location = New System.Drawing.Point(0, 22)
+            Me.m_lblComments.Name = "m_lblComments"
+            Me.m_lblComments.Size = New System.Drawing.Size(510, 116)
+            Me.m_lblComments.TabIndex = 0
+            Me.m_lblComments.Text = "<comments>"
+            '
+            'm_hdrDetails
+            '
+            Me.m_hdrDetails.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrDetails.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+            Me.m_hdrDetails.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_hdrDetails.Location = New System.Drawing.Point(0, 3)
+            Me.m_hdrDetails.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_hdrDetails.Name = "m_hdrDetails"
+            Me.m_hdrDetails.Size = New System.Drawing.Size(510, 18)
+            Me.m_hdrDetails.TabIndex = 1
+            Me.m_hdrDetails.Text = "Selected model comments:"
+            '
             'm_hdr
             '
             Me.m_hdr.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -207,13 +211,12 @@
             Me.Controls.Add(Me.m_btnBrowse)
             Me.Controls.Add(Me.m_tbxOutputFolder)
             Me.Controls.Add(Me.m_lblOutputFolder)
-            Me.Controls.Add(Me.m_lblModels)
+            Me.Controls.Add(Me.m_hdrModels)
             Me.Controls.Add(Me.m_hdr)
             Me.Name = "ucImportPageModels"
             Me.Size = New System.Drawing.Size(510, 476)
             Me.m_scModels.Panel1.ResumeLayout(False)
             Me.m_scModels.Panel2.ResumeLayout(False)
-            Me.m_scModels.Panel2.PerformLayout()
             Me.m_scModels.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -223,12 +226,12 @@
         Private WithEvents m_btnBrowse As System.Windows.Forms.Button
         Private WithEvents m_tbxOutputFolder As System.Windows.Forms.TextBox
         Private WithEvents m_lblOutputFolder As System.Windows.Forms.Label
-        Private WithEvents m_lblModels As System.Windows.Forms.Label
+        Private WithEvents m_hdrModels As cEwEHeaderLabel
         Private WithEvents m_hdr As ucImportHeader
         Private WithEvents m_lblFormat As System.Windows.Forms.Label
         Private WithEvents m_scModels As System.Windows.Forms.SplitContainer
         Private WithEvents m_lblComments As System.Windows.Forms.Label
-        Private WithEvents m_lblDetails As System.Windows.Forms.Label
+        Private WithEvents m_hdrDetails As cEwEHeaderLabel
         Private WithEvents m_cmbDatabaseFormat As System.Windows.Forms.ComboBox
 
     End Class

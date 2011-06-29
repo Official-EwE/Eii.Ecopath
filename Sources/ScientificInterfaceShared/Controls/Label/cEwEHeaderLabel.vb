@@ -255,7 +255,6 @@ Namespace Controls
 
             Select Case Me.RightToLeft
                 Case RightToLeft.Inherit
-                    ' ToDo: use style guide here somehow
                     bRightToLeft = Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft
                 Case RightToLeft.Yes
                     bRightToLeft = True

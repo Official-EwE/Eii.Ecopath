@@ -308,6 +308,7 @@ Namespace Import
             Dim appl As AppLauncher = AppLauncher.GetInstance()
             Dim db As cEwEDatabase = Nothing
             Dim strModel As String = Me.EwE6ModelName(setting, Me.OutputFormat)
+            Dim strLogFile As String = ""
             Dim bSucces As Boolean = False
 
             ' Only import models selected for import
@@ -321,12 +322,15 @@ Namespace Import
                 ' #Yes: Open target model
                 db.Open(strModel)
                 ' Able to import?
-                If Me.m_dbImp.Import(setting.ModelInfo.ID, db, setting.LogFile) Then
+                If Me.m_dbImp.Import(setting.ModelInfo.ID, db, strLogFile) Then
                     ' #Yes: remember last imported model file
                     Me.m_strFileName = strModel
                     ' Succes
                     bSucces = True
                 End If
+                ' Update log file
+                setting.LogFile = strLogFile
+
                 ' Clean up
                 db.Close()
             End If

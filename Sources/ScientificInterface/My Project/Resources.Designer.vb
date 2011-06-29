@@ -2187,6 +2187,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecopath model file name.
+        '''</summary>
+        Friend ReadOnly Property HEADER_ECOPATH_MODEL_NAME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOPATH_MODEL_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecopath model name.
+        '''</summary>
+        Friend ReadOnly Property HEADER_ECOPATH_NAME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOPATH_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} [0, 1].
         '''</summary>
         Friend ReadOnly Property HEADERMASK_UNIT_ZEROTOONE() As String
@@ -3703,6 +3721,15 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_IMPORTING_MODEL() As String
             Get
                 Return ResourceManager.GetString("STATUS_IMPORTING_MODEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model &apos;{0}&apos; was not imported..
+        '''</summary>
+        Friend ReadOnly Property STATUS_IMPORTING_MODEL_CANCELLED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_IMPORTING_MODEL_CANCELLED", resourceCulture)
             End Get
         End Property
         

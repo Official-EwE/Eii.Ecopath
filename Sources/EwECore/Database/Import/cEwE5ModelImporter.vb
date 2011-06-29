@@ -213,7 +213,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function Import(ByVal strModelName As String, _
                                ByVal db As cEwEDatabase, _
-                               ByVal strLogfileName As String) As Boolean
+                               ByRef strLogfileName As String) As Boolean
 
             Dim bSucces As Boolean = False
 
