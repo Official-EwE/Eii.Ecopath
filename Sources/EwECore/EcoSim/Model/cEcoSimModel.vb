@@ -2573,31 +2573,12 @@ Namespace Ecosim
         Public Sub InitialState()
             'VC changed tzero in CJWs version to TimeJuv()
             'find initial state for delay-difference model pools
-            Dim i As Integer, j As Integer 'M As Single, 
+            Dim i As Integer
 
             ReDim Srec(nGroups)
             ReDim SimGES(nGroups)
 
-            'If frmSim1.ChkEvolve.value = Checked Then EvolveIsOn = True Else EvolveIsOn = False
-
             'set up total and free base nutrient concentrations
-            'vc placed the error trap above 030811 to catch cases where the numbers for split groups doesn't match the number of
-            'groups (when groups are being merget the split group numbering get screwed up (not the stanza numbering)
-            'save split/stanza code numbers for every group
-            Dim ieco As Integer, ir As Integer
-            '    ReDim IadCode(nGroups), IjuCode(nGroups), IecoCode(nGroups)
-
-            'jb Split Pool initialization code removed from here See EwE5 InitialState()
-
-            ir = 0
-            For i = 1 To m_stanza.Nsplit
-                For j = 1 To m_stanza.Nstanza(i)
-                    ir = ir + 1
-                    ieco = m_stanza.EcopathCode(i, j)
-                    '       IecoCode(ieco) = ir
-                Next
-            Next
-
             m_Data.NutBiom = 0
             For i = 1 To nGroups
                 m_Data.NutBiom = m_Data.NutBiom + m_Data.StartBiomass(i)
@@ -2615,8 +2596,6 @@ Namespace Ecosim
             m_Data.NutMin = 0.00101 * m_Data.NutFree
 
             If m_TracerData.EcoSimConSimOn = True Then initConTracer()
-
-            'jb Split Pool initialization code removed from here See EwE5 InitialState()
 
             For i = 0 To nGroups
                 m_Data.Ftime(i) = 1

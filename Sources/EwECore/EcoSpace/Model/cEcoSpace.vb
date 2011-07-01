@@ -840,7 +840,8 @@ Public Class cEcoSpace
             For m_Data.TimeNow = StartTime To (m_Data.TotalTime - m_Data.TimeStep) Step m_Data.TimeStep
                 '            'SetBoundaryB
 
-                'If CInt(m_Data.TimeNow) = 10 Then ' messing with habcap for debugging purposes
+                ' messing with habcap for debugging purposes
+                'If CInt(m_Data.TimeNow) = 10 Then 
                 '    For ii As Integer = 1 To 3
                 '        m_Data.HabCap(1, ii, 2) = 0.001
                 '    Next
@@ -909,15 +910,6 @@ Public Class cEcoSpace
                 '            StoreTimeSeriesData = IIf(imonth = 1 And SpDatYear > 0, True, False)
 
                 VaryMovementParameters2(m_Data.MonthNow)
-                'If useMigratoryGrad Then
-                'VaryMigMovementParameters(imonth)
-                'Else
-                'For ip = 1 To m_Data.NGroups
-                '    If m_Data.IsMigratory(ip) Then
-                '        VaryMovementParameters(imonth, ip, IecoCode(ip))
-                '    End If
-                'Next
-                'End If
 
                 'set tval() (time step forcing value) to the value for this time step for each forcing shape
                 'Time forcing function are disable in EcoSpace via ApplyAVmodifiers() "UseTime" flag
@@ -1840,13 +1832,12 @@ Public Class cEcoSpace
                                 'And m_Data.DistributionEnvelope(i, j, ieco) = True Then
                                 ' NstanzaBase(isc) * Basebiomass(ieco) / m_SimData.StartBiomass(ieco)
                                 m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
-                                ' If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) '* Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco) '.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
-                                If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco) '.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
-                                'Else
-                                '    m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(i, j, ieco) ' / 10
-                                '    If m_Data.NewMultiStanza Then m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) ' / 1000
-                                'End If
-                            Else ': Print()
+                                If m_Data.NewMultiStanza Then
+                                    'm_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco)
+                                    m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
+                                End If
+                            Else
+                                'Land
                                 m_Data.Bcell(i, j, nvar2 + isc) = 1.0E-20
                             End If
                             m_Data.Blast(i, j, nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
@@ -3999,10 +3990,10 @@ exitline:
                         'If (m_Data.PrefHab(iGr, m_Data.HabType(iRo, iCo)) Or m_Data.PrefHab(iGr, 0)) And _
                         If ((m_Data.PrefHab(iGr, m_Data.HabType(iRo, iCo)) > 0) Or (m_Data.PrefHab(iGr, 0)) > 0) And _
                         m_Data.DistributionEnvelope(iRo, iCo, iGr) Then HabAreaUsed(iGr) += 1
-                    Next
-                End If
-            Next
-        Next
+                    Next iGr
+                End If ' m_Data.Depth(iRo, iCo) > 0
+            Next iCo
+        Next iRo
 
         For i = 1 To m_Data.NGroups
             'VC Hobart Sep 2008: next replaced by calculation above with Distribution Envelope
@@ -4044,7 +4035,7 @@ exitline:
             '              morning to diverge, giving larger Atemp(ii) values on each iteration without limit.
             '              What this divergence means is that Vspace is set too low to predict the “observed” 
             '              ecopath base consumption rates, when added up over the ecospace grid.
-            If m_Data.Vspace(ii) < m_SimData.VulArena(ii) Then m_Data.Vspace(ii) = m_SimData.VulArena(ii)
+            'If m_Data.Vspace(ii) < m_SimData.VulArena(ii) Then m_Data.Vspace(ii) = m_SimData.VulArena(ii)
 
             If m_SimData.BoutFeeding Then
                 VulBiom(ii) = -Qarena(ii) / Math.Log(1 - 1 / (m_SimData.VulMult(i, j) + 0.0000000001))

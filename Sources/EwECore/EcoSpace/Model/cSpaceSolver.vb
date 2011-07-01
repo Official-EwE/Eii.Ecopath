@@ -690,8 +690,7 @@ Public Class cSpaceSolver
                 If i <= m_Data.nLiving Then      'Living group
                     Pmult = 1.0#
                     ApplyAVmodifiers(Pmult, Veff(1), i, i, False, iRow, iCol)
-                    'pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
-                    pbb(i) = Pmult * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) * EatEff(i)
+                    pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) * EatEff(i)
                     'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
                     loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
                     'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
