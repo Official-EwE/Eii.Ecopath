@@ -7138,13 +7138,13 @@ Namespace DataSources
             ' Set active scenario
             ecopathDS.ActiveEcospaceScenario = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, iScenarioID)
 
+            ' Load base map first
+            bSucces = bSucces And Me.LoadEcospaceMap(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceHabitats(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceMPAs(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceRegions(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
-            ' Load basemap last
-            bSucces = bSucces And Me.LoadEcospaceBasemap(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
 
@@ -7344,12 +7344,12 @@ Namespace DataSources
             bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(iScenario))
             bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceStatistics, ecopathDS.EcospaceScenarioDBID(iScenario))
 
+            bSucces = bSucces And Me.SaveEcospaceMap(idm)
             bSucces = bSucces And Me.SaveEcospaceHabitats(idm)
             bSucces = bSucces And Me.SaveEcospaceMPAs(idm)
             bSucces = bSucces And Me.SaveEcospaceRegions(idm)
             bSucces = bSucces And Me.SaveEcospaceGroups(idm)
             bSucces = bSucces And Me.SaveEcospaceFleets(idm)
-            bSucces = bSucces And Me.SaveEcospaceBasemap(idm)
             bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
 
             If bSucces Then
@@ -7504,7 +7504,7 @@ Namespace DataSources
 
 #End Region ' Scenarios
 
-#Region " Basemap "
+#Region " Map "
 
 #Region " Resizing "
 
@@ -7526,7 +7526,6 @@ Namespace DataSources
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
-            Dim strSQL As String = String.Format("DELETE FROM EcospaceScenarioBasemap WHERE (ScenarioID={0}) AND ((InRow > {1}) OR (InCol > {2}))", iScenarioID, InRow, InCol)
 
             ' Get ID of scenario to save to
             iScenarioID = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
@@ -7542,29 +7541,6 @@ Namespace DataSources
                 drow.EndEdit()
 
                 Me.m_db.ReleaseWriter(writer, True)
-
-                ' Delete unused cells
-                bSucces = Me.m_db.Execute(strSQL)
-
-                ' Assign newly created cells as water cells
-                writer = Me.m_db.GetWriter("EcospaceScenarioBasemap")
-                For i As Integer = 1 To InRow
-                    For j As Integer = 1 To InCol
-                        If ((i > ecospaceDS.InRow) Or (j > ecospaceDS.InCol)) Then
-                            drow = writer.NewRow()
-                            drow("ScenarioID") = iScenarioID
-                            drow("InRow") = i
-                            drow("InCol") = j
-                            drow("Depth") = 1
-                            drow("XVel") = 0
-                            drow("YVel") = 0
-                            writer.AddRow(drow)
-                        End If
-                    Next
-                Next
-                Me.m_db.ReleaseWriter(writer, True)
-
-                ' Reallocate fish and port cells
 
             Catch ex As Exception
                 bSucces = False
@@ -7584,51 +7560,22 @@ Namespace DataSources
         ''' <param name="iScenarioID">The scenario to load the data for.</param>
         ''' <returns>True if succesful.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function LoadEcospaceBasemap(ByVal iScenarioID As Integer) As Boolean
+        Private Function LoadEcospaceMap(ByVal iScenarioID As Integer) As Boolean
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
-            Dim iRow As Integer = 0
-            Dim iCol As Integer = 0
             Dim iID As Integer = 0
-            Dim sScalePP As Single = 0
-
-            ' Change all cells to land by default since the database will read only water cells
-            For i As Integer = 1 To ecospaceDS.InRow
-                For j As Integer = 1 To ecospaceDS.InCol
-                    ecospaceDS.Depth(i, j) = 0
-                    ecospaceDS.DepthA(i, j) = 0
-                Next
-            Next
 
             Try
-                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioBasemap WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
                 While reader.Read()
 
-                    iRow = CInt(reader("InRow"))
-                    iCol = CInt(reader("InCol"))
-
-                    ' Valid cell?
-                    If ((iRow <= ecospaceDS.InRow) And (iCol <= ecospaceDS.InCol)) Then
-
-                        ' Read scalars
-                        ecospaceDS.Depth(iRow, iCol) = CInt(reader("Depth"))
-                        ecospaceDS.DepthA(iRow, iCol) = CInt(Me.m_db.ReadSafe(reader, "DepthA", ecospaceDS.Depth(iRow, iCol)))
-                        ecospaceDS.RelPP(iRow, iCol) = CSng(reader("RelPP"))
-                        ecospaceDS.RelCin(iRow, iCol) = CSng(reader("RelCin"))
-                        ecospaceDS.Xvel(iRow, iCol) = CSng(Me.m_db.ReadSafe(reader, "XVel", 0.0!))
-                        ecospaceDS.Yvel(iRow, iCol) = CSng(Me.m_db.ReadSafe(reader, "YVel", 0.0!))
-                        ' Read FKs
-                        iID = CInt(reader("HabitatID"))
-                        ecospaceDS.HabType(iRow, iCol) = CInt(IIf((iID > 0), Math.Max(0, Array.IndexOf(ecospaceDS.HabitatDBID, iID)), 0))
-                        iID = CInt(reader("RegionID"))
-                        ecospaceDS.Region(iRow, iCol) = CInt(IIf((iID > 0), Math.Max(0, Array.IndexOf(ecospaceDS.RegionDBID, iID)), 0))
-                        iID = CInt(reader("MPAID"))
-                        ecospaceDS.MPA(iRow, iCol) = CInt(IIf((iID > 0), Math.Max(0, Array.IndexOf(ecospaceDS.MPADBID, iID)), 0))
-                        ' Update trackers
-                        sScalePP = CSng(Math.Max(ecospaceDS.RelPP(iRow, iCol), sScalePP))
-
-                    End If
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "DepthMap", "")), ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RelPPMap", "")), ecospaceDS.RelPP, ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RelCinMap", "")), ecospaceDS.RelCin, ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "XVelMap", "")), ecospaceDS.Xvel, ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "YVelMap", "")), ecospaceDS.Yvel, ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.Depth)
 
                 End While
 
@@ -7652,15 +7599,14 @@ Namespace DataSources
         ''' <param name="idm">The scenario to save the data for.</param>
         ''' <returns>True if succesful.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function SaveEcospaceBasemap(ByVal idm As cIDMappings) As Boolean
+        Private Function SaveEcospaceMap(ByVal idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim iActiveScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim iScenarioID As Integer = 0
-            Dim iRow As Integer = 0
-            Dim iCol As Integer = 0
+            Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
@@ -7668,40 +7614,20 @@ Namespace DataSources
             iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iActiveScenarioID)
 
             Try
-                ' Destroy current
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioBasemap WHERE (ScenarioID={0})", iScenarioID))
+                writer = Me.m_db.GetWriter("EcospaceScenario")
+                dt = writer.GetDataTable()
+                drow = dt.Rows.Find(iScenarioID)
 
-                ' Rebuild
-                writer = Me.m_db.GetWriter("EcospaceScenarioBasemap")
-                ' Every cell will need a row in the database, because every cell is assigned to a habitat.
-                ' JS070226: should profile to see whether it's faster to update existing rows rather than
-                '           destroying and rebuilding the entire table content.
-                For iRow = 1 To ecospaceDS.InRow
-                    For iCol = 1 To ecospaceDS.InCol
-                        ' Create new row
-                        drow = writer.NewRow()
-                        ' Store simple values
-                        drow("ScenarioID") = iScenarioID
-                        drow("InRow") = iRow
-                        drow("InCol") = iCol
-                        drow("Depth") = ecospaceDS.Depth(iRow, iCol)
-                        drow("DepthA") = ecospaceDS.DepthA(iRow, iCol)
-                        drow("RelPP") = ecospaceDS.RelPP(iRow, iCol)
-                        drow("RelCin") = ecospaceDS.RelCin(iRow, iCol)
-                        drow("XVel") = ecospaceDS.Xvel(iRow, iCol)
-                        drow("YVel") = ecospaceDS.Yvel(iRow, iCol)
-                        ' Store (mapped) habitat ID
-                        drow("HabitatID") = idm.GetID(eDataTypes.EcospaceHabitat, ecospaceDS.HabitatDBID(ecospaceDS.HabType(iRow, iCol)))
-                        ' Store (mapped) region ID
-                        drow("RegionID") = idm.GetID(eDataTypes.EcospaceRegion, ecospaceDS.RegionDBID(ecospaceDS.Region(iRow, iCol)))
-                        ' Store (mapped) MPA ID
-                        drow("MPAID") = idm.GetID(eDataTypes.EcospaceMPA, ecospaceDS.MPADBID(ecospaceDS.MPA(iRow, iCol)))
-                        ' Add the row
-                        writer.AddRow(drow)
-                    Next iCol
-                Next iRow
+                drow.BeginEdit()
+                drow("DepthMap") = cStringUtils.ArrayToString(ecospaceDS.Depth)
+                drow("RelPPMap") = cStringUtils.ArrayToString(ecospaceDS.RelPP, ecospaceDS.Depth)
+                drow("RelCinMap") = cStringUtils.ArrayToString(ecospaceDS.RelCin, ecospaceDS.Depth)
+                drow("XVelMap") = cStringUtils.ArrayToString(ecospaceDS.Xvel, ecospaceDS.Depth)
+                drow("YVelMap") = cStringUtils.ArrayToString(ecospaceDS.Yvel, ecospaceDS.Depth)
+                drow("DepthAMap") = cStringUtils.ArrayToString(ecospaceDS.DepthA, ecospaceDS.Depth)
+                drow.EndEdit()
 
-                Me.m_db.ReleaseWriter(writer)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
 
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceBasemap, iActiveScenarioID)
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerDepth, iActiveScenarioID)
@@ -7726,7 +7652,7 @@ Namespace DataSources
 
 #End Region ' Save
 
-#End Region ' Basemap
+#End Region ' Map
 
 #Region " Habitats "
 
@@ -7736,6 +7662,7 @@ Namespace DataSources
 
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim reader As IDataReader = Nothing
+            Dim strMap As String = ""
             Dim bSucces As Boolean = True
             Dim i As Integer = 0
 
@@ -7751,6 +7678,10 @@ Namespace DataSources
                 While reader.Read()
                     ecospaceDS.HabitatDBID(i) = CInt(reader("HabitatID"))
                     ecospaceDS.HabitatText(i) = CStr(reader("HabitatName"))
+
+                    strMap = CStr(Me.m_db.ReadSafe(reader, "HabitatMap", ""))
+                    ' Read only water cells with values for this habitat index
+                    cStringUtils.StringToArray(strMap, ecospaceDS.HabType, ecospaceDS.Depth, True, i)
                     i += 1
                 End While
                 Me.m_db.ReleaseReader(reader)
@@ -7849,6 +7780,8 @@ Namespace DataSources
 
                     drow("HabitatName") = ecospaceDS.HabitatText(iHabitat)
                     drow("Sequence") = iHabitat
+                    ' Write map for only water cells for this habitat index
+                    drow("HabitatMap") = cStringUtils.ArrayToString(ecospaceDS.HabType, ecospaceDS.Depth, True, iHabitat)
 
                     If bNewRow Then
                         writer.AddRow(drow)
@@ -7899,7 +7832,7 @@ Namespace DataSources
 
                 Next iChange
 
-                Me.m_db.ReleaseWriter(writer)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
                 bSucces = False
@@ -7964,6 +7897,7 @@ Namespace DataSources
             drow("HabitatID") = iHabitatID
             drow("HabitatName") = strHabitatName
             drow("Sequence") = iPosition
+            drow("HabitatMap") = ""
             writer.AddRow(drow)
 
             Me.m_db.ReleaseWriter(writer)
@@ -8006,8 +7940,10 @@ Namespace DataSources
 #Region " Load "
 
         Private Function LoadEcospaceRegions(ByVal iScenarioID As Integer) As Boolean
+
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim reader As IDataReader = Nothing
+            Dim strMap As String = ""
             Dim bSucces As Boolean = True
             Dim i As Integer = 0
 
@@ -8022,6 +7958,9 @@ Namespace DataSources
                     i += 1
                     ecospaceDS.RegionDBID(i) = CInt(reader("RegionID"))
                     ecospaceDS.RegionName(i) = CStr(reader("RegionName"))
+                    strMap = CStr(Me.m_db.ReadSafe(reader, "RegionMap", ""))
+                    ' Read only water cells for this region index
+                    bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.Region, ecospaceDS.Depth, True, i)
                 End While
                 Me.m_db.ReleaseReader(reader)
 
@@ -8039,6 +7978,7 @@ Namespace DataSources
 #Region " Save "
 
         Private Function SaveEcospaceRegions(ByVal idm As cIDMappings) As Boolean
+
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim iScenarioIDSrc As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
@@ -8082,6 +8022,7 @@ Namespace DataSources
                     End If
 
                     drow("RegionName") = ecospaceDS.RegionName(iRegion)
+                    drow("RegionMap") = cStringUtils.ArrayToString(ecospaceDS.Region, ecospaceDS.Depth, True, iRegion)
                     drow("Sequence") = iRegion
 
                     If bNewRow Then
@@ -8173,6 +8114,7 @@ Namespace DataSources
                 drow("ScenarioID") = iScenarioID
                 drow("RegionID") = iRegionID
                 drow("RegionName") = strRegionName
+                drow("RegionMap") = ""
                 drow("Sequence") = iRegionID
                 writer.AddRow(drow)
 
@@ -8224,15 +8166,26 @@ Namespace DataSources
 #Region " Load "
 
         Private Function LoadEcospaceGroups(ByVal iScenarioID As Integer) As Boolean
+
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
             Dim astrSplit As String() = Nothing
+            Dim strMap As String = ""
             Dim iGroup As Integer = 0
 
             ' Group redimensioning is handled from the LoadScenario call
             'ecospaceDS.RedimGroupVariables(False)
+
+            ' Clear
+            For iGroup = 1 To Me.m_core.nGroups
+                For iRow As Integer = 0 To ecospaceDS.InRow
+                    For iCol As Integer = 0 To ecospaceDS.InCol
+                        ecospaceDS.HabCapInput(iRow, iCol, iGroup) = 1.0
+                    Next iCol
+                Next iRow
+            Next iGroup
 
             ' Read the data
             Try
@@ -8268,6 +8221,9 @@ Namespace DataSources
                         ecospaceDS.Prefcol(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
                     Next
 
+                    strMap = CStr(Me.m_db.ReadSafe(reader, "CapacityMap", ""))
+                    cStringUtils.StringToArray(strMap, iGroup, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.HabCapInput, ecospaceDS.Depth)
+
                 End While
                 Me.m_db.ReleaseReader(reader)
 
@@ -8276,15 +8232,14 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-
             ' Load habitat preferences
             bSucces = bSucces And Me.LoadEcospaceGroupHabitats(iScenarioID)
-            bSucces = bSucces And Me.LoadEcospaceGroupMap(iScenarioID)
             Return bSucces
 
         End Function
 
         Private Function LoadEcospaceGroupHabitats(ByVal iScenarioID As Integer) As Boolean
+
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim reader As IDataReader = Nothing
             Dim iGroupID As Integer = 0
@@ -8322,47 +8277,6 @@ Namespace DataSources
                 Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
                 bSucces = False
             End Try
-
-            Return bSucces
-        End Function
-
-        Private Function LoadEcospaceGroupMap(ByVal iScenarioID As Integer) As Boolean
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim reader As IDataReader = Nothing
-            Dim iGroup As Integer = 0
-            Dim iRow As Integer = 0
-            Dim iCol As Integer = 0
-            Dim sCapacity As Single = 0
-            Dim bSucces As Boolean = True
-
-            ' Clear
-            For iGroup = 1 To Me.m_core.nGroups
-                For iRow = 0 To ecospaceDS.InRow
-                    For iCol = 0 To ecospaceDS.InCol
-                        ecospaceDS.HabCapInput(iRow, iCol, iGroup) = 1.0
-                    Next iCol
-                Next iRow
-            Next iGroup
-
-            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioGroupMap WHERE (ScenarioID={0})", iScenarioID))
-            Try
-                If reader IsNot Nothing Then
-                    While reader.Read()
-
-                        iGroup = Array.IndexOf(ecospaceDS.GroupDBID, CInt(reader("GroupID")))
-                        iRow = CInt(reader("InRow"))
-                        iCol = CInt(reader("InCol"))
-                        sCapacity = CSng(reader("Capacity"))
-                        ecospaceDS.HabCapInput(iRow, iCol, iGroup) = sCapacity
-
-                    End While
-                End If
-
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioGroupMap for group {1}, scenario ID {2}", ex.Message, iGroup, iScenarioID))
-                bSucces = False
-            End Try
-            Me.m_db.ReleaseReader(reader)
 
             Return bSucces
         End Function
@@ -8429,6 +8343,7 @@ Namespace DataSources
                         sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.Prefcol(iGroup, iMonth)))
                     Next
                     drow("PrefCol") = sbTemp.ToString()
+                    drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput, iGroup, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Depth, True)
 
                     bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceGroup, ecospaceDS.GroupDBID(iGroup))
                     bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceGroupOuput, ecospaceDS.GroupDBID(iGroup))
@@ -8441,13 +8356,14 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
-            Return bSucces And Me.SaveEcospaceGroupHabitats(idm) And Me.SaveEcospaceGroupMap(idm)
+            Return bSucces And Me.SaveEcospaceGroupHabitats(idm)
 
         End Function
 
         Private Function SaveEcospaceGroupHabitats(ByVal idm As cIDMappings) As Boolean
+
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -8495,61 +8411,6 @@ Namespace DataSources
 
         End Function
 
-        Private Function SaveEcospaceGroupMap(ByVal idm As cIDMappings) As Boolean
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim drow As DataRow = Nothing
-            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
-            Dim iGroup As Integer = 0
-            Dim iRow As Integer = 0
-            Dim iCol As Integer = 0
-            Dim iGroupID As Integer = 0
-            Dim bSucces As Boolean = True
-
-            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
-
-            Try
-                ' Erase
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMap WHERE ScenarioID={0}", iScenarioID))
-                writer = Me.m_db.GetWriter("EcospaceScenarioGroupMap")
-
-                For iGroup = 1 To ecospaceDS.nFleets
-
-                    iGroupID = idm.GetID(eDataTypes.EcospaceGroup, ecospaceDS.GroupDBID(iGroup))
-                    Debug.Assert(iGroupID <> 0)
-
-                    For iRow = 1 To ecospaceDS.InRow
-                        For iCol = 1 To ecospaceDS.InCol
-
-                            If (ecospaceDS.Depth(iRow, iCol) > 0) Then
-
-                                drow = writer.NewRow()
-                                drow("ScenarioID") = iScenarioID
-                                drow("GroupID") = iGroupID
-                                drow("InRow") = iRow
-                                drow("InCol") = iCol
-                                drow("Capacity") = ecospaceDS.HabCapInput(iRow, iCol, iGroup)
-                                writer.AddRow(drow)
-
-                            End If
-
-                        Next iCol
-                    Next iRow
-                Next iGroup
-
-                Me.m_db.ReleaseWriter(writer, True)
-
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcospaceScenarioFleetMap", ex.Message))
-                bSucces = False
-            End Try
-
-            ' Report outcome
-            Return bSucces
-
-        End Function
 #End Region ' Save
 
 #Region " Modify "
@@ -8613,6 +8474,7 @@ Namespace DataSources
                 drow("GroupID") = iGroupID
                 ' Detritus default of 10, non-detritus 300
                 drow("MVel") = CSng(IIf(bIsDetritus, 10, 300))
+                drow("CapacityMap") = ""
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)
@@ -8623,7 +8485,6 @@ Namespace DataSources
 
             Return bSucces
         End Function
-
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -8659,6 +8520,7 @@ Namespace DataSources
         Private Function LoadEcospaceFleets(ByVal iScenarioID As Integer) As Boolean
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim reader As IDataReader = Nothing
+            Dim strMap As String = ""
             Dim bSucces As Boolean = True
             Dim iFleet As Integer = 0
 
@@ -8671,6 +8533,19 @@ Namespace DataSources
                     ecospaceDS.FleetDBID(iFleet) = CInt(reader("FleetID"))
                     ecospaceDS.EcopathFleetDBID(iFleet) = CInt(reader("EcopathFleetID"))
                     ecospaceDS.EffPower(iFleet) = CSng(reader("EffPower"))
+
+                    ' Read port map for a given fleet and land cells only
+                    strMap = CStr(Me.m_db.ReadSafe(reader, "PortMap", ""))
+                    bSucces = bSucces And cStringUtils.StringToArray(strMap, _
+                                                                     iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
+                                                                     ecospaceDS.Port, ecospaceDS.Depth, False)
+
+                    ' Read sailing cost map for a given fleet and water cells only
+                    strMap = CStr(Me.m_db.ReadSafe(reader, "SailCostMap", ""))
+                    bSucces = bSucces And cStringUtils.StringToArray(strMap, _
+                                                                     iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
+                                                                     ecospaceDS.Sail, ecospaceDS.Depth, True)
+
                 End While
 
             Catch ex As Exception
@@ -8680,8 +8555,6 @@ Namespace DataSources
 
             Me.m_db.ReleaseReader(reader)
 
-            ' Read port data
-            bSucces = bSucces And Me.LoadEcospaceFleetMap(iScenarioID)
             ' Read habitat fishery
             bSucces = bSucces And Me.LoadEcospaceHabitatFishery(iScenarioID)
             ' Read MPA fishery
@@ -8689,48 +8562,6 @@ Namespace DataSources
             ' There
             Return bSucces
 
-        End Function
-
-        Private Function LoadEcospaceFleetMap(ByVal iScenarioID As Integer) As Boolean
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim reader As IDataReader = Nothing
-            Dim iFleet As Integer = 0
-            Dim iRow As Integer = 0
-            Dim iCol As Integer = 0
-            Dim iPort As Integer = 0
-            Dim iCell As Integer = 0
-            Dim bSucces As Boolean = True
-
-            ' Clear
-            For iFleet = 1 To Me.m_core.nFleets
-                For iRow = 0 To ecospaceDS.InRow
-                    For iCol = 0 To ecospaceDS.InCol
-                        ecospaceDS.Port(iFleet, iRow, iCol) = False
-                    Next iCol
-                Next iRow
-            Next iFleet
-
-            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioFleetMap WHERE (ScenarioID={0})", iScenarioID))
-            Try
-                While reader.Read()
-
-                    iFleet = Array.IndexOf(ecospaceDS.FleetDBID, CInt(reader("FleetID")))
-                    iRow = CInt(reader("InRow"))
-                    iCol = CInt(reader("InCol"))
-                    iPort = CInt(reader("PortID"))
-
-                    ecospaceDS.Port(iFleet, iRow, iCol) = (iPort > 0)
-                    ecospaceDS.Sail(iFleet, iRow, iCol) = CSng(Me.m_db.ReadSafe(reader, "SailCost", 0.0!))
-
-                End While
-
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioFleetMap for iFleet {1}, scenario ID {2}", ex.Message, iFleet, iScenarioID))
-                bSucces = False
-            End Try
-            Me.m_db.ReleaseReader(reader)
-
-            Return bSucces
         End Function
 
         Private Function LoadEcospaceHabitatFishery(ByVal iScenarioID As Integer) As Boolean
@@ -8825,6 +8656,10 @@ Namespace DataSources
 
                     ' Update fleet vars
                     drow("EffPower") = ecospaceDS.EffPower(iFleet)
+                    drow("PortMap") = cStringUtils.ArrayToString(ecospaceDS.Port, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
+                                                                 ecospaceDS.Depth, False)
+                    drow("SailCostMap") = cStringUtils.ArrayToString(ecospaceDS.Sail, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
+                                                                 ecospaceDS.Depth, True)
 
                 Next iFleet
 
@@ -8836,9 +8671,6 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-
-            ' Save Sail and Port data
-            bSucces = bSucces And Me.SaveEcospaceFleetMap(idm)
             ' Save habitat fishery
             bSucces = bSucces And Me.SaveEcospaceHabitatFishery(idm)
             ' Save MPA fishery
@@ -9048,6 +8880,8 @@ Namespace DataSources
                 drow("ScenarioID") = iScenarioID
                 drow("FleetID") = iFleetID
                 drow("EcopathFleetID") = iEcopathFleetID
+                drow("SailCostMap") = ""
+                drow("PortMap") = ""
 
                 ' ToDo_JS: Figure out defaults for remaining row values
                 ' EffPower:   ?
@@ -9073,9 +8907,11 @@ Namespace DataSources
 #Region " Load "
 
         Private Function LoadEcospaceMPAs(ByVal iScenarioID As Integer) As Boolean
+
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim reader As IDataReader = Nothing
             Dim strMPAMonth As String = ""
+            Dim strMPAMap As String = ""
             Dim bSucces As Boolean = True
             Dim iMPA As Integer = 0
 
@@ -9095,7 +8931,7 @@ Namespace DataSources
                     ecospaceDS.MPADBID(iMPA) = CInt(reader("MPAID"))
                     ecospaceDS.MPAname(iMPA) = CStr(reader("MPAName"))
 
-                    ' Read month bit pattern
+                    ' Read month '0' or '1' pattern (yeah yeah, could have been done with 12-bit bitflags LONG value)
                     strMPAMonth = CStr(reader("MPAMonth"))
                     For iMonth As Integer = 0 To Math.Min(cCore.N_MONTHS, strMPAMonth.Length) - 1
                         ' MPAmonth is an array of boolean flags depicting wheter an MPA is open for fishing,
@@ -9103,6 +8939,10 @@ Namespace DataSources
                         ' EcospaceDS.MPAmonth: False if closed, True if open
                         ecospaceDS.MPAmonth(iMonth + 1, iMPA) = (strMPAMonth.Substring(iMonth, 1) = "1")
                     Next iMonth
+
+                    ' Read map
+                    strMPAMap = CStr(Me.m_db.ReadSafe(reader, "MPAMap", ""))
+                    bSucces = bSucces And cStringUtils.StringToArray(strMPAMap, ecospaceDS.MPA, ecospaceDS.Depth, True, iMPA)
 
                 End While
 
@@ -9166,8 +9006,8 @@ Namespace DataSources
                         drow.BeginEdit()
                     End If
 
-                    ' Update fleet vars
                     drow("MPAName") = ecospaceDS.MPAname(iMPA)
+                    drow("MPAMap") = cStringUtils.ArrayToString(ecospaceDS.MPA, ecospaceDS.Depth, True, iMPA)
 
                     ' Create MPA month bit pattern
                     sbMPAMonth.Length = 0
@@ -9258,6 +9098,7 @@ Namespace DataSources
             drow("ScenarioID") = iScenarioID
             drow("MPAID") = iMPAID
             drow("MPAName") = strMPAName
+            drow("MPAMap") = ""
             drow("Sequence") = iMPAID
 
             sbMPAMonth.Length = 0
@@ -9312,7 +9153,6 @@ Namespace DataSources
 
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim readerLayer As IDataReader = Nothing
-            Dim readerCells As IDataReader = Nothing
             Dim l As cEcospaceDataStructures.cLayerImportanceData = Nothing
             Dim bSucces As Boolean = True
             Dim iRow As Integer = 0
@@ -9330,24 +9170,9 @@ Namespace DataSources
                     l.strDescription = CStr(readerLayer("Description"))
                     l.sWeight = CSng(readerLayer("Weight"))
 
-                    Try
-                        ' Read layer data
-                        readerCells = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioWeightLayerCell WHERE LayerID={0}", l.DBID))
-                        While readerCells.Read()
-                            iRow = CInt(readerCells("InRow"))
-                            iCol = CInt(readerCells("InCol"))
-                            ' Valid cell?
-                            If ((iRow <= ecospaceDS.InRow) And (iCol <= ecospaceDS.InCol)) Then
-                                l.Data(iRow, iCol) = CSng(readerCells("Weight"))
-                            End If
-                        End While
+                    Dim strMap As String = CStr(Me.m_db.ReadSafe(readerLayer, "LayerMap", ""))
+                    bSucces = bSucces And cStringUtils.StringToArray(strMap, l.Data, ecospaceDS.Depth)
 
-                    Catch ex As Exception
-                        bSucces = False
-                    Finally
-                        Me.m_db.ReleaseReader(readerCells)
-                        readerCells = Nothing
-                    End Try
                     ' Next!
                     iLayer += 1
                 End While
@@ -9421,6 +9246,7 @@ Namespace DataSources
                     drow("Description") = l.strDescription
                     drow("Weight") = l.sWeight
                     drow("Sequence") = iLayer
+                    drow("LayerMap") = cStringUtils.ArrayToString(l.Data, ecospaceDS.Depth)
 
                     If bNewRow Then
                         writer.AddRow(drow)
@@ -9435,63 +9261,6 @@ Namespace DataSources
             Finally
                 Me.m_db.ReleaseWriter(writer)
                 writer = Nothing
-            End Try
-
-            Return Me.SaveEcospaceWeightLayerCells(idm)
-
-        End Function
-
-        Private Function SaveEcospaceWeightLayerCells(ByVal idm As cIDMappings) As Boolean
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
-            Dim l As cEcospaceDataStructures.cLayerImportanceData = Nothing
-            Dim lID As Integer = 0
-            Dim iRow As Integer = 0
-            Dim iCol As Integer = 0
-            Dim drow As DataRow = Nothing
-            Dim bSucces As Boolean = True
-
-            ' Get ID of scenario to save to
-            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
-
-            Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE ScenarioID={0}", iScenarioID))
-
-                writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayerCell")
-
-                For iLayer As Integer = 0 To ecospaceDS.nImportanceLayers - 1
-
-                    l = ecospaceDS.ImportanceLayers(iLayer)
-                    lID = idm.GetID(eDataTypes.EcospaceLayerImportance, l.DBID)
-
-                    For iRow = 1 To ecospaceDS.InRow
-                        For iCol = 1 To ecospaceDS.InCol
-
-                            ' Need to save this?
-                            If l.Data(iRow, iCol) <> 0.0! Then
-                                ' Create new row
-                                drow = writer.NewRow()
-                                ' Store simple values
-                                drow("ScenarioID") = iScenarioID
-                                drow("LayerID") = idm.GetID(eDataTypes.EcospaceLayerImportance, lID)
-                                drow("InRow") = iRow
-                                drow("InCol") = iCol
-                                drow("Weight") = l.Data(iRow, iCol)
-                                writer.AddRow(drow)
-                            End If
-                        Next iCol
-                    Next iRow
-
-                Next iLayer
-
-                Me.m_db.ReleaseWriter(writer)
-                writer = Nothing
-
-            Catch ex As Exception
-                bSucces = False
             End Try
 
             Return bSucces
@@ -9563,6 +9332,7 @@ Namespace DataSources
             drow("Sequence") = iLayerID
             drow("Description") = strDescription
             drow("Weight") = sWeight
+            drow("LayerMap") = ""
             writer.AddRow(drow)
 
             Me.m_db.ReleaseWriter(writer)
@@ -9587,10 +9357,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE (LayerID={0})", iLayerID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iLayerID))
-                '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
-                'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace Importance Layer {1}", ex.Message, iLayerID))
                 bSucces = False

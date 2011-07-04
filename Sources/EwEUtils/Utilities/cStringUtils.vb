@@ -251,6 +251,20 @@ Namespace Utilities
 
         End Function
 
+        Public Shared Function ConvertToNumber(ByVal strNumber As String, _
+                                               ByVal typeTarget As Type, _
+                                               Optional ByVal objNullValue As Object = -9999, _
+                                               Optional ByVal strDecimalSeparator As String = ".", _
+                                               Optional ByVal strThousandsSeparator As String = "") As Object
+            If typeTarget Is GetType(Single) Then
+                Return ConvertToSingle(strNumber, CSng(objNullValue), strDecimalSeparator, strThousandsSeparator)
+            ElseIf typeTarget Is GetType(Double) Then
+                Return ConvertToDouble(strNumber, CDbl(objNullValue), strDecimalSeparator, strThousandsSeparator)
+            End If
+            Return ConvertToInteger(strNumber, CInt(objNullValue), strDecimalSeparator, strThousandsSeparator)
+        End Function
+
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Generic conversion helper, converts a string into an integer value using
@@ -376,7 +390,28 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Generic conversion helper, converts a single value into a string using
+        ''' Generic conversion helper, converts a number into a string using
+        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' </summary>
+        ''' <param name="value"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FormatNumber(ByVal value As Object, _
+                                            Optional ByVal strDecimalSeparator As String = ".", _
+                                            Optional ByVal strThousandsSeparator As String = "") As String
+
+            If TypeOf value Is Single Then
+                Return FormatSingle(CSng(value), strDecimalSeparator, strThousandsSeparator)
+            ElseIf TypeOf value Is Double Then
+                Return FormatDouble(CDbl(value), strDecimalSeparator, strThousandsSeparator)
+            End If
+            Return FormatInteger(CInt(value), strDecimalSeparator, strThousandsSeparator)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generic conversion helper, converts an integer value into a string using
         ''' the fixed EwE number format of decimal points and NO thousands separator.
         ''' </summary>
         ''' <param name="iValue"></param>
@@ -551,6 +586,378 @@ Namespace Utilities
             Return strResult
 
         End Function
+
+#Region " Map array conversions "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a 2-dimensional (map) array to a string for database storage.
+        ''' </summary>
+        ''' <param name="data">Data to write to the string.</param>
+        ''' <param name="dataDepth">Optional depth data mask to apply. If provided, only 
+        ''' water cells or land cells are stored based on the value of <paramref name="bWaterOnly"/>.</param>
+        ''' <param name="bWaterOnly">Flag, stating whether only values should be written
+        ''' for water cells (true) or land cells (false), as indicated by parameter <paramref name="dataDepth"/>.</param>
+        ''' <param name="valueSet">Value to find in the data and to write to the string,
+        ''' or Nothing if any value from the data must be written to the string.</param>
+        ''' <returns>The resulting converted string.</returns>
+        ''' <remarks>This code is optimized to include as few characters as possible
+        ''' in the output string without having to revert to run-length encoding.
+        ''' Rows without any values will be left empty and are only marked by a semi-colon.</remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function ArrayToString(ByVal data As Array, _
+                                             Optional ByVal dataDepth As Integer(,) = Nothing, _
+                                             Optional ByVal bWaterOnly As Boolean = True, _
+                                             Optional ByVal valueSet As Object = Nothing) As String
+
+            ' Can only handle 2-dimensional arrays
+            Debug.Assert(data.Rank = 2)
+
+            Dim sb As New StringBuilder()
+            Dim sbRow As New StringBuilder()
+            Dim bUseCell As Boolean = False
+            Dim bHasRowValues As Boolean = False
+            Dim value As Object = Nothing
+            Dim tData As Type = data.GetType().GetElementType
+
+            ' For all rows
+            For i As Integer = 1 To data.GetUpperBound(0)
+
+                ' Start of new row
+                bHasRowValues = False
+                sbRow.Length = 0
+                bUseCell = False
+
+                ' For all cols
+                For j As Integer = 1 To data.GetUpperBound(1)
+
+                    ' Append separator after last value
+                    If bUseCell Then sbRow.Append(","c)
+
+                    ' Ignore land filter?
+                    If (dataDepth Is Nothing) Then
+                        ' #Yes: use cell
+                        bUseCell = True
+                    Else
+                        ' #No: only use cell if land or water (depeding on bWaterOnly)
+                        bUseCell = CBool(IIf(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly))
+                    End If
+
+                    If (bUseCell) Then
+                        ' Get value
+                        value = data.GetValue(i, j)
+                        ' Append value in correct type 
+                        If tData Is GetType(Boolean) Then
+                            ' #Boolean values are stored as 1 (true) and 0 (false)
+                            sbRow.Append(CStr(IIf(CBool(value), "1", "0")))
+                            bHasRowValues = bHasRowValues Or (CBool(value))
+                        Else
+                            ' Is an allowed value?
+                            If ((value.Equals(valueSet) Or (valueSet Is Nothing))) Then
+                                ' #Yes: convert value to a fixed en-US representation text
+                                sbRow.Append(cStringUtils.FormatNumber(value))
+                                bHasRowValues = True
+                            End If
+                        End If
+                    End If
+                Next j
+
+                ' Add row if not empty
+                If bHasRowValues Then sb.Append(sbRow.ToString)
+                ' Add row delimiter
+                sb.Append(";"c)
+
+            Next i
+
+            ' Done
+            Return sb.ToString
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="strData"></param>
+        ''' <param name="data"></param>
+        ''' <param name="land"></param>
+        ''' <param name="bWaterOnly"></param>
+        ''' <param name="valueGet"></param>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function StringToArray(ByVal strData As String, ByVal data As Array, _
+                                             Optional ByVal land As Integer(,) = Nothing, _
+                                             Optional ByVal bWaterOnly As Boolean = True, _
+                                             Optional ByVal valueGet As Object = Nothing) As Boolean
+
+            ' Need 2 dim array
+            Debug.Assert(data.Rank = 2)
+
+            Dim astrLines As String() = strData.Split(";"c)
+            Dim astrValues As String() = Nothing
+            Dim iColumn As Integer = 0
+            Dim bUseCell As Boolean = False
+            Dim value As Object = Nothing
+            Dim tData As Type = data.GetType().GetElementType
+
+            ' For all rows
+            For i As Integer = 1 To data.GetUpperBound(0)
+                ' Still row data left?
+                If (i < astrLines.Length) Then
+
+                    ' #Yes: split row into values
+                    astrValues = astrLines(i - 1).Split(","c)
+                    ' For all cols
+                    For j As Integer = 1 To data.GetUpperBound(1)
+                        ' Ignore land filter?
+                        If (land Is Nothing) Then
+                            ' #Yes: use cell
+                            bUseCell = True
+                        Else
+                            ' #No: only use cell if land or water (depeding on bWaterOnly)
+                            bUseCell = CBool(IIf(land(i, j) > 0, bWaterOnly, Not bWaterOnly))
+                        End If
+
+                        ' Use cell and there is cell data?
+                        If bUseCell And (iColumn < astrValues.Length) Then
+                            ' #Yes: is there really, really cell data?
+                            If Not String.IsNullOrEmpty(astrValues(iColumn)) Then
+                                Try
+                                    ' #Yes: get value
+                                    If tData Is GetType(Boolean) Then
+                                        value = (astrValues(iColumn) = "1")
+                                    Else
+                                        value = cStringUtils.ConvertToNumber(astrValues(iColumn), tData)
+                                    End If
+
+                                    ' Does this value match the value to get if provided?
+                                    If (value.Equals(valueGet) Or (valueGet Is Nothing)) Then
+                                        ' #Yes: update array
+                                        data.SetValue(value, i, j)
+                                    End If
+                                Catch ex As Exception
+                                    Return False
+                                End Try
+                            End If
+                            ' Next column
+                            iColumn += 1
+                        End If
+                    Next j
+                    ' Reset column count
+                    iColumn = 0
+                End If
+            Next i
+
+            ' Done
+            Return True
+
+        End Function
+
+        ''' <summary>
+        ''' Enumerated type, stating where to find the data filter in a 3D map array.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Enum eFilterIndexTypes As Integer
+            FirstIndex = 0
+            LastIndex
+        End Enum
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a 3-dimensional (map) array to a string for database storage.
+        ''' </summary>
+        ''' <param name="data">Data to write to the string.</param>
+        ''' <param name="dataDepth">Optional depth data mask to apply. If provided, only 
+        ''' water cells or land cells are stored based on the value of <paramref name="bWaterOnly"/>.</param>
+        ''' <param name="bWaterOnly">Flag, stating whether only values should be written
+        ''' for water cells (true) or land cells (false), as indicated by parameter <paramref name="dataDepth"/>.</param>
+        ''' <param name="valueSet">Value to find in the data and to write to the string,
+        ''' or Nothing if any value from the data must be written to the string.</param>
+        ''' <returns>The resulting converted string.</returns>
+        ''' <remarks>This code is optimized to include as few characters as possible
+        ''' in the output string without having to revert to run-length encoding.
+        ''' Rows without any values will be left empty and are only marked by a semi-colon.</remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function ArrayToString(ByVal data As Array, _
+                                             ByVal iFilter As Integer, _
+                                             ByVal filterIndex As eFilterIndexTypes, _
+                                             Optional ByVal dataDepth As Integer(,) = Nothing, _
+                                             Optional ByVal bWaterOnly As Boolean = True, _
+                                             Optional ByVal valueSet As Object = Nothing) As String
+
+            ' Need 3 dim array
+            Debug.Assert(data.Rank = 3)
+
+            Dim sb As New StringBuilder()
+            Dim sbRow As New StringBuilder()
+            Dim bHasRowValues As Boolean = False
+            Dim bUseCell As Boolean = False
+            Dim InRow As Integer = 0
+            Dim InCol As Integer = 0
+            Dim value As Object = Nothing
+            Dim tData As Type = data.GetType().GetElementType
+
+            Select Case filterIndex
+                Case eFilterIndexTypes.FirstIndex
+                    InRow = data.GetUpperBound(1)
+                    InCol = data.GetUpperBound(2)
+                Case eFilterIndexTypes.LastIndex
+                    InRow = data.GetUpperBound(0)
+                    InCol = data.GetUpperBound(1)
+            End Select
+
+            ' For all rows
+            For i As Integer = 1 To InRow
+
+                ' Start new line
+                bHasRowValues = False
+                sbRow.Length = 0
+                bUseCell = False
+
+                ' For all cols
+                For j As Integer = 1 To InCol
+
+                    ' Append separator if already has values on this row
+                    If bUseCell Then sbRow.Append(","c)
+
+                    ' Ignore land filter?
+                    If (dataDepth Is Nothing) Then
+                        ' #Yes: use cell
+                        bUseCell = True
+                    Else
+                        ' #No: only use cell if land or water (depeding on bWaterOnly)
+                        bUseCell = CBool(IIf(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly))
+                    End If
+
+                    If bUseCell Then
+
+                        ' Get actual cell value
+                        Select Case filterIndex
+                            Case eFilterIndexTypes.FirstIndex : value = data.GetValue(iFilter, i, j)
+                            Case eFilterIndexTypes.LastIndex : value = data.GetValue(i, j, iFilter)
+                        End Select
+
+
+                        If tData Is GetType(Boolean) Then
+                            sbRow.Append(CStr(IIf(CBool(value), "1", "0")))
+                            bHasRowValues = bHasRowValues Or (CBool(value))
+                        Else
+                            ' Is not an allowed value?
+                            If ((value.Equals(valueSet) Or (valueSet Is Nothing))) Then
+                                sbRow.Append(cStringUtils.FormatNumber(value))
+                                bHasRowValues = True
+                            End If
+                        End If
+                    End If
+                Next j
+
+                If bHasRowValues Then sb.Append(sbRow.ToString())
+                sb.Append(";"c)
+            Next i
+
+            ' Done
+            Return sb.ToString
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="strData"></param>
+        ''' <param name="iFilter"></param>
+        ''' <param name="filterIndex"></param>
+        ''' <param name="data"></param>
+        ''' <param name="land"></param>
+        ''' <param name="bWaterOnly"></param>
+        ''' <param name="valueGet"></param>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function StringToArray(ByVal strData As String, _
+                                             ByVal iFilter As Integer, _
+                                             ByVal filterIndex As eFilterIndexTypes, _
+                                             ByVal data As Array, _
+                                             Optional ByVal land As Integer(,) = Nothing, _
+                                             Optional ByVal bWaterOnly As Boolean = True, _
+                                             Optional ByVal valueGet As Object = Nothing) As Boolean
+
+            ' Need 3 dim array
+            Debug.Assert(data.Rank = 3)
+
+            Dim astrLines As String() = strData.Split(";"c)
+            Dim astrValues As String() = Nothing
+            Dim iColumn As Integer = 0
+            Dim InRow As Integer = 0
+            Dim InCol As Integer = 0
+            Dim value As Object = Nothing
+            Dim tData As Type = data.GetType().GetElementType
+            Dim bUseValue As Boolean = False
+
+            Select Case filterIndex
+                Case eFilterIndexTypes.FirstIndex
+                    InRow = data.GetUpperBound(1)
+                    InCol = data.GetUpperBound(2)
+                Case eFilterIndexTypes.LastIndex
+                    InRow = data.GetUpperBound(0)
+                    InCol = data.GetUpperBound(1)
+            End Select
+
+            ' For all rows
+            For i As Integer = 1 To InRow
+                ' Still row data left?
+                If (i < astrLines.Length) Then
+
+                    ' #Yes: split row into values
+                    astrValues = astrLines(i - 1).Split(","c)
+                    ' For all cols
+                    For j As Integer = 1 To InCol
+                        ' Ignore land filter?
+                        If (land Is Nothing) Then
+                            ' #Yes: use cell
+                            bUseValue = True
+                        Else
+                            ' #No: only use cell if land or water (depeding on bWaterOnly)
+                            bUseValue = CBool(IIf(land(i, j) > 0, bWaterOnly, Not bWaterOnly))
+                        End If
+
+                        ' Use cell and there is cell data?
+                        If bUseValue And (iColumn < astrValues.Length) Then
+                            ' #Yes: is there really, really cell data?
+                            If Not String.IsNullOrEmpty(astrValues(iColumn)) Then
+                                Try
+                                    ' #Yes: get value
+                                    If tData Is GetType(Boolean) Then
+                                        value = (astrValues(iColumn) = "1")
+                                    Else
+                                        value = cStringUtils.ConvertToNumber(astrValues(iColumn), tData)
+                                    End If
+                                    ' Does this value match the value to get if provided?
+                                    If (value.Equals(valueGet) Or (valueGet Is Nothing)) Then
+                                        ' #Yes: update array
+                                        Select Case filterIndex
+                                            Case eFilterIndexTypes.FirstIndex : data.SetValue(value, iFilter, i, j)
+                                            Case eFilterIndexTypes.LastIndex : data.SetValue(value, i, j, iFilter)
+                                        End Select
+                                    End If
+                                Catch ex As Exception
+
+                                End Try
+                            End If
+                            ' Next column
+                            iColumn += 1
+                        End If
+                    Next j
+                    ' Reset column count
+                    iColumn = 0
+                End If
+            Next i
+
+            ' Done
+            Return True
+
+        End Function
+
+#End Region ' Map array conversions
 
     End Class
 

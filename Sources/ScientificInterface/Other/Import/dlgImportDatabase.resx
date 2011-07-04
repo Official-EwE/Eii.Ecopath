@@ -123,10 +123,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_sep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 475</value>
+    <value>12, 318</value>
   </data>
   <data name="m_sep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>512, 2</value>
+    <value>510, 2</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_sep.TabIndex" type="System.Int32, mscorlib">
@@ -136,7 +136,7 @@
     <value>m_sep</value>
   </data>
   <data name="&gt;&gt;m_sep.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFormSeparator, ScientificInterfaceShared, Version=6.1.1.228, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFormSeparator, ScientificInterfaceShared, Version=6.2.0.627, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sep.Parent" xml:space="preserve">
     <value>$this</value>
@@ -148,7 +148,7 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_navigator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 481</value>
+    <value>12, 324</value>
   </data>
   <data name="m_navigator.Size" type="System.Drawing.Size, System.Drawing">
     <value>510, 23</value>
@@ -160,7 +160,7 @@
     <value>m_navigator</value>
   </data>
   <data name="&gt;&gt;m_navigator.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Wizard.ucWizardNavigation, ScientificInterfaceShared, Version=6.1.1.228, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Wizard.ucWizardNavigation, ScientificInterfaceShared, Version=6.2.0.627, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_navigator.Parent" xml:space="preserve">
     <value>$this</value>
@@ -175,7 +175,7 @@
     <value>12, 12</value>
   </data>
   <data name="m_plWizardContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>510, 457</value>
+    <value>510, 300</value>
   </data>
   <data name="m_plWizardContent.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -199,16 +199,13 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>534, 516</value>
-  </data>
-  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>550, 400</value>
+    <value>534, 359</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Convert models to EwE6</value>
+    <value>Model conversion utility</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>dlgImportDatabase</value>

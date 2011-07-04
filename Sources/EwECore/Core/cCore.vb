@@ -2402,7 +2402,7 @@ Public Class cCore
                     If File.Exists(src) Then
 
                         ' User wants to make a backup?
-                        Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, _
+                        Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, db.Name), _
                                                          eCoreComponentType.DataSource, eMessageType.Any, _
                                                          eMessageImportance.Information, _
                                                          cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)

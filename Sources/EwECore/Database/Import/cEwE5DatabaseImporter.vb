@@ -63,6 +63,9 @@ Namespace Database
         ''' <summary>ID for next imported Auxillary data.</summary>
         Private m_iNextAuxID As Integer = 1
 
+        ''' <summary>Dict of Ecospace depth profiles per scenario ID.</summary>
+        Private m_dicDepthMaps As New Dictionary(Of Integer, Integer(,))
+
         ' == Databases ==
 
         ''' <summary>Source database in EwE5 format.</summary>
@@ -249,7 +252,7 @@ Namespace Database
             If Me.ImportEcoSim() Then
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMGROUPS)
-                Me.ImportEcoSimN()
+                Me.ImportEcosimN()
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGMEDIATION)
                 Me.ImportEcoSimnShapes()
@@ -276,13 +279,13 @@ Namespace Database
             ' --------
 
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACESCENARIOS)
-            If (Me.ImportEcoSpaceScenario()) Then
+            If (Me.ImportEcospaceScenario()) Then
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROPRESS_ECOSPACEHABITATS)
                 Me.ImportEcospaceHabitats()
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEGROUPS)
-                Me.ImportEcoSpaceGroups()
+                Me.ImportEcospaceGroups()
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEREGIONS)
                 Me.ImportEcospaceRegions()
@@ -290,12 +293,13 @@ Namespace Database
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEMPAS)
                 Me.ImportEcospaceMPA()
 
-                ' Import fleets after habitats and MPAs
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEFLEETS)
-                Me.ImportEcoSpaceFleets()
-
+                ' Import basemap after habitat, mpa and regions
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEBASEMAP)
                 Me.ImportEcospaceBasemap()
+
+                ' Import fleets after basemap
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEFLEETS)
+                Me.ImportEcospaceFleets()
 
             End If
 
@@ -792,7 +796,7 @@ Namespace Database
             End If
 
             drow("UnitMonetary") = Me.FixValue(reader, "monetaryUnit", "EUR")
-            drow("EcoSimVulMultAll") = Me.FixValue(reader, "EcoSim vulMultAll")
+            drow("EcosimVulMultAll") = Me.FixValue(reader, "Ecosim vulMultAll")
             writer.AddRow(drow)
             If Not writer.Commit() Then
                 Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_ERROR_COMMIT, "model"), _
@@ -1532,9 +1536,9 @@ Namespace Database
 
 #End Region ' Ecoranger
 
-#Region " EcoSim "
+#Region " Ecosim "
 
-        Private Function ImportEcoSim() As Boolean
+        Private Function ImportEcosim() As Boolean
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -1545,7 +1549,7 @@ Namespace Database
             ' Clear table(s)
             Me.m_dbEwE6.Execute("DELETE * FROM EcosimScenario")
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return False
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenario")
@@ -1594,7 +1598,7 @@ Namespace Database
 
         End Function
 
-        Private Sub ImportEcoSimN()
+        Private Sub ImportEcosimN()
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -1630,7 +1634,7 @@ Namespace Database
                     ' .. create a new ecosim group
 
                     ' Check if an ecosim group exists for this ecopath group, ecosim scenario combination
-                    reader = m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
+                    reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
                             Me.m_strModelName, strScenario, strGroup))
 
                     bHasGroup = reader.Read()
@@ -1736,7 +1740,7 @@ Namespace Database
 
         End Sub
 
-        Private Sub ImportEcoSimPairs()
+        Private Sub ImportEcosimPairs()
 
             Dim reader As IDataReader = Nothing
             Dim readerTmp As IDataReader = Nothing
@@ -1744,7 +1748,7 @@ Namespace Database
             Dim strJuvinile As String = ""
             Dim bWarned As Boolean = False
 
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim Pairs] where modelName='{0}'", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim Pairs] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             While reader.Read
@@ -1781,7 +1785,7 @@ Namespace Database
 
         End Sub
 
-        Private Sub ImportEcoSimFishGear()
+        Private Sub ImportEcosimFishGear()
 
             Dim reader As IDataReader = Nothing
             Dim readerEcopath As IDataReader = Nothing
@@ -1811,7 +1815,7 @@ Namespace Database
                     ' Grab foreign keys
                     iEcopathFleetID = Me.HashKey(eDataTypes.FleetInput, strFleet)
 
-                    reader = m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'", _
+                    reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'", _
                                                               Me.m_strModelName, strFleet, strScenario))
                     ' Assume no shape is read
                     iShapeID = 0
@@ -1867,7 +1871,7 @@ Namespace Database
 
 #Region " Forcing shapes "
 
-        Private Sub ImportEcoSimnShapes()
+        Private Sub ImportEcosimnShapes()
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2154,7 +2158,7 @@ Namespace Database
             ' import shape specific data in subtable
             Select Case shapeDataType
                 Case eDataTypes.Forcing
-                    writer = Me.m_dbEwE6.GetWriter("EcoSimShapeTime")
+                    writer = Me.m_dbEwE6.GetWriter("EcosimShapeTime")
                     drow = writer.NewRow()
                     drow("Title") = fsd.Title
                     drow("zScale") = fsd.ZScale
@@ -2313,7 +2317,7 @@ Namespace Database
             ' import shape specific data in subtable
             Select Case shapeDataType
                 Case eDataTypes.Forcing
-                    writer = Me.m_dbEwE6.GetWriter("EcoSimShapeTime")
+                    writer = Me.m_dbEwE6.GetWriter("EcosimShapeTime")
                     drow = writer.NewRow()
                     drow("FunctionType") = eShapeFunctionType.NotSet
 
@@ -2377,7 +2381,7 @@ Namespace Database
             Dim drow As DataRow = Nothing
 
             ' Resolve Scenario dependent forcing shapes
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSim] WHERE modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [Ecosim] WHERE modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenario")
@@ -2547,7 +2551,7 @@ Namespace Database
             Return CInt(Me.m_dbEwE5.GetValue(String.Format(strDetectEggSQL, Me.m_strModelName, nShapeNumber))) > 0
         End Function
 
-        Private Sub ImportEcoSimNxN()
+        Private Sub ImportEcosimNxN()
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2556,7 +2560,7 @@ Namespace Database
             Dim iScenarioID As Integer = 0
             Dim drow As DataRow = Nothing
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim NxN] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim NxN] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenarioForcingMatrix")
@@ -2618,7 +2622,7 @@ Namespace Database
 
         End Sub
 
-        Private Sub ImportEcoSimMedWeights()
+        Private Sub ImportEcosimMedWeights()
 
             Dim reader As IDataReader = Nothing
             Dim writerGroup As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2630,7 +2634,7 @@ Namespace Database
             Dim iFleetID As Integer = 0
             Dim iShapeID As Integer = 0
 
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim MedWeights] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim MedWeights] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writerGroup = Me.m_dbEwE6.GetWriter("EcosimScenarioShapeMedWeightsGroup")
@@ -2674,7 +2678,7 @@ Namespace Database
 
         End Sub
 
-        Private Sub ImportEcoSimNxNInteraction()
+        Private Sub ImportEcosimNxNInteraction()
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2690,7 +2694,7 @@ Namespace Database
             Dim iFFApplication As eForcingFunctionApplication = 0
 
             ' EwE6: Shape type explicitly identifies a shape type
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [EcoSim NxN Forcing] where modelName='{0}'", Me.m_strModelName))
+            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Ecosim NxN Forcing] where modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbEwE6.GetWriter("EcosimScenarioPredPreyShape")
@@ -2723,7 +2727,7 @@ Namespace Database
             Me.m_dbEwE5.ReleaseReader(reader)
             Me.m_dbEwE6.ReleaseWriter(writer)
 
-        End Sub ' ImportEcoSimNxNInteraction
+        End Sub ' ImportEcosimNxNInteraction
 
 #End Region ' Forcing shapes 
 
@@ -2825,7 +2829,7 @@ Namespace Database
             writerTimeSeries = Me.m_dbEwE6.GetWriter("EcosimTimeSeries")
             writerGroup = Me.m_dbEwE6.GetWriter("EcosimTimeSeriesGroup")
             writerFleet = Me.m_dbEwE6.GetWriter("EcosimTimeSeriesFleet")
-            writerShape = Me.m_dbEwE6.GetWriter("EcoSimShape")
+            writerShape = Me.m_dbEwE6.GetWriter("EcosimShape")
             writerShapeTime = Me.m_dbEwE6.GetWriter("EcosimShapeTime")
 
             While reader.Read()
@@ -2999,7 +3003,7 @@ Namespace Database
 
 #End Region ' Time series 
 
-#End Region ' EcoSim
+#End Region ' Ecosim
 
 #Region " Ecospace "
 
@@ -3009,13 +3013,14 @@ Namespace Database
         ''' </summary>
         ''' <returns>True if a scenario was imported.</returns>
         ''' -------------------------------------------------------------------
-        Private Function ImportEcoSpaceScenario() As Boolean
+        Private Function ImportEcospaceScenario() As Boolean
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim nScenarioID As Integer = 1
             Dim iEcosimScenarioID As Integer = -1
+            Dim depthmap As Integer(,) = Nothing
 
             ' Clear table(s)
             Me.m_dbEwE6.Execute("DELETE * FROM EcospaceScenario")
@@ -3059,6 +3064,9 @@ Namespace Database
                 '        drow(String.Format("Habitat{0}", i)) = Me.FixValue(reader, String.Format("Habitat{0}", i))
                 '    Next
                 'End If
+
+                ReDim depthmap(CInt(drow("InRow")), CInt(drow("InCol")))
+                Me.m_dicDepthMaps(nScenarioID) = depthmap
 
                 writer.AddRow(drow)
                 writer.Commit()
@@ -3283,7 +3291,7 @@ Namespace Database
 
         End Sub
 
-        Private Sub ImportEcoSpaceGroups()
+        Private Sub ImportEcospaceGroups()
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -3415,7 +3423,7 @@ Namespace Database
 
         End Sub
 
-        Private Sub ImportEcoSpaceFleets()
+        Private Sub ImportEcospaceFleets()
 
             Dim reader As IDataReader = Nothing
             Dim readerSub As IDataReader = Nothing
@@ -3423,14 +3431,15 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 1
             Dim strFlags As String = ""
-            Dim astrPort As String()
-            Dim astrSail As String()
+            Dim astrPort As String() ' Port read buffer
+            Dim astrSail As String() ' Sailing cost read buffer
             Dim iFleetID As Integer = 1
             Dim iHabitatID As Integer = 1
             Dim iMPAID As Integer = 1
             Dim nRows As Integer = 0
             Dim nCols As Integer = 0
             Dim iCell As Integer = 0
+            Dim iFleet As Integer = 1
 
             ' Generate an Ecospace fleet entry for every Ecopath fleet
             Dim dtEcopathFleets As Dictionary(Of String, Integer) = Me.m_adtKeys(CInt(eDataTypes.FleetInput))
@@ -3439,6 +3448,9 @@ Namespace Database
             Dim strEcospaceScenario As String = ""
             Dim bHasFleet As Boolean = False
 
+            Dim dataPort As Boolean(,)
+            Dim dataSailCost As Single(,)
+
             ' Get writers
             writer = Me.m_dbEwE6.GetWriter("EcospaceScenarioFleet")
 
@@ -3446,48 +3458,43 @@ Namespace Database
 
                 ' For each ecospace scenario..
                 For Each strEcospaceScenario In dtEcospaceScenarios.Keys
+
+                    ' Get scenario map dimensions
+                    reader = Me.m_dbEwE6.GetReader("SELECT InRow, InCol FROM EcospaceScenario WHERE ScenarioID=" & dtEcospaceScenarios(strEcospaceScenario))
+                    reader.Read()
+                    nRows = CInt(reader("InRow"))
+                    nCols = CInt(reader("InCol"))
+                    Me.m_dbEwE6.ReleaseReader(reader)
+
+                    ReDim dataPort(nRows, nCols)
+                    ReDim dataSailCost(nRows, nCols)
+
                     ' ..and each ecopath fleet
                     For Each strEcopathFleet In dtEcopathFleets.Keys
 
                         Me.LogProgress("Importing maps for scenario " & strEcospaceScenario & ", fleet " & strEcopathFleet)
-
+ 
                         ' Generate an Ecospace fleet entry
                         reader = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace Gear] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
-                                Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
+                                                                  Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
                         bHasFleet = reader.Read()
 
                         ' Create new row
                         drow = writer.NewRow()
 
                         iScenarioID = Me.HashKey(eDataTypes.EcoSpaceScenario, strEcospaceScenario)
-
                         drow("ScenarioID") = iScenarioID
                         drow("FleetID") = iFleetID
                         drow("EcopathFleetID") = Me.HashKey(eDataTypes.FleetInput, strEcopathFleet)
-
-                        ' Copy fields
                         If (bHasFleet) Then
                             drow("EffPower") = Me.FixValue(reader, "EffPower")
                             ' JS 070119: discontinued in favour of finer-grained MPAFish, see below
                             ' drow("MPAfishery") = Me.FixValue(reader, "MPAFishery", "T")
                         End If
 
-                        writer.AddRow(drow)
-                        writer.Commit()
-
                         If bHasFleet Then
-                            ' JS 05Oct09: Port data restructured, got rid of string of zeroes and ones. Now, ports can potentially
-                            '             be entities with properties
                             astrPort = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Port", "0")), CChar(" "), 1)
                             astrSail = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Sail", "0")), CChar(" "), 6)
-
-                            ' Get # of cols and rows for this scenario, in case an old version of Port() import is required
-                            readerSub = m_dbEwE6.GetReader(String.Format("SELECT * FROM EcoSpaceScenario WHERE ScenarioID={0}", iScenarioID))
-                            readerSub.Read()
-                            nRows = CInt(readerSub("InRow"))
-                            nCols = CInt(readerSub("InCol"))
-                            Me.m_dbEwE6.ReleaseReader(readerSub)
-                            readerSub = Nothing
 
                             ' Port data found?
                             If (astrPort.Length = 0) Then
@@ -3496,25 +3503,24 @@ Namespace Database
                                 For iRow As Integer = 0 To nRows : For iCol As Integer = 0 To nCols : astrPort(iRow * nCols + iCol) = "" : Next : Next
                                 Try
                                     readerSub = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
-                                            Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
+                                                                                 Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
 
                                     If readerSub IsNot Nothing Then
                                         While readerSub.Read()
                                             Try
                                                 astrPort((CInt(reader("InCol")) - 1) * nCols + (CInt(reader("InCol")) - 1)) = CStr(Me.FixValue(readerSub, "Port", "0"))
                                             Catch ex As Exception
+                                                ' Swallow
                                             End Try
                                         End While
                                         Me.m_dbEwE5.ReleaseReader(readerSub)
                                         readerSub = Nothing
                                     End If
-
                                 Catch ex As Exception
-
+                                    ' Swallow
                                 End Try
                             End If
 
-                            Dim writerFishMap As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("EcospaceScenarioFleetMap")
                             iCell = 0
                             For iRow As Integer = 1 To nRows
                                 For iCol As Integer = 1 To nCols
@@ -3522,29 +3528,24 @@ Namespace Database
                                     Dim bPort As Boolean = False
                                     Dim sCost As Single = 0.0!
 
-                                    If (astrPort.Length > iCell) Then
-                                        If (astrPort(iCell) = "1") Then
-                                            bPort = True
-                                        End If
-                                    End If
+                                    bPort = False
+                                    If (astrPort.Length > iCell) Then bPort = (astrPort(iCell) = "1")
                                     If (astrSail.Length > iCell) Then
                                         sCost = cStringUtils.ConvertToSingle(astrSail(iCell), 0.0!)
                                     End If
 
-                                    If bPort And (sCost > 0.0!) Then
-                                        drow = writerFishMap.NewRow()
-                                        drow("ScenarioID") = iScenarioID
-                                        drow("FleetID") = iFleetID
-                                        drow("InRow") = iRow
-                                        drow("InCol") = iCol
-                                        drow("PortID") = IIf(bPort, 1, 0)
-                                        drow("SailCost") = sCost
-                                        writerFishMap.AddRow(drow)
-                                    End If
+                                    dataPort(iRow, iCol) = bPort
+                                    dataSailCost(iRow, iCol) = sCost
+
                                     iCell += 1
                                 Next
                             Next
-                            Me.m_dbEwE6.ReleaseWriter(writerFishMap)
+
+                            drow("SailCostMap") = cStringUtils.ArrayToString(dataSailCost, Me.m_dicDepthMaps(iScenarioID), True)
+                            drow("PortMap") = cStringUtils.ArrayToString(dataPort, Me.m_dicDepthMaps(iScenarioID), False)
+
+                            writer.AddRow(drow)
+                            writer.Commit()
 
                             Dim writerHabFish As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("EcospaceScenarioHabitatFishery")
                             ' Write GearHab flag field to proper table combining (ScenarioID, FleetID, HabitatID)
@@ -3616,26 +3617,29 @@ Namespace Database
         Private Sub ImportEcospaceBasemap()
 
             Dim reader As IDataReader = Nothing
+            Dim readerSub As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writerSub As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim dtSub As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim strScenario As String = ""
             Dim iScenarioID As Integer = 1
-            Dim astrDepth() As String = Nothing
-            Dim astrHabType() As String = Nothing
-            Dim astrRegion() As String = Nothing
-            Dim astrMPA() As String = Nothing
-            Dim astrRelPP() As String = Nothing
-            Dim astrRelCin() As String = Nothing
+            Dim astrDepth() As String = Nothing : Dim dataDepth(,) As Integer
+            Dim astrHabType() As String = Nothing : Dim dataHabitat(,) As Integer
+            Dim astrRegion() As String = Nothing : Dim dataRegion(,) As Integer
+            Dim astrMPA() As String = Nothing : Dim dataMPA(,) As Integer
+            Dim astrRelPP() As String = Nothing : Dim dataRelPP(,) As Single
+            Dim astrRelCin() As String = Nothing : Dim dataRelCin(,) As Single
             Dim iCell As Integer = 0
-            Dim iDepth As Integer = 0
-            Dim sCellValue As Single = 0
             Dim nRows As Integer = 0
             Dim nCols As Integer = 1
 
             reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace] WHERE modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
-            writer = Me.m_dbEwE6.GetWriter("EcospaceScenarioBasemap")
+            writer = Me.m_dbEwE6.GetWriter("EcospaceScenario")
+            dt = writer.GetDataTable()
 
             While reader.Read()
 
@@ -3643,6 +3647,13 @@ Namespace Database
                 iScenarioID = Me.HashKey(eDataTypes.EcoSpaceScenario, strScenario)
                 nRows = CInt(reader("Inrow"))
                 nCols = CInt(reader("Incol"))
+
+                ReDim dataDepth(nRows, nCols)
+                ReDim dataHabitat(nRows, nCols)
+                ReDim dataRegion(nRows, nCols)
+                ReDim dataMPA(nRows, nCols)
+                ReDim dataRelPP(nRows, nCols)
+                ReDim dataRelCin(nRows, nCols)
 
                 ' Depth: 2 formats encountered: '#####' and '#### '
                 astrDepth = SplitNumberListString(CStr(Me.FixValue(reader, "Depth", "0")), CChar(" "), 5)
@@ -3665,68 +3676,27 @@ Namespace Database
 
                         ' Copy depth value
                         If astrDepth.Length > iCell Then
-                            Try
-                                iDepth = cStringUtils.ConvertToInteger(astrDepth(iCell))
-                            Catch ex As Exception
-                                ' hmm
-                                iDepth = 0
-                            End Try
-                        Else
-                            iDepth = 0
+                            dataDepth(iRow, iCol) = cStringUtils.ConvertToInteger(astrDepth(iCell))
                         End If
 
-                        ' Create row for water cells only
-                        If iDepth > 0 Then
+                        If astrHabType.Length > iCell Then
+                            dataHabitat(iRow, iCol) = cStringUtils.ConvertToInteger(astrHabType(iCell), 0)
+                        End If
 
-                            drow = writer.NewRow()
-                            drow("ScenarioID") = iScenarioID
-                            drow("Inrow") = iRow
-                            drow("Incol") = iCol
-                            drow("Depth") = iDepth
+                        If astrRegion.Length > iCell Then
+                            dataRegion(iRow, iCol) = cStringUtils.ConvertToInteger(astrRegion(iCell), 0)
+                        End If
 
-                            ' Resolve habitat ID for deep cell
-                            If astrHabType.Length > iCell Then
-                                sCellValue = cStringUtils.ConvertToSingle(astrHabType(iCell), 0)
-                                If sCellValue <> 0 Then
-                                    drow("HabitatID") = Me.HashKey(eDataTypes.EcospaceHabitat, CStr(sCellValue), eDataTypes.EcoSpaceScenario, iScenarioID)
-                                End If
-                            End If
+                        If astrMPA.Length > iCell Then
+                            dataMPA(iRow, iCol) = cStringUtils.ConvertToInteger(astrMPA(iCell), 0)
+                        End If
 
-                            ' Resolve region ID for deep cell
-                            If astrRegion.Length > iCell Then
-                                sCellValue = cStringUtils.ConvertToSingle(astrRegion(iCell), 0)
-                                If sCellValue <> 0 Then
-                                    drow("RegionID") = Me.HashKey(eDataTypes.EcospaceRegion, CStr(sCellValue), eDataTypes.EcoSpaceScenario, iScenarioID)
-                                End If
-                            End If
+                        If astrRelPP.Length > iCell Then
+                            dataRelPP(iRow, iCol) = cStringUtils.ConvertToSingle(astrRelPP(iCell), 1.0!)
+                        End If
 
-                            ' Resolve MPA ID for deep cell
-                            If astrMPA.Length > iCell Then
-                                sCellValue = cStringUtils.ConvertToSingle(astrMPA(iCell), 0)
-                                If sCellValue <> 0 Then
-                                    drow("MPAID") = Me.HashKey(eDataTypes.EcospaceMPA, CStr(sCellValue), eDataTypes.EcoSpaceScenario, iScenarioID)
-                                End If
-                            End If
-
-                            ' Copy Rel. PP for deep cell
-                            If astrRelPP.Length > iCell Then
-                                sCellValue = cStringUtils.ConvertToSingle(astrRelPP(iCell), 1.0!)
-                                drow("RelPP") = sCellValue
-                            End If
-
-                            ' Copy Rel. Cin for deep cell
-                            If astrRelCin.Length > iCell Then
-                                sCellValue = cStringUtils.ConvertToSingle(astrRelCin(iCell), 1.0!)
-                                drow("RelCin") = sCellValue
-                            End If
-
-                            drow("XVel") = 0.0!
-                            drow("YVel") = 0.0!
-                            drow("DepthA") = iDepth
-
-                            ' Add the row
-                            writer.AddRow(drow)
-
+                        If astrRelCin.Length > iCell Then
+                            dataRelCin(iRow, iCol) = cStringUtils.ConvertToSingle(astrRelCin(iCell), 1.0!)
                         End If
 
                         ' Next cell
@@ -3735,10 +3705,73 @@ Namespace Database
                     Next iCol
                 Next iRow
 
-            End While
+                drow = dt.Rows.Find(iScenarioID)
+                drow.BeginEdit()
+                drow("DepthMap") = cStringUtils.ArrayToString(dataDepth)
+                drow("RelPPMap") = cStringUtils.ArrayToString(dataRelPP, dataDepth)
+                drow("RelCinMap") = cStringUtils.ArrayToString(dataRelCin, dataDepth)
+                drow("XVelMap") = ""
+                drow("YVelMap") = ""
+                drow("DepthAMap") = ""
+                drow.EndEdit()
 
-            If Not writer.Commit() Then
-            End If
+                Me.m_dicDepthMaps(iScenarioID) = dataDepth
+
+                Dim keys As Object() = {iScenarioID, 0}
+                Dim iKey As Integer = 0
+
+                ' Habitats
+                readerSub = Me.m_dbEwE5.GetReader(String.Format("SELECT HabitatNo FROM [Ecospace habitats] WHERE modelName='{0}' AND Scenario='{1}'", Me.m_strModelName, strScenario))
+                writerSub = Me.m_dbEwE6.GetWriter("EcospaceScenarioHabitat")
+                dtSub = writerSub.GetDataTable()
+                While readerSub.Read()
+                    iCell = CInt(readerSub("HabitatNo"))
+                    iKey = Me.HashKey(eDataTypes.EcospaceHabitat, CStr(iCell), eDataTypes.EcoSpaceScenario, iScenarioID)
+                    keys(1) = iKey
+                    drow = dtSub.Rows.Find(keys)
+                    drow.BeginEdit()
+                    drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, dataDepth, True, iCell)
+                    drow.EndEdit()
+                End While
+                dtSub = Nothing
+                Me.m_dbEwE5.ReleaseReader(readerSub)
+                Me.m_dbEwE6.ReleaseWriter(writerSub)
+
+                ' MPAs
+                readerSub = Me.m_dbEwE5.GetReader(String.Format("SELECT MPANo FROM [EcoSpace MPA] WHERE modelName='{0}' AND Scenario='{1}'", Me.m_strModelName, strScenario))
+                writerSub = Me.m_dbEwE6.GetWriter("EcospaceScenarioMPA")
+                dtSub = writerSub.GetDataTable()
+                While readerSub.Read()
+                    iCell = CInt(readerSub("MPANo"))
+                    iKey = Me.HashKey(eDataTypes.EcospaceMPA, CStr(iCell), eDataTypes.EcoSpaceScenario, iScenarioID)
+                    keys(1) = iKey
+                    drow = dtSub.Rows.Find(keys)
+                    drow.BeginEdit()
+                    drow("MPAMap") = cStringUtils.ArrayToString(dataMPA, dataDepth, True, iCell)
+                    drow.EndEdit()
+                End While
+                dtSub = Nothing
+                Me.m_dbEwE5.ReleaseReader(readerSub)
+                Me.m_dbEwE6.ReleaseWriter(writerSub)
+
+                ' Regions
+                readerSub = Me.m_dbEwE5.GetReader(String.Format("SELECT RegionNo FROM [EcoSpace regions] WHERE modelName='{0}' AND Scenario='{1}'", Me.m_strModelName, strScenario))
+                writerSub = Me.m_dbEwE6.GetWriter("EcospaceScenarioRegion")
+                dtSub = writerSub.GetDataTable()
+                While readerSub.Read()
+                    iCell = CInt(readerSub("RegionNo"))
+                    iKey = Me.HashKey(eDataTypes.EcospaceRegion, CStr(iCell), eDataTypes.EcoSpaceScenario, iScenarioID)
+                    keys(1) = iKey
+                    drow = dtSub.Rows.Find(keys)
+                    drow.BeginEdit()
+                    drow("RegionMap") = cStringUtils.ArrayToString(dataMPA, dataDepth, True, iCell)
+                    drow.EndEdit()
+                End While
+                dtSub = Nothing
+                Me.m_dbEwE5.ReleaseReader(readerSub)
+                Me.m_dbEwE6.ReleaseWriter(writerSub)
+
+            End While
 
             Me.m_dbEwE5.ReleaseReader(reader)
             Me.m_dbEwE6.ReleaseWriter(writer)

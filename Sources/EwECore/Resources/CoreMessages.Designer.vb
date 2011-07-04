@@ -182,7 +182,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to This database was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?.
+        '''  Looks up a localized string similar to The database &apos;{0}&apos; was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?.
         '''</summary>
         Friend Shared ReadOnly Property DATABASE_BACKUP_PROMPT() As String
             Get

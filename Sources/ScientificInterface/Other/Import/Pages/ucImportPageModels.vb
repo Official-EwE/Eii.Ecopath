@@ -86,8 +86,6 @@ Namespace Import
             Me.m_wizard = DirectCast(wizard, cImportWizard)
             Me.m_uic = uic
 
-            ' Show database name in header
-            Me.m_hdr.SubText = Me.m_wizard.Database
             ' Initialize output folder path
             Me.m_tbxOutputFolder.Text = Me.m_wizard.OutputFolder
 

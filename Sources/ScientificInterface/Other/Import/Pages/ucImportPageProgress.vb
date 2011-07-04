@@ -145,10 +145,13 @@ Namespace Import
         Private Delegate Sub UpdateProgressDelegate(ByVal iProgress As Integer, ByVal strMsg As String)
 
         Private Sub UpdateProgress(ByVal iProgress As Integer, ByVal strMsg As String)
+
             ' Update progress bar
             Me.m_pb.Value = Math.Max(0, Math.Min(100, iProgress))
-            ' Update progress label
-            Me.m_lbProgress.Text = strMsg
+            ' Update progress listbox
+            Me.m_lbSummary.Items.Add(vbTab & strMsg)
+            Me.m_lbSummary.TopIndex = Me.m_lbSummary.Items.Count - 1
+
         End Sub
 
 #End Region ' Events

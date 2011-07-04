@@ -1801,11 +1801,10 @@ Public Class AppLauncher
         Select Case format
             Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
                 If File.Exists(strFileName) Then
-                    Dim fmsg As New cFeedbackMessage(String.Format("The file '{0}' already exists. Do you want to overwrite it?", strFileName), _
+                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName), _
                                                      eCoreComponentType.DataSource, eMessageType.DataValidation, _
                                                      eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
                     fmsg.Reply = cFeedbackMessage.eReply.NO
-                    fmsg.Suppressable = True
                     Me.Core.Messages.SendMessage(fmsg)
                     If fmsg.Reply = cFeedbackMessage.eReply.NO Then Return Nothing
                 End If

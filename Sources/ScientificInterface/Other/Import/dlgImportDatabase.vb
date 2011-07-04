@@ -19,8 +19,6 @@ Namespace Import
 #Region " Private vars "
 
         Private m_wizard As cImportWizard = Nothing
-        ''' <summary>The import log file.</summary>
-        Private m_strLogFileName As String = ""
 
 #End Region ' Private vars
 
