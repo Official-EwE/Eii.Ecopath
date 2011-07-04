@@ -429,7 +429,7 @@ Description: {1}</value>
     <value>The number entered is not valid</value>
   </data>
   <data name="ECOSPACE_DISPERSAL_NSCONT" xml:space="preserve">
-    <value>North/south concentration</value>
+    <value>Mig. N/S concentration</value>
   </data>
   <data name="glyph_dots_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_dots_small.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1022,7 +1022,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Your database was compacted correctly, but EwE was not able to reload the database. Please contact EwE technical support</value>
   </data>
   <data name="ECOSPACE_DISPERSAL_EWCONT" xml:space="preserve">
-    <value>East/west concentration</value>
+    <value>Mig. E/W concentration</value>
   </data>
   <data name="glyph_muddy_brown" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_muddy_brown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
