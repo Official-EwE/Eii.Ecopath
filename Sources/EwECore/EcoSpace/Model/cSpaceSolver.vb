@@ -573,8 +573,6 @@ Public Class cSpaceSolver
 
             For j = m_Data.nLiving + 1 To m_Data.NGroups
                 ToDetritus(j - m_Data.nLiving) = 0
-                'jb DetPassedOn() is not used anywhere
-                ' DetPassedOn(j) = 0
             Next j
 
             SetRelaSwitch(Biomass)
