@@ -504,7 +504,7 @@ Namespace Properties
                 End If
             Catch ex As Exception
                 ' Log entry
-                cLog.Write(ex, "cPropertyManager.AllMessagesHandler")
+                cLog.Write(msg, "cPropertyManager.AllMessagesHandler")
             End Try
 
         End Sub
