@@ -1308,7 +1308,7 @@ Namespace DataSources
 
             Try
                 ' Start writing, protect sequence
-                writer = Me.m_db.GetWriter("Pedigree", "Sequence")
+                writer = Me.m_db.GetWriter("Pedigree")
 
                 ' Get new row to add
                 drow = writer.NewRow()
@@ -2128,7 +2128,7 @@ Namespace DataSources
                 End Try
 
                 ' Start writing, protect sequence
-                writer = Me.m_db.GetWriter("EcopathGroup", "Sequence")
+                writer = Me.m_db.GetWriter("EcopathGroup")
 
                 ' Get new row to add
                 drow = writer.NewRow()
@@ -2827,7 +2827,7 @@ Namespace DataSources
 
             Try
                 ' Start writing, protect sequence
-                writer = Me.m_db.GetWriter("EcopathFleet", "Sequence")
+                writer = Me.m_db.GetWriter("EcopathFleet")
                 drow = writer.NewRow()
                 drow("FleetID") = iFleetID
                 drow("FleetName") = strFleetName
@@ -3626,10 +3626,8 @@ Namespace DataSources
             Dim iScenario As Integer = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)
             Dim iActiveScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim bSucces As Boolean = True
-            Dim idm As cIDMappings = Nothing
+            Dim idm As New cIDMappings()
 
-            ' Prepare for saving
-            idm = New cIDMappings()
             If iScenarioID = 0 Then iScenarioID = iActiveScenarioID
 
             ' Duplicating a scenario?
@@ -4532,12 +4530,12 @@ Namespace DataSources
                     bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcoSimGroupOutput, ecopathDS.GroupDBID(i))
 
                 Next i
-                Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
                 bSucces = False
             End Try
 
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
             bSucces = bSucces And Me.SaveEcosimGroupYear(idm)
 
             Return bSucces
@@ -4610,21 +4608,21 @@ Namespace DataSources
 
             ' Obtain mapped scenario ID
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+            objKeys(0) = iScenarioID
 
-            ' Get next available shape ID
             Try
+                ' Get next available shape ID
                 iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
             Catch ex As Exception
                 iNextShapeID = 1
             End Try
-            ' Get next available fleet ID
+
             Try
+                ' Get next available fleet ID
                 iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcosimScenarioFleet")) + 1
             Catch ex As Exception
                 iNextFleetID = 1
             End Try
-
-            objKeys(0) = iScenarioID
 
             Try
                 writer = Me.m_db.GetWriter("EcosimScenarioFleet")
@@ -6497,7 +6495,7 @@ Namespace DataSources
             End Try
 
             ' Time series are scenario-independant
-            writer = Me.m_db.GetWriter("EcosimTimeSeries", "Sequence")
+            writer = Me.m_db.GetWriter("EcosimTimeSeries")
 
             drow = writer.NewRow()
             drow("TimeSeriesID") = iTimeSeriesID
@@ -6748,7 +6746,7 @@ Namespace DataSources
             Try
 
                 ' Time series are scenario-independent
-                writer = Me.m_db.GetWriter("EcosimTimeSeries", "Sequence")
+                writer = Me.m_db.GetWriter("EcosimTimeSeries")
                 dt = writer.GetDataTable()
 
                 writerGroups = Me.m_db.GetWriter("EcosimTimeSeriesGroup")
@@ -6879,7 +6877,7 @@ Namespace DataSources
 
             Try
                 ' Start writing, protect sequence
-                writer = Me.m_db.GetWriter("EcosimTimeSeries", "Sequence")
+                writer = Me.m_db.GetWriter("EcosimTimeSeries")
                 drow = writer.NewRow()
                 drow("TimeSeriesID") = iShapeID
                 drow("DatasetID") = tsDS.iDatasetDBID(tsDS.ActiveDatasetIndex)
@@ -7161,16 +7159,9 @@ Namespace DataSources
              ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean _
                     Implements IEcospaceDatasource.SaveEcospaceScenarioAs
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim iActiveScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim idm As New cIDMappings()
-            Dim iIDtmp As Integer = 0
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
-
-            Me.m_db.BeginTransaction()
 
             ' Delete existing scenario
             Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE ScenarioName='{0}'", strScenarioName))
@@ -7181,7 +7172,6 @@ Namespace DataSources
                 iScenarioID = 1
             End Try
 
-            idm.Add(eDataTypes.EcoSpaceScenario, iActiveScenarioID, iScenarioID)
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenario")
                 drow = writer.NewRow()
@@ -7196,31 +7186,7 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-            ' ------
-            ' Generate Ecopath objects for new Ecospace scenario
-            ' ------
-
-            ' First duplicate all Ecospace 'objects'
-            For i As Integer = 1 To ecopathDS.NumGroups
-                ' Add group to the new scenario
-                bSucces = bSucces And Me.AddEcospaceGroup(ecopathDS.GroupDBID(i), iScenarioID, (ecopathDS.PP(i) = 2.0), iIDtmp)
-                idm.Add(eDataTypes.EcospaceGroup, ecospaceDS.GroupDBID(i), iIDtmp)
-            Next
-
-            For i As Integer = 1 To ecopathDS.NumFleet
-                ' Add fleet to the new scenario
-                bSucces = bSucces And Me.AddEcospaceFleet(ecopathDS.FleetDBID(i), iScenarioID, iIDtmp)
-                idm.Add(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(i), iIDtmp)
-            Next
-
-            bSucces = bSucces And Me.SaveEcospaceScenario(idm)
-
-            If bSucces Then
-                Me.m_db.CommitTransaction(True)
-            Else
-                Me.m_db.RollbackTransaction()
-            End If
-            Return bSucces
+            Return (bSucces And Me.SaveEcospaceScenario(iScenarioID))
 
         End Function
 
@@ -7239,15 +7205,15 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim iActiveScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
-            Dim idm As cIDMappings = Nothing
-            Dim bSucces As Boolean = True
 
             ' Abort if there is no active scenario
-            If iActiveScenarioID = 0 Then Return False
+            If ecopathDS.ActiveEcospaceScenario <= 0 Then Return False
 
-            ' Prepare for saving
-            idm = New cIDMappings()
+            Dim iScenario As Integer = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, iScenarioID)
+            Dim iActiveScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim idm As New cIDMappings()
+            Dim bSucces As Boolean = True
+
             If iScenarioID = 0 Then iScenarioID = iActiveScenarioID
 
             ' Duplicating a scenario?
@@ -7258,8 +7224,13 @@ Namespace DataSources
 
             ' Start transaction
             bSucces = Me.m_db.BeginTransaction()
-            ' Save scenario
-            bSucces = bSucces And Me.SaveEcospaceScenario(idm)
+
+            Try
+                ' Save scenario
+                bSucces = bSucces And Me.SaveEcospaceScenario(idm)
+            Catch ex As Exception
+                bSucces = False
+            End Try
 
             ' Commit transaction
             If bSucces Then
@@ -7268,10 +7239,15 @@ Namespace DataSources
                 Me.m_db.RollbackTransaction()
             End If
 
-            ' Reload ecospace scenario definitions to update lastsaved data
-            Me.LoadEcospaceScenarioDefinitions()
+            If (bSucces) Then
+                ' Clear changed admin
+                Me.ClearChanged(s_EcospaceComponents)
+                ' Reload ecospace scenario definitions 
+                Me.LoadEcospaceScenarioDefinitions()
+            End If
 
             Return bSucces
+
         End Function
 
         ''' -------------------------------------------------------------------
@@ -7351,13 +7327,6 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcospaceGroups(idm)
             bSucces = bSucces And Me.SaveEcospaceFleets(idm)
             bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
-
-            If bSucces Then
-                ' Clear changed admin
-                Me.ClearChanged(s_EcospaceComponents)
-                '' JS 12Dec2010: do NOT reload ecospace scenario definitions; this should happen outside transactions
-                'Me.LoadEcospaceScenarioDefinitions()
-            End If
 
             Return bSucces
 
@@ -7761,7 +7730,7 @@ Namespace DataSources
             End Try
 
             Try
-                writer = Me.m_db.GetWriter("EcospaceScenarioHabitat", "Sequence", String.Format("ScenarioID={0}", iScenarioIDDest))
+                writer = Me.m_db.GetWriter("EcospaceScenarioHabitat")
                 dt = writer.GetDataTable()
                 For iHabitat As Integer = 0 To ecospaceDS.NoHabitats - 1
 
@@ -7890,7 +7859,7 @@ Namespace DataSources
             End Try
 
             ' The writer needed here will maintain row sequence for the given scenario only
-            writer = Me.m_db.GetWriter("EcospaceScenarioHabitat", "Sequence", String.Format("ScenarioID={0}", iScenarioID))
+            writer = Me.m_db.GetWriter("EcospaceScenarioHabitat")
 
             drow = writer.NewRow()
             drow("ScenarioID") = iScenarioID
@@ -8001,7 +7970,7 @@ Namespace DataSources
             End Try
 
             Try
-                writer = Me.m_db.GetWriter("EcospaceScenarioRegion", "Sequence", String.Format("ScenarioID={0}", iScenarioIDDest))
+                writer = Me.m_db.GetWriter("EcospaceScenarioRegion")
                 dt = writer.GetDataTable()
                 For iRegion As Integer = 1 To ecospaceDS.NoRegions
 
@@ -8108,7 +8077,7 @@ Namespace DataSources
 
             Try
 
-                writer = Me.m_db.GetWriter("EcospaceScenarioRegion", "Sequence")
+                writer = Me.m_db.GetWriter("EcospaceScenarioRegion")
 
                 drow = writer.NewRow()
                 drow("ScenarioID") = iScenarioID
@@ -8294,31 +8263,49 @@ Namespace DataSources
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim sbTemp As New StringBuilder
             Dim drow As DataRow = Nothing
-            Dim iGroup As Integer = 0
+            Dim bNewRow As Boolean = False
+            Dim iNextGroupID As Integer = 0
             Dim iGroupID As Integer = 0
-            Dim objKeys() As Object = {Nothing, Nothing} ' Composite key to find group per scenario
             Dim bSucces As Boolean = True
+            Dim objKeys() As Object = {iScenarioID, 0}
 
             ' Get mapped scenario ID, in case saving to a different scenario
             iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
             objKeys(0) = iScenarioID
 
+            ' Get next available group ID
+            Try
+                iNextGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcospaceScenarioGroup")) + 1
+            Catch ex As Exception
+                iNextGroupID = 1
+            End Try
+
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioGroup")
                 dt = writer.GetDataTable()
+                For iGroup As Integer = 1 To ecopathDS.NumGroups
 
-                For iGroup = 1 To ecopathDS.NumGroups
-
-                    ' Find group ID, it may be mapped to a different ID when saving to a new scenario
-                    iGroupID = idm.GetID(eDataTypes.EcospaceGroup, ecospaceDS.GroupDBID(iGroup))
-                    objKeys(1) = iGroupID
-
-                    ' Find existing row
+                    objKeys(1) = ecopathDS.GroupDBID(iGroup)
                     drow = dt.Rows.Find(objKeys)
-                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for group {0} ({1})", iGroupID, ecospaceDS.GroupDBID(iGroup)))
 
-                    ' JS: NEVER MODIFY THE GROUPID ONCE CREATED, this should ONLY be done at creation time!
-                    ' drow("GroupID") = ecopathDS.GroupDBID(iGroup)
+                    bNewRow = (drow Is Nothing)
+                    If bNewRow Then
+                        drow = writer.NewRow()
+                        drow("ScenarioID") = iScenarioID
+                        drow("EcopathGroupID") = ecopathDS.GroupDBID(iGroup)
+                        drow("GroupID") = iNextGroupID
+                        iNextGroupID += 1
+                    Else
+                        drow.BeginEdit()
+                    End If
+
+                    iGroupID = CInt(drow("GroupID"))
+
+                    ' Store ecospace group ID mapping now we know it
+                    ' JS 04Jul11: group mapping is stored by ECOPATH group ID since this is the only constant
+                    '             factor while appending Ecospace scenarios. This follows the structure that
+                    '             Ecosim adapted 2 years ago
+                    idm.Add(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup), iGroupID)
 
                     drow("Mvel") = ecospaceDS.Mvel(iGroup)
                     drow("RelMoveBad") = ecospaceDS.RelMoveBad(iGroup)
@@ -8345,6 +8332,12 @@ Namespace DataSources
                     drow("PrefCol") = sbTemp.ToString()
                     drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput, iGroup, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Depth, True)
 
+                    If bNewRow Then
+                        writer.AddRow(drow)
+                    Else
+                        drow.EndEdit()
+                    End If
+
                     bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceGroup, ecospaceDS.GroupDBID(iGroup))
                     bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceGroupOuput, ecospaceDS.GroupDBID(iGroup))
 
@@ -8357,8 +8350,9 @@ Namespace DataSources
 
             ' Save changes
             bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.SaveEcospaceGroupHabitats(idm)
 
-            Return bSucces And Me.SaveEcospaceGroupHabitats(idm)
+            Return bSucces
 
         End Function
 
@@ -8382,7 +8376,7 @@ Namespace DataSources
 
                 writer = Me.m_db.GetWriter("EcospaceScenarioGroupHabitat")
                 For iGroup = 1 To ecopathDS.NumGroups
-                    iGroupID = idm.GetID(eDataTypes.EcospaceGroup, ecospaceDS.GroupDBID(iGroup))
+                    iGroupID = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
 
                     For iHabitat = 0 To ecospaceDS.NoHabitats
                         iHabitatID = idm.GetID(eDataTypes.EcospaceHabitat, ecospaceDS.HabitatDBID(iHabitat))
@@ -8630,15 +8624,25 @@ Namespace DataSources
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
-            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim iScenarioID As Integer = 0
             Dim drow As DataRow = Nothing
+            Dim bNewRow As Boolean = False
             Dim iFleet As Integer = 0
+            Dim iNextFleetID As Integer = 0
             Dim iFleetID As Integer = 0
             Dim objKeys() As Object = {Nothing, Nothing} ' Composite key to find group per scenario
             Dim bSucces As Boolean = True
 
-            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
+            ' Obtain mapped scenario ID
+            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
             objKeys(0) = iScenarioID
+
+            Try
+                ' Get next available fleet ID
+                iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcospaceScenarioFleet")) + 1
+            Catch ex As Exception
+                iNextFleetID = 1
+            End Try
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioFleet")
@@ -8646,20 +8650,42 @@ Namespace DataSources
 
                 For iFleet = 1 To ecospaceDS.nFleets
 
-                    ' Find fleet ID, it may be mapped to a different ID when saving to a new scenario
-                    iFleetID = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
-                    objKeys(1) = iFleetID
+                    objKeys(1) = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
 
                     ' Find existing row
                     drow = dt.Rows.Find(objKeys)
-                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find existing row for fleet {0} ({1})", iFleetID, ecospaceDS.FleetDBID(iFleet)))
+                    ' Check wheter a new row or an existing row
+                    bNewRow = Object.ReferenceEquals(drow, Nothing)
+                    ' New row?
+                    If bNewRow Then
+                        ' #Yes: create new row
+                        drow = writer.NewRow()
+                        ' Populate PK
+                        drow("ScenarioID") = objKeys(0)
+                        drow("EcopathFleetID") = objKeys(1)
+                        drow("FleetID") = iNextFleetID
+                        iNextFleetID += 1
+                    Else
+                        ' #No: edit the row
+                        drow.BeginEdit()
+                    End If
+
+                    iFleetID = CInt(drow("FleetID"))
+                    idm.Add(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet), iFleetID)
 
                     ' Update fleet vars
                     drow("EffPower") = ecospaceDS.EffPower(iFleet)
-                    drow("PortMap") = cStringUtils.ArrayToString(ecospaceDS.Port, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
-                                                                 ecospaceDS.Depth, False)
-                    drow("SailCostMap") = cStringUtils.ArrayToString(ecospaceDS.Sail, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
-                                                                 ecospaceDS.Depth, True)
+                    drow("PortMap") = cStringUtils.ArrayToString(ecospaceDS.Port, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.Depth, False)
+                    drow("SailCostMap") = cStringUtils.ArrayToString(ecospaceDS.Sail, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.Depth, True)
+
+                    ' Wrap up: was this a new row?
+                    If bNewRow Then
+                        ' #Yes: add it to the writer
+                        writer.AddRow(drow)
+                    Else
+                        ' #No: done editing
+                        drow.EndEdit()
+                    End If
 
                 Next iFleet
 
@@ -8704,7 +8730,7 @@ Namespace DataSources
 
                 For iFleet = 1 To ecospaceDS.nFleets
 
-                    iFleetID = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
+                    iFleetID = idm.GetID(eDataTypes.EcospaceFleet, ecopathDS.FleetDBID(iFleet))
                     Debug.Assert(iFleetID <> 0)
 
                     For iRow = 1 To ecospaceDS.InRow
@@ -8764,7 +8790,7 @@ Namespace DataSources
 
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
-                            drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
+                            drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecopathDS.FleetDBID(iFleet))
                             drow("HabitatID") = idm.GetID(eDataTypes.EcospaceHabitat, ecospaceDS.HabitatDBID(iHabitat))
                             writer.AddRow(drow)
 
@@ -8807,7 +8833,7 @@ Namespace DataSources
 
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
-                            drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
+                            drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecopathDS.FleetDBID(iFleet))
                             drow("MPAID") = idm.GetID(eDataTypes.EcospaceMPA, ecospaceDS.MPADBID(iMPA))
                             writer.AddRow(drow)
 
@@ -9092,7 +9118,7 @@ Namespace DataSources
                 iMPAID = 1
             End Try
 
-            writer = Me.m_db.GetWriter("EcospaceScenarioMPA", "Sequence")
+            writer = Me.m_db.GetWriter("EcospaceScenarioMPA")
 
             drow = writer.NewRow()
             drow("ScenarioID") = iScenarioID
@@ -9218,7 +9244,7 @@ Namespace DataSources
             End Try
 
             Try
-                writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayer", "Sequence", String.Format("ScenarioID={0}", iScenarioIDdest))
+                writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayer")
                 dt = writer.GetDataTable()
 
                 For iLayer As Integer = 0 To ecospaceDS.nImportanceLayers - 1
@@ -9323,7 +9349,7 @@ Namespace DataSources
                 iLayerID = 1
             End Try
 
-            writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayer", "Sequence")
+            writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayer")
 
             drow = writer.NewRow()
             drow("ScenarioID") = iScenarioID

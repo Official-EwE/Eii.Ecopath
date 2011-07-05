@@ -72,7 +72,15 @@ Friend Class cDBUpdate6_02_00_01
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN CapacityMap MEMO")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioWeightLayer ADD COLUMN LayerMap MEMO")
 
-        ' ToDo: include EcospaceScenarioWeightLayer
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioGroup DROP CONSTRAINT " & db.GetPkKeyName("EcospaceScenarioGroup"))
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioGroup ADD PRIMARY KEY (ScenarioID, EcopathGroupID)")
+
+        ' Re-forge ecospace fleet relationships due to ^@!#^% Access limitations
+        ' Good grief, target table has to specified BACKWARDS?!
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioMPAFishery DROP CONSTRAINT " & db.GetFkKeyName("EcospaceScenarioFleet", "EcospaceScenarioMPAFishery", "FleetID"))
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioHabitatFishery DROP CONSTRAINT " & db.GetFkKeyName("EcospaceScenarioFleet", "EcospaceScenarioHabitatFishery", "FleetID"))
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioFleet DROP CONSTRAINT " & db.GetPkKeyName("EcospaceScenarioFleet"))
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioFleet ADD PRIMARY KEY (ScenarioID, EcopathFleetID)")
 
         Me.LogProgress("UpdateEcospaceTables", bSuccess)
         Return bSuccess

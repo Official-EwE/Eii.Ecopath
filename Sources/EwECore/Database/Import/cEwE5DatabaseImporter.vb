@@ -1466,7 +1466,7 @@ Namespace Database
             reader = Me.m_dbEwE5.GetReader("SELECT * from [Pedigree]")
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
-            writer = Me.m_dbEwE6.GetWriter("Pedigree", "Sequence")
+            writer = Me.m_dbEwE6.GetWriter("Pedigree")
 
             While reader.Read()
                 ' Translate col to varname

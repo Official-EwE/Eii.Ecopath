@@ -42,10 +42,6 @@ Namespace Database
             Private m_db As cEwEDatabase = Nothing
             ''' <summary>Table in the database to write to</summary>
             Private m_strTable As String = ""
-            ''' <summary>Field dictating sequence order of rows that must be maintained</summary>
-            Private m_strSequenceField As String = ""
-            ''' <summary>Sequence subgroup filter</summary>
-            Private m_strSequenceFilter As String = ""
             ''' <summary>DataSet contains a mirror of the indicated table</summary>
             Private m_ds As DataSet = Nothing
             ''' <summary>DataTable that mirrors the indicated table</summary>
@@ -61,20 +57,14 @@ Namespace Database
             ''' </summary>
             ''' <param name="db">The <see cref="cEwEDatabase">cEwEDatabase</see> to read from.</param>
             ''' <param name="strTable">The name of the table to link to.</param>
-            ''' <param name="strSequenceField">Field that dictates the order of items in a particular table. 
-            ''' The writer will safeguard the order of items if this field is provided.</param>
-            ''' <param name="strSequenceFilter">Optional sequence field subgrouping clause, such
-            ''' as 'ScenarioID=2'. The writer will manage the sequence order of only those rows
-            ''' that match this filter.</param>
             ''' <remarks>
             ''' <para>This method will attempt to connect and read the table into its internal
             ''' structures. It might be prudent to validate whether the instance is connected
             ''' by calling <see cref="IsConnected">IsConnected</see> prior to using it.</para>
             ''' </remarks>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByRef db As cEwEDatabase, ByVal strTable As String, _
-                    Optional ByVal strSequenceField As String = "", Optional ByVal strSequenceFilter As String = "")
-                Me.Connect(db, strTable, strSequenceField, strSequenceFilter)
+            Public Sub New(ByRef db As cEwEDatabase, ByVal strTable As String)
+                Me.Connect(db, strTable)
             End Sub
 
             ''' ---------------------------------------------------------------
@@ -85,8 +75,7 @@ Namespace Database
             ''' <param name="strTable">The name of the table to link to.</param>
             ''' <returns>True if connected.</returns>
             ''' ---------------------------------------------------------------
-            Public Function Connect(ByRef db As cEwEDatabase, ByVal strTable As String, _
-                    Optional ByVal strSequenceField As String = "", Optional ByVal strSequenceFilter As String = "") As Boolean
+            Public Function Connect(ByRef db As cEwEDatabase, ByVal strTable As String) As Boolean
 
                 ' Pre
                 Debug.Assert(db IsNot Nothing, "Need a valid database")
@@ -97,8 +86,6 @@ Namespace Database
                 ' Remember these
                 Me.m_db = db
                 Me.m_strTable = strTable
-                Me.m_strSequenceField = strSequenceField
-                Me.m_strSequenceFilter = strSequenceFilter
                 Me.m_dtSchema = Nothing
 
                 ' OLEDB hack
@@ -226,69 +213,7 @@ Namespace Database
             ''' </remarks>
             ''' ---------------------------------------------------------------
             Public Sub AddRow(ByVal drow As DataRow)
-
-                Dim nSequence As Integer = 0      ' Seq. no of the new row
-                Dim nSequenceIndex As Integer = 0 ' Seq. counter of the table
-                Dim nSeqTemp As Integer = 1       ' Temporary sequence number
-                Dim rowsTemp() As DataRow = Nothing
-                Dim rowTemp As DataRow = Nothing
-
-                ' Need to update sequence field?
-                If (Not String.IsNullOrEmpty(Me.m_strSequenceField)) Then
-                    ' #Yes: Get sequence number from new row
-                    nSequence = CInt(drow(Me.m_strSequenceField))
-                    ' Sort table on existing sequence numbers
-                    rowsTemp = Me.m_dt.Select(Me.m_strSequenceFilter, String.Format("{0} ASC", Me.m_strSequenceField))
-
-                    ' Must determine new sequence number?
-                    If (nSequence <= 0) Then
-                        ' #Yes: Find last sequence number to add row last in sequence
-                        ' Are there any rows at all?
-                        If rowsTemp.Length > 0 Then
-                            ' #Yes: get sequence number from the last row
-                            rowTemp = rowsTemp(rowsTemp.Length - 1)
-                            ' New row will be placed after this
-                            nSequence = CInt(rowTemp(Me.m_strSequenceField)) + 1
-                        Else
-                            ' #No, there are no rows. Start at the beginning
-                            nSequence = 1
-                        End If
-                    End If ' Must determine new seq number
-
-                    ' Re-align sequence numbers in the table
-                    For nRow As Integer = 0 To rowsTemp.Length - 1
-
-                        ' Get the row
-                        rowTemp = rowsTemp(nRow)
-                        ' Is this a valid row?
-                        If (rowTemp IsNot Nothing) Then
-
-                            ' #Yes: Get sequence number of this row
-                            If Not Convert.IsDBNull(rowTemp(Me.m_strSequenceField)) Then
-                                nSeqTemp = CInt(rowTemp(Me.m_strSequenceField))
-                            Else
-                                nSeqTemp = nSequence
-                            End If
-
-                            ' Is this the spot where the new row should go?
-                            If (nSeqTemp = nSequence) Then
-                                ' #Yes: leave a spot in the sequence index
-                                nSequenceIndex += 2
-                            Else
-                                ' #No: just increment the sequence index
-                                nSequenceIndex += 1
-                            End If
-
-                            ' Update row sequence number
-                            rowTemp(Me.m_strSequenceField) = nSequenceIndex
-
-                        End If ' Is a valid row
-                    Next ' Re-align sequence numbers
-                End If ' Need to update sequence field
-
-                ' Now finally add the new row
                 Me.m_dt.Rows.Add(drow)
-
             End Sub
 
             ''' ---------------------------------------------------------------
@@ -305,35 +230,7 @@ Namespace Database
             ''' </remarks>
             ''' ---------------------------------------------------------------
             Public Function RemoveRow(ByVal drow As DataRow) As Boolean
-
-                Dim nSequence As Integer = 0      ' Seq. no of the new row
-                Dim rowsTemp() As DataRow = Nothing
-                Dim rowTemp As DataRow = Nothing
-
-                ' Need to update sequence field?
-                If (Not String.IsNullOrEmpty(Me.m_strSequenceField)) Then
-                    ' #Yes: Get sequence number from new row
-                    nSequence = CInt(drow(Me.m_strSequenceField))
-                    ' Remove the row
-                    Me.m_dt.Rows.Remove(drow)
-                    ' Sort remaining rows by sequence number
-                    rowsTemp = Me.m_dt.Select(String.Format("{0} > {1}", Me.m_strSequenceField, nSequence), _
-                            String.Format("{0} ASC", Me.m_strSequenceField))
-
-                    ' Re-align sequence numbers in these rows
-                    For nRow As Integer = 0 To rowsTemp.Length - 1
-                        ' Get the row
-                        rowTemp = rowsTemp(nRow)
-                        ' Is this a valid row?
-                        If (rowTemp IsNot Nothing) Then
-                            ' #Yes: Get sequence number of this row
-                            nSequence = CInt(rowTemp(Me.m_strSequenceField))
-                            ' Tuck it back in, lowered by one
-                            rowTemp(Me.m_strSequenceField) = nSequence - 1
-                        End If ' Is a valid row
-                    Next ' Re-align sequence numbers
-                End If ' Need to update sequence field
-
+                Me.m_dt.Rows.Remove(drow)
                 Return True
             End Function
 
@@ -828,17 +725,9 @@ Namespace Database
         ''' the given table in the database.
         ''' </summary>
         ''' <param name="strTable">The table to connect the EwEDbWriter to.</param>
-        ''' <param name="strSquenceFieldName">Field name that indicates a sequence 
-        ''' number that needs to be maintained when adding new rows. This parameter
-        ''' is optional since only a few tables in EwE have a sequence field.</param>
-        ''' <param name="strSquenceFilter">Sequence field subfilter. Only those rows
-        ''' that match this filter will have their sequence field maintained.</param>
-        ''' <returns>A writer that is connected if the table was available in the database.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetWriter(ByVal strTable As String, _
-                Optional ByVal strSquenceFieldName As String = "", _
-                Optional ByVal strSquenceFilter As String = "") As cEwEDbWriter
-            Return New cEwEDbWriter(Me, strTable, strSquenceFieldName, strSquenceFilter)
+        Public Overridable Function GetWriter(ByVal strTable As String) As cEwEDbWriter
+            Return New cEwEDbWriter(Me, strTable)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -986,10 +875,11 @@ Namespace Database
         ''' <summary>
         ''' Returns the name of a primary key of a table.
         ''' </summary>
-        ''' <param name="strTable">The table name to obtain the primary key for.</param>
         ''' <returns>A name, or an empty string when no primary key was found.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetFkKeyName(ByVal strTable As String, ByVal strColumn As String) As String
+        Public Overridable Function GetFkKeyName(ByVal strTableFrom As String, _
+                                                 ByVal strTableTo As String, _
+                                                 ByVal strColumn As String) As String
 
             Dim conn As IDbConnection = Me.GetConnection()
             Dim dtKeys As DataTable = Nothing
@@ -1001,11 +891,16 @@ Namespace Database
                 Try
                     Dim cdb As OleDbConnection = DirectCast(conn, OleDbConnection)
                     ' Get PK keys schema information for entire DB
-                    dtKeys = cdb.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, New Object() {Nothing, Nothing, strTable})
+                    dtKeys = cdb.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, New Object() {Nothing, Nothing, strTableFrom})
                     ' Sanity checks, pk may not be defined
                     If (dtKeys.Rows.Count = 0) Then Return strFKKey
                     For Each drow As DataRow In dtKeys.Rows
-                        If (String.Compare(CStr(drow("PK_COLUMN_NAME")), strColumn, True) = 0) Then
+                        'Dim s1 As String = CStr(drow("PK_TABLE_NAME"))
+                        'Dim s2 As String = CStr(drow("FK_TABLE_NAME"))
+                        'Dim s3 As String = CStr(drow("FK_COLUMN_NAME"))
+                        If (String.Compare(CStr(drow("PK_TABLE_NAME")), strTableFrom) = 0) And _
+                           (String.Compare(CStr(drow("FK_TABLE_NAME")), strTableTo) = 0) And _
+                           (String.Compare(CStr(drow("FK_COLUMN_NAME")), strColumn) = 0) Then
                             strFKKey = CStr(drow("FK_NAME"))
                         End If
                     Next
