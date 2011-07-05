@@ -19,9 +19,6 @@ Public Class cEcospaceGroup
 
         Try
 
-            m_dataType = eDataTypes.EcospaceGroup
-            m_coreComponent = eCoreComponentType.EcoSpace
-
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Mvel
