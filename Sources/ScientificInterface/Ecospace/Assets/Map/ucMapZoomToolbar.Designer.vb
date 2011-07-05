@@ -28,7 +28,7 @@ Namespace Ecospace
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucMapZoomToolbar))
-            Me.m_tsZoom = New cEwEToolStrip
+            Me.m_tsZoom = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_tsbSaveImage = New System.Windows.Forms.ToolStripButton
             Me.m_ts1 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsddbPosition = New System.Windows.Forms.ToolStripDropDownButton
@@ -52,21 +52,22 @@ Namespace Ecospace
             '
             'm_tsZoom
             '
+            Me.m_tsZoom.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSaveImage, Me.m_ts1, Me.m_tsddbPosition, Me.m_ts2, Me.m_tsbZoomIn, Me.m_tsbZoomOut, Me.m_tscbZoomPercent, Me.m_tsbZoomReset})
             Me.m_tsZoom.Location = New System.Drawing.Point(0, 0)
             Me.m_tsZoom.Name = "m_tsZoom"
+            Me.m_tsZoom.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             Me.m_tsZoom.Size = New System.Drawing.Size(377, 25)
             Me.m_tsZoom.TabIndex = 1
             Me.m_tsZoom.Text = "m_tzZoom"
             '
             'm_tsbSaveImage
             '
-            Me.m_tsbSaveImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.m_tsbSaveImage.Image = CType(resources.GetObject("m_tsbSaveImage.Image"), System.Drawing.Image)
             Me.m_tsbSaveImage.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSaveImage.Name = "m_tsbSaveImage"
-            Me.m_tsbSaveImage.Size = New System.Drawing.Size(23, 22)
-            Me.m_tsbSaveImage.Text = "Save image"
+            Me.m_tsbSaveImage.Size = New System.Drawing.Size(96, 22)
+            Me.m_tsbSaveImage.Text = "Save image..."
             '
             'm_ts1
             '
@@ -80,19 +81,19 @@ Namespace Ecospace
             Me.m_tsddbPosition.Image = CType(resources.GetObject("m_tsddbPosition.Image"), System.Drawing.Image)
             Me.m_tsddbPosition.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsddbPosition.Name = "m_tsddbPosition"
-            Me.m_tsddbPosition.Size = New System.Drawing.Size(57, 22)
+            Me.m_tsddbPosition.Size = New System.Drawing.Size(63, 22)
             Me.m_tsddbPosition.Text = "Position"
             '
             'm_tsmiViewCenter1
             '
             Me.m_tsmiViewCenter1.Name = "m_tsmiViewCenter1"
-            Me.m_tsmiViewCenter1.Size = New System.Drawing.Size(120, 22)
+            Me.m_tsmiViewCenter1.Size = New System.Drawing.Size(111, 22)
             Me.m_tsmiViewCenter1.Text = "Center"
             '
             'm_tsmiViewStretch1
             '
             Me.m_tsmiViewStretch1.Name = "m_tsmiViewStretch1"
-            Me.m_tsmiViewStretch1.Size = New System.Drawing.Size(120, 22)
+            Me.m_tsmiViewStretch1.Size = New System.Drawing.Size(111, 22)
             Me.m_tsmiViewStretch1.Text = "Stretch"
             '
             'm_ts2
@@ -136,31 +137,31 @@ Namespace Ecospace
             '
             Me.m_cmsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewCenter2, Me.m_tsmiViewStretch2, Me.m_ts3, Me.m_tsmiZoomIn, Me.m_tsmiZoomOut, Me.m_tsmiZoomReset})
             Me.m_cmsZoom.Name = "m_cmsControl"
-            Me.m_cmsZoom.Size = New System.Drawing.Size(181, 120)
+            Me.m_cmsZoom.Size = New System.Drawing.Size(177, 120)
             '
             'm_tsmiViewCenter2
             '
             Me.m_tsmiViewCenter2.Name = "m_tsmiViewCenter2"
-            Me.m_tsmiViewCenter2.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiViewCenter2.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiViewCenter2.Text = "Center"
             '
             'm_tsmiViewStretch2
             '
             Me.m_tsmiViewStretch2.Name = "m_tsmiViewStretch2"
-            Me.m_tsmiViewStretch2.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiViewStretch2.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiViewStretch2.Text = "Stretch"
             '
             'm_ts3
             '
             Me.m_ts3.Name = "m_ts3"
-            Me.m_ts3.Size = New System.Drawing.Size(177, 6)
+            Me.m_ts3.Size = New System.Drawing.Size(173, 6)
             '
             'm_tsmiZoomIn
             '
             Me.m_tsmiZoomIn.Enabled = False
             Me.m_tsmiZoomIn.Name = "m_tsmiZoomIn"
             Me.m_tsmiZoomIn.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-            Me.m_tsmiZoomIn.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiZoomIn.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiZoomIn.Text = "Zoom in"
             '
             'm_tsmiZoomOut
@@ -168,7 +169,7 @@ Namespace Ecospace
             Me.m_tsmiZoomOut.Enabled = False
             Me.m_tsmiZoomOut.Name = "m_tsmiZoomOut"
             Me.m_tsmiZoomOut.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-            Me.m_tsmiZoomOut.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiZoomOut.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiZoomOut.Text = "Zoom out"
             '
             'm_tsmiZoomReset
@@ -176,7 +177,7 @@ Namespace Ecospace
             Me.m_tsmiZoomReset.Enabled = False
             Me.m_tsmiZoomReset.Name = "m_tsmiZoomReset"
             Me.m_tsmiZoomReset.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-            Me.m_tsmiZoomReset.Size = New System.Drawing.Size(180, 22)
+            Me.m_tsmiZoomReset.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiZoomReset.Text = "Reset zoom"
             '
             'ucMapZoomToolbar
@@ -187,7 +188,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_tsZoom)
             Me.MinimumSize = New System.Drawing.Size(100, 25)
             Me.Name = "ucMapZoomToolbar"
-            Me.Size = New System.Drawing.Size(377, 49)
+            Me.Size = New System.Drawing.Size(377, 23)
             Me.m_tsZoom.ResumeLayout(False)
             Me.m_tsZoom.PerformLayout()
             Me.m_cmsZoom.ResumeLayout(False)
