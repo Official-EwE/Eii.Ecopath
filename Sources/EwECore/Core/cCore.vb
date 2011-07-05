@@ -4770,7 +4770,7 @@ Public Class cCore
         obj.AllowValidation = True
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.AddMessage(New cMessage("PB+QB+GE+BA flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
@@ -4800,7 +4800,7 @@ Public Class cCore
         End If
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.AddMessage(New cMessage("GS flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
@@ -4836,7 +4836,7 @@ Public Class cCore
         End If
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.AddMessage(New cMessage("EE+OtherMort flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
@@ -4856,7 +4856,7 @@ Public Class cCore
         End If
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.AddMessage(New cMessage("DetImp flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
@@ -4913,7 +4913,7 @@ Public Class cCore
         End If
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.AddMessage(New cMessage("Migration flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
@@ -4933,8 +4933,8 @@ Public Class cCore
         End If
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
-                    eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
+            Me.m_publisher.SendMessage(New cMessage("IBM flags updated", eMessageType.DataModified, _
+                    eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceModelParameter))
         End If
 
         obj.AllowValidation = True
@@ -4954,7 +4954,7 @@ Public Class cCore
         Next
 
         If bSendMessage Then
-            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.SendMessage(New cMessage("Market price flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.FleetInput))
         End If
 
@@ -4982,7 +4982,7 @@ Public Class cCore
         Next
 
         If bSendMessage Then
-            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.SendMessage(New cMessage("Quota flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput))
         End If
 
@@ -5005,7 +5005,7 @@ Public Class cCore
         Next
 
         If bSendMessage Then
-            Me.m_publisher.SendMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.SendMessage(New cMessage("Discard mort flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.FleetInput))
         End If
 
@@ -5045,7 +5045,7 @@ Public Class cCore
         End If
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.AddMessage(New cMessage("VBK flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
@@ -5107,7 +5107,7 @@ Public Class cCore
         End If
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.AddMessage(New cMessage("TCatch flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
@@ -5132,7 +5132,7 @@ Public Class cCore
         End If
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.AddMessage(New cMessage("TMax flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput))
         End If
 
@@ -5223,7 +5223,7 @@ Public Class cCore
         t.AllowValidation = True
 
         If bSendMessage Then
-            Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified, _
+            Me.m_publisher.AddMessage(New cMessage("Taxon flags updated", eMessageType.DataModified, _
                     eCoreComponentType.EcoPath, eMessageImportance.Maintenance, t.DataType))
         End If
 
@@ -8337,15 +8337,15 @@ Public Class cCore
 
     End Property
 
-    Private Sub SendEcospaceLoadMessage(ByVal iScenario As Integer, Optional ByVal strError As String = "")
+    Private Sub SendEcospaceLoadMessage(ByVal strScenarioName As String, Optional ByVal strError As String = "")
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
 
         If String.IsNullOrEmpty(strError) Then
-            strText = String.Format(My.Resources.CoreMessages.ECOSPACE_LOAD_SUCCESS, Me.m_EcoPathData.EcospaceScenarioName(iScenario))
+            strText = String.Format(My.Resources.CoreMessages.ECOSPACE_LOAD_SUCCESS, strScenarioName)
             msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         Else
-            strText = String.Format(My.Resources.CoreMessages.ECOSPACE_LOAD_FAILED, Me.m_EcoPathData.EcospaceScenarioName(iScenario), strError)
+            strText = String.Format(My.Resources.CoreMessages.ECOSPACE_LOAD_FAILED, strScenarioName, strError)
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
         End If
 
@@ -8447,6 +8447,7 @@ Public Class cCore
     Public Function LoadEcospaceScenario(ByVal iScenario As Integer) As Boolean
 
         Dim ds As IEcospaceDatasource = Nothing
+        Dim strScenarioName As String = Me.m_EcoPathData.EcospaceScenarioName(iScenario)
         Dim bSuccess As Boolean = True
 
         ' Sanity checks
@@ -8474,12 +8475,12 @@ Public Class cCore
             ds = DirectCast(DataSource, IEcospaceDatasource)
             If Not ds.LoadEcospaceScenario(Me.m_EcoPathData.EcospaceScenarioDBID(iScenario)) Then
                 Debug.Assert(False, "LoadEcospaceScenario() Failed to load scenario from data source.")
-                SendEcospaceLoadMessage(iScenario, " ")
+                SendEcospaceLoadMessage("", "Failed to load scenario")
                 Return False
             End If
 
             ' JS 12dec10: This seems wrong; Ecosim and Ecospace can run with different numbers of years.
-            '             The commetned-out line below caused any changed number of years to be lost.
+            '             The commented-out line below caused any changed number of years to be lost.
             'set the time steps is Ecospace to be the same as ecosim
             'If m_EcoSpaceData.TotalTime <> m_EcoSimData.NumYears Then m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
             'JB sorry Space can not run longer than Sim
@@ -8523,7 +8524,7 @@ Public Class cCore
             InitEcospaceOutputs()
             InitEcotracerOutputs()
 
-            SendEcospaceLoadMessage(iScenario)
+            SendEcospaceLoadMessage(strScenarioName)
 
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
@@ -8536,7 +8537,7 @@ Public Class cCore
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".LoadEcospaceScenario(...) Error: " & ex.Message)
-            SendEcospaceLoadMessage(iScenario, ex.Message)
+            SendEcospaceLoadMessage(strScenarioName, ex.Message)
             Debug.Assert(False, ex.Message)
             bSuccess = False
         End Try
@@ -8596,7 +8597,6 @@ Public Class cCore
             Debug.Assert(False, Me.ToString & ".CloseEcoSpaceScenario() Exception: " & ex.Message)
             cLog.Write(ex)
         End Try
-
 
     End Sub
 
@@ -8855,8 +8855,6 @@ Public Class cCore
             ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. Since this
             '             value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
             m_EcospaceModelParams.PacketsMultiplier = Me.m_Stanza.NPacketsMultiplier
-
-            Me.Set_IBM_Flags(m_EcospaceModelParams)
 
             m_EcospaceModelParams.ResetStatusFlags()
             m_EcospaceModelParams.AllowValidation = True
@@ -10638,6 +10636,7 @@ Public Class cCore
     Public Function LoadEcotracerScenario(ByVal iScenario As Integer) As Boolean
 
         Dim ds As IEcotracerDatasource = Nothing
+        Dim strScenarioName As String = Me.m_EcoPathData.EcotracerScenarioName(iScenario)
         Dim bSuccess As Boolean = True
 
         ' Sanity checks
@@ -10658,7 +10657,7 @@ Public Class cCore
             ds = DirectCast(DataSource, IEcotracerDatasource)
             If Not ds.LoadEcotracerScenario(Me.m_EcoPathData.EcotracerScenarioDBID(iScenario)) Then
                 Debug.Assert(False, "LoadEcotracerScenario() Failed to load scenario from data source.")
-                SendEcospaceLoadMessage(iScenario, My.Resources.CoreMessages.ECOTRACER_LOAD_FAILED)
+                SendEcotracerLoadMessage(strScenarioName, My.Resources.CoreMessages.ECOTRACER_LOAD_FAILED)
                 Return False
             End If
 
@@ -10670,7 +10669,7 @@ Public Class cCore
             ' Reset ecosim model params for consimon flag
             Me.m_EcoSimRun.ResetStatusFlags()
 
-            SendEcotracerLoadMessage(iScenario)
+            SendEcotracerLoadMessage(strScenarioName)
 
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.LoadEcotracerScenario(ds)
@@ -10679,7 +10678,7 @@ Public Class cCore
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".LoadEcotracerScenario(...) Error: " & ex.Message)
-            SendEcotracerLoadMessage(iScenario, ex.Message)
+            SendEcotracerLoadMessage(strScenarioName, ex.Message)
             Debug.Assert(False, ex.Message)
             bSuccess = False
         End Try
@@ -10933,15 +10932,15 @@ Public Class cCore
         End Get
     End Property
 
-    Private Sub SendEcotracerLoadMessage(ByVal iScenario As Integer, Optional ByVal strError As String = "")
+    Private Sub SendEcotracerLoadMessage(ByVal strScenario As String, Optional ByVal strError As String = "")
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
 
         If String.IsNullOrEmpty(strError) Then
-            strText = String.Format(My.Resources.CoreMessages.ECOTRACER_LOAD_SUCCESS, Me.m_EcoPathData.EcotracerScenarioName(iScenario))
+            strText = String.Format(My.Resources.CoreMessages.ECOTRACER_LOAD_SUCCESS, strScenario)
             msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.Ecotracer, eMessageImportance.Information)
         Else
-            strText = String.Format(My.Resources.CoreMessages.ECOTRACER_LOAD_FAILED, Me.m_EcoPathData.EcotracerScenarioName(iScenario), strError)
+            strText = String.Format(My.Resources.CoreMessages.ECOTRACER_LOAD_FAILED, strScenario, strError)
             msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
         End If
 
