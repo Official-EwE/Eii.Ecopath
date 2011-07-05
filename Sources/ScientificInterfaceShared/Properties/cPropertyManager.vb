@@ -492,15 +492,20 @@ Namespace Properties
             astrPropIDs = Me.ExtractPropertyIDs(msg)
             aProps = Me.GetProperties(astrPropIDs)
 
-            If (astrPropIDs.Length = 0) Then
-                ' Update everything (ouch)
-                Me.Refresh(msg.Source)
-            Else
-                ' Update each property in this message
-                For Each prop In aProps
-                    prop.Refresh()
-                Next
-            End If
+            Try
+                If (astrPropIDs.Length = 0) Then
+                    ' Update everything (ouch)
+                    Me.Refresh(msg.Source)
+                Else
+                    ' Update each property in this message
+                    For Each prop In aProps
+                        prop.Refresh()
+                    Next
+                End If
+            Catch ex As Exception
+                ' Log entry
+                cLog.Write(ex, "cPropertyManager.AllMessagesHandler")
+            End Try
 
         End Sub
 
