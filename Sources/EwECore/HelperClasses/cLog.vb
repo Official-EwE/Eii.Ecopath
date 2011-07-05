@@ -104,7 +104,7 @@ Public Class cLog
                 xmlStrm.WriteStartElement("Exception_Messages")
                 xmlStrm.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
                 If Not String.IsNullOrEmpty(strMsg) Then
-                    xmlStrm.WriteElementString("Message", strMsg)
+                    xmlStrm.WriteElementString("Detail", strMsg)
                 End If
                 Dim thisEx As Exception = theException
                 Do While thisEx IsNot Nothing
@@ -141,7 +141,7 @@ Public Class cLog
     ''' </summary>
     ''' <param name="message"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Write(ByVal message As cMessage)
+    Public Shared Sub Write(ByVal message As cMessage, Optional ByVal strMsg As String = "")
         Dim xmlStrm As cXMLLogWriter
 
         Try
@@ -157,6 +157,9 @@ Public Class cLog
 
                 xmlStrm.WriteStartElement(message.Importance.ToString & "_Message") '????
                 xmlStrm.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
+                If Not String.IsNullOrEmpty(strMsg) Then
+                    xmlStrm.WriteElementString("Detail", strMsg)
+                End If
                 xmlStrm.WriteElementString("Message", message.Message)
                 xmlStrm.WriteElementString("Message_Type", message.Type.ToString)
                 xmlStrm.WriteElementString("Message_Source", message.Source.ToString)
