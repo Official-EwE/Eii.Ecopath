@@ -8650,7 +8650,7 @@ Namespace DataSources
 
                 For iFleet = 1 To ecospaceDS.nFleets
 
-                    objKeys(1) = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
+                    objKeys(1) = ecopathDS.FleetDBID(iFleet)
 
                     ' Find existing row
                     drow = dt.Rows.Find(objKeys)
