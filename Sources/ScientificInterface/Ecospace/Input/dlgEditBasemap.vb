@@ -128,6 +128,7 @@ Public Class dlgEditBasemap
         Dim iColCount As Integer = CInt(Me.m_fpInCol.Value)
         Dim iRowCount As Integer = CInt(Me.m_fpInRow.Value)
         Dim fmsg As cFeedbackMessage = Nothing
+        Dim core As cCore = Me.m_uic.Core
         Dim bResizeMap As Boolean = False
 
         If ((iRowCount <> Me.m_basemap.InRow) Or (iColCount <> Me.m_basemap.InCol)) Then
@@ -138,7 +139,7 @@ Public Class dlgEditBasemap
                                             eCoreComponentType.External, eMessageType.Any, _
                                             eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
                 fmsg.Reply = cFeedbackMessage.eReply.NO
-                Me.m_uic.Core.Messages.SendMessage(fmsg)
+                core.Messages.SendMessage(fmsg)
                 If (fmsg.Reply = cFeedbackMessage.eReply.NO) Then
                     Return
                 End If
@@ -151,8 +152,14 @@ Public Class dlgEditBasemap
         Me.m_basemap.Longitude = CSng(Me.m_fpLon.Value)
 
         If bResizeMap Then
-            ' Whooohooo! if THIS is not going to cause a Tsunami...
-            Me.m_uic.Core.ResizeEcospaceBasemap(iRowCount, iColCount)
+            cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_RESIZING_MAP)
+            Try
+                ' Whooohooo! if THIS is not going to cause a Tsunami...
+                Me.m_uic.Core.ResizeEcospaceBasemap(iRowCount, iColCount)
+            Catch ex As Exception
+
+            End Try
+            cApplicationStatusNotifier.EndProgress(core)
         End If
 
     End Sub

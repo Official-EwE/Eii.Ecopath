@@ -1677,4 +1677,7 @@ Description: {2}</value>
   <data name="STATUS_IMPORTING_MODEL_CANCELLED" xml:space="preserve">
     <value>Model '{0}' was not imported.</value>
   </data>
+  <data name="STATUS_RESIZING_MAP" xml:space="preserve">
+    <value>Resizing map, please wait...</value>
+  </data>
 </root>
