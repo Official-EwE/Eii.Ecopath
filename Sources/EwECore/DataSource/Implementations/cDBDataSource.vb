@@ -714,7 +714,7 @@ Namespace DataSources
                 ecopathDS.ModelContact = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
                 ecopathDS.ModelArea = CSng(Me.m_db.ReadSafe(reader, "Area", 1.0))
                 ecopathDS.ModelNumDigits = CInt(reader("NumDigits"))
-                ecopathDS.ModelGroupDigits = CBool(Me.m_db.ReadSafe(reader, "GroupDigits", False))
+                ecopathDS.ModelGroupDigits = CInt(Me.m_db.ReadSafe(reader, "GroupDigits", False) <> 0)
                 ecopathDS.ModelUnitCurrency = DirectCast(Me.m_db.ReadSafe(reader, "UnitCurrency", eUnitCurrencyType.WetWeight), eUnitCurrencyType)
                 ecopathDS.ModelUnitCurrencyCustom = CStr(Me.m_db.ReadSafe(reader, "UnitCurrencyCustom", ""))
                 ecopathDS.ModelUnitTime = DirectCast(Me.m_db.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
@@ -1566,8 +1566,8 @@ Namespace DataSources
                         stanzaDS.BABsplit(iStanza) = CSng(rdStanza("BabSplit"))
                         stanzaDS.WmatWinf(iStanza) = CSng(rdStanza("WMatWinf"))
                         ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
-                        stanzaDS.FixedFecundity(iStanza) = CBool(rdStanza("FixedFecundity"))
-                        stanzaDS.EggAtSpawn(iStanza) = CBool(Me.m_db.ReadSafe(rdStanza, "EggAtSpawn", True))
+                        stanzaDS.FixedFecundity(iStanza) = (CInt(rdStanza("FixedFecundity")) <> 0)
+                        stanzaDS.EggAtSpawn(iStanza) = (CInt(Me.m_db.ReadSafe(rdStanza, "EggAtSpawn", True)) <> 0)
 
                         ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
                         ' JS 23nov10: Hah, three and a half years later these values are stored again
@@ -1948,8 +1948,8 @@ Namespace DataSources
                     ecopathDS.Ex(iGroup) = CSng(reader("Export"))
                     ecopathDS.fCatch(iGroup) = CSng(reader("Catch"))
                     ecopathDS.DCInput(iGroup, 0) = CSng(reader("ImpVar"))
-                    ecopathDS.GroupIsFish(iGroup) = CBool(reader("GroupIsFish"))
-                    ecopathDS.GroupIsInvert(iGroup) = CBool(reader("GroupIsInvert"))
+                    ecopathDS.GroupIsFish(iGroup) = (CInt(reader("GroupIsFish")) <> 0)
+                    ecopathDS.GroupIsInvert(iGroup) = (CInt(reader("GroupIsInvert")) <> 0)
                     ecopathDS.Shadow(iGroup) = CSng(reader("NonMarketValue"))
                     ecopathDS.Resp(iGroup) = CSng(reader("Respiration"))
                     ecopathDS.Immig(iGroup) = CSng(reader("Immigration"))
@@ -4846,11 +4846,11 @@ Namespace DataSources
 
                         Case eDataTypes.EggProd
                             iForcingShape += 1
-                            bSucces = bSucces And Me.LoadEggShape(iShapeID, iForcingShape, CBool(reader("IsSeasonal")))
+                            bSucces = bSucces And Me.LoadEggShape(iShapeID, iForcingShape, CInt(reader("IsSeasonal")) <> 0)
 
                         Case eDataTypes.Forcing
                             iForcingShape += 1
-                            bSucces = bSucces And Me.LoadTimeShape(iShapeID, iForcingShape, CBool(reader("IsSeasonal")))
+                            bSucces = bSucces And Me.LoadTimeShape(iShapeID, iForcingShape, CInt(reader("IsSeasonal")) <> 0)
 
                         Case eDataTypes.Mediation
                             iPredPreyMediationShape += 1
@@ -7095,7 +7095,7 @@ Namespace DataSources
                 ecospaceDS.Lat1 = CSng(Me.m_db.ReadSafe(reader, "MinLat", 0))
                 ecospaceDS.Lon1 = CSng(Me.m_db.ReadSafe(reader, "MinLon", 0))
                 ecospaceDS.TimeStep = CSng(Me.m_db.ReadSafe(reader, "TimeStep", 0))
-                ecospaceDS.PredictEffort = CBool(Me.m_db.ReadSafe(reader, "PredictEffort", True))
+                ecospaceDS.PredictEffort = (CInt(Me.m_db.ReadSafe(reader, "PredictEffort", True)) <> 0)
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
                 If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -7105,8 +7105,8 @@ Namespace DataSources
                 ecospaceDS.nSpaceSolverThreads = CInt(reader("NumThreads"))
                 ecospaceDS.nGridSolverThreads = CInt(reader("NumThreads"))
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
-                ecospaceDS.AdjustSpace = CBool(reader("AdjustSpace"))
-                ecospaceDS.UseExact = CBool(reader("UseExact"))
+                ecospaceDS.AdjustSpace = (CInt(reader("AdjustSpace")) <> 0)
+                ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
 
                 Select Case CInt(reader("ModelType"))
@@ -8174,8 +8174,8 @@ Namespace DataSources
                     ecospaceDS.EatEffBad(iGroup) = CSng(reader("EatEffBad"))
                     ' VERIFY_JS: RiskSens imported but not used in EwE5
                     ' ecospaceDS.RiskSens(i) = CSng(reader("RiskSens"))
-                    ecospaceDS.IsAdvected(iGroup) = CBool(reader("IsAdvected"))
-                    ecospaceDS.IsMigratory(iGroup) = CBool(reader("IsMigratory"))
+                    ecospaceDS.IsAdvected(iGroup) = (CInt(reader("IsAdvected")) <> 0)
+                    ecospaceDS.IsMigratory(iGroup) = (CInt(reader("IsMigratory")) <> 0)
                     ecospaceDS.MigConcRow(iGroup) = CSng(reader("MigConcRow"))
                     ecospaceDS.MigConcCol(iGroup) = CSng(reader("MigConcCol"))
                     ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.m_db.ReadSafe(reader, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
