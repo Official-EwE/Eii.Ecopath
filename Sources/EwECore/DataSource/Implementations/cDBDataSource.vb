@@ -714,7 +714,7 @@ Namespace DataSources
                 ecopathDS.ModelContact = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
                 ecopathDS.ModelArea = CSng(Me.m_db.ReadSafe(reader, "Area", 1.0))
                 ecopathDS.ModelNumDigits = CInt(reader("NumDigits"))
-                ecopathDS.ModelGroupDigits = CInt(Me.m_db.ReadSafe(reader, "GroupDigits", False) <> 0)
+                ecopathDS.ModelGroupDigits = (CInt(Me.m_db.ReadSafe(reader, "GroupDigits", False)) <> 0)
                 ecopathDS.ModelUnitCurrency = DirectCast(Me.m_db.ReadSafe(reader, "UnitCurrency", eUnitCurrencyType.WetWeight), eUnitCurrencyType)
                 ecopathDS.ModelUnitCurrencyCustom = CStr(Me.m_db.ReadSafe(reader, "UnitCurrencyCustom", ""))
                 ecopathDS.ModelUnitTime = DirectCast(Me.m_db.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
