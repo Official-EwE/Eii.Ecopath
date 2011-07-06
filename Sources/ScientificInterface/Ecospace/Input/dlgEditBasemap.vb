@@ -127,13 +127,19 @@ Public Class dlgEditBasemap
 
         Dim iColCount As Integer = CInt(Me.m_fpInCol.Value)
         Dim iRowCount As Integer = CInt(Me.m_fpInRow.Value)
+        Dim fmsg As cFeedbackMessage = Nothing
         Dim bResizeMap As Boolean = False
 
         If ((iRowCount <> Me.m_basemap.InRow) Or (iColCount <> Me.m_basemap.InCol)) Then
             bResizeMap = True
             If ((iRowCount < Me.m_basemap.InRow) Or (iColCount < Me.m_basemap.InCol)) Then
                 ' Prompt user
-                If MsgBox(My.Resources.ECOSPACE_BASEMAP_SHRINK_PROMPT, MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation) = MsgBoxResult.No Then
+                fmsg = New cFeedbackMessage(My.Resources.ECOSPACE_BASEMAP_SHRINK_PROMPT, _
+                                            eCoreComponentType.External, eMessageType.Any, _
+                                            eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                fmsg.Reply = cFeedbackMessage.eReply.NO
+                Me.m_uic.Core.Messages.SendMessage(fmsg)
+                If (fmsg.Reply = cFeedbackMessage.eReply.NO) Then
                     Return
                 End If
             End If
@@ -148,6 +154,7 @@ Public Class dlgEditBasemap
             ' Whooohooo! if THIS is not going to cause a Tsunami...
             Me.m_uic.Core.ResizeEcospaceBasemap(iRowCount, iColCount)
         End If
+
     End Sub
 
 #End Region ' Implementation
