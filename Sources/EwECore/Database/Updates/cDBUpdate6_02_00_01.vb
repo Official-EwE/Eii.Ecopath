@@ -42,7 +42,7 @@ Friend Class cDBUpdate6_02_00_01
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Switched to faster habitat save maps"
+            Return "Optimized Ecospace map storage structure for speedy saving and loading"
         End Get
     End Property
 
@@ -227,7 +227,7 @@ Friend Class cDBUpdate6_02_00_01
             dataRelCin(iRow, iCol) = CSng(reader("RelCin"))
             dataXVel(iRow, iCol) = CSng(db.ReadSafe(reader, "XVel", 0.0!))
             dataYVel(iRow, iCol) = CSng(db.ReadSafe(reader, "YVel", 0.0!))
-            dataDepthA(iRow, iCol) = CSng(reader("DepthA"))
+            dataDepthA(iRow, iCol) = CSng(db.ReadSafe(reader, "DepthA", 1.0!))
 
             ' Exclude 'all' habitat map
             i = lHabitatID.IndexOf(CInt(reader("HabitatID")))
