@@ -1680,4 +1680,7 @@ Description: {2}</value>
   <data name="STATUS_RESIZING_MAP" xml:space="preserve">
     <value>Resizing map, please wait...</value>
   </data>
+  <data name="Ecopath_beta" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ecopath_beta.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

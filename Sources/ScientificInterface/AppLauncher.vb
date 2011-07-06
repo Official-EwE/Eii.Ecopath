@@ -702,11 +702,13 @@ Public Class AppLauncher
             .BringToFront()
         End With
 
+        ' Egg
         Dim d As Date = Date.Now
         If d.DayOfYear > 345 And d.DayOfYear < 363 Then
             Me.Icon = My.Resources.Ecopath_hohoho
         Else
             Me.Icon = My.Resources.Ecopath
+            'Me.Icon = My.Resources.Ecopath_beta
         End If
         Me.ResumeLayout()
         My.Settings.Reload()

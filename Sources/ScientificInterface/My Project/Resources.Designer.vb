@@ -213,6 +213,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property Ecopath_beta() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath_beta", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to Failed to delete group &apos;{0}&apos;.
         '''</summary>
