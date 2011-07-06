@@ -38,13 +38,14 @@ Namespace Ecospace.Basemap.Layers
             ' Initialize group combo 
             Dim core As cCore = Me.UIContext.Core
             Dim group As cEcoPathGroupInput = Nothing
+            Dim fmt As New cCoreInterfaceFormatter()
 
             Me.m_cmbGroup.Items.Clear()
 
             ' ToDo: this control will not respond to dynamic group name changes
             For iGroup As Integer = 1 To core.nLivingGroups
                 group = core.EcoPathGroupInputs(iGroup)
-                Me.m_cmbGroup.Items.Add(group.Name)
+                Me.m_cmbGroup.Items.Add(fmt.GetDescriptor(group))
             Next iGroup
 
             Me.UpdateContent(Me.Editor)

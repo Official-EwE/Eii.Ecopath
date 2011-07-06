@@ -23,6 +23,7 @@ Namespace Ecospace.Basemap.Layers
             ' Initialize group combo 
             Dim core As cCore = Me.UIContext.Core
             Dim fleet As cFleetInput = Nothing
+            Dim fmt As New cCoreInterfaceFormatter()
 
             Me.m_cmbFleet.Items.Clear()
 
@@ -30,7 +31,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_cmbFleet.Items.Add(SharedResources.GENERIC_VALUE_ALL)
             For iGroup As Integer = 1 To core.nFleets
                 fleet = core.FleetInputs(iGroup)
-                Me.m_cmbFleet.Items.Add(fleet.Name)
+                Me.m_cmbFleet.Items.Add(fmt.GetDescriptor(fleet))
             Next iGroup
 
             ' Update control
