@@ -641,7 +641,7 @@ Public Class cSpaceSolver
             For ii = 1 To m_SimData.inlinks
                 i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
                 If m_SimData.TrophicOff Then Bprey = m_SimData.StartBiomass(i) Else Bprey = Biomass(i)
-
+                'Debug.Assert(i <> 41)
                 'prey
                 ' For j = 1 To N  'VC ignore detritus; CJW had NumGroups 'predator
                 '    aeff = A(i, j) * tval(SeasonType(i, j)) * Ftime(j)
@@ -684,6 +684,7 @@ Public Class cSpaceSolver
             For i = 1 To m_Data.NGroups
 
                 Eatenby(i) = Eatenby(i) + m_SimData.QBoutside(i) * Biomass(i)
+                'Debug.Assert(i <> 41)
 
                 If i <= m_Data.nLiving Then      'Living group
                     Pmult = 1.0#

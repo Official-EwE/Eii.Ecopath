@@ -236,8 +236,7 @@ Public Class cEcoSpace
 
     Private m_SpaceCatchSemaphor As Semaphore
 
-    'Private m_FleetSums As New List(Of cSpaceFleetSummary)
-    'Private m_FleetSum As cSpaceFleetSummary
+    Private m_ResultsWriter As IEcospaceResultsWriter
 
 #End Region
 
@@ -441,7 +440,6 @@ Public Class cEcoSpace
             Me.m_OnRunCompletedDelegate = value
         End Set
     End Property
-
 
 #End Region
 
@@ -1087,10 +1085,9 @@ Public Class cEcoSpace
                     m_search.calcBaseYearCost(m_Data.YearNow, m_Data.nWaterCells)
                 End If
 
-                Dim slvET3 As Single = Microsoft.VisualBasic.Timer
-
                 'post notification that a time step has been completed
                 marshallOnTimeStep(itt)
+                Dim slvET3 As Single = Microsoft.VisualBasic.Timer
                 timeStepTimer = timeStepTimer + (Microsoft.VisualBasic.Timer - slvET3)
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_Data, itt)
@@ -1830,10 +1827,8 @@ Public Class cEcoSpace
                                 'VC Hobart Sep 2008: adding distribution envelope 
                                 'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) _
                                 'And m_Data.DistributionEnvelope(i, j, ieco) = True Then
-                                ' NstanzaBase(isc) * Basebiomass(ieco) / m_SimData.StartBiomass(ieco)
                                 m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
                                 If m_Data.NewMultiStanza Then
-                                    'm_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco)
                                     m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(i, j, ieco) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
                                 End If
                             Else
@@ -3353,12 +3348,6 @@ exitline:
         'sets solvegrid movement arrays based on depth map
         Dim i As Integer, j As Integer, ip As Integer, AdScale As Single ', iad As Integer, iju As Integer
         Dim isp As Integer, ist As Integer, nvar2 As Integer, ir As Integer, ieco As Integer
-        '   Erase Bcw, C, d, e
-
-        'ReDim Bcw(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        'ReDim C(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        'ReDim d(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        'ReDim e(m_Data.Inrow + 1, m_Data.InCol + 1, m_Data.nvartot)
         Dim imig As Integer
         Dim nMig As Integer
         Dim migIndex() As Integer
@@ -3780,7 +3769,8 @@ exitline:
             '              morning to diverge, giving larger Atemp(ii) values on each iteration without limit.
             '              What this divergence means is that Vspace is set too low to predict the “observed” 
             '              ecopath base consumption rates, when added up over the ecospace grid.
-            'If m_Data.Vspace(ii) < m_SimData.VulArena(ii) Then m_Data.Vspace(ii) = m_SimData.VulArena(ii)
+            'Debug.Assert(m_Data.Vspace(ii) > m_SimData.VulArena(ii))
+            If m_Data.Vspace(ii) < m_SimData.VulArena(ii) Then m_Data.Vspace(ii) = m_SimData.VulArena(ii)
 
             If m_SimData.BoutFeeding Then
                 VulBiom(ii) = -Qarena(ii) / Math.Log(1 - 1 / (m_SimData.VulMult(i, j) + 0.0000000001))
@@ -3876,6 +3866,21 @@ exitline:
 
         '#End If
 
+    End Sub
+
+
+    Private Sub SaveResults(ByVal SpaceResults As cEcospaceTimestep)
+        Try
+            If Not Me.m_Data.bSave Then Return
+            Debug.Assert(Me.m_ResultsWriter IsNot Nothing, Me.ToString & ".SaveResults() Results writer has not been set!")
+            If Me.m_ResultsWriter Is Nothing Then Return
+
+
+
+    
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 #End Region

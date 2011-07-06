@@ -443,6 +443,7 @@ Public Class cEcospaceDataStructures
     Public HabCap(,,) As Single
     Public HabCapInput(,,) As Single
     Public TotHabCap() As Single
+
     ''' <summary>
     ''' Latiude of a cell by row
     ''' </summary>
@@ -450,6 +451,12 @@ Public Class cEcospaceDataStructures
     Public Lat() As Single
 
     Public Width() As Single
+
+    ''' <summary>
+    ''' Save Ecospace time step results to file
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public bSave As Boolean
 
 
 #End Region

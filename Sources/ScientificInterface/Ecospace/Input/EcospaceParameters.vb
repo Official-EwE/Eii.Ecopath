@@ -38,12 +38,14 @@ Namespace Ecospace
         Private m_fpMaxIterations As cEwEFormatProvider = Nothing
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
         Private m_fpUseExact As cEwEFormatProvider = Nothing
+        Private m_fpSave As cEwEFormatProvider = Nothing
         Private WithEvents m_bpConTracing As cBooleanProperty = Nothing
 
         ' Properties to monitor for setting radio button check states
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
         Private WithEvents m_bpUseNewStanza As cBooleanProperty = Nothing
         Private WithEvents m_bpAdjustSpace As cBooleanProperty = Nothing
+
 
 #End Region ' Private vars
 
@@ -67,6 +69,7 @@ Namespace Ecospace
             Me.m_bpUseNewStanza = Nothing
             Me.m_bpAdjustSpace = Nothing
             Me.m_bpConTracing = Nothing
+            Me.m_fpSave = Nothing
 
             Me.m_fpScenarioName.Release()
             Me.m_fpScenarioDescription.Release()
@@ -99,6 +102,8 @@ Namespace Ecospace
 
             Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
 
+
+
             ' Initialize
             ' OK, the positioning of this code requires some explanation. Consider the following facts:
             ' - Form.Load sets the focus to the first control in the tab order.
@@ -125,6 +130,9 @@ Namespace Ecospace
             Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_cbPredictEffort, ecospaceModelParams, eVarNameFlags.PredictEffort)
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
+
+            Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSave, ecospaceModelParams, eVarNameFlags.EcospaceSave)
+
             Me.UpdateScenarioFormatProviders()
 
         End Sub
@@ -188,6 +196,7 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) _
                 Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged, m_bpConTracing.PropertyChanged
+
             Me.UpdateControls()
         End Sub
 

@@ -7694,6 +7694,8 @@ Public Class cCore
     Friend m_EcospaceRegionSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
 
+    Friend m_EcospaceResultsWriter As EwEUtils.Core.IEcospaceResultsWriter
+
 #End Region ' Variables
 
     Private Function InitEcoSpace() As Boolean
@@ -7736,6 +7738,9 @@ Public Class cCore
 
         'this will initialize local Ecospace variables to default values as well as some dimensioning
         m_Ecospace.InitToDefaults()
+
+        m_EcospaceResultsWriter = New cEcospaceCSVResultsWriter
+        m_EcospaceResultsWriter.Init(Me)
 
         Return True
 
@@ -7839,6 +7844,9 @@ Public Class cCore
                     Me.m_StateMonitor.SetEcospaceRun()
 
                     Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
+
+                    m_EcospaceResultsWriter.StartWrite()
+
                     'make sure Ecospace is not paused
                     Me.m_Ecospace.isPaused = False
                     breturn = m_Ecospace.RunThreaded()
@@ -7869,6 +7877,8 @@ Public Class cCore
             LoadEcospaceResults()
             loadEcoTracerResults()
         End If
+
+        m_EcospaceResultsWriter.EndWrite()
 
         Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
                       eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
@@ -7984,28 +7994,45 @@ Public Class cCore
     ''' <remarks>processEcospaceTimeStep() will populate the cEcospaceTSResults object and send it to an interface</remarks>
     Private Sub onEcospaceTimeStep(ByVal iTime As Integer)
         Try
-            'only populate the results object if there is somewhere to send it
+
+            m_spaceresults.iTimeStep = iTime
+            m_spaceresults.TimeStepinYears = m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep
+
+            m_spaceresults.ComputeIBMMap()
+
+            'the group time-step data was populated by Ecospace
+            For igrp As Integer = 1 To nGroups
+                m_spaceresults.Biomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
+                m_spaceresults.RelativeBiomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTime)
+                If m_Ecospace.ContaiminantTracerData.EcoSpaceConSimOn Then
+                    m_spaceresults.ConcMax(igrp) = m_Ecospace.ContaiminantTracerData.ConcMax(igrp)
+                End If
+
+                For irgn As Integer = 1 To nRegions
+                    m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcoSpaceData.ResultsRegionGroup(irgn, igrp, iTime)
+                Next
+            Next
+
+            'Save to file???
+            If Me.m_EcoSpaceData.bSave Then
+                If m_EcospaceResultsWriter IsNot Nothing Then
+                    Try
+                        Me.m_EcospaceResultsWriter.WriteResults(Me.m_spaceresults)
+                    Catch ex As Exception
+                        System.Console.WriteLine("Core.onEcospaceTimeStep(" & iTime.ToString & ") EcospaceResultsWriter Exception: " & ex.Message)
+                    End Try
+                End If
+            End If
+
+
+            'Call the interface delegate
             If m_SpaceInterfaceCallBack IsNot Nothing Then
 
-                m_spaceresults.iTimeStep = iTime
-                m_spaceresults.TimeStepinYears = m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep
-
-                m_spaceresults.ComputeIBMMap()
-
-                'the group time-step data was populated by Ecospace
-                For igrp As Integer = 1 To nGroups
-                    m_spaceresults.Biomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
-                    m_spaceresults.RelativeBiomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTime)
-                    If m_Ecospace.ContaiminantTracerData.EcoSpaceConSimOn Then
-                        m_spaceresults.ConcMax(igrp) = m_Ecospace.ContaiminantTracerData.ConcMax(igrp)
-                    End If
-
-                    For irgn As Integer = 1 To nRegions
-                        m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcoSpaceData.ResultsRegionGroup(irgn, igrp, iTime)
-                    Next
-                Next
-
-                m_SpaceInterfaceCallBack(m_spaceresults)
+                Try
+                    m_SpaceInterfaceCallBack(m_spaceresults)
+                Catch ex As Exception
+                    System.Console.WriteLine("Core.onEcospaceTimeStep(" & iTime.ToString & ") Interface Delegate Exception: " & ex.Message)
+                End Try
 
             End If
 
@@ -8850,6 +8877,8 @@ Public Class cCore
             m_EcospaceModelParams.SOR = m_EcoSpaceData.W
             m_EcospaceModelParams.MaxNumberOfIterations = m_EcoSpaceData.maxIter
             m_EcospaceModelParams.UseExact = m_EcoSpaceData.UseExact
+            m_EcospaceModelParams.Save = m_EcoSpaceData.bSave
+
 
 
             ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. Since this
@@ -8898,6 +8927,7 @@ Public Class cCore
         m_EcoSpaceData.W = m_EcospaceModelParams.SOR
         m_EcoSpaceData.maxIter = m_EcospaceModelParams.MaxNumberOfIterations
         m_EcoSpaceData.UseExact = m_EcospaceModelParams.UseExact
+        m_EcoSpaceData.bSave = m_EcospaceModelParams.Save
 
         ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. Since this
         '             value is used during Ecospace calculations, it makes sense to expose it from Ecospace.

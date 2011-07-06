@@ -35,14 +35,14 @@ Namespace Ecospace
             Me.m_rbAdjustedBiomass = New System.Windows.Forms.RadioButton
             Me.m_cbPredictEffort = New System.Windows.Forms.CheckBox
             Me.m_lbNumThreads = New System.Windows.Forms.Label
-            Me.m_nudNumThreads = New cEwENumericUpDown
+            Me.m_nudNumThreads = New ScientificInterfaceShared.Controls.cEwENumericUpDown
             Me.lbPacketsMultiplier = New System.Windows.Forms.Label
             Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_hdrModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel
             Me.m_gbThreading = New System.Windows.Forms.GroupBox
             Me.m_tbNumPackets = New System.Windows.Forms.TextBox
-            Me.m_nudMaxIterations = New cEwENumericUpDown
+            Me.m_nudMaxIterations = New ScientificInterfaceShared.Controls.cEwENumericUpDown
             Me.m_lbTotalTime = New System.Windows.Forms.Label
             Me.m_lblNumTimstepsPerYear = New System.Windows.Forms.Label
             Me.m_lbNumIterations = New System.Windows.Forms.Label
@@ -53,6 +53,7 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox
             Me.m_tbSOR = New System.Windows.Forms.TextBox
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox
+            Me.m_cbSave = New System.Windows.Forms.CheckBox
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox
             Me.m_cbUseExact = New System.Windows.Forms.CheckBox
             Me.m_tbContact = New System.Windows.Forms.TextBox
@@ -145,11 +146,17 @@ Namespace Ecospace
             'm_hdrInitialization
             '
             resources.ApplyResources(Me.m_hdrInitialization, "m_hdrInitialization")
+            Me.m_hdrInitialization.CanCollapseParent = False
+            Me.m_hdrInitialization.CollapsedParentHeight = 0
+            Me.m_hdrInitialization.IsCollapsed = False
             Me.m_hdrInitialization.Name = "m_hdrInitialization"
             '
             'm_hdrModel
             '
             resources.ApplyResources(Me.m_hdrModel, "m_hdrModel")
+            Me.m_hdrModel.CanCollapseParent = False
+            Me.m_hdrModel.CollapsedParentHeight = 0
+            Me.m_hdrModel.IsCollapsed = False
             Me.m_hdrModel.Name = "m_hdrModel"
             '
             'm_tlpModelTop
@@ -229,6 +236,7 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
+            Me.m_gbRunTime.Controls.Add(Me.m_cbSave)
             Me.m_gbRunTime.Controls.Add(Me.m_tbSOR)
             Me.m_gbRunTime.Controls.Add(Me.m_tbTolerance)
             Me.m_gbRunTime.Controls.Add(Me.m_tbNumTimeStepsPerYear)
@@ -244,6 +252,12 @@ Namespace Ecospace
             Me.m_gbRunTime.Controls.Add(Me.m_nudMaxIterations)
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
+            '
+            'm_cbSave
+            '
+            resources.ApplyResources(Me.m_cbSave, "m_cbSave")
+            Me.m_cbSave.Name = "m_cbSave"
+            Me.m_cbSave.UseVisualStyleBackColor = True
             '
             'm_cbContaminantTracing
             '
@@ -300,6 +314,9 @@ Namespace Ecospace
             'm_hdrScenario
             '
             resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
+            Me.m_hdrScenario.CanCollapseParent = False
+            Me.m_hdrScenario.CollapsedParentHeight = 0
+            Me.m_hdrScenario.IsCollapsed = False
             Me.m_hdrScenario.Name = "m_hdrScenario"
             '
             'm_plBiomass
@@ -364,7 +381,6 @@ Namespace Ecospace
         Private WithEvents m_rbIBM As System.Windows.Forms.RadioButton
         Private WithEvents m_rbOldSchool As System.Windows.Forms.RadioButton
         Private WithEvents m_lbNumThreads As System.Windows.Forms.Label
-        Private WithEvents m_nudNumThreads As System.Windows.Forms.NumericUpDown
         Private WithEvents m_tbNumPackets As System.Windows.Forms.TextBox
         Private WithEvents m_gbRunTime As System.Windows.Forms.GroupBox
         Private WithEvents m_lbTotalTime As System.Windows.Forms.Label
@@ -372,7 +388,6 @@ Namespace Ecospace
         Private WithEvents m_lblNumTimstepsPerYear As System.Windows.Forms.Label
         Private WithEvents m_tbNumTimeStepsPerYear As System.Windows.Forms.TextBox
         Private WithEvents m_lbNumIterations As System.Windows.Forms.Label
-        Private WithEvents m_nudMaxIterations As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lbTolerance As System.Windows.Forms.Label
         Private WithEvents m_tbTolerance As System.Windows.Forms.TextBox
         Private WithEvents m_tbSOR As System.Windows.Forms.TextBox
@@ -380,6 +395,9 @@ Namespace Ecospace
         Private WithEvents m_cbPredictEffort As System.Windows.Forms.CheckBox
         Private WithEvents m_cbUseExact As System.Windows.Forms.CheckBox
         Private WithEvents m_cbContaminantTracing As System.Windows.Forms.CheckBox
+        Private WithEvents m_nudNumThreads As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudMaxIterations As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Friend WithEvents m_cbSave As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace
