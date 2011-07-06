@@ -8671,7 +8671,7 @@ Namespace DataSources
                     End If
 
                     iFleetID = CInt(drow("FleetID"))
-                    idm.Add(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet), iFleetID)
+                    idm.Add(eDataTypes.EcospaceFleet, ecopathDS.FleetDBID(iFleet), iFleetID)
 
                     ' Update fleet vars
                     drow("EffPower") = ecospaceDS.EffPower(iFleet)
