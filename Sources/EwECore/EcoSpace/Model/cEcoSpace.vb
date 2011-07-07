@@ -544,15 +544,12 @@ Public Class cEcoSpace
             bsuccess = False
         End Try
 
-        m_publisher.sendAllMessages()
-
-
         Try
+            m_publisher.sendAllMessages()
             m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireRunCompleted), bsuccess)
         Catch ex As Exception
             Debug.Assert(False, "Exception calling Ecosim.OnRunCompleted() Exception: " & ex.Message)
         End Try
-
 
         Return bsuccess
 
@@ -572,6 +569,7 @@ Public Class cEcoSpace
     Public Function RunThreaded() As Boolean
         Dim started As Boolean = False
         Try
+
             'Has the SpaceThread already been created
             If Me.m_SpaceThread IsNot Nothing Then
                 'Yes Is it running
@@ -582,13 +580,17 @@ Public Class cEcoSpace
                     Return False
                 End If
 
+                'Space is not running 
+                'But the Thread has already been created
+                'so clear it out of memory
                 Me.m_SpaceThread = Nothing
 
             End If
 
-            'No Create a new thread object
+            'Not running Create a new thread object
             Me.m_SpaceThread = New Thread(AddressOf Me.RunSpace)
 
+            'run EcoSpace on the new thread
             Me.m_SpaceThread.Start()
             started = True
 
@@ -600,6 +602,12 @@ Public Class cEcoSpace
         End Try
 
         m_publisher.sendAllMessages()
+
+        'Failed to start Ecospace
+        'make sure the onRunCompleted delegate is fire so the core can clean up
+        If Not started Then
+            Me.fireRunCompleted(False)
+        End If
 
         Return started
 

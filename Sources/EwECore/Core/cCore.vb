@@ -7798,6 +7798,10 @@ Public Class cCore
         Dim breturn As Boolean
 
         Debug.Assert(Me.m_StateMonitor.HasEcospaceLoaded, "RunEcospace() You must load an Ecospace scenario first.")
+        'ToDo_jb 7-July-2011 cCore.RunEcospace() When running Ecospace the OnEcospaceRunCompleted delegate must always be called
+        'even if the run failed
+        'This could be done by adding a CanEcoSpaceRun function that did all the checking 
+        'if that failed then OnEcospaceRunCompleted() could be called with False...
 
         If Me.m_StateMonitor.IsEcospaceRunning Then
             'EcoSpace is already running
@@ -7835,21 +7839,28 @@ Public Class cCore
 
                 If checkHabitats() Then
 
-                    'user supplied delegate to call at each time step
+                    'Setup delegates for Ecospace to call 
+
+                    'Interface TimeStep delegate pass in as an argument
                     Me.m_SpaceInterfaceCallBack = EcospaceTimeStepHandler
-                    'set the handler for the Ecospace time step 
-                    'this makes sure Ecospace calls the core handler and not some other process that was running Ecospace
+
+                    'Core TimeStep delegate
                     m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
 
-                    Me.m_StateMonitor.SetEcospaceRun()
-
+                    'Core Run Completed delegate
                     Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
 
-                    m_EcospaceResultsWriter.StartWrite()
+                    'Tell the StateMonitor an run has started
+                    Me.m_StateMonitor.SetEcospaceRun()
+
+                    'Tell the Ecospace results writer that a run has started
+                    Me.m_EcospaceResultsWriter.StartWrite()
 
                     'make sure Ecospace is not paused
                     Me.m_Ecospace.isPaused = False
-                    breturn = m_Ecospace.RunThreaded()
+
+                    'Run Ecospace
+                    breturn = Me.m_Ecospace.RunThreaded()
 
                 End If 'If GroupsMissingHabitat() Then
 
@@ -7857,7 +7868,6 @@ Public Class cCore
                 Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_NO_SPACE_SCENARIO, _
                                           eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
             End If 'If Me.m_StateMonitor.HasEcospaceLoaded Then
-
 
             Return breturn
 
@@ -7873,22 +7883,30 @@ Public Class cCore
 
     Private Sub onEcoSpaceRunCompleted(ByVal Succeeded As Boolean)
 
-        If succeeded Then
-            LoadEcospaceResults()
-            loadEcoTracerResults()
-        End If
+        Try
 
-        m_EcospaceResultsWriter.EndWrite()
+            If Succeeded Then
+                LoadEcospaceResults()
+                loadEcoTracerResults()
+            End If
 
-        Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
-                      eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
+            Try
+                'the Ecospace Writer could have come from a Plugin so we can't guarantee that is will not throw an exception
+                m_EcospaceResultsWriter.EndWrite()
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".cEcospaceResultsWriter.EndWrite() Exception: " & ex.Message)
+            End Try
 
-        'System.Console.WriteLine("cCore.RunEcospace() Run Time = " & CDbl(Timer - t))
-        'System.Console.WriteLine("----------cCore.RunEcospace() End------------")
 
-        Me.m_StateMonitor.SetEcospaceCompleted()
-        Me.m_publisher.sendAllMessages()
+            Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
+                          eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
 
+            Me.m_StateMonitor.SetEcospaceCompleted()
+            Me.m_publisher.sendAllMessages()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".onEcoSpaceRunCompleted() Exception: " & ex.Message)
+        End Try
 
     End Sub
 
@@ -8013,7 +8031,7 @@ Public Class cCore
                 Next
             Next
 
-            'Save to file???
+            'Save to the current writer
             If Me.m_EcoSpaceData.bSave Then
                 If m_EcospaceResultsWriter IsNot Nothing Then
                     Try
