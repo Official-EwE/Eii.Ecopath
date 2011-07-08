@@ -38,8 +38,10 @@ Namespace Ecospace
         Private m_fpMaxIterations As cEwEFormatProvider = Nothing
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
         Private m_fpUseExact As cEwEFormatProvider = Nothing
-        Private m_fpSave As cEwEFormatProvider = Nothing
         Private WithEvents m_bpConTracing As cBooleanProperty = Nothing
+
+        Private m_fpSaveCSV As cEwEFormatProvider = Nothing
+        Private m_fpSaveASC As cEwEFormatProvider = Nothing
 
         ' Properties to monitor for setting radio button check states
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
@@ -69,7 +71,8 @@ Namespace Ecospace
             Me.m_bpUseNewStanza = Nothing
             Me.m_bpAdjustSpace = Nothing
             Me.m_bpConTracing = Nothing
-            Me.m_fpSave = Nothing
+            Me.m_fpSaveCSV = Nothing
+            Me.m_fpSaveASC = Nothing
 
             Me.m_fpScenarioName.Release()
             Me.m_fpScenarioDescription.Release()
@@ -131,8 +134,8 @@ Namespace Ecospace
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_cbPredictEffort, ecospaceModelParams, eVarNameFlags.PredictEffort)
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
 
-            Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSave, ecospaceModelParams, eVarNameFlags.EcospaceSave)
-
+            Me.m_fpSaveCSV = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSaveCSV, ecospaceModelParams, eVarNameFlags.EcospaceSaveCSV)
+            Me.m_fpSaveASC = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSaveASC, ecospaceModelParams, eVarNameFlags.EcospaceSaveASC)
             Me.UpdateScenarioFormatProviders()
 
         End Sub

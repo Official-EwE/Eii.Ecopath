@@ -652,8 +652,12 @@ Namespace Core
         SOR
         ''' <summary>Ecospace maximum number of iterations.</summary>
         MaxIterations
-        ''' <summary>Ecospace save results to file.</summary>
-        EcospaceSave
+
+        ''' <summary>Ecospace save results to CSV file format.</summary>
+        EcospaceSaveCSV
+
+        ''' <summary>Ecospace save results to ASC file format.</summary>
+        EcospaceSaveASC
 
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time

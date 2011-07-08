@@ -7694,7 +7694,8 @@ Public Class cCore
     Friend m_EcospaceRegionSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
 
-    Friend m_EcospaceResultsWriter As EwEUtils.Core.IEcospaceResultsWriter
+    Friend m_EcospaceResultsCSVWriter As EwEUtils.Core.IEcospaceResultsWriter
+    Friend m_EcospaceResultsASCWriter As EwEUtils.Core.IEcospaceResultsWriter
 
 #End Region ' Variables
 
@@ -7739,8 +7740,11 @@ Public Class cCore
         'this will initialize local Ecospace variables to default values as well as some dimensioning
         m_Ecospace.InitToDefaults()
 
-        m_EcospaceResultsWriter = New cEcospaceCSVResultsWriter
-        m_EcospaceResultsWriter.Init(Me)
+        m_EcospaceResultsCSVWriter = New cEcospaceCSVResultsWriter
+        m_EcospaceResultsCSVWriter.Init(Me)
+
+        m_EcospaceResultsASCWriter = New cEcospaceASCResultsWriter
+        m_EcospaceResultsASCWriter.Init(Me)
 
         Return True
 
@@ -7854,7 +7858,8 @@ Public Class cCore
                     Me.m_StateMonitor.SetEcospaceRun()
 
                     'Tell the Ecospace results writer that a run has started
-                    Me.m_EcospaceResultsWriter.StartWrite()
+                    Me.m_EcospaceResultsCSVWriter.StartWrite()
+                    Me.m_EcospaceResultsASCWriter.StartWrite()
 
                     'make sure Ecospace is not paused
                     Me.m_Ecospace.isPaused = False
@@ -7892,7 +7897,8 @@ Public Class cCore
 
             Try
                 'the Ecospace Writer could have come from a Plugin so we can't guarantee that is will not throw an exception
-                m_EcospaceResultsWriter.EndWrite()
+                m_EcospaceResultsCSVWriter.EndWrite()
+                m_EcospaceResultsASCWriter.EndWrite()
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".cEcospaceResultsWriter.EndWrite() Exception: " & ex.Message)
             End Try
@@ -8032,15 +8038,7 @@ Public Class cCore
             Next
 
             'Save to the current writer
-            If Me.m_EcoSpaceData.bSave Then
-                If m_EcospaceResultsWriter IsNot Nothing Then
-                    Try
-                        Me.m_EcospaceResultsWriter.WriteResults(Me.m_spaceresults)
-                    Catch ex As Exception
-                        System.Console.WriteLine("Core.onEcospaceTimeStep(" & iTime.ToString & ") EcospaceResultsWriter Exception: " & ex.Message)
-                    End Try
-                End If
-            End If
+            Me.SaveEcospaceResults(Me.m_spaceresults)
 
 
             'Call the interface delegate
@@ -8056,6 +8054,37 @@ Public Class cCore
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".processEcospaceTimeStep() Error: " & ex.Message)
+        End Try
+    End Sub
+
+
+    Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
+        Try
+
+
+            If Me.m_EcoSpaceData.bSaveCSV Then
+                If m_EcospaceResultsCSVWriter IsNot Nothing Then
+                    Try
+                        Me.m_EcospaceResultsCSVWriter.WriteResults(Me.m_spaceresults)
+                    Catch ex As Exception
+                        System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
+                    End Try
+                End If
+            End If
+
+            If Me.m_EcoSpaceData.bSaveASC Then
+                If m_EcospaceResultsASCWriter IsNot Nothing Then
+                    Try
+                        Me.m_EcospaceResultsASCWriter.WriteResults(Me.m_spaceresults)
+                    Catch ex As Exception
+                        System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
+                    End Try
+                End If
+            End If
+
+
+        Catch ex As Exception
+
         End Try
     End Sub
 
@@ -8895,7 +8924,9 @@ Public Class cCore
             m_EcospaceModelParams.SOR = m_EcoSpaceData.W
             m_EcospaceModelParams.MaxNumberOfIterations = m_EcoSpaceData.maxIter
             m_EcospaceModelParams.UseExact = m_EcoSpaceData.UseExact
-            m_EcospaceModelParams.Save = m_EcoSpaceData.bSave
+            m_EcospaceModelParams.SaveCSV = m_EcoSpaceData.bSaveCSV
+            'SaveASC
+            m_EcospaceModelParams.SaveASC = m_EcoSpaceData.bSaveASC
 
 
 
@@ -8945,7 +8976,8 @@ Public Class cCore
         m_EcoSpaceData.W = m_EcospaceModelParams.SOR
         m_EcoSpaceData.maxIter = m_EcospaceModelParams.MaxNumberOfIterations
         m_EcoSpaceData.UseExact = m_EcospaceModelParams.UseExact
-        m_EcoSpaceData.bSave = m_EcospaceModelParams.Save
+        m_EcoSpaceData.bSaveCSV = m_EcospaceModelParams.SaveCSV
+        m_EcoSpaceData.bSaveasc = m_EcospaceModelParams.SaveASC
 
         ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. Since this
         '             value is used during Ecospace calculations, it makes sense to expose it from Ecospace.

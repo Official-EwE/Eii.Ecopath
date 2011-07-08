@@ -53,7 +53,7 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox
             Me.m_tbSOR = New System.Windows.Forms.TextBox
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox
-            Me.m_cbSave = New System.Windows.Forms.CheckBox
+            Me.m_cbSaveCSV = New System.Windows.Forms.CheckBox
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox
             Me.m_cbUseExact = New System.Windows.Forms.CheckBox
             Me.m_tbContact = New System.Windows.Forms.TextBox
@@ -66,6 +66,7 @@ Namespace Ecospace
             Me.m_lbScenarioName = New System.Windows.Forms.Label
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_plBiomass = New System.Windows.Forms.Panel
+            Me.m_cbSaveASC = New System.Windows.Forms.CheckBox
             m_gbModel = New System.Windows.Forms.GroupBox
             m_gbModel.SuspendLayout()
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -236,7 +237,8 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
-            Me.m_gbRunTime.Controls.Add(Me.m_cbSave)
+            Me.m_gbRunTime.Controls.Add(Me.m_cbSaveASC)
+            Me.m_gbRunTime.Controls.Add(Me.m_cbSaveCSV)
             Me.m_gbRunTime.Controls.Add(Me.m_tbSOR)
             Me.m_gbRunTime.Controls.Add(Me.m_tbTolerance)
             Me.m_gbRunTime.Controls.Add(Me.m_tbNumTimeStepsPerYear)
@@ -253,11 +255,11 @@ Namespace Ecospace
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
             '
-            'm_cbSave
+            'm_cbSaveCSV
             '
-            resources.ApplyResources(Me.m_cbSave, "m_cbSave")
-            Me.m_cbSave.Name = "m_cbSave"
-            Me.m_cbSave.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbSaveCSV, "m_cbSaveCSV")
+            Me.m_cbSaveCSV.Name = "m_cbSaveCSV"
+            Me.m_cbSaveCSV.UseVisualStyleBackColor = True
             '
             'm_cbContaminantTracing
             '
@@ -325,6 +327,12 @@ Namespace Ecospace
             Me.m_plBiomass.Controls.Add(Me.m_rbBaseBiomass)
             Me.m_plBiomass.Controls.Add(Me.m_rbAdjustedBiomass)
             Me.m_plBiomass.Name = "m_plBiomass"
+            '
+            'm_cbSaveASC
+            '
+            resources.ApplyResources(Me.m_cbSaveASC, "m_cbSaveASC")
+            Me.m_cbSaveASC.Name = "m_cbSaveASC"
+            Me.m_cbSaveASC.UseVisualStyleBackColor = True
             '
             'EcospaceParameters
             '
@@ -397,7 +405,8 @@ Namespace Ecospace
         Private WithEvents m_cbContaminantTracing As System.Windows.Forms.CheckBox
         Private WithEvents m_nudNumThreads As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMaxIterations As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Friend WithEvents m_cbSave As System.Windows.Forms.CheckBox
+        Friend WithEvents m_cbSaveCSV As System.Windows.Forms.CheckBox
+        Friend WithEvents m_cbSaveASC As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace

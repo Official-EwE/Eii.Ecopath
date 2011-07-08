@@ -1,45 +1,36 @@
 ﻿
+#Region "Import"
+
 Imports System.IO
 Imports System.Text
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
+#End Region
+
 Public Class cEcospaceCSVResultsWriter
-    Implements EwEUtils.Core.IEcospaceResultsWriter
+    Inherits cEcospaceBaseResultsWriter
+
 
 #Region "Private data "
 
-    Private m_core As cCore
-    Private m_TimeStampDirName As String
 
 #End Region
 
+
 #Region "IEcospaceResultsWriter Implementation"
 
-
-    Public Sub WriteResults(ByVal SpaceTimeStepResults As Object) Implements EwEUtils.Core.IEcospaceResultsWriter.WriteResults
+    Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
         Dim strm As StreamWriter
         Dim fn As String
 
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.getFileName(SpaceTimeStepResults, igrp)
-            strm = New StreamWriter(fn, False)
+            fn = Me.getFileName("Biomass", igrp, "CSV")
+            strm = New StreamWriter(fn, True)
 
-
-            'saveASC(strm, tsData, igrp)
-            'saveCSV(strm, tsData, igrp)
-            saveXYZ(strm, tsData, igrp)
-
-            'For ir As Integer = 1 To Me.SpaceData.InRow
-            '    For ic As Integer = 1 To Me.SpaceData.InCol
-            '        If ic > 1 Then buff = buff & ","
-            '        buff = buff & cStringUtils.FormatSingle(tsData.BiomassMap(ir, ic, igrp))
-            '    Next
-            '    strm.WriteLine(buff)
-            '    buff = ""
-            'Next
+            saveCSV(strm, tsData, igrp)
 
             strm.Close()
             strm = Nothing
@@ -48,88 +39,48 @@ Public Class cEcospaceCSVResultsWriter
     End Sub
 
 
-    Public Sub EndWrite() Implements EwEUtils.Core.IEcospaceResultsWriter.EndWrite
+    Public Overrides Sub EndWrite()
 
     End Sub
 
-    Public Sub Init(ByVal theCore As Object) Implements EwEUtils.Core.IEcospaceResultsWriter.Init
-        Me.m_core = theCore
-    End Sub
-
-    Public Sub StartWrite() Implements EwEUtils.Core.IEcospaceResultsWriter.StartWrite
-        If Me.SpaceData.bSave Then
+    Public Overrides Sub StartWrite()
+        If Me.SpaceData.bSaveCSV Then
             Me.CreateTimeStampedDir()
+            Me.WriteFileHeaders()
         End If
     End Sub
+
+
+    Protected Overrides ReadOnly Property OuputType() As cEcospaceBaseResultsWriter.eSpaceOutputType
+        Get
+            Return eSpaceOutputType.CSV
+        End Get
+    End Property
 
 #End Region
 
 #Region "Private methods"
 
-    Private Sub CreateTimeStampedDir()
-
-        m_TimeStampDirName = System.IO.Path.Combine(Me.m_core.OutputPath, "EcospaceMapOuput " & Me.getTimeStamp)
-
-        If Directory.Exists(Me.TimeStampDirName) Then
-            Return
-        End If
-
-        Try
-            Directory.CreateDirectory(TimeStampDirName)
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".CreateTimeStampedDir() Exception: " & ex.Message)
-        End Try
-    End Sub
-
-    Private Function getTimeStamp() As String
-        Return Format(Date.Now, "y-M-d-H-m-s")
-    End Function
-
-    Private ReadOnly Property TimeStampDirName()
-        Get
-            Return Me.m_TimeStampDirName
-        End Get
-    End Property
-
-
-    Private Function getFileName(ByVal SpaceTimeStepResults As cEcospaceTimestep, ByVal iGrp As Integer) As String
-
-        Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
-        Dim time As String = SpaceTimeStepResults.iTimeStep.ToString
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName("EcoSpaceOutput-Biomass-" & grpName & "-" & time & ".xyz", False)
-        Return System.IO.Path.Combine(Me.TimeStampDirName, fn)
-
-    End Function
-
-    Private ReadOnly Property PathData() As cEcopathDataStructures
-        Get
-            Return Me.m_core.m_EcoPathData
-        End Get
-    End Property
-
-    Private ReadOnly Property SpaceData() As cEcospaceDataStructures
-        Get
-            Return Me.m_core.m_EcoSpaceData
-        End Get
-    End Property
-
-    Private Sub saveCSV(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
-
+    Private Sub saveCSV(ByRef strm As StreamWriter, ByVal Results As cEcospaceTimestep, ByVal igrp As Integer)
         Dim buff As String
+        strm.WriteLine("Step," & Results.iTimeStep.ToString)
+        'TimeNow is the loop counter in Ecospace and is not updated until the end of the loop
+        'For the Year of this time step we need to add delta T
+        strm.WriteLine("Year," & (SpaceData.TimeNow + Me.SpaceData.TimeStep).ToString)
         For ir As Integer = 1 To Me.SpaceData.InRow
             For ic As Integer = 1 To Me.SpaceData.InCol
                 If ic > 1 Then buff = buff & ","
-                buff = buff & cStringUtils.FormatSingle(SpaceTSData.BiomassMap(ir, ic, igrp))
+                buff = buff & cStringUtils.FormatSingle(Results.BiomassMap(ir, ic, igrp))
             Next
             strm.WriteLine(buff)
             buff = ""
         Next
 
+        strm.WriteLine()
+
     End Sub
 
     Private Sub saveXYZ(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
-
-
         Dim buff As String
         strm.WriteLine("X,Y,Z")
         For ir As Integer = 1 To Me.SpaceData.InRow
@@ -139,42 +90,50 @@ Public Class cEcospaceCSVResultsWriter
                 buff = ""
             Next
         Next
-
     End Sub
 
-    Private Sub saveASC(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
-        Me.WriteHeader(strm)
-        Me.WriteBody(strm, SpaceTSData, igrp)
-    End Sub
+    Private Sub WriteFileHeaders()
+        Dim strm As StreamWriter
+        Dim fn As String
 
-
-    Protected Sub WriteHeader(ByRef writer As TextWriter)
-        'ToDo compute yllcorner
-        'ToDo find cell size in degrees
-        writer.WriteLine("ncols       " & Me.SpaceData.InCol)
-        writer.WriteLine("nrows       " & Me.SpaceData.InRow)
-        'X Lower Left corner (cols)
-        writer.WriteLine("xllcorner   " & Me.SpaceData.Lon1) 'org.LonOrigin)
-        'Y Lower Left Corner (rows)
-        writer.WriteLine("yllcorner   " & Me.SpaceData.Lat1) 'org.LatOrigin)
-        writer.WriteLine("cellsize    " & Me.SpaceData.CellLength)
-        writer.WriteLine("NODATAVALUE " & cCore.NULL_VALUE)
-    End Sub
-
-    Protected Sub WriteBody(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
-        Dim buff As String
-
-        For ir As Integer = Me.SpaceData.InRow To 1 Step -1
-            For ic As Integer = 1 To Me.SpaceData.InCol
-                If ic > 1 Then buff = buff & " "
-                buff = buff & Format(SpaceTSData.BiomassMap(ir, ic, igrp), "#########0.0#####")
-            Next
-            strm.WriteLine(buff)
-            buff = ""
+        For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
+            fn = Me.getFileName("Biomass", igrp, "CSV")
+            strm = New StreamWriter(fn, True)
+            Me.WriteHeader(strm, igrp, "Biomass")
+            strm.Close()
+            strm = Nothing
         Next
 
     End Sub
 
+
+    Private Sub WriteHeader(ByRef strm As StreamWriter, ByVal igrp As Integer, ByVal Variable As String)
+
+        Try
+            Dim simScen As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
+            Dim SpaceScen As String = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name
+
+            strm.WriteLine("Model," & Chr(34) & Me.m_core.DataSource.FileName & Chr(34))
+            strm.WriteLine("Variable," & Variable)
+            strm.WriteLine("Group name," & Chr(34) & Me.PathData.GroupName(igrp) & Chr(34))
+            strm.WriteLine("EcoSim Scenario," & Chr(34) & simScen & Chr(34))
+            strm.WriteLine("EcoSpace Scenario," & Chr(34) & SpaceScen & Chr(34))
+            strm.WriteLine("EcoSpace time step length," & Me.SpaceData.TimeStep.ToString)
+            strm.WriteLine("Map rows," & Me.SpaceData.InRow)
+            strm.WriteLine("Map cols," & Me.SpaceData.InCol)
+            strm.WriteLine("Map cell length," & Me.SpaceData.CellLength)
+            strm.WriteLine("Map Latitude," & Me.SpaceData.Lat1)
+            strm.WriteLine("Map Longitude," & Me.SpaceData.Lon1)
+
+            strm.WriteLine()
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+    End Sub
+
 #End Region
+
 
 End Class

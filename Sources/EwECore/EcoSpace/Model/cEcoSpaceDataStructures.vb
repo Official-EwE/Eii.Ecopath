@@ -453,10 +453,18 @@ Public Class cEcospaceDataStructures
     Public Width() As Single
 
     ''' <summary>
-    ''' Save Ecospace time step results to file
+    ''' Save Ecospace time step results to CSV format file
     ''' </summary>
     ''' <remarks></remarks>
-    Public bSave As Boolean
+    Public bSaveCSV As Boolean
+
+
+    ''' <summary>
+    ''' Save Ecospace time step results to ASC format file
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public bSaveASC As Boolean
+
 
 
 #End Region

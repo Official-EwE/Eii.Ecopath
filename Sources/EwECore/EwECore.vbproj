@@ -244,7 +244,9 @@
     <Compile Include="DataSource\IEwEDatasourceMetadata.vb" />
     <Compile Include="EcoPath\cEcopathModelFromEcosim.vb" />
     <Compile Include="EcoSim\Model\cMediationDataStructures.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceBaseResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceCSVResultsWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceASCResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerHabitatCapacity.vb" />
     <Compile Include="HelperClasses\cPathUtility.vb" />
     <Compile Include="Monte Carlo\cMonteCarloResultsWriter.vb" />

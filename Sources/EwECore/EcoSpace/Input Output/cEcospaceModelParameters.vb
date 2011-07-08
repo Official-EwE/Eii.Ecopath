@@ -162,9 +162,15 @@ Public Class cEcospaceModelParameters
 
             'Save to file
             meta = New cVariableMetaData()
-            val = New cValue(1, eVarNameFlags.EcospaceSave, eStatusFlags.Null, eValueTypes.Bool, _
+            val = New cValue(1, eVarNameFlags.EcospaceSaveCSV, eStatusFlags.Null, eValueTypes.Bool, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData()
+            val = New cValue(1, eVarNameFlags.EcospaceSaveASC, eStatusFlags.Null, eValueTypes.Bool, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
 
 
             'set status flags to default values
@@ -497,7 +503,7 @@ Public Class cEcospaceModelParameters
     End Property
 
     ''' <summary>
-    ''' Save Ecospace results to file
+    ''' Save Ecospace results to CSV file format
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
@@ -505,14 +511,36 @@ Public Class cEcospaceModelParameters
     ''' This saves the cEcospaceTimeStep object to the current IEcospaceResultsWriter. 
     ''' At this time there is only one EcospaceResultsWriter.
     ''' </remarks>
-    Public Property Save() As Boolean
+    Public Property SaveCSV() As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceSave))
+            Return CBool(GetVariable(eVarNameFlags.EcospaceSaveCSV))
         End Get
 
         Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceSave, value)
+            SetVariable(eVarNameFlags.EcospaceSaveCSV, value)
+        End Set
+
+    End Property
+
+
+    ''' <summary>
+    ''' Save Ecospace results to CSV file format
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' This saves the cEcospaceTimeStep object to the current IEcospaceResultsWriter. 
+    ''' At this time there is only one EcospaceResultsWriter.
+    ''' </remarks>
+    Public Property SaveASC() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceSaveASC))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceSaveASC, value)
         End Set
 
     End Property
