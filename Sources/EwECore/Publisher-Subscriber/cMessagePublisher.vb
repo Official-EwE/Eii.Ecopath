@@ -176,11 +176,7 @@ Public Class cMessagePublisher
             Next handler
 
             If Not bMessageHandled Then
-                'something is very wrong 
-                'the owner of this publisher has tried to send a message that has no handler
-
-                'Debugging issue you have not defined a handler for this type of message
-                '  Debug.Assert(messageHandled, "No default message handler defined for source = " & Message.Source.ToString)
+                'nobody is listening to a message. This is legitimate when the core is used without a UI
                 cLog.Write(Me.ToString & ".SendMessage(...) No default message handler defined for source = " & Message.Source.ToString)
             End If
 
