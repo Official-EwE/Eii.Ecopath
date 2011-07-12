@@ -31,7 +31,6 @@ Public Class cLog
         If m_xmlWriter Is Nothing Then
             If String.IsNullOrEmpty(m_logFilename) Then
                 m_logFilename = Path.Combine(cSystemUtils.ApplicationSettingsPath(), "EwELog.xml")
-                'm_logFilename = System.AppDomain.CurrentDomain.BaseDirectory() + "EwELog.xml"
             End If
             m_xmlWriter = New cXMLLogWriter(m_logFilename, m_modelname)
         End If
@@ -45,9 +44,13 @@ Public Class cLog
     ''' <remarks></remarks>
     Public Shared Sub InitLog(ByVal strModelPath As String)
 
-        m_modelname = cFileUtils.ToValidFileName(Path.GetFileNameWithoutExtension(strModelPath), False)
-        ' m_logFilename = System.AppDomain.CurrentDomain.BaseDirectory() & "Log_" & ModelName & "_" & Format(Date.Now, "yy-M-d-H-m") & ".xml"
-        m_logFilename = Path.Combine(Path.GetDirectoryName(strModelPath), "EwELog_" & m_modelname & ".xml")
+        If Not String.IsNullOrEmpty(strModelPath) Then
+            m_modelname = cFileUtils.ToValidFileName(Path.GetFileNameWithoutExtension(strModelPath), False)
+            m_logFilename = Path.Combine(Path.GetDirectoryName(strModelPath), "EwELog_" & m_modelname & ".xml")
+        Else
+            m_modelname = ""
+            m_logFilename = ""
+        End If
 
         WriteSessionStarted()
         m_xmlWriter = Nothing

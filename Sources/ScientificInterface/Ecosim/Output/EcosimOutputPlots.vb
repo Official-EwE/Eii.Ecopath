@@ -168,19 +168,19 @@ Namespace Ecosim
 
         Public Overrides Property Settings() As String
             Get
-                Dim strSettings As String = ""
-                For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
-                    strSettings = strSettings & CChar(IIf(Me.m_abPlotVisible(plot), "1", "0"))
+                Dim sbSettings As New StringBuilder()
+                Dim iNumPlots As Integer = [Enum].GetValues(GetType(eSimPlot)).Length
+                For iPlot As Integer = 0 To iNumPlots - 1
+                    sbSettings.Append((IIf(Me.m_abPlotVisible(DirectCast(iPlot, eSimPlot)), "1", "0")))
                 Next
-                Return strSettings
+                Return sbSettings.ToString()
             End Get
             Set(ByVal strSettings As String)
                 If String.IsNullOrEmpty(strSettings) Then Return
 
-                For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
-                    If plot <= strSettings.Length Then
-                        Me.m_abPlotVisible(plot) = (strSettings.Substring(plot, 1) = "1"c)
-                    End If
+                Dim iNumPlots As Integer = Math.Min([Enum].GetValues(GetType(eSimPlot)).Length, strSettings.Length)
+                For iPlot As Integer = 0 To iNumPlots - 1
+                    Me.m_abPlotVisible(DirectCast(iPlot, eSimPlot)) = (strSettings.Substring(iPlot, 1) = "1"c)
                 Next
             End Set
         End Property

@@ -6,6 +6,10 @@ Imports System.Windows.Forms
 Imports System.Collections.Specialized
 Imports ScientificInterfaceShared.Forms
 Imports System.Web
+Imports EwEUtils.Utilities
+Imports EwECore
+Imports System.Xml
+Imports WeifenLuo.WinFormsUI
 
 #End Region ' Imports
 
@@ -31,11 +35,13 @@ Public Class cFormSettings
 
 #Region " Private vars "
 
+        Private m_strName As String = ""
         Private m_iPosX As Integer = 0
         Private m_iPosY As Integer = 0
         Private m_iWidth As Integer = 0
         Private m_iHeight As Integer = 0
-        Private m_dockState As DockStyle = DockStyle.None
+        Private m_dockWin As DockStyle = DockStyle.None
+        Private m_dockWeifenLuo As Docking.DockState = Docking.DockState.Unknown
         Private m_formState As FormWindowState = FormWindowState.Normal
         Private m_strMisc As String = ""
 
@@ -43,7 +49,8 @@ Public Class cFormSettings
 
 #Region " Constructor "
 
-        Public Sub New()
+        Public Sub New(ByVal strFormName As String)
+            Me.m_strName = strFormName
         End Sub
 
 #End Region ' Constructor
@@ -82,15 +89,18 @@ Public Class cFormSettings
                 frm.Height = Me.m_iHeight
             End If
 
-            frm.Dock = Me.m_dockState
             frm.WindowState = Me.m_formState
 
-            If TypeOf frm Is frmewe Then
+            If (TypeOf frm Is frmEwE) Then
+                Dim fx As frmEwE = DirectCast(frm, frmEwE)
+                fx.DockState = Me.m_dockWeifenLuo
                 Try
-                    DirectCast(frm, frmEwE).Settings = Me.m_strMisc
+                    fx.Settings = Me.m_strMisc
                 Catch ex As Exception
-
+                    cLog.Write(ex, "cFormSettings::Apply on " & frm.Text)
                 End Try
+            Else
+                frm.Dock = Me.m_dockWin
             End If
 
             frm.ResumeLayout()
@@ -104,12 +114,12 @@ Public Class cFormSettings
         ''' <param name="frm">The form to read.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Initialize(ByVal frm As Form) As Boolean
+        Public Function Store(ByVal frm As Form) As Boolean
             Dim rc As Rectangle = Nothing
 
-            If frm Is Nothing Then Return False
+            If (frm Is Nothing) Then Return False
 
-            If frm.Parent Is Nothing Then
+            If (frm.Parent Is Nothing) Then
                 rc = frm.DesktopBounds
             Else
                 rc = frm.RestoreBounds
@@ -118,16 +128,19 @@ Public Class cFormSettings
             Me.m_iPosY = rc.Y
             Me.m_iWidth = rc.Width
             Me.m_iHeight = rc.Height
-            Me.m_dockState = frm.Dock
-            Me.m_formState = frm.WindowState
 
             If TypeOf frm Is frmEwE Then
+                Me.m_dockWeifenLuo = DirectCast(frm, frmEwE).DockState
                 Try
                     Me.m_strMisc = DirectCast(frm, frmEwE).Settings
                 Catch ex As Exception
-
+                    cLog.Write(ex, "cFormSettings::store on EwE form " & frm.Text)
                 End Try
+            Else
+                Me.m_dockWin = frm.Dock
             End If
+            Me.m_formState = frm.WindowState
+
             Return True
         End Function
 
@@ -135,20 +148,41 @@ Public Class cFormSettings
         ''' <summary>
         ''' Initialize by reading a settings string.
         ''' </summary>
-        ''' <param name="strSetting">The string to read.</param>
+        ''' <param name="nodeSetting">The xml node to read.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Initialize(ByVal strSetting As String) As Boolean
-            Dim asValue As String() = strSetting.Split(","c)
+        Public Function FromXML(ByVal nodeSetting As XmlNode) As Boolean
             Try
-                Me.m_iPosX = CInt(Val(asValue(0)))
-                Me.m_iPosY = CInt(Val(asValue(1)))
-                Me.m_iWidth = CInt(Val(asValue(2)))
-                Me.m_iHeight = CInt(Val(asValue(3)))
-                Me.m_dockState = CType(Val(asValue(4)), DockStyle)
-                Me.m_formState = CType(Val(asValue(5)), FormWindowState)
-                Me.m_strMisc = HttpUtility.UrlDecode(CStr(asValue(6)))
+                Dim node As XmlNode = Nothing
+
+                node = nodeSetting("location")
+                If (node IsNot Nothing) Then
+                    With node
+                        Me.m_iPosX = cStringUtils.ConvertToInteger(.Attributes("x").InnerText)
+                        Me.m_iPosY = cStringUtils.ConvertToInteger(.Attributes("y").InnerText)
+                        Me.m_iWidth = cStringUtils.ConvertToInteger(.Attributes("w").InnerText)
+                        Me.m_iHeight = cStringUtils.ConvertToInteger(.Attributes("h").InnerText)
+                    End With
+                End If
+
+                node = nodeSetting("state")
+                If (node IsNot Nothing) Then
+                    With node
+                        Me.m_dockWin = CType(Val(.Attributes("dockWin").InnerText), DockStyle)
+                        Me.m_dockWeifenLuo = CType(Val(.Attributes("dockWFL").InnerText), Docking.DockState)
+                        Me.m_formState = CType(Val(.Attributes("formpos").InnerText), FormWindowState)
+                    End With
+                End If
+
+                node = nodeSetting("localsettings")
+                If (node IsNot Nothing) Then
+                    With node
+                        Me.m_strMisc = .InnerText
+                    End With
+                End If
+
             Catch ex As Exception
+                cLog.Write(ex, "cFormSettings::Initialize")
                 Return False
             End Try
             Return True
@@ -156,16 +190,46 @@ Public Class cFormSettings
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Produce a settings string.
+        ''' Produce a form settings XML node.
         ''' </summary>
         ''' <returns>A settings string.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function ToString() As String
-            Return CStr(Me.m_iPosX) & "," & CStr(Me.m_iPosY) & "," & _
-                   CStr(Me.m_iWidth) & "," & CStr(Me.m_iHeight) & "," & _
-                   CStr(CInt(Me.m_dockState)) & "," & CStr(CInt(Me.m_formState)) & ", " & _
-                   CStr(HttpUtility.UrlEncode(Me.m_strMisc))
+        Public Function ToXML(ByVal doc As XmlDocument) As XmlNode
+
+            Dim node As XmlNode = doc.CreateElement("formsetting")
+            Dim nodeChild As XmlNode = Nothing
+            Dim attr As XmlAttribute = Nothing
+
+            attr = doc.CreateAttribute("name")
+            attr.InnerText = Me.m_strName
+            node.Attributes.Append(attr)
+
+            nodeChild = doc.CreateElement("location")
+            attr = doc.CreateAttribute("x") : attr.InnerText = cStringUtils.FormatInteger(Me.m_iPosX) : nodeChild.Attributes.Append(attr)
+            attr = doc.CreateAttribute("y") : attr.InnerText = cStringUtils.FormatInteger(Me.m_iPosY) : nodeChild.Attributes.Append(attr)
+            attr = doc.CreateAttribute("w") : attr.InnerText = cStringUtils.FormatInteger(Me.m_iWidth) : nodeChild.Attributes.Append(attr)
+            attr = doc.CreateAttribute("h") : attr.InnerText = cStringUtils.FormatInteger(Me.m_iHeight) : nodeChild.Attributes.Append(attr)
+            node.AppendChild(nodeChild)
+
+            nodeChild = doc.CreateElement("state")
+            attr = doc.CreateAttribute("dockWin") : attr.InnerText = CStr(CInt(Me.m_dockWin)) : nodeChild.Attributes.Append(attr)
+            attr = doc.CreateAttribute("dockWFL") : attr.InnerText = CStr(CInt(Me.m_dockWeifenLuo)) : nodeChild.Attributes.Append(attr)
+            attr = doc.CreateAttribute("formpos") : attr.InnerText = CStr(CInt(Me.m_formState)) : nodeChild.Attributes.Append(attr)
+            node.AppendChild(nodeChild)
+
+            nodeChild = doc.CreateElement("localsettings")
+            nodeChild.InnerText = Me.m_strMisc
+            node.AppendChild(nodeChild)
+
+            Return node
+
         End Function
+
+        Public ReadOnly Property Name() As String
+            Get
+                Return Me.m_strName
+            End Get
+        End Property
 
 #End Region ' Public bits
 
@@ -183,7 +247,7 @@ Public Class cFormSettings
 #Region " Constructor "
 
     ''' -----------------------------------------------------------------------
-    ''' <summary>Enforced singleton.</summary>
+    ''' <summary>Welcome, naive human.</summary>
     ''' -----------------------------------------------------------------------
     Public Sub New()
     End Sub
@@ -197,11 +261,11 @@ Public Class cFormSettings
     ''' Get/set the setting to maintain in this class
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Setting() As Specialized.StringCollection
+    Public Property Setting() As XmlDocument
         Get
-            Return Me.ToCollection()
+            Return Me.Content()
         End Get
-        Set(ByVal value As Specialized.StringCollection)
+        Set(ByVal value As XmlDocument)
             Me.Initialize(value)
         End Set
     End Property
@@ -228,9 +292,9 @@ Public Class cFormSettings
         End If
 
         ' Create form state
-        fs = New cFormSetting()
+        fs = New cFormSetting(strFormType)
         ' Able to read from form?
-        If fs.Initialize(frm) Then
+        If fs.Store(frm) Then
             ' #Yes: store it
             Me.m_dictFormPositions(strFormType) = fs
         End If
@@ -264,57 +328,64 @@ Public Class cFormSettings
     ''' <summary>
     ''' Load this class from application settings.
     ''' </summary>
-    ''' <param name="sc">The string collection to analyze.</param>
+    ''' <param name="settings">The settings to analyze.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub Initialize(ByVal sc As StringCollection)
+    Private Sub Initialize(ByVal settings As XmlDocument)
 
         Dim fp As cFormSetting = Nothing
-        Dim astrSetting() As String = Nothing
+        Dim node As XmlNode = Nothing
 
         ' Clear!
         Me.m_dictFormPositions.Clear()
 
         ' Sanity checks
-        If sc Is Nothing Then Return
-        If sc.Count = 0 Then Return
+        If (settings Is Nothing) Then Return
+        If (settings.ChildNodes.Count = 0) Then Return
 
         ' For every form setting
-        For Each strFormSetting As String In sc
+        For Each node In settings.SelectNodes("/formsettings/formsetting")
             ' Is valid?
-            If Not String.IsNullOrEmpty(strFormSetting) Then
-                ' #Yes: process
-                Try
-                    ' Split in {formname}={{position} bits
-                    astrSetting = strFormSetting.Split("="c)
-                    ' 
-                    fp = New cFormSetting()
-                    ' Can read form position data?
-                    If fp.Initialize(astrSetting(1)) Then
-                        ' #Yes: store in local admin!
-                        Me.m_dictFormPositions(astrSetting(0)) = fp
-                    End If
-                Catch ex As Exception
-                    ' Woops - ignore malformed setting
-                End Try
-            End If
+            Try
+                fp = New cFormSetting(node.Attributes("name").InnerText)
+                ' Can read form position data?
+                If fp.FromXML(node) Then
+                    ' #Yes: store in local admin!
+                    Me.m_dictFormPositions(fp.Name) = fp
+                End If
+            Catch ex As Exception
+                ' Woops - ignore malformed setting
+            End Try
         Next
 
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Generate collection from data in local dictionary.
+    ''' Generate XML document from local data.
     ''' </summary>
     ''' <returns>A penguin. Really.</returns>
     ''' -----------------------------------------------------------------------
-    Private Overloads Function ToCollection() As StringCollection
-        Dim sc As New StringCollection()
-        Dim strEntry As String = ""
+    Private Overloads Function Content() As XmlDocument
+
+        Dim doc As New XmlDocument()
+        Dim node As XmlNode = Nothing
+
+        node = doc.CreateXmlDeclaration("1.0", "utf-16", Nothing)
+        doc.AppendChild(node)
+
+        node = doc.CreateElement("formsettings")
+        doc.AppendChild(node)
 
         For Each strFormName As String In Me.m_dictFormPositions.Keys
-            sc.Add(String.Format("{0}={1}", strFormName, Me.m_dictFormPositions(strFormName).ToString()))
+            Try
+                Dim ndForm As XmlNode = Me.m_dictFormPositions(strFormName).ToXML(doc)
+                node.AppendChild(ndForm)
+            Catch ex As Exception
+
+            End Try
         Next
-        Return sc
+        Return doc
+
     End Function
 
     ''' -----------------------------------------------------------------------

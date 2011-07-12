@@ -269,11 +269,6 @@ Namespace Forms
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             If (Me.UIContext IsNot Nothing) Then
-                If (Me.DesignMode = False) Then
-                    ' Store form position
-                    Me.UIContext.FormSettings.Store(Me)
-                End If
-
                 ' Release style guide event
                 RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 ' Release UI context
@@ -397,9 +392,17 @@ Namespace Forms
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+
+            If (Me.UIContext isnot Nothing) and (Me.DesignMode = False) Then
+                ' Store form position BEFORE form is closed
+                Me.UIContext.FormSettings.Store(Me)
+            End If
+
             MyBase.OnFormClosing(e)
+
             ' Prevent active run forms from closing.
             If Me.IsRunForm And Me.IsRunning Then e.Cancel = True
+
         End Sub
 
         ''' -----------------------------------------------------------------------

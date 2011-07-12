@@ -2993,9 +2993,8 @@ Public Class cCore
         End Try
 
         Try
-            'work from the top down Space to Path
-
-            'Sim and Space
+            'work from the top down Tracer to Path
+            Me.CloseEcotracerScenario()
             Me.CloseEcoSpaceScenario()
             Me.CloseEcosimScenario()
 
@@ -3083,6 +3082,9 @@ Public Class cCore
 #If PROFILE Then
         System.Console.WriteLine("CloseModel() memory after  " & GC.GetTotalMemory(True))
 #End If
+
+        cLog.Write("Model closed")
+        cLog.InitLog("")
 
         Return True
 
@@ -6137,6 +6139,7 @@ Public Class cCore
 
         'Last thing Setting the state monitor can fire events that use the Ecosim and Ecospace data
         Me.m_StateMonitor.SetEcoSimLoaded(False)
+        cLog.Write("Ecosim scenario closed")
 
     End Sub
 
@@ -8529,6 +8532,7 @@ Public Class cCore
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecospace) Then Return False
+        Me.CloseEcotracerScenario()
 
         Try
 
@@ -8671,6 +8675,8 @@ Public Class cCore
             Debug.Assert(False, Me.ToString & ".CloseEcoSpaceScenario() Exception: " & ex.Message)
             cLog.Write(ex)
         End Try
+
+        cLog.Write("Ecospace scenario closed")
 
     End Sub
 
@@ -10767,6 +10773,11 @@ Public Class cCore
 
     End Function
 
+    Public Sub CloseEcotracerScenario()
+        Me.m_EcoPathData.ActiveEcotracerScenario = -1
+        Me.m_StateMonitor.SetEcotracerLoaded(False)
+        cLog.Write("Ecotracer scenario closed")
+    End Sub
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Save the current Ecotracer scenario.

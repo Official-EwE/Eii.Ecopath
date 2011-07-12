@@ -1283,7 +1283,7 @@ Public Class AppLauncher
 
         Me.UIContext.FormSettings.Store(Me, False)
         Me.m_styleguideupdater.Save()
-        My.Settings.FormPositions = Me.UIContext.FormSettings.Setting
+        My.Settings.FormSettings = Me.UIContext.FormSettings.Setting
         Me.SaveSettings()
 
     End Sub
@@ -3747,7 +3747,7 @@ Public Class AppLauncher
             End If
 
             ' Read form positions
-            Me.UIContext.FormSettings.Setting = My.Settings.FormPositions
+            Me.UIContext.FormSettings.Setting = My.Settings.FormSettings
 
             ' Get the form position from user settings
             Me.StartPosition = FormStartPosition.Manual
