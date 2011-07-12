@@ -3,6 +3,12 @@ Imports System.Math
 
 Public Class cEcospaceDataStructures
 
+    ''' <summary>
+    ''' Multiplier to convert KM to Degrees
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Const KM_TO_DEGRESS As Single = 1 / (40007.86291736 / 360.0)
+
 #Region "Public Fields"
 
 #Region " Storage classes "
@@ -55,7 +61,7 @@ Public Class cEcospaceDataStructures
 
     Public chkMPA As Boolean
 
-  
+
     ''' <summary>Current Model time step.</summary>
     ''' <remarks>This is the time in years, not the array index</remarks>
     Public TimeNow As Single
@@ -814,8 +820,8 @@ Public Class cEcospaceDataStructures
     Public Sub RedimMigratoryVariables()
         Try
 
-            ReDim PrefRow(nGroups, 12)
-            ReDim Prefcol(nGroups, 12)
+            ReDim PrefRow(NGroups, 12)
+            ReDim Prefcol(NGroups, 12)
             ReDim IsMigratory(nvartot)
             ReDim MigConcRow(NGroups)
             ReDim MigConcCol(NGroups)
@@ -938,7 +944,7 @@ Public Class cEcospaceDataStructures
 
             'jb EwE5 EwE6 does not have Pairs (split pools)
             'nvartot = NumGroups + 2 * npairs + Nvarsplit
-            nvartot = nGroups + Nvarsplit
+            nvartot = NGroups + Nvarsplit
 
             ReDim Basebiomass(nvartot)
             ReDim Bnew(nvartot)
