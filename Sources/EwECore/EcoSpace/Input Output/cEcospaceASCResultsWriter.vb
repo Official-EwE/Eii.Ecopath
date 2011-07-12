@@ -44,6 +44,7 @@ Public Class cEcospaceASCResultsWriter
     Public Overrides Sub StartWrite()
         If Me.SpaceData.bSaveASC Then
             Me.CreateTimeStampedDir()
+            Me.WriteIndexFile()
         End If
     End Sub
 
@@ -56,6 +57,39 @@ Public Class cEcospaceASCResultsWriter
 #End Region
 
 #Region "Private methods"
+
+
+    Private Sub WriteIndexFile()
+        Try
+            Dim fn As String
+            Dim strm As StreamWriter
+            fn = Path.Combine(Me.TimeStampDirName, ".Ecospace RunInfo.txt")
+            strm = New StreamWriter(fn, False)
+
+            Dim simScen As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
+            Dim SpaceScen As String = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name
+            Dim ver As String = System.Reflection.Assembly.GetAssembly(GetType(cCore)).GetName.Version.ToString
+
+            strm.WriteLine("EcoSpace ASC map output")
+            strm.WriteLine("EwE version," & ver)
+            strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
+
+            strm.WriteLine("Model," & Chr(34) & Me.m_core.DataSource.FileName & Chr(34))
+            strm.WriteLine("EcoSim Scenario," & Chr(34) & simScen & Chr(34))
+            strm.WriteLine("EcoSpace Scenario," & Chr(34) & SpaceScen & Chr(34))
+            strm.WriteLine("Map rows," & Me.SpaceData.InRow)
+            strm.WriteLine("Map cols," & Me.SpaceData.InCol)
+            strm.WriteLine("Map cell length," & Me.SpaceData.CellLength)
+            strm.WriteLine("Map Latitude," & Me.SpaceData.Lat1)
+            strm.WriteLine("Map Longitude," & Me.SpaceData.Lon1)
+            strm.WriteLine("EcoSpace time step length," & Me.SpaceData.TimeStep.ToString)
+
+            strm.Close()
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
     Private Sub saveASC(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
         Try
