@@ -8,15 +8,13 @@ Imports EwEUtils.Utilities
 
 #End Region
 
+''' <summary>
+''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
+''' to save Ecospace results to file. 
+''' </summary>
+''' <remarks>There will be one CSV file for each group containing data for all the time steps.</remarks>
 Public Class cEcospaceCSVResultsWriter
     Inherits cEcospaceBaseResultsWriter
-
-
-#Region "Private data "
-
-
-#End Region
-
 
 #Region "IEcospaceResultsWriter Implementation"
 
@@ -66,7 +64,7 @@ Public Class cEcospaceCSVResultsWriter
         strm.WriteLine("Step," & Results.iTimeStep.ToString)
         'TimeNow is the loop counter in Ecospace and is not updated until the end of the loop
         'For the Year of this time step we need to add delta T
-        strm.WriteLine("Year," & (SpaceData.TimeNow + Me.SpaceData.TimeStep).ToString)
+        strm.WriteLine("Year," & Results.TimeStepinYears.ToString)
         For ir As Integer = 1 To Me.SpaceData.InRow
             For ic As Integer = 1 To Me.SpaceData.InCol
                 If ic > 1 Then buff = buff & ","
@@ -80,6 +78,13 @@ Public Class cEcospaceCSVResultsWriter
 
     End Sub
 
+    ''' <summary>
+    ''' Not used here but saves the data to an XYZ formatted file
+    ''' </summary>
+    ''' <param name="strm"></param>
+    ''' <param name="SpaceTSData"></param>
+    ''' <param name="igrp"></param>
+    ''' <remarks></remarks>
     Private Sub saveXYZ(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
         Dim buff As String
         strm.WriteLine("X,Y,Z")
@@ -114,16 +119,16 @@ Public Class cEcospaceCSVResultsWriter
             Dim SpaceScen As String = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name
 
             strm.WriteLine("Model," & Chr(34) & Me.m_core.DataSource.FileName & Chr(34))
-            strm.WriteLine("Variable," & Variable)
-            strm.WriteLine("Group name," & Chr(34) & Me.PathData.GroupName(igrp) & Chr(34))
             strm.WriteLine("EcoSim Scenario," & Chr(34) & simScen & Chr(34))
             strm.WriteLine("EcoSpace Scenario," & Chr(34) & SpaceScen & Chr(34))
-            strm.WriteLine("EcoSpace time step length," & Me.SpaceData.TimeStep.ToString)
             strm.WriteLine("Map rows," & Me.SpaceData.InRow)
             strm.WriteLine("Map cols," & Me.SpaceData.InCol)
             strm.WriteLine("Map cell length," & Me.SpaceData.CellLength)
             strm.WriteLine("Map Latitude," & Me.SpaceData.Lat1)
             strm.WriteLine("Map Longitude," & Me.SpaceData.Lon1)
+            strm.WriteLine("EcoSpace time step length," & Me.SpaceData.TimeStep.ToString)
+            strm.WriteLine("Variable," & Variable)
+            strm.WriteLine("Group name," & Chr(34) & Me.PathData.GroupName(igrp) & Chr(34))
 
             strm.WriteLine()
 

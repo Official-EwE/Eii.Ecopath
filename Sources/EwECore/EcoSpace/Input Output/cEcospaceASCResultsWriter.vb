@@ -8,16 +8,13 @@ Imports EwEUtils.Utilities
 
 #End Region
 
-
+''' <summary>
+''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
+''' to write Ecospace output a ESRI ASC files. 
+''' </summary>
+''' <remarks>Each ASC file will contain Biomass of a group for a time step</remarks>
 Public Class cEcospaceASCResultsWriter
     Inherits cEcospaceBaseResultsWriter
-
-
-#Region "Private data "
-
-
-#End Region
-
 
 #Region "IEcospaceResultsWriter Implementation"
 
@@ -28,7 +25,7 @@ Public Class cEcospaceASCResultsWriter
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.getFileName("Bomass", igrp, "ASC", tsData.iTimeStep)
+            fn = Me.getFileName("Biomass", igrp, "ASC", tsData.iTimeStep)
             strm = New StreamWriter(fn, False)
 
             saveASC(strm, tsData, igrp)
@@ -60,7 +57,6 @@ Public Class cEcospaceASCResultsWriter
 
 #Region "Private methods"
 
-
     Private Sub saveASC(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
         Try
             Me.WriteHeader(strm)
@@ -72,25 +68,33 @@ Public Class cEcospaceASCResultsWriter
 
 
     Protected Sub WriteHeader(ByRef writer As TextWriter)
-        'ToDo compute yllcorner
-        'ToDo find cell size in degrees
+
+        Dim cellSizeDegrees As Single = Me.SpaceData.CellLength * cEcospaceDataStructures.KM_TO_DEGRESS
+        Dim latLL As Single = Me.SpaceData.Lat1 + (Me.SpaceData.InRow + 1) * cellSizeDegrees
+
         writer.WriteLine("ncols       " & Me.SpaceData.InCol)
         writer.WriteLine("nrows       " & Me.SpaceData.InRow)
         'X Lower Left corner (cols)
         writer.WriteLine("xllcorner   " & Me.SpaceData.Lon1) 'org.LonOrigin)
         'Y Lower Left Corner (rows)
-        writer.WriteLine("yllcorner   " & Me.SpaceData.Lat1) 'org.LatOrigin)
-        writer.WriteLine("cellsize    " & Me.SpaceData.CellLength)
+        writer.WriteLine("yllcorner   " & latLL) 'org.LatOrigin)
+        writer.WriteLine("cellsize    " & cellSizeDegrees)
         writer.WriteLine("NODATAVALUE " & cCore.NULL_VALUE)
     End Sub
 
     Protected Sub WriteBody(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
         Dim buff As String
-
+        Dim bcell As Single
         For ir As Integer = Me.SpaceData.InRow To 1 Step -1
             For ic As Integer = 1 To Me.SpaceData.InCol
                 If ic > 1 Then buff = buff & " "
-                buff = buff & Format(SpaceTSData.BiomassMap(ir, ic, igrp), "#########0.0#####")
+                If Me.SpaceData.Depth(ir, ic) > 0 Then
+                    bcell = SpaceTSData.BiomassMap(ir, ic, igrp)
+                Else
+                    'land as NODATAVALUE
+                    bcell = cCore.NULL_VALUE
+                End If
+                buff = buff & Format(bcell, "#########0.0#####")
             Next
             strm.WriteLine(buff)
             buff = ""
@@ -100,5 +104,4 @@ Public Class cEcospaceASCResultsWriter
 
 #End Region
 
-   
 End Class
