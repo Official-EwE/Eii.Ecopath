@@ -44,7 +44,7 @@ Public Class cEcospaceASCResultsWriter
     Public Overrides Sub StartWrite()
         If Me.SpaceData.bSaveASC Then
             Me.CreateTimeStampedDir()
-            Me.WriteIndexFile()
+            Me.WriteInfoFile()
         End If
     End Sub
 
@@ -59,7 +59,7 @@ Public Class cEcospaceASCResultsWriter
 #Region "Private methods"
 
 
-    Private Sub WriteIndexFile()
+    Private Sub WriteInfoFile()
         Try
             Dim fn As String
             Dim strm As StreamWriter
