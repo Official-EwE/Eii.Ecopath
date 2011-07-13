@@ -1087,6 +1087,8 @@ Public Class cEcosimDatastructures
         SorWt = 0.5
         EquilibriumStepSize = 0.003
         StepsPerMonth = 1
+        'StepsPerMonth = 30
+        'MsgBox("Warning daily time step.")
 
         'Hack warning temp hard wire of summary time periods
         SumStart(0) = 0
