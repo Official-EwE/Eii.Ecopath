@@ -846,120 +846,6 @@ Namespace MSE
                 Debug.Assert(False, Me.ToString & ".SaveIteration() Exception: " & ex.Message)
             End Try
 
-            'If Not Me.m_data.SaveOutput Then Return
-
-            'Dim buff As StringBuilder = Nothing
-            'Dim strm As StreamWriter = Nothing
-
-            'Try
-            '    'We could set this up so each type had a seperate flag for dumping
-
-            '    'Biomass
-            '    For igrp As Integer = 1 To Me.m_data.NGroups
-            '        Try
-            '            buff = New StringBuilder()
-            '            For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-            '                If (its > 1) Then buff.Append(", ")
-            '                buff.Append(cStringUtils.FormatSingle(m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, its)))
-            '            Next
-
-            '            strm = New StreamWriter(BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)), True)
-            '            strm.WriteLine(buff)
-            '            strm.Close()
-            '            buff = Nothing
-            '        Catch ex As Exception
-            '            ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
-            '        End Try
-            '    Next
-
-            '    'Catch by group
-            '    For igrp As Integer = 1 To Me.m_data.NGroups
-            '        Try
-            '            If Me.m_epdata.fCatch(igrp) > 0 Then
-            '                buff = New StringBuilder()
-            '                For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-            '                    If (its > 1) Then buff.Append(", ")
-            '                    buff.Append(cStringUtils.FormatSingle(m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, its)))
-            '                Next
-
-            '                strm = New StreamWriter(BuildCSVFilename(CATCH_DATA, Me.m_epdata.GroupName(igrp)), True)
-            '                strm.WriteLine(buff)
-            '                strm.Close()
-            '                buff = Nothing
-            '            End If
-            '        Catch ex As Exception
-            '            ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
-            '        End Try
-            '    Next
-
-            '    'Quota by group
-            '    For igrp As Integer = 1 To Me.m_data.NGroups
-            '        Try
-            '            Dim data(,) As Single = Me.m_lstData.Item(eResultsData.GroupQuota)
-            '            If Me.m_epdata.fCatch(igrp) > 0 Then
-            '                buff = New StringBuilder()
-            '                For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-            '                    If (its > 1) Then buff.Append(", ")
-            '                    buff.Append(cStringUtils.FormatSingle(data(igrp, its)))
-            '                Next
-
-            '                strm = New StreamWriter(BuildCSVFilename(QUOTAGROUP_DATA, Me.m_epdata.GroupName(igrp)), True)
-            '                strm.WriteLine(buff)
-            '                strm.Close()
-            '                buff = Nothing
-            '            End If
-            '        Catch ex As Exception
-            '            ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)) & " Exception: " & ex.Message)
-            '        End Try
-            '    Next
-
-            '    'Catch by fleet
-            '    For iflt As Integer = 1 To Me.m_data.nFleets
-            '        Try
-            '            buff = New StringBuilder()
-            '            For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-            '                If (its > 1) Then buff.Append(", ")
-            '                buff.Append(cStringUtils.FormatSingle(m_esData.ResultsSumCatchByGear(iflt, its)))
-            '            Next
-
-            '            strm = New StreamWriter(BuildCSVFilename(FLEETCATCH_DATA, Me.m_epdata.FleetName(iflt)), True)
-            '            strm.WriteLine(buff)
-            '            strm.Close()
-            '            buff = Nothing
-
-            '        Catch ex As Exception
-            '            'Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(CATCH_DATA, Me.m_epdata.FleetName(iflt)))
-            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(FLEETCATCH_DATA, Me.m_epdata.FleetName(iflt)) & " Exception: " & ex.Message)
-            '        End Try
-            '    Next
-
-            '    'Effort by fleet
-            '    For iflt As Integer = 1 To Me.m_data.nFleets
-            '        Try
-            '            buff = New StringBuilder()
-            '            For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-            '                If its > 1 Then buff.Append(", ")
-            '                buff.Append(cStringUtils.FormatSingle(m_esData.ResultsEffort(iflt, its)))
-            '            Next
-
-            '            strm = New StreamWriter(BuildCSVFilename(EFFORT_DATA, Me.m_epdata.FleetName(iflt)), True)
-            '            strm.WriteLine(buff)
-            '            strm.Close()
-            '            buff = Nothing
-
-            '        Catch ex As Exception
-            '            ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(EFFORT_DATA, Me.m_epdata.GroupName(iflt)))
-            '            System.Console.WriteLine(Me.ToString & " Failed to write data to file " & BuildCSVFilename(EFFORT_DATA, Me.m_epdata.FleetName(iflt)) & " Exception: " & ex.Message)
-            '        End Try
-            '    Next
-
-            'Catch ex As Exception
-            '    Debug.Assert(False, Me.ToString & ".SaveIteration() Exception: " & ex.Message)
-            'End Try
-
         End Sub
 
         Private Function BuildCSVFilename(ByVal strDataType As String, ByVal strDataName As String) As String
@@ -2527,9 +2413,9 @@ Namespace MSE
                     Me.m_data.BioStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
                     Me.m_data.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
                 Next igrp
+
                 Dim sumValue As Single
                 For iflt As Integer = 1 To Me.m_esData.nGear
-
                     sumValue += Me.m_esData.ResultsSumValueByGear(iflt, CInt(iTime))
                     Me.m_data.CatchFleetStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
                     Me.m_data.EffortStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsEffort(iflt, CInt(iTime)))
