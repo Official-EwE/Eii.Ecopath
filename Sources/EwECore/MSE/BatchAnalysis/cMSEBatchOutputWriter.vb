@@ -608,12 +608,16 @@ Namespace MSEBatchManager
                     Return cStringUtils.FormatSingle(Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, igrp, iTime))
 
                 Case eMSEBatchOuputTypes.FishingMortRate
-                    Dim sumF As Single
-                    'sum F across all fleets
-                    For iflt As Integer = 1 To Me.m_core.m_EcoSimData.nGear
-                        sumF += Me.m_core.m_EcoSimData.ResultsSumFMortByGroupGear(igrp, iflt, iTime)
-                    Next
-                    Return cStringUtils.FormatSingle(sumF)
+                    'jb 13-July-2011
+                    'Zero fleet index is the sum across all fleets
+                    'See cEcosimModel.PopulateResults()
+
+                    'Dim sumF As Single
+                    ''sum F across all fleets
+                    'For iflt As Integer = 1 To Me.m_core.m_EcoSimData.nGear
+                    '    sumF += Me.m_core.m_EcoSimData.ResultsSumFMortByGroupGear(igrp, iflt, iTime)
+                    'Next
+                    Return cStringUtils.FormatSingle(Me.m_core.m_EcoSimData.ResultsSumFMortByGroupGear(igrp, 0, iTime))
 
                 Case eMSEBatchOuputTypes.PredRate
                     Return cStringUtils.FormatSingle(Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, igrp, iTime))
