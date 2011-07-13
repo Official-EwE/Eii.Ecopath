@@ -1911,8 +1911,9 @@ Namespace Ecosim
                             End If ' If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
                         Next iflt
 
-                    Else 'If m_Data.FishTime(igrp) > 0 Then
-
+                    Else
+                        'FishTime(igrp) <= 0
+                        'no fishing on this group
                         For iflt = 1 To m_Data.nGear
                             m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = 0
                             m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) = 0
