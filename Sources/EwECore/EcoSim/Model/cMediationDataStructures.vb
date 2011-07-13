@@ -218,13 +218,9 @@ Public Class cMediationDataStructures
 
         Next
 
-        'If bFoundMed Then
-        '    System.Console.WriteLine("Market value=" & Me.m_EPData.Market(iFlt, iGrp).ToString & ", mediation=" & pMult.ToString)
-        'End If
-
         'No price elasticity function found set the multiplier to 1
         If Not bFoundMed Then pMult = 1
-        'apply the price elasticity multiplier to market value for this Group/Fleet
+        'Return the multiplier
         Return pMult
 
     End Function
