@@ -1113,10 +1113,11 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iGrp">Index of the affected group. This is the group that the price function is applied to in the application grid.</param>
         ''' <param name="iFlt">Index of the affected fleet. This is the fleet that the price function is applied to in the application grid.</param>
-        ''' <returns></returns>
+        ''' <returns>[Ecopath market value] * [PES multiplier]</returns>
         ''' <remarks></remarks>
         Public Function PESValue(ByVal iGrp As Integer, ByVal iFlt As Integer) As Single
             'apply the price elasticity multiplier to market value for this Group/Fleet
+            'if there is no PES function for this group fleet getPESMult(group,fleet) will return 1
             Return Me.m_EPData.Market(iFlt, iGrp) * Me.m_Data.PriceMedData.getPESMult(iGrp, iFlt)
 
         End Function
