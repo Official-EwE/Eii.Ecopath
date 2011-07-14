@@ -10237,7 +10237,7 @@ Public Class cCore
                 stanza.CB(j) = m_EcoPathData.QBinput(m_Stanza.EcopathCode(iStanza, j))
             Next j
 
-            For iage As Integer = 1 To stanza.MaxAge ' the MaxAge of a stanza group is not available until the Index has been set
+            For iage As Integer = 0 To stanza.MaxAge ' the MaxAge of a stanza group is not available until the Index has been set
                 'biomass at age is not used by ecosim it is compute when it is needed
                 stanza.BiomassAtAge(iage) = m_Stanza.SplitWage(iStanza, iage) * m_Stanza.SplitNo(iStanza, iage)
                 stanza.WeightAtAge(iage) = m_Stanza.SplitWage(iStanza, iage)
