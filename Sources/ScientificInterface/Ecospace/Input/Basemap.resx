@@ -123,13 +123,13 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_plLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 87</value>
+    <value>0, 84</value>
   </data>
   <data name="m_plLayers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 501</value>
+    <value>184, 504</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_plLayers.TabIndex" type="System.Int32, mscorlib">
@@ -139,7 +139,7 @@
     <value>m_plLayers</value>
   </data>
   <data name="&gt;&gt;m_plLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSmoothPanel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSmoothPanel, ScientificInterfaceShared, Version=6.2.0.713, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_plLayers.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -172,7 +172,7 @@
     <value>m_zoomToolbar</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucMapZoomToolbar, EwE6, Version=6.1.1.402, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.ucMapZoomToolbar, EwE6, Version=6.2.0.713, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -199,7 +199,7 @@
     <value>m_zoomContainer</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucMapZoom, EwE6, Version=6.1.1.402, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.ucMapZoom, EwE6, Version=6.2.0.713, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -250,7 +250,7 @@
     <value>m_hdrLayers</value>
   </data>
   <data name="&gt;&gt;m_hdrLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.713, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLayers.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -313,7 +313,7 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsbDefineRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 35</value>
+    <value>48, 37</value>
   </data>
   <data name="m_tsbDefineRegion.Text" xml:space="preserve">
     <value>&amp;Region</value>
@@ -340,7 +340,7 @@
     <value>m_tsEditBasemapThingies</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.2.0.713, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -484,6 +484,6 @@
     <value>Basemap</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.402, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.2.0.713, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

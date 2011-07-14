@@ -91,14 +91,19 @@ Partial Class Basemap
             '
             'm_hdrLayers
             '
+            Me.m_hdrLayers.CanCollapseParent = False
+            Me.m_hdrLayers.CollapsedParentHeight = 0
             resources.ApplyResources(Me.m_hdrLayers, "m_hdrLayers")
+            Me.m_hdrLayers.IsCollapsed = False
             Me.m_hdrLayers.Name = "m_hdrLayers"
             '
             'm_tsEditBasemapThingies
             '
             resources.ApplyResources(Me.m_tsEditBasemapThingies, "m_tsEditBasemapThingies")
+            Me.m_tsEditBasemapThingies.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsEditBasemapThingies.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbEditBasemap, Me.m_tsbDefineHabitats, Me.m_tsbDefineMPA, Me.m_tsbDefineRegion})
             Me.m_tsEditBasemapThingies.Name = "m_tsEditBasemapThingies"
+            Me.m_tsEditBasemapThingies.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'tsbEditBasemap
             '

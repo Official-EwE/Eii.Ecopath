@@ -132,6 +132,7 @@ Namespace Ecospace.Basemap
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
             RemoveHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
+            Me.SelectedLayer = Nothing
 
             ' Detach from message sources
             Me.CoreComponents = Nothing
