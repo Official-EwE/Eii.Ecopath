@@ -52,14 +52,7 @@ Namespace Ecospace.Basemap.Layers
             If (Me.UIContext Is Nothing) Then Return
 
             ' Set control value
-            Dim sValue As Single = Math.Max(CSng(Me.Editor.CellValue), 1.0!)
-            Me.m_nudDepth.Value = Convert.ToDecimal(Math.Max(Math.Min(sValue, CSng(Me.m_nudDepth.Maximum)), CSng(Me.m_nudDepth.Minimum)))
-            Me.UpdatePreview(Me.m_pbPreviewWater, sValue)
-
-            If (TypeOf Me.Editor Is cLayerEditorDepth) Then
-                Dim ed As cLayerEditorDepth = DirectCast(Me.Editor, cLayerEditorDepth)
-                Me.m_cbProtectCoastline.Checked = ed.ProtectCoastLine
-            End If
+            Me.UpdatePreview(Me.m_pbPreviewWater, CSng(Me.m_nudDepth.Value))
 
         End Sub
 
@@ -73,24 +66,9 @@ Namespace Ecospace.Basemap.Layers
             Me.UpdateContent(Me.Editor)
         End Sub
 
-        Private Sub OnWaterSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbWater.CheckedChanged
+        Private Sub OnLandWaterSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_rbWater.CheckedChanged, m_rbLand.CheckedChanged
             Me.UpdateValue()
-            If (TypeOf Me.Editor Is cLayerEditorDepth) Then
-                Dim ed As cLayerEditorDepth = DirectCast(Me.Editor, cLayerEditorDepth)
-                ed.ProtectCoastLine = True
-                Me.UpdateContent(ed)
-            End If
-        End Sub
-
-        Private Sub OnLandSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbLand.CheckedChanged
-            Me.UpdateValue()
-            If (TypeOf Me.Editor Is cLayerEditorDepth) Then
-                Dim ed As cLayerEditorDepth = DirectCast(Me.Editor, cLayerEditorDepth)
-                ed.ProtectCoastLine = False
-                Me.UpdateContent(ed)
-            End If
         End Sub
 
         Private Sub OnValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -141,8 +119,10 @@ Namespace Ecospace.Basemap.Layers
 
             If Me.m_rbWater.Checked Then
                 Me.Editor.CellValue = Me.m_nudDepth.Value
+                Me.m_cbProtectCoastline.Enabled = True
             Else
                 Me.Editor.CellValue = 0
+                Me.m_cbProtectCoastline.Enabled = False
             End If
         End Sub
 
