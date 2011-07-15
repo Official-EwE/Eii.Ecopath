@@ -82,7 +82,7 @@ Partial Class dlgChangeShape
             'm_lbShape
             '
             Me.m_lbShape.FormattingEnabled = True
-            Me.m_lbShape.Items.AddRange(New Object() {resources.GetString("m_lbShape.Items"), resources.GetString("m_lbShape.Items1"), resources.GetString("m_lbShape.Items2"), resources.GetString("m_lbShape.Items3"), resources.GetString("m_lbShape.Items4")})
+            Me.m_lbShape.Items.AddRange(New Object() {resources.GetString("m_lbShape.Items"), resources.GetString("m_lbShape.Items1"), resources.GetString("m_lbShape.Items2"), resources.GetString("m_lbShape.Items3"), resources.GetString("m_lbShape.Items4"), resources.GetString("m_lbShape.Items5")})
             resources.ApplyResources(Me.m_lbShape, "m_lbShape")
             Me.m_lbShape.Name = "m_lbShape"
             '

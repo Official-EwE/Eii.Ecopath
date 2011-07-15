@@ -413,7 +413,7 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>
     ''' <para>This determines how much weight is put into the pathfinding movement algorithm for migratory species.
-    ''' If fish are getting cought in complex habitat, increasing this value will help the fish get "un-stuck".</para>
+    ''' If fish are getting caught in complex habitat, increasing this value will help the fish get "un-stuck".</para>
     ''' <para>Possible values [0-1]</para>
     ''' <para>Increasing this will increase the concentration of the fish, so the regular NS/EW concentrations should
     ''' be lowered to keep the concentration the same.</para>

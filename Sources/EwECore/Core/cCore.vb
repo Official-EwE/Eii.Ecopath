@@ -10334,7 +10334,7 @@ Public Class cCore
             bSuccess = m_EcoSim.CalculateStanzaParameters(iStanza, nStanzas, stanza.LeadingB, FirstAge, SecondAge, Bio, orgVBK, Z, _
                                                 stanza.LeadingCB, cb, stanza.BiomassAccumulationRate, Bat)
 
-            'set Age2() for the last life stage of this stanza group to the value calculated here and CalculateStanzaParameters() (why not just once in CalculateStanzaParameters?) 
+            'set Age2() for the last life stage of this stanza group to the value calculated here and CalculateStanzaParameters()
             'In EwE5 this only happens in InitStanza here we need the value from Age2() for the interface EwE5 uses SecondAge()
             m_Stanza.Age2(iStanza, nStanzas) = SecondAge(nStanzas)
 

@@ -3513,14 +3513,12 @@ Namespace Ecosim
 
                 'Calculate weight at age
                 m_stanza.vBM(isp) = 1 - 3 * vbK / 12
-
-                '040213VC: vbMann isn't used anywhere
-                'jb then I'm getting rid of it
-                ' vBMann(isp) = 1 - 3 * vbK : If vBMann(isp) < 0 Then vBMann(isp) = 0
                 For Age = 0 To Second(Stanza)         'weight will be zero if age is zero!!!!!
+                    'm_stanza.SplitWage(isp, Age) = (1 - Math.Exp(-vbK * (Age + 0.5F) / 12)) ^ 3
                     m_stanza.SplitWage(isp, Age) = (1 - Math.Exp(-vbK * Age / 12)) ^ 3
                     m_stanza.WWa(isp, Age) = m_stanza.SplitWage(isp, Age) ^ (2 / 3)
                 Next
+
                 'Estimate monthly survival rate, Sa, for age a, from Z estimates by age range
                 Survive(0) = 1
                 PrevSurv = 1
@@ -4156,7 +4154,7 @@ Namespace Ecosim
         ''' Sets Qmult(ngroups) (density dependent catchability multiplier) to biomass(ngroups) 
         ''' </summary>
         ''' <param name="BB">Biomass use to set Qmult()</param>
-        ''' <remarks>Called at each time step to set density dependent catchability to the current biomass</remarks>
+        ''' <remarks>Called at each time step to set density dependent catchability to biomass at the current time step</remarks>
         Private Sub setDenDepCatchMult(ByVal BB() As Single)
 
             ReDim Qmult(m_Data.nGroups)

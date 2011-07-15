@@ -339,6 +339,9 @@
   <data name="m_lbShape.Items4" xml:space="preserve">
     <value>Exponential</value>
   </data>
+  <data name="m_lbShape.Items5" xml:space="preserve">
+    <value>Beta</value>
+  </data>
   <data name="m_lbShape.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>

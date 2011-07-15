@@ -13,6 +13,7 @@ Public Enum eShapeFunctionType
     Sigmoid
     Hyperbolic
     Exponential
+    Betapdf
 End Enum
 
 #End Region

@@ -228,4 +228,24 @@ Public Class cMediationDataStructures
     Public Sub New()
 
     End Sub
+
+
+End Class
+
+
+Public Class cCapacityFunction
+    Inherits cMediationDataStructures
+
+    Private m_map(,) As Single
+
+    Public Property Map() As Single(,)
+        Get
+
+        End Get
+        Set(ByVal value As Single(,))
+
+        End Set
+    End Property
+
+
 End Class

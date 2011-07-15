@@ -37,6 +37,10 @@ Namespace Controls
 
         Private m_bRecalc As Boolean = True
 
+        Private MAXIT As Integer = 100
+        Private EPS As Single = 0.0000003
+        Private FPMIN As Single = 1.0E-30
+
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -193,6 +197,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
 
+            Dim bBeta As Boolean = False
             Dim bEnableSteep As Boolean = False
             Dim bEnableYBase As Boolean = False
             Dim bEnableYEnd As Boolean = False
@@ -209,9 +214,22 @@ Namespace Controls
                     bEnableYBase = True : bEnableYEnd = True : bEnableYZero = True : bEnableSteep = True
                 Case eShapeFunctionType.Exponential
                     bEnableYZero = True : bEnableYEnd = True : bEnableYBase = True
+                Case eShapeFunctionType.Betapdf
+                    bEnableYZero = True : bEnableYEnd = True
+                    bBeta = True
+
                 Case Else
                     Debug.Assert(False)
             End Select
+
+            If bBeta Then
+                Me.lbYZero.Text = "a"
+                Me.lbYEnd.Text = "b"
+            Else
+                Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgChangeShape))
+                Me.lbYZero.Text = resources.GetString("lbYZero.Text")
+                Me.lbYEnd.Text = resources.GetString("lbYEnd.Text")
+            End If
 
             ' Enable controls
             Me.m_fpYZero.Enabled = bEnableYZero
@@ -277,6 +295,14 @@ Namespace Controls
                             Me.m_asDataWork(i) = sTmp
                         Next i
 
+                    Case eShapeFunctionType.Betapdf
+
+                        'Beta probability distribution function
+                        For i As Integer = 1 To nPoints
+                            Dim x As Single = CSng(i / (nPoints + 1))
+                            Me.m_asDataWork(i) = CSng(Me.betaPDF(sYZero, sYEnd, x))
+                        Next i
+
                     Case Else
                         Debug.Assert(False)
                         Return False
@@ -290,6 +316,147 @@ Namespace Controls
             Return True
 
         End Function
+
+
+        '' <summary>
+        ''' Gamma function
+        ''' </summary>
+        ''' <param name="xx"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function Gamma(ByVal xx As Double) As Double
+            'HACK gammln(x) returns the log n gamma used by Numeric Recipies in C betai(a,b,x) 
+            'we need gamma for beta(x) so remove the log
+            Return Math.Exp(Me.gammln(xx))
+        End Function
+
+
+        ''' <summary>
+        ''' Gamma Log n from Numeric Recipies in C
+        ''' </summary>
+        ''' <param name="xx"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function gammln(ByVal xx As Double) As Double
+            'from NRC-2
+            Dim x As Double, y As Double, tmp As Double, ser As Double
+            Dim cof() As Double = {76.180091729471457, -86.505320329416776, _
+                                  24.014098240830911, -1.231739572450155, _
+                                  0.001208650973866179, -0.000005395239384953}
+            Dim j As Integer
+            x = xx
+            tmp = x + 5.5
+            tmp -= (x + 0.5) * Math.Log(tmp)
+            ser = 1.0000000001900149
+
+            For j = 0 To 5
+                y += 1
+                ser += cof(j) / (x + y)
+            Next
+
+            Return -tmp + Math.Log(2.5066282746310007 * ser / x)
+
+        End Function
+
+        ''' <summary>
+        ''' Cumulative Beta distribution function from Numeric Recipies in C
+        ''' </summary>
+        ''' <param name="a"></param>
+        ''' <param name="b"></param>
+        ''' <param name="x"></param>
+        ''' <returns></returns>
+        ''' <remarks>Not used here but left in because it works!!!</remarks>
+        Private Function betacf(ByVal a As Double, ByVal b As Double, ByVal x As Double) As Double
+
+            Dim m As Integer, m2 As Integer
+            Dim aa As Double, c As Double, d As Double, del As Double, h As Double, qab As Double, qam As Double, qap As Double
+            qab = a + b ' These q's will be used in factors that occur
+            qap = a + 1.0F ' in the coecients (6.4.6).
+            qam = a - 1.0F '
+            c = 1.0 ' First step of Lentz's method.
+            d = 1.0F - qab * x / qap '
+            If (Math.Abs(d) < FPMIN) Then d = FPMIN
+            d = 1.0F / d
+            h = d
+
+            For m = 1 To MAXIT ' - 1 '(m=1;m<=MAXIT;m++) 
+                m2 = 2 * m
+                aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+                d = 1.0F + aa * d ' One step (the even one) of the recurrence.
+                If (Math.Abs(d) < FPMIN) Then d = FPMIN
+                c = 1.0F + aa / c
+                If (Math.Abs(c) < FPMIN) Then c = FPMIN 'if (fabs(c) < FPMIN) c=FPMIN;
+                d = 1.0F / d
+                h *= d * c
+                aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+                d = 1.0F + aa * d ' Next step of the recurrence (the odd one).
+                If (Math.Abs(d) < FPMIN) Then d = FPMIN
+                c = 1.0F + aa / c
+                If (Math.Abs(c) < FPMIN) Then c = FPMIN
+                d = 1.0F / d
+                del = d * c
+                h *= del
+                If (Math.Abs(del - 1.0) < EPS) Then Exit For ' Are we done?'if (fabs(del-1.0) < EPS) break; Are we done?
+
+            Next
+
+            'if (m > MAXIT) nrerror("a or b too big, or MAXIT too small in betacf");
+            Return h
+
+        End Function
+
+
+        Private Function beta(ByVal a As Single, ByVal b As Single) As Single
+            'Beta function from Wikipedia
+            'http://en.wikipedia.org/wiki/Beta_function
+            Return CSng(Gamma(a) * Gamma(b) / Gamma(a + b))
+
+        End Function
+
+        Private Function betaPDF(ByVal a As Single, ByVal b As Single, ByVal x As Single) As Single
+            'Beta Distribution pdf from Wikipedia
+            'http://en.wikipedia.org/wiki/Beta_distribution
+            Return CSng((x ^ (a - 1) * (1 - x) ^ (b - 1)) / beta(a, b))
+
+        End Function
+
+
+        ''' <summary>
+        ''' Cumulative Beta distribution from Numberic Recipies in C
+        ''' </summary>
+        ''' <param name="a"></param>
+        ''' <param name="b"></param>
+        ''' <param name="x"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function betai(ByVal a As Double, ByVal b As Double, ByVal x As Double) As Double
+
+            Dim bt As Double
+            ' if (x < 0.0 || x > 1.0) nrerror("Bad x in routine betai");
+            If (x <= 0.0 Or x >= 1.0) Then
+                bt = 0.0
+            Else
+                bt = Math.Exp(gammln(a + b) - gammln(a) - gammln(b) + a * Math.Log(x) + b * Math.Log(1.0 - x))
+            End If
+
+            If (x < (a + 1.0) / (a + b + 2.0)) Then 'Use continued fraction directly.
+                Return bt * betacf(a, b, x) / a
+            Else 'Use continued fraction after making the symmetry transformation.
+                Return 1D - bt * betacf(b, a, 1D - x) / b ' 
+            End If
+
+
+            '            float bt;
+            'if (x < 0.0 || x > 1.0) nrerror("Bad x in routine betai");
+            'if (x == 0.0 || x == 1.0) bt=0.0;
+            'else Factors in front of the continued fraction.
+            'bt=exp(gammln(a+b)-gammln(a)-gammln(b)+a*log(x)+b*log(1.0-x));
+            'if (x < (a+1.0)/(a+b+2.0)) Use continued fraction directly.
+            'return bt*betacf(a,b,x)/a;
+            'else Use continued fraction after making the sym-
+            'return 1.0-bt*betacf(b,a,1.0-x)/b; metry transformation.
+        End Function
+
 
 #End Region ' Private method helpers
 
