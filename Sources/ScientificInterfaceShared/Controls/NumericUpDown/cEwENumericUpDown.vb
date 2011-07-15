@@ -26,6 +26,8 @@ Namespace Controls
 
 #Region " Control overrides "
 
+#If 0 Then
+
         ''' <summary>
         ''' Mouse press override. Used to set the capture for possible dragging.
         ''' </summary>
@@ -98,6 +100,8 @@ Namespace Controls
             Return New Point(dx, dy)
 
         End Function
+
+#End If
 
 #End Region ' Control overrides
 
