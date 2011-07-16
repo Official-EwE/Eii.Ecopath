@@ -36,38 +36,38 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' This method returns the marks displayed on the Axis X
+        ''' Get the labels to display along the X axis.
         ''' </summary>
-        Private Function GetAxisX() As String()
+        ''' <param name="iWidth">Width of the X axis for the labels.</param>
+        ''' <param name="sScale">Label placement scale factor along the X axis.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub GetXAxisLabels(ByVal iWidth As Integer, ByRef astrLabels As String(), ByRef sScale As Single)
 
-            Dim lstrAxis As New List(Of String)
+            Dim lstrLabels As New List(Of String)
 
-            If Me.Shape Is Nothing Then Return lstrAxis.ToArray()
-
-            If Not Me.IsSeasonal Then
-                Dim iStepSize As Integer
-                Dim iYMax As Integer = CInt(Me.Shape.XMax / cCore.N_MONTHS)
-
-                iStepSize = (iYMax + 9) \ 10
-                For i As Integer = 0 To iYMax Step iStepSize
-                    lstrAxis.Add(i.ToString)
-                Next
-                Return lstrAxis.ToArray()
-
-            Else
-
-                Dim lstrMonths As New List(Of String)
-                For i As Integer = 1 To 12
-                    lstrMonths.Add(New Date(1, i, 1).ToString("MMM"))
-                Next
-                ' Hack: one extra to center labels under value ranges
-                lstrMonths.Add("")
-                Return lstrMonths.ToArray()
-
+            If (Me.Shape IsNot Nothing) Then
+                If Not Me.IsSeasonal Then
+                    Dim iYearMax As Integer = CInt(Me.XAxisMaxValue / cCore.N_MONTHS)
+                    Dim iStepSize As Integer = (iYearMax + 9) \ 10
+                    For i As Integer = 0 To iYearMax Step iStepSize
+                        lstrLabels.Add(i.ToString)
+                        sScale = CSng(Me.YearToX(i, iWidth) / iWidth)
+                    Next
+                Else
+                    Dim lstrMonths As New List(Of String)
+                    For i As Integer = 1 To cCore.N_MONTHS
+                        lstrMonths.Add(New Date(1, i, 1).ToString("MMM"))
+                    Next
+                    ' Hack: one extra to center labels under value ranges
+                    lstrMonths.Add("")
+                    sScale = 1
+                End If
             End If
 
-        End Function
+            astrLabels = lstrLabels.ToArray
+        End Sub
 
         Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
             MyBase.OnResize(e)
@@ -84,6 +84,7 @@ Namespace Controls
 
             Dim strLabel As String = ""
             Dim sXMax As Single = 0.0!
+            Dim sLabelXScale As Single = 1.0!
             Dim sLabelXPos As Single = 0.0!
             Dim astrXMarks As String() = Nothing
             Dim sfmt As StringFormat = Nothing
@@ -101,18 +102,18 @@ Namespace Controls
 
             'Draw the line with y's value equal to 1
             g.DrawLine(Pens.Black, _
-                cShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax), _
-                cShapeImage.ToImagePoint(New PointF(Me.Shape.XMax, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax))
+                cShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.XAxisMaxValue, sYMax), _
+                cShapeImage.ToImagePoint(New PointF(Me.XAxisMaxValue, 1), Me.ClientRectangle, Me.XAxisMaxValue, sYMax))
 
             ' Draw the axis when this mode is on
             If Me.m_bShowAxis Then
 
-                'Draw X and Y axises
+                ' Draw X and Y axises
                 g.DrawLine(Pens.Gray, New PointF(rcImage.Left, rcImage.Bottom), New PointF(rcImage.Right, rcImage.Bottom))
                 g.DrawLine(Pens.Gray, New PointF(rcImage.Left, rcImage.Top), New PointF(rcImage.Left, rcImage.Bottom))
 
-                ' Draw Axis X marks
-                astrXMarks = GetAxisX()
+                ' Draw X axis labels
+                Me.GetXAxisLabels(rcImage.Width, astrXMarks, sLabelXScale)
 
                 sfmt = New StringFormat
                 sfmt.Alignment = StringAlignment.Center
@@ -127,7 +128,7 @@ Namespace Controls
                     If Me.Shape.IsSeasonal Then
                         sLabelXPos = CSng((i + 0.5!) * rcImage.Width / (astrXMarks.Length - 1))
                     Else
-                        sLabelXPos = CSng(i * rcImage.Width / (astrXMarks.Length - 1))
+                        sLabelXPos = CSng(i * rcImage.Width * sLabelXScale / (astrXMarks.Length - 1))
                     End If
                     g.DrawString(astrXMarks(i), Me.Font, brTmp, rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace, sfmt)
                     g.DrawLine(penTmp, rcImage.Left + sLabelXPos, rcImage.Bottom, rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace / 2)

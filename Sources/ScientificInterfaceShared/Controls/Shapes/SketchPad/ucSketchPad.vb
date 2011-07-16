@@ -267,7 +267,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         <Category("Sketchpad"), _
          Description("State the max X value for the graph.")> _
-        Public Property XAxisMaxValue() As Integer
+        Public Overridable Property XAxisMaxValue() As Integer
             Get
                 If Me.m_iXMax <= 0 Then Return Me.Shape.XMax
                 Return Me.m_iXMax

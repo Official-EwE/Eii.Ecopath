@@ -58,6 +58,8 @@ Namespace Controls
             Dim strLabel As String = ""
             Dim fmt As StringFormat = Nothing
             Dim desc As New cTimeSeriesTypeFormatter()
+            Dim astrXMarks As String() = Nothing
+            Dim sLabelXScale As Single = 1.0!
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
 
@@ -67,8 +69,8 @@ Namespace Controls
             ' JS 30Jan08: Only draw this line if it is going to be visible
             If (sYMax >= 1.0) Then
                 g.DrawLine(Pens.Black, _
-                    cShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax), _
-                    cShapeImage.ToImagePoint(New PointF(Me.Shape.XMax, 1), Me.ClientRectangle, Me.Shape.XMax, sYMax))
+                    cShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.XAxisMaxValue, sYMax), _
+                    cShapeImage.ToImagePoint(New PointF(Me.XAxisMaxValue, 1), Me.ClientRectangle, Me.XAxisMaxValue, sYMax))
             End If
 
             ' Draw the axis when this mode is on
@@ -78,8 +80,9 @@ Namespace Controls
                 g.DrawLine(Pens.Gray, New PointF(rcImage.Left, rcImage.Bottom), New PointF(rcImage.Right, rcImage.Bottom))
                 g.DrawLine(Pens.Gray, New PointF(rcImage.Left, rcImage.Top), New PointF(rcImage.Left, rcImage.Bottom))
 
-                ' Draw Axis X marks
-                Dim astrXMarks As String() = GetAxisX()
+                ' Draw X axis labels
+                Me.GetXAxisLabels(rcImage.Width, astrXMarks, sLabelXScale)
+
                 fmt = New StringFormat
                 fmt.Alignment = StringAlignment.Center
                 fmt.LineAlignment = StringAlignment.Center
@@ -94,7 +97,7 @@ Namespace Controls
                     If Me.Shape.IsSeasonal Then
                         sLabelXPos = CSng((i + 0.5!) * rcImage.Width / Math.Max(1, astrXMarks.Length - 1))
                     Else
-                        sLabelXPos = CSng(i * rcImage.Width / Math.Max(1, astrXMarks.Length - 1))
+                        sLabelXPos = CSng(i * rcImage.Width * sLabelXScale / Math.Max(1, astrXMarks.Length - 1))
                     End If
                     g.DrawString(astrXMarks(i), Me.Font, brTmp, _
                             rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace, fmt)
@@ -178,10 +181,14 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' This method returns the marks displayed on the Axis X
+        ''' Get the labels to display along the X axis.
         ''' </summary>
-        Private Function GetAxisX() As String()
+        ''' <param name="iWidth">Width of the X axis for the labels.</param>
+        ''' <param name="sScale">Label placement scale factor along the X axis.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub GetXAxisLabels(ByVal iWidth As Integer, ByRef astrLabels As String(), ByRef sScale As Single)
 
             Dim iDS As Integer = Me.UIContext.Core.ActiveTimeSeriesDatasetIndex
             Dim ds As cTimeSeriesDataset = Nothing
@@ -190,41 +197,40 @@ Namespace Controls
             Dim iTSFirstYear As Integer = 0
             Dim iStepSize As Integer = 1
             Dim lstrAxis As New List(Of String)
+            sScale = 1
 
-            If Me.Shape Is Nothing Then Return lstrAxis.ToArray()
-            If Not (TypeOf Me.Shape Is cTimeSeries) Then Return lstrAxis.ToArray()
+            If (Me.Shape IsNot Nothing) And (TypeOf Me.Shape Is cTimeSeries) Then
 
-            If Not Me.IsSeasonal Then
+                If Not Me.IsSeasonal Then
 
-                If iDS >= 0 Then ds = Me.UIContext.Core.TimeSeriesDataset(iDS)
+                    If iDS >= 0 Then ds = Me.UIContext.Core.TimeSeriesDataset(iDS)
 
-                If ds IsNot Nothing Then
-                    iTSFirstYear = ds.FirstYear
+                    If ds IsNot Nothing Then
+                        iTSFirstYear = ds.FirstYear
+                    Else
+                        iTSFirstYear = 1
+                    End If
+
+                    iTSFinalYear = iTSFirstYear + Me.XAxisMaxValue
+                    iStepSize = Math.Max(1, CInt((iTSFinalYear - iTSFirstYear) / 10))
+                    For i As Integer = iTSFirstYear To iTSFinalYear Step iStepSize
+                        lstrAxis.Add(i.ToString)
+                    Next
                 Else
-                    iTSFirstYear = 1
+
+                    Dim lstrMonths As New List(Of String)
+                    For i As Integer = 1 To cCore.N_MONTHS
+                        lstrMonths.Add(New Date(1, i, 1).ToString("MMM"))
+                    Next
+
+                    ' Hack: one extra to center labels under value ranges
+                    lstrMonths.Add("")
                 End If
-
-                iTSFinalYear = iTSFirstYear + Me.Shape.XMax
-                iStepSize = Math.Max(1, CInt((iTSFinalYear - iTSFirstYear) / 10))
-                For i As Integer = iTSFirstYear To iTSFinalYear Step iStepSize
-                    lstrAxis.Add(i.ToString)
-                Next
-                Return lstrAxis.ToArray()
-
-            Else
-
-                Dim lstrMonths As New List(Of String)
-                For i As Integer = 1 To 12
-                    lstrMonths.Add(New Date(1, i, 1).ToString("MMM"))
-                Next
-
-                ' Hack: one extra to center labels under value ranges
-                lstrMonths.Add("")
-                Return lstrMonths.ToArray()
-
             End If
 
-        End Function
+            astrLabels = lstrAxis.ToArray
+
+        End Sub
 
         Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
             MyBase.OnResize(e)

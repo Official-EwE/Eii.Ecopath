@@ -60,7 +60,7 @@ Namespace Controls
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
             'sYMax = Me.YAxisMaxValue
-            iXMax = Me.Shape.XMax
+            iXMax = Me.XAxisMaxValue
             sYScale = Me.YMarkValue
 
             If (sYScale = 0) Then sYScale = 1
