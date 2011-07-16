@@ -24,20 +24,22 @@ Namespace Controls
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucSketchPadToolbar))
             Dim ts4 As System.Windows.Forms.ToolStripSeparator
             Dim ts2 As System.Windows.Forms.ToolStripSeparator
+            Dim sep42 As System.Windows.Forms.ToolStripSeparator
             Me.m_tsMenus = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_tsbnSaveAsImage = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnLongTerm = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnSeasonal = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbnShowAllData = New System.Windows.Forms.ToolStripButton
             Me.m_tslWeight = New System.Windows.Forms.ToolStripLabel
             Me.m_tstbWeight = New System.Windows.Forms.ToolStripTextBox
             Me.m_tsbnValues = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnChangeShape = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnReset = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnOptions = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbnShowAllData = New System.Windows.Forms.ToolStripButton
             ts1 = New System.Windows.Forms.ToolStripSeparator
             ts4 = New System.Windows.Forms.ToolStripSeparator
             ts2 = New System.Windows.Forms.ToolStripSeparator
+            sep42 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsMenus.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -60,7 +62,7 @@ Namespace Controls
             '
             resources.ApplyResources(Me.m_tsMenus, "m_tsMenus")
             Me.m_tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSaveAsImage, ts1, Me.m_tsbnLongTerm, Me.m_tsbnSeasonal, Me.m_tsbnShowAllData, ts2, Me.m_tslWeight, Me.m_tstbWeight, Me.m_tsbnValues, Me.m_tsbnChangeShape, Me.m_tsbnReset, ts4, Me.m_tsbnOptions})
+            Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSaveAsImage, ts1, Me.m_tsbnLongTerm, Me.m_tsbnSeasonal, ts2, Me.m_tslWeight, Me.m_tstbWeight, Me.m_tsbnValues, Me.m_tsbnChangeShape, Me.m_tsbnReset, ts4, Me.m_tsbnOptions, sep42, Me.m_tsbnShowAllData})
             Me.m_tsMenus.Name = "m_tsMenus"
             Me.m_tsMenus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
@@ -79,6 +81,13 @@ Namespace Controls
             '
             resources.ApplyResources(Me.m_tsbnSeasonal, "m_tsbnSeasonal")
             Me.m_tsbnSeasonal.Name = "m_tsbnSeasonal"
+            '
+            'm_tsbnShowAllData
+            '
+            Me.m_tsbnShowAllData.CheckOnClick = True
+            Me.m_tsbnShowAllData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnShowAllData, "m_tsbnShowAllData")
+            Me.m_tsbnShowAllData.Name = "m_tsbnShowAllData"
             '
             'm_tslWeight
             '
@@ -115,12 +124,10 @@ Namespace Controls
             resources.ApplyResources(Me.m_tsbnOptions, "m_tsbnOptions")
             Me.m_tsbnOptions.Name = "m_tsbnOptions"
             '
-            'm_tsbnShowAllData
+            'sep42
             '
-            Me.m_tsbnShowAllData.CheckOnClick = True
-            Me.m_tsbnShowAllData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnShowAllData, "m_tsbnShowAllData")
-            Me.m_tsbnShowAllData.Name = "m_tsbnShowAllData"
+            sep42.Name = "sep42"
+            resources.ApplyResources(sep42, "sep42")
             '
             'ucSketchPadToolbar
             '

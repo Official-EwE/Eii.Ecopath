@@ -74,8 +74,7 @@ Namespace Controls
         Protected m_shapeType As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
 
         ''' <summary></summary>
-        Private m_sXMax As Single = cCore.NULL_VALUE
-
+        Private m_iXMax As Integer = cCore.NULL_VALUE
         ''' <summary></summary>
         Private m_sYMax As Single = cCore.NULL_VALUE
         ''' <summary></summary>
@@ -259,6 +258,24 @@ Namespace Controls
                 Me.Invalidate()
             End Set
 
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the max Y value for the graph.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("State the max X value for the graph.")> _
+        Public Property XAxisMaxValue() As Integer
+            Get
+                If Me.m_iXMax <= 0 Then Return Me.Shape.XMax
+                Return Me.m_iXMax
+            End Get
+            Set(ByVal iValue As Integer)
+                Me.m_iXMax = iValue
+                Me.Invalidate()
+            End Set
         End Property
 
         ''' -------------------------------------------------------------------
@@ -562,17 +579,17 @@ Namespace Controls
                                 ByVal drawMode As eSketchDrawModeTypes, _
                                 ByVal sYMax As Single)
 
+            If (Me.Shape Is Nothing) Then Return
+
             ' Draw default
             cShapeImage.DrawShape(Me.UIContext, shape, rcImage, g, clr, drawMode, _
-                                  cCore.NULL_VALUE, sYMax, _
+                                  Me.XAxisMaxValue, sYMax, _
                                   Me.XMarkValue, Me.YMarkValue, _
                                   Me.XMarkLabel, Me.YMarkLabel)
 
             ' Draw gray area to block out data past the NumDataYears, if applicable
-            If (shape IsNot Nothing) Then
-                If (Me.NumDataYears > 0 And Not shape.IsSeasonal) Then
-                    Me.DrawYearLimit(g, Me.YearToX(Me.NumDataYears, rcImage.Width))
-                End If
+            If (Me.NumDataYears > 0 And Not shape.IsSeasonal) Then
+                Me.DrawYearLimit(g, Me.YearToX(Me.NumDataYears, rcImage.Width))
             End If
 
         End Sub
@@ -604,12 +621,12 @@ Namespace Controls
         End Sub
 
         Protected Function YearToX(ByVal iYear As Integer, ByVal iWidth As Integer) As Integer
-            Return CInt(Math.Round((iYear * iWidth * cCore.N_MONTHS) / Me.Shape.XMax))
+            Return CInt(Math.Round((iYear * iWidth * cCore.N_MONTHS) / Me.XAxisMaxValue))
         End Function
 
         Protected Function XToYear(ByVal x As Integer, ByVal iWidth As Integer) As Integer
-            Dim iYear As Integer = CInt(Math.Round(x * Me.Shape.XMax / (cCore.N_MONTHS * iWidth)))
-            Return Math.Min(Math.Max(0, iYear), CInt(Math.Floor(Me.Shape.XMax / cCore.N_MONTHS)))
+            Dim iYear As Integer = CInt(Math.Round(x * Me.XAxisMaxValue / (cCore.N_MONTHS * iWidth)))
+            Return Math.Min(Math.Max(0, iYear), CInt(Math.Floor(Me.XAxisMaxValue / cCore.N_MONTHS)))
         End Function
 
         Private Sub UpdateControl()
@@ -667,7 +684,7 @@ Namespace Controls
 
         Private Sub DragXMark(ByVal ptPrev As Point, ByVal ptCur As Point)
             Dim sYMax As Single = Me.YAxisMaxValue
-            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
+            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
             Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
             Me.XMarkValue = ptfCur.X
             Me.PositionYMark()
@@ -682,7 +699,7 @@ Namespace Controls
         Private Sub DrawShape(ByVal ptPrev As Point, ByVal ptCur As Point)
 
             Dim sYMax As Single = Me.YAxisMaxValue
-            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
+            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
             Dim ptfPrev As PointF = cShapeImage.ToModelPoint(ptPrev, Me.ClientRectangle, iXMax, sYMax)
             Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
 
@@ -690,7 +707,7 @@ Namespace Controls
             Dim iEnd As Integer = CInt(Math.Max(ptfPrev.X, ptfCur.X))
 
             'If iStart = iEnd Or iEnd > Me.Shape.XData.XMax Or iStart < 1 Then
-            If (iStart < 0) Or (iEnd > Me.Shape.XMax) Then
+            If (iStart < 0) Or (iEnd > Me.XAxisMaxValue) Then
                 Return
             End If
 
@@ -704,8 +721,8 @@ Namespace Controls
                 Next
             End If
 
-            If iEnd = Math.Round((Me.ClientRectangle.Width - 1) * Me.Shape.XMax / Me.ClientRectangle.Width) Then
-                For i As Integer = iEnd To Me.Shape.XMax - 1
+            If iEnd = Math.Round((Me.ClientRectangle.Width - 1) * Me.XAxisMaxValue / Me.ClientRectangle.Width) Then
+                For i As Integer = iEnd To Me.XAxisMaxValue - 1
                     Me.Shape.ShapeData(i) = Me.Shape.ShapeData(iEnd)
                 Next
             End If
@@ -720,7 +737,7 @@ Namespace Controls
 
             If Me.m_bShowTooltip And (ptCur <> Nothing) Then
                 Dim sYMax As Single = Me.YAxisMaxValue
-                Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
+                Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
                 Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
                 Dim sValue As Single = 0.0!
 
@@ -757,7 +774,7 @@ Namespace Controls
 
             ' Check if x value is near x mark
             Dim sYMax As Single = Me.YAxisMaxValue
-            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
+            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
             Dim ptfMouseL As PointF = cShapeImage.ToModelPoint(New PointF(sX - cCLICK_TOLERANCE, 0), Me.ClientRectangle, iXMax, sYMax)
             Dim ptfMouseR As PointF = cShapeImage.ToModelPoint(New PointF(sX + cCLICK_TOLERANCE, 0), Me.ClientRectangle, iXMax, sYMax)
 
@@ -779,7 +796,7 @@ Namespace Controls
             If (Me.UIContext Is Nothing) Then Return False
 
             Dim sYMax As Single = Me.YAxisMaxValue
-            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.Shape.XMax))
+            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
             Dim ptfMouseT As PointF = cShapeImage.ToModelPoint(New PointF(ptCur.X, ptCur.Y - 2 * cCLICK_TOLERANCE), Me.ClientRectangle, iXMax, sYMax)
             Dim ptfMouseB As PointF = cShapeImage.ToModelPoint(New PointF(ptCur.X, ptCur.Y + 2 * cCLICK_TOLERANCE), Me.ClientRectangle, iXMax, sYMax)
             Dim sValue As Single = Me.Shape.ShapeData(CInt(ptfMouseT.X))

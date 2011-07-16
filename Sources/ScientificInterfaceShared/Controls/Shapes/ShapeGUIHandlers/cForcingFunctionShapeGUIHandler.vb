@@ -48,6 +48,8 @@ Namespace Controls
             Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.Any, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
 
+            Me.SetDisplayYears(False)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -274,9 +276,7 @@ Namespace Controls
                     Me.ResetShapePrompted(Me.SelectedShapes)
 
                 Case eShapeCommandTypes.ShowAllData
-                    If Me.SketchPad IsNot Nothing Then
-                        'Me.SketchPad.
-                    End If
+                    Me.SetDisplayYears(CBool(data))
 
                 Case Else
                     'Debug.Assert(False, String.Format("Command {0} not supported", cmd))
@@ -301,6 +301,7 @@ Namespace Controls
                 If (Me.SketchPad IsNot Nothing) Then
                     Try
                         Me.SketchPad.NumDataYears = Me.NumDataYears
+                        Me.SetDisplayYears(Me.SketchPad.XAxisMaxValue = cCore.NULL_VALUE)
                         Me.Refresh()
                     Catch ex As Exception
                     End Try
@@ -527,6 +528,12 @@ Namespace Controls
 
             End If
 
+        End Sub
+
+        Protected Sub SetDisplayYears(ByVal bShowAll As Boolean)
+            If Me.SketchPad IsNot Nothing Then
+                Me.SketchPad.XAxisMaxValue = CInt(IIf(bShowAll, cCore.NULL_VALUE, Me.SketchPad.NumDataYears * cCore.N_MONTHS))
+            End If
         End Sub
 
         Protected Sub ResetShapePrompted(ByVal ashapes As cShapeData())
