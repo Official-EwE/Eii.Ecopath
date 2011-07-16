@@ -70,14 +70,20 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Draws a <see cref="cForcingFunction">Forcing Function</see>.
+        ''' Draws a <see cref="cShapeData">shape</see>.
         ''' </summary>
+        ''' <param name="uic">UIContext that provides contextual information.</param>
         ''' <param name="shape">The shape to draw.</param>
         ''' <param name="rcImage">The dimensions of the area to render the shape onto.</param>
         ''' <param name="g">The graphics to draw the image onto.</param>
         ''' <param name="clr">The colour to use rendering the image.</param>
         ''' <param name="drawMode">The <see cref="eSketchDrawModeTypes">mode</see> to render the shape with.</param>
-        ''' <param name="sYMax">The max Y value to scale the shape to.</param>
+        ''' <param name="iXMax">The max X value to draw, or cCore.NULL_VALUE to use all points in the shape.</param>
+        ''' <param name="sYMax">The max Y value to scale the shape to, or cCore.NULL_VALUE to use the default.</param>
+        ''' <param name="strXMarkLabel">Label to draw along the XMark line.</param>
+        ''' <param name="strYMarkLabel">Label to draw along the YMark line.</param>
+        ''' <param name="sXMark">X mark line position, expressed in the same units as the X-axis values of the shape. Provide cCore.NULL_VALUE to use the default.</param>
+        ''' <param name="sYMark">Y mark line position, expressed in the same units as the Y-axis values of the shape. Provide cCore.NULL_VALUE to use the default.</param>
         ''' -------------------------------------------------------------------
         Public Shared Sub DrawShape(ByVal uic As cUIContext, _
                                 ByVal shape As cShapeData, _
@@ -85,22 +91,25 @@ Namespace Controls
                                 ByVal g As Graphics, _
                                 ByVal clr As Color, _
                                 ByVal drawMode As eSketchDrawModeTypes, _
+                                Optional ByVal iXMax As Integer = cCore.NULL_VALUE, _
                                 Optional ByVal sYMax As Single = cCore.NULL_VALUE, _
-                                Optional ByVal sYMark As Single = cCore.NULL_VALUE, _
                                 Optional ByVal sXMark As Single = cCore.NULL_VALUE, _
-                                Optional ByVal strYMarkLabel As String = "", _
-                                Optional ByVal strXMarkLabel As String = "")
+                                Optional ByVal sYMark As Single = cCore.NULL_VALUE, _
+                                Optional ByVal strXMarkLabel As String = "", _
+                                Optional ByVal strYMarkLabel As String = "")
 
             If shape Is Nothing Then Return
             If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax * 1.2!
             If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!))
 
+            If (iXMax <= 0) Then iXMax = shape.XMax
+
             cShapeImage.DrawShapeDirect(uic, _
-                    shape.ShapeData, shape.XMax, shape.IsSeasonal, _
+                    shape.ShapeData, iXMax, shape.IsSeasonal, _
                     rcImage, g, clr, _
                     drawMode, _
                     sYMax, _
-                    sYMark, sXMark, strYMarkLabel, strXMarkLabel)
+                    sXMark, sYMark, strXMarkLabel, strYMarkLabel)
 
         End Sub
 
@@ -111,10 +120,10 @@ Namespace Controls
                                 ByVal clr As Color, _
                                 ByVal drawMode As eSketchDrawModeTypes, _
                                 ByVal sYMax As Single, _
-                                ByVal sYMark As Single, _
                                 ByVal sXMark As Single, _
-                                Optional ByVal strYMarkLabel As String = "", _
-                                Optional ByVal strXMarkLabel As String = "")
+                                ByVal sYMark As Single, _
+                                Optional ByVal strXMarkLabel As String = "", _
+                                Optional ByVal strYMarkLabel As String = "")
 
             Dim sg As cStyleGuide = uic.StyleGuide
             Dim brShape As New SolidBrush(clr)
@@ -325,7 +334,7 @@ Namespace Controls
             If dm = eSketchDrawModeTypes.Dots Then dm = eSketchDrawModeTypes.LineSelective
 
             Try
-                DrawShape(uic, shape, New Rectangle(New Point(0, 0), bmp.Size), g, clr, dm, sYMax, cCore.NULL_VALUE)
+                DrawShape(uic, shape, New Rectangle(New Point(0, 0), bmp.Size), g, clr, dm, cCore.NULL_VALUE, sYMax, cCore.NULL_VALUE)
             Catch ex As Exception
                 ' Draw error image
                 g.FillRectangle(Brushes.White, New Rectangle(New Point(0, 0), bmp.Size))

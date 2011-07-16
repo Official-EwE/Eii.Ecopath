@@ -135,15 +135,6 @@ Namespace Ecosim
 
         End Sub
 
-        Private Function YearToX(ByVal iYear As Integer, ByVal iWidth As Integer) As Integer
-            Return CInt(Math.Round((iYear * iWidth * cCore.N_MONTHS) / Me.Shape.XMax))
-        End Function
-
-        Private Function XToYear(ByVal x As Integer, ByVal iWidth As Integer) As Integer
-            Dim iYear As Integer = CInt(Math.Round(x * Me.Shape.XMax / (cCore.N_MONTHS * iWidth)))
-            Return Math.Min(Math.Max(0, iYear), CInt(Math.Floor(Me.Shape.XMax / cCore.N_MONTHS)))
-        End Function
-
         Private Sub DrawYearLine(ByRef g As Graphics, ByVal x As Integer)
             Using penLine As New Pen(Drawing.Color.Black, 2)
                 penLine.DashStyle = Drawing2D.DashStyle.Dot
@@ -155,12 +146,6 @@ Namespace Ecosim
             Using penLine As New Pen(Drawing.Color.Orange, 1)
                 penLine.DashStyle = Drawing2D.DashStyle.Dot
                 g.DrawLine(penLine, New Point(x, 0), New Point(x, Me.Height))
-            End Using
-        End Sub
-
-        Private Sub DrawYearLimit(ByRef g As Graphics, ByVal x As Integer)
-            Using br As New HatchBrush(HatchStyle.LargeConfetti, Color.FromArgb(75, 0, 0, 0), Color.Transparent)
-                g.FillRectangle(br, New Rectangle(x, 0, Me.Width, Me.Height))
             End Using
         End Sub
 

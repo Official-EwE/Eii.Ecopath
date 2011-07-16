@@ -547,8 +547,10 @@ Namespace Controls
                                 ByVal sYMax As Single)
 
             ' Draw default
-            cShapeImage.DrawShape(Me.UIContext, shape, rcImage, g, clr, drawMode, sYMax, _
-                                 Me.YMarkValue, Me.XMarkValue, Me.YMarkLabel, Me.XMarkLabel)
+            cShapeImage.DrawShape(Me.UIContext, shape, rcImage, g, clr, drawMode, _
+                                  cCore.NULL_VALUE, sYMax, _
+                                  Me.XMarkValue, Me.YMarkValue, _
+                                  Me.XMarkLabel, Me.YMarkLabel)
 
         End Sub
 
@@ -570,7 +572,22 @@ Namespace Controls
 
 #End Region ' IUIElement implementation
 
-#Region " Private Methods "
+#Region " Internal Methods "
+
+        Protected Sub DrawYearLimit(ByRef g As Graphics, ByVal x As Integer)
+            Using br As New HatchBrush(HatchStyle.SmallConfetti, Color.FromArgb(100, 0, 0, 0), Color.Transparent)
+                g.FillRectangle(br, New Rectangle(x, 0, Me.Width, Me.Height))
+            End Using
+        End Sub
+
+        Protected Function YearToX(ByVal iYear As Integer, ByVal iWidth As Integer) As Integer
+            Return CInt(Math.Round((iYear * iWidth * cCore.N_MONTHS) / Me.Shape.XMax))
+        End Function
+
+        Protected Function XToYear(ByVal x As Integer, ByVal iWidth As Integer) As Integer
+            Dim iYear As Integer = CInt(Math.Round(x * Me.Shape.XMax / (cCore.N_MONTHS * iWidth)))
+            Return Math.Min(Math.Max(0, iYear), CInt(Math.Floor(Me.Shape.XMax / cCore.N_MONTHS)))
+        End Function
 
         Private Sub UpdateControl()
 
