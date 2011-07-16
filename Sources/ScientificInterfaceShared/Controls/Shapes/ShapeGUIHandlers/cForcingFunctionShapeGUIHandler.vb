@@ -377,7 +377,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub ChangeFFShape()
-            Dim dlg As New dlgChangeShape(Me.UIContext, DirectCast(Me.SelectedShape, cForcingFunction))
+            Dim dlg As New dlgChangeShape(Me.UIContext, DirectCast(Me.SelectedShape, cForcingFunction), Me.Color)
             dlg.ShowDialog(Me.UIContext.FormMain)
         End Sub
 
