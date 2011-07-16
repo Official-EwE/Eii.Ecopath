@@ -81,34 +81,34 @@ Namespace Controls
         End Sub
 
         Private Sub ResetShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnReset.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
+            If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
         End Sub
 
         Private Sub ShapeValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnValues.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
+            If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
         End Sub
 
         Private Sub LoadShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Load)
+            If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Load)
         End Sub
 
         Private Sub SaveShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnSaveAsImage.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
+            If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
         End Sub
 
         Private Sub tsbChangeShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnChangeShape.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape)
+            If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape)
         End Sub
 
         Private Sub ShapeOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbnOptions.Click
-            If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
+            If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
         End Sub
 
         Private Sub OnConvertToLongTerm(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbnLongTerm.Click
             If Me.m_bInUpdate Then Return
-            If Me.Handler IsNot Nothing Then
+            If (Me.Handler IsNot Nothing) Then
                 Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Nothing, False)
             End If
         End Sub
@@ -116,8 +116,16 @@ Namespace Controls
         Private Sub OnConvertToSeasonal(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbnSeasonal.Click
             If Me.m_bInUpdate Then Return
-            If Me.Handler IsNot Nothing Then
+            If (Me.Handler IsNot Nothing) Then
                 Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Nothing, True)
+            End If
+        End Sub
+
+        Private Sub OnShowAllData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnShowAllData.Click
+            If Me.m_bInUpdate Then Return
+            If (Me.Handler IsNot Nothing) Then
+                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAllData, Nothing, Me.m_tsbnShowAllData.Checked)
             End If
         End Sub
 
@@ -164,6 +172,7 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.m_tsbnSeasonal)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tslWeight)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tstbWeight)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAllData, Me.m_tsbnShowAllData)
 
             If (shapeSelected IsNot Nothing) Then
                 Me.m_bInUpdate = True
@@ -191,7 +200,6 @@ Namespace Controls
         End Sub
 
 #End Region ' Internal implementation
-
 
     End Class
 

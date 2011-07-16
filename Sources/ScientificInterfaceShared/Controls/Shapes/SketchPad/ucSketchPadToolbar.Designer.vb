@@ -22,12 +22,10 @@ Namespace Controls
         Private Sub InitializeComponent()
             Dim ts1 As System.Windows.Forms.ToolStripSeparator
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucSketchPadToolbar))
-            Dim ts3 As System.Windows.Forms.ToolStripSeparator
             Dim ts4 As System.Windows.Forms.ToolStripSeparator
             Dim ts2 As System.Windows.Forms.ToolStripSeparator
             Me.m_tsMenus = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_tsbnSaveAsImage = New System.Windows.Forms.ToolStripButton
-            Me.m_tslConvertTo = New System.Windows.Forms.ToolStripLabel
             Me.m_tsbnLongTerm = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnSeasonal = New System.Windows.Forms.ToolStripButton
             Me.m_tslWeight = New System.Windows.Forms.ToolStripLabel
@@ -36,8 +34,8 @@ Namespace Controls
             Me.m_tsbnChangeShape = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnReset = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnOptions = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbnShowAllData = New System.Windows.Forms.ToolStripButton
             ts1 = New System.Windows.Forms.ToolStripSeparator
-            ts3 = New System.Windows.Forms.ToolStripSeparator
             ts4 = New System.Windows.Forms.ToolStripSeparator
             ts2 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsMenus.SuspendLayout()
@@ -47,11 +45,6 @@ Namespace Controls
             '
             ts1.Name = "ts1"
             resources.ApplyResources(ts1, "ts1")
-            '
-            'ts3
-            '
-            ts3.Name = "ts3"
-            resources.ApplyResources(ts3, "ts3")
             '
             'ts4
             '
@@ -66,19 +59,16 @@ Namespace Controls
             'm_tsMenus
             '
             resources.ApplyResources(Me.m_tsMenus, "m_tsMenus")
-            Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSaveAsImage, ts1, Me.m_tslConvertTo, Me.m_tsbnLongTerm, Me.m_tsbnSeasonal, ts2, Me.m_tslWeight, Me.m_tstbWeight, Me.m_tsbnValues, ts3, Me.m_tsbnChangeShape, Me.m_tsbnReset, ts4, Me.m_tsbnOptions})
+            Me.m_tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSaveAsImage, ts1, Me.m_tsbnLongTerm, Me.m_tsbnSeasonal, Me.m_tsbnShowAllData, ts2, Me.m_tslWeight, Me.m_tstbWeight, Me.m_tsbnValues, Me.m_tsbnChangeShape, Me.m_tsbnReset, ts4, Me.m_tsbnOptions})
             Me.m_tsMenus.Name = "m_tsMenus"
+            Me.m_tsMenus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbnSaveAsImage
             '
             Me.m_tsbnSaveAsImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.m_tsbnSaveAsImage, "m_tsbnSaveAsImage")
             Me.m_tsbnSaveAsImage.Name = "m_tsbnSaveAsImage"
-            '
-            'm_tslConvertTo
-            '
-            Me.m_tslConvertTo.Name = "m_tslConvertTo"
-            resources.ApplyResources(Me.m_tslConvertTo, "m_tslConvertTo")
             '
             'm_tsbnLongTerm
             '
@@ -125,6 +115,13 @@ Namespace Controls
             resources.ApplyResources(Me.m_tsbnOptions, "m_tsbnOptions")
             Me.m_tsbnOptions.Name = "m_tsbnOptions"
             '
+            'm_tsbnShowAllData
+            '
+            Me.m_tsbnShowAllData.CheckOnClick = True
+            Me.m_tsbnShowAllData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnShowAllData, "m_tsbnShowAllData")
+            Me.m_tsbnShowAllData.Name = "m_tsbnShowAllData"
+            '
             'ucSketchPadToolbar
             '
             resources.ApplyResources(Me, "$this")
@@ -143,12 +140,12 @@ Namespace Controls
         Private WithEvents m_tsbnValues As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnSaveAsImage As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnOptions As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tslConvertTo As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tsbnChangeShape As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tslWeight As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tstbWeight As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tsbnLongTerm As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnSeasonal As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnShowAllData As System.Windows.Forms.ToolStripButton
 
     End Class
 

@@ -74,9 +74,14 @@ Namespace Controls
         Protected m_shapeType As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
 
         ''' <summary></summary>
+        Private m_sXMax As Single = cCore.NULL_VALUE
+
+        ''' <summary></summary>
         Private m_sYMax As Single = cCore.NULL_VALUE
         ''' <summary></summary>
         Private m_sYMin As Single = cCore.NULL_VALUE
+        ''' <summary>Number of data years to show.</summary>
+        Private m_iNumDataYears As Integer = 0
 
         ''' <summary>Horizontal mark line.</summary>
         Private m_sYMarkValue As Single = cCore.NULL_VALUE
@@ -388,6 +393,17 @@ Namespace Controls
             End Set
         End Property
 
+        <Browsable(False)> _
+        Public Property NumDataYears() As Integer
+            Get
+                Return Me.m_iNumDataYears
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iNumDataYears = value
+                Me.Invalidate()
+            End Set
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Label for vertical (X mark) line.
@@ -551,6 +567,13 @@ Namespace Controls
                                   cCore.NULL_VALUE, sYMax, _
                                   Me.XMarkValue, Me.YMarkValue, _
                                   Me.XMarkLabel, Me.YMarkLabel)
+
+            ' Draw gray area to block out data past the NumDataYears, if applicable
+            If (shape IsNot Nothing) Then
+                If (Me.NumDataYears > 0 And Not shape.IsSeasonal) Then
+                    Me.DrawYearLimit(g, Me.YearToX(Me.NumDataYears, rcImage.Width))
+                End If
+            End If
 
         End Sub
 

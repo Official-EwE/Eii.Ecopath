@@ -174,6 +174,8 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.Seasonal
                     Return True
+                Case eShapeCommandTypes.ShowAllData
+                    Return True
                 Case Else
                     Return False
             End Select
@@ -211,6 +213,12 @@ Namespace Controls
                      eShapeCommandTypes.SaveAsImage, _
                      eShapeCommandTypes.Seasonal
                     Return bHasSingleSelection
+
+                Case eShapeCommandTypes.ShowAllData
+                    If (Me.SelectedShape IsNot Nothing) Then
+                        Return (Me.SelectedShape.IsSeasonal = False)
+                    End If
+                    Return False
 
             End Select
             Return False
@@ -265,6 +273,11 @@ Namespace Controls
                 Case eShapeCommandTypes.SetValue
                     Me.ResetShapePrompted(Me.SelectedShapes)
 
+                Case eShapeCommandTypes.ShowAllData
+                    If Me.SketchPad IsNot Nothing Then
+                        'Me.SketchPad.
+                    End If
+
                 Case Else
                     'Debug.Assert(False, String.Format("Command {0} not supported", cmd))
             End Select
@@ -279,6 +292,20 @@ Namespace Controls
         Public Overrides Sub Refresh()
             If Me.m_bInUpdate Then Return
             Me.UpdateShapeList(Me.SelectedShapes)
+        End Sub
+
+        Protected Overrides Sub OnCoreMessage(ByRef msg As EwECore.cMessage)
+            MyBase.OnCoreMessage(msg)
+
+            If (msg.Source = eCoreComponentType.ShapesManager And msg.Type = eMessageType.DataModified) Then
+                If (Me.SketchPad IsNot Nothing) Then
+                    Try
+                        Me.SketchPad.NumDataYears = Me.NumDataYears
+                        Me.Refresh()
+                    Catch ex As Exception
+                    End Try
+                End If
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -356,6 +383,14 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Protected Overrides Function MinYScale() As Single
             Return 2.0!
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.NumDataYears"/>
+        ''' <remarks>Overridden to limit data years to the number of Ecosim years.</remarks>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Function NumDataYears() As Integer
+            Return Me.UIContext.Core.nEcosimYears
         End Function
 
 #End Region ' Baseclass overrides

@@ -30,7 +30,6 @@ Namespace Ecosim
         Private m_iYearFirst As Integer = 0
         Private m_iYearLast As Integer = 0
         Private m_iNumSplinePoints As Integer = 0
-        Private m_iNumTSYears As Integer = 0
 
 #End Region ' Private bits
 
@@ -75,16 +74,6 @@ Namespace Ecosim
             End Set
         End Property
 
-        Public Property NumTSYears() As Integer
-            Get
-                Return Me.m_iNumTSYears
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iNumTSYears = value
-                Me.Invalidate()
-            End Set
-        End Property
-
 #End Region ' Public properties
 
 #Region " Public events "
@@ -111,9 +100,6 @@ Namespace Ecosim
             If (Me.Shape Is Nothing) Then Return
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
-
-            ' Draw gray area to block out areas past TS
-            Me.DrawYearLimit(g, Me.YearToX(Me.NumTSYears, rcImage.Width))
 
             If Me.m_dragMode = eDragModeTypes.None Then
                 iYear1 = Me.YearToX(Me.m_iYearFirst, rcImage.Width)
@@ -213,7 +199,7 @@ Namespace Ecosim
             If Me.Capture Then
                 ' Calc resulting years
                 Me.m_iYearFirst = Math.Max(0, Me.XToYear(Me.m_iYearFirstDragPos, w))
-                Me.m_iYearLast = Math.Min(Me.NumTSYears, Me.XToYear(Me.m_iYearLastDragPos, w))
+                Me.m_iYearLast = Math.Min(Me.NumDataYears, Me.XToYear(Me.m_iYearLastDragPos, w))
 
                 ' Notify the world
                 RaiseEvent OnYearRangeChanged(Me)

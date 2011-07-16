@@ -64,8 +64,10 @@ Namespace Controls
             DefineMediation
             ''' <summary>Filter display of shapes.</summary>
             Filter
-            ''' <summary>Set view mode.</summary>
+            ''' <summary>Set view mode for reflecting information in a different way.</summary>
             ViewMode
+            ''' <summary>Set if all data on an axis can be shown, or only used data.</summary>
+            ShowAllData
         End Enum
 
 #Region " Private variables "
@@ -236,6 +238,16 @@ Namespace Controls
         ''' <returns>The lowest Y-scale limit that should be used to render shapes with.</returns>
         ''' -------------------------------------------------------------------
         Protected MustOverride Function MinYScale() As Single
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Override this to specify the number of relevant data years for shape data.
+        ''' </summary>
+        ''' <returns>Return cCore.NULL_VALUE to omit any restrictions.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function NumDataYears() As Integer
+            Return cCore.NULL_VALUE
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -453,6 +465,7 @@ Namespace Controls
                     AddHandler Me.m_sketchPad.ShapeFinalized, AddressOf OnShapeFinalized
                     Me.m_sketchPad.ShapeColor = Me.Color
                     Me.m_sketchPad.YAxisMinValue = Me.MinYScale
+                    Me.m_sketchPad.NumDataYears = Me.NumDataYears
                     Me.m_sketchPad.SketchDrawMode = Me.SketchDrawMode
                     Me.m_sketchPad.Handler = Me
                     Me.m_sketchPad.UIContext = Me.UIContext
