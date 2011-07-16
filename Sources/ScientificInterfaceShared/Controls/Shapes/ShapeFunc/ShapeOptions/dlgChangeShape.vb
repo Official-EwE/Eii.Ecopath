@@ -21,9 +21,13 @@ Namespace Controls
 
 #Region " Private vars "
 
+        ''' <summary></summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary></summary>
         Private m_shape As cForcingFunction = Nothing
+        ''' <summary></summary>
+        Private m_clr As Color = Color.Black
+
         ''' <summary>Copy of the original shape to work on.</summary>
         Private m_asDataWork As Single()
         ''' <summary></summary>
@@ -45,11 +49,11 @@ Namespace Controls
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext, ByVal shape As cForcingFunction)
+        Public Sub New(ByVal uic As cUIContext, ByVal shape As cForcingFunction, ByVal clr As Color)
 
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
-            InitializeComponent()
+            Me.InitializeComponent()
 
             ' Sanity checks
             Debug.Assert(uic IsNot Nothing)
@@ -58,6 +62,7 @@ Namespace Controls
             ' Init
             Me.m_uic = uic
             Me.m_shape = shape
+            Me.m_clr = clr
             Me.m_asDataWork = shape.ShapeData
 
         End Sub
@@ -66,10 +71,11 @@ Namespace Controls
 
 #Region " Events "
 
-        Private Sub ForcingShape_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles MyBase.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             Me.CenterToParent()
+
             'jb 24-May-11 removed data validation to fix ticket 975
             Me.m_fpYZero = New cEwEFormatProvider(Me.m_uic, Me.m_txbYZero, GetType(Single))
             Me.m_fpYZero.Value = Me.m_shape.YZero 'Math.Max(0, Me.m_shape.YZero)
@@ -83,26 +89,23 @@ Namespace Controls
             Me.m_fpSteep = New cEwEFormatProvider(Me.m_uic, Me.m_txbSteep, GetType(Single))
             Me.m_fpSteep.Value = CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
 
-            Me.m_lbShape.SelectedIndex = Me.m_shape.ShapeFunctionType
+            Me.EnableRelevantShapeTypes()
+            Me.SelectedShapeType = Me.m_shape.ShapeFunctionType
 
             Me.UpdatePreview()
+            Me.UpdateControls()
 
         End Sub
 
-        Private Sub dlgChangeShape_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
-            Handles Me.FormClosing
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.m_fpSteep.Release()
             Me.m_fpYBase.Release()
             Me.m_fpYEnd.Release()
             Me.m_fpYZero.Release()
 
-        End Sub
+            MyBase.OnFormClosed(e)
 
-        Private Sub lbShape_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_lbShape.SelectedIndexChanged
-            Me.UpdateControls()
-            Me.UpdatePreview()
         End Sub
 
         Private Sub OnOk(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
@@ -162,7 +165,7 @@ Namespace Controls
 
             cShapeImage.DrawShapeDirect(Me.m_uic, _
                                        Me.m_asDataWork, Me.m_shape.XMax, Me.m_shape.IsSeasonal, _
-                                       Me.m_plPreview.ClientRectangle, e.Graphics, Color.Black, _
+                                       Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_clr, _
                                        eSketchDrawModeTypes.Line, _
                                        sDataMax / 0.8!, cCore.NULL_VALUE, cCore.NULL_VALUE)
 
@@ -172,22 +175,80 @@ Namespace Controls
 
 #Region " Private method helpers "
 
+        Private Sub OnShapeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_rbOriginal.CheckedChanged, m_rbLinear.CheckedChanged, m_rbSigmoid.CheckedChanged, _
+                    m_rbHyperbolic.CheckedChanged, m_rbExponential.CheckedChanged, m_rbBeta.CheckedChanged
+            Me.UpdateControls()
+            Me.UpdatePreview()
+        End Sub
+
         Private Property SelectedShapeType() As eShapeFunctionType
             Get
-                Return DirectCast(Me.m_lbShape.SelectedIndex, eShapeFunctionType)
+                If Me.m_rbLinear.Checked Then
+                    Return eShapeFunctionType.Linear
+                ElseIf Me.m_rbSigmoid.Checked Then
+                    Return eShapeFunctionType.Sigmoid
+                ElseIf Me.m_rbHyperbolic.Checked Then
+                    Return eShapeFunctionType.Hyperbolic
+                ElseIf Me.m_rbExponential.Checked Then
+                    Return eShapeFunctionType.Exponential
+                ElseIf Me.m_rbBeta.Checked Then
+                    Return eShapeFunctionType.Betapdf
+                End If
+                Return eShapeFunctionType.NotSet
             End Get
             Set(ByVal value As eShapeFunctionType)
-                Me.m_lbShape.SelectedIndex = value
+                Select Case value
+                    Case eShapeFunctionType.NotSet : Me.m_rbOriginal.Checked = True
+                    Case eShapeFunctionType.Linear : Me.m_rbLinear.Checked = True
+                    Case eShapeFunctionType.Sigmoid : Me.m_rbSigmoid.Checked = True
+                    Case eShapeFunctionType.Hyperbolic : Me.m_rbHyperbolic.Checked = True
+                    Case eShapeFunctionType.Exponential : Me.m_rbExponential.Checked = True
+                    Case eShapeFunctionType.Betapdf : Me.m_rbBeta.Checked = True
+                End Select
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Generate one common shape (linear, sigmoid, etc) based on the user's choice.
         ''' </summary>
         ''' <remarks>The formula here is extracted from EwE5 code</remarks>
+        ''' -------------------------------------------------------------------
         Private Sub UpdatePreview()
             Me.m_bRecalc = True
             Me.m_plPreview.Invalidate()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Enable shape type options that make sense for the selected shape.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub EnableRelevantShapeTypes()
+
+            ' Proof of concept: to extend to proper datatypes
+
+            Dim bEnableHyperbolic As Boolean = False
+            Dim bEnableExponential As Boolean = False
+            Dim bEnableBeta As Boolean = False
+
+            Select Case Me.m_shape.DataType
+
+                Case EwEUtils.Core.eDataTypes.Forcing
+
+                Case EwEUtils.Core.eDataTypes.Mediation, EwEUtils.Core.eDataTypes.PriceMediation
+                    bEnableHyperbolic = True
+                    bEnableExponential = True
+                    bEnableBeta = True
+
+            End Select
+
+            ' Table layout panel will keep interface neat
+            Me.m_rbHyperbolic.Visible = bEnableHyperbolic
+            Me.m_rbExponential.Visible = bEnableExponential
+            Me.m_rbBeta.Visible = bEnableBeta
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -318,12 +379,12 @@ Namespace Controls
         End Function
 
 
-        '' <summary>
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Gamma function
         ''' </summary>
         ''' <param name="xx"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
         Private Function Gamma(ByVal xx As Double) As Double
             'HACK gammln(x) returns the log n gamma used by Numeric Recipies in C betai(a,b,x) 
             'we need gamma for beta(x) so remove the log
@@ -331,12 +392,13 @@ Namespace Controls
         End Function
 
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Gamma Log n from Numeric Recipies in C
         ''' </summary>
         ''' <param name="xx"></param>
         ''' <returns></returns>
-        ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
         Private Function gammln(ByVal xx As Double) As Double
             'from NRC-2
             Dim x As Double, y As Double, tmp As Double, ser As Double
@@ -358,6 +420,7 @@ Namespace Controls
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Cumulative Beta distribution function from Numeric Recipies in C
         ''' </summary>
@@ -366,6 +429,7 @@ Namespace Controls
         ''' <param name="x"></param>
         ''' <returns></returns>
         ''' <remarks>Not used here but left in because it works!!!</remarks>
+        ''' -------------------------------------------------------------------
         Private Function betacf(ByVal a As Double, ByVal b As Double, ByVal x As Double) As Double
 
             Dim m As Integer, m2 As Integer
@@ -405,7 +469,6 @@ Namespace Controls
 
         End Function
 
-
         Private Function beta(ByVal a As Single, ByVal b As Single) As Single
             'Beta function from Wikipedia
             'http://en.wikipedia.org/wiki/Beta_function
@@ -420,7 +483,7 @@ Namespace Controls
 
         End Function
 
-
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Cumulative Beta distribution from Numberic Recipies in C
         ''' </summary>
@@ -428,7 +491,7 @@ Namespace Controls
         ''' <param name="b"></param>
         ''' <param name="x"></param>
         ''' <returns></returns>
-        ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
         Private Function betai(ByVal a As Double, ByVal b As Double, ByVal x As Double) As Double
 
             Dim bt As Double
@@ -445,7 +508,6 @@ Namespace Controls
                 Return 1D - bt * betacf(b, a, 1D - x) / b ' 
             End If
 
-
             '            float bt;
             'if (x < 0.0 || x > 1.0) nrerror("Bad x in routine betai");
             'if (x == 0.0 || x == 1.0) bt=0.0;
@@ -456,7 +518,6 @@ Namespace Controls
             'else Use continued fraction after making the sym-
             'return 1.0-bt*betacf(b,a,1.0-x)/b; metry transformation.
         End Function
-
 
 #End Region ' Private method helpers
 
