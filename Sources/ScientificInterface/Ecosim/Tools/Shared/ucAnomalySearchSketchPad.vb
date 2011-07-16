@@ -159,7 +159,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub DrawYearLimit(ByRef g As Graphics, ByVal x As Integer)
-            Using br As New HatchBrush(HatchStyle.DiagonalCross, Drawing.Color.LightGray, Drawing.Color.Transparent)
+            Using br As New HatchBrush(HatchStyle.LargeConfetti, Color.FromArgb(75, 0, 0, 0), Color.Transparent)
                 g.FillRectangle(br, New Rectangle(x, 0, Me.Width, Me.Height))
             End Using
         End Sub
