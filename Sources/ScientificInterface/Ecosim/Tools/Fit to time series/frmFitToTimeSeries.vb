@@ -23,7 +23,7 @@ Namespace Ecosim
 #Region " Private variables "
 
         Private m_F2TSManager As cF2TSManager = Nothing
-        Private m_shapeHandler As AppliedFFGUIHandler = Nothing
+        Private m_shapeHandler As cAnomalySearchShapeGUIHandler = Nothing
         Private m_dlgSensOfSS As dlgSensitivityOfSStoV = Nothing
         Private m_SensitivityByPredatorResults As cSensitivityToVulResults = Nothing
         Private m_cmdTSWeights As cCommand = Nothing
@@ -34,63 +34,6 @@ Namespace Ecosim
         Private m_fpUseDefaultVs As cEwEFormatProvider = Nothing
 
 #End Region 'Private variables
-
-#Region " Helper classes "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper class, inherits a regular forcing shape handler that dynamically
-        ''' includes forcing shapes that are applied.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Class AppliedFFGUIHandler
-            Inherits cForcingShapeGUIHandler
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' 
-            ''' </summary>
-            ''' <param name="uic"></param>
-            ''' <param name="stb"></param>
-            ''' <param name="sp"></param>
-            ''' ---------------------------------------------------------------
-            Public Shadows Sub Attach(ByVal uic As cUIContext, _
-                                      ByVal stb As ucShapeToolbox, _
-                                      ByVal sp As ucSketchPad)
-                MyBase.Attach(uic, stb, Nothing, sp, Nothing)
-            End Sub
-
-            ' ''' ---------------------------------------------------------------
-            ' ''' <summary>
-            ' ''' 
-            ' ''' </summary>
-            ' ''' ---------------------------------------------------------------
-            'Public Overrides Property SketchPad() As ucSketchPad
-            '    Get
-            '        Return MyBase.SketchPad
-            '    End Get
-            '    Set(ByVal value As ucSketchPad)
-            '        MyBase.SketchPad = value
-            '    End Set
-            'End Property
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' 
-            ''' </summary>
-            ''' <param name="shape"></param>
-            ''' <returns></returns>
-            ''' ---------------------------------------------------------------
-            Protected Overrides Function IncludeShape(ByVal shape As EwECore.cShapeData) As Boolean
-                Dim manager As cMediatedInteractionManager = Me.Core.MediatedInteractionManager
-                If Not (TypeOf shape Is cForcingFunction) Then Return False
-                If (manager Is Nothing) Then Return False
-                Return manager.IsApplied(DirectCast(shape, cForcingFunction))
-            End Function
-
-        End Class
-
-#End Region ' Helper clases
 
 #Region " Constructor "
 
@@ -122,7 +65,7 @@ Namespace Ecosim
                 Me.m_grid.UIContext = Me.UIContext
                 Me.m_gridOutput.UIContext = Me.UIContext
 
-                Me.m_shapeHandler = New AppliedFFGUIHandler()
+                Me.m_shapeHandler = New cAnomalySearchShapeGUIHandler()
                 Me.m_shapeHandler.Attach(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
 
                 Me.m_cmdTSWeights = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
@@ -523,6 +466,14 @@ Namespace Ecosim
                 Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = iBlock
             Catch ex As Exception
                 ' NOP
+            End Try
+        End Sub
+
+        Private Sub OnShowAllData_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbShowAllData.CheckedChanged
+            Try
+                Me.m_shapeHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAllData, Nothing, Me.m_cbShowAllData.Checked)
+            Catch ex As Exception
             End Try
         End Sub
 

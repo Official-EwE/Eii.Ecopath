@@ -24,52 +24,54 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFitToTimeSeries))
-            Me.m_split1 = New System.Windows.Forms.SplitContainer()
-            Me.m_cbResetVs = New System.Windows.Forms.CheckBox()
-            Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button()
-            Me.m_splitSearch = New System.Windows.Forms.SplitContainer()
-            Me.m_scGrids = New System.Windows.Forms.SplitContainer()
-            Me.m_hdrFishingMortality = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup()
-            Me.m_tbxAICDataPts = New System.Windows.Forms.TextBox()
-            Me.m_btnClearOutputs = New System.Windows.Forms.Button()
-            Me.m_gridOutput = New ScientificInterface.Ecosim.gridFitToTimeSeriesOutput()
-            Me.m_lblAICDataPts = New System.Windows.Forms.Label()
-            Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_tlbSearch = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_tbResults = New System.Windows.Forms.TextBox()
-            Me.m_hdrIterations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_btnStop = New System.Windows.Forms.Button()
-            Me.m_btnSearch = New System.Windows.Forms.Button()
-            Me.m_hdrSearchTypes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_cbVulnerabilitySearch = New System.Windows.Forms.CheckBox()
-            Me.m_cbAnomalySearch = New System.Windows.Forms.CheckBox()
-            Me.m_tabSearchOptions = New System.Windows.Forms.TabControl()
-            Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage()
-            Me.m_nudVariance = New cEwENumericUpDown()
-            Me.m_tsVulSearchTools = New cEwEToolstrip()
-            Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbSearchGroup = New System.Windows.Forms.ToolStripButton()
-            Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
-            Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ucParmBlockCodes()
-            Me.m_vulnerabilityBlockMatrix = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks()
-            Me.m_lblVarianceVulnerability = New System.Windows.Forms.Label()
-            Me.m_tpAnomalySearch = New System.Windows.Forms.TabPage()
-            Me.m_nudVariancePrimaryProd = New cEwENumericUpDown()
-            Me.m_nudLastYear = New cEwENumericUpDown()
-            Me.m_nudFirstYear = New cEwENumericUpDown()
-            Me.m_nudSplinePts = New cEwENumericUpDown()
-            Me.m_splitAnomalyShape = New System.Windows.Forms.SplitContainer()
-            Me.m_sketchPad = New ScientificInterface.Ecosim.ucAnomalySearchSketchPad()
-            Me.m_hdrAppliedFF = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox()
-            Me.m_lbFirstYear = New System.Windows.Forms.Label()
-            Me.m_lbLastYear = New System.Windows.Forms.Label()
-            Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label()
-            Me.m_lbSplinePoints = New System.Windows.Forms.Label()
-            Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_split1 = New System.Windows.Forms.SplitContainer
+            Me.m_cbResetVs = New System.Windows.Forms.CheckBox
+            Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button
+            Me.m_splitSearch = New System.Windows.Forms.SplitContainer
+            Me.m_scGrids = New System.Windows.Forms.SplitContainer
+            Me.m_hdrFishingMortality = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup
+            Me.m_tbxAICDataPts = New System.Windows.Forms.TextBox
+            Me.m_btnClearOutputs = New System.Windows.Forms.Button
+            Me.m_gridOutput = New ScientificInterface.Ecosim.gridFitToTimeSeriesOutput
+            Me.m_lblAICDataPts = New System.Windows.Forms.Label
+            Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_tlbSearch = New System.Windows.Forms.TableLayoutPanel
+            Me.m_tbResults = New System.Windows.Forms.TextBox
+            Me.m_hdrIterations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
+            Me.m_btnStop = New System.Windows.Forms.Button
+            Me.m_btnSearch = New System.Windows.Forms.Button
+            Me.m_hdrSearchTypes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_cbVulnerabilitySearch = New System.Windows.Forms.CheckBox
+            Me.m_cbAnomalySearch = New System.Windows.Forms.CheckBox
+            Me.m_tabSearchOptions = New System.Windows.Forms.TabControl
+            Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage
+            Me.m_nudVariance = New ScientificInterfaceShared.Controls.cEwENumericUpDown
+            Me.m_tsVulSearchTools = New ScientificInterfaceShared.Controls.cEwEToolstrip
+            Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton
+            Me.m_tsbSearchGroup = New System.Windows.Forms.ToolStripButton
+            Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
+            Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ucParmBlockCodes
+            Me.m_vulnerabilityBlockMatrix = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks
+            Me.m_lblVarianceVulnerability = New System.Windows.Forms.Label
+            Me.m_tpAnomalySearch = New System.Windows.Forms.TabPage
+            Me.m_cbShowAllData = New System.Windows.Forms.CheckBox
+            Me.m_nudVariancePrimaryProd = New ScientificInterfaceShared.Controls.cEwENumericUpDown
+            Me.m_nudLastYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown
+            Me.m_nudFirstYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown
+            Me.m_nudSplinePts = New ScientificInterfaceShared.Controls.cEwENumericUpDown
+            Me.m_splitAnomalyShape = New System.Windows.Forms.SplitContainer
+            Me.m_sketchPad = New ScientificInterface.Ecosim.ucAnomalySearchSketchPad
+            Me.m_hdrAppliedFF = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
+            Me.m_lbFirstYear = New System.Windows.Forms.Label
+            Me.m_lbLastYear = New System.Windows.Forms.Label
+            Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label
+            Me.m_lbSplinePoints = New System.Windows.Forms.Label
+            Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
@@ -118,15 +120,15 @@ Namespace Ecosim
             Me.m_split1.Panel2.Controls.Add(Me.m_tabSearchOptions)
             Me.m_split1.Panel2.Controls.Add(Me.m_hdrSearch)
             Me.m_split1.Panel2.Padding = New System.Windows.Forms.Padding(0, 3, 0, 0)
-            Me.m_split1.Size = New System.Drawing.Size(784, 633)
-            Me.m_split1.SplitterDistance = 249
+            Me.m_split1.Size = New System.Drawing.Size(866, 633)
+            Me.m_split1.SplitterDistance = 275
             Me.m_split1.TabIndex = 0
             '
             'm_cbResetVs
             '
             Me.m_cbResetVs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cbResetVs.AutoSize = True
-            Me.m_cbResetVs.Location = New System.Drawing.Point(138, 53)
+            Me.m_cbResetVs.Location = New System.Drawing.Point(164, 54)
             Me.m_cbResetVs.Name = "m_cbResetVs"
             Me.m_cbResetVs.Size = New System.Drawing.Size(109, 17)
             Me.m_cbResetVs.TabIndex = 3
@@ -137,7 +139,7 @@ Namespace Ecosim
             '
             Me.m_btnTimeSeriesWeights.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnTimeSeriesWeights.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnTimeSeriesWeights.Location = New System.Drawing.Point(138, 26)
+            Me.m_btnTimeSeriesWeights.Location = New System.Drawing.Point(164, 26)
             Me.m_btnTimeSeriesWeights.Name = "m_btnTimeSeriesWeights"
             Me.m_btnTimeSeriesWeights.Size = New System.Drawing.Size(108, 23)
             Me.m_btnTimeSeriesWeights.TabIndex = 0
@@ -161,7 +163,7 @@ Namespace Ecosim
             'm_splitSearch.Panel2
             '
             Me.m_splitSearch.Panel2.Controls.Add(Me.m_tlbSearch)
-            Me.m_splitSearch.Size = New System.Drawing.Size(246, 560)
+            Me.m_splitSearch.Size = New System.Drawing.Size(272, 560)
             Me.m_splitSearch.SplitterDistance = 391
             Me.m_splitSearch.TabIndex = 8
             '
@@ -184,7 +186,7 @@ Namespace Ecosim
             Me.m_scGrids.Panel2.Controls.Add(Me.m_gridOutput)
             Me.m_scGrids.Panel2.Controls.Add(Me.m_lblAICDataPts)
             Me.m_scGrids.Panel2.Controls.Add(Me.m_hdrOutput)
-            Me.m_scGrids.Size = New System.Drawing.Size(246, 391)
+            Me.m_scGrids.Size = New System.Drawing.Size(272, 391)
             Me.m_scGrids.SplitterDistance = 194
             Me.m_scGrids.TabIndex = 0
             '
@@ -192,10 +194,13 @@ Namespace Ecosim
             '
             Me.m_hdrFishingMortality.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrFishingMortality.CanCollapseParent = False
+            Me.m_hdrFishingMortality.CollapsedParentHeight = 0
+            Me.m_hdrFishingMortality.IsCollapsed = False
             Me.m_hdrFishingMortality.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrFishingMortality.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrFishingMortality.Name = "m_hdrFishingMortality"
-            Me.m_hdrFishingMortality.Size = New System.Drawing.Size(246, 18)
+            Me.m_hdrFishingMortality.Size = New System.Drawing.Size(272, 18)
             Me.m_hdrFishingMortality.TabIndex = 0
             Me.m_hdrFishingMortality.Text = "Max fishing mortality"
             Me.m_hdrFishingMortality.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -223,7 +228,7 @@ Namespace Ecosim
             Me.m_grid.Manager = Nothing
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.Size = New System.Drawing.Size(246, 176)
+            Me.m_grid.Size = New System.Drawing.Size(272, 176)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -248,7 +253,7 @@ Namespace Ecosim
             '
             Me.m_btnClearOutputs.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnClearOutputs.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-            Me.m_btnClearOutputs.Location = New System.Drawing.Point(171, 170)
+            Me.m_btnClearOutputs.Location = New System.Drawing.Point(197, 170)
             Me.m_btnClearOutputs.Margin = New System.Windows.Forms.Padding(0)
             Me.m_btnClearOutputs.Name = "m_btnClearOutputs"
             Me.m_btnClearOutputs.Size = New System.Drawing.Size(75, 23)
@@ -279,7 +284,7 @@ Namespace Ecosim
             Me.m_gridOutput.Margin = New System.Windows.Forms.Padding(0)
             Me.m_gridOutput.Name = "m_gridOutput"
             Me.m_gridOutput.NumAICPoints = 0
-            Me.m_gridOutput.Size = New System.Drawing.Size(246, 149)
+            Me.m_gridOutput.Size = New System.Drawing.Size(272, 149)
             Me.m_gridOutput.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -306,10 +311,13 @@ Namespace Ecosim
             '
             Me.m_hdrOutput.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrOutput.CanCollapseParent = False
+            Me.m_hdrOutput.CollapsedParentHeight = 0
+            Me.m_hdrOutput.IsCollapsed = False
             Me.m_hdrOutput.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrOutput.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrOutput.Name = "m_hdrOutput"
-            Me.m_hdrOutput.Size = New System.Drawing.Size(246, 18)
+            Me.m_hdrOutput.Size = New System.Drawing.Size(272, 18)
             Me.m_hdrOutput.TabIndex = 0
             Me.m_hdrOutput.Text = "Ouput"
             Me.m_hdrOutput.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -329,7 +337,7 @@ Namespace Ecosim
             Me.m_tlbSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18.0!))
             Me.m_tlbSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.m_tlbSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
-            Me.m_tlbSearch.Size = New System.Drawing.Size(246, 165)
+            Me.m_tlbSearch.Size = New System.Drawing.Size(272, 165)
             Me.m_tlbSearch.TabIndex = 0
             '
             'm_tbResults
@@ -341,17 +349,20 @@ Namespace Ecosim
             Me.m_tbResults.Name = "m_tbResults"
             Me.m_tbResults.ReadOnly = True
             Me.m_tbResults.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-            Me.m_tbResults.Size = New System.Drawing.Size(246, 117)
+            Me.m_tbResults.Size = New System.Drawing.Size(272, 117)
             Me.m_tbResults.TabIndex = 1
             '
             'm_hdrIterations
             '
             Me.m_hdrIterations.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrIterations.CanCollapseParent = False
+            Me.m_hdrIterations.CollapsedParentHeight = 0
+            Me.m_hdrIterations.IsCollapsed = False
             Me.m_hdrIterations.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrIterations.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrIterations.Name = "m_hdrIterations"
-            Me.m_hdrIterations.Size = New System.Drawing.Size(246, 18)
+            Me.m_hdrIterations.Size = New System.Drawing.Size(272, 18)
             Me.m_hdrIterations.TabIndex = 0
             Me.m_hdrIterations.Text = "Iterations"
             Me.m_hdrIterations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -371,13 +382,13 @@ Namespace Ecosim
             Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
             Me.TableLayoutPanel2.RowCount = 1
             Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.TableLayoutPanel2.Size = New System.Drawing.Size(246, 30)
+            Me.TableLayoutPanel2.Size = New System.Drawing.Size(272, 30)
             Me.TableLayoutPanel2.TabIndex = 2
             '
             'm_btnStop
             '
             Me.m_btnStop.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnStop.Location = New System.Drawing.Point(51, 3)
+            Me.m_btnStop.Location = New System.Drawing.Point(64, 3)
             Me.m_btnStop.Name = "m_btnStop"
             Me.m_btnStop.Size = New System.Drawing.Size(69, 24)
             Me.m_btnStop.TabIndex = 0
@@ -387,7 +398,7 @@ Namespace Ecosim
             'm_btnSearch
             '
             Me.m_btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSearch.Location = New System.Drawing.Point(126, 3)
+            Me.m_btnSearch.Location = New System.Drawing.Point(139, 3)
             Me.m_btnSearch.Name = "m_btnSearch"
             Me.m_btnSearch.Size = New System.Drawing.Size(69, 24)
             Me.m_btnSearch.TabIndex = 1
@@ -398,10 +409,13 @@ Namespace Ecosim
             '
             Me.m_hdrSearchTypes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrSearchTypes.CanCollapseParent = False
+            Me.m_hdrSearchTypes.CollapsedParentHeight = 0
+            Me.m_hdrSearchTypes.IsCollapsed = False
             Me.m_hdrSearchTypes.Location = New System.Drawing.Point(0, 3)
             Me.m_hdrSearchTypes.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrSearchTypes.Name = "m_hdrSearchTypes"
-            Me.m_hdrSearchTypes.Size = New System.Drawing.Size(246, 18)
+            Me.m_hdrSearchTypes.Size = New System.Drawing.Size(272, 18)
             Me.m_hdrSearchTypes.TabIndex = 0
             Me.m_hdrSearchTypes.Text = "Search types"
             Me.m_hdrSearchTypes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -421,7 +435,7 @@ Namespace Ecosim
             'm_cbAnomalySearch
             '
             Me.m_cbAnomalySearch.AutoSize = True
-            Me.m_cbAnomalySearch.Location = New System.Drawing.Point(3, 53)
+            Me.m_cbAnomalySearch.Location = New System.Drawing.Point(3, 54)
             Me.m_cbAnomalySearch.Name = "m_cbAnomalySearch"
             Me.m_cbAnomalySearch.Size = New System.Drawing.Size(101, 17)
             Me.m_cbAnomalySearch.TabIndex = 2
@@ -439,7 +453,7 @@ Namespace Ecosim
             Me.m_tabSearchOptions.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tabSearchOptions.Name = "m_tabSearchOptions"
             Me.m_tabSearchOptions.SelectedIndex = 0
-            Me.m_tabSearchOptions.Size = New System.Drawing.Size(531, 607)
+            Me.m_tabSearchOptions.Size = New System.Drawing.Size(587, 607)
             Me.m_tabSearchOptions.TabIndex = 1
             '
             'tpVulnerabilitySearch
@@ -453,7 +467,7 @@ Namespace Ecosim
             Me.tpVulnerabilitySearch.Margin = New System.Windows.Forms.Padding(0)
             Me.tpVulnerabilitySearch.Name = "tpVulnerabilitySearch"
             Me.tpVulnerabilitySearch.Padding = New System.Windows.Forms.Padding(3)
-            Me.tpVulnerabilitySearch.Size = New System.Drawing.Size(523, 581)
+            Me.tpVulnerabilitySearch.Size = New System.Drawing.Size(579, 581)
             Me.tpVulnerabilitySearch.TabIndex = 0
             Me.tpVulnerabilitySearch.Text = "Vulnerability Search"
             Me.tpVulnerabilitySearch.UseVisualStyleBackColor = True
@@ -469,10 +483,12 @@ Namespace Ecosim
             '
             'm_tsVulSearchTools
             '
+            Me.m_tsVulSearchTools.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsVulSearchTools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSensOfSS2V, Me.m_tsbSearchGroup, Me.ToolStripButton1})
             Me.m_tsVulSearchTools.Location = New System.Drawing.Point(3, 3)
             Me.m_tsVulSearchTools.Name = "m_tsVulSearchTools"
-            Me.m_tsVulSearchTools.Size = New System.Drawing.Size(517, 25)
+            Me.m_tsVulSearchTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            Me.m_tsVulSearchTools.Size = New System.Drawing.Size(573, 25)
             Me.m_tsVulSearchTools.TabIndex = 0
             '
             'm_tsbSensOfSS2V
@@ -540,6 +556,7 @@ Namespace Ecosim
             '
             'm_tpAnomalySearch
             '
+            Me.m_tpAnomalySearch.Controls.Add(Me.m_cbShowAllData)
             Me.m_tpAnomalySearch.Controls.Add(Me.m_nudVariancePrimaryProd)
             Me.m_tpAnomalySearch.Controls.Add(Me.m_nudLastYear)
             Me.m_tpAnomalySearch.Controls.Add(Me.m_nudFirstYear)
@@ -552,15 +569,26 @@ Namespace Ecosim
             Me.m_tpAnomalySearch.Location = New System.Drawing.Point(4, 22)
             Me.m_tpAnomalySearch.Name = "m_tpAnomalySearch"
             Me.m_tpAnomalySearch.Padding = New System.Windows.Forms.Padding(3)
-            Me.m_tpAnomalySearch.Size = New System.Drawing.Size(523, 581)
+            Me.m_tpAnomalySearch.Size = New System.Drawing.Size(579, 581)
             Me.m_tpAnomalySearch.TabIndex = 1
             Me.m_tpAnomalySearch.Text = "Anomaly Search"
             Me.m_tpAnomalySearch.UseVisualStyleBackColor = True
             '
+            'm_cbShowAllData
+            '
+            Me.m_cbShowAllData.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_cbShowAllData.AutoSize = True
+            Me.m_cbShowAllData.Location = New System.Drawing.Point(452, 32)
+            Me.m_cbShowAllData.Name = "m_cbShowAllData"
+            Me.m_cbShowAllData.Size = New System.Drawing.Size(121, 17)
+            Me.m_cbShowAllData.TabIndex = 9
+            Me.m_cbShowAllData.Text = "Show all data points"
+            Me.m_cbShowAllData.UseVisualStyleBackColor = True
+            '
             'm_nudVariancePrimaryProd
             '
             Me.m_nudVariancePrimaryProd.DecimalPlaces = 3
-            Me.m_nudVariancePrimaryProd.Location = New System.Drawing.Point(262, 4)
+            Me.m_nudVariancePrimaryProd.Location = New System.Drawing.Point(241, 5)
             Me.m_nudVariancePrimaryProd.Name = "m_nudVariancePrimaryProd"
             Me.m_nudVariancePrimaryProd.Size = New System.Drawing.Size(53, 20)
             Me.m_nudVariancePrimaryProd.TabIndex = 3
@@ -585,7 +613,7 @@ Namespace Ecosim
             '
             'm_nudSplinePts
             '
-            Me.m_nudSplinePts.Location = New System.Drawing.Point(263, 30)
+            Me.m_nudSplinePts.Location = New System.Drawing.Point(242, 30)
             Me.m_nudSplinePts.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
             Me.m_nudSplinePts.Name = "m_nudSplinePts"
             Me.m_nudSplinePts.Size = New System.Drawing.Size(52, 20)
@@ -609,7 +637,7 @@ Namespace Ecosim
             '
             Me.m_splitAnomalyShape.Panel2.Controls.Add(Me.m_hdrAppliedFF)
             Me.m_splitAnomalyShape.Panel2.Controls.Add(Me.m_shapeToolBox)
-            Me.m_splitAnomalyShape.Size = New System.Drawing.Size(523, 528)
+            Me.m_splitAnomalyShape.Size = New System.Drawing.Size(579, 528)
             Me.m_splitAnomalyShape.SplitterDistance = 388
             Me.m_splitAnomalyShape.TabIndex = 8
             '
@@ -629,16 +657,18 @@ Namespace Ecosim
             Me.m_sketchPad.Location = New System.Drawing.Point(0, 0)
             Me.m_sketchPad.Margin = New System.Windows.Forms.Padding(0)
             Me.m_sketchPad.Name = "m_sketchPad"
-            Me.m_sketchPad.NumSplinePoints = 0
             Me.m_sketchPad.NumDataYears = 0
+            Me.m_sketchPad.NumSplinePoints = 0
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowValueTooltip = True
             Me.m_sketchPad.ShowXMark = False
             Me.m_sketchPad.ShowYMark = False
-            Me.m_sketchPad.Size = New System.Drawing.Size(523, 388)
+            Me.m_sketchPad.Size = New System.Drawing.Size(579, 388)
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_sketchPad.TabIndex = 0
             Me.m_sketchPad.UIContext = Nothing
+            Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
@@ -650,10 +680,13 @@ Namespace Ecosim
             '
             Me.m_hdrAppliedFF.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrAppliedFF.CanCollapseParent = False
+            Me.m_hdrAppliedFF.CollapsedParentHeight = 0
+            Me.m_hdrAppliedFF.IsCollapsed = False
             Me.m_hdrAppliedFF.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrAppliedFF.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrAppliedFF.Name = "m_hdrAppliedFF"
-            Me.m_hdrAppliedFF.Size = New System.Drawing.Size(529, 23)
+            Me.m_hdrAppliedFF.Size = New System.Drawing.Size(585, 23)
             Me.m_hdrAppliedFF.TabIndex = 0
             Me.m_hdrAppliedFF.Text = "Applied Forcing Functions"
             Me.m_hdrAppliedFF.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -671,7 +704,8 @@ Namespace Ecosim
             Me.m_shapeToolBox.Margin = New System.Windows.Forms.Padding(0)
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
             Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
-            Me.m_shapeToolBox.Size = New System.Drawing.Size(523, 113)
+            Me.m_shapeToolBox.Size = New System.Drawing.Size(579, 113)
+            Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_shapeToolBox.TabIndex = 1
             Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
@@ -697,7 +731,7 @@ Namespace Ecosim
             'm_lbVariancePrimaryProd
             '
             Me.m_lbVariancePrimaryProd.AutoSize = True
-            Me.m_lbVariancePrimaryProd.Location = New System.Drawing.Point(187, 7)
+            Me.m_lbVariancePrimaryProd.Location = New System.Drawing.Point(167, 7)
             Me.m_lbVariancePrimaryProd.Name = "m_lbVariancePrimaryProd"
             Me.m_lbVariancePrimaryProd.Size = New System.Drawing.Size(69, 13)
             Me.m_lbVariancePrimaryProd.TabIndex = 2
@@ -706,7 +740,7 @@ Namespace Ecosim
             'm_lbSplinePoints
             '
             Me.m_lbSplinePoints.AutoSize = True
-            Me.m_lbSplinePoints.Location = New System.Drawing.Point(187, 33)
+            Me.m_lbSplinePoints.Location = New System.Drawing.Point(166, 33)
             Me.m_lbSplinePoints.Name = "m_lbSplinePoints"
             Me.m_lbSplinePoints.Size = New System.Drawing.Size(70, 13)
             Me.m_lbSplinePoints.TabIndex = 6
@@ -716,10 +750,13 @@ Namespace Ecosim
             '
             Me.m_hdrSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrSearch.CanCollapseParent = False
+            Me.m_hdrSearch.CollapsedParentHeight = 0
+            Me.m_hdrSearch.IsCollapsed = False
             Me.m_hdrSearch.Location = New System.Drawing.Point(0, 3)
             Me.m_hdrSearch.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrSearch.Name = "m_hdrSearch"
-            Me.m_hdrSearch.Size = New System.Drawing.Size(531, 18)
+            Me.m_hdrSearch.Size = New System.Drawing.Size(587, 18)
             Me.m_hdrSearch.TabIndex = 0
             Me.m_hdrSearch.Text = "Search"
             Me.m_hdrSearch.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -728,7 +765,7 @@ Namespace Ecosim
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(784, 633)
+            Me.ClientSize = New System.Drawing.Size(866, 633)
             Me.Controls.Add(Me.m_split1)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmFitToTimeSeries"
@@ -790,9 +827,6 @@ Namespace Ecosim
         Private WithEvents m_tlbSearch As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_hdrIterations As cEwEHeaderLabel
         Private WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_nudSplinePts As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudLastYear As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudFirstYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_hdrSearchTypes As cEwEHeaderLabel
         Private WithEvents m_tsVulSearchTools As cEwEToolStrip
         Private WithEvents m_tsbSensOfSS2V As System.Windows.Forms.ToolStripButton
@@ -805,12 +839,16 @@ Namespace Ecosim
         Private WithEvents m_lblAICDataPts As System.Windows.Forms.Label
         Private WithEvents m_scGrids As System.Windows.Forms.SplitContainer
         Private WithEvents m_hdrOutput As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Private WithEvents m_nudVariance As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudVariancePrimaryProd As System.Windows.Forms.NumericUpDown
         Private WithEvents m_gridOutput As ScientificInterface.Ecosim.gridFitToTimeSeriesOutput
         Friend WithEvents m_btnClearOutputs As System.Windows.Forms.Button
         Private WithEvents m_tbxAICDataPts As System.Windows.Forms.TextBox
         Private WithEvents m_cbResetVs As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbShowAllData As System.Windows.Forms.CheckBox
+        Private WithEvents m_nudSplinePts As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudLastYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudFirstYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudVariance As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudVariancePrimaryProd As ScientificInterfaceShared.Controls.cEwENumericUpDown
     End Class
 
 End Namespace
