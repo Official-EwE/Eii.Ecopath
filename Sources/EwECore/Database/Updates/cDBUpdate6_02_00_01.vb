@@ -393,8 +393,8 @@ Friend Class cDBUpdate6_02_00_01
         ' 5) Importance layers
         writer = db.GetWriter("EcospaceScenarioWeightLayer")
         dt = writer.GetDataTable()
-        For i = 0 To lFleetID.Count - 1
-            key(1) = lFleetID(i)
+        For i = 0 To lImportanceLayerID.Count - 1
+            key(1) = lImportanceLayerID(i)
             drow = dt.Rows.Find(key)
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
