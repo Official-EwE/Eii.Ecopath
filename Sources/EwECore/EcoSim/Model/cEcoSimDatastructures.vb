@@ -963,7 +963,14 @@ Public Class cEcosimDatastructures
         If NTimes > ForcePoints Then
 
             'this means ForcePoints is >=  DEFAULT_N_FORCINGPOINTS and can only grow
+            Dim orgPts As Single = ForcePoints
             ForcePoints = NTimes
+
+            'Can't Redim Preserve the first dimension
+            'so we need to copy the values back into the new zscale()
+            Dim orgZscale(,) As Single
+            ReDim orgZscale(orgPts, ForcingShapes)
+            Array.Copy(zscale, orgZscale, zscale.Length)
 
             ReDim zscale(ForcePoints, ForcingShapes)
             ReDim tval(ForcingShapes)
@@ -971,8 +978,14 @@ Public Class cEcosimDatastructures
             For ishape = 0 To ForcingShapes
                 tval(0) = 1      'For forcing functions
                 ZmaxScale = 2
-                For ipt = 0 To ForcePoints
-                    zscale(ipt, ishape) = 1   'Default value is half the max
+                'copy the values from the original zscale() into the new zscale()
+                For ipt = 0 To orgPts
+                    zscale(ipt, ishape) = orgZscale(ipt, ishape)
+                Next
+
+                'set the new values to Default 
+                For ipt = orgPts + 1 To ForcePoints
+                    zscale(ipt, ishape) = 1
                 Next
             Next
 

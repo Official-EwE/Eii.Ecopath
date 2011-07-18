@@ -6941,6 +6941,9 @@ Public Class cCore
             Me.m_SearchManagers(eDataTypes.FishingPolicyManager).Load()
             Me.m_SearchManagers(eDataTypes.MSEManager).Load()
 
+            Me.m_ShapeManagers(eDataTypes.Forcing).Load()
+            Me.m_ShapeManagers(eDataTypes.EggProd).Load()
+
             'Parameters
             Me.LoadEcoSimModelParameters()
 
