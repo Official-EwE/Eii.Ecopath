@@ -422,8 +422,8 @@ Namespace Controls
                 Try
                     ' Store ref to control
                     Me.m_ud = DirectCast(ctrl, NumericUpDown)
-                    AddHandler Me.m_ud.Validated, AddressOf OnSaveValue
-                    AddHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
+                    AddHandler Me.m_ud.ValueChanged, AddressOf OnSaveValue
+                    'AddHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
 
                     Me.m_sg = Me.UIContext.StyleGuide
                     AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -457,8 +457,8 @@ Namespace Controls
                     Implements IControlWrapper.Release
 
                 If (Me.m_ud IsNot Nothing) Then
-                    RemoveHandler Me.m_ud.Validated, AddressOf OnSaveValue
-                    RemoveHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
+                    RemoveHandler Me.m_ud.ValueChanged, AddressOf OnSaveValue
+                    'RemoveHandler Me.m_ud.LostFocus, AddressOf OnSaveValue
                     Me.m_ud = Nothing
                 End If
 
