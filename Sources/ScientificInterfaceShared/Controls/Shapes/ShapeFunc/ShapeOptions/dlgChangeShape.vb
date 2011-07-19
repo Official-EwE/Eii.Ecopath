@@ -308,13 +308,14 @@ Namespace Controls
                     Debug.Assert(False)
             End Select
 
+            ' Todo: Need to fix this resource code; all labels should be obtained from resources, not from form template
             If bBeta Then
                 Me.m_lbYZero.Text = "a"
                 Me.m_lbYEnd.Text = "b"
             Else
                 Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgChangeShape))
-                Me.m_lbYZero.Text = resources.GetString("lbYZero.Text")
-                Me.m_lbYEnd.Text = resources.GetString("lbYEnd.Text")
+                Me.m_lbYZero.Text = resources.GetString("m_lbYZero.Text")
+                Me.m_lbYEnd.Text = resources.GetString("m_lbYEnd.Text")
             End If
 
             ' Enable controls
