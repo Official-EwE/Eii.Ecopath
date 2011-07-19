@@ -13,6 +13,7 @@ Public Enum eShapeFunctionType
     Hyperbolic
     Exponential
     Betapdf
+    Normal
 End Enum
 
 #End Region

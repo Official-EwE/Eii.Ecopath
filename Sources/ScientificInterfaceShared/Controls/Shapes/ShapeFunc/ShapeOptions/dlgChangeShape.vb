@@ -258,14 +258,14 @@ Namespace Controls
         ''' Enable shape type options that make sense for the selected shape.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function IsRelevantShapeType(ByVal t As eShapeFunctionType) As Boolean
+        Private Function IsRelevantShapeType(ByVal FuncType As eShapeFunctionType) As Boolean
 
-            If (t = eShapeFunctionType.NotSet) Then Return True
+            If (FuncType = eShapeFunctionType.NotSet) Then Return True
 
             Select Case Me.m_shape.DataType
 
                 Case EwEUtils.Core.eDataTypes.Forcing
-                    Return (t <> eShapeFunctionType.Betapdf)
+                    Return (FuncType <> eShapeFunctionType.Betapdf And FuncType <> eShapeFunctionType.Normal)
 
                 Case EwEUtils.Core.eDataTypes.Mediation, EwEUtils.Core.eDataTypes.PriceMediation
                     Return True
@@ -283,40 +283,53 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
 
-            Dim bBeta As Boolean = False
+            'Dim bBetaLabel As Boolean = False
+            'Dim bNormalLabel As Boolean = False
+
             Dim bEnableSteep As Boolean = False
             Dim bEnableYBase As Boolean = False
             Dim bEnableYEnd As Boolean = False
             Dim bEnableYZero As Boolean = False
+
+            'default labels
+            Dim YZeroTxt As String = "Y Zero"
+            Dim YEndTxt As String = "Y End"
+            Dim YBaseTxt As String = "Y Base"
 
             Select Case Me.SelectedShapeType()
                 Case eShapeFunctionType.NotSet
                     ' All input controls disabled
                 Case eShapeFunctionType.Linear
                     bEnableYZero = True : bEnableYEnd = True
+
                 Case eShapeFunctionType.Sigmoid
                     bEnableYBase = True : bEnableYEnd = True : bEnableYZero = True
+
                 Case eShapeFunctionType.Hyperbolic
                     bEnableYBase = True : bEnableYEnd = True : bEnableYZero = True : bEnableSteep = True
+
                 Case eShapeFunctionType.Exponential
                     bEnableYZero = True : bEnableYEnd = True : bEnableYBase = True
+
                 Case eShapeFunctionType.Betapdf
                     bEnableYZero = True : bEnableYEnd = True
-                    bBeta = True
+                    YZeroTxt = "a"
+                    YEndTxt = "b"
+
+                Case eShapeFunctionType.Normal
+                    bEnableYBase = True : bEnableYEnd = True : bEnableYZero = True
+                    YZeroTxt = "SD Left"
+                    YEndTxt = "SD Right"
+                    YBaseTxt = "SD Width"
 
                 Case Else
                     Debug.Assert(False)
             End Select
 
-            ' Todo: Need to fix this resource code; all labels should be obtained from resources, not from form template
-            If bBeta Then
-                Me.m_lbYZero.Text = "a"
-                Me.m_lbYEnd.Text = "b"
-            Else
-                Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgChangeShape))
-                Me.m_lbYZero.Text = resources.GetString("m_lbYZero.Text")
-                Me.m_lbYEnd.Text = resources.GetString("m_lbYEnd.Text")
-            End If
+            'labels
+            Me.m_lbYZero.Text = YZeroTxt
+            Me.m_lbYEnd.Text = YEndTxt
+            Me.m_lbYBase.Text = YBaseTxt
 
             ' Enable controls
             Me.m_fpYZero.Enabled = bEnableYZero
@@ -389,6 +402,30 @@ Namespace Controls
                             Dim x As Single = CSng(i / (nPoints + 1))
                             Me.m_asDataWork(i) = CSng(Me.betaPDF(sYZero, sYEnd, x))
                         Next i
+
+                    Case eShapeFunctionType.Normal
+
+                        'normal distribution with a mean of Zero
+                        'User defines 
+                        '   Standard deviation on the left and right
+                        '   Width of the data in standard deviations 
+                        Dim nPtHalf As Integer = nPoints \ 2
+                        'SD left
+                        Dim sd As Single = sYZero + 0.0000001F
+                        'width in SD
+                        Dim Wsd As Single = sYBase
+                        'Delta X 
+                        Dim dx As Single = Wsd / (nPoints - 1)
+                        'Start X
+                        Dim x0 As Single = -Wsd * 0.5F
+                        Dim x As Single
+                        For i As Integer = 1 To nPoints
+                            If i > nPtHalf Then
+                                sd = sYEnd + 0.0000001F
+                            End If
+                            x = x0 + dx * (i - 1)
+                            Me.m_asDataWork(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
+                        Next
 
                     Case Else
                         Debug.Assert(False)
