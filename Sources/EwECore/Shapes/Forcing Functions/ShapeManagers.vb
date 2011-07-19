@@ -4,9 +4,8 @@ Imports EwEUtils.Core
 #Region "Public Enumerators"
 
 ''' <summary>
-''' The type of function used to create a shape
+''' The type of function used to create a shape.
 ''' </summary>
-''' <remarks></remarks>
 Public Enum eShapeFunctionType
     NotSet = 0
     Linear

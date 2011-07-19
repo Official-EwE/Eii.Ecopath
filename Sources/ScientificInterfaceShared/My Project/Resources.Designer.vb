@@ -5141,6 +5141,60 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Beta function.
+        '''</summary>
+        Public ReadOnly Property SHAPEFUNCTION_BETAPDF() As String
+            Get
+                Return ResourceManager.GetString("SHAPEFUNCTION_BETAPDF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Exponential.
+        '''</summary>
+        Public ReadOnly Property SHAPEFUNCTION_EXPONENTIAL() As String
+            Get
+                Return ResourceManager.GetString("SHAPEFUNCTION_EXPONENTIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Hyperbolic.
+        '''</summary>
+        Public ReadOnly Property SHAPEFUNCTION_HYPERBOLIC() As String
+            Get
+                Return ResourceManager.GetString("SHAPEFUNCTION_HYPERBOLIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Linear.
+        '''</summary>
+        Public ReadOnly Property SHAPEFUNCTION_LINEAR() As String
+            Get
+                Return ResourceManager.GetString("SHAPEFUNCTION_LINEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (Original shape)|||Shape as imported or sketched.
+        '''</summary>
+        Public ReadOnly Property SHAPEFUNCTION_NOTSET() As String
+            Get
+                Return ResourceManager.GetString("SHAPEFUNCTION_NOTSET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sigmoid.
+        '''</summary>
+        Public ReadOnly Property SHAPEFUNCTION_SIGMOID() As String
+            Get
+                Return ResourceManager.GetString("SHAPEFUNCTION_SIGMOID", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property ShowGridlines2HS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ShowGridlines2HS", resourceCulture)

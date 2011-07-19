@@ -6,6 +6,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -26,7 +27,7 @@ Namespace Controls
         ''' <summary></summary>
         Private m_shape As cForcingFunction = Nothing
         ''' <summary></summary>
-        Private m_clr As Color = Color.Black
+        Private m_handler As cShapeGUIHandler = Nothing
 
         ''' <summary>Copy of the original shape to work on.</summary>
         Private m_asDataWork As Single()
@@ -47,9 +48,33 @@ Namespace Controls
 
 #End Region ' Private vars
 
+#Region " Private class "
+
+        Private Class cShapeFunctionTypeItem
+
+            Private m_sft As eShapeFunctionType = eShapeFunctionType.NotSet
+
+            Public Sub New(ByVal sft As eShapeFunctionType)
+                Me.m_sft = sft
+            End Sub
+
+            Public Overrides Function ToString() As String
+                Dim fmt As New cShapeFunctionTypeFormatter()
+                Return fmt.GetDescriptor(Me.m_sft)
+            End Function
+
+            ReadOnly Property ShapeFunctionType() As eShapeFunctionType
+                Get
+                    Return Me.m_sft
+                End Get
+            End Property
+
+        End Class
+#End Region ' Private class
+
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext, ByVal shape As cForcingFunction, ByVal clr As Color)
+        Public Sub New(ByVal uic As cUIContext, ByVal shape As cForcingFunction, ByVal handler As cShapeGUIHandler)
 
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
@@ -62,7 +87,7 @@ Namespace Controls
             ' Init
             Me.m_uic = uic
             Me.m_shape = shape
-            Me.m_clr = clr
+            Me.m_handler = handler
             Me.m_asDataWork = shape.ShapeData
 
         End Sub
@@ -87,9 +112,19 @@ Namespace Controls
             Me.m_fpYEnd.Value = Me.m_shape.YEnd 'CSng(IIf(Me.m_shape.YEnd < 0, 1.0!, Me.m_shape.YEnd))
 
             Me.m_fpSteep = New cEwEFormatProvider(Me.m_uic, Me.m_txbSteep, GetType(Single))
-            Me.m_fpSteep.Value = CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
+            Me.m_fpSteep.Value = Me.m_shape.Steep ' CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
 
-            Me.EnableRelevantShapeTypes()
+            ' Show available options
+            For Each sft As eShapeFunctionType In [Enum].GetValues(GetType(eShapeFunctionType))
+                If Me.IsRelevantShapeType(sft) Then
+                    Me.m_lbShapeFunctionTypes.Items.Add(New cShapeFunctionTypeItem(sft))
+                End If
+            Next
+
+            ' Integrate shape name into the dialog title
+            Dim fmt As New cShapeDataFormatter()
+            Me.Text = String.Format(Me.Text, fmt.GetDescriptor(Me.m_shape))
+
             Me.SelectedShapeType = Me.m_shape.ShapeFunctionType
 
             Me.UpdatePreview()
@@ -138,6 +173,16 @@ Namespace Controls
             Me.Close()
         End Sub
 
+        Private Sub OnShapeFunctionTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_lbShapeFunctionTypes.SelectedIndexChanged
+            Try
+                Me.UpdateControls()
+                Me.UpdatePreview()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
         Private Sub OnInputValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
                 Handles m_txbSteep.Validated, m_txbYBase.Validated, m_txbYEnd.Validated, m_txbYZero.Validated
             Me.UpdatePreview()
@@ -165,8 +210,8 @@ Namespace Controls
 
             cShapeImage.DrawShapeDirect(Me.m_uic, _
                                        Me.m_asDataWork, Me.m_shape.XMax, Me.m_shape.IsSeasonal, _
-                                       Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_clr, _
-                                       eSketchDrawModeTypes.Line, _
+                                       Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
+                                       Me.m_handler.SketchDrawMode, _
                                        sDataMax / 0.8!, cCore.NULL_VALUE, cCore.NULL_VALUE)
 
         End Sub
@@ -175,37 +220,25 @@ Namespace Controls
 
 #Region " Private method helpers "
 
-        Private Sub OnShapeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbOriginal.CheckedChanged, m_rbLinear.CheckedChanged, m_rbSigmoid.CheckedChanged, _
-                    m_rbHyperbolic.CheckedChanged, m_rbExponential.CheckedChanged, m_rbBeta.CheckedChanged
-            Me.UpdateControls()
-            Me.UpdatePreview()
-        End Sub
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the selected shape function type in the type selection controls
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Property SelectedShapeType() As eShapeFunctionType
             Get
-                If Me.m_rbLinear.Checked Then
-                    Return eShapeFunctionType.Linear
-                ElseIf Me.m_rbSigmoid.Checked Then
-                    Return eShapeFunctionType.Sigmoid
-                ElseIf Me.m_rbHyperbolic.Checked Then
-                    Return eShapeFunctionType.Hyperbolic
-                ElseIf Me.m_rbExponential.Checked Then
-                    Return eShapeFunctionType.Exponential
-                ElseIf Me.m_rbBeta.Checked Then
-                    Return eShapeFunctionType.Betapdf
-                End If
-                Return eShapeFunctionType.NotSet
+                Dim item As Object = Me.m_lbShapeFunctionTypes.SelectedItem
+                If (item Is Nothing) Then Return eShapeFunctionType.NotSet
+                Return DirectCast(item, cShapeFunctionTypeItem).ShapeFunctionType
             End Get
             Set(ByVal value As eShapeFunctionType)
-                Select Case value
-                    Case eShapeFunctionType.NotSet : Me.m_rbOriginal.Checked = True
-                    Case eShapeFunctionType.Linear : Me.m_rbLinear.Checked = True
-                    Case eShapeFunctionType.Sigmoid : Me.m_rbSigmoid.Checked = True
-                    Case eShapeFunctionType.Hyperbolic : Me.m_rbHyperbolic.Checked = True
-                    Case eShapeFunctionType.Exponential : Me.m_rbExponential.Checked = True
-                    Case eShapeFunctionType.Betapdf : Me.m_rbBeta.Checked = True
-                End Select
+                For Each item As Object In Me.m_lbShapeFunctionTypes.Items
+                    If DirectCast(item, cShapeFunctionTypeItem).ShapeFunctionType = value Then
+                        Me.m_lbShapeFunctionTypes.SelectedItem = item
+                        Return
+                    End If
+                Next
+                Me.m_lbShapeFunctionTypes.SelectedItem = Nothing
             End Set
         End Property
 
@@ -225,31 +258,23 @@ Namespace Controls
         ''' Enable shape type options that make sense for the selected shape.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub EnableRelevantShapeTypes()
+        Private Function IsRelevantShapeType(ByVal t As eShapeFunctionType) As Boolean
 
-            ' Proof of concept: to extend to proper datatypes
-
-            Dim bEnableHyperbolic As Boolean = False
-            Dim bEnableExponential As Boolean = False
-            Dim bEnableBeta As Boolean = False
+            If (t = eShapeFunctionType.NotSet) Then Return True
 
             Select Case Me.m_shape.DataType
 
                 Case EwEUtils.Core.eDataTypes.Forcing
+                    Return (t <> eShapeFunctionType.Betapdf)
 
                 Case EwEUtils.Core.eDataTypes.Mediation, EwEUtils.Core.eDataTypes.PriceMediation
-                    bEnableHyperbolic = True
-                    bEnableExponential = True
-                    bEnableBeta = True
+                    Return True
 
             End Select
 
-            ' Table layout panel will keep interface neat
-            Me.m_rbHyperbolic.Visible = bEnableHyperbolic
-            Me.m_rbExponential.Visible = bEnableExponential
-            Me.m_rbBeta.Visible = bEnableBeta
+            Return True
 
-        End Sub
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -284,12 +309,12 @@ Namespace Controls
             End Select
 
             If bBeta Then
-                Me.lbYZero.Text = "a"
-                Me.lbYEnd.Text = "b"
+                Me.m_lbYZero.Text = "a"
+                Me.m_lbYEnd.Text = "b"
             Else
                 Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgChangeShape))
-                Me.lbYZero.Text = resources.GetString("lbYZero.Text")
-                Me.lbYEnd.Text = resources.GetString("lbYEnd.Text")
+                Me.m_lbYZero.Text = resources.GetString("lbYZero.Text")
+                Me.m_lbYEnd.Text = resources.GetString("lbYEnd.Text")
             End If
 
             ' Enable controls
