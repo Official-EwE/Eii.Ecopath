@@ -409,6 +409,14 @@ Namespace Controls
                         'User defines 
                         '   Standard deviation on the left and right
                         '   Width of the data in standard deviations 
+                        '   Width is important because values outside the bounds 
+                        '       are just the first or last value in the shape
+
+                        'Normal and Beta shapes are not used for Forcing functions
+                        'so it is only the shape we are interested in not that actual data
+                        'how the shape affects the data is defined by the user by where they place the baseline
+                        'If these are to be used as Forcing Function then we will need a way to 'scale' the data
+                        'as there is no way to in the Forcing Function interface to select where the baseline is.
                         Dim nPtHalf As Integer = nPoints \ 2
                         'SD left
                         Dim sd As Single = sYZero + 0.0000001F
