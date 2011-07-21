@@ -5521,9 +5521,9 @@ exitline:
 
         'set capacities from habitats and input maps
         cap = Me.setHabCapFromHabitat
-        Math.Max(MaxCap, cap)
+        MaxCap = Math.Max(MaxCap, cap)
         cap = Me.SetHabCapFromMaps
-        Math.Max(MaxCap, cap)
+        MaxCap = Math.Max(MaxCap, cap)
 
         'now normalize the capacity map
         Me.normalizeCapacityMap(MaxCap)
@@ -5537,17 +5537,14 @@ exitline:
     Private Sub normalizeCapacityMap(ByVal MaxCap As Single)
         Dim iGrp As Integer, ir As Integer, ic As Integer, cap As Single
 
-        'set capacities from habitats and input maps
-        cap = Me.setHabCapFromHabitat
-        Math.Max(MaxCap, cap)
-        cap = Me.SetHabCapFromMaps
-        Math.Max(MaxCap, cap)
-
+     
         'now normalize the capacity map
         For iGrp = 1 To Me.m_Data.NGroups
             'rescale and sum up over cells
             For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
                     Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / MaxCap
+                    'Min Capacity
+                    If Me.m_Data.HabCap(ir, ic, iGrp) < 0.000001F Then Me.m_Data.HabCap(ir, ic, iGrp) = 0.000001F
                     Me.m_Data.TotHabCap(iGrp) = Me.m_Data.TotHabCap(iGrp) + Me.m_Data.HabCap(ir, ic, iGrp)
                 Next
             Next
@@ -5566,16 +5563,16 @@ exitline:
             Next ist
 
             If Not bMultiStanza Then
-                For ir = 0 To Me.m_Data.InCol + 1
+                For ic = 0 To Me.m_Data.InCol + 1
                     Me.m_Data.HabCap(0, ic, iGrp) = Me.m_Data.HabCap(1, ic, iGrp)
 
                     Me.m_Data.HabCap(Me.m_Data.InRow + 1, ic, iGrp) = Me.m_Data.HabCap(Me.m_Data.InRow, ic, iGrp)
-                Next ir
+                Next ic
 
-                For ic = 0 To Me.m_Data.InRow + 1
+                For ir = 0 To Me.m_Data.InRow + 1
                     Me.m_Data.HabCap(ir, 0, iGrp) = Me.m_Data.HabCap(ir, 1, iGrp)
                     Me.m_Data.HabCap(ir, Me.m_Data.InCol + 1, iGrp) = Me.m_Data.HabCap(ir, Me.m_Data.InCol, iGrp)
-                Next ic
+                Next ir
             End If
 
         Next iGrp
