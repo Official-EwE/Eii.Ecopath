@@ -464,13 +464,23 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public bSaveCSV As Boolean
 
-
     ''' <summary>
     ''' Save Ecospace time step results to ASC format file
     ''' </summary>
     ''' <remarks></remarks>
     Public bSaveASC As Boolean
 
+    Public CapMaps As New List(Of IEnviroInputMap)
+
+    ''' <summary>
+    ''' Capacity Environmental Response functions (mediation functions). 
+    ''' Shape to convert input value to capacity value e.g. CapacityMap(irow,icol) = F(InputMap(irow,icol)) (capacity as a function of X)
+    ''' </summary>
+    ''' <remarks>
+    ''' Generical Environmental Response functions are used to convert an enviromental input value to a value used in either Ecosim(time series input data) or Ecospace(spatial/temporal data)
+    ''' For Capacity Environmental Response functions are used in conjunction with a cEnviroInputMap(of T) to populate the Capacity map
+    ''' </remarks>
+    Dim CapEnvResData As New cMediationDataStructures
 
 
 #End Region
@@ -1595,6 +1605,55 @@ Public Class cEcospaceDataStructures
         If startIndex > Me.nTimeSteps Then startIndex = 1
         If endIndex > Me.nTimeSteps Then endIndex = Me.nTimeSteps - Me.NumStep
         nIndexes = Me.NumStep
+    End Sub
+
+
+    ''' <summary>
+    ''' Hardwire some Capacity map values
+    ''' </summary>
+    ''' <remarks>FOR DEBUGGING ONLY</remarks>
+    Public Sub setDebugCapMaps()
+
+        Try
+
+            CapEnvResData.MediationShapes = 1
+            CapEnvResData.ReDimMediation(Me.NGroups, Me.nFleets)
+
+            'create a linear increasing shape to use as the Environmental Response function (mediation function)
+            Dim dx As Single = 10.0F / CapEnvResData.NMedPoints
+            For ipt As Integer = 1 To CapEnvResData.NMedPoints
+                CapEnvResData.Medpoints(ipt, 1) = dx * (ipt - 1)
+            Next
+            CapEnvResData.IMedBase(1) = CapEnvResData.NMedPoints \ 2
+            CapEnvResData.MedXbase(1) = 5
+            CapEnvResData.MedYbase(1) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(1), 1)
+
+            'Depth Map
+            Dim depthMap As New cEnviroInputMap(Of Integer)
+            depthMap.Map = Me.Depth
+            depthMap.Init(CapEnvResData, Me)
+            'all groups use the first response function (mediation shape)
+            For igrp As Integer = 1 To Me.NGroups
+                depthMap.setResponseForGroup(igrp) = 1
+            Next
+
+            'PP map
+            Dim PPmap As New cEnviroInputMap(Of Single)
+            PPmap.Map = Me.RelPP
+            PPmap.Init(CapEnvResData, Me)
+            'use the first/only function for all groups
+            For igrp As Integer = 1 To Me.NGroups
+                PPmap.setResponseForGroup(igrp) = 1
+            Next
+
+            Me.CapMaps.Add(PPmap)
+            Me.CapMaps.Add(depthMap)
+
+        Catch ex As Exception
+            Debug.Assert(False, "Failed it init debug capacity map")
+        End Try
+
+
     End Sub
 
 

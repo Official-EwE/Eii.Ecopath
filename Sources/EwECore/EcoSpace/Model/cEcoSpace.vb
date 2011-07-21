@@ -1713,8 +1713,12 @@ Public Class cEcoSpace
             'jb 12-Ma7-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
             Me.m_Ecosim.Init(True)
 
+            'hardwire some capacity maps for debugging
+            Me.m_Data.setDebugCapMaps()
+
             SetHabCap()
-            AdjustLowHapCaps()
+
+
             'first set density map for all pools to no movement equilibrium
             SetBiomassesEcospace()
             PPScale = ScaleRelativePrimaryProductivityToEcopathLevel()
@@ -5475,10 +5479,10 @@ exitline:
 
     End Function
 
-    Sub SetHabCap()
-        'set up array of relative habitat capacities by cell and group
+
+    Private Function setHabCapFromHabitat() As Single
         Dim i As Integer, j As Integer, K As Integer, MaxCap As Double
-        ReDim m_Data.HabCap(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups), m_Data.TotHabCap(m_Data.NGroups)
+
         For K = 1 To Me.m_Data.NGroups
             MaxCap = 0
             For i = 1 To Me.m_Data.InRow
@@ -5498,47 +5502,146 @@ exitline:
                     If Me.m_Data.HabCap(i, j, K) > MaxCap Then MaxCap = Me.m_Data.HabCap(i, j, K)
                 Next j
             Next i
+        Next K
 
-            'jb this is just for debugging
-            'SmoothCap(K)
-            'SmoothCap(K)
+        Return MaxCap
 
+    End Function
+
+
+
+    ''' <summary>
+    ''' Set capacity maps from all sources Habitats and Input Capacity Maps 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetHabCap()
+        'set up array of relative habitat capacities by cell and group
+        Dim MaxCap As Double, cap As Single
+        ReDim m_Data.HabCap(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups), m_Data.TotHabCap(m_Data.NGroups)
+
+        'set capacities from habitats and input maps
+        cap = Me.setHabCapFromHabitat
+        Math.Max(MaxCap, cap)
+        cap = Me.SetHabCapFromMaps
+        Math.Max(MaxCap, cap)
+
+        'now normalize the capacity map
+        Me.normalizeCapacityMap(MaxCap)
+
+        'Set the capacity gradients to flow high capacity cells
+        AdjustLowHapCaps()
+
+    End Sub
+
+
+    Private Sub normalizeCapacityMap(ByVal MaxCap As Single)
+        Dim iGrp As Integer, ir As Integer, ic As Integer, cap As Single
+
+        'set capacities from habitats and input maps
+        cap = Me.setHabCapFromHabitat
+        Math.Max(MaxCap, cap)
+        cap = Me.SetHabCapFromMaps
+        Math.Max(MaxCap, cap)
+
+        'now normalize the capacity map
+        For iGrp = 1 To Me.m_Data.NGroups
             'rescale and sum up over cells
-            For i = 1 To Me.m_Data.InRow : For j = 1 To Me.m_Data.InCol
-                    Me.m_Data.HabCap(i, j, K) = Me.m_Data.HabCap(i, j, K) / MaxCap
-                    Me.m_Data.TotHabCap(K) = Me.m_Data.TotHabCap(K) + Me.m_Data.HabCap(i, j, K)
+            For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
+                    Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / MaxCap
+                    Me.m_Data.TotHabCap(iGrp) = Me.m_Data.TotHabCap(iGrp) + Me.m_Data.HabCap(ir, ic, iGrp)
                 Next
             Next
 
             'set habcaps for cells across grid boundaries
             Dim bMultiStanza As Boolean = False
-            For i = 1 To m_Stanza.Nsplit
+            For ist As Integer = 1 To m_Stanza.Nsplit
 
-                For ii As Integer = 1 To m_Stanza.Nstanza(i)
-                    If K = m_Stanza.EcopathCode(i, ii) Then
+                For ii As Integer = 1 To m_Stanza.Nstanza(ist)
+                    If iGrp = m_Stanza.EcopathCode(ist, ii) Then
                         bMultiStanza = True 'stanzas are indexed from zero
                         Exit For
                     End If
                 Next ii
                 If bMultiStanza = True Then Exit For
-            Next i
+            Next ist
 
             If Not bMultiStanza Then
-                For j = 0 To Me.m_Data.InCol + 1
-                    Me.m_Data.HabCap(0, j, K) = Me.m_Data.HabCap(1, j, K)
+                For ir = 0 To Me.m_Data.InCol + 1
+                    Me.m_Data.HabCap(0, ic, iGrp) = Me.m_Data.HabCap(1, ic, iGrp)
 
-                    Me.m_Data.HabCap(Me.m_Data.InRow + 1, j, K) = Me.m_Data.HabCap(Me.m_Data.InRow, j, K)
-                Next j
+                    Me.m_Data.HabCap(Me.m_Data.InRow + 1, ic, iGrp) = Me.m_Data.HabCap(Me.m_Data.InRow, ic, iGrp)
+                Next ir
 
-                For i = 0 To Me.m_Data.InRow + 1
-                    Me.m_Data.HabCap(i, 0, K) = Me.m_Data.HabCap(i, 1, K)
-                    Me.m_Data.HabCap(i, Me.m_Data.InCol + 1, K) = Me.m_Data.HabCap(i, Me.m_Data.InCol, K)
-                Next i
+                For ic = 0 To Me.m_Data.InRow + 1
+                    Me.m_Data.HabCap(ir, 0, iGrp) = Me.m_Data.HabCap(ir, 1, iGrp)
+                    Me.m_Data.HabCap(ir, Me.m_Data.InCol + 1, iGrp) = Me.m_Data.HabCap(ir, Me.m_Data.InCol, iGrp)
+                Next ic
             End If
 
-        Next K
-
+        Next iGrp
     End Sub
+
+    Private Function SetHabCapFromMaps() As Single
+        'set up array of relative habitat capacities by cell and group
+        Dim i As Integer, j As Integer, igrp As Integer, MaxCap As Double
+
+        For igrp = 1 To Me.m_Data.NGroups
+
+            For Each map As IEnviroInputMap In Me.m_Data.CapMaps
+
+                For i = 1 To Me.m_Data.InRow
+                    For j = 1 To Me.m_Data.InCol
+                        Me.m_Data.HabCap(i, j, igrp) += map.ResponseFunction(igrp, i, j)
+                        MaxCap = Math.Max(Me.m_Data.HabCap(i, j, igrp), MaxCap)
+                    Next
+                Next
+
+            Next map
+
+        Next igrp
+
+        Return MaxCap
+
+        ''jb this is just for debugging
+        ''SmoothCap(K)
+        ''SmoothCap(K)
+
+        ''rescale and sum up over cells
+        'For i = 1 To Me.m_Data.InRow : For j = 1 To Me.m_Data.InCol
+        '        Me.m_Data.HabCap(i, j, igrp) = Me.m_Data.HabCap(i, j, igrp) / MaxCap
+        '        Me.m_Data.TotHabCap(igrp) = Me.m_Data.TotHabCap(igrp) + Me.m_Data.HabCap(i, j, igrp)
+        '    Next
+        'Next
+
+        ''set habcaps for cells across grid boundaries
+        'Dim bMultiStanza As Boolean = False
+        'For i = 1 To m_Stanza.Nsplit
+
+        '    For ii As Integer = 1 To m_Stanza.Nstanza(i)
+        '        If igrp = m_Stanza.EcopathCode(i, ii) Then
+        '            bMultiStanza = True 'stanzas are indexed from zero
+        '            Exit For
+        '        End If
+        '    Next ii
+        '    If bMultiStanza = True Then Exit For
+        'Next i
+
+        'If Not bMultiStanza Then
+        '    For j = 0 To Me.m_Data.InCol + 1
+        '        Me.m_Data.HabCap(0, j, igrp) = Me.m_Data.HabCap(1, j, igrp)
+
+        '        Me.m_Data.HabCap(Me.m_Data.InRow + 1, j, igrp) = Me.m_Data.HabCap(Me.m_Data.InRow, j, igrp)
+        '    Next j
+
+        '    For i = 0 To Me.m_Data.InRow + 1
+        '        Me.m_Data.HabCap(i, 0, igrp) = Me.m_Data.HabCap(i, 1, igrp)
+        '        Me.m_Data.HabCap(i, Me.m_Data.InCol + 1, igrp) = Me.m_Data.HabCap(i, Me.m_Data.InCol, igrp)
+        '    Next i
+        'End If
+
+        '    Next igrp
+
+    End Function
 
     Private Sub SmoothCap(ByVal k As Integer)
 

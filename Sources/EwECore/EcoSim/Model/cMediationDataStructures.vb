@@ -3,7 +3,6 @@ Public Class cMediationDataStructures
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Mediation vars 
 
-
     Public Const MAXFUNCTIONS As Integer = 5
 
     ''' <summary>Number of functions</summary>
@@ -49,10 +48,10 @@ Public Class cMediationDataStructures
     Public IsMedFunction(,,) As Boolean
     Public FunctionType(,,) As Integer
 
-    Private m_nGroups As Integer
-    Private m_nFleets As Integer
+    Protected m_nGroups As Integer
+    Protected m_nFleets As Integer
 
-    Public Sub ReDimMediation(ByVal nGroups As Integer, ByVal nFleets As Integer)
+    Public Overridable Sub ReDimMediation(ByVal nGroups As Integer, ByVal nFleets As Integer)
         Dim i, j As Integer
         'following is for Mediation:
         NMedPoints = 1200
@@ -232,20 +231,3 @@ Public Class cMediationDataStructures
 
 End Class
 
-
-Public Class cCapacityFunction
-    Inherits cMediationDataStructures
-
-    Private m_map(,) As Single
-
-    Public Property Map() As Single(,)
-        Get
-
-        End Get
-        Set(ByVal value As Single(,))
-
-        End Set
-    End Property
-
-
-End Class
