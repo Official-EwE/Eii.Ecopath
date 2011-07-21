@@ -17,20 +17,6 @@ Public Class cAnomalySearchShapeGUIHandler
         MyBase.Attach(uic, stb, Nothing, sp, Nothing)
     End Sub
 
-    ' ''' ---------------------------------------------------------------
-    ' ''' <summary>
-    ' ''' 
-    ' ''' </summary>
-    ' ''' ---------------------------------------------------------------
-    'Public Overrides Property SketchPad() As ucSketchPad
-    '    Get
-    '        Return MyBase.SketchPad
-    '    End Get
-    '    Set(ByVal value As ucSketchPad)
-    '        MyBase.SketchPad = value
-    '    End Set
-    'End Property
-
     ''' ---------------------------------------------------------------
     ''' <summary>
     ''' 
@@ -45,7 +31,7 @@ Public Class cAnomalySearchShapeGUIHandler
         Return manager.IsApplied(DirectCast(shape, cForcingFunction))
     End Function
 
-    Protected Overrides Function NumDataYears() As Integer
+    Public Overrides Function NumDataYears() As Integer
         Return Me.UIContext.Core.nTimeSeriesYears
     End Function
 
