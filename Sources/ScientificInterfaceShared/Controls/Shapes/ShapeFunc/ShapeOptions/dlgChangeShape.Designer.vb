@@ -22,61 +22,62 @@ Partial Class dlgChangeShape
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgChangeShape))
-            Me.m_txbYBase = New System.Windows.Forms.TextBox
-            Me.m_lbYBase = New System.Windows.Forms.Label
-            Me.m_txbYZero = New System.Windows.Forms.TextBox
-            Me.m_lbYZero = New System.Windows.Forms.Label
-            Me.m_txbSteep = New System.Windows.Forms.TextBox
-            Me.m_txbYEnd = New System.Windows.Forms.TextBox
-            Me.m_lbSteep = New System.Windows.Forms.Label
-            Me.m_lbYEnd = New System.Windows.Forms.Label
+            Me.m_tbxC = New System.Windows.Forms.TextBox
+            Me.m_lblC = New System.Windows.Forms.Label
+            Me.m_tbxA = New System.Windows.Forms.TextBox
+            Me.m_lblA = New System.Windows.Forms.Label
+            Me.m_tbxD = New System.Windows.Forms.TextBox
+            Me.m_tbxB = New System.Windows.Forms.TextBox
+            Me.m_lblD = New System.Windows.Forms.Label
+            Me.m_lblB = New System.Windows.Forms.Label
             Me.m_btnOk = New System.Windows.Forms.Button
             Me.m_btnCancel = New System.Windows.Forms.Button
             Me.m_plPreview = New System.Windows.Forms.Panel
             Me.m_lbShapeFunctionTypes = New System.Windows.Forms.ListBox
             Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_btnDefaults = New System.Windows.Forms.Button
             Me.SuspendLayout()
             '
-            'm_txbYBase
+            'm_tbxC
             '
-            resources.ApplyResources(Me.m_txbYBase, "m_txbYBase")
-            Me.m_txbYBase.Name = "m_txbYBase"
+            resources.ApplyResources(Me.m_tbxC, "m_tbxC")
+            Me.m_tbxC.Name = "m_tbxC"
             '
-            'm_lbYBase
+            'm_lblC
             '
-            resources.ApplyResources(Me.m_lbYBase, "m_lbYBase")
-            Me.m_lbYBase.Name = "m_lbYBase"
+            resources.ApplyResources(Me.m_lblC, "m_lblC")
+            Me.m_lblC.Name = "m_lblC"
             '
-            'm_txbYZero
+            'm_tbxA
             '
-            resources.ApplyResources(Me.m_txbYZero, "m_txbYZero")
-            Me.m_txbYZero.Name = "m_txbYZero"
+            resources.ApplyResources(Me.m_tbxA, "m_tbxA")
+            Me.m_tbxA.Name = "m_tbxA"
             '
-            'm_lbYZero
+            'm_lblA
             '
-            resources.ApplyResources(Me.m_lbYZero, "m_lbYZero")
-            Me.m_lbYZero.Name = "m_lbYZero"
+            resources.ApplyResources(Me.m_lblA, "m_lblA")
+            Me.m_lblA.Name = "m_lblA"
             '
-            'm_txbSteep
+            'm_tbxD
             '
-            resources.ApplyResources(Me.m_txbSteep, "m_txbSteep")
-            Me.m_txbSteep.Name = "m_txbSteep"
+            resources.ApplyResources(Me.m_tbxD, "m_tbxD")
+            Me.m_tbxD.Name = "m_tbxD"
             '
-            'm_txbYEnd
+            'm_tbxB
             '
-            resources.ApplyResources(Me.m_txbYEnd, "m_txbYEnd")
-            Me.m_txbYEnd.Name = "m_txbYEnd"
+            resources.ApplyResources(Me.m_tbxB, "m_tbxB")
+            Me.m_tbxB.Name = "m_tbxB"
             '
-            'm_lbSteep
+            'm_lblD
             '
-            resources.ApplyResources(Me.m_lbSteep, "m_lbSteep")
-            Me.m_lbSteep.Name = "m_lbSteep"
+            resources.ApplyResources(Me.m_lblD, "m_lblD")
+            Me.m_lblD.Name = "m_lblD"
             '
-            'm_lbYEnd
+            'm_lblB
             '
-            resources.ApplyResources(Me.m_lbYEnd, "m_lbYEnd")
-            Me.m_lbYEnd.Name = "m_lbYEnd"
+            resources.ApplyResources(Me.m_lblB, "m_lblB")
+            Me.m_lblB.Name = "m_lblB"
             '
             'm_btnOk
             '
@@ -121,6 +122,12 @@ Partial Class dlgChangeShape
             Me.m_hdrParams.IsCollapsed = False
             Me.m_hdrParams.Name = "m_hdrParams"
             '
+            'm_btnDefaults
+            '
+            resources.ApplyResources(Me.m_btnDefaults, "m_btnDefaults")
+            Me.m_btnDefaults.Name = "m_btnDefaults"
+            Me.m_btnDefaults.UseVisualStyleBackColor = True
+            '
             'dlgChangeShape
             '
             Me.AcceptButton = Me.m_btnOk
@@ -129,19 +136,20 @@ Partial Class dlgChangeShape
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
             Me.Controls.Add(Me.m_lbShapeFunctionTypes)
-            Me.Controls.Add(Me.m_lbYZero)
-            Me.Controls.Add(Me.m_lbSteep)
+            Me.Controls.Add(Me.m_lblA)
+            Me.Controls.Add(Me.m_lblD)
             Me.Controls.Add(Me.m_hdrShape)
             Me.Controls.Add(Me.m_hdrParams)
-            Me.Controls.Add(Me.m_txbYEnd)
+            Me.Controls.Add(Me.m_tbxB)
             Me.Controls.Add(Me.m_plPreview)
-            Me.Controls.Add(Me.m_txbYBase)
-            Me.Controls.Add(Me.m_lbYEnd)
+            Me.Controls.Add(Me.m_tbxC)
+            Me.Controls.Add(Me.m_lblB)
+            Me.Controls.Add(Me.m_btnDefaults)
             Me.Controls.Add(Me.m_btnOk)
-            Me.Controls.Add(Me.m_lbYBase)
+            Me.Controls.Add(Me.m_lblC)
             Me.Controls.Add(Me.m_btnCancel)
-            Me.Controls.Add(Me.m_txbSteep)
-            Me.Controls.Add(Me.m_txbYZero)
+            Me.Controls.Add(Me.m_tbxD)
+            Me.Controls.Add(Me.m_tbxA)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.Name = "dlgChangeShape"
             Me.ShowInTaskbar = False
@@ -149,20 +157,21 @@ Partial Class dlgChangeShape
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_txbYBase As System.Windows.Forms.TextBox
-        Private WithEvents m_lbYBase As System.Windows.Forms.Label
-        Private WithEvents m_txbYZero As System.Windows.Forms.TextBox
-        Private WithEvents m_lbYZero As System.Windows.Forms.Label
-        Private WithEvents m_txbSteep As System.Windows.Forms.TextBox
-        Private WithEvents m_txbYEnd As System.Windows.Forms.TextBox
-        Private WithEvents m_lbSteep As System.Windows.Forms.Label
-        Private WithEvents m_lbYEnd As System.Windows.Forms.Label
+        Private WithEvents m_tbxC As System.Windows.Forms.TextBox
+        Private WithEvents m_lblC As System.Windows.Forms.Label
+        Private WithEvents m_tbxA As System.Windows.Forms.TextBox
+        Private WithEvents m_lblA As System.Windows.Forms.Label
+        Private WithEvents m_tbxD As System.Windows.Forms.TextBox
+        Private WithEvents m_tbxB As System.Windows.Forms.TextBox
+        Private WithEvents m_lblD As System.Windows.Forms.Label
+        Private WithEvents m_lblB As System.Windows.Forms.Label
         Private WithEvents m_btnOk As System.Windows.Forms.Button
         Private WithEvents m_btnCancel As System.Windows.Forms.Button
         Private WithEvents m_plPreview As System.Windows.Forms.Panel
         Private WithEvents m_hdrParams As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_hdrShape As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_lbShapeFunctionTypes As System.Windows.Forms.ListBox
+        Private WithEvents m_btnDefaults As System.Windows.Forms.Button
 
     End Class
 

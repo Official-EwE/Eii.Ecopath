@@ -32,13 +32,13 @@ Namespace Controls
         ''' <summary>Copy of the original shape to work on.</summary>
         Private m_asDataWork As Single()
         ''' <summary></summary>
-        Private m_fpYBase As cEwEFormatProvider = Nothing
+        Private m_fpC As cEwEFormatProvider = Nothing
         ''' <summary></summary>
-        Private m_fpYEnd As cEwEFormatProvider = Nothing
+        Private m_fpB As cEwEFormatProvider = Nothing
         ''' <summary></summary>
-        Private m_fpYZero As cEwEFormatProvider = Nothing
+        Private m_fpA As cEwEFormatProvider = Nothing
         ''' <summary></summary>
-        Private m_fpSteep As cEwEFormatProvider = Nothing
+        Private m_fpD As cEwEFormatProvider = Nothing
 
         Private m_bRecalc As Boolean = True
 
@@ -102,17 +102,17 @@ Namespace Controls
             Me.CenterToParent()
 
             'jb 24-May-11 removed data validation to fix ticket 975
-            Me.m_fpYZero = New cEwEFormatProvider(Me.m_uic, Me.m_txbYZero, GetType(Single))
-            Me.m_fpYZero.Value = Me.m_shape.YZero 'Math.Max(0, Me.m_shape.YZero)
+            Me.m_fpA = New cEwEFormatProvider(Me.m_uic, Me.m_tbxA, GetType(Single))
+            Me.m_fpA.Value = Me.m_shape.YZero 'Math.Max(0, Me.m_shape.YZero)
 
-            Me.m_fpYBase = New cEwEFormatProvider(Me.m_uic, Me.m_txbYBase, GetType(Single))
-            Me.m_fpYBase.Value = Me.m_shape.YBase 'CSng(IIf(Me.m_shape.YBase <= 0, 0.5!, Me.m_shape.YBase))
+            Me.m_fpB = New cEwEFormatProvider(Me.m_uic, Me.m_tbxB, GetType(Single))
+            Me.m_fpB.Value = Me.m_shape.YEnd 'CSng(IIf(Me.m_shape.YEnd < 0, 1.0!, Me.m_shape.YEnd))
 
-            Me.m_fpYEnd = New cEwEFormatProvider(Me.m_uic, Me.m_txbYEnd, GetType(Single))
-            Me.m_fpYEnd.Value = Me.m_shape.YEnd 'CSng(IIf(Me.m_shape.YEnd < 0, 1.0!, Me.m_shape.YEnd))
+            Me.m_fpC = New cEwEFormatProvider(Me.m_uic, Me.m_tbxC, GetType(Single))
+            Me.m_fpC.Value = Me.m_shape.YBase 'CSng(IIf(Me.m_shape.YBase <= 0, 0.5!, Me.m_shape.YBase))
 
-            Me.m_fpSteep = New cEwEFormatProvider(Me.m_uic, Me.m_txbSteep, GetType(Single))
-            Me.m_fpSteep.Value = Me.m_shape.Steep ' CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
+            Me.m_fpD = New cEwEFormatProvider(Me.m_uic, Me.m_tbxD, GetType(Single))
+            Me.m_fpD.Value = Me.m_shape.Steep ' CSng(IIf(Me.m_shape.Steep = 0, 3.0!, Me.m_shape.Steep))
 
             ' Show available options
             For Each sft As eShapeFunctionType In [Enum].GetValues(GetType(eShapeFunctionType))
@@ -134,16 +134,47 @@ Namespace Controls
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            Me.m_fpSteep.Release()
-            Me.m_fpYBase.Release()
-            Me.m_fpYEnd.Release()
-            Me.m_fpYZero.Release()
+            Me.m_fpD.Release()
+            Me.m_fpC.Release()
+            Me.m_fpB.Release()
+            Me.m_fpA.Release()
 
             MyBase.OnFormClosed(e)
 
         End Sub
 
-        Private Sub OnOk(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
+        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnDefaults.Click
+
+            Dim sA As Single = 0.0
+            Dim sB As Single = 0.0
+            Dim sC As Single = 0.0
+            Dim sD As Single = 0.0
+
+            Select Case Me.SelectedShapeType
+                Case eShapeFunctionType.NotSet
+                    sA = Me.m_shape.YZero : sB = Me.m_shape.YEnd : sC = Me.m_shape.YBase : sD = Me.m_shape.Steep
+                Case eShapeFunctionType.Linear
+                Case eShapeFunctionType.Exponential
+                Case eShapeFunctionType.Hyperbolic
+                Case eShapeFunctionType.Sigmoid
+                Case eShapeFunctionType.Betapdf
+                Case eShapeFunctionType.Normal
+            End Select
+
+            Me.m_fpA.Value = sA
+            Me.m_fpB.Value = sB
+            Me.m_fpC.Value = sC
+            Me.m_fpD.Value = sD
+
+            Me.UpdatePreview()
+            Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnOk(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnOk.Click
+
             If Not Me.RecalcShape() Then
                 ' MsgBox
                 Return
@@ -154,10 +185,10 @@ Namespace Controls
             ' Copy shape data back
             Me.m_shape.ShapeData = Me.m_asDataWork
             ' Store last used params
-            Me.m_shape.YZero = CSng(Me.m_fpYZero.Value)
-            Me.m_shape.YBase = CSng(Me.m_fpYBase.Value)
-            Me.m_shape.YEnd = CSng(Me.m_fpYEnd.Value)
-            Me.m_shape.Steep = CSng(Me.m_fpSteep.Value)
+            Me.m_shape.YZero = CSng(Me.m_fpA.Value)
+            Me.m_shape.YBase = CSng(Me.m_fpC.Value)
+            Me.m_shape.YEnd = CSng(Me.m_fpB.Value)
+            Me.m_shape.Steep = CSng(Me.m_fpD.Value)
             Me.m_shape.ShapeFunctionType = Me.SelectedShapeType()
 
             ' Go johnny go
@@ -184,7 +215,7 @@ Namespace Controls
         End Sub
 
         Private Sub OnInputValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
-                Handles m_txbSteep.Validated, m_txbYBase.Validated, m_txbYEnd.Validated, m_txbYZero.Validated
+                Handles m_tbxD.Validated, m_tbxC.Validated, m_tbxB.Validated, m_tbxA.Validated
             Me.UpdatePreview()
         End Sub
 
@@ -283,59 +314,57 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
 
-            'Dim bBetaLabel As Boolean = False
-            'Dim bNormalLabel As Boolean = False
+            Dim bEnableA As Boolean = False
+            Dim bEnableB As Boolean = False
+            Dim bEnableC As Boolean = False
+            Dim bEnableD As Boolean = False
 
-            Dim bEnableSteep As Boolean = False
-            Dim bEnableYBase As Boolean = False
-            Dim bEnableYEnd As Boolean = False
-            Dim bEnableYZero As Boolean = False
-
-            'default labels
-            Dim YZeroTxt As String = "Y Zero"
-            Dim YEndTxt As String = "Y End"
-            Dim YBaseTxt As String = "Y Base"
+            Dim strLabelA As String = My.Resources.LABEL_YZERO
+            Dim strLabelB As String = My.Resources.LABEL_YEND
+            Dim strLabelC As String = My.Resources.LABEL_YBASE
+            Dim strLabelD As String = My.Resources.LABEL_STEEPNESS
 
             Select Case Me.SelectedShapeType()
                 Case eShapeFunctionType.NotSet
                     ' All input controls disabled
                 Case eShapeFunctionType.Linear
-                    bEnableYZero = True : bEnableYEnd = True
+                    bEnableD = True : bEnableC = True
 
                 Case eShapeFunctionType.Sigmoid
-                    bEnableYBase = True : bEnableYEnd = True : bEnableYZero = True
+                    bEnableB = True : bEnableC = True : bEnableD = True
 
                 Case eShapeFunctionType.Hyperbolic
-                    bEnableYBase = True : bEnableYEnd = True : bEnableYZero = True : bEnableSteep = True
+                    bEnableB = True : bEnableC = True : bEnableD = True : bEnableA = True
 
                 Case eShapeFunctionType.Exponential
-                    bEnableYZero = True : bEnableYEnd = True : bEnableYBase = True
+                    bEnableD = True : bEnableC = True : bEnableB = True
 
                 Case eShapeFunctionType.Betapdf
-                    bEnableYZero = True : bEnableYEnd = True
-                    YZeroTxt = "a"
-                    YEndTxt = "b"
+                    bEnableD = True : bEnableC = True
+                    strLabelA = My.Resources.LABEL_A
+                    strLabelB = My.Resources.LABEL_B
 
                 Case eShapeFunctionType.Normal
-                    bEnableYBase = True : bEnableYEnd = True : bEnableYZero = True
-                    YZeroTxt = "SD Left"
-                    YEndTxt = "SD Right"
-                    YBaseTxt = "SD Width"
+                    bEnableB = True : bEnableC = True : bEnableD = True
+                    strLabelA = My.Resources.LABEL_SD_LEFT
+                    strLabelB = My.Resources.LABEL_SD_RIGHT
+                    strLabelC = My.Resources.LABEL_SD_WIDTH
 
                 Case Else
                     Debug.Assert(False)
             End Select
 
             'labels
-            Me.m_lbYZero.Text = YZeroTxt
-            Me.m_lbYEnd.Text = YEndTxt
-            Me.m_lbYBase.Text = YBaseTxt
+            Me.m_lblA.Text = strLabelA
+            Me.m_lblB.Text = strLabelB
+            Me.m_lblC.Text = strLabelC
+            Me.m_lblD.Text = strLabelD
 
             ' Enable controls
-            Me.m_fpYZero.Enabled = bEnableYZero
-            Me.m_fpYBase.Enabled = bEnableYBase
-            Me.m_fpYEnd.Enabled = bEnableYEnd
-            Me.m_fpSteep.Enabled = bEnableSteep
+            Me.m_fpA.Enabled = bEnableD
+            Me.m_fpC.Enabled = bEnableB
+            Me.m_fpB.Enabled = bEnableC
+            Me.m_fpD.Enabled = bEnableA
 
         End Sub
 
@@ -351,10 +380,10 @@ Namespace Controls
 
                 Dim xBase As Single = 0.3 ' This original value is extracted from EwE5
                 Dim xHalf, xPow, expK As Single
-                Dim sYZero As Single = CSng(Me.m_fpYZero.Value)
-                Dim sSteep As Single = CSng(Me.m_fpSteep.Value)
-                Dim sYBase As Single = CSng(Me.m_fpYBase.Value)
-                Dim sYEnd As Single = CSng(Me.m_fpYEnd.Value)
+                Dim sYZero As Single = CSng(Me.m_fpA.Value)
+                Dim sSteep As Single = CSng(Me.m_fpD.Value)
+                Dim sYBase As Single = CSng(Me.m_fpC.Value)
+                Dim sYEnd As Single = CSng(Me.m_fpB.Value)
 
                 Select Case Me.SelectedShapeType
 

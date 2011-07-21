@@ -4594,6 +4594,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to A:.
+        '''</summary>
+        Public ReadOnly Property LABEL_A() As String
+            Get
+                Return ResourceManager.GetString("LABEL_A", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to B:.
+        '''</summary>
+        Public ReadOnly Property LABEL_B() As String
+            Get
+                Return ResourceManager.GetString("LABEL_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &amp;Fleet:.
         '''</summary>
         Public ReadOnly Property LABEL_FLEET() As String
@@ -4612,11 +4630,74 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to SD &amp;left:.
+        '''</summary>
+        Public ReadOnly Property LABEL_SD_LEFT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_SD_LEFT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to SD &amp;right:.
+        '''</summary>
+        Public ReadOnly Property LABEL_SD_RIGHT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_SD_RIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to SD &amp;width:.
+        '''</summary>
+        Public ReadOnly Property LABEL_SD_WIDTH() As String
+            Get
+                Return ResourceManager.GetString("LABEL_SD_WIDTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &amp;Set:.
         '''</summary>
         Public ReadOnly Property LABEL_SET() As String
             Get
                 Return ResourceManager.GetString("LABEL_SET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &amp;Steepness:.
+        '''</summary>
+        Public ReadOnly Property LABEL_STEEPNESS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_STEEPNESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Y &amp;base:.
+        '''</summary>
+        Public ReadOnly Property LABEL_YBASE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_YBASE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Y &amp;end:.
+        '''</summary>
+        Public ReadOnly Property LABEL_YEND() As String
+            Get
+                Return ResourceManager.GetString("LABEL_YEND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Y &amp;zero:.
+        '''</summary>
+        Public ReadOnly Property LABEL_YZERO() As String
+            Get
+                Return ResourceManager.GetString("LABEL_YZERO", resourceCulture)
             End Get
         End Property
         
@@ -5174,6 +5255,15 @@ Namespace My.Resources
         Public ReadOnly Property SHAPEFUNCTION_LINEAR() As String
             Get
                 Return ResourceManager.GetString("SHAPEFUNCTION_LINEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Normal.
+        '''</summary>
+        Public ReadOnly Property SHAPEFUNCTION_NORMAL() As String
+            Get
+                Return ResourceManager.GetString("SHAPEFUNCTION_NORMAL", resourceCulture)
             End Get
         End Property
         

@@ -118,234 +118,234 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_txbYBase.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tbxC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_txbYBase.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tbxC.Location" type="System.Drawing.Point, System.Drawing">
     <value>101, 249</value>
   </data>
-  <data name="m_txbYBase.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tbxC.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 20</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_txbYBase.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tbxC.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_txbYBase.Name" xml:space="preserve">
-    <value>m_txbYBase</value>
+  <data name="&gt;&gt;m_tbxC.Name" xml:space="preserve">
+    <value>m_tbxC</value>
   </data>
-  <data name="&gt;&gt;m_txbYBase.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxC.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_txbYBase.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxC.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_txbYBase.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxC.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_lbYBase.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lblC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
-  <data name="m_lbYBase.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lbYBase.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblC.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lbYBase.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblC.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 252</value>
   </data>
-  <data name="m_lbYBase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 13</value>
+  <data name="m_lblC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 13</value>
   </data>
-  <data name="m_lbYBase.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblC.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="m_lbYBase.Text" xml:space="preserve">
-    <value>Y &amp;Base:</value>
+  <data name="m_lblC.Text" xml:space="preserve">
+    <value>&lt;C&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lbYBase.Name" xml:space="preserve">
-    <value>m_lbYBase</value>
+  <data name="&gt;&gt;m_lblC.Name" xml:space="preserve">
+    <value>m_lblC</value>
   </data>
-  <data name="&gt;&gt;m_lbYBase.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblC.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lbYBase.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblC.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lbYBase.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="&gt;&gt;m_lblC.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
-  <data name="m_txbYZero.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tbxA.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
-  <data name="m_txbYZero.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tbxA.Location" type="System.Drawing.Point, System.Drawing">
     <value>101, 197</value>
   </data>
-  <data name="m_txbYZero.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tbxA.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 20</value>
   </data>
-  <data name="m_txbYZero.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tbxA.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_txbYZero.Name" xml:space="preserve">
-    <value>m_txbYZero</value>
+  <data name="&gt;&gt;m_tbxA.Name" xml:space="preserve">
+    <value>m_tbxA</value>
   </data>
-  <data name="&gt;&gt;m_txbYZero.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxA.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_txbYZero.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxA.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_txbYZero.ZOrder" xml:space="preserve">
-    <value>13</value>
+  <data name="&gt;&gt;m_tbxA.ZOrder" xml:space="preserve">
+    <value>14</value>
   </data>
-  <data name="m_lbYZero.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lblA.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
-  <data name="m_lbYZero.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lbYZero.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblA.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lbYZero.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblA.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 200</value>
   </data>
-  <data name="m_lbYZero.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 13</value>
+  <data name="m_lblA.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 13</value>
   </data>
-  <data name="m_lbYZero.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblA.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_lbYZero.Text" xml:space="preserve">
-    <value>Y &amp;Zero:</value>
+  <data name="m_lblA.Text" xml:space="preserve">
+    <value>&lt;A&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lbYZero.Name" xml:space="preserve">
-    <value>m_lbYZero</value>
+  <data name="&gt;&gt;m_lblA.Name" xml:space="preserve">
+    <value>m_lblA</value>
   </data>
-  <data name="&gt;&gt;m_lbYZero.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblA.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lbYZero.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblA.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lbYZero.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblA.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_txbSteep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tbxD.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
-  <data name="m_txbSteep.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tbxD.Location" type="System.Drawing.Point, System.Drawing">
     <value>101, 275</value>
   </data>
-  <data name="m_txbSteep.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tbxD.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 20</value>
   </data>
-  <data name="m_txbSteep.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tbxD.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;m_txbSteep.Name" xml:space="preserve">
-    <value>m_txbSteep</value>
+  <data name="&gt;&gt;m_tbxD.Name" xml:space="preserve">
+    <value>m_tbxD</value>
   </data>
-  <data name="&gt;&gt;m_txbSteep.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxD.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_txbSteep.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxD.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_txbSteep.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="&gt;&gt;m_tbxD.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
-  <data name="m_txbYEnd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tbxB.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
-  <data name="m_txbYEnd.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tbxB.Location" type="System.Drawing.Point, System.Drawing">
     <value>101, 223</value>
   </data>
-  <data name="m_txbYEnd.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tbxB.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 20</value>
   </data>
-  <data name="m_txbYEnd.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tbxB.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_txbYEnd.Name" xml:space="preserve">
-    <value>m_txbYEnd</value>
+  <data name="&gt;&gt;m_tbxB.Name" xml:space="preserve">
+    <value>m_tbxB</value>
   </data>
-  <data name="&gt;&gt;m_txbYEnd.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxB.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_txbYEnd.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxB.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_txbYEnd.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxB.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="m_lbSteep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lblD.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
-  <data name="m_lbSteep.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblD.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lbSteep.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblD.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lbSteep.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblD.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 278</value>
   </data>
-  <data name="m_lbSteep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 13</value>
+  <data name="m_lblD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 13</value>
   </data>
-  <data name="m_lbSteep.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblD.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="m_lbSteep.Text" xml:space="preserve">
-    <value>&amp;Steepness:</value>
+  <data name="m_lblD.Text" xml:space="preserve">
+    <value>&lt;D&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lbSteep.Name" xml:space="preserve">
-    <value>m_lbSteep</value>
+  <data name="&gt;&gt;m_lblD.Name" xml:space="preserve">
+    <value>m_lblD</value>
   </data>
-  <data name="&gt;&gt;m_lbSteep.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblD.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lbSteep.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblD.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lbSteep.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblD.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_lbYEnd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_lblB.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
-  <data name="m_lbYEnd.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lbYEnd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblB.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lbYEnd.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblB.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 226</value>
   </data>
-  <data name="m_lbYEnd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 13</value>
+  <data name="m_lblB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 13</value>
   </data>
-  <data name="m_lbYEnd.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblB.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_lbYEnd.Text" xml:space="preserve">
-    <value>Y &amp;End:</value>
+  <data name="m_lblB.Text" xml:space="preserve">
+    <value>&lt;B&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lbYEnd.Name" xml:space="preserve">
-    <value>m_lbYEnd</value>
+  <data name="&gt;&gt;m_lblB.Name" xml:space="preserve">
+    <value>m_lblB</value>
   </data>
-  <data name="&gt;&gt;m_lbYEnd.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblB.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lbYEnd.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblB.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lbYEnd.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblB.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
   <data name="m_btnOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -355,10 +355,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>412, 301</value>
+    <value>390, 301</value>
   </data>
   <data name="m_btnOk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 23</value>
+    <value>75, 23</value>
   </data>
   <data name="m_btnOk.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -376,7 +376,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -385,10 +385,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>482, 301</value>
+    <value>471, 301</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 23</value>
+    <value>75, 23</value>
   </data>
   <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -406,7 +406,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="m_plPreview.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -484,7 +484,7 @@
     <value>m_hdrShape</value>
   </data>
   <data name="&gt;&gt;m_hdrShape.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.714, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.721, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrShape.Parent" xml:space="preserve">
     <value>$this</value>
@@ -517,13 +517,43 @@
     <value>m_hdrParams</value>
   </data>
   <data name="&gt;&gt;m_hdrParams.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.2.0.714, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.721, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrParams.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrParams.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="m_btnDefaults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="m_btnDefaults.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnDefaults.Location" type="System.Drawing.Point, System.Drawing">
+    <value>309, 301</value>
+  </data>
+  <data name="m_btnDefaults.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnDefaults.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_btnDefaults.Text" xml:space="preserve">
+    <value>Defaults</value>
+  </data>
+  <data name="&gt;&gt;m_btnDefaults.Name" xml:space="preserve">
+    <value>m_btnDefaults</value>
+  </data>
+  <data name="&gt;&gt;m_btnDefaults.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnDefaults.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnDefaults.ZOrder" xml:space="preserve">
+    <value>9</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
