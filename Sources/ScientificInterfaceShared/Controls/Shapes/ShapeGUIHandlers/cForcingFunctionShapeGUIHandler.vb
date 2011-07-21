@@ -390,7 +390,7 @@ Namespace Controls
         ''' <inheritdocs cref="cShapeGUIHandler.NumDataYears"/>
         ''' <remarks>Overridden to limit data years to the number of Ecosim years.</remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function NumDataYears() As Integer
+        Public Overrides Function NumDataYears() As Integer
             Return Me.UIContext.Core.nEcosimYears
         End Function
 

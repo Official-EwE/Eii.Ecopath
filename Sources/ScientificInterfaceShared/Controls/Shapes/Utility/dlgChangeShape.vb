@@ -155,6 +155,7 @@ Namespace Controls
                 Case eShapeFunctionType.NotSet
                     sA = Me.m_shape.YZero : sB = Me.m_shape.YEnd : sC = Me.m_shape.YBase : sD = Me.m_shape.Steep
                 Case eShapeFunctionType.Linear
+                    sA = 1.0! : sB = 1.0!
                 Case eShapeFunctionType.Exponential
                 Case eShapeFunctionType.Hyperbolic
                 Case eShapeFunctionType.Sigmoid
@@ -240,10 +241,10 @@ Namespace Controls
             End Using
 
             cShapeImage.DrawShapeDirect(Me.m_uic, _
-                                       Me.m_asDataWork, Me.m_shape.XMax, Me.m_shape.IsSeasonal, _
-                                       Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
-                                       Me.m_handler.SketchDrawMode, _
-                                       sDataMax / 0.8!, cCore.NULL_VALUE, cCore.NULL_VALUE)
+                                        Me.m_asDataWork, Me.m_handler.NumDataYears * cCore.N_MONTHS, Me.m_shape.IsSeasonal, _
+                                        Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
+                                        Me.m_handler.SketchDrawMode, _
+                                        sDataMax / 0.8!, cCore.NULL_VALUE, cCore.NULL_VALUE)
 
         End Sub
 

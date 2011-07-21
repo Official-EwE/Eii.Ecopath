@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -216,17 +216,17 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cMediationGUIHandler.vb" />
-    <Compile Include="Controls\Shapes\ShapeFunc\ShapeImage.vb" />
-    <Compile Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgChangeShape.Designer.vb">
+    <Compile Include="Controls\Shapes\Utility\ShapeImage.vb" />
+    <Compile Include="Controls\Shapes\Utility\dlgChangeShape.Designer.vb">
       <DependentUpon>dlgChangeShape.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgChangeShape.vb">
+    <Compile Include="Controls\Shapes\Utility\dlgChangeShape.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.Designer.vb">
+    <Compile Include="Controls\Shapes\Utility\dlgGraphDisplayOptions.Designer.vb">
       <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.vb">
+    <Compile Include="Controls\Shapes\Utility\dlgGraphDisplayOptions.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\Shapes\ShapeToolbox\ucShapeToolbox.Designer.vb">
@@ -425,11 +425,11 @@
       <DependentUpon>dlgDefineMediationAssignments.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgChangeShape.resx">
+    <EmbeddedResource Include="Controls\Shapes\Utility\dlgChangeShape.resx">
       <DependentUpon>dlgChangeShape.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Shapes\ShapeFunc\ShapeOptions\dlgGraphDisplayOptions.resx">
+    <EmbeddedResource Include="Controls\Shapes\Utility\dlgGraphDisplayOptions.resx">
       <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

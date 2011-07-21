@@ -245,7 +245,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>Return cCore.NULL_VALUE to omit any restrictions.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function NumDataYears() As Integer
+        Public Overridable Function NumDataYears() As Integer
             Return cCore.NULL_VALUE
         End Function
 
