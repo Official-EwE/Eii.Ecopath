@@ -102,7 +102,10 @@ Namespace Controls
             If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax * 1.2!
             If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!))
 
-            If (iXMax <= 0) Then iXMax = shape.XMax
+            If (iXMax <= 0) Or (shape.DataType = eDataTypes.PriceMediation) Or _
+                (shape.DataType = eDataTypes.Mediation) Then
+                iXMax = shape.XMax
+            End If
 
             cShapeImage.DrawShapeDirect(uic, _
                     shape.ShapeData, iXMax, shape.IsSeasonal, _
