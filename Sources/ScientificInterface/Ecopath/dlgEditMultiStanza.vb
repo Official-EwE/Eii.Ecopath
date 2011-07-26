@@ -193,7 +193,8 @@ Namespace Ecopath
             Dim sMaxBiomass As Single = 0.0
 
             'don't show the last value
-            For i As Integer = 1 To sg.MaxAge - 1
+            'For i As Integer = 1 To sg.MaxAge - 1
+            For i As Integer = 0 To sg.MaxAge - 1
                 sMaxNumber = Math.Max(sMaxNumber, sg.NumberAtAge(i))
                 sMaxWeight = Math.Max(sMaxWeight, sg.WeightAtAge(i))
                 sMaxBiomass = Math.Max(sMaxBiomass, sg.BiomassAtAge(i))
@@ -205,7 +206,8 @@ Namespace Ecopath
 
             ' NB: All curves are scaled to 1
             zgc.GraphPane.CurveList.Clear()
-            For i As Integer = 1 To sg.MaxAge - 1
+            ' For i As Integer = 1 To sg.MaxAge - 1
+            For i As Integer = 0 To sg.MaxAge - 1
                 pplNumber.Add(i - 1, sg.NumberAtAge(i) / sMaxNumber)
                 pplWeight.Add(i - 1, sg.WeightAtAge(i) / sMaxWeight)
                 pplB.Add(i - 1, sg.BiomassAtAge(i) / sMaxBiomass)

@@ -5824,6 +5824,9 @@ Public Class cCore
             manager = New cLandingsMediationManager(m_EcoSimData, Me, eDataTypes.PriceMediation)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
+            manager = New cCapMapResponseManager(m_EcoSimData, Me.m_EcoSpaceData, Me, eDataTypes.CapacityMediation)
+            Me.m_ShapeManagers.Add(manager.DataType, manager)
+
             Me.m_MediatedInteractionManager = New cMediatedInteractionManager(m_EcoPathData, m_EcoSimData, Me)
             Me.m_FitToTimeSeriesData = New cF2TSDataStructures()
             ' me.m_FitToTimeSeries = New cF2TSManager(Me)
@@ -6758,6 +6761,31 @@ Public Class cCore
         End Get
 
     End Property
+
+
+    Public ReadOnly Property MapInteractionManager() As cMapResponseInteractionManager
+        Get
+            Return Me.m_mapInteractionManager
+        End Get
+    End Property
+
+
+    Public ReadOnly Property CapacityShapeManager() As cCapMapResponseManager
+
+        Get
+            Try
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.CapacityMediation), cCapMapResponseManager)
+            Catch ex As Exception
+                Debug.Assert(False, "Failed to find price elasticity shape manager")
+                cLog.Write(Me.ToString & ".PriceElasticityShapeManager() Error: " & ex.Message)
+                Return Nothing
+            End Try
+
+        End Get
+
+    End Property
+
+
 
     ''' <summary>
     ''' Update all the underlying data structures that contain EcoSim scenario data
@@ -7703,6 +7731,8 @@ Public Class cCore
     Friend m_EcospaceResultsCSVWriter As EwEUtils.Core.IEcospaceResultsWriter
     Friend m_EcospaceResultsASCWriter As EwEUtils.Core.IEcospaceResultsWriter
 
+    Friend m_mapInteractionManager As cMapResponseInteractionManager
+
 #End Region ' Variables
 
     Private Function InitEcoSpace() As Boolean
@@ -7751,6 +7781,9 @@ Public Class cCore
 
         m_EcospaceResultsASCWriter = New cEcospaceASCResultsWriter
         m_EcospaceResultsASCWriter.Init(Me)
+
+        m_mapInteractionManager = New cMapResponseInteractionManager
+        m_mapInteractionManager.Init(Me.m_EcoSpaceData.CapEnvResData, Me.m_EcoSpaceData.CapMaps)
 
         Return True
 
@@ -8569,6 +8602,10 @@ Public Class cCore
 
             m_Ecospace.SearchData = m_SearchData
 
+            'hardwire some capacity maps for debugging
+            Me.m_EcoSpaceData.setDebugCapMaps()
+            Me.m_ShapeManagers.Item(eDataTypes.CapacityMediation).Init()
+
             'sets the summary peroids to first and last year
             'at this time this data is not saved in the database
             m_EcoSpaceData.setDefaultSummaryPeriod()
@@ -8986,7 +9023,7 @@ Public Class cCore
         m_EcoSpaceData.maxIter = m_EcospaceModelParams.MaxNumberOfIterations
         m_EcoSpaceData.UseExact = m_EcospaceModelParams.UseExact
         m_EcoSpaceData.bSaveCSV = m_EcospaceModelParams.SaveCSV
-        m_EcoSpaceData.bSaveasc = m_EcospaceModelParams.SaveASC
+        m_EcoSpaceData.bSaveASC = m_EcospaceModelParams.SaveASC
 
         ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. Since this
         '             value is used during Ecospace calculations, it makes sense to expose it from Ecospace.

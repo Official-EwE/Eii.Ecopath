@@ -1713,11 +1713,7 @@ Public Class cEcoSpace
             'jb 12-Ma7-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
             Me.m_Ecosim.Init(True)
 
-            'hardwire some capacity maps for debugging
-            Me.m_Data.setDebugCapMaps()
-
             SetHabCap()
-
 
             'first set density map for all pools to no movement equilibrium
             SetBiomassesEcospace()
@@ -5535,9 +5531,8 @@ exitline:
 
 
     Private Sub normalizeCapacityMap(ByVal MaxCap As Single)
-        Dim iGrp As Integer, ir As Integer, ic As Integer, cap As Single
+        Dim iGrp As Integer, ir As Integer, ic As Integer
 
-     
         'now normalize the capacity map
         For iGrp = 1 To Me.m_Data.NGroups
             'rescale and sum up over cells

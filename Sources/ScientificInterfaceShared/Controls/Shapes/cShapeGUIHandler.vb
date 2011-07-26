@@ -572,6 +572,7 @@ Namespace Controls
                 Case eDataTypes.PriceMediation : Return New cLandingsShapeGUIHandler()
                 Case eDataTypes.GroupTimeSeries : Return New cTimeSeriesShapeGUIHandler()
                 Case eDataTypes.FleetTimeSeries : Return New cTimeSeriesShapeGUIHandler()
+                Case eDataTypes.CapacityMediation : Return New cCapacityShapeGUIHandler()
             End Select
             Return Nothing
         End Function

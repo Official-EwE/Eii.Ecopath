@@ -107,12 +107,14 @@ Public Class cMediationDataStructures
     Friend Sub SetMedFunctions(ByVal Biom() As Single, ByVal FishingEffort(,) As Single, ByVal iEffortTime As Integer, ByVal MedVal() As Single)
         'called from derivt, derivtred if MedIsUsed(0)=true to set
         'current Y value of each active trophic mediation function
-        Dim iShp As Integer, iGrp As Integer, MedX As Single, ip As Long
+        Dim iShp As Integer, iGrp As Integer, MedX As Single ', ip As Long
         Try
 
             For iShp = 1 To Me.MediationShapes
                 If Me.MedIsUsed(iShp) Then
                     MedX = 0.0000000001
+                    'Get the value on the X axis 
+                    'Weighted sum of all the Groups or Fleet that are assigned to the X axis
                     For iGrp = 1 To Me.NMedXused(iShp)
                         If Me.IMedUsed(iGrp, iShp) <= Me.m_nGroups Then
                             MedX = MedX + Biom(Me.IMedUsed(iGrp, iShp)) * Me.MedWeights(Me.IMedUsed(iGrp, iShp), iShp)
@@ -120,19 +122,38 @@ Public Class cMediationDataStructures
                             MedX = MedX + FishingEffort(Me.IMedUsed(iGrp, iShp) - Me.m_nGroups, iEffortTime) * Me.MedWeights(Me.IMedUsed(iGrp, iShp), iShp)
                         End If
                     Next
-                    '060328 CJW found that without the +0.01 below it could be unstable when slope
-                    'was large around Ecopath base point in mediation function, causing instability.
-                    'This solves it. VC.
-                    ip = Int(Me.IMedBase(iShp) * MedX / Me.MedXbase(iShp) + 0.01)
-                    If ip < 1 Then ip = 1
-                    If ip > Me.NMedPoints Then ip = Me.NMedPoints
-                    MedVal(iShp) = Me.Medpoints(ip, iShp) / Me.MedYbase(iShp)
+
+                    'Get the Y of this shape at this X
+                    MedVal(iShp) = Me.getMedValue(iShp, MedX)
+
                 End If
             Next
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".SetMedFunctions() Exception: " & ex.Message)
         End Try
     End Sub
+
+    ''' <summary>
+    ''' Compute the mediation value for a mediation shape index(iMedShapeIndex) from an input value on the X axis (Xvalue) 
+    ''' </summary>
+    ''' <param name="iMedShapeIndex">Index of the mediation shape to use</param>
+    ''' <param name="Xvalue">Value on the X axis to compute the mediation value for</param>
+    ''' <returns>Value(Y) on the mediation shape for the input(X)</returns>
+    ''' <remarks></remarks>
+    Public Function getMedValue(ByVal iMedShapeIndex As Integer, ByVal Xvalue As Single) As Single
+        Dim ip As Long
+        '060328 CJW found that without the +0.01 below it could be unstable when slope
+        'was large around Ecopath base point in mediation function, causing instability.
+        'This solves it. VC.
+        ip = Int(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01)
+
+        'if the index is out of bounds use the fist or last value
+        If ip < 1 Then ip = 1
+        If ip > Me.NMedPoints Then ip = Me.NMedPoints
+        Return Me.Medpoints(ip, iMedShapeIndex) / Me.MedYbase(iMedShapeIndex)
+
+    End Function
+
 
     ''' <summary>
     ''' Set Mediation function multiplier in <see cref="cMediationDataStructures.MedVal"> cMediationDataStructures.MedVal()</see> for the current Biomass and/or Effort
@@ -161,7 +182,7 @@ Public Class cMediationDataStructures
     ''' This means that the catch must also be the Ecopath annual catch.
     '''  </remarks>
     Friend Sub SetPriceMedFunctions(ByVal LandingsGroupFleet(,) As Single)
-        Dim iShp As Integer, iGrp As Integer, MedX As Single, ip As Long
+        Dim iShp As Integer, iGrp As Integer, MedX As Single ', ip As Long
         Dim iMedGrp As Integer
         Dim iMedFlt As Integer
 
@@ -170,6 +191,8 @@ Public Class cMediationDataStructures
             For iShp = 1 To Me.MediationShapes
                 If Me.MedIsUsed(iShp) Then
                     MedX = 0.0000000001
+
+                    'Get the weighted sum of all landings for the Group/Fleets assigned to this mediation shape
                     For iGrp = 1 To Me.NMedXused(iShp)
                         If Me.IMedUsed(iGrp, iShp) Then
                             'Get the Group and Fleet index
@@ -178,13 +201,9 @@ Public Class cMediationDataStructures
                             MedX = MedX + LandingsGroupFleet(iMedGrp, iMedFlt) * Me.MedPriceWeights(iMedGrp, iMedFlt, iShp)
                         End If
                     Next
-                    '060328 CJW found that without the +0.01 below it could be unstable when slope
-                    'was large around Ecopath base point in mediation function, causing instability.
-                    'This solves it. VC.
-                    ip = Int(Me.IMedBase(iShp) * MedX / Me.MedXbase(iShp) + 0.01)
-                    If ip < 1 Then ip = 1
-                    If ip > Me.NMedPoints Then ip = Me.NMedPoints
-                    Me.MedVal(iShp) = Me.Medpoints(ip, iShp) / Me.MedYbase(iShp)
+
+                    'Get the Y value from the mediation shape for this X
+                    MedVal(iShp) = Me.getMedValue(iShp, MedX)
                 End If
             Next
 
@@ -205,7 +224,7 @@ Public Class cMediationDataStructures
         Dim pMult As Single
         Dim bFoundMed As Boolean = False
 
-        'now sum the multiplier for all applied price med functions for this Group Fleet
+        'Sum the multiplier for all applied price med functions for this Group Fleet
         For iFnt As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
 
             If Me.PriceMedFuncNum(iGroup, iFleet, iFnt) <= 0 Then
@@ -227,7 +246,6 @@ Public Class cMediationDataStructures
     Public Sub New()
 
     End Sub
-
 
 End Class
 

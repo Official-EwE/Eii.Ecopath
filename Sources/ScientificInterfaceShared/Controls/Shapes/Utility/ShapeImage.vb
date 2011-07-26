@@ -103,7 +103,9 @@ Namespace Controls
             If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!))
 
             If (iXMax <= 0) Or (shape.DataType = eDataTypes.PriceMediation) Or _
-                (shape.DataType = eDataTypes.Mediation) Then
+                                (shape.DataType = eDataTypes.Mediation) Or _
+                                (shape.DataType = eDataTypes.CapacityMediation) Then
+
                 iXMax = shape.XMax
             End If
 

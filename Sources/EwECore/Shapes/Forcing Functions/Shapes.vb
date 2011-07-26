@@ -1397,3 +1397,69 @@ End Class
 
 #End Region ' Fish Mortality Shape
 
+#Region "Response Function"
+
+Public Class cEnviroResponseFunction
+    Inherits cMediationBaseFunction
+
+
+    Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
+                   ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+        MyBase.New(EcoSimData, Manager, data, DBID, DataType)
+
+
+    End Sub
+
+
+#Region "Groups and Fleets interfaces not used by a cEnviroResponseFunction "
+
+    Public Overrides Function AddFleet(ByVal iFleet As Integer, ByVal weight As Single) As Boolean
+        Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
+        Return False
+    End Function
+
+    Public Overrides Function AddGroup(ByVal iGroup As Integer, ByVal weight As Single, Optional ByVal iFleetIndex As Integer = -9999) As Boolean
+        Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
+        Return False
+    End Function
+
+    Public Overrides Property Fleet(ByVal iIndex As Integer) As cMediatingFleet
+        Get
+            Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
+            Return Nothing
+        End Get
+        Set(ByVal value As cMediatingFleet)
+            Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
+        End Set
+    End Property
+
+    Public Overrides Property Group(ByVal iIndex As Integer) As cMediatingGroup
+        Get
+            Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
+            Return Nothing
+        End Get
+        Set(ByVal value As cMediatingGroup)
+            Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
+        End Set
+    End Property
+
+    Public Overrides ReadOnly Property NumFleet() As Integer
+        Get
+            'Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
+            Return 0
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property NumGroups() As Integer
+        Get
+            'Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
+            Return 0
+        End Get
+    End Property
+
+#End Region
+
+End Class
+
+#End Region
+

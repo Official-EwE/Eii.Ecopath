@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F24972EB-7291-497E-B4D7-9C2EACBE8E62}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -965,6 +965,15 @@
       <DependentUpon>ucWind.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Capacity\Apply\dlgSelectResponse.resx">
+      <DependentUpon>dlgSelectResponse.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.resx">
+      <DependentUpon>frmApplyCapacity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.resx">
+      <DependentUpon>frmCapacityFunction.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Panels\StartPanel\frmStartPanel.resx">
       <DependentUpon>frmStartPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1362,6 +1371,30 @@
     </Compile>
     <Compile Include="Ecospace\Input\Advection\ucWind.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\dlgSelectResponse.Designer.vb">
+      <DependentUpon>dlgSelectResponse.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\dlgSelectResponse.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.Designer.vb">
+      <DependentUpon>frmApplyCapacity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\ucApplyMapResponseGrid.Designer.vb">
+      <DependentUpon>ucApplyMapResponseGrid.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Apply\ucApplyMapResponseGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.Designer.vb">
+      <DependentUpon>frmCapacityFunction.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>

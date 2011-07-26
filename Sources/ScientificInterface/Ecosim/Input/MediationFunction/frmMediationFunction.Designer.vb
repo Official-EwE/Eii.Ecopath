@@ -3,7 +3,7 @@ Imports ScientificInterfaceShared.Forms
 Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class frmMediationFunction
+    Partial Class frmCapacityFunction
         Inherits frmEwE
 
         'UserControl overrides dispose to clean up the component list.
@@ -24,7 +24,7 @@ Namespace Ecosim
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediationFunction))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCapacityFunction))
             Me.m_tlpSketchPad = New System.Windows.Forms.TableLayoutPanel
             Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucMediationSketchPad

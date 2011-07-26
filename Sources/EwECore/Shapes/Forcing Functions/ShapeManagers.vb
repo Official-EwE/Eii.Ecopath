@@ -700,6 +700,95 @@ End Class
 
 #End Region ' Mediation shape manager
 
+#Region " Mediation shape manager "
+
+''' <summary>
+''' Implemenation of the Base class for Mediation shapes
+''' </summary>
+''' <remarks>
+''' </remarks>
+Public Class cCapMapResponseManager
+    Inherits cBaseShapeManager
+
+    Private m_medData As cMediationDataStructures
+    Private m_spaceData As cEcospaceDataStructures
+
+
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByVal SpaceData As cEcospaceDataStructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+        MyBase.New(EcoSimData, theCore, DataType)
+
+        Me.m_spaceData = SpaceData
+        Init()
+
+    End Sub
+
+
+    Public Overrides ReadOnly Property NPoints() As Integer
+        Get
+            Return m_medData.NMedPoints
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Create a new Mediation shape
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
+            Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
+            Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
+            Optional ByVal shapeType As eShapeFunctionType = eShapeFunctionType.NotSet) As cForcingFunction
+
+        Dim dbID As Integer
+
+
+        If m_core.AddShape(strName, m_DataType, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
+
+            Dim medFunct As cEnviroResponseFunction
+
+            'create a new shape that is hooked up to the underlying ecosim data
+            medFunct = New cEnviroResponseFunction(m_Data, Me, Me.m_medData, dbID, m_DataType)
+            medFunct.ID = m_shapes.Count
+            medFunct.Load()
+
+            'Add the new shape to the list 
+            MyBase.Add(medFunct)
+
+            m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
+
+            Return medFunct
+
+        End If
+
+        Return Nothing
+
+    End Function
+
+    Friend Overrides Function Init() As Boolean
+        Dim medFunct As cEnviroResponseFunction
+
+        'get the Enviromental response function for Capacity 
+        m_medData = Me.m_spaceData.CapEnvResData
+
+        'clear out any existing data
+        m_shapes.Clear()
+
+        For imed As Integer = 1 To m_medData.MediationShapes
+            'All mediation shapes from the core will have an object 
+            medFunct = New cEnviroResponseFunction(m_Data, Me, Me.m_medData, m_medData.MediationDBIDs(imed), Me.m_DataType)
+            medFunct.ID = m_shapes.Count
+            medFunct.Load()
+            m_shapes.Add(medFunct)
+
+        Next imed
+        Me.Load()
+
+    End Function
+
+End Class
+
+#End Region ' Mediation shape manager
+
 #Region " Egg Production shape manager "
 
 ''' <summary>

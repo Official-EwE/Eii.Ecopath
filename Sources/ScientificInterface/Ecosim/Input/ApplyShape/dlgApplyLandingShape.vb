@@ -16,7 +16,7 @@ Imports EwEUtils.Core
 Namespace Ecosim
 
     ''' <summary>
-    ''' Interface to manage assign forcing punctions to fleet/group interactions.
+    ''' Interface to manage assign forcing functions to fleet/group interactions.
     ''' </summary>
     Public Class dlgApplyLandingShape
 

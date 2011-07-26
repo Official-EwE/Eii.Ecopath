@@ -1927,6 +1927,9 @@ Namespace Core
 
         EcospaceLayerHabitatCapacity = 98
 
+
+        CapacityMediation = 99
+
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
         ''' </summary>
