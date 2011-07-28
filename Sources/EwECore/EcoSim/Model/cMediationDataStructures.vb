@@ -51,6 +51,9 @@ Public Class cMediationDataStructures
     Protected m_nGroups As Integer
     Protected m_nFleets As Integer
 
+    Public XAxisMin() As Single
+    Public XAxisMax() As Single
+
     Public Overridable Sub ReDimMediation(ByVal nGroups As Integer, ByVal nFleets As Integer)
         Dim i, j As Integer
         'following is for Mediation:
@@ -77,6 +80,9 @@ Public Class cMediationDataStructures
         ReDim MediationTitles(MediationShapes)
         ReDim MediationShapeParams(MediationShapes)
         ReDim MediationDBIDs(MediationShapes)
+
+        ReDim XAxisMin(MediationShapes)
+        ReDim XAxisMax(MediationShapes)
 
         ReDim PriceMedFuncNum(nGroups, nFleets, MAXFUNCTIONS)
 

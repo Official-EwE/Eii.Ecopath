@@ -1403,12 +1403,42 @@ Public Class cEnviroResponseFunction
     Inherits cMediationBaseFunction
 
 
+
     Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
                    ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
         MyBase.New(EcoSimData, Manager, data, DBID, DataType)
 
 
     End Sub
+
+
+#Region "Map interfaces"
+    Public Property XAxisMin() As Single
+        Get
+            Return m_medData.XAxisMin(Me.Index)
+        End Get
+        Set(ByVal value As Single)
+
+        End Set
+    End Property
+
+    Public Property XAxisMax() As Single
+        Get
+            Return m_medData.XAxisMax(Me.Index)
+        End Get
+        Set(ByVal value As Single)
+            m_medData.XAxisMax(Me.Index) = value
+        End Set
+    End Property
+
+    Public ReadOnly Property XAxisMean() As Single
+        Get
+            Return (m_medData.XAxisMin(Me.Index) + m_medData.XAxisMax(Me.Index)) * 0.5F
+        End Get
+    End Property
+
+
+#End Region
 
 
 #Region "Groups and Fleets interfaces not used by a cEnviroResponseFunction "

@@ -21,7 +21,7 @@ Namespace Ecosim
     ''' <see cref="cMediationFunction">mediation shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class frmCapacityFunction
+    Public Class frmMediationFunction
 
 #Region " Private variables "
 
@@ -91,6 +91,7 @@ Namespace Ecosim
         End Sub
 
 #End Region ' Overrides
+
 
     End Class
 

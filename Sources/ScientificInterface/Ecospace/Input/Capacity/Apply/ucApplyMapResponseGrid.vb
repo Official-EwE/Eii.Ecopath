@@ -27,7 +27,7 @@ Public Class ucApplyMapResponseGrid
         If (Me.UIContext Is Nothing) Then Return
 
         Dim group As cCoreGroupBase = Nothing
-        Dim map As cMapResponseInteractionManager = Core.MapInteractionManager
+        Dim map As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
 
         ' Define grid dimensions
         Me.Redim(Core.nLivingGroups + 1, map.nMaps + 2)
@@ -59,7 +59,7 @@ Public Class ucApplyMapResponseGrid
 
 
         Try
-            Dim Manager As cMapResponseInteractionManager = Core.MapInteractionManager
+            Dim Manager As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
 
             For imap As Integer = 1 To Manager.nMaps
                 Dim map As IEnviroInputMap = Manager.Maps(imap)
@@ -152,7 +152,7 @@ Public Class ucApplyMapResponseGrid
 
         Try
 
-            Dim MapInteraction As cMapResponseInteractionManager = Core.MapInteractionManager
+            Dim MapInteraction As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
             Dim igrp As Integer = e.Position.Row
             Dim iMap As Integer = e.Position.Column - 1
             Dim map As EwECore.IEnviroInputMap = MapInteraction.Maps(iMap)

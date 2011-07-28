@@ -6763,7 +6763,7 @@ Public Class cCore
     End Property
 
 
-    Public ReadOnly Property MapInteractionManager() As cMapResponseInteractionManager
+    Public ReadOnly Property CapacitMapInteractionManager() As cMapResponseInteractionManager
         Get
             Return Me.m_mapInteractionManager
         End Get

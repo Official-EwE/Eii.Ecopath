@@ -3,7 +3,7 @@ Imports ScientificInterfaceShared.Forms
 Namespace Ecosim
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class frmCapacityFunction
+    Partial Class frmMediationFunction
         Inherits frmEwE
 
         'UserControl overrides dispose to clean up the component list.
@@ -24,27 +24,27 @@ Namespace Ecosim
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCapacityFunction))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediationFunction))
             Me.m_tlpSketchPad = New System.Windows.Forms.TableLayoutPanel
             Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucMediationSketchPad
             Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_tlpAssingments = New System.Windows.Forms.TableLayoutPanel
-            Me.m_assignmentsToolbar = New ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar
             Me.m_scBottomBits = New System.Windows.Forms.SplitContainer
+            Me.m_tlpToolbox = New System.Windows.Forms.TableLayoutPanel
             Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
             Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
+            Me.m_tlpAssingments = New System.Windows.Forms.TableLayoutPanel
             Me.m_assignments = New ScientificInterfaceShared.Controls.ucMediationAssignments
-            Me.m_tlpToolbox = New System.Windows.Forms.TableLayoutPanel
+            Me.m_assignmentsToolbar = New ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar
             Me.m_tlpSketchPad.SuspendLayout()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
-            Me.m_tlpAssingments.SuspendLayout()
             Me.m_scBottomBits.Panel1.SuspendLayout()
             Me.m_scBottomBits.Panel2.SuspendLayout()
             Me.m_scBottomBits.SuspendLayout()
             Me.m_tlpToolbox.SuspendLayout()
+            Me.m_tlpAssingments.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tlpSketchPad
@@ -71,6 +71,7 @@ Namespace Ecosim
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
             Me.m_sketchPad.Name = "m_sketchPad"
+            Me.m_sketchPad.NumDataYears = 0
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
             Me.m_sketchPad.ShowValueTooltip = True
@@ -79,6 +80,7 @@ Namespace Ecosim
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_sketchPad.UIContext = Nothing
             Me.m_sketchPad.XAxisLabel = "Mediating group (weighted) biomass"
+            Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
@@ -100,22 +102,6 @@ Namespace Ecosim
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_scBottomBits)
             '
-            'm_tlpAssingments
-            '
-            resources.ApplyResources(Me.m_tlpAssingments, "m_tlpAssingments")
-            Me.m_tlpAssingments.Controls.Add(Me.m_assignments, 0, 1)
-            Me.m_tlpAssingments.Controls.Add(Me.m_assignmentsToolbar, 0, 0)
-            Me.m_tlpAssingments.Name = "m_tlpAssingments"
-            '
-            'm_assignmentsToolbar
-            '
-            resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
-            Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
-            Me.m_assignmentsToolbar.DefineMediationLabel = "<prompt>"
-            Me.m_assignmentsToolbar.Handler = Nothing
-            Me.m_assignmentsToolbar.IsMenuVisible = True
-            Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
-            '
             'm_scBottomBits
             '
             Me.m_scBottomBits.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -129,6 +115,13 @@ Namespace Ecosim
             'm_scBottomBits.Panel2
             '
             Me.m_scBottomBits.Panel2.Controls.Add(Me.m_tlpAssingments)
+            '
+            'm_tlpToolbox
+            '
+            resources.ApplyResources(Me.m_tlpToolbox, "m_tlpToolbox")
+            Me.m_tlpToolbox.Controls.Add(Me.m_shapeToolBox, 0, 1)
+            Me.m_tlpToolbox.Controls.Add(Me.m_shapeToolboxToolbar, 0, 0)
+            Me.m_tlpToolbox.Name = "m_tlpToolbox"
             '
             'm_shapeToolBox
             '
@@ -148,6 +141,13 @@ Namespace Ecosim
             Me.m_shapeToolboxToolbar.Handler = Nothing
             Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
             '
+            'm_tlpAssingments
+            '
+            resources.ApplyResources(Me.m_tlpAssingments, "m_tlpAssingments")
+            Me.m_tlpAssingments.Controls.Add(Me.m_assignments, 0, 1)
+            Me.m_tlpAssingments.Controls.Add(Me.m_assignmentsToolbar, 0, 0)
+            Me.m_tlpAssingments.Name = "m_tlpAssingments"
+            '
             'm_assignments
             '
             Me.m_assignments.Data = Nothing
@@ -160,29 +160,31 @@ Namespace Ecosim
             Me.m_assignments.XAxisLabel = "Mediating group"
             Me.m_assignments.YAxisLabel = "Relative weight"
             '
-            'm_tlpToolbox
+            'm_assignmentsToolbar
             '
-            resources.ApplyResources(Me.m_tlpToolbox, "m_tlpToolbox")
-            Me.m_tlpToolbox.Controls.Add(Me.m_shapeToolBox, 0, 1)
-            Me.m_tlpToolbox.Controls.Add(Me.m_shapeToolboxToolbar, 0, 0)
-            Me.m_tlpToolbox.Name = "m_tlpToolbox"
+            resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
+            Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
+            Me.m_assignmentsToolbar.DefineMediationLabel = "<prompt>"
+            Me.m_assignmentsToolbar.Handler = Nothing
+            Me.m_assignmentsToolbar.IsMenuVisible = True
+            Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
             '
-            'frmMediationFunction
+            'frmCapacityFunction
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_scMain)
-            Me.Name = "frmMediationFunction"
+            Me.Name = "frmCapacityFunction"
             Me.m_tlpSketchPad.ResumeLayout(False)
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.ResumeLayout(False)
-            Me.m_tlpAssingments.ResumeLayout(False)
-            Me.m_tlpAssingments.PerformLayout()
             Me.m_scBottomBits.Panel1.ResumeLayout(False)
             Me.m_scBottomBits.Panel2.ResumeLayout(False)
             Me.m_scBottomBits.ResumeLayout(False)
             Me.m_tlpToolbox.ResumeLayout(False)
+            Me.m_tlpAssingments.ResumeLayout(False)
+            Me.m_tlpAssingments.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub

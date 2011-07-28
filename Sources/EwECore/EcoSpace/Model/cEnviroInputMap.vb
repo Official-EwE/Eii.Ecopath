@@ -45,6 +45,15 @@ Public Interface IEnviroInputMap
     ''' </code>
     ''' </remarks>
     Property ResponseIndexForGroup(ByVal GroupIndex As Integer) As Integer
+
+
+    ReadOnly Property Max() As Single
+    ReadOnly Property Min() As Single
+    ReadOnly Property Mean() As Single
+
+    Function Histogram(ByVal nPoints As Single) As Drawing.PointF()
+
+
 End Interface
 
 
@@ -64,7 +73,9 @@ Public Class cEnviroInputMap(Of T)
     Private m_MedData As cMediationDataStructures
     Private m_spaceData As cEcospaceDataStructures
     Private m_name As String
-
+    Private m_min As Single
+    Private m_max As Single
+    Private m_mean As Single
 
     Public Function Init(ByVal EnviroMediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean Implements IEnviroInputMap.Init
         Me.m_MedData = EnviroMediationData
@@ -72,7 +83,26 @@ Public Class cEnviroInputMap(Of T)
 
         ReDim Me.m_GrpToShape(Me.nGroups)
 
+        Me.computeMinMax()
+
     End Function
+
+    Private Sub computeMinMax()
+
+        m_min = Single.MaxValue
+        m_max = Single.MinValue
+
+        For ir As Integer = 1 To Me.m_spaceData.InRow
+            For ic As Integer = 1 To Me.m_spaceData.InCol
+                Dim ob As Object = Me.m_map(ir, ic)
+                m_min = Math.Min(CType(ob, Double), m_min)
+                m_max = Math.Max(CType(ob, Double), m_max)
+            Next
+        Next
+
+        Me.m_mean = (Me.m_min + m_max) * 0.5F
+
+    End Sub
 
 
     ''' <summary>
@@ -105,9 +135,9 @@ Public Class cEnviroInputMap(Of T)
         Try
             iShp = Me.ResponseIndexForGroup(igrp)
             'at this time I'm not sure if this is a error or not!
-            Debug.Assert(iShp <> 0, Me.ToString & ".ResponseFunction() no function has been set for this group!")
+            'Debug.Assert(iShp <> 0, Me.ToString & ".ResponseFunction() no function has been set for this group!")
             'no shape has been set for this group
-            If iShp = 0 Then
+            If iShp <= 0 Then
                 'need to decide what the null response should be
                 Return 0
             End If
@@ -125,7 +155,7 @@ Public Class cEnviroInputMap(Of T)
     End Function
 
     ''' <summary>
-    ''' Sets or gets the response(mediation) function ndex to use from the current cMediationDataStructures load during the Init(...)
+    ''' Sets or gets the response(mediation) function index to use from the current cMediationDataStructures load during the Init(...)
     ''' </summary>
     ''' <param name="GrpIndex">Group index for the response function.</param>
     ''' <value></value>
@@ -139,9 +169,44 @@ Public Class cEnviroInputMap(Of T)
         Set(ByVal ResponseShapeIndex As Integer)
             If ResponseShapeIndex <= Me.m_MedData.MediationShapes And GrpIndex <= Me.nGroups Then
                 Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
+
+                'For now 
+                'If the min and max of the shape have not been set 
+                'then set them to this map
+                If Me.m_MedData.XAxisMax(ResponseShapeIndex) = 0 Then
+                    Me.m_MedData.XAxisMin(ResponseShapeIndex) = Me.Min
+                    Me.m_MedData.XAxisMax(ResponseShapeIndex) = Me.Max
+                End If
+
             End If
         End Set
     End Property
+
+
+    Public Function Histogram(ByVal nPoints As Single) As Drawing.PointF() Implements IEnviroInputMap.Histogram
+        Dim ipt As Integer, maxPts As Integer
+        nPoints = 100
+        Dim pts() As Drawing.PointF
+        ReDim pts(nPoints)
+        Dim binWidth As Single = Me.Max / nPoints
+
+        For ir As Integer = 1 To Me.m_spaceData.InRow
+            For ic As Integer = 1 To Me.m_spaceData.InCol
+                Dim cell As Single = CSng(CObj(Me.m_map(ir, ic)))
+                ipt = Int(cell / binWidth)
+                pts(ipt).Y += 1
+                maxPts = Math.Max(pts(ipt).Y, maxPts)
+            Next
+        Next
+
+        For i As Integer = 0 To nPoints
+            pts(i).X = binWidth * i
+            pts(i).Y = pts(i).Y / maxPts
+        Next
+
+        Return pts
+
+    End Function
 
 
     Public ReadOnly Property nGroups() As Integer
@@ -164,6 +229,24 @@ Public Class cEnviroInputMap(Of T)
         Set(ByVal value As String)
             Me.m_name = value
         End Set
+    End Property
+
+    Public ReadOnly Property Max() As Single Implements IEnviroInputMap.Max
+        Get
+            Return Me.m_max
+        End Get
+    End Property
+
+    Public ReadOnly Property Mean() As Single Implements IEnviroInputMap.Mean
+        Get
+            Return Me.m_mean
+        End Get
+    End Property
+
+    Public ReadOnly Property Min() As Single Implements IEnviroInputMap.Min
+        Get
+            Return Me.m_min
+        End Get
     End Property
 
 End Class

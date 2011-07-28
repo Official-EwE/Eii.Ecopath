@@ -142,7 +142,7 @@ Public Class frmNavigationPanel
             .Add("ndGroupInfo", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.GroupInfoEwEGrid), "Group info.htm")
             .Add("ndVulnerabilities", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmVulnerabilities), "Vulnerabilities flow control.htm")
             .Add("ndTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTimeSeries), "Time series.htm")
-            .Add("ndMediation", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmCapacityFunction), "Mediation.htm")
+            .Add("ndMediation", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMediationFunction), "Mediation.htm")
             .Add("ndApplyMediation", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyMedConsumer), "Apply mediation.htm")
             .Add("ndApplyMediationPP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyMedPrimaryProducer), "Apply mediation.htm")
             .Add("ndForcingFunction", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmForcingFunction), "Forcing function.htm")
