@@ -50,7 +50,7 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.ConfigurePane("Map histogram & Response function", "Map values", "Capacity normalized", True)
 
             If Me.m_shape.XAxisMax = 0 Then
-                Me.m_shape.XAxisMax = 1.0 'some kind of bugus default in nothing has been defined
+                Me.m_shape.XAxisMax = 1.0 'some kind of bogus default if nothing has been defined
             End If
             Me.updateControls()
 
