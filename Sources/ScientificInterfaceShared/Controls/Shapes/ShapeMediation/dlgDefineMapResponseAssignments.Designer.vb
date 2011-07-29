@@ -31,6 +31,9 @@ Partial Class dlgDefineMapResponseAssignments
         Me.txXMax = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.ZedGraph = New ZedGraph.ZedGraphControl
+        Me.txXMin = New System.Windows.Forms.TextBox
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.btDefaultMinMax = New System.Windows.Forms.Button
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -90,7 +93,7 @@ Partial Class dlgDefineMapResponseAssignments
         '
         'txXMax
         '
-        Me.txXMax.Location = New System.Drawing.Point(321, 26)
+        Me.txXMax.Location = New System.Drawing.Point(565, 26)
         Me.txXMax.Name = "txXMax"
         Me.txXMax.Size = New System.Drawing.Size(85, 20)
         Me.txXMax.TabIndex = 3
@@ -98,18 +101,18 @@ Partial Class dlgDefineMapResponseAssignments
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(187, 29)
+        Me.Label2.Location = New System.Drawing.Point(428, 29)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(128, 13)
+        Me.Label2.Size = New System.Drawing.Size(131, 13)
         Me.Label2.TabIndex = 4
-        Me.Label2.Text = "Response function X max"
+        Me.Label2.Text = "Response function X max."
         '
         'ZedGraph
         '
         Me.ZedGraph.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ZedGraph.Location = New System.Drawing.Point(190, 63)
+        Me.ZedGraph.Location = New System.Drawing.Point(190, 52)
         Me.ZedGraph.Name = "ZedGraph"
         Me.ZedGraph.ScrollGrace = 0
         Me.ZedGraph.ScrollMaxX = 0
@@ -118,8 +121,33 @@ Partial Class dlgDefineMapResponseAssignments
         Me.ZedGraph.ScrollMinX = 0
         Me.ZedGraph.ScrollMinY = 0
         Me.ZedGraph.ScrollMinY2 = 0
-        Me.ZedGraph.Size = New System.Drawing.Size(610, 225)
+        Me.ZedGraph.Size = New System.Drawing.Size(610, 236)
         Me.ZedGraph.TabIndex = 5
+        '
+        'txXMin
+        '
+        Me.txXMin.Location = New System.Drawing.Point(321, 26)
+        Me.txXMin.Name = "txXMin"
+        Me.txXMin.Size = New System.Drawing.Size(82, 20)
+        Me.txXMin.TabIndex = 6
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(187, 29)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(128, 13)
+        Me.Label3.TabIndex = 7
+        Me.Label3.Text = "Response function X min."
+        '
+        'btDefaultMinMax
+        '
+        Me.btDefaultMinMax.Location = New System.Drawing.Point(694, 23)
+        Me.btDefaultMinMax.Name = "btDefaultMinMax"
+        Me.btDefaultMinMax.Size = New System.Drawing.Size(103, 23)
+        Me.btDefaultMinMax.TabIndex = 8
+        Me.btDefaultMinMax.Text = "Default min. max."
+        Me.btDefaultMinMax.UseVisualStyleBackColor = True
         '
         'dlgDefineMapResponseAssignments
         '
@@ -128,6 +156,9 @@ Partial Class dlgDefineMapResponseAssignments
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(812, 335)
+        Me.Controls.Add(Me.btDefaultMinMax)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.txXMin)
         Me.Controls.Add(Me.ZedGraph)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.txXMax)
@@ -141,7 +172,7 @@ Partial Class dlgDefineMapResponseAssignments
         Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "dlgDefineMapResponseAssignments"
+        Me.Text = "Response to input map"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -155,5 +186,8 @@ Partial Class dlgDefineMapResponseAssignments
     Friend WithEvents txXMax As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ZedGraph As ZedGraph.ZedGraphControl
+    Friend WithEvents txXMin As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents btDefaultMinMax As System.Windows.Forms.Button
 
 End Class

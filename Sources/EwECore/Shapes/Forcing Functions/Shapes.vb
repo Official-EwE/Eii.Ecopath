@@ -1418,7 +1418,7 @@ Public Class cEnviroResponseFunction
             Return m_medData.XAxisMin(Me.Index)
         End Get
         Set(ByVal value As Single)
-
+            m_medData.XAxisMin(Me.Index) = value
         End Set
     End Property
 
