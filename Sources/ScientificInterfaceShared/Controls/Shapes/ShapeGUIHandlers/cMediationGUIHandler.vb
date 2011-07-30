@@ -236,6 +236,8 @@ Namespace Controls
                     Return False
                 Case eShapeCommandTypes.DefineMediation
                     Return True
+                Case eShapeCommandTypes.ShowAllData
+                    Return False
             End Select
             Return MyBase.SupportCommand(cmd)
         End Function
