@@ -14,11 +14,14 @@ Imports ScientificInterfaceShared.Style
 
 Namespace Controls
 
-
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
+    ''' handling <see cref="cMediationFunction">capacity shapes</see>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class cCapacityShapeGUIHandler
         Inherits cMediationShapeGUIHandler
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -30,7 +33,6 @@ Namespace Controls
             Return Me.Core.CapacityShapeManager
         End Function
 
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Returns the colour for rendering price elasticity shapes.
@@ -41,7 +43,9 @@ Namespace Controls
             Return Drawing.Color.SandyBrown
         End Function
 
-
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="cMediationShapeGUIHandler.ExecuteCommand"/>
+        ''' -----------------------------------------------------------------------
         Public Overrides Sub ExecuteCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
                                           Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
                                           Optional ByVal data As Object = Nothing)
@@ -70,7 +74,23 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the name for a new capacity shape.
+        ''' </summary>
+        ''' <returns>The name for a new capacity shape.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function NewShapeNameMask() As String
+            Return My.Resources.ECOSIM_DEFAULT_NEWCAPACITYSHAPE
+        End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.Datatypes"/>
+        ''' <remarks>Overridden to enable handler for capacity shapes.</remarks>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+            Return New eDataTypes() {eDataTypes.CapacityMediation}
+        End Function
     End Class
 
 End Namespace

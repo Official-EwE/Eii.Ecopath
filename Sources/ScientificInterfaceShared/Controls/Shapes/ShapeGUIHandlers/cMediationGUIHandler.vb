@@ -70,12 +70,18 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.Detach"/>
+        ''' -------------------------------------------------------------------
         Public Overloads Sub Detach()
             Me.MediationAssignments = Nothing
             Me.MediationAssignmentsToolbar = Nothing
             MyBase.Detach()
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.SetSeasonal"/>
+        ''' -------------------------------------------------------------------
         Public Overrides Sub SetSeasonal(ByVal shape As EwECore.cShapeData, ByVal bSeasonal As Boolean)
             ' Not allowed to do this; it makes absolutely no sense for Mediation shapes
             Debug.Assert(False)
@@ -91,6 +97,12 @@ Namespace Controls
             Return Me.Core.MediationShapeManager
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="ucMediationAssignments">mediation assingments control</see>
+        ''' to for this handler.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Public Overridable Property MediationAssignments() As ucMediationAssignments
             Get
                 Return Me.m_medass
@@ -110,6 +122,12 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="MediationAssignmentsToolbar">mediation assingments 
+        ''' toolbar</see> to for this handler.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Public Overridable Property MediationAssignmentsToolbar() As ucMediationAssignmentsToolbar
             Get
                 Return Me.m_medasstoolbar
@@ -209,7 +227,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Overridden to suppress Seasonal command
+        ''' Overridden to suppress Seasonal command.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
@@ -222,6 +240,9 @@ Namespace Controls
             Return MyBase.SupportCommand(cmd)
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.EnableCommand"/>
+        ''' -------------------------------------------------------------------
         Public Overrides Function EnableCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
                 Case eShapeCommandTypes.DefineMediation
@@ -230,9 +251,12 @@ Namespace Controls
             Return MyBase.EnableCommand(cmd)
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.ExecuteCommand"/>
+        ''' -------------------------------------------------------------------
         Public Overrides Sub ExecuteCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
-                                            Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
-                                            Optional ByVal data As Object = Nothing)
+                                             Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
+                                             Optional ByVal data As Object = Nothing)
 
             Try
                 Select Case cmd
@@ -256,11 +280,17 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.OnShapeFinalized"/>
+        ''' -------------------------------------------------------------------
         Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
             DirectCast(shape, cMediationBaseFunction).XBaseIndex = CInt(Math.Round(sketchpad.XMarkValue))
             MyBase.OnShapeFinalized(shape, sketchpad)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.OnShapeSelected"/>
+        ''' -------------------------------------------------------------------
         Public Overrides Sub OnShapeSelected(ByVal shape() As EwECore.cShapeData)
             MyBase.OnShapeSelected(shape)
             If (Me.MediationAssignments IsNot Nothing) Then
@@ -275,6 +305,10 @@ Namespace Controls
             End If
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.Datatypes"/>
+        ''' <remarks>Overridden to enable handler for mediation shapes.</remarks>
+        ''' -------------------------------------------------------------------
         Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.Mediation}
         End Function
