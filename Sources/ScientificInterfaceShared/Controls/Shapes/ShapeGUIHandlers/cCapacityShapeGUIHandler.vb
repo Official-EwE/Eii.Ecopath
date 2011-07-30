@@ -17,7 +17,7 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' <see cref="cShapeGUIHandler">cShapeGUIHandler implementation</see> for 
-    ''' handling <see cref="cMediationFunction">capacity shapes</see>.
+    ''' handling <see cref="cEnviroResponseFunction">environmental response functions</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cCapacityShapeGUIHandler
@@ -86,7 +86,9 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.Datatypes"/>
-        ''' <remarks>Overridden to enable handler for capacity shapes.</remarks>
+        ''' <remarks>Overridden to enable handler for 
+        ''' <see cref="cEnviroResponseFunction">environmental response functions</see>.
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.CapacityMediation}
