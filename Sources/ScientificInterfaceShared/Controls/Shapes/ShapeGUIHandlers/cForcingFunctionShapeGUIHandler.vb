@@ -26,6 +26,10 @@ Namespace Controls
         Private m_lShapes As New List(Of cShapeData)
         ''' <summary>Shape changed core message handler.</summary>
         Private m_mhShapes As cMessageHandler = Nothing
+        ''' <summary>Shape changed core message handler.</summary>
+        Private m_mhEcosim As cMessageHandler = Nothing
+
+        Private m_bShowAll As Boolean = False
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -47,6 +51,8 @@ Namespace Controls
 
             Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.Any, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
+            Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.UIContext.SyncObject)
+            Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
             Me.SetDisplayYears(False)
 
@@ -58,6 +64,8 @@ Namespace Controls
         Public Overrides Sub Detach()
             Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhShapes)
             Me.m_mhShapes = Nothing
+            Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+            Me.m_mhEcosim = Nothing
             MyBase.Detach()
         End Sub
 
@@ -297,11 +305,18 @@ Namespace Controls
         Protected Overrides Sub OnCoreMessage(ByRef msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
-            If (msg.Source = eCoreComponentType.ShapesManager And msg.Type = eMessageType.DataModified) Then
-                If (Me.SketchPad IsNot Nothing) Then
+            If (Me.SketchPad IsNot Nothing) Then
+                If (msg.Source = eCoreComponentType.ShapesManager And msg.Type = eMessageType.DataModified) Then
+                    Try
+                        'Me.SketchPad.NumDataYears = Me.NumDataYears
+                        'Me.SetDisplayYears(Me.SketchPad.XAxisMaxValue = cCore.NULL_VALUE)
+                        Me.Refresh()
+                    Catch ex As Exception
+                    End Try
+                ElseIf msg.Source = eCoreComponentType.EcoSim And msg.Type = eMessageType.EcosimNYearsChanged Then
                     Try
                         Me.SketchPad.NumDataYears = Me.NumDataYears
-                        Me.SetDisplayYears(Me.SketchPad.XAxisMaxValue = cCore.NULL_VALUE)
+                        Me.SetDisplayYears(Me.m_bShowAll)
                         Me.Refresh()
                     Catch ex As Exception
                     End Try
@@ -531,6 +546,7 @@ Namespace Controls
         End Sub
 
         Protected Sub SetDisplayYears(ByVal bShowAll As Boolean)
+            Me.m_bShowAll = bShowAll
             If Me.SketchPad IsNot Nothing Then
                 Me.SketchPad.XAxisMaxValue = CInt(IIf(bShowAll, cCore.NULL_VALUE, Me.SketchPad.NumDataYears * cCore.N_MONTHS))
             End If
