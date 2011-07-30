@@ -25,13 +25,11 @@ Namespace Controls
 
         Public Sub New()
             Me.InitializeComponent()
-            ''No axis info in the mediation sketchpad right now. 
-            'Me.m_tsmiShowMarks.Visible = False
         End Sub
 
-        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
-            Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.ShapeColor, True, Me.SketchDrawMode, Me.YAxisMaxValue)
-        End Sub
+        'Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        '    Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.ShapeColor, True, Me.SketchDrawMode, Me.YAxisMaxValue)
+        'End Sub
 
         Protected Overrides Sub DrawShape(ByVal shape As EwECore.cShapeData, _
                 ByVal rcImage As System.Drawing.Rectangle, _
@@ -129,6 +127,14 @@ Namespace Controls
             End Get
         End Property
 
+        Public Overrides Property NumDataYears() As Integer
+            Get
+                Return cCore.NULL_VALUE
+            End Get
+            Set(ByVal value As Integer)
+                '
+            End Set
+        End Property
     End Class
 
 End Namespace

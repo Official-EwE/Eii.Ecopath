@@ -20,14 +20,13 @@ Imports EwEUtils.Utilities
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' This Sketchpad control class is used to render the shape and support
     ''' mouse interaction. It can be used as the base class for both forcing functions and 
     ''' mediation functions.
     ''' </summary>
-    ''' <remarks>
-    ''' This code is a mess and deserves some serious lobotomy
-    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public Class ucSketchPad
         Implements IUIElement
@@ -411,7 +410,7 @@ Namespace Controls
         End Property
 
         <Browsable(False)> _
-        Public Property NumDataYears() As Integer
+        Public Overridable Property NumDataYears() As Integer
             Get
                 Return Me.m_iNumDataYears
             End Get
@@ -614,6 +613,11 @@ Namespace Controls
 
 #Region " Internal Methods "
 
+        ''' <summary>
+        ''' Draw a hashed-out area past a given <see cref="NumDataYears">data limit</see>.
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' <param name="x"></param>
         Protected Sub DrawYearLimit(ByRef g As Graphics, ByVal x As Integer)
             Using br As New HatchBrush(HatchStyle.SmallConfetti, Color.FromArgb(100, 0, 0, 0), Color.Transparent)
                 g.FillRectangle(br, New Rectangle(x, 0, Me.Width, Me.Height))
@@ -693,10 +697,10 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Draws a shape between two click points.
+        ''' Modifies a shape between two click points.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub DrawShape(ByVal ptPrev As Point, ByVal ptCur As Point)
+        Private Sub ModifyShapePoints(ByVal ptPrev As Point, ByVal ptCur As Point)
 
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
@@ -817,8 +821,7 @@ Namespace Controls
         ''' This method handls the Paint event and does the actual drawing routine
         ''' It only draws the graph with no other additional info like caption, axises..eg..Those will be drawn in the inherited class if needed
         ''' </summary>
-        Private Sub SketchPad_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-            Handles MyBase.Paint
+        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
 
             If Me.UIContext Is Nothing Then Return
 
@@ -860,7 +863,7 @@ Namespace Controls
 
                 Select Case Me.m_editMode
                     Case eMouseInteractionMode.DrawShape
-                        Me.DrawShape(Me.m_ptPosPrevious, ptPosCurrent)
+                        Me.ModifyShapePoints(Me.m_ptPosPrevious, ptPosCurrent)
 
                     Case eMouseInteractionMode.DragXMark
                         Me.DragXMark(Me.m_ptPosPrevious, ptPosCurrent)

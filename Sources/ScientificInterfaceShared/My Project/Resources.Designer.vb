@@ -551,6 +551,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Capacity shape {0}.
+        '''</summary>
+        Public ReadOnly Property ECOSIM_DEFAULT_NEWCAPACITYSHAPE() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWCAPACITYSHAPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Egg production shape {0}.
         '''</summary>
         Public ReadOnly Property ECOSIM_DEFAULT_NEWEGGPRODSHAPE() As String

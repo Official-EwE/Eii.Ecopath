@@ -545,7 +545,7 @@ Namespace Controls
 
         End Sub
 
-        Protected Sub SetDisplayYears(ByVal bShowAll As Boolean)
+        Protected Overridable Sub SetDisplayYears(ByVal bShowAll As Boolean)
             Me.m_bShowAll = bShowAll
             If Me.SketchPad IsNot Nothing Then
                 Me.SketchPad.XAxisMaxValue = CInt(IIf(bShowAll, cCore.NULL_VALUE, Me.SketchPad.NumDataYears * cCore.N_MONTHS))

@@ -79,6 +79,10 @@ Namespace Controls
             MyBase.Detach()
         End Sub
 
+        Protected Overrides Sub SetDisplayYears(ByVal bShowAll As Boolean)
+            ' NOP
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.SetSeasonal"/>
         ''' -------------------------------------------------------------------

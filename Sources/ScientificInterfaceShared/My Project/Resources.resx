@@ -2165,4 +2165,8 @@
   <data name="SHAPEFUNCTION_NORMAL" xml:space="preserve">
     <value>Normal</value>
   </data>
+  <data name="ECOSIM_DEFAULT_NEWCAPACITYSHAPE" xml:space="preserve">
+    <value>Capacity shape {0}</value>
+    <comment>The default name for a new Ecosim capacity shape. {0}: autonumber</comment>
+  </data>
 </root>
