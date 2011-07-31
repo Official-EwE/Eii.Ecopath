@@ -32,6 +32,7 @@ Imports Microsoft.VisualBasic
 Imports System.Threading
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Commands
+Imports System.Drawing.Printing
 
 #End Region ' Imports
 
@@ -155,6 +156,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
     ' ToDo_JS: Discontinue, move to Ecosim UI
     Private WithEvents m_cmdExportEcosimResultsToCSV As cCommand = Nothing
+    Private WithEvents m_cmdPrint As cCommand = Nothing
 
 #End Region ' Commands
 
@@ -316,6 +318,10 @@ Public Class AppLauncher
 
         ' Create and configure navigate command
         Me.m_cmdNavigate = New cNavigationCommand(cmdh)
+
+        ' Create and configure print command
+        Me.m_cmdPrint = New cPrintCommand(cmdh)
+        Me.m_cmdPrint.AddControl(Me.m_tsmiPrint)
 
         ' Create and configure 'close all forms' command
         Me.m_cmdCloseAllForms = New cCommand(cmdh, "CloseAllForms")
@@ -2612,6 +2618,32 @@ Public Class AppLauncher
         Else
             cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact(Me.SelectedFileName)
         End If
+    End Sub
+
+    Private Sub OnInvokePrint(ByVal cmd As cCommand) Handles m_cmdPrint.OnInvoke
+
+        Dim dlg As New PrintPreviewDialog()
+        Dim cnt As IDockContent = Me.m_DockPanel.ActiveContent
+
+        If (TypeOf cnt Is frmEwE) Then
+            dlg.Document = DirectCast(cnt, frmEwE).PrintDoc
+            dlg.Document.DocumentName = cnt.ToString
+            dlg.ShowDialog()
+        End If
+
+    End Sub
+
+    Private Sub OnEnablePrint(ByVal cmd As cCommand) Handles m_cmdPrint.OnUpdate
+
+        Dim cnt As IDockContent = Me.m_DockPanel.ActiveContent
+        Dim bEnable As Boolean = False
+
+        If (cnt IsNot Nothing) Then
+            bEnable = (TypeOf cnt Is frmEwE)
+        End If
+
+        cmd.Enabled = bEnable
+
     End Sub
 
 #End Region ' File commands

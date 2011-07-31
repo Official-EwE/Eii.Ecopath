@@ -43,9 +43,9 @@ Namespace Commands
         ''' from anywhere in the EwE6 user interface:
         ''' <code>
         ''' ' Get the one and only command 
-        ''' Dim cdmH As CommandHandler = CommandHandler.GetInstance()
+        ''' Dim cdmH As cCommandHandler = cCommandHandler.GetInstance()
         ''' ' Get the one and only navigation command
-        ''' Dim cmd As NavigationCommand = DirectCast(GetCommand(NavigationCommand.COMMAND_NAME), NavigationCommand)
+        ''' Dim cmd As cNavigationCommand = DirectCast(GetCommand(cNavigationCommand.COMMAND_NAME), cNavigationCommand)
         ''' ' Invoke the command
         ''' ...
         ''' </code>

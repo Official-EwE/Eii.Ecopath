@@ -13,6 +13,7 @@ Imports ScientificInterfaceShared.Style
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Properties
 Imports System.Xml
+Imports System.Drawing.Printing
 
 #End Region ' Imports
 
@@ -225,6 +226,8 @@ Namespace Forms
         ''' <summary>Misc. form settings.</summary>
         Private m_strSettings As String = ""
 
+        Private m_printDoc As PrintDocument = Nothing
+
 #End Region ' Private variables
 
 #Region " Constructors "
@@ -393,7 +396,7 @@ Namespace Forms
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
-            If (Me.UIContext isnot Nothing) and (Me.DesignMode = False) Then
+            If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
                 ' Store form position BEFORE form is closed
                 Me.UIContext.FormSettings.Store(Me)
             End If
@@ -430,6 +433,32 @@ Namespace Forms
             End Set
         End Property
 
+        Public Function PrintDoc() As Printdocument
+
+            If Me.m_printDoc Is Nothing Then
+                Me.m_printDoc = New PrintDocument
+                AddHandler Me.m_printDoc.PrintPage, AddressOf OnPrintMe
+            End If
+            Return Me.m_printDoc
+
+        End Function
+
+        Protected Overridable Shadows Sub OnPrint(ByVal args As PrintPageEventArgs)
+
+            Dim bmp As New Bitmap(Me.ClientRectangle.Width, Me.ClientRectangle.Height, Imaging.PixelFormat.Format32bppArgb)
+            Me.DrawToBitmap(bmp, Me.ClientRectangle)
+            args.Graphics.DrawImage(bmp, args.MarginBounds)
+            bmp.Dispose()
+
+        End Sub
+
+        Private Sub OnPrintMe(ByVal sender As Object, ByVal args As PrintPageEventArgs)
+            Try
+                Me.OnPrint(args)
+            Catch ex As Exception
+                cLog.Write(ex, "OnPrint")
+            End Try
+        End Sub
 #End Region ' Overrides
 
 #Region " Core messages "

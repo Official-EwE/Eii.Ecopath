@@ -27,7 +27,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Dim m_tssFile1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssFile2 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssFile3 As System.Windows.Forms.ToolStripSeparator
-        Dim m_tssFile4 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssView1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcosim1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcosim2 As System.Windows.Forms.ToolStripSeparator
@@ -116,11 +115,12 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton
+        Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator
         m_tssFile3 = New System.Windows.Forms.ToolStripSeparator
-        m_tssFile4 = New System.Windows.Forms.ToolStripSeparator
         m_tssView1 = New System.Windows.Forms.ToolStripSeparator
         m_tssEcosim1 = New System.Windows.Forms.ToolStripSeparator
         m_tssEcosim2 = New System.Windows.Forms.ToolStripSeparator
@@ -156,11 +156,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         m_tssFile3.Name = "m_tssFile3"
         resources.ApplyResources(m_tssFile3, "m_tssFile3")
-        '
-        'm_tssFile4
-        '
-        m_tssFile4.Name = "m_tssFile4"
-        resources.ApplyResources(m_tssFile4, "m_tssFile4")
         '
         'm_tssView1
         '
@@ -346,7 +341,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'MenuFile
         '
-        Me.MenuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFileNew, Me.m_tsmiFileOpen, m_tssFile1, Me.m_tsmiFileClose, m_tssFile2, Me.m_tsmiFileSave, Me.m_tsmiFileSaveAs, Me.m_tsmiFileCompact, m_tssFile3, Me.m_tsmiFileRecent, m_tssFile4, Me.m_tsmiFileExit})
+        Me.MenuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFileNew, Me.m_tsmiFileOpen, Me.m_tsmiFileRecent, m_tssFile1, Me.m_tsmiFileClose, m_tssFile2, Me.m_tsmiFileSave, Me.m_tsmiFileSaveAs, Me.m_tsmiFileCompact, m_tssFile3, Me.m_tsmiPrint, Me.ToolStripSeparator4, Me.m_tsmiFileExit})
         resources.ApplyResources(Me.MenuFile, "MenuFile")
         Me.MenuFile.Name = "MenuFile"
         '
@@ -638,6 +633,16 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
         '
+        'm_tsmiPrint
+        '
+        Me.m_tsmiPrint.Name = "m_tsmiPrint"
+        resources.ApplyResources(Me.m_tsmiPrint, "m_tsmiPrint")
+        '
+        'ToolStripSeparator4
+        '
+        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
+        resources.ApplyResources(Me.ToolStripSeparator4, "ToolStripSeparator4")
+        '
         'AppLauncher
         '
         resources.ApplyResources(Me, "$this")
@@ -733,6 +738,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewMenu As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiForums As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiPrint As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
 
 End Class
 

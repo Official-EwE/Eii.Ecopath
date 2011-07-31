@@ -16,6 +16,7 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Commands
+Imports System.Drawing.Printing
 
 #End Region
 
@@ -710,6 +711,29 @@ Namespace Forms
             Me.Grid = Nothing
 
             MyBase.OnFormClosed(e)
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Print the grid to a given device context.
+        ''' </summary>
+        ''' <param name="e"></param>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Sub OnPrint(ByVal e As PrintPageEventArgs)
+
+            ' ToDo: prepare multiple pages
+
+            Try
+                Dim rc As New Rectangle(0, 0, Grid.Width, Grid.Height)
+                Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
+                Me.Grid.DrawToBitmap(bmp, rc)
+                e.Graphics.DrawImage(bmp, e.MarginBounds.X, e.MarginBounds.Y, rc, GraphicsUnit.Pixel)
+                bmp.Dispose()
+
+            Catch ex As Exception
+
+            End Try
+
         End Sub
 
 #End Region ' Form overrides
