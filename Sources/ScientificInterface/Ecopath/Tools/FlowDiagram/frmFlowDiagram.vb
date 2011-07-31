@@ -110,6 +110,9 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
+        Protected Overrides Sub OnPrint(ByVal args As System.Drawing.Printing.PrintPageEventArgs)
+            Me.m_doodler.DrawFlowDiagram(args.Graphics, args.MarginBounds)
+        End Sub
 
 #End Region ' Overrides
 
