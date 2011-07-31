@@ -2623,7 +2623,7 @@ Public Class AppLauncher
     Private Sub OnInvokePrint(ByVal cmd As cCommand) Handles m_cmdPrint.OnInvoke
 
         Dim dlg As New PrintPreviewDialog()
-        Dim cnt As IDockContent = Me.m_DockPanel.ActiveContent
+        Dim cnt As IDockContent = Me.m_DockPanel.ActiveDocument
 
         If (TypeOf cnt Is frmEwE) Then
             dlg.Document = DirectCast(cnt, frmEwE).PrintDoc
@@ -2635,7 +2635,7 @@ Public Class AppLauncher
 
     Private Sub OnEnablePrint(ByVal cmd As cCommand) Handles m_cmdPrint.OnUpdate
 
-        Dim cnt As IDockContent = Me.m_DockPanel.ActiveContent
+        Dim cnt As IDockContent = Me.m_DockPanel.ActiveDocument
         Dim bEnable As Boolean = False
 
         If (cnt IsNot Nothing) Then
