@@ -97,6 +97,13 @@ Public Class dlgDefineMapResponseAssignments
         End If
 
         Try
+            Dim txb As TextBox = DirectCast(sender, TextBox)
+            'is this really user input
+            If Not txb.Focused Then
+                'No bump out of here
+                Exit Sub
+            End If
+
             Dim maxX As Single = Single.Parse(Me.txXMax.Text)
             Dim minX As Single = Single.Parse(Me.txXMin.Text)
             Me.m_shape.XAxisMin = minX
@@ -139,10 +146,10 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.GetPane(1).CurveList.Clear()
 
             Dim dx As Single = Xrange / Me.m_shape.XMax
-            Dim MaxY As Single = Me.m_shape.YMax
+            Dim MaxY As Single = 1 / Me.m_shape.YMax
             Dim lstPts As New PointPairList
             For ipt As Integer = 1 To Me.m_shape.XMax
-                lstPts.Add(Xmin + dx * (ipt - 1), Me.m_shape.ShapeData(ipt) / MaxY)
+                lstPts.Add(Xmin + dx * (ipt - 1), Me.m_shape.ShapeData(ipt) * MaxY)
             Next
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem("Response", Definitions.eLineType.NotSet, Color.SandyBrown, lstPts)
@@ -156,6 +163,7 @@ Public Class dlgDefineMapResponseAssignments
 
             Me.m_zgh.XScaleMax = Xmax
             Me.m_zgh.YScaleMax = 1.2
+            Me.m_zgh.YScaleMin = 0
 
         Catch ex As Exception
 
@@ -180,8 +188,14 @@ Public Class dlgDefineMapResponseAssignments
             Exit Sub
         End If
 
-        Me.txXMax.Text = map.Max.ToString
-        Me.txXMin.Text = map.Min.ToString
+        Me.m_shape.XAxisMax = map.Max
+        Me.m_shape.XAxisMin = map.Min
+
+        Me.updateControls()
+
+        PlotShape()
+        PlotMap()
+
 
     End Sub
 
@@ -215,17 +229,18 @@ Public Class dlgDefineMapResponseAssignments
 
             Dim histPts() As Drawing.PointF = map.Histogram(Me.m_shape.XMax)
 
-            Dim maxX As Single = map.Max
+            'Dim maxX As Single = map.Max
             Dim lstPts As New PointPairList
-            For ipt As Integer = 0 To 100
+            For ipt As Integer = 0 To histPts.Length - 1
                 lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
             Next
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem("Histogram", Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
-            Me.m_zgh.XScaleMax = maxX
+            Me.m_zgh.XScaleMax = map.Max
             Me.m_zgh.YScaleMax = 1.2
+            Me.m_zgh.YScaleMin = 0
 
         Catch ex As Exception
 
