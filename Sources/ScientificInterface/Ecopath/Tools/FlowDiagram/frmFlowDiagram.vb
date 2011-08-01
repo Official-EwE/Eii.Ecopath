@@ -110,9 +110,13 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Protected Overrides Sub OnPrint(ByVal args As System.Drawing.Printing.PrintPageEventArgs)
-            Me.m_doodler.DrawFlowDiagram(args.Graphics, args.MarginBounds)
-        End Sub
+        Protected Overrides Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
+            Dim img As New Bitmap(rcPrint.Width, rcPrint.Height, PixelFormat.Format32bppArgb)
+            Dim g As Graphics = Graphics.FromImage(img)
+            Me.m_doodler.DrawFlowDiagram(g, rcPrint)
+            g.Dispose()
+            Return img
+        End Function
 
 #End Region ' Overrides
 

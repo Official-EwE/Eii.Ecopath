@@ -227,6 +227,7 @@ Namespace Forms
         Private m_strSettings As String = ""
 
         Private m_printDoc As PrintDocument = Nothing
+        Private m_iPrintPage As Integer = 0
 
 #End Region ' Private variables
 
@@ -401,6 +402,9 @@ Namespace Forms
                 Me.UIContext.FormSettings.Store(Me)
             End If
 
+            ' Just in case
+            Me.EndPrint()
+
             MyBase.OnFormClosing(e)
 
             ' Prevent active run forms from closing.
@@ -433,33 +437,96 @@ Namespace Forms
             End Set
         End Property
 
-        Public Function PrintDoc() As Printdocument
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the content of the form as an image for printing.
+        ''' </summary>
+        ''' <param name="rcPrint">The print area.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
+            Dim bmp As New Bitmap(Me.ClientRectangle.Width, Me.ClientRectangle.Height, Imaging.PixelFormat.Format32bppArgb)
+            Me.DrawToBitmap(bmp, Me.ClientRectangle)
+            Return bmp
+        End Function
 
-            If Me.m_printDoc Is Nothing Then
+#End Region ' Overrides
+
+#Region " Printing "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Starts multi-page printing.
+        ''' </summary>
+        ''' <returns>A <see cref="PrintDocument"/> to print with.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function BeginPrint() As PrintDocument
+
+            If (Me.m_printDoc Is Nothing) Then
                 Me.m_printDoc = New PrintDocument
+                Me.m_printDoc.DocumentName = Me.Text
                 AddHandler Me.m_printDoc.PrintPage, AddressOf OnPrintMe
             End If
+            Me.m_iPrintPage = 0
             Return Me.m_printDoc
 
         End Function
 
-        Protected Overridable Shadows Sub OnPrint(ByVal args As PrintPageEventArgs)
-
-            Dim bmp As New Bitmap(Me.ClientRectangle.Width, Me.ClientRectangle.Height, Imaging.PixelFormat.Format32bppArgb)
-            Me.DrawToBitmap(bmp, Me.ClientRectangle)
-            args.Graphics.DrawImage(bmp, args.MarginBounds)
-            bmp.Dispose()
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' End printing.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub EndPrint()
+            If (Me.m_printDoc IsNot Nothing) Then
+                RemoveHandler Me.m_printDoc.PrintPage, AddressOf OnPrintMe
+                Me.m_printDoc.Dispose()
+                Me.m_printDoc = Nothing
+            End If
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="args"></param>
+        ''' -------------------------------------------------------------------
         Private Sub OnPrintMe(ByVal sender As Object, ByVal args As PrintPageEventArgs)
+
             Try
-                Me.OnPrint(args)
+                Dim img As Image = Me.GetPrintContent(args.MarginBounds)
+
+                ' Determine number of pages
+                Dim iDX As Integer = CInt(Math.Ceiling(img.Width / args.MarginBounds.Width))
+                Dim iDY As Integer = CInt(Math.Ceiling(img.Height / args.MarginBounds.Height))
+                Dim iNumPages As Integer = iDX * iDY
+
+                Dim iX As Integer = Me.m_iPrintPage Mod iDX
+                Dim iY As Integer = Me.m_iPrintPage \ iDX
+
+                ' Check which part of the print area is represented by m_iPrintPage
+                Dim rcPrint As New Rectangle(iX * args.MarginBounds.Width, _
+                                             iY * args.MarginBounds.Height, _
+                                             Math.Min(img.Width - iX * args.MarginBounds.Width, args.MarginBounds.Width), _
+                                             Math.Min(img.Height - iY * args.MarginBounds.Height, args.MarginBounds.Height))
+                ' Draw
+                args.Graphics.DrawImage(img, args.MarginBounds.X, args.MarginBounds.Y, rcPrint, GraphicsUnit.Pixel)
+                Me.m_iPrintPage += 1
+
+                ' Done
+                img.Dispose()
+
+                args.HasMorePages = (Me.m_iPrintPage < iNumPages)
+
             Catch ex As Exception
                 cLog.Write(ex, "OnPrint")
+                args.HasMorePages = False
             End Try
+
         End Sub
-#End Region ' Overrides
+
+#End Region ' Printing
 
 #Region " Core messages "
 

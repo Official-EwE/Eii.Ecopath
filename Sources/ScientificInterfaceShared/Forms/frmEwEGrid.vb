@@ -715,26 +715,18 @@ Namespace Forms
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Print the grid to a given device context.
+        ''' Return the content of the grid as an image.
         ''' </summary>
-        ''' <param name="e"></param>
+        ''' <param name="rcPrint">The print area. Ignored in this method.</param>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnPrint(ByVal e As PrintPageEventArgs)
+        Protected Overrides Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
 
-            ' ToDo: prepare multiple pages
+            Dim rc As New Rectangle(0, 0, Grid.Width, Grid.Height)
+            Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
+            Me.Grid.DrawToBitmap(bmp, rc)
+            Return bmp
 
-            Try
-                Dim rc As New Rectangle(0, 0, Grid.Width, Grid.Height)
-                Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
-                Me.Grid.DrawToBitmap(bmp, rc)
-                e.Graphics.DrawImage(bmp, e.MarginBounds.X, e.MarginBounds.Y, rc, GraphicsUnit.Pixel)
-                bmp.Dispose()
-
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
+        End Function
 
 #End Region ' Form overrides
 

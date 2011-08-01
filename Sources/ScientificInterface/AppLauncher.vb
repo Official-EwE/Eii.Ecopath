@@ -2626,9 +2626,10 @@ Public Class AppLauncher
         Dim cnt As IDockContent = Me.m_DockPanel.ActiveDocument
 
         If (TypeOf cnt Is frmEwE) Then
-            dlg.Document = DirectCast(cnt, frmEwE).PrintDoc
-            dlg.Document.DocumentName = cnt.ToString
+            Dim frm As frmEwE = DirectCast(cnt, frmEwE)
+            dlg.Document = frm.BeginPrint
             dlg.ShowDialog()
+            frm.EndPrint()
         End If
 
     End Sub
