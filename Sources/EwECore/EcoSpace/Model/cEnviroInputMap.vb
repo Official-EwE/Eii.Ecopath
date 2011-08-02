@@ -50,8 +50,12 @@ Public Interface IEnviroInputMap
     ReadOnly Property Max() As Single
     ReadOnly Property Min() As Single
     ReadOnly Property Mean() As Single
+    ReadOnly Property BinWidth() As Single
 
     Function Histogram(ByVal nPoints As Single) As Drawing.PointF()
+
+    Function Update()
+
 
 
 End Interface
@@ -76,6 +80,7 @@ Public Class cEnviroInputMap(Of T)
     Private m_min As Single
     Private m_max As Single
     Private m_mean As Single
+    Private m_binWidth As Single
 
     Public Function Init(ByVal EnviroMediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean Implements IEnviroInputMap.Init
         Me.m_MedData = EnviroMediationData
@@ -188,19 +193,21 @@ Public Class cEnviroInputMap(Of T)
         nPoints = 100
         Dim pts() As Drawing.PointF
         ReDim pts(nPoints)
-        Dim binWidth As Single = Me.Max / nPoints
+        Me.m_binwidth = Me.Max / nPoints
 
         For ir As Integer = 1 To Me.m_spaceData.InRow
             For ic As Integer = 1 To Me.m_spaceData.InCol
                 Dim cell As Single = CSng(CObj(Me.m_map(ir, ic)))
-                ipt = Int(cell / binWidth)
+                ipt = Math.Truncate(cell / m_binWidth)
+                If ipt >= nPoints Then ipt = nPoints
+                If ipt <= 0 Then ipt = 1
                 pts(ipt).Y += 1
                 maxPts = Math.Max(pts(ipt).Y, maxPts)
             Next
         Next
 
-        For i As Integer = 0 To nPoints
-            pts(i).X = binWidth * i
+        For i As Integer = 1 To nPoints
+            pts(i).X = m_binWidth * i
             pts(i).Y = pts(i).Y / maxPts
         Next
 
@@ -249,4 +256,22 @@ Public Class cEnviroInputMap(Of T)
         End Get
     End Property
 
+    Public Function Update() As Object Implements IEnviroInputMap.Update
+        Dim bReturn As Boolean = False
+
+        Try
+            Me.computeMinMax()
+            bReturn = True
+        Catch ex As Exception
+
+        End Try
+        Return bReturn
+
+    End Function
+
+    Public ReadOnly Property BinWidth() As Single Implements IEnviroInputMap.BinWidth
+        Get
+            Return Me.m_binWidth
+        End Get
+    End Property
 End Class

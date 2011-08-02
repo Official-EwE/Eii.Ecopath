@@ -52,10 +52,10 @@ Public Class dlgDefineMapResponseAssignments
             If Me.m_shape.XAxisMax = 0 Then
                 Me.m_shape.XAxisMax = 1.0 'some kind of bogus default if nothing has been defined
             End If
-            Me.updateControls()
 
-            Me.PlotShape()
+            Me.updateControls()
             Me.loadMaps()
+            Me.PlotGraph()
 
         Catch ex As Exception
 
@@ -86,15 +86,11 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Sub lvMaps_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMaps.SelectedIndexChanged
 
-        PlotMap()
+        Me.PlotGraph()
 
     End Sub
 
     Private Sub txXMax_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txXMax.TextChanged, txXMin.TextChanged
-
-        If Not m_bHasInit Then
-            Exit Sub
-        End If
 
         Try
             Dim txb As TextBox = DirectCast(sender, TextBox)
@@ -109,8 +105,8 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_shape.XAxisMin = minX
             Me.m_shape.XAxisMax = maxX
 
-            PlotShape()
-            PlotMap()
+            Me.PlotGraph()
+
         Catch ex As Exception
 
         End Try
@@ -124,6 +120,24 @@ Public Class dlgDefineMapResponseAssignments
 #End Region
 
 #Region "Private Methods"
+
+    Private Sub PlotGraph()
+
+        Try
+            'Always clear out the old data????
+            'Maybe not!!!
+            Me.m_zgh.GetPane(1).CurveList.Clear()
+
+
+
+            Me.PlotShape()
+            Me.PlotMap()
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
 
     Private Sub updateControls()
         Try
@@ -141,25 +155,27 @@ Public Class dlgDefineMapResponseAssignments
             Dim Xmin As Single = Me.m_shape.XAxisMin
             Dim Xrange As Single = Me.m_shape.XAxisMax - Me.m_shape.XAxisMin
 
-            'Always clear out the old data????
-            'Maybe not!!!
-            Me.m_zgh.GetPane(1).CurveList.Clear()
-
-            Dim dx As Single = Xrange / Me.m_shape.XMax
-            Dim MaxY As Single = 1 / Me.m_shape.YMax
-            Dim lstPts As New PointPairList
-            For ipt As Integer = 1 To Me.m_shape.XMax
-                lstPts.Add(Xmin + dx * (ipt - 1), Me.m_shape.ShapeData(ipt) * MaxY)
-            Next
-
-            Dim il As LineItem = Me.m_zgh.CreateLineItem("Response", Definitions.eLineType.NotSet, Color.SandyBrown, lstPts)
-            Me.m_zgh.GetPane(1).CurveList.Add(il)
-
             'if there is a selected map then use that to set the x axis
             Dim map As IEnviroInputMap = Me.getSelMap()
             If map IsNot Nothing Then
-                Xmax = map.Max
+                Xmax = map.Max + map.BinWidth
             End If
+
+            Dim dx As Single = Xrange / Me.m_shape.XMax
+            Dim YScale As Single = 1 / Me.m_shape.YMax
+            Dim lstPts As New PointPairList
+
+            'First point from shape at the zero X axis
+            lstPts.Add(0, Me.m_shape.ShapeData(1) * YScale)
+            For ipt As Integer = 1 To Me.m_shape.XMax
+                lstPts.Add(Xmin + dx * (ipt - 1), Me.m_shape.ShapeData(ipt) * YScale)
+            Next
+
+            'add the last point out at the end of the graph
+            lstPts.Add(Xmax, Me.m_shape.ShapeData(Me.m_shape.XMax) * YScale)
+
+            Dim il As LineItem = Me.m_zgh.CreateLineItem("Response", Definitions.eLineType.NotSet, Color.SandyBrown, lstPts)
+            Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Xmax
             Me.m_zgh.YScaleMax = 1.2
@@ -193,9 +209,7 @@ Public Class dlgDefineMapResponseAssignments
 
         Me.updateControls()
 
-        PlotShape()
-        PlotMap()
-
+        Me.PlotGraph()
 
     End Sub
 
@@ -220,25 +234,26 @@ Public Class dlgDefineMapResponseAssignments
         Try
             Dim map As IEnviroInputMap = Me.getSelMap
             If map Is Nothing Then
+                'not map to plot
                 Exit Sub
             End If
 
-            If Me.m_zgh.GetPane(1).CurveList.Count > 1 Then
-                Me.m_zgh.GetPane(1).CurveList.RemoveAt(1)
-            End If
-
             Dim histPts() As Drawing.PointF = map.Histogram(Me.m_shape.XMax)
-
-            'Dim maxX As Single = map.Max
             Dim lstPts As New PointPairList
-            For ipt As Integer = 0 To histPts.Length - 1
+            lstPts.Add(0, histPts(1).Y)
+            For ipt As Integer = 1 To histPts.Length - 2
                 lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
+                lstPts.Add(histPts(ipt).X, histPts(ipt + 1).Y)
+                ' lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
             Next
+
+            lstPts.Add(histPts(histPts.Length - 1).X, histPts(histPts.Length - 1).Y)
+
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem("Histogram", Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
-            Me.m_zgh.XScaleMax = map.Max
+            Me.m_zgh.XScaleMax = map.Max '+ map.BinWidth
             Me.m_zgh.YScaleMax = 1.2
             Me.m_zgh.YScaleMin = 0
 
