@@ -5529,6 +5529,36 @@ exitline:
 
     End Sub
 
+    Public Sub UpdateMaps(ByVal MapDataType As eDataTypes)
+        Try
+
+            If MapDataType = eDataTypes.EcospaceLayerHabitat Or _
+                MapDataType = eDataTypes.EcospaceHabitat Or _
+                MapDataType = eDataTypes.EcospaceLayerDepth Or _
+                MapDataType = eDataTypes.EcospaceLayerHabitatCapacity Or _
+                MapDataType = eDataTypes.EcospaceLayerRelPP Then
+
+                Me.UpdateCapacityMaps()
+                Me.SetHabCap()
+
+            End If
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Public Sub UpdateCapacityMaps()
+        Try
+            For Each map As IEnviroInputMap In Me.m_Data.CapMaps
+                map.Update()
+            Next
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
 
     Private Sub normalizeCapacityMap(ByVal MaxCap As Single)
         Dim iGrp As Integer, ir As Integer, ic As Integer

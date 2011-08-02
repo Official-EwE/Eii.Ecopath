@@ -12634,6 +12634,12 @@ Public Class cCore
                      eDataTypes.EcospaceLayerFlow, _
                      eDataTypes.EcospaceLayerUpwelling
                     DirectCast(obj, cEcospaceLayer).Invalidate()
+
+
+                    'Input map(s) may have change
+                    'Let Ecospace decide what to update in response
+                    Me.m_Ecospace.UpdateMaps(obj.DataType)
+
                     Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
                 Case eDataTypes.EcospaceLayerWind, _
