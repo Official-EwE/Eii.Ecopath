@@ -39,6 +39,7 @@ Public Class dlgSelectResponse
     Public Sub New(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal InteractionMap As EwECore.IEnviroInputMap)
         Me.Init(uic, Manager, InteractionMap)
 
+        Me.m_map = InteractionMap
         Me.LoadAvailableShapes()
 
     End Sub
@@ -46,9 +47,11 @@ Public Class dlgSelectResponse
     Public Sub New(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal InteractionMap As EwECore.IEnviroInputMap, ByVal iSelGroup As Integer)
         Me.Init(uic, Manager, InteractionMap)
 
-        Me.LoadAvailableShapes()
-
         iSelGrp = iSelGroup
+        Me.LoadAvailableShapes()
+        Me.LoadAppliedShapes()
+
+
 
     End Sub
 
@@ -312,7 +315,23 @@ Public Class dlgSelectResponse
 
     Private Sub LoadAppliedShapes()
 
-'
+        Try
+            Dim isp As Integer
+            isp = Me.m_map.ResponseIndexForGroup(Me.iSelGrp)
+            Dim shape As cForcingFunction = Me.m_lFFs.Item(isp - 1)
+            Dim item As ListViewItem
+            item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
+            item.ImageIndex = Me.m_lFFs.IndexOf(Shape)
+            item.SubItems.Add("")
+            item.Tag = shape
+
+            Me.m_lvAppliedShapes.Items.Add(item)
+
+        Catch ex As Exception
+
+        End Try
+
+        '
         'Dim item As ListViewItem = Nothing
         'Dim shape As cForcingFunction = Nothing
         'Dim ffappl As eForcingFunctionApplication
