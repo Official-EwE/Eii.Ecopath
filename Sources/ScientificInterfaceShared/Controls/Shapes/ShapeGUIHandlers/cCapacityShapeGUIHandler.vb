@@ -77,6 +77,48 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Constructor, initializes a new instance of this handler.
+        ''' </summary>
+        ''' <param name="uic"><see cref="cUIContext">UI context</see> to connect to.</param>
+        ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
+        ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
+        ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
+        ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
+        ''' <param name="ma"><see cref="ucMediationAssignments">Mediation assignments control</see> to handle, if any.</param>
+        ''' <param name="mat"><see cref="ucMediationAssignmentsToolbar"/> to handle, if any.</param>
+        ''' -------------------------------------------------------------------
+        Public Overridable Shadows Sub Attach(ByVal uic As cUIContext, _
+                                  ByVal stb As ucShapeToolbox, _
+                                  ByVal stbtb As ucShapeToolboxToolbar, _
+                                  ByVal sp As ucSketchPad, _
+                                  ByVal sptb As ucSketchPadToolbar, _
+                                  ByVal ma As ucMediationAssignments, _
+                                  ByVal mat As ucMediationAssignmentsToolbar)
+
+            MyBase.Attach(uic, stb, stbtb, sp, sptb, ma, mat)
+
+            Me.SketchPad.ShowXMark = False
+            ' Tooltip does not make much sense for mediation functions
+            Me.SketchPad.ShowValueTooltip = False
+
+            'Me.MediationAssignments = ma
+            'If (Me.MediationAssignments IsNot Nothing) Then
+            '    Me.MediationAssignments.Title = ""
+            '    Me.MediationAssignments.XAxisLabel = My.Resources.HEADER_ASSIGNED_GROUPS_FLEETS
+            'End If
+
+            Me.MediationAssignmentsToolbar = mat
+            If (Me.MediationAssignmentsToolbar IsNot Nothing) Then
+                Me.MediationAssignmentsToolbar.DefineMediationLabel = "Set X axis values."
+            End If
+
+            '' Manually update selection
+            'Me.MediationAssignments.Shape = DirectCast(Me.SelectedShape, cMediationBaseFunction)
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the name for a new capacity shape.
         ''' </summary>
         ''' <returns>The name for a new capacity shape.</returns>

@@ -46,17 +46,37 @@ Public Interface IEnviroInputMap
     ''' </remarks>
     Property ResponseIndexForGroup(ByVal GroupIndex As Integer) As Integer
 
-
+    ''' <summary>
+    ''' Max value of the map
+    ''' </summary>
     ReadOnly Property Max() As Single
+
+    ''' <summary>
+    ''' Minimum value of the map
+    ''' </summary>
     ReadOnly Property Min() As Single
+
+    ''' <summary>
+    ''' Mean value of the map
+    ''' </summary>
     ReadOnly Property Mean() As Single
-    ReadOnly Property BinWidth() As Single
 
-    Function Histogram(ByVal nPoints As Single) As Drawing.PointF()
+    ''' <summary>
+    ''' Histogram of the map values
+    ''' </summary>
+    ''' <remarks>
+    ''' Values in the Histogram will be normalized.
+    ''' Re-computed on each call to Histogram.
+    ''' </remarks>
+    Function Histogram() As Drawing.PointF()
 
+
+    ''' <summary>
+    ''' Updates the map stats on the underlying data
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks>Caluculates Min, Max and Mean</remarks>
     Function Update()
-
-
 
 End Interface
 
@@ -188,25 +208,26 @@ Public Class cEnviroInputMap(Of T)
     End Property
 
 
-    Public Function Histogram(ByVal nPoints As Single) As Drawing.PointF() Implements IEnviroInputMap.Histogram
+    Public Function Histogram() As Drawing.PointF() Implements IEnviroInputMap.Histogram
         Dim ipt As Integer, maxPts As Integer
-        nPoints = 100
+        Dim nBins As Integer = 100
         Dim pts() As Drawing.PointF
-        ReDim pts(nPoints)
-        Me.m_binwidth = Me.Max / nPoints
+        ReDim pts(nBins)
+        Me.m_binWidth = Me.Max / nBins
 
         For ir As Integer = 1 To Me.m_spaceData.InRow
             For ic As Integer = 1 To Me.m_spaceData.InCol
                 Dim cell As Single = CSng(CObj(Me.m_map(ir, ic)))
-                ipt = Math.Truncate(cell / m_binWidth)
-                If ipt >= nPoints Then ipt = nPoints
+                ipt = Int(cell / m_binWidth)
+                If ipt >= nBins Then ipt = nBins
                 If ipt <= 0 Then ipt = 1
                 pts(ipt).Y += 1
                 maxPts = Math.Max(pts(ipt).Y, maxPts)
             Next
         Next
 
-        For i As Integer = 1 To nPoints
+        'Normalize the histogram
+        For i As Integer = 1 To nBins
             pts(i).X = m_binWidth * i
             pts(i).Y = pts(i).Y / maxPts
         Next
@@ -269,9 +290,4 @@ Public Class cEnviroInputMap(Of T)
 
     End Function
 
-    Public ReadOnly Property BinWidth() As Single Implements IEnviroInputMap.BinWidth
-        Get
-            Return Me.m_binWidth
-        End Get
-    End Property
 End Class

@@ -53,6 +53,8 @@ Public Class dlgDefineMapResponseAssignments
                 Me.m_shape.XAxisMax = 1.0 'some kind of bogus default if nothing has been defined
             End If
 
+            Me.lbSeletedFunctionName.Text = "Set X axis min and max for function " & Me.m_shape.Name
+
             Me.updateControls()
             Me.loadMaps()
             Me.PlotGraph()
@@ -77,20 +79,29 @@ Public Class dlgDefineMapResponseAssignments
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
 
-        'set the response shape back to its original state
-        Me.m_shape.XAxisMax = Me.m_orgMax
-        Me.m_shape.XAxisMin = Me.m_orgMin
+        Try
+            'set the response shape back to its original state
+            Me.m_shape.XAxisMax = Me.m_orgMax
+            Me.m_shape.XAxisMin = Me.m_orgMin
+        Catch ex As Exception
+
+        End Try
 
         Me.Close()
-    End Sub
-
-    Private Sub lvMaps_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMaps.SelectedIndexChanged
-
-        Me.PlotGraph()
 
     End Sub
 
-    Private Sub txXMax_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txXMax.TextChanged, txXMin.TextChanged
+
+    Private Sub trvMapTree_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles trvMapTree.AfterSelect
+        Try
+            Me.PlotGraph()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+
+    Private Sub OnMinMaxTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txXMax.TextChanged, txXMin.TextChanged
 
         Try
             Dim txb As TextBox = DirectCast(sender, TextBox)
@@ -128,8 +139,6 @@ Public Class dlgDefineMapResponseAssignments
             'Maybe not!!!
             Me.m_zgh.GetPane(1).CurveList.Clear()
 
-
-
             Me.PlotShape()
             Me.PlotMap()
 
@@ -158,7 +167,7 @@ Public Class dlgDefineMapResponseAssignments
             'if there is a selected map then use that to set the x axis
             Dim map As IEnviroInputMap = Me.getSelMap()
             If map IsNot Nothing Then
-                Xmax = map.Max + map.BinWidth
+                Xmax = map.Max '+ map.BinWidth
             End If
 
             Dim dx As Single = Xrange / Me.m_shape.XMax
@@ -188,11 +197,33 @@ Public Class dlgDefineMapResponseAssignments
     End Sub
 
     Private Sub loadMaps()
-        Dim map As IEnviroInputMap
-        For imap As Integer = 1 To Me.m_manager.nMaps
-            map = Me.m_manager.Maps(imap)
-            Me.lvMaps.Items.Add(map.Name).Tag = map
-        Next
+        Try
+
+            Dim map As IEnviroInputMap
+            For imap As Integer = 1 To Me.m_manager.nMaps
+                map = Me.m_manager.Maps(imap)
+                Dim ndApply As TreeNode
+                Dim ndGrps As TreeNode
+                ndApply = Me.trvMapTree.Nodes.Add(map.Name)
+                'add the Map to the node tag
+                ndApply.Tag = map
+                ndGrps = ndApply.Nodes.Add("Applied to groups")
+
+                For igrp As Integer = 1 To Me.m_uic.Core.nGroups
+                    'Is the current shape selected as the response function for any group
+                    If Me.m_shape.Index = map.ResponseIndexForGroup(igrp) Then
+                        'Yes this shape is set for this group
+                        'add a group node
+                        ndGrps.Nodes.Add(Me.m_uic.Core.EcoPathGroupInputs(igrp).Name)
+
+                    End If
+                Next
+            Next
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".loadMaps() Exception: " & ex.Message)
+        End Try
+
 
     End Sub
 
@@ -217,9 +248,19 @@ Public Class dlgDefineMapResponseAssignments
         Try
 
             Dim ob As Object
-            ob = Me.lvMaps.SelectedItems(0).Tag
+            Dim node As TreeNode
+            node = Me.trvMapTree.SelectedNode
+
+            Do While node.Parent IsNot Nothing
+                node = node.Parent
+            Loop
+            ob = node.Tag
+
             If ob IsNot Nothing Then
-                Return DirectCast(ob, IEnviroInputMap)
+                If TypeOf ob Is IEnviroInputMap Then
+                    ' System.Console.WriteLine("Seleted map " & DirectCast(ob, IEnviroInputMap).Name)
+                    Return DirectCast(ob, IEnviroInputMap)
+                End If
             End If
 
         Catch ex As Exception
@@ -234,26 +275,26 @@ Public Class dlgDefineMapResponseAssignments
         Try
             Dim map As IEnviroInputMap = Me.getSelMap
             If map Is Nothing Then
-                'not map to plot
+                'no map to plot
                 Exit Sub
             End If
 
-            Dim histPts() As Drawing.PointF = map.Histogram(Me.m_shape.XMax)
+            Dim histPts() As Drawing.PointF = map.Histogram()
             Dim lstPts As New PointPairList
+            'The X value in the histogram is the max value, right hand side, in the bin
+            'So an input value of 1.0 will be in the .X = 1.0 bin
             lstPts.Add(0, histPts(1).Y)
             For ipt As Integer = 1 To histPts.Length - 2
                 lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
                 lstPts.Add(histPts(ipt).X, histPts(ipt + 1).Y)
-                ' lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
             Next
 
             lstPts.Add(histPts(histPts.Length - 1).X, histPts(histPts.Length - 1).Y)
 
-
             Dim il As LineItem = Me.m_zgh.CreateLineItem("Histogram", Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
-            Me.m_zgh.XScaleMax = map.Max '+ map.BinWidth
+            Me.m_zgh.XScaleMax = map.Max
             Me.m_zgh.YScaleMax = 1.2
             Me.m_zgh.YScaleMin = 0
 
@@ -264,6 +305,7 @@ Public Class dlgDefineMapResponseAssignments
     End Sub
 
 #End Region
+
 
 End Class
 
