@@ -195,13 +195,15 @@ Public Class cEnviroInputMap(Of T)
             If ResponseShapeIndex <= Me.m_MedData.MediationShapes And GrpIndex <= Me.nGroups Then
                 Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
 
-                'For now 
-                'If the min and max of the shape have not been set 
-                'then set them to this map
-                If Me.m_MedData.XAxisMax(ResponseShapeIndex) = 0 Then
-                    Me.m_MedData.XAxisMin(ResponseShapeIndex) = Me.Min
-                    Me.m_MedData.XAxisMax(ResponseShapeIndex) = Me.Max
-                End If
+                'Maybe not ResponseShapeIndex can be < 0 to clear out the response functions
+                'so no defaults for now
+                ''For now 
+                ''If the min and max of the shape have not been set 
+                ''then set them to this map
+                'If Me.m_MedData.XAxisMax(ResponseShapeIndex) = 0 Then
+                '    Me.m_MedData.XAxisMin(ResponseShapeIndex) = Me.Min
+                '    Me.m_MedData.XAxisMax(ResponseShapeIndex) = Me.Max
+                'End If
 
             End If
         End Set
