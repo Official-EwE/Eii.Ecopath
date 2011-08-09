@@ -58,6 +58,7 @@ Namespace Controls
         Public Enum eViewModeTypes As Integer
             Pie = 0
             Bar
+            Line
         End Enum
 
         ''' -------------------------------------------------------------------
@@ -277,6 +278,8 @@ Namespace Controls
                         Me.LoadAsPie()
                     Case eViewModeTypes.Bar
                         Me.LoadAsBar()
+                    Case eViewModeTypes.Line
+                        Me.LoadAsLine()
                 End Select
                 Me.m_zedgraph.Visible = True
             Else
@@ -286,6 +289,63 @@ Namespace Controls
             ' Calculate the Axis Scale Ranges
             m_zedgraph.AxisChange()
             m_zedgraph.Refresh()
+
+        End Sub
+
+
+        Public Sub LoadAsLine()
+
+            ' Sanity checks
+            If (Me.m_uic Is Nothing) Then Return
+            If (Me.IsDisposed) Then Return
+            If (Me.m_medfn Is Nothing) Then Return
+
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim list As PointPairList = Nothing
+            Dim pane As GraphPane = Nothing
+            Dim source As cCoreInputOutputBase = Nothing
+            Dim strLabel As String = ""
+            Dim fmt As New cCoreInterfaceFormatter()
+            Dim clr As Color = Color.Transparent
+
+            Me.m_zgh.ConfigurePane(Me.m_strTitle, Me.m_strXAxisLabel, Me.m_strYAxisLabel, True)
+            pane = Me.m_zgh.GetPane(1)
+
+            pane.XAxis.Scale.IsVisible = True
+            pane.CurveList.Clear()
+
+            'make sure this is the correct type of shape
+            Debug.Assert(TypeOf Me.m_medfn Is cEnviroResponseFunction, Me.ToString & ".LoadAsLine() Invalid shape type.")
+            If Not (TypeOf Me.m_medfn Is cEnviroResponseFunction) Then
+                Exit Sub
+            End If
+            Dim resShape As cEnviroResponseFunction = DirectCast(Me.m_medfn, cEnviroResponseFunction)
+
+            Dim Xmax As Single = resShape.XAxisMax
+            Dim Xmin As Single = resShape.XAxisMin
+            Dim YScale As Single = 1 / resShape.YMax
+            If Xmax = 0 Then Xmax = resShape.XMax
+            Dim Xrange As Single = Xmax - Xmin
+
+            Dim dx As Single = Xrange / resShape.XMax
+            If dx = 0 Then dx = 1
+            Dim lstPts As New PointPairList
+
+            'First point from shape at the zero X axis
+            lstPts.Add(0, resShape.ShapeData(1) * YScale)
+            For ipt As Integer = 1 To resShape.XMax
+                lstPts.Add(Xmin + dx * (ipt - 1), resShape.ShapeData(ipt) * YScale)
+            Next
+
+            'add the last point out at the end of the graph
+            lstPts.Add(Xmax, resShape.ShapeData(resShape.XMax))
+
+            Dim il As LineItem = Me.m_zgh.CreateLineItem("", Definitions.eLineType.NotSet, Color.SandyBrown, lstPts)
+            pane.CurveList.Add(il)
+
+            Me.m_zgh.XScaleMax = Xmax
+            Me.m_zgh.YScaleMax = 1.2
+            Me.m_zgh.YScaleMin = 0
 
         End Sub
 

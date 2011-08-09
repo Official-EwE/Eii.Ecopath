@@ -71,7 +71,7 @@ Partial Class frmCapacityFunction
         Me.m_sketchPad.Handler = Nothing
         Me.m_sketchPad.IsSeasonal = False
         Me.m_sketchPad.Name = "m_sketchPad"
-        Me.m_sketchPad.NumDataYears = 0
+        Me.m_sketchPad.NumDataYears = -9999
         Me.m_sketchPad.Shape = Nothing
         Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
         Me.m_sketchPad.ShowValueTooltip = True
@@ -156,9 +156,9 @@ Partial Class frmCapacityFunction
         Me.m_assignments.Shape = Nothing
         Me.m_assignments.Title = ""
         Me.m_assignments.UIContext = Nothing
-        Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Pie
-        Me.m_assignments.XAxisLabel = "Mediating group"
-        Me.m_assignments.YAxisLabel = "Relative weight"
+        Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Line
+        Me.m_assignments.XAxisLabel = "Input"
+        Me.m_assignments.YAxisLabel = "Capacity"
         '
         'm_assignmentsToolbar
         '
