@@ -79,7 +79,7 @@ Partial Class frmCapacityFunction
         Me.m_sketchPad.ShowYMark = True
         Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
         Me.m_sketchPad.UIContext = Nothing
-        Me.m_sketchPad.XAxisLabel = "Mediating group (weighted) biomass"
+        Me.m_sketchPad.XAxisLabel = "Input value"
         Me.m_sketchPad.XAxisMaxValue = -9999
         Me.m_sketchPad.XMarkValue = -9999.0!
         Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
