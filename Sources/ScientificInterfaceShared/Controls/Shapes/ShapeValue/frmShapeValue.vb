@@ -114,7 +114,7 @@ Public Class frmShapeValue
         End If
 
         ' Determine display mode
-        If TypeOf (shape) Is cMediationFunction Then
+        If TypeOf (shape) Is cMediationBaseFunction Then
             Me.m_displayMode = frmShapeValue.eDisplayMode.Index
         ElseIf TypeOf (shape) Is cTimeSeries Then
             Me.m_displayMode = frmShapeValue.eDisplayMode.Yearly
