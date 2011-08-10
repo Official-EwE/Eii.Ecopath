@@ -157,16 +157,10 @@ Public Class dlgSelectResponse
     ''' </summary>
     ''' -------------------------------------------------------------------
     Private Sub AddShapes()
-
         Dim colSelected As ListView.SelectedIndexCollection = m_lvAllShapes.SelectedIndices
         Dim shapeSelected As cForcingFunction = Nothing
         Dim shapeTest As cForcingFunction = Nothing
-        'Dim iNumApplied As Integer = 0
         Dim bFound As Boolean = False
-
-        'For Each item As ListViewItem In Me.m_lvAppliedShapes.Items
-        '    iNumApplied += 1
-        'Next
 
         For Each itemSrc As ListViewItem In Me.m_lvAllShapes.SelectedItems
 
@@ -185,21 +179,18 @@ Public Class dlgSelectResponse
 
             ' Not found
             If (Not bFound) Then
-                'Only one shape ca be applied at a time for Response functions
+                'Only one shape can be applied at a time for Response functions
                 Me.m_lvAppliedShapes.Items.Clear()
 
                 itemSrc = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shapeSelected.Index, shapeSelected.Name))
                 itemSrc.ImageIndex = Me.m_lFFs.IndexOf(shapeSelected)
-                ' itemSrc.SubItems.Add("")
                 itemSrc.Tag = shapeSelected
-                ' Me.UpdateAppliedShape(itemSrc, Me.m_appl)
 
                 Me.m_lvAppliedShapes.Items.Add(itemSrc)
 
                 Me.m_lvAppliedShapes.View = View.LargeIcon
                 Me.m_lvAllShapes.Items(0).Selected = True
                 Me.m_lvAllShapes.LargeImageList = Me.m_ilLarge
-
 
             End If
         Next
@@ -330,33 +321,6 @@ Public Class dlgSelectResponse
         Catch ex As Exception
 
         End Try
-
-        '
-        'Dim item As ListViewItem = Nothing
-        'Dim shape As cForcingFunction = Nothing
-        'Dim ffappl As eForcingFunctionApplication
-
-        'If ppi Is Nothing Then Return
-        'For i As Integer = 1 To ppi.NAppliedShapes
-
-        '    ppi.getShape(i, shape, ffappl)
-
-        '    item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
-        '    item.ImageIndex = Me.m_lFFs.IndexOf(shape)
-        '    item.SubItems.Add("")
-        '    item.Tag = shape
-
-        '    '  If Not Me.IsAllowedShape(shape) Then item.ForeColor = SystemColors.GrayText
-
-        '    Me.UpdateAppliedShape(item, ffappl)
-        '    Me.m_lvAppliedShapes.Items.Add(item)
-
-        'Next
-
-        'Me.m_lvAppliedShapes.View = View.Details
-        'Me.m_lvAppliedShapes.SmallImageList = m_ilSmall
-
-
 
     End Sub
 
