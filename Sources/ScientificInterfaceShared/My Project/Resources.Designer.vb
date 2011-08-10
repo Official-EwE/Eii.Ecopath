@@ -175,11 +175,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Set X axis values.
+        '''  Looks up a localized string similar to Set input values(X axis).
         '''</summary>
         Public ReadOnly Property CAPACITY_PROMPT() As String
             Get
                 Return ResourceManager.GetString("CAPACITY_PROMPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Set input data range for function {0}.
+        '''</summary>
+        Public ReadOnly Property CAPACITY_SET_SHAPE_MINMAX() As String
+            Get
+                Return ResourceManager.GetString("CAPACITY_SET_SHAPE_MINMAX", resourceCulture)
             End Get
         End Property
         
@@ -1376,6 +1385,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_AREA_CLOSED() As String
             Get
                 Return ResourceManager.GetString("HEADER_AREA_CLOSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Capacity of input value for {0}.
+        '''</summary>
+        Public ReadOnly Property HEADER_ASSIGNED_CAPACITY_SHAPE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ASSIGNED_CAPACITY_SHAPE", resourceCulture)
             End Get
         End Property
         
@@ -5168,6 +5186,33 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("RelationshipsHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Map histogram &amp; Response function.
+        '''</summary>
+        Public ReadOnly Property RESPONSE_GRAPH_TITLE() As String
+            Get
+                Return ResourceManager.GetString("RESPONSE_GRAPH_TITLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Map values.
+        '''</summary>
+        Public ReadOnly Property RESPONSE_GRAPH_XLABEL() As String
+            Get
+                Return ResourceManager.GetString("RESPONSE_GRAPH_XLABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Capacity normalized.
+        '''</summary>
+        Public ReadOnly Property RESPONSE_GRAPH_YLABEL() As String
+            Get
+                Return ResourceManager.GetString("RESPONSE_GRAPH_YLABEL", resourceCulture)
             End Get
         End Property
         

@@ -7,6 +7,8 @@ Imports EwECore
 Imports ZedGraph
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
+
 
 #End Region
 
@@ -47,13 +49,14 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_orgMin = Me.m_shape.XAxisMin
             Me.m_orgMax = Me.m_shape.XAxisMax
 
-            Me.m_zgh.ConfigurePane("Map histogram & Response function", "Map values", "Capacity normalized", True)
+            Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
             If Me.m_shape.XAxisMax = 0 Then
                 Me.m_shape.XAxisMax = 1.0 'some kind of bogus default if nothing has been defined
             End If
 
-            Me.lbSeletedFunctionName.Text = "Set X axis min and max for function " & Me.m_shape.Name
+            Dim fmt As New cCoreInterfaceFormatter()
+            Me.lbSeletedFunctionName.Text = String.Format(My.Resources.CAPACITY_SET_SHAPE_MINMAX, fmt.GetDescriptor(Me.m_shape, eDescriptorTypes.Name))
 
             Me.updateControls()
             Me.loadMaps()

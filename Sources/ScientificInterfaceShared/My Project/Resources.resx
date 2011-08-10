@@ -2170,9 +2170,24 @@
     <comment>The default name for a new Ecosim capacity shape. {0}: autonumber</comment>
   </data>
   <data name="CAPACITY_PROMPT" xml:space="preserve">
-    <value>Set X axis values</value>
+    <value>Set input values(X axis)</value>
   </data>
   <data name="CAPACITY_XLABEL" xml:space="preserve">
     <value>Input</value>
+  </data>
+  <data name="CAPACITY_SET_SHAPE_MINMAX" xml:space="preserve">
+    <value>Set input data range for function {0}</value>
+  </data>
+  <data name="HEADER_ASSIGNED_CAPACITY_SHAPE" xml:space="preserve">
+    <value>Capacity of input value for {0}</value>
+  </data>
+  <data name="RESPONSE_GRAPH_TITLE" xml:space="preserve">
+    <value>Map histogram &amp; Response function</value>
+  </data>
+  <data name="RESPONSE_GRAPH_XLABEL" xml:space="preserve">
+    <value>Map values</value>
+  </data>
+  <data name="RESPONSE_GRAPH_YLABEL" xml:space="preserve">
+    <value>Capacity normalized</value>
   </data>
 </root>
