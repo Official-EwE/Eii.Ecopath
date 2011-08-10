@@ -332,13 +332,13 @@ Namespace Controls
                     bEnableD = True : bEnableC = True
 
                 Case eShapeFunctionType.Sigmoid
-                    bEnableB = True : bEnableC = True : bEnableD = True
+                    bEnableA = True : bEnableB = True : bEnableC = True : bEnableD = True
 
                 Case eShapeFunctionType.Hyperbolic
-                    bEnableB = True : bEnableC = True : bEnableD = True : bEnableA = True
+                    bEnableB = True : bEnableC = True : bEnableD = True
 
                 Case eShapeFunctionType.Exponential
-                    bEnableD = True : bEnableC = True : bEnableB = True
+                    bEnableB = True : bEnableD = True : bEnableC = True
 
                 Case eShapeFunctionType.Betapdf
                     bEnableD = True : bEnableC = True
