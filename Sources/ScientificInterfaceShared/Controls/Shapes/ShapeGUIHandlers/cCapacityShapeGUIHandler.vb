@@ -101,15 +101,15 @@ Namespace Controls
             ' Tooltip does not make much sense for mediation functions
             Me.SketchPad.ShowValueTooltip = False
 
-            'Me.MediationAssignments = ma
-            'If (Me.MediationAssignments IsNot Nothing) Then
-            '    Me.MediationAssignments.Title = ""
-            '    Me.MediationAssignments.XAxisLabel = My.Resources.HEADER_ASSIGNED_GROUPS_FLEETS
-            'End If
+            Me.MediationAssignments = ma
+            If (Me.MediationAssignments IsNot Nothing) Then
+                Me.MediationAssignments.Title = ""
+                Me.MediationAssignments.XAxisLabel = My.Resources.CAPACITY_XLABEL
+            End If
 
             Me.MediationAssignmentsToolbar = mat
             If (Me.MediationAssignmentsToolbar IsNot Nothing) Then
-                Me.MediationAssignmentsToolbar.DefineMediationLabel = "Set X axis values."
+                Me.MediationAssignmentsToolbar.DefineMediationLabel = My.Resources.CAPACITY_PROMPT
             End If
 
             '' Manually update selection
