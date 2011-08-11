@@ -153,6 +153,24 @@ Namespace Controls
                 Me.MediationAssignments.Title = strTitle
             End If
         End Sub
+
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.OnShapeFinalized"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
+            DirectCast(shape, cMediationBaseFunction).XBaseIndex = CInt(Math.Round(sketchpad.XMarkValue))
+            MyBase.OnShapeFinalized(shape, sketchpad)
+
+            If (Me.MediationAssignments IsNot Nothing) Then
+                Me.MediationAssignments.RefreshContent()
+            End If
+
+        End Sub
+
     End Class
+
+
+  
 
 End Namespace
