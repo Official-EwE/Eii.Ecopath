@@ -126,7 +126,7 @@ Public Class dlgSelectResponse
     Private ReadOnly Property LargeIconSize() As Integer
         Get
             Debug.Assert(Me.m_uic.StyleGuide IsNot Nothing)
-            Return CInt(Me.m_uic.StyleGuide.ThumbnailSize * 3)
+            Return CInt(Me.m_uic.StyleGuide.ThumbnailSize)
         End Get
     End Property
 
@@ -187,10 +187,11 @@ Public Class dlgSelectResponse
                 itemSrc.Tag = shapeSelected
 
                 Me.m_lvAppliedShapes.Items.Add(itemSrc)
-
                 Me.m_lvAppliedShapes.View = View.LargeIcon
-                Me.m_lvAllShapes.Items(0).Selected = True
-                Me.m_lvAllShapes.LargeImageList = Me.m_ilLarge
+                Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
+                ' itemSrc.ImageIndex = Me.m_lFFs.IndexOf(shapeSelected)
+
+                Me.m_lvAppliedShapes.Items(0).Selected = True
 
             End If
         Next
@@ -261,6 +262,7 @@ Public Class dlgSelectResponse
 
         ' For all selectable shapes
         For Each shape As cForcingFunction In Me.m_lFFs
+
             ' Get handler
             If Not dtHandlers.ContainsKey(shape.DataType) Then
                 dtHandlers(shape.DataType) = cShapeGUIHandler.GetShapeUIHandler(shape)
@@ -268,11 +270,14 @@ Public Class dlgSelectResponse
             ' Create bmp
             bmp = New Bitmap(rc.Width, rc.Height)
             ' Get graphics content
-            Using g As Graphics = Graphics.FromImage(bmp)
-                cShapeImage.DrawShape(Me.m_uic, shape, rc, g, dtHandlers(shape.DataType).Color, eSketchDrawModeTypes.Line)
-            End Using
+            'Using g As Graphics = Graphics.FromImage(bmp)
+            '    cShapeImage.DrawShape(Me.m_uic, shape, rc, g, dtHandlers(shape.DataType).Color, eSketchDrawModeTypes.Line)
+            'End Using
+            '' Add image
+            'Icons.Images.Add(bmp)
+
             ' Add image
-            Icons.Images.Add(bmp)
+            Icons.Images.Add(cShapeImage.IconImage(Me.m_uic, shape, dtHandlers(shape.DataType).Color, eSketchDrawModeTypes.Fill, DirectCast(shape, cEnviroResponseFunction).YMax, False))
         Next
         ' Forget
         dtHandlers.Clear()
