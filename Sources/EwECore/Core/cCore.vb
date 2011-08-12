@@ -12542,7 +12542,7 @@ Public Class cCore
         Try
             Select Case obj.DataType
 
-                Case eDataTypes.PriceMediation, eDataTypes.Mediation
+                Case eDataTypes.PriceMediation, eDataTypes.Mediation, eDataTypes.CapacityMediation
 
                     If obj.DataType = eDataTypes.PriceMediation Then
                         Me.m_EcoSim.InitializePriceFunctions()
