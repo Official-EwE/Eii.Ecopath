@@ -1411,6 +1411,13 @@ Public Class cEnviroResponseFunction
 
     End Sub
 
+    Public Overrides Function Update() As Boolean
+        MyBase.Update()
+
+        'tell the manager that a shape has changed it's data
+        ShapeChanged()
+    End Function
+
 
 #Region "Map interfaces"
     Public Property XAxisMin() As Single
