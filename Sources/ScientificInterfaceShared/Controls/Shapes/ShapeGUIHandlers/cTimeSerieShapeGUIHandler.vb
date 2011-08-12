@@ -679,6 +679,14 @@ Namespace Controls
         Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries}
         End Function
+
+
+        ''' <inheritdocs cref="cShapeGUIHandler.isGraphTypeEnabled"/>
+        Public Overrides ReadOnly Property isGraphTypeEnabled() As Boolean
+            Get
+                Return False
+            End Get
+        End Property
     End Class
 
 End Namespace

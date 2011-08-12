@@ -168,6 +168,15 @@ Namespace Controls
 
         End Sub
 
+
+
+        ''' <inheritdocs cref="cShapeGUIHandler.isGraphTypeEnabled"/>
+        Public Overrides ReadOnly Property isGraphTypeEnabled() As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
     End Class
 
 

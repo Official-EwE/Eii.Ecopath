@@ -409,6 +409,14 @@ Namespace Controls
             Return Me.UIContext.Core.nEcosimYears
         End Function
 
+        ''' <inheritdocs cref="cShapeGUIHandler.isGraphTypeEnabled"/>
+        Public Overrides ReadOnly Property isGraphTypeEnabled() As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
+
 #End Region ' Baseclass overrides
 
 #Region " Internal implementation "
