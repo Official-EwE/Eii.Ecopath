@@ -427,11 +427,6 @@ Namespace Controls
 
             Dim cmd As cCommand = Nothing
 
-            'Me.m_uic.CommandHander.GetCommand("LoadTimeSeries")
-            'If cmd IsNot Nothing Then
-            '    cmd.AddControl(Me.
-            'End If
-
             cmd = Me.m_uic.CommandHandler.GetCommand("WeightTimeSeries")
             If cmd IsNot Nothing Then
                 cmd.AddControl(Me.ApplyToolStripMenuItem)
