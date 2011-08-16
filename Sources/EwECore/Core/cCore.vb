@@ -12620,6 +12620,11 @@ Public Class cCore
 
                     ' Recalc habitat area
                     Me.LoadEcospaceHabitats()
+
+                    'Input map(s) may have change
+                    'Let Ecospace decide what to update in response
+                    Me.m_Ecospace.UpdateMaps(obj.DataType)
+
                     Me.m_publisher.AddMessage(New cMessage("Ecospace basemap changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerDepth))
                     Me.m_publisher.AddMessage(New cMessage("Ecospace habitats changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceHabitat))
 
