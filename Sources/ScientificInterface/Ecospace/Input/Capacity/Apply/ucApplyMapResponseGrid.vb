@@ -60,12 +60,21 @@ Public Class ucApplyMapResponseGrid
 
         Try
             Dim Manager As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
+            Dim ShapeManager As cCapMapResponseManager = Me.Core.CapacityShapeManager
+            Dim ff As cForcingFunction
+            Dim label As String
 
             For imap As Integer = 1 To Manager.nMaps
                 Dim map As IEnviroInputMap = Manager.Maps(imap)
                 For igrp As Integer = 1 To Me.Core.nLivingGroups
+                    label = ""
+                    Dim ishp As Integer = map.ResponseIndexForGroup(igrp)
+                    If ishp > 0 Then
+                        ff = ShapeManager.Item(ishp - 1)
+                        label = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name)
+                    End If
 
-                    Me(igrp, imap + 1) = New Cells.Real.Cell(map.ResponseIndexForGroup(igrp))
+                    Me(igrp, imap + 1) = New Cells.Real.Cell(label)
                     Me(igrp, imap + 1).DataModel = Me.m_editor
                     Me(igrp, imap + 1).Behaviors.Add(Me.m_BehaviorClick)
 
@@ -76,54 +85,6 @@ Public Class ucApplyMapResponseGrid
 
         End Try
 
-        'Dim ff As cForcingFunction = Nothing
-        'Dim interaction As cMediatedInteraction = Nothing
-        'Dim cellBlocked As EwECell = Nothing
-        'Dim fmt As New cMonetaryTypeFormatter()
-        'Dim ri As New RegionInfo(CultureInfo.CurrentUICulture.LCID)
-        'Dim strSymbol As String = fmt.GetDescriptor(ri, eDescriptorTypes.Symbol)
-
-        'If (Me.m_InteractionManager Is Nothing) Then Return
-
-        'For iFleet As Integer = 1 To Me.Core.nFleets
-        '    For iGroup As Integer = 1 To Me.Core.nLivingGroups
-
-        '        If Me.m_InteractionManager.isLandings(iFleet, iGroup) Then
-
-        '            interaction = Me.m_InteractionManager.LandingInteraction(iFleet, iGroup)
-        '            Dim shape As cForcingFunction = Nothing
-        '            Dim aplType As eForcingFunctionApplication
-        '            Dim sb As New StringBuilder()
-
-        '            If interaction IsNot Nothing Then
-        '                For i As Integer = 1 To interaction.NAppliedShapes
-        '                    interaction.getShape(i, shape, aplType)
-        '                    If shape IsNot Nothing Then
-        '                        If sb.Length > 0 Then sb.Append(" ")
-        '                        sb.Append(String.Format(My.Resources.ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY, shape.Index, strSymbol))
-        '                    End If
-        '                Next
-        '            Else
-        '                ' This should NOT occur; this indicates that the interaction manager is not up to date!
-        '                sb.Append("X")
-        '            End If
-
-        '            Me(iGroup, iFleet + 1) = New Cells.Real.Cell(sb.ToString)
-        '            Me(iGroup, iFleet + 1).DataModel = Me.m_editor
-        '            Me(iGroup, iFleet + 1).Behaviors.Add(Me.m_BehaviorClick)
-
-        '        Else
-        '            ' #No: cannot assign FF to this pred/prey combo
-        '            cellBlocked = New EwECell(Nothing, GetType(Single))
-        '            '  Setup default cell
-        '            cellBlocked.Style = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
-        '            ' Apply cell to the grid
-        '            Me(iGroup, iFleet + 1) = cellBlocked
-        '        End If
-
-        '    Next iGroup
-
-        'Next iFleet
 
     End Sub
 
@@ -156,9 +117,9 @@ Public Class ucApplyMapResponseGrid
             Dim igrp As Integer = e.Position.Row
             Dim iMap As Integer = e.Position.Column - 1
             Dim map As EwECore.IEnviroInputMap = MapInteraction.Maps(iMap)
-            Dim CapShapes As cBaseShapeManager = Core.CapacityShapeManager
+            Dim ShapeManager As cBaseShapeManager = Core.CapacityShapeManager
 
-            Dim dlg As New dlgSelectResponse(Me.UIContext, CapShapes, map, igrp)
+            Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, map, igrp)
             dlg.ShowDialog()
             If dlg.DialogResult = DialogResult.OK Then
                 'update the interface to the newly selected response
@@ -173,10 +134,13 @@ Public Class ucApplyMapResponseGrid
 
     Protected Overrides Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
         Try
-            Dim iRow As Integer = e.Position.Row
-            Dim iCol As Integer = e.Position.Column
 
-            MsgBox("Sorry selection of map response function not implemented yet!")
+            'ToDo_jb ucApplyMapResponseGrid Row or Column selection has to be implemented in dlgSelectResponse
+
+            'Dim iRow As Integer = e.Position.Row
+            'Dim iCol As Integer = e.Position.Column  
+
+            'MsgBox("Sorry selection of map response function not implemented yet!")
 
         Catch ex As Exception
 

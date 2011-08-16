@@ -21,7 +21,8 @@ Public Class dlgSelectResponse
     Private m_Manager As cBaseShapeManager
     Private m_lFFs As New List(Of cForcingFunction)
     Private m_map As EwECore.IEnviroInputMap
-    Dim iSelGrp As Integer = cCore.NULL_VALUE
+    Private m_ShapeGUI As cShapeGUIHandler
+    Private m_iSelGrp As Integer = cCore.NULL_VALUE
 
     ''' <summary>Image list used for displaying small thumbnails.</summary>
     Private m_ilSmall As New ImageList()
@@ -36,22 +37,20 @@ Public Class dlgSelectResponse
 
 #Region "Construction"
 
-    Public Sub New(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal InteractionMap As EwECore.IEnviroInputMap)
-        Me.Init(uic, Manager, InteractionMap)
+    'Public Sub New(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal InteractionMap As EwECore.IEnviroInputMap)
+    '    Me.Init(uic, Manager, InteractionMap)
 
-        Me.m_map = InteractionMap
-        Me.LoadAvailableShapes()
+    '    Me.m_map = InteractionMap
+    '    Me.LoadAvailableShapes()
 
-    End Sub
+    'End Sub
 
     Public Sub New(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal InteractionMap As EwECore.IEnviroInputMap, ByVal iSelGroup As Integer)
         Me.Init(uic, Manager, InteractionMap)
 
-        iSelGrp = iSelGroup
+        m_iSelGrp = iSelGroup
         Me.LoadAvailableShapes()
         Me.LoadAppliedShapes()
-
-
 
     End Sub
 
@@ -106,6 +105,7 @@ Public Class dlgSelectResponse
         Me.m_uic = uic
         Me.m_Manager = Manager
         Me.m_map = InteractionMap
+        Me.m_ShapeGUI = cShapeGUIHandler.GetShapeUIHandler(Me.m_Manager.DataType)
 
         ' Get the available shapes that can be applied
         For Each shape As cForcingFunction In Me.m_Manager
@@ -189,7 +189,6 @@ Public Class dlgSelectResponse
                 Me.m_lvAppliedShapes.Items.Add(itemSrc)
                 Me.m_lvAppliedShapes.View = View.LargeIcon
                 Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
-                ' itemSrc.ImageIndex = Me.m_lFFs.IndexOf(shapeSelected)
 
                 Me.m_lvAppliedShapes.Items(0).Selected = True
 
@@ -255,32 +254,17 @@ Public Class dlgSelectResponse
 
     Private Sub GenerateShapeThumbnails(ByVal Icons As ImageList, ByVal IconSize As Integer)
 
-        Dim dtHandlers As New Dictionary(Of eDataTypes, cShapeGUIHandler)
-        Dim handler As cShapeGUIHandler = Nothing
-        Dim rc As New Rectangle(0, 0, IconSize, IconSize)
-        Dim bmp As Bitmap = Nothing
+        'Dim dtHandlers As New Dictionary(Of eDataTypes, cShapeGUIHandler)
+        'Dim handler As cShapeGUIHandler = Nothing
+        'Dim rc As New Rectangle(0, 0, IconSize, IconSize)
+        'Dim bmp As Bitmap = Nothing
 
         ' For all selectable shapes
         For Each shape As cForcingFunction In Me.m_lFFs
 
-            ' Get handler
-            If Not dtHandlers.ContainsKey(shape.DataType) Then
-                dtHandlers(shape.DataType) = cShapeGUIHandler.GetShapeUIHandler(shape)
-            End If
-            ' Create bmp
-            bmp = New Bitmap(rc.Width, rc.Height)
-            ' Get graphics content
-            'Using g As Graphics = Graphics.FromImage(bmp)
-            '    cShapeImage.DrawShape(Me.m_uic, shape, rc, g, dtHandlers(shape.DataType).Color, eSketchDrawModeTypes.Line)
-            'End Using
-            '' Add image
-            'Icons.Images.Add(bmp)
-
-            ' Add image
-            Icons.Images.Add(cShapeImage.IconImage(Me.m_uic, shape, dtHandlers(shape.DataType).Color, eSketchDrawModeTypes.Fill, DirectCast(shape, cEnviroResponseFunction).YMax, False))
+            ' Create and Add the thumbnail image
+            Icons.Images.Add(cShapeImage.IconImage(Me.m_uic, shape, Me.m_ShapeGUI.Color, eSketchDrawModeTypes.Fill, DirectCast(shape, cEnviroResponseFunction).YMax, False))
         Next
-        ' Forget
-        dtHandlers.Clear()
 
     End Sub
 
@@ -313,15 +297,24 @@ Public Class dlgSelectResponse
 
         Try
             Dim isp As Integer
-            isp = Me.m_map.ResponseIndexForGroup(Me.iSelGrp)
+
+            Me.m_lvAppliedShapes.Items.Clear()
+
+            isp = Me.m_map.ResponseIndexForGroup(Me.m_iSelGrp)
+            If isp < 1 Then
+                'No Shape selected for this Map/Group
+                Exit Sub
+            End If
             Dim shape As cForcingFunction = Me.m_lFFs.Item(isp - 1)
             Dim item As ListViewItem
             item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
             item.ImageIndex = Me.m_lFFs.IndexOf(Shape)
-            item.SubItems.Add("")
             item.Tag = shape
-
             Me.m_lvAppliedShapes.Items.Add(item)
+
+            Me.m_lvAppliedShapes.View = View.LargeIcon
+            Me.m_lvAppliedShapes.Items(0).Selected = True
+            Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
 
         Catch ex As Exception
 
@@ -332,8 +325,8 @@ Public Class dlgSelectResponse
     Private Function UpdateSelectedResponseMap() As Boolean
 
         Try
-            If Me.iSelGrp > 0 And Me.iSelGrp <= Me.m_uic.Core.nLivingGroups Then
-                m_map.ResponseIndexForGroup(iSelGrp) = Me.getAppliedResponseIndex
+            If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_uic.Core.nLivingGroups Then
+                m_map.ResponseIndexForGroup(m_iSelGrp) = Me.getAppliedResponseIndex
                 Return True
             End If
 
