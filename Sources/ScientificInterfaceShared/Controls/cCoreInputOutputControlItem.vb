@@ -11,8 +11,8 @@ Namespace Controls
     ''' =======================================================================
     ''' <summary>
     ''' Wrapper class for storing a <see cref="cCoreInputOutputBase">core
-    ''' input/output item</see> in a Windows control, such as listbox
-    ''' or combobox.
+    ''' input/output item</see> in a Windows control, such as listbox,
+    ''' combobox or tree control.
     ''' </summary>
     ''' =======================================================================
     Public Class cCoreInputOutputControlItem
