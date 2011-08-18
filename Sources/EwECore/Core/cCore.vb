@@ -12543,7 +12543,7 @@ Public Class cCore
             Select Case obj.DataType
 
                 Case eDataTypes.PriceMediation, eDataTypes.Mediation, eDataTypes.CapacityMediation
-
+                    'jb 18-Aug-2011 Capacity functions (cEnviroResponseFunction) don't have an init function
                     If obj.DataType = eDataTypes.PriceMediation Then
                         Me.m_EcoSim.InitializePriceFunctions()
                     ElseIf obj.DataType = eDataTypes.Mediation Then
