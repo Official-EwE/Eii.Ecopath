@@ -159,19 +159,17 @@ Public Class cEnviroInputMap(Of T)
 
         Try
             iShp = Me.ResponseIndexForGroup(igrp)
-            'at this time I'm not sure if this is a error or not!
-            'Debug.Assert(iShp <> 0, Me.ToString & ".ResponseFunction() no function has been set for this group!")
-            'no shape has been set for this group
+            'Response(shape) index of -9999 means there is no shape set for this Map/Group
             If iShp <= 0 Then
+                'No shape has been set for this group
                 'need to decide what the null response should be
                 Return 0
             End If
 
-            MedX = 0.0000000001
             Dim obj As Object = Me.m_map(iMapRow, iMapCol)
             MedX = CType(obj, Single)
 
-            Return Me.m_MedData.getMedValue(iShp, MedX)
+            Return Me.m_MedData.getEnviroResponse(iShp, MedX)
 
         Catch ex As Exception
             Debug.Assert(False)
