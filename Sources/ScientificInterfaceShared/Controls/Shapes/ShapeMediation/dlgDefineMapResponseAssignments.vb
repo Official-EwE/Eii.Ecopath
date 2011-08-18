@@ -10,6 +10,64 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
 
+
+#End Region
+
+
+#Region "ZedGraph helper for Response tool tips"
+
+''' <summary>
+''' Derived Zedgraph helper class that just overrides the ToolTip formating for the EnvironmentalResponse graphs
+''' </summary>
+''' <remarks></remarks>
+<CLSCompliant(False)> _
+Public Class cZedGraphEnviroResponseHelper
+    Inherits cZedGraphHelper
+
+    Protected Overrides Function FormatTooltip(ByVal pane As ZedGraph.GraphPane, ByVal curve As ZedGraph.CurveItem, ByVal iPoint As Integer) As String
+        'This is not a very good way to do this 
+        'It may be better to not use a tool tip at all 
+        'instead pass out the X and Y Axis value(s) and let the container figure out how to show the data
+        Try
+
+            'WARNING this only works if the curve is labeled "Response"
+            Dim bUseBase As Boolean = True
+            If curve.Tag IsNot Nothing Then
+                If TypeOf curve.Tag Is cCurveInfo Then
+                    Dim ci As cCurveInfo = DirectCast(curve.Tag, cCurveInfo)
+                    If String.Compare(ci.Label, "Response") = 0 Then
+                        bUseBase = False
+                    Else
+                        'this is the Histogram Curve
+                        'so don't show anything
+                        Return ""
+                    End If '  If String.Compare(ci.Label, "Response") = 0 Then
+                End If ' If TypeOf curve.Tag Is cCurveInfo Then
+            End If ' If curve.Tag IsNot Nothing Then
+
+            If bUseBase Then
+                Return MyBase.FormatTooltip(pane, curve, iPoint)
+            End If
+
+            Debug.Assert(curve.IsLine, "ToolTip wrong line type.")
+
+            Dim sb As New System.Text.StringBuilder()
+            sb.AppendLine("Capacity for Map input.")
+
+            Dim pp As PointPair = curve(iPoint)
+            sb.AppendLine("Map input " & Me.StyleGuide.FormatNumber(pp.X))
+            sb.AppendLine("Capacity " & Me.StyleGuide.FormatNumber(pp.Y))
+            Return sb.ToString
+        Catch ex As Exception
+
+        End Try
+        Return ""
+    End Function
+
+
+End Class
+
+
 #End Region
 
 
@@ -19,7 +77,7 @@ Public Class dlgDefineMapResponseAssignments
 
     Private m_shape As EwECore.cEnviroResponseFunction
     Private m_manager As cMapResponseInteractionManager
-    Private m_zgh As cZedGraphHelper
+    Private m_zgh As cZedGraphEnviroResponseHelper 'cZedGraphHelper
     Private m_uic As cUIContext
     Private m_orgMin As Single
     Private m_orgMax As Single
@@ -37,7 +95,7 @@ Public Class dlgDefineMapResponseAssignments
 
         Me.m_uic = UIC
 
-        Me.m_zgh = New cZedGraphHelper
+        Me.m_zgh = New cZedGraphEnviroResponseHelper 'cZedGraphHelper
         Me.m_zgh.Attach(Me.m_uic, Me.ZedGraph)
         Me.m_zgh.ShowPointValue = True
 
@@ -316,4 +374,7 @@ Public Class dlgDefineMapResponseAssignments
 
 
 End Class
+
+
+
 
