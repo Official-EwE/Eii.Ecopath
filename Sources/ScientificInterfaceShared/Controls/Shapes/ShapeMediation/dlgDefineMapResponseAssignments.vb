@@ -39,6 +39,8 @@ Public Class dlgDefineMapResponseAssignments
 
         Me.m_zgh = New cZedGraphHelper
         Me.m_zgh.Attach(Me.m_uic, Me.ZedGraph)
+        Me.m_zgh.ShowPointValue = True
+
     End Sub
 
     Private Sub dlgDefineMapResponseAssignments_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -253,6 +255,9 @@ Public Class dlgDefineMapResponseAssignments
             Dim ob As Object
             Dim node As TreeNode
             node = Me.trvMapTree.SelectedNode
+
+            'No node has been selected just return nothing
+            If node Is Nothing Then Return Nothing
 
             Do While node.Parent IsNot Nothing
                 node = node.Parent
