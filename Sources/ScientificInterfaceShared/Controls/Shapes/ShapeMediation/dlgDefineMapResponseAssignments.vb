@@ -36,8 +36,9 @@ Public Class cZedGraphEnviroResponseHelper
                 If TypeOf curve.Tag Is cCurveInfo Then
                     Dim ci As cCurveInfo = DirectCast(curve.Tag, cCurveInfo)
                     If String.Compare(ci.Label, "Response") = 0 Then
+                        'format the tooltip here
                         bUseBase = False
-                    Else
+                    ElseIf String.Compare(ci.Label, "Histogram") = 0 Then
                         'this is the Histogram Curve
                         'so don't show anything
                         Return ""

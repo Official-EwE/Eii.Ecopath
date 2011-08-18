@@ -22,7 +22,7 @@ Namespace Controls
 
         Private m_uic As cUIContext = Nothing
         Private m_medfn As cMediationBaseFunction = Nothing
-        Private m_zgh As cZedGraphHelper = Nothing
+        Private m_zgh As cZedGraphEnviroResponseHelper 'cZedGraphHelper = Nothing
         Private m_strXAxisLabel As String = ""
         Private m_strYAxisLabel As String = ""
         Private m_strTitle As String = ""
@@ -140,7 +140,7 @@ Namespace Controls
                 Me.m_uic = value
 
                 If Me.m_uic IsNot Nothing Then
-                    Me.m_zgh = New cZedGraphHelper()
+                    Me.m_zgh = New cZedGraphEnviroResponseHelper 'cZedGraphHelper()
                     Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph, 1)
                     Me.LoadGraphData(Me.m_data)
 
