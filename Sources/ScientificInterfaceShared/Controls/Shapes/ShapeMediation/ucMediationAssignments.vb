@@ -143,6 +143,12 @@ Namespace Controls
                     Me.m_zgh = New cZedGraphHelper()
                     Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph, 1)
                     Me.LoadGraphData(Me.m_data)
+
+                    If Me.m_viewmode = eViewModeTypes.Line Then
+                        'ONLY show toolTips when in Environmental Response mode??
+                        Me.m_zgh.ShowPointValue = True
+                    End If
+
                     AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 End If
             End Set
@@ -344,7 +350,7 @@ Namespace Controls
                 lstPts.Add(Xmax, resShape.ShapeData(resShape.XMax))
 
                 'need a way to find the color of the shape
-                Dim il As LineItem = Me.m_zgh.CreateLineItem("", Definitions.eLineType.NotSet, Color.SandyBrown, lstPts)
+                Dim il As LineItem = Me.m_zgh.CreateLineItem("Response", Definitions.eLineType.NotSet, Color.SandyBrown, lstPts)
                 pane.CurveList.Add(il)
 
                 Me.m_zgh.XScaleMax = Xmax
