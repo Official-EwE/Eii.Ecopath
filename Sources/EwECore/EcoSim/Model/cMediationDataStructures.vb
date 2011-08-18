@@ -249,6 +249,19 @@ Public Class cMediationDataStructures
 
     End Function
 
+    Public Function getEnviroResponse(ByVal iMedShapeIndex As Integer, ByVal Xvalue As Single) As Single
+        Dim ip As Integer
+
+        'is the Xvalue in bounds
+        If Xvalue <= Me.XAxisMin(iMedShapeIndex) Then Return Me.Medpoints(1, iMedShapeIndex)
+        If Xvalue >= Me.XAxisMax(iMedShapeIndex) Then Return Me.Medpoints(NMedPoints, iMedShapeIndex)
+
+        Dim dx As Double = NMedPoints / (Me.XAxisMax(iMedShapeIndex) - Me.XAxisMin(iMedShapeIndex) + 0.00001)
+        ip = (Xvalue - Me.XAxisMin(iMedShapeIndex)) * dx
+        Return Me.Medpoints(ip, iMedShapeIndex)
+
+    End Function
+
     Public Sub New()
 
     End Sub
