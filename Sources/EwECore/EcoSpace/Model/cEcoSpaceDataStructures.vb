@@ -1641,7 +1641,7 @@ Public Class cEcospaceDataStructures
             Next
             CapEnvResData.IMedBase(2) = CapEnvResData.NMedPoints \ 2
             CapEnvResData.MedXbase(2) = 5
-            CapEnvResData.MedYbase(2) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(1), 1)
+            CapEnvResData.MedYbase(2) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(2), 2)
             CapEnvResData.MediationTitles(2) = "Decreasing"
 
             'Flat
@@ -1651,7 +1651,7 @@ Public Class cEcospaceDataStructures
             Next
             CapEnvResData.IMedBase(3) = CapEnvResData.NMedPoints \ 2
             CapEnvResData.MedXbase(3) = 5
-            CapEnvResData.MedYbase(3) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(1), 1)
+            CapEnvResData.MedYbase(3) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(3), 3)
             CapEnvResData.MediationTitles(3) = "Flat"
 
             '
@@ -1661,15 +1661,12 @@ Public Class cEcospaceDataStructures
             'Next
             CapEnvResData.IMedBase(4) = CapEnvResData.NMedPoints \ 2
             CapEnvResData.MedXbase(4) = 5
-            CapEnvResData.MedYbase(4) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(1), 1)
+            CapEnvResData.MedYbase(4) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(4), 4)
             CapEnvResData.MediationTitles(4) = "Normal"
             CapEnvResData.MediationShapeParams(4).ShapeFunctionType = eShapeFunctionType.Normal
             CapEnvResData.MediationShapeParams(4).YBase = 5 'width
             CapEnvResData.MediationShapeParams(4).YZero = 2 'sd left
             CapEnvResData.MediationShapeParams(4).YEnd = 2 'sd right
-
-
-
 
             'Depth Map
             Dim depthMap As New cEnviroInputMap(Of Integer)
