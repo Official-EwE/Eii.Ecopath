@@ -1402,12 +1402,9 @@ End Class
 Public Class cEnviroResponseFunction
     Inherits cMediationBaseFunction
 
-
-
     Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
                    ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
         MyBase.New(EcoSimData, Manager, data, DBID, DataType)
-
 
     End Sub
 
