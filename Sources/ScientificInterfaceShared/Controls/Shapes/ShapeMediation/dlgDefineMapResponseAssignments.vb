@@ -9,66 +9,6 @@ Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
-
-
-#End Region
-
-
-#Region "ZedGraph helper for Response tool tips"
-
-''' <summary>
-''' Derived Zedgraph helper class that just overrides the ToolTip formating for the EnvironmentalResponse graphs
-''' </summary>
-''' <remarks></remarks>
-<CLSCompliant(False)> _
-Public Class cZedGraphEnviroResponseHelper
-    Inherits cZedGraphHelper
-
-    Protected Overrides Function FormatTooltip(ByVal pane As ZedGraph.GraphPane, ByVal curve As ZedGraph.CurveItem, ByVal iPoint As Integer) As String
-        'This is not a very good way to do this 
-        'It may be better to not use a tool tip at all 
-        'instead pass out the X and Y Axis value(s) and let the container figure out how to show the data
-        Try
-
-            'WARNING this only works if the curve is labeled "Response"
-            Dim bUseBase As Boolean = True
-            If curve.Tag IsNot Nothing Then
-                If TypeOf curve.Tag Is cCurveInfo Then
-                    Dim ci As cCurveInfo = DirectCast(curve.Tag, cCurveInfo)
-                    If String.Compare(ci.Label, "Response") = 0 Then
-                        'format the tooltip here
-                        bUseBase = False
-                    ElseIf String.Compare(ci.Label, "Histogram") = 0 Then
-                        'this is the Histogram Curve
-                        'so don't show anything
-                        Return ""
-                    End If '  If String.Compare(ci.Label, "Response") = 0 Then
-                End If ' If TypeOf curve.Tag Is cCurveInfo Then
-            End If ' If curve.Tag IsNot Nothing Then
-
-            If bUseBase Then
-                Return MyBase.FormatTooltip(pane, curve, iPoint)
-            End If
-
-            Debug.Assert(curve.IsLine, "ToolTip wrong line type.")
-
-            Dim sb As New System.Text.StringBuilder()
-            sb.AppendLine("Capacity for Map input.")
-
-            Dim pp As PointPair = curve(iPoint)
-            sb.AppendLine("Map input " & Me.StyleGuide.FormatNumber(pp.X))
-            sb.AppendLine("Capacity " & Me.StyleGuide.FormatNumber(pp.Y))
-            Return sb.ToString
-        Catch ex As Exception
-
-        End Try
-        Return ""
-    End Function
-
-
-End Class
-
-
 #End Region
 
 
@@ -120,6 +60,7 @@ Public Class dlgDefineMapResponseAssignments
             Me.lbSeletedFunctionName.Text = String.Format(My.Resources.CAPACITY_SET_SHAPE_MINMAX, fmt.GetDescriptor(Me.m_shape, eDescriptorTypes.Name))
 
             Me.updateControls()
+            Me.LoadGroups()
             Me.loadMaps()
             Me.PlotGraph()
 
@@ -134,6 +75,62 @@ Public Class dlgDefineMapResponseAssignments
 #End Region
 
 #Region "Control Event Handlers"
+
+    ''' <summary>
+    ''' Add the selected groups to the currently selected map
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btAdd.Click
+
+        Try
+
+            Dim Map As IEnviroInputMap = Me.getSelMap
+            'Is there a selected map
+            If Map Is Nothing Then Return
+
+            'Yes add all the groups 
+            For Each item As GroupListItem In Me.lstGroups.SelectedItems
+                Map.ResponseIndexForGroup(item.Index) = Me.m_shape.Index
+            Next
+
+            'bluntly reload the map tree
+            Me.loadMaps()
+
+        Catch ex As Exception
+            Debug.Assert(False)
+        End Try
+
+    End Sub
+
+
+
+    Private Sub btRemove_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btRemove.Click
+        Try
+
+            Dim map As IEnviroInputMap = Me.getSelMap
+            If map Is Nothing Then Return
+
+            Dim node As TreeNode
+            node = Me.trvMapTree.SelectedNode
+            If node IsNot Nothing Then
+                'last node this must be a selected group node
+                If node.Nodes.Count = 0 Then
+                    'Group index was put in the tag when the tree was populated
+                    Dim iGrp As Integer = DirectCast(node.Tag, Integer)
+                    map.ResponseIndexForGroup(iGrp) = cCore.NULL_VALUE
+                    'now remove the node
+                    Me.trvMapTree.SelectedNode.Remove()
+                End If
+            End If
+
+            ' Me.loadMaps()
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -260,9 +257,19 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
+
+    Private Sub LoadGroups()
+        Dim core As cCore = Me.m_uic.Core
+        For igrp As Integer = 1 To core.nGroups
+            Me.lstGroups.Items.Add(New GroupListItem(core.EcoPathGroupInputs(igrp)))
+        Next
+    End Sub
+
     Private Sub loadMaps()
         Try
 
+            Me.trvMapTree.Nodes.Clear()
+            Dim shapeLabel As String = "Groups using '" & Me.m_shape.Name & "'"
             Dim map As IEnviroInputMap
             For imap As Integer = 1 To Me.m_manager.nMaps
                 map = Me.m_manager.Maps(imap)
@@ -271,15 +278,15 @@ Public Class dlgDefineMapResponseAssignments
                 ndApply = Me.trvMapTree.Nodes.Add(map.Name)
                 'add the Map to the node tag
                 ndApply.Tag = map
-                ndGrps = ndApply.Nodes.Add("Applied to groups")
+                ndGrps = ndApply.Nodes.Add(shapeLabel)
 
                 For igrp As Integer = 1 To Me.m_uic.Core.nGroups
                     'Is the current shape selected as the response function for any group
                     If Me.m_shape.Index = map.ResponseIndexForGroup(igrp) Then
                         'Yes this shape is set for this group
                         'add a group node
-                        ndGrps.Nodes.Add(Me.m_uic.Core.EcoPathGroupInputs(igrp).Name)
-
+                        Dim ndgrp As TreeNode = ndGrps.Nodes.Add(Me.m_uic.Core.EcoPathGroupInputs(igrp).Name)
+                        ndgrp.Tag = igrp
                     End If
                 Next
             Next
@@ -374,7 +381,86 @@ Public Class dlgDefineMapResponseAssignments
 #End Region
 
 
+    Private Class GroupListItem
+        Public Group As cEcoPathGroupInput
+        Public Sub New(ByVal theGroup As cEcoPathGroupInput)
+            Group = theGroup
+        End Sub
+
+        Public Overrides Function ToString() As String
+            Return Group.Name
+        End Function
+
+        Public ReadOnly Property Index() As Integer
+            Get
+                Return Group.Index
+            End Get
+        End Property
+    End Class
+
+
+
+
 End Class
+
+
+
+#Region "ZedGraph helper for Response tool tips"
+
+''' <summary>
+''' Derived Zedgraph helper class that just overrides the ToolTip formating for the EnvironmentalResponse graphs
+''' </summary>
+''' <remarks></remarks>
+<CLSCompliant(False)> _
+Public Class cZedGraphEnviroResponseHelper
+    Inherits cZedGraphHelper
+
+    Protected Overrides Function FormatTooltip(ByVal pane As ZedGraph.GraphPane, ByVal curve As ZedGraph.CurveItem, ByVal iPoint As Integer) As String
+        'This is not a very good way to do this 
+        'It may be better to not use a tool tip at all 
+        'instead pass out the X and Y Axis value(s) and let the container figure out how to show the data
+        Try
+
+            'WARNING this only works if the curve is labeled "Response"
+            Dim bUseBase As Boolean = True
+            If curve.Tag IsNot Nothing Then
+                If TypeOf curve.Tag Is cCurveInfo Then
+                    Dim ci As cCurveInfo = DirectCast(curve.Tag, cCurveInfo)
+                    If String.Compare(ci.Label, "Response") = 0 Then
+                        'format the tooltip here
+                        bUseBase = False
+                    ElseIf String.Compare(ci.Label, "Histogram") = 0 Then
+                        'this is the Histogram Curve
+                        'so don't show anything
+                        Return ""
+                    End If '  If String.Compare(ci.Label, "Response") = 0 Then
+                End If ' If TypeOf curve.Tag Is cCurveInfo Then
+            End If ' If curve.Tag IsNot Nothing Then
+
+            If bUseBase Then
+                Return MyBase.FormatTooltip(pane, curve, iPoint)
+            End If
+
+            Debug.Assert(curve.IsLine, "ToolTip wrong line type.")
+
+            Dim sb As New System.Text.StringBuilder()
+            sb.AppendLine("Capacity for Map input.")
+
+            Dim pp As PointPair = curve(iPoint)
+            sb.AppendLine("Map input " & Me.StyleGuide.FormatNumber(pp.X))
+            sb.AppendLine("Capacity " & Me.StyleGuide.FormatNumber(pp.Y))
+            Return sb.ToString
+        Catch ex As Exception
+
+        End Try
+        Return ""
+    End Function
+
+
+End Class
+
+
+#End Region
 
 
 

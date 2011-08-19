@@ -35,6 +35,10 @@ Partial Class dlgDefineMapResponseAssignments
         Me.btDefaultMinMax = New System.Windows.Forms.Button
         Me.trvMapTree = New System.Windows.Forms.TreeView
         Me.lbSeletedFunctionName = New System.Windows.Forms.Label
+        Me.lstGroups = New System.Windows.Forms.ListBox
+        Me.btAdd = New System.Windows.Forms.Button
+        Me.btRemove = New System.Windows.Forms.Button
+        Me.Label4 = New System.Windows.Forms.Label
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -46,7 +50,7 @@ Partial Class dlgDefineMapResponseAssignments
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(651, 290)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(892, 295)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -75,7 +79,7 @@ Partial Class dlgDefineMapResponseAssignments
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(9, 13)
+        Me.Label1.Location = New System.Drawing.Point(10, 9)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(117, 13)
         Me.Label1.TabIndex = 2
@@ -83,7 +87,7 @@ Partial Class dlgDefineMapResponseAssignments
         '
         'txXMax
         '
-        Me.txXMax.Location = New System.Drawing.Point(548, 50)
+        Me.txXMax.Location = New System.Drawing.Point(707, 26)
         Me.txXMax.Name = "txXMax"
         Me.txXMax.Size = New System.Drawing.Size(85, 20)
         Me.txXMax.TabIndex = 3
@@ -91,7 +95,7 @@ Partial Class dlgDefineMapResponseAssignments
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(411, 54)
+        Me.Label2.Location = New System.Drawing.Point(570, 29)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(131, 13)
         Me.Label2.TabIndex = 4
@@ -102,7 +106,7 @@ Partial Class dlgDefineMapResponseAssignments
         Me.ZedGraph.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ZedGraph.Location = New System.Drawing.Point(190, 79)
+        Me.ZedGraph.Location = New System.Drawing.Point(350, 54)
         Me.ZedGraph.Name = "ZedGraph"
         Me.ZedGraph.ScrollGrace = 0
         Me.ZedGraph.ScrollMaxX = 0
@@ -111,12 +115,12 @@ Partial Class dlgDefineMapResponseAssignments
         Me.ZedGraph.ScrollMinX = 0
         Me.ZedGraph.ScrollMinY = 0
         Me.ZedGraph.ScrollMinY2 = 0
-        Me.ZedGraph.Size = New System.Drawing.Size(607, 205)
+        Me.ZedGraph.Size = New System.Drawing.Size(688, 235)
         Me.ZedGraph.TabIndex = 5
         '
         'txXMin
         '
-        Me.txXMin.Location = New System.Drawing.Point(324, 50)
+        Me.txXMin.Location = New System.Drawing.Point(482, 26)
         Me.txXMin.Name = "txXMin"
         Me.txXMin.Size = New System.Drawing.Size(82, 20)
         Me.txXMin.TabIndex = 6
@@ -124,7 +128,7 @@ Partial Class dlgDefineMapResponseAssignments
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(190, 54)
+        Me.Label3.Location = New System.Drawing.Point(347, 29)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(128, 13)
         Me.Label3.TabIndex = 7
@@ -132,7 +136,7 @@ Partial Class dlgDefineMapResponseAssignments
         '
         'btDefaultMinMax
         '
-        Me.btDefaultMinMax.Location = New System.Drawing.Point(654, 49)
+        Me.btDefaultMinMax.Location = New System.Drawing.Point(810, 23)
         Me.btDefaultMinMax.Name = "btDefaultMinMax"
         Me.btDefaultMinMax.Size = New System.Drawing.Size(140, 23)
         Me.btDefaultMinMax.TabIndex = 8
@@ -141,20 +145,56 @@ Partial Class dlgDefineMapResponseAssignments
         '
         'trvMapTree
         '
-        Me.trvMapTree.Location = New System.Drawing.Point(12, 29)
+        Me.trvMapTree.Location = New System.Drawing.Point(12, 26)
         Me.trvMapTree.Name = "trvMapTree"
-        Me.trvMapTree.Size = New System.Drawing.Size(169, 255)
+        Me.trvMapTree.Size = New System.Drawing.Size(175, 264)
         Me.trvMapTree.TabIndex = 9
         '
         'lbSeletedFunctionName
         '
         Me.lbSeletedFunctionName.AutoSize = True
-        Me.lbSeletedFunctionName.Location = New System.Drawing.Point(190, 29)
+        Me.lbSeletedFunctionName.Location = New System.Drawing.Point(347, 9)
         Me.lbSeletedFunctionName.Name = "lbSeletedFunctionName"
         Me.lbSeletedFunctionName.Size = New System.Drawing.Size(77, 13)
         Me.lbSeletedFunctionName.TabIndex = 10
         Me.lbSeletedFunctionName.Tag = ""
         Me.lbSeletedFunctionName.Text = "Function name"
+        '
+        'lstGroups
+        '
+        Me.lstGroups.FormattingEnabled = True
+        Me.lstGroups.Location = New System.Drawing.Point(197, 26)
+        Me.lstGroups.Name = "lstGroups"
+        Me.lstGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstGroups.Size = New System.Drawing.Size(136, 264)
+        Me.lstGroups.TabIndex = 11
+        '
+        'btAdd
+        '
+        Me.btAdd.Location = New System.Drawing.Point(197, 296)
+        Me.btAdd.Name = "btAdd"
+        Me.btAdd.Size = New System.Drawing.Size(136, 22)
+        Me.btAdd.TabIndex = 12
+        Me.btAdd.Text = "Add selected groups"
+        Me.btAdd.UseVisualStyleBackColor = True
+        '
+        'btRemove
+        '
+        Me.btRemove.Location = New System.Drawing.Point(12, 296)
+        Me.btRemove.Name = "btRemove"
+        Me.btRemove.Size = New System.Drawing.Size(175, 22)
+        Me.btRemove.TabIndex = 13
+        Me.btRemove.Text = "Remove selected group"
+        Me.btRemove.UseVisualStyleBackColor = True
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(194, 9)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(41, 13)
+        Me.Label4.TabIndex = 14
+        Me.Label4.Text = "Groups"
         '
         'dlgDefineMapResponseAssignments
         '
@@ -162,7 +202,11 @@ Partial Class dlgDefineMapResponseAssignments
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(809, 331)
+        Me.ClientSize = New System.Drawing.Size(1050, 336)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.btRemove)
+        Me.Controls.Add(Me.btAdd)
+        Me.Controls.Add(Me.lstGroups)
         Me.Controls.Add(Me.lbSeletedFunctionName)
         Me.Controls.Add(Me.trvMapTree)
         Me.Controls.Add(Me.btDefaultMinMax)
@@ -198,5 +242,9 @@ Partial Class dlgDefineMapResponseAssignments
     Friend WithEvents btDefaultMinMax As System.Windows.Forms.Button
     Friend WithEvents trvMapTree As System.Windows.Forms.TreeView
     Friend WithEvents lbSeletedFunctionName As System.Windows.Forms.Label
+    Friend WithEvents lstGroups As System.Windows.Forms.ListBox
+    Friend WithEvents btAdd As System.Windows.Forms.Button
+    Friend WithEvents btRemove As System.Windows.Forms.Button
+    Friend WithEvents Label4 As System.Windows.Forms.Label
 
 End Class
