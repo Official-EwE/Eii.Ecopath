@@ -98,8 +98,6 @@ Public Class ucApplyMapResponseGrid
 
     End Sub
 
-
-
     Public Overrides Sub SetAllPairs()
 
     End Sub

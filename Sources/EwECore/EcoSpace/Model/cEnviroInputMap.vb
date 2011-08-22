@@ -78,6 +78,15 @@ Public Interface IEnviroInputMap
     ''' <remarks>Caluculates Min, Max and Mean</remarks>
     Function Update()
 
+
+    ''' <summary>
+    ''' Set the cMapResponseInteractionManager that this map uses
+    ''' </summary>
+    ''' <param name="theManager"></param>
+    ''' <remarks></remarks>
+    Sub setManager(ByVal theManager As cMapResponseInteractionManager)
+
+
 End Interface
 
 
@@ -92,6 +101,7 @@ End Interface
 Public Class cEnviroInputMap(Of T)
     Implements IEnviroInputMap
 
+
     Private m_map(,) As T
     Private m_GrpToShape() As Integer
     Private m_MedData As cMediationDataStructures
@@ -101,6 +111,7 @@ Public Class cEnviroInputMap(Of T)
     Private m_max As Single
     Private m_mean As Single
     Private m_binWidth As Single
+    Private m_manager As cMapResponseInteractionManager
 
     Public Function Init(ByVal EnviroMediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean Implements IEnviroInputMap.Init
         Me.m_MedData = EnviroMediationData
@@ -191,17 +202,15 @@ Public Class cEnviroInputMap(Of T)
 
         Set(ByVal ResponseShapeIndex As Integer)
             If ResponseShapeIndex <= Me.m_MedData.MediationShapes And GrpIndex <= Me.nGroups Then
+                'Response index(shape index) of -9999 NULL_VALUE means there is not response set for this Map/Group
                 Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
 
-                'Maybe not ResponseShapeIndex can be < 0 to clear out the response functions
-                'so no defaults for now
-                ''For now 
-                ''If the min and max of the shape have not been set 
-                ''then set them to this map
-                'If Me.m_MedData.XAxisMax(ResponseShapeIndex) = 0 Then
-                '    Me.m_MedData.XAxisMin(ResponseShapeIndex) = Me.Min
-                '    Me.m_MedData.XAxisMax(ResponseShapeIndex) = Me.Max
-                'End If
+                'If then manager is nothing the response index was set during initialization
+                'The manager is not initialized until an Ecospace scenarion is loaded
+                If Not Me.m_manager Is Nothing Then
+                    Me.m_manager.update()
+                End If
+
 
             End If
         End Set
@@ -289,5 +298,18 @@ Public Class cEnviroInputMap(Of T)
         Return bReturn
 
     End Function
+
+    Public Sub setManager(ByVal theManager As cMapResponseInteractionManager) Implements IEnviroInputMap.setManager
+        Me.m_manager = theManager
+    End Sub
+
+    Public Sub New()
+
+    End Sub
+
+    Public Sub New(ByVal theManager As cMapResponseInteractionManager)
+        Me.setManager(theManager)
+
+    End Sub
 
 End Class

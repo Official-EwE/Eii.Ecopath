@@ -1925,10 +1925,19 @@ Namespace Core
         ''' </summary>
         LandingInteraction = 97
 
+
         EcospaceLayerHabitatCapacity = 98
 
-
+        ''' <summary>
+        ''' Data belongs to a Capacity Mediation.
+        ''' </summary>
         CapacityMediation = 99
+
+
+        ''' <summary>
+        ''' Data belongs to a IEnviroInputMap
+        ''' </summary>
+        MapResponse = 100
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
@@ -2244,6 +2253,8 @@ Namespace Core
         MSE
         ''' <summary> EcoSeed </summary>
         MPAOptimization
+
+        MapResponseInteractionManager
 
     End Enum
 

@@ -7783,7 +7783,7 @@ Public Class cCore
         m_EcospaceResultsASCWriter.Init(Me)
 
         m_mapInteractionManager = New cMapResponseInteractionManager
-        m_mapInteractionManager.Init(Me.m_EcoSpaceData.CapEnvResData, Me.m_EcoSpaceData.CapMaps)
+        m_mapInteractionManager.Init(Me, Me.m_EcoSpaceData.CapEnvResData, Me.m_EcoSpaceData.CapMaps)
 
         Return True
 
@@ -8641,6 +8641,8 @@ Public Class cCore
 
             InitEcospaceOutputs()
             InitEcotracerOutputs()
+
+            Me.m_mapInteractionManager.Load()
 
             SendEcospaceLoadMessage(strScenarioName)
 
@@ -12713,6 +12715,14 @@ Public Class cCore
 
                     Me.m_publisher.AddMessage(New cMessage("Monte carlo data has changed.", eMessageType.DataModified, _
                                        eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Maintenance))
+
+
+                Case eDataTypes.MapResponse
+                    If obj.CoreComponent = eCoreComponentType.MapResponseInteractionManager Then
+
+                        Me.m_publisher.AddMessage(New cMessage("Capacity map data has changed.", TypeOfChange, _
+                                      eCoreComponentType.MapResponseInteractionManager, eMessageImportance.Maintenance))
+                    End If
 
             End Select
 

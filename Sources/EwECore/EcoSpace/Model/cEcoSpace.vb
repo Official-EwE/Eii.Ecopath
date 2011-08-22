@@ -5544,7 +5544,7 @@ exitline:
             End If
 
         Catch ex As Exception
-
+            Me.m_publisher.SendMessage(New cMessage("Ecospace failed to update map.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
 
     End Sub
@@ -5604,64 +5604,61 @@ exitline:
     End Sub
 
     Private Function SetHabCapFromMaps() As Single
-        'set up array of relative habitat capacities by cell and group
         Dim i As Integer, j As Integer, igrp As Integer, MaxCap As Double
 
-        For igrp = 1 To Me.m_Data.NGroups
-
-            For Each map As IEnviroInputMap In Me.m_Data.CapMaps
-
-                For i = 1 To Me.m_Data.InRow
-                    For j = 1 To Me.m_Data.InCol
-                        Me.m_Data.HabCap(i, j, igrp) += map.ResponseFunction(igrp, i, j)
-                        MaxCap = Math.Max(Me.m_Data.HabCap(i, j, igrp), MaxCap)
+        For Each map As IEnviroInputMap In Me.m_Data.CapMaps
+            For igrp = 1 To Me.m_Data.nLiving
+                If map.ResponseIndexForGroup(igrp) > 0 Then
+                    For i = 1 To Me.m_Data.InRow
+                        For j = 1 To Me.m_Data.InCol
+                            Me.m_Data.HabCap(i, j, igrp) += map.ResponseFunction(igrp, i, j)
+                            MaxCap = Math.Max(Me.m_Data.HabCap(i, j, igrp), MaxCap)
+                        Next
                     Next
-                Next
-
-            Next map
-
-        Next igrp
+                End If
+            Next igrp
+        Next map
 
         Return MaxCap
 
-        ''jb this is just for debugging
-        ''SmoothCap(K)
-        ''SmoothCap(K)
+            ''jb this is just for debugging
+            ''SmoothCap(K)
+            ''SmoothCap(K)
 
-        ''rescale and sum up over cells
-        'For i = 1 To Me.m_Data.InRow : For j = 1 To Me.m_Data.InCol
-        '        Me.m_Data.HabCap(i, j, igrp) = Me.m_Data.HabCap(i, j, igrp) / MaxCap
-        '        Me.m_Data.TotHabCap(igrp) = Me.m_Data.TotHabCap(igrp) + Me.m_Data.HabCap(i, j, igrp)
-        '    Next
-        'Next
+            ''rescale and sum up over cells
+            'For i = 1 To Me.m_Data.InRow : For j = 1 To Me.m_Data.InCol
+            '        Me.m_Data.HabCap(i, j, igrp) = Me.m_Data.HabCap(i, j, igrp) / MaxCap
+            '        Me.m_Data.TotHabCap(igrp) = Me.m_Data.TotHabCap(igrp) + Me.m_Data.HabCap(i, j, igrp)
+            '    Next
+            'Next
 
-        ''set habcaps for cells across grid boundaries
-        'Dim bMultiStanza As Boolean = False
-        'For i = 1 To m_Stanza.Nsplit
+            ''set habcaps for cells across grid boundaries
+            'Dim bMultiStanza As Boolean = False
+            'For i = 1 To m_Stanza.Nsplit
 
-        '    For ii As Integer = 1 To m_Stanza.Nstanza(i)
-        '        If igrp = m_Stanza.EcopathCode(i, ii) Then
-        '            bMultiStanza = True 'stanzas are indexed from zero
-        '            Exit For
-        '        End If
-        '    Next ii
-        '    If bMultiStanza = True Then Exit For
-        'Next i
+            '    For ii As Integer = 1 To m_Stanza.Nstanza(i)
+            '        If igrp = m_Stanza.EcopathCode(i, ii) Then
+            '            bMultiStanza = True 'stanzas are indexed from zero
+            '            Exit For
+            '        End If
+            '    Next ii
+            '    If bMultiStanza = True Then Exit For
+            'Next i
 
-        'If Not bMultiStanza Then
-        '    For j = 0 To Me.m_Data.InCol + 1
-        '        Me.m_Data.HabCap(0, j, igrp) = Me.m_Data.HabCap(1, j, igrp)
+            'If Not bMultiStanza Then
+            '    For j = 0 To Me.m_Data.InCol + 1
+            '        Me.m_Data.HabCap(0, j, igrp) = Me.m_Data.HabCap(1, j, igrp)
 
-        '        Me.m_Data.HabCap(Me.m_Data.InRow + 1, j, igrp) = Me.m_Data.HabCap(Me.m_Data.InRow, j, igrp)
-        '    Next j
+            '        Me.m_Data.HabCap(Me.m_Data.InRow + 1, j, igrp) = Me.m_Data.HabCap(Me.m_Data.InRow, j, igrp)
+            '    Next j
 
-        '    For i = 0 To Me.m_Data.InRow + 1
-        '        Me.m_Data.HabCap(i, 0, igrp) = Me.m_Data.HabCap(i, 1, igrp)
-        '        Me.m_Data.HabCap(i, Me.m_Data.InCol + 1, igrp) = Me.m_Data.HabCap(i, Me.m_Data.InCol, igrp)
-        '    Next i
-        'End If
+            '    For i = 0 To Me.m_Data.InRow + 1
+            '        Me.m_Data.HabCap(i, 0, igrp) = Me.m_Data.HabCap(i, 1, igrp)
+            '        Me.m_Data.HabCap(i, Me.m_Data.InCol + 1, igrp) = Me.m_Data.HabCap(i, Me.m_Data.InCol, igrp)
+            '    Next i
+            'End If
 
-        '    Next igrp
+            '    Next igrp
 
     End Function
 
