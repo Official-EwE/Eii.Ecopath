@@ -34,7 +34,7 @@ Public Class ucApplyMapResponseGrid
 
         For imap As Integer = 1 To map.nMaps
 
-            Me(0, 1 + imap) = New EwEColumnHeaderCell(map.Maps(imap).Name)
+            Me(0, 1 + imap) = New EwEColumnHeaderCell(map.Map(imap).Name)
             Me(0, 1 + imap).Behaviors.Add(Me.m_RowColClick)
 
         Next imap
@@ -65,7 +65,7 @@ Public Class ucApplyMapResponseGrid
             Dim label As String
 
             For imap As Integer = 1 To Manager.nMaps
-                Dim map As IEnviroInputMap = Manager.Maps(imap)
+                Dim map As IEnviroInputMap = Manager.Map(imap)
                 For igrp As Integer = 1 To Me.Core.nLivingGroups
                     label = ""
                     Dim ishp As Integer = map.ResponseIndexForGroup(igrp)
@@ -114,7 +114,7 @@ Public Class ucApplyMapResponseGrid
             Dim MapInteraction As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
             Dim igrp As Integer = e.Position.Row
             Dim iMap As Integer = e.Position.Column - 1
-            Dim map As EwECore.IEnviroInputMap = MapInteraction.Maps(iMap)
+            Dim map As EwECore.IEnviroInputMap = MapInteraction.Map(iMap)
             Dim ShapeManager As cBaseShapeManager = Core.CapacityShapeManager
 
             Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, map, igrp)

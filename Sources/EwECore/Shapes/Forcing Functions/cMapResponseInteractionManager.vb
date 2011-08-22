@@ -62,7 +62,7 @@ Public Class cMapResponseInteractionManager
     End Property
 
 
-    Public ReadOnly Property Maps(ByVal MapIndex As Integer) As IEnviroInputMap
+    Public ReadOnly Property Map(ByVal MapIndex As Integer) As IEnviroInputMap
         Get
             If MapIndex > 0 And MapIndex <= Me.m_maps.Count Then
                 Return Me.m_maps(MapIndex - 1)
@@ -81,6 +81,46 @@ Public Class cMapResponseInteractionManager
         End Try
         Return False
     End Function
+
+    Public Function AddMap(ByVal dataArray(,) As Single, ByVal MapName As String) As Boolean
+        Dim breturn As Boolean
+        Try
+
+            'Create a map from the input data
+            'this will init the map to the data in the Manager
+            Dim map As New cEnviroInputMap(Of Single)(Me, dataArray, MapName)
+
+            'add the new map to the list of maps
+            Me.m_maps.Add(map)
+
+            'tell the core that the MapResponse  data has change
+            Me.onChanged()
+
+            breturn = True
+
+        Catch ex As Exception
+            breturn = False
+            Debug.Assert(False, Me.ToString & ".AddMap() ")
+        End Try
+
+        Return breturn
+
+    End Function
+
+
+    Friend ReadOnly Property MediationData() As cMediationDataStructures
+        Get
+            Return Me.m_MedData
+        End Get
+    End Property
+
+
+    Friend ReadOnly Property SpaceData() As cEcospaceDataStructures
+        Get
+            Return Me.m_core.m_EcoSpaceData
+        End Get
+    End Property
+
 
 #End Region
 

@@ -307,8 +307,16 @@ Public Class cEnviroInputMap(Of T)
 
     End Sub
 
-    Public Sub New(ByVal theManager As cMapResponseInteractionManager)
+    Public Sub New(ByVal theManager As cMapResponseInteractionManager, ByVal MapArray(,) As T, ByVal mapName As String)
+
         Me.setManager(theManager)
+        Me.Name = mapName
+        Me.m_map = MapArray
+
+        'init to the data in the manager
+        Me.Init(Me.m_manager.MediationData, Me.m_manager.SpaceData)
+
+        Me.Update()
 
     End Sub
 

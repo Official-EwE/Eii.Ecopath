@@ -272,7 +272,7 @@ Public Class dlgDefineMapResponseAssignments
             Dim shapeLabel As String = "Groups using '" & Me.m_shape.Name & "'"
             Dim map As IEnviroInputMap
             For imap As Integer = 1 To Me.m_manager.nMaps
-                map = Me.m_manager.Maps(imap)
+                map = Me.m_manager.Map(imap)
                 Dim ndApply As TreeNode
                 Dim ndGrps As TreeNode
                 ndApply = Me.trvMapTree.Nodes.Add(map.Name)

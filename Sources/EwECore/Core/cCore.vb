@@ -8644,6 +8644,10 @@ Public Class cCore
 
             Me.m_mapInteractionManager.Load()
 
+            'For debugging add the RelCin Layer to the Capacity maps
+            'you have to turn On the Contaminant tracer to edit the RelCin map
+            'Me.m_mapInteractionManager.AddMap(Me.m_EcoSpaceData.RelCin, "Relative Contaminants")
+
             SendEcospaceLoadMessage(strScenarioName)
 
             ' Invoke plugin point
