@@ -22,14 +22,36 @@ Public Class cMapResponseInteractionManager
     End Sub
 
     Public Sub Load()
+        Try
 
-        'Set the manager of each map in the list
-        'this was not done by Ecospace because it does not have an instance of the core or the manager
-        'it could be done by the core but I think it makes more sense for the manager to do it
-        'Kind of hack as the maps should already know this but it's not the simple
-        For Each map As IEnviroInputMap In Me.m_maps
-            map.setManager(Me)
-        Next
+            'Set the manager of each map in the list
+            'this was not done by Ecospace because it does not have an instance of the core or the manager
+            'it could be done by the core but I think it makes more sense for the manager to do it
+            'Kind of hack as the maps should already know this but it's not the simple
+            For Each map As IEnviroInputMap In Me.m_maps
+                map.setManager(Me)
+            Next
+
+            'update the maps with the newly loaded data
+            Me.Update()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".Load() Exception: " & ex.Message)
+        End Try
+
+    End Sub
+
+    Public Sub Update()
+        Try
+
+            For Each map As IEnviroInputMap In Me.m_maps
+                map.Update()
+            Next
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)
+        End Try
+
     End Sub
 
 
@@ -50,7 +72,7 @@ Public Class cMapResponseInteractionManager
 
     End Property
 
-    Public Function update() As Boolean
+    Public Function onChanged() As Boolean
         Try
             Me.m_core.onChanged(Me, eMessageType.DataModified)
             Return True

@@ -5538,7 +5538,6 @@ exitline:
                 MapDataType = eDataTypes.EcospaceLayerHabitatCapacity Or _
                 MapDataType = eDataTypes.EcospaceLayerRelPP Then
 
-                Me.UpdateCapacityMaps()
                 Me.SetHabCap()
 
             End If
@@ -5547,16 +5546,6 @@ exitline:
             Me.m_publisher.SendMessage(New cMessage("Ecospace failed to update map.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
 
-    End Sub
-
-    Public Sub UpdateCapacityMaps()
-        Try
-            For Each map As IEnviroInputMap In Me.m_Data.CapMaps
-                map.Update()
-            Next
-        Catch ex As Exception
-
-        End Try
     End Sub
 
 

@@ -12623,6 +12623,9 @@ Public Class cCore
                     ' Recalc habitat area
                     Me.LoadEcospaceHabitats()
 
+                    'update the map/response interactions to the new data
+                    Me.m_mapInteractionManager.Update()
+
                     'Input map(s) may have change
                     'Let Ecospace decide what to update in response
                     Me.m_Ecospace.UpdateMaps(obj.DataType)
@@ -12642,6 +12645,8 @@ Public Class cCore
                      eDataTypes.EcospaceLayerUpwelling
                     DirectCast(obj, cEcospaceLayer).Invalidate()
 
+                    'update the map/response interactions to the new data
+                    Me.m_mapInteractionManager.Update()
 
                     'Input map(s) may have change
                     'Let Ecospace decide what to update in response
