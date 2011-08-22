@@ -205,7 +205,7 @@ Public Class cEnviroInputMap(Of T)
                 'Response index(shape index) of -9999 NULL_VALUE means there is not response set for this Map/Group
                 Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
 
-                'If then manager is nothing the response index was set during initialization
+                'If the manager is nothing the response index was set during initialization
                 'The manager is not initialized until an Ecospace scenarion is loaded
                 If Not Me.m_manager Is Nothing Then
                     Me.m_manager.onChanged()
