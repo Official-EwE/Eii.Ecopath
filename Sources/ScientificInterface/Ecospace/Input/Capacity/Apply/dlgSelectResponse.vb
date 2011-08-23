@@ -17,12 +17,19 @@ Imports EwEUtils.Core
 
 Public Class dlgSelectResponse
 
+    Public Enum eSelectionType
+        Cell
+        Row
+        Col
+    End Enum
+
     Private m_uic As cUIContext = Nothing
-    Private m_Manager As cBaseShapeManager
+    Private m_ShapeManager As cBaseShapeManager
     Private m_lFFs As New List(Of cForcingFunction)
     Private m_map As EwECore.IEnviroInputMap
     Private m_ShapeGUI As cShapeGUIHandler
     Private m_iSelGrp As Integer = cCore.NULL_VALUE
+    Private m_iSelMap As Integer = cCore.NULL_VALUE
 
     ''' <summary>Image list used for displaying small thumbnails.</summary>
     Private m_ilSmall As New ImageList()
@@ -34,6 +41,8 @@ Public Class dlgSelectResponse
     Private m_ilLarge As New ImageList()
 
     Private m_nGroups As Integer = 0
+    Private m_SelType As eSelectionType
+    Private m_MapManager As cMapResponseInteractionManager
 
 #Region "Construction"
 
@@ -45,10 +54,20 @@ Public Class dlgSelectResponse
 
     'End Sub
 
-    Public Sub New(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal InteractionMap As EwECore.IEnviroInputMap, ByVal iSelGroup As Integer)
-        Me.Init(uic, Manager, InteractionMap)
+    Public Sub New(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal MapIntManager As cMapResponseInteractionManager, _
+                   ByVal iMap As Integer, ByVal iSelGroup As Integer, ByVal WhatIsSelected As eSelectionType)
 
-        m_iSelGrp = iSelGroup
+        Me.m_SelType = WhatIsSelected
+        Me.m_uic = uic
+        Me.m_ShapeManager = Manager
+        Me.m_MapManager = MapIntManager
+        Me.m_ShapeGUI = cShapeGUIHandler.GetShapeUIHandler(Me.m_ShapeManager.DataType)
+
+        Me.m_iSelMap = iMap
+        Me.m_iSelGrp = iSelGroup
+
+        Me.Init()
+
         Me.LoadAvailableShapes()
         Me.LoadAppliedShapes()
 
@@ -97,18 +116,17 @@ Public Class dlgSelectResponse
     ''' <summary>
     ''' Populate the dialog.
     ''' </summary>
-    ''' <param name="uic"></param>
     ''' -------------------------------------------------------------------
-    Private Sub Init(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal InteractionMap As EwECore.IEnviroInputMap)
+    Private Sub Init()
 
         Me.InitializeComponent()
-        Me.m_uic = uic
-        Me.m_Manager = Manager
-        Me.m_map = InteractionMap
-        Me.m_ShapeGUI = cShapeGUIHandler.GetShapeUIHandler(Me.m_Manager.DataType)
+
+        If Me.m_iSelMap > 0 Then
+            Me.m_map = Me.m_MapManager.Map(Me.m_iSelMap)
+        End If
 
         ' Get the available shapes that can be applied
-        For Each shape As cForcingFunction In Me.m_Manager
+        For Each shape As cForcingFunction In Me.m_ShapeManager
             Me.m_lFFs.Add(shape)
         Next
 
@@ -300,6 +318,10 @@ Public Class dlgSelectResponse
 
             Me.m_lvAppliedShapes.Items.Clear()
 
+            'Only populate the selected shapes if the user selected a cell
+            'If it's a row or col then there is potentially more than one shape selected
+            If Me.m_SelType <> eSelectionType.Cell Then Return
+
             isp = Me.m_map.ResponseIndexForGroup(Me.m_iSelGrp)
             If isp < 1 Then
                 'No Shape selected for this Map/Group
@@ -308,7 +330,7 @@ Public Class dlgSelectResponse
             Dim shape As cForcingFunction = Me.m_lFFs.Item(isp - 1)
             Dim item As ListViewItem
             item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
-            item.ImageIndex = Me.m_lFFs.IndexOf(Shape)
+            item.ImageIndex = Me.m_lFFs.IndexOf(shape)
             item.Tag = shape
             Me.m_lvAppliedShapes.Items.Add(item)
 
@@ -325,9 +347,24 @@ Public Class dlgSelectResponse
     Private Function UpdateSelectedResponseMap() As Boolean
 
         Try
-            If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_uic.Core.nLivingGroups Then
-                m_map.ResponseIndexForGroup(m_iSelGrp) = Me.getAppliedResponseIndex
-                Return True
+            If Me.m_SelType = eSelectionType.Cell Then
+                If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_uic.Core.nLivingGroups Then
+                    m_map.ResponseIndexForGroup(m_iSelGrp) = Me.getAppliedResponseIndex
+                    Return True
+                End If
+            ElseIf Me.m_SelType = eSelectionType.Col Then
+                'Apply the same shape to all the groups of the current map
+                Dim iSelResponseShape As Integer = Me.getAppliedResponseIndex
+                For igrp As Integer = 1 To Me.m_nGroups
+                    m_map.ResponseIndexForGroup(igrp) = iSelResponseShape
+                Next
+
+            ElseIf Me.m_SelType = eSelectionType.Row Then
+                'Apply the selected shape to the same group for all the maps
+                Dim iSelResponseShape As Integer = Me.getAppliedResponseIndex
+                For imap As Integer = 1 To Me.m_MapManager.nMaps
+                    Me.m_MapManager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
+                Next
             End If
 
         Catch ex As Exception
@@ -338,11 +375,17 @@ Public Class dlgSelectResponse
 
     End Function
 
-
+    ''' <summary>
+    ''' Get the index of the shape in the Applied Shapes list view control
+    ''' </summary>
+    ''' <returns>Index of the Applied shape or cCore.NULL_VALUE if nothing is Applied</returns>
+    ''' <remarks></remarks>
     Private Function getAppliedResponseIndex() As Integer
         'response index < 0 clears out the selected response index for this group
         Dim index As Integer = cCore.NULL_VALUE
         Try
+            'There can only be one item in the Applied Shapes list 
+            'Get the index from the shape or return the default cCore.NULL_VALUE
             Dim shape As cForcingFunction
             If Me.m_lvAppliedShapes.Items.Count > 0 Then
                 shape = DirectCast(Me.m_lvAppliedShapes.Items(0).Tag, cForcingFunction)

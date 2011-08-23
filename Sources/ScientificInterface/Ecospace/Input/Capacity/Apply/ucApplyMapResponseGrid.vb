@@ -111,18 +111,10 @@ Public Class ucApplyMapResponseGrid
 
         Try
 
-            Dim MapInteraction As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
             Dim igrp As Integer = e.Position.Row
             Dim iMap As Integer = e.Position.Column - 1
-            Dim map As EwECore.IEnviroInputMap = MapInteraction.Map(iMap)
-            Dim ShapeManager As cBaseShapeManager = Core.CapacityShapeManager
 
-            Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, map, igrp)
-            dlg.ShowDialog()
-            If dlg.DialogResult = DialogResult.OK Then
-                'update the interface to the newly selected response
-                Me.FillData()
-            End If
+            Me.showSelectionDialog(dlgSelectResponse.eSelectionType.Cell, igrp, iMap)
 
         Catch ex As Exception
             ' Whoah
@@ -130,54 +122,42 @@ Public Class ucApplyMapResponseGrid
 
     End Sub
 
-    Protected Overrides Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+
+    Private Sub showSelectionDialog(ByVal SelectionType As dlgSelectResponse.eSelectionType, ByVal iGrp As Integer, ByVal iMap As Integer)
         Try
+            Dim MapManager As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
+            Dim ShapeManager As cBaseShapeManager = Core.CapacityShapeManager
 
-            'ToDo_jb ucApplyMapResponseGrid Row or Column selection has to be implemented in dlgSelectResponse
-
-            'Dim iRow As Integer = e.Position.Row
-            'Dim iCol As Integer = e.Position.Column  
-
-            'MsgBox("Sorry selection of map response function not implemented yet!")
+            Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, MapManager, iMap, igrp, SelectionType)
+            dlg.ShowDialog()
+            If dlg.DialogResult = DialogResult.OK Then
+                'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
+                'update the interface from the CapacitMapInteractionManager data
+                Me.FillData()
+            End If
 
         Catch ex As Exception
 
         End Try
-        'Dim dlg As dlgApplyLandingShape = Nothing
+    End Sub
 
-        '' --------------
-        '' Prepare dialog
-        '' --------------
+    Protected Overrides Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Try
 
-        '' Column header clicked?
-        'If iRow = 0 Then
-        '    ' #Yes: Predator column clicked?
-        '    If iCol > 1 Then
-        '        ' #Yes: launch dialog for all diets of this predator
-        '        Dim iFleet As Integer = iCol - 1
-        '        dlg = New dlgApplyLandingShape(Me.UIContext, iFleet, dlgApplyLandingShape.eEditMode.Fleet)
-        '    Else
-        '        dlg = New dlgApplyLandingShape(Me.UIContext)
-        '    End If
-        'Else
-        '    ' #No: Prey row header clicked?
-        '    If iCol < Me.FixedColumns Then
-        '        ' #Yes: Prey row clicked?
-        '        If iRow > 0 Then
-        '            ' #Yes: launch dialog for all predation of this prey
-        '            dlg = New dlgApplyLandingShape(Me.UIContext, iRow, dlgApplyLandingShape.eEditMode.Group)
-        '        End If
-        '    End If
-        'End If
+            Dim igrp As Integer = e.Position.Row
+            Dim iMap As Integer = e.Position.Column - 1
+            Dim selectionType As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.Col
+            If iMap < 0 Then
+                'the user has selected a row
+                selectionType = dlgSelectResponse.eSelectionType.Row
+            End If
 
-        ' --------------
-        ' Invoke dialog
-        ' --------------
+            Me.showSelectionDialog(selectionType, igrp, iMap)
 
-        'If dlg IsNot Nothing Then
-        '    dlg.ShowDialog()
-        'End If
+        Catch ex As Exception
 
+        End Try
+      
     End Sub
 
 #End Region ' Internals
