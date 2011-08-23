@@ -23,6 +23,39 @@ Namespace Ecosim
     ''' </summary>
     Public Class EcosimOutputPlots
 
+#Region " Private helper class "
+
+        ''' <summary>
+        ''' Helper class to convert plot types to readable names
+        ''' </summary>
+        Private Class cSimPlotFormatter
+            Implements ITypeFormatter
+
+            Public Function GetDescribedType() As System.Type Implements ScientificInterfaceShared.Style.ITypeFormatter.GetDescribedType
+                Return GetType(eSimPlot)
+            End Function
+
+            Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As ScientificInterfaceShared.Style.eDescriptorTypes = ScientificInterfaceShared.Style.eDescriptorTypes.Name) As String Implements ScientificInterfaceShared.Style.ITypeFormatter.GetDescriptor
+                Select Case DirectCast(value, eSimPlot)
+                    Case eSimPlot.AvgWeightOrProdCons : Return SharedResources.HEADER_PRODCONS
+                    Case eSimPlot.Biomass : Return SharedResources.HEADER_BIOMASS
+                    Case eSimPlot.ConsumptionBiomass : Return SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS
+                    Case eSimPlot.FeedingTime : Return SharedResources.HEADER_FEEDINGTIME
+                    Case eSimPlot.FleetFishingMortality : Return SharedResources.HEADER_FISHINGMORTALITY
+                    Case eSimPlot.Mortality : Return My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS
+                    Case eSimPlot.PredationMortality : Return SharedResources.HEADER_PREDMORT
+                    Case eSimPlot.Prey : Return SharedResources.HEADER_PREY_PERCENTAGE
+                    Case eSimPlot.Value : Return SharedResources.HEADER_VALUE
+                    Case eSimPlot.[Catch] : Return SharedResources.HEADER_CATCH
+                End Select
+                Return ""
+
+            End Function
+
+        End Class
+
+#End Region ' Private helper class
+
 #Region " Variables "
 
         Private m_parms As cEcoSimModelParameters
@@ -78,6 +111,7 @@ Namespace Ecosim
 
             Me.m_parms = Me.UIContext.Core.EcoSimModelParameters()
             Me.m_paneMaster = Me.m_graph.MasterPane
+            Me.ConfigureShowHidePlots()
 
             Me.m_zgh = New cZedGraphHelper()
             Me.ConfigurePlots(True)
@@ -91,7 +125,6 @@ Namespace Ecosim
 
             Me.UpdateColors()
             Me.AddCurves()
-            Me.ConfigureShowHidePlots()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
             Me.m_lbGroups.SelectedIndex = 0
@@ -145,6 +178,29 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnShowHidePlots(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsDDShowHidePlots.ButtonClick
+
+            Dim dlg As New dlgSelectItems(GetType(eSimPlot), New cSimPlotFormatter())
+
+            Dim lSelected As New List(Of Integer)
+            For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
+                If (Me.m_abPlotVisible(plot)) Then lSelected.Add(plot)
+            Next
+
+            If dlg.ShowDialog(Me, lSelected.ToArray) = Windows.Forms.DialogResult.OK Then
+                For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
+                    Try
+                        Me.m_abPlotVisible(CInt(plot)) = (Array.IndexOf(dlg.Selection, plot) >= 0)
+                    Catch ex As Exception
+
+                    End Try
+                Next
+            End If
+            Me.ConfigurePlots()
+
+        End Sub
+
         Private Sub OnShowHidePlot(ByVal sender As Object, ByVal args As EventArgs)
 
             If Not TypeOf sender Is ToolStripMenuItem Then Return
@@ -153,7 +209,12 @@ Namespace Ecosim
             Dim plot As eSimPlot = CType(item.Tag, eSimPlot)
 
             Me.m_abPlotVisible(plot) = Not Me.m_abPlotVisible(plot)
-            item.Checked = Me.m_abPlotVisible(plot)
+
+            Me.ShowHidePlots()
+
+        End Sub
+
+        Private Sub ShowHidePlots()
 
             Me.m_graph.Visible = False
             Me.ConfigurePlots(True)
@@ -161,7 +222,6 @@ Namespace Ecosim
             Me.m_graph.Visible = True
 
         End Sub
-
 #End Region ' Event handlers
 
 #Region " Helper methods "
@@ -208,7 +268,13 @@ Namespace Ecosim
                 Else
                     Me.m_aiPlotPane(plot) = cCore.NULL_VALUE
                 End If
+                Try
+                    DirectCast(Me.m_tsDDShowHidePlots.DropDownItems(plot), ToolStripMenuItem).Checked = Me.m_abPlotVisible(plot)
+                Catch ex As Exception
+
+                End Try
             Next plot
+
 
             If Me.m_zgh.IsAttached Then
                 Me.m_zgh.Detach()
@@ -655,19 +721,10 @@ Namespace Ecosim
         End Sub
 
         Private Function GetPlotTitle(ByVal data As eSimPlot) As String
-            Select Case data
-                Case eSimPlot.AvgWeightOrProdCons : Return SharedResources.HEADER_PRODCONS
-                Case eSimPlot.Biomass : Return SharedResources.HEADER_BIOMASS
-                Case eSimPlot.ConsumptionBiomass : Return SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS
-                Case eSimPlot.FeedingTime : Return SharedResources.HEADER_FEEDINGTIME
-                Case eSimPlot.FleetFishingMortality : Return SharedResources.HEADER_FISHINGMORTALITY
-                Case eSimPlot.Mortality : Return My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS
-                Case eSimPlot.PredationMortality : Return SharedResources.HEADER_PREDMORT
-                Case eSimPlot.Prey : Return SharedResources.HEADER_PREY_PERCENTAGE
-                Case eSimPlot.Value : Return SharedResources.HEADER_VALUE
-                Case eSimPlot.[Catch] : Return SharedResources.HEADER_CATCH
-            End Select
-            Return ""
+
+            Dim tfm As New cSimPlotFormatter()
+            Return tfm.GetDescriptor(data)
+
         End Function
 
         Private Function GetPlotAxisMax(ByVal data As eSimPlot) As Double

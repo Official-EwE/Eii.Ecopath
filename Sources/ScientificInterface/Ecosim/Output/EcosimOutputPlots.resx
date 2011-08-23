@@ -166,7 +166,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_plGroups</value>
@@ -226,7 +226,7 @@
     <value>m_lbPredators</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Parent" xml:space="preserve">
     <value>m_plPredators</value>
@@ -256,7 +256,7 @@
     <value>m_lbPrey</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Parent" xml:space="preserve">
     <value>m_plPrey</value>
@@ -313,7 +313,7 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsDDShowHidePlots.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 22</value>
+    <value>121, 22</value>
   </data>
   <data name="m_tsDDShowHidePlots.Text" xml:space="preserve">
     <value>Show or hide plots</value>
@@ -331,7 +331,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -367,7 +367,7 @@
     <value>m_hdrGroup</value>
   </data>
   <data name="&gt;&gt;m_hdrGroup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroup.Parent" xml:space="preserve">
     <value>m_plGroups</value>
@@ -424,7 +424,7 @@
     <value>m_lbFleets</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>
@@ -460,7 +460,7 @@
     <value>m_hdrFleets</value>
   </data>
   <data name="&gt;&gt;m_hdrFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>
@@ -523,7 +523,7 @@
     <value>m_hdrPredators</value>
   </data>
   <data name="&gt;&gt;m_hdrPredators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPredators.Parent" xml:space="preserve">
     <value>m_plPredators</value>
@@ -586,7 +586,7 @@
     <value>m_hdrPrey</value>
   </data>
   <data name="&gt;&gt;m_hdrPrey.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPrey.Parent" xml:space="preserve">
     <value>m_plPrey</value>
@@ -712,12 +712,12 @@
     <value>m_tsDDShowHidePlots</value>
   </data>
   <data name="&gt;&gt;m_tsDDShowHidePlots.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>EcosimOutputPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.512, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
