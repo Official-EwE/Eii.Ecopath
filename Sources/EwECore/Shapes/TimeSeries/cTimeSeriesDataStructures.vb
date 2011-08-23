@@ -382,7 +382,12 @@ Public Class cTimeSeriesDataStructures
                 For j = 1 To NdatType
                     Select Case DatType(j)
 
-                        Case eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs
+                        Case eTimeSeriesType.BiomassRel
+
+                            If DatVal(i, j) > 0 Then Iobs = Iobs + 1
+                            'PoolForceBB(DatPool(j), i) = 0
+
+                        Case eTimeSeriesType.BiomassAbs
 
                             If DatVal(i, j) > 0 Then Iobs = Iobs + 1
                             PoolForceBB(DatPool(j), i) = 0
