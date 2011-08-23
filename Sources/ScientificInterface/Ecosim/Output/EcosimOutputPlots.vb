@@ -191,7 +191,7 @@ Namespace Ecosim
             If dlg.ShowDialog(Me, lSelected.ToArray) = Windows.Forms.DialogResult.OK Then
                 For Each plot As eSimPlot In [Enum].GetValues(GetType(eSimPlot))
                     Try
-                        Me.m_abPlotVisible(CInt(plot)) = (Array.IndexOf(dlg.Selection, plot) >= 0)
+                        Me.m_abPlotVisible(CInt(plot)) = (Array.IndexOf(dlg.Selection, CInt(plot)) >= 0)
                     Catch ex As Exception
 
                     End Try
