@@ -137,21 +137,6 @@ Public Class dlgDefineMapResponseAssignments
         Me.Close()
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-
-        Try
-            'set the response shape back to its original state
-            Me.m_shape.XAxisMax = Me.m_orgMax
-            Me.m_shape.XAxisMin = Me.m_orgMin
-        Catch ex As Exception
-
-        End Try
-
-        Me.Close()
-
-    End Sub
-
 
     Private Sub trvMapTree_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles trvMapTree.AfterSelect
         Try
@@ -380,6 +365,7 @@ Public Class dlgDefineMapResponseAssignments
 
 #End Region
 
+#Region "Helper class Ecopath Group ListBox Item used of group name and index"
 
     Private Class GroupListItem
         Public Group As cEcoPathGroupInput
@@ -398,12 +384,9 @@ Public Class dlgDefineMapResponseAssignments
         End Property
     End Class
 
-
-
+#End Region
 
 End Class
-
-
 
 #Region "ZedGraph helper for Response tool tips"
 
