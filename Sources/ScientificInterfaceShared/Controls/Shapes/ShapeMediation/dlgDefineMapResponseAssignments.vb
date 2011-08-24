@@ -23,6 +23,7 @@ Public Class dlgDefineMapResponseAssignments
     Private m_orgMin As Single
     Private m_orgMax As Single
     Private m_bHasInit As Boolean
+    Private m_map As IEnviroInputMap
 
 #End Region
 
@@ -86,13 +87,13 @@ Public Class dlgDefineMapResponseAssignments
 
         Try
 
-            Dim Map As IEnviroInputMap = Me.getSelMap
+            'Dim Map As IEnviroInputMap = Me.getSelMap
             'Is there a selected map
-            If Map Is Nothing Then Return
+            If Me.m_map Is Nothing Then Return
 
             'Yes add all the groups 
             For Each item As GroupListItem In Me.lstGroups.SelectedItems
-                Map.ResponseIndexForGroup(item.Index) = Me.m_shape.Index
+                Me.m_map.ResponseIndexForGroup(item.Index) = Me.m_shape.Index
             Next
 
             'bluntly reload the map tree
@@ -109,8 +110,8 @@ Public Class dlgDefineMapResponseAssignments
     Private Sub btRemove_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btRemove.Click
         Try
 
-            Dim map As IEnviroInputMap = Me.getSelMap
-            If map Is Nothing Then Return
+            ' Dim map As IEnviroInputMap = Me.getSelMap
+            If Me.m_map Is Nothing Then Return
 
             Dim node As TreeNode
             node = Me.trvMapTree.SelectedNode
@@ -119,7 +120,7 @@ Public Class dlgDefineMapResponseAssignments
                 If node.Nodes.Count = 0 Then
                     'Group index was put in the tag when the tree was populated
                     Dim iGrp As Integer = DirectCast(node.Tag, Integer)
-                    map.ResponseIndexForGroup(iGrp) = cCore.NULL_VALUE
+                    Me.m_map.ResponseIndexForGroup(iGrp) = cCore.NULL_VALUE
                     'now remove the node
                     Me.trvMapTree.SelectedNode.Remove()
                 End If
@@ -137,9 +138,18 @@ Public Class dlgDefineMapResponseAssignments
         Me.Close()
     End Sub
 
+    Private Sub trvMapTree_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles trvMapTree.AfterExpand
+        Me.m_map = Me.getSelMap(e.Node)
+    End Sub
+
+    Private Sub trvMapTree_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles trvMapTree.Click
+        'Me.m_map = Me.getSelMap
+    End Sub
+
 
     Private Sub trvMapTree_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles trvMapTree.AfterSelect
         Try
+            Me.m_map = getSelMap(e.Node)
             Me.PlotGraph()
         Catch ex As Exception
 
@@ -173,6 +183,8 @@ Public Class dlgDefineMapResponseAssignments
     Private Sub btDefaultMinMax_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btDefaultMinMax.Click
         Me.setDefaultMinMax()
     End Sub
+
+ 
 
 #End Region
 
@@ -211,9 +223,9 @@ Public Class dlgDefineMapResponseAssignments
             Dim Xrange As Single = Me.m_shape.XAxisMax - Me.m_shape.XAxisMin
 
             'if there is a selected map then use that to set the x axis
-            Dim map As IEnviroInputMap = Me.getSelMap()
-            If map IsNot Nothing Then
-                Xmax = map.Max '+ map.BinWidth
+            'Dim map As IEnviroInputMap = Me.getSelMap()
+            If Me.m_map IsNot Nothing Then
+                Xmax = Me.m_map.Max '+ map.BinWidth
             End If
 
             Dim dx As Single = Xrange / Me.m_shape.XMax
@@ -285,14 +297,14 @@ Public Class dlgDefineMapResponseAssignments
 
 
     Private Sub setDefaultMinMax()
-        Dim map As IEnviroInputMap = Me.getSelMap
-        If map Is Nothing Then
+        ' Dim map As IEnviroInputMap = Me.getSelMap
+        If Me.m_map Is Nothing Then
             'some kind of a warning
             Exit Sub
         End If
 
-        Me.m_shape.XAxisMax = map.Max
-        Me.m_shape.XAxisMin = map.Min
+        Me.m_shape.XAxisMax = Me.m_map.Max
+        Me.m_shape.XAxisMin = Me.m_map.Min
 
         Me.updateControls()
 
@@ -300,12 +312,12 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-    Private Function getSelMap() As IEnviroInputMap
+    Private Function getSelMap(ByVal node As TreeNode) As IEnviroInputMap
         Try
 
             Dim ob As Object
-            Dim node As TreeNode
-            node = Me.trvMapTree.SelectedNode
+            'Dim node As TreeNode
+            'node = Me.trvMapTree.SelectedNode
 
             'No node has been selected just return nothing
             If node Is Nothing Then Return Nothing
@@ -317,7 +329,7 @@ Public Class dlgDefineMapResponseAssignments
 
             If ob IsNot Nothing Then
                 If TypeOf ob Is IEnviroInputMap Then
-                    ' System.Console.WriteLine("Seleted map " & DirectCast(ob, IEnviroInputMap).Name)
+                    System.Console.WriteLine("Seleted map " & DirectCast(ob, IEnviroInputMap).Name)
                     Return DirectCast(ob, IEnviroInputMap)
                 End If
             End If
@@ -330,15 +342,50 @@ Public Class dlgDefineMapResponseAssignments
 
     End Function
 
+
+
+
+    'Private Function getSelMap() As IEnviroInputMap
+    '    Try
+
+    '        '  Dim ob As Object
+    '        Dim node As TreeNode
+    '        node = Me.trvMapTree.SelectedNode
+
+    '        Me.getSelMap(node)
+
+    '        ''No node has been selected just return nothing
+    '        'If node Is Nothing Then Return Nothing
+
+    '        'Do While node.Parent IsNot Nothing
+    '        '    node = node.Parent
+    '        'Loop
+    '        'ob = node.Tag
+
+    '        'If ob IsNot Nothing Then
+    '        '    If TypeOf ob Is IEnviroInputMap Then
+    '        '        System.Console.WriteLine("Seleted map " & DirectCast(ob, IEnviroInputMap).Name)
+    '        '        Return DirectCast(ob, IEnviroInputMap)
+    '        '    End If
+    '        'End If
+
+    '    Catch ex As Exception
+
+    '    End Try
+
+    '    Return Nothing
+
+    'End Function
+
     Private Sub PlotMap()
         Try
-            Dim map As IEnviroInputMap = Me.getSelMap
-            If map Is Nothing Then
+            'Dim map As IEnviroInputMap = Me.getSelMap
+            If Me.m_map Is Nothing Then
                 'no map to plot
                 Exit Sub
             End If
 
-            Dim histPts() As Drawing.PointF = map.Histogram()
+            Dim histPts() As Drawing.PointF = Me.m_map.Histogram()
             Dim lstPts As New PointPairList
             'The X value in the histogram is the max value, right hand side, in the bin
             'So an input value of 1.0 will be in the .X = 1.0 bin
@@ -353,7 +400,7 @@ Public Class dlgDefineMapResponseAssignments
             Dim il As LineItem = Me.m_zgh.CreateLineItem("Histogram", Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
-            Me.m_zgh.XScaleMax = map.Max
+            Me.m_zgh.XScaleMax = Me.m_map.Max
             Me.m_zgh.YScaleMax = 1.2
             Me.m_zgh.YScaleMin = 0
 

@@ -223,14 +223,8 @@ Public Class dlgSelectResponse
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public Sub RemoveShapes()
-        ' Remove all allowed shapes
-        For Each item As ListViewItem In Me.m_lvAppliedShapes.SelectedItems
-            Me.m_lvAppliedShapes.Items.Remove(item)
-        Next
-        ' Update selection
-        If Me.m_lvAppliedShapes.Items.Count > 0 Then
-            Me.m_lvAppliedShapes.Items(Me.m_lvAppliedShapes.Items.Count - 1).Selected = True
-        End If
+        ' Remove all shapes
+        Me.m_lvAppliedShapes.Items.Clear()
         ' Yoho
         Me.UpdateControls()
     End Sub
@@ -272,14 +266,8 @@ Public Class dlgSelectResponse
 
     Private Sub GenerateShapeThumbnails(ByVal Icons As ImageList, ByVal IconSize As Integer)
 
-        'Dim dtHandlers As New Dictionary(Of eDataTypes, cShapeGUIHandler)
-        'Dim handler As cShapeGUIHandler = Nothing
-        'Dim rc As New Rectangle(0, 0, IconSize, IconSize)
-        'Dim bmp As Bitmap = Nothing
-
         ' For all selectable shapes
         For Each shape As cForcingFunction In Me.m_lFFs
-
             ' Create and Add the thumbnail image
             Icons.Images.Add(cShapeImage.IconImage(Me.m_uic, shape, Me.m_ShapeGUI.Color, eSketchDrawModeTypes.Fill, DirectCast(shape, cEnviroResponseFunction).YMax, False))
         Next
@@ -320,13 +308,61 @@ Public Class dlgSelectResponse
 
             'Only populate the selected shapes if the user selected a cell
             'If it's a row or col then there is potentially more than one shape selected
-            If Me.m_SelType <> eSelectionType.Cell Then Return
+            If Me.m_SelType = eSelectionType.Cell Then
 
-            isp = Me.m_map.ResponseIndexForGroup(Me.m_iSelGrp)
-            If isp < 1 Then
-                'No Shape selected for this Map/Group
-                Exit Sub
+
+                isp = Me.m_map.ResponseIndexForGroup(Me.m_iSelGrp)
+                If isp < 1 Then
+                    'No Shape selected for this Map/Group
+                    Exit Sub
+                End If
+
+                Me.addShapeToApplied(isp)
+
+                'Dim shape As cForcingFunction = Me.m_lFFs.Item(isp - 1)
+                'Dim item As ListViewItem
+                'item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
+                'item.ImageIndex = Me.m_lFFs.IndexOf(shape)
+                'item.Tag = shape
+                'Me.m_lvAppliedShapes.Items.Add(item)
+
+                'Me.m_lvAppliedShapes.View = View.LargeIcon
+                'Me.m_lvAppliedShapes.Items(0).Selected = True
+                'Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
+
+            ElseIf Me.m_SelType = eSelectionType.Col Then
+
+                For igrp As Integer = 1 To Me.m_uic.Core.nGroups
+                    isp = Me.m_map.ResponseIndexForGroup(igrp)
+                    If isp > 0 Then
+                        Me.addShapeToApplied(isp)
+                    End If
+                Next
+
+            ElseIf Me.m_SelType = eSelectionType.Row Then
+
+                'update all the maps with this selected shape
+                For imap As Integer = 1 To Me.m_MapManager.nMaps
+                    isp = Me.m_MapManager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp)
+                    If isp > 0 Then
+                        Me.addShapeToApplied(isp)
+                    End If
+                Next
+
             End If
+
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+
+    Private Sub addShapeToApplied(ByVal isp As Integer)
+
+        Try
+
             Dim shape As cForcingFunction = Me.m_lFFs.Item(isp - 1)
             Dim item As ListViewItem
             item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
@@ -335,15 +371,14 @@ Public Class dlgSelectResponse
             Me.m_lvAppliedShapes.Items.Add(item)
 
             Me.m_lvAppliedShapes.View = View.LargeIcon
-            Me.m_lvAppliedShapes.Items(0).Selected = True
+            ' Me.m_lvAppliedShapes.Items(0).Selected = True
             Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
 
         Catch ex As Exception
-
+            Debug.Assert(False)
         End Try
 
     End Sub
-
     Private Function UpdateSelectedResponseMap() As Boolean
 
         Try
