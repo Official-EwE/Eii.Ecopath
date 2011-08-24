@@ -293,7 +293,7 @@ Public Class cEnviroInputMap(Of T)
             Me.computeMinMax()
             bReturn = True
         Catch ex As Exception
-
+            Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)
         End Try
         Return bReturn
 
