@@ -223,7 +223,7 @@
     <value>m_gridB</value>
   </data>
   <data name="&gt;&gt;m_gridB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.1.509, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.3.0.818, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridB.Parent" xml:space="preserve">
     <value>m_tbpB</value>
@@ -271,7 +271,7 @@
     <value>m_gridPB</value>
   </data>
   <data name="&gt;&gt;m_gridPB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.1.509, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.3.0.818, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridPB.Parent" xml:space="preserve">
     <value>m_tbpBP</value>
@@ -319,7 +319,7 @@
     <value>m_gridEE</value>
   </data>
   <data name="&gt;&gt;m_gridEE.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.1.509, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.3.0.818, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridEE.Parent" xml:space="preserve">
     <value>m_tbpEE</value>
@@ -367,7 +367,7 @@
     <value>m_gridBA</value>
   </data>
   <data name="&gt;&gt;m_gridBA.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.1.1.509, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunInputGrid, EwE6, Version=6.3.0.818, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridBA.Parent" xml:space="preserve">
     <value>m_tbpBA</value>
@@ -463,7 +463,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.1.1.509, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.818, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_spPlot.Panel2</value>
@@ -471,37 +471,37 @@
   <data name="&gt;&gt;m_lbGroups.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_lblGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblGroups.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrGroups.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_lblGroups.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrGroups.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 18</value>
   </data>
-  <data name="m_lblGroups.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrGroups.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_lblGroups.Text" xml:space="preserve">
+  <data name="m_hdrGroups.Text" xml:space="preserve">
     <value>Groups</value>
   </data>
-  <data name="m_lblGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblGroups.Name" xml:space="preserve">
-    <value>m_lblGroups</value>
+  <data name="&gt;&gt;m_hdrGroups.Name" xml:space="preserve">
+    <value>m_hdrGroups</value>
   </data>
-  <data name="&gt;&gt;m_lblGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.818, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_lblGroups.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
     <value>m_spPlot.Panel2</value>
   </data>
-  <data name="&gt;&gt;m_lblGroups.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrGroups.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="&gt;&gt;m_spPlot.Panel2.Name" xml:space="preserve">
@@ -577,7 +577,7 @@
     <value>m_gridBestFit</value>
   </data>
   <data name="&gt;&gt;m_gridBestFit.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.MCRunOutputGrid, EwE6, Version=6.1.1.509, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.MCRunOutputGrid, EwE6, Version=6.3.0.818, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridBestFit.Parent" xml:space="preserve">
     <value>m_tbpBestTrial</value>
@@ -910,7 +910,7 @@
     <value>m_nudNumTrials</value>
   </data>
   <data name="&gt;&gt;m_nudNumTrials.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.0.818, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNumTrials.Parent" xml:space="preserve">
     <value>$this</value>
@@ -920,9 +920,6 @@
   </data>
   <data name="m_btnTS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_btnTS.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
   </data>
   <data name="m_btnTS.Location" type="System.Drawing.Point, System.Drawing">
     <value>371, 26</value>
@@ -1186,7 +1183,7 @@
     <value>m_hdrInputOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrInputOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.509, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.818, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInputOpt.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1219,7 +1216,7 @@
     <value>m_hdrOutputParam</value>
   </data>
   <data name="&gt;&gt;m_hdrOutputParam.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.509, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.818, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOutputParam.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1265,9 +1262,6 @@
   </data>
   <data name="m_btnFromPedigree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="m_btnFromPedigree.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
   </data>
   <data name="m_btnFromPedigree.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1345,6 +1339,6 @@
     <value>MCRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.509, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.0.818, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

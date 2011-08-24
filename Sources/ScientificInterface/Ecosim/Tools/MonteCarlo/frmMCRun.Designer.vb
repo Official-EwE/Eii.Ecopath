@@ -42,7 +42,7 @@ Namespace Ecosim
             Me.m_spPlot = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
-            Me.m_lblGroups = New System.Windows.Forms.Label
+            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tbpBestTrial = New System.Windows.Forms.TabPage
             Me.m_gridBestFit = New ScientificInterface.Ecosim.MCRunOutputGrid
             Me.m_cbRetainEstimates = New System.Windows.Forms.CheckBox
@@ -53,7 +53,7 @@ Namespace Ecosim
             Me.lblBestSS = New System.Windows.Forms.Label
             Me.m_cbShowBioTraj = New System.Windows.Forms.CheckBox
             Me.m_btnApply = New System.Windows.Forms.Button
-            Me.m_nudNumTrials = New cEwENumericUpDown
+            Me.m_nudNumTrials = New ScientificInterfaceShared.Controls.cEwENumericUpDown
             Me.m_btnTS = New System.Windows.Forms.Button
             Me.lblValueERun = New System.Windows.Forms.Label
             Me.lblValueSSBest = New System.Windows.Forms.Label
@@ -277,7 +277,7 @@ Namespace Ecosim
             'm_spPlot.Panel2
             '
             Me.m_spPlot.Panel2.Controls.Add(Me.m_lbGroups)
-            Me.m_spPlot.Panel2.Controls.Add(Me.m_lblGroups)
+            Me.m_spPlot.Panel2.Controls.Add(Me.m_hdrGroups)
             '
             'm_graph
             '
@@ -308,12 +308,13 @@ Namespace Ecosim
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueAsc
             '
-            'm_lblGroups
+            'm_hdrGroups
             '
-            resources.ApplyResources(Me.m_lblGroups, "m_lblGroups")
-            Me.m_lblGroups.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_lblGroups.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-            Me.m_lblGroups.Name = "m_lblGroups"
+            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
+            Me.m_hdrGroups.CanCollapseParent = False
+            Me.m_hdrGroups.CollapsedParentHeight = 0
+            Me.m_hdrGroups.IsCollapsed = False
+            Me.m_hdrGroups.Name = "m_hdrGroups"
             '
             'm_tbpBestTrial
             '
@@ -442,11 +443,17 @@ Namespace Ecosim
             'm_hdrInputOpt
             '
             resources.ApplyResources(Me.m_hdrInputOpt, "m_hdrInputOpt")
+            Me.m_hdrInputOpt.CanCollapseParent = False
+            Me.m_hdrInputOpt.CollapsedParentHeight = 0
+            Me.m_hdrInputOpt.IsCollapsed = False
             Me.m_hdrInputOpt.Name = "m_hdrInputOpt"
             '
             'm_hdrOutputParam
             '
             resources.ApplyResources(Me.m_hdrOutputParam, "m_hdrOutputParam")
+            Me.m_hdrOutputParam.CanCollapseParent = False
+            Me.m_hdrOutputParam.CollapsedParentHeight = 0
+            Me.m_hdrOutputParam.IsCollapsed = False
             Me.m_hdrOutputParam.Name = "m_hdrOutputParam"
             '
             'm_tlpOutputs
@@ -522,7 +529,6 @@ Namespace Ecosim
         Private WithEvents m_cbShowBioTraj As System.Windows.Forms.CheckBox
         Private WithEvents m_btnApply As System.Windows.Forms.Button
         Private WithEvents m_btnTS As System.Windows.Forms.Button
-        Private WithEvents m_nudNumTrials As System.Windows.Forms.NumericUpDown
         Private WithEvents m_hdrInputOpt As cEwEHeaderLabel
         Private WithEvents m_hdrOutputParam As cEwEHeaderLabel
         Private WithEvents m_tcOutput As System.Windows.Forms.TabControl
@@ -551,9 +557,10 @@ Namespace Ecosim
         Private WithEvents m_spPlot As System.Windows.Forms.SplitContainer
         Private WithEvents m_graph As ZedGraphControl
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
-        Private WithEvents m_lblGroups As System.Windows.Forms.Label
+        Private WithEvents m_hdrGroups As cEwEHeaderLabel
         Private WithEvents m_btnFromPedigree As System.Windows.Forms.Button
         Friend WithEvents m_cbSave As System.Windows.Forms.CheckBox
+        Private WithEvents m_nudNumTrials As ScientificInterfaceShared.Controls.cEwENumericUpDown
     End Class
 
 End Namespace
