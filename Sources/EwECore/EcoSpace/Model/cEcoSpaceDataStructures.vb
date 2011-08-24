@@ -1688,6 +1688,8 @@ Public Class cEcospaceDataStructures
                 PPmap.ResponseIndexForGroup(igrp) = 2
             Next
 
+            'clear out the old data
+            Me.CapMaps.Clear()
             Me.CapMaps.Add(PPmap)
             Me.CapMaps.Add(depthMap)
 
