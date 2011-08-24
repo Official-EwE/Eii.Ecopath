@@ -7983,6 +7983,12 @@ Public Class cCore
         Dim msg As cMessage = Nothing
         Dim vs As cVariableStatus = Nothing
 
+        Me.Messages.SendMessage(New cMessage("WARNING: Core.CheckHabitats() has been disabled for debugging.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+        System.Console.WriteLine("------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX--------------")
+        System.Console.WriteLine("------WARNING: Core.CheckHabitats() has been disabled for debugging.--------------")
+        System.Console.WriteLine("------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX--------------")
+        Return True
+
         If Not Me.m_EcoSpaceData.NewMultiStanza Then
             'this only matters for the New Multi Stanza code
             Return True
