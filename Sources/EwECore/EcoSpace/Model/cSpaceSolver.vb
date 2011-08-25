@@ -299,6 +299,7 @@ Public Class cSpaceSolver
 
                 If m_Data.Depth(i, j) = 0 Then m_Data.Bcell(i, j, iGrp) = 0
                 BB(iGrp) = m_Data.Bcell(i, j, iGrp)
+                'Debug.Assert(Not Single.IsNaN(BB(iGrp)))
 
                 If m_TracerData.EcoSpaceConSimOn Then m_ConTracer.ConcTr(iGrp) = m_Data.Ccell(i, j, iGrp)
 
@@ -383,7 +384,7 @@ Public Class cSpaceSolver
 
             If RelPPupwell < 1 Then RelPPupwell = 1
 
-            '  Debug.Assert(i <> 2)
+
             'jb compute Flowin() and FlowoutRate() for all groups for this row/col
             derivtRed(BB, Flowin, FlowoutRate, EatEff, VulPred, m_Data.RelPP(i, j) / PPScale * RelPPupwell, i, j)
 
@@ -783,8 +784,9 @@ Public Class cSpaceSolver
         'numbers in pools iad, iju rather than biomasses
         For i = 1 To m_Data.NGroups
             'If i > N And biomass(i) = 0 Then biomass(i) = 1
-            If Biomass(i) < 1.0E-20 Then Biomass(i) = 1.0E-20 '0.00000001
+            If Biomass(i) < 1.0E-20 Or Single.IsNaN(Biomass(i)) Then Biomass(i) = 1.0E-20 '0.00000001
             If m_SimData.NoIntegrate(i) >= 0 Then pred(i) = Biomass(i)
+            If Single.IsNaN(pred(i)) Then pred(i) = 1.0E-20
         Next
 
     End Sub

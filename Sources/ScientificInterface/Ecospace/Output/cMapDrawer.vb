@@ -320,7 +320,7 @@ Public Class cMapDrawer
                         sMapValue = m_map(i, j, iGroup) / m_core.StartBiomass(iGroup)
                         If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
                             icc = m_lColors.Count
-                        ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Then
+                        ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Or Single.IsNaN(sMapValue) Then
                             icc = 1
                         Else
                             ' Old EwE5:    icc = m_ColorNum * 1 / (MapValue + 1)
@@ -330,7 +330,7 @@ Public Class cMapDrawer
                             'icc = CSng(Math.Log(sMapValue) * m_lColors.Count + m_lColors.Count / 2)
                         End If
 
-                        'Boundary check
+                       'Boundary check
                         icc = Math.Max(Math.Min(m_lColors.Count - 1, icc), 1)
 
                         brCell = New SolidBrush(m_lColors(CInt(icc)))

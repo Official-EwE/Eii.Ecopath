@@ -30,6 +30,8 @@ Public Class cEcoSpace
 
 #Region "Private data"
 
+    Private Const MIN_HABCAP As Single = 0.001F '0.000001F
+
     Private Enum eDistanceType As Integer
         NauticalMiles
         Kilometers
@@ -942,6 +944,8 @@ Public Class cEcoSpace
                 ReDim Btime(m_Data.NGroups) 'this clears out btime
                 ReDim ConTotal(m_Data.NGroups)
 
+                'Debug.Assert(itt <= 43)
+
                 '*************
                 'UPDATE SOLVERS WITH NON REFERENCED TIMESTEP DATA (itt, etc)
                 '*************
@@ -963,6 +967,9 @@ Public Class cEcoSpace
                 For ip = 1 To m_Data.nvartot
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
+                            If Single.IsNaN(Me.m_Data.Bcell(i, j, ip)) Then
+                                m_Data.Bcell(i, j, ip) = 1.0E-30
+                            End If
                             If m_Data.Bcell(i, j, ip) < 1.0E-30 Then m_Data.Bcell(i, j, ip) = 1.0E-30
                         Next j
                     Next i
@@ -5491,10 +5498,11 @@ exitline:
                     If ((Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) > 0) Or (Me.m_Data.PrefHab(K, 0) > 0)) And (m_Data.Depth(i, j) > 0.0) Then
                         Me.m_Data.HabCap(i, j, K) = 1
                     Else
-                        Me.m_Data.HabCap(i, j, K) = 0.001
+                        Me.m_Data.HabCap(i, j, K) = MIN_HABCAP 'F0.001
                     End If
                     'get max for rescaling to 0-1 range
-                    If Me.m_Data.HabCap(i, j, K) < 0.000001 Then Me.m_Data.HabCap(i, j, K) = 0.000001
+                    'If Me.m_Data.HabCap(i, j, K) < 0.000001 Then Me.m_Data.HabCap(i, j, K) = 0.000001
+                    If Me.m_Data.HabCap(i, j, K) < MIN_HABCAP Then Me.m_Data.HabCap(i, j, K) = MIN_HABCAP
                     If Me.m_Data.HabCap(i, j, K) > MaxCap Then MaxCap = Me.m_Data.HabCap(i, j, K)
                 Next j
             Next i
@@ -5513,7 +5521,9 @@ exitline:
     Public Sub SetHabCap()
         'set up array of relative habitat capacities by cell and group
         Dim MaxCap As Double, cap As Single
-        ReDim m_Data.HabCap(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups), m_Data.TotHabCap(m_Data.NGroups)
+        ReDim m_Data.HabCap(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        ReDim m_Data.TotHabCap(m_Data.NGroups)
+        ReDim m_Data.MaxHabCap(m_Data.NGroups)
 
         'set capacities from habitats and input maps
         cap = Me.setHabCapFromHabitat
@@ -5528,6 +5538,22 @@ exitline:
         AdjustLowHapCaps()
 
     End Sub
+
+
+    Public Function GetHabCapsLessThen(ByVal LowerLimit As Single) As List(Of Integer)
+        'make sure the habitat capacity has been set
+        Me.SetHabCap()
+
+        Dim failedIndexes As New List(Of Integer)
+        For igrp As Integer = 1 To Me.m_Data.nLiving
+            If Me.m_Data.MaxHabCap(igrp) < LowerLimit Then
+                failedIndexes.Add(igrp)
+            End If
+        Next
+
+        Return failedIndexes
+
+    End Function
 
     Public Sub UpdateMaps(ByVal MapDataType As eDataTypes)
         Try
@@ -5558,8 +5584,9 @@ exitline:
             For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
                     Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / MaxCap
                     'Min Capacity
-                    If Me.m_Data.HabCap(ir, ic, iGrp) < 0.000001F Then Me.m_Data.HabCap(ir, ic, iGrp) = 0.000001F
+                    If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP '0.000001F
                     Me.m_Data.TotHabCap(iGrp) = Me.m_Data.TotHabCap(iGrp) + Me.m_Data.HabCap(ir, ic, iGrp)
+                    Me.m_Data.MaxHabCap(iGrp) = Math.Max(Me.m_Data.MaxHabCap(iGrp), Me.m_Data.HabCap(ir, ic, iGrp))
                 Next
             Next
 
@@ -5600,6 +5627,8 @@ exitline:
                 If map.ResponseIndexForGroup(igrp) > 0 Then
                     For i = 1 To Me.m_Data.InRow
                         For j = 1 To Me.m_Data.InCol
+                            'Sum all the capability map response functions into the HabCap Cell for each group
+                            'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
                             Me.m_Data.HabCap(i, j, igrp) += map.ResponseFunction(igrp, i, j)
                             MaxCap = Math.Max(Me.m_Data.HabCap(i, j, igrp), MaxCap)
                         Next

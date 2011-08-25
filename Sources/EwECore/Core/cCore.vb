@@ -7975,67 +7975,108 @@ Public Class cCore
     ''' <returns>True if all groups have habitat area. False otherwise</returns>
     ''' -----------------------------------------------------------------------
     Private Function checkHabitats() As Boolean
-
-        Dim group As cEcospaceGroup = Nothing
         Dim igrp As Integer
-        Dim bHasArea As Boolean
-        Dim bAllArea As Boolean = True
-        Dim msg As cMessage = Nothing
+        Dim msg As cFeedbackMessage = Nothing
         Dim vs As cVariableStatus = Nothing
 
-        Me.Messages.SendMessage(New cMessage("WARNING: Core.CheckHabitats() has been disabled for debugging.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
-        System.Console.WriteLine("------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX--------------")
-        System.Console.WriteLine("------WARNING: Core.CheckHabitats() has been disabled for debugging.--------------")
-        System.Console.WriteLine("------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX--------------")
-        Return True
+        Dim FailedGroups As List(Of Integer)
+        FailedGroups = Me.m_Ecospace.GetHabCapsLessThen(0.5F)
 
-        If Not Me.m_EcoSpaceData.NewMultiStanza Then
-            'this only matters for the New Multi Stanza code
-            Return True
-        End If
+        'send a message if there are groups that failed the HabCap test
+        If FailedGroups.Count > 0 Then
+            Dim msgStr As String = "Warning: The following group(s) have a maximun habitat capacity lower than 0.5. Do you want to continue?"
+            'msgStr = My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA
+            msg = New cFeedbackMessage(msgStr, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
+                                                                cFeedbackMessage.eReplyStyle.YES_NO, , cFeedbackMessage.eReply.YES)
 
-        For isp As Integer = 1 To Me.m_Stanza.Nsplit
-            For ist As Integer = 1 To m_Stanza.Nstanza(isp)
+            For Each igrp In FailedGroups
+                ' Connect variable status to group preferred habitat
+                Dim grpName As String
+                ' grpName = String.Format(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA_GROUP, Me.m_EcoPathData.GroupName(igrp))
+                grpName = Me.m_EcoPathData.GroupName(igrp)
 
-                igrp = m_Stanza.EcopathCode(isp, ist)
-                group = Me.EcospaceGroups(igrp)
+                vs = New cVariableStatus(eStatusFlags.MissingParameter, grpName, _
+                                         eVarNameFlags.NotSet, eDataTypes.MapResponse, eCoreComponentType.EcoSpace, igrp)
 
-                'Determine area
-                bHasArea = False
-                For ihab As Integer = 0 To Me.nHabitats
-                    ' ToDo: reevaluate
-                    If (Me.m_EcoSpaceData.PrefHab(igrp, ihab) > 0) Then  ' If Me.m_EcoSpaceData.PrefHab(igrp, ihab)
-                        If Me.m_EcoSpaceData.HabAreaProportion(ihab) > 0 Then
-                            bHasArea = True
-                            Exit For
-                        End If
-                    End If
-                Next ihab
 
-                ' Keep track record of assessment
-                bAllArea = bAllArea And bHasArea
+                msg.AddVariable(vs)
 
-                If Not bHasArea Then
-                    'no area for this group
-                    If (msg Is Nothing) Then msg = New cMessage(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA, _
-                                                                eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
-                                                                eMessageImportance.Warning, eDataTypes.EcospaceGroup)
-                    ' Connect variable status to group preferred habitat
-                    vs = New cVariableStatus(group, eStatusFlags.MissingParameter, _
-                                             String.Format(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA_GROUP, group.Name), _
-                                             eVarNameFlags.PreferredHabitat, 1)
-                    msg.AddVariable(vs)
-                End If
+            Next
 
-            Next ist
-        Next isp
+            Me.m_publisher.SendMessage(msg)
 
-        If Not bAllArea Then
-            Me.Messages.AddMessage(msg)
-            Return False
+            If msg.Reply = cFeedbackMessage.eReply.NO Then
+                Return False
+            End If
+
+
         End If
 
         Return True
+
+
+        'Dim group As cEcospaceGroup = Nothing
+        'Dim igrp As Integer
+        'Dim bHasArea As Boolean
+        'Dim bAllArea As Boolean = True
+        'Dim msg As cFeedbackMessage = Nothing
+        'Dim vs As cVariableStatus = Nothing
+        'Dim bFailed As Boolean
+
+
+        ''Me.Messages.SendMessage(New cMessage("WARNING: Core.CheckHabitats() has been disabled for debugging.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+        ''System.Console.WriteLine("------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX--------------")
+        ''System.Console.WriteLine("------WARNING: Core.CheckHabitats() has been disabled for debugging.--------------")
+        ''System.Console.WriteLine("------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX--------------")
+        'Return True
+
+        'If Not Me.m_EcoSpaceData.NewMultiStanza Then
+        '    'this only matters for the New Multi Stanza code
+        '    Return True
+        'End If
+
+        'For isp As Integer = 1 To Me.m_Stanza.Nsplit
+        '    For ist As Integer = 1 To m_Stanza.Nstanza(isp)
+
+        '        igrp = m_Stanza.EcopathCode(isp, ist)
+        '        group = Me.EcospaceGroups(igrp)
+
+        '        'Determine area
+        '        bHasArea = False
+        '        For ihab As Integer = 0 To Me.nHabitats
+        '            ' ToDo: reevaluate
+        '            If (Me.m_EcoSpaceData.PrefHab(igrp, ihab) > 0) Then  ' If Me.m_EcoSpaceData.PrefHab(igrp, ihab)
+        '                If Me.m_EcoSpaceData.HabAreaProportion(ihab) > 0 Then
+        '                    bHasArea = True
+        '                    Exit For
+        '                End If
+        '            End If
+        '        Next ihab
+
+        '        ' Keep track record of assessment
+        '        bAllArea = bAllArea And bHasArea
+
+        '        If Not bHasArea Then
+        '            'no area for this group
+        '            If (msg Is Nothing) Then msg = New cMessage(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA, _
+        '                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
+        '                                                        eMessageImportance.Warning, eDataTypes.EcospaceGroup)
+        '            ' Connect variable status to group preferred habitat
+        '            vs = New cVariableStatus(group, eStatusFlags.MissingParameter, _
+        '                                     String.Format(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA_GROUP, group.Name), _
+        '                                     eVarNameFlags.PreferredHabitat, 1)
+        '            msg.AddVariable(vs)
+        '        End If
+
+        '    Next ist
+        'Next isp
+
+        'If Not bAllArea Then
+        '    Me.Messages.AddMessage(msg)
+        '    Return False
+        'End If
+
+        'Return True
 
     End Function
 

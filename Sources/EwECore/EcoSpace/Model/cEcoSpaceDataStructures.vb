@@ -450,6 +450,9 @@ Public Class cEcospaceDataStructures
     Public HabCapInput(,,) As Single
     Public TotHabCap() As Single
 
+    '''<summary>max capacity by group</summary>
+    ''' <remarks>Used to check that the user has set capacities for all groups </remarks>
+    Public MaxHabCap() As Single
     ''' <summary>
     ''' Latiude of a cell by row
     ''' </summary>
@@ -971,6 +974,7 @@ Public Class cEcospaceDataStructures
             '   ReDim VulPred(nvartot)
             ReDim IsAdvected(NGroups)
             ReDim Me.TotHabCap(NGroups)
+            ReDim Me.MaxHabCap(NGroups)
             'jb PrefHab() was redimed here and redimHabitatVariables()
             '        ReDim PrefHab(nGroups, NoHabitats)
 
