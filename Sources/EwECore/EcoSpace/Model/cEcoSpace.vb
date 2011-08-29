@@ -5623,7 +5623,7 @@ exitline:
         Dim i As Integer, j As Integer, igrp As Integer, MaxCap As Double
 
         For Each map As IEnviroInputMap In Me.m_Data.CapMaps
-            For igrp = 1 To Me.m_Data.nLiving
+            For igrp = 1 To Me.m_Data.NGroups
                 If map.ResponseIndexForGroup(igrp) > 0 Then
                     For i = 1 To Me.m_Data.InRow
                         For j = 1 To Me.m_Data.InCol
