@@ -30,7 +30,7 @@ Public Class cEcoSpace
 
 #Region "Private data"
 
-    Private Const MIN_HABCAP As Single = 0.001F '0.000001F
+    Private Const MIN_HABCAP As Single = 0.000001F
 
     Private Enum eDistanceType As Integer
         NauticalMiles
@@ -1790,11 +1790,11 @@ Public Class cEcoSpace
                                 m_Data.Bcell(i, j, ip) = 0.0001 * m_SimData.StartBiomass(ip)
                             End If
 
-
                             If m_Data.IsMigratory(ip) Then
                                 If i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1 Then m_Data.Bcell(i, j, ip) = 0
                             End If
                         Else
+                            'Depth(i,j) <= 0
                             AMm(i, j, ip) = -1.0 'E+30
                         End If ' If m_Data.Depth(i, j) > 0 Then
 
@@ -5493,16 +5493,14 @@ exitline:
                     'set relative habitat capacity for this cell, group=f(cell attributes)
                     'example using qualitative habitat use from old ecospace
 
-                    ' To JB: Converted PrefHab from boolean to single, please assess
                     'If (Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) = True Or Me.m_Data.PrefHab(K, 0) = True) And m_Data.Depth(i, j) > 0.0 Then
                     If ((Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) > 0) Or (Me.m_Data.PrefHab(K, 0) > 0)) And (m_Data.Depth(i, j) > 0.0) Then
                         Me.m_Data.HabCap(i, j, K) = 1
-                    Else
-                        Me.m_Data.HabCap(i, j, K) = MIN_HABCAP 'F0.001
                     End If
+                    'Do Not set min hab capacity here 
+                    'it will be set once all the capacities have been add and the capacity is normalizeCapacityMap()
+                    'If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP
                     'get max for rescaling to 0-1 range
-                    'If Me.m_Data.HabCap(i, j, K) < 0.000001 Then Me.m_Data.HabCap(i, j, K) = 0.000001
-                    If Me.m_Data.HabCap(i, j, K) < MIN_HABCAP Then Me.m_Data.HabCap(i, j, K) = MIN_HABCAP
                     If Me.m_Data.HabCap(i, j, K) > MaxCap Then MaxCap = Me.m_Data.HabCap(i, j, K)
                 Next j
             Next i
@@ -5544,6 +5542,7 @@ exitline:
         'make sure the habitat capacity has been set
         Me.SetHabCap()
 
+        'build a list of groups that have a max capacity of less than the lower limit
         Dim failedIndexes As New List(Of Integer)
         For igrp As Integer = 1 To Me.m_Data.nLiving
             If Me.m_Data.MaxHabCap(igrp) < LowerLimit Then
@@ -5586,6 +5585,7 @@ exitline:
                     'Min Capacity
                     If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP '0.000001F
                     Me.m_Data.TotHabCap(iGrp) = Me.m_Data.TotHabCap(iGrp) + Me.m_Data.HabCap(ir, ic, iGrp)
+                    'MaxHabCap() is used to test if the capacity of a group is above so min level
                     Me.m_Data.MaxHabCap(iGrp) = Math.Max(Me.m_Data.MaxHabCap(iGrp), Me.m_Data.HabCap(ir, ic, iGrp))
                 Next
             Next
@@ -5638,45 +5638,6 @@ exitline:
         Next map
 
         Return MaxCap
-
-            ''jb this is just for debugging
-            ''SmoothCap(K)
-            ''SmoothCap(K)
-
-            ''rescale and sum up over cells
-            'For i = 1 To Me.m_Data.InRow : For j = 1 To Me.m_Data.InCol
-            '        Me.m_Data.HabCap(i, j, igrp) = Me.m_Data.HabCap(i, j, igrp) / MaxCap
-            '        Me.m_Data.TotHabCap(igrp) = Me.m_Data.TotHabCap(igrp) + Me.m_Data.HabCap(i, j, igrp)
-            '    Next
-            'Next
-
-            ''set habcaps for cells across grid boundaries
-            'Dim bMultiStanza As Boolean = False
-            'For i = 1 To m_Stanza.Nsplit
-
-            '    For ii As Integer = 1 To m_Stanza.Nstanza(i)
-            '        If igrp = m_Stanza.EcopathCode(i, ii) Then
-            '            bMultiStanza = True 'stanzas are indexed from zero
-            '            Exit For
-            '        End If
-            '    Next ii
-            '    If bMultiStanza = True Then Exit For
-            'Next i
-
-            'If Not bMultiStanza Then
-            '    For j = 0 To Me.m_Data.InCol + 1
-            '        Me.m_Data.HabCap(0, j, igrp) = Me.m_Data.HabCap(1, j, igrp)
-
-            '        Me.m_Data.HabCap(Me.m_Data.InRow + 1, j, igrp) = Me.m_Data.HabCap(Me.m_Data.InRow, j, igrp)
-            '    Next j
-
-            '    For i = 0 To Me.m_Data.InRow + 1
-            '        Me.m_Data.HabCap(i, 0, igrp) = Me.m_Data.HabCap(i, 1, igrp)
-            '        Me.m_Data.HabCap(i, Me.m_Data.InCol + 1, igrp) = Me.m_Data.HabCap(i, Me.m_Data.InCol, igrp)
-            '    Next i
-            'End If
-
-            '    Next igrp
 
     End Function
 
