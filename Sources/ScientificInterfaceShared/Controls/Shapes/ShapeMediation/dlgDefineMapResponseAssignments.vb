@@ -284,6 +284,10 @@ Public Class dlgDefineMapResponseAssignments
                         'add a group node
                         Dim ndgrp As TreeNode = ndGrps.Nodes.Add(Me.m_uic.Core.EcoPathGroupInputs(igrp).Name)
                         ndgrp.Tag = igrp
+                        If Not ndApply.IsExpanded Then
+                            'if there are groups assigned to this Map/Node then expand it the tree to this point
+                            ndApply.ExpandAll()
+                        End If
                     End If
                 Next
             Next
@@ -436,6 +440,11 @@ Public Class dlgDefineMapResponseAssignments
 End Class
 
 #Region "ZedGraph helper for Response tool tips"
+
+
+'ToDo_jb cZedGraphEnviroResponseHelper is used by both dlgDefineMapResponseAssignments and ucMediationAssignments
+'it should be located in it's own file some place in the SI Shared...
+
 
 ''' <summary>
 ''' Derived Zedgraph helper class that just overrides the ToolTip formating for the EnvironmentalResponse graphs

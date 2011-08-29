@@ -30,7 +30,7 @@ Public Class ucApplyMapResponseGrid
         Dim map As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
 
         ' Define grid dimensions
-        Me.Redim(Core.nLivingGroups + 1, map.nMaps + 2)
+        Me.Redim(Core.nGroups + 1, map.nMaps + 2)
 
         For imap As Integer = 1 To map.nMaps
 
@@ -42,7 +42,7 @@ Public Class ucApplyMapResponseGrid
 
         Me(0, 0) = New EwEColumnHeaderCell("")
         Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        For iGroup As Integer = 1 To Core.nLivingGroups
+        For iGroup As Integer = 1 To Core.nGroups
             group = Core.EcoPathGroupInputs(iGroup)
             ' # Group name row header cells
             Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
@@ -66,7 +66,7 @@ Public Class ucApplyMapResponseGrid
 
             For imap As Integer = 1 To Manager.nMaps
                 Dim map As IEnviroInputMap = Manager.Map(imap)
-                For igrp As Integer = 1 To Me.Core.nLivingGroups
+                For igrp As Integer = 1 To Core.nGroups
                     label = ""
                     Dim ishp As Integer = map.ResponseIndexForGroup(igrp)
                     If ishp > 0 Then
@@ -146,9 +146,10 @@ Public Class ucApplyMapResponseGrid
 
             Dim igrp As Integer = e.Position.Row
             Dim iMap As Integer = e.Position.Column - 1
+            'just assume it is the column that the user has selected!!!
             Dim selectionType As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.Col
             If iMap < 0 Then
-                'the user has selected a row
+                'the user has selected a Row not the Col(as set above)
                 selectionType = dlgSelectResponse.eSelectionType.Row
             End If
 

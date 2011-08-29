@@ -332,7 +332,7 @@ Public Class dlgSelectResponse
 
             ElseIf Me.m_SelType = eSelectionType.Col Then
 
-                For igrp As Integer = 1 To Me.m_uic.Core.nGroups
+                For igrp As Integer = 1 To Me.m_nGroups
                     isp = Me.m_map.ResponseIndexForGroup(igrp)
                     If isp > 0 Then
                         Me.addShapeToApplied(isp)
@@ -383,14 +383,14 @@ Public Class dlgSelectResponse
 
         Try
             If Me.m_SelType = eSelectionType.Cell Then
-                If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_uic.Core.nLivingGroups Then
+                If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_nGroups Then
                     m_map.ResponseIndexForGroup(m_iSelGrp) = Me.getAppliedResponseIndex
                     Return True
                 End If
             ElseIf Me.m_SelType = eSelectionType.Col Then
                 'Apply the same shape to all the groups of the current map
                 Dim iSelResponseShape As Integer = Me.getAppliedResponseIndex
-                For igrp As Integer = 1 To Me.m_nGroups
+                For igrp As Integer = 1 To Me.m_uic.Core.nLivingGroups
                     m_map.ResponseIndexForGroup(igrp) = iSelResponseShape
                 Next
 

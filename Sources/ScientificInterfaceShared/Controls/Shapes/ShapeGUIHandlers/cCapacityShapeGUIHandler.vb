@@ -58,6 +58,7 @@ Namespace Controls
                         Dim dlgDefBP As New dlgDefineMapResponseAssignments(Me.UIContext, DirectCast(Me.SelectedShape, EwECore.cEnviroResponseFunction), UIContext.Core.CapacitMapInteractionManager)
                         '   Dim dlgDefBP As New ScientificInterfaceShared.d
 
+
                         If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
                             Me.MediationAssignments.RefreshContent()
                         End If
