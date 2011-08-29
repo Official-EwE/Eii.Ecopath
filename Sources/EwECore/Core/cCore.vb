@@ -7970,21 +7970,31 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Does every group have area defined on the map for its habitat(s)
+    ''' Has the capacity been set to a reasonable level for all groups.
     ''' </summary>
-    ''' <returns>True if all groups have habitat area. False otherwise</returns>
+    ''' <returns>True if all groups are above so min value. False otherwise</returns>
     ''' -----------------------------------------------------------------------
     Private Function checkHabitats() As Boolean
         Dim igrp As Integer
         Dim msg As cFeedbackMessage = Nothing
         Dim vs As cVariableStatus = Nothing
+        Dim limits() As Single
 
+        'set the lower limit based on the trophic level
+        ReDim limits(Me.nGroups)
+        For i As Integer = 1 To Me.nGroups
+            limits(i) = 1.0F - CSng(Math.Log10(Me.m_EcoPathData.TTLX(i)))
+            If limits(i) < 0.1F Then limits(i) = 0.1F
+        Next
+
+        'get the groups that are below the limit
         Dim FailedGroups As List(Of Integer)
-        FailedGroups = Me.m_Ecospace.GetHabCapsLessThen(0.5F)
+        FailedGroups = Me.m_Ecospace.GetHabCapsLessThen(limits)
 
         'send a message if there are groups that failed the HabCap test
         If FailedGroups.Count > 0 Then
-            Dim msgStr As String = "Warning: The following group(s) have a maximun habitat capacity lower than 0.5. Do you want to continue?"
+            'ToDo checkHabitats localize
+            Dim msgStr As String = "Warning: The following group(s) have a low maximun habitat capacity. Do you want to continue?"
             'msgStr = My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA
             msg = New cFeedbackMessage(msgStr, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
                                                                 cFeedbackMessage.eReplyStyle.YES_NO, , cFeedbackMessage.eReply.YES)
@@ -7994,13 +8004,11 @@ Public Class cCore
                 Dim grpName As String
                 ' grpName = String.Format(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA_GROUP, Me.m_EcoPathData.GroupName(igrp))
                 grpName = Me.m_EcoPathData.GroupName(igrp)
-
+                grpName = grpName & " max. capacity = " & Me.m_EcoSpaceData.MaxHabCap(igrp)
                 vs = New cVariableStatus(eStatusFlags.MissingParameter, grpName, _
                                          eVarNameFlags.NotSet, eDataTypes.MapResponse, eCoreComponentType.EcoSpace, igrp)
 
-
                 msg.AddVariable(vs)
-
             Next
 
             Me.m_publisher.SendMessage(msg)
@@ -8008,7 +8016,6 @@ Public Class cCore
             If msg.Reply = cFeedbackMessage.eReply.NO Then
                 Return False
             End If
-
 
         End If
 
@@ -8126,7 +8133,6 @@ Public Class cCore
             'Save to the current writer
             Me.SaveEcospaceResults(Me.m_spaceresults)
 
-
             'Call the interface delegate
             If m_SpaceInterfaceCallBack IsNot Nothing Then
 
@@ -8146,8 +8152,6 @@ Public Class cCore
 
     Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
         Try
-
-
             If Me.m_EcoSpaceData.bSaveCSV Then
                 If m_EcospaceResultsCSVWriter IsNot Nothing Then
                     Try
@@ -8168,9 +8172,8 @@ Public Class cCore
                 End If
             End If
 
-
         Catch ex As Exception
-
+            cLog.Write(ex)
         End Try
     End Sub
 

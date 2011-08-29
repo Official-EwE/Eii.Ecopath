@@ -5538,14 +5538,14 @@ exitline:
     End Sub
 
 
-    Public Function GetHabCapsLessThen(ByVal LowerLimit As Single) As List(Of Integer)
+    Public Function GetHabCapsLessThen(ByVal LowerLimits() As Single) As List(Of Integer)
         'make sure the habitat capacity has been set
         Me.SetHabCap()
 
         'build a list of groups that have a max capacity of less than the lower limit
         Dim failedIndexes As New List(Of Integer)
-        For igrp As Integer = 1 To Me.m_Data.nLiving
-            If Me.m_Data.MaxHabCap(igrp) < LowerLimit Then
+        For igrp As Integer = 1 To Me.m_Data.NGroups
+            If Me.m_Data.MaxHabCap(igrp) < LowerLimits(igrp) Then
                 failedIndexes.Add(igrp)
             End If
         Next
