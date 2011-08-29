@@ -723,7 +723,6 @@ Public Class cEcospaceDataStructures
 
             SetDefaultMeanVelocityMvel()
 
-
             For i = 1 To NGroups                            'CJW had nvar not n1
                 PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
@@ -742,8 +741,6 @@ Public Class cEcospaceDataStructures
             Next
 
             ReDimFleets()
-
-            ' setDefaultThreads()
 
             Return True
         Catch ex As Exception
@@ -1629,9 +1626,9 @@ Public Class cEcospaceDataStructures
             CapEnvResData.MediationDBIDs(1) = 1
 
             'create a linear increasing shape to use as the Environmental Response function (mediation function)
-            Dim dx As Single = 10.0F / CapEnvResData.NMedPoints
+            Dim dx As Double = 1.0F / (CapEnvResData.NMedPoints - 1)
             For ipt As Integer = 1 To CapEnvResData.NMedPoints
-                CapEnvResData.Medpoints(ipt, 1) = dx * (ipt - 1)
+                CapEnvResData.Medpoints(ipt, 1) = CSng(dx * (ipt - 1))
             Next
             CapEnvResData.IMedBase(1) = CapEnvResData.NMedPoints \ 2
             CapEnvResData.MedXbase(1) = 5
@@ -1641,7 +1638,7 @@ Public Class cEcospaceDataStructures
             'decreasing
             CapEnvResData.MediationDBIDs(2) = 2
             For ipt As Integer = 1 To CapEnvResData.NMedPoints
-                CapEnvResData.Medpoints(ipt, 2) = dx * (CapEnvResData.NMedPoints - ipt - 1)
+                CapEnvResData.Medpoints(ipt, 2) = CSng(dx * (CapEnvResData.NMedPoints - ipt))
             Next
             CapEnvResData.IMedBase(2) = CapEnvResData.NMedPoints \ 2
             CapEnvResData.MedXbase(2) = 5
