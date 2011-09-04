@@ -1286,7 +1286,8 @@ Public Class cFishingRateShape
                     m_data.FishRateNo(igrp, it) = 0
                     For iflt As Integer = 1 To m_data.nGear
                         m_data.FishRateNo(igrp, it) = m_data.FishRateNo(igrp, it) + m_data.FishMGear(iflt, igrp) * m_data.FishRateGear(iflt, it)
-                        If m_data.FishRateNo(igrp, it) > 0 Then m_data.FishRateNo(igrp, it) = 0
+                        ' JS 3sept11: Fixed #1041
+                        If m_data.FishRateNo(igrp, it) < 0 Then m_data.FishRateNo(igrp, it) = 0
                     Next iflt
 
                 End If ' Not isCombinedFleets
