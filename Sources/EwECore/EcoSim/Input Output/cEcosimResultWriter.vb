@@ -21,7 +21,7 @@ Public Class cEcosimResultWriter
 
     Private m_core As cCore = Nothing
 
-    Private Enum eResultTypes As Integer
+    Public Enum eResultTypes As Integer
         Biomass = 0
         Mortality
         Yield
@@ -47,9 +47,11 @@ Public Class cEcosimResultWriter
     ''' </summary>
     ''' <param name="strPath">The path to write to. If not specified, output is
     ''' written to <see cref="cCore.OutputPath">the core output path</see>.</param>
+    ''' <param name="results">The results to write, or nothing to write all results.</param>
     ''' <returns>True if saved successfully.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteResults(Optional ByVal strPath As String = "") As Boolean
+    Public Function WriteResults(Optional ByVal strPath As String = "", _
+                                 Optional ByVal results As eResultTypes() = Nothing) As Boolean
 
         Dim msg As cMessage = Nothing
         Dim bSucces As Boolean = True
@@ -64,16 +66,18 @@ Public Class cEcosimResultWriter
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return False
 
         For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(eResultTypes))
-            Try
-                If Not Me.WriteResults(outputtype, strPath, True) Or Not Me.WriteResults(outputtype, strPath, False) Then
+            If Me.CanWriteResult(results, outputtype) Then
+                Try
+                    If Not Me.WriteResults(outputtype, strPath, True) Or Not Me.WriteResults(outputtype, strPath, False) Then
+                        bSucces = False
+                        msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                        Me.m_core.Messages.SendMessage(msg)
+                    End If
+                Catch ex As Exception
                     bSucces = False
-                    msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
-                    Me.m_core.Messages.SendMessage(msg)
-                End If
-            Catch ex As Exception
-                bSucces = False
-                cLog.Write(String.Format("Exception in cEcosimResultWriter: {0}", ex.Message))
-            End Try
+                    cLog.Write(String.Format("Exception in cEcosimResultWriter: {0}", ex.Message))
+                End Try
+            End If
         Next
 
         If bSucces Then
@@ -87,6 +91,13 @@ Public Class cEcosimResultWriter
 #End Region ' Public interfaces
 
 #Region " Internal helpers "
+
+    Private Function CanWriteResult(ByVal aResults As eResultTypes(), ByVal result As eResultTypes) As Boolean
+
+        If (aResults Is Nothing) Then Return True
+        Return (Array.IndexOf(aResults, result) > -1)
+
+    End Function
 
     Private Function WriteResults(ByVal resulttype As eResultTypes, _
                                   ByVal strPath As String, _
