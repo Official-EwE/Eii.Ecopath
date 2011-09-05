@@ -372,7 +372,7 @@ Public Class cEcosimDatastructures
     Public ForcingShapes As Integer
     Public ForcingTitles() As String
 
-    Public ForcePoints As Integer 'number of points per forcing function
+    Public ForcePoints As Integer = DEFAULT_N_FORCINGPOINTS 'number of points per forcing function
     Public ZmaxScale As Single
     Public zscale(,) As Single 'ReDim Preserve zscale(ForcePoints, ForcingShapes + 3) 
     Public tval() As Single
@@ -899,12 +899,6 @@ Public Class cEcosimDatastructures
 
         Try
             Debug.Assert(NumYears > 0, Me.ToString & ".redimForcingShapes() TotalTime must be set to redim Forcing Shapes.")
-
-            If NumYears * FORCING_POINTS_PER_YEAR < DEFAULT_N_FORCINGPOINTS Then
-                ForcePoints = DEFAULT_N_FORCINGPOINTS '100 years is the min size of the forcing shapes
-            Else
-                ForcePoints = NumYears * FORCING_POINTS_PER_YEAR
-            End If
 
             ReDim zscale(ForcePoints, ForcingShapes)
             ReDim tval(ForcingShapes)

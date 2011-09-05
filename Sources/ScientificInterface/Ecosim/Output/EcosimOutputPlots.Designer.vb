@@ -34,6 +34,7 @@ Namespace Ecosim
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
+            Me.m_tsDDShowHidePlots = New System.Windows.Forms.ToolStripSplitButton
             Me.m_plGroups = New System.Windows.Forms.Panel
             Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_plFleets = New System.Windows.Forms.Panel
@@ -43,7 +44,7 @@ Namespace Ecosim
             Me.m_hdrPredators = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_plPrey = New System.Windows.Forms.Panel
             Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tsDDShowHidePlots = New System.Windows.Forms.ToolStripSplitButton
+            Me.m_cbSaveVisibleOnly = New System.Windows.Forms.CheckBox
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -150,6 +151,7 @@ Namespace Ecosim
             Me.m_tlpMain.Controls.Add(Me.m_plFleets, 0, 4)
             Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 2)
             Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 3)
+            Me.m_tlpMain.Controls.Add(Me.m_cbSaveVisibleOnly, 0, 6)
             Me.m_tlpMain.Name = "m_tlpMain"
             '
             'm_tsMain
@@ -159,6 +161,12 @@ Namespace Ecosim
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsDDShowHidePlots})
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsDDShowHidePlots
+            '
+            Me.m_tsDDShowHidePlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsDDShowHidePlots, "m_tsDDShowHidePlots")
+            Me.m_tsDDShowHidePlots.Name = "m_tsDDShowHidePlots"
             '
             'm_plGroups
             '
@@ -234,11 +242,11 @@ Namespace Ecosim
             Me.m_hdrPrey.IsCollapsed = False
             Me.m_hdrPrey.Name = "m_hdrPrey"
             '
-            'm_tsDDShowHidePlots
+            'm_cbSaveVisibleOnly
             '
-            Me.m_tsDDShowHidePlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsDDShowHidePlots, "m_tsDDShowHidePlots")
-            Me.m_tsDDShowHidePlots.Name = "m_tsDDShowHidePlots"
+            resources.ApplyResources(Me.m_cbSaveVisibleOnly, "m_cbSaveVisibleOnly")
+            Me.m_cbSaveVisibleOnly.Name = "m_cbSaveVisibleOnly"
+            Me.m_cbSaveVisibleOnly.UseVisualStyleBackColor = True
             '
             'EcosimOutputPlots
             '
@@ -279,6 +287,7 @@ Namespace Ecosim
         Private WithEvents m_hdrFleets As cEwEHeaderLabel
         Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tsDDShowHidePlots As System.Windows.Forms.ToolStripSplitButton
+        Private WithEvents m_cbSaveVisibleOnly As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace

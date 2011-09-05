@@ -693,6 +693,7 @@ Namespace DataSources
 
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathModel")
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim sVal1 As Single = 0.0!
             Dim sVal2 As Single = 0.0!
             Dim bSucces As Boolean = True
@@ -758,6 +759,7 @@ Namespace DataSources
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim bNewRow As Boolean = False
@@ -3487,6 +3489,58 @@ Namespace DataSources
 
 #End Region ' Diagnostics
 
+#Region " Model "
+
+        Private Function LoadEcosimModel() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcosimModel")
+            Dim bSuccess As Boolean = True
+
+            Try
+                ecosimDS.ForcePoints = CInt(Me.m_db.ReadSafe(reader, "ForcePoints", cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS))
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+
+            ecosimDS.nGroups = ecopathDS.NumGroups
+
+            Me.m_db.ReleaseReader(reader)
+            Return bSuccess
+
+        End Function
+
+        Private Function SaveEcosimModel() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSuccess As Boolean = True
+
+            ' Abort if there is no active scenario
+            If ecopathDS.ActiveEcosimScenario <= 0 Then Return False
+
+            writer = Me.m_db.GetWriter("EcosimModel")
+            dt = writer.GetDataTable()
+            Try
+                drow = dt.Rows(0)
+                drow.BeginEdit()
+                drow("ForcePoints") = ecosimDS.ForcePoints
+                drow.EndEdit()
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+
+            Me.m_db.ReleaseWriter(writer)
+            Return bSuccess
+
+        End Function
+
+#End Region ' Model
+
 #Region " Scenarios "
 
         ''' -------------------------------------------------------------------
@@ -3505,7 +3559,7 @@ Namespace DataSources
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
 
-            ecosimDS.nGroups = ecopathDS.NumGroups
+            bSucces = Me.LoadEcosimModel()
 
             ecosimDS.RedimVars()
             ecosimDS.SetDefaultParameters()
@@ -3617,8 +3671,7 @@ Namespace DataSources
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
-            ' Abort if there is no active scenario
-            If ecopathDS.ActiveEcosimScenario <= 0 Then Return False
+            If Not Me.SaveEcosimModel() Then Return False
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -3628,10 +3681,10 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Dim idm As New cIDMappings()
 
-            If iScenarioID = 0 Then iScenarioID = iActiveScenarioID
+            If (iScenarioID = 0) Then iScenarioID = iActiveScenarioID
 
             ' Duplicating a scenario?
-            If iScenarioID <> iActiveScenarioID Then
+            If (iScenarioID <> iActiveScenarioID) Then
                 ' #Yes: add ID mapping to allow copying of scenario content
                 idm.Add(eDataTypes.EcoSimScenario, iActiveScenarioID, iScenarioID)
             End If

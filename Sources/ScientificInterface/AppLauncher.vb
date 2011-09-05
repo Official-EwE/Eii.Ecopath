@@ -154,8 +154,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdShowHideItems As cDisplayGroupsCommand = Nothing
     Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
-    ' ToDo_JS: Discontinue, move to Ecosim UI
-    Private WithEvents m_cmdExportEcosimResultsToCSV As cCommand = Nothing
+    Private WithEvents m_cmdExportEcosimResultsToCSV As cEcosimSaveDataCommand = Nothing
     Private WithEvents m_cmdPrint As cCommand = Nothing
 
 #End Region ' Commands
@@ -493,7 +492,7 @@ Public Class AppLauncher
 
         Me.m_cmdEstimateVs = New cCommand(cmdh, "EstimateVs")
 
-        Me.m_cmdExportEcosimResultsToCSV = New cCommand(cmdh, "ExportEcosimResultsToCSV")
+        Me.m_cmdExportEcosimResultsToCSV = New cEcosimSaveDataCommand(cmdh)
 
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
@@ -3199,16 +3198,12 @@ Public Class AppLauncher
     Private Sub OnExportEcosimResultsToCSV(ByVal cmd As cCommand) _
         Handles m_cmdExportEcosimResultsToCSV.OnInvoke
 
-        Dim iGroup As Integer = cCore.NULL_VALUE
-        Dim bSaveAnnual As Boolean = False
-        Dim writer As cEcosimResultWriter = Nothing
+        Dim writer As EwECore.Ecosim.cEcosimResultWriter = Nothing
         Dim strPath As String = Me.Core.OutputPath
 
-        If cFileUtils.IsDirectoryAvailable(strPath, True) Then
-            writer = New cEcosimResultWriter(Me.UIContext.Core)
-            writer.WriteResults(strPath)
-            writer = Nothing
-        End If
+        writer = New EwECore.Ecosim.cEcosimResultWriter(Me.UIContext.Core)
+        writer.WriteResults(strPath, DirectCast(cmd, cEcosimSaveDataCommand).Results)
+        writer = Nothing
 
     End Sub
 

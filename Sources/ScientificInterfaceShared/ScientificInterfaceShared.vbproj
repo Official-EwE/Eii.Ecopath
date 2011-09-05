@@ -86,6 +86,7 @@
     <Compile Include="Commands\cFileSaveCommand.vb" />
     <Compile Include="Commands\cNavigationCommand.vb" />
     <Compile Include="Commands\cBrowserCommand.vb" />
+    <Compile Include="Commands\cEcosimSaveDataCommand.vb" />
     <Compile Include="Commands\cPrintCommand.vb" />
     <Compile Include="Controls\ApplicationStatus\cApplicationStatusNotifier.vb" />
     <Compile Include="Controls\ColorDialog\cEwEColorDialog.vb">

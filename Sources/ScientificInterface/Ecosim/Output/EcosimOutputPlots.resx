@@ -157,7 +157,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 215</value>
+    <value>193, 206</value>
   </data>
   <data name="m_lbGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -166,7 +166,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_plGroups</value>
@@ -178,19 +178,19 @@
     <value>Fill</value>
   </data>
   <data name="m_btnSaveData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 581</value>
+    <value>0, 559</value>
   </data>
   <data name="m_btnSaveData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_btnSaveData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 26</value>
+    <value>193, 25</value>
   </data>
   <data name="m_btnSaveData.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_btnSaveData.Text" xml:space="preserve">
-    <value>&amp;Save results to .csv...</value>
+    <value>&amp;Save results to .csv</value>
   </data>
   <data name="&gt;&gt;m_btnSaveData.Name" xml:space="preserve">
     <value>m_btnSaveData</value>
@@ -217,7 +217,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbPredators.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 101</value>
+    <value>193, 96</value>
   </data>
   <data name="m_lbPredators.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -226,7 +226,7 @@
     <value>m_lbPredators</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbPredators.Parent" xml:space="preserve">
     <value>m_plPredators</value>
@@ -247,7 +247,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 98</value>
+    <value>193, 93</value>
   </data>
   <data name="m_lbPrey.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -256,7 +256,7 @@
     <value>m_lbPrey</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbPrey.Parent" xml:space="preserve">
     <value>m_plPrey</value>
@@ -331,7 +331,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -367,7 +367,7 @@
     <value>m_hdrGroup</value>
   </data>
   <data name="&gt;&gt;m_hdrGroup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroup.Parent" xml:space="preserve">
     <value>m_plGroups</value>
@@ -385,7 +385,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 232</value>
+    <value>193, 223</value>
   </data>
   <data name="m_plGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -415,7 +415,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 71</value>
+    <value>193, 68</value>
   </data>
   <data name="m_lbFleets.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -424,7 +424,7 @@
     <value>m_lbFleets</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>
@@ -460,7 +460,7 @@
     <value>m_hdrFleets</value>
   </data>
   <data name="&gt;&gt;m_hdrFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>
@@ -472,13 +472,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 489</value>
+    <value>0, 470</value>
   </data>
   <data name="m_plFleets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 92</value>
+    <value>193, 89</value>
   </data>
   <data name="m_plFleets.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -523,7 +523,7 @@
     <value>m_hdrPredators</value>
   </data>
   <data name="&gt;&gt;m_hdrPredators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPredators.Parent" xml:space="preserve">
     <value>m_plPredators</value>
@@ -535,13 +535,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plPredators.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 257</value>
+    <value>0, 248</value>
   </data>
   <data name="m_plPredators.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plPredators.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 116</value>
+    <value>193, 111</value>
   </data>
   <data name="m_plPredators.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -586,7 +586,7 @@
     <value>m_hdrPrey</value>
   </data>
   <data name="&gt;&gt;m_hdrPrey.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPrey.Parent" xml:space="preserve">
     <value>m_plPrey</value>
@@ -598,13 +598,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plPrey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 373</value>
+    <value>0, 359</value>
   </data>
   <data name="m_plPrey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 116</value>
+    <value>193, 111</value>
   </data>
   <data name="m_plPrey.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -621,6 +621,33 @@
   <data name="&gt;&gt;m_plPrey.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="m_cbSaveVisibleOnly.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbSaveVisibleOnly.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 587</value>
+  </data>
+  <data name="m_cbSaveVisibleOnly.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 17</value>
+  </data>
+  <data name="m_cbSaveVisibleOnly.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_cbSaveVisibleOnly.Text" xml:space="preserve">
+    <value>Save data for visible plots only</value>
+  </data>
+  <data name="&gt;&gt;m_cbSaveVisibleOnly.Name" xml:space="preserve">
+    <value>m_cbSaveVisibleOnly</value>
+  </data>
+  <data name="&gt;&gt;m_cbSaveVisibleOnly.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbSaveVisibleOnly.Parent" xml:space="preserve">
+    <value>m_tlpMain</value>
+  </data>
+  <data name="&gt;&gt;m_cbSaveVisibleOnly.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
   <data name="m_tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -631,7 +658,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tlpMain.RowCount" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_tlpMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>193, 607</value>
@@ -652,7 +679,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsMain" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnSaveData" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plGroups" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plFleets" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPredators" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPrey" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,41.66667,Percent,20.83333,Percent,20.83333,Percent,16.66667,Absolute,25" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsMain" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnSaveData" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plGroups" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plFleets" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPredators" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plPrey" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cbSaveVisibleOnly" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,41.66667,Percent,20.83333,Percent,20.83333,Percent,16.66667,Absolute,25,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -718,6 +745,6 @@
     <value>EcosimOutputPlots</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.0.816, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.0.828, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
