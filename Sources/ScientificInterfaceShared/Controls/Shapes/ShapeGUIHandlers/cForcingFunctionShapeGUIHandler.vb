@@ -54,7 +54,7 @@ Namespace Controls
             Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
-            Me.SetDisplayYears(False)
+            Me.SketchpadDisplayAllData(False)
 
         End Sub
 
@@ -284,7 +284,7 @@ Namespace Controls
                     Me.ResetShapePrompted(Me.SelectedShapes)
 
                 Case eShapeCommandTypes.ShowAllData
-                    Me.SetDisplayYears(CBool(data))
+                    Me.SketchpadDisplayAllData(CBool(data))
 
                 Case Else
                     'Debug.Assert(False, String.Format("Command {0} not supported", cmd))
@@ -315,8 +315,8 @@ Namespace Controls
                     End Try
                 ElseIf msg.Source = eCoreComponentType.EcoSim And msg.Type = eMessageType.EcosimNYearsChanged Then
                     Try
-                        Me.SketchPad.NumDataYears = Me.NumDataYears
-                        Me.SetDisplayYears(Me.m_bShowAll)
+                        Me.SketchPad.NumDataPoints = Me.NumDataYears
+                        Me.SketchpadDisplayAllData(Me.m_bShowAll)
                         Me.Refresh()
                     Catch ex As Exception
                     End Try
@@ -553,10 +553,19 @@ Namespace Controls
 
         End Sub
 
-        Protected Overridable Sub SetDisplayYears(ByVal bShowAll As Boolean)
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Set whether all available shape data should be shown in the attached
+        ''' sketch pad.
+        ''' </summary>
+        ''' <param name="bShowAll">True to show all data, false to limit the shown data
+        ''' to an arbitrary number of data points dictated by specific shape handler
+        ''' implementations.</param>
+        ''' -----------------------------------------------------------------------
+        Protected Overridable Sub SketchpadDisplayAllData(ByVal bShowAll As Boolean)
             Me.m_bShowAll = bShowAll
-            If Me.SketchPad IsNot Nothing Then
-                Me.SketchPad.XAxisMaxValue = CInt(IIf(bShowAll, cCore.NULL_VALUE, Me.SketchPad.NumDataYears * cCore.N_MONTHS))
+            If (Me.SketchPad IsNot Nothing) Then
+                Me.SketchPad.XAxisMaxValue = CInt(IIf(bShowAll, cCore.NULL_VALUE, Me.SketchPad.NumDataPoints * cCore.N_MONTHS))
             End If
         End Sub
 

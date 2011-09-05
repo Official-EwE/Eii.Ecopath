@@ -71,7 +71,6 @@ Partial Class frmCapacityFunction
         Me.m_sketchPad.Handler = Nothing
         Me.m_sketchPad.IsSeasonal = False
         Me.m_sketchPad.Name = "m_sketchPad"
-        Me.m_sketchPad.NumDataYears = -9999
         Me.m_sketchPad.Shape = Nothing
         Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
         Me.m_sketchPad.ShowValueTooltip = True

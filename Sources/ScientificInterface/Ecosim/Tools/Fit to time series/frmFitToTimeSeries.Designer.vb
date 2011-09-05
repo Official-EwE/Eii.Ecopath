@@ -657,7 +657,7 @@ Namespace Ecosim
             Me.m_sketchPad.Location = New System.Drawing.Point(0, 0)
             Me.m_sketchPad.Margin = New System.Windows.Forms.Padding(0)
             Me.m_sketchPad.Name = "m_sketchPad"
-            Me.m_sketchPad.NumDataYears = 0
+            Me.m_sketchPad.NumDataPoints = 0
             Me.m_sketchPad.NumSplinePoints = 0
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue

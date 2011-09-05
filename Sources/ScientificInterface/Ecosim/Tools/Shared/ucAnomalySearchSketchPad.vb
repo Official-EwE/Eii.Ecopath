@@ -90,6 +90,7 @@ Namespace Ecosim
                                           ByVal clr As System.Drawing.Color, _
                                           ByVal bDrawLabels As Boolean, _
                                           ByVal drawMode As eSketchDrawModeTypes, _
+                                          ByVal iXMax As Integer, _
                                           ByVal sYMax As Single)
 
             Dim iYear1 As Integer = 0
@@ -99,7 +100,7 @@ Namespace Ecosim
             ' Designer mode test
             If (Me.Shape Is Nothing) Then Return
 
-            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
+            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, iXMax, sYMax)
 
             If Me.m_dragMode = eDragModeTypes.None Then
                 iYear1 = Me.YearToX(Me.m_iYearFirst, rcImage.Width)
@@ -199,7 +200,7 @@ Namespace Ecosim
             If Me.Capture Then
                 ' Calc resulting years
                 Me.m_iYearFirst = Math.Max(0, Me.XToYear(Me.m_iYearFirstDragPos, w))
-                Me.m_iYearLast = Math.Min(Me.NumDataYears, Me.XToYear(Me.m_iYearLastDragPos, w))
+                Me.m_iYearLast = Math.Min(Me.NumDataPoints, Me.XToYear(Me.m_iYearLastDragPos, w))
 
                 ' Notify the world
                 RaiseEvent OnYearRangeChanged(Me)

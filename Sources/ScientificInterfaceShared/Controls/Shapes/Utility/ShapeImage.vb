@@ -98,16 +98,12 @@ Namespace Controls
                                 Optional ByVal strXMarkLabel As String = "", _
                                 Optional ByVal strYMarkLabel As String = "")
 
-            If shape Is Nothing Then Return
+            If (shape Is Nothing) Then Return
+
+            ' Provide defaults
             If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax * 1.2!
-            If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(shape.DataType = eDataTypes.Mediation, 0.5!, 1.0!))
-
-            If (iXMax <= 0) Or (shape.DataType = eDataTypes.PriceMediation) Or _
-                                (shape.DataType = eDataTypes.Mediation) Or _
-                                (shape.DataType = eDataTypes.CapacityMediation) Then
-
-                iXMax = shape.XMax
-            End If
+            If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(TypeOf (shape) Is cMediationFunction, 0.5!, 1.0!))
+            If (iXMax <= 0) Then iXMax = shape.XMax
 
             cShapeImage.DrawShapeDirect(uic, _
                     shape.ShapeData, iXMax, shape.IsSeasonal, _

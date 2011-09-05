@@ -79,8 +79,10 @@ Namespace Controls
             MyBase.Detach()
         End Sub
 
-        Protected Overrides Sub SetDisplayYears(ByVal bShowAll As Boolean)
-            ' NOP
+        Protected Overrides Sub SketchpadDisplayAllData(ByVal bShowAll As Boolean)
+            If (Me.SketchPad IsNot Nothing) Then
+                Me.SketchPad.XAxisMaxValue = cCore.NULL_VALUE
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------

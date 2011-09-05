@@ -79,7 +79,7 @@ Namespace Controls
         ''' <summary></summary>
         Private m_sYMin As Single = cCore.NULL_VALUE
         ''' <summary>Number of data years to show.</summary>
-        Private m_iNumDataYears As Integer = 0
+        Private m_iNumDataPoints As Integer = 0
 
         ''' <summary>Horizontal mark line.</summary>
         Private m_sYMarkValue As Single = cCore.NULL_VALUE
@@ -409,13 +409,19 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the number of X-axis points with relevant data. All data 
+        ''' beyond this number will be blocked-out when drawn.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         <Browsable(False)> _
-        Public Overridable Property NumDataYears() As Integer
+        Public Overridable Property NumDataPoints() As Integer
             Get
-                Return Me.m_iNumDataYears
+                Return Me.m_iNumDataPoints
             End Get
             Set(ByVal value As Integer)
-                Me.m_iNumDataYears = value
+                Me.m_iNumDataPoints = value
                 Me.Invalidate()
             End Set
         End Property
@@ -519,7 +525,7 @@ Namespace Controls
             g.Clear(Me.BackColor)
 
             Try
-                Me.DrawShape(shape, rcClient, g, Me.ShapeColor, True, Me.SketchDrawMode, Me.YAxisMaxValue)
+                Me.DrawShape(shape, rcClient, g, Me.ShapeColor, True, Me.SketchDrawMode, Me.XAxisMaxValue, Me.YAxisMaxValue)
             Catch ex As Exception
                 bSucces = False
             End Try
@@ -568,6 +574,7 @@ Namespace Controls
         ''' <param name="g">The graphics to draw the image onto.</param>
         ''' <param name="clr">The colour to use rendering the image.</param>
         ''' <param name="drawMode">The <see cref="SketchDrawMode">Mode</see> to render the shape with.</param>
+        ''' <param name="bDrawLabels">The max X value to draw.</param>
         ''' <param name="sYMax">The max Y value to scale the shape to.</param>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub DrawShape(ByVal shape As cShapeData, _
@@ -576,19 +583,20 @@ Namespace Controls
                                 ByVal clr As Color, _
                                 ByVal bDrawLabels As Boolean, _
                                 ByVal drawMode As eSketchDrawModeTypes, _
+                                ByVal iXMax As Integer, _
                                 ByVal sYMax As Single)
 
             If (Me.Shape Is Nothing) Then Return
 
             ' Draw default
             cShapeImage.DrawShape(Me.UIContext, shape, rcImage, g, clr, drawMode, _
-                                  Me.XAxisMaxValue, sYMax, _
+                                  iXMax, sYMax, _
                                   Me.XMarkValue, Me.YMarkValue, _
                                   Me.XMarkLabel, Me.YMarkLabel)
 
             ' Draw gray area to block out data past the NumDataYears, if applicable
-            If (Me.NumDataYears > 0 And Not shape.IsSeasonal) Then
-                Me.DrawYearLimit(g, Me.YearToX(Me.NumDataYears, rcImage.Width))
+            If (Me.NumDataPoints > 0 And Not shape.IsSeasonal) Then
+                Me.DrawYearLimit(g, Me.YearToX(Me.NumDataPoints, rcImage.Width))
             End If
 
         End Sub
@@ -836,7 +844,7 @@ Namespace Controls
 
             Try
                 ' Draw
-                Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.ShapeColor, True, Me.SketchDrawMode, sYMax)
+                Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.ShapeColor, True, Me.SketchDrawMode, Me.XAxisMaxValue, sYMax)
             Catch ex As Exception
                 ' Woops
             End Try

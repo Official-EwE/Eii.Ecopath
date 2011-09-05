@@ -47,6 +47,7 @@ Namespace Controls
                 ByVal clr As System.Drawing.Color, _
                 ByVal bDrawLabels As Boolean, _
                 ByVal drawMode As eSketchDrawModeTypes, _
+                ByVal iXMax As Integer, _
                 ByVal sYMax As Single)
 
             If Me.UIContext Is Nothing Then Return
@@ -61,7 +62,7 @@ Namespace Controls
             Dim astrXMarks As String() = Nothing
             Dim sLabelXScale As Single = 1.0!
 
-            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
+            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, iXMax, sYMax)
 
             If Me.Shape Is Nothing Then Return
 

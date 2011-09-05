@@ -473,7 +473,7 @@ Namespace Controls
                     AddHandler Me.m_sketchPad.ShapeFinalized, AddressOf OnShapeFinalized
                     Me.m_sketchPad.ShapeColor = Me.Color
                     Me.m_sketchPad.YAxisMinValue = Me.MinYScale
-                    Me.m_sketchPad.NumDataYears = Me.NumDataYears
+                    Me.m_sketchPad.NumDataPoints = Me.NumDataYears
                     Me.m_sketchPad.SketchDrawMode = Me.SketchDrawMode
                     Me.m_sketchPad.Handler = Me
                     Me.m_sketchPad.UIContext = Me.UIContext

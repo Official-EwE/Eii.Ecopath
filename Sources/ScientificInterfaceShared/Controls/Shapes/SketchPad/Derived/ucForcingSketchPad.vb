@@ -80,10 +80,10 @@ Namespace Controls
                 ByVal clr As System.Drawing.Color, _
                 ByVal bDrawLabels As Boolean, _
                 ByVal drawMode As eSketchDrawModeTypes, _
+                ByVal iXMax As Integer, _
                 ByVal sYMax As Single)
 
             Dim strLabel As String = ""
-            Dim sXMax As Single = 0.0!
             Dim sLabelXScale As Single = 1.0!
             Dim sLabelXPos As Single = 0.0!
             Dim astrXMarks As String() = Nothing
@@ -95,7 +95,7 @@ Namespace Controls
             Dim yStep As Integer = 0
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
-            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
+            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, iXMax, sYMax)
 
             If Not bDrawLabels Then Return
             If Me.Shape Is Nothing Then Return

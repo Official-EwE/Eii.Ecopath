@@ -27,28 +27,24 @@ Namespace Controls
             Me.InitializeComponent()
         End Sub
 
-        'Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
-        '    Me.DrawShape(Me.Shape, Me.ClientRectangle, e.Graphics, Me.ShapeColor, True, Me.SketchDrawMode, Me.YAxisMaxValue)
-        'End Sub
-
         Protected Overrides Sub DrawShape(ByVal shape As EwECore.cShapeData, _
                 ByVal rcImage As System.Drawing.Rectangle, _
                 ByVal g As System.Drawing.Graphics, _
                 ByVal clr As System.Drawing.Color, _
                 ByVal bDrawLabels As Boolean, _
                 ByVal drawMode As eSketchDrawModeTypes, _
+                ByVal iXMax As Integer, _
                 ByVal sYMax As Single)
 
             If (Me.UIContext Is Nothing) Then Return
 
-            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, sYMax)
+            MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, iXMax, sYMax)
 
             ' Sanity checks
             If (shape Is Nothing) Then Return
             If (Not TypeOf (shape) Is cMediationBaseFunction) Then Return
             If (Not bDrawLabels) Then Return
 
-            Dim iXMax As Integer = 0
             Dim sfmt As StringFormat = Nothing
             Dim strCaption As String = ""
             Dim strLabel As String = ""
@@ -57,8 +53,6 @@ Namespace Controls
             Dim sYScale As Single = 1
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
-            'sYMax = Me.YAxisMaxValue
-            iXMax = Me.XAxisMaxValue
             sYScale = Me.YMarkValue
 
             If (sYScale = 0) Then sYScale = 1
@@ -127,7 +121,8 @@ Namespace Controls
             End Get
         End Property
 
-        Public Overrides Property NumDataYears() As Integer
+        <Browsable(False)> _
+        Public Overrides Property NumDataPoints() As Integer
             Get
                 Return cCore.NULL_VALUE
             End Get

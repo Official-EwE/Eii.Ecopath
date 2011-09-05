@@ -92,7 +92,7 @@ Namespace Ecosim
                 Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = Me.m_vulnerabilityBlockCodeSelector.SelectedBlock
                 Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
                 Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
-                Me.m_sketchPad.NumDataYears = Me.Core.nTimeSeriesYears
+                Me.m_sketchPad.NumDataPoints = Me.Core.nTimeSeriesYears
 
                 Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
                 Me.IsRunning = Me.m_F2TSManager.IsRunning()
@@ -178,7 +178,7 @@ Namespace Ecosim
                     End If
 
                 Case eCoreComponentType.TimeSeries
-                    Me.m_sketchPad.NumDataYears = Me.Core.nTimeSeriesYears
+                    Me.m_sketchPad.NumDataPoints = Me.Core.nTimeSeriesYears
 
                 Case eCoreComponentType.ShapesManager
                     ' Refresh the Anomaly search content
