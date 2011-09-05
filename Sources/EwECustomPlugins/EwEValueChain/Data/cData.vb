@@ -98,9 +98,9 @@ Public Class cData
         Dim strOldDBName As String = cData.GetDatabaseFileName(strModelName)
         Dim strDBName As String = ""
         Dim bMigrate As Boolean = False
-        Dim bSucces As Boolean = True
+        Dim bSucces As Boolean = False
 
-        If Me.m_db.IsConnected Then Me.m_db.Close()
+        Me.Close()
 
         cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_LOADING)
 
@@ -112,7 +112,7 @@ Public Class cData
             strDBName = strModelName
         End If
 
-        If Me.m_db.Open(strDBName, eDataSourceTypes.Access2003) = eDatasourceAccessType.Success Then
+        If Me.m_db.Open(strDBName) = eDatasourceAccessType.Success Then
 
             Me.m_bInitializing = True
             bSucces = Me.m_db.LoadModel(Me)
@@ -145,7 +145,7 @@ Public Class cData
         ' Start clean
         Me.IsChanged = False
 
-        Return bSucces
+        Return bSucces And Me.m_db.IsConnected
 
     End Function
 
