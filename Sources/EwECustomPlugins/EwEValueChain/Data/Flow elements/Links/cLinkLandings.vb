@@ -205,14 +205,22 @@ Public Class cLinkLandings
         End Get
     End Property
 
-    Public Overrides Function IsValid() As Boolean
-        Try
-            Dim fleet As cFleetInput = DirectCast(Me.Source, cProducerUnit).Fleet
-            Return (fleet.Landings(Me.Group.Index) = 0)
-        Catch ex As Exception
-        End Try
+    Public Overrides Function IsVisible() As Boolean
+        Dim fleet As cFleetInput = DirectCast(Me.Source, cProducerUnit).Fleet
+        Dim group As cEcoPathGroupInput = Me.Group
+        If (fleet IsNot Nothing) And (group IsNot Nothing) Then
+            Return (fleet.Landings(group.Index) > 0)
+        End If
         Return False
     End Function
+
+    Public Overrides ReadOnly Property Style() As ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags
+        Get
+            Dim fleet As cFleetInput = DirectCast(Me.Source, cProducerUnit).Fleet
+            If (fleet Is Nothing) Then Return cStyleGuide.eStyleFlags.FailedValidation
+            Return MyBase.Style
+        End Get
+    End Property
 
 #End Region ' Overrides
 

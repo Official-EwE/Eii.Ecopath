@@ -123,7 +123,13 @@ Public Class cLinkDefault
         End Set
     End Property
 
-    Public Overridable Function IsValid() As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' States whether a link is visible in the interface.
+    ''' </summary>
+    ''' <returns>True by default.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Function IsVisible() As Boolean
         Return True
     End Function
 

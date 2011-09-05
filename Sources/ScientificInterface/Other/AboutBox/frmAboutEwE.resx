@@ -121,6 +121,9 @@
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
     <value>522, 321</value>
@@ -150,6 +153,9 @@
   <data name="m_tlpGeneral.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="m_pbFish0.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_pbFish0.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -157,7 +163,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_pbFish0.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 280</value>
+    <value>145, 278</value>
   </data>
   <data name="m_pbFish0.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>AutoSize</value>
@@ -182,6 +188,9 @@
   </data>
   <data name="m_lbTitle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="m_lbTitle.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_lbTitle.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 0</value>
@@ -237,6 +246,9 @@
   <data name="m_lbVersion.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="m_lbVersion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lbVersion.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 18</value>
   </data>
@@ -263,6 +275,9 @@
   </data>
   <data name="m_lbCopyright.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="m_lbCopyright.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_lbCopyright.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 36</value>
@@ -538,7 +553,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpCredits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbTeam" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFish1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,25773,Percent,74,74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbTeam" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFish1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25.25773,Percent,74.74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpTeam.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -667,7 +682,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpModules.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbAcknowledgements" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFish2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,25773,Percent,74,74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbAcknowledgements" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFish2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25.25773,Percent,74.74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpacknowledgements.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -738,6 +753,9 @@
   <data name="m_lbTechnical.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="m_lbTechnical.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lbTechnical.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 0</value>
   </data>
@@ -767,6 +785,9 @@
   </data>
   <data name="m_lblNetVersion.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="m_lblNetVersion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_lblNetVersion.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 261</value>
@@ -814,7 +835,7 @@
     <value>m_gridTechnical</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Type" xml:space="preserve">
-    <value>ScientificInterface.AboutEwEGrid, EwE6, Version=6.1.1.109, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.AboutEwEGrid, EwE6, Version=6.3.0.904, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Parent" xml:space="preserve">
     <value>m_tlpTechnicalDetails</value>
@@ -883,7 +904,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpTechnical.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpTechnicalDetails" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,25773,Percent,74,74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish3" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpTechnicalDetails" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25.25773,Percent,74.74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpTechnical.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -1000,7 +1021,7 @@
     <value>m_gridDatabase</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Type" xml:space="preserve">
-    <value>ScientificInterface.DatabaseGrid, EwE6, Version=6.1.1.109, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.DatabaseGrid, EwE6, Version=6.3.0.904, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Parent" xml:space="preserve">
     <value>TableLayoutPanel2</value>
@@ -1069,7 +1090,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpDatabase.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish4" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TableLayoutPanel2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,25773,Percent,74,74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFish4" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TableLayoutPanel2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25.25773,Percent,74.74227" /&gt;&lt;Rows Styles="Percent,100,Absolute,281" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpDatabase.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -1130,6 +1151,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>604, 353</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>9, 9, 9, 9</value>

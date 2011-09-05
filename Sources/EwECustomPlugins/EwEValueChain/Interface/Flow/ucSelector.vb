@@ -23,8 +23,8 @@ Public Class ucSelector
             Dim lObj As New List(Of Object)
             If TypeOf value Is Array Then
                 For Each obj As Object In DirectCast(value, Array)
-                    If TypeOf obj Is cLink Then
-                        If DirectCast(obj, cLink).IsValid Then
+                    If (TypeOf obj Is cLink) Then
+                        If DirectCast(obj, cLink).IsVisible Then
                             lObj.Add(obj)
                         End If
                     Else

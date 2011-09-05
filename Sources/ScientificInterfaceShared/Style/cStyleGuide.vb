@@ -194,13 +194,13 @@ Namespace Style
             ''' <summary>Flag indicating that an Unknown Error has been encountered regarding this value.</summary>
             ErrorEncountered = CInt(eStatusFlags.ErrorEncountered)
 
-            ''' <summary>Flag indicating that a value is a Missing Parameter for one of the EwE models.</summary>
-            ''' <remarks>
-            ''' This flag is different from <see cref="eStatusFlags.Null">StyleFlags.Null</see>; Null values
-            ''' are model-technically not initialized while Missing Parameter values do not contain a valid
-            ''' value for the model that they are used in.
-            ''' </remarks>
-            MissingParameter = CInt(eStatusFlags.MissingParameter)
+            '''' <summary>Flag indicating that a value is a Missing Parameter for one of the EwE models.</summary>
+            '''' <remarks>
+            '''' This flag is different from <see cref="eStatusFlags.Null">StyleFlags.Null</see>; Null values
+            '''' are model-technically not initialized while Missing Parameter values do not contain a valid
+            '''' value for the model that they are used in.
+            '''' </remarks>
+            'MissingParameter = CInt(eStatusFlags.MissingParameter)
 
             ''' <summary>
             ''' Flag indicating that the core deemed a value as important for whatever reason. The

@@ -31,6 +31,7 @@ Namespace Other
             Me.m_lbVersion = New System.Windows.Forms.Label
             Me.m_lbCopyright = New System.Windows.Forms.Label
             Me.m_rtbDistribution = New System.Windows.Forms.RichTextBox
+            Me.m_pbSponsors = New System.Windows.Forms.PictureBox
             Me.m_tcMain = New System.Windows.Forms.TabControl
             Me.m_tpGeneral = New System.Windows.Forms.TabPage
             Me.m_tpTeam = New System.Windows.Forms.TabPage
@@ -47,17 +48,17 @@ Namespace Other
             Me.m_tlpTechnicalDetails = New System.Windows.Forms.TableLayoutPanel
             Me.m_lbTechnical = New System.Windows.Forms.Label
             Me.m_lblNetVersion = New System.Windows.Forms.Label
-            Me.m_gridTechnical = New ScientificInterface.AboutEwEGrid
             Me.m_tpDatabase = New System.Windows.Forms.TabPage
             Me.m_tlpDatabase = New System.Windows.Forms.TableLayoutPanel
             Me.m_pbFish4 = New System.Windows.Forms.PictureBox
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
             Me.m_lblDatabase = New System.Windows.Forms.Label
+            Me.m_gridTechnical = New ScientificInterface.AboutEwEGrid
             Me.m_gridDatabase = New ScientificInterface.DatabaseGrid
-            Me.m_pbSponsors = New System.Windows.Forms.PictureBox
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpDetails.SuspendLayout()
+            CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tcMain.SuspendLayout()
             Me.m_tpGeneral.SuspendLayout()
             Me.m_tpTeam.SuspendLayout()
@@ -74,7 +75,6 @@ Namespace Other
             Me.m_tlpDatabase.SuspendLayout()
             CType(Me.m_pbFish4, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel2.SuspendLayout()
-            CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_btnOK
@@ -92,7 +92,6 @@ Namespace Other
             '
             'm_pbFish0
             '
-            Me.m_pbFish0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_pbFish0.Image = Global.ScientificInterface.My.Resources.Resources.EwELogo_caption
             resources.ApplyResources(Me.m_pbFish0, "m_pbFish0")
             Me.m_pbFish0.Name = "m_pbFish0"
@@ -138,6 +137,14 @@ Namespace Other
             resources.ApplyResources(Me.m_rtbDistribution, "m_rtbDistribution")
             Me.m_rtbDistribution.Name = "m_rtbDistribution"
             '
+            'm_pbSponsors
+            '
+            Me.m_pbSponsors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_pbSponsors.Image = Global.ScientificInterface.My.Resources.Resources.Sponsors
+            resources.ApplyResources(Me.m_pbSponsors, "m_pbSponsors")
+            Me.m_pbSponsors.Name = "m_pbSponsors"
+            Me.m_pbSponsors.TabStop = False
+            '
             'm_tcMain
             '
             resources.ApplyResources(Me.m_tcMain, "m_tcMain")
@@ -180,7 +187,6 @@ Namespace Other
             'm_pbFish1
             '
             resources.ApplyResources(Me.m_pbFish1, "m_pbFish1")
-            Me.m_pbFish1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_pbFish1.Image = Global.ScientificInterface.My.Resources.Resources.EwELogo_caption
             Me.m_pbFish1.Name = "m_pbFish1"
             Me.m_pbFish1.TabStop = False
@@ -208,7 +214,6 @@ Namespace Other
             '
             'm_pbFish2
             '
-            Me.m_pbFish2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_pbFish2, "m_pbFish2")
             Me.m_pbFish2.Image = Global.ScientificInterface.My.Resources.Resources.EwELogo_caption
             Me.m_pbFish2.Name = "m_pbFish2"
@@ -230,7 +235,6 @@ Namespace Other
             '
             'm_pbFish3
             '
-            Me.m_pbFish3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_pbFish3, "m_pbFish3")
             Me.m_pbFish3.Image = Global.ScientificInterface.My.Resources.Resources.EwELogo_caption
             Me.m_pbFish3.Name = "m_pbFish3"
@@ -253,6 +257,39 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
             Me.m_lblNetVersion.Name = "m_lblNetVersion"
+            '
+            'm_tpDatabase
+            '
+            Me.m_tpDatabase.Controls.Add(Me.m_tlpDatabase)
+            resources.ApplyResources(Me.m_tpDatabase, "m_tpDatabase")
+            Me.m_tpDatabase.Name = "m_tpDatabase"
+            Me.m_tpDatabase.UseVisualStyleBackColor = True
+            '
+            'm_tlpDatabase
+            '
+            resources.ApplyResources(Me.m_tlpDatabase, "m_tlpDatabase")
+            Me.m_tlpDatabase.Controls.Add(Me.m_pbFish4, 0, 0)
+            Me.m_tlpDatabase.Controls.Add(Me.TableLayoutPanel2, 1, 0)
+            Me.m_tlpDatabase.Name = "m_tlpDatabase"
+            '
+            'm_pbFish4
+            '
+            resources.ApplyResources(Me.m_pbFish4, "m_pbFish4")
+            Me.m_pbFish4.Image = Global.ScientificInterface.My.Resources.Resources.EwELogo_caption
+            Me.m_pbFish4.Name = "m_pbFish4"
+            Me.m_pbFish4.TabStop = False
+            '
+            'TableLayoutPanel2
+            '
+            resources.ApplyResources(Me.TableLayoutPanel2, "TableLayoutPanel2")
+            Me.TableLayoutPanel2.Controls.Add(Me.m_lblDatabase, 0, 0)
+            Me.TableLayoutPanel2.Controls.Add(Me.m_gridDatabase, 0, 1)
+            Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+            '
+            'm_lblDatabase
+            '
+            resources.ApplyResources(Me.m_lblDatabase, "m_lblDatabase")
+            Me.m_lblDatabase.Name = "m_lblDatabase"
             '
             'm_gridTechnical
             '
@@ -283,40 +320,6 @@ Namespace Other
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridTechnical.UIContext = Nothing
             '
-            'm_tpDatabase
-            '
-            Me.m_tpDatabase.Controls.Add(Me.m_tlpDatabase)
-            resources.ApplyResources(Me.m_tpDatabase, "m_tpDatabase")
-            Me.m_tpDatabase.Name = "m_tpDatabase"
-            Me.m_tpDatabase.UseVisualStyleBackColor = True
-            '
-            'm_tlpDatabase
-            '
-            resources.ApplyResources(Me.m_tlpDatabase, "m_tlpDatabase")
-            Me.m_tlpDatabase.Controls.Add(Me.m_pbFish4, 0, 0)
-            Me.m_tlpDatabase.Controls.Add(Me.TableLayoutPanel2, 1, 0)
-            Me.m_tlpDatabase.Name = "m_tlpDatabase"
-            '
-            'm_pbFish4
-            '
-            Me.m_pbFish4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            resources.ApplyResources(Me.m_pbFish4, "m_pbFish4")
-            Me.m_pbFish4.Image = Global.ScientificInterface.My.Resources.Resources.EwELogo_caption
-            Me.m_pbFish4.Name = "m_pbFish4"
-            Me.m_pbFish4.TabStop = False
-            '
-            'TableLayoutPanel2
-            '
-            resources.ApplyResources(Me.TableLayoutPanel2, "TableLayoutPanel2")
-            Me.TableLayoutPanel2.Controls.Add(Me.m_lblDatabase, 0, 0)
-            Me.TableLayoutPanel2.Controls.Add(Me.m_gridDatabase, 0, 1)
-            Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-            '
-            'm_lblDatabase
-            '
-            resources.ApplyResources(Me.m_lblDatabase, "m_lblDatabase")
-            Me.m_lblDatabase.Name = "m_lblDatabase"
-            '
             'm_gridDatabase
             '
             Me.m_gridDatabase.AllowBlockSelect = False
@@ -346,14 +349,6 @@ Namespace Other
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatabase.UIContext = Nothing
             '
-            'm_pbSponsors
-            '
-            Me.m_pbSponsors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_pbSponsors.Image = Global.ScientificInterface.My.Resources.Resources.Sponsors
-            resources.ApplyResources(Me.m_pbSponsors, "m_pbSponsors")
-            Me.m_pbSponsors.Name = "m_pbSponsors"
-            Me.m_pbSponsors.TabStop = False
-            '
             'frmAboutEwE
             '
             Me.AcceptButton = Me.m_btnOK
@@ -373,6 +368,7 @@ Namespace Other
             Me.m_tlpGeneral.PerformLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpDetails.ResumeLayout(False)
+            CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tcMain.ResumeLayout(False)
             Me.m_tpGeneral.ResumeLayout(False)
             Me.m_tpTeam.ResumeLayout(False)
@@ -393,7 +389,6 @@ Namespace Other
             Me.m_tlpDatabase.PerformLayout()
             CType(Me.m_pbFish4, System.ComponentModel.ISupportInitialize).EndInit()
             Me.TableLayoutPanel2.ResumeLayout(False)
-            CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub

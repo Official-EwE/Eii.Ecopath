@@ -485,8 +485,6 @@ Public Class plFlow
             ' Assign
             Me.m_selection = value
 
-
-
             If TypeOf (Me.m_selection) Is plUnitControl Then
                 If Me.m_selector IsNot Nothing Then
                     ' Update property grid
