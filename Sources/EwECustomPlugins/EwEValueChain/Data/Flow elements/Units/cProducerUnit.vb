@@ -658,7 +658,7 @@ Public Class cProducerUnit
             ' Sanity check
             If (TypeOf link Is cLinkLandings) Then
                 Dim ll As cLinkLandings = DirectCast(link, cLinkLandings)
-                If (ll.Group IsNot Nothing) Then
+                If (ll.Group IsNot Nothing) And (ll.IsVisible) Then
                     asTotalBGroup(ll.Group.Index) += ll.BiomassRatio
                 End If
             End If
@@ -677,16 +677,17 @@ Public Class cProducerUnit
 
             If (TypeOf link Is cLinkLandings) Then
                 Dim ll As cLinkLandings = DirectCast(link, cLinkLandings)
-                If (ll.Group IsNot Nothing) Then
+                If (ll.Group IsNot Nothing) And (ll.IsVisible) Then
                     Dim iGroup As Integer = ll.Group.Index
                     sBiomass = Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
                     sPrice = Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
                 End If
             End If
 
+            ' Process every link to ensure that target units receive all inputs!
             link.Target.Process(results, New cInput(sBiomass, sPrice, sPrice), iTimeStep, iFleet)
-
             sTotalOutputValue += sPrice * sBiomass
+
         Next
 
         results.StoreFleetContribution(iFleet, Me, iTimeStep, sTotalOutputValue)
