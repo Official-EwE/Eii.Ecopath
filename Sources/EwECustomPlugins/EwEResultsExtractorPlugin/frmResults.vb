@@ -787,7 +787,7 @@ Public Class frmResults
                     For Month As Integer = 1 To 12
                         YearlyBiomass += Core.EcoSimGroupOutputs(EwEIndex).Biomass((Year - 1) * 12 + Month)
                     Next
-                    ABiomass(ParentIndex, Year) = YearlyBiomass / 12
+                    ABiomass(ParentIndex + 1, Year) = YearlyBiomass / 12
                 Next
             Else
                 For TimeStep As Integer = 1 To nDataRows
