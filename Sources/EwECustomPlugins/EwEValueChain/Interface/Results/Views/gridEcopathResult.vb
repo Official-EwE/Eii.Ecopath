@@ -180,10 +180,10 @@ Public Class gridEcopathResult
         Implements IResultView.ShowResults
 
         ' Split units in the different types
-        Dim alUnits(4) As List(Of cUnit)
+        Dim alUnits(5) As List(Of cUnit)
         Dim cell As SourceGrid2.Cells.Real.Cell = Nothing
 
-        For i As Integer = 0 To 3
+        For i As Integer = 0 To 4
             alUnits(i) = New List(Of cUnit)
         Next
 
@@ -198,11 +198,13 @@ Public Class gridEcopathResult
                     alUnits(2).Add(unit)
                 Case cUnitFactory.eUnitType.Wholesaler
                     alUnits(3).Add(unit)
+                Case cUnitFactory.eUnitType.Retailer
+                    alUnits(4).Add(unit)
             End Select
         Next
 
         ' Populate data cells
-        For i As Integer = 0 To 3
+        For i As Integer = 0 To 4
 
             Me.UpdateDataCell(Me(1, 2 + i), results, cResults.eVariableType.Production, alUnits(i), iFleet)
             Me.UpdateDataCell(Me(2, 2 + i), results, cResults.eVariableType.ProductionLive, alUnits(i), iFleet)
@@ -233,7 +235,7 @@ Public Class gridEcopathResult
         Next i
 
         ' Create total cells
-        For iRow As Integer = 3 To Me.RowsCount - 1
+        For iRow As Integer = 4 To Me.RowsCount - 1
             Dim sTotal As Single = 0.0!
             For iCol As Integer = eColumnTypes.Producer To eColumnTypes.Wholesaler
                 Try
@@ -274,10 +276,11 @@ Public Class gridEcopathResult
     End Function
 
     Private Function CreateDataCell(Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As EwECell
-        Dim cell As New EwECell(0.0!, GetType(Single))
+        Dim cell As New EwECell(0, GetType(Single))
         cell.Style = style
         cell.EditableMode = EditableMode.None
         cell.EnableEdit = False
+        cell.SuppressZero(0.0!) = True
         ' No decimals in results
         cell.NumDigits = 0
         Return cell
