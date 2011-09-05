@@ -3499,6 +3499,7 @@ Namespace DataSources
             Dim bSuccess As Boolean = True
 
             Try
+                reader.Read()
                 ecosimDS.ForcePoints = CInt(Me.m_db.ReadSafe(reader, "ForcePoints", cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS))
             Catch ex As Exception
                 bSuccess = False
