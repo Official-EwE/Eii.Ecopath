@@ -783,8 +783,8 @@ Public Class frmResults
             'Loop through EwE datastructure getting biomass for current group at each timestep
             If chkYearly.Checked Then
                 For Year As Integer = 1 To Core.nEcosimYears
+                    YearlyBiomass = 0
                     For Month As Integer = 1 To 12
-                        YearlyBiomass = 0
                         YearlyBiomass += Core.EcoSimGroupOutputs(EwEIndex).Biomass((Year - 1) * 12 + Month)
                     Next
                     ABiomass(ParentIndex, Year) = YearlyBiomass / 12
