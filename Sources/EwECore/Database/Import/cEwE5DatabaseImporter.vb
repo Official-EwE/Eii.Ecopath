@@ -1542,9 +1542,11 @@ Namespace Database
 
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim nScenarioID As Integer = 1
             Dim bHasScenarios As Boolean = False
+            Dim nMaxForcePoints As Integer = 1200
 
             ' Clear table(s)
             Me.m_dbEwE6.Execute("DELETE * FROM EcosimScenario")
@@ -1580,6 +1582,8 @@ Namespace Database
                 drow("UseVarPQ") = Me.FixValue(reader, "UseVarPQ")
                 drow("LastSaved") = Me.ExtractLastSavedJulianDate(CStr(Me.FixValue(reader, "remarks", "")))
 
+                nMaxForcePoints = Math.Max(nMaxForcePoints, CInt(drow("TotalTime")) * 12)
+
                 ' Nutrient forcing shape will be resolved when shapes are loaded
                 writer.AddRow(drow)
 
@@ -1593,6 +1597,14 @@ Namespace Database
 
             Me.m_dbEwE6.ReleaseWriter(writer)
             Me.m_dbEwE5.ReleaseReader(reader)
+
+            writer = Me.m_dbEwE6.GetWriter("EcosimModel")
+            dt = writer.GetDataTable()
+            drow = dt.rows(0)
+            drow.BeginEdit()
+            drow("ForcePoints") = nMaxForcePoints
+            drow.EndEdit()
+            Me.m_dbEwE6.ReleaseWriter(writer)
 
             Return bHasScenarios
 
