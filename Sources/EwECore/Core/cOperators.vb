@@ -1,17 +1,3 @@
-'==============================================================================
-'
-' $Log: cOperators.vb,v $
-' Revision 1.1  2008/09/26 07:30:12  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2007/06/05 02:43:34  jeroens
-' * cOperatorManager made public instead of friend
-'
-' Revision 1.2  2006/09/19 00:08:25  jeroens
-' * Fixed spelling error in constant
-'
-'==============================================================================
-
 Option Strict On
 
 #Region "Operator Manager"
