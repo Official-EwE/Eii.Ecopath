@@ -114,7 +114,7 @@ Public Class ucApplyMapResponseGrid
             Dim igrp As Integer = e.Position.Row
             Dim iMap As Integer = e.Position.Column - 1
 
-            Me.showSelectionDialog(dlgSelectResponse.eSelectionType.Cell, igrp, iMap)
+            Me.showSelectionDialog(dlgSelectResponse.eSelectionType.MapGroup, igrp, iMap)
 
         Catch ex As Exception
             ' Whoah
@@ -147,10 +147,10 @@ Public Class ucApplyMapResponseGrid
             Dim igrp As Integer = e.Position.Row
             Dim iMap As Integer = e.Position.Column - 1
             'just assume it is the column that the user has selected!!!
-            Dim selectionType As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.Col
+            Dim selectionType As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.Map
             If iMap < 0 Then
                 'the user has selected a Row not the Col(as set above)
-                selectionType = dlgSelectResponse.eSelectionType.Row
+                selectionType = dlgSelectResponse.eSelectionType.Group
             End If
 
             Me.showSelectionDialog(selectionType, igrp, iMap)

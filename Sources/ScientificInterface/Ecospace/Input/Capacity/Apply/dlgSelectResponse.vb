@@ -14,13 +14,18 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-
 Public Class dlgSelectResponse
 
+    ''' <summary>
+    ''' Enumerated type, indicating for what type of data the dialog was invoked.
+    ''' </summary>
     Public Enum eSelectionType
-        Cell
-        Row
-        Col
+        ''' <summary>Dialog was invoked for a specific map / group combination.</summary>
+        MapGroup
+        ''' <summary>Dialog was invoked for all maps and a single group.</summary>
+        Group
+        ''' <summary>Dialog was invoked for all groups and a single map.</summary>
+        Map
     End Enum
 
     Private m_uic As cUIContext = Nothing
@@ -31,31 +36,32 @@ Public Class dlgSelectResponse
     Private m_iSelGrp As Integer = cCore.NULL_VALUE
     Private m_iSelMap As Integer = cCore.NULL_VALUE
 
-    ''' <summary>Image list used for displaying small thumbnails.</summary>
+    ''' <summary>Small thumbnails</summary>
     Private m_ilSmall As New ImageList()
-
-    ''' <summary>
-    ''' Large thumbnails
-    ''' </summary>
-    ''' <remarks></remarks>
+    ''' <summary>Large thumbnails</summary>
     Private m_ilLarge As New ImageList()
 
     Private m_nGroups As Integer = 0
-    Private m_SelType As eSelectionType
-    Private m_MapManager As cMapResponseInteractionManager
+    Private m_SelType As eSelectionType = eSelectionType.MapGroup
+    Private m_MapManager As cMapResponseInteractionManager = Nothing
 
-#Region "Construction"
+#Region " Construction "
 
-    'Public Sub New(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal InteractionMap As EwECore.IEnviroInputMap)
-    '    Me.Init(uic, Manager, InteractionMap)
-
-    '    Me.m_map = InteractionMap
-    '    Me.LoadAvailableShapes()
-
-    'End Sub
-
-    Public Sub New(ByVal uic As cUIContext, ByVal Manager As cBaseShapeManager, ByVal MapIntManager As cMapResponseInteractionManager, _
-                   ByVal iMap As Integer, ByVal iSelGroup As Integer, ByVal WhatIsSelected As eSelectionType)
+    ''' <summary>
+    ''' Constructor.
+    ''' </summary>
+    ''' <param name="uic">UI context to use.</param>
+    ''' <param name="Manager">Manager providing available environmental response functions.</param>
+    ''' <param name="MapIntManager">Manager providing available environmental response maps.</param>
+    ''' <param name="iMap">Index of selected map in the <paramref name="Manager">manager</paramref>.</param>
+    ''' <param name="iSelGroup"></param>
+    ''' <param name="WhatIsSelected">Indicator <see cref="eSelectionType">how the dialog was invoked</see>.</param>
+    Public Sub New(ByVal uic As cUIContext, _
+                   ByVal Manager As cBaseShapeManager, _
+                   ByVal MapIntManager As cMapResponseInteractionManager, _
+                   ByVal iMap As Integer, _
+                   ByVal iSelGroup As Integer, _
+                   ByVal WhatIsSelected As eSelectionType)
 
         Me.m_SelType = WhatIsSelected
         Me.m_uic = uic
@@ -66,6 +72,7 @@ Public Class dlgSelectResponse
         Me.m_iSelMap = iMap
         Me.m_iSelGrp = iSelGroup
 
+        Me.InitializeComponent()
         Me.Init()
 
         Me.LoadAvailableShapes()
@@ -73,42 +80,73 @@ Public Class dlgSelectResponse
 
     End Sub
 
-#End Region
+#End Region ' Construction
 
+#Region " Overrides "
 
-#Region "Control Event handlers"
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
 
+        If (Me.m_uic Is Nothing) Then Return
+        Me.UpdateControls()
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    End Sub
+
+#End Region ' Overrides
+
+#Region " Control Event handlers "
+
+    Private Sub OnAdd(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnAdd.Click
+        Try
+            Me.AddShapes()
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnRemove(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnRemove.Click
+        Try
+            Me.RemoveShapes()
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnAppliedShapesSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_lvAppliedShapes.SelectedIndexChanged
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnAvailableShapesSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_lvAllShapes.SelectedIndexChanged
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.UpdateSelectedResponseMap()
         Me.Close()
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
-
-    Private Sub m_btAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btAdd.Click
-        Try
-            Me.AddShapes()
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-    Private Sub m_btRemove_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btRemove.Click
-        Try
-            Me.RemoveShapes()
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-#End Region
-
+#End Region ' Control Event handlers
 
 #Region " Private methods "
 
@@ -118,8 +156,6 @@ Public Class dlgSelectResponse
     ''' </summary>
     ''' -------------------------------------------------------------------
     Private Sub Init()
-
-        Me.InitializeComponent()
 
         If Me.m_iSelMap > 0 Then
             Me.m_map = Me.m_MapManager.Map(Me.m_iSelMap)
@@ -139,7 +175,6 @@ Public Class dlgSelectResponse
         Me.m_nGroups = Me.m_uic.Core.nGroups
 
     End Sub
-
 
     Private ReadOnly Property LargeIconSize() As Integer
         Get
@@ -175,6 +210,7 @@ Public Class dlgSelectResponse
     ''' </summary>
     ''' -------------------------------------------------------------------
     Private Sub AddShapes()
+
         Dim colSelected As ListView.SelectedIndexCollection = m_lvAllShapes.SelectedIndices
         Dim shapeSelected As cForcingFunction = Nothing
         Dim shapeTest As cForcingFunction = Nothing
@@ -236,21 +272,13 @@ Public Class dlgSelectResponse
     ''' -------------------------------------------------------------------
     Private Sub UpdateControls()
 
-        'Dim colSelected As ListView.SelectedIndexCollection = Me.m_lvAppliedShapes.SelectedIndices
-        'Dim iAppliedSelected As Integer = 0
-        'Dim iApplied As Integer = 0
-        'Dim iAvailableSelected As Integer = Me.m_lvAllShapes.SelectedItems.Count
+        ' Can add only one shape
+        Me.m_btnAdd.Enabled = (Me.m_lvAllShapes.SelectedItems.Count = 1)
+        ' Can only remove selected shape(s)
+        Me.m_btnRemove.Enabled = (Me.m_lvAppliedShapes.SelectedItems.Count > 0)
 
-        '' Check selected item status
-        'For Each lvi As ListViewItem In Me.m_lvAppliedShapes.Items
-        '    If Me.IsAllowedShape(Me.Shape(lvi)) Then
-        '        iApplied += 1
-        '        If lvi.Selected Then iAppliedSelected += 1
-        '    End If
-        'Next
-
-        'Me.m_btnAdd.Enabled = (iAvailableSelected > 0) And (iApplied < Me.m_InteractionManager.MaxNShapes)
-        'Me.m_btnRemove.Enabled = (iAppliedSelected > 0)
+        ' Can OK on only one or less applied shape
+        Me.OK_Button.Enabled = (Me.m_lvAppliedShapes.Items.Count <= 1)
 
     End Sub
 
@@ -302,14 +330,14 @@ Public Class dlgSelectResponse
     Private Sub LoadAppliedShapes()
 
         Try
-            Dim isp As Integer
+            Dim isp As Integer = 0
+            Dim lShapes As New List(Of Integer)
 
             Me.m_lvAppliedShapes.Items.Clear()
 
             'Only populate the selected shapes if the user selected a cell
             'If it's a row or col then there is potentially more than one shape selected
-            If Me.m_SelType = eSelectionType.Cell Then
-
+            If Me.m_SelType = eSelectionType.MapGroup Then
 
                 isp = Me.m_map.ResponseIndexForGroup(Me.m_iSelGrp)
                 If isp < 1 Then
@@ -330,22 +358,24 @@ Public Class dlgSelectResponse
                 'Me.m_lvAppliedShapes.Items(0).Selected = True
                 'Me.m_lvAppliedShapes.LargeImageList = Me.m_ilLarge
 
-            ElseIf Me.m_SelType = eSelectionType.Col Then
+            ElseIf Me.m_SelType = eSelectionType.Map Then
 
                 For igrp As Integer = 1 To Me.m_nGroups
                     isp = Me.m_map.ResponseIndexForGroup(igrp)
-                    If isp > 0 Then
+                    If (isp > 0) And (Not lShapes.Contains(isp)) Then
                         Me.addShapeToApplied(isp)
+                        lShapes.Add(isp)
                     End If
                 Next
 
-            ElseIf Me.m_SelType = eSelectionType.Row Then
+            ElseIf Me.m_SelType = eSelectionType.Group Then
 
                 'update all the maps with this selected shape
                 For imap As Integer = 1 To Me.m_MapManager.nMaps
                     isp = Me.m_MapManager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp)
-                    If isp > 0 Then
+                    If (isp > 0) And (Not lShapes.Contains(isp)) Then
                         Me.addShapeToApplied(isp)
+                        lShapes.Add(isp)
                     End If
                 Next
 
@@ -358,14 +388,13 @@ Public Class dlgSelectResponse
 
     End Sub
 
-
     Private Sub addShapeToApplied(ByVal isp As Integer)
 
         Try
 
             Dim shape As cForcingFunction = Me.m_lFFs.Item(isp - 1)
-            Dim item As ListViewItem
-            item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
+            Dim item As New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
+
             item.ImageIndex = Me.m_lFFs.IndexOf(shape)
             item.Tag = shape
             Me.m_lvAppliedShapes.Items.Add(item)
@@ -379,22 +408,23 @@ Public Class dlgSelectResponse
         End Try
 
     End Sub
+
     Private Function UpdateSelectedResponseMap() As Boolean
 
         Try
-            If Me.m_SelType = eSelectionType.Cell Then
+            If Me.m_SelType = eSelectionType.MapGroup Then
                 If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_nGroups Then
                     m_map.ResponseIndexForGroup(m_iSelGrp) = Me.getAppliedResponseIndex
                     Return True
                 End If
-            ElseIf Me.m_SelType = eSelectionType.Col Then
+            ElseIf Me.m_SelType = eSelectionType.Map Then
                 'Apply the same shape to all the groups of the current map
                 Dim iSelResponseShape As Integer = Me.getAppliedResponseIndex
                 For igrp As Integer = 1 To Me.m_nGroups
                     m_map.ResponseIndexForGroup(igrp) = iSelResponseShape
                 Next
 
-            ElseIf Me.m_SelType = eSelectionType.Row Then
+            ElseIf Me.m_SelType = eSelectionType.Group Then
                 'Apply the selected shape to the same group for all the maps
                 Dim iSelResponseShape As Integer = Me.getAppliedResponseIndex
                 For imap As Integer = 1 To Me.m_MapManager.nMaps
@@ -436,6 +466,5 @@ Public Class dlgSelectResponse
 
 
 #End Region
-
 
 End Class
