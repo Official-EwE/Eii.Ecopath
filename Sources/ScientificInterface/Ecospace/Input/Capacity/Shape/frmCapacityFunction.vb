@@ -13,12 +13,10 @@ Imports ScientificInterfaceShared
 
 #End Region ' Imports
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Form implementing all functionality to add, remove and edit
-''' <see cref="cMediationFunction">mediation shapes</see>.
+''' <see cref="cEnviroResponseFunction">environmental response shapes</see>.
 ''' </summary>
 ''' -----------------------------------------------------------------------
 Public Class frmCapacityFunction
@@ -72,6 +70,7 @@ Public Class frmCapacityFunction
         Me.m_shapeguihandler.Detach()
         MyBase.OnFormClosed(e)
     End Sub
+
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Generic EwEForm message handler; implemented to respond to Forcing 
