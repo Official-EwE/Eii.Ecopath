@@ -113,6 +113,7 @@ Public Class cEnviroInputMap(Of T)
     Private m_binWidth As Single
     Private m_manager As cMapResponseInteractionManager
 
+    ''' <inheritdocs cref="IEnviroInputMap.Init"/>
     Public Function Init(ByVal EnviroMediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean Implements IEnviroInputMap.Init
         Me.m_MedData = EnviroMediationData
         Me.m_spaceData = SpaceData
@@ -142,11 +143,8 @@ Public Class cEnviroInputMap(Of T)
 
 
     ''' <summary>
-    ''' Set the input map that the response function will use to look up it's input value
+    ''' Get/set the input map that the response function will use to look up its input value
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Property Map() As T(,)
         Get
             Return Me.m_map
@@ -164,7 +162,6 @@ Public Class cEnviroInputMap(Of T)
     ''' <param name="iMapRow">Row of the input map</param>
     ''' <param name="iMapCol">Col of the input map</param>
     ''' <returns>Y = F(x)</returns>
-    ''' <remarks></remarks>
     Public Function ResponseFunction(ByVal igrp As Integer, ByVal iMapRow As Integer, ByVal iMapCol As Integer) As Single Implements IEnviroInputMap.ResponseFunction
         Dim iShp As Integer, MedX As Single ', ip As Long
 
@@ -216,7 +213,7 @@ Public Class cEnviroInputMap(Of T)
         End Set
     End Property
 
-
+    ''' <inheritdocs cref="IEnviroInputMap.Histogram"/>
     Public Function Histogram() As Drawing.PointF() Implements IEnviroInputMap.Histogram
         Dim ipt As Integer, maxPts As Integer
         Dim nBins As Integer = 100
@@ -245,7 +242,6 @@ Public Class cEnviroInputMap(Of T)
 
     End Function
 
-
     Public ReadOnly Property nGroups() As Integer
         Get
             Return Me.m_spaceData.NGroups
@@ -258,7 +254,7 @@ Public Class cEnviroInputMap(Of T)
         End Get
     End Property
 
-
+    ''' <inheritdocs cref="IEnviroInputMap.Name"/>
     Public Property Name() As String Implements IEnviroInputMap.Name
         Get
             Return Me.m_name
@@ -268,24 +264,28 @@ Public Class cEnviroInputMap(Of T)
         End Set
     End Property
 
+    ''' <inheritdocs cref="IEnviroInputMap.Max"/>
     Public ReadOnly Property Max() As Single Implements IEnviroInputMap.Max
         Get
             Return Me.m_max
         End Get
     End Property
 
+    ''' <inheritdocs cref="IEnviroInputMap.Mean"/>
     Public ReadOnly Property Mean() As Single Implements IEnviroInputMap.Mean
         Get
             Return Me.m_mean
         End Get
     End Property
 
+    ''' <inheritdocs cref="IEnviroInputMap.Min"/>
     Public ReadOnly Property Min() As Single Implements IEnviroInputMap.Min
         Get
             Return Me.m_min
         End Get
     End Property
 
+    ''' <inheritdocs cref="IEnviroInputMap.Update"/>
     Public Function Update() As Object Implements IEnviroInputMap.Update
         Dim bReturn As Boolean = False
 
@@ -299,6 +299,7 @@ Public Class cEnviroInputMap(Of T)
 
     End Function
 
+    ''' <inheritdocs cref="IEnviroInputMap.setManager"/>
     Public Sub setManager(ByVal theManager As cMapResponseInteractionManager) Implements IEnviroInputMap.setManager
         Me.m_manager = theManager
     End Sub
