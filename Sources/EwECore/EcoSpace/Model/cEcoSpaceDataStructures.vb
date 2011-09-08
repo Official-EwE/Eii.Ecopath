@@ -475,17 +475,6 @@ Public Class cEcospaceDataStructures
 
     Public CapMaps As New List(Of IEnviroInputMap)
 
-    ''' <summary>
-    ''' Capacity Environmental Response functions (mediation functions). 
-    ''' Shape to convert input value to capacity value e.g. CapacityMap(irow,icol) = F(InputMap(irow,icol)) (capacity as a function of X)
-    ''' </summary>
-    ''' <remarks>
-    ''' Generical Environmental Response functions are used to convert an enviromental input value to a value used in either Ecosim(time series input data) or Ecospace(spatial/temporal data)
-    ''' For Capacity Environmental Response functions are used in conjunction with a cEnviroInputMap(of T) to populate the Capacity map
-    ''' </remarks>
-    Public CapEnvResData As New cMediationDataStructures
-
-
 #End Region
 
 #Region "Private Data"
@@ -1613,81 +1602,88 @@ Public Class cEcospaceDataStructures
     ''' Hardwire some Capacity map values
     ''' </summary>
     ''' <remarks>FOR DEBUGGING ONLY</remarks>
-    Public Sub setDebugCapMaps()
+    Public Sub setDebugCapMaps(ByVal CapEnvResData As cMediationDataStructures)
 
         Try
 
-            '4 response functions
-            CapEnvResData.MediationShapes = 4
-            CapEnvResData.ReDimMediation(Me.NGroups, Me.nFleets)
+            ' JS: removed, can now be created 'live'
+            ''4 response functions
+            'CapEnvResData.MediationShapes = 4
+            'CapEnvResData.ReDimMediation(Me.NGroups, Me.nFleets)
 
-            'hardwire a database ID to the shape index
-            'this allows the manager and shape to function as though the shape came from the database
-            CapEnvResData.MediationDBIDs(1) = 1
+            ''hardwire a database ID to the shape index
+            ''this allows the manager and shape to function as though the shape came from the database
+            'CapEnvResData.MediationDBIDs(1) = 1
 
-            'create a linear increasing shape to use as the Environmental Response function (mediation function)
-            Dim dx As Double = 1.0F / (CapEnvResData.NMedPoints - 1)
-            For ipt As Integer = 1 To CapEnvResData.NMedPoints
-                CapEnvResData.Medpoints(ipt, 1) = CSng(dx * (ipt - 1))
-            Next
-            CapEnvResData.IMedBase(1) = CapEnvResData.NMedPoints \ 2
-            CapEnvResData.MedXbase(1) = 5
-            CapEnvResData.MedYbase(1) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(1), 1)
-            CapEnvResData.MediationTitles(1) = "Increasing"
+            ''create a linear increasing shape to use as the Environmental Response function (mediation function)
+            'Dim dx As Double = 1.0F / (CapEnvResData.NMedPoints - 1)
+            'For ipt As Integer = 1 To CapEnvResData.NMedPoints
+            '    CapEnvResData.Medpoints(ipt, 1) = CSng(dx * (ipt - 1))
+            'Next
+            'CapEnvResData.IMedBase(1) = CapEnvResData.NMedPoints \ 2
+            'CapEnvResData.MedXbase(1) = 5
+            'CapEnvResData.MedYbase(1) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(1), 1)
+            'CapEnvResData.MediationTitles(1) = "Increasing"
 
-            'decreasing
-            CapEnvResData.MediationDBIDs(2) = 2
-            For ipt As Integer = 1 To CapEnvResData.NMedPoints
-                CapEnvResData.Medpoints(ipt, 2) = CSng(dx * (CapEnvResData.NMedPoints - ipt))
-            Next
-            CapEnvResData.IMedBase(2) = CapEnvResData.NMedPoints \ 2
-            CapEnvResData.MedXbase(2) = 5
-            CapEnvResData.MedYbase(2) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(2), 2)
-            CapEnvResData.MediationTitles(2) = "Decreasing"
+            ''decreasing
+            'CapEnvResData.MediationDBIDs(2) = 2
+            'For ipt As Integer = 1 To CapEnvResData.NMedPoints
+            '    CapEnvResData.Medpoints(ipt, 2) = CSng(dx * (CapEnvResData.NMedPoints - ipt))
+            'Next
+            'CapEnvResData.IMedBase(2) = CapEnvResData.NMedPoints \ 2
+            'CapEnvResData.MedXbase(2) = 5
+            'CapEnvResData.MedYbase(2) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(2), 2)
+            'CapEnvResData.MediationTitles(2) = "Decreasing"
 
-            'Flat
-            CapEnvResData.MediationDBIDs(3) = 3
-            For ipt As Integer = 1 To CapEnvResData.NMedPoints
-                CapEnvResData.Medpoints(ipt, 3) = 1
-            Next
-            CapEnvResData.IMedBase(3) = CapEnvResData.NMedPoints \ 2
-            CapEnvResData.MedXbase(3) = 5
-            CapEnvResData.MedYbase(3) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(3), 3)
-            CapEnvResData.MediationTitles(3) = "Flat"
-
-            '
-            CapEnvResData.MediationDBIDs(4) = 4
+            ''Flat
+            'CapEnvResData.MediationDBIDs(3) = 3
             'For ipt As Integer = 1 To CapEnvResData.NMedPoints
             '    CapEnvResData.Medpoints(ipt, 3) = 1
             'Next
-            CapEnvResData.IMedBase(4) = CapEnvResData.NMedPoints \ 2
-            CapEnvResData.MedXbase(4) = 5
-            CapEnvResData.MedYbase(4) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(4), 4)
-            CapEnvResData.MediationTitles(4) = "Normal"
-            CapEnvResData.MediationShapeParams(4).ShapeFunctionType = eShapeFunctionType.Normal
-            CapEnvResData.MediationShapeParams(4).YBase = 5 'width
-            CapEnvResData.MediationShapeParams(4).YZero = 2 'sd left
-            CapEnvResData.MediationShapeParams(4).YEnd = 2 'sd right
+            'CapEnvResData.IMedBase(3) = CapEnvResData.NMedPoints \ 2
+            'CapEnvResData.MedXbase(3) = 5
+            'CapEnvResData.MedYbase(3) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(3), 3)
+            'CapEnvResData.MediationTitles(3) = "Flat"
+
+            ''
+            'CapEnvResData.MediationDBIDs(4) = 4
+            ''For ipt As Integer = 1 To CapEnvResData.NMedPoints
+            ''    CapEnvResData.Medpoints(ipt, 3) = 1
+            ''Next
+            'CapEnvResData.IMedBase(4) = CapEnvResData.NMedPoints \ 2
+            'CapEnvResData.MedXbase(4) = 5
+            'CapEnvResData.MedYbase(4) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(4), 4)
+            'CapEnvResData.MediationTitles(4) = "Normal"
+            'CapEnvResData.MediationShapeParams(4).ShapeFunctionType = eShapeFunctionType.Normal
+            'CapEnvResData.MediationShapeParams(4).YBase = 5 'width
+            'CapEnvResData.MediationShapeParams(4).YZero = 2 'sd left
+            'CapEnvResData.MediationShapeParams(4).YEnd = 2 'sd right
 
             'Depth Map
             Dim depthMap As New cEnviroInputMap(Of Integer)
             depthMap.Map = Me.Depth
             depthMap.Init(CapEnvResData, Me)
             depthMap.Name = "Depth"
-            'all groups use the first response function (mediation shape)
-            For igrp As Integer = 1 To Me.NGroups
-                depthMap.ResponseIndexForGroup(igrp) = 1
-            Next
+
+            If CapEnvResData.MediationShapes >= 1 Then
+                'all groups use the first response function (mediation shape)
+                For igrp As Integer = 1 To Me.NGroups
+                    depthMap.ResponseIndexForGroup(igrp) = 1
+                Next
+            End If
 
             'PP map
             Dim PPmap As New cEnviroInputMap(Of Single)
             PPmap.Map = Me.RelPP
             PPmap.Name = "Relative PP"
             PPmap.Init(CapEnvResData, Me)
-            'use the second function for all groups
-            For igrp As Integer = 1 To Me.NGroups
-                PPmap.ResponseIndexForGroup(igrp) = 2
-            Next
+
+            If CapEnvResData.MediationShapes >= 2 Then
+                'use the second function for all groups
+                For igrp As Integer = 1 To Me.NGroups
+                    PPmap.ResponseIndexForGroup(igrp) = 2
+                Next
+            End If
 
             'clear out the old data
             Me.CapMaps.Clear()

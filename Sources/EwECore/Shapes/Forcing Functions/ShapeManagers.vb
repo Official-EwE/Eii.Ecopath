@@ -768,7 +768,7 @@ Public Class cCapMapResponseManager
         Dim medFunct As cEnviroResponseFunction
 
         'get the Enviromental response function for Capacity 
-        m_medData = Me.m_spaceData.CapEnvResData
+        m_medData = Me.m_Data.CapEnvResData
 
         'clear out any existing data
         m_shapes.Clear()

@@ -54,6 +54,16 @@ Public Class cEcosimDatastructures
     Public PriceMedData As New cMediationDataStructures
 
     ''' <summary>
+    ''' Capacity Environmental Response functions (mediation functions). 
+    ''' Shape to convert input value to capacity value e.g. CapacityMap(irow,icol) = F(InputMap(irow,icol)) (capacity as a function of X)
+    ''' </summary>
+    ''' <remarks>
+    ''' Generical Environmental Response functions are used to convert an enviromental input value to a value used in either Ecosim(time series input data) or Ecospace(spatial/temporal data)
+    ''' For Capacity Environmental Response functions are used in conjunction with a cEnviroInputMap(of T) to populate the Capacity map
+    ''' </remarks>
+    Public CapEnvResData As New cMediationDataStructures
+
+    ''' <summary>
     ''' Boolean flag set by the calling routine to tell Ecosim if it should process the output timestep data cEcoSImModel.ProcessTimeStep()
     ''' </summary>
     ''' <remarks>If true then Ecosim will compute all output data including data over time and call the timestep delegate. If false then it will run in a silent mode and not compute output data  </remarks>

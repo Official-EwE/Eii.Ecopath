@@ -4861,6 +4861,7 @@ Namespace DataSources
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim PredPreyMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.BioMedData
             Dim LandingsMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.PriceMedData
+            Dim CapEnvResMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.CapEnvResData
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim reader As IDataReader = Nothing
             Dim iShapeID As Integer = 0
@@ -4868,6 +4869,7 @@ Namespace DataSources
             Dim iForcingShape As Integer = 0
             Dim iPredPreyMediationShape As Integer = 0
             Dim iLandingsMediationShape As Integer = 0
+            Dim iCapEnvResMediationShape As Integer = 0
             Dim iFishingMortShape As Integer = 0
             Dim iFishRateShape As Integer = 0
             Dim bSucces As Boolean = True
@@ -4883,10 +4885,14 @@ Namespace DataSources
             strQuery = String.Format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.PriceMediation))
             LandingsMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery))
 
+            strQuery = String.Format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.CapacityMediation))
+            CapEnvResMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery))
+
             ecosimDS.DimForcingShapes()
             ecosimDS.InitForcingShapes()
             PredPreyMedDS.ReDimMediation(ecosimDS.nGroups, ecosimDS.nGear)
             LandingsMedDS.ReDimMediation(ecosimDS.nGroups, ecosimDS.nGear)
+            CapEnvResMedDS.ReDimMediation(ecosimDS.nGroups, ecosimDS.nGear)
 
             Try
 
@@ -4913,6 +4919,10 @@ Namespace DataSources
                         Case eDataTypes.PriceMediation
                             iLandingsMediationShape += 1
                             bSucces = bSucces And Me.LoadMediationShape(iShapeID, iLandingsMediationShape, LandingsMedDS)
+
+                        Case eDataTypes.CapacityMediation
+                            iCapEnvResMediationShape += 1
+                            bSucces = bSucces And Me.LoadMediationShape(iShapeID, iCapEnvResMediationShape, CapEnvResMedDS)
 
                         Case eDataTypes.FishingEffort
                             ' Shape type loaded from LoadEcosimFleets(); do not handle here
@@ -5538,11 +5548,12 @@ Namespace DataSources
                     End If
                 Next iShape
 
-                For Each shapeDataType As eDataTypes In New eDataTypes() {eDataTypes.Mediation, eDataTypes.PriceMediation}
+                For Each shapeDataType As eDataTypes In New eDataTypes() {eDataTypes.Mediation, eDataTypes.PriceMediation, eDataTypes.CapacityMediation}
                     Dim medData As cMediationDataStructures = Nothing
                     Select Case shapeDataType
                         Case eDataTypes.Mediation : medData = ecosimDS.BioMedData
                         Case eDataTypes.PriceMediation : medData = ecosimDS.PriceMedData
+                        Case eDataTypes.CapacityMediation : medData = ecosimDS.CapEnvResData
                     End Select
 
                     For iShape = 1 To medData.MediationShapes
@@ -6273,7 +6284,7 @@ Namespace DataSources
                     Case eDataTypes.Forcing
                         writerShape = Me.m_db.GetWriter("EcosimShapeTime")
 
-                    Case eDataTypes.Mediation, eDataTypes.PriceMediation
+                    Case eDataTypes.Mediation, eDataTypes.PriceMediation, eDataTypes.CapacityMediation
                         writerShape = Me.m_db.GetWriter("EcosimShapeMediation")
 
                     Case eDataTypes.FishingEffort

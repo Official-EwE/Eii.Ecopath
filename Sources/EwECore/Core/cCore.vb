@@ -7783,7 +7783,7 @@ Public Class cCore
         m_EcospaceResultsASCWriter.Init(Me)
 
         m_mapInteractionManager = New cMapResponseInteractionManager
-        m_mapInteractionManager.Init(Me, Me.m_EcoSpaceData.CapEnvResData, Me.m_EcoSpaceData.CapMaps)
+        m_mapInteractionManager.Init(Me, Me.m_EcoSimData.CapEnvResData, Me.m_EcoSpaceData.CapMaps)
 
         Return True
 
@@ -8653,7 +8653,7 @@ Public Class cCore
             m_Ecospace.SearchData = m_SearchData
 
             'hardwire some capacity maps for debugging
-            Me.m_EcoSpaceData.setDebugCapMaps()
+            Me.m_EcoSpaceData.setDebugCapMaps(Me.m_EcoSimData.CapEnvResData)
             Me.m_ShapeManagers.Item(eDataTypes.CapacityMediation).Init()
 
             'sets the summary peroids to first and last year
