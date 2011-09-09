@@ -43,13 +43,15 @@ Friend Class cDBUpdate6_02_00_02
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Max forcing time remembered in model"
+            Return "Max forcing time remembered in model" & vbNewLine & _
+                   "Added capacity map tables"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
         Return Me.UpdateForcePoints(db) And _
-               Me.AddCapacityMapTable(db)
+               Me.AddCapacityMapTable(db) And _
+               Me.AddCapacityMapAssignmentTable(db)
     End Function
 
     Private Function UpdateForcePoints(ByVal db As cEwEDatabase) As Boolean
@@ -87,9 +89,25 @@ Friend Class cDBUpdate6_02_00_02
         ' Read ecosim run length
         bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacityMap (ScenarioID LONG, MapID LONG, Sequence LONG, MapName TEXT(50), VarName TEXT(50))")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMap ADD PRIMARY KEY (ScenarioID, MapID)")
+        bSuccess = bSuccess And db.Execute("CREATE UNIQUE INDEX idMaps ON EcospaceScenarioCapacityMap(MapID)")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMap ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
 
         Me.LogProgress("ADD TABLE EcospaceScenarioCapacityMap", bSuccess)
+        Return bSuccess
+
+    End Function
+
+    Private Function AddCapacityMapAssignmentTable(ByVal db As cEwEDatabase) As Boolean
+        Dim bSuccess As Boolean = True
+
+        ' Read ecosim run length
+        bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacityMapAssignments (MapID LONG, GroupID LONG, ShapeID LONG)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD PRIMARY KEY (MapID, GroupID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (MapID) REFERENCES EcospaceScenarioCapacityMap(MapID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (GroupID) REFERENCES EcopathGroup(GroupID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (ShapeID) REFERENCES EcosimShape(ShapeID)")
+
+        Me.LogProgress("ADD TABLE EcospaceScenarioCapacityMapAssignments", bSuccess)
         Return bSuccess
 
     End Function

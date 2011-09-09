@@ -477,8 +477,9 @@ Public Class cEcospaceDataStructures
     Public CapMapDBID() As Integer
     Public CapMapName() As String
     Public CapMapVariable() As EwEUtils.Core.eVarNameFlags
+    Public CapMapFunctions(,) As Integer
 
-    ' CapMaps are visible to the user, and should become IO objects that should be managed by the core and exposed to the UI via core counters etc.
+    ' CapMaps are I/O objects visible to the user, and should be managed by the core and exposed to the UI via core counters etc.
     Public CapMaps As New List(Of IEnviroInputMap)
 
 #End Region
@@ -986,6 +987,7 @@ Public Class cEcospaceDataStructures
             ReDim Me.CapMapDBID(Me.NoCapMaps)
             ReDim Me.CapMapName(Me.NoCapMaps)
             ReDim Me.CapMapVariable(Me.NoCapMaps)
+            ReDim Me.CapMapFunctions(Me.NoCapMaps, Me.NGroups)
 
         Catch ex As Exception
 
