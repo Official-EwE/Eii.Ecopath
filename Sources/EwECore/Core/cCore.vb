@@ -8006,7 +8006,7 @@ Public Class cCore
                 grpName = Me.m_EcoPathData.GroupName(igrp)
                 grpName = grpName & " max. capacity = " & Me.m_EcoSpaceData.MaxHabCap(igrp)
                 vs = New cVariableStatus(eStatusFlags.MissingParameter, grpName, _
-                                         eVarNameFlags.NotSet, eDataTypes.MapResponse, eCoreComponentType.EcoSpace, igrp)
+                                         eVarNameFlags.NotSet, eDataTypes.EcospaceMapResponse, eCoreComponentType.EcoSpace, igrp)
 
                 msg.AddVariable(vs)
             Next
@@ -8684,6 +8684,7 @@ Public Class cCore
             bSuccess = bSuccess And InitEcospaceGroups()
             bSuccess = bSuccess And InitEcospaceFleets()
             bSuccess = bSuccess And InitEcospaceAdvection()
+            bSuccess = bSuccess And InitAndLoadCapacityMaps()
 
             'Init advection
             Me.m_AdvectionManager.Init(Me, Me.m_Ecospace)
@@ -10215,6 +10216,70 @@ Public Class cCore
     End Function
 
 #End Region ' Importance layers
+
+#Region " Capacity maps "
+
+    Private Function InitAndLoadCapacityMaps() As Boolean
+
+        Dim bSuccess As Boolean = True
+
+        Try
+            Dim objMap As IEnviroInputMap = Nothing
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_EcoSpaceData
+
+            Me.m_EcoSpaceData.CapMaps.Clear()
+
+            'populate the list of IEnviroInputMap objects that the user will interact with 
+            'to change region related parameters from the interface
+            For i As Integer = 1 To Me.m_EcoSpaceData.NoCapMaps
+                Try
+
+                    Dim data As Object = Me.EcospaceBasemap.GetLayerData(ecospaceDS.CapMapVariable(i))
+
+                    Debug.Assert(data IsNot Nothing)
+                    Debug.Assert(data.GetType.IsArray)
+
+                    ' Get type of Ecospace element data
+                    Dim tElm As Type = data.GetType.GetElementType
+
+                    ' Reflection cannot be used to call the constructor of a generic class with parameters. Aargh.
+                    '' Get type of Environmental map
+                    'Dim tMap As Type = GetType(cEnviroInputMap(Of ))
+                    '' Create generic instantiation type for type T
+                    'Dim tMagic As Type = tMap.MakeGenericType(tElm)
+                    '' Build map (helmet, anyone?)
+                    ''Dim map As IEnviroInputMap = DirectCast(Activator.CreateInstance(tMagic,  New Object() {Me, Me.CapacitMapInteractionManager, data, ecospaceDS.CapMapName(i)}),  IEnviroInputMap)
+
+                    Dim map As IEnviroInputMap = Nothing
+                    If tElm Is GetType(Integer) Then
+                        map = New cEnviroInputMap(Of Integer)(Me, Me.CapacitMapInteractionManager, DirectCast(data, Integer(,)))
+                    ElseIf tElm Is GetType(Single) Then
+                        map = New cEnviroInputMap(Of Single)(Me, Me.CapacitMapInteractionManager, DirectCast(data, Single(,)))
+                    End If
+
+                    DirectCast(map, cCoreInputOutputBase).AllowValidation = False
+                    map.Name = ecospaceDS.CapMapName(i)
+                    DirectCast(map, cCoreInputOutputBase).AllowValidation = True
+
+                    ecospaceDS.CapMaps.Add(map)
+
+                Catch ex As Exception
+                    Debug.Assert(False, "InitAndLoadCapacityMaps Error: " & ex.Message)
+                    bSuccess = False
+                End Try
+
+            Next i
+
+        Catch ex As Exception
+            Debug.Assert(False, "InitAndLoadCapacityMaps Error: " & ex.Message)
+            bSuccess = False
+        End Try
+
+        Return bSuccess
+
+    End Function
+
+#End Region ' Capacity maps
 
 #Region " Advection "
 
@@ -12776,7 +12841,7 @@ Public Class cCore
                                        eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Maintenance))
 
 
-                Case eDataTypes.MapResponse
+                Case eDataTypes.EcospaceMapResponse
                     If obj.CoreComponent = eCoreComponentType.MapResponseInteractionManager Then
 
                         Me.m_publisher.AddMessage(New cMessage("Capacity map data has changed.", TypeOfChange, _

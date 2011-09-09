@@ -2,6 +2,8 @@
 
 Option Strict On
 
+Imports EwEUtils.Core
+
 #End Region ' Imports
 
 Namespace DataSources
@@ -126,7 +128,7 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an ecospace habitat to the datasource at a given position.
+        ''' Adds an ecospace habitat to the datasource.
         ''' </summary>
         ''' <param name="strHabitatName">Name to assign to new habitat.</param>
         ''' <param name="iHabitatID">Database ID assigned to the new habitat.</param>
@@ -216,6 +218,30 @@ Namespace DataSources
         Function RemoveEcospaceImportanceLayer(ByVal iDBID As Integer) As Boolean
 
 #End Region ' Importance layers
+
+#Region " Capacity maps "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adds an ecospace capacity map to the datasource.
+        ''' </summary>
+        ''' <param name="strName">Name to assign to new capacity map.</param>
+        ''' <param name="EcospaceVariable">Ecospace variable that the new capacity map is based on.</param>
+        ''' <param name="iDBID">Database ID assigned to the new capacity map.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function AddEcospaceCapacityMap(ByVal strName As String, ByVal EcospaceVariable As eVarNameFlags, ByRef iDBID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes an ecospace capacity map from the datasource.
+        ''' </summary>
+        ''' <param name="iDBID">Database ID of the capacity map to remove.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Function RemoveEcospaceCapacityMap(ByVal iDBID As Integer) As Boolean
+
+#End Region ' Capacity maps
 
     End Interface
 

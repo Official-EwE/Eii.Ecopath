@@ -88,7 +88,11 @@ Public Class cMapResponseInteractionManager
 
             'Create a map from the input data
             'this will init the map to the data in the Manager
-            Dim map As New cEnviroInputMap(Of Single)(Me, dataArray, MapName)
+            Dim map As New cEnviroInputMap(Of Single)(Me.m_core, Me, dataArray)
+
+            map.AllowValidation = False
+            map.Name = MapName
+            map.AllowValidation = True
 
             'add the new map to the list of maps
             Me.m_maps.Add(map)
@@ -137,7 +141,7 @@ Public Class cMapResponseInteractionManager
     Public ReadOnly Property DataType() As EwEUtils.Core.eDataTypes Implements ICoreInterface.DataType
         Get
             '
-            Return EwEUtils.Core.eDataTypes.MapResponse
+            Return EwEUtils.Core.eDataTypes.EcospaceMapResponse
         End Get
     End Property
 

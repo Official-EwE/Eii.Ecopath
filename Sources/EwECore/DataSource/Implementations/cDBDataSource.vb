@@ -7209,6 +7209,7 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
+            bSucces = bSucces And Me.LoadEcospaceCapacityMaps(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
 
             Me.ClearChanged(s_EcospaceComponents)
@@ -7392,6 +7393,7 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcospaceGroups(idm)
             bSucces = bSucces And Me.SaveEcospaceFleets(idm)
             bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
+            bSucces = bSucces And Me.SaveEcospaceCapacityMaps(idm)
 
             Return bSucces
 
@@ -9460,6 +9462,178 @@ Namespace DataSources
 #End Region ' Modify
 
 #End Region ' Weight layers
+
+#Region " Capacity maps "
+
+#Region " Load "
+
+        Private Function LoadEcospaceCapacityMaps(ByVal iScenarioID As Integer) As Boolean
+
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim reader As IDataReader = Nothing
+            Dim bSucces As Boolean = True
+            Dim i As Integer = 1
+
+            ' Allocate space for capacaity maps
+            ecospaceDS.NoCapMaps = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioCapacityMap WHERE ScenarioID={0}", iScenarioID)))
+            ecospaceDS.RedimCapacityMaps()
+
+            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioCapacityMap WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
+            While reader.Read()
+                ecospaceDS.CapMapDBID(i) = CInt(reader("MapID"))
+                ecospaceDS.CapMapName(i) = CStr(reader("MapName"))
+                ecospaceDS.CapMapVariable(i) = cin.GetVarName(CStr(reader("VarName")))
+                i += 1
+            End While
+            Me.m_db.ReleaseReader(reader)
+
+            Return bSucces
+
+        End Function
+
+#End Region ' Load
+
+#Region " Save "
+
+        Private Function SaveEcospaceCapacityMaps(ByVal idm As cIDMappings) As Boolean
+
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim iScenarioIDSrc As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim iScenarioIDDest As Integer = 0
+            Dim iMapID As Integer = 0
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+            Dim bNewRow As Boolean = True
+            Dim objKeys() As Object = {Nothing, Nothing}
+
+            iScenarioIDDest = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioIDSrc)
+            objKeys(0) = iScenarioIDDest
+
+            Try
+                iMapID = CInt(Me.m_db.GetValue("SELECT MAX(MapID) FROM EcospaceScenarioCapacityMap")) + 1
+            Catch ex As Exception
+                iMapID = 1
+            End Try
+
+            Try
+                writer = Me.m_db.GetWriter("EcospaceScenarioCapacityMap")
+                dt = writer.GetDataTable()
+                For iMap As Integer = 1 To ecospaceDS.NoCapMaps
+
+                    ' Find existing row
+                    objKeys(1) = idm.GetID(eDataTypes.EcospaceMapResponse, ecospaceDS.CapMapDBID(iMap))
+                    drow = dt.Rows.Find(objKeys)
+
+                    bNewRow = (iScenarioIDDest <> iScenarioIDSrc) Or (drow Is Nothing)
+
+                    If bNewRow Then
+                        drow = writer.NewRow()
+                        drow("ScenarioID") = iScenarioIDDest
+                        drow("MapID") = iMapID
+                        idm.Add(eDataTypes.EcospaceRegion, ecospaceDS.CapMapDBID(iMap), iMapID)
+                        iMapID += 1
+                    Else
+                        drow.BeginEdit()
+                    End If
+
+                    drow("MapName") = ecospaceDS.CapMapName(iMap)
+                    drow("VarName") = cin.GetVarName(ecospaceDS.CapMapVariable(iMap))
+                    drow("Sequence") = iMap
+
+                    If bNewRow Then
+                        writer.AddRow(drow)
+                    Else
+                        drow.EndEdit()
+                    End If
+
+                    bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceMapResponse, ecospaceDS.CapMapDBID(iMap))
+
+                Next iMap
+                Me.m_db.ReleaseWriter(writer)
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            Return bSucces
+
+        End Function
+
+#End Region ' Save
+
+#Region " Modify "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Append a capacity map to the current ecospace scenario
+        ''' </summary>
+        ''' <param name="strName"></param>
+        ''' <param name="varName"></param>
+        ''' <param name="iDBID"></param>
+        ''' -------------------------------------------------------------------
+        Public Function AddEcospaceCapacityMap(ByVal strName As String, ByVal varName As eVarNameFlags, ByRef iDBID As Integer) As Boolean _
+            Implements IEcospaceDatasource.AddEcospaceCapacityMap
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+            Dim iPosition As Integer = 1
+
+            Try
+                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(HabitatID) FROM EcospaceScenarioCapacityMap")) + 1
+                iPosition = CInt(Me.m_db.GetValue("SELECT Count(*) FROM EcospaceScenarioCapacityMap")) + 1
+            Catch ex As Exception
+                iDBID = 1
+                iPosition = 1
+            End Try
+
+            ' The writer needed here will maintain row sequence for the given scenario only
+            writer = Me.m_db.GetWriter("EcospaceScenarioCapacityMap")
+
+            drow = writer.NewRow()
+            drow("ScenarioID") = iScenarioID
+            drow("MapID") = iDBID
+            drow("Sequence") = iPosition
+            drow("MapName") = strName
+            drow("VarName") = varName.ToString
+            writer.AddRow(drow)
+
+            Me.m_db.ReleaseWriter(writer)
+
+            Return bSucces
+
+        End Function
+
+        Public Function RemoveEcospaceCapacityMap(ByVal iDBID As Integer) As Boolean _
+            Implements IEcospaceDatasource.RemoveEcospaceCapacityMap
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim bSucces As Boolean = True
+
+            Try
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityMap WHERE (ScenarioID={0}) AND (MapID={1})", iScenarioID, iDBID))
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace capacity map ID {1}", ex.Message, iDBID))
+                bSucces = False
+            End Try
+            Return bSucces
+
+        End Function
+
+#End Region ' Modify
+
+#End Region ' Capacity maps
 
 #End Region ' Ecospace
 

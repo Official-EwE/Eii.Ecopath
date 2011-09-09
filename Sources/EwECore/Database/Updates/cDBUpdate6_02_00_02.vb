@@ -48,7 +48,8 @@ Friend Class cDBUpdate6_02_00_02
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-        Return Me.UpdateForcePoints(db)
+        Return Me.UpdateForcePoints(db) And _
+               Me.AddCapacityMapTable(db)
     End Function
 
     Private Function UpdateForcePoints(ByVal db As cEwEDatabase) As Boolean
@@ -76,6 +77,19 @@ Friend Class cDBUpdate6_02_00_02
         bSuccess = bSuccess And db.Execute("INSERT INTO EcosimModel ( ModelID, ForcePoints ) VALUES (1, " & iForcePoints & ")")
 
         Me.LogProgress("UPDATE TABLE EcosimModel", bSuccess)
+        Return bSuccess
+
+    End Function
+
+    Private Function AddCapacityMapTable(ByVal db As cEwEDatabase) As Boolean
+        Dim bSuccess As Boolean = True
+
+        ' Read ecosim run length
+        bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacityMap (ScenarioID LONG, MapID LONG, Sequence LONG, MapName TEXT(50), VarName TEXT(50))")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMap ADD PRIMARY KEY (ScenarioID, MapID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMap ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
+
+        Me.LogProgress("ADD TABLE EcospaceScenarioCapacityMap", bSuccess)
         Return bSuccess
 
     End Function

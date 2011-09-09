@@ -1937,7 +1937,7 @@ Namespace Core
         ''' <summary>
         ''' Data belongs to a IEnviroInputMap
         ''' </summary>
-        MapResponse = 100
+        EcospaceMapResponse = 100
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

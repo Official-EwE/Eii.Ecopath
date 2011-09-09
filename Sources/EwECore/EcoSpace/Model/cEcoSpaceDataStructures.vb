@@ -473,6 +473,12 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public bSaveASC As Boolean
 
+    Public NoCapMaps As Integer
+    Public CapMapDBID() As Integer
+    Public CapMapName() As String
+    Public CapMapVariable() As EwEUtils.Core.eVarNameFlags
+
+    ' CapMaps are visible to the user, and should become IO objects that should be managed by the core and exposed to the UI via core counters etc.
     Public CapMaps As New List(Of IEnviroInputMap)
 
 #End Region
@@ -973,6 +979,18 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
+    Sub RedimCapacityMaps()
+
+        Try
+
+            ReDim Me.CapMapDBID(Me.NoCapMaps)
+            ReDim Me.CapMapName(Me.NoCapMaps)
+            ReDim Me.CapMapVariable(Me.NoCapMaps)
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
     Public Sub ReDimFleets()
         Try
@@ -1660,35 +1678,35 @@ Public Class cEcospaceDataStructures
             'CapEnvResData.MediationShapeParams(4).YEnd = 2 'sd right
 
             'Depth Map
-            Dim depthMap As New cEnviroInputMap(Of Integer)
-            depthMap.Map = Me.Depth
-            depthMap.Init(CapEnvResData, Me)
-            depthMap.Name = "Depth"
+            'Dim depthMap As New cEnviroInputMap(Of Integer)
+            'depthMap.Map = Me.Depth
+            'depthMap.Init(CapEnvResData, Me)
+            'depthMap.Name = "Depth"
 
-            If CapEnvResData.MediationShapes >= 1 Then
-                'all groups use the first response function (mediation shape)
-                For igrp As Integer = 1 To Me.NGroups
-                    depthMap.ResponseIndexForGroup(igrp) = 1
-                Next
-            End If
+            'If CapEnvResData.MediationShapes >= 1 Then
+            '    'all groups use the first response function (mediation shape)
+            '    For igrp As Integer = 1 To Me.NGroups
+            '        depthMap.ResponseIndexForGroup(igrp) = 1
+            '    Next
+            'End If
 
-            'PP map
-            Dim PPmap As New cEnviroInputMap(Of Single)
-            PPmap.Map = Me.RelPP
-            PPmap.Name = "Relative PP"
-            PPmap.Init(CapEnvResData, Me)
+            ''PP map
+            'Dim PPmap As New cEnviroInputMap(Of Single)
+            'PPmap.Map = Me.RelPP
+            'PPmap.Name = "Relative PP"
+            'PPmap.Init(CapEnvResData, Me)
 
-            If CapEnvResData.MediationShapes >= 2 Then
-                'use the second function for all groups
-                For igrp As Integer = 1 To Me.NGroups
-                    PPmap.ResponseIndexForGroup(igrp) = 2
-                Next
-            End If
+            'If CapEnvResData.MediationShapes >= 2 Then
+            '    'use the second function for all groups
+            '    For igrp As Integer = 1 To Me.NGroups
+            '        PPmap.ResponseIndexForGroup(igrp) = 2
+            '    Next
+            'End If
 
-            'clear out the old data
-            Me.CapMaps.Clear()
-            Me.CapMaps.Add(PPmap)
-            Me.CapMaps.Add(depthMap)
+            ''clear out the old data
+            'Me.CapMaps.Clear()
+            'Me.CapMaps.Add(PPmap)
+            'Me.CapMaps.Add(depthMap)
 
         Catch ex As Exception
             Debug.Assert(False, "Failed it init debug capacity map")
