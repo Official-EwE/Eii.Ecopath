@@ -1,4 +1,12 @@
-﻿''' <summary>
+﻿#Region " Imports "
+
+Option Strict On
+Imports EwEUtils.Core
+Imports EwECore.ValueWrapper
+
+#End Region ' Imports
+
+''' <summary>
 ''' Joins an input map(row,col) with a list(by group) of Environmental Response functions (mediation functions).
 ''' </summary>
 ''' <typeparam name="T">Type of map</typeparam>
@@ -15,7 +23,8 @@ Public Class cEnviroInputMap(Of T)
     Private m_GrpToShape() As Integer
     Private m_MedData As cMediationDataStructures
     Private m_spaceData As cEcospaceDataStructures
-    Private m_name As String
+    Private m_strName As String
+    Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
     Private m_min As Single
     Private m_max As Single
     Private m_mean As Single
@@ -24,24 +33,37 @@ Public Class cEnviroInputMap(Of T)
 
 #End Region ' Private vars
 
-    Friend Sub New(ByVal core As cCore)
+    Friend Sub New(ByVal core As cCore, ByVal iDBID As Integer, ByVal iIndex As Integer, ByVal strName As String, _
+                   ByVal varName As eVarNameFlags, ByVal theManager As cMapResponseInteractionManager, ByVal MapArray(,) As T)
+
         MyBase.New(core)
 
-        Me.m_dataType = EwEUtils.Core.eDataTypes.EcospaceMapResponse
+        Dim val As cValue
+        Dim meta As cVariableMetaData
+
+        Me.AllowValidation = False
+
         Me.m_coreComponent = EwEUtils.Core.eCoreComponentType.EcoSpace
+        Me.m_dataType = EwEUtils.Core.eDataTypes.EcospaceMapResponse
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-    End Sub
+        'VarName
+        meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Integer, eVarNameFlags.VariableName, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
 
-    Friend Sub New(ByVal core As cCore, ByVal theManager As cMapResponseInteractionManager, ByVal MapArray(,) As T)
-
-        Me.New(core)
-
-        Me.setManager(theManager)
+        Me.Index = iIndex
+        Me.DBID = iDBID
+        Me.Name = strName
+        Me.Variable = varName
         Me.m_map = MapArray
+        Me.setManager(theManager)
 
-        'init to the data in the manager
+        ' Init to the data in the manager
         Me.Init(Me.m_manager.MediationData, Me.m_manager.SpaceData)
         Me.Update()
+
+        Me.AllowValidation = True
 
     End Sub
 
@@ -63,29 +85,21 @@ Public Class cEnviroInputMap(Of T)
         m_min = Single.MaxValue
         m_max = Single.MinValue
 
-        For ir As Integer = 1 To Me.m_spaceData.InRow
-            For ic As Integer = 1 To Me.m_spaceData.InCol
-                Dim ob As Object = Me.m_map(ir, ic)
-                m_min = Math.Min(CType(ob, Double), m_min)
-                m_max = Math.Max(CType(ob, Double), m_max)
+        Try
+            For ir As Integer = 1 To Me.m_spaceData.InRow
+                For ic As Integer = 1 To Me.m_spaceData.InCol
+                    Dim ob As Object = Me.m_map(ir, ic)
+                    Me.m_min = Math.Min(CSng(ob), Me.m_min)
+                    Me.m_max = Math.Max(CSng(ob), Me.m_max)
+                Next
             Next
-        Next
+        Catch ex As Exception
+            ' Argh
+        End Try
 
-        Me.m_mean = (Me.m_min + m_max) * 0.5F
+        Me.m_mean = (Me.m_min + Me.m_max) * 0.5F
 
     End Sub
-
-    ''' <summary>
-    ''' Get/set the input map that the response function will use to look up its input value
-    ''' </summary>
-    Friend Property Map() As T(,)
-        Get
-            Return Me.m_map
-        End Get
-        Set(ByVal value As T(,))
-            Me.m_map = value
-        End Set
-    End Property
 
     ''' <inheritdocs cref="IEnviroInputMap.setManager"/>
     Friend Sub setManager(ByVal theManager As cMapResponseInteractionManager) Implements IEnviroInputMap.setManager
@@ -159,26 +173,34 @@ Public Class cEnviroInputMap(Of T)
         ReDim pts(nBins)
         Me.m_binWidth = Me.Max / nBins
 
-        For ir As Integer = 1 To Me.m_spaceData.InRow
-            For ic As Integer = 1 To Me.m_spaceData.InCol
-                Dim cell As Single = CSng(CObj(Me.m_map(ir, ic)))
-                ipt = Int(cell / m_binWidth)
-                If ipt >= nBins Then ipt = nBins
-                If ipt <= 0 Then ipt = 1
-                pts(ipt).Y += 1
-                maxPts = Math.Max(pts(ipt).Y, maxPts)
-            Next
-        Next
+        Try
 
-        'Normalize the histogram
-        For i As Integer = 1 To nBins
-            pts(i).X = m_binWidth * i
-            pts(i).Y = pts(i).Y / maxPts
-        Next
+            For ir As Integer = 1 To Me.m_spaceData.InRow
+                For ic As Integer = 1 To Me.m_spaceData.InCol
+                    Dim cell As Single = CSng(CObj(Me.m_map(ir, ic)))
+                    ipt = CInt(cell / m_binWidth)
+                    If ipt >= nBins Then ipt = nBins
+                    If ipt <= 0 Then ipt = 1
+                    pts(ipt).Y += 1
+                    maxPts = CInt(Math.Max(pts(ipt).Y, maxPts))
+                Next
+            Next
+
+            'Normalize the histogram
+            For i As Integer = 1 To nBins
+                pts(i).X = m_binWidth * i
+                pts(i).Y = pts(i).Y / maxPts
+            Next
+
+        Catch ex As Exception
+
+        End Try
 
         Return pts
 
     End Function
+
+#Region " Properties "
 
     Public ReadOnly Property nGroups() As Integer
         Get
@@ -204,6 +226,30 @@ Public Class cEnviroInputMap(Of T)
             MyBase.Name = value
         End Set
     End Property
+
+    Public Property Variable() As eVarNameFlags _
+        Implements IEnviroInputMap.Variable
+        Get
+            Return DirectCast(Me.GetVariable(eVarNameFlags.VariableName), eVarNameFlags)
+        End Get
+        Set(ByVal value As eVarNameFlags)
+            Me.SetVariable(eVarNameFlags.VariableName, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the input map that the response function will use to look up its input value
+    ''' </summary>
+    Friend Property Map() As T(,)
+        Get
+            Return Me.m_map
+        End Get
+        Set(ByVal value As T(,))
+            Me.m_map = value
+        End Set
+    End Property
+
+#End Region ' Properties
 
     ''' <inheritdocs cref="IEnviroInputMap.Max"/>
     Public ReadOnly Property Max() As Single _

@@ -9589,7 +9589,7 @@ Namespace DataSources
             Dim iPosition As Integer = 1
 
             Try
-                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(HabitatID) FROM EcospaceScenarioCapacityMap")) + 1
+                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(MapID) FROM EcospaceScenarioCapacityMap")) + 1
                 iPosition = CInt(Me.m_db.GetValue("SELECT Count(*) FROM EcospaceScenarioCapacityMap")) + 1
             Catch ex As Exception
                 iDBID = 1

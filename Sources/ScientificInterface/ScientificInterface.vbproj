@@ -977,6 +977,10 @@
     <EmbeddedResource Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.resx">
       <DependentUpon>frmCapacityFunction.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineCapacityMaps.resx">
+      <DependentUpon>dlgDefineCapacityMaps.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Panels\StartPanel\frmStartPanel.resx">
       <DependentUpon>frmStartPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1400,6 +1404,15 @@
       <DependentUpon>frmCapacityFunction.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridDefineCapacityMaps.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgDefineCapacityMaps.Designer.vb">
+      <DependentUpon>dlgDefineCapacityMaps.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgDefineCapacityMaps.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">

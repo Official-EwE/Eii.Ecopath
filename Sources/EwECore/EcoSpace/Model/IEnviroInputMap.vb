@@ -1,4 +1,5 @@
-﻿
+﻿Imports EwEUtils.Core
+
 ''' <summary>
 ''' Interface for defining Ecospace Environmental Input maps
 ''' </summary>
@@ -9,6 +10,11 @@ Public Interface IEnviroInputMap
     ''' Name of the underlying Map
     ''' </summary>
     Property Name() As String
+
+    ''' <summary>
+    ''' Variable of the underlying Map
+    ''' </summary>
+    Property Variable() As eVarNameFlags
 
     ''' <summary>
     ''' Return the value of the map as a function of the applied Response Function

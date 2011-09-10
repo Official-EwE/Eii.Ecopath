@@ -141,7 +141,8 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditHabitats As cCommand = Nothing
     Private WithEvents m_cmdEditRegions As cCommand = Nothing
     Private WithEvents m_cmdEditMPAs As cCommand = Nothing
-    Private WithEvents m_cmdEditImportanceLayers As cCommand = Nothing
+    Private WithEvents m_cmdDefineImportanceLayers As cCommand = Nothing
+    Private WithEvents m_cmdDefineCapMaps As cCommand = Nothing
     Private WithEvents m_cmdImportLayerData As cCommand = Nothing
     Private WithEvents m_cmdExportLayerData As cCommand = Nothing
     Private WithEvents m_cmdImportTimeSeries As cCommand = Nothing
@@ -451,8 +452,11 @@ Public Class AppLauncher
         Me.m_cmdEditMPAs = New cCommand(cmdh, "EditMPAs")
         Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceDefineMPAs)
 
-        Me.m_cmdEditImportanceLayers = New cCommand(cmdh, "EditImportanceLayers")
-        Me.m_cmdEditImportanceLayers.AddControl(Me.m_tsmiEcospaceDefineImportanceLayers)
+        Me.m_cmdDefineImportanceLayers = New cCommand(cmdh, "EditImportanceLayers")
+        Me.m_cmdDefineImportanceLayers.AddControl(Me.m_tsmiEcospaceDefineImportanceLayers)
+
+        Me.m_cmdDefineCapMaps = New cCommand(cmdh, "EditCapacityMaps")
+        Me.m_cmdDefineCapMaps.AddControl(Me.m_tsmiEcospaceDefineCapacityMaps)
 
         Me.m_cmdImportLayerData = New cCommand(cmdh, "ImportLayerData")
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
@@ -3412,7 +3416,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit importance layers dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdEditImportanceLayers.OnInvoke
+    Private Sub OnEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdDefineImportanceLayers.OnInvoke
         Dim dlg As New dlgEditImportanceLayers(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
@@ -3420,8 +3424,16 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit importance layers dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdEditImportanceLayers.OnUpdate
+    Private Sub OnUpdateDefineCapacityMaps(ByVal cmd As cCommand) Handles m_cmdDefineCapMaps.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; invokes the Ecospace define capacity maps dialog.
+    ''' </summary>
+    Private Sub OnEditDefineCapacityMaps(ByVal cmd As cCommand) Handles m_cmdDefineCapMaps.OnInvoke
+        Dim dlg As New dlgDefineCapacityMaps(Me.UIContext)
+        dlg.ShowDialog(Me)
     End Sub
 
     ''' <summary>

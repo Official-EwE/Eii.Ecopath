@@ -479,8 +479,7 @@ Public Class cEcospaceDataStructures
     Public CapMapVariable() As EwEUtils.Core.eVarNameFlags
     Public CapMapFunctions(,) As Integer
 
-    ' CapMaps are I/O objects visible to the user, and should be managed by the core and exposed to the UI via core counters etc.
-    Public CapMaps As New List(Of IEnviroInputMap)
+    Public CapMaps As IEnviroInputMap() = Nothing
 
 #End Region
 

@@ -5622,6 +5622,8 @@ exitline:
     Private Function SetHabCapFromMaps() As Single
         Dim i As Integer, j As Integer, igrp As Integer, MaxCap As Double
 
+        If (Me.m_Data.CapMaps Is Nothing) Then Return MaxCap
+
         For Each map As IEnviroInputMap In Me.m_Data.CapMaps
             For igrp = 1 To Me.m_Data.NGroups
                 If map.ResponseIndexForGroup(igrp) > 0 Then

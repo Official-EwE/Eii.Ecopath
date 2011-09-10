@@ -1,5 +1,10 @@
-﻿
+﻿#Region " Imports "
 
+Option Strict On
+
+Imports EwEUtils.Core
+
+#End Region ' Imports
 
 Public Class cMapResponseInteractionManager
     Implements ICoreInterface
@@ -7,39 +12,93 @@ Public Class cMapResponseInteractionManager
 #Region "Private data"
 
     Private m_maps As List(Of IEnviroInputMap)
+    Private m_SpaceData As cEcospaceDataStructures
     Private m_MedData As cMediationDataStructures
     Private m_core As cCore
 
 #End Region
 
-#Region "Public Methods and Properties"
+#Region " Constructor "
 
-    Public Sub Init(ByVal theCore As cCore, ByVal MediationData As cMediationDataStructures, ByVal InputMaps As List(Of IEnviroInputMap))
-        Me.m_maps = InputMaps
-        Me.m_MedData = MediationData
-        Me.m_core = theCore
-
+    Public Sub New()
     End Sub
 
-    Public Sub Load()
+#End Region ' Constructor
+
+#Region "Public Methods and Properties"
+
+    Public Sub Init(ByVal theCore As cCore, ByVal spaceData As cEcospaceDataStructures, ByVal MediationData As cMediationDataStructures)
+        Me.m_core = theCore
+        Me.m_SpaceData = spaceData
+        Me.m_MedData = MediationData
+        Me.m_maps = New List(Of IEnviroInputMap)
+    End Sub
+
+    Friend Function Load() As Boolean
+
+        Dim objMap As IEnviroInputMap = Nothing
+        Dim bSuccess As Boolean = True
+
         Try
 
-            'Set the manager of each map in the list
-            'this was not done by Ecospace because it does not have an instance of the core or the manager
-            'it could be done by the core but I think it makes more sense for the manager to do it
-            'Kind of hack as the maps should already know this but it's not the simple
-            For Each map As IEnviroInputMap In Me.m_maps
-                map.setManager(Me)
-            Next
+            Me.m_maps.Clear()
+
+            'populate the list of IEnviroInputMap objects that the user will interact with 
+            'to change region related parameters from the interface
+            For i As Integer = 1 To Me.m_SpaceData.NoCapMaps
+                Try
+
+                    Dim data As Object = Me.m_core.EcospaceBasemap.GetLayerData(Me.m_SpaceData.CapMapVariable(i))
+                    Dim map As IEnviroInputMap = Nothing
+
+                    Debug.Assert(data IsNot Nothing)
+                    Debug.Assert(data.GetType.IsArray)
+
+                    ' Get type of Ecospace element data
+                    Dim tElm As Type = data.GetType.GetElementType
+
+                    ' Reflection cannot be used to call the constructor of a generic class with parameters. Aargh.
+                    '' Get type of Environmental map
+                    'Dim tMap As Type = GetType(cEnviroInputMap(Of ))
+                    '' Create generic instantiation type for type T
+                    'Dim tMagic As Type = tMap.MakeGenericType(tElm)
+                    '' Build map (helmet, anyone?)
+                    ''Dim map As IEnviroInputMap = DirectCast(Activator.CreateInstance(tMagic,  New Object() {Me, Me.CapacitMapInteractionManager, data, Me.m_SpaceData.CapMapName(i)}),  IEnviroInputMap)
+
+                    If (tElm Is GetType(Integer)) Then
+                        map = New cEnviroInputMap(Of Integer)(Me.m_core, Me.m_SpaceData.CapMapDBID(i), i, Me.m_SpaceData.CapMapName(i), _
+                                                              Me.m_SpaceData.CapMapVariable(i), Me, DirectCast(data, Integer(,)))
+                    ElseIf (tElm Is GetType(Single)) Then
+                        map = New cEnviroInputMap(Of Single)(Me.m_core, Me.m_SpaceData.CapMapDBID(i), i, Me.m_SpaceData.CapMapName(i), _
+                                                             Me.m_SpaceData.CapMapVariable(i), Me, DirectCast(data, Single(,)))
+                    Else
+                        ' Not supported
+                    End If
+
+                    If (map IsNot Nothing) Then
+                        Me.m_maps.Add(map)
+                    End If
+
+                Catch ex As Exception
+                    Debug.Assert(False, "InitAndLoadCapacityMaps Error: " & ex.Message)
+                    bSuccess = False
+                End Try
+
+            Next i
+
+            Me.m_SpaceData.CapMaps = Me.m_maps.ToArray
 
             'update the maps with the newly loaded data
             Me.Update()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Load() Exception: " & ex.Message)
+            bSuccess = False
         End Try
 
-    End Sub
+        Return bSuccess
+
+    End Function
 
     Public Sub Update()
         Try
@@ -54,13 +113,11 @@ Public Class cMapResponseInteractionManager
 
     End Sub
 
-
     Public ReadOnly Property nMaps() As Integer
         Get
             Return Me.m_maps.Count
         End Get
     End Property
-
 
     Public ReadOnly Property Map(ByVal MapIndex As Integer) As IEnviroInputMap
         Get
@@ -82,35 +139,28 @@ Public Class cMapResponseInteractionManager
         Return False
     End Function
 
-    Public Function AddMap(ByVal dataArray(,) As Single, ByVal MapName As String) As Boolean
-        Dim breturn As Boolean
+    Public Function AddMap(ByVal strMapName As String, ByVal variable As eVarNameFlags) As Boolean
+
+        Dim iDBID As Integer = 0
         Try
-
-            'Create a map from the input data
-            'this will init the map to the data in the Manager
-            Dim map As New cEnviroInputMap(Of Single)(Me.m_core, Me, dataArray)
-
-            map.AllowValidation = False
-            map.Name = MapName
-            map.AllowValidation = True
-
-            'add the new map to the list of maps
-            Me.m_maps.Add(map)
-
-            'tell the core that the MapResponse  data has change
-            Me.onChanged()
-
-            breturn = True
-
+            Return Me.m_core.AddEcospaceCapacityMap(strMapName, variable, iDBID)
         Catch ex As Exception
-            breturn = False
             Debug.Assert(False, Me.ToString & ".AddMap() ")
+            Return False
         End Try
-
-        Return breturn
 
     End Function
 
+    Public Function RemoveMap(ByVal iDBID As Integer) As Boolean
+
+        Try
+            Return Me.m_core.RemoveEcospaceCapacityMap(iDBID)
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".RemoveMap() ")
+            Return False
+        End Try
+
+    End Function
 
     Friend ReadOnly Property MediationData() As cMediationDataStructures
         Get
@@ -118,13 +168,11 @@ Public Class cMapResponseInteractionManager
         End Get
     End Property
 
-
     Friend ReadOnly Property SpaceData() As cEcospaceDataStructures
         Get
             Return Me.m_core.m_EcoSpaceData
         End Get
     End Property
-
 
 #End Region
 

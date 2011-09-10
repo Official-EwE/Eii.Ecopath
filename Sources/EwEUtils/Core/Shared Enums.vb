@@ -2050,6 +2050,8 @@ Namespace Core
 
         ''' <summary>The number of supported pedigree variables.</summary>
         nPedigreeVariables
+        ''' <summary>The number of supported capacity maps.</summary>
+        nCapacityMaps
 
     End Enum
 

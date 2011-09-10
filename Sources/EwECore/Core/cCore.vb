@@ -213,13 +213,13 @@ Public Class cCore
                     ' Case eCoreCounterTypes.nTrophicLevels
                     '     Return m_NetworkManager.nTrophicLevels
                 Case eCoreCounterTypes.nRows
-                    If m_EcospaceBasemap IsNot Nothing Then
+                    If (Me.m_EcospaceBasemap IsNot Nothing) Then
                         Return Me.m_EcospaceBasemap.InRow
                     Else
                         Return 0
                     End If
                 Case eCoreCounterTypes.nCols
-                    If m_EcospaceBasemap IsNot Nothing Then
+                    If (Me.m_EcospaceBasemap IsNot Nothing) Then
                         Return Me.m_EcospaceBasemap.InCol
                     Else
                         Return 0
@@ -232,6 +232,8 @@ Public Class cCore
                     Return Me.nTaxon
                 Case eCoreCounterTypes.nPedigreeVariables
                     Return Me.nPedigreeVariables
+                Case eCoreCounterTypes.nCapacityMaps
+                    Return Me.CapacitMapInteractionManager.nMaps
                 Case Else
                     'Debug.Assert(False, String.Format("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
                     Return NULL_VALUE
@@ -288,7 +290,7 @@ Public Class cCore
     ''' Total number of groups across all models.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nGroups">eCoreCounterTypes.nGroups</see>.
+    ''' See <see cref="eCoreCounterTypes.nGroups"/>.
     ''' </remarks>
     Public ReadOnly Property nGroups() As Integer
         Get
@@ -300,7 +302,7 @@ Public Class cCore
     ''' Number of detritus groups across all models.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nDetritus">eCoreCounterTypes.nDetritus</see>.
+    ''' See <see cref="eCoreCounterTypes.nDetritus"/>.
     ''' </remarks>
     Public ReadOnly Property nDetritusGroups() As Integer
         Get
@@ -312,7 +314,7 @@ Public Class cCore
     ''' Number of living groups across all models.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nLivingGroups">eCoreCounterTypes.nLivingGroups</see>.
+    ''' See <see cref="eCoreCounterTypes.nLivingGroups"/>.
     ''' </remarks>
     Public ReadOnly Property nLivingGroups() As Integer
         Get
@@ -324,7 +326,7 @@ Public Class cCore
     ''' Number of fishing fleets across all models.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nFleets">eCoreCounterTypes.nFleets</see>.
+    ''' See <see cref="eCoreCounterTypes.nFleets"/>.
     ''' </remarks>
     Public ReadOnly Property nFleets() As Integer
         Get
@@ -336,7 +338,7 @@ Public Class cCore
     ''' Number of Ecospace habitats.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nHabitats">eCoreCounterTypes.nHabitats</see>.
+    ''' See <see cref="eCoreCounterTypes.nHabitats"/>.
     ''' </remarks>
     Public ReadOnly Property nHabitats() As Integer
         Get
@@ -348,7 +350,7 @@ Public Class cCore
     ''' Number of Ecospace regions.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nRegions">eCoreCounterTypes.nRegions</see>.
+    ''' See <see cref="eCoreCounterTypes.nRegions"/>.
     ''' </remarks>
     Public ReadOnly Property nRegions() As Integer
         Get
@@ -369,7 +371,7 @@ Public Class cCore
     ''' Number of Ecospace Importance layers.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nImportanceLayers">eCoreCounterTypes.nImportanceLayers</see>.
+    ''' See <see cref="eCoreCounterTypes.nImportanceLayers"/>.
     ''' </remarks>
     Public ReadOnly Property nImportanceLayers() As Integer
         Get
@@ -381,7 +383,7 @@ Public Class cCore
     ''' Number of years to run an Ecospace model.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nEcospaceYears">eCoreCounterTypes.nEcospaceYears</see>.
+    ''' See <see cref="eCoreCounterTypes.nEcospaceYears"/>.
     ''' </remarks>
     Public ReadOnly Property nEcospaceYears() As Integer
         Get
@@ -393,7 +395,7 @@ Public Class cCore
     ''' Number time steps in an Ecospace model.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nEcospaceYears">eCoreCounterTypes.nEcospaceYears</see>.
+    ''' See <see cref="eCoreCounterTypes.nEcospaceYears"/>.
     ''' </remarks>
     Public ReadOnly Property nEcospaceTimeSteps() As Integer
         Get
@@ -405,7 +407,7 @@ Public Class cCore
     ''' Number of years to run an Ecosim model.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nEcosimYears">eCoreCounterTypes.nEcosimYears</see>.
+    ''' See <see cref="eCoreCounterTypes.nEcosimYears"/>.
     ''' </remarks>
     Public ReadOnly Property nEcosimYears() As Integer
         Get
@@ -417,7 +419,7 @@ Public Class cCore
     ''' Number of time steps in an Ecosim run.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nEcosimTimeSteps">eCoreCounterTypes.nEcosimTimeSteps</see>.
+    ''' See <see cref="eCoreCounterTypes.nEcosimTimeSteps"/>.
     ''' </remarks>
     Public ReadOnly Property nEcosimTimeSteps() As Integer
         Get
@@ -432,7 +434,7 @@ Public Class cCore
     ''' Max number of groups in a single stanza configuration over all stanza groups.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nMaxStanza">eCoreCounterTypes.MaxStanza</see>.
+    ''' See <see cref="eCoreCounterTypes.nMaxStanza"/>.
     ''' </remarks>
     Public ReadOnly Property nMaxStanza() As Integer
         Get
@@ -444,7 +446,7 @@ Public Class cCore
     ''' Number of stanza configurations.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nStanzas">eCoreCounterTypes.nStanzas</see>.
+    ''' See <see cref="eCoreCounterTypes.nStanzas"/>.
     ''' </remarks>
     Public ReadOnly Property nStanzas() As Integer
         Get
@@ -456,7 +458,7 @@ Public Class cCore
     ''' Number of available time series.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nTimeSeries">eCoreCounterTypes.nTimeSeries</see>.
+    ''' See <see cref="eCoreCounterTypes.nTimeSeries"/>.
     ''' </remarks>
     Public ReadOnly Property nTimeSeries() As Integer
         Get
@@ -468,7 +470,7 @@ Public Class cCore
     ''' Number of applied time series.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nTimeSeriesApplied">eCoreCounterTypes.nTimeSeriesApplied</see>.
+    ''' See <see cref="eCoreCounterTypes.nTimeSeriesApplied"/>.
     ''' </remarks>
     Public ReadOnly Property nTimeSeriesEnabled() As Integer
         Get
@@ -480,7 +482,7 @@ Public Class cCore
     ''' Number of applied time series.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nTimeSeriesApplied">eCoreCounterTypes.nTimeSeriesApplied</see>.
+    ''' See <see cref="eCoreCounterTypes.nTimeSeriesApplied"/>.
     ''' </remarks>
     Public ReadOnly Property nTimeSeriesYears() As Integer
         Get
@@ -510,7 +512,7 @@ Public Class cCore
     ''' Get the number of taxonomy groups.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nTaxon">eCoreCounterTypes.nTaxon</see>.
+    ''' See <see cref="eCoreCounterTypes.nTaxon"/>.
     ''' </remarks>
     Public ReadOnly Property nTaxon() As Integer
         Get
@@ -522,11 +524,23 @@ Public Class cCore
     ''' Get the number of pedigree variables.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nPedigreeVariables">eCoreCounterTypes.nPedigreeVariables</see>.
+    ''' See <see cref="eCoreCounterTypes.nPedigreeVariables"/>.
     ''' </remarks>
     Public ReadOnly Property nPedigreeVariables() As Integer
         Get
             Return Me.m_EcoPathData.NumPedigreeVariables
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Get the number of capacity maps.
+    ''' </summary>
+    ''' <remarks>
+    ''' See <see cref="eCoreCounterTypes.nCapacityMaps"/>.
+    ''' </remarks>
+    Public ReadOnly Property nCapacityMaps() As Integer
+        Get
+            Return Me.CapacitMapInteractionManager.nMaps
         End Get
     End Property
 
@@ -7783,7 +7797,7 @@ Public Class cCore
         m_EcospaceResultsASCWriter.Init(Me)
 
         m_mapInteractionManager = New cMapResponseInteractionManager
-        m_mapInteractionManager.Init(Me, Me.m_EcoSimData.CapEnvResData, Me.m_EcoSpaceData.CapMaps)
+        m_mapInteractionManager.Init(Me, Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
 
         Return True
 
@@ -7993,19 +8007,14 @@ Public Class cCore
 
         'send a message if there are groups that failed the HabCap test
         If FailedGroups.Count > 0 Then
-            'ToDo checkHabitats localize
-            Dim msgStr As String = "Warning: The following group(s) have a low maximun habitat capacity. Do you want to continue?"
-            'msgStr = My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA
-            msg = New cFeedbackMessage(msgStr, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
+            Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_AREA
+            msg = New cFeedbackMessage(strMsg, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
                                                                 cFeedbackMessage.eReplyStyle.YES_NO, , cFeedbackMessage.eReply.YES)
 
             For Each igrp In FailedGroups
                 ' Connect variable status to group preferred habitat
-                Dim grpName As String
-                ' grpName = String.Format(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA_GROUP, Me.m_EcoPathData.GroupName(igrp))
-                grpName = Me.m_EcoPathData.GroupName(igrp)
-                grpName = grpName & " max. capacity = " & Me.m_EcoSpaceData.MaxHabCap(igrp)
-                vs = New cVariableStatus(eStatusFlags.MissingParameter, grpName, _
+                strMsg = String.Format(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_AREA_GROUP, Me.m_EcoPathData.GroupName(igrp), Me.m_EcoSpaceData.MaxHabCap(igrp))
+                vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, _
                                          eVarNameFlags.NotSet, eDataTypes.EcospaceMapResponse, eCoreComponentType.EcoSpace, igrp)
 
                 msg.AddVariable(vs)
@@ -8020,70 +8029,6 @@ Public Class cCore
         End If
 
         Return True
-
-
-        'Dim group As cEcospaceGroup = Nothing
-        'Dim igrp As Integer
-        'Dim bHasArea As Boolean
-        'Dim bAllArea As Boolean = True
-        'Dim msg As cFeedbackMessage = Nothing
-        'Dim vs As cVariableStatus = Nothing
-        'Dim bFailed As Boolean
-
-
-        ''Me.Messages.SendMessage(New cMessage("WARNING: Core.CheckHabitats() has been disabled for debugging.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
-        ''System.Console.WriteLine("------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX--------------")
-        ''System.Console.WriteLine("------WARNING: Core.CheckHabitats() has been disabled for debugging.--------------")
-        ''System.Console.WriteLine("------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX--------------")
-        'Return True
-
-        'If Not Me.m_EcoSpaceData.NewMultiStanza Then
-        '    'this only matters for the New Multi Stanza code
-        '    Return True
-        'End If
-
-        'For isp As Integer = 1 To Me.m_Stanza.Nsplit
-        '    For ist As Integer = 1 To m_Stanza.Nstanza(isp)
-
-        '        igrp = m_Stanza.EcopathCode(isp, ist)
-        '        group = Me.EcospaceGroups(igrp)
-
-        '        'Determine area
-        '        bHasArea = False
-        '        For ihab As Integer = 0 To Me.nHabitats
-        '            ' ToDo: reevaluate
-        '            If (Me.m_EcoSpaceData.PrefHab(igrp, ihab) > 0) Then  ' If Me.m_EcoSpaceData.PrefHab(igrp, ihab)
-        '                If Me.m_EcoSpaceData.HabAreaProportion(ihab) > 0 Then
-        '                    bHasArea = True
-        '                    Exit For
-        '                End If
-        '            End If
-        '        Next ihab
-
-        '        ' Keep track record of assessment
-        '        bAllArea = bAllArea And bHasArea
-
-        '        If Not bHasArea Then
-        '            'no area for this group
-        '            If (msg Is Nothing) Then msg = New cMessage(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA, _
-        '                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
-        '                                                        eMessageImportance.Warning, eDataTypes.EcospaceGroup)
-        '            ' Connect variable status to group preferred habitat
-        '            vs = New cVariableStatus(group, eStatusFlags.MissingParameter, _
-        '                                     String.Format(My.Resources.CoreMessages.ECOSPACE_NOHABITAT_AREA_GROUP, group.Name), _
-        '                                     eVarNameFlags.PreferredHabitat, 1)
-        '            msg.AddVariable(vs)
-        '        End If
-
-        '    Next ist
-        'Next isp
-
-        'If Not bAllArea Then
-        '    Me.Messages.AddMessage(msg)
-        '    Return False
-        'End If
-
-        'Return True
 
     End Function
 
@@ -8684,7 +8629,6 @@ Public Class cCore
             bSuccess = bSuccess And InitEcospaceGroups()
             bSuccess = bSuccess And InitEcospaceFleets()
             bSuccess = bSuccess And InitEcospaceAdvection()
-            bSuccess = bSuccess And InitAndLoadCapacityMaps()
 
             'Init advection
             Me.m_AdvectionManager.Init(Me, Me.m_Ecospace)
@@ -8693,7 +8637,7 @@ Public Class cCore
             InitEcospaceOutputs()
             InitEcotracerOutputs()
 
-            Me.m_mapInteractionManager.Load()
+            bSuccess = bSuccess And Me.CapacitMapInteractionManager.Load()
 
             'For debugging add the RelCin Layer to the Capacity maps
             'you have to turn On the Contaminant tracer to edit the RelCin map
@@ -10219,64 +10163,81 @@ Public Class cCore
 
 #Region " Capacity maps "
 
-    Private Function InitAndLoadCapacityMaps() As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Add an <see cref="IEnviroInputMap">capacity map</see> to the current
+    ''' <see cref="DataSource">data source</see>.
+    ''' </summary>
+    ''' <param name="strMap">Name of map to add.</param>
+    ''' <param name="variable">Variable to apply the map to.</param>
+    ''' <param name="iDBID">DB id of the new map.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Friend Function AddEcospaceCapacityMap(ByVal strMap As String, ByVal variable As eVarNameFlags, ByRef iDBID As Integer) As Boolean
+        Dim ds As IEcospaceDatasource = Nothing
+        Dim obj As cCoreInputOutputBase = Nothing
+        Dim bSucces As Boolean = True
 
-        Dim bSuccess As Boolean = True
+        ' Sanity checks
+        If (Not Me.CanSave(True)) Then Return False
+        If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
+        If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
-        Try
-            Dim objMap As IEnviroInputMap = Nothing
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_EcoSpaceData
+        ' Increase batch count
+        If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
-            Me.m_EcoSpaceData.CapMaps.Clear()
+        ds = DirectCast(DataSource, IEcospaceDatasource)
+        If ds.AddEcospaceCapacityMap(strMap, variable, iDBID) Then
+            ' Broadcast update
+            Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace cap map {0} has been added", strMap), _
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
+        Else
+            bSucces = False
+        End If
 
-            'populate the list of IEnviroInputMap objects that the user will interact with 
-            'to change region related parameters from the interface
-            For i As Integer = 1 To Me.m_EcoSpaceData.NoCapMaps
-                Try
+        ' Decrease batch count, stating what has changed
+        Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecospace)
 
-                    Dim data As Object = Me.EcospaceBasemap.GetLayerData(ecospaceDS.CapMapVariable(i))
+        Return bSucces
+    End Function
 
-                    Debug.Assert(data IsNot Nothing)
-                    Debug.Assert(data.GetType.IsArray)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Remove an <see cref="IEnviroInputMap">capacity map</see> from the current
+    ''' <see cref="DataSource">data source</see>.
+    ''' </summary>
+    ''' <param name="iDBID">The <see cref="cCoreInputOutputBase.DBID"/> of the map
+    ''' to remove.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function RemoveEcospaceCapacityMap(ByVal iDBID As Integer) As Boolean
+        Dim bsucces As Boolean = False
+        Dim ds As IEcospaceDatasource = Nothing
 
-                    ' Get type of Ecospace element data
-                    Dim tElm As Type = data.GetType.GetElementType
+        ' Sanity checks
+        If (Not Me.CanSave(True)) Then Return False
+        If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
+        If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
-                    ' Reflection cannot be used to call the constructor of a generic class with parameters. Aargh.
-                    '' Get type of Environmental map
-                    'Dim tMap As Type = GetType(cEnviroInputMap(Of ))
-                    '' Create generic instantiation type for type T
-                    'Dim tMagic As Type = tMap.MakeGenericType(tElm)
-                    '' Build map (helmet, anyone?)
-                    ''Dim map As IEnviroInputMap = DirectCast(Activator.CreateInstance(tMagic,  New Object() {Me, Me.CapacitMapInteractionManager, data, ecospaceDS.CapMapName(i)}),  IEnviroInputMap)
+        ' Not allowed to delete 0 region (if any)
+        If iDBID <= 0 Then Return False
 
-                    Dim map As IEnviroInputMap = Nothing
-                    If tElm Is GetType(Integer) Then
-                        map = New cEnviroInputMap(Of Integer)(Me, Me.CapacitMapInteractionManager, DirectCast(data, Integer(,)))
-                    ElseIf tElm Is GetType(Single) Then
-                        map = New cEnviroInputMap(Of Single)(Me, Me.CapacitMapInteractionManager, DirectCast(data, Single(,)))
-                    End If
+        ' Increase batch count
+        If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
-                    DirectCast(map, cCoreInputOutputBase).AllowValidation = False
-                    map.Name = ecospaceDS.CapMapName(i)
-                    DirectCast(map, cCoreInputOutputBase).AllowValidation = True
+        ds = DirectCast(DataSource, IEcospaceDatasource)
+        bsucces = ds.RemoveEcospaceCapacityMap(iDBID)
 
-                    ecospaceDS.CapMaps.Add(map)
+        If bsucces Then
+            ' Broadcast update
+            Me.m_publisher.AddMessage(New cMessage("Ecospace cap map has been removed", _
+                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
+        End If
 
-                Catch ex As Exception
-                    Debug.Assert(False, "InitAndLoadCapacityMaps Error: " & ex.Message)
-                    bSuccess = False
-                End Try
+        ' Decrease batch count, stating what has changed
+        Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecospace)
 
-            Next i
-
-        Catch ex As Exception
-            Debug.Assert(False, "InitAndLoadCapacityMaps Error: " & ex.Message)
-            bSuccess = False
-        End Try
-
-        Return bSuccess
-
+        Return bsucces
     End Function
 
 #End Region ' Capacity maps

@@ -1,5 +1,4 @@
-﻿
-#Region " Imports "
+﻿#Region " Imports "
 
 Option Explicit On
 Option Strict On
@@ -14,10 +13,13 @@ Imports SourceLibrary
 
 #End Region
 
+''' <summary>
+''' Grid to configure the environmental response 
+''' </summary>
+''' <remarks></remarks>
 <CLSCompliant(False)> _
 Public Class ucApplyMapResponseGrid
     Inherits Ecosim.ApplyShapeGrid
-
 
 #Region " Overrides "
 
@@ -27,14 +29,17 @@ Public Class ucApplyMapResponseGrid
         If (Me.UIContext Is Nothing) Then Return
 
         Dim group As cCoreGroupBase = Nothing
-        Dim map As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
+        Dim mapManager As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
+        Dim src As cCoreInputOutputBase = Nothing
+        Dim fmt As New cCoreInterfaceFormatter()
 
         ' Define grid dimensions
-        Me.Redim(Core.nGroups + 1, map.nMaps + 2)
+        Me.Redim(Core.nGroups + 1, mapManager.nMaps + 2)
 
-        For imap As Integer = 1 To map.nMaps
+        For imap As Integer = 1 To mapManager.nMaps
 
-            Me(0, 1 + imap) = New EwEColumnHeaderCell(map.Map(imap).Name)
+            src = DirectCast(mapManager.Map(imap), cCoreInputOutputBase)
+            Me(0, 1 + imap) = New PropertyColumnHeaderCell(Me.PropertyManager, src, eVarNameFlags.Name)
             Me(0, 1 + imap).Behaviors.Add(Me.m_RowColClick)
 
         Next imap
@@ -42,6 +47,7 @@ Public Class ucApplyMapResponseGrid
 
         Me(0, 0) = New EwEColumnHeaderCell("")
         Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+
         For iGroup As Integer = 1 To Core.nGroups
             group = Core.EcoPathGroupInputs(iGroup)
             ' # Group name row header cells
@@ -56,7 +62,6 @@ Public Class ucApplyMapResponseGrid
     End Sub
 
     Protected Overrides Sub FillData()
-
 
         Try
             Dim Manager As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
@@ -102,8 +107,7 @@ Public Class ucApplyMapResponseGrid
 
     End Sub
 
-#End Region
-
+#End Region ' Overrides
 
 #Region " Internals "
 

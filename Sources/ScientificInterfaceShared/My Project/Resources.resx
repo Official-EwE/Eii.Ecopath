@@ -615,7 +615,7 @@
   </data>
   <data name="DEFAULT_NEWLAYER_NUM" xml:space="preserve">
     <value>Layer {0}</value>
-    <comment>{0}: layer number</comment>
+    <comment>{0}: sequential number</comment>
   </data>
   <data name="DEFAULT_NEWMODELNAME" xml:space="preserve">
     <value>New model</value>
@@ -2189,5 +2189,18 @@
   </data>
   <data name="RESPONSE_GRAPH_YLABEL" xml:space="preserve">
     <value>Capacity normalized</value>
+  </data>
+  <data name="DEFAULT_NEWMAP_NUM" xml:space="preserve">
+    <value>Capacity map {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="VARIABLE_LAYERDEPTH" xml:space="preserve">
+    <value>Depth</value>
+  </data>
+  <data name="VARIABLE_LAYERRELCIN" xml:space="preserve">
+    <value>C(rel)||Relative Cin|Relative contaminants</value>
+  </data>
+  <data name="VARIABLE_LAYERRELPP" xml:space="preserve">
+    <value>PP(rel)||Relative PP|Relative Primary Production</value>
   </data>
 </root>
