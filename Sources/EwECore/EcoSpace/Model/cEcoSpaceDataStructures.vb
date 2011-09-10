@@ -473,7 +473,7 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public bSaveASC As Boolean
 
-    Public NoCapMaps As Integer
+    Public NumCapMaps As Integer
     Public CapMapDBID() As Integer
     Public CapMapName() As String
     Public CapMapVariable() As EwEUtils.Core.eVarNameFlags
@@ -983,10 +983,10 @@ Public Class cEcospaceDataStructures
 
         Try
 
-            ReDim Me.CapMapDBID(Me.NoCapMaps)
-            ReDim Me.CapMapName(Me.NoCapMaps)
-            ReDim Me.CapMapVariable(Me.NoCapMaps)
-            ReDim Me.CapMapFunctions(Me.NoCapMaps, Me.NGroups)
+            ReDim Me.CapMapDBID(Me.NumCapMaps)
+            ReDim Me.CapMapName(Me.NumCapMaps)
+            ReDim Me.CapMapVariable(Me.NumCapMaps)
+            ReDim Me.CapMapFunctions(Me.NumCapMaps, Me.NGroups)
 
         Catch ex As Exception
 

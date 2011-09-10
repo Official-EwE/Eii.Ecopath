@@ -45,10 +45,10 @@ Public Class cMapResponseInteractionManager
 
             'populate the list of IEnviroInputMap objects that the user will interact with 
             'to change region related parameters from the interface
-            For i As Integer = 1 To Me.m_SpaceData.NoCapMaps
+            For iMap As Integer = 1 To Me.m_SpaceData.NumCapMaps
                 Try
 
-                    Dim data As Object = Me.m_core.EcospaceBasemap.GetLayerData(Me.m_SpaceData.CapMapVariable(i))
+                    Dim data As Object = Me.m_core.EcospaceBasemap.GetLayerData(Me.m_SpaceData.CapMapVariable(iMap))
                     Dim map As IEnviroInputMap = Nothing
 
                     Debug.Assert(data IsNot Nothing)
@@ -66,14 +66,18 @@ Public Class cMapResponseInteractionManager
                     ''Dim map As IEnviroInputMap = DirectCast(Activator.CreateInstance(tMagic,  New Object() {Me, Me.CapacitMapInteractionManager, data, Me.m_SpaceData.CapMapName(i)}),  IEnviroInputMap)
 
                     If (tElm Is GetType(Integer)) Then
-                        map = New cEnviroInputMap(Of Integer)(Me.m_core, Me.m_SpaceData.CapMapDBID(i), i, Me.m_SpaceData.CapMapName(i), _
-                                                              Me.m_SpaceData.CapMapVariable(i), Me, DirectCast(data, Integer(,)))
+                        map = New cEnviroInputMap(Of Integer)(Me.m_core, Me.m_SpaceData.CapMapDBID(iMap), iMap, Me.m_SpaceData.CapMapName(iMap), _
+                                                              Me.m_SpaceData.CapMapVariable(iMap), Me, DirectCast(data, Integer(,)))
                     ElseIf (tElm Is GetType(Single)) Then
-                        map = New cEnviroInputMap(Of Single)(Me.m_core, Me.m_SpaceData.CapMapDBID(i), i, Me.m_SpaceData.CapMapName(i), _
-                                                             Me.m_SpaceData.CapMapVariable(i), Me, DirectCast(data, Single(,)))
+                        map = New cEnviroInputMap(Of Single)(Me.m_core, Me.m_SpaceData.CapMapDBID(iMap), iMap, Me.m_SpaceData.CapMapName(iMap), _
+                                                             Me.m_SpaceData.CapMapVariable(iMap), Me, DirectCast(data, Single(,)))
                     Else
                         ' Not supported
                     End If
+
+                    For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
+                        map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapMapFunctions(iMap, iGroup)
+                    Next
 
                     If (map IsNot Nothing) Then
                         Me.m_maps.Add(map)
@@ -84,7 +88,7 @@ Public Class cMapResponseInteractionManager
                     bSuccess = False
                 End Try
 
-            Next i
+            Next iMap
 
             Me.m_SpaceData.CapMaps = Me.m_maps.ToArray
 
@@ -113,6 +117,7 @@ Public Class cMapResponseInteractionManager
 
     End Sub
 
+
     Public ReadOnly Property nMaps() As Integer
         Get
             Return Me.m_maps.Count
@@ -131,6 +136,12 @@ Public Class cMapResponseInteractionManager
 
     Public Function onChanged() As Boolean
         Try
+            For Each map As IEnviroInputMap In Me.m_maps
+                For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
+                    Me.m_SpaceData.CapMapFunctions(DirectCast(map, cCoreInputOutputBase).Index, iGroup) = map.ResponseIndexForGroup(iGroup)
+                Next
+            Next
+
             Me.m_core.onChanged(Me, eMessageType.DataModified)
             Return True
         Catch ex As Exception

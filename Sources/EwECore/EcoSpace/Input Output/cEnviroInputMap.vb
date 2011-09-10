@@ -63,6 +63,7 @@ Public Class cEnviroInputMap(Of T)
         Me.Init(Me.m_manager.MediationData, Me.m_manager.SpaceData)
         Me.Update()
 
+        Me.ResetStatusFlags()
         Me.AllowValidation = True
 
     End Sub

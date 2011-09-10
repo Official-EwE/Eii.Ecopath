@@ -101,8 +101,9 @@ Friend Class cDBUpdate6_02_00_02
         Dim bSuccess As Boolean = True
 
         ' Read ecosim run length
-        bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacityMapAssignments (MapID LONG, GroupID LONG, ShapeID LONG)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD PRIMARY KEY (MapID, GroupID)")
+        bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacityMapAssignments (ScenarioID LONG, MapID LONG, GroupID LONG, ShapeID LONG)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD PRIMARY KEY (ScenarioID, MapID, GroupID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (MapID) REFERENCES EcospaceScenarioCapacityMap(MapID)")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (GroupID) REFERENCES EcopathGroup(GroupID)")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (ShapeID) REFERENCES EcosimShape(ShapeID)")

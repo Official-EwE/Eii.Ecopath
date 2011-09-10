@@ -64,7 +64,7 @@ Namespace Ecospace
             ''' <summary>DBID of associated map.</summary>
             Private m_iMapDBID As Integer = cCore.NULL_VALUE
             Private m_iMapIndex As Integer = cCore.NULL_VALUE
-            Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
+            Private m_varname As eVarNameFlags = eVarNameFlags.LayerDepth
             ''' <summary>Name for this Map.</summary>
             Private m_strName As String = ""
             ''' <summary>Flag stating whether a user action is confirmed</summary>
@@ -829,7 +829,7 @@ Namespace Ecospace
 
                 ' Test whether new Maps were loaded correctly 
                 ' !! taking into account that this dialog does NOT contain the All map, hence the '-1'
-                Debug.Assert(Me.m_alMaps.Count = (Me.Core.nCapacityMaps - 1), ">> Internal panic: Dialog and core out of sync on Maps")
+                Debug.Assert(Me.m_alMaps.Count = Me.Core.nCapacityMaps, ">> Internal panic: Dialog and core out of sync on Maps")
             End If
 
             ' Update core objects

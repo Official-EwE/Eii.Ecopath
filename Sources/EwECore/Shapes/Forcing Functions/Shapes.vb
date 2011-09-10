@@ -1398,7 +1398,7 @@ End Class
 
 #End Region ' Fish Mortality Shape
 
-#Region "Response Function"
+#Region " Response Function "
 
 Public Class cEnviroResponseFunction
     Inherits cMediationBaseFunction
@@ -1406,18 +1406,24 @@ Public Class cEnviroResponseFunction
     Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
                    ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
         MyBase.New(EcoSimData, Manager, data, DBID, DataType)
-
     End Sub
 
     Public Overrides Function Update() As Boolean
+
         MyBase.Update()
 
-        'tell the manager that a shape has changed it's data
+        'do not update during initialization
+        If m_bInInit Then
+            Return False
+        End If
+
+        'tell the manager that a shape has changed its data
         ShapeChanged()
+
     End Function
 
+#Region " Map interfaces "
 
-#Region "Map interfaces"
     Public Property XAxisMin() As Single
         Get
             Return m_medData.XAxisMin(Me.Index)
@@ -1442,9 +1448,7 @@ Public Class cEnviroResponseFunction
         End Get
     End Property
 
-
-#End Region
-
+#End Region ' Map interfaces
 
 #Region "Groups and Fleets interfaces not used by a cEnviroResponseFunction "
 
@@ -1494,7 +1498,7 @@ Public Class cEnviroResponseFunction
 
 #End Region
 
-End Class
+End Class ' Response Function
 
 #End Region
 

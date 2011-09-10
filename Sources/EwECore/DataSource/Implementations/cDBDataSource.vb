@@ -40,7 +40,7 @@ Namespace DataSources
         ''' <summary>Core components stored with Ecosim.</summary>
         Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries, eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.MediatedInteractionManager, eCoreComponentType.FishingPolicySearch, eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
         ''' <summary>Core components stored with Ecospace.</summary>
-        Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization}
+        Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization, eCoreComponentType.MapResponseInteractionManager}
         ''' <summary>Core components stored with Ecotracer.</summary>
         Private Shared s_EcotracerComponents() As eCoreComponentType = {eCoreComponentType.Ecotracer}
 
@@ -9477,7 +9477,7 @@ Namespace DataSources
             Dim i As Integer = 1
 
             ' Allocate space for capacaity maps
-            ecospaceDS.NoCapMaps = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioCapacityMap WHERE ScenarioID={0}", iScenarioID)))
+            ecospaceDS.NumCapMaps = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioCapacityMap WHERE ScenarioID={0}", iScenarioID)))
             ecospaceDS.RedimCapacityMaps()
 
             reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioCapacityMap WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
@@ -9487,6 +9487,33 @@ Namespace DataSources
                 ecospaceDS.CapMapVariable(i) = cin.GetVarName(CStr(reader("VarName")))
                 i += 1
             End While
+            Me.m_db.ReleaseReader(reader)
+
+            Return bSucces And Me.LoadCapacityMapAssignments(iScenarioID)
+
+        End Function
+
+        Private Function LoadCapacityMapAssignments(ByVal iScenarioID As Integer) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim reader As IDataReader = Nothing
+            Dim bSucces As Boolean = True
+
+            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioCapacityMapAssignments WHERE (ScenarioID={0})", iScenarioID))
+            Try
+
+                While reader.Read()
+                    Dim iMap As Integer = Array.IndexOf(ecospaceDS.CapMapDBID, CInt(reader("MapID")))
+                    Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
+                    Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacitMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ShapeID")))
+                    If (iMap > 0) And (iGroup > 0) And (iShape > 0) Then
+                        ecospaceDS.CapMapFunctions(iMap, iGroup) = iShape
+                    End If
+                End While
+            Catch ex As Exception
+                bSucces = False
+            End Try
             Me.m_db.ReleaseReader(reader)
 
             Return bSucces
@@ -9524,7 +9551,7 @@ Namespace DataSources
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioCapacityMap")
                 dt = writer.GetDataTable()
-                For iMap As Integer = 1 To ecospaceDS.NoCapMaps
+                For iMap As Integer = 1 To ecospaceDS.NumCapMaps
 
                     ' Find existing row
                     objKeys(1) = idm.GetID(eDataTypes.EcospaceMapResponse, ecospaceDS.CapMapDBID(iMap))
@@ -9536,7 +9563,7 @@ Namespace DataSources
                         drow = writer.NewRow()
                         drow("ScenarioID") = iScenarioIDDest
                         drow("MapID") = iMapID
-                        idm.Add(eDataTypes.EcospaceRegion, ecospaceDS.CapMapDBID(iMap), iMapID)
+                        idm.Add(eDataTypes.EcospaceMapResponse, ecospaceDS.CapMapDBID(iMap), iMapID)
                         iMapID += 1
                     Else
                         drow.BeginEdit()
@@ -9560,6 +9587,43 @@ Namespace DataSources
             Catch ex As Exception
                 bSucces = False
             End Try
+
+            Return bSucces And SaveCapacityMapAssignments(idm)
+
+        End Function
+
+        Private Function SaveCapacityMapAssignments(ByVal idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim medDS As cMediationDataStructures = Me.m_core.CapacitMapInteractionManager.MediationData
+            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            ' Clear
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityMapAssignments WHERE (ScenarioID={0})", iScenarioID))
+            writer = Me.m_db.GetWriter("EcospaceScenarioCapacityMapAssignments")
+
+            Try
+                For iMap As Integer = 1 To ecospaceDS.NumCapMaps
+                    For iGroup As Integer = 1 To ecopathDS.NumGroups
+                        If ecospaceDS.CapMapFunctions(iMap, iGroup) > 0 Then
+                            drow = writer.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("MapID") = idm.GetID(eDataTypes.EcospaceMapResponse, ecospaceDS.CapMapDBID(iMap))
+                            drow("GroupID") = ecopathDS.GroupDBID(iGroup)
+                            drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
+                            writer.AddRow(drow)
+                        End If
+                    Next iGroup
+                Next iMap
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
 
             Return bSucces
 
