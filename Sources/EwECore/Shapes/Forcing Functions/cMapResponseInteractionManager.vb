@@ -25,9 +25,90 @@ Public Class cMapResponseInteractionManager
 
 #End Region ' Constructor
 
-#Region "Public Methods and Properties"
+#Region " Public Methods and Properties "
 
-    Public Sub Init(ByVal theCore As cCore, ByVal spaceData As cEcospaceDataStructures, ByVal MediationData As cMediationDataStructures)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Gets the number of maps managed by the manager.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property nMaps() As Integer
+        Get
+            Return Me.m_maps.Count
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the map at a given index [1, <see cref="nMaps"/>].
+    ''' </summary>
+    ''' <param name="MapIndex">The one-based index of the map to return.</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Map(ByVal MapIndex As Integer) As IEnviroInputMap
+        Get
+            If MapIndex > 0 And MapIndex <= Me.m_maps.Count Then
+                Return Me.m_maps(MapIndex - 1)
+            End If
+            Return Nothing
+        End Get
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Add a map to the database.
+    ''' </summary>
+    ''' <param name="strMapName">The name of the map to add.</param>
+    ''' <param name="variable">Variable to link the map to, which should be listed
+    ''' among the <see cref="SupportedVariables"/>.</param>
+    ''' <param name="iDBID">The database ID that will be assigned to the new map.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function AddMap(ByVal strMapName As String, ByVal variable As eVarNameFlags, ByRef iDBID As Integer) As Boolean
+        Try
+            ' Check if variable is supported
+            If (Array.IndexOf(Me.SupportedVariables(), variable) = -1) Then Return False
+            ' Let the core do the work
+            Return Me.m_core.AddEcospaceCapacityMap(strMapName, variable, iDBID)
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".AddMap() ")
+            Return False
+        End Try
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Remove a map from the database.
+    ''' </summary>
+    ''' <param name="iDBID"><see cref="ICoreInterface.DBID"/> of the map to remove.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function RemoveMap(ByVal iDBID As Integer) As Boolean
+        Try
+            Return Me.m_core.RemoveEcospaceCapacityMap(iDBID)
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".RemoveMap() ")
+            Return False
+        End Try
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns all supported map variables.
+    ''' </summary>
+    ''' <returns>
+    ''' All supported map variables.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Public Function SupportedVariables() As eVarNameFlags()
+        Return New eVarNameFlags() {eVarNameFlags.LayerDepth, eVarNameFlags.LayerRelPP, eVarNameFlags.LayerRelCin}
+    End Function
+
+#End Region ' Public Methods and Properties
+
+#Region " Friend interfaces "
+
+    Friend Sub Init(ByVal theCore As cCore, ByVal spaceData As cEcospaceDataStructures, ByVal MediationData As cMediationDataStructures)
         Me.m_core = theCore
         Me.m_SpaceData = spaceData
         Me.m_MedData = MediationData
@@ -104,37 +185,7 @@ Public Class cMapResponseInteractionManager
 
     End Function
 
-    Public Sub Update()
-        Try
-
-            For Each map As IEnviroInputMap In Me.m_maps
-                map.Update()
-            Next
-
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)
-        End Try
-
-    End Sub
-
-
-    Public ReadOnly Property nMaps() As Integer
-        Get
-            Return Me.m_maps.Count
-        End Get
-    End Property
-
-    Public ReadOnly Property Map(ByVal MapIndex As Integer) As IEnviroInputMap
-        Get
-            If MapIndex > 0 And MapIndex <= Me.m_maps.Count Then
-                Return Me.m_maps(MapIndex - 1)
-            End If
-            Return Nothing
-        End Get
-
-    End Property
-
-    Public Function onChanged() As Boolean
+    Friend Function onChanged() As Boolean
         Try
             For Each map As IEnviroInputMap In Me.m_maps
                 For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
@@ -150,28 +201,32 @@ Public Class cMapResponseInteractionManager
         Return False
     End Function
 
-    Public Function AddMap(ByVal strMapName As String, ByVal variable As eVarNameFlags) As Boolean
-
-        Dim iDBID As Integer = 0
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Update all the maps in the manager.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Friend Sub Update()
         Try
-            Return Me.m_core.AddEcospaceCapacityMap(strMapName, variable, iDBID)
+
+            For Each map As IEnviroInputMap In Me.m_maps
+                map.Update()
+            Next
+
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".AddMap() ")
-            Return False
+            Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)
         End Try
 
-    End Function
+    End Sub
 
-    Public Function RemoveMap(ByVal iDBID As Integer) As Boolean
+    Friend Sub Clear()
 
-        Try
-            Return Me.m_core.RemoveEcospaceCapacityMap(iDBID)
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".RemoveMap() ")
-            Return False
-        End Try
+        For Each map As IEnviroInputMap In Me.m_maps
+            DirectCast(map, cCoreInputOutputBase).Dispose()
+        Next
+        Me.m_maps.Clear()
 
-    End Function
+    End Sub
 
     Friend ReadOnly Property MediationData() As cMediationDataStructures
         Get
@@ -185,9 +240,9 @@ Public Class cMapResponseInteractionManager
         End Get
     End Property
 
-#End Region
+#End Region ' Friend interfaces
 
-#Region "ICoreInterface Implementation"
+#Region " ICoreInterface Implementation "
 
     Public ReadOnly Property CoreComponent() As EwEUtils.Core.eCoreComponentType Implements ICoreInterface.CoreComponent
         Get
@@ -209,7 +264,7 @@ Public Class cMapResponseInteractionManager
             Return cCore.NULL_VALUE
         End Get
         Set(ByVal value As Integer)
-
+            ' NOP
         End Set
     End Property
 
