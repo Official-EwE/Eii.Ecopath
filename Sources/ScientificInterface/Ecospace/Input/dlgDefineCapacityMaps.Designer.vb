@@ -19,7 +19,6 @@ Namespace Ecospace
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineCapacityMaps))
             Me.m_grid = New ScientificInterface.Ecospace.gridDefineCapacityMaps

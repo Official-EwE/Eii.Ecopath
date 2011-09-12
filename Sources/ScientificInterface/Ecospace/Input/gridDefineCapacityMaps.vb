@@ -44,10 +44,6 @@ Namespace Ecospace
             MapStatus
         End Enum
 
-        Private m_aSupportedVars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.LayerDepth, _
-                                                                           eVarNameFlags.LayerRelPP, _
-                                                                           eVarNameFlags.LayerRelCin}
-
 #Region " Helper classes "
 
         ''' -----------------------------------------------------------------------
@@ -252,11 +248,29 @@ Namespace Ecospace
 
             MyBase.New()
 
-            ' Prepare editor
-            Me.m_editorVariable = New EwEComboBoxCellEditor(New cVarnameTypeFormatter())
-            Me.m_editorVariable.StandardValues = Me.m_aSupportedVars
-
         End Sub
+
+        Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+                MyBase.UIContext = value
+
+                If (Me.Core IsNot Nothing) Then
+                    Try
+                        ' Prepare manager and editor
+                        Me.m_manager = Me.Core.CapacitMapInteractionManager
+                        Me.m_editorVariable = New EwEComboBoxCellEditor(New cVarnameTypeFormatter(), Me.m_manager.SupportedVariables)
+                    Catch ex As Exception
+
+                    End Try
+                Else
+                    Me.m_manager = Nothing
+                    Me.m_editorVariable = Nothing
+                End If
+            End Set
+        End Property
 
 #Region " Grid interaction "
 
@@ -300,8 +314,6 @@ Namespace Ecospace
             ' Get the core reference
             Dim map As IEnviroInputMap = Nothing
             Dim info As cMapInfo = Nothing
-
-            Me.m_manager = Me.Core.CapacitMapInteractionManager
 
             ' Populate local administration from a snapshot of the live data
 
@@ -800,7 +812,7 @@ Namespace Ecospace
                 For iMap = 0 To Me.m_alMaps.Count - 1
                     info = DirectCast(Me.m_alMaps(iMap), cMapInfo)
                     If (info.IsNew()) Then
-                        bSuccess = bSuccess And Me.m_manager.AddMap(info.Name, info.Variable)
+                        bSuccess = bSuccess And Me.m_manager.AddMap(info.Name, info.Variable, iDBID)
                     End If
                 Next
 
