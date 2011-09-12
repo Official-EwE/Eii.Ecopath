@@ -8694,8 +8694,7 @@ Public Class cCore
             Me.m_EcospaceMPAs.Clear()
             Me.m_EcospaceRegions.Clear()
             Me.m_EcospaceRegionSummaries.Clear()
-
-            '  Me.m_EcoSpaceScenarios.Clear()
+            Me.m_mapInteractionManager.Clear()
 
             Me.m_EcospaceModelParams = Nothing
 
