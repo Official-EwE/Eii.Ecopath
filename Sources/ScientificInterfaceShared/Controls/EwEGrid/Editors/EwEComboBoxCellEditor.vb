@@ -12,7 +12,15 @@ Namespace Controls.EwEGrid
     Public Class EwEComboBoxCellEditor
         Inherits EditorComboBox
 
-        Public Sub New(ByVal formatter As ITypeFormatter)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a combo box editor that shows a range of values obtained from 
+        ''' a <see cref="ITypeFormatter"/>
+        ''' </summary>
+        ''' <param name="formatter">The <see cref="ITypeFormatter">type formatter</see> to link to.</param>
+        ''' <param name="standardvalues">An optional (sub)set of values to present in the combo box.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal formatter As ITypeFormatter, Optional ByVal standardvalues As ICollection = Nothing)
 
             MyBase.New(formatter.GetDescribedType)
 
@@ -20,10 +28,17 @@ Namespace Controls.EwEGrid
             Dim lValues As New List(Of Object)
             Dim lRepresentations As New List(Of String)
 
-            For Each key As Object In [Enum].GetValues(formatter.GetDescribedType)
-                lValues.Add(key)
-                lRepresentations.Add(formatter.GetDescriptor(key))
-            Next
+            If (standardvalues Is Nothing) Then
+                For Each key As Object In [Enum].GetValues(formatter.GetDescribedType)
+                    lValues.Add(key)
+                    lRepresentations.Add(formatter.GetDescriptor(key))
+                Next
+            Else
+                For Each item As Object In standardvalues
+                    lValues.Add(item)
+                    lRepresentations.Add(formatter.GetDescriptor(item))
+                Next
+            End If
 
             Me.StandardValues = lValues
             Me.StandardValuesExclusive = True
