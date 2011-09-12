@@ -3422,6 +3422,13 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
+    ''' Command handler; updates the Ecospace edit importance layers command.
+    ''' </summary>
+    Private Sub OnUpdateEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdDefineImportanceLayers.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+    End Sub
+
+    ''' <summary>
     ''' Command handler; handles access to the Ecospace edit importance layers dialog.
     ''' </summary>
     Private Sub OnUpdateDefineCapacityMaps(ByVal cmd As cCommand) Handles m_cmdDefineCapMaps.OnUpdate
