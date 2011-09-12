@@ -98,7 +98,7 @@ Namespace Forms
                 Me.m_form = frm
                 ' Store ref to grid
                 Me.m_grid = frm.Grid
-                AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectioChanged
+                AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
                 ' Store ref to UIC
                 Me.m_uic = uic
 
@@ -231,7 +231,7 @@ Namespace Forms
                 Me.m_btnSet.Dispose()
                 Me.m_btnSet = Nothing
 
-                RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectioChanged
+                RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
                 Me.m_grid = Nothing
 
                 Me.m_ts = Nothing
@@ -316,7 +316,7 @@ Namespace Forms
 
 #Region " Grid events "
 
-            Private Sub OnGridSelectioChanged(ByVal cells As SourceGrid2.CellVirtualCollection)
+            Private Sub OnGridSelectionChanged(ByVal cells As SourceGrid2.CellVirtualCollection)
                 Me.UpdateControls()
             End Sub
 
@@ -391,6 +391,11 @@ Namespace Forms
                     Me.m_ttbValue.Enabled = bHasEditableCells And Not bIsMixedSelection
                     Me.m_ttbValue.Visible = bIsInputForm
                     Me.m_ttbValue.Text = ""
+
+                    ' ToDo_JS: replace text box with a dynamic control that is smartly configured to
+                    '   - Use cell variable metadata to determine a value range
+                    '   - Use cell editor properties to allow entry or selections (e.g. text box or combo box) via cTypeFormatterFactory.GetTypeFormatter
+                    '   - Use cell editor properties to limit the combo box to discreet values
                     If ((objValue IsNot Nothing) And (bIsMixedValue = False)) Then
                         If TypeOf objValue Is String Then
                             Me.m_ttbValue.Text = CStr(objValue)
