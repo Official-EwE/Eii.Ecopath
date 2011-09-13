@@ -7,6 +7,7 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
+Imports System.Drawing.Drawing2D
 
 #End Region ' Imports
 
@@ -223,28 +224,40 @@ Namespace Controls
         Private Sub OnPaintPreview(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
                 Handles m_plPreview.Paint
 
-            Dim sDataMax As Single = 0.0
-            Dim g As Graphics = e.Graphics
-            Dim rc As Rectangle = Me.m_plPreview.ClientRectangle
+            Try
 
-            If Me.m_bRecalc Then
-                Me.RecalcShape()
-                Me.m_bRecalc = False
-            End If
+                Dim sDataMax As Single = 0.0
+                Dim g As Graphics = e.Graphics
+                Dim rc As Rectangle = Me.m_plPreview.ClientRectangle
+                Dim iNumPoints As Integer = Me.m_shape.ShapeData.Length
 
-            For Each s As Single In Me.m_asDataWork
-                sDataMax = Math.Max(s, sDataMax)
-            Next
+                If Me.m_bRecalc Then
+                    Me.RecalcShape()
+                    Me.m_bRecalc = False
+                End If
 
-            Using br As New SolidBrush(Me.m_plPreview.BackColor)
-                g.FillRectangle(br, rc)
-            End Using
+                For Each s As Single In Me.m_asDataWork
+                    sDataMax = Math.Max(s, sDataMax)
+                Next
 
-            cShapeImage.DrawShapeDirect(Me.m_uic, _
-                                        Me.m_asDataWork, Me.m_handler.NumDataYears * cCore.N_MONTHS, Me.m_shape.IsSeasonal, _
-                                        Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
-                                        Me.m_handler.SketchDrawMode, _
-                                        sDataMax / 0.8!, cCore.NULL_VALUE, cCore.NULL_VALUE)
+                Using br As New SolidBrush(Me.m_plPreview.BackColor)
+                    g.FillRectangle(br, rc)
+                End Using
+
+                cShapeImage.DrawShapeDirect(Me.m_uic, _
+                                            Me.m_asDataWork, Me.NumDisplayPoints, Me.m_shape.IsSeasonal, _
+                                            Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
+                                            Me.m_handler.SketchDrawMode, _
+                                            sDataMax / 0.8!, cCore.NULL_VALUE, cCore.NULL_VALUE)
+
+                Using br As New HatchBrush(HatchStyle.SmallConfetti, Color.FromArgb(100, 0, 0, 0), Color.Transparent)
+                    Dim x As Integer = CInt(Math.Ceiling(rc.Width * Me.NumDataPoints / Me.NumDisplayPoints))
+                    g.FillRectangle(br, New Rectangle(x, 0, rc.Width, rc.Height))
+                End Using
+
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
@@ -371,11 +384,7 @@ Namespace Controls
 
         Private Function RecalcShape() As Boolean
 
-            Dim nPoints As Integer = Me.m_shape.ShapeData.Length - 1
-
-            If Me.m_shape.IsSeasonal Then
-                nPoints = cCore.N_MONTHS
-            End If
+            Dim nPoints As Integer = Me.NumDataPoints
 
             Try
 
@@ -474,6 +483,16 @@ Namespace Controls
             Catch ex As Exception
                 Return False
             End Try
+
+            ' Is not displaying original shape?
+            If (Me.SelectedShapeType <> eShapeFunctionType.NotSet) Then
+
+                ' Complete rest of shape
+                For i As Integer = nPoints + 1 To Me.NumDisplayPoints
+                    Me.m_asDataWork(i) = Me.m_asDataWork(nPoints)
+                Next
+
+            End If
 
             Return True
 
@@ -618,6 +637,19 @@ Namespace Controls
             'return bt*betacf(a,b,x)/a;
             'else Use continued fraction after making the sym-
             'return 1.0-bt*betacf(b,a,1.0-x)/b; metry transformation.
+        End Function
+
+        Private Function NumDisplayPoints() As Integer
+            If Me.m_shape.IsSeasonal Then Return cCore.N_MONTHS
+            Return Me.m_shape.ShapeData.Length - 1
+        End Function
+
+        Private Function NumDataPoints() As Integer
+            If Me.m_shape.IsSeasonal Then Return cCore.N_MONTHS
+            If Me.m_shape.DataType = EwEUtils.Core.eDataTypes.Forcing Then
+                Return Me.m_uic.Core.nEcosimYears * cCore.N_MONTHS
+            End If
+            Return Me.NumDataPoints()
         End Function
 
 #End Region ' Private method helpers
