@@ -622,7 +622,7 @@ Namespace Controls
 #Region " Internal Methods "
 
         ''' <summary>
-        ''' Draw a hashed-out area past a given <see cref="NumDataYears">data limit</see>.
+        ''' Draw a hashed-out area past a given <see cref="XAxisMaxValue">data limit</see>.
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="x"></param>
