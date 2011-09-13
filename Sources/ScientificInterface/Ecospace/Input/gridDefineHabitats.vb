@@ -658,10 +658,13 @@ Namespace Ecospace
             ' Check if name is unique
             For i As Integer = 0 To Me.m_alHabitats.Count - 1
                 Dim infoTmp As cHabitatInfo = DirectCast(Me.m_alHabitats(i), cHabitatInfo)
-                ' Does name already exist?
-                If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
-                    ' Report failure
-                    Return False
+                ' Only compare new items
+                If (infoTmp.Status <> eItemStatusTypes.Removed And info.Status <> eItemStatusTypes.Removed) Then
+                    ' Does name already exist?
+                    If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
+                        ' Report failure
+                        Return False
+                    End If
                 End If
             Next
             Return True

@@ -1394,10 +1394,10 @@
     <Compile Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\ucApplyMapResponseGrid.Designer.vb">
-      <DependentUpon>ucApplyMapResponseGrid.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\Capacity\Apply\gridApplyCapacity.Designer.vb">
+      <DependentUpon>gridApplyCapacity.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\ucApplyMapResponseGrid.vb">
+    <Compile Include="Ecospace\Input\Capacity\Apply\gridApplyCapacity.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.Designer.vb">

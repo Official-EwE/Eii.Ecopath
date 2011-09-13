@@ -25,7 +25,6 @@ Namespace Ecospace
             Me.m_grid = New ScientificInterface.Ecospace.gridEditRegions
             Me.m_btnAddRegion = New System.Windows.Forms.Button
             Me.m_btnRemoveRegion = New System.Windows.Forms.Button
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
             Me.m_btnKeep = New System.Windows.Forms.Button
@@ -38,7 +37,6 @@ Namespace Ecospace
             Me.m_hdrSelect = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_btnSelectAll = New System.Windows.Forms.Button
             Me.m_btnSelectNone = New System.Windows.Forms.Button
-            Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_grid
@@ -80,13 +78,6 @@ Namespace Ecospace
             Me.m_btnRemoveRegion.Name = "m_btnRemoveRegion"
             Me.m_btnRemoveRegion.UseVisualStyleBackColor = True
             '
-            'TableLayoutPanel1
-            '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-            '
             'OK_Button
             '
             resources.ApplyResources(Me.OK_Button, "OK_Button")
@@ -119,11 +110,17 @@ Namespace Ecospace
             'm_hdrEdit
             '
             resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+            Me.m_hdrEdit.CanCollapseParent = False
+            Me.m_hdrEdit.CollapsedParentHeight = 0
+            Me.m_hdrEdit.IsCollapsed = False
             Me.m_hdrEdit.Name = "m_hdrEdit"
             '
             'm_hdrGenerate
             '
             resources.ApplyResources(Me.m_hdrGenerate, "m_hdrGenerate")
+            Me.m_hdrGenerate.CanCollapseParent = False
+            Me.m_hdrGenerate.CollapsedParentHeight = 0
+            Me.m_hdrGenerate.IsCollapsed = False
             Me.m_hdrGenerate.Name = "m_hdrGenerate"
             '
             'm_btnMPAtoRegion
@@ -141,6 +138,9 @@ Namespace Ecospace
             'm_hdrSelect
             '
             resources.ApplyResources(Me.m_hdrSelect, "m_hdrSelect")
+            Me.m_hdrSelect.CanCollapseParent = False
+            Me.m_hdrSelect.CollapsedParentHeight = 0
+            Me.m_hdrSelect.IsCollapsed = False
             Me.m_hdrSelect.Name = "m_hdrSelect"
             '
             'm_btnSelectAll
@@ -160,7 +160,9 @@ Namespace Ecospace
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.m_hdrGenerate)
+            Me.Controls.Add(Me.Cancel_Button)
             Me.Controls.Add(Me.m_hdrSelect)
             Me.Controls.Add(Me.m_hdrEdit)
             Me.Controls.Add(Me.m_btnFromCells)
@@ -170,7 +172,6 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_btnSelectAll)
             Me.Controls.Add(Me.m_btnSelectEmpty)
             Me.Controls.Add(Me.m_btnKeep)
-            Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnRemoveRegion)
             Me.Controls.Add(Me.m_btnAddRegion)
             Me.Controls.Add(Me.m_grid)
@@ -179,13 +180,11 @@ Namespace Ecospace
             Me.Name = "dlgEditRegions"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
-            Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents m_btnRemoveRegion As System.Windows.Forms.Button
         Private WithEvents m_btnAddRegion As System.Windows.Forms.Button
-        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_btnKeep As System.Windows.Forms.Button

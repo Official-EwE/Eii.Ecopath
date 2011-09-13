@@ -762,10 +762,13 @@ Namespace Ecospace
             ' Check if name is unique
             For i As Integer = 0 To Me.m_alMPAs.Count - 1
                 Dim infoTmp As cMPAInfo = DirectCast(Me.m_alMPAs(i), cMPAInfo)
-                ' Does name already exist?
-                If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
-                    ' Report failure
-                    Return False
+                ' Only compare new items
+                If (infoTmp.Status <> eItemStatusTypes.Removed And info.Status <> eItemStatusTypes.Removed) Then
+                    ' Does name already exist?
+                    If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
+                        ' Report failure
+                        Return False
+                    End If
                 End If
             Next
             Return True

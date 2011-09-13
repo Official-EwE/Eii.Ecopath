@@ -25,11 +25,9 @@ Namespace Ecospace
             Me.m_grid = New ScientificInterface.Ecospace.gridEditMPA
             Me.m_btnAddMPA = New System.Windows.Forms.Button
             Me.m_btnRemoveMPA = New System.Windows.Forms.Button
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
             Me.m_btnKeep = New System.Windows.Forms.Button
-            Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_grid
@@ -71,13 +69,6 @@ Namespace Ecospace
             Me.m_btnRemoveMPA.Name = "m_btnRemoveMPA"
             Me.m_btnRemoveMPA.UseVisualStyleBackColor = True
             '
-            'TableLayoutPanel1
-            '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-            '
             'OK_Button
             '
             resources.ApplyResources(Me.OK_Button, "OK_Button")
@@ -100,8 +91,9 @@ Namespace Ecospace
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.m_btnKeep)
-            Me.Controls.Add(Me.TableLayoutPanel1)
+            Me.Controls.Add(Me.Cancel_Button)
             Me.Controls.Add(Me.m_btnRemoveMPA)
             Me.Controls.Add(Me.m_btnAddMPA)
             Me.Controls.Add(Me.m_grid)
@@ -110,14 +102,12 @@ Namespace Ecospace
             Me.Name = "dlgEditMPAs"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
-            Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents m_grid As gridEditMPA
         Private WithEvents m_btnRemoveMPA As System.Windows.Forms.Button
         Private WithEvents m_btnAddMPA As System.Windows.Forms.Button
-        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_btnKeep As System.Windows.Forms.Button

@@ -28,8 +28,24 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
-            Me.m_grid = New ucApplyMapResponseGrid(Me.components)
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyCapacity))
+            Me.m_tsMain = New System.Windows.Forms.ToolStrip
+            Me.m_tsbnDefineMaps = New System.Windows.Forms.ToolStripButton
+            Me.m_grid = New ScientificInterface.Ecospace.ucApplyMapResponseGrid(Me.components)
+            Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
+            '
+            'm_tsMain
+            '
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMaps})
+            resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+            Me.m_tsMain.Name = "m_tsMain"
+            '
+            'm_tsbnDefineMaps
+            '
+            Me.m_tsbnDefineMaps.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnDefineMaps, "m_tsbnDefineMaps")
+            Me.m_tsbnDefineMaps.Name = "m_tsbnDefineMaps"
             '
             'm_grid
             '
@@ -44,13 +60,11 @@ Namespace Ecospace
                         Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                         Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
-            Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
-            Me.m_grid.Location = New System.Drawing.Point(0, 0)
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.Size = New System.Drawing.Size(292, 273)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                         Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                         Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -60,23 +74,25 @@ Namespace Ecospace
                         Or SourceGrid2.GridSpecialKeys.Enter) _
                         Or SourceGrid2.GridSpecialKeys.Escape) _
                         Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TabIndex = 0
             Me.m_grid.UIContext = Nothing
             '
             'frmApplyCapacity
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(292, 273)
             Me.Controls.Add(Me.m_grid)
-            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Controls.Add(Me.m_tsMain)
             Me.Name = "frmApplyCapacity"
-            Me.Text = "Apply Capacity"
+            Me.m_tsMain.ResumeLayout(False)
+            Me.m_tsMain.PerformLayout()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
 
-        Private WithEvents m_grid As ucApplyMapResponseGrid
+        Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsbnDefineMaps As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_grid As ScientificInterface.Ecospace.ucApplyMapResponseGrid
 
     End Class
 

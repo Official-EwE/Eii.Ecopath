@@ -7,6 +7,7 @@ Option Explicit On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Forms
+Imports EwEUtils.Commands
 
 #End Region
 
@@ -34,6 +35,19 @@ Namespace Ecospace
             ' For this form only
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MapResponseInteractionManager}
 
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditCapacityMaps")
+            If (cmd IsNot Nothing) Then
+                cmd.AddControl(Me.m_tsbnDefineMaps)
+            End If
+
+        End Sub
+
+        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditCapacityMaps")
+            If (cmd IsNot Nothing) Then
+                cmd.RemoveControl(Me.m_tsbnDefineMaps)
+            End If
+            MyBase.OnFormClosed(e)
         End Sub
 
         Protected Overrides ReadOnly Property Grid() As Ecosim.ApplyShapeGrid
@@ -48,7 +62,6 @@ Namespace Ecospace
             If (msg.Source = eCoreComponentType.MapResponseInteractionManager) Then
                 Me.Grid.UpdateContent()
             End If
-
 
         End Sub
 

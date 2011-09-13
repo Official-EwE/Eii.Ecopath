@@ -39,7 +39,7 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOkidokie(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
 
             ' Try to apply grid changes
@@ -54,23 +54,28 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
             Me.DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnAdd.Click
+        Private Sub OnAdd(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnAdd.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemove.Click
+        Private Sub OnDelete(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemove.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
+        Private Sub OnKeep(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub OnCreateDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCreateDefaults.Click
+            Me.m_grid.CreateDefaults()
             Me.UpdateControls()
         End Sub
 

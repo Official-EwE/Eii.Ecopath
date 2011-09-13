@@ -24,11 +24,11 @@ Namespace Ecospace
             Me.m_grid = New ScientificInterface.Ecospace.gridDefineCapacityMaps
             Me.m_btnAdd = New System.Windows.Forms.Button
             Me.m_btnRemove = New System.Windows.Forms.Button
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
             Me.OK_Button = New System.Windows.Forms.Button
             Me.Cancel_Button = New System.Windows.Forms.Button
             Me.m_btnKeep = New System.Windows.Forms.Button
-            Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_hdrDefaults = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_btnCreateDefaults = New System.Windows.Forms.Button
             Me.SuspendLayout()
             '
             'm_grid
@@ -70,13 +70,6 @@ Namespace Ecospace
             Me.m_btnRemove.Name = "m_btnRemove"
             Me.m_btnRemove.UseVisualStyleBackColor = True
             '
-            'TableLayoutPanel1
-            '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-            '
             'OK_Button
             '
             resources.ApplyResources(Me.OK_Button, "OK_Button")
@@ -94,14 +87,31 @@ Namespace Ecospace
             Me.m_btnKeep.Name = "m_btnKeep"
             Me.m_btnKeep.UseVisualStyleBackColor = True
             '
+            'm_hdrDefaults
+            '
+            resources.ApplyResources(Me.m_hdrDefaults, "m_hdrDefaults")
+            Me.m_hdrDefaults.CanCollapseParent = False
+            Me.m_hdrDefaults.CollapsedParentHeight = 0
+            Me.m_hdrDefaults.IsCollapsed = False
+            Me.m_hdrDefaults.Name = "m_hdrDefaults"
+            '
+            'm_btnCreateDefaults
+            '
+            resources.ApplyResources(Me.m_btnCreateDefaults, "m_btnCreateDefaults")
+            Me.m_btnCreateDefaults.Name = "m_btnCreateDefaults"
+            Me.m_btnCreateDefaults.UseVisualStyleBackColor = True
+            '
             'dlgDefineCapacityMaps
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.OK_Button)
+            Me.Controls.Add(Me.m_hdrDefaults)
+            Me.Controls.Add(Me.Cancel_Button)
             Me.Controls.Add(Me.m_btnKeep)
-            Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnRemove)
+            Me.Controls.Add(Me.m_btnCreateDefaults)
             Me.Controls.Add(Me.m_btnAdd)
             Me.Controls.Add(Me.m_grid)
             Me.MaximizeBox = False
@@ -109,17 +119,17 @@ Namespace Ecospace
             Me.Name = "dlgDefineCapacityMaps"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
-            Me.TableLayoutPanel1.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents m_grid As gridDefineCapacityMaps
         Private WithEvents m_btnRemove As System.Windows.Forms.Button
         Private WithEvents m_btnAdd As System.Windows.Forms.Button
-        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_btnKeep As System.Windows.Forms.Button
+        Private WithEvents m_hdrDefaults As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnCreateDefaults As System.Windows.Forms.Button
 
     End Class
 

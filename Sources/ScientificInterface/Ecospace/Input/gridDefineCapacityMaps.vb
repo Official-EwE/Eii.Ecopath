@@ -60,7 +60,7 @@ Namespace Ecospace
             ''' <summary>DBID of associated map.</summary>
             Private m_iMapDBID As Integer = cCore.NULL_VALUE
             Private m_iMapIndex As Integer = cCore.NULL_VALUE
-            Private m_varname As eVarNameFlags = eVarNameFlags.LayerDepth
+            Private m_variable As eVarNameFlags = eVarNameFlags.LayerDepth
             ''' <summary>Name for this Map.</summary>
             Private m_strName As String = ""
             ''' <summary>Flag stating whether a user action is confirmed</summary>
@@ -82,7 +82,7 @@ Namespace Ecospace
                 Me.m_iMapDBID = cio.DBID
                 Me.m_iMapIndex = cio.Index
                 Me.m_strName = map.Name
-                Me.m_varname = map.Variable
+                Me.m_variable = map.Variable
                 Me.m_status = eItemStatusTypes.Original
             End Sub
 
@@ -92,8 +92,9 @@ Namespace Ecospace
             ''' </summary>
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal strName As String)
+            Public Sub New(ByVal strName As String, ByVal variable As eVarNameFlags)
                 Me.m_strName = strName
+                Me.m_variable = variable
                 Me.m_status = eItemStatusTypes.Added
             End Sub
 
@@ -119,10 +120,10 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Property Variable() As eVarNameFlags
                 Get
-                    Return Me.m_varname
+                    Return Me.m_variable
                 End Get
                 Set(ByVal value As eVarNameFlags)
-                    Me.m_varname = value
+                    Me.m_variable = value
                 End Set
             End Property
 
@@ -191,7 +192,7 @@ Namespace Ecospace
 
                 If (cio.DBID <> Me.m_iMapDBID) Then Return True
                 If (cio.Name <> Me.m_strName) Then Return True
-                If (map.Variable <> Me.m_varname) Then Return True
+                If (map.Variable <> Me.m_variable) Then Return True
                 Return False
 
             End Function
@@ -258,7 +259,7 @@ Namespace Ecospace
                 If (value IsNot Nothing) Then
                     Try
                         ' Prepare manager and editor
-                        Me.m_manager = Me.Core.CapacitMapInteractionManager
+                        Me.m_manager = value.Core.CapacitMapInteractionManager
                         Me.m_editorVariable = New EwEComboBoxCellEditor(New cVarnameTypeFormatter(), Me.m_manager.SupportedVariables)
                     Catch ex As Exception
 
@@ -586,6 +587,7 @@ Namespace Ecospace
             Dim iRow As Integer = -1
             Dim iMap As Integer = -1
             Dim info As cMapInfo = Nothing
+            Dim strName As String = ""
             Dim lstrMaps As New List(Of String)
 
             ' Make fit
@@ -601,8 +603,8 @@ Namespace Ecospace
             Next
 
             ' Format new map with an autonumber value based on existing names
-            info = New cMapInfo(String.Format(SharedResources.DEFAULT_NEWMAP_NUM, _
-                    cStringUtils.GetNextNumber(lstrMaps.ToArray(), SharedResources.DEFAULT_NEWMAP_NUM)))
+            strName = String.Format(SharedResources.DEFAULT_NEWMAP_NUM, cStringUtils.GetNextNumber(lstrMaps.ToArray(), SharedResources.DEFAULT_NEWMAP_NUM))
+            info = New cMapInfo(strName, Me.m_manager.SupportedVariables(0))
             Me.m_alMaps.Insert(iMap, info)
 
             Me.UpdateGrid()
@@ -614,6 +616,31 @@ Namespace Ecospace
         ''' </summary>
         Public Function CanAddRow() As Boolean
             Return True
+        End Function
+
+        Public Function CreateDefaults() As Boolean
+
+            For Each inf As cMapInfo In Me.m_alMaps.ToArray
+
+                inf.FlaggedForDeletion = True
+
+                ' Check to see what is to happen to the map now
+                Select Case inf.Status
+
+                    Case eItemStatusTypes.Removed
+                        ' Set removed status
+                        Me.m_alMapsRemoved.Add(inf)
+
+                    Case eItemStatusTypes.Invalid
+                        ' Set removed status
+                        Me.m_alMaps.Remove(inf)
+
+                End Select
+            Next
+
+            Me.m_alMaps.AddRange(Me.DefaultMaps())
+            Me.UpdateGrid()
+
         End Function
 
 #End Region ' Row manipulation 
@@ -643,6 +670,18 @@ Namespace Ecospace
                 End If
             End Set
         End Property
+
+        Private Function DefaultMaps() As cMapInfo()
+
+            Dim lMaps As New List(Of cMapInfo)
+            Dim tfm As New cVarnameTypeFormatter()
+
+            For Each var As eVarNameFlags In Me.m_manager.SupportedVariables
+                lMaps.Add(New cMapInfo(String.Format(SharedResources.DEFAULT_NEWMAP_NUM, tfm.GetDescriptor(var)), var))
+            Next
+            Return lMaps.ToArray
+
+        End Function
 
 #Region " Selection extension "
 
@@ -713,10 +752,13 @@ Namespace Ecospace
             ' Check if name is unique
             For i As Integer = 0 To Me.m_alMaps.Count - 1
                 Dim infoTmp As cMapInfo = DirectCast(Me.m_alMaps(i), cMapInfo)
-                ' Does name already exist?
-                If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
-                    ' Report failure
-                    Return False
+                ' Only compare new items
+                If (infoTmp.Status <> eItemStatusTypes.Removed And info.Status <> eItemStatusTypes.Removed) Then
+                    ' Does name already exist?
+                    If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
+                        ' Report failure
+                        Return False
+                    End If
                 End If
             Next
             Return True
