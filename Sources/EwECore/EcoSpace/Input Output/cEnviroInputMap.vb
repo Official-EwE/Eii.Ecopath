@@ -156,10 +156,9 @@ Public Class cEnviroInputMap(Of T)
 
                 'If the manager is nothing the response index was set during initialization
                 'The manager is not initialized until an Ecospace scenarion is loaded
-                If Not Me.m_manager Is Nothing Then
+                If (Not Me.m_manager Is Nothing) And (Me.AllowValidation = True) Then
                     Me.m_manager.onChanged()
                 End If
-
 
             End If
         End Set

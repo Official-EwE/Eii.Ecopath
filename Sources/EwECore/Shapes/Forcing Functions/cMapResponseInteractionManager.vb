@@ -156,9 +156,11 @@ Public Class cMapResponseInteractionManager
                         ' Not supported
                     End If
 
+                    DirectCast(map, cCoreInputOutputBase).AllowValidation = False
                     For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
                         map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapMapFunctions(iMap, iGroup)
                     Next
+                    DirectCast(map, cCoreInputOutputBase).AllowValidation = True
 
                     If (map IsNot Nothing) Then
                         Me.m_maps.Add(map)
