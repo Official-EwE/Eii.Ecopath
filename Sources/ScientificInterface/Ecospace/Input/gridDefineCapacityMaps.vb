@@ -255,9 +255,7 @@ Namespace Ecospace
                 Return MyBase.UIContext
             End Get
             Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
-                MyBase.UIContext = value
-
-                If (Me.Core IsNot Nothing) Then
+                If (value IsNot Nothing) Then
                     Try
                         ' Prepare manager and editor
                         Me.m_manager = Me.Core.CapacitMapInteractionManager
@@ -269,6 +267,7 @@ Namespace Ecospace
                     Me.m_manager = Nothing
                     Me.m_editorVariable = Nothing
                 End If
+                MyBase.UIContext = value
             End Set
         End Property
 
