@@ -7426,7 +7426,17 @@ Namespace DataSources
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iIDtmp As Integer = 0
+            Dim aiNewMap(InRow, InCol) As Integer
+            Dim asNewMap(InRow, InCol) As Single
             Dim bSucces As Boolean = True
+
+            ' Init maps
+            For iRow As Integer = 1 To InRow
+                For iCol As Integer = 1 To InCol
+                    aiNewMap(iRow, iCol) = 1
+                    asNewMap(iRow, iCol) = 1.0!
+                Next
+            Next
 
             Try
                 ' Delete any existing scenario
@@ -7453,34 +7463,13 @@ Namespace DataSources
                 drow("MinLat") = sOriginLat
                 drow("MinLon") = sOriginLon
                 drow("ModelType") = 2
+                drow("DepthMap") = cStringUtils.ArrayToString(aiNewMap)
+                drow("DepthAMap") = cStringUtils.ArrayToString(aiNewMap)
+                drow("RelPPMap") = cStringUtils.ArrayToString(asNewMap)
+                drow("RelCinMap") = cStringUtils.ArrayToString(asNewMap)
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)
-
-                ' ------
-                ' Fill basemap with all water cells and RelPP values
-                ' ------
-                writer = Me.m_db.GetWriter("EcospaceScenarioBasemap")
-                For i As Integer = 1 To InRow
-                    For j As Integer = 1 To InCol
-                        drow = writer.NewRow()
-                        drow("ScenarioID") = iScenarioID
-                        drow("InRow") = i
-                        drow("InCol") = j
-                        drow("HabitatID") = 0
-                        drow("RegionID") = 0
-                        drow("MPAID") = 0
-                        drow("MPA") = 0
-                        drow("Depth") = 1
-                        drow("RelPP") = 1 ' Fixes bug 410
-                        drow("RelCin") = 1 ' Fixes bug 744
-                        drow("XVel") = 0
-                        drow("YVel") = 0
-                        drow("DepthA") = 1
-                        writer.AddRow(drow)
-                    Next
-                Next
-                bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
 
                 ' First duplicate all Ecospace 'objects'
                 For i As Integer = 1 To ecopathDS.NumGroups
