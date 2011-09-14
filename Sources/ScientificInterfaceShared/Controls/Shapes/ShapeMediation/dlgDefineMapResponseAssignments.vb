@@ -11,7 +11,6 @@ Imports ScientificInterfaceShared.Style
 
 #End Region
 
-
 Public Class dlgDefineMapResponseAssignments
 
 #Region "Private variables"
@@ -24,10 +23,12 @@ Public Class dlgDefineMapResponseAssignments
     Private m_orgMax As Single
     Private m_bHasInit As Boolean
     Private m_map As IEnviroInputMap
+    Private m_fpXMin As cEwEFormatProvider = Nothing
+    Private m_fpXMax As cEwEFormatProvider = Nothing
 
 #End Region
 
-#Region "Construciton Initialization"
+#Region "Construction Initialization"
 
     Public Sub New(ByVal UIC As cUIContext, ByVal ResponseShape As EwECore.cEnviroResponseFunction, ByVal Manager As EwECore.cMapResponseInteractionManager)
         Me.InitializeComponent()
@@ -38,38 +39,59 @@ Public Class dlgDefineMapResponseAssignments
         Me.m_uic = UIC
 
         Me.m_zgh = New cZedGraphEnviroResponseHelper 'cZedGraphHelper
-        Me.m_zgh.Attach(Me.m_uic, Me.ZedGraph)
+        Me.m_zgh.Attach(Me.m_uic, Me.m_graph)
         Me.m_zgh.ShowPointValue = True
+
+        Try
+            Me.Text = String.Format(Me.Text, New cShapeDataFormatter().GetDescriptor(Me.m_shape))
+        Catch ex As Exception
+            ' Whoah!
+        End Try
 
     End Sub
 
-    Private Sub dlgDefineMapResponseAssignments_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
 
-        Try
+        If (Me.m_uic Is Nothing) Then Return
 
-            'remember the original response function min and max
-            Me.m_orgMin = Me.m_shape.XAxisMin
-            Me.m_orgMax = Me.m_shape.XAxisMax
+        Me.m_fpXMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
+        Me.m_fpXMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
 
-            Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
+        'remember the original response function min and max
+        Me.m_orgMin = Me.m_shape.XAxisMin
+        Me.m_orgMax = Me.m_shape.XAxisMax
 
-            If Me.m_shape.XAxisMax = 0 Then
-                Me.m_shape.XAxisMax = 1.0 'some kind of bogus default if nothing has been defined
-            End If
+        Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
-            Dim fmt As New cCoreInterfaceFormatter()
-            Me.lbSeletedFunctionName.Text = String.Format(My.Resources.CAPACITY_SET_SHAPE_MINMAX, fmt.GetDescriptor(Me.m_shape, eDescriptorTypes.Name))
+        If Me.m_shape.XAxisMax = 0 Then
+            Me.m_shape.XAxisMax = 1.0 'some kind of bogus default if nothing has been defined
+        End If
 
-            Me.updateControls()
-            Me.LoadGroups()
-            Me.loadMaps()
-            Me.PlotGraph()
+        Dim fmt As New cCoreInterfaceFormatter()
 
-        Catch ex As Exception
+        Me.lstGroups.Attach(Me.m_uic)
 
-        End Try
+        Me.updateControls()
+        Me.loadMaps()
+        Me.PlotGraph()
 
         Me.m_bHasInit = True
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        If (Me.m_uic Is Nothing) Then Return
+
+        Me.lstGroups.Detach()
+
+        Me.m_fpXMax.Release()
+        Me.m_fpXMax = Nothing
+        Me.m_fpXMin.Release()
+        Me.m_fpXMin = Nothing
+
+        MyBase.OnFormClosed(e)
 
     End Sub
 
@@ -80,10 +102,8 @@ Public Class dlgDefineMapResponseAssignments
     ''' <summary>
     ''' Add the selected groups to the currently selected map
     ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub btAdd_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btAdd.Click
+    Private Sub OnAddGroup(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnAdd.Click
 
         Try
 
@@ -92,8 +112,8 @@ Public Class dlgDefineMapResponseAssignments
             If Me.m_map Is Nothing Then Return
 
             'Yes add all the groups 
-            For Each item As GroupListItem In Me.lstGroups.SelectedItems
-                Me.m_map.ResponseIndexForGroup(item.Index) = Me.m_shape.Index
+            For Each i As Integer In Me.lstGroups.SelectedIndices
+                Me.m_map.ResponseIndexForGroup(Me.lstGroups.GetGroupIndexAt(i)) = Me.m_shape.Index
             Next
 
             'bluntly reload the map tree
@@ -105,16 +125,15 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-
-
-    Private Sub btRemove_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btRemove.Click
+    Private Sub OnRemove(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnRemove.Click
         Try
 
             ' Dim map As IEnviroInputMap = Me.getSelMap
             If Me.m_map Is Nothing Then Return
 
             Dim node As TreeNode
-            node = Me.trvMapTree.SelectedNode
+            node = Me.m_tvMaps.SelectedNode
             If node IsNot Nothing Then
                 'last node this must be a selected group node
                 If node.Nodes.Count = 0 Then
@@ -122,7 +141,7 @@ Public Class dlgDefineMapResponseAssignments
                     Dim iGrp As Integer = DirectCast(node.Tag, Integer)
                     Me.m_map.ResponseIndexForGroup(iGrp) = cCore.NULL_VALUE
                     'now remove the node
-                    Me.trvMapTree.SelectedNode.Remove()
+                    Me.m_tvMaps.SelectedNode.Remove()
                 End If
             End If
 
@@ -133,21 +152,29 @@ Public Class dlgDefineMapResponseAssignments
         End Try
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnOk.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Private Sub trvMapTree_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles trvMapTree.AfterExpand
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnCancel.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub trvMapTree_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+        Handles m_tvMaps.AfterExpand
         Me.m_map = Me.getSelMap(e.Node)
     End Sub
 
-    Private Sub trvMapTree_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles trvMapTree.Click
+    Private Sub trvMapTree_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tvMaps.Click
         'Me.m_map = Me.getSelMap
     End Sub
 
-
-    Private Sub trvMapTree_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles trvMapTree.AfterSelect
+    Private Sub trvMapTree_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+        Handles m_tvMaps.AfterSelect
         Try
             Me.m_map = getSelMap(e.Node)
             Me.PlotGraph()
@@ -156,8 +183,8 @@ Public Class dlgDefineMapResponseAssignments
         End Try
     End Sub
 
-
-    Private Sub OnMinMaxTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txXMax.TextChanged, txXMin.TextChanged
+    Private Sub OnMinMaxTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_tbxXMax.TextChanged, m_tbxXMin.TextChanged
 
         Try
             Dim txb As TextBox = DirectCast(sender, TextBox)
@@ -167,8 +194,8 @@ Public Class dlgDefineMapResponseAssignments
                 Exit Sub
             End If
 
-            Dim maxX As Single = Single.Parse(Me.txXMax.Text)
-            Dim minX As Single = Single.Parse(Me.txXMin.Text)
+            Dim maxX As Single = Single.Parse(Me.m_tbxXMax.Text)
+            Dim minX As Single = Single.Parse(Me.m_tbxXMin.Text)
             Me.m_shape.XAxisMin = minX
             Me.m_shape.XAxisMax = maxX
 
@@ -180,11 +207,10 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-    Private Sub btDefaultMinMax_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btDefaultMinMax.Click
+    Private Sub btDefaultMinMax_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnDefaultMinMax.Click
         Me.setDefaultMinMax()
     End Sub
-
- 
 
 #End Region
 
@@ -208,8 +234,8 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Sub updateControls()
         Try
-            Me.txXMax.Text = Me.m_shape.XAxisMax.ToString
-            Me.txXMin.Text = Me.m_shape.XAxisMin.ToString
+            Me.m_tbxXMax.Text = Me.m_shape.XAxisMax.ToString
+            Me.m_tbxXMin.Text = Me.m_shape.XAxisMin.ToString
         Catch ex As Exception
 
         End Try
@@ -254,25 +280,17 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-
-    Private Sub LoadGroups()
-        Dim core As cCore = Me.m_uic.Core
-        For igrp As Integer = 1 To core.nGroups
-            Me.lstGroups.Items.Add(New GroupListItem(core.EcoPathGroupInputs(igrp)))
-        Next
-    End Sub
-
     Private Sub loadMaps()
         Try
 
-            Me.trvMapTree.Nodes.Clear()
+            Me.m_tvMaps.Nodes.Clear()
             Dim shapeLabel As String = "Groups using '" & Me.m_shape.Name & "'"
             Dim map As IEnviroInputMap
             For imap As Integer = 1 To Me.m_manager.nMaps
                 map = Me.m_manager.Map(imap)
                 Dim ndApply As TreeNode
                 Dim ndGrps As TreeNode
-                ndApply = Me.trvMapTree.Nodes.Add(map.Name)
+                ndApply = Me.m_tvMaps.Nodes.Add(map.Name)
                 'add the Map to the node tag
                 ndApply.Tag = map
                 ndGrps = ndApply.Nodes.Add(shapeLabel)
@@ -413,27 +431,6 @@ Public Class dlgDefineMapResponseAssignments
         End Try
 
     End Sub
-
-#End Region
-
-#Region "Helper class Ecopath Group ListBox Item used of group name and index"
-
-    Private Class GroupListItem
-        Public Group As cEcoPathGroupInput
-        Public Sub New(ByVal theGroup As cEcoPathGroupInput)
-            Group = theGroup
-        End Sub
-
-        Public Overrides Function ToString() As String
-            Return Group.Name
-        End Function
-
-        Public ReadOnly Property Index() As Integer
-            Get
-                Return Group.Index
-            End Get
-        End Property
-    End Class
 
 #End Region
 

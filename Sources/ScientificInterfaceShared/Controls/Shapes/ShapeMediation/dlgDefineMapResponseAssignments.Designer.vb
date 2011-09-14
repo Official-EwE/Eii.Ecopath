@@ -1,4 +1,6 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports ScientificInterfaceShared.Controls
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class dlgDefineMapResponseAssignments
     Inherits System.Windows.Forms.Form
 
@@ -23,215 +25,186 @@ Partial Class dlgDefineMapResponseAssignments
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-        Me.OK_Button = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.txXMax = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.ZedGraph = New ZedGraph.ZedGraphControl
-        Me.txXMin = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.btDefaultMinMax = New System.Windows.Forms.Button
-        Me.trvMapTree = New System.Windows.Forms.TreeView
-        Me.lbSeletedFunctionName = New System.Windows.Forms.Label
-        Me.lstGroups = New System.Windows.Forms.ListBox
-        Me.btAdd = New System.Windows.Forms.Button
-        Me.btRemove = New System.Windows.Forms.Button
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TableLayoutPanel1.SuspendLayout()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineMapResponseAssignments))
+        Me.m_btnOk = New System.Windows.Forms.Button
+        Me.m_lblMaps = New System.Windows.Forms.Label
+        Me.m_tbxXMax = New System.Windows.Forms.TextBox
+        Me.m_lblXMax = New System.Windows.Forms.Label
+        Me.m_graph = New ZedGraph.ZedGraphControl
+        Me.m_tbxXMin = New System.Windows.Forms.TextBox
+        Me.m_lblXMin = New System.Windows.Forms.Label
+        Me.m_btnDefaultMinMax = New System.Windows.Forms.Button
+        Me.m_tvMaps = New System.Windows.Forms.TreeView
+        Me.lstGroups = New ScientificInterfaceShared.Controls.cGroupListBox
+        Me.m_lblGroups = New System.Windows.Forms.Label
+        Me.m_btnCancel = New System.Windows.Forms.Button
+        Me.m_btnRemove = New System.Windows.Forms.Button
+        Me.m_btnAdd = New System.Windows.Forms.Button
+        Me.m_scMain = New System.Windows.Forms.SplitContainer
+        Me.m_scMain.Panel1.SuspendLayout()
+        Me.m_scMain.Panel2.SuspendLayout()
+        Me.m_scMain.SuspendLayout()
         Me.SuspendLayout()
         '
-        'TableLayoutPanel1
+        'm_btnOk
         '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(892, 295)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(146, 29)
-        Me.TableLayoutPanel1.TabIndex = 0
+        resources.ApplyResources(Me.m_btnOk, "m_btnOk")
+        Me.m_btnOk.Name = "m_btnOk"
         '
-        'OK_Button
+        'm_lblMaps
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Location = New System.Drawing.Point(76, 3)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 22)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
+        resources.ApplyResources(Me.m_lblMaps, "m_lblMaps")
+        Me.m_lblMaps.Name = "m_lblMaps"
         '
-        'Label1
+        'm_tbxXMax
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(10, 9)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(117, 13)
-        Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Input maps for capacity"
+        resources.ApplyResources(Me.m_tbxXMax, "m_tbxXMax")
+        Me.m_tbxXMax.Name = "m_tbxXMax"
         '
-        'txXMax
+        'm_lblXMax
         '
-        Me.txXMax.Location = New System.Drawing.Point(707, 26)
-        Me.txXMax.Name = "txXMax"
-        Me.txXMax.Size = New System.Drawing.Size(85, 20)
-        Me.txXMax.TabIndex = 3
+        resources.ApplyResources(Me.m_lblXMax, "m_lblXMax")
+        Me.m_lblXMax.Name = "m_lblXMax"
         '
-        'Label2
+        'm_graph
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(570, 29)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(131, 13)
-        Me.Label2.TabIndex = 4
-        Me.Label2.Text = "Response function X max."
+        resources.ApplyResources(Me.m_graph, "m_graph")
+        Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_graph.Name = "m_graph"
+        Me.m_graph.ScrollGrace = 0
+        Me.m_graph.ScrollMaxX = 0
+        Me.m_graph.ScrollMaxY = 0
+        Me.m_graph.ScrollMaxY2 = 0
+        Me.m_graph.ScrollMinX = 0
+        Me.m_graph.ScrollMinY = 0
+        Me.m_graph.ScrollMinY2 = 0
         '
-        'ZedGraph
+        'm_tbxXMin
         '
-        Me.ZedGraph.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ZedGraph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.ZedGraph.Location = New System.Drawing.Point(350, 54)
-        Me.ZedGraph.Name = "ZedGraph"
-        Me.ZedGraph.ScrollGrace = 0
-        Me.ZedGraph.ScrollMaxX = 0
-        Me.ZedGraph.ScrollMaxY = 0
-        Me.ZedGraph.ScrollMaxY2 = 0
-        Me.ZedGraph.ScrollMinX = 0
-        Me.ZedGraph.ScrollMinY = 0
-        Me.ZedGraph.ScrollMinY2 = 0
-        Me.ZedGraph.Size = New System.Drawing.Size(688, 235)
-        Me.ZedGraph.TabIndex = 5
+        resources.ApplyResources(Me.m_tbxXMin, "m_tbxXMin")
+        Me.m_tbxXMin.Name = "m_tbxXMin"
         '
-        'txXMin
+        'm_lblXMin
         '
-        Me.txXMin.Location = New System.Drawing.Point(482, 26)
-        Me.txXMin.Name = "txXMin"
-        Me.txXMin.Size = New System.Drawing.Size(82, 20)
-        Me.txXMin.TabIndex = 6
+        resources.ApplyResources(Me.m_lblXMin, "m_lblXMin")
+        Me.m_lblXMin.Name = "m_lblXMin"
         '
-        'Label3
+        'm_btnDefaultMinMax
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(347, 29)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(128, 13)
-        Me.Label3.TabIndex = 7
-        Me.Label3.Text = "Response function X min."
+        resources.ApplyResources(Me.m_btnDefaultMinMax, "m_btnDefaultMinMax")
+        Me.m_btnDefaultMinMax.Name = "m_btnDefaultMinMax"
+        Me.m_btnDefaultMinMax.UseVisualStyleBackColor = True
         '
-        'btDefaultMinMax
+        'm_tvMaps
         '
-        Me.btDefaultMinMax.Location = New System.Drawing.Point(810, 23)
-        Me.btDefaultMinMax.Name = "btDefaultMinMax"
-        Me.btDefaultMinMax.Size = New System.Drawing.Size(140, 23)
-        Me.btDefaultMinMax.TabIndex = 8
-        Me.btDefaultMinMax.Text = "Set X axis to current map"
-        Me.btDefaultMinMax.UseVisualStyleBackColor = True
-        '
-        'trvMapTree
-        '
-        Me.trvMapTree.Location = New System.Drawing.Point(12, 26)
-        Me.trvMapTree.Name = "trvMapTree"
-        Me.trvMapTree.Size = New System.Drawing.Size(175, 264)
-        Me.trvMapTree.TabIndex = 9
-        '
-        'lbSeletedFunctionName
-        '
-        Me.lbSeletedFunctionName.AutoSize = True
-        Me.lbSeletedFunctionName.Location = New System.Drawing.Point(347, 9)
-        Me.lbSeletedFunctionName.Name = "lbSeletedFunctionName"
-        Me.lbSeletedFunctionName.Size = New System.Drawing.Size(77, 13)
-        Me.lbSeletedFunctionName.TabIndex = 10
-        Me.lbSeletedFunctionName.Tag = ""
-        Me.lbSeletedFunctionName.Text = "Function name"
+        resources.ApplyResources(Me.m_tvMaps, "m_tvMaps")
+        Me.m_tvMaps.FullRowSelect = True
+        Me.m_tvMaps.HideSelection = False
+        Me.m_tvMaps.Name = "m_tvMaps"
         '
         'lstGroups
         '
+        Me.lstGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
+        Me.lstGroups.AllGroupsItemText = "(All)"
+        resources.ApplyResources(Me.lstGroups, "lstGroups")
+        Me.lstGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.lstGroups.FormattingEnabled = True
-        Me.lstGroups.Location = New System.Drawing.Point(197, 26)
+        Me.lstGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
+        Me.lstGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.Manual
+        Me.lstGroups.IsAllGroupsItemSelected = False
         Me.lstGroups.Name = "lstGroups"
+        Me.lstGroups.SelectedGroup = Nothing
+        Me.lstGroups.SelectedGroupIndex = -1
         Me.lstGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstGroups.Size = New System.Drawing.Size(136, 264)
-        Me.lstGroups.TabIndex = 11
+        Me.lstGroups.ShowAllGroupsItem = False
+        Me.lstGroups.SortThreshold = -9999.0!
+        Me.lstGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
         '
-        'btAdd
+        'm_lblGroups
         '
-        Me.btAdd.Location = New System.Drawing.Point(197, 296)
-        Me.btAdd.Name = "btAdd"
-        Me.btAdd.Size = New System.Drawing.Size(136, 22)
-        Me.btAdd.TabIndex = 12
-        Me.btAdd.Text = "Add selected groups"
-        Me.btAdd.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_lblGroups, "m_lblGroups")
+        Me.m_lblGroups.Name = "m_lblGroups"
         '
-        'btRemove
+        'm_btnCancel
         '
-        Me.btRemove.Location = New System.Drawing.Point(12, 296)
-        Me.btRemove.Name = "btRemove"
-        Me.btRemove.Size = New System.Drawing.Size(175, 22)
-        Me.btRemove.TabIndex = 13
-        Me.btRemove.Text = "Remove selected group"
-        Me.btRemove.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_btnCancel.Name = "m_btnCancel"
         '
-        'Label4
+        'm_btnRemove
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(194, 9)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(41, 13)
-        Me.Label4.TabIndex = 14
-        Me.Label4.Text = "Groups"
+        resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
+        Me.m_btnRemove.Image = Global.ScientificInterfaceShared.My.Resources.Resources.NavBack
+        Me.m_btnRemove.Name = "m_btnRemove"
+        Me.m_btnRemove.UseVisualStyleBackColor = True
+        '
+        'm_btnAdd
+        '
+        resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
+        Me.m_btnAdd.Image = Global.ScientificInterfaceShared.My.Resources.Resources.NavForward
+        Me.m_btnAdd.Name = "m_btnAdd"
+        Me.m_btnAdd.UseVisualStyleBackColor = True
+        '
+        'm_scMain
+        '
+        resources.ApplyResources(Me.m_scMain, "m_scMain")
+        Me.m_scMain.Name = "m_scMain"
+        '
+        'm_scMain.Panel1
+        '
+        Me.m_scMain.Panel1.Controls.Add(Me.lstGroups)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnRemove)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_lblMaps)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnAdd)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_tvMaps)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_lblGroups)
+        '
+        'm_scMain.Panel2
+        '
+        Me.m_scMain.Panel2.Controls.Add(Me.m_lblXMin)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tbxXMax)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_lblXMax)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_graph)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_btnDefaultMinMax)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tbxXMin)
         '
         'dlgDefineMapResponseAssignments
         '
-        Me.AcceptButton = Me.OK_Button
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AcceptButton = Me.m_btnOk
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1050, 336)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.btRemove)
-        Me.Controls.Add(Me.btAdd)
-        Me.Controls.Add(Me.lstGroups)
-        Me.Controls.Add(Me.lbSeletedFunctionName)
-        Me.Controls.Add(Me.trvMapTree)
-        Me.Controls.Add(Me.btDefaultMinMax)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.txXMin)
-        Me.Controls.Add(Me.ZedGraph)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.txXMax)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_scMain)
+        Me.Controls.Add(Me.m_btnCancel)
+        Me.Controls.Add(Me.m_btnOk)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgDefineMapResponseAssignments"
         Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Function response to input map"
-        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.m_scMain.Panel1.ResumeLayout(False)
+        Me.m_scMain.Panel1.PerformLayout()
+        Me.m_scMain.Panel2.ResumeLayout(False)
+        Me.m_scMain.Panel2.PerformLayout()
+        Me.m_scMain.ResumeLayout(False)
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents txXMax As System.Windows.Forms.TextBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents ZedGraph As ZedGraph.ZedGraphControl
-    Friend WithEvents txXMin As System.Windows.Forms.TextBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents btDefaultMinMax As System.Windows.Forms.Button
-    Friend WithEvents trvMapTree As System.Windows.Forms.TreeView
-    Friend WithEvents lbSeletedFunctionName As System.Windows.Forms.Label
-    Friend WithEvents lstGroups As System.Windows.Forms.ListBox
-    Friend WithEvents btAdd As System.Windows.Forms.Button
-    Friend WithEvents btRemove As System.Windows.Forms.Button
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Private WithEvents m_btnOk As System.Windows.Forms.Button
+    Private WithEvents m_lblMaps As System.Windows.Forms.Label
+    Private WithEvents m_lblGroups As System.Windows.Forms.Label
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_btnRemove As System.Windows.Forms.Button
+    Private WithEvents m_btnAdd As System.Windows.Forms.Button
+    Private WithEvents m_tvMaps As System.Windows.Forms.TreeView
+    Private WithEvents lstGroups As cGroupListBox
+    Private WithEvents m_btnDefaultMinMax As System.Windows.Forms.Button
+    Private WithEvents m_lblXMin As System.Windows.Forms.Label
+    Private WithEvents m_lblXMax As System.Windows.Forms.Label
+    Private WithEvents m_graph As ZedGraph.ZedGraphControl
+    Private WithEvents m_tbxXMin As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxXMax As System.Windows.Forms.TextBox
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
 
 End Class

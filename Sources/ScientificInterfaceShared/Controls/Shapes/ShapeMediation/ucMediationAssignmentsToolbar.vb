@@ -126,13 +126,20 @@ Namespace Controls
         Private Sub UpdateControls()
             If (Me.Handler Is Nothing) Then Return
 
-            'Handler decides if the graph type selection buttons are enabled
-            If Me.Handler.isGraphTypeEnabled Then
-                Me.m_tsbnViewAsBar.Enabled = True
-                Me.m_tsbnViewAsPie.Enabled = True
+            If (Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode)) Then
+                'Handler decides if the graph type selection buttons are enabled
+                If Me.Handler.isGraphTypeEnabled Then
+                    Me.m_tsbnViewAsBar.Enabled = True
+                    Me.m_tsbnViewAsPie.Enabled = True
+                Else
+                    Me.m_tsbnViewAsBar.Enabled = False
+                    Me.m_tsbnViewAsPie.Enabled = False
+                End If
+                Me.m_tsbnViewAsBar.Visible = True
+                Me.m_tsbnViewAsPie.Visible = True
             Else
-                Me.m_tsbnViewAsBar.Enabled = False
-                Me.m_tsbnViewAsPie.Enabled = False
+                Me.m_tsbnViewAsBar.Visible = False
+                Me.m_tsbnViewAsPie.Visible = False
             End If
 
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DefineMediation, m_tsbnDefineMediatingItems)

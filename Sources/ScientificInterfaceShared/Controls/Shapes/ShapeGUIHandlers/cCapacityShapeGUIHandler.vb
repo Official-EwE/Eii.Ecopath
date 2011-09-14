@@ -43,6 +43,14 @@ Namespace Controls
             Return Drawing.Color.SandyBrown
         End Function
 
+        Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+            Select Case cmd
+                Case eShapeCommandTypes.ViewMode
+                    Return False
+            End Select
+            Return MyBase.SupportCommand(cmd)
+        End Function
+
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cMediationShapeGUIHandler.ExecuteCommand"/>
         ''' -----------------------------------------------------------------------
