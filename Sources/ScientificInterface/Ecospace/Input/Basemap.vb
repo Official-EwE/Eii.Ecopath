@@ -34,10 +34,7 @@ Namespace Ecospace.Basemap
         Private m_ucBasemap As ucMap = Nothing
         ''' <summary>The one and only control that provides the layers interface.</summary>
         Private m_ucLayers As ucLayersControl = Nothing
-        ''' <summary>Contaminant tracing on/off property.</summary>
-        Private m_propContaminantTracing As cProperty = Nothing
-        Private m_layerRelCin As cLayer = Nothing
-
+ 
         Private m_cmdEditBasemap As cCommand = Nothing
         Private m_cmdEditHabitats As cCommand = Nothing
         Private m_cmdEditRegions As cCommand = Nothing
@@ -121,17 +118,12 @@ Namespace Ecospace.Basemap
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
-            Me.m_propContaminantTracing = pm.GetProperty(source, eVarNameFlags.ConSimOnEcoSpace)
-            AddHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
-            Me.OnContaminantTracingChanged(Me.m_propContaminantTracing, cProperty.eChangeFlags.Value)
-
             Me.m_plEditor.Visible = False
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-            RemoveHandler Me.m_propContaminantTracing.PropertyChanged, AddressOf OnContaminantTracingChanged
             Me.SelectedLayer = Nothing
 
             ' Detach from message sources
@@ -169,7 +161,6 @@ Namespace Ecospace.Basemap
                 Me.m_cmdEditRegions = Nothing
             End If
 
-            Me.m_propContaminantTracing = Nothing
             MyBase.OnFormClosed(e)
 
         End Sub
@@ -199,14 +190,6 @@ Namespace Ecospace.Basemap
                 Next
                 ' Set selection
                 Me.SelectedLayer = layerSelect
-            End If
-        End Sub
-
-        Private Sub OnContaminantTracingChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
-            If ((cf And cProperty.eChangeFlags.Value) = cf) And _
-               (Me.m_layerRelCin IsNot Nothing) Then
-                Me.m_layerRelCin.Editor.IsEditable = CBool(prop.GetValue())
-                'Console.WriteLine("LayerCIn editable " & Me.m_layerRelCin.Editor.IsEditable)
             End If
         End Sub
 
@@ -258,10 +241,6 @@ Namespace Ecospace.Basemap
             ' Define group
             Me.m_ucLayers.AddGroup(strGroup, True, bClearGroup)
 
-            If varName = eVarNameFlags.LayerRelCin Then
-                Me.m_layerRelCin = alayers(0)
-            End If
-
             For iLayer As Integer = 0 To alayers.Length - 1
                 Me.AddLayer(alayers(iLayer), strGroup)
             Next
@@ -278,7 +257,6 @@ Namespace Ecospace.Basemap
             For Each layer As cLayer In alayers
                 Me.RemoveLayer(layer)
             Next
-            Me.m_layerRelCin = Nothing
         End Sub
 
         ''' -------------------------------------------------------------------
