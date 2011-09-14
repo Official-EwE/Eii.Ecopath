@@ -649,7 +649,7 @@ Namespace Controls
             If Me.m_shape.DataType = EwEUtils.Core.eDataTypes.Forcing Then
                 Return Me.m_uic.Core.nEcosimYears * cCore.N_MONTHS
             End If
-            Return Me.NumDataPoints()
+            Return Me.m_shape.XMax
         End Function
 
 #End Region ' Private method helpers
