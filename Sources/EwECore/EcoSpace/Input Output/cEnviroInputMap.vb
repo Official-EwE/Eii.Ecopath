@@ -151,7 +151,7 @@ Public Class cEnviroInputMap(Of T)
 
         Set(ByVal ResponseShapeIndex As Integer)
             If ResponseShapeIndex <= Me.m_MedData.MediationShapes And GrpIndex <= Me.nGroups Then
-                'Response index(shape index) of -9999 NULL_VALUE means there is not response set for this Map/Group
+                'Response index(shape index) of -9999 NULL_VALUE means there is no response set for this Map/Group
                 Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
 
                 'If the manager is nothing the response index was set during initialization
@@ -171,7 +171,15 @@ Public Class cEnviroInputMap(Of T)
         Dim nBins As Integer = 100
         Dim pts() As Drawing.PointF
         ReDim pts(nBins)
-        Me.m_binWidth = Me.Max / nBins
+
+        'Make sure there is data in the map
+        If Me.Max > 0 Then
+            Me.m_binWidth = Me.Max / nBins
+        Else
+            'No data in the map so just set a default binwidth 
+            'this will dump all the data into the zero bin
+            Me.m_binWidth = 1.0F / nBins
+        End If
 
         Try
 
