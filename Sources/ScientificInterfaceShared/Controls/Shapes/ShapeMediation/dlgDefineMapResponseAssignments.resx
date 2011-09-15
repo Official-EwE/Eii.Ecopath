@@ -379,7 +379,7 @@
     <value>m_lbxGroups</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.913.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Parent" xml:space="preserve">
     <value>$this</value>
@@ -498,58 +498,58 @@
   <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="CEwEHeaderLabel1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrConfig.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 9</value>
   </data>
-  <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrConfig.Size" type="System.Drawing.Size, System.Drawing">
     <value>392, 18</value>
   </data>
-  <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrConfig.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="CEwEHeaderLabel1.Text" xml:space="preserve">
+  <data name="m_hdrConfig.Text" xml:space="preserve">
     <value>Group / Capacity Map usage</value>
   </data>
-  <data name="CEwEHeaderLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrConfig.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel1</value>
+  <data name="&gt;&gt;m_hdrConfig.Name" xml:space="preserve">
+    <value>m_hdrConfig</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.913.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrConfig.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="CEwEHeaderLabel2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrReponse.Location" type="System.Drawing.Point, System.Drawing">
     <value>445, 9</value>
   </data>
-  <data name="CEwEHeaderLabel2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrReponse.Size" type="System.Drawing.Size, System.Drawing">
     <value>593, 18</value>
   </data>
-  <data name="CEwEHeaderLabel2.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrReponse.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="CEwEHeaderLabel2.Text" xml:space="preserve">
+  <data name="m_hdrReponse.Text" xml:space="preserve">
     <value>Response function configuration</value>
   </data>
-  <data name="CEwEHeaderLabel2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrReponse.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel2.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel2</value>
+  <data name="&gt;&gt;m_hdrReponse.Name" xml:space="preserve">
+    <value>m_hdrReponse</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  <data name="&gt;&gt;m_hdrReponse.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.913.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrReponse.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrReponse.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -565,7 +565,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Function '{0}' response to input maps</value>
+    <value>Function response to input maps for '{0}' </value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>dlgDefineMapResponseAssignments</value>

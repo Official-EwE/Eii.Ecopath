@@ -40,8 +40,8 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_btnCancel = New System.Windows.Forms.Button
         Me.m_btnRemove = New System.Windows.Forms.Button
         Me.m_btnAdd = New System.Windows.Forms.Button
-        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.CEwEHeaderLabel2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -144,21 +144,21 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_btnAdd.Name = "m_btnAdd"
         Me.m_btnAdd.UseVisualStyleBackColor = True
         '
-        'CEwEHeaderLabel1
+        'm_hdrConfig
         '
-        Me.CEwEHeaderLabel1.CanCollapseParent = False
-        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
-        Me.CEwEHeaderLabel1.IsCollapsed = False
-        resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
-        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+        Me.m_hdrConfig.CanCollapseParent = False
+        Me.m_hdrConfig.CollapsedParentHeight = 0
+        Me.m_hdrConfig.IsCollapsed = False
+        resources.ApplyResources(Me.m_hdrConfig, "m_hdrConfig")
+        Me.m_hdrConfig.Name = "m_hdrConfig"
         '
-        'CEwEHeaderLabel2
+        'm_hdrReponse
         '
-        Me.CEwEHeaderLabel2.CanCollapseParent = False
-        Me.CEwEHeaderLabel2.CollapsedParentHeight = 0
-        Me.CEwEHeaderLabel2.IsCollapsed = False
-        resources.ApplyResources(Me.CEwEHeaderLabel2, "CEwEHeaderLabel2")
-        Me.CEwEHeaderLabel2.Name = "CEwEHeaderLabel2"
+        Me.m_hdrReponse.CanCollapseParent = False
+        Me.m_hdrReponse.CollapsedParentHeight = 0
+        Me.m_hdrReponse.IsCollapsed = False
+        resources.ApplyResources(Me.m_hdrReponse, "m_hdrReponse")
+        Me.m_hdrReponse.Name = "m_hdrReponse"
         '
         'dlgDefineMapResponseAssignments
         '
@@ -168,11 +168,11 @@ Partial Class dlgDefineMapResponseAssignments
         Me.CancelButton = Me.m_btnCancel
         Me.Controls.Add(Me.m_lblXMin)
         Me.Controls.Add(Me.m_tbxXMax)
-        Me.Controls.Add(Me.CEwEHeaderLabel2)
+        Me.Controls.Add(Me.m_hdrReponse)
         Me.Controls.Add(Me.m_lblXMax)
         Me.Controls.Add(Me.m_lbxGroups)
         Me.Controls.Add(Me.m_graph)
-        Me.Controls.Add(Me.CEwEHeaderLabel1)
+        Me.Controls.Add(Me.m_hdrConfig)
         Me.Controls.Add(Me.m_btnDefaultMinMax)
         Me.Controls.Add(Me.m_btnRemove)
         Me.Controls.Add(Me.m_tbxXMin)
@@ -206,7 +206,7 @@ Partial Class dlgDefineMapResponseAssignments
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tbxXMin As System.Windows.Forms.TextBox
     Private WithEvents m_tbxXMax As System.Windows.Forms.TextBox
-    Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents CEwEHeaderLabel2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrReponse As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrConfig As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
 End Class
