@@ -41,10 +41,11 @@ Namespace Controls
 
             ' == Contextual properties ==
 
+            Private m_uic As cUIContext = Nothing
             Private m_source As ICoreInterface = Nothing
             Private m_iGroup As Integer = cCore.NULL_VALUE
             Private m_iFleet As Integer = cCore.NULL_VALUE
-            Private m_uic As cUIContext = Nothing
+            Private m_tag As Object = Nothing
 
             ' == Fixed properties ==
 
@@ -69,7 +70,8 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Sub New(ByVal src As ICoreInterface, _
                            ByVal uic As cUIContext, _
-                           Optional ByVal strLabel As String = "")
+                           Optional ByVal strLabel As String = "", _
+                           Optional ByVal tag As Object = Nothing)
 
                 ' Sanity checks
                 Debug.Assert(src IsNot Nothing)
@@ -78,6 +80,7 @@ Namespace Controls
                 Me.m_source = src
                 Me.m_uic = uic
                 Me.m_strLabel = strLabel
+                Me.m_tag = tag
 
                 If (TypeOf src Is cCoreInputOutputBase) Then
                     If (TypeOf src Is cEcoPathGroupInput) Then
@@ -114,11 +117,13 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Sub New(ByVal strLabel As String, _
                            ByVal colour As Color, _
-                           ByVal lineType As eLineType)
+                           ByVal lineType As eLineType, _
+                           Optional ByVal tag As Object = Nothing)
 
                 Me.m_strLabel = strLabel
                 Me.m_colour = colour
                 Me.m_lineType = lineType
+                Me.m_tag = tag
 
             End Sub
 
@@ -246,6 +251,20 @@ Namespace Controls
                 Get
                     Return (Me.m_liOffset IsNot Nothing)
                 End Get
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set a custom tag for the curve.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Property Tag() As Object
+                Get
+                    Return Me.m_tag
+                End Get
+                Set(ByVal value As Object)
+                    Me.m_tag = value
+                End Set
             End Property
 
         End Class
@@ -1080,11 +1099,12 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overridable Function CreateLineItem(ByVal src As ICoreInterface, _
                                                    ByVal ppl As PointPairList, _
-                                                   Optional ByVal strLabel As String = "") As LineItem
+                                                   Optional ByVal strLabel As String = "", _
+                                                   Optional ByVal tag As Object = Nothing) As LineItem
             ' SAnity check
             Debug.Assert(TypeOf (src) Is cEcoPathGroupInput Or TypeOf (src) Is cFleetInput Or _
                          TypeOf (src) Is cGroupTimeSeries Or TypeOf (src) Is cFleetTimeSeries)
-            Return Me.CreateLineItem(New cCurveInfo(src, Me.m_uic, strLabel), ppl)
+            Return Me.CreateLineItem(New cCurveInfo(src, Me.m_uic, strLabel, tag), ppl)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1100,8 +1120,9 @@ Namespace Controls
         Public Overridable Function CreateLineItem(ByVal strName As String, _
                                                    ByVal curveType As eLineType, _
                                                    ByVal clr As Color, _
-                                                   ByVal ppl As PointPairList) As LineItem
-            Return Me.CreateLineItem(New cCurveInfo(strName, clr, curveType), ppl)
+                                                   ByVal ppl As PointPairList, _
+                                                   Optional ByVal tag As Object = Nothing) As LineItem
+            Return Me.CreateLineItem(New cCurveInfo(strName, clr, curveType, tag), ppl)
         End Function
 
         ''' -------------------------------------------------------------------
