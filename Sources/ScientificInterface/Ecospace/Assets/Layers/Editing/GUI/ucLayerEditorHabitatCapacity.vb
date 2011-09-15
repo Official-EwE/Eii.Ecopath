@@ -18,12 +18,13 @@ Namespace Ecospace.Basemap.Layers
             ' Initialize group combo 
             Dim core As cCore = Me.UIContext.Core
             Dim group As cCoreGroupBase = Nothing
+            Dim fmt As New cCoreInterfaceFormatter()
 
             Me.m_cmbGroups.Items.Clear()
 
             For iGroup As Integer = 1 To core.nGroups
                 group = core.EcoPathGroupInputs(iGroup)
-                Me.m_cmbGroups.Items.Add(group.Name)
+                Me.m_cmbGroups.Items.Add(fmt.GetDescriptor(group))
             Next iGroup
 
             ' Update control
