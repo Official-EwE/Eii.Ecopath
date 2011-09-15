@@ -942,7 +942,11 @@ Namespace Controls
                 Return Me.GetPane(iPane).XAxis.Scale.Max
             End Get
             Set(ByVal value As Double)
-                Me.GetPane(iPane).XAxis.Scale.Max = value
+                Dim scale As Scale = Me.GetPane(iPane).XAxis.Scale
+                ' Fudge
+                If (scale.Min = value) Then value += 1
+                ' Apply
+                scale.Max = value
                 Me.RescaleAndRedraw(iPane)
             End Set
         End Property
@@ -967,8 +971,12 @@ Namespace Controls
                 Return Me.GetPane(iPane).XAxis.Scale.Min
             End Get
             Set(ByVal value As Double)
-                Me.AutoScaleYOption(iPane) = eScaleOptionTypes.None
-                Me.GetPane(iPane).XAxis.Scale.Min = value
+                'Me.AutoScaleYOption(iPane) = eScaleOptionTypes.None ' WHy is the Y axis affected here?
+                Dim scale As Scale = Me.GetPane(iPane).XAxis.Scale
+                If (scale.Max = value) Then
+                    scale.Max += 1
+                End If
+                scale.Min = value
                 Me.RescaleAndRedraw(iPane)
             End Set
         End Property
