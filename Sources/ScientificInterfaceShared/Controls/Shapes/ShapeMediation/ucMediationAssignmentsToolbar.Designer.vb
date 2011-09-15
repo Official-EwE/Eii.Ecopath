@@ -2,7 +2,7 @@ Namespace Controls
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
         Partial Class ucMediationAssignmentsToolbar
-        Inherits cEwEToolstrip
+        Inherits System.Windows.Forms.UserControl
 
         'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
@@ -57,7 +57,6 @@ Namespace Controls
             'ucMediationAssignmentsToolbar
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_tsMenus)
             Me.Name = "ucMediationAssignmentsToolbar"
             Me.m_tsMenus.ResumeLayout(False)

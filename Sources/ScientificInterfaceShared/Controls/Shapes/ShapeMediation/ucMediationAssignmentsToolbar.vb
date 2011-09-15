@@ -126,6 +126,8 @@ Namespace Controls
         Private Sub UpdateControls()
             If (Me.Handler Is Nothing) Then Return
 
+            Me.m_tsMenus.SuspendLayout()
+
             If (Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode)) Then
                 'Handler decides if the graph type selection buttons are enabled
                 If Me.Handler.isGraphTypeEnabled Then
@@ -143,6 +145,8 @@ Namespace Controls
             End If
 
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DefineMediation, m_tsbnDefineMediatingItems)
+
+            Me.m_tsMenus.PerformLayout()
 
         End Sub
 
