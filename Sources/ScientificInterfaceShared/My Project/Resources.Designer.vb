@@ -175,7 +175,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Set input values(X axis).
+        '''  Looks up a localized string similar to Set input values (X axis)....
         '''</summary>
         Public ReadOnly Property CAPACITY_PROMPT() As String
             Get

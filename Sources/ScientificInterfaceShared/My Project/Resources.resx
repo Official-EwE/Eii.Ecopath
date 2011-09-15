@@ -2170,7 +2170,7 @@
     <comment>The default name for a new Ecosim capacity shape. {0}: autonumber</comment>
   </data>
   <data name="CAPACITY_PROMPT" xml:space="preserve">
-    <value>Set input values(X axis)</value>
+    <value>Set input values (X axis)...</value>
   </data>
   <data name="CAPACITY_XLABEL" xml:space="preserve">
     <value>Input</value>

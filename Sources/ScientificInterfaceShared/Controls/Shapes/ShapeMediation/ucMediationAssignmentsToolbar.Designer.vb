@@ -2,7 +2,7 @@ Namespace Controls
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
         Partial Class ucMediationAssignmentsToolbar
-        Inherits System.Windows.Forms.UserControl
+        Inherits cEwEToolstrip
 
         'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
@@ -15,7 +15,7 @@ Namespace Controls
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucMediationAssignmentsToolbar))
             Me.m_tsMenus = New ScientificInterfaceShared.Controls.cEwEToolstrip
             Me.m_tsbnDefineMediatingItems = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tsbnViewAsBar = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnViewAsPie = New System.Windows.Forms.ToolStripButton
             Me.m_tsMenus.SuspendLayout()
@@ -23,9 +23,11 @@ Namespace Controls
             '
             'm_tsMenus
             '
-            Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMediatingItems, Me.ToolStripSeparator1, Me.m_tsbnViewAsBar, Me.m_tsbnViewAsPie})
+            Me.m_tsMenus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsMenus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMediatingItems, Me.m_sep1, Me.m_tsbnViewAsBar, Me.m_tsbnViewAsPie})
             resources.ApplyResources(Me.m_tsMenus, "m_tsMenus")
             Me.m_tsMenus.Name = "m_tsMenus"
+            Me.m_tsMenus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbnDefineMediatingItems
             '
@@ -33,10 +35,10 @@ Namespace Controls
             resources.ApplyResources(Me.m_tsbnDefineMediatingItems, "m_tsbnDefineMediatingItems")
             Me.m_tsbnDefineMediatingItems.Name = "m_tsbnDefineMediatingItems"
             '
-            'ToolStripSeparator1
+            'm_sep1
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            Me.m_sep1.Name = "m_sep1"
+            resources.ApplyResources(Me.m_sep1, "m_sep1")
             '
             'm_tsbnViewAsBar
             '
@@ -66,9 +68,9 @@ Namespace Controls
         End Sub
         Private WithEvents m_tsbnDefineMediatingItems As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsMenus As cEwEToolstrip
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsbnViewAsBar As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnViewAsPie As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
 
     End Class
 
