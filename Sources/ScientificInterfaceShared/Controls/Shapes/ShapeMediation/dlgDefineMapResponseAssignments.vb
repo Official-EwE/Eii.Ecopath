@@ -13,18 +13,23 @@ Imports ScientificInterfaceShared.Style
 
 Public Class dlgDefineMapResponseAssignments
 
+    ' ToDo: store all edits in a local cache, and apply only when OK is pressed
+
 #Region "Private variables"
 
     Private m_shape As EwECore.cEnviroResponseFunction
     Private m_manager As cMapResponseInteractionManager
     Private m_zgh As cZedGraphEnviroResponseHelper 'cZedGraphHelper
     Private m_uic As cUIContext
-    Private m_orgMin As Single
-    Private m_orgMax As Single
     Private m_bHasInit As Boolean
     Private m_map As IEnviroInputMap
     Private m_fpXMin As cEwEFormatProvider = Nothing
     Private m_fpXMax As cEwEFormatProvider = Nothing
+
+    Public Enum eLines As Integer
+        Response
+        Histogram
+    End Enum
 
 #End Region
 
@@ -56,28 +61,23 @@ Public Class dlgDefineMapResponseAssignments
         If (Me.m_uic Is Nothing) Then Return
 
         'remember the original response function min and max
-        Me.m_orgMin = Me.m_shape.XAxisMin
-        Me.m_orgMax = Me.m_shape.XAxisMax
-
         Me.m_fpXMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
         Me.m_fpXMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
-        Me.m_fpXMin.Value = Me.m_orgMin
-        Me.m_fpXMax.Value = Me.m_orgMax
+        Me.m_fpXMin.Value = Me.m_shape.XAxisMin
+        Me.m_fpXMax.Value = Me.m_shape.XAxisMax
+
+        If (CSng(Me.m_fpXMax.Value) = 0) Then
+            Me.m_fpXMax.Value = 1.0 'some kind of bogus default if nothing has been defined
+        End If
 
         AddHandler Me.m_fpXMin.OnValueChanged, AddressOf OnMinMaxTextChanged
         AddHandler Me.m_fpXMax.OnValueChanged, AddressOf OnMinMaxTextChanged
 
-        Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
-
-        If Me.m_shape.XAxisMax = 0 Then
-            Me.m_shape.XAxisMax = 1.0 'some kind of bogus default if nothing has been defined
-        End If
-
-        Dim fmt As New cCoreInterfaceFormatter()
+        ' Leave graph title empty until a map has been selected
+        Me.m_zgh.ConfigurePane("", My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, False)
 
         Me.m_lbxGroups.Attach(Me.m_uic)
 
-        Me.updateControls()
         Me.loadMaps()
         Me.PlotGraph()
 
@@ -180,8 +180,14 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnOk.Click
+
+        ' Apply changes
+        Me.m_shape.XAxisMin = CSng(Me.m_fpXMin.Value)
+        Me.m_shape.XAxisMax = CSng(Me.m_fpXMax.Value)
+
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
+
     End Sub
 
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -192,17 +198,17 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Sub trvMapTree_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tvMaps.AfterExpand
-        Me.m_map = Me.getSelMap(e.Node)
+        Me.m_map = Me.GetSelectedMap(e.Node)
     End Sub
 
-    Private Sub trvMapTree_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tvMaps.Click
-        'Me.m_map = Me.getSelMap
-    End Sub
+    'Private Sub trvMapTree_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tvMaps.Click
+    '    'Me.m_map = Me.getSelMap
+    'End Sub
 
     Private Sub trvMapTree_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tvMaps.AfterSelect
         Try
-            Me.m_map = getSelMap(e.Node)
+            Me.m_map = GetSelectedMap(e.Node)
             Me.updateControls()
             Me.PlotGraph()
         Catch ex As Exception
@@ -212,13 +218,8 @@ Public Class dlgDefineMapResponseAssignments
 
     Private Sub OnMinMaxTextChanged(ByVal sender As cEwEFormatProvider)
 
-        Try
-            Me.m_shape.XAxisMin = CSng(Me.m_fpXMin.Value)
-            Me.m_shape.XAxisMax = CSng(Me.m_fpXMax.Value)
-            Me.PlotGraph()
-        Catch ex As Exception
-
-        End Try
+        ' Format providers changed: update the map
+        Me.PlotGraph()
 
     End Sub
 
@@ -260,13 +261,13 @@ Public Class dlgDefineMapResponseAssignments
     Private Sub PlotShape()
 
         Try
-            Dim Xmax As Single = Me.m_shape.XAxisMax
-            Dim Xmin As Single = Me.m_shape.XAxisMin
-            Dim Xrange As Single = Me.m_shape.XAxisMax - Me.m_shape.XAxisMin
+            Dim Xmax As Single = CSng(Me.m_fpXMax.Value)
+            Dim Xmin As Single = CSng(Me.m_fpXMin.Value)
+            Dim Xrange As Single = Xmax - Xmin
 
             'if there is a selected map then use that to set the x axis
             'Dim map As IEnviroInputMap = Me.getSelMap()
-            If Me.m_map IsNot Nothing Then
+            If (Me.m_map IsNot Nothing) Then
                 Xmax = Me.m_map.Max '+ map.BinWidth
             End If
 
@@ -283,7 +284,7 @@ Public Class dlgDefineMapResponseAssignments
             'add the last point out at the end of the graph
             lstPts.Add(Xmax, Me.m_shape.ShapeData(Me.m_shape.XMax) * YScale)
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem("Response", Definitions.eLineType.NotSet, Color.SandyBrown, lstPts)
+            Dim il As LineItem = Me.m_zgh.CreateLineItem(My.Resources.HEADER_RESPONSE, Definitions.eLineType.NotSet, Color.SandyBrown, lstPts, eLines.Response)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Xmax
@@ -335,14 +336,14 @@ Public Class dlgDefineMapResponseAssignments
 
 
     Private Sub setDefaultMinMax()
-        ' Dim map As IEnviroInputMap = Me.getSelMap
-        If Me.m_map Is Nothing Then
+
+        If (Me.m_map Is Nothing) Then
             'some kind of a warning
             Exit Sub
         End If
 
-        Me.m_shape.XAxisMax = Me.m_map.Max
-        Me.m_shape.XAxisMin = Me.m_map.Min
+        Me.m_fpXMax.Value = Me.m_map.Max
+        Me.m_fpXMin.Value = Me.m_map.Min
 
         Me.updateControls()
 
@@ -350,12 +351,10 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-    Private Function getSelMap(ByVal node As TreeNode) As IEnviroInputMap
+    Private Function GetSelectedMap(ByVal node As TreeNode) As IEnviroInputMap
         Try
 
             Dim ob As Object
-            'Dim node As TreeNode
-            'node = Me.trvMapTree.SelectedNode
 
             'No node has been selected just return nothing
             If node Is Nothing Then Return Nothing
@@ -367,7 +366,7 @@ Public Class dlgDefineMapResponseAssignments
 
             If ob IsNot Nothing Then
                 If TypeOf ob Is IEnviroInputMap Then
-                    System.Console.WriteLine("Seleted map " & DirectCast(ob, IEnviroInputMap).Name)
+                    System.Console.WriteLine("Selected map " & DirectCast(ob, IEnviroInputMap).Name)
                     Return DirectCast(ob, IEnviroInputMap)
                 End If
             End If
@@ -379,9 +378,6 @@ Public Class dlgDefineMapResponseAssignments
         Return Nothing
 
     End Function
-
-
-
 
     'Private Function getSelMap() As IEnviroInputMap
     '    Try
@@ -420,11 +416,17 @@ Public Class dlgDefineMapResponseAssignments
             'Dim map As IEnviroInputMap = Me.getSelMap
             If Me.m_map Is Nothing Then
                 'no map to plot
-                Exit Sub
+                Return
             End If
 
             Dim histPts() As Drawing.PointF = Me.m_map.Histogram()
-            Dim lstPts As New PointPairList
+            Dim lstPts As New PointPairList()
+            Dim fmt As New cCoreInterfaceFormatter()
+
+            ' Show selected map in function graph title
+            Me.m_zgh.ConfigurePane(String.Format(My.Resources.RESPONSE_GRAPH_TITLE, fmt.GetDescriptor(Me.m_map)), _
+                                   My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
+
             'The X value in the histogram is the max value, right hand side, in the bin
             'So an input value of 1.0 will be in the .X = 1.0 bin
             lstPts.Add(0, histPts(1).Y)
@@ -435,7 +437,7 @@ Public Class dlgDefineMapResponseAssignments
 
             lstPts.Add(histPts(histPts.Length - 1).X, histPts(histPts.Length - 1).Y)
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem("Histogram", Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts)
+            Dim il As LineItem = Me.m_zgh.CreateLineItem(My.Resources.HEADER_HISTOGRAM, Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts, eLines.Histogram)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Me.m_map.Max
@@ -468,6 +470,9 @@ Public Class cZedGraphEnviroResponseHelper
     Inherits cZedGraphHelper
 
     Protected Overrides Function FormatTooltip(ByVal pane As ZedGraph.GraphPane, ByVal curve As ZedGraph.CurveItem, ByVal iPoint As Integer) As String
+
+        ' ToDo: localize this
+
         'This is not a very good way to do this 
         'It may be better to not use a tool tip at all 
         'instead pass out the X and Y Axis value(s) and let the container figure out how to show the data
@@ -475,17 +480,20 @@ Public Class cZedGraphEnviroResponseHelper
 
             'WARNING this only works if the curve is labeled "Response"
             Dim bUseBase As Boolean = True
+
             If curve.Tag IsNot Nothing Then
                 If TypeOf curve.Tag Is cCurveInfo Then
                     Dim ci As cCurveInfo = DirectCast(curve.Tag, cCurveInfo)
-                    If String.Compare(ci.Label, "Response") = 0 Then
-                        'format the tooltip here
-                        bUseBase = False
-                    ElseIf String.Compare(ci.Label, "Histogram") = 0 Then
-                        'this is the Histogram Curve
-                        'so don't show anything
-                        Return ""
-                    End If '  If String.Compare(ci.Label, "Response") = 0 Then
+                    Dim tag As dlgDefineMapResponseAssignments.eLines = DirectCast(ci.Tag, dlgDefineMapResponseAssignments.eLines)
+
+                    Select Case tag
+                        Case dlgDefineMapResponseAssignments.eLines.Response
+                            bUseBase = False
+                        Case dlgDefineMapResponseAssignments.eLines.Histogram
+                            Return ""
+                        Case Else
+                            Debug.Assert(False, "Unsupported line type")
+                    End Select
                 End If ' If TypeOf curve.Tag Is cCurveInfo Then
             End If ' If curve.Tag IsNot Nothing Then
 
@@ -495,6 +503,7 @@ Public Class cZedGraphEnviroResponseHelper
 
             Debug.Assert(curve.IsLine, "ToolTip wrong line type.")
 
+            ' ToDo: localize this
             Dim sb As New System.Text.StringBuilder()
             sb.AppendLine("Capacity for Map input.")
 
@@ -506,11 +515,10 @@ Public Class cZedGraphEnviroResponseHelper
 
         End Try
         Return ""
+
     End Function
 
-
 End Class
-
 
 #End Region
 
