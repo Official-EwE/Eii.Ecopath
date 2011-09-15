@@ -29,7 +29,7 @@ Namespace Ecospace
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyCapacity))
-            Me.m_tsMain = New System.Windows.Forms.ToolStrip
+            Me.m_tsMain = New cEwEToolstrip
             Me.m_tsbnDefineMaps = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecospace.ucApplyMapResponseGrid(Me.components)
             Me.m_tsMain.SuspendLayout()
@@ -90,7 +90,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tsbnDefineMaps As System.Windows.Forms.ToolStripButton
         Private WithEvents m_grid As ScientificInterface.Ecospace.ucApplyMapResponseGrid
 
