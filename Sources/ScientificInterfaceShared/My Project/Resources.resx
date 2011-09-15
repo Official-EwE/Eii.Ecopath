@@ -2182,7 +2182,8 @@
     <value>Capacity of input value for {0}</value>
   </data>
   <data name="RESPONSE_GRAPH_TITLE" xml:space="preserve">
-    <value>Map histogram &amp; Response function</value>
+    <value>Map histogram &amp; Response function for map '{0}'</value>
+    <comment>{0}: map name</comment>
   </data>
   <data name="RESPONSE_GRAPH_XLABEL" xml:space="preserve">
     <value>Map values</value>
@@ -2202,5 +2203,11 @@
   </data>
   <data name="VARIABLE_LAYERRELPP" xml:space="preserve">
     <value>PP(rel)||Relative PP|Relative Primary Production</value>
+  </data>
+  <data name="HEADER_HISTOGRAM" xml:space="preserve">
+    <value>Histogram</value>
+  </data>
+  <data name="HEADER_RESPONSE" xml:space="preserve">
+    <value>Response</value>
   </data>
 </root>
