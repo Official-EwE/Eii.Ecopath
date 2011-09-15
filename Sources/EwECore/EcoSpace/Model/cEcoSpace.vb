@@ -19,6 +19,8 @@ Public Class cEcoSpace
 
     'ToDo_jb Change summary values to be across all time steps
 
+    'ToDo_jb 15-Sept-2011 Added message to SetHabCap so the basemap interface can responed to changes
+
 #Region "Solver threads"
 
     Public Delegate Sub SolverErrorDelegate(ByVal ThreadID As Integer, ByVal msg As String)
@@ -5532,7 +5534,7 @@ exitline:
         'now normalize the capacity map
         Me.normalizeCapacityMap(MaxCap)
 
-        'Set the capacity gradients to flow high capacity cells
+        'Set the capacity gradients to flow from low to high capacity cells
         AdjustLowHapCaps()
 
     End Sub
@@ -5561,7 +5563,9 @@ exitline:
                 MapDataType = eDataTypes.EcospaceHabitat Or _
                 MapDataType = eDataTypes.EcospaceLayerDepth Or _
                 MapDataType = eDataTypes.EcospaceLayerHabitatCapacity Or _
-                MapDataType = eDataTypes.EcospaceLayerRelPP Then
+                MapDataType = eDataTypes.EcospaceLayerRelPP Or _
+                MapDataType = eDataTypes.CapacityMediation Or _
+                MapDataType = eDataTypes.EcospaceMapResponse Then
 
                 Me.SetHabCap()
 
