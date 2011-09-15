@@ -1710,7 +1710,7 @@ Public Class cEcospaceDataStructures
             'Me.CapMaps.Add(depthMap)
 
         Catch ex As Exception
-            Debug.Assert(False, "Failed it init debug capacity map")
+            Debug.Assert(False, "Failed to init debug capacity map")
         End Try
 
 
