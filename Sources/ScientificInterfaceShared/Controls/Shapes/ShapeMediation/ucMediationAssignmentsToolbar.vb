@@ -146,7 +146,7 @@ Namespace Controls
 
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DefineMediation, m_tsbnDefineMediatingItems)
 
-            Me.m_tsMenus.PerformLayout()
+            Me.m_tsMenus.ResumeLayout(True)
 
         End Sub
 
