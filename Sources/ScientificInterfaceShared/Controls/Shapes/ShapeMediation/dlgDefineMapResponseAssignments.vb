@@ -71,8 +71,7 @@ Public Class dlgDefineMapResponseAssignments
         AddHandler Me.m_fpXMin.OnValueChanged, AddressOf OnMinMaxTextChanged
         AddHandler Me.m_fpXMax.OnValueChanged, AddressOf OnMinMaxTextChanged
 
-        ' Leave graph title empty until a map has been selected
-        Me.m_zgh.ConfigurePane("", My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, False)
+        Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
         Me.m_lbxGroups.Attach(Me.m_uic)
 
@@ -252,6 +251,7 @@ Public Class dlgDefineMapResponseAssignments
             Dim Xmax As Single = CSng(Me.m_fpXMax.Value)
             Dim Xmin As Single = CSng(Me.m_fpXMin.Value)
             Dim Xrange As Single = Xmax - Xmin
+            Dim fmt As New cCoreInterfaceFormatter()
 
             'if there is a selected map then use that to set the x axis
             'Dim map As IEnviroInputMap = Me.getSelMap()
@@ -272,7 +272,8 @@ Public Class dlgDefineMapResponseAssignments
             'add the last point out at the end of the graph
             lstPts.Add(Xmax, Me.m_shape.ShapeData(Me.m_shape.XMax) * YScale)
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(My.Resources.HEADER_RESPONSE, Definitions.eLineType.NotSet, Color.SandyBrown, lstPts, eLines.Response)
+            Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(Me.m_shape)), _
+                                                         Definitions.eLineType.NotSet, Color.SandyBrown, lstPts, eLines.Response)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Xmax
@@ -411,10 +412,6 @@ Public Class dlgDefineMapResponseAssignments
             Dim lstPts As New PointPairList()
             Dim fmt As New cCoreInterfaceFormatter()
 
-            ' Show selected map in function graph title
-            Me.m_zgh.ConfigurePane(String.Format(My.Resources.RESPONSE_GRAPH_TITLE, fmt.GetDescriptor(Me.m_map)), _
-                                   My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
-
             'The X value in the histogram is the max value, right hand side, in the bin
             'So an input value of 1.0 will be in the .X = 1.0 bin
             lstPts.Add(0, histPts(1).Y)
@@ -425,7 +422,8 @@ Public Class dlgDefineMapResponseAssignments
 
             lstPts.Add(histPts(histPts.Length - 1).X, histPts(histPts.Length - 1).Y)
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(My.Resources.HEADER_HISTOGRAM, Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts, eLines.Histogram)
+            Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map)), _
+                                                         Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts, eLines.Histogram)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Me.m_map.Max

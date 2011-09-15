@@ -2748,11 +2748,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Histogram.
+        '''  Looks up a localized string similar to Histogram for &apos;{0}&apos;.
         '''</summary>
-        Public ReadOnly Property HEADER_HISTOGRAM() As String
+        Public ReadOnly Property HEADER_HISTOGRAM_TARGET() As String
             Get
-                Return ResourceManager.GetString("HEADER_HISTOGRAM", resourceCulture)
+                Return ResourceManager.GetString("HEADER_HISTOGRAM_TARGET", resourceCulture)
             End Get
         End Property
         
@@ -3846,11 +3846,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Response.
+        '''  Looks up a localized string similar to Response function &apos;{0}&apos;.
         '''</summary>
-        Public ReadOnly Property HEADER_RESPONSE() As String
+        Public ReadOnly Property HEADER_RESPONSE_TARGET() As String
             Get
-                Return ResourceManager.GetString("HEADER_RESPONSE", resourceCulture)
+                Return ResourceManager.GetString("HEADER_RESPONSE_TARGET", resourceCulture)
             End Get
         End Property
         
@@ -5217,7 +5217,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Map histogram &amp; Response function for map &apos;{0}&apos;.
+        '''  Looks up a localized string similar to Map histogram &amp; Response function.
         '''</summary>
         Public ReadOnly Property RESPONSE_GRAPH_TITLE() As String
             Get
