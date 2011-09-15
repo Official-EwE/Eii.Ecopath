@@ -13,8 +13,6 @@ Imports ScientificInterfaceShared.Style
 
 Public Class dlgDefineMapResponseAssignments
 
-    ' ToDo: store all edits in a local cache, and apply only when OK is pressed
-
 #Region "Private variables"
 
     Private m_shape As EwECore.cEnviroResponseFunction
@@ -190,20 +188,10 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnCancel.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
-    End Sub
-
     Private Sub trvMapTree_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tvMaps.AfterExpand
         Me.m_map = Me.GetSelectedMap(e.Node)
     End Sub
-
-    'Private Sub trvMapTree_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tvMaps.Click
-    '    'Me.m_map = Me.getSelMap
-    'End Sub
 
     Private Sub trvMapTree_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tvMaps.AfterSelect

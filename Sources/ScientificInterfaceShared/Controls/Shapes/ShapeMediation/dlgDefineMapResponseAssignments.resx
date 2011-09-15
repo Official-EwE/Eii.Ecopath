@@ -121,12 +121,15 @@
   <data name="m_btnOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
+  <data name="m_btnOk.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>882, 419</value>
+    <value>943, 419</value>
   </data>
   <data name="m_btnOk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 22</value>
+    <value>95, 22</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnOk.TabIndex" type="System.Int32, mscorlib">
@@ -145,10 +148,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="m_lblMaps.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_lblMaps.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_lblMaps.Location" type="System.Drawing.Point, System.Drawing">
     <value>214, 35</value>
@@ -200,6 +206,9 @@
   </data>
   <data name="m_lblXMax.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_lblXMax.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_lblXMax.Location" type="System.Drawing.Point, System.Drawing">
     <value>614, 35</value>
@@ -276,6 +285,9 @@
   <data name="m_lblXMin.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblXMin.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblXMin.Location" type="System.Drawing.Point, System.Drawing">
     <value>445, 35</value>
   </data>
@@ -307,16 +319,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnDefaultMinMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>914, 30</value>
+    <value>861, 30</value>
   </data>
   <data name="m_btnDefaultMinMax.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 23</value>
+    <value>177, 23</value>
   </data>
   <data name="m_btnDefaultMinMax.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
   <data name="m_btnDefaultMinMax.Text" xml:space="preserve">
-    <value>Set default X axis</value>
+    <value>Set X axis from selected map</value>
   </data>
   <data name="&gt;&gt;m_btnDefaultMinMax.Name" xml:space="preserve">
     <value>m_btnDefaultMinMax</value>
@@ -331,7 +343,7 @@
     <value>7</value>
   </data>
   <data name="m_tvMaps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+    <value>Top, Bottom, Left</value>
   </data>
   <data name="m_tvMaps.Location" type="System.Drawing.Point, System.Drawing">
     <value>217, 59</value>
@@ -355,40 +367,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tvMaps.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="m_lbxGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left</value>
-  </data>
-  <data name="m_lbxGroups.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_lbxGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 59</value>
-  </data>
-  <data name="m_lbxGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 3, 0</value>
-  </data>
-  <data name="m_lbxGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 354</value>
-  </data>
-  <data name="m_lbxGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_lbxGroups.Name" xml:space="preserve">
-    <value>m_lbxGroups</value>
-  </data>
-  <data name="&gt;&gt;m_lbxGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.913.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lbxGroups.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbxGroups.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>13</value>
   </data>
   <data name="m_lblGroups.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_lblGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_lblGroups.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 35</value>
@@ -415,34 +400,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblGroups.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>963, 419</value>
-  </data>
-  <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 22</value>
-  </data>
-  <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="m_btnCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Name" xml:space="preserve">
-    <value>m_btnCancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>14</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -496,34 +454,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
-  <data name="m_hdrConfig.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 9</value>
-  </data>
-  <data name="m_hdrConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>392, 18</value>
-  </data>
-  <data name="m_hdrConfig.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_hdrConfig.Text" xml:space="preserve">
-    <value>Group / Capacity Map usage</value>
-  </data>
-  <data name="m_hdrConfig.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConfig.Name" xml:space="preserve">
-    <value>m_hdrConfig</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.913.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConfig.ZOrder" xml:space="preserve">
-    <value>6</value>
+  <data name="m_hdrReponse.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_hdrReponse.Location" type="System.Drawing.Point, System.Drawing">
     <value>445, 9</value>
@@ -544,13 +478,73 @@
     <value>m_hdrReponse</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.913.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="m_lbxGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
+  </data>
+  <data name="m_lbxGroups.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_lbxGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 59</value>
+  </data>
+  <data name="m_lbxGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 3, 0</value>
+  </data>
+  <data name="m_lbxGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 354</value>
+  </data>
+  <data name="m_lbxGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_lbxGroups.Name" xml:space="preserve">
+    <value>m_lbxGroups</value>
+  </data>
+  <data name="&gt;&gt;m_lbxGroups.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_lbxGroups.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lbxGroups.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_hdrConfig.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrConfig.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 9</value>
+  </data>
+  <data name="m_hdrConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>392, 18</value>
+  </data>
+  <data name="m_hdrConfig.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_hdrConfig.Text" xml:space="preserve">
+    <value>Group / Capacity Map usage</value>
+  </data>
+  <data name="m_hdrConfig.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrConfig.Name" xml:space="preserve">
+    <value>m_hdrConfig</value>
+  </data>
+  <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrConfig.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

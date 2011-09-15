@@ -35,13 +35,12 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_lblXMin = New System.Windows.Forms.Label
         Me.m_btnDefaultMinMax = New System.Windows.Forms.Button
         Me.m_tvMaps = New System.Windows.Forms.TreeView
-        Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox
         Me.m_lblGroups = New System.Windows.Forms.Label
-        Me.m_btnCancel = New System.Windows.Forms.Button
         Me.m_btnRemove = New System.Windows.Forms.Button
         Me.m_btnAdd = New System.Windows.Forms.Button
-        Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox
+        Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -101,6 +100,33 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_tvMaps.Name = "m_tvMaps"
         Me.m_tvMaps.ShowRootLines = False
         '
+        'm_lblGroups
+        '
+        resources.ApplyResources(Me.m_lblGroups, "m_lblGroups")
+        Me.m_lblGroups.Name = "m_lblGroups"
+        '
+        'm_btnRemove
+        '
+        resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
+        Me.m_btnRemove.Image = Global.ScientificInterfaceShared.My.Resources.Resources.NavBack
+        Me.m_btnRemove.Name = "m_btnRemove"
+        Me.m_btnRemove.UseVisualStyleBackColor = True
+        '
+        'm_btnAdd
+        '
+        resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
+        Me.m_btnAdd.Image = Global.ScientificInterfaceShared.My.Resources.Resources.NavForward
+        Me.m_btnAdd.Name = "m_btnAdd"
+        Me.m_btnAdd.UseVisualStyleBackColor = True
+        '
+        'm_hdrReponse
+        '
+        Me.m_hdrReponse.CanCollapseParent = False
+        Me.m_hdrReponse.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrReponse, "m_hdrReponse")
+        Me.m_hdrReponse.IsCollapsed = False
+        Me.m_hdrReponse.Name = "m_hdrReponse"
+        '
         'm_lbxGroups
         '
         Me.m_lbxGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
@@ -119,53 +145,19 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_lbxGroups.SortThreshold = -9999.0!
         Me.m_lbxGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
         '
-        'm_lblGroups
-        '
-        resources.ApplyResources(Me.m_lblGroups, "m_lblGroups")
-        Me.m_lblGroups.Name = "m_lblGroups"
-        '
-        'm_btnCancel
-        '
-        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
-        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.m_btnCancel.Name = "m_btnCancel"
-        '
-        'm_btnRemove
-        '
-        resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
-        Me.m_btnRemove.Image = Global.ScientificInterfaceShared.My.Resources.Resources.NavBack
-        Me.m_btnRemove.Name = "m_btnRemove"
-        Me.m_btnRemove.UseVisualStyleBackColor = True
-        '
-        'm_btnAdd
-        '
-        resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
-        Me.m_btnAdd.Image = Global.ScientificInterfaceShared.My.Resources.Resources.NavForward
-        Me.m_btnAdd.Name = "m_btnAdd"
-        Me.m_btnAdd.UseVisualStyleBackColor = True
-        '
         'm_hdrConfig
         '
         Me.m_hdrConfig.CanCollapseParent = False
         Me.m_hdrConfig.CollapsedParentHeight = 0
-        Me.m_hdrConfig.IsCollapsed = False
         resources.ApplyResources(Me.m_hdrConfig, "m_hdrConfig")
+        Me.m_hdrConfig.IsCollapsed = False
         Me.m_hdrConfig.Name = "m_hdrConfig"
-        '
-        'm_hdrReponse
-        '
-        Me.m_hdrReponse.CanCollapseParent = False
-        Me.m_hdrReponse.CollapsedParentHeight = 0
-        Me.m_hdrReponse.IsCollapsed = False
-        resources.ApplyResources(Me.m_hdrReponse, "m_hdrReponse")
-        Me.m_hdrReponse.Name = "m_hdrReponse"
         '
         'dlgDefineMapResponseAssignments
         '
         Me.AcceptButton = Me.m_btnOk
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.m_btnCancel
         Me.Controls.Add(Me.m_lblXMin)
         Me.Controls.Add(Me.m_tbxXMax)
         Me.Controls.Add(Me.m_hdrReponse)
@@ -177,7 +169,6 @@ Partial Class dlgDefineMapResponseAssignments
         Me.Controls.Add(Me.m_btnRemove)
         Me.Controls.Add(Me.m_tbxXMin)
         Me.Controls.Add(Me.m_lblMaps)
-        Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnAdd)
         Me.Controls.Add(Me.m_btnOk)
         Me.Controls.Add(Me.m_tvMaps)
@@ -195,7 +186,6 @@ Partial Class dlgDefineMapResponseAssignments
     Private WithEvents m_btnOk As System.Windows.Forms.Button
     Private WithEvents m_lblMaps As System.Windows.Forms.Label
     Private WithEvents m_lblGroups As System.Windows.Forms.Label
-    Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Private WithEvents m_tvMaps As System.Windows.Forms.TreeView
