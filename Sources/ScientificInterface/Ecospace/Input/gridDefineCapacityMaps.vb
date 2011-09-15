@@ -329,6 +329,15 @@ Namespace Ecospace
 
         End Sub
 
+        Protected Overrides Sub FinishStyle()
+            MyBase.FinishStyle()
+
+            For Each col As eColumnTypes In [Enum].GetValues(GetType(eColumnTypes))
+                Me.Columns(col).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize Or SourceGrid2.AutoSizeMode.EnableStretch
+            Next
+
+        End Sub
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Brute-force resize the gird if necessary, and repopulate with data from 
