@@ -1977,6 +1977,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Executing database update {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_DATABASE_UPDATE() As String
+            Get
+                Return ResourceManager.GetString("STATUS_DATABASE_UPDATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Saving changes, please wait....
         '''</summary>
         Friend Shared ReadOnly Property STATUS_SAVING_CHANGES() As String

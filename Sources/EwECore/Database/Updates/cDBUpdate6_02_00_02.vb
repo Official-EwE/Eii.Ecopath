@@ -51,7 +51,8 @@ Friend Class cDBUpdate6_02_00_02
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
         Return Me.UpdateForcePoints(db) And _
                Me.AddCapacityMapTable(db) And _
-               Me.AddCapacityMapAssignmentTable(db)
+               Me.AddCapacityMapAssignmentTable(db) And _
+               Me.UpdateMediationTable(db)
     End Function
 
     Private Function UpdateForcePoints(ByVal db As cEwEDatabase) As Boolean
@@ -111,6 +112,17 @@ Friend Class cDBUpdate6_02_00_02
         Me.LogProgress("ADD TABLE EcospaceScenarioCapacityMapAssignments", bSuccess)
         Return bSuccess
 
+    End Function
+
+    Private Function UpdateMediationTable(ByVal db As cEwEDatabase) As Boolean
+        Dim bSuccess As Boolean = True
+
+        ' Read ecosim run length
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimShapeMediation ADD COLUMN XAxisMin SINGLE")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimShapeMediation ADD COLUMN XAxisMax SINGLE")
+
+        Me.LogProgress("Updated table EcosimShapeMediation", bSuccess)
+        Return bSuccess
     End Function
 
 End Class

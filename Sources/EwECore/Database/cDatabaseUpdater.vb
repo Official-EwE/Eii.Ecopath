@@ -208,6 +208,9 @@ Namespace Database
                 If (update.UpdateVersion > sDBVersion) Then
                     ' #Yes: able to start transaction?
                     If db.BeginTransaction() Then
+
+                        Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion), eMessageImportance.Information)
+
                         Try
                             ' #Yes: run the update
                             bSucces = update.ApplyUpdate(db)
@@ -217,12 +220,12 @@ Namespace Database
                                 db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
                             Else
                                 ' #No: report a generic error
-                                Me.ReportUpdateError(String.Format(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED, update.UpdateVersion))
+                                Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED, update.UpdateVersion))
                             End If
 
                         Catch ex As Exception
                             ' Woops!
-                            Me.ReportUpdateError(String.Format(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED_DETAIL, update.UpdateVersion, ex.Message))
+                            Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED_DETAIL, update.UpdateVersion, ex.Message))
                             bSucces = False
                         End Try
 
@@ -280,18 +283,20 @@ Namespace Database
         ''' <summary>
         ''' Send an error message to the core.
         ''' </summary>
-        ''' <param name="strError"></param>
+        ''' <param name="strStatus">Status message.</param>
+        ''' <param name="importance">Message importance.</param>
         ''' -------------------------------------------------------------------
-        Private Sub ReportUpdateError(ByVal strError As String)
+        Private Sub ReportUpdateStatus(ByVal strStatus As String, _
+                                       Optional ByVal importance As eMessageImportance = eMessageImportance.Critical)
 
-            Dim msg As cMessage = New cMessage(strError, _
+            Dim msg As cMessage = New cMessage(strStatus, _
                                                eMessageType.DataImport, _
                                                eCoreComponentType.DataSource, _
-                                               eMessageImportance.Critical)
+                                               importance)
 
             Try
                 Me.m_core.Messages.SendMessage(msg)
-                cLog.Write("Database update failure: " & strError)
+                cLog.Write("Database update failure: " & strStatus)
             Catch ex As Exception
 
             End Try

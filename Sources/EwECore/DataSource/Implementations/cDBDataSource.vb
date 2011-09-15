@@ -5111,7 +5111,8 @@ Namespace DataSources
                 medData.MediationDBIDs(iMediationShape) = iShapeID
                 medData.MediationTitles(iMediationShape) = CStr(readerShape("Title"))
                 medData.IMedBase(iMediationShape) = CInt(Me.m_db.ReadSafe(readerShape, "IMedBase", 1200 / 3))
-
+                medData.XAxisMin(iMediationShape) = CSng(Me.m_db.ReadSafe(readerShape, "XAxisMin", 0))
+                medData.XAxisMax(iMediationShape) = CSng(Me.m_db.ReadSafe(readerShape, "XAxisMax", 1))
                 Me.m_db.ReleaseReader(readerShape)
                 readerShape = Nothing
 
@@ -5786,6 +5787,9 @@ Namespace DataSources
                 drow("Steep") = shapeParms.Steep
                 drow("IMedBase") = medData.IMedBase(iShape)
                 drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
+                drow("XAxisMin") = medData.XAxisMin(iShape)
+                drow("XAxisMax") = medData.XAxisMax(iShape)
+
                 ' Assemble Zscale
                 For ipt As Integer = 1 To medData.NMedPoints
                     If (ipt > 1) Then sbZScale.Append(" ")
@@ -6376,6 +6380,8 @@ Namespace DataSources
 
                 ' Delete pred/prey interactions
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioPredPreyShape WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcoSimShapeCapacity WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityMapAssignments WHERE (ShapeID={0})", iShapeID))
 
                 ' Destroy the given shape
                 Me.m_db.Execute(String.Format("DELETE FROM EcoSimShape WHERE (ShapeID={0})", iShapeID))
