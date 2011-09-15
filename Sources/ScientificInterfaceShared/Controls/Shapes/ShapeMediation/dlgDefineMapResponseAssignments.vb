@@ -55,12 +55,17 @@ Public Class dlgDefineMapResponseAssignments
 
         If (Me.m_uic Is Nothing) Then Return
 
-        Me.m_fpXMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
-        Me.m_fpXMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
-
         'remember the original response function min and max
         Me.m_orgMin = Me.m_shape.XAxisMin
         Me.m_orgMax = Me.m_shape.XAxisMax
+
+        Me.m_fpXMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
+        Me.m_fpXMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
+        Me.m_fpXMin.Value = Me.m_orgMin
+        Me.m_fpXMax.Value = Me.m_orgMax
+
+        AddHandler Me.m_fpXMin.OnValueChanged, AddressOf OnMinMaxTextChanged
+        AddHandler Me.m_fpXMax.OnValueChanged, AddressOf OnMinMaxTextChanged
 
         Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
@@ -70,13 +75,14 @@ Public Class dlgDefineMapResponseAssignments
 
         Dim fmt As New cCoreInterfaceFormatter()
 
-        Me.lstGroups.Attach(Me.m_uic)
+        Me.m_lbxGroups.Attach(Me.m_uic)
 
         Me.updateControls()
         Me.loadMaps()
         Me.PlotGraph()
 
         Me.m_bHasInit = True
+        Me.updateControls()
 
     End Sub
 
@@ -84,7 +90,10 @@ Public Class dlgDefineMapResponseAssignments
 
         If (Me.m_uic Is Nothing) Then Return
 
-        Me.lstGroups.Detach()
+        Me.m_lbxGroups.Detach()
+
+        RemoveHandler Me.m_fpXMin.OnValueChanged, AddressOf OnMinMaxTextChanged
+        RemoveHandler Me.m_fpXMax.OnValueChanged, AddressOf OnMinMaxTextChanged
 
         Me.m_fpXMax.Release()
         Me.m_fpXMax = Nothing
@@ -99,6 +108,14 @@ Public Class dlgDefineMapResponseAssignments
 
 #Region "Control Event Handlers"
 
+    Private Sub OnGroupSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_lbxGroups.SelectedValueChanged
+        Try
+            Me.updateControls()
+        Catch ex As Exception
+        End Try
+    End Sub
+
     ''' <summary>
     ''' Add the selected groups to the currently selected map
     ''' </summary>
@@ -112,8 +129,8 @@ Public Class dlgDefineMapResponseAssignments
             If Me.m_map Is Nothing Then Return
 
             'Yes add all the groups 
-            For Each i As Integer In Me.lstGroups.SelectedIndices
-                Me.m_map.ResponseIndexForGroup(Me.lstGroups.GetGroupIndexAt(i)) = Me.m_shape.Index
+            For Each i As Integer In Me.m_lbxGroups.SelectedIndices
+                Me.m_map.ResponseIndexForGroup(Me.m_lbxGroups.GetGroupIndexAt(i)) = Me.m_shape.Index
             Next
 
             'bluntly reload the map tree
@@ -134,14 +151,23 @@ Public Class dlgDefineMapResponseAssignments
 
             Dim node As TreeNode
             node = Me.m_tvMaps.SelectedNode
-            If node IsNot Nothing Then
-                'last node this must be a selected group node
-                If node.Nodes.Count = 0 Then
-                    'Group index was put in the tag when the tree was populated
-                    Dim iGrp As Integer = DirectCast(node.Tag, Integer)
-                    Me.m_map.ResponseIndexForGroup(iGrp) = cCore.NULL_VALUE
-                    'now remove the node
-                    Me.m_tvMaps.SelectedNode.Remove()
+            If (node IsNot Nothing) Then
+                ' Is group node?
+                If (TypeOf (node.Tag) Is cCoreGroupBase) Then
+                    ' #Yes: group was put in the tag when the tree was populated
+                    Dim grp As cCoreGroupBase = DirectCast(node.Tag, cCoreGroupBase)
+                    Me.m_map.ResponseIndexForGroup(grp.Index) = cCore.NULL_VALUE
+                    node.Remove()
+                Else
+                    Dim lGroupNodes As New List(Of TreeNode)
+                    For Each ndChild As TreeNode In node.Nodes
+                        lGroupNodes.Add(ndChild)
+                    Next
+                    For Each ndChild As TreeNode In lGroupNodes
+                        Dim grp As cCoreGroupBase = DirectCast(ndChild.Tag, cCoreGroupBase)
+                        Me.m_map.ResponseIndexForGroup(grp.Index) = cCore.NULL_VALUE
+                        ndChild.Remove()
+                    Next
                 End If
             End If
 
@@ -177,37 +203,26 @@ Public Class dlgDefineMapResponseAssignments
         Handles m_tvMaps.AfterSelect
         Try
             Me.m_map = getSelMap(e.Node)
+            Me.updateControls()
             Me.PlotGraph()
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Private Sub OnMinMaxTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_tbxXMax.TextChanged, m_tbxXMin.TextChanged
+    Private Sub OnMinMaxTextChanged(ByVal sender As cEwEFormatProvider)
 
         Try
-            Dim txb As TextBox = DirectCast(sender, TextBox)
-            'is this really user input
-            If Not txb.Focused Then
-                'No bump out of here
-                Exit Sub
-            End If
-
-            Dim maxX As Single = Single.Parse(Me.m_tbxXMax.Text)
-            Dim minX As Single = Single.Parse(Me.m_tbxXMin.Text)
-            Me.m_shape.XAxisMin = minX
-            Me.m_shape.XAxisMax = maxX
-
+            Me.m_shape.XAxisMin = CSng(Me.m_fpXMin.Value)
+            Me.m_shape.XAxisMax = CSng(Me.m_fpXMax.Value)
             Me.PlotGraph()
-
         Catch ex As Exception
 
         End Try
 
     End Sub
 
-    Private Sub btDefaultMinMax_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnSetDefaultMinMax(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_btnDefaultMinMax.Click
         Me.setDefaultMinMax()
     End Sub
@@ -233,12 +248,13 @@ Public Class dlgDefineMapResponseAssignments
     End Sub
 
     Private Sub updateControls()
-        Try
-            Me.m_tbxXMax.Text = Me.m_shape.XAxisMax.ToString
-            Me.m_tbxXMin.Text = Me.m_shape.XAxisMin.ToString
-        Catch ex As Exception
 
-        End Try
+        Dim bCanAddGroup As Boolean = (Me.m_lbxGroups.SelectedItems.Count > 0)
+        Dim bCanRemoveGroup As Boolean = (Me.m_tvMaps.SelectedNode IsNot Nothing)
+
+        Me.m_btnAdd.Enabled = bCanAddGroup
+        Me.m_btnRemove.Enabled = bCanRemoveGroup
+
     End Sub
 
     Private Sub PlotShape()
@@ -281,27 +297,28 @@ Public Class dlgDefineMapResponseAssignments
     End Sub
 
     Private Sub loadMaps()
-        Try
 
+        Dim map As IEnviroInputMap = Nothing
+        Dim fmt As New cCoreInterfaceFormatter()
+
+        Try
             Me.m_tvMaps.Nodes.Clear()
-            Dim shapeLabel As String = "Groups using '" & Me.m_shape.Name & "'"
-            Dim map As IEnviroInputMap
+
             For imap As Integer = 1 To Me.m_manager.nMaps
+
                 map = Me.m_manager.Map(imap)
-                Dim ndApply As TreeNode
-                Dim ndGrps As TreeNode
-                ndApply = Me.m_tvMaps.Nodes.Add(map.Name)
-                'add the Map to the node tag
+                Dim ndApply As TreeNode = Me.m_tvMaps.Nodes.Add(fmt.GetDescriptor(map))
                 ndApply.Tag = map
-                ndGrps = ndApply.Nodes.Add(shapeLabel)
 
                 For igrp As Integer = 1 To Me.m_uic.Core.nGroups
                     'Is the current shape selected as the response function for any group
                     If Me.m_shape.Index = map.ResponseIndexForGroup(igrp) Then
                         'Yes this shape is set for this group
                         'add a group node
-                        Dim ndgrp As TreeNode = ndGrps.Nodes.Add(Me.m_uic.Core.EcoPathGroupInputs(igrp).Name)
-                        ndgrp.Tag = igrp
+                        Dim grp As cCoreGroupBase = Me.m_uic.Core.EcoPathGroupInputs(igrp)
+                        Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.GetDescriptor(grp))
+                        ndgrp.Tag = grp
+
                         If Not ndApply.IsExpanded Then
                             'if there are groups assigned to this Map/Node then expand it the tree to this point
                             ndApply.ExpandAll()
@@ -313,7 +330,6 @@ Public Class dlgDefineMapResponseAssignments
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".loadMaps() Exception: " & ex.Message)
         End Try
-
 
     End Sub
 

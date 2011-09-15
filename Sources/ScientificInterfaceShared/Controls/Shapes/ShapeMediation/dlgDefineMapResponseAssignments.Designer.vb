@@ -35,15 +35,13 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_lblXMin = New System.Windows.Forms.Label
         Me.m_btnDefaultMinMax = New System.Windows.Forms.Button
         Me.m_tvMaps = New System.Windows.Forms.TreeView
-        Me.lstGroups = New ScientificInterfaceShared.Controls.cGroupListBox
+        Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox
         Me.m_lblGroups = New System.Windows.Forms.Label
         Me.m_btnCancel = New System.Windows.Forms.Button
         Me.m_btnRemove = New System.Windows.Forms.Button
         Me.m_btnAdd = New System.Windows.Forms.Button
-        Me.m_scMain = New System.Windows.Forms.SplitContainer
-        Me.m_scMain.Panel1.SuspendLayout()
-        Me.m_scMain.Panel2.SuspendLayout()
-        Me.m_scMain.SuspendLayout()
+        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.CEwEHeaderLabel2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -101,24 +99,25 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_tvMaps.FullRowSelect = True
         Me.m_tvMaps.HideSelection = False
         Me.m_tvMaps.Name = "m_tvMaps"
+        Me.m_tvMaps.ShowRootLines = False
         '
-        'lstGroups
+        'm_lbxGroups
         '
-        Me.lstGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
-        Me.lstGroups.AllGroupsItemText = "(All)"
-        resources.ApplyResources(Me.lstGroups, "lstGroups")
-        Me.lstGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.lstGroups.FormattingEnabled = True
-        Me.lstGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
-        Me.lstGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.Manual
-        Me.lstGroups.IsAllGroupsItemSelected = False
-        Me.lstGroups.Name = "lstGroups"
-        Me.lstGroups.SelectedGroup = Nothing
-        Me.lstGroups.SelectedGroupIndex = -1
-        Me.lstGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstGroups.ShowAllGroupsItem = False
-        Me.lstGroups.SortThreshold = -9999.0!
-        Me.lstGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
+        Me.m_lbxGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
+        Me.m_lbxGroups.AllGroupsItemText = "(All)"
+        resources.ApplyResources(Me.m_lbxGroups, "m_lbxGroups")
+        Me.m_lbxGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+        Me.m_lbxGroups.FormattingEnabled = True
+        Me.m_lbxGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
+        Me.m_lbxGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.Manual
+        Me.m_lbxGroups.IsAllGroupsItemSelected = False
+        Me.m_lbxGroups.Name = "m_lbxGroups"
+        Me.m_lbxGroups.SelectedGroup = Nothing
+        Me.m_lbxGroups.SelectedGroupIndex = -1
+        Me.m_lbxGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.m_lbxGroups.ShowAllGroupsItem = False
+        Me.m_lbxGroups.SortThreshold = -9999.0!
+        Me.m_lbxGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
         '
         'm_lblGroups
         '
@@ -145,28 +144,21 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_btnAdd.Name = "m_btnAdd"
         Me.m_btnAdd.UseVisualStyleBackColor = True
         '
-        'm_scMain
+        'CEwEHeaderLabel1
         '
-        resources.ApplyResources(Me.m_scMain, "m_scMain")
-        Me.m_scMain.Name = "m_scMain"
+        Me.CEwEHeaderLabel1.CanCollapseParent = False
+        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel1.IsCollapsed = False
+        resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
+        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
         '
-        'm_scMain.Panel1
+        'CEwEHeaderLabel2
         '
-        Me.m_scMain.Panel1.Controls.Add(Me.lstGroups)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_btnRemove)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_lblMaps)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_btnAdd)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_tvMaps)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_lblGroups)
-        '
-        'm_scMain.Panel2
-        '
-        Me.m_scMain.Panel2.Controls.Add(Me.m_lblXMin)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_tbxXMax)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_lblXMax)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_graph)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_btnDefaultMinMax)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_tbxXMin)
+        Me.CEwEHeaderLabel2.CanCollapseParent = False
+        Me.CEwEHeaderLabel2.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel2.IsCollapsed = False
+        resources.ApplyResources(Me.CEwEHeaderLabel2, "CEwEHeaderLabel2")
+        Me.CEwEHeaderLabel2.Name = "CEwEHeaderLabel2"
         '
         'dlgDefineMapResponseAssignments
         '
@@ -174,21 +166,30 @@ Partial Class dlgDefineMapResponseAssignments
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
-        Me.Controls.Add(Me.m_scMain)
+        Me.Controls.Add(Me.m_lblXMin)
+        Me.Controls.Add(Me.m_tbxXMax)
+        Me.Controls.Add(Me.CEwEHeaderLabel2)
+        Me.Controls.Add(Me.m_lblXMax)
+        Me.Controls.Add(Me.m_lbxGroups)
+        Me.Controls.Add(Me.m_graph)
+        Me.Controls.Add(Me.CEwEHeaderLabel1)
+        Me.Controls.Add(Me.m_btnDefaultMinMax)
+        Me.Controls.Add(Me.m_btnRemove)
+        Me.Controls.Add(Me.m_tbxXMin)
+        Me.Controls.Add(Me.m_lblMaps)
         Me.Controls.Add(Me.m_btnCancel)
+        Me.Controls.Add(Me.m_btnAdd)
         Me.Controls.Add(Me.m_btnOk)
+        Me.Controls.Add(Me.m_tvMaps)
+        Me.Controls.Add(Me.m_lblGroups)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgDefineMapResponseAssignments"
         Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
-        Me.m_scMain.Panel1.ResumeLayout(False)
-        Me.m_scMain.Panel1.PerformLayout()
-        Me.m_scMain.Panel2.ResumeLayout(False)
-        Me.m_scMain.Panel2.PerformLayout()
-        Me.m_scMain.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_btnOk As System.Windows.Forms.Button
@@ -198,13 +199,14 @@ Partial Class dlgDefineMapResponseAssignments
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Private WithEvents m_tvMaps As System.Windows.Forms.TreeView
-    Private WithEvents lstGroups As cGroupListBox
+    Private WithEvents m_lbxGroups As cGroupListBox
     Private WithEvents m_btnDefaultMinMax As System.Windows.Forms.Button
     Private WithEvents m_lblXMin As System.Windows.Forms.Label
     Private WithEvents m_lblXMax As System.Windows.Forms.Label
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tbxXMin As System.Windows.Forms.TextBox
     Private WithEvents m_tbxXMax As System.Windows.Forms.TextBox
-    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+    Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents CEwEHeaderLabel2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
 End Class
