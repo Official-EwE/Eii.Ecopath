@@ -44,7 +44,8 @@ Friend Class cDBUpdate6_02_00_02
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
             Return "Max forcing time remembered in model" & vbNewLine & _
-                   "Added capacity map tables"
+                   "Added capacity map tables" & vbNewLine &
+                   "Applied fix to Stanza table"
         End Get
     End Property
 
@@ -123,6 +124,14 @@ Friend Class cDBUpdate6_02_00_02
 
         Me.LogProgress("Updated table EcosimShapeMediation", bSuccess)
         Return bSuccess
+    End Function
+
+    Private Function UpdateStanzaTable(ByVal db As cEwEDatabase) As Boolean
+
+        db.Execute("ALTER TABLE Stanza ADD COLUMN EggAtSpawn SHORT")
+        Me.LogProgress("Updated table UpdateStanzaTable", True)
+        Return True
+
     End Function
 
 End Class
