@@ -1430,7 +1430,10 @@ Public Class cEnviroResponseFunction
         End Get
         Set(ByVal value As Single)
             m_medData.XAxisMin(Me.Index) = value
+            'tell the manager that a shape has changed its data
+            ShapeChanged()
         End Set
+
     End Property
 
     Public Property XAxisMax() As Single
@@ -1439,7 +1442,10 @@ Public Class cEnviroResponseFunction
         End Get
         Set(ByVal value As Single)
             m_medData.XAxisMax(Me.Index) = value
+            'tell the manager that a shape has changed its data
+            ShapeChanged()
         End Set
+
     End Property
 
     Public ReadOnly Property XAxisMean() As Single
