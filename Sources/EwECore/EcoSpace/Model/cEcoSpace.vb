@@ -5556,7 +5556,13 @@ exitline:
 
     End Function
 
-    Public Sub UpdateMaps(ByVal MapDataType As eDataTypes)
+    ''' <summary>
+    ''' Update the capacity map based on the datatype
+    ''' </summary>
+    ''' <param name="MapDataType"></param>
+    ''' <returns>True if the capacity map was changed. False otherwise.</returns>
+    ''' <remarks></remarks>
+    Public Function UpdateMaps(ByVal MapDataType As eDataTypes) As Boolean
         Try
 
             If MapDataType = eDataTypes.EcospaceLayerHabitat Or _
@@ -5568,6 +5574,7 @@ exitline:
                 MapDataType = eDataTypes.EcospaceMapResponse Then
 
                 Me.SetHabCap()
+                Return True
 
             End If
 
@@ -5575,7 +5582,9 @@ exitline:
             Me.m_publisher.SendMessage(New cMessage("Ecospace failed to update map.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
 
-    End Sub
+        Return False
+
+    End Function
 
 
     Private Sub normalizeCapacityMap(ByVal MaxCap As Single)
