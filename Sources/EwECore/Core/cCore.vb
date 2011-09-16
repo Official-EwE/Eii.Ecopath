@@ -12629,12 +12629,17 @@ Public Class cCore
                         Me.m_EcoSim.InitializePriceFunctions()
                     ElseIf obj.DataType = eDataTypes.Mediation Then
                         Me.m_EcoSim.InitializeMedFunctions()
-                    ElseIf obj.DataType = eDataTypes.CapacityMediation And TypeOfChange = eMessageType.DataModified Then
-                        'Capacity response function edited
+                    End If
+                    Me.m_publisher.AddMessage(New cMessage("Mediation shape has changed", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
+
+                Case eDataTypes.CapacityMediation
+
+                    If TypeOfChange = eMessageType.DataModified Then
+                        'Capacity response function (Shape) has changed 
                         'Let Ecospace decide what to update in response
                         Me.m_Ecospace.UpdateMaps(obj.DataType)
                     End If
-                    Me.m_publisher.AddMessage(New cMessage("Mediation shape has changed", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
+                    Me.m_publisher.AddMessage(New cMessage("Capacity shape has changed", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
 
                 Case eDataTypes.PredPreyInteraction
                     Me.m_publisher.AddMessage(New cMessage("PredPrey interactions changed.", TypeOfChange, eCoreComponentType.MediatedInteractionManager, eMessageImportance.Maintenance))
