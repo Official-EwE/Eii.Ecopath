@@ -12623,7 +12623,7 @@ Public Class cCore
         Try
             Select Case obj.DataType
 
-                Case eDataTypes.PriceMediation, eDataTypes.Mediation, eDataTypes.CapacityMediation
+                Case eDataTypes.PriceMediation, eDataTypes.Mediation ', eDataTypes.CapacityMediation
                     'jb 18-Aug-2011 Capacity functions (cEnviroResponseFunction) don't have an init function
                     If obj.DataType = eDataTypes.PriceMediation Then
                         Me.m_EcoSim.InitializePriceFunctions()
@@ -12638,6 +12638,10 @@ Public Class cCore
                         'Capacity response function (Shape) has changed 
                         'Let Ecospace decide what to update in response
                         Me.m_Ecospace.UpdateMaps(obj.DataType)
+
+                        'Capacity layer has changed
+                        Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
+                                                               eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
                     End If
                     Me.m_publisher.AddMessage(New cMessage("Capacity shape has changed", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
 
@@ -12814,6 +12818,10 @@ Public Class cCore
                     If obj.CoreComponent = eCoreComponentType.MapResponseInteractionManager Then
 
                         Me.m_Ecospace.UpdateMaps(obj.DataType)
+
+                        'Capacity layer has changed
+                        Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
+                                                               eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
 
                         Me.m_publisher.AddMessage(New cMessage("Capacity map data has changed.", TypeOfChange, _
                                       eCoreComponentType.MapResponseInteractionManager, eMessageImportance.Maintenance))
