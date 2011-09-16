@@ -12,6 +12,8 @@ Imports EwECore.FishingPolicy
 
 Namespace Ecosim
 
+#Region "Public defintions"
+
     ''' <summary>
     ''' Reason the model completed
     ''' </summary>
@@ -37,7 +39,7 @@ Namespace Ecosim
 
     Public Delegate Sub EcoSimRunCompletedDelegate(ByVal obj As Object)
 
-
+#End Region
     ''' <summary>
     ''' Class to encapsulate EcoSim Model
     ''' </summary>
@@ -250,6 +252,9 @@ Namespace Ecosim
 
 #End Region
 
+#Region "Construction Destruction"
+
+
         Sub New(ByVal functions As cEcoFunctions)
             m_bInit = False
             m_Ecofunctions = functions
@@ -319,6 +324,8 @@ Namespace Ecosim
 
         End Sub
 
+
+#End Region
 
 #Region "Multi threading code"
 
@@ -624,6 +631,8 @@ Namespace Ecosim
 
 
 #End Region
+
+#Region "Running the model"
 
 
 
@@ -972,6 +981,10 @@ Namespace Ecosim
             Me.m_Data.onEcosimRunCompleted()
 
         End Sub
+
+#End Region
+
+#Region "Private modeling code"
 
         ''' <summary>
         ''' Calculates Ecosim yearly catch, sum of catch for year, for search data.
@@ -4942,6 +4955,8 @@ Namespace Ecosim
             Return -1
 
         End Function
+
+#End Region
 
 #Region "Evolve functions stored for reference"
 
