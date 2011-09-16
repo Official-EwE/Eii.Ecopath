@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -59,6 +59,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,6 +73,7 @@
     <FxCopInputAssembly>bin\Debug\ScientificInterface.exe</FxCopInputAssembly>
     <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,6 +85,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>true</DefineTrace>
@@ -93,6 +96,7 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86">

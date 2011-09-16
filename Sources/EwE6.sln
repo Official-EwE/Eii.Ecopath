@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwECore", "EwECore", "{25F1B99A-B8AA-435B-989B-F1C7C97094AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScientificInterface", "ScientificInterface", "{5969ADB4-4FDE-4385-986B-6C28A162AD78}"
@@ -15,6 +15,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwENetworkAnalysis", "EwENe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScientificInterfaceShared", "ScientificInterfaceShared", "{AF7464FB-5887-480E-8C7E-0490D8C4DE40}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEValueChain", "EwEValueChain", "{07C4195B-DB4D-46C7-A118-4406D3029B52}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEFlowDiagramPlugin", "EwEFlowDiagramPlugin", "{565FE5C8-EC97-41D0-AB9B-47B88ECCBC02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEResultsExtractor", "EwEResultsExtractor", "{9CEC0ECE-1C11-404E-A36B-FAF20CAA0620}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEShapeGridPlugin", "EwEShapeGridPlugin", "{D3EC03C9-6949-4248-9248-058696208B0A}"
+EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwECore", "EwECore\EwECore.vbproj", "{CDECE065-503A-4562-A955-06777B2F909E}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEPlugin", "EwEPlugin\EwEPlugin.vbproj", "{0B91F6E0-6127-4CF3-BF57-684092481454}"
@@ -27,19 +35,11 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ScientificInterface", "Scie
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ScientificInterfaceShared", "ScientificInterfaceShared\ScientificInterfaceShared.vbproj", "{70AF596E-7D27-4D39-BDE7-89D4525BD60F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEValueChain", "EwEValueChain", "{07C4195B-DB4D-46C7-A118-4406D3029B52}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEValueChain", "EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj", "{E87E552B-C82F-4984-9249-631DAC727633}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEFlowDiagramPlugin", "EwEFlowDiagramPlugin", "{565FE5C8-EC97-41D0-AB9B-47B88ECCBC02}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEFlowDiagramPlugin", "EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj", "{206B8C0C-BC5A-40C3-822B-F17B638704FD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEResultsExtractor", "EwEResultsExtractor", "{9CEC0ECE-1C11-404E-A36B-FAF20CAA0620}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEResultsExtractorPlugin", "EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj", "{0913D0AE-BDEC-4C3E-9551-D0A314BE9DE6}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEShapeGridPlugin", "EwEShapeGridPlugin", "{D3EC03C9-6949-4248-9248-058696208B0A}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEShapeGridPlugin", "EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj", "{5E7BEAC5-84D8-4BC5-9B53-8C7888FC9786}"
 EndProject

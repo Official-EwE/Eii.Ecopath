@@ -24,54 +24,53 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFitToTimeSeries))
-            Me.m_split1 = New System.Windows.Forms.SplitContainer
-            Me.m_cbResetVs = New System.Windows.Forms.CheckBox
-            Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button
-            Me.m_splitSearch = New System.Windows.Forms.SplitContainer
-            Me.m_scGrids = New System.Windows.Forms.SplitContainer
-            Me.m_hdrFishingMortality = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup
-            Me.m_tbxAICDataPts = New System.Windows.Forms.TextBox
-            Me.m_btnClearOutputs = New System.Windows.Forms.Button
-            Me.m_gridOutput = New ScientificInterface.Ecosim.gridFitToTimeSeriesOutput
-            Me.m_lblAICDataPts = New System.Windows.Forms.Label
-            Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tlbSearch = New System.Windows.Forms.TableLayoutPanel
-            Me.m_tbResults = New System.Windows.Forms.TextBox
-            Me.m_hdrIterations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
-            Me.m_btnStop = New System.Windows.Forms.Button
-            Me.m_btnSearch = New System.Windows.Forms.Button
-            Me.m_hdrSearchTypes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_cbVulnerabilitySearch = New System.Windows.Forms.CheckBox
-            Me.m_cbAnomalySearch = New System.Windows.Forms.CheckBox
-            Me.m_tabSearchOptions = New System.Windows.Forms.TabControl
-            Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage
-            Me.m_nudVariance = New ScientificInterfaceShared.Controls.cEwENumericUpDown
-            Me.m_tsVulSearchTools = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbSearchGroup = New System.Windows.Forms.ToolStripButton
-            Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
-            Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ucParmBlockCodes
-            Me.m_vulnerabilityBlockMatrix = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks
-            Me.m_lblVarianceVulnerability = New System.Windows.Forms.Label
-            Me.m_tpAnomalySearch = New System.Windows.Forms.TabPage
-            Me.m_cbShowAllData = New System.Windows.Forms.CheckBox
-            Me.m_nudVariancePrimaryProd = New ScientificInterfaceShared.Controls.cEwENumericUpDown
-            Me.m_nudLastYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown
-            Me.m_nudFirstYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown
-            Me.m_nudSplinePts = New ScientificInterfaceShared.Controls.cEwENumericUpDown
-            Me.m_splitAnomalyShape = New System.Windows.Forms.SplitContainer
-            Me.m_sketchPad = New ScientificInterface.Ecosim.ucAnomalySearchSketchPad
-            Me.m_hdrAppliedFF = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
-            Me.m_lbFirstYear = New System.Windows.Forms.Label
-            Me.m_lbLastYear = New System.Windows.Forms.Label
-            Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label
-            Me.m_lbSplinePoints = New System.Windows.Forms.Label
-            Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_split1 = New System.Windows.Forms.SplitContainer()
+            Me.m_cbResetVs = New System.Windows.Forms.CheckBox()
+            Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button()
+            Me.m_splitSearch = New System.Windows.Forms.SplitContainer()
+            Me.m_scGrids = New System.Windows.Forms.SplitContainer()
+            Me.m_hdrFishingMortality = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup()
+            Me.m_tbxAICDataPts = New System.Windows.Forms.TextBox()
+            Me.m_btnClearOutputs = New System.Windows.Forms.Button()
+            Me.m_gridOutput = New ScientificInterface.Ecosim.gridFitToTimeSeriesOutput()
+            Me.m_lblAICDataPts = New System.Windows.Forms.Label()
+            Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlbSearch = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tbResults = New System.Windows.Forms.TextBox()
+            Me.m_hdrIterations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_btnStop = New System.Windows.Forms.Button()
+            Me.m_btnSearch = New System.Windows.Forms.Button()
+            Me.m_hdrSearchTypes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbVulnerabilitySearch = New System.Windows.Forms.CheckBox()
+            Me.m_cbAnomalySearch = New System.Windows.Forms.CheckBox()
+            Me.m_tabSearchOptions = New System.Windows.Forms.TabControl()
+            Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage()
+            Me.m_nudVariance = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_tsVulSearchTools = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbSearchGroup = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
+            Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ucParmBlockCodes()
+            Me.m_vulnerabilityBlockMatrix = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks()
+            Me.m_lblVarianceVulnerability = New System.Windows.Forms.Label()
+            Me.m_tpAnomalySearch = New System.Windows.Forms.TabPage()
+            Me.m_cbShowAllData = New System.Windows.Forms.CheckBox()
+            Me.m_nudVariancePrimaryProd = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudLastYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudFirstYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudSplinePts = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_splitAnomalyShape = New System.Windows.Forms.SplitContainer()
+            Me.m_sketchPad = New ScientificInterface.Ecosim.ucAnomalySearchSketchPad()
+            Me.m_hdrAppliedFF = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox()
+            Me.m_lbFirstYear = New System.Windows.Forms.Label()
+            Me.m_lbLastYear = New System.Windows.Forms.Label()
+            Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label()
+            Me.m_lbSplinePoints = New System.Windows.Forms.Label()
+            Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
@@ -138,7 +137,6 @@ Namespace Ecosim
             'm_btnTimeSeriesWeights
             '
             Me.m_btnTimeSeriesWeights.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnTimeSeriesWeights.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnTimeSeriesWeights.Location = New System.Drawing.Point(164, 26)
             Me.m_btnTimeSeriesWeights.Name = "m_btnTimeSeriesWeights"
             Me.m_btnTimeSeriesWeights.Size = New System.Drawing.Size(108, 23)
@@ -252,7 +250,6 @@ Namespace Ecosim
             'm_btnClearOutputs
             '
             Me.m_btnClearOutputs.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnClearOutputs.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnClearOutputs.Location = New System.Drawing.Point(197, 170)
             Me.m_btnClearOutputs.Margin = New System.Windows.Forms.Padding(0)
             Me.m_btnClearOutputs.Name = "m_btnClearOutputs"
@@ -319,7 +316,7 @@ Namespace Ecosim
             Me.m_hdrOutput.Name = "m_hdrOutput"
             Me.m_hdrOutput.Size = New System.Drawing.Size(272, 18)
             Me.m_hdrOutput.TabIndex = 0
-            Me.m_hdrOutput.Text = "Ouput"
+            Me.m_hdrOutput.Text = "Output"
             Me.m_hdrOutput.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tlbSearch
