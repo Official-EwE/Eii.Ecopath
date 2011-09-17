@@ -30,8 +30,10 @@
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>ScientificInterface.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkProfile />
     <PublishUrl>http://localhost/ScientificInterface/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -46,7 +48,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <AssemblyOriginatorKeyFile>ScientificInterface.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -788,7 +789,7 @@
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
-      <ProductName>.NET Framework Client Profile</ProductName>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -2008,6 +2009,30 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EcosimModifyFGearPlugin\EcosimModifyFGearPlugin.vbproj">
+      <Project>{556710C3-0E21-4D58-82A9-E8B1E01DA515}</Project>
+      <Name>EcosimModifyFGearPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEDepletionRecoveryPlugin\EwEDepletionRecoveryPlugin.vbproj">
+      <Project>{23D9FC89-5F0E-4C98-A569-77C2F211BAC8}</Project>
+      <Name>EwEDepletionRecoveryPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEEcotroph\EwEEcotroph.vbproj">
+      <Project>{5541C964-2913-4D7A-B6AE-294F75576E3D}</Project>
+      <Name>EwEEcotroph</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEFishBasePlugin\EwEFishBasePlugin.vbproj">
+      <Project>{C79DDF56-00B7-4C13-A262-DFB4B7D56E53}</Project>
+      <Name>EwEFishBasePlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwEMPAOpenStatePlugin\EwEMPAOpenStatePlugin\EwEMPAOpenStatePlugin.vbproj">
+      <Project>{4E5F21CE-2BAB-4947-AF64-348C8CF4DD1F}</Project>
+      <Name>EwEMPAOpenStatePlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\EwESAUPTaxonPlugin\EwESAUPTaxonPlugin.vbproj">
+      <Project>{46DC10D8-71E8-4C3B-8E27-BD573BA55006}</Project>
+      <Name>EwESAUPTaxonPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
@@ -2023,6 +2048,10 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj">
       <Project>{0913D0AE-BDEC-4C3E-9551-D0A314BE9DE6}</Project>
       <Name>EwEResultsExtractorPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj">
+      <Project>{5E7BEAC5-84D8-4BC5-9B53-8C7888FC9786}</Project>
+      <Name>EwEShapeGridPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
       <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
