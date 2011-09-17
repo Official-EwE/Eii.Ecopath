@@ -40,7 +40,7 @@ Partial Class frmNavigationPanel
         Me.m_tvNavigation.HotTracking = True
         Me.m_tvNavigation.ImageList = Me.m_ilTreeIcons
         Me.m_tvNavigation.Name = "m_tvNavigation"
-        Me.m_tvNavigation.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvNavigation.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes1"), System.Windows.Forms.TreeNode)})
+        Me.m_tvNavigation.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvNavigation.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes4"), System.Windows.Forms.TreeNode)})
         '
         'frmNavigationPanel
         '
