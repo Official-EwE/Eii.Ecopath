@@ -12,21 +12,11 @@ Partial Class frmNavigationPanel
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNavigationPanel))
-        Me.m_tvNavigation = New System.Windows.Forms.TreeView
         Me.m_ilTreeIcons = New System.Windows.Forms.ImageList(Me.components)
+        Me.m_tvNavigation = New System.Windows.Forms.TreeView()
         Me.SuspendLayout()
-        '
-        'm_tvNavigation
-        '
-        resources.ApplyResources(Me.m_tvNavigation, "m_tvNavigation")
-        Me.m_tvNavigation.FullRowSelect = True
-        Me.m_tvNavigation.HideSelection = False
-        Me.m_tvNavigation.HotTracking = True
-        Me.m_tvNavigation.ImageList = Me.m_ilTreeIcons
-        Me.m_tvNavigation.Name = "m_tvNavigation"
-        Me.m_tvNavigation.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvNavigation.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes4"), System.Windows.Forms.TreeNode)})
         '
         'm_ilTreeIcons
         '
@@ -42,6 +32,16 @@ Partial Class frmNavigationPanel
         Me.m_ilTreeIcons.Images.SetKeyName(7, "Ecosim_32x32.png")
         Me.m_ilTreeIcons.Images.SetKeyName(8, "Ecopath_32x32.png")
         '
+        'm_tvNavigation
+        '
+        resources.ApplyResources(Me.m_tvNavigation, "m_tvNavigation")
+        Me.m_tvNavigation.FullRowSelect = True
+        Me.m_tvNavigation.HideSelection = False
+        Me.m_tvNavigation.HotTracking = True
+        Me.m_tvNavigation.ImageList = Me.m_ilTreeIcons
+        Me.m_tvNavigation.Name = "m_tvNavigation"
+        Me.m_tvNavigation.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvNavigation.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes1"), System.Windows.Forms.TreeNode)})
+        '
         'frmNavigationPanel
         '
         resources.ApplyResources(Me, "$this")
@@ -56,6 +56,6 @@ Partial Class frmNavigationPanel
 
     End Sub
 
-    Private WithEvents m_tvNavigation As System.Windows.Forms.TreeView
     Private WithEvents m_ilTreeIcons As System.Windows.Forms.ImageList
+    Private WithEvents m_tvNavigation As System.Windows.Forms.TreeView
 End Class
