@@ -3236,44 +3236,49 @@ Namespace DataSources
             Dim nTaxonSaved As Integer = 0
             Dim bSucces As Boolean = True
 
-            bSucces = Me.m_db.Execute("DELETE FROM EcopathTaxon")
-            writer = Me.m_db.GetWriter("EcopathTaxon")
+            bSucces = Me.m_db.Execute("DELETE FROM EcopathStanzaTaxon")
+            bSucces = bSucces And Me.m_db.Execute("DELETE FROM EcopathGroupTaxon")
+            bSucces = bSucces And Me.m_db.Execute("DELETE FROM EcopathTaxon")
 
-            Try
-                For iTaxon As Integer = 1 To taxonDS.NumTaxon
+            If (bSucces) Then
+                writer = Me.m_db.GetWriter("EcopathTaxon")
 
-                    drow = writer.NewRow()
-                    drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
-                    drow("CodeISCAAP") = taxonDS.TaxonCodeISCAAP(iTaxon)
-                    drow("CodeTaxon") = taxonDS.TaxonCodeTaxon(iTaxon)
-                    drow("Code3A") = taxonDS.TaxonCode3A(iTaxon)
-                    drow("ClassName") = taxonDS.TaxonClass(iTaxon)
-                    drow("OrderName") = taxonDS.TaxonOrder(iTaxon)
-                    drow("FamilyName") = taxonDS.TaxonFamily(iTaxon)
-                    drow("GenusName") = taxonDS.TaxonGenus(iTaxon)
-                    drow("SpeciesName") = taxonDS.TaxonSpecies(iTaxon)
-                    drow("CommonName") = taxonDS.TaxonName(iTaxon)
-                    drow("SourceName") = taxonDS.TaxonSource(iTaxon)
-                    drow("SourceKey") = taxonDS.TaxonSourceKey(iTaxon)
-                    drow("EcologyType") = taxonDS.TaxonEcologyType(iTaxon)
-                    drow("OrganismType") = taxonDS.TaxonOrganismType(iTaxon)
-                    drow("ConservationStatus") = taxonDS.TaxonIUCNConservationStatus(iTaxon)
-                    drow("OccurrenceStatus") = taxonDS.TaxonOccurrenceStatus(iTaxon)
-                    drow("MeanWeight") = taxonDS.TaxonMeanWeight(iTaxon)
-                    drow("MeanLength") = taxonDS.TaxonMeanLength(iTaxon)
-                    drow("MaxLength") = taxonDS.TaxonMaxLength(iTaxon)
-                    drow("MeanLifeSpan") = taxonDS.TaxonMeanLifeSpan(iTaxon)
-                    drow("VulnerabiltyIndex") = taxonDS.TaxonVulnerabilityIndex(iTaxon)
-                    drow("LastUpdated") = taxonDS.TaxonLastUpdated(iTaxon)
-                    writer.AddRow(drow)
+                Try
+                    For iTaxon As Integer = 1 To taxonDS.NumTaxon
 
-                    nTaxonSaved += 1
-                Next iTaxon
+                        drow = writer.NewRow()
+                        drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
+                        drow("CodeISCAAP") = taxonDS.TaxonCodeISCAAP(iTaxon)
+                        drow("CodeTaxon") = taxonDS.TaxonCodeTaxon(iTaxon)
+                        drow("Code3A") = taxonDS.TaxonCode3A(iTaxon)
+                        drow("ClassName") = taxonDS.TaxonClass(iTaxon)
+                        drow("OrderName") = taxonDS.TaxonOrder(iTaxon)
+                        drow("FamilyName") = taxonDS.TaxonFamily(iTaxon)
+                        drow("GenusName") = taxonDS.TaxonGenus(iTaxon)
+                        drow("SpeciesName") = taxonDS.TaxonSpecies(iTaxon)
+                        drow("CommonName") = taxonDS.TaxonName(iTaxon)
+                        drow("SourceName") = taxonDS.TaxonSource(iTaxon)
+                        drow("SourceKey") = taxonDS.TaxonSourceKey(iTaxon)
+                        drow("EcologyType") = taxonDS.TaxonEcologyType(iTaxon)
+                        drow("OrganismType") = taxonDS.TaxonOrganismType(iTaxon)
+                        drow("ConservationStatus") = taxonDS.TaxonIUCNConservationStatus(iTaxon)
+                        drow("OccurrenceStatus") = taxonDS.TaxonOccurrenceStatus(iTaxon)
+                        drow("MeanWeight") = taxonDS.TaxonMeanWeight(iTaxon)
+                        drow("MeanLength") = taxonDS.TaxonMeanLength(iTaxon)
+                        drow("MaxLength") = taxonDS.TaxonMaxLength(iTaxon)
+                        drow("MeanLifeSpan") = taxonDS.TaxonMeanLifeSpan(iTaxon)
+                        drow("VulnerabiltyIndex") = taxonDS.TaxonVulnerabilityIndex(iTaxon)
+                        drow("LastUpdated") = taxonDS.TaxonLastUpdated(iTaxon)
+                        writer.AddRow(drow)
 
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathTaxa", ex.Message))
-                bSucces = False
-            End Try
+                        nTaxonSaved += 1
+                    Next iTaxon
+
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while saving EcopathTaxa", ex.Message))
+                    bSucces = False
+                End Try
+            End If
 
             Debug.Assert(nTaxonSaved = taxonDS.NumTaxon)
 
