@@ -107,8 +107,8 @@ Public MustInherit Class gridForcingBase
         For i As Integer = 1 To Me.ColumnsCount - 1
             Me.Columns(i).Width = Math.Max(Me.Columns(i).Width, 48)
         Next
-        ' Fix all descriptive rows
-        Me.FixedRows = eRowType.FirstTime
+        ' Fix rows up to (not including) name, because name needs to be editable. Fixed cells cannot be editable
+        Me.FixedRows = eRowType.Name
         ' Fix header column
         Me.FixedColumns = 1
     End Sub
@@ -117,12 +117,15 @@ Public MustInherit Class gridForcingBase
 
 #Region " Edits "
 
-    Dim m_bInEdit As Boolean = False
+    Dim m_bInLocalEdit As Boolean = False
 
     Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, _
                                               ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
         Dim shape As cShapeData = Me.Shape(p.Column)
+
+        Me.m_bInLocalEdit = True
+        If (Me.IsInBatchEdit) Then shape.LockUpdates()
 
         Select Case DirectCast(p.Row, eRowType)
             Case eRowType.Name
@@ -132,15 +135,11 @@ Public MustInherit Class gridForcingBase
                 shape.ShapeData(iTime) = CSng(cell.GetValue(p))
         End Select
 
-        ' Do not invalidate individual shapes on a batch cell edit
-        If Me.IsInBatchEdit Then
-            Me.InvalidateShape(p.Column)
-        Else
-            ' Stop local cell edits from refreshing the content of the entire grid (see OnRefreshed)
-            Me.m_bInEdit = True
-            shape.Update()
-            Me.m_bInEdit = False
+        If (Me.IsInBatchEdit) Then
+            shape.UnlockUpdates(False)
+            Me.InvalidateShape(shape)
         End If
+        Me.m_bInLocalEdit = False
 
         Return MyBase.OnCellEdited(p, cell)
     End Function
@@ -157,15 +156,18 @@ Public MustInherit Class gridForcingBase
 
     Protected Overrides Sub OnRefreshed(ByVal sender As cShapeGUIHandler)
 
+        If Me.IsInBatchEdit Then
+            Return
+        End If
+
         ' Unpleasant: a refresh can be triggered from an external edit or by 
         ' this very interface in response to a cell edit. If a cell edit is in
         ' progress the grid content cannot be refreshed.
 
         ' In local cell edit?
-        If Me.m_bInEdit Then
+        If Me.m_bInLocalEdit Then
             ' #Yes: just invalidate the thumbnail
-            Me.InvalidateCells()
-            'Me.InvalidateRange(New SourceGrid2.Range(eRowType.Thumbnail, 0, eRowType.Thumbnail, Me.ColumnsCount - 1))
+            Me.InvalidateRange(New SourceGrid2.Range(eRowType.Thumbnail, 0, eRowType.Thumbnail, Me.ColumnsCount - 1))
         Else
             ' #No: refresh the whole lot
             Me.RefreshContent()

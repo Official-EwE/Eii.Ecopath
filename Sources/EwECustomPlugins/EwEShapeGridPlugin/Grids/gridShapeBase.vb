@@ -109,7 +109,20 @@ Public MustInherit Class gridShapeBase
     End Function
 
     Protected Sub InvalidateShape(ByVal iCol As Integer)
-        Me.m_lInvalidatedShapes.Add(Me.Shape(iCol))
+        Me.InvalidateShape(Me.Shape(iCol))
+    End Sub
+
+    Protected Sub InvalidateShape(ByVal shape As cShapeData)
+
+        If Not Me.m_lInvalidatedShapes.Contains(shape) Then
+            Me.m_lInvalidatedShapes.Add(shape)
+        End If
+
+    End Sub
+
+    Public Overrides Sub BeginBatchEdit()
+        Me.m_lInvalidatedShapes.Clear()
+        MyBase.BeginBatchEdit()
     End Sub
 
     Public Overrides Sub EndBatchEdit()
