@@ -39,14 +39,6 @@
   </Class>
   <Class Name="EwEShapeGridPlugin.gridForcing" Collapsed="true">
     <Position X="3.75" Y="5" Width="2" />
-    <InheritanceLine Type="EwEShapeGridPlugin.gridForcingBase" FixedFromPoint="true">
-      <Path>
-        <Point X="7" Y="4.281" />
-        <Point X="7" Y="4.625" />
-        <Point X="4.75" Y="4.625" />
-        <Point X="4.75" Y="5" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAAAAAAAAEAAAAAABAAAAAAAAAAAAAA=</HashCode>
       <FileName>Grids\gridForcing.vb</FileName>
@@ -67,22 +59,21 @@
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>EAAAAUCAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <HashCode>EAAAAUCAAAAAAAAAAACAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>Grids\gridForcingBase.vb</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EwEShapeGridPlugin.gridLandingsMediation" Collapsed="true">
+  <Class Name="EwEShapeGridPlugin.gridHabitatCapacity" Collapsed="true">
     <Position X="10.75" Y="6.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAAAAAAEAAAAAABAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Grids\gridLandingsMediation.vb</FileName>
-      <NewMemberFileName>Grids\gridMediation.vb</NewMemberFileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grids\gridHabitatCapacity.vb</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EwEShapeGridPlugin.gridShapeBase" Collapsed="true">
     <Position X="4.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAEAACAAAAIAIAQgEAAAAAAAAAABAAIAAAACEAAABA=</HashCode>
+      <HashCode>AAAEAACAAAAIAIAQgEAAAAAAAAAABAAIAAAACGAAABA=</HashCode>
       <FileName>Grids\gridShapeBase.vb</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

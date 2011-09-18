@@ -61,7 +61,7 @@ Public MustInherit Class cPluginPointBase
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.EnabledState"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState _
+    Public Overridable ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState _
         Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
             Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
