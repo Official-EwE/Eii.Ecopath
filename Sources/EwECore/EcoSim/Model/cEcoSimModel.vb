@@ -267,6 +267,83 @@ Namespace Ecosim
 
         End Sub
 
+
+        ''' <summary>
+        ''' Call initialization routines for EcoSim
+        ''' </summary>
+        ''' <returns>True if successful. False otherwise</returns>
+        ''' <remarks>
+        ''' Was called StartEcoSim() in original code
+        ''' </remarks>
+        Public Function Init(ByVal bFullInitialization As Boolean) As Boolean
+
+            Try
+
+                'Ecosim data is about to initialize
+                If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimPreDataInitialized(Me.m_Data)
+
+                'jb this may need to be called every time Ecosim is Run 
+                'to make sure any edits made in Ecosim are used for the initialization
+                m_Results = New cEcoSimResults(Me.nGroups, m_stanza.Nsplit, m_stanza.MaxAgeSplit, Me.m_EPData.NumFleet)
+
+                RedimEcoSimVars()
+
+                SetInlinks()
+
+                'jb 12-Feb-2010 Reloading of forcing data overwrites user edits of effort
+                'We just need to make sure the forcing data arrays are dimensioned big enough to handle the run length
+                Me.m_RefData.nGroups = Me.nGroups
+                Me.m_RefData.redimFocingData(Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
+                'Me.m_RefData.LoadForcingData(Me.m_Data, Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
+
+                DefaultDF()
+
+                'Init Propdiscardtime() and Proplandedtime() to Ecopath values
+                InitPropLanded()
+
+                ReDim m_Data.StartBiomass(nGroups)
+                SetStartBiomass()     'Startbiomass must be set before SimFile is opened
+                RemoveImportFromEcosim()
+
+                Calc_nvar()
+
+                CalcEatenOfBy()
+                CalcStartEatenOfBy()
+
+                SetupSimVariables() 'sets vulrate()
+
+                InitialState() 'uses vulrate() to set A()
+
+                DefaultMigrationAndToDetritus()
+                CalcMo()
+
+                InitStanza()
+
+                BaseValueOfHarvest()
+                BaseValueOfFishMGear()
+
+                SetRelativeCatchabilities()
+
+                If bFullInitialization Then
+
+                    SetBaseFFromGear()
+
+                End If
+
+                SetTimeSteps()
+
+                CalculateAssimilationEfficiencies()
+
+                Me.m_ConTracer = New cContaminantTracer
+
+                m_publisher.sendAllMessages()
+
+                Return True
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Function
+
         Public Sub Clear()
 
             Me.A = Nothing 'nGroups, nGroups
@@ -500,81 +577,6 @@ Namespace Ecosim
             Return True
         End Function
 
-        ''' <summary>
-        ''' Call initialization routines for EcoSim
-        ''' </summary>
-        ''' <returns>True if successful. False otherwise</returns>
-        ''' <remarks>
-        ''' Was called StartEcoSim() in original code
-        ''' </remarks>
-        Public Function Init(ByVal bFullInitialization As Boolean) As Boolean
-
-            Try
-
-                'Ecosim data is about to initialize
-                If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimPreDataInitialized(Me.m_Data)
-
-                'jb this may need to be called every time Ecosim is Run 
-                'to make sure any edits made in Ecosim are used for the initialization
-                m_Results = New cEcoSimResults(Me.nGroups, m_stanza.Nsplit, m_stanza.MaxAgeSplit, Me.m_EPData.NumFleet)
-
-                RedimEcoSimVars()
-
-                SetInlinks()
-
-                'jb 12-Feb-2010 Reloading of forcing data overwrites user edits of effort
-                'We just need to make sure the forcing data arrays are dimensioned big enough to handle the run length
-                Me.m_RefData.nGroups = Me.nGroups
-                Me.m_RefData.redimFocingData(Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
-                'Me.m_RefData.LoadForcingData(Me.m_Data, Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.NdatYear))
-
-                DefaultDF()
-
-                'Init Propdiscardtime() and Proplandedtime() to Ecopath values
-                InitPropLanded()
-
-                ReDim m_Data.StartBiomass(nGroups)
-                SetStartBiomass()     'Startbiomass must be set before SimFile is opened
-                RemoveImportFromEcosim()
-
-                Calc_nvar()
-
-                CalcEatenOfBy()
-                CalcStartEatenOfBy()
-
-                SetupSimVariables() 'sets vulrate()
-
-                InitialState() 'uses vulrate() to set A()
-
-                DefaultMigrationAndToDetritus()
-                CalcMo()
-
-                InitStanza()
-
-                BaseValueOfHarvest()
-                BaseValueOfFishMGear()
-
-                SetRelativeCatchabilities()
-
-                If bFullInitialization Then
-
-                    SetBaseFFromGear()
-
-                End If
-
-                SetTimeSteps()
-
-                CalculateAssimilationEfficiencies()
-
-                Me.m_ConTracer = New cContaminantTracer
-
-                m_publisher.sendAllMessages()
-
-                Return True
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
-        End Function
 
         Public Sub CalculateAssimilationEfficiencies()
             '041012 VC calculating assimilation efficiency for variable p/q
@@ -4955,6 +4957,49 @@ Namespace Ecosim
             Return -1
 
         End Function
+
+#End Region
+
+#Region "Equilibrium"
+
+        Public Function runEcosimEquilibrium() As Boolean
+            'Run the EwE5 Ecosim Equilibrium 
+            'EwE 5 Sim.bas.EquilFish(PlotOn)
+            'Basic algo
+            'Make a series of Ecosim runs increasing and decreasing fishing effort or F by a small amount
+            'At the end of each 40 year run the interface plots Biomass, Catch...(other variables?) from the last timestep of the run
+            'User can set the individual Fleet or all Fleets(for effort) or Group (for F) that gets altered
+            'User can 'Freeze' biomass for other groups, this fixes the biomass for groups not being altered to Ecopath base values
+            'User can set the upper limit for effort
+
+            'EwE6 needs 
+            'Input object
+            'cEcosimEquilibriumModelParameters this object will contain the parameters that govern the the Equilibrium run
+            'Max Effort
+            'Fleet or Group to alter
+            'Freeze biomass for non altered groups
+
+            'Output object
+            'cEquilibriumTimeStepResults object contains the results (biomass & catch) for all groups for one iteration (effort or F at some level)
+            'Effort or F for the current iteration (x axis on the graph)
+            'Biomass() at the end of the run by group
+            'Catch() at the end of the run by group
+
+            'Running
+            'EcosimEquilibriumIterationDelegate(cEquilibriumTimeStepResults)
+            'Delegate that gets called at the end of each run with the results from the iteration
+            'cCore.RunEcosimEquilibrium() to start the run 
+            'cCore.RunEcosimEquilibrium(EcosimEquilibriumIterationDelegate) 
+            'Or
+            'Some kind of a manager cEcosimEquilibriumManager
+            'cCore.EcosimEquilibriumManager.Run()
+            'cCore.EcosimEquilibriumManager.Stop()
+            'cCore.EcosimEquilibriumManager.ModelParamaters() as cEcosimEquilibriumModelParameters
+            'cCore.EcosimEquilibriumManager.EcosimEquilibriumIterationDelegate as EcosimEquilibriumIterationDelegate
+
+
+        End Function
+
 
 #End Region
 
