@@ -4980,13 +4980,13 @@ Namespace Ecosim
             'Freeze biomass for non altered groups
 
             'Output object
-            'cEquilibriumTimeStepResults object contains the results (biomass & catch) for all groups for one iteration (effort or F at some level)
+            'cEquilibriumIterationResults object contains the results (biomass & catch) for all groups for one iteration (effort or F at some level)
             'Effort or F for the current iteration (x axis on the graph)
             'Biomass() at the end of the run by group
             'Catch() at the end of the run by group
 
             'Running
-            'EcosimEquilibriumIterationDelegate(cEquilibriumTimeStepResults)
+            'EcosimEquilibriumIterationDelegate(cEquilibriumIterationResults)
             'Delegate that gets called at the end of each run with the results from the iteration
             'cCore.RunEcosimEquilibrium() to start the run 
             'cCore.RunEcosimEquilibrium(EcosimEquilibriumIterationDelegate) 
