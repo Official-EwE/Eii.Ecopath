@@ -3,6 +3,7 @@
 Option Strict On
 
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

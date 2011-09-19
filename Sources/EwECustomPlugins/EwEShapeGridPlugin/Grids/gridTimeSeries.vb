@@ -7,6 +7,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -79,7 +80,7 @@ Public Class gridTimeSeries
 
         For i As Integer = 0 To nYears - 1
             ' ToDo: format seasonal differently
-            Me(eRowType.FirstTime + i, 0) = New EwERowHeaderCell(CStr(Me.Core.EcosimFirstYear + i))
+            Me(eRowType.FirstTime + i, 0) = New EwERowHeaderCell(Me.TimeLabel(i))
         Next
 
         For i As Integer = 0 To nTS - 1
@@ -232,11 +233,13 @@ Public Class gridTimeSeries
     End Function
 
     Protected Function GroupNames(ByVal aIndexes As Integer()) As String()
+        Dim fmt As New cCoreInterfaceFormatter()
         Dim lstrNames As New List(Of String)
+
         For i As Integer = 0 To aIndexes.Length - 1
             Dim iGroup As Integer = aIndexes(i)
             Dim group As cCoreInputOutputBase = Me.Core.EcoPathGroupInputs(iGroup)
-            lstrNames.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, group.Index, group.Name))
+            lstrNames.Add(fmt.GetDescriptor(group))
         Next
         Return lstrNames.ToArray
     End Function
@@ -250,11 +253,12 @@ Public Class gridTimeSeries
     End Function
 
     Protected Function FleetNames(ByVal aIndexes As Integer()) As String()
+        Dim fmt As New cCoreInterfaceFormatter()
         Dim lstrNames As New List(Of String)
         For i As Integer = 0 To aIndexes.Length - 1
             Dim iFleet As Integer = aIndexes(i)
             Dim fleet As cCoreInputOutputBase = Me.Core.FleetInputs(iFleet)
-            lstrNames.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, fleet.Index, fleet.Name))
+            lstrNames.Add(fmt.GetDescriptor(fleet))
         Next
         Return lstrNames.ToArray
     End Function
@@ -286,6 +290,14 @@ Public Class gridTimeSeries
             lstrNames.Add(desc.GetDescriptor(tst))
         Next tst
         Return lstrNames.ToArray
+    End Function
+
+    Protected Overrides Function TimeLabel(ByVal iPoint As Integer) As String
+        If Me.IsSeasonal Then
+            Return cDateUtils.GetMonthName(iPoint + 1)
+        Else
+            Return CStr(iPoint + Me.Core.EcosimFirstYear)
+        End If
     End Function
 
 #End Region ' Helper methods

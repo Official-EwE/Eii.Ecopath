@@ -137,4 +137,12 @@ Public MustInherit Class gridShapeBase
         MyBase.EndBatchEdit()
     End Sub
 
+    ''' <summary>
+    ''' Return a legible label for a data point.
+    ''' </summary>
+    ''' <param name="iPoint">The point to return the label for.</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Protected MustOverride Function TimeLabel(ByVal iPoint As Integer) As String
+
 End Class
