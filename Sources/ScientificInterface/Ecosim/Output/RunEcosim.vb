@@ -41,7 +41,6 @@ Namespace Ecosim
         End Enum
 
         Private m_selectionMode As eSelectionModeType = eSelectionModeType.NotSet
-        Private m_ccb As cCustomComboBoxFleetGroupTree = Nothing
 
         Private m_shapeGUIHandler As cForcingShapeGUIHandler = Nothing
         Private m_params As cEcoSimModelParameters = Nothing
@@ -85,7 +84,6 @@ Namespace Ecosim
             Me.m_params = Core.EcoSimModelParameters()
             Me.m_simStats = Me.Core.EcosimStats
 
-            Me.m_ccb = New cCustomComboBoxFleetGroupTree(Me.Core, Me.m_tscbTarget)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
 
             Me.m_lbGroups.Attach(Me.UIContext)
@@ -120,6 +118,7 @@ Namespace Ecosim
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             Me.PopulateGraph()
+            Me.SelectionMode = eSelectionModeType.Fleets
 
         End Sub
 
@@ -195,7 +194,7 @@ Namespace Ecosim
 #Region " Controls "
 
         Private Sub btnRunOrStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles btnRunOrStop.Click
+            Handles m_btnRun.Click
 
             If Not Me.IsRunning Then
                 Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
@@ -461,28 +460,21 @@ Namespace Ecosim
 
 #Region " Forcing function "
 
-        Private Sub tscbTarget_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tscbTarget.SelectedIndexChanged
+        Private Sub OnTargetSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tscbTarget.SelectedIndexChanged
             Dim obj As ICoreInterface = GetSelectedGroupOrFleet()
 
-            If TypeOf obj Is cFishingRateShape Then
-                Me.SelectionMode = eSelectionModeType.Fleets
-                Me.LoadFishingRateShape()
-                Return
-            End If
-
-            If TypeOf obj Is cEcoPathGroupInput Then
-                Me.SelectionMode = eSelectionModeType.Groups
-                Me.LoadFishMortShape()
-                Return
-            End If
-
-            Me.SelectionMode = eSelectionModeType.NotSet
-            Me.ClearShape()
-
-            Return
+            Select Case Me.SelectionMode
+                Case eSelectionModeType.Fleets
+                    Me.LoadFishingRateShape()
+                Case eSelectionModeType.Groups
+                    Me.LoadFishMortShape()
+                Case Else
+                    Debug.Assert(False)
+            End Select
         End Sub
 
-        Private Sub OnFValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSetToValue.Click
+        Private Sub OnFValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnSetToValue.Click
 
             Dim strCaption As String = My.Resources.RUN_ECOSIM_F_VALUE_CAPTION
             Dim strMessage As String = My.Resources.RUN_ECOSIM_F_VALUE_MSG
@@ -537,7 +529,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnFReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbResetFs.Click
+        Private Sub OnFReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnResetFs.Click
 
             Dim ts As cTimeSeries = Nothing
 
@@ -553,7 +545,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnFZero_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbSetTo0.Click
+        Private Sub OnFZero_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnSetTo0.Click
             If Me.m_shapeGUIHandler IsNot Nothing Then
                 Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, _
                                                     New cShapeData() {Me.m_sketchPad.Shape}, 0.0!)
@@ -879,8 +871,8 @@ Namespace Ecosim
         End Sub
 
         Private Function GetSelectedGroupOrFleet() As ICoreInterface
-            Dim tv As cCustomComboBoxFleetGroupTree = DirectCast(Me.m_tscbTarget.DropdownControl, cCustomComboBoxFleetGroupTree)
-            Return tv.SelectedItem()
+            Dim item As Object = Me.m_tscbTarget.SelectedItem
+            Return DirectCast(item, cCoreInputOutputControlItem).Source
         End Function
 
         ''' <summary>
@@ -889,6 +881,10 @@ Namespace Ecosim
         Private Sub LoadFishingRateShape()
 
             Dim item As ICoreInterface = Me.GetSelectedGroupOrFleet()
+            Dim shape As cShapeData = Nothing
+
+            ' Mortality shapes are 0-base indexed, fleets are 1-base indexed
+            shape = Core.FishingEffortShapeManager.Item(item.Index - 1)
 
             If (Not TypeOf Me.m_shapeGUIHandler Is cFishingEffortShapeGUIHandler) Then
                 If (Not Me.m_shapeGUIHandler Is Nothing) Then
@@ -899,7 +895,7 @@ Namespace Ecosim
                 Me.m_shapeGUIHandler.Attach(Me.UIContext, Nothing, Nothing, Me.m_sketchPad, Nothing)
             End If
 
-            Me.m_shapeGUIHandler.SelectedShape = DirectCast(item, cFishingRateShape)
+            Me.m_shapeGUIHandler.SelectedShape = shape
             Me.m_sketchPad.Editable = True
             Me.m_bIsEffortSelected = True
             Me.UpdateControls()
@@ -939,8 +935,12 @@ Namespace Ecosim
                 Return Me.m_selectionMode
             End Get
             Set(ByVal value As eSelectionModeType)
-                Me.m_selectionMode = value
-                Me.UpdateControls()
+
+                If (value <> Me.SelectionMode) Then
+                    Me.m_selectionMode = value
+                    Me.PopulateTargetComboBox()
+                    Me.UpdateControls()
+                End If
             End Set
         End Property
 
@@ -951,15 +951,15 @@ Namespace Ecosim
             Me.m_bInUpdate = True
 
             ' Configure run/stop button
-            Me.btnRunOrStop.Text = CStr(IIf(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
-            Me.btnRunOrStop.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
+            Me.m_btnRun.Text = CStr(IIf(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
+            Me.m_btnRun.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
             ' Reflect change immediately
-            Me.btnRunOrStop.Update()
+            Me.m_btnRun.Update()
 
             ' Reset buttons
-            Me.tsbSetToValue.Enabled = (Me.m_sketchPad.Shape IsNot Nothing)
-            Me.tsbSetTo0.Enabled = (Me.m_sketchPad.Shape IsNot Nothing)
-            Me.tsbResetFs.Enabled = True
+            Me.m_tsbnSetToValue.Enabled = (Me.m_sketchPad.Shape IsNot Nothing)
+            Me.m_tsbnSetTo0.Enabled = (Me.m_sketchPad.Shape IsNot Nothing)
+            Me.m_tsbnResetFs.Enabled = True
 
             Me.m_tsmiShowAnnualOutput.Checked = Me.m_bIsAnnual
 
@@ -986,12 +986,15 @@ Namespace Ecosim
                 Me.m_tsbnExplore.Checked = False
             End If
 
+            Me.m_tsbnFleet.Checked = (Me.SelectionMode = eSelectionModeType.Fleets)
+            Me.m_tsbnGroup.Checked = (Me.SelectionMode = eSelectionModeType.Groups)
+
             Me.m_scOptions.Panel1Collapsed = Not Me.m_zgp.ShowMultipleRuns
             Me.m_tsbnShowMultipleRuns.Checked = Me.m_zgp.ShowMultipleRuns
             Me.m_tstbChangeAmount.Text = CStr(Me.m_sChangeTrackSize)
 
-            Me.tsbSetToValue.Enabled = Me.m_bIsEffortSelected
-            Me.tsbSetTo0.Enabled = Me.m_bIsEffortSelected
+            Me.m_tsbnSetToValue.Enabled = Me.m_bIsEffortSelected
+            Me.m_tsbnSetTo0.Enabled = Me.m_bIsEffortSelected
 
             Me.m_bInUpdate = False
 
@@ -1047,7 +1050,51 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub PopulateTargetComboBox()
+
+            Me.m_tscbTarget.Items.Clear()
+
+            Select Case Me.SelectionMode
+                Case eSelectionModeType.Fleets
+                    For i As Integer = 1 To Me.Core.nFleets
+                        Dim fleet As cFleetInput = Me.Core.FleetInputs(i)
+                        Me.m_tscbTarget.Items.Add(New cCoreInputOutputControlItem(fleet))
+                    Next
+
+                Case eSelectionModeType.Groups
+                    For i As Integer = 1 To Me.Core.nGroups
+                        Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+                        If (group.IsFished) Then
+                            Me.m_tscbTarget.Items.Add(New cCoreInputOutputControlItem(group))
+                        End If
+                    Next
+
+                Case Else
+                    Debug.Assert(False)
+
+            End Select
+
+            If (Me.m_tscbTarget.Items.Count > 0) Then
+                Me.m_tscbTarget.SelectedIndex = 0
+            End If
+
+        End Sub
+
 #End Region ' Internal implementation
+
+        Private Sub OnSelectTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnFleet.Click, m_tsbnGroup.Click
+            Try
+                If Object.ReferenceEquals(sender, Me.m_tsbnFleet) Then
+                    Me.SelectionMode = eSelectionModeType.Fleets
+                Else
+                    Me.SelectionMode = eSelectionModeType.Groups
+                End If
+                Me.UpdateControls()
+                Me.PopulateTargetComboBox()
+            Catch ex As Exception
+            End Try
+        End Sub
 
     End Class
 

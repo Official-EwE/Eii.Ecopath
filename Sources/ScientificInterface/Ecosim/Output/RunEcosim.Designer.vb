@@ -25,70 +25,74 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunEcosim))
             Dim ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
             Dim ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
-            Me.btnRunOrStop = New System.Windows.Forms.Button
-            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.tslTarget = New System.Windows.Forms.ToolStripLabel
-            Me.m_tscbTarget = New ScientificInterfaceShared.Controls.cCustomToolstripComboBox
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsbSetTo0 = New System.Windows.Forms.ToolStripButton
-            Me.tsbSetToValue = New System.Windows.Forms.ToolStripButton
-            Me.tsbResetFs = New System.Windows.Forms.ToolStripButton
-            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad
-            Me.m_spContainer = New System.Windows.Forms.SplitContainer
-            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
-            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton
-            Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel
-            Me.tsblbSS = New System.Windows.Forms.ToolStripLabel
-            Me.m_tsdrpdnbtnContent = New System.Windows.Forms.ToolStripDropDownButton
-            Me.m_tsmiBiomassAbs = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiBiomassRel = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsmiCatchAbs = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiCatchRel = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsmiValueAbs = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiValueRel = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsbnExplore = New System.Windows.Forms.ToolStripButton
-            Me.m_tsddGraphOptions = New System.Windows.Forms.ToolStripDropDownButton
-            Me.m_tsmiAutoscale = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiCustomScaleLabel = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiMax = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tstbMax = New System.Windows.Forms.ToolStripTextBox
-            Me.m_tsmiMin = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tstbMin = New System.Windows.Forms.ToolStripTextBox
-            Me.m_tsmiShowAnnualOutput = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiShowLegend = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsmiSort = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tslChangeAmount = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tstbChangeAmount = New System.Windows.Forms.ToolStripTextBox
-            Me.m_scGraph = New System.Windows.Forms.SplitContainer
-            Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.m_scOptions = New System.Windows.Forms.SplitContainer
-            Me.m_hdrRuns = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lbRuns = New System.Windows.Forms.ListBox
-            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
-            Me.m_tsbnShowMultipleRuns = New System.Windows.Forms.ToolStripButton
-            ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
-            ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-            ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_btnRun = New System.Windows.Forms.Button()
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tslTarget = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tsbnFleet = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnGroup = New System.Windows.Forms.ToolStripButton()
+            Me.m_tscbTarget = New System.Windows.Forms.ToolStripComboBox()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnSetTo0 = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnSetToValue = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnResetFs = New System.Windows.Forms.ToolStripButton()
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
+            Me.m_spContainer = New System.Windows.Forms.SplitContainer()
+            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
+            Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel()
+            Me.tsblbSS = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tsdrpdnbtnContent = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmiBiomassAbs = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiBiomassRel = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiCatchAbs = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiCatchRel = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiValueAbs = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiValueRel = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsbnShowMultipleRuns = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnExplore = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsddGraphOptions = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmiAutoscale = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiCustomScaleLabel = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiMax = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tstbMax = New System.Windows.Forms.ToolStripTextBox()
+            Me.m_tsmiMin = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tstbMin = New System.Windows.Forms.ToolStripTextBox()
+            Me.m_tsmiShowAnnualOutput = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiShowLegend = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiSort = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tslChangeAmount = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tstbChangeAmount = New System.Windows.Forms.ToolStripTextBox()
+            Me.m_scGraph = New System.Windows.Forms.SplitContainer()
+            Me.m_graph = New ZedGraph.ZedGraphControl()
+            Me.m_scOptions = New System.Windows.Forms.SplitContainer()
+            Me.m_hdrRuns = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lbRuns = New System.Windows.Forms.ListBox()
+            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
+            ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+            ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+            ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsMain.SuspendLayout()
+            CType(Me.m_spContainer, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_spContainer.Panel1.SuspendLayout()
             Me.m_spContainer.Panel2.SuspendLayout()
             Me.m_spContainer.SuspendLayout()
             Me.m_tlpMain.SuspendLayout()
             Me.m_ts.SuspendLayout()
+            CType(Me.m_scGraph, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scGraph.Panel1.SuspendLayout()
             Me.m_scGraph.Panel2.SuspendLayout()
             Me.m_scGraph.SuspendLayout()
+            CType(Me.m_scOptions, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scOptions.Panel1.SuspendLayout()
             Me.m_scOptions.Panel2.SuspendLayout()
             Me.m_scOptions.SuspendLayout()
@@ -109,31 +113,48 @@ Namespace Ecosim
             ToolStripSeparator4.Name = "ToolStripSeparator4"
             resources.ApplyResources(ToolStripSeparator4, "ToolStripSeparator4")
             '
-            'btnRunOrStop
+            'm_btnRun
             '
-            resources.ApplyResources(Me.btnRunOrStop, "btnRunOrStop")
-            Me.btnRunOrStop.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.btnRunOrStop.Name = "btnRunOrStop"
-            Me.btnRunOrStop.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnRun, "m_btnRun")
+            Me.m_btnRun.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.m_btnRun.Name = "m_btnRun"
+            Me.m_btnRun.UseVisualStyleBackColor = True
             '
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslTarget, Me.m_tscbTarget, Me.ToolStripSeparator1, Me.tsbSetTo0, Me.tsbSetToValue, Me.tsbResetFs})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslTarget, Me.m_tsbnFleet, Me.m_tsbnGroup, Me.m_tscbTarget, Me.ToolStripSeparator1, Me.m_tsbnSetTo0, Me.m_tsbnSetToValue, Me.m_tsbnResetFs})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
-            'tslTarget
+            'm_tslTarget
             '
-            Me.tslTarget.Name = "tslTarget"
-            resources.ApplyResources(Me.tslTarget, "tslTarget")
+            Me.m_tslTarget.Name = "m_tslTarget"
+            resources.ApplyResources(Me.m_tslTarget, "m_tslTarget")
+            '
+            'm_tsbnFleet
+            '
+            Me.m_tsbnFleet.Checked = True
+            Me.m_tsbnFleet.CheckOnClick = True
+            Me.m_tsbnFleet.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsbnFleet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnFleet, "m_tsbnFleet")
+            Me.m_tsbnFleet.Image = SharedResources.fishing_gear
+            Me.m_tsbnFleet.Name = "m_tsbnFleet"
+            '
+            'm_tsbnGroup
+            '
+            Me.m_tsbnGroup.CheckOnClick = True
+            Me.m_tsbnGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnGroup, "m_tsbnGroup")
+            Me.m_tsbnGroup.Image = SharedResources.fish
+            Me.m_tsbnGroup.Name = "m_tsbnGroup"
             '
             'm_tscbTarget
             '
-            resources.ApplyResources(Me.m_tscbTarget, "m_tscbTarget")
-            Me.m_tscbTarget.DropDownHeight = 1
             Me.m_tscbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            resources.ApplyResources(Me.m_tscbTarget, "m_tscbTarget")
             Me.m_tscbTarget.Name = "m_tscbTarget"
             '
             'ToolStripSeparator1
@@ -141,23 +162,23 @@ Namespace Ecosim
             Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
             resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
             '
-            'tsbSetTo0
+            'm_tsbnSetTo0
             '
-            Me.tsbSetTo0.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsbSetTo0, "tsbSetTo0")
-            Me.tsbSetTo0.Name = "tsbSetTo0"
+            Me.m_tsbnSetTo0.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnSetTo0, "m_tsbnSetTo0")
+            Me.m_tsbnSetTo0.Name = "m_tsbnSetTo0"
             '
-            'tsbSetToValue
+            'm_tsbnSetToValue
             '
-            Me.tsbSetToValue.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsbSetToValue, "tsbSetToValue")
-            Me.tsbSetToValue.Name = "tsbSetToValue"
+            Me.m_tsbnSetToValue.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnSetToValue, "m_tsbnSetToValue")
+            Me.m_tsbnSetToValue.Name = "m_tsbnSetToValue"
             '
-            'tsbResetFs
+            'm_tsbnResetFs
             '
-            Me.tsbResetFs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.tsbResetFs, "tsbResetFs")
-            Me.tsbResetFs.Name = "tsbResetFs"
+            Me.m_tsbnResetFs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnResetFs, "m_tsbnResetFs")
+            Me.m_tsbnResetFs.Name = "m_tsbnResetFs"
             '
             'm_sketchPad
             '
@@ -171,6 +192,7 @@ Namespace Ecosim
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
             Me.m_sketchPad.Name = "m_sketchPad"
+            Me.m_sketchPad.NumDataPoints = 0
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
             Me.m_sketchPad.ShowValueTooltip = True
@@ -178,6 +200,7 @@ Namespace Ecosim
             Me.m_sketchPad.ShowYMark = False
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_sketchPad.UIContext = Nothing
+            Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
@@ -198,7 +221,7 @@ Namespace Ecosim
             'm_spContainer.Panel2
             '
             Me.m_spContainer.Panel2.Controls.Add(Me.m_tsMain)
-            Me.m_spContainer.Panel2.Controls.Add(Me.btnRunOrStop)
+            Me.m_spContainer.Panel2.Controls.Add(Me.m_btnRun)
             Me.m_spContainer.Panel2.Controls.Add(Me.m_sketchPad)
             '
             'm_tlpMain
@@ -284,6 +307,12 @@ Namespace Ecosim
             '
             Me.m_tsmiValueRel.Name = "m_tsmiValueRel"
             resources.ApplyResources(Me.m_tsmiValueRel, "m_tsmiValueRel")
+            '
+            'm_tsbnShowMultipleRuns
+            '
+            Me.m_tsbnShowMultipleRuns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnShowMultipleRuns, "m_tsbnShowMultipleRuns")
+            Me.m_tsbnShowMultipleRuns.Name = "m_tsbnShowMultipleRuns"
             '
             'ToolStripSeparator3
             '
@@ -392,13 +421,13 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0
-            Me.m_graph.ScrollMaxX = 0
-            Me.m_graph.ScrollMaxY = 0
-            Me.m_graph.ScrollMaxY2 = 0
-            Me.m_graph.ScrollMinX = 0
-            Me.m_graph.ScrollMinY = 0
-            Me.m_graph.ScrollMinY2 = 0
+            Me.m_graph.ScrollGrace = 0.0R
+            Me.m_graph.ScrollMaxX = 0.0R
+            Me.m_graph.ScrollMaxY = 0.0R
+            Me.m_graph.ScrollMaxY2 = 0.0R
+            Me.m_graph.ScrollMinX = 0.0R
+            Me.m_graph.ScrollMinY = 0.0R
+            Me.m_graph.ScrollMinY2 = 0.0R
             '
             'm_scOptions
             '
@@ -418,6 +447,9 @@ Namespace Ecosim
             'm_hdrRuns
             '
             resources.ApplyResources(Me.m_hdrRuns, "m_hdrRuns")
+            Me.m_hdrRuns.CanCollapseParent = False
+            Me.m_hdrRuns.CollapsedParentHeight = 0
+            Me.m_hdrRuns.IsCollapsed = False
             Me.m_hdrRuns.Name = "m_hdrRuns"
             '
             'm_lbRuns
@@ -431,6 +463,9 @@ Namespace Ecosim
             'm_hdrGroups
             '
             resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
+            Me.m_hdrGroups.CanCollapseParent = False
+            Me.m_hdrGroups.CollapsedParentHeight = 0
+            Me.m_hdrGroups.IsCollapsed = False
             Me.m_hdrGroups.Name = "m_hdrGroups"
             '
             'm_lbGroups
@@ -450,12 +485,6 @@ Namespace Ecosim
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
             '
-            'm_tsbnShowMultipleRuns
-            '
-            Me.m_tsbnShowMultipleRuns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnShowMultipleRuns, "m_tsbnShowMultipleRuns")
-            Me.m_tsbnShowMultipleRuns.Name = "m_tsbnShowMultipleRuns"
-            '
             'RunEcosim
             '
             resources.ApplyResources(Me, "$this")
@@ -467,6 +496,7 @@ Namespace Ecosim
             Me.m_spContainer.Panel1.ResumeLayout(False)
             Me.m_spContainer.Panel2.ResumeLayout(False)
             Me.m_spContainer.Panel2.PerformLayout()
+            CType(Me.m_spContainer, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_spContainer.ResumeLayout(False)
             Me.m_tlpMain.ResumeLayout(False)
             Me.m_tlpMain.PerformLayout()
@@ -474,23 +504,25 @@ Namespace Ecosim
             Me.m_ts.PerformLayout()
             Me.m_scGraph.Panel1.ResumeLayout(False)
             Me.m_scGraph.Panel2.ResumeLayout(False)
+            CType(Me.m_scGraph, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scGraph.ResumeLayout(False)
             Me.m_scOptions.Panel1.ResumeLayout(False)
             Me.m_scOptions.Panel2.ResumeLayout(False)
+            CType(Me.m_scOptions, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scOptions.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
 
-        Private WithEvents btnRunOrStop As System.Windows.Forms.Button
+        Private WithEvents m_btnRun As System.Windows.Forms.Button
         Private WithEvents m_sketchPad As ucForcingSketchPad
         Private WithEvents m_tsMain As cEwEToolStrip
-        Private WithEvents tslTarget As System.Windows.Forms.ToolStripLabel
-        Private WithEvents m_tscbTarget As cCustomToolstripComboBox
+        Private WithEvents m_tslTarget As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_tscbTarget As System.Windows.Forms.ToolStripComboBox
         Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents tsbResetFs As System.Windows.Forms.ToolStripButton
-        Private WithEvents tsbSetTo0 As System.Windows.Forms.ToolStripButton
-        Private WithEvents tsbSetToValue As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnResetFs As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnSetTo0 As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnSetToValue As System.Windows.Forms.ToolStripButton
         Private WithEvents m_spContainer As System.Windows.Forms.SplitContainer
         Private WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_ts As cEwEToolStrip
@@ -518,17 +550,19 @@ Namespace Ecosim
         Private WithEvents m_tsmiBiomassAbs As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiCatchAbs As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiBiomassRel As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiCatchRel As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiValueAbs As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents m_tsmiValueRel As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiValueRel As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsbnExplore As System.Windows.Forms.ToolStripButton
-        Friend WithEvents ToolStripSeparator8 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents ToolStripSeparator8 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiSort As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tstbChangeAmount As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tslChangeAmount As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsbnShowMultipleRuns As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnFleet As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnGroup As System.Windows.Forms.ToolStripButton
 
     End Class
 End Namespace

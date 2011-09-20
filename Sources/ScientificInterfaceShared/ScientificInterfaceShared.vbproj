@@ -570,8 +570,11 @@
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
     <Content Include="Resources\Annual.png" />
+    <None Include="Resources\fishing_gear.png" />
+    <None Include="Resources\fish.png" />
     <Content Include="Resources\Info.ico" />
     <None Include="Resources\rss_icon.gif" />
+    <None Include="Resources\multistanza.png" />
     <Content Include="Resources\Seasonal.png" />
     <None Include="Resources\PieChart.bmp" />
     <None Include="Resources\ani_loader.gif" />

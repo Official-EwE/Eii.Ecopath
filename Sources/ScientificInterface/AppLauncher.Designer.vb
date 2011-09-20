@@ -241,25 +241,21 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'm_tsmiEcospaceEditMap
         '
-        Me.m_tsmiEcospaceEditMap.Image = Global.ScientificInterface.My.Resources.Resources.Raster1
         Me.m_tsmiEcospaceEditMap.Name = "m_tsmiEcospaceEditMap"
         resources.ApplyResources(Me.m_tsmiEcospaceEditMap, "m_tsmiEcospaceEditMap")
         '
         'm_tsmiEcospaceDefineHabitats
         '
-        Me.m_tsmiEcospaceDefineHabitats.Image = Global.ScientificInterface.My.Resources.Resources.Habitat1
         Me.m_tsmiEcospaceDefineHabitats.Name = "m_tsmiEcospaceDefineHabitats"
         resources.ApplyResources(Me.m_tsmiEcospaceDefineHabitats, "m_tsmiEcospaceDefineHabitats")
         '
         'm_tsmiEcospaceDefineMPAs
         '
-        Me.m_tsmiEcospaceDefineMPAs.Image = Global.ScientificInterface.My.Resources.Resources.MPA1
         Me.m_tsmiEcospaceDefineMPAs.Name = "m_tsmiEcospaceDefineMPAs"
         resources.ApplyResources(Me.m_tsmiEcospaceDefineMPAs, "m_tsmiEcospaceDefineMPAs")
         '
         'm_tsmiEcospaceDefineRegions
         '
-        Me.m_tsmiEcospaceDefineRegions.Image = Global.ScientificInterface.My.Resources.Resources.Regions
         Me.m_tsmiEcospaceDefineRegions.Name = "m_tsmiEcospaceDefineRegions"
         resources.ApplyResources(Me.m_tsmiEcospaceDefineRegions, "m_tsmiEcospaceDefineRegions")
         '
@@ -471,31 +467,26 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'm_tsmiEcopathDefineGroups
         '
-        Me.m_tsmiEcopathDefineGroups.Image = Global.ScientificInterface.My.Resources.Resources.EditGroup
         Me.m_tsmiEcopathDefineGroups.Name = "m_tsmiEcopathDefineGroups"
         resources.ApplyResources(Me.m_tsmiEcopathDefineGroups, "m_tsmiEcopathDefineGroups")
         '
         'm_tsmiEcopathDefineMultiStanza
         '
-        Me.m_tsmiEcopathDefineMultiStanza.Image = Global.ScientificInterface.My.Resources.Resources.EditMultiStanza
         Me.m_tsmiEcopathDefineMultiStanza.Name = "m_tsmiEcopathDefineMultiStanza"
         resources.ApplyResources(Me.m_tsmiEcopathDefineMultiStanza, "m_tsmiEcopathDefineMultiStanza")
         '
         'm_tsmiEcopathDefineFleets
         '
-        Me.m_tsmiEcopathDefineFleets.Image = Global.ScientificInterface.My.Resources.Resources.EditFleets
         Me.m_tsmiEcopathDefineFleets.Name = "m_tsmiEcopathDefineFleets"
         resources.ApplyResources(Me.m_tsmiEcopathDefineFleets, "m_tsmiEcopathDefineFleets")
         '
         'm_tsmiEcopathDefinePedigree
         '
-        Me.m_tsmiEcopathDefinePedigree.Image = Global.ScientificInterface.My.Resources.Resources.certificate
         Me.m_tsmiEcopathDefinePedigree.Name = "m_tsmiEcopathDefinePedigree"
         resources.ApplyResources(Me.m_tsmiEcopathDefinePedigree, "m_tsmiEcopathDefinePedigree")
         '
         'm_tsmiEcopathDefineTaxa
         '
-        Me.m_tsmiEcopathDefineTaxa.Image = Global.ScientificInterface.My.Resources.Resources.EditTaxa
         resources.ApplyResources(Me.m_tsmiEcopathDefineTaxa, "m_tsmiEcopathDefineTaxa")
         Me.m_tsmiEcopathDefineTaxa.Name = "m_tsmiEcopathDefineTaxa"
         '

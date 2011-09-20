@@ -910,6 +910,20 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property fish() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("fish", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property fishing_gear() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("fishing_gear", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property FormulaEvaluatorHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("FormulaEvaluatorHS", resourceCulture)
@@ -4804,6 +4818,13 @@ Namespace My.Resources
         Public ReadOnly Property MENU_SHOW_LEGEND() As String
             Get
                 Return ResourceManager.GetString("MENU_SHOW_LEGEND", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property multistanza() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("multistanza", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

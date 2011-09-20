@@ -44,7 +44,7 @@ Namespace Ecopath.Input
             '
             'm_tsbnEditFleets
             '
-            Me.m_tsbnEditFleets.Image = Global.ScientificInterface.My.Resources.Resources.EditGroup
+            Me.m_tsbnEditFleets.Image = SharedResources.fishing_gear
             Me.m_tsbnEditFleets.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditFleets.Name = "m_tsbnEditFleets"
             Me.m_tsbnEditFleets.Size = New System.Drawing.Size(101, 22)

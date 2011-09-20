@@ -1346,27 +1346,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property EditFleets() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("EditFleets", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property EditGroup() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("EditGroup", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property EditMultiStanza() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("EditMultiStanza", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property EditTaxa() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("EditTaxa", resourceCulture)

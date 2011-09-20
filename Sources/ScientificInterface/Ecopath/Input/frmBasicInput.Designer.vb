@@ -45,7 +45,7 @@ Namespace Ecopath.Input
             '
             'm_tsbnEditGroups
             '
-            Me.m_tsbnEditGroups.Image = Global.ScientificInterface.My.Resources.Resources.EditGroup
+            Me.m_tsbnEditGroups.Image = SharedResources.fish
             Me.m_tsbnEditGroups.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditGroups.Name = "m_tsbnEditGroups"
             Me.m_tsbnEditGroups.Size = New System.Drawing.Size(110, 22)
@@ -54,7 +54,7 @@ Namespace Ecopath.Input
             '
             'm_tsbnEditMultiStanza
             '
-            Me.m_tsbnEditMultiStanza.Image = Global.ScientificInterface.My.Resources.Resources.EditMultiStanza
+            Me.m_tsbnEditMultiStanza.Image = SharedResources.multistanza
             Me.m_tsbnEditMultiStanza.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditMultiStanza.Name = "m_tsbnEditMultiStanza"
             Me.m_tsbnEditMultiStanza.Size = New System.Drawing.Size(125, 22)
