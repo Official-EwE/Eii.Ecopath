@@ -31,7 +31,6 @@ Namespace Ecosim
             Dim ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
             Me.m_btnRun = New System.Windows.Forms.Button()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tslTarget = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsbnFleet = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnGroup = New System.Windows.Forms.ToolStripButton()
             Me.m_tscbTarget = New System.Windows.Forms.ToolStripComboBox()
@@ -123,15 +122,10 @@ Namespace Ecosim
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslTarget, Me.m_tsbnFleet, Me.m_tsbnGroup, Me.m_tscbTarget, Me.ToolStripSeparator1, Me.m_tsbnSetTo0, Me.m_tsbnSetToValue, Me.m_tsbnResetFs})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnFleet, Me.m_tsbnGroup, Me.m_tscbTarget, Me.ToolStripSeparator1, Me.m_tsbnSetTo0, Me.m_tsbnSetToValue, Me.m_tsbnResetFs})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tslTarget
-            '
-            Me.m_tslTarget.Name = "m_tslTarget"
-            resources.ApplyResources(Me.m_tslTarget, "m_tslTarget")
             '
             'm_tsbnFleet
             '
@@ -140,7 +134,6 @@ Namespace Ecosim
             Me.m_tsbnFleet.CheckState = System.Windows.Forms.CheckState.Checked
             Me.m_tsbnFleet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnFleet, "m_tsbnFleet")
-            Me.m_tsbnFleet.Image = SharedResources.fishing_gear
             Me.m_tsbnFleet.Name = "m_tsbnFleet"
             '
             'm_tsbnGroup
@@ -148,7 +141,6 @@ Namespace Ecosim
             Me.m_tsbnGroup.CheckOnClick = True
             Me.m_tsbnGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnGroup, "m_tsbnGroup")
-            Me.m_tsbnGroup.Image = SharedResources.fish
             Me.m_tsbnGroup.Name = "m_tsbnGroup"
             '
             'm_tscbTarget
@@ -517,7 +509,6 @@ Namespace Ecosim
         Private WithEvents m_btnRun As System.Windows.Forms.Button
         Private WithEvents m_sketchPad As ucForcingSketchPad
         Private WithEvents m_tsMain As cEwEToolStrip
-        Private WithEvents m_tslTarget As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tscbTarget As System.Windows.Forms.ToolStripComboBox
         Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsbnResetFs As System.Windows.Forms.ToolStripButton
