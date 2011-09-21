@@ -19,7 +19,10 @@ Public Class cEcoSpace
 
     'ToDo_jb Change summary values to be across all time steps
 
-    'ToDo_jb 15-Sept-2011 Added message to SetHabCap so the basemap interface can responed to changes
+    'ToDo_jb 21-Sept-2011 Capacity Add a Capacity Input layer and Capacity Compute/Output layer
+    'ToDo_jb 21-Sept-2011 Add a Not Used Habitat layer that is the default assignment 
+    'ToDo_jb 21-Sept-2011 Added User defined Capacity layers...
+
 
 #Region "Solver threads"
 
