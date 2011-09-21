@@ -21,7 +21,6 @@ Public Class ucCVBlockSelector
 
     Private m_uic As cUIContext
     Private m_numBlocks As Integer
-    Private m_iBlockCur As Integer
     Private m_cvs() As Single
 
     Public Event OnBlockSelected(ByVal sender As IBlockSelector) Implements IBlockSelector.OnBlockSelected
@@ -115,11 +114,10 @@ Public Class ucCVBlockSelector
     Public Property SelectedBlock() As Integer _
         Implements IBlockSelector.SelectedBlock
         Get
-            Return Me.m_iBlockCur
+            Return Me.m_gridSelector.SelectedBlock
         End Get
         Set(ByVal value As Integer)
-            If (value <> Me.m_iBlockCur) Then
-                Me.m_iBlockCur = value
+            If (value <> Me.m_gridSelector.SelectedBlock) Then
                 Me.m_gridSelector.SelectedBlock = value
             End If
         End Set
@@ -129,19 +127,20 @@ Public Class ucCVBlockSelector
     Public ReadOnly Property SelectedBlockColor() As System.Drawing.Color _
         Implements IBlockSelector.SelectedBlockColor
         Get
-            Return Me.BlockColors(Me.m_iBlockCur)
+            Return Me.BlockColors(Me.SelectedBlock)
         End Get
+
     End Property
 
     ''' <inheritdoc cref="IBlockSelector.BlocktoValue"/>
     Public Function BlocktoValue(ByVal iBlock As Integer) As Single _
         Implements IBlockSelector.BlocktoValue
         Try
-            If iBlock < 1 Then Return EwECore.cCore.NULL_VALUE
+            If iBlock < 1 Then Return 0.0F
             Return Me.m_cvs(iBlock)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".BlocktoValue() iBlock out of bounds!")
-            Return cCore.NULL_VALUE
+            Return 0.0F
         End Try
     End Function
 
@@ -243,7 +242,7 @@ Public Class ucCVBlockSelector
         Try
             '
             Me.SelectedBlock = Me.m_gridSelector.SelectedBlock
-            Debug.Assert(Me.m_iBlockCur <= Me.NumBlocks, Me.ToString & ".OnSelectionChanged() selected block > total number of blocks!!!")
+            'Debug.Assert(Me.m_iBlockCur <= Me.NumBlocks, Me.ToString & ".OnSelectionChanged() selected block > total number of blocks!!!")
             RaiseEvent OnBlockSelected(Me)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".OnSelectionChanged() Exception: " & ex.Message)

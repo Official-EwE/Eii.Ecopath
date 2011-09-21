@@ -133,6 +133,9 @@ Public Class gridSelectColorBlock
     Private Sub gridSelectColorBlock_CellGotFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
         Handles Me.CellGotFocus
 
+        'Don't set the value if this is not a valid value column
+        If e.Position.Column < 1 Then Exit Sub
+
         Try
             ' Parse using UI default number formatting
             Me.m_sBlockValue = Single.Parse(CStr(Me(0, e.Position.Column).Value))
@@ -146,6 +149,9 @@ Public Class gridSelectColorBlock
 
     Private Sub gridSelectColorBlock_CellLostFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
         Handles Me.CellLostFocus
+
+        'Don't set the value if this is not a valid value column
+        If e.Position.Column < 1 Then Exit Sub
 
         Try
             ' Parse using UI default number formatting
