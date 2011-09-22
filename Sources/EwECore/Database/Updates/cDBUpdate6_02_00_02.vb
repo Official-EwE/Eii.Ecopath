@@ -53,7 +53,8 @@ Friend Class cDBUpdate6_02_00_02
         Return Me.UpdateForcePoints(db) And _
                Me.AddCapacityMapTable(db) And _
                Me.AddCapacityMapAssignmentTable(db) And _
-               Me.UpdateMediationTable(db)
+               Me.UpdateMediationTable(db) And _
+               Me.UpdateEcospaceParmsTable(db)
     End Function
 
     Private Function UpdateForcePoints(ByVal db As cEwEDatabase) As Boolean
@@ -132,6 +133,10 @@ Friend Class cDBUpdate6_02_00_02
         Me.LogProgress("Updated table UpdateStanzaTable", True)
         Return True
 
+    End Function
+
+    Private Function UpdateEcospaceParmsTable(ByVal db As cEwEDatabase) As Boolean
+        Return db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN CapacityCalcType SHORT")
     End Function
 
 End Class
