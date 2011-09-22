@@ -446,7 +446,15 @@ Public Class cEcospaceDataStructures
     ''' <remarks>Added for Model coupling</remarks>
     Public GroupDetritus(,,) As Single
 
+    ''' <summary>
+    ''' Habitat Capacity by Row,Col,Group
+    ''' </summary>
+    ''' <remarks>Habitat capacity is the normalized sum of all Capacity inputs (maps)  <see cref="cEcoSpace.SetHabCap">Ecospace.SetHabCap</see> </remarks>
     Public HabCap(,,) As Single
+
+    ''' <summary>
+    ''' User defined input habitat capacity.
+    ''' </summary>
     Public HabCapInput(,,) As Single
     Public TotHabCap() As Single
 
