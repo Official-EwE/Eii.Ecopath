@@ -2436,14 +2436,20 @@ Namespace Core
 
 #End Region ' Automated update result types
 
-#Region "Ecospace Capacity and Habitat"
+#Region " Ecospace Capacity and Habitat "
 
+    ''' <summary>
+    ''' Enumerated type, indicating capacity calculation methods.
+    ''' </summary>
     Public Enum eEcospaceCapacityCalType As Integer
-        CapacityAndHabitat
-        Capacity
-        Habitat
+        ''' <summary>Both capacity inputs and habitats are used to calculate capacity.</summary>
+        CapacityAndHabitat = 0
+        ''' <summary>Only capacity inputs are used to calculate capacity. Habitats are ignored.</summary>
+        Capacity = 1
+        ''' <summary>Only habitats are used to calculate capacity. Capacity inputs are ignored.</summary>
+        Habitat = 2
     End Enum
 
-#End Region
+#End Region ' Ecospace Capacity and Habitat
 
 End Namespace ' Core
