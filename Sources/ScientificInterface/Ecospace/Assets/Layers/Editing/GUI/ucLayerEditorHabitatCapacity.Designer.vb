@@ -24,8 +24,8 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_cmbGroups = New System.Windows.Forms.ComboBox
-            Me.m_lblFleet = New System.Windows.Forms.Label
+            Me.m_cmbGroups = New System.Windows.Forms.ComboBox()
+            Me.m_lblFleet = New System.Windows.Forms.Label()
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -45,7 +45,7 @@
             '
             Me.m_lblFleet.AutoSize = True
             Me.m_lblFleet.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblFleet.Location = New System.Drawing.Point(0, 99)
+            Me.m_lblFleet.Location = New System.Drawing.Point(3, 99)
             Me.m_lblFleet.Name = "m_lblFleet"
             Me.m_lblFleet.Size = New System.Drawing.Size(39, 13)
             Me.m_lblFleet.TabIndex = 5
@@ -58,10 +58,10 @@
             Me.Controls.Add(Me.m_cmbGroups)
             Me.Controls.Add(Me.m_lblFleet)
             Me.Name = "ucLayerEditorHabitatCapacity"
-            Me.Size = New System.Drawing.Size(200, 121)
-            Me.Controls.SetChildIndex(Me.m_pbPreview, 0)
+            Me.Size = New System.Drawing.Size(200, 126)
             Me.Controls.SetChildIndex(Me.m_lblFleet, 0)
             Me.Controls.SetChildIndex(Me.m_cmbGroups, 0)
+            Me.Controls.SetChildIndex(Me.m_pbPreview, 0)
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()

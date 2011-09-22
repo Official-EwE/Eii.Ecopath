@@ -131,9 +131,14 @@ Namespace Ecospace.Basemap.Layers
             End If
         End Sub
 
-        Private Sub m_btnSmooth_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSmooth(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnSmooth.Click
             Me.Editor.Smooth()
+        End Sub
+
+        Private Sub OnFillLayer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnFill.Click
+            Me.Editor.Fill()
         End Sub
 
 #End Region ' Events

@@ -386,6 +386,27 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Fill the layer with the current <see cref="CellValue"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Fill()
+
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
+
+            For i As Integer = 1 To bm.InRow
+                For j As Integer = 1 To bm.InCol
+                    If layerDepth.IsWaterCell(i, j) Then
+                        Me.Layer.Value(i, j) = Me.CellValue
+                    End If
+                Next j
+            Next i
+            Me.Layer.Update(cLayer.eChangeFlags.Map)
+
+        End Sub
+
 #End Region ' Editing
 
 #Region " Properties "

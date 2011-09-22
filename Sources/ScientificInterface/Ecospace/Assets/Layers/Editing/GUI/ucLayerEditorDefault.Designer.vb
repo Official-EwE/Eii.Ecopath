@@ -25,8 +25,8 @@
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditorDefault))
-            Me.m_ucSlider = New ScientificInterfaceShared.Controls.ucSlider
-            Me.m_lblCursor = New System.Windows.Forms.Label
+            Me.m_ucSlider = New ScientificInterfaceShared.Controls.ucSlider()
+            Me.m_lblCursor = New System.Windows.Forms.Label()
             Me.SuspendLayout()
             '
             'm_ucSlider

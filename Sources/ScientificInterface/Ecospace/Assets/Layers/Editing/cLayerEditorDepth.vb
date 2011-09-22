@@ -1,4 +1,11 @@
-﻿Namespace Ecospace.Basemap.Layers
+﻿#Region " Imports "
+
+Option Strict On
+Imports EwECore
+
+#End Region
+
+Namespace Ecospace.Basemap.Layers
 
     Public Class cLayerEditorDepth
         Inherits cLayerEditor
@@ -23,10 +30,15 @@
                                              ByVal e As MouseEventArgs, _
                                              ByVal ptClick As System.Drawing.Point)
 
-            Dim bIsLandCell As Boolean = (CInt(Me.Layer.Value(ptSet.Y, ptSet.X)) = 0)
+            Dim layerDepth As cEcospaceLayerDepth = DirectCast(Me.Layer.Data, cEcospaceLayerDepth)
+            Dim bIsLandCell As Boolean = (layerDepth.IsLandCell(ptSet.Y, ptSet.X))
             Dim bIsLandValue As Boolean = (CInt(value) = 0)
 
-            If Me.m_bProtectLand And (bIsLandCell <> bIsLandValue) Then Return
+            If Me.m_bProtectLand Then
+                If (bIsLandCell <> bIsLandValue) Then
+                    Return
+                End If
+            End If
 
             MyBase.SetCellValue(ptSet, value, e, ptClick)
 

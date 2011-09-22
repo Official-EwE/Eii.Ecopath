@@ -141,7 +141,7 @@ Namespace Ecospace.Basemap.Layers
                     End If
 
                     renderer = New cLayerRendererValue(vs)
-                    editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
+                    editor = New cLayerEditorGroup(GetType(ucLayerEditorGroup))
                     editor.IsReadOnly = True
                     layerData = bmd.LayerHabitatCapacity
                     layer = New cLayer(uic, layerData, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, bmd, eVarNameFlags.LayerHabitatCapacity)

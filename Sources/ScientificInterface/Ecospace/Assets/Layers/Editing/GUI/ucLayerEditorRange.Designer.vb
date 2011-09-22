@@ -13,10 +13,11 @@
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerEditorRange))
-            Me.m_lbValue = New System.Windows.Forms.Label
-            Me.m_nudValue = New cEwENumericUpDown
-            Me.m_pbPreview = New System.Windows.Forms.PictureBox
-            Me.m_btnSmooth = New System.Windows.Forms.Button
+            Me.m_lbValue = New System.Windows.Forms.Label()
+            Me.m_nudValue = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_pbPreview = New System.Windows.Forms.PictureBox()
+            Me.m_btnSmooth = New System.Windows.Forms.Button()
+            Me.m_btnFill = New System.Windows.Forms.Button()
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -44,10 +45,18 @@
             Me.m_btnSmooth.Name = "m_btnSmooth"
             Me.m_btnSmooth.UseVisualStyleBackColor = True
             '
+            'm_btnFill
+            '
+            resources.ApplyResources(Me.m_btnFill, "m_btnFill")
+            Me.m_btnFill.Name = "m_btnFill"
+            Me.m_btnFill.UseVisualStyleBackColor = True
+            Me.m_btnFill.Image = ScientificInterfaceShared.My.Resources.Fill
+            '
             'ucLayerEditorRange
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_btnFill)
             Me.Controls.Add(Me.m_btnSmooth)
             Me.Controls.Add(Me.m_pbPreview)
             Me.Controls.Add(Me.m_nudValue)
@@ -57,6 +66,7 @@
             Me.Controls.SetChildIndex(Me.m_nudValue, 0)
             Me.Controls.SetChildIndex(Me.m_pbPreview, 0)
             Me.Controls.SetChildIndex(Me.m_btnSmooth, 0)
+            Me.Controls.SetChildIndex(Me.m_btnFill, 0)
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
@@ -64,9 +74,10 @@
 
         End Sub
         Private WithEvents m_lbValue As System.Windows.Forms.Label
-        Private WithEvents m_nudValue As System.Windows.Forms.NumericUpDown
         Protected WithEvents m_pbPreview As System.Windows.Forms.PictureBox
         Private WithEvents m_btnSmooth As System.Windows.Forms.Button
+        Private WithEvents m_nudValue As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_btnFill As System.Windows.Forms.Button
 
     End Class
 
