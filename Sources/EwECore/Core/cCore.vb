@@ -12562,6 +12562,16 @@ Public Class cCore
                     Case eVarNameFlags.EcospaceNumberSummaryTimeSteps, eVarNameFlags.EcospaceSummaryTimeEnd, eVarNameFlags.EcospaceSummaryTimeStart
                         Me.LoadEcospaceResults()
 
+                    Case eVarNameFlags.EcospaceCapCalType
+
+                        'Let Ecospace decide what to update in response
+                        If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
+                            'Capacity layer has changed
+                            'send out a message
+                            Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
+                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
+                        End If
+
                 End Select 'Select Case value.varName
 
 

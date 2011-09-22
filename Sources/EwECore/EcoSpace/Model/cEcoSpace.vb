@@ -5489,29 +5489,33 @@ exitline:
 
 
     Private Function setHabCapFromHabitat() As Single
-        Dim i As Integer, j As Integer, K As Integer, MaxCap As Double
+        Dim i As Integer, j As Integer, K As Integer, bReturn As Boolean
 
-        For K = 1 To Me.m_Data.NGroups
-            For i = 1 To Me.m_Data.InRow
-                For j = 1 To Me.m_Data.InCol
-                    'set relative habitat capacity for this cell, group=f(cell attributes)
-                    'example using qualitative habitat use from old ecospace
+        'If the CapCalType = Capacity then ONLY Capacity Inputs are used to calculate Capacity 
+        If Me.m_Data.CapCalType <> eEcospaceCapacityCalType.Capacity Then
+            bReturn = True
+            For K = 1 To Me.m_Data.NGroups
+                For i = 1 To Me.m_Data.InRow
+                    For j = 1 To Me.m_Data.InCol
+                        'set relative habitat capacity for this cell, group=f(cell attributes)
+                        'example using qualitative habitat use from old ecospace
 
-                    If ((Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) > 0) Or (Me.m_Data.PrefHab(K, 0) > 0)) And (m_Data.Depth(i, j) > 0.0) Then
-                        'sum 1 to the existing capacity
-                        Me.m_Data.HabCap(i, j, K) += 1
-                    End If
-                    'Do Not set min hab capacity here 
-                    'it will be set once all the capacities have been add and the capacity is normalizeCapacityMap()
-                    'If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP
-                    'get max for rescaling to 0-1 range
-                    '  If Me.m_Data.HabCap(i, j, K) > MaxCap Then MaxCap = Me.m_Data.HabCap(i, j, K)
-                    m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
-                Next j
-            Next i
-        Next K
+                        If ((Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) > 0) Or (Me.m_Data.PrefHab(K, 0) > 0)) And (m_Data.Depth(i, j) > 0.0) Then
+                            'sum 1 to the existing capacity
+                            Me.m_Data.HabCap(i, j, K) += 1
+                        End If
+                        'Do Not set min hab capacity here 
+                        'it will be set once all the capacities have been add and the capacity is normalizeCapacityMap()
+                        'If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP
+                        'get max for rescaling to 0-1 range
+                        m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
+                    Next j
+                Next i
+            Next K
 
-        Return MaxCap
+        End If 'Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat
+
+        Return bReturn
 
     End Function
 
@@ -5523,26 +5527,23 @@ exitline:
     ''' <remarks></remarks>
     Public Sub SetHabCap()
         'set up array of relative habitat capacities by cell and group
-        Dim MaxCap As Double, cap As Single
+        'Dim MaxCap As Double, cap As Single
         ReDim m_Data.HabCap(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
         ReDim m_Data.TotHabCap(m_Data.NGroups)
         ReDim m_Data.MaxHabCap(m_Data.NGroups)
 
         'set capacities from user input capacity, habitats and input maps
         'Capacity from user defined input capacity map
-        cap = Me.setHabCapFromCapMap
-        MaxCap = Math.Max(MaxCap, cap)
+        Me.setHabCapFromCapInputMap()
 
         'Capacity from Habitats
-        cap = Me.setHabCapFromHabitat
-        MaxCap = Math.Max(MaxCap, cap)
+        Me.setHabCapFromHabitat()
 
         'Capacity from Enviromental input maps
-        cap = Me.SetHabCapFromMaps
-        MaxCap = Math.Max(MaxCap, cap)
+        Me.SetHabCapFromMaps()
 
         'now normalize the capacity map
-        Me.normalizeCapacityMap(MaxCap)
+        Me.normalizeCapacityMap()
 
         'Set the capacity gradients to flow from low to high capacity cells
         AdjustLowHapCaps()
@@ -5553,26 +5554,30 @@ exitline:
     ''' Set Habitat Capacity map from the user input HabCap map
     ''' </summary>
     ''' <remarks></remarks>
-    Private Function setHabCapFromCapMap() As Single
-        Dim irow As Integer, icol As Integer, igrp As Integer, MaxCap As Double
+    Private Function setHabCapFromCapInputMap() As Boolean
+        Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
 
-        MaxCap = 0
-        For igrp = 1 To Me.m_Data.NGroups
-            For irow = 1 To Me.m_Data.InRow
-                For icol = 1 To Me.m_Data.InCol
+        'If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
+        If Me.m_Data.CapCalType <> eEcospaceCapacityCalType.Habitat Then
 
-                    'Just copy the values from the user input capacity map into the HabCap map
-                    Me.m_Data.HabCap(irow, icol, igrp) = Me.m_Data.HabCapInput(irow, icol, igrp)
+            bReturn = True
+            For igrp = 1 To Me.m_Data.NGroups
+                For irow = 1 To Me.m_Data.InRow
+                    For icol = 1 To Me.m_Data.InCol
 
-                    'get max for rescaling to 0-1 range
-                    ' MaxCap = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), MaxCap)
-                    m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+                        'Sum the values from the user input capacity map into the HabCap map
+                        Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
 
-                Next icol
-            Next irow
-        Next igrp
+                        'get max for rescaling to 0-1 range
+                        m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
 
-        Return MaxCap
+                    Next icol
+                Next irow
+            Next igrp
+
+        End If
+
+        Return bReturn
 
     End Function
 
@@ -5609,9 +5614,11 @@ exitline:
                 MapDataType = eDataTypes.EcospaceLayerHabitatCapacity Or _
                 MapDataType = eDataTypes.EcospaceLayerRelPP Or _
                 MapDataType = eDataTypes.CapacityMediation Or _
-                MapDataType = eDataTypes.EcospaceMapResponse Then
+                MapDataType = eDataTypes.EcospaceMapResponse Or _
+                MapDataType = eDataTypes.EcospaceModelParameter Then
 
                 Me.SetHabCap()
+
                 Return True
 
             End If
@@ -5625,7 +5632,7 @@ exitline:
     End Function
 
 
-    Private Sub normalizeCapacityMap(ByVal MaxCap As Single)
+    Private Sub normalizeCapacityMap()
         Dim iGrp As Integer, ir As Integer, ic As Integer
 
         'now normalize the capacity map
@@ -5670,29 +5677,36 @@ exitline:
         Next iGrp
     End Sub
 
-    Private Function SetHabCapFromMaps() As Single
-        Dim irow As Integer, icol As Integer, igrp As Integer, MaxCap As Double
+    Private Function SetHabCapFromMaps() As Boolean
+        Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
 
-        If (Me.m_Data.CapMaps Is Nothing) Then Return MaxCap
+        If (Me.m_Data.CapMaps Is Nothing) Then Return False
 
-        For Each map As IEnviroInputMap In Me.m_Data.CapMaps
-            For igrp = 1 To Me.m_Data.NGroups
-                If map.ResponseIndexForGroup(igrp) > 0 Then
-                    For irow = 1 To Me.m_Data.InRow
-                        For icol = 1 To Me.m_Data.InCol
-                            'Sum all the capability map response functions into the HabCap Cell for each group
-                            'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
-                            Me.m_Data.HabCap(irow, icol, igrp) += map.ResponseFunction(igrp, irow, icol)
-                            ' MaxCap = Math.Max(Me.m_Data.HabCap(i, j, igrp), MaxCap)
-                            m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+        'If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
+        If Me.m_Data.CapCalType <> eEcospaceCapacityCalType.Habitat Then
 
+            For Each map As IEnviroInputMap In Me.m_Data.CapMaps
+                For igrp = 1 To Me.m_Data.NGroups
+                    If map.ResponseIndexForGroup(igrp) > 0 Then
+                        For irow = 1 To Me.m_Data.InRow
+                            For icol = 1 To Me.m_Data.InCol
+                                'Sum all the capability map response functions into the HabCap Cell for each group
+                                'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
+                                Me.m_Data.HabCap(irow, icol, igrp) += map.ResponseFunction(igrp, irow, icol)
+                                m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+
+                            Next
                         Next
-                    Next
-                End If
-            Next igrp
-        Next map
+                    End If
+                Next igrp
 
-        Return MaxCap
+            Next map
+
+            bReturn = True
+
+        End If
+
+        Return bReturn
 
     End Function
 
