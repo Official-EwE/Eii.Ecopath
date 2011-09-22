@@ -29,15 +29,18 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
-                Case eShapeCommandTypes.SetToZero
+                Case eShapeCommandTypes.SetToZero, _
+                     eShapeCommandTypes.SetToValue, _
+                     eShapeCommandTypes.SetToEcopathBaseline
                     Return True
-                Case eShapeCommandTypes.SetValue
-                    Return True
+
                 Case eShapeCommandTypes.Reset, _
                      eShapeCommandTypes.ResetAll
                     Return True
+
                 Case eShapeCommandTypes.Modify
                     Return True
+
             End Select
             Return False
         End Function
@@ -64,7 +67,8 @@ Namespace Controls
 
                 Case eShapeCommandTypes.Reset, _
                      eShapeCommandTypes.SetToZero, _
-                     eShapeCommandTypes.SetValue
+                     eShapeCommandTypes.SetToValue, _
+                     eShapeCommandTypes.SetToEcopathBaseline
                     Return bHasSelection
 
             End Select
@@ -86,6 +90,9 @@ Namespace Controls
 
             If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
             Select Case cmd
+
+                Case eShapeCommandTypes.SetToEcopathBaseline
+                    Me.SetToBaseline(ashapes)
 
                 Case eShapeCommandTypes.Reset
 
@@ -158,6 +165,26 @@ Namespace Controls
                 End If
             End Set
         End Property
+
+        Protected Sub SetToBaseline(ByVal ashapes As cShapeData())
+
+            Dim man As cFishingBaseShapeManager = Nothing
+            Dim sBaseValue As Single = 0.0
+
+            For Each shape As cShapeData In ashapes
+                ' Repeat values across shape
+                man = DirectCast(Me.ShapeManager, cFishingBaseShapeManager)
+                sBaseValue = man.EcopathBaseValue(shape.Index)
+
+                shape.LockUpdates()
+                For iTime As Integer = 0 To shape.XMax
+                    shape.ShapeData(iTime) = sBaseValue
+                Next
+                shape.UnlockUpdates()
+            Next
+            Me.SelectedShapes = Me.SelectedShapes
+
+        End Sub
 
     End Class
 

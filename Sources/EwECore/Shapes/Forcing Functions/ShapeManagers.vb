@@ -1165,7 +1165,7 @@ Public Class cFishingEffortManger
     End Sub
 
     Public Overrides Function EcopathBaseValue(ByVal iShape As Integer) As Single
-        Return Me.m_core.m_EcoPathData.fCatch(iShape)
+        Return 1
     End Function
 
 End Class
@@ -1218,7 +1218,7 @@ Public Class cFishingMortalityManger
     End Sub
 
     Public Overrides Function EcopathBaseValue(ByVal iShape As Integer) As Single
-        Return 0
+        Return Me.m_core.m_EcoSimData.Fish1(iShape)
     End Function
 
 End Class

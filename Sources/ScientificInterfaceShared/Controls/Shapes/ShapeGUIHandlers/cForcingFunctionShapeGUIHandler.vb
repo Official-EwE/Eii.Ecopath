@@ -280,7 +280,7 @@ Namespace Controls
                 Case eShapeCommandTypes.Seasonal
                     Me.SetSeasonal(ashapes(0), CBool(data))
 
-                Case eShapeCommandTypes.SetValue
+                Case eShapeCommandTypes.SetToValue
                     Me.ResetShapePrompted(Me.SelectedShapes)
 
                 Case eShapeCommandTypes.ShowAllData
@@ -605,12 +605,10 @@ Namespace Controls
 
                 For Each shape As cShapeData In ashapes
                     ' Repeat values across shape
-                    Dim asValues(shape.XMax) As Single
-                    For iTime As Integer = 0 To shape.XMax
-                        asValues(iTime) = lsEntered(iTime Mod lsEntered.Count)
-                    Next
                     shape.LockUpdates()
-                    shape.ShapeData = asValues
+                    For iTime As Integer = 0 To shape.XMax
+                        shape.ShapeData(iTime) = lsEntered(iTime Mod lsEntered.Count)
+                    Next
                     shape.UnlockUpdates()
                 Next
 

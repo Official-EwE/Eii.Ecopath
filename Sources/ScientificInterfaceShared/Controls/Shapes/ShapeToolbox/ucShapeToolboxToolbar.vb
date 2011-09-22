@@ -65,7 +65,8 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Remove, Me.m_tsbRemove)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ResetAll, Me.m_tsbResetAll)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToZero, Me.m_tsbSetTo0)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetValue, Me.m_tsbSetToValue)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToEcopathBaseline, Me.m_tsbSetToBaseline)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToValue, Me.m_tsbSetToValue)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Filter, Me.m_tscmbFilter)
 
             Dim astrFilters As String() = Me.m_handler.Filters()
@@ -164,7 +165,15 @@ Namespace Controls
             Handles m_tsbSetToValue.Click
 
             If (Me.m_handler Is Nothing) Then Return
-            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SetValue)
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SetToValue)
+
+        End Sub
+
+        Private Sub OnSteToBaseline(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_tsbSetToBaseline.Click
+
+            If (Me.m_handler Is Nothing) Then Return
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SetToEcopathBaseline)
 
         End Sub
 

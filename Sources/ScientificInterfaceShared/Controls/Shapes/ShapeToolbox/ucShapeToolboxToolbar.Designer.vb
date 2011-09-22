@@ -25,31 +25,33 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucShapeToolboxToolbar))
-            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.m_tsbImport = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbExport = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbLoad = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbWeight = New System.Windows.Forms.ToolStripButton
-            Me.m_ts1 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsbAdd = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbRemove = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbDuplicate = New System.Windows.Forms.ToolStripButton
-            Me.m_ts2 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsbSetTo0 = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbSetToValue = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbResetAll = New System.Windows.Forms.ToolStripButton
-            Me.m_tscmbFilter = New System.Windows.Forms.ToolStripComboBox
+            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbImport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbExport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbLoad = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbWeight = New System.Windows.Forms.ToolStripButton()
+            Me.m_ts1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbAdd = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbRemove = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbDuplicate = New System.Windows.Forms.ToolStripButton()
+            Me.m_ts2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbSetTo0 = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbSetToValue = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbResetAll = New System.Windows.Forms.ToolStripButton()
+            Me.m_tscmbFilter = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_tsbSetToBaseline = New System.Windows.Forms.ToolStripButton()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter})
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToBaseline, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
+            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             Me.m_ts.Size = New System.Drawing.Size(903, 25)
             Me.m_ts.TabIndex = 0
-            Me.m_ts.Text = "ToolStrip1"
             '
             'm_tsbImport
             '
@@ -160,6 +162,15 @@ Namespace Controls
             Me.m_tscmbFilter.Size = New System.Drawing.Size(150, 25)
             Me.m_tscmbFilter.Sorted = True
             '
+            'm_tsbSetToBaseline
+            '
+            Me.m_tsbSetToBaseline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbSetToBaseline.Image = CType(resources.GetObject("m_tsbSetToBaseline.Image"), System.Drawing.Image)
+            Me.m_tsbSetToBaseline.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbSetToBaseline.Name = "m_tsbSetToBaseline"
+            Me.m_tsbSetToBaseline.Size = New System.Drawing.Size(87, 22)
+            Me.m_tsbSetToBaseline.Text = "Set to &baseline"
+            '
             'ucShapeToolboxToolbar
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -187,6 +198,7 @@ Namespace Controls
         Private WithEvents m_tsbResetAll As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbExport As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tscmbFilter As System.Windows.Forms.ToolStripComboBox
+        Private WithEvents m_tsbSetToBaseline As System.Windows.Forms.ToolStripButton
 
     End Class
 

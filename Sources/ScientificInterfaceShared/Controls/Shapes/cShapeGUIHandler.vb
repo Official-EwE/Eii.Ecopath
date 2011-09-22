@@ -55,9 +55,11 @@ Namespace Controls
             ''' <summary>Set the weight of a single time series.</summary>
             SetWeight
             ''' <summary>Set a shape to a given value.</summary>
-            SetValue
+            SetToValue
             ''' <summary>Set a shape to 0.</summary>
             SetToZero
+            ''' <summary>Set a shape to the Ecopath baseline value.</summary>
+            SetToEcopathBaseline
             ''' <summary>Weight all time series.</summary>
             Weight
             ''' <summary>Define mediation items.</summary>
