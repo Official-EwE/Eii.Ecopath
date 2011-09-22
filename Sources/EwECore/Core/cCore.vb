@@ -12575,6 +12575,22 @@ Public Class cCore
                 End Select 'Select Case value.varName
 
 
+            Case eDataTypes.EcospaceGroup
+
+                Select Case value.varName
+                    Case eVarNameFlags.PreferredHabitat
+
+                        'Let Ecospace decide what to update in response
+                        If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
+                            'Capacity layer has changed
+                            'send out a message
+                            Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
+                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
+                        End If
+
+                End Select
+
+
             Case eDataTypes.MonteCarlo
 
                 Select Case value.varName
@@ -12755,6 +12771,7 @@ Public Class cCore
                      eDataTypes.EcospaceLayerFlow, _
                      eDataTypes.EcospaceLayerUpwelling, _
                      eDataTypes.EcospaceLayerHabitatCapacityInput
+
                     DirectCast(obj, cEcospaceLayer).Invalidate()
 
                     'update the map/response interactions to the new data
