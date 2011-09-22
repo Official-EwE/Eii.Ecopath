@@ -171,6 +171,10 @@ Public Class cEcospaceModelParameters
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(1, eVarNameFlags.EcospaceCapCalType, eStatusFlags.Null, eValueTypes.Int, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
 
 
             'set status flags to default values
@@ -544,6 +548,32 @@ Public Class cEcospaceModelParameters
         End Set
 
     End Property
+
+
+    ''' <summary>
+    ''' Set the inputs that Ecospace uses to calculate capacity
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' </remarks>
+    Public Property CapacityCalculationType() As Integer
+
+        Get
+            Return CInt(GetVariable(eVarNameFlags.EcospaceCapCalType))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.EcospaceCapCalType, value)
+        End Set
+
+    End Property
+
+
+
+
+
+
 
 #End Region ' Variables by dot (.) operator
 

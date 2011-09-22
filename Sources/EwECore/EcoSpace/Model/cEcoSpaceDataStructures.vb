@@ -489,6 +489,8 @@ Public Class cEcospaceDataStructures
 
     Public CapMaps As IEnviroInputMap() = Nothing
 
+    Public CapCalType As EwEUtils.Core.eEcospaceCapacityCalType = EwEUtils.Core.eEcospaceCapacityCalType.Capacity
+
 #End Region
 
 #Region "Private Data"

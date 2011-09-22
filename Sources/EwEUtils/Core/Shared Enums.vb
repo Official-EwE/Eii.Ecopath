@@ -661,6 +661,9 @@ Namespace Core
         ''' <summary>Ecospace save results to ASC file format.</summary>
         EcospaceSaveASC
 
+        ''' <summary>How Capacity is calculated in Ecospace.</summary>
+        EcospaceCapCalType
+
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time
         '''''''''''''''''''''
@@ -2432,5 +2435,15 @@ Namespace Core
     End Enum
 
 #End Region ' Automated update result types
+
+#Region "Ecospace Capacity and Habitat"
+
+    Public Enum eEcospaceCapacityCalType As Integer
+        CapacityAndHabitat
+        Capacity
+        Habitat
+    End Enum
+
+#End Region
 
 End Namespace ' Core

@@ -8974,7 +8974,7 @@ Public Class cCore
             'SaveASC
             m_EcospaceModelParams.SaveASC = m_EcoSpaceData.bSaveASC
 
-
+            m_EcospaceModelParams.CapacityCalculationType = m_EcoSpaceData.CapCalType
 
             ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. Since this
             '             value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
@@ -9024,6 +9024,9 @@ Public Class cCore
         m_EcoSpaceData.UseExact = m_EcospaceModelParams.UseExact
         m_EcoSpaceData.bSaveCSV = m_EcospaceModelParams.SaveCSV
         m_EcoSpaceData.bSaveASC = m_EcospaceModelParams.SaveASC
+
+        'cast the Integer from the interface into the Enum
+        m_EcoSpaceData.CapCalType = CType(m_EcospaceModelParams.CapacityCalculationType, eEcospaceCapacityCalType)
 
         ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. Since this
         '             value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
