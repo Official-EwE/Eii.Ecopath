@@ -5488,11 +5488,12 @@ exitline:
     End Function
 
 
-    Private Function setHabCapFromHabitat() As Single
+    Private Function setHabCapFromHabitat() As Boolean
         Dim i As Integer, j As Integer, K As Integer, bReturn As Boolean
 
         'If the CapCalType = Capacity then ONLY Capacity Inputs are used to calculate Capacity 
         If Me.m_Data.CapCalType <> eEcospaceCapacityCalType.Capacity Then
+
             bReturn = True
             For K = 1 To Me.m_Data.NGroups
                 For i = 1 To Me.m_Data.InRow
@@ -5501,8 +5502,8 @@ exitline:
                         'example using qualitative habitat use from old ecospace
 
                         If ((Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) > 0) Or (Me.m_Data.PrefHab(K, 0) > 0)) And (m_Data.Depth(i, j) > 0.0) Then
-                            'sum 1 to the existing capacity
-                            Me.m_Data.HabCap(i, j, K) += 1
+                            'sum into the existing capacity
+                            Me.m_Data.HabCap(i, j, K) += 1.0
                         End If
                         'Do Not set min hab capacity here 
                         'it will be set once all the capacities have been add and the capacity is normalizeCapacityMap()
@@ -5615,7 +5616,8 @@ exitline:
                 MapDataType = eDataTypes.EcospaceLayerRelPP Or _
                 MapDataType = eDataTypes.CapacityMediation Or _
                 MapDataType = eDataTypes.EcospaceMapResponse Or _
-                MapDataType = eDataTypes.EcospaceModelParameter Then
+                MapDataType = eDataTypes.EcospaceModelParameter Or _
+                MapDataType = eDataTypes.EcospaceGroup Then
 
                 Me.SetHabCap()
 
