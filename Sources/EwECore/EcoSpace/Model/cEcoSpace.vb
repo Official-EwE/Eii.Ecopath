@@ -5571,6 +5571,7 @@ exitline:
             If MapDataType = eDataTypes.EcospaceLayerHabitat Or _
                 MapDataType = eDataTypes.EcospaceHabitat Or _
                 MapDataType = eDataTypes.EcospaceLayerDepth Or _
+                MapDataType = eDataTypes.EcospaceLayerHabitatCapacityInput Or _
                 MapDataType = eDataTypes.EcospaceLayerHabitatCapacity Or _
                 MapDataType = eDataTypes.EcospaceLayerRelPP Or _
                 MapDataType = eDataTypes.CapacityMediation Or _

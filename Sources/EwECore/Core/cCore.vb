@@ -12740,7 +12740,8 @@ Public Class cCore
                      eDataTypes.EcospaceLayerSail, _
                      eDataTypes.EcospaceLayerMigration, _
                      eDataTypes.EcospaceLayerFlow, _
-                     eDataTypes.EcospaceLayerUpwelling
+                     eDataTypes.EcospaceLayerUpwelling, _
+                     eDataTypes.EcospaceLayerHabitatCapacityInput
                     DirectCast(obj, cEcospaceLayer).Invalidate()
 
                     'update the map/response interactions to the new data

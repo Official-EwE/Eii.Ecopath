@@ -485,7 +485,9 @@ Namespace Core
         LayerDepth
         ''' <summary>Ecospace cell habitat assignments</summary>
         LayerHabitat
-        ''' <summary>Ecospace cell habitat capacity.</summary>
+        ''' <summary>Ecospace cell habitat capacity, input.</summary>
+        LayerHabitatCapacityInput
+        ''' <summary>Ecospace cell habitat capacity, computed.</summary>
         LayerHabitatCapacity
         ''' <summary>Ecospace cell MPA assignments</summary>
         LayerMPA
@@ -1925,8 +1927,8 @@ Namespace Core
         ''' </summary>
         LandingInteraction = 97
 
-
         EcospaceLayerHabitatCapacity = 98
+        EcospaceLayerHabitatCapacityInput = 101
 
         ''' <summary>
         ''' Data belongs to a Capacity Mediation.

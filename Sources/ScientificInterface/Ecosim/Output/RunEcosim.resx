@@ -177,13 +177,13 @@
   <data name="m_tsbnFleet.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFWSURBVDhPnZPPToNAEMb7Gj7bLggmevJq7N1XsBEbtaHW
-        fz1ighxImm0wEC70YAghhnAyhvRGwnVkFpdCi1Ek4TCzO7/59tvZwaDjkxR6K6sUxI9x174fc1iYJO8w
-        mdyAaT5zUG+ArutgGAZYlvk/wGoVQBi+AVsu+gOEB46z5MW9PcDzYmGWZb93F07vq/SoaRTmiyLvBIga
-        vh8Dy3rhG5uQClC0ALiO+SgKN3lZoR+O4wBjrAXZBohiTdM4QFJIVilQaBQEAbiuyxWUcS6UNRVgHtfx
-        VmzbBqzjAEklZ5fjC5jPn3YU5PnGA6EAm7WOSw7JHspBBaPReT2+D4/35RyEcHU9rnPYeXY3xe6frcmU
-        DsgJUmezKTcUC7F7mqY89jyvPOIrDIenO2bXIAFBEGML8H2/BCQQxzGIgdq+qc73Uco7RoNklayrKSTZ
-        d0x7Pai/bv4CwU5Bm+gKQcQAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFXSURBVDhPnZPPToNAEMb7Gr6auwUx0ZNXY+++go3YqA0V
+        //WICXIgabbBQLjQgyGEGMLJGNIbCdeRWbIUWowiCYeZ3fnNt9/ODgYdH5XpnaRQED/GXft+zGFhknzA
+        dHoLpvnCQb0BmqaBYRhgWeb/AKtVAGH4Dmy56A8QHjjOkhf39gDPi4VZlv3eXTgtK/S4aRTmiyLvBIga
+        vh8Dy3rlG5uQClC0ALiO+SgKN3npgH46jgOMsRZkGyCKVVXlACqTrFIg0ygIAnBdlyso41woayrAPK7j
+        rdi2DVjHAUOFnF9NLmE+f95RkOcbD4QCbNY6LjkieygHFYzHF/X4Pj49lHMQwvXNpM5hZ/1+ht2/WpM5
+        PCSnSNX1GTcUC7F7mqY89jyvPOIbjEZnO2bXIAFBEGML8H2/BCQQxzGIgdq+qc73Ud7KCRokKfvragpJ
+        VsWE9npQf938DZYLQYUvU8qAAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_tsbnFleet.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -201,16 +201,16 @@
   <data name="m_tsbnGroup.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPzVJNq+FRGLeaL+A72FooJZESNpTyXhIJC1ak
-        UJR0DVGUGEReIpLi36XJGA1dbO6t+wlmM1MzawvvL8+c59SdZjHd7mZqTp3+p//zezvPeVis/3YplcqO
-        1+vNqdXqtsPhKL05qEAgmPp8vlqxWMxls1nIZDLg9/trEolk/KoIcWlotdpxMpnsEDKk02loNpuQSqVg
-        uVxCPB5vu1yuzl9FeDzegjh9qNfrMBwOYTweU/JgMIB8Pg+xWAwsFgv0+/0nYvKIIiaTqSoWiwdU0Gw2
-        3y8WC0DnbrcLvV4P5vM5FAoFmEwmUK1WIRwOg9VqBcST8yMRzQWDwTxLo9EwhHSHjkSIkiuVCpRKJVit
-        VjQR9gHrgUAASAKYzWbQaDRAKpU+sORy+RyLCObz+TQ2OjmdTvB4PIDXGo1GVAAxDMNAq9WCdrsN5IVW
-        LJ1ON71cLoB7v9/DdruFSCQCh8OBntF1s9nA6XSi/1AUU5XLZeByuT9pD0Qi0UcE47rdbkBmAKLRKNjt
-        drher3A+n6k4iu12O+BwON/X6zUYDIYfVCAUCr0nCS5YxGWz2SgRxV622+2mZPJ9QI5QKPxKcN9+Pyub
-        zX5WqVRMIpF4xuscj0cam6T5otfrayQNg6KkP/evDpRCoZgZjcYpIX0iTfr8J1gmk43ePNL/FEja9O7F
-        4Bfb5Hl5/ng/1QAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAICSURBVDhPzZLNq+FRGMet5g/wR9haKEWhFDYWikTJS2LD
+        ihSKkoZEUWIQeYlIil+XbsZo6GJzp+5fMJuZmllbeLtennmeU3eaxXS7m6k5dfqdzvl+P9/nPL/D4/23
+        Q6vVdn0+X16n03VcLlf5zYVKJJKZ3++vl0qlfC6Xg2w2C4FAoK5QKCavQjClaTAYJqlUqotmyGQy0Gq1
+        IJ1Ow2q1gkQi0XG73d2/QkQi0RKTPjQaDRiNRjCZTJh5OBxCoVCAeDwOVqsVBoPBFwx5JIjZbK7J5fIh
+        A1oslrvlcgmU3Ov1oN/vw2KxgGKxCNPpFGq1GkQiEbDb7UB6XD8iNB8KhQo8vV7Poek9JSKImavVKpTL
+        ZViv16wi6gOdB4NBwApgPp9Ds9kEpVL5wFOr1Qs6JLFYLGZlUxLeF7xeL9C1xuMxA5CG4zhot9vQ6XQA
+        /9Cah8TZ5XIBmofDAXa7HUSjUTgej2xNqdvtFp6fn9keQamqSqUCQqHwJ+uBTCa7JzGN2+0G+AYgFouB
+        0+mE6/UK5/OZwQm23+9BIBB832w2YDQafzBAOBxOouhChzQcDgczEuxlejweZsbvA3mkUulX1H37/Vv5
+        fP4TJnPJZPKJrnM6nVjZuPcZk+pYDUdQm8129+qD0mg0c5PJNEPTR2zSpz/FKpVq/OYn/U+F2KZ3LwG/
+        AKireVhu6bT4AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_tsbnGroup.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -314,9 +314,6 @@
   </data>
   <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="m_tsMain.Text" xml:space="preserve">
-    <value>ToolStrip1</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
     <value>m_tsMain</value>
@@ -604,9 +601,6 @@
   </data>
   <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
-  </data>
-  <data name="m_ts.Text" xml:space="preserve">
-    <value>ToolStrip1</value>
   </data>
   <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
     <value>m_ts</value>

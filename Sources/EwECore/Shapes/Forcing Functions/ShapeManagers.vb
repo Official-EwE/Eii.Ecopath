@@ -391,7 +391,6 @@ End Class
 Public Class cForcingFunctionManager
     Inherits cBaseShapeManager
 
-
     ''' <summary>
     ''' Creates and loads a new Forcing shape manager out from the EcoSim data
     ''' </summary>
@@ -700,10 +699,10 @@ End Class
 
 #End Region ' Mediation shape manager
 
-#Region " Mediation shape manager "
+#Region " Capacity shape manager "
 
 ''' <summary>
-''' Implemenation of the Base class for Mediation shapes
+''' Implemenation of the Base class for capacity shapes
 ''' </summary>
 ''' <remarks>
 ''' </remarks>
@@ -787,7 +786,7 @@ Public Class cCapMapResponseManager
 
 End Class
 
-#End Region ' Mediation shape manager
+#End Region ' Capacity shape manager
 
 #Region " Egg Production shape manager "
 
@@ -1102,6 +1101,8 @@ Public MustInherit Class cFishingBaseShapeManager
 
     Public MustOverride Sub ResetToDefaults()
 
+    Public MustOverride Function EcopathBaseValue(ByVal iShape As Integer) As Single
+
 End Class
 
 #End Region ' Effort shape manager base class
@@ -1163,6 +1164,10 @@ Public Class cFishingEffortManger
         Me.ShapeChanged()
     End Sub
 
+    Public Overrides Function EcopathBaseValue(ByVal iShape As Integer) As Single
+        Return Me.m_core.m_EcoPathData.fCatch(iShape)
+    End Function
+
 End Class
 
 #End Region ' Fishing Rate shape manager
@@ -1211,6 +1216,10 @@ Public Class cFishingMortalityManger
         Me.Load()
         Me.ShapeChanged()
     End Sub
+
+    Public Overrides Function EcopathBaseValue(ByVal iShape As Integer) As Single
+        Return 0
+    End Function
 
 End Class
 

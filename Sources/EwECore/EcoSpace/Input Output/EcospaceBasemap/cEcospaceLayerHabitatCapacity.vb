@@ -12,9 +12,9 @@ Public Class cEcospaceLayerHabitatCapacity
     Inherits cEcospaceLayerSingle
     Implements ICoreGroupFilter
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerHabitatCapacity)
-        Me.m_dataType = eDataTypes.EcospaceLayerHabitatCapacity
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal dt As eDataTypes, ByVal vn As eVarNameFlags)
+        MyBase.New(theCore, manager, vn)
+        Me.m_dataType = dt
     End Sub
 
 #Region " Cell interaction "

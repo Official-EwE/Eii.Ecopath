@@ -103,6 +103,11 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerHabitatCapacity, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' LayerHabitatCapacityInput
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerHabitatCapacityInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' LayerMPA
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nMPAs), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             val = New cValue(0, eVarNameFlags.LayerMPA, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -175,7 +180,13 @@ Public Class cEcospaceBasemap
             ' Habitat layers
             layer = New cEcospaceLayerHabitat(theCore, Me)
             Me.Layers(layer.VarName) = layer
-            layer = New cEcospaceLayerHabitatCapacity(theCore, Me)
+
+            ' Habitat capacity input layer
+            layer = New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacityInput, eVarNameFlags.LayerHabitatCapacityInput)
+            Me.Layers(layer.VarName) = layer
+
+            ' Habitat capacity output layer
+            layer = New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacity)
             Me.Layers(layer.VarName) = layer
 
             ' MPA layer
@@ -479,6 +490,24 @@ Public Class cEcospaceBasemap
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerHabitatCapacityInput() As cEcospaceLayerHabitatCapacity
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerHabitatCapacityInput), cEcospaceLayerHabitatCapacity)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerHabitatCapacity() As cEcospaceLayerHabitatCapacity
         Get
             Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerHabitatCapacity), cEcospaceLayerHabitatCapacity)
@@ -640,6 +669,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.HabType
             Case eVarNameFlags.LayerHabitatCapacity
                 Return Me.m_core.m_EcoSpaceData.HabCap
+            Case eVarNameFlags.LayerHabitatCapacityInput
+                Return Me.m_core.m_EcoSpaceData.HabCapInput
             Case eVarNameFlags.LayerMPA
                 Return Me.m_core.m_EcoSpaceData.MPA
             Case eVarNameFlags.LayerRegion
