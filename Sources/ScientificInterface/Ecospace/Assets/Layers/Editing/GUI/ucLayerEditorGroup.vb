@@ -28,7 +28,6 @@ Namespace Ecospace.Basemap.Layers
             Me.m_cmbGroup.Items.Clear()
 
             ' ToDo: this control will not respond to dynamic name changes
-            Me.m_cmbGroup.Items.Add(SharedResources.GENERIC_VALUE_ALL)
             For iGroup As Integer = 1 To core.nGroups
                 grp = core.EcoPathGroupInputs(iGroup)
                 Me.m_cmbGroup.Items.Add(fmt.GetDescriptor(grp))
