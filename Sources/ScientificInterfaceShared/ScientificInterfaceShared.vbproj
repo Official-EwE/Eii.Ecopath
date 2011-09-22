@@ -572,6 +572,7 @@
     <Content Include="Resources\Annual.png" />
     <None Include="Resources\fishing_gear.png" />
     <None Include="Resources\fish.png" />
+    <Content Include="Resources\Fill.png" />
     <Content Include="Resources\Info.ico" />
     <None Include="Resources\rss_icon.gif" />
     <None Include="Resources\multistanza.png" />

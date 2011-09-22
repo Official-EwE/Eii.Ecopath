@@ -3077,6 +3077,9 @@ Namespace Database
                 '    Next
                 'End If
 
+                ' JS 22Sep11: set default capacity calculation type
+                drow("CapacityCalcType") = eEcospaceCapacityCalType.Habitat
+
                 ReDim depthmap(CInt(drow("InRow")), CInt(drow("InCol")))
                 Me.m_dicDepthMaps(nScenarioID) = depthmap
 

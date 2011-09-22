@@ -7184,6 +7184,7 @@ Namespace DataSources
                 ecospaceDS.AdjustSpace = (CInt(reader("AdjustSpace")) <> 0)
                 ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
+                ecospaceDS.CapCalType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.Capacity)), eEcospaceCapacityCalType)
 
                 Select Case CInt(reader("ModelType"))
                     Case 0
@@ -7383,6 +7384,7 @@ Namespace DataSources
                     drow("Tolerance") = ecospaceDS.Tol
                 End If
                 drow("LastSaved") = cDateUtils.DateToJulian()
+                drow("CapacityCalType") = ecospaceDS.CapCalType
 
                 drow.EndEdit()
 
@@ -7478,6 +7480,8 @@ Namespace DataSources
                 drow("DepthAMap") = cStringUtils.ArrayToString(aiNewMap)
                 drow("RelPPMap") = cStringUtils.ArrayToString(asNewMap)
                 drow("RelCinMap") = cStringUtils.ArrayToString(asNewMap)
+                drow("CapacityCalType") = eEcospaceCapacityCalType.Capacity
+
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)

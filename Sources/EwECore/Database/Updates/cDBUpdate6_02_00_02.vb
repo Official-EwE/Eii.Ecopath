@@ -136,7 +136,9 @@ Friend Class cDBUpdate6_02_00_02
     End Function
 
     Private Function UpdateEcospaceParmsTable(ByVal db As cEwEDatabase) As Boolean
-        Return db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN CapacityCalcType SHORT")
+
+        Return db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN CapacityCalType SHORT")
+
     End Function
 
 End Class
