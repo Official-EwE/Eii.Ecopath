@@ -28,50 +28,55 @@ Namespace Ecospace
         Private Sub InitializeComponent()
             Dim m_gbModel As System.Windows.Forms.GroupBox
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcospaceParameters))
-            Me.m_rbNewStanzaModel = New System.Windows.Forms.RadioButton
-            Me.m_rbIBM = New System.Windows.Forms.RadioButton
-            Me.m_rbOldSchool = New System.Windows.Forms.RadioButton
-            Me.m_rbBaseBiomass = New System.Windows.Forms.RadioButton
-            Me.m_rbAdjustedBiomass = New System.Windows.Forms.RadioButton
-            Me.m_cbPredictEffort = New System.Windows.Forms.CheckBox
-            Me.m_lbNumThreads = New System.Windows.Forms.Label
-            Me.m_nudNumThreads = New ScientificInterfaceShared.Controls.cEwENumericUpDown
-            Me.lbPacketsMultiplier = New System.Windows.Forms.Label
-            Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_hdrModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel
-            Me.m_gbThreading = New System.Windows.Forms.GroupBox
-            Me.m_tbNumPackets = New System.Windows.Forms.TextBox
-            Me.m_nudMaxIterations = New ScientificInterfaceShared.Controls.cEwENumericUpDown
-            Me.m_lbTotalTime = New System.Windows.Forms.Label
-            Me.m_lblNumTimstepsPerYear = New System.Windows.Forms.Label
-            Me.m_lbNumIterations = New System.Windows.Forms.Label
-            Me.m_lbTolerance = New System.Windows.Forms.Label
-            Me.m_lbSOR = New System.Windows.Forms.Label
-            Me.m_tbTotalTime = New System.Windows.Forms.TextBox
-            Me.m_tbNumTimeStepsPerYear = New System.Windows.Forms.TextBox
-            Me.m_tbTolerance = New System.Windows.Forms.TextBox
-            Me.m_tbSOR = New System.Windows.Forms.TextBox
-            Me.m_gbRunTime = New System.Windows.Forms.GroupBox
-            Me.m_cbSaveCSV = New System.Windows.Forms.CheckBox
-            Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox
-            Me.m_cbUseExact = New System.Windows.Forms.CheckBox
-            Me.m_tbContact = New System.Windows.Forms.TextBox
-            Me.m_tbAuthor = New System.Windows.Forms.TextBox
-            Me.m_lbContact = New System.Windows.Forms.Label
-            Me.m_lbAuthor = New System.Windows.Forms.Label
-            Me.m_tbName = New System.Windows.Forms.TextBox
-            Me.m_tbDescription = New System.Windows.Forms.TextBox
-            Me.m_lblDescription = New System.Windows.Forms.Label
-            Me.m_lbScenarioName = New System.Windows.Forms.Label
-            Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_plBiomass = New System.Windows.Forms.Panel
-            Me.m_cbSaveASC = New System.Windows.Forms.CheckBox
-            m_gbModel = New System.Windows.Forms.GroupBox
+            Me.m_rbNewStanzaModel = New System.Windows.Forms.RadioButton()
+            Me.m_rbIBM = New System.Windows.Forms.RadioButton()
+            Me.m_rbOldSchool = New System.Windows.Forms.RadioButton()
+            Me.m_rbBaseBiomass = New System.Windows.Forms.RadioButton()
+            Me.m_rbAdjustedBiomass = New System.Windows.Forms.RadioButton()
+            Me.m_cbPredictEffort = New System.Windows.Forms.CheckBox()
+            Me.m_lbNumThreads = New System.Windows.Forms.Label()
+            Me.m_nudNumThreads = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.lbPacketsMultiplier = New System.Windows.Forms.Label()
+            Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_gbThreading = New System.Windows.Forms.GroupBox()
+            Me.m_tbNumPackets = New System.Windows.Forms.TextBox()
+            Me.m_gbCapCalcs = New System.Windows.Forms.GroupBox()
+            Me.m_rbHab = New System.Windows.Forms.RadioButton()
+            Me.m_rbCap = New System.Windows.Forms.RadioButton()
+            Me.m_rbCapHap = New System.Windows.Forms.RadioButton()
+            Me.m_nudMaxIterations = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lbTotalTime = New System.Windows.Forms.Label()
+            Me.m_lblNumTimstepsPerYear = New System.Windows.Forms.Label()
+            Me.m_lbNumIterations = New System.Windows.Forms.Label()
+            Me.m_lbTolerance = New System.Windows.Forms.Label()
+            Me.m_lbSOR = New System.Windows.Forms.Label()
+            Me.m_tbTotalTime = New System.Windows.Forms.TextBox()
+            Me.m_tbNumTimeStepsPerYear = New System.Windows.Forms.TextBox()
+            Me.m_tbTolerance = New System.Windows.Forms.TextBox()
+            Me.m_tbSOR = New System.Windows.Forms.TextBox()
+            Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
+            Me.m_cbSaveASC = New System.Windows.Forms.CheckBox()
+            Me.m_cbSaveCSV = New System.Windows.Forms.CheckBox()
+            Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
+            Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
+            Me.m_tbContact = New System.Windows.Forms.TextBox()
+            Me.m_tbAuthor = New System.Windows.Forms.TextBox()
+            Me.m_lbContact = New System.Windows.Forms.Label()
+            Me.m_lbAuthor = New System.Windows.Forms.Label()
+            Me.m_tbName = New System.Windows.Forms.TextBox()
+            Me.m_tbDescription = New System.Windows.Forms.TextBox()
+            Me.m_lblDescription = New System.Windows.Forms.Label()
+            Me.m_lbScenarioName = New System.Windows.Forms.Label()
+            Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_plBiomass = New System.Windows.Forms.Panel()
+            m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpModelTop.SuspendLayout()
             Me.m_gbThreading.SuspendLayout()
+            Me.m_gbCapCalcs.SuspendLayout()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbRunTime.SuspendLayout()
             Me.m_plBiomass.SuspendLayout()
@@ -79,10 +84,10 @@ Namespace Ecospace
             '
             'm_gbModel
             '
-            resources.ApplyResources(m_gbModel, "m_gbModel")
             m_gbModel.Controls.Add(Me.m_rbNewStanzaModel)
             m_gbModel.Controls.Add(Me.m_rbIBM)
             m_gbModel.Controls.Add(Me.m_rbOldSchool)
+            resources.ApplyResources(m_gbModel, "m_gbModel")
             m_gbModel.Name = "m_gbModel"
             m_gbModel.TabStop = False
             '
@@ -165,15 +170,16 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tlpModelTop, "m_tlpModelTop")
             Me.m_tlpModelTop.Controls.Add(Me.m_gbThreading, 1, 0)
             Me.m_tlpModelTop.Controls.Add(m_gbModel, 0, 0)
+            Me.m_tlpModelTop.Controls.Add(Me.m_gbCapCalcs, 2, 0)
             Me.m_tlpModelTop.Name = "m_tlpModelTop"
             '
             'm_gbThreading
             '
-            resources.ApplyResources(Me.m_gbThreading, "m_gbThreading")
             Me.m_gbThreading.Controls.Add(Me.m_tbNumPackets)
             Me.m_gbThreading.Controls.Add(Me.m_lbNumThreads)
             Me.m_gbThreading.Controls.Add(Me.m_nudNumThreads)
             Me.m_gbThreading.Controls.Add(Me.lbPacketsMultiplier)
+            resources.ApplyResources(Me.m_gbThreading, "m_gbThreading")
             Me.m_gbThreading.Name = "m_gbThreading"
             Me.m_gbThreading.TabStop = False
             '
@@ -181,6 +187,36 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_tbNumPackets, "m_tbNumPackets")
             Me.m_tbNumPackets.Name = "m_tbNumPackets"
+            '
+            'm_gbCapCalcs
+            '
+            Me.m_gbCapCalcs.Controls.Add(Me.m_rbHab)
+            Me.m_gbCapCalcs.Controls.Add(Me.m_rbCap)
+            Me.m_gbCapCalcs.Controls.Add(Me.m_rbCapHap)
+            resources.ApplyResources(Me.m_gbCapCalcs, "m_gbCapCalcs")
+            Me.m_gbCapCalcs.Name = "m_gbCapCalcs"
+            Me.m_gbCapCalcs.TabStop = False
+            '
+            'm_rbHab
+            '
+            resources.ApplyResources(Me.m_rbHab, "m_rbHab")
+            Me.m_rbHab.Name = "m_rbHab"
+            Me.m_rbHab.TabStop = True
+            Me.m_rbHab.UseVisualStyleBackColor = True
+            '
+            'm_rbCap
+            '
+            resources.ApplyResources(Me.m_rbCap, "m_rbCap")
+            Me.m_rbCap.Name = "m_rbCap"
+            Me.m_rbCap.TabStop = True
+            Me.m_rbCap.UseVisualStyleBackColor = True
+            '
+            'm_rbCapHap
+            '
+            resources.ApplyResources(Me.m_rbCapHap, "m_rbCapHap")
+            Me.m_rbCapHap.Name = "m_rbCapHap"
+            Me.m_rbCapHap.TabStop = True
+            Me.m_rbCapHap.UseVisualStyleBackColor = True
             '
             'm_nudMaxIterations
             '
@@ -255,6 +291,12 @@ Namespace Ecospace
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
             '
+            'm_cbSaveASC
+            '
+            resources.ApplyResources(Me.m_cbSaveASC, "m_cbSaveASC")
+            Me.m_cbSaveASC.Name = "m_cbSaveASC"
+            Me.m_cbSaveASC.UseVisualStyleBackColor = True
+            '
             'm_cbSaveCSV
             '
             resources.ApplyResources(Me.m_cbSaveCSV, "m_cbSaveCSV")
@@ -328,12 +370,6 @@ Namespace Ecospace
             Me.m_plBiomass.Controls.Add(Me.m_rbAdjustedBiomass)
             Me.m_plBiomass.Name = "m_plBiomass"
             '
-            'm_cbSaveASC
-            '
-            resources.ApplyResources(Me.m_cbSaveASC, "m_cbSaveASC")
-            Me.m_cbSaveASC.Name = "m_cbSaveASC"
-            Me.m_cbSaveASC.UseVisualStyleBackColor = True
-            '
             'EcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
@@ -359,6 +395,8 @@ Namespace Ecospace
             Me.m_tlpModelTop.ResumeLayout(False)
             Me.m_gbThreading.ResumeLayout(False)
             Me.m_gbThreading.PerformLayout()
+            Me.m_gbCapCalcs.ResumeLayout(False)
+            Me.m_gbCapCalcs.PerformLayout()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gbRunTime.ResumeLayout(False)
             Me.m_gbRunTime.PerformLayout()
@@ -405,8 +443,12 @@ Namespace Ecospace
         Private WithEvents m_cbContaminantTracing As System.Windows.Forms.CheckBox
         Private WithEvents m_nudNumThreads As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMaxIterations As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Friend WithEvents m_cbSaveCSV As System.Windows.Forms.CheckBox
-        Friend WithEvents m_cbSaveASC As System.Windows.Forms.CheckBox
+        Private WithEvents m_gbCapCalcs As System.Windows.Forms.GroupBox
+        Private WithEvents m_rbHab As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbCap As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbCapHap As System.Windows.Forms.RadioButton
+        Private WithEvents m_cbSaveCSV As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbSaveASC As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace

@@ -166,6 +166,7 @@ Namespace Ecospace
             Dim threadingModel As eThreadingModelType = eThreadingModelType.OldSchool
             Dim bUseIBM As Boolean = CBool(Me.m_bpUseIBM.GetValue())
             Dim bUseNewStanza As Boolean = CBool(Me.m_bpUseNewStanza.GetValue())
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
 
             If bUseIBM Then threadingModel = eThreadingModelType.UseIBM
             If bUseNewStanza Then threadingModel = eThreadingModelType.UseNewStanza
@@ -179,10 +180,14 @@ Namespace Ecospace
                     Me.m_rbNewStanzaModel.Checked = True
             End Select
 
-            m_rbBaseBiomass.Checked = Not CBool(Me.m_bpAdjustSpace.GetValue())
-            m_rbAdjustedBiomass.Checked = CBool(Me.m_bpAdjustSpace.GetValue())
+            Me.m_rbBaseBiomass.Checked = Not CBool(Me.m_bpAdjustSpace.GetValue())
+            Me.m_rbAdjustedBiomass.Checked = CBool(Me.m_bpAdjustSpace.GetValue())
 
             Me.m_cbContaminantTracing.Checked = CBool(Me.m_bpConTracing.GetValue())
+
+            Me.m_rbCapHap.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.CapacityAndHabitat)
+            Me.m_rbCap.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.Capacity)
+            Me.m_rbHab.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.Habitat)
 
         End Sub
 
@@ -297,6 +302,22 @@ Namespace Ecospace
             Me.m_bpConTracing.SetValue(Me.m_cbContaminantTracing.Checked)
 
             Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnCapCalcOptionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_rbCapHap.CheckedChanged, m_rbCap.CheckedChanged, m_rbHab.CheckedChanged
+
+            Dim capcalctype As eEcospaceCapacityCalType = eEcospaceCapacityCalType.CapacityAndHabitat
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+
+            If Me.m_rbHab.Checked Then
+                capcalctype = eEcospaceCapacityCalType.Habitat
+            ElseIf Me.m_rbCap.Checked Then
+                capcalctype = eEcospaceCapacityCalType.Capacity
+            End If
+
+            parms.CapacityCalculationType = capcalctype
 
         End Sub
 
