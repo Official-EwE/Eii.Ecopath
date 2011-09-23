@@ -174,6 +174,15 @@
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
+  <data name="m_tsbnFleet.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACbSURBVDhPvZPdCcQgEITTn7VYiIXYiIVYiC8eX2DgMM4S
+        7+ECYUF3flbH6/r3l1Ka/D/pAuy9zzHGOQng1trMOd/VunAbrNdabwLqti+ajz2sW3U1RA6Y3yrD7ho0
+        f2gdsLOn07fqgMW+Nr1Sj5QhtrOTJl3Pzl5oXVGkqZTyuFsR24P7zvJKInCYuPUxACJlckM9fjRK4smL
+        +wBKM991ZomCIgAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="m_tsbnFleet.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -185,6 +194,24 @@
   </data>
   <data name="m_tsbnFleet.ToolTipText" xml:space="preserve">
     <value>Show fishing effort (per fleet)</value>
+  </data>
+  <data name="m_tsbnGroup.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKmSURBVDhPvZNrSJNhFMdHHyKIxA+FdvMShk3DybspzSlz
+        eVlzm5dd2NymOXXRLMGpmcuyu1CBNWlekAoxK8GoplGRlhc0pagkS0zMS3nJhUPBXF7ef+8US6gPfqk/
+        /DlwOOd3eJ7nPDTavxI5TW6RhghnHJG0UqbiqmbNAB52kvRmsGVkZOwhsDhyMoyfDEoeywCgay1sb5yp
+        3Jo/oL5+nEl+tBYK7XHEqXMgVWVDID4If4I3vbLY0Qz0r/uV40Toy3cGpz8glEW23doqbNPcgk9aHbaq
+        KiA60w4i3kQSkYYffz2Gtxe3IVZ1Yk6UehWCjGqEHnkCur4WRGY9PJNuY7u0DK7cXCjTSxHAVg45IPEc
+        XiXfl/FwEUjflzqUWFCNwPRiEMYq+JyqBcv8Cs6GO/C73AaX3HtwSjZhQ1w+ngPOLHV+RXhSnomnOQqa
+        r0A3nJBXgtjccrjJ88EtsIB+0gKP048RdrMX/qZ2uBrvg3HWAk9dEVyis6G9UANlViG8uCoKIGIj5ZwB
+        xhsX4baPQIr5GJhpYhAGGVg5asSY86CqvAKhuQApNVWIKStFRKEZEZdKsFF1ADSmjFffO/8VH2FF43gX
+        LF86wM2Jx9PZPty1dYFp3I/ro11oxgLqFr6DnpUJcfE1cM+bQAuPxeIdhLADWro7WwHSRnkMsigGMvQi
+        JCqCqNcawfhEH94NfIBEp0fTwPjm9QwBqSuqHd0Rk7EESFTLLfapEfS8bVoEJEj3AHOfqObPmJ/rh33e
+        iiiFGM3vexCkSG4YBnY5cTTwistcAjjk7uRujQoUNB6W657ZBycx1jmIie5RCFhhHdEhMY8kkaqWb0Oz
+        iAzVtE1NkZscpib8XqRlUBRz70sJR9QqCRK+EAfyO1YuTjAhfL2q//Bfi34C/smAn9BvyLQAAAAASUVO
+        RK5CYII=
+</value>
   </data>
   <data name="m_tsbnGroup.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -412,7 +439,7 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsdrpdnbtnContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 22</value>
+    <value>82, 22</value>
   </data>
   <data name="m_tsdrpdnbtnContent.Text" xml:space="preserve">
     <value>&amp;Data to plot</value>
@@ -561,7 +588,7 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsddGraphOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 22</value>
+    <value>62, 22</value>
   </data>
   <data name="m_tsddGraphOptions.Text" xml:space="preserve">
     <value>&amp;Options</value>

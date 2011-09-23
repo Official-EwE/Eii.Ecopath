@@ -134,7 +134,6 @@ Namespace Ecosim
             Me.m_tsbnFleet.CheckState = System.Windows.Forms.CheckState.Checked
             Me.m_tsbnFleet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnFleet, "m_tsbnFleet")
-            Me.m_tsbnFleet.Image = SharedResources.fishing_gear
             Me.m_tsbnFleet.Name = "m_tsbnFleet"
             '
             'm_tsbnGroup
@@ -142,7 +141,6 @@ Namespace Ecosim
             Me.m_tsbnGroup.CheckOnClick = True
             Me.m_tsbnGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnGroup, "m_tsbnGroup")
-            Me.m_tsbnGroup.Image = SharedResources.fish
             Me.m_tsbnGroup.Name = "m_tsbnGroup"
             '
             'm_tscbTarget
@@ -253,6 +251,7 @@ Namespace Ecosim
             '
             'm_tsdrpdnbtnContent
             '
+            Me.m_tsdrpdnbtnContent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.m_tsdrpdnbtnContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiBiomassAbs, Me.m_tsmiBiomassRel, Me.ToolStripSeparator6, Me.m_tsmiCatchAbs, Me.m_tsmiCatchRel, Me.ToolStripSeparator7, Me.m_tsmiValueAbs, Me.m_tsmiValueRel})
             Me.m_tsdrpdnbtnContent.Image = Global.ScientificInterface.My.Resources.Resources.Importance
             resources.ApplyResources(Me.m_tsdrpdnbtnContent, "m_tsdrpdnbtnContent")
@@ -320,6 +319,7 @@ Namespace Ecosim
             '
             'm_tsddGraphOptions
             '
+            Me.m_tsddGraphOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, ToolStripSeparator4, Me.m_tsmiShowAnnualOutput, Me.m_tsmiShowLegend, Me.ToolStripSeparator8, Me.m_tsmiSort, Me.m_tslChangeAmount, Me.m_tstbChangeAmount})
             resources.ApplyResources(Me.m_tsddGraphOptions, "m_tsddGraphOptions")
             Me.m_tsddGraphOptions.Name = "m_tsddGraphOptions"

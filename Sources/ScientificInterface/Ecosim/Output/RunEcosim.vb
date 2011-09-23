@@ -400,6 +400,7 @@ Namespace Ecosim
                 Me.IsRunning = bEcosimRunning
                 If Me.IsRunning Then
                     cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOSIM_RUNNING)
+                    Me.IsExploring = False
                 Else
                     cApplicationStatusNotifier.EndProgress(Me.Core)
                     If Not Me.m_zgp.ShowMultipleRuns Then
@@ -995,6 +996,8 @@ Namespace Ecosim
 
             Me.m_tsbnSetToValue.Enabled = Me.m_bIsEffortSelected
             Me.m_tsbnSetTo0.Enabled = Me.m_bIsEffortSelected
+
+            Me.m_tsbnExplore.Enabled = (Me.Core.StateMonitor.HasEcosimRan)
 
             Me.m_bInUpdate = False
 
