@@ -34,7 +34,7 @@ Namespace Ecospace.Basemap.Layers
             Next iGroup
 
             ' Update control
-            Me.m_cmbGroup.SelectedIndex = Me.GroupIndex
+            Me.m_cmbGroup.SelectedIndex = Me.GroupIndex - 1
 
         End Sub
 
@@ -75,7 +75,7 @@ Namespace Ecospace.Basemap.Layers
 
         Private Sub OnSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbGroup.SelectedIndexChanged
-            Me.GroupIndex = Me.m_cmbGroup.SelectedIndex
+            Me.GroupIndex = Me.m_cmbGroup.SelectedIndex + 1
         End Sub
 
     End Class
