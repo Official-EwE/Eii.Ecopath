@@ -485,6 +485,7 @@ Public Class cEcospaceDataStructures
     Public CapMapDBID() As Integer
     Public CapMapName() As String
     Public CapMapVariable() As EwEUtils.Core.eVarNameFlags
+    Public CapMapVarIndex() As Integer
     Public CapMapFunctions(,) As Integer
 
     Public CapMaps As IEnviroInputMap() = Nothing
@@ -996,7 +997,12 @@ Public Class cEcospaceDataStructures
             ReDim Me.CapMapDBID(Me.NumCapMaps)
             ReDim Me.CapMapName(Me.NumCapMaps)
             ReDim Me.CapMapVariable(Me.NumCapMaps)
+            ReDim Me.CapMapVarIndex(Me.NumCapMaps)
             ReDim Me.CapMapFunctions(Me.NumCapMaps, Me.NGroups)
+
+            For i As Integer = 0 To Me.NumCapMaps - 1
+                Me.CapMapVarIndex(i) = cCore.NULL_VALUE
+            Next
 
         Catch ex As Exception
 

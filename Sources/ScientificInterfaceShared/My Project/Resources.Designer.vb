@@ -88,6 +88,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Back() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Back", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property BreakpointHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("BreakpointHS", resourceCulture)
@@ -934,6 +941,13 @@ Namespace My.Resources
         Public ReadOnly Property FormulaEvaluatorHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("FormulaEvaluatorHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property forward() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("forward", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -4658,6 +4672,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property History() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("History", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property HomeHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("HomeHS", resourceCulture)
@@ -4669,13 +4690,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("ImportXMLHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Info() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Info", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         
@@ -4894,20 +4908,6 @@ Namespace My.Resources
         Public ReadOnly Property nav8_ecospace() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("nav8_ecospace", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Public ReadOnly Property NavBack() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("NavBack", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Public ReadOnly Property NavForward() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("NavForward", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

@@ -129,7 +129,7 @@ Public Class cMapResponseInteractionManager
             For iMap As Integer = 1 To Me.m_SpaceData.NumCapMaps
                 Try
 
-                    Dim data As Object = Me.m_core.EcospaceBasemap.GetLayerData(Me.m_SpaceData.CapMapVariable(iMap))
+                    Dim data As Object = Me.m_core.EcospaceBasemap.GetLayerData(Me.m_SpaceData.CapMapVariable(iMap), Me.m_SpaceData.CapMapVarIndex(iMap))
                     Dim map As IEnviroInputMap = Nothing
 
                     Debug.Assert(data IsNot Nothing)
@@ -138,20 +138,12 @@ Public Class cMapResponseInteractionManager
                     ' Get type of Ecospace element data
                     Dim tElm As Type = data.GetType.GetElementType
 
-                    ' Reflection cannot be used to call the constructor of a generic class with parameters. Aargh.
-                    '' Get type of Environmental map
-                    'Dim tMap As Type = GetType(cEnviroInputMap(Of ))
-                    '' Create generic instantiation type for type T
-                    'Dim tMagic As Type = tMap.MakeGenericType(tElm)
-                    '' Build map (helmet, anyone?)
-                    ''Dim map As IEnviroInputMap = DirectCast(Activator.CreateInstance(tMagic,  New Object() {Me, Me.CapacitMapInteractionManager, data, Me.m_SpaceData.CapMapName(i)}),  IEnviroInputMap)
-
                     If (tElm Is GetType(Integer)) Then
                         map = New cEnviroInputMap(Of Integer)(Me.m_core, Me.m_SpaceData.CapMapDBID(iMap), iMap, Me.m_SpaceData.CapMapName(iMap), _
-                                                              Me.m_SpaceData.CapMapVariable(iMap), Me, DirectCast(data, Integer(,)))
+                                                              Me, DirectCast(data, Integer(,)), Me.m_SpaceData.CapMapVariable(iMap), Me.m_SpaceData.CapMapVarIndex(iMap))
                     ElseIf (tElm Is GetType(Single)) Then
                         map = New cEnviroInputMap(Of Single)(Me.m_core, Me.m_SpaceData.CapMapDBID(iMap), iMap, Me.m_SpaceData.CapMapName(iMap), _
-                                                             Me.m_SpaceData.CapMapVariable(iMap), Me, DirectCast(data, Single(,)))
+                                                             Me, DirectCast(data, Single(,)), Me.m_SpaceData.CapMapVariable(iMap), Me.m_SpaceData.CapMapVarIndex(iMap))
                     Else
                         ' Not supported
                     End If

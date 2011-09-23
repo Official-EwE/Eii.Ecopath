@@ -134,6 +134,7 @@ Namespace Ecosim
             Me.m_tsbnFleet.CheckState = System.Windows.Forms.CheckState.Checked
             Me.m_tsbnFleet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnFleet, "m_tsbnFleet")
+            Me.m_tsbnFleet.Image = SharedResources.fishing_gear
             Me.m_tsbnFleet.Name = "m_tsbnFleet"
             '
             'm_tsbnGroup
@@ -141,6 +142,7 @@ Namespace Ecosim
             Me.m_tsbnGroup.CheckOnClick = True
             Me.m_tsbnGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnGroup, "m_tsbnGroup")
+            Me.m_tsbnGroup.Image = SharedResources.fish
             Me.m_tsbnGroup.Name = "m_tsbnGroup"
             '
             'm_tscbTarget

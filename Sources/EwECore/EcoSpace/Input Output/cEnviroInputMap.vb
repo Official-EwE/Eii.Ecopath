@@ -34,7 +34,9 @@ Public Class cEnviroInputMap(Of T)
 #End Region ' Private vars
 
     Friend Sub New(ByVal core As cCore, ByVal iDBID As Integer, ByVal iIndex As Integer, ByVal strName As String, _
-                   ByVal varName As eVarNameFlags, ByVal theManager As cMapResponseInteractionManager, ByVal MapArray(,) As T)
+                   ByVal theManager As cMapResponseInteractionManager, ByVal MapArray(,) As T, _
+                   ByVal varName As eVarNameFlags, _
+                   Optional ByVal iVarIndex As Integer = cCore.NULL_VALUE)
 
         MyBase.New(core)
 

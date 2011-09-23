@@ -48,9 +48,11 @@ Partial Class frmNavigationPanel
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.CloseButtonVisible = False
+        Me.ControlBox = False
         Me.Controls.Add(Me.m_tvNavigation)
         Me.HideOnClose = True
         Me.Name = "frmNavigationPanel"
+        Me.ShowIcon = False
         Me.TabText = "Navigator"
         Me.ResumeLayout(False)
 

@@ -33,6 +33,7 @@ Imports System.Threading
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Commands
 Imports System.Drawing.Printing
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -519,7 +520,11 @@ Public Class AppLauncher
 
     Private Sub InitDockPanelPositions()
 
-        Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockLeft)
+        If Me.StyleGuide.IsRightToLeft Then
+            Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockRight)
+        Else
+            Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockLeft)
+        End If
         Me.Panel(cPANEL_STATUS).Show(m_DockPanel, DockState.DockBottomAutoHide)
         Me.Panel(cPANEL_REMARKS).Show(m_DockPanel, DockState.DockBottomAutoHide)
 
@@ -704,10 +709,11 @@ Public Class AppLauncher
 
         ' Add the dock panel 
         Me.SuspendLayout()
-        Me.m_DockPanel = New DockPanel
+        Me.m_DockPanel = New DockPanel()
         With Me.m_DockPanel
             .Parent = Me
             .Dock = DockStyle.Fill
+            .ShowDocumentIcon = False
             .BringToFront()
         End With
 

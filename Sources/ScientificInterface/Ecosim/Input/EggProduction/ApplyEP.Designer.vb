@@ -113,7 +113,7 @@ Namespace Ecosim
             '
             Me.m_tsbSet.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tsbSet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbSet.Image = SharedResources.NavForward
+            Me.m_tsbSet.Image = SharedResources.forward
             resources.ApplyResources(Me.m_tsbSet, "m_tsbSet")
             Me.m_tsbSet.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tsbSet.Name = "m_tsbSet"

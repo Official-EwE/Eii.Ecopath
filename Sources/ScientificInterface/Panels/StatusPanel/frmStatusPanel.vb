@@ -70,6 +70,8 @@ Public Class frmStatusPanel
         Me.m_tvStatus.SelectedImageIndex = -1
         Me.m_tvStatus.SelectedImageKey = ""
 
+        Me.Icon = Icon.FromHandle(SharedResources.History.GetHicon)
+
         Me.SyncHistory()
 
         ' Go live

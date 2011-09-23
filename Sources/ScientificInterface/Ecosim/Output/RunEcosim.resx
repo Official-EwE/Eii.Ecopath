@@ -174,18 +174,6 @@
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
-  <data name="m_tsbnFleet.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFXSURBVDhPnZPPToNAEMb7Gr6auwUx0ZNXY+++go3YqA0V
-        //WICXIgabbBQLjQgyGEGMLJGNIbCdeRWbIUWowiCYeZ3fnNt9/ODgYdH5XpnaRQED/GXft+zGFhknzA
-        dHoLpvnCQb0BmqaBYRhgWeb/AKtVAGH4Dmy56A8QHjjOkhf39gDPi4VZlv3eXTgtK/S4aRTmiyLvBIga
-        vh8Dy3rlG5uQClC0ALiO+SgKN3npgH46jgOMsRZkGyCKVVXlACqTrFIg0ygIAnBdlyso41woayrAPK7j
-        rdi2DVjHAUOFnF9NLmE+f95RkOcbD4QCbNY6LjkieygHFYzHF/X4Pj49lHMQwvXNpM5hZ/1+ht2/WpM5
-        PCSnSNX1GTcUC7F7mqY89jyvPOIbjEZnO2bXIAFBEGML8H2/BCQQxzGIgdq+qc73Ud7KCRokKfvragpJ
-        VsWE9npQf938DZYLQYUvU8qAAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="m_tsbnFleet.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -197,21 +185,6 @@
   </data>
   <data name="m_tsbnFleet.ToolTipText" xml:space="preserve">
     <value>Show fishing effort (per fleet)</value>
-  </data>
-  <data name="m_tsbnGroup.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAICSURBVDhPzZLNq+FRGMet5g/wR9haKEWhFDYWikTJS2LD
-        ihSKkoZEUWIQeYlIil+XbsZo6GJzp+5fMJuZmllbeLtennmeU3eaxXS7m6k5dfqdzvl+P9/nPL/D4/23
-        Q6vVdn0+X16n03VcLlf5zYVKJJKZ3++vl0qlfC6Xg2w2C4FAoK5QKCavQjClaTAYJqlUqotmyGQy0Gq1
-        IJ1Ow2q1gkQi0XG73d2/QkQi0RKTPjQaDRiNRjCZTJh5OBxCoVCAeDwOVqsVBoPBFwx5JIjZbK7J5fIh
-        A1oslrvlcgmU3Ov1oN/vw2KxgGKxCNPpFGq1GkQiEbDb7UB6XD8iNB8KhQo8vV7Poek9JSKImavVKpTL
-        ZViv16wi6gOdB4NBwApgPp9Ds9kEpVL5wFOr1Qs6JLFYLGZlUxLeF7xeL9C1xuMxA5CG4zhot9vQ6XQA
-        /9Cah8TZ5XIBmofDAXa7HUSjUTgej2xNqdvtFp6fn9keQamqSqUCQqHwJ+uBTCa7JzGN2+0G+AYgFouB
-        0+mE6/UK5/OZwQm23+9BIBB832w2YDQafzBAOBxOouhChzQcDgczEuxlejweZsbvA3mkUulX1H37/Vv5
-        fP4TJnPJZPKJrnM6nVjZuPcZk+pYDUdQm8129+qD0mg0c5PJNEPTR2zSpz/FKpVq/OYn/U+F2KZ3LwG/
-        AKireVhu6bT4AAAAAElFTkSuQmCC
-</value>
   </data>
   <data name="m_tsbnGroup.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -319,7 +292,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.922.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_spContainer.Panel2</value>
@@ -343,7 +316,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.3.922.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_spContainer.Panel2</value>
@@ -606,7 +579,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.922.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -690,7 +663,7 @@
     <value>m_hdrRuns</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.922.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Parent" xml:space="preserve">
     <value>m_scOptions.Panel1</value>
@@ -765,7 +738,7 @@
     <value>m_hdrGroups</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.922.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
     <value>m_scOptions.Panel2</value>
@@ -795,7 +768,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.922.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_scOptions.Panel2</value>
@@ -1188,6 +1161,6 @@
     <value>RunEcosim</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.914.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.922.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

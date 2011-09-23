@@ -59,14 +59,14 @@ Namespace Controls
             'm_btnAdd
             '
             resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
-            Me.m_btnAdd.Image = Global.ScientificInterfaceShared.My.Resources.Resources.NavForward
+            Me.m_btnAdd.Image = Global.ScientificInterfaceShared.My.Resources.Resources.forward
             Me.m_btnAdd.Name = "m_btnAdd"
             Me.m_btnAdd.UseVisualStyleBackColor = True
             '
             'm_btnRemove
             '
             resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
-            Me.m_btnRemove.Image = Global.ScientificInterfaceShared.My.Resources.Resources.NavBack
+            Me.m_btnRemove.Image = Global.ScientificInterfaceShared.My.Resources.Resources.Back
             Me.m_btnRemove.Name = "m_btnRemove"
             Me.m_btnRemove.UseVisualStyleBackColor = True
             '
