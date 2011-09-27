@@ -133,6 +133,8 @@ Namespace MSEBatchManager
                     Return
                 End If
 
+                Me.Update()
+
                 m_thrdRun = New System.Threading.Thread(AddressOf Me.RunThreaded)
                 m_thrdRun.Start()
 
@@ -146,7 +148,7 @@ Namespace MSEBatchManager
             Try
 
                 Me.m_parameters = New cMSEBatchParameters(Me.m_core, Me.m_BatchData, Me.m_BatchData.ScenarioDBID)
-
+            
                 Me.m_lstTFMs.Clear()
                 For igrp As Integer = 1 To Me.nGroups
                     Me.m_lstTFMs.Add(New cMSETFMGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
@@ -166,6 +168,8 @@ Namespace MSEBatchManager
         ''' <remarks></remarks>
         Public Sub Load()
 
+            Me.Parameters.nTFMIteration = Me.m_BatchData.nTFM
+
             For igrp As Integer = 1 To Me.nGroups
                 Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
                 tfm.BLim = Me.m_MSEdata.Blim(igrp)
@@ -182,6 +186,8 @@ Namespace MSEBatchManager
 
             Next
 
+            Me.m_BatchData.isInit = True
+
         End Sub
 
         ''' <summary>
@@ -189,6 +195,10 @@ Namespace MSEBatchManager
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub Update()
+
+            Me.m_BatchData.nTFM = Me.Parameters.nTFMIteration
+
+            Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
 
             For igrp As Integer = 1 To Me.nGroups
                 'TFM's
@@ -204,7 +214,28 @@ Namespace MSEBatchManager
                 Me.m_MSEdata.Fopt(igrp) = tfm.FMax
                 Me.m_BatchData.FOptLower(igrp) = tfm.FMaxLower
                 Me.m_BatchData.FOptUpper(igrp) = tfm.FMaxUpper
-            Next
+
+
+                For iTFM As Integer = 1 To Me.m_BatchData.nTFM
+                    Me.m_BatchData.tfmBlim(iTFM, igrp) = tfm.BLimValue(iTFM)
+                    Me.m_BatchData.tfmBbase(iTFM, igrp) = tfm.BBaseValue(iTFM)
+                    Me.m_BatchData.tfmFmax(iTFM, igrp) = tfm.FMaxValue(iTFM)
+                Next iTFM
+
+            Next igrp
+
+                'Control types
+                Me.m_BatchData.redimControlTypes(Me.m_BatchData.nControlTypes, Me.nFleets)
+                For icon As Integer = 1 To Me.m_BatchData.nControlTypes
+                    For iflt As Integer = 1 To Me.m_MSEdata.nFleets
+                        'set the control type to what ever is currently loaded
+                        Me.BatchData.ControlType(icon, iflt) = Me.m_MSEdata.QuotaType(iflt)
+                    Next iflt
+                Next icon
+
+
+
+
 
         End Sub
 
@@ -213,6 +244,13 @@ Namespace MSEBatchManager
             For Each tfm As cMSETFMGroup In Me.m_lstTFMs
                 tfm.SetToDefaults()
             Next
+
+            Me.m_BatchData.RunType = eMSEBatchRunTypes.TFM
+            Me.m_BatchData.nParIters = Me.m_BatchData.nTFM
+            Me.m_BatchData.nControlTypes = 1
+            Me.m_BatchData.nForcing = 1
+
+
         End Sub
 
         ''' <summary>
@@ -554,6 +592,18 @@ Namespace MSEBatchManager
 #End Region
 
 #Region "Properties"
+
+        Public ReadOnly Property Parameters As cMSEBatchParameters
+            Get
+                Return Me.m_parameters
+            End Get
+        End Property
+
+        Public ReadOnly Property TFMGroups(GroupIndex As Integer) As cMSETFMGroup
+            Get
+                Return Me.m_lstTFMs.Item(GroupIndex)
+            End Get
+        End Property
 
         Friend ReadOnly Property BatchData() As cMSEBatchDataStructures
             Get

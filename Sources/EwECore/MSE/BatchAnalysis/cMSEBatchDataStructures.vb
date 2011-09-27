@@ -229,11 +229,15 @@ Namespace MSEBatchManager
         End Sub
 
         Private Sub redimToMSE(MSEdata As MSE.cMSEDataStructures)
-            Me.redimFixedF(0, MSEdata.nGroups)
-            Me.redimForcing(0)
+
+            Me.redimForcing(1)
+            Me.redimControlTypes(1, MSEdata.nFleets)
+
             Me.redimOuputTypes()
             Me.redimTAC(0, MSEdata.nGroups)
-            Me.redimTFM(0, MSEdata.nGroups)
+            Me.redimTFM(0, MSEdata.NGroups)
+            Me.redimFixedF(0, MSEdata.NGroups)
+
         End Sub
 
 

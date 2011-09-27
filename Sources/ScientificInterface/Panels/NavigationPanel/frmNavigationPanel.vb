@@ -210,6 +210,9 @@ Public Class frmNavigationPanel
             .Add("ndMSEResults", eCoreExecutionState.EcosimLoaded, GetType(frmMSEResults), "") ' ToDo: connect to help
             .Add("ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), "") ' ToDo: connect to help
 
+            'MSE Batch
+            .Add("ndRunBatch", eCoreExecutionState.EcosimLoaded, GetType(frmMSERunBatch), "") ' ToDo: connect to help
+
             'Ecospace habitat capacity stuff...
             .Add("ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityFunction), "") ' ToDo: connect to help
             .Add("ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyCapacity), "") ' ToDo: connect to help

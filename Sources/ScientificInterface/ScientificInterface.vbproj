@@ -1004,6 +1004,9 @@
       <DependentUpon>ucOptionsPresentation.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\MSEBatch\frmMSERunBatch.resx">
+      <DependentUpon>frmMSERunBatch.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSE\frmMSERecruitment.resx">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1454,6 +1457,12 @@
     <Compile Include="Other\Options\IOptionsPage.vb" />
     <Compile Include="Settings.vb">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\frmMSERunBatch.Designer.vb">
+      <DependentUpon>frmMSERunBatch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\frmMSERunBatch.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Tools\MSE\cMSEFishingColorBlockDataSource.vb" />
     <Compile Include="Tools\MSE\cMSEGroupColorBlockDataSource.vb" />

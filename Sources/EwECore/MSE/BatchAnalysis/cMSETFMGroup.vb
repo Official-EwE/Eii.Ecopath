@@ -240,7 +240,7 @@ Namespace MSE
         End Sub
 
 
-        Private Sub calcDefaults(Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, values() As Single)
+        Private Sub calcDefaults(Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, ByRef values() As Single)
 
             Try
                 ReDim values(n)
