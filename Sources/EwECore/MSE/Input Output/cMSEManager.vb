@@ -593,7 +593,6 @@ Namespace MSE
 
         End Function
 
-
         Private Function loadInputs() As Boolean
 
             Dim coreData As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -768,6 +767,11 @@ Namespace MSE
             Dim breturn As Boolean
             Try
                 Me.m_Batch.LoadScenario()
+
+                'WARNING: this will overwrite any data loaded by the database
+                'Right now it's used for debugging to load data into the objects
+                Me.m_Batch.setDefaults()
+
                 breturn = True
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)

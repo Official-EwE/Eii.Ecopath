@@ -13,6 +13,8 @@ Namespace MSE
         Inherits cCoreGroupBase
 
         Private m_BLimValues() As Single
+        Private m_BBaseValues() As Single
+        Private m_FMaxValues() As Single
         Private m_BatchData As MSEBatchManager.cMSEBatchDataStructures
 
 
@@ -33,29 +35,29 @@ Namespace MSE
             'see comment setVariable(...)
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-            ' MSETFMNIteration
-            'MSETFMBLimLower()
-            ' MSETFMBLimUpper()
-            ' MSETFMBLimValues()
-
-            'meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            'val = New cValue(New Integer, eVarNameFlags.MSETFMNIteration, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMNIteration))
-            'm_values.Add(val.varName, val)
-
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.MSETFMBLimLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMBLimLower))
             m_values.Add(val.varName, val)
-
 
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.MSETFMBLimUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMBLimUpper))
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSETFMBBaseLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMBBaseLower))
+            m_values.Add(val.varName, val)
 
-            'meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            'val = New cValue(New Single, eVarNameFlags.MSETFMBLimLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMBLimUpper))
-            'm_values.Add(val.varName, val)
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSETFMBBaseUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMBBaseUpper))
+            m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSETFMFOptLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMFOptLower))
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSETFMFOptUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMFOptUpper))
+            m_values.Add(val.varName, val)
 
 
             'bBase
@@ -74,7 +76,6 @@ Namespace MSE
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.MSEFmin, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFmin))
             m_values.Add(val.varName, val)
-
 
         End Sub
 
@@ -127,10 +128,114 @@ Namespace MSE
             End Set
         End Property
 
+
+        Public Property BBase As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEBBase))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEBBase, value)
+            End Set
+        End Property
+
+        Public Property BBaseLower As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSETFMBBaseLower))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSETFMBBaseLower, value)
+            End Set
+        End Property
+
+        Public Property BBaseUpper As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSETFMBBaseUpper))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSETFMBBaseUpper, value)
+            End Set
+        End Property
+
+
+
+        Public Property BBaseValue(IterationIndex As Integer) As Single
+            Get
+                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nTFM Then
+                    Return Me.m_BBaseValues(IterationIndex)
+                End If
+                'OH My.....
+                Return cCore.NULL_VALUE
+            End Get
+
+            Set(ByVal value As Single)
+                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nTFM Then
+                    Me.m_BBaseValues(IterationIndex) = value
+                End If
+            End Set
+        End Property
+
+
+        Public Property FMax As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEFmax))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEFmax, value)
+            End Set
+        End Property
+
+        Public Property FMaxLower As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSETFMFOptLower))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSETFMFOptLower, value)
+            End Set
+        End Property
+
+        Public Property FMaxUpper As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSETFMFOptUpper))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSETFMFOptUpper, value)
+            End Set
+        End Property
+
+
+
+        Public Property FMaxValue(IterationIndex As Integer) As Single
+            Get
+                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nTFM Then
+                    Return Me.m_FMaxValues(IterationIndex)
+                End If
+                'OH My.....
+                Return cCore.NULL_VALUE
+            End Get
+
+            Set(ByVal value As Single)
+                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nTFM Then
+                    Me.m_FMaxValues(IterationIndex) = value
+                End If
+            End Set
+        End Property
+
+
         Public Sub SetToDefaults()
 
-
             Me.calcDefaults(BLim, BLimLower, BLimUpper, Me.m_BatchData.nTFM, Me.m_BLimValues)
+            Me.calcDefaults(BBase, BBaseLower, BBaseUpper, Me.m_BatchData.nTFM, Me.m_BBaseValues)
+            Me.calcDefaults(FMax, FMaxLower, FMaxUpper, Me.m_BatchData.nTFM, Me.m_FMaxValues)
 
         End Sub
 

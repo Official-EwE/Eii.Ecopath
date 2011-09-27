@@ -1193,10 +1193,19 @@ Namespace Core
         MSYStartTime
         MSYEvaluateFleet
 
+        'MSE Batch Variables
         MSETFMNIteration
         MSETFMBLimLower
         MSETFMBLimUpper
         MSETFMBLimValues
+
+        MSETFMBBaseLower
+        MSETFMBBaseUpper
+        MSETFMBBaseValues
+
+        MSETFMFOptLower
+        MSETFMFOptUpper
+        MSETFMFOptValues
 
         ' Pedigree
         VariableName

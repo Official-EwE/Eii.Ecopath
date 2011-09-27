@@ -149,17 +149,70 @@ Namespace MSEBatchManager
 
                 Me.m_lstTFMs.Clear()
                 For igrp As Integer = 1 To Me.nGroups
-                    Dim tfm As cMSETFMGroup = New cMSETFMGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp))
-                    tfm.BLim = Me.m_MSEdata.Blim(igrp)
-                    tfm.BLimLower = Me.m_BatchData.BlimLower(igrp)
-                    tfm.BLimUpper = Me.m_BatchData.BlimUpper(igrp)
-                    tfm.SetToDefaults()
-                    Me.m_lstTFMs.Add(tfm)
+                    Me.m_lstTFMs.Add(New cMSETFMGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
                 Next
+
+                'Load the values into the input objects
+                Me.Load()
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".LoadScenario() Exception: " & ex.Message)
             End Try
+        End Sub
+
+        ''' <summary>
+        ''' Load core data into Input objects
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Sub Load()
+
+            For igrp As Integer = 1 To Me.nGroups
+                Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
+                tfm.BLim = Me.m_MSEdata.Blim(igrp)
+                tfm.BLimLower = Me.m_BatchData.BlimLower(igrp)
+                tfm.BLimUpper = Me.m_BatchData.BlimUpper(igrp)
+
+                tfm.BBase = Me.m_MSEdata.Bbase(igrp)
+                tfm.BBaseLower = Me.m_BatchData.BBaseLower(igrp)
+                tfm.BBaseUpper = Me.m_BatchData.BBaseUpper(igrp)
+
+                tfm.FMax = Me.m_MSEdata.Fopt(igrp)
+                tfm.FMaxLower = Me.m_BatchData.FOptLower(igrp)
+                tfm.FMaxUpper = Me.m_BatchData.FOptUpper(igrp)
+
+            Next
+
+        End Sub
+
+        ''' <summary>
+        ''' Update core data with data from input objects
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Sub Update()
+
+            For igrp As Integer = 1 To Me.nGroups
+                'TFM's
+                Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
+                Me.m_MSEdata.Blim(igrp) = tfm.BLim
+                Me.m_BatchData.BlimLower(igrp) = tfm.BLimLower
+                Me.m_BatchData.BlimUpper(igrp) = tfm.BLimUpper
+
+                Me.m_MSEdata.Bbase(igrp) = tfm.BBase
+                Me.m_BatchData.BBaseLower(igrp) = tfm.BBaseLower
+                Me.m_BatchData.BBaseUpper(igrp) = tfm.BBaseUpper
+
+                Me.m_MSEdata.Fopt(igrp) = tfm.FMax
+                Me.m_BatchData.FOptLower(igrp) = tfm.FMaxLower
+                Me.m_BatchData.FOptUpper(igrp) = tfm.FMaxUpper
+            Next
+
+        End Sub
+
+
+        Public Sub setDefaults()
+            For Each tfm As cMSETFMGroup In Me.m_lstTFMs
+                tfm.SetToDefaults()
+            Next
         End Sub
 
         ''' <summary>
