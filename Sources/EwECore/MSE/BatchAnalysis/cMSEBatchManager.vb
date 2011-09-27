@@ -149,7 +149,12 @@ Namespace MSEBatchManager
 
                 Me.m_lstTFMs.Clear()
                 For igrp As Integer = 1 To Me.nGroups
-                    Me.m_lstTFMs.Add(New cMSETFMGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
+                    Dim tfm As cMSETFMGroup = New cMSETFMGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp))
+                    tfm.BLim = Me.m_MSEdata.Blim(igrp)
+                    tfm.BLimLower = Me.m_BatchData.BlimLower(igrp)
+                    tfm.BLimUpper = Me.m_BatchData.BlimUpper(igrp)
+                    tfm.SetToDefaults()
+                    Me.m_lstTFMs.Add(tfm)
                 Next
 
             Catch ex As Exception

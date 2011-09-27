@@ -114,6 +114,15 @@ Namespace MSEBatchManager
 
         Public TFMDBIDs() As Integer
 
+        Public BlimLower() As Single
+        Public BlimUpper() As Single
+
+        Public BBaseLower() As Single
+        Public BBaseUpper() As Single
+
+        Public FOptLower() As Single
+        Public FOptUpper() As Single
+
         Public Sub redimForcing(ByVal nForcingFunctions As Integer)
             nForcing = nForcingFunctions
             If nForcing = 0 Then nForcing = 1
@@ -142,6 +151,17 @@ Namespace MSEBatchManager
             ReDim tfmFmin(Me.nTFM, nGroups)
 
             ReDim TFMDBIDs(nGroups)
+
+            ReDim BlimLower(nGroups)
+            ReDim BlimUpper(nGroups)
+
+            ReDim BBaseLower(nGroups)
+            ReDim BBaseUpper(nGroups)
+
+            ReDim FOptLower(nGroups)
+            ReDim FOptUpper(nGroups)
+
+            Me.setDefaultTFM()
 
         End Sub
 
@@ -177,6 +197,22 @@ Namespace MSEBatchManager
             ReDim Me.OuputType(Me.nOuputTypes)
             ReDim Me.isOuputSaved(Me.nOuputTypes)
 
+        End Sub
+
+        Public Sub setDefaultTFM()
+            Me.nTFM = 10
+            Dim defautlLL As Single = 0.5
+            Dim defautlUp As Single = 1.0
+            For igrp As Integer = 1 To Me.nGroups
+                BlimLower(igrp) = defautlLL
+                BlimUpper(igrp) = defautlUp
+
+                BBaseLower(igrp) = defautlLL
+                BBaseUpper(igrp) = defautlUp
+
+                FOptLower(igrp) = defautlLL
+                FOptUpper(igrp) = defautlUp
+            Next
         End Sub
 
         Public Sub New()

@@ -142,9 +142,9 @@ Namespace MSE
                 Dim LowB As Single, UpB As Single
                 LowB = Value - Value * LowPercent
                 UpB = Value + Value * UPPercent
-                Dim dx As Single = (LowB - UpB) / (n - 1)
+                Dim dx As Single = (UpB - LowB) / (n - 1)
                 For i As Integer = 1 To n
-                    values(i) = LowPercent + dx * (i - 1)
+                    values(i) = LowB + dx * (i - 1)
                 Next
             Catch ex As Exception
 
