@@ -1949,9 +1949,9 @@ Namespace Core
         ''' </summary>
         EcospaceMapResponse = 100
 
-
-        MSEBatchParameters = 101
-        MSEBatchTFMInput = 102
+        MSEBatchManager = 101
+        MSEBatchParameters = 102
+        MSEBatchTFMInput = 103
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

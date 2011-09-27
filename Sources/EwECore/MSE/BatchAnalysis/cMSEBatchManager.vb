@@ -7,6 +7,7 @@ Imports EwECore.MSECommandFile
 
 Namespace MSEBatchManager
 
+
     Public Enum eMSEBatchRunTypes
         Any = 0
         Constant_F = 1
@@ -25,20 +26,23 @@ Namespace MSEBatchManager
     End Enum
 
     Public Class cMSEBatchManager
+        Implements ICoreInterface
+
 
         'ToDo_jb 17-Aug-2010 MSEBatchManager add run header to outputs
         'ToDo_jb 17-Aug-2010 MSEBatchManager Validation of model and scenario
         'ToDo_jb 17-Aug-2010 MSEBatchManager figure out how to prompt user if validation failed
 
         'ToDo_jb 24-Aug-2010 MSEBatchManager Why does the list box in the interface not update after the first run
+        Public Delegate Sub MSEBatchMessage(ByVal strMessage As String)
 
+#Region "Private data"
 
         Private Enum eBatchRunState
             Running
             Idle
         End Enum
 
-        Public Delegate Sub MSEBatchMessage(ByVal strMessage As String)
 
         Private m_core As cCore
         Private m_fileReader As cMSECommandFileReader
@@ -57,6 +61,9 @@ Namespace MSEBatchManager
 
         Private m_parameters As cMSEBatchParameters
         Private m_lstTFMs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBatchTFMInput, 1)
+#End Region
+
+#Region "Construction, Initialization and Destruction"
 
         Public Sub New()
             Me.m_SyncOb = System.Threading.SynchronizationContext.Current
@@ -108,6 +115,32 @@ Namespace MSEBatchManager
             End Try
         End Sub
 
+#End Region
+
+#Region "Public Methods"
+
+        Public Sub Run()
+
+            Try
+
+                If Not Me.m_BatchData.isInit Then
+                    Me.MarshallMessage("MSE Batch cannot be run. Data failed to initialize.")
+                    Return
+                End If
+
+                If Me.m_runState = eBatchRunState.Running Then
+                    Me.MarshallMessage("MSE Batch already running, please wait for the current run to stop before trying again.")
+                    Return
+                End If
+
+                m_thrdRun = New System.Threading.Thread(AddressOf Me.RunThreaded)
+                m_thrdRun.Start()
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
 
         Public Sub LoadScenario()
             Try
@@ -123,9 +156,6 @@ Namespace MSEBatchManager
                 Debug.Assert(False, Me.ToString & ".LoadScenario() Exception: " & ex.Message)
             End Try
         End Sub
-
-
-
 
         ''' <summary>
         ''' Vary the Primary Production forcing function value of the current time step
@@ -156,6 +186,37 @@ Namespace MSEBatchManager
 
         End Sub
 
+
+        Public Function ReadCommandFile(ByVal CommandFileName As String) As Boolean
+
+            If Me.m_runState = eBatchRunState.Running Then
+                'message can't run
+                Return False
+            End If
+
+            Me.BatchData.CommandFilename = CommandFileName
+
+            If Me.m_fileReader.Read(CommandFileName) Then
+                If Me.ValidateData() Then
+                    If Me.updateDataStructures() Then
+                        Me.checkRunType()
+                        Me.postValidationMessage()
+                        Me.BatchData.isInit = True
+                        Return True
+                    End If
+                End If
+                Return False
+            End If
+
+            Me.BatchData.isInit = False
+            'message failed to read file
+            Return False
+
+        End Function
+
+#End Region
+
+#Region "Private Methods"
 
         Private Function ValidateData() As Boolean
             Dim bSuccess As Boolean
@@ -256,34 +317,6 @@ Namespace MSEBatchManager
 
         End Sub
 
-
-        Public Function ReadCommandFile(ByVal CommandFileName As String) As Boolean
-
-            If Me.m_runState = eBatchRunState.Running Then
-                'message can't run
-                Return False
-            End If
-
-            Me.BatchData.Commandfilename = CommandFileName
-
-            If Me.m_fileReader.Read(CommandFileName) Then
-                If Me.ValidateData() Then
-                    If Me.updateDataStructures() Then
-                        Me.checkRunType()
-                        Me.postValidationMessage()
-                        Me.BatchData.isInit = True
-                        Return True
-                    End If
-                End If
-                Return False
-            End If
-
-            Me.BatchData.isInit = False
-            'message failed to read file
-            Return False
-
-        End Function
-
         Private Sub postValidationMessage()
 
             Try
@@ -318,7 +351,6 @@ Namespace MSEBatchManager
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
-
 
         End Sub
 
@@ -449,44 +481,23 @@ Namespace MSEBatchManager
 
         End Sub
 
-
-
-        Public Sub Run()
-
-            Try
-
-                If Not Me.m_BatchData.isInit Then
-                    Me.MarshallMessage("MSE Batch cannot be run. Data failed to initialize.")
-                    Return
-                End If
-
-                If Me.m_runState = eBatchRunState.Running Then
-                    Me.MarshallMessage("MSE Batch already running, please wait for the current run to stop before trying again.")
-                    Return
-                End If
-
-                m_thrdRun = New System.Threading.Thread(AddressOf Me.RunThreaded)
-                m_thrdRun.Start()
-
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
         Private Function updateDataStructures() As Boolean
 
             Return Me.m_fileReader.updateDataStructures()
 
         End Function
 
-        Public ReadOnly Property OutputWriter() As IMSEOutputWriter
+        Friend ReadOnly Property OutputWriter() As IMSEOutputWriter
             Get
                 Return Me.m_OutputWriter
             End Get
         End Property
 
-        Public ReadOnly Property BatchData() As cMSEBatchDataStructures
+#End Region
+
+#Region "Properties"
+
+        Friend ReadOnly Property BatchData() As cMSEBatchDataStructures
             Get
                 Return Me.m_BatchData
             End Get
@@ -588,6 +599,55 @@ Namespace MSEBatchManager
             End Get
         End Property
 
+#End Region
+
+#Region "ICoreInterface implementation"
+
+
+        Public ReadOnly Property CoreComponent As EwEUtils.Core.eCoreComponentType Implements ICoreInterface.CoreComponent
+            Get
+                Return eCoreComponentType.MSE '??? maybe needs its own component type
+            End Get
+        End Property
+
+        Public ReadOnly Property DataType As EwEUtils.Core.eDataTypes Implements ICoreInterface.DataType
+            Get
+                Return eDataTypes.MSEBatchManager
+            End Get
+        End Property
+
+        Public Property DBID As Integer Implements ICoreInterface.DBID
+            Get
+                Return cCore.NULL_VALUE
+            End Get
+            Set(value As Integer)
+
+            End Set
+        End Property
+
+        Public Function GetID() As String Implements ICoreInterface.GetID
+            Return cValueID.getDataTypeID(Me.DataType, Me.DBID)
+        End Function
+
+        Public Property Index As Integer Implements ICoreInterface.Index
+            Get
+                Return cCore.NULL_VALUE
+            End Get
+            Set(value As Integer)
+
+            End Set
+        End Property
+
+        Public Property Name As String Implements ICoreInterface.Name
+            Get
+                Return Me.ToString
+            End Get
+            Set(value As String)
+
+            End Set
+        End Property
+
+#End Region
 
     End Class
 
