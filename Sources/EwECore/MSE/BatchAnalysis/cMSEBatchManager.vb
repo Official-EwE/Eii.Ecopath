@@ -55,6 +55,8 @@ Namespace MSEBatchManager
         Private m_SyncOb As System.Threading.SynchronizationContext
         Private m_runState As eBatchRunState
 
+        Private m_parameters As cMSEBatchParameters
+        Private m_lstTFMs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBatchTFMInput, 1)
 
         Public Sub New()
             Me.m_SyncOb = System.Threading.SynchronizationContext.Current
@@ -72,12 +74,11 @@ Namespace MSEBatchManager
 
             Me.m_runState = eBatchRunState.Idle
 
-            Me.m_BatchData = New cMSEBatchDataStructures
-
             Me.m_core = theCore
             Me.m_MSE = MSE
             Me.m_MSEdata = MSE.Data
 
+            Me.m_BatchData = New cMSEBatchDataStructures(Me.m_MSEdata)
             Me.m_fileReader = New cMSECommandFileReader(Me.Core, Me)
 
             MSE.BatchManager = Me
@@ -106,6 +107,24 @@ Namespace MSEBatchManager
 
             End Try
         End Sub
+
+
+        Public Sub LoadScenario()
+            Try
+
+                Me.m_parameters = New cMSEBatchParameters(Me.m_core, Me.m_BatchData, Me.m_BatchData.ScenarioDBID)
+
+                Me.m_lstTFMs.Clear()
+                For igrp As Integer = 1 To Me.nGroups
+                    Me.m_lstTFMs.Add(New cMSETFMGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
+                Next
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".LoadScenario() Exception: " & ex.Message)
+            End Try
+        End Sub
+
+
 
 
         ''' <summary>
@@ -167,10 +186,10 @@ Namespace MSEBatchManager
 
         End Sub
 
-        Private Sub setControls(ByVal iForcing As Integer)
+        Private Sub setControls(ByVal iControlIndex As Integer)
 
             For iflt As Integer = 1 To Me.m_MSEdata.nFleets
-                Me.m_MSEdata.QuotaType(iflt) = Me.BatchData.ControlType(iForcing, iflt)
+                Me.m_MSEdata.QuotaType(iflt) = Me.BatchData.ControlType(iControlIndex, iflt)
             Next iflt
 
         End Sub
@@ -509,6 +528,12 @@ Namespace MSEBatchManager
         ''' <remarks></remarks>
         Private Sub LoadPPForcing(ByVal iShapeIndex As Integer, ByVal iPPGroupIndex As Integer)
             'shapes are held in a list Indexed from 0
+            If iShapeIndex < 1 Or iPPGroupIndex < 1 Then
+                'no shape and or PredPrey index defined
+                'This will happen if the user does not want to alter the PP Forcing 
+                Return
+            End If
+
             iShapeIndex -= 1
             Dim shape As cForcingFunction = Me.m_core.ForcingShapeManager.Item(iShapeIndex)
             Debug.Assert(shape IsNot Nothing, "Invalid PP forcing index.")
@@ -555,6 +580,13 @@ Namespace MSEBatchManager
                 Debug.Assert(False, Me.ToString & " Error sending message to interface.")
             End Try
         End Sub
+
+
+        Public ReadOnly Property TFMInputs(ByVal iGroup As Integer) As cMSETFMGroup
+            Get
+                Return DirectCast(Me.m_lstTFMs(iGroup), cMSETFMGroup)
+            End Get
+        End Property
 
 
     End Class

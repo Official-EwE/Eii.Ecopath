@@ -105,6 +105,15 @@ Namespace MSEBatchManager
 
         Public VersionNumber As Single
 
+
+        ''' <summary>
+        ''' Database ID of the currently loaded Batch Scenario
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public ScenarioDBID As Integer
+
+        Public TFMDBIDs() As Integer
+
         Public Sub redimForcing(ByVal nForcingFunctions As Integer)
             nForcing = nForcingFunctions
             If nForcing = 0 Then nForcing = 1
@@ -131,6 +140,8 @@ Namespace MSEBatchManager
             ReDim tfmBbase(Me.nTFM, nGroups)
             ReDim tfmFmax(Me.nTFM, nGroups)
             ReDim tfmFmin(Me.nTFM, nGroups)
+
+            ReDim TFMDBIDs(nGroups)
 
         End Sub
 
@@ -171,6 +182,24 @@ Namespace MSEBatchManager
         Public Sub New()
 
         End Sub
+
+
+        Public Sub New(MSEdata As MSE.cMSEDataStructures)
+            Try
+                Me.redimToMSE(MSEdata)
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub redimToMSE(MSEdata As MSE.cMSEDataStructures)
+            Me.redimFixedF(0, MSEdata.nGroups)
+            Me.redimForcing(0)
+            Me.redimOuputTypes()
+            Me.redimTAC(0, MSEdata.nGroups)
+            Me.redimTFM(0, MSEdata.nGroups)
+        End Sub
+
 
         ''' <summary>
         ''' Store the initial state of the MSE data so it can be restored later
@@ -222,6 +251,8 @@ Namespace MSEBatchManager
             End Try
 
         End Sub
+
+
 
     End Class
 

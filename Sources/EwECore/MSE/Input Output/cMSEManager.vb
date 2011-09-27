@@ -256,6 +256,12 @@ Namespace MSE
             End Get
         End Property
 
+        Public ReadOnly Property MSEBatchManager As MSEBatchManager.cMSEBatchManager
+            Get
+                Return Me.m_MSE.BatchManager
+            End Get
+        End Property
+
 #End Region
 
 #Region "Construction Initialization and Running of the model"
@@ -571,12 +577,29 @@ Namespace MSE
 
         Friend Function Load() As Boolean Implements ISearchObjective.Load
 
+            Try
+
+                'Load the Input Output objects
+                Me.loadInputs()
+
+                'Load the MSE Batch Manager
+                Me.loadBatch()
+
+            Catch ex As Exception
+
+            End Try
+
+
+
+        End Function
+
+
+        Private Function loadInputs() As Boolean
+
             Dim coreData As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim iGroup As Integer, iFleet As Integer
 
             Try
-
-                ' Me.m_MSEdata.DefaultBioBounds()
 
                 'Group inputs
                 For Each mseGrp As cMSEGroupInput In Me.m_lstGroupInputs
@@ -725,7 +748,6 @@ Namespace MSE
                 m_parameters.MSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
                 m_parameters.MSEStartYear = Me.m_MSEdata.StartYear
 
-                m_parameters.MSEResultsStartYear = Me.m_MSEdata.ResultsStartYear
                 m_parameters.MSEResultsEndYear = Me.m_MSEdata.ResultsEndYear
 
                 m_parameters.ResetStatusFlags()
@@ -737,6 +759,21 @@ Namespace MSE
                 Throw New ApplicationException(Me.ToString & ".Load() Error: " & ex.Message, ex)
             End Try
 
+            Return True
+
+        End Function
+
+
+        Private Function loadBatch() As Boolean
+            Dim breturn As Boolean
+            Try
+                Me.m_Batch.LoadScenario()
+                breturn = True
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & " Exception: " & ex.Message)
+            End Try
+
+            Return breturn
         End Function
 
         Friend Sub Clear() Implements ISearchObjective.Clear

@@ -13175,7 +13175,6 @@ Public Class cCore
 
 #Region "MSE"
 
-    '  Dim m_MSEManager As cMSEManager
 
     Public ReadOnly Property MSEManager() As cMSEManager
         Get
@@ -13186,6 +13185,17 @@ Public Class cCore
                 Return Nothing
             End Try
 
+        End Get
+    End Property
+
+    Public ReadOnly Property MSEBatchManager() As MSEBatchManager.cMSEBatchManager
+        Get
+            Try
+                Return DirectCast(Me.m_SearchManagers.Item(eDataTypes.MSEManager), cMSEManager).MSEBatchManager
+            Catch ex As Exception
+                cLog.Write(ex)
+                Return Nothing
+            End Try
         End Get
     End Property
 

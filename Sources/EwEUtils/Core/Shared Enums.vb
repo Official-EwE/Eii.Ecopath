@@ -1193,6 +1193,11 @@ Namespace Core
         MSYStartTime
         MSYEvaluateFleet
 
+        MSETFMNIteration
+        MSETFMBLimLower
+        MSETFMBLimUpper
+        MSETFMBLimValues
+
         ' Pedigree
         VariableName
         IndexValue
@@ -1943,6 +1948,10 @@ Namespace Core
         ''' Data belongs to a IEnviroInputMap
         ''' </summary>
         EcospaceMapResponse = 100
+
+
+        MSEBatchParameters = 101
+        MSEBatchTFMInput = 102
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

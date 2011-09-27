@@ -113,11 +113,13 @@
     <Compile Include="Auxiliary\cAuxiliaryData.vb" />
     <Compile Include="Auxiliary\cReference.vb" />
     <Compile Include="Auxiliary\cVisualStyle.vb" />
+    <Compile Include="MSE\BatchAnalysis\cMSEBatchParameters.vb" />
     <Compile Include="Contaminant Tracer\cContaminantTracer.vb" />
     <Compile Include="Database\cDatabaseUpdater.vb" />
     <Compile Include="Database\cEwEAccessDatabase.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimGroupOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimStats.vb" />
+    <Compile Include="MSE\BatchAnalysis\cMSETFMGroup.vb" />
     <Compile Include="Search\cSearchDatastructures.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceStats.vb" />
     <Compile Include="EcoSpace\Model\cGridSolver.vb" />
@@ -402,6 +404,7 @@
     <Compile Include="Shapes\TimeSeries\Writers\cTimeSeriesCSVWriter.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesDataset.vb" />
     <Compile Include="Taxon\cTaxonDataStructures.vb" />
+    <None Include="MSE\BatchAnalysis\MSEBatch.cd" />
     <None Include="Database\Compact\_compacters_.cd" />
     <None Include="Database\Import\_Importers_.cd" />
     <None Include="EwECore.snk" />
