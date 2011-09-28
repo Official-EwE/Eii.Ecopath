@@ -5502,8 +5502,12 @@ exitline:
                         'example using qualitative habitat use from old ecospace
 
                         If ((Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) > 0) Or (Me.m_Data.PrefHab(K, 0) > 0)) And (m_Data.Depth(i, j) > 0.0) Then
+                            Dim cap As Single = Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j))
+                            'if PrefHab is all habitats (PrefHab(K, 0) > 0) then  PrefHab for this HabType will be 0 ( PrefHab(K, HabType(i, j)) = 0)
+                            'So the cap need to come from PrefHab(K, 0) in that case
+                            If Me.m_Data.PrefHab(K, 0) > 0 Then cap = Me.m_Data.PrefHab(K, 0)
                             'sum into the existing capacity
-                            Me.m_Data.HabCap(i, j, K) += Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) '1.0f
+                            Me.m_Data.HabCap(i, j, K) += cap 'Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) '1.0f
                         End If
                         'Do Not set min hab capacity here 
                         'it will be set once all the capacities have been add and the capacity is normalizeCapacityMap()
