@@ -5503,7 +5503,7 @@ exitline:
 
                         If ((Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) > 0) Or (Me.m_Data.PrefHab(K, 0) > 0)) And (m_Data.Depth(i, j) > 0.0) Then
                             'sum into the existing capacity
-                            Me.m_Data.HabCap(i, j, K) += 1.0
+                            Me.m_Data.HabCap(i, j, K) += Me.m_Data.PrefHab(K, Me.m_Data.HabType(i, j)) '1.0f
                         End If
                         'Do Not set min hab capacity here 
                         'it will be set once all the capacities have been add and the capacity is normalizeCapacityMap()
@@ -5694,7 +5694,10 @@ exitline:
                             For icol = 1 To Me.m_Data.InCol
                                 'Sum all the capability map response functions into the HabCap Cell for each group
                                 'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
-                                Me.m_Data.HabCap(irow, icol, igrp) += map.ResponseFunction(igrp, irow, icol)
+                                'Me.m_Data.HabCap(irow, icol, igrp) += map.ResponseFunction(igrp, irow, icol)
+                                '28-Sept-2011 jb Changed to multiple response with the existing capacity
+                                'this allows the cap input to reduce the capacity
+                                Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
                                 m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
 
                             Next

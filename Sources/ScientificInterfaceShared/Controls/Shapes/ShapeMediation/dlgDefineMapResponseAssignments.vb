@@ -260,7 +260,7 @@ Public Class dlgDefineMapResponseAssignments
             End If
 
             Dim dx As Single = Xrange / Me.m_shape.XMax
-            Dim YScale As Single = 1 / Me.m_shape.YMax
+            Dim YScale As Single = 1 '/ Me.m_shape.YMax
             Dim lstPts As New PointPairList
 
             'First point from shape at the zero X axis
@@ -277,7 +277,7 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Xmax
-            Me.m_zgh.YScaleMax = 1.2
+            Me.m_zgh.YScaleMax = Me.m_shape.YMax + Me.m_shape.YMax * 0.1
             Me.m_zgh.YScaleMin = 0
 
         Catch ex As Exception
@@ -427,7 +427,7 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Me.m_map.Max
-            Me.m_zgh.YScaleMax = 1.2
+            'Me.m_zgh.YScaleMax = 1.2
             Me.m_zgh.YScaleMin = 0
 
         Catch ex As Exception

@@ -332,7 +332,7 @@ Namespace Controls
                 Dim Xmax As Single = resShape.XAxisMax
                 Dim Xmin As Single = resShape.XAxisMin
                 'Scale the Y axis to one
-                Dim YScale As Single = 1 / resShape.YMax
+                Dim YScale As Single = 1 ' / resShape.YMax
                 If Xmax = 0 Then Xmax = 1
                 Dim Xrange As Single = Xmax - Xmin
 
@@ -354,7 +354,7 @@ Namespace Controls
                 pane.CurveList.Add(il)
 
                 Me.m_zgh.XScaleMax = Xmax
-                Me.m_zgh.YScaleMax = 1.2
+                Me.m_zgh.YScaleMax = resShape.YMax + resShape.YMax * 0.1
                 Me.m_zgh.YScaleMin = 0
 
             Catch ex As Exception
