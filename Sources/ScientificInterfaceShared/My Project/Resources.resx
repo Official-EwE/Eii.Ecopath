@@ -2179,7 +2179,7 @@
     <value>Map values</value>
   </data>
   <data name="RESPONSE_GRAPH_YLABEL" xml:space="preserve">
-    <value>Capacity normalized</value>
+    <value>Capacity</value>
   </data>
   <data name="DEFAULT_NEWMAP_NUM" xml:space="preserve">
     <value>Capacity map {0}</value>
