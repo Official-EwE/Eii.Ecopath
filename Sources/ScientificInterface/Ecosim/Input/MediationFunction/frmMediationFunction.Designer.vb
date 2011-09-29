@@ -23,23 +23,24 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediationFunction))
-            Me.m_tlpSketchPad = New System.Windows.Forms.TableLayoutPanel
-            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar
-            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucMediationSketchPad
-            Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_scBottomBits = New System.Windows.Forms.SplitContainer
-            Me.m_tlpToolbox = New System.Windows.Forms.TableLayoutPanel
-            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox
-            Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
-            Me.m_tlpAssingments = New System.Windows.Forms.TableLayoutPanel
-            Me.m_assignments = New ScientificInterfaceShared.Controls.ucMediationAssignments
-            Me.m_assignmentsToolbar = New ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar
+            Me.m_tlpSketchPad = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucMediationSketchPad()
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_scBottomBits = New System.Windows.Forms.SplitContainer()
+            Me.m_tlpToolbox = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox()
+            Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar()
+            Me.m_tlpAssingments = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_assignments = New ScientificInterfaceShared.Controls.ucMediationAssignments()
+            Me.m_assignmentsToolbar = New ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar()
             Me.m_tlpSketchPad.SuspendLayout()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
+            CType(Me.m_scBottomBits, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scBottomBits.Panel1.SuspendLayout()
             Me.m_scBottomBits.Panel2.SuspendLayout()
             Me.m_scBottomBits.SuspendLayout()
@@ -70,7 +71,9 @@ Namespace Ecosim
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
+            Me.m_sketchPad.AllowedEdits = ucSketchPad.eMouseInteractionMode.DrawShape Or ucSketchPad.eMouseInteractionMode.DragXMark
             Me.m_sketchPad.Name = "m_sketchPad"
+            Me.m_sketchPad.NumDataPoints = -9999
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
             Me.m_sketchPad.ShowValueTooltip = True
@@ -168,18 +171,20 @@ Namespace Ecosim
             Me.m_assignmentsToolbar.IsMenuVisible = True
             Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
             '
-            'frmCapacityFunction
+            'frmMediationFunction
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_scMain)
-            Me.Name = "frmCapacityFunction"
+            Me.Name = "frmMediationFunction"
             Me.m_tlpSketchPad.ResumeLayout(False)
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.m_scBottomBits.Panel1.ResumeLayout(False)
             Me.m_scBottomBits.Panel2.ResumeLayout(False)
+            CType(Me.m_scBottomBits, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scBottomBits.ResumeLayout(False)
             Me.m_tlpToolbox.ResumeLayout(False)
             Me.m_tlpAssingments.ResumeLayout(False)
