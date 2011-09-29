@@ -138,9 +138,19 @@ Namespace Controls
             Me.CalculateYMark()
         End Sub
 
+        Protected Overrides Sub DragYMark(ByVal ptPrev As System.Drawing.Point, ByVal ptCur As System.Drawing.Point)
+            MyBase.DragYMark(ptPrev, ptCur)
+            Me.YMarkValue = Math.Min(Me.YMarkValue, Me.Shape.YMax)
+        End Sub
+
         Protected Overrides Sub OnShapeChanged()
             MyBase.OnShapeChanged()
-            Me.CalculateYMark()
+            If (Me.EditMode <> eMouseInteractionMode.DragYMark) Then
+                Me.CalculateYMark()
+            End If
+            If (Me.EditMode <> eMouseInteractionMode.DragXMark) Then
+                ' Me.CalculateXMark()
+            End If
         End Sub
 
         Protected Overridable Sub CalculateYMark()
