@@ -586,6 +586,7 @@ Namespace Controls
                                 ByVal iXMax As Integer, _
                                 ByVal sYMax As Single)
 
+            Console.WriteLine(Me.YMarkValue)
             If (Me.Shape Is Nothing) Then Return
 
             ' Draw default
@@ -694,12 +695,11 @@ Namespace Controls
                    (p.Y >= rcImage.Top) And (p.Y <= rcImage.Bottom)
         End Function
 
-        Private Sub DragXMark(ByVal ptPrev As Point, ByVal ptCur As Point)
+        Protected Overridable Sub DragXMark(ByVal ptPrev As Point, ByVal ptCur As Point)
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
             Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
             Me.XMarkValue = ptfCur.X
-            Me.PositionYMark()
             Me.Refresh()
         End Sub
 
@@ -717,27 +717,28 @@ Namespace Controls
 
             Dim iStart As Integer = CInt(Math.Min(ptfPrev.X, ptfCur.X))
             Dim iEnd As Integer = CInt(Math.Max(ptfPrev.X, ptfCur.X))
+            Dim sY As Single = 0
 
-            'If iStart = iEnd Or iEnd > Me.Shape.XData.XMax Or iStart < 1 Then
             If (iStart < 0) Or (iEnd > Me.XAxisMaxValue) Then
                 Return
             End If
 
             ' Single click?
             If iStart = iEnd Then
-                Me.Shape.ShapeData(iStart) = (ptfCur.Y + ptfPrev.Y) / 2
+                sY = (ptfCur.Y + ptfPrev.Y) / 2
+                Me.Shape.ShapeData(iStart) = sY
             Else
                 For i As Integer = iStart To iEnd
-                    Dim sYTmp As Single = (ptfCur.Y - ptfPrev.Y) * (i - ptfPrev.X) / (ptfCur.X - ptfPrev.X) + ptfPrev.Y
-                    Me.Shape.ShapeData(i) = sYTmp
+                    sY = (ptfCur.Y - ptfPrev.Y) * (i - ptfPrev.X) / (ptfCur.X - ptfPrev.X) + ptfPrev.Y
+                    Me.Shape.ShapeData(i) = sY
                 Next
             End If
 
-            If iEnd = Math.Round((Me.ClientRectangle.Width - 1) * Me.XAxisMaxValue / Me.ClientRectangle.Width) Then
-                For i As Integer = iEnd To Me.XAxisMaxValue - 1
-                    Me.Shape.ShapeData(i) = Me.Shape.ShapeData(iEnd)
-                Next
-            End If
+            'If iEnd = Math.Round((Me.ClientRectangle.Width - 1) * Me.XAxisMaxValue / Me.ClientRectangle.Width) Then
+            '    For i As Integer = iEnd To Me.XAxisMaxValue - 1
+            '        Me.Shape.ShapeData(i) = Me.Shape.ShapeData(iEnd)
+            '    Next
+            'End If
 
         End Sub
 
@@ -798,11 +799,6 @@ Namespace Controls
             Return False
         End Function
 
-        Private Sub PositionYMark()
-            If (Me.Shape Is Nothing) Then Return
-            Me.YMarkValue = Me.Shape.ShapeData(CInt(Math.Max(0, Math.Min(Me.Shape.ShapeData.Length - 1, Me.XMarkValue))))
-        End Sub
-
         Private Function IsNearValue(ByVal ptCur As Point) As Boolean
             If (Me.Shape Is Nothing) Then Return False
             If (Me.UIContext Is Nothing) Then Return False
@@ -862,10 +858,6 @@ Namespace Controls
 
                 If Not Me.Editable Then Return
                 If Not Me.Capture Then Return
-
-                Dim sYPrev As Single = Me.m_shape.YMax
-                Dim sYNew As Single = 0.0
-                Dim rcImage As Rectangle = Me.ClientRectangle
 
                 If (Me.m_ptPosPrevious = Nothing) Then m_ptPosPrevious = ptPosCurrent
 
@@ -994,7 +986,6 @@ Namespace Controls
         ''' </summary>
         Protected Overridable Sub OnShapeChanged()
             RaiseEvent ShapeChanged(Me.Shape)
-            Me.PositionYMark()
             Me.Invalidate()
         End Sub
 

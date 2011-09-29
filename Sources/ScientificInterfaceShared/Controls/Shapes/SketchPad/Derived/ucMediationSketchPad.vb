@@ -73,10 +73,10 @@ Namespace Controls
                         g.DrawString(strCaption, ft, br, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
                         g.DrawString(Me.XAxisLabel, ft, br, CSng(rcImage.Width / 2), rcImage.Bottom - 15, sfmt)
 
-                        ' Scale sYMax to the value at XMark
+                        ' Scale sYMax to the value at YMark
                         sYMax /= sYScale
 
-                        'Draw Axis Y marks
+                        ' Draw Axis Y marks
                         iYStep = CInt(sYMax / 3)
                         If iYStep = 0 Then iYStep = 1
 
@@ -89,6 +89,7 @@ Namespace Controls
                             g.DrawLine(pn, rcImage.Left, iYPos, rcImage.Left + 3, iYPos)
                         Next
 
+                        ' Draw ticks
                         If sYMax < 0.5 And sYMax >= 0.01 Then
                             For j As Integer = 0 To 2
                                 iYPos = CInt(rcImage.Bottom - rcImage.Height * (3 - j) / 3)
@@ -97,6 +98,7 @@ Namespace Controls
                                 g.DrawLine(pn, rcImage.Left, iYPos, rcImage.Left + 3, iYPos)
                             Next
                         End If
+
                     End Using
                 End Using
             End Using
@@ -130,6 +132,23 @@ Namespace Controls
                 '
             End Set
         End Property
+
+        Protected Overrides Sub DragXMark(ByVal ptPrev As System.Drawing.Point, ByVal ptCur As System.Drawing.Point)
+            MyBase.DragXMark(ptPrev, ptCur)
+            Me.CalculateYMark()
+        End Sub
+
+        Protected Overrides Sub OnShapeChanged()
+            MyBase.OnShapeChanged()
+            Me.CalculateYMark()
+        End Sub
+
+        Protected Overridable Sub CalculateYMark()
+            If (Me.Shape Is Nothing) Then Return
+            If (Me.XMarkValue < 0) Then Return
+            Me.YMarkValue = Me.Shape.ShapeData(CInt(Math.Max(0, Math.Min(Me.Shape.ShapeData.Length - 1, Me.XMarkValue))))
+        End Sub
+
     End Class
 
 End Namespace
