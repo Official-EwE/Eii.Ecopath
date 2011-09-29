@@ -36,7 +36,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Enum eMouseInteractionMode As Integer
+        Public Enum eMouseInteractionMode As Integer
             ''' <summary>Not drawing.</summary>
             None = 0
             ''' <summary>User is drawing the shape.</summary>
@@ -44,8 +44,9 @@ Namespace Controls
             ''' <summary>User is dragging the X mark line.</summary>
             DragXMark = 2
             ''' <summary>User is dragging the Y mark line.</summary>
-            ''' <remarks>JS 02Mar09: This feature is not implemented yet.</remarks>
             DragYMark = 4
+            ''' <summary>User can do all of the above.</summary>
+            All = DrawShape Or DragXMark Or DragYMark
         End Enum
 
         Private Const cCLICK_TOLERANCE As Integer = 4
@@ -93,8 +94,10 @@ Namespace Controls
         Private m_sXMarkValue As Single = cCore.NULL_VALUE
         ''' <summary>Flag stating whether the value tool tip should be shown.</summary>
         Private m_bShowTooltip As Boolean = True
-        ''' <summary></summary>
+        ''' <summary>Current edit mode</summary>
         Private m_editMode As eMouseInteractionMode = eMouseInteractionMode.None
+        ''' <summary>Current edit mode</summary>
+        Private m_editAllowed As eMouseInteractionMode = eMouseInteractionMode.DrawShape
         ''' <summary>Style of the control.</summary>
         Private m_style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
@@ -312,7 +315,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         <Category("Sketchpad"), _
           Description("State the min Y value for the graph.")> _
-         Public Property YAxisMinValue() As Single
+        Public Property YAxisMinValue() As Single
             Get
                 Return Me.m_sYMin
             End Get
@@ -463,8 +466,7 @@ Namespace Controls
         ''' Get the <see cref="eShapeCategoryTypes">category</see> of the shape.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Category("Sketchpad"), _
-         Description("Category of the shape.")> _
+        <Browsable(False)> _
         Public ReadOnly Property ShapeCategory() As eShapeCategoryTypes
 
             Get
@@ -548,7 +550,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="eShapeCategoryTypes">category</see> of the shape.
+        ''' Get whether the shape is editable by the user.
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Category("Sketchpad"), _
@@ -601,6 +603,28 @@ Namespace Controls
             End If
 
         End Sub
+
+        <Category("Sketchpad"), _
+          Description("States the possible operations that the user can perform.")> _
+        Public Property AllowedEdits As eMouseInteractionMode
+            Get
+                Return Me.m_editAllowed
+            End Get
+            Set(ByVal value As eMouseInteractionMode)
+                Me.m_editAllowed = value
+            End Set
+        End Property
+
+        <Browsable(False)> _
+        Protected Property EditMode As eMouseInteractionMode
+            Get
+                Return Me.m_editMode
+            End Get
+            Set(ByVal value As eMouseInteractionMode)
+                Me.m_editMode = value
+                Me.UpdateCursor()
+            End Set
+        End Property
 
 #End Region ' Public access
 
@@ -656,13 +680,11 @@ Namespace Controls
 
         End Sub
 
-        Private Sub UpdateCursor(Optional ByVal editMode As eMouseInteractionMode = eMouseInteractionMode.None)
+        Private Sub UpdateCursor()
 
             If Me.Enabled Then
 
-                If editMode = eMouseInteractionMode.None Then editMode = Me.m_editMode
-
-                Select Case Me.m_editMode
+                Select Case Me.EditMode
 
                     Case eMouseInteractionMode.DragXMark
                         Me.Cursor = Cursors.SizeWE
@@ -700,7 +722,13 @@ Namespace Controls
             Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
             Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
             Me.XMarkValue = ptfCur.X
-            Me.Refresh()
+        End Sub
+
+        Protected Overridable Sub DragYMark(ByVal ptPrev As Point, ByVal ptCur As Point)
+            Dim sYMax As Single = Me.YAxisMaxValue
+            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
+            Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
+            Me.YMarkValue = ptfCur.Y
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -795,8 +823,17 @@ Namespace Controls
 
         End Function
 
-        Private Function IsNearYMark(ByVal ptMouse As PointF) As Boolean
-            Return False
+        Private Function IsNearYMark(ByVal sY As Single) As Boolean
+
+            If Not m_bShowYMark Then Return False
+
+            ' Check if y value is near y mark
+            Dim sYMax As Single = Me.YAxisMaxValue
+            Dim ptfMouseT As PointF = cShapeImage.ToModelPoint(New PointF(0, sY - cCLICK_TOLERANCE), Me.ClientRectangle, 0, sYMax)
+            Dim ptfMouseB As PointF = cShapeImage.ToModelPoint(New PointF(0, sY + cCLICK_TOLERANCE), Me.ClientRectangle, 0, sYMax)
+
+            Return (ptfMouseT.Y >= Me.YMarkValue) And (ptfMouseB.Y <= Me.YMarkValue)
+
         End Function
 
         Private Function IsNearValue(ByVal ptCur As Point) As Boolean
@@ -861,14 +898,18 @@ Namespace Controls
 
                 If (Me.m_ptPosPrevious = Nothing) Then m_ptPosPrevious = ptPosCurrent
 
-                Select Case Me.m_editMode
+                Select Case Me.EditMode
                     Case eMouseInteractionMode.DrawShape
                         Me.ModifyShapePoints(Me.m_ptPosPrevious, ptPosCurrent)
 
                     Case eMouseInteractionMode.DragXMark
                         Me.DragXMark(Me.m_ptPosPrevious, ptPosCurrent)
+                        Me.Refresh()
 
                     Case eMouseInteractionMode.DragYMark
+                        Me.DragYMark(Me.m_ptPosPrevious, ptPosCurrent)
+                        Me.Refresh()
+
                     Case eMouseInteractionMode.None
 
                 End Select
@@ -900,10 +941,12 @@ Namespace Controls
             ' Determine interaction mode only when not capturing input
             If (Me.Editable = True) And (Me.Capture = False) Then
 
-                If Me.IsNearXMark(e.X) Then
-                    Me.m_editMode = eMouseInteractionMode.DragXMark
-                Else
-                    Me.m_editMode = eMouseInteractionMode.DrawShape
+                If (Me.IsNearXMark(e.X) And ((Me.m_editAllowed And eMouseInteractionMode.DragXMark) > 0)) Then
+                    Me.EditMode = eMouseInteractionMode.DragXMark
+                ElseIf (Me.IsNearYMark(e.Y) And ((Me.m_editAllowed And eMouseInteractionMode.DragYMark) > 0)) Then
+                    Me.EditMode = eMouseInteractionMode.DragYMark
+                ElseIf (Me.Editable And ((Me.m_editAllowed And eMouseInteractionMode.DrawShape) > 0)) Then
+                    Me.EditMode = eMouseInteractionMode.DrawShape
                 End If
 
                 ' Update cursor to provide feedback
