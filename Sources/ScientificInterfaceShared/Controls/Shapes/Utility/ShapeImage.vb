@@ -51,8 +51,12 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' This method transforms the screen point to the underlying model point
+        ''' Transforms a screen point to an underlying model point.
         ''' </summary>
+        ''' <param name="ptImage">The screen point to translate.</param>
+        ''' <param name="rcClip">The screen clip area for interpreting the screen point.</param>
+        ''' <param name="sXMax">X max scale to translate the point to. This code assumes that the x min scale always equals 0.</param>
+        ''' <param name="sYMax">Y max scale to translate the point to. This code assumes that the y min scale always equals 0.</param>
         ''' -------------------------------------------------------------------
         Public Shared Function ToModelPoint(ByVal ptImage As PointF, _
                                     ByVal rcClip As Rectangle, _
@@ -61,6 +65,7 @@ Namespace Controls
             Dim ptModel As New PointF(CInt(Math.Ceiling((ptImage.X - rcClip.Left) * sXMax / rcClip.Width)), _
                                 (rcClip.Height + rcClip.Top - ptImage.Y) * sYMax / rcClip.Height)
 
+            ' Clip values
             ptModel.X = Math.Min(Math.Max(0, ptModel.X), sXMax)
             ptModel.Y = Math.Max(0, ptModel.Y)
 
