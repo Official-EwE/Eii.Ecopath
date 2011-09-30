@@ -481,7 +481,7 @@ Namespace Ecospace.Basemap.Layers
                     For iLayer As Integer = 1 To core.nImportanceLayers
 
                         Dim src As cEcospaceLayerImportance = core.EcospaceBasemap.LayerImportance(iLayer)
-                        key = New cValueID(eDataTypes.EcospaceLayerImportance, src.DBID, eVarNameFlags.Name)
+                        key = New cValueID(src.DataType, src.DBID, eVarNameFlags.Name)
                         ad = core.AuxillaryData(key)
 
                         ' Get or create Visual Style
@@ -497,7 +497,34 @@ Namespace Ecospace.Basemap.Layers
                         ' Create layer
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorTwoState()
-                        layer = New cLayer(uic, bmd.LayerImportance(iLayer), renderer, editor, src, eVarNameFlags.Name)
+                        layer = New cLayer(uic, src, renderer, editor, src, eVarNameFlags.Name)
+
+                        lLayers.Add(layer)
+
+                    Next iLayer
+
+                Case eVarNameFlags.LayerDriver
+
+                    For iLayer As Integer = 1 To core.nDriverLayers
+
+                        Dim src As cEcospaceLayerDriver = core.EcospaceBasemap.LayerDriver(iLayer)
+                        key = New cValueID(src.DataType, src.DBID, eVarNameFlags.Name)
+                        ad = core.AuxillaryData(key)
+
+                        ' Get or create Visual Style
+                        vs = ad.VisualStyle
+                        If vs Is Nothing Then
+                            vs = New cVisualStyle()
+                            vs.ForeColour = Color.Black
+                            ad.AllowValidation = False
+                            ad.VisualStyle = vs
+                            ad.AllowValidation = True
+                        End If
+
+                        ' Create layer
+                        renderer = New cLayerRendererValue(vs)
+                        editor = New cLayerEditorRange()
+                        layer = New cLayer(uic, src, renderer, editor, src, eVarNameFlags.Name)
 
                         lLayers.Add(layer)
 
@@ -547,6 +574,9 @@ Namespace Ecospace.Basemap.Layers
 
                 Case eVarNameFlags.LayerImportance
                     strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_IMPORTANCE
+
+                Case eVarNameFlags.LayerDriver
+                    strGroup = "Custom drivers"
 
             End Select
             Return strGroup

@@ -18,7 +18,9 @@ Public Class cEcospaceBasemap
     Private m_dictLayers As New Dictionary(Of eVarNameFlags, cEcospaceLayer)
     ''' <summary>Importance layers maintained in a basemap.</summary>
     Private m_lstLayerImportance As New List(Of cEcospaceLayerImportance)
- 
+    ''' <summary>External driver layers maintained in a basemap.</summary>
+    Private m_lstLayerDriver As New List(Of cEcospaceLayerDriver)
+
     ''' <summary>Equator length in km.</summary>
     ''' <remarks>http://en.wikipedia.org/wiki/Equator#Exact_length_of_the_Equator</remarks>
     Private Shared c_sEquatorLength As Single = 40007.862917
@@ -33,7 +35,7 @@ Public Class cEcospaceBasemap
         Dim val As cValue = Nothing
         Dim meta As cVariableMetaData = Nothing
         Dim layer As cEcospaceLayer = Nothing
-        Dim lData As cEcospaceDataStructures.cLayerImportanceData = Nothing
+        Dim lData As cEcospaceDataStructures.cLayerDriverData = Nothing
 
         Me.AllowValidation = False
 
@@ -216,6 +218,12 @@ Public Class cEcospaceBasemap
                 m_lstLayerImportance.Add(New cEcospaceLayerImportance(theCore, lData.DBID, Me, i))
             Next
 
+            ' Driver layers
+            For i As Integer = 0 To Me.m_core.nDriverLayers - 1
+                lData = data.DriverLayers(i)
+                m_lstLayerDriver.Add(New cEcospaceLayerDriver(theCore, lData.DBID, Me, i))
+            Next
+
             ' Migration
             layer = New cEcospaceLayerMigration(theCore, Me, eVarNameFlags.LayerMigration)
             Me.Layers(layer.VarName) = layer
@@ -392,7 +400,7 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns a LayerImportance
+    ''' Returns an importance layer
     ''' </summary>
     ''' <param name="index">Index from 1 to nLayerImportance</param>
     ''' -----------------------------------------------------------------------
@@ -401,8 +409,26 @@ Public Class cEcospaceBasemap
             Try
                 Return Me.m_lstLayerImportance(index - 1)
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".New(..) Unable to access LayerImportance of index:" & index & ". Error: " & ex.Message)
-                m_core.Messages.AddMessage(New cMessage("Unable to access LayerImportance of index", eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
+                cLog.Write(Me.ToString & ".New(..) Unable to access importance layer of index:" & index & ". Error: " & ex.Message)
+                m_core.Messages.AddMessage(New cMessage("Unable to access importance layer of index", eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
+                Return Nothing
+            End Try
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns an external driver layer
+    ''' </summary>
+    ''' <param name="index">Index from 1 to nLayerDriver</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerDriver(ByVal index As Integer) As cEcospaceLayerDriver
+        Get
+            Try
+                Return Me.m_lstLayerDriver(index - 1)
+            Catch ex As Exception
+                cLog.Write(Me.ToString & ".New(..) Unable to access driver layer of index:" & index & ". Error: " & ex.Message)
+                m_core.Messages.AddMessage(New cMessage("Unable to access driver layer of index", eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
                 Return Nothing
             End Try
         End Get
@@ -693,10 +719,16 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.DepthA
             Case eVarNameFlags.LayerImportance
                 If iIndex < 0 Or iIndex > Me.m_core.m_EcoSpaceData.ImportanceLayers.Count - 1 Then
-                    Debug.Assert(False, "cCore message: Index out of bounds error for ImportanceLayers")
+                    Debug.Assert(False, "cCore message: Index out of bounds error for importance layers")
                     Return Nothing
                 End If
                 Return Me.m_core.m_EcoSpaceData.ImportanceLayers(iIndex).Data
+            Case eVarNameFlags.LayerDriver
+                If iIndex < 0 Or iIndex > Me.m_core.m_EcoSpaceData.DriverLayers.Count - 1 Then
+                    Debug.Assert(False, "cCore message: Index out of bounds error for driver layers")
+                    Return Nothing
+                End If
+                Return Me.m_core.m_EcoSpaceData.DriverLayers(iIndex).Data
             Case eVarNameFlags.LayerPort
                 Return Me.m_core.m_EcoSpaceData.Port
             Case eVarNameFlags.LayerSail

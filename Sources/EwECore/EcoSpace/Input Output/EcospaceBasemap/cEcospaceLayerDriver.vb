@@ -1,0 +1,66 @@
+#Region " Imports "
+
+Option Strict On
+Imports EwECore.ValueWrapper
+Imports EwEUtils.Core
+
+#End Region ' Imports 
+
+''' <summary>
+''' Layer providing access to Ecospace external driving data.
+''' </summary>
+Public Class cEcospaceLayerDriver
+    Inherits cEcospaceLayerSingle
+
+#Region " Constructor "
+
+    Sub New(ByRef theCore As cCore, ByVal idBID As Integer, ByRef manager As cEcospaceBasemap, ByVal iIndex As Integer)
+
+        MyBase.New(theCore, idBID, manager, eVarNameFlags.LayerDriver, iIndex)
+
+        Dim val As cValue
+        Dim meta As cVariableMetaData
+        Dim desc As Char()
+
+        Me.AllowValidation = False
+
+        Try
+            m_dataType = eDataTypes.EcospaceLayerDriver
+            m_coreComponent = eCoreComponentType.EcoSpace
+
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+
+            ' Description
+            meta = New cVariableMetaData(60000)
+            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            'set status flags to default values
+            ResetStatusFlags()
+
+            Me.AllowValidation = True
+
+        Catch ex As Exception
+            Debug.Assert(False, "Error creating new cEcospaceLayerDriver.")
+            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceLayerDriver. Error: " & ex.Message)
+        End Try
+
+    End Sub
+
+#End Region ' Constructor
+
+#Region " Properties by dot (.) operator "
+
+    Public Property Description() As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.Description))
+        End Get
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.Description, value)
+        End Set
+    End Property
+
+#End Region ' Properties by dot (.) operator
+
+End Class

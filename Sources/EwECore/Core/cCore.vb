@@ -210,6 +210,8 @@ Public Class cCore
                     Return Me.nTimeSeriesDatasets
                 Case eCoreCounterTypes.nImportanceLayers
                     Return Me.nImportanceLayers
+                Case eCoreCounterTypes.nDriverLayers
+                    Return Me.nDriverLayers
                     ' Case eCoreCounterTypes.nTrophicLevels
                     '     Return m_NetworkManager.nTrophicLevels
                 Case eCoreCounterTypes.nRows
@@ -376,6 +378,18 @@ Public Class cCore
     Public ReadOnly Property nImportanceLayers() As Integer
         Get
             Return Me.m_EcoSpaceData.nImportanceLayers
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Number of Ecospace external driver layers.
+    ''' </summary>
+    ''' <remarks>
+    ''' See <see cref="eCoreCounterTypes.nDriverLayers"/>.
+    ''' </remarks>
+    Public ReadOnly Property nDriverLayers() As Integer
+        Get
+            Return Me.m_EcoSpaceData.nDriverLayers
         End Get
     End Property
 
@@ -9119,7 +9133,9 @@ Public Class cCore
                 .AllowValidation = True
             End With
 
-            LoadEcospaceImportanceLayer()
+            ' Load layers that do not get initialized by the basemap
+            Me.LoadEcospaceImportanceLayers()
+            Me.LoadEcospaceDriverLayers()
             Return True
 
         Catch ex As Exception
@@ -9129,7 +9145,7 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadEcospaceImportanceLayer() As Boolean
+    Private Function LoadEcospaceImportanceLayers() As Boolean
         Dim dest As cEcospaceLayerImportance = Nothing
         Dim src As cEcospaceDataStructures.cLayerImportanceData = Nothing
 
@@ -9147,6 +9163,22 @@ Public Class cCore
         Next i
     End Function
 
+    Private Function LoadEcospaceDriverLayers() As Boolean
+        Dim dest As cEcospaceLayerDriver = Nothing
+        Dim src As cEcospaceDataStructures.cLayerDriverData = Nothing
+
+        For i As Integer = 0 To Me.m_EcoSpaceData.nImportanceLayers - 1
+            src = Me.m_EcoSpaceData.DriverLayers(i)
+            dest = Me.m_EcospaceBasemap.LayerDriver(i + 1)
+
+            dest.AllowValidation = False
+            dest.Index = i
+            dest.Name = src.strName
+            dest.Description = src.strDescription
+            dest.AllowValidation = True
+
+        Next i
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -9164,11 +9196,13 @@ Public Class cCore
             ' JS21sep07: Basemap row/col set via ResizeEcospaceBasemap
             'Me.m_EcoSpaceData.Inrow = m_EcospaceBasemap.InRow
             'Me.m_EcoSpaceData.InCol = m_EcospaceBasemap.InCol
+
             Me.m_EcoSpaceData.CellLength = m_EcospaceBasemap.CellLength
             Me.m_EcoSpaceData.Lat1 = m_EcospaceBasemap.Latitude
             Me.m_EcoSpaceData.Lon1 = m_EcospaceBasemap.Longitude
 
-            UpdateEcospaceImportanceLayers()
+            Me.UpdateEcospaceImportanceLayers()
+            Me.UpdateEcospaceDriverLayers()
 
         Catch ex As Exception
             bSucces = False
@@ -9178,6 +9212,7 @@ Public Class cCore
     End Function
 
     Private Sub UpdateEcospaceImportanceLayers()
+
         Dim src As cEcospaceLayerImportance = Nothing
         Dim dest As cEcospaceDataStructures.cLayerImportanceData = Nothing
 
@@ -9190,6 +9225,20 @@ Public Class cCore
             dest.strDescription = src.Description
 
         Next i
+    End Sub
+
+    Private Sub UpdateEcospaceDriverLayers()
+
+        Dim src As cEcospaceLayerDriver = Nothing
+        Dim dest As cEcospaceDataStructures.cLayerDriverData = Nothing
+
+        For i As Integer = 0 To Me.m_EcoSpaceData.nImportanceLayers - 1
+            src = Me.m_EcospaceBasemap.LayerDriver(i + 1)
+            dest = Me.m_EcoSpaceData.ImportanceLayers(i)
+            dest.strName = src.Name
+            dest.strDescription = src.Description
+        Next i
+
     End Sub
 
 #End Region ' Basemap

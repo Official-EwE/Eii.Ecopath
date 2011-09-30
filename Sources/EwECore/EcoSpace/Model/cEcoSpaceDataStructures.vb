@@ -13,19 +13,30 @@ Public Class cEcospaceDataStructures
 
 #Region " Storage classes "
 
-    Public Class cLayerImportanceData
+    Public Class cLayerDriverData
 
         Public DBID As Integer
         Public Data(,) As Single
         Public strName As String
         Public strDescription As String
-        Public sWeight As Single
 
         Public Sub New(ByVal inRow As Integer, ByVal inCol As Integer)
             ReDim Data(inRow, inCol)
         End Sub
 
     End Class
+
+    Public Class cLayerImportanceData
+        Inherits cLayerDriverData
+
+        Public sWeight As Single
+
+        Public Sub New(ByVal inRow As Integer, ByVal inCol As Integer)
+            MyBase.New(inRow, inCol)
+        End Sub
+
+    End Class
+
 #End Region
 
     Public EcosimScenarioDBID As Integer
@@ -93,6 +104,9 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>Number of Importance layers</summary>
     Public nImportanceLayers As Integer
+
+    ''' <summary>Number of Driver layers</summary>
+    Public nDriverLayers As Integer
 
     ''' <summary>Descriptive text of habitat type (name) </summary>
     Public HabitatText() As String
@@ -220,6 +234,7 @@ Public Class cEcospaceDataStructures
     Public RelCinorig(,) As Single    'for use with habitat change
     Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
     Public Port(,,) As Boolean
+    Public DriverLayers As New List(Of cLayerDriverData)
     Public ImportanceLayers As New List(Of cLayerImportanceData)
 
     Public EffPower() As Single
@@ -1154,6 +1169,11 @@ Public Class cEcospaceDataStructures
             ImportanceLayers.Clear()
             For i = 0 To nImportanceLayers - 1
                 ImportanceLayers.Add(New cLayerImportanceData(InRow, InCol))
+            Next
+
+            DriverLayers.Clear()
+            For i = 0 To nDriverLayers - 1
+                DriverLayers.Add(New cLayerDriverData(InRow, InCol))
             Next
 
             ReDim MPAfishery(nFleets, 1)

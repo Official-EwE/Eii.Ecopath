@@ -512,6 +512,8 @@ Namespace Core
         LayerUpwelling
         ''' <summary>Ecospace MPA importance.</summary>
         LayerImportance
+        ''' <summary>Ecospace external driver layer.</summary>
+        LayerDriver
         ''' <summary>Ecospace cell port assignments.</summary>
         LayerPort
         ''' <summary>Ecospace sailing cost.</summary>
@@ -522,6 +524,7 @@ Namespace Core
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type.</summary>
         HabAreaProportion
+        ''' <summary>Ecospace IBM packets layer.</summary>
         LayerIBMPackets
         ''' <summary>Total Eff, Muiltiplier.</summary>
         ''' <remarks>Summary taken from EwE5 code, not overly helpful I'm afraid...</remarks>
@@ -1952,7 +1955,6 @@ Namespace Core
         ''' </summary>
         CapacityMediation = 99
 
-
         ''' <summary>
         ''' Data belongs to a IEnviroInputMap
         ''' </summary>
@@ -1961,6 +1963,8 @@ Namespace Core
         MSEBatchManager = 101
         MSEBatchParameters = 102
         MSEBatchTFMInput = 103
+
+        EcospaceLayerDriver = 104
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
@@ -2030,7 +2034,8 @@ Namespace Core
         nTimeSeriesDatasets
         ''' <summary>Number of importance layers.</summary>
         nImportanceLayers
-
+        ''' <summary>Number of driver layers.</summary>
+        nDriverLayers
         ''' <summary>Number of years the game simulation can run for.</summary>
         nGameSimYears
         ''' <summary>Number of timesteps the game simulation can run for.</summary>
