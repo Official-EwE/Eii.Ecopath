@@ -2,15 +2,8 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="ScientificInterfaceShared.Controls.cShapeGUIHandler" Collapsed="true">
     <Position X="9.5" Y="0.75" Width="2.25" />
-    <NestedTypes>
-      <Enum Name="ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Controls\Shapes\cShapeGUIHandler.vb</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AIACQAABIARIABICQBAoIAAABAAACABAEUAAkAgggBA=</HashCode>
+      <HashCode>AIACQASBIARIABICwJAoIABARIAACABAEUACkAgggBA=</HashCode>
       <FileName>Controls\Shapes\cShapeGUIHandler.vb</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -20,28 +13,28 @@
   <Class Name="ScientificInterfaceShared.Controls.cTimeSeriesShapeGUIHandler" Collapsed="true">
     <Position X="7.5" Y="2" Width="2" />
     <TypeIdentifier>
-      <HashCode>AYgAAIARAARAAAIAAEAEAAAQQAAACAAgEEAAgAAAgMA=</HashCode>
+      <HashCode>AYgAAIERAARAAAIAgMAEAABQQIAACAAgEMAAgAAAgMA=</HashCode>
       <FileName>Controls\Shapes\ShapeGUIHandlers\cTimeSerieShapeGUIHandler.vb</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ScientificInterfaceShared.Controls.cForcingShapeGUIHandler" Collapsed="true">
     <Position X="11.5" Y="2" Width="2" />
     <TypeIdentifier>
-      <HashCode>ooAEBCABAERABAJACAAEAAAAQAYACAAAEEAQgAAAglA=</HashCode>
+      <HashCode>ooAEDCABAERABAIAigAEAABBQIYACAAAEMASgAQAglA=</HashCode>
       <FileName>Controls\Shapes\ShapeGUIHandlers\cForcingFunctionShapeGUIHandler.vb</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ScientificInterfaceShared.Controls.cMediationShapeGUIHandler" Collapsed="true">
-    <Position X="15" Y="3.5" Width="2.25" />
+    <Position X="16.25" Y="3.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AIAAAAAAIAQAAAIAAAAAQAAAAABACAAAEAAQkAACggA=</HashCode>
+      <HashCode>AIAAAAAAIAQAAAIAhAAAAAABIIAACAAAFgAQkAAAggA=</HashCode>
       <FileName>Controls\Shapes\ShapeGUIHandlers\cMediationGUIHandler.vb</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ScientificInterfaceShared.Controls.cFishingMortalityShapeGUIHandler" Collapsed="true">
     <Position X="9.5" Y="5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAgQAAAgA=</HashCode>
+      <HashCode>AAAAAAAAAAQAAAIAAAAAAAAAAAAAAAAAAAAAgQAAAgA=</HashCode>
       <FileName>Controls\Shapes\ShapeGUIHandlers\cFishingMortalityShapeGUIHandler.vb</FileName>
     </TypeIdentifier>
   </Class>
@@ -55,7 +48,7 @@
   <Class Name="ScientificInterfaceShared.Controls.cFishingBaseShapeGUIHandler" Collapsed="true">
     <Position X="11.25" Y="3.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AIAACCAAAAQAAAAACAAAAAAABAAACAAAAAAAAQAAAAA=</HashCode>
+      <HashCode>AIAIACAAAAQAAAAACAAAAAAABAAACAAAAAAAAQAAAAA=</HashCode>
       <FileName>Controls\Shapes\ShapeGUIHandlers\cFishingShapeGUIHandler.vb</FileName>
     </TypeIdentifier>
   </Class>
@@ -70,6 +63,13 @@
     <Position X="13.25" Y="0.75" Width="1.5" />
     <TypeIdentifier />
     <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ScientificInterfaceShared.Controls.cCapacityShapeGUIHandler" Collapsed="true">
+    <Position X="16.25" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAQAAAAAgAAAAABAAIAACAAAEAAQgAAAggA=</HashCode>
+      <FileName>Controls\Shapes\ShapeGUIHandlers\cCapacityShapeGUIHandler.vb</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>

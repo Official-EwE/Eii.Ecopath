@@ -221,7 +221,8 @@ Namespace Controls
                      eShapeCommandTypes.Modify, _
                      eShapeCommandTypes.DisplayOptions, _
                      eShapeCommandTypes.SaveAsImage, _
-                     eShapeCommandTypes.Seasonal
+                     eShapeCommandTypes.Seasonal, _
+                     eShapeCommandTypes.SetMaxValue
                     Return bHasSingleSelection
 
                 Case eShapeCommandTypes.ShowAllData
@@ -279,6 +280,9 @@ Namespace Controls
 
                 Case eShapeCommandTypes.Seasonal
                     Me.SetSeasonal(ashapes(0), CBool(data))
+
+                Case eShapeCommandTypes.SetMaxValue
+                    Me.ScaleShape(ashapes(0), CSng(data))
 
                 Case eShapeCommandTypes.SetToValue
                     Me.ResetShapePrompted(Me.SelectedShapes)
@@ -480,6 +484,24 @@ Namespace Controls
 
             Dim dlg As New frmShapeValue(Me.UIContext, shape)
             dlg.ShowDialog(Me.UIContext.FormMain)
+
+        End Sub
+
+        Private Sub ScaleShape(ByVal shape As cShapeData, ByVal sNewMaxValue As Single)
+
+            ' Sanity check
+            Debug.Assert(shape IsNot Nothing, "Need valid FF")
+            Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
+
+            Dim sCurrMax As Single = shape.YMax
+            If (sCurrMax <= 0) Then Return
+
+            Dim sScale As Single = sNewMaxValue / sCurrMax
+            shape.LockUpdates()
+            For i As Integer = 0 To shape.XMax
+                shape.ShapeData(i) *= sScale
+            Next
+            shape.UnlockUpdates(True)
 
         End Sub
 

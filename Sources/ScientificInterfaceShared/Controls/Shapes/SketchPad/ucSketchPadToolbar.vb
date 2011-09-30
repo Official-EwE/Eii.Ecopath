@@ -8,6 +8,7 @@ Imports System.Drawing.Drawing2D
 Imports System.Drawing
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -21,17 +22,19 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public Class ucSketchPadToolbar
+        Implements IUIElement
 
 #Region " Variables "
 
         Private m_handler As cShapeGUIHandler = Nothing
+        Private m_uic As cUIContext = Nothing
 
-#End Region
+#End Region ' Variables
 
 #Region " Constructors "
 
         Public Sub New()
-            InitializeComponent()
+            Me.InitializeComponent()
         End Sub
 
 #End Region ' Constructors
@@ -51,6 +54,22 @@ Namespace Controls
         Public WriteOnly Property IsMenuVisible() As Boolean
             Set(ByVal value As Boolean)
                 m_tsMenus.Visible = value
+            End Set
+        End Property
+
+        Public Property UIContext As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                If (Me.m_uic IsNot Nothing) Then
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+                Me.m_uic = value
+                If (Me.m_uic IsNot Nothing) Then
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
             End Set
         End Property
 
@@ -151,6 +170,28 @@ Namespace Controls
             End If
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler; responds to an [ENTER] key press to apply entered text
+        ''' to the grid selection.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub m_tstbMaxValue_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles m_tstbMaxValue.KeyDown
+            ' Is [ENTER]?
+            If e.KeyCode = Keys.Enter Then
+                If (Me.Handler IsNot Nothing) Then
+                    Dim sValue As Single = 1.0!
+                    Try
+                        ' Parse value using UI number settings
+                        sValue = Single.Parse(m_tstbMaxValue.Text)
+                    Catch ex As Exception
+                        sValue = 1.0!
+                    End Try
+                    Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SetMaxValue, Nothing, sValue)
+                End If
+            End If
+        End Sub
+
 #End Region ' Event handlers
 
 #Region " Internal implementation "
@@ -173,6 +214,8 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tslWeight)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tstbWeight)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAllData, Me.m_tsbnShowAllData)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetMaxValue, Me.m_tslMaxValue)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetMaxValue, Me.m_tstbMaxValue)
 
             If (shapeSelected IsNot Nothing) Then
                 Me.m_bInUpdate = True
@@ -183,13 +226,20 @@ Namespace Controls
 
             If ((shapeSelected IsNot Nothing) And (TypeOf shapeSelected Is cTimeSeries)) Then
                 Me.m_bInUpdate = True
-                Me.m_tstbWeight.Text = CStr(DirectCast(shapeSelected, cTimeSeries).WtType)
+                Me.m_tstbWeight.Text = Me.m_uic.StyleGuide.FormatNumber(DirectCast(shapeSelected, cTimeSeries).WtType)
+                Me.m_bInUpdate = False
+            End If
+
+            If (shapeSelected IsNot Nothing) Then
+                Me.m_bInUpdate = True
+                Me.m_tstbMaxValue.Text = Me.m_uic.StyleGuide.FormatNumber(shapeSelected.YMax)
                 Me.m_bInUpdate = False
             End If
 
         End Sub
 
         Private Sub UpdateCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, ByVal tsi As ToolStripItem)
+
             If (Me.m_handler Is Nothing) Then Return
             If Me.m_handler.SupportCommand(cmd) Then
                 tsi.Visible = True
@@ -197,6 +247,15 @@ Namespace Controls
             Else
                 tsi.Visible = False
             End If
+
+        End Sub
+
+        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+            Try
+                Me.UpdateControls()
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #End Region ' Internal implementation

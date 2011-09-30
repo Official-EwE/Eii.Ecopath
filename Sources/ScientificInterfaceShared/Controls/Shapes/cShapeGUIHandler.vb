@@ -54,6 +54,8 @@ Namespace Controls
             Seasonal
             ''' <summary>Set the weight of a single time series.</summary>
             SetWeight
+            ''' <summary>Set the max Y value of a single shape.</summary>
+            SetMaxValue
             ''' <summary>Set a shape to a given value.</summary>
             SetToValue
             ''' <summary>Set a shape to 0.</summary>
@@ -550,12 +552,14 @@ Namespace Controls
 
                 If (Me.m_sketchPadToolbar IsNot Nothing) Then
                     Me.m_sketchPadToolbar.Handler = Nothing
+                    Me.m_sketchPadToolbar.UIContext = Nothing
                 End If
 
                 Me.m_sketchPadToolbar = value
 
                 If (Me.m_sketchPadToolbar IsNot Nothing) Then
                     Me.m_sketchPadToolbar.Handler = Me
+                    Me.m_sketchPadToolbar.UIContext = Me.UIContext
                 End If
 
             End Set

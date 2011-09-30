@@ -65,7 +65,7 @@ Namespace Ecosim
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
-            If Me.UIContext Is Nothing Then Return
+            If (Me.UIContext Is Nothing) Then Return
 
             Me.m_handler = New cFishingMortalityShapeGUIHandler()
             Me.m_handler.Attach(Me.UIContext, _

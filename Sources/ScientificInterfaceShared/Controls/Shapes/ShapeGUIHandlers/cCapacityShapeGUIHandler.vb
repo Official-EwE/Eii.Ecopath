@@ -35,24 +35,29 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the colour for rendering price elasticity shapes.
+        ''' Returns the colour for rendering capacity shapes.
         ''' </summary>
-        ''' <returns>The color for rendering price elasticity shapes.</returns>
+        ''' <returns>The color for rendering capacity shapes.</returns>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Color() As System.Drawing.Color
             Return Drawing.Color.SandyBrown
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.SupportCommand"/>
+        ''' -----------------------------------------------------------------------
         Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
                 Case eShapeCommandTypes.ViewMode
                     Return False
+                Case eShapeCommandTypes.SetMaxValue
+                    Return True
             End Select
             Return MyBase.SupportCommand(cmd)
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="cMediationShapeGUIHandler.ExecuteCommand"/>
+        ''' <inheritdocs cref="cShapeGUIHandler.ExecuteCommand"/>
         ''' -----------------------------------------------------------------------
         Public Overrides Sub ExecuteCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
                                           Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
@@ -64,15 +69,9 @@ Namespace Controls
                     Case eShapeCommandTypes.DefineMediation
                         Debug.Assert((TypeOf Me.SelectedShape Is EwECore.cEnviroResponseFunction), "OPPSSS...")
                         Dim dlgDefBP As New dlgDefineMapResponseAssignments(Me.UIContext, DirectCast(Me.SelectedShape, EwECore.cEnviroResponseFunction), UIContext.Core.CapacitMapInteractionManager)
-                        '   Dim dlgDefBP As New ScientificInterfaceShared.d
-
-
                         If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
                             Me.MediationAssignments.RefreshContent()
                         End If
-
-                        'Case eShapeCommandTypes.ViewMode
-                        '    Me.m_medass.ViewMode = DirectCast(data, ucMediationAssignments.eViewModeTypes)
 
                     Case Else
                         MyBase.ExecuteCommand(cmd, ashapes, data)
@@ -163,7 +162,6 @@ Namespace Controls
             End If
         End Sub
 
-
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.OnShapeFinalized"/>
         ''' -------------------------------------------------------------------
@@ -177,9 +175,9 @@ Namespace Controls
 
         End Sub
 
-
-
+        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.isGraphTypeEnabled"/>
+        ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property isGraphTypeEnabled() As Boolean
             Get
                 Return False
@@ -187,8 +185,5 @@ Namespace Controls
         End Property
 
     End Class
-
-
-  
 
 End Namespace
