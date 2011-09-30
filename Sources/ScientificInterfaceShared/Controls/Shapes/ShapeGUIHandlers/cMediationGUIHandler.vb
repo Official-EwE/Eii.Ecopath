@@ -211,12 +211,13 @@ Namespace Controls
                 End If
 
                 If (Me.SketchPad IsNot Nothing) Then
-                    If (shapeSelected Is Nothing) Then
-                        Me.SketchPad.XMarkValue = cCore.NULL_VALUE
-                        Me.SketchPad.YMarkValue = cCore.NULL_VALUE
-                    Else
+                    Me.SketchPad.XMarkValue = cCore.NULL_VALUE
+                    Me.SketchPad.YMarkValue = 1.0
+                    If (shapeSelected IsNot Nothing) Then
                         Me.SketchPad.XMarkValue = CSng(shapeSelected.XBaseIndex)
-                        Me.SketchPad.YMarkValue = shapeSelected.ShapeData(Math.Max(0, Math.Min(shapeSelected.XBaseIndex, shapeSelected.ShapeData.Length - 1)))
+                        If (Me.SketchPad.XMarkValue >= 0) Then
+                            Me.SketchPad.YMarkValue = shapeSelected.ShapeData(Math.Max(0, Math.Min(shapeSelected.XBaseIndex, shapeSelected.ShapeData.Length - 1)))
+                        End If
                     End If
                 End If
 

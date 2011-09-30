@@ -302,8 +302,14 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Sub Refresh()
-            If Me.m_bInUpdate Then Return
-            Me.UpdateShapeList(Me.SelectedShapes)
+            If Me.m_bInUpdate Then
+                ' Perform limited update. Sketchpad and Toolbox should take care of themselves
+                If (Me.SketchPadToolbar IsNot Nothing) Then Me.SketchPadToolbar.Refresh()
+                If (Me.ShapeToolBoxToolbar IsNot Nothing) Then Me.ShapeToolBoxToolbar.Refresh()
+            Else
+                ' Do full update
+                Me.UpdateShapeList(Me.SelectedShapes)
+            End If
         End Sub
 
         Protected Overrides Sub OnCoreMessage(ByRef msg As EwECore.cMessage)

@@ -144,8 +144,12 @@ Namespace Controls
 #Region " Obligatory overrides "
 
         Protected Overridable Sub OnCoreMessage(ByRef mgs As cMessage)
-            If Me.Datatypes Is Nothing Then Return
-            If Array.IndexOf(Me.Datatypes, mgs.DataType) >= 0 Then
+
+            Dim adt As eDataTypes() = Me.Datatypes
+
+            If (adt Is Nothing) Then Return
+
+            If Array.IndexOf(adt, mgs.DataType) >= 0 Then
                 Try
                     Me.Refresh()
                     RaiseEvent OnRefreshed(Me)

@@ -77,6 +77,7 @@ Partial Class frmCapacityFunction
         Me.m_sketchPad.ShowXMark = True
         Me.m_sketchPad.ShowYMark = True
         Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+        Me.m_sketchPad.AllowedEdits = ucSketchPad.eMouseInteractionMode.DrawShape
         Me.m_sketchPad.UIContext = Nothing
         Me.m_sketchPad.XAxisLabel = "Input value"
         Me.m_sketchPad.XAxisMaxValue = -9999
