@@ -75,6 +75,12 @@ Public Interface IEnviroInputMap
     Function Histogram() As Drawing.PointF()
 
     ''' <summary>
+    ''' Width of a histogram bin
+    ''' </summary>
+    ReadOnly Property HistogramBinWidth() As Single
+
+
+    ''' <summary>
     ''' Updates the map stats on the underlying data
     ''' </summary>
     ''' <remarks>Caluculates Min, Max and Mean</remarks>

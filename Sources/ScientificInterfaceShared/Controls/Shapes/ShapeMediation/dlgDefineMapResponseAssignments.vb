@@ -73,6 +73,19 @@ Public Class dlgDefineMapResponseAssignments
 
         Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
+        Me.m_zgh.GetPane(1).Y2Axis.IsVisible = True
+        Me.m_zgh.GetPane(1).Y2Axis.Title.Text = "Map histogram"
+        Me.m_zgh.GetPane(1).Y2Axis.Title.IsVisible = True
+        Me.m_zgh.GetPane(1).Y2Axis.Title.FontSpec = Me.m_zgh.GetPane(1).YAxis.Title.FontSpec
+        '  Me.m_zgh.GetPane(1).Y2Axis.MajorTic. = Me.m_zgh.GetPane(1).YAxis.MajorTic
+
+        Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsAllTics = False
+        Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsOpposite = False
+        Me.m_zgh.GetPane(1).Y2Axis.MajorTic.IsOpposite = False
+        'somehow set the Y2Axis label font size
+
+        Me.m_zgh.GetPane(1).Y2Axis.Scale.MaxAuto = True
+
         Me.m_lbxGroups.Attach(Me.m_uic)
 
         Me.loadMaps()
@@ -408,26 +421,28 @@ Public Class dlgDefineMapResponseAssignments
                 Return
             End If
 
+            Dim y2max As Single
             Dim histPts() As Drawing.PointF = Me.m_map.Histogram()
+            Dim binWidth As Single = Me.m_map.HistogramBinWidth
             Dim lstPts As New PointPairList()
             Dim fmt As New cCoreInterfaceFormatter()
 
-            'The X value in the histogram is the max value, right hand side, in the bin
+            'The X value in the histogram is the max value of the bin, right hand side of the bin
             'So an input value of 1.0 will be in the .X = 1.0 bin
-            lstPts.Add(0, histPts(1).Y)
-            For ipt As Integer = 1 To histPts.Length - 2
+            For ipt As Integer = 1 To histPts.Length - 1
+                lstPts.Add(histPts(ipt).X - binWidth, histPts(ipt).Y)
                 lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
-                lstPts.Add(histPts(ipt).X, histPts(ipt + 1).Y)
+                y2max = Math.Max(histPts(ipt).Y, y2max)
             Next
-
-            lstPts.Add(histPts(histPts.Length - 1).X, histPts(histPts.Length - 1).Y)
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map)), _
                                                          Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts, eLines.Histogram)
+
+            il.IsY2Axis = True
+            il.Line.Fill = New Fill(System.Drawing.Color.Gray)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Me.m_map.Max
-            'Me.m_zgh.YScaleMax = 1.2
             Me.m_zgh.YScaleMin = 0
 
         Catch ex As Exception

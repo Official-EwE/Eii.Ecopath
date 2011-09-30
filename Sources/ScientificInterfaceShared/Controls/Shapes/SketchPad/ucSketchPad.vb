@@ -478,6 +478,9 @@ Namespace Controls
                         Return eShapeCategoryTypes.EggProduction
                     Case eDataTypes.Mediation
                         Return eShapeCategoryTypes.Mediation
+
+                    Case eDataTypes.CapacityMediation
+                        Return eShapeCategoryTypes.Mediation
                     Case Else
                         Debug.Assert(False)
                 End Select

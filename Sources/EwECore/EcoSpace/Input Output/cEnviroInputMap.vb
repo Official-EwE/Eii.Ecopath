@@ -169,9 +169,10 @@ Public Class cEnviroInputMap(Of T)
     ''' <inheritdocs cref="IEnviroInputMap.Histogram"/>
     Public Function Histogram() As Drawing.PointF() Implements IEnviroInputMap.Histogram
 
-        Dim ipt As Integer, maxPts As Integer
+        Dim ipt As Integer ', maxPts As Integer
         Dim nBins As Integer = 100
         Dim pts() As Drawing.PointF
+        Dim ncells As Integer
         ReDim pts(nBins)
 
         'Make sure there is data in the map
@@ -180,26 +181,33 @@ Public Class cEnviroInputMap(Of T)
         Else
             'No data in the map so just set a default binwidth 
             'this will dump all the data into the zero bin
-            Me.m_binWidth = 1.0F / nBins
+            Me.m_binWidth = 1.0F / CSng(nBins)
         End If
 
         Try
 
             For ir As Integer = 1 To Me.m_spaceData.InRow
                 For ic As Integer = 1 To Me.m_spaceData.InCol
-                    Dim cell As Single = CSng(CObj(Me.m_map(ir, ic)))
-                    ipt = CInt(cell / m_binWidth)
-                    If ipt >= nBins Then ipt = nBins
-                    If ipt <= 0 Then ipt = 1
-                    pts(ipt).Y += 1
-                    maxPts = CInt(Math.Max(pts(ipt).Y, maxPts))
+                    If Me.m_spaceData.Depth(ir, ic) > 0 Then
+                        Dim cell As Single = CSng(CObj(Me.m_map(ir, ic)))
+                        ipt = CInt(Math.Truncate(cell / m_binWidth)) + 1
+                        If ipt >= nBins Then ipt = nBins
+                        If ipt <= 0 Then ipt = 1
+                        pts(ipt).Y += 1
+                        'maxPts = CInt(Math.Max(pts(ipt).Y, maxPts))
+                        ncells += 1
+                    End If
                 Next
             Next
+            If ncells = 0 Then ncells = 1
 
             'Normalize the histogram
+            '29-Sept-2011 make it the percentage instead
             For i As Integer = 1 To nBins
-                pts(i).X = m_binWidth * i
-                pts(i).Y = pts(i).Y / maxPts
+                pts(i).X = CSng(m_binWidth * i)
+                'normalize the data
+                'pts(i).Y = pts(i).Y / maxPts
+                pts(i).Y = pts(i).Y / ncells
             Next
 
         Catch ex As Exception
@@ -209,6 +217,12 @@ Public Class cEnviroInputMap(Of T)
         Return pts
 
     End Function
+
+    Public ReadOnly Property HistogramBinWidth As Single Implements IEnviroInputMap.HistogramBinWidth
+        Get
+            Return Me.m_binWidth
+        End Get
+    End Property
 
 #Region " Properties "
 
@@ -298,4 +312,5 @@ Public Class cEnviroInputMap(Of T)
 
     End Function
 
+    
 End Class
