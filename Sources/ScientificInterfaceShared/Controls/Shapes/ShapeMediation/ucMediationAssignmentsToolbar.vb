@@ -124,25 +124,19 @@ Namespace Controls
         Private m_bInUpdate As Boolean = False
 
         Private Sub UpdateControls()
+
             If (Me.Handler Is Nothing) Then Return
+
+            Dim bShowViewMode As Boolean = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode)
+            Dim bEnableViewMode As Boolean = Me.Handler.EnableCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode)
 
             Me.m_tsMenus.SuspendLayout()
 
-            If (Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode)) Then
-                'Handler decides if the graph type selection buttons are enabled
-                If Me.Handler.isGraphTypeEnabled Then
-                    Me.m_tsbnViewAsBar.Enabled = True
-                    Me.m_tsbnViewAsPie.Enabled = True
-                Else
-                    Me.m_tsbnViewAsBar.Enabled = False
-                    Me.m_tsbnViewAsPie.Enabled = False
-                End If
-                Me.m_tsbnViewAsBar.Visible = True
-                Me.m_tsbnViewAsPie.Visible = True
-            Else
-                Me.m_tsbnViewAsBar.Visible = False
-                Me.m_tsbnViewAsPie.Visible = False
-            End If
+            Me.m_tsbnViewAsBar.Visible = bShowViewMode
+            Me.m_tsbnViewAsBar.Enabled = bEnableViewMode
+
+            Me.m_tsbnViewAsPie.Visible = bShowViewMode
+            Me.m_tsbnViewAsPie.Enabled = bEnableViewMode
 
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DefineMediation, m_tsbnDefineMediatingItems)
 

@@ -260,14 +260,6 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Protected MustOverride Function Datatypes() As eDataTypes()
 
-
-        ''' <summary>
-        ''' Are the Pie and Bar graph type buttons enabled on the Toolbar
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks>Used to Enable or Disable the graph display type on the Assignment Toolbar</remarks>
-        Public MustOverride ReadOnly Property isGraphTypeEnabled() As Boolean
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the selected <see cref="cShapeData">shape</see>.

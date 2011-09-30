@@ -244,6 +244,8 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.ShowAllData
                     Return False
+                Case eShapeCommandTypes.ViewMode
+                    Return True
             End Select
             Return MyBase.SupportCommand(cmd)
         End Function
@@ -253,7 +255,8 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Function EnableCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
-                Case eShapeCommandTypes.DefineMediation
+                Case eShapeCommandTypes.DefineMediation, _
+                     eShapeCommandTypes.ViewMode
                     Return (Me.SelectedShape IsNot Nothing)
             End Select
             Return MyBase.EnableCommand(cmd)
