@@ -58,41 +58,48 @@ Public Class dlgDefineMapResponseAssignments
 
         If (Me.m_uic Is Nothing) Then Return
 
-        'remember the original response function min and max
-        Me.m_fpXMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
-        Me.m_fpXMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
-        Me.m_fpXMin.Value = Me.m_shape.XAxisMin
-        Me.m_fpXMax.Value = Me.m_shape.XAxisMax
+        Try
 
-        If (CSng(Me.m_fpXMax.Value) = 0) Then
-            Me.m_fpXMax.Value = 1.0 'some kind of bogus default if nothing has been defined
-        End If
+            'remember the original response function min and max
+            Me.m_fpXMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
+            Me.m_fpXMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
+            Me.m_fpXMin.Value = Me.m_shape.XAxisMin
+            Me.m_fpXMax.Value = Me.m_shape.XAxisMax
 
-        AddHandler Me.m_fpXMin.OnValueChanged, AddressOf OnMinMaxTextChanged
-        AddHandler Me.m_fpXMax.OnValueChanged, AddressOf OnMinMaxTextChanged
+            If (CSng(Me.m_fpXMax.Value) = 0) Then
+                Me.m_fpXMax.Value = 1.0 'some kind of bogus default if nothing has been defined
+            End If
 
-        Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
+            AddHandler Me.m_fpXMin.OnValueChanged, AddressOf OnMinMaxTextChanged
+            AddHandler Me.m_fpXMax.OnValueChanged, AddressOf OnMinMaxTextChanged
 
-        Me.m_zgh.GetPane(1).Y2Axis.IsVisible = True
-        Me.m_zgh.GetPane(1).Y2Axis.Title.Text = "Map histogram"
-        Me.m_zgh.GetPane(1).Y2Axis.Title.IsVisible = True
-        Me.m_zgh.GetPane(1).Y2Axis.Title.FontSpec = Me.m_zgh.GetPane(1).YAxis.Title.FontSpec
-        '  Me.m_zgh.GetPane(1).Y2Axis.MajorTic. = Me.m_zgh.GetPane(1).YAxis.MajorTic
+            Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
-        Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsAllTics = False
-        Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsOpposite = False
-        Me.m_zgh.GetPane(1).Y2Axis.MajorTic.IsOpposite = False
-        'somehow set the Y2Axis label font size
+            Me.m_zgh.GetPane(1).Y2Axis.IsVisible = True
+            Me.m_zgh.GetPane(1).Y2Axis.Title.Text = "Map histogram"
+            Me.m_zgh.GetPane(1).Y2Axis.Title.IsVisible = True
+            Me.m_zgh.GetPane(1).Y2Axis.Title.FontSpec = Me.m_zgh.GetPane(1).YAxis.Title.FontSpec
 
-        Me.m_zgh.GetPane(1).Y2Axis.Scale.MaxAuto = True
+            Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsAllTics = False
+            Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsOpposite = False
+            Me.m_zgh.GetPane(1).Y2Axis.MajorTic.IsOpposite = False
+            'somehow set the Y2Axis label font size
 
-        Me.m_lbxGroups.Attach(Me.m_uic)
+            Me.m_zgh.GetPane(1).Y2Axis.Scale.MaxAuto = True
 
-        Me.loadMaps()
-        Me.PlotGraph()
+            Me.m_lbxGroups.Attach(Me.m_uic)
 
-        Me.m_bHasInit = True
-        Me.updateControls()
+            Me.loadMaps()
+            Me.PlotGraph()
+
+            Me.m_bHasInit = True
+            Me.updateControls()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".OnLoad() Exception: " & ex.Message)
+            cLog.Write(ex)
+            Throw New Exception(ex.Message)
+        End Try
 
     End Sub
 
