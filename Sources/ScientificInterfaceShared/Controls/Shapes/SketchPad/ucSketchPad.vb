@@ -591,7 +591,6 @@ Namespace Controls
                                 ByVal iXMax As Integer, _
                                 ByVal sYMax As Single)
 
-            Console.WriteLine(Me.YMarkValue)
             If (Me.Shape Is Nothing) Then Return
 
             ' Draw default
