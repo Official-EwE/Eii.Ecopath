@@ -204,6 +204,8 @@ Namespace Controls
 
             Dim shapeSelected As cShapeData = Me.Handler.SelectedShape
 
+            Me.m_bInUpdate = True
+
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions, Me.m_tsbnOptions)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage, Me.m_tsbnSaveAsImage)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape, Me.m_tsbnChangeShape)
@@ -218,23 +220,20 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetMaxValue, Me.m_tstbMaxValue)
 
             If (shapeSelected IsNot Nothing) Then
-                Me.m_bInUpdate = True
                 Me.m_tsbnSeasonal.Checked = shapeSelected.IsSeasonal
                 Me.m_tsbnLongTerm.Checked = Not shapeSelected.IsSeasonal
-                Me.m_bInUpdate = False
             End If
 
             If ((shapeSelected IsNot Nothing) And (TypeOf shapeSelected Is cTimeSeries)) Then
-                Me.m_bInUpdate = True
                 Me.m_tstbWeight.Text = Me.m_uic.StyleGuide.FormatNumber(DirectCast(shapeSelected, cTimeSeries).WtType)
-                Me.m_bInUpdate = False
             End If
 
             If (shapeSelected IsNot Nothing) Then
-                Me.m_bInUpdate = True
-                Me.m_tstbMaxValue.Text = Me.m_uic.StyleGuide.FormatNumber(shapeSelected.YMax)
-                Me.m_bInUpdate = False
+                Dim sVal As Single = shapeSelected.YMax
+                Me.m_tstbMaxValue.Text = CStr(sVal)
             End If
+
+            Me.m_bInUpdate = False
 
         End Sub
 
