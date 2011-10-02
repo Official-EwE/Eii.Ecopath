@@ -219,6 +219,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerDepth)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput)
             Me.AddData(eVarNameFlags.LayerHabitatCapacity, False)
+            Me.AddData(eVarNameFlags.LayerDriver)
             Me.AddData(eVarNameFlags.LayerHabitat)
 
             Me.m_ucLayers.UnlockUpdates()
@@ -323,16 +324,14 @@ Namespace Ecospace.Basemap
 
                 If Object.ReferenceEquals(layer, Me.m_layerSelected) Then Return
 
-                Me.m_plLayers.SuspendLayout()
-                Me.m_plEditor.SuspendLayout()
-
+                Me.SuspendLayout()
+ 
                 If (Me.m_layerSelected IsNot Nothing) Then
                     ' Has editor GUI?
                     If (Me.m_editorGUISelected IsNot Nothing) Then
                         ' #Yes: remove layer editor GUI
                         RemoveHandler Me.m_editorGUISelected.OnChanged, AddressOf OnLayerEditorChanged
                         Me.m_plEditor.Controls.Remove(Me.m_editorGUISelected)
-                        Me.m_plEditor.Visible = False
                         Me.m_editorGUISelected = Nothing
                     End If
                     Me.m_layerSelected.Editor.DestroyEditorControl()
@@ -347,13 +346,13 @@ Namespace Ecospace.Basemap
                         Me.m_plEditor.Height = Me.m_editorGUISelected.Height
                         Me.m_editorGUISelected.Dock = DockStyle.Fill
                         Me.m_plEditor.Controls.Add(Me.m_editorGUISelected)
-                        Me.m_plEditor.Visible = True
                         AddHandler Me.m_editorGUISelected.OnChanged, AddressOf OnLayerEditorChanged
                     End If
                 End If
 
-                Me.m_plEditor.ResumeLayout(True)
-                Me.m_plLayers.ResumeLayout(True)
+                Me.ResumeLayout()
+
+                Me.m_plEditor.Visible = (Me.m_editorGUISelected IsNot Nothing)
 
             End Set
         End Property
