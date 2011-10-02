@@ -434,11 +434,10 @@ Namespace Ecospace
                 iAreaClosed = CInt(Me.m_cmbAreaClosed.Items(iLevel))
                 ' Wrap this in a core map layer to handle projections
                 ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core, _
-                                    Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults))
+                                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
+                                                     String.Format(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
                 layerTmp = New cLayer(Me.UIContext, ldataTmp, Nothing, Nothing)
-                ' Give the layer a savvy name
-                layerTmp.Name = String.Format("BestCount_{0}", iAreaClosed)
                 ' Add the layer to the stash to save
                 lLayers.Add(layerTmp)
 
@@ -1015,7 +1014,7 @@ Namespace Ecospace
                 ' Redim data
                 ReDim Me.m_aiFeedback(Me.m_basemap.InRow, Me.m_basemap.InCol)
                 ' Create layer to use for showing the data
-                datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback)
+                datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback, "")
 
                 Select Case Me.SearchType
 
@@ -1026,7 +1025,7 @@ Namespace Ecospace
 
                         ' DO NOT CHANGE THE ORDER OF LAYERS HERE TO ENSURE THAT THE 
                         ' SEED PROGRESS INDICATORS SHOW UP ON TOP OF THE RUNNING SEED CELLS,
-                        ' AND THAT THE BEST CELL SHOWS UP ON THE CURRENT CELL
+                        ' AND THAT THE BEST CELL SHOWS UP ON TOP OF THE CURRENT CELL
 
                         ' Create best cell layer
                         alayers = cLayerFactory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedBest, datalayerTemp)

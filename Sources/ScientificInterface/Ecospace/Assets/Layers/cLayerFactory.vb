@@ -21,12 +21,16 @@ Namespace Ecospace.Basemap.Layers
         Public Const cECOSEED_LAYER_CURRENTVALUE As Integer = 1
         Public Const cECOSEED_LAYER_BESTVALUE As Integer = 2
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Build layer(s) for a given core data layer name.
         ''' </summary>
         ''' <param name="uic">UI context to connect layer to.</param>
-        ''' <param name="layerData"></param>
-        ''' <returns></returns>
+        ''' <param name="layerData">Optional data to attach to the layer. If no
+        ''' data is given the layer will attempt to get its data from the 
+        ''' Ecospace basemap.</param>
+        ''' <returns>An array of layers</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function GetLayers(ByVal uic As cUIContext, _
                                          ByVal varName As eVarNameFlags, _
                                          Optional ByVal layerData As cEcospaceLayer = Nothing) As cLayer()
@@ -68,8 +72,6 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorDepth()
                     If layerData Is Nothing Then layerData = bmd.LayerDepth
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerDepth)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_DEPTH
-
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerHabitat
@@ -120,7 +122,6 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
                     layerData = bmd.LayerHabitatCapacityInput
                     layer = New cLayer(uic, layerData, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, bmd, eVarNameFlags.LayerHabitatCapacity)
-                    layer.Name = "Input"
 
                     lLayers.Add(layer)
 
@@ -145,7 +146,6 @@ Namespace Ecospace.Basemap.Layers
                     editor.IsReadOnly = True
                     layerData = bmd.LayerHabitatCapacity
                     layer = New cLayer(uic, layerData, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, bmd, eVarNameFlags.LayerHabitatCapacity)
-                    layer.Name = "Computed"
 
                     lLayers.Add(layer)
 
@@ -172,9 +172,7 @@ Namespace Ecospace.Basemap.Layers
                     editor.CellValueMax = core.nRegions
                     editor.IsEditable = (core.nRegions > 0)
                     If layerData Is Nothing Then layerData = bmd.LayerRegion
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.Name)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_REGIONS
-
+                    layer = New cLayer(uic, layerData, renderer, editor, layerData, eVarNameFlags.Name)
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMPA
@@ -226,7 +224,6 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerRelPP
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerRelPP)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_RELPP
 
                     lLayers.Add(layer)
 
@@ -250,7 +247,6 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerRelCin
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerRelCin)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_RELCIN
 
                     lLayers.Add(layer)
 
@@ -264,11 +260,12 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerMPASeed
                     layer = New cLayer(uic, layerData, renderer, editor, 1, 0, bmd, eVarNameFlags.LayerMPASeed)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_MPASEED
 
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMPASeedCurrent
+
+                    Debug.Assert(layerData IsNot Nothing, "Cannot link to core data")
 
                     vs = New cVisualStyle()
                     vs.ForeColour = Color.LightGreen
@@ -276,14 +273,15 @@ Namespace Ecospace.Basemap.Layers
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
-                    If layerData Is Nothing Then Debug.Assert(False, "Cannot link to core data")
                     layer = New cLayer(uic, layerData, renderer, editor, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SEEDCURRENT
+                    layer.Name = My.Resources.ECOSPACE_LAYER_SEEDCURRENT ' Use local layer name
                     layer.Editor.IsReadOnly = True
 
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMPASeedBest
+
+                    Debug.Assert(layerData IsNot Nothing, "Cannot link to core data")
 
                     vs = New cVisualStyle()
                     vs.ForeColour = Color.DarkGreen
@@ -294,14 +292,14 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorTwoState()
 
                     layer = New cLayer(uic, layerData, renderer, editor, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SEEDBEST
+                    layer.Name = My.Resources.ECOSPACE_LAYER_SEEDBEST
                     layer.Editor.IsReadOnly = True
 
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMPARandom
 
-                    If layerData IsNot Nothing Then
+                    If (layerData IsNot Nothing) Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.Black
                         vs.BackColour = Color.Blue
@@ -309,7 +307,7 @@ Namespace Ecospace.Basemap.Layers
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorRange()
                         layer = New cLayer(uic, layerData, renderer, editor)
-                        layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_RANDOMBEST
+                        layer.Name = My.Resources.ECOSPACE_LAYER_RANDOMBEST
                         layer.Editor.IsReadOnly = True
 
                         lLayers.Add(layer)
@@ -334,7 +332,6 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorMigration()
                     If layerData Is Nothing Then layerData = bmd.LayerMigration
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMigration)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_MIGRATION
 
                     lLayers.Add(layer)
 
@@ -356,7 +353,6 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererWindEwE5(vs)
                     If layerData Is Nothing Then layerData = bmd.LayerAdvection
                     layer = New cLayer(uic, layerData, renderer, Nothing, bmd, eVarNameFlags.LayerAdvection)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_ADVECTION
 
                     lLayers.Add(layer)
 
@@ -379,7 +375,6 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorVector(GetType(ucLayerEditorVector))
                     If layerData Is Nothing Then layerData = bmd.LayerWind
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerWind)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_WIND
 
                     lLayers.Add(layer)
 
@@ -448,7 +443,6 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorFleet(GetType(ucLayerEditorPort))
                     If layerData Is Nothing Then layerData = bmd.LayerPort
                     layer = New cLayer(uic, layerData, renderer, editor, 1.0!, 0.0!, bmd, eVarNameFlags.LayerPort)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_PORT
 
                     lLayers.Add(layer)
 
@@ -472,7 +466,6 @@ Namespace Ecospace.Basemap.Layers
                     editor = New cLayerEditorFleet(GetType(ucLayerEditorSailCost))
                     If layerData Is Nothing Then layerData = bmd.LayerSailingCost
                     layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerSail)
-                    layer.Name = My.Resources.ECOSPACE_BASEMAP_LAYERS_SAILINGCOST
 
                     lLayers.Add(layer)
 
@@ -545,38 +538,43 @@ Namespace Ecospace.Basemap.Layers
             Select Case varName
 
                 Case eVarNameFlags.LayerDepth
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_DEPTH
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_DEPTH
 
                 Case eVarNameFlags.LayerHabitat
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_HABITATS
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABITATS
 
-                Case eVarNameFlags.LayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacityInput
-                    strGroup = "Habitat Capacity"
+                Case eVarNameFlags.LayerHabitatCapacity, _
+                     eVarNameFlags.LayerHabitatCapacityInput
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABCAP
 
                 Case eVarNameFlags.LayerRegion
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_REGIONS
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_REGIONS
 
                 Case eVarNameFlags.LayerMPA
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_MPAS
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_MPAS
 
-                Case eVarNameFlags.LayerRelPP, eVarNameFlags.LayerRelCin, _
+                Case eVarNameFlags.LayerRelPP, _
+                     eVarNameFlags.LayerRelCin, _
                      eVarNameFlags.LayerMigration
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_NUMERICAL
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_MISC
 
-                Case eVarNameFlags.LayerMPASeed, eVarNameFlags.LayerMPASeedBest, eVarNameFlags.LayerMPASeedCurrent
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_ECOSEED
+                Case eVarNameFlags.LayerMPASeed, _
+                     eVarNameFlags.LayerMPASeedBest, _
+                     eVarNameFlags.LayerMPASeedCurrent
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_ECOSEED
 
                 Case eVarNameFlags.LayerMPARandom
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_RANDOMSEARCH
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_MPARANDOM
 
-                Case eVarNameFlags.LayerPort, eVarNameFlags.LayerSail
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_FISHING
+                Case eVarNameFlags.LayerPort, _
+                      eVarNameFlags.LayerSail
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_FISHING
 
                 Case eVarNameFlags.LayerImportance
-                    strGroup = My.Resources.ECOSPACE_BASEMAP_LAYERS_IMPORTANCE
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_IMPORTANCE
 
                 Case eVarNameFlags.LayerDriver
-                    strGroup = "Custom drivers"
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_DRIVERS
 
             End Select
             Return strGroup

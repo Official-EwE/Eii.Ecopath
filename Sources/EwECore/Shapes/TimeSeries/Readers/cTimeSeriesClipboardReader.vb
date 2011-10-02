@@ -60,7 +60,7 @@ Public Class cTimeSeriesClipboardReader
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property Dataset() As String
         Get
-            Return My.Resources.CoreDefaults.TIMESERIES_SOURCE_CLIPBOARD
+            Return My.Resources.CoreDefaults.SOURCE_CLIPBOARD
         End Get
     End Property
 

@@ -721,222 +721,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Advection.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_ADVECTION() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_ADVECTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Depth.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_DEPTH() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_DEPTH", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecoseed.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_ECOSEED() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_ECOSEED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Fishing.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_FISHING() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_FISHING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecoseed.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_GROUP_ECOSEED() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_GROUP_ECOSEED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Habitats.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_HABITATS() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_HABITATS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Importance.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_IMPORTANCE() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_IMPORTANCE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Migration.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_MIGRATION() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_MIGRATION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Random cells.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_MPARANDOM() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_MPARANDOM", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to MPAs.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_MPAS() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_MPAS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Seed cells.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_MPASEED() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_MPASEED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Seed cells to start searching for MPAs.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_MPASEED_DESCRIPTION() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_MPASEED_DESCRIPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Numerical layers.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_NUMERICAL() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_NUMERICAL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Port.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_PORT() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_PORT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Best count.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_RANDOMBEST() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_RANDOMBEST", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Random search.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_RANDOMSEARCH() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_RANDOMSEARCH", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Regions.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_REGIONS() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_REGIONS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Relative contaminant.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_RELCIN() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_RELCIN", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Relative PP.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_RELPP() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_RELPP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Sailing cost.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_SAILINGCOST() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_SAILINGCOST", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Best cells.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_SEEDBEST() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_SEEDBEST", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Current cells.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_SEEDCURRENT() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_SEEDCURRENT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Transport rate.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_TRANSPORTRATE() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_TRANSPORTRATE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Wind.
-        '''</summary>
-        Friend ReadOnly Property ECOSPACE_BASEMAP_LAYERS_WIND() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_BASEMAP_LAYERS_WIND", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to The selected shape file is not compatible with the current Ecospace basemap dimensions. Do you want to use this file anyway?.
         '''</summary>
         Friend ReadOnly Property ECOSPACE_BASEMAP_SHAPECOMPATIBLE() As String
@@ -1203,6 +987,150 @@ Namespace My.Resources
         Friend ReadOnly Property ECOSPACE_HEADER_RELB() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_HEADER_RELB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Best count {0}.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYER_MPABESTCOUNT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYER_MPABESTCOUNT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Best count.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYER_RANDOMBEST() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYER_RANDOMBEST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Random search.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYER_RANDOMSEARCH() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYER_RANDOMSEARCH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Best cells.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYER_SEEDBEST() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYER_SEEDBEST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Current cells.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYER_SEEDCURRENT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYER_SEEDCURRENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Bathymetry.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_DEPTH() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_DEPTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Environmental drivers.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_DRIVERS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_DRIVERS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EcoSeed.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_ECOSEED() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_ECOSEED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_FISHING() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_FISHING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Habitat capacity.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_HABCAP() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_HABCAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Habitats.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_HABITATS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_HABITATS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Importance.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_IMPORTANCE() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_IMPORTANCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Miscellaneous.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_MISC() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_MISC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Random cells.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_MPARANDOM() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_MPARANDOM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Marine Protected Areas.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_MPAS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_MPAS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Regions.
+        '''</summary>
+        Friend ReadOnly Property ECOSPACE_LAYERGROUP_REGIONS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_REGIONS", resourceCulture)
             End Get
         End Property
         

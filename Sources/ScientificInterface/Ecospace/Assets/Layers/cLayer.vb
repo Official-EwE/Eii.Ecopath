@@ -116,17 +116,16 @@ Namespace Ecospace.Basemap.Layers
         Private m_bInUpdate As Boolean = False
 
         ''' <summary>
-        ''' The <see cref="cProperty">property</see> that provides the name of this layer.
-        ''' As well, this property is used to simulate live map changes to sync different
+        ''' The <see cref="cProperty">property</see> that simulates live map changes to sync different
         ''' layer instances linked to the same data.
         ''' </summary>
         ''' <remarks>
         ''' This is a hack solution. <see cref="cEcospaceLayer">Basemap layers</see> are not exposed as true
         ''' <see cref="EwECore.ValueWrapper.cValue">core value objects</see>. To provide layers with common GUI issues
         ''' such as remark feedback and broadcasted updates, as well as the ability to attach 
-        ''' <see cref="cVisualStyle">Visual Styles</see> to layers, a hidden property is used.
+        ''' <see cref="cVisualStyle">Visual Styles</see> to layers, this hidden property is used.
         ''' </remarks>
-        Private m_propName As cProperty = Nothing
+        Private m_propBacklink As cProperty = Nothing
 
         Private m_aUnitTypes() As cStyleGuide.eUnitType = Nothing
         Private m_strUnitMask As String = ""
@@ -226,8 +225,6 @@ Namespace Ecospace.Basemap.Layers
             Debug.Assert(uic IsNot Nothing)
 
             Me.m_uic = uic
-            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
-            Me.m_mh.Name = "cLayer:" & Me.Name
 
             Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mh)
 
@@ -245,14 +242,17 @@ Namespace Ecospace.Basemap.Layers
             Me.m_valueSet = objValueSet
             Me.m_valueClear = objValueClear
             Me.m_valueType = data.ValueType
-            Me.m_propName = Me.m_uic.PropertyManager.GetProperty(source, varName)
+            Me.m_propBacklink = Me.m_uic.PropertyManager.GetProperty(source, varName)
 
-            If (m_propName IsNot Nothing) Then
-                AddHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
+            If (m_propBacklink IsNot Nothing) Then
+                AddHandler Me.m_propBacklink.PropertyChanged, AddressOf OnPropertyChanged
             End If
 
             ' Update editor
             Me.m_editor.Initialize(uic, Me)
+
+            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+            Me.m_mh.Name = "cLayer:" & Me.Name
 
         End Sub
 
@@ -283,9 +283,9 @@ Namespace Ecospace.Basemap.Layers
                     If Me.m_uic IsNot Nothing Then
                         Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mh)
                     End If
-                    If Me.m_propName IsNot Nothing Then
-                        RemoveHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
-                        Me.m_propName = Nothing
+                    If Me.m_propBacklink IsNot Nothing Then
+                        RemoveHandler Me.m_propBacklink.PropertyChanged, AddressOf OnPropertyChanged
+                        Me.m_propBacklink = Nothing
                     End If
                 End If
             End If
@@ -401,8 +401,8 @@ Namespace Ecospace.Basemap.Layers
                             End If
                         Else
                             ' #No: Fire off property change to make other copies of non-core layers respond
-                            If (Me.m_propName IsNot Nothing) Then
-                                Me.m_propName.FireChangeNotification(cProperty.eChangeFlags.Custom)
+                            If (Me.m_propBacklink IsNot Nothing) Then
+                                Me.m_propBacklink.FireChangeNotification(cProperty.eChangeFlags.Custom)
                             End If
                         End If
                     End If
@@ -438,10 +438,23 @@ Namespace Ecospace.Basemap.Layers
         ''' -----------------------------------------------------------------------
         Public Property Name() As String
             Get
-                ' If no hard-wired name provided, obtain the name from the attached property
-                If String.IsNullOrEmpty(Me.m_strName) And (Me.m_propName IsNot Nothing) Then
-                    Return CStr(Me.m_propName.GetValue())
+                ' No overriding name defined?
+                If String.IsNullOrWhiteSpace(Me.m_strName) Then
+                    ' #Yes: is a backlink property provided?
+                    If (Me.m_propBacklink IsNot Nothing) Then
+                        ' #Yes: and is this property linked to a true name?
+                        If (Me.m_propBacklink.VarName = eVarNameFlags.Name) Then
+                            ' #Yes: return name property value
+                            Return CStr(Me.m_propBacklink.GetValue())
+                        End If
+                    End If
+                    ' Alternative: is data attached?
+                    If (Me.m_data IsNot Nothing) Then
+                        ' #Yes: return data name)
+                        Return Me.m_data.Name
+                    End If
                 End If
+                ' Return overriding name
                 Return Me.m_strName
             End Get
             Set(ByVal value As String)

@@ -165,7 +165,7 @@
     <value>Prey {0}</value>
     <comment>{0}: prey name</comment>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_RANDOMBEST" xml:space="preserve">
+  <data name="ECOSPACE_LAYER_RANDOMBEST" xml:space="preserve">
     <value>Best count</value>
   </data>
   <data name="ECOSIM_GROUPINFO_DENDEPCATCHABILITY" xml:space="preserve">
@@ -358,9 +358,6 @@ Description: {1}</value>
   <data name="glyph_deep_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_deep_blue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_RELCIN" xml:space="preserve">
-    <value>Relative contaminant</value>
-  </data>
   <data name="GENERIC_TOOLTIP_PREDPREY" xml:space="preserve">
     <value>Predator {0}, prey {1}</value>
     <comment>{0}: predator name, {1}: prey name</comment>
@@ -381,10 +378,6 @@ Description: {1}</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_SUM" xml:space="preserve">
     <value>Summed values|Cells that contain a summary of row(s) and/or column(s) in a grid</value>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_RELPP" xml:space="preserve">
-    <value>Relative PP</value>
-    <comment>Layer Relative Prim Prod</comment>
   </data>
   <data name="ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME" xml:space="preserve">
     <value>Fraction of other mortality sens. to changes in feeding time</value>
@@ -503,9 +496,6 @@ Description: {1}</value>
   <data name="OPTIONS_FONTDLG_LEGEND" xml:space="preserve">
     <value>Legend|Font to render legends in graphs and figures</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_MPASEED_DESCRIPTION" xml:space="preserve">
-    <value>Seed cells to start searching for MPAs</value>
-  </data>
   <data name="STATUS_ECOTRACER_RUNNING" xml:space="preserve">
     <value>Running Ecotracer...</value>
   </data>
@@ -515,14 +505,6 @@ Description: {1}</value>
   </data>
   <data name="PROMPT_STANZA_MISSING_LIFESTAGES" xml:space="preserve">
     <value>One or more stanza configurations do not have life stages assigned. Do you want to do this now?</value>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_REGIONS" xml:space="preserve">
-    <value>Regions</value>
-    <comment>Layer group 'Regions'</comment>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_HABITATS" xml:space="preserve">
-    <value>Habitats</value>
-    <comment>Layer group 'Habitats'</comment>
   </data>
   <data name="STATUSSTRIP_ECOTRACER_TOOLTIP" xml:space="preserve">
     <value>Ecotracer scenario
@@ -676,7 +658,7 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   <data name="PROMPT_MODELNOTFOUND" xml:space="preserve">
     <value>Model '{0}' cannot be found.</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_SEEDCURRENT" xml:space="preserve">
+  <data name="ECOSPACE_LAYER_SEEDCURRENT" xml:space="preserve">
     <value>Current cells</value>
   </data>
   <data name="ECOSIM_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
@@ -726,10 +708,6 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   <data name="PROMPT_PLUGIN_INCOMPATIBLE" xml:space="preserve">
     <value>The plug-in '{0}' uses outdated EwE components, and is likely to be incompatible with this version of EwE6. Do you wish to disable this plug-in?</value>
     <comment>{0}: plug-in name</comment>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_MIGRATION" xml:space="preserve">
-    <value>Migration</value>
-    <comment>Layer Migration</comment>
   </data>
   <data name="glyph_squares_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\glyph_squares_large.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -781,7 +759,7 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   <data name="OPTIONS_FONTDLG_VALUES" xml:space="preserve">
     <value>Values|Font to render values</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_RANDOMSEARCH" xml:space="preserve">
+  <data name="ECOSPACE_LAYER_RANDOMSEARCH" xml:space="preserve">
     <value>Random search</value>
   </data>
   <data name="glyph_blue6" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -790,11 +768,8 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   <data name="SCENARIO_CONFIRMDELETE_CAPTION" xml:space="preserve">
     <value>Delete scenario</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_SEEDBEST" xml:space="preserve">
+  <data name="ECOSPACE_LAYER_SEEDBEST" xml:space="preserve">
     <value>Best cells</value>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_FISHING" xml:space="preserve">
-    <value>Fishing</value>
   </data>
   <data name="STATUSSTRIP_ECOPATH_TOOLTIP" xml:space="preserve">
     <value>Ecopath model
@@ -820,9 +795,6 @@ Location: {1}</value>
   </data>
   <data name="ECOSPACE_DISPERSAL_RELFEEDRATE" xml:space="preserve">
     <value>Rel. feed. rate in bad habitat</value>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_ECOSEED" xml:space="preserve">
-    <value>Ecoseed</value>
   </data>
   <data name="FIT2TS_PROGRESS_RUNSTARTED" xml:space="preserve">
     <value>Search started, base SS = {0}</value>
@@ -856,10 +828,6 @@ Location: {1}</value>
   <data name="LABEL_FLEET" xml:space="preserve">
     <value>&amp;Fleet:</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_DEPTH" xml:space="preserve">
-    <value>Depth</value>
-    <comment>Layer Depth</comment>
-  </data>
   <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_OLD" xml:space="preserve">
     <value>This database was written by an outdated version of Ecopath 5, which is not supported by the EwE6 import process. 
 
@@ -892,9 +860,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="ECOSPACE_DISPERSAL_RELDISP" xml:space="preserve">
     <value>Rel. dispersal in bad habitat</value>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_IMPORTANCE" xml:space="preserve">
-    <value>Importance</value>
   </data>
   <data name="STATUS_LOADING" xml:space="preserve">
     <value>Loading, please wait...</value>
@@ -1054,9 +1019,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="OPTIONS_COLORDLG_PROMPT_DEFAULT" xml:space="preserve">
     <value>Default text|Colour scheme to use for default text</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_PORT" xml:space="preserve">
-    <value>Port</value>
-  </data>
   <data name="SET_ROW_VUL_MSG" xml:space="preserve">
     <value>Enter new vulnerability setting for {0} as prey</value>
     <comment>{0}: group name</comment>
@@ -1078,9 +1040,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="OPTIONS_COLORDLG_PROMPT_HIGHLIGHT" xml:space="preserve">
     <value>Highlighted values|Values that are highlighted by you, the user</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_GROUP_ECOSEED" xml:space="preserve">
-    <value>Ecoseed</value>
-  </data>
   <data name="PROMPT_PLUGIN_CAUTION" xml:space="preserve">
     <value>The plug-in '{0}' uses older EwE components, and may be incompatible with this version of EwE6.</value>
     <comment>{0}: plug-in name</comment>
@@ -1097,9 +1056,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="SCENARIO_CONFIRMOVERWRITE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to overwrite scenario {0}? This action cannot be undone.</value>
     <comment>{0}: scenario name</comment>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_SAILINGCOST" xml:space="preserve">
-    <value>Sailing cost</value>
   </data>
   <data name="ECOSIM_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecosim scenario - Ecopath model {0}</value>
@@ -1141,10 +1097,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>The plug-in '{0}' cannot be diagnosed for compatibility with EwE6. It is advisable not to use this plug-in. Do you wish to disable this plug-in?</value>
     <comment>{0}: plug-in name</comment>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_NUMERICAL" xml:space="preserve">
-    <value>Numerical layers</value>
-    <comment>Layer group 'Numerical layers' (Rel. PP, Migration, ..)</comment>
-  </data>
   <data name="GENERIC_REPLY_NO" xml:space="preserve">
     <value>You answered 'No'</value>
   </data>
@@ -1174,10 +1126,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ECOSIM_SUITABILITY_PLOT_FUNCT_RESP" xml:space="preserve">
     <value>Functional response</value>
   </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_MPARANDOM" xml:space="preserve">
-    <value>Random cells</value>
-    <comment>Random search</comment>
-  </data>
   <data name="ECOSPACE_RUN_PROGRESS" xml:space="preserve">
     <value>{0} of {1} years</value>
     <comment>{0}: current year, {1}: total years in an ecospace run</comment>
@@ -1191,10 +1139,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="MPAOPT_AXISLABEL_OBJECTIVEVALUE" xml:space="preserve">
     <value>Objective value</value>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_MPAS" xml:space="preserve">
-    <value>MPAs</value>
-    <comment>Layer group 'MPAs'</comment>
   </data>
   <data name="ECOSIM_LABEL_APPLY_SHAPES_PRED" xml:space="preserve">
     <value>For all pairs with group {0}: {1} as a predator</value>
@@ -1262,10 +1206,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ECOTRACER_SCENARIO_LOAD_CAPTION" xml:space="preserve">
     <value>Load Ecotracer scenario - Ecopath model {0}</value>
     <comment>{0}: scenario name</comment>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_MPASEED" xml:space="preserve">
-    <value>Seed cells</value>
-    <comment>Ecoseed search</comment>
   </data>
   <data name="FPS_FG_JOBS" xml:space="preserve">
     <value>Jobs / catch value</value>
@@ -1370,15 +1310,6 @@ Description: {2}</value>
   <data name="PROMPT_TIMESERIES_IMPORT_AS_MONTHLY" xml:space="preserve">
     <value>Do you wish to import '{0}' as monthly forcing data?</value>
     <comment>{0}: name of dataset</comment>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_ADVECTION" xml:space="preserve">
-    <value>Advection</value>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_TRANSPORTRATE" xml:space="preserve">
-    <value>Transport rate</value>
-  </data>
-  <data name="ECOSPACE_BASEMAP_LAYERS_WIND" xml:space="preserve">
-    <value>Wind</value>
   </data>
   <data name="PEDIGREE_DEFAULT_APPROX_INDIRECT" xml:space="preserve">
     <value>Approximate or indirect method|May include methods like remote sensing, etc.</value>
@@ -1673,5 +1604,41 @@ Description: {2}</value>
   </data>
   <data name="Ecopath_beta" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ecopath_beta.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_DEPTH" xml:space="preserve">
+    <value>Bathymetry</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_DRIVERS" xml:space="preserve">
+    <value>Environmental drivers</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_ECOSEED" xml:space="preserve">
+    <value>EcoSeed</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_FISHING" xml:space="preserve">
+    <value>Fishing</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_HABCAP" xml:space="preserve">
+    <value>Habitat capacity</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_HABITATS" xml:space="preserve">
+    <value>Habitats</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
+    <value>Importance</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MISC" xml:space="preserve">
+    <value>Miscellaneous</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MPARANDOM" xml:space="preserve">
+    <value>Random cells</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
+    <value>Marine Protected Areas</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_REGIONS" xml:space="preserve">
+    <value>Regions</value>
+  </data>
+  <data name="ECOSPACE_LAYER_MPABESTCOUNT" xml:space="preserve">
+    <value>Best count {0}</value>
   </data>
 </root>

@@ -23,34 +23,36 @@ Partial Class dlgEditLayer
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditLayer))
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.OK_Button = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.Apply_Button = New System.Windows.Forms.Button
-            Me.lbName = New System.Windows.Forms.Label
-            Me.m_tbNameValue = New System.Windows.Forms.TextBox
-            Me.m_lblRemarks = New System.Windows.Forms.Label
-            Me.m_tbRemarks = New System.Windows.Forms.TextBox
-            Me.m_btnDataImport = New System.Windows.Forms.Button
-            Me.m_btnDataExport = New System.Windows.Forms.Button
-            Me.m_plEditVisualStyle = New System.Windows.Forms.Panel
-            Me.m_tcLayerView = New System.Windows.Forms.TabControl
-            Me.m_tbAppearance = New System.Windows.Forms.TabPage
-            Me.m_zoommap = New ScientificInterface.Ecospace.ucMapZoom
-            Me.m_scDetails = New System.Windows.Forms.SplitContainer
-            Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel
-            Me.m_tbDescription = New System.Windows.Forms.TextBox
-            Me.m_lblWeight = New System.Windows.Forms.Label
-            Me.m_lblDescription = New System.Windows.Forms.Label
-            Me.m_nudWeight = New cEwENumericUpDown
-            Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tpData = New System.Windows.Forms.TabPage
-            Me.m_hdrStaticData = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_grid = New ScientificInterface.gridLayerData
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.OK_Button = New System.Windows.Forms.Button()
+            Me.Cancel_Button = New System.Windows.Forms.Button()
+            Me.Apply_Button = New System.Windows.Forms.Button()
+            Me.m_lblName = New System.Windows.Forms.Label()
+            Me.m_tbNameValue = New System.Windows.Forms.TextBox()
+            Me.m_lblRemarks = New System.Windows.Forms.Label()
+            Me.m_tbRemarks = New System.Windows.Forms.TextBox()
+            Me.m_btnDataImport = New System.Windows.Forms.Button()
+            Me.m_btnDataExport = New System.Windows.Forms.Button()
+            Me.m_plEditVisualStyle = New System.Windows.Forms.Panel()
+            Me.m_tcLayerView = New System.Windows.Forms.TabControl()
+            Me.m_tbAppearance = New System.Windows.Forms.TabPage()
+            Me.m_zoommap = New ScientificInterface.Ecospace.ucMapZoom()
+            Me.m_scDetails = New System.Windows.Forms.SplitContainer()
+            Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tbDescription = New System.Windows.Forms.TextBox()
+            Me.m_lblWeight = New System.Windows.Forms.Label()
+            Me.m_lblDescription = New System.Windows.Forms.Label()
+            Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tpData = New System.Windows.Forms.TabPage()
+            Me.m_tsGrid = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_hdrStaticData = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_grid = New ScientificInterface.gridLayerData()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tbAppearance.SuspendLayout()
+            CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scDetails.Panel1.SuspendLayout()
             Me.m_scDetails.Panel2.SuspendLayout()
             Me.m_scDetails.SuspendLayout()
@@ -84,10 +86,10 @@ Partial Class dlgEditLayer
             resources.ApplyResources(Me.Apply_Button, "Apply_Button")
             Me.Apply_Button.Name = "Apply_Button"
             '
-            'lbName
+            'm_lblName
             '
-            resources.ApplyResources(Me.lbName, "lbName")
-            Me.lbName.Name = "lbName"
+            resources.ApplyResources(Me.m_lblName, "m_lblName")
+            Me.m_lblName.Name = "m_lblName"
             '
             'm_tbNameValue
             '
@@ -163,12 +165,15 @@ Partial Class dlgEditLayer
             'm_hdrDescription
             '
             resources.ApplyResources(Me.m_hdrDescription, "m_hdrDescription")
+            Me.m_hdrDescription.CanCollapseParent = False
+            Me.m_hdrDescription.CollapsedParentHeight = 0
+            Me.m_hdrDescription.IsCollapsed = False
             Me.m_hdrDescription.Name = "m_hdrDescription"
             '
             'm_tlpDetails
             '
             resources.ApplyResources(Me.m_tlpDetails, "m_tlpDetails")
-            Me.m_tlpDetails.Controls.Add(Me.lbName, 0, 0)
+            Me.m_tlpDetails.Controls.Add(Me.m_lblName, 0, 0)
             Me.m_tlpDetails.Controls.Add(Me.m_tbNameValue, 1, 0)
             Me.m_tlpDetails.Controls.Add(Me.m_tbRemarks, 1, 3)
             Me.m_tlpDetails.Controls.Add(Me.m_tbDescription, 1, 2)
@@ -201,10 +206,14 @@ Partial Class dlgEditLayer
             'm_hdrAppearance
             '
             resources.ApplyResources(Me.m_hdrAppearance, "m_hdrAppearance")
+            Me.m_hdrAppearance.CanCollapseParent = False
+            Me.m_hdrAppearance.CollapsedParentHeight = 0
+            Me.m_hdrAppearance.IsCollapsed = False
             Me.m_hdrAppearance.Name = "m_hdrAppearance"
             '
             'm_tpData
             '
+            Me.m_tpData.Controls.Add(Me.m_tsGrid)
             Me.m_tpData.Controls.Add(Me.m_hdrStaticData)
             Me.m_tpData.Controls.Add(Me.m_btnDataExport)
             Me.m_tpData.Controls.Add(Me.m_btnDataImport)
@@ -213,9 +222,19 @@ Partial Class dlgEditLayer
             Me.m_tpData.Name = "m_tpData"
             Me.m_tpData.UseVisualStyleBackColor = True
             '
+            'm_tsGrid
+            '
+            resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
+            Me.m_tsGrid.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsGrid.Name = "m_tsGrid"
+            Me.m_tsGrid.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
             'm_hdrStaticData
             '
             resources.ApplyResources(Me.m_hdrStaticData, "m_hdrStaticData")
+            Me.m_hdrStaticData.CanCollapseParent = False
+            Me.m_hdrStaticData.CollapsedParentHeight = 0
+            Me.m_hdrStaticData.IsCollapsed = False
             Me.m_hdrStaticData.Name = "m_hdrStaticData"
             '
             'm_grid
@@ -263,6 +282,7 @@ Partial Class dlgEditLayer
             Me.m_tbAppearance.ResumeLayout(False)
             Me.m_scDetails.Panel1.ResumeLayout(False)
             Me.m_scDetails.Panel2.ResumeLayout(False)
+            CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scDetails.ResumeLayout(False)
             Me.m_tlpDetails.ResumeLayout(False)
             Me.m_tlpDetails.PerformLayout()
@@ -274,7 +294,7 @@ Partial Class dlgEditLayer
         Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
-        Private WithEvents lbName As System.Windows.Forms.Label
+        Private WithEvents m_lblName As System.Windows.Forms.Label
         Private WithEvents m_lblRemarks As System.Windows.Forms.Label
         Private WithEvents m_tbRemarks As System.Windows.Forms.TextBox
         Private WithEvents Apply_Button As System.Windows.Forms.Button
@@ -293,9 +313,10 @@ Partial Class dlgEditLayer
         Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
         Private WithEvents m_lblWeight As System.Windows.Forms.Label
-        Private WithEvents m_nudWeight As System.Windows.Forms.NumericUpDown
         Private WithEvents m_scDetails As System.Windows.Forms.SplitContainer
         Private WithEvents m_zoommap As ScientificInterface.Ecospace.ucMapZoom
+        Private WithEvents m_tsGrid As cEwEToolstrip
+        Private WithEvents m_nudWeight As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
     End Class
 End Namespace

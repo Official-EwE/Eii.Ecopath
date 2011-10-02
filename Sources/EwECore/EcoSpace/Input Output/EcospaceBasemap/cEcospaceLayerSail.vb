@@ -13,7 +13,7 @@ Public Class cEcospaceLayerSail
     Implements ICoreFleetFilter
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerSail)
+        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, EwEUtils.Core.eVarNameFlags.LayerSail)
         Me.m_dataType = eDataTypes.EcospaceLayerSail
     End Sub
 

@@ -16,15 +16,18 @@ Public Class cEcospaceLayerAdvection
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for an NxN layer that derives its data and identity from 
-    ''' a manager.
+    ''' Constructor for the advection layer.
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, eVarNameFlags.LayerAdvection, cCore.NULL_VALUE)
+
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, _
+                   My.Resources.CoreDefaults.CORE_DEFAULT_ADVECTION, _
+                   eVarNameFlags.LayerAdvection, cCore.NULL_VALUE)
         Me.m_dataType = eDataTypes.EcospaceLayerAdvection
+
     End Sub
 
 #End Region ' Construction

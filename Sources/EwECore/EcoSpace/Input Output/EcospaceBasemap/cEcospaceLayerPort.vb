@@ -13,7 +13,7 @@ Public Class cEcospaceLayerPort
     Implements ICoreFleetFilter
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerPort)
+        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_PORT, EwEUtils.Core.eVarNameFlags.LayerPort)
         Me.m_dataType = eDataTypes.EcospaceLayerPort
     End Sub
 

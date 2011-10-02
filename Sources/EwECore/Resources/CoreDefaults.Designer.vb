@@ -83,11 +83,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Advection.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_ADVECTION() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_ADVECTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Combined fleets.
         '''</summary>
         Friend Shared ReadOnly Property CORE_DEFAULT_COMBINEDFLEETS() As String
             Get
                 Return ResourceManager.GetString("CORE_DEFAULT_COMBINEDFLEETS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Depth.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_DEPTH() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_DEPTH", resourceCulture)
             End Get
         End Property
         
@@ -128,6 +146,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Capacity (computed).
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_HABCAP() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_HABCAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Capacity (input).
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_HABCAP_INPUT() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_HABCAP_INPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Habitat.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_HABITAT() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_HABITAT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Mediation Shape {0}.
         '''</summary>
         Friend Shared ReadOnly Property CORE_DEFAULT_MEDIATIONSHAPE() As String
@@ -137,11 +182,110 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Migration.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_MIGRATION() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_MIGRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mixed layer depth.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_MIXEDLAYERDEPTH() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_MIXEDLAYERDEPTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Marine Protected Areas.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_MPA() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_MPA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Seed cells.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_MPASEED() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_MPASEED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ports.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_PORT() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_PORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Regions.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_REGION() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_REGION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Contaminants (rel).
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_RELCIN() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_RELCIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PP (relative).
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_RELPP() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_RELPP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sailing cost.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_SAILCOST() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_SAILCOST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to New Scenario.
         '''</summary>
         Friend Shared ReadOnly Property CORE_DEFAULT_SCENARIO() As String
             Get
                 Return ResourceManager.GetString("CORE_DEFAULT_SCENARIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Upwelling.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_UPWELLING() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_UPWELLING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Wind.
+        '''</summary>
+        Friend Shared ReadOnly Property CORE_DEFAULT_WIND() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_WIND", resourceCulture)
             End Get
         End Property
         
@@ -184,9 +328,18 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to From clipboard.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_SOURCE_CLIPBOARD() As String
+        Friend Shared ReadOnly Property SOURCE_CLIPBOARD() As String
             Get
-                Return ResourceManager.GetString("TIMESERIES_SOURCE_CLIPBOARD", resourceCulture)
+                Return ResourceManager.GetString("SOURCE_CLIPBOARD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Friend Shared ReadOnly Property String1() As String
+            Get
+                Return ResourceManager.GetString("String1", resourceCulture)
             End Get
         End Property
     End Class

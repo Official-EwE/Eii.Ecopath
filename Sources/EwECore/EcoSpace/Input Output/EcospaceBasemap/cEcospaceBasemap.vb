@@ -236,8 +236,8 @@ Public Class cEcospaceBasemap
             '    Me.m_lstLayerIBM.Add(New cEcospaceLayerIBMPackets(theCore, Me, i))
             'Next
 
-            layer = New cEcospaceLayerDistribution(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            'layer = New cEcospaceLayerDistribution(theCore, Me)
+            'Me.Layers(layer.VarName) = layer
 
             ' Advection
             layer = New cEcospaceLayerAdvection(theCore, Me)
@@ -676,11 +676,11 @@ Public Class cEcospaceBasemap
     '    End Get
     'End Property
 
-    Public ReadOnly Property LayerDistribution() As cEcospaceLayerDistribution
-        Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerDistribution), cEcospaceLayerDistribution)
-        End Get
-    End Property
+    'Public ReadOnly Property LayerDistribution() As cEcospaceLayerDistribution
+    '    Get
+    '        Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerDistribution), cEcospaceLayerDistribution)
+    '    End Get
+    'End Property
 
     Friend Function GetLayerData(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Object
         Select Case varName

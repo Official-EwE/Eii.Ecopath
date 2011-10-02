@@ -28,6 +28,7 @@ Namespace Ecospace.Basemap.Layers
 #Region " Private variables "
 
         Private m_uic As cUIContext = Nothing
+        Private m_qehGrid As cQuickEditHandler = Nothing
 
         ''' <summary>Original layer this dialog was invoked for.</summary>
         Private m_layerOriginal As cLayer = Nothing
@@ -92,6 +93,9 @@ Namespace Ecospace.Basemap.Layers
             Me.m_zoommap.UIContext = Me.m_uic
             Me.m_grid.UIContext = Me.m_uic
 
+            Me.m_qehGrid = New cQuickEditHandler()
+            Me.m_qehGrid.Attach(Me.m_grid, Me.m_uic, Me.m_tsGrid, Me.m_layerOriginal.Name)
+
             ' Show your stuff
             Me.m_ucPreview = Me.m_zoommap.Map()
             Me.m_ucPreview.Basemap = Me.m_uic.Core.EcospaceBasemap
@@ -119,6 +123,9 @@ Namespace Ecospace.Basemap.Layers
             If Me.m_ucEditVisualStyle IsNot Nothing Then
                 RemoveHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
             End If
+
+            Me.m_qehGrid.Detach()
+            Me.m_qehGrid = Nothing
 
             Me.m_fpName.Release()
             Me.m_fpWeight.Release()

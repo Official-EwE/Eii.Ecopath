@@ -21,7 +21,8 @@ Public Class cEcospaceLayerMLD
 #End Region ' Private vars
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerMLD, cCore.NULL_VALUE)
+        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_MIXEDLAYERDEPTH, _
+                   EwEUtils.Core.eVarNameFlags.LayerMLD, cCore.NULL_VALUE)
         Me.m_dataType = eDataTypes.EcospaceLayerMLD
     End Sub
 

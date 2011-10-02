@@ -12,7 +12,8 @@ Public Class cEcospaceLayerMPASeed
     Inherits cEcospaceLayerInteger
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerMPASeed, cCore.NULL_VALUE)
+        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_MPASEED, _
+                   EwEUtils.Core.eVarNameFlags.LayerMPASeed, cCore.NULL_VALUE)
         Me.m_dataType = eDataTypes.EcospaceLayerMPASeed
     End Sub
 

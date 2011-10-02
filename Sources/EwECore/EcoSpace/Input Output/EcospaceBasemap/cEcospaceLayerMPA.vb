@@ -12,7 +12,8 @@ Public Class cEcospaceLayerMPA
     Inherits cEcospaceLayerInteger
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerMPA, cCore.NULL_VALUE)
+        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_MPA, _
+                   EwEUtils.Core.eVarNameFlags.LayerMPA, cCore.NULL_VALUE)
         Me.m_dataType = eDataTypes.EcospaceLayerMPA
     End Sub
 

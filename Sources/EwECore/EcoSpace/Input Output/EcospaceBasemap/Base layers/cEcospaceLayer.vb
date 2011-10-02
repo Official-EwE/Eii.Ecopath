@@ -57,11 +57,12 @@ Public MustInherit Class cEcospaceLayer
     Protected Sub New(ByVal theCore As cCore, _
                       ByVal iDBID As Integer, _
                       ByVal manager As cEcospaceBasemap, _
+                      ByVal strName As String, _
                       ByVal vnData As eVarNameFlags, _
                       ByVal iIndex As Integer, _
                       ByVal typeValue As Type)
 
-        Me.New(theCore, iDBID, typeValue, Nothing)
+        Me.New(theCore, iDBID, strName, typeValue, Nothing)
 
         Debug.Assert(vnData <> eVarNameFlags.NotSet)
 
@@ -84,10 +85,11 @@ Public MustInherit Class cEcospaceLayer
     ''' -----------------------------------------------------------------------
     Protected Sub New(ByVal theCore As cCore, _
                       ByVal data As Object, _
+                      ByVal strName As String, _
                       ByVal typeValue As Type, _
                       Optional ByVal meta As cVariableMetaData = Nothing)
 
-        Me.New(theCore, cCore.NULL_VALUE, typeValue, meta)
+        Me.New(theCore, cCore.NULL_VALUE, strName, typeValue, meta)
 
         Me.m_data = data
 
@@ -95,6 +97,7 @@ Public MustInherit Class cEcospaceLayer
 
     Private Sub New(ByVal theCore As cCore, _
                     ByVal iDBID As Integer, _
+                    ByVal strName As String, _
                     ByVal typeValue As Type, _
                     ByVal meta As cVariableMetaData)
 
@@ -108,6 +111,10 @@ Public MustInherit Class cEcospaceLayer
             Me.m_coreComponent = eCoreComponentType.EcoSpace
             Me.m_metadata = meta
             Me.m_typeValue = typeValue
+
+            Me.AllowValidation = False
+            Me.Name = strName
+            Me.AllowValidation = True
 
             Me.ResetStatusFlags()
 

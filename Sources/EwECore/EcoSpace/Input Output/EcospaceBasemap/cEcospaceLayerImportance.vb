@@ -16,7 +16,8 @@ Public Class cEcospaceLayerImportance
 
     Sub New(ByRef theCore As cCore, ByVal idBID As Integer, ByRef manager As cEcospaceBasemap, ByVal iIndex As Integer)
 
-        MyBase.New(theCore, idBID, manager, eVarNameFlags.LayerImportance, iIndex)
+        ' Importance layers are user-defined, and will have user-provided names
+        MyBase.New(theCore, idBID, manager, "", eVarNameFlags.LayerImportance, iIndex)
 
         Dim val As cValue
         Dim meta As cVariableMetaData

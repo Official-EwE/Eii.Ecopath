@@ -41,9 +41,10 @@ Public MustInherit Class cEcospaceLayerVector
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal theCore As cCore, _
                    ByVal manager As cEcospaceBasemap, _
+                   ByVal strName As String, _
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, varName, iIndex, GetType(Single))
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, strName, varName, iIndex, GetType(Single))
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -60,10 +61,11 @@ Public MustInherit Class cEcospaceLayerVector
     Public Sub New(ByVal theCore As cCore, _
                    ByVal iDBID As Integer, _
                    ByVal manager As cEcospaceBasemap, _
+                   ByVal strName As String, _
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
 
-        MyBase.New(theCore, iDBID, manager, varName, iIndex, GetType(Single))
+        MyBase.New(theCore, iDBID, manager, strName, varName, iIndex, GetType(Single))
 
     End Sub
 
