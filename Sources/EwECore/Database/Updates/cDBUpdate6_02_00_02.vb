@@ -90,12 +90,12 @@ Friend Class cDBUpdate6_02_00_02
         Dim bSuccess As Boolean = True
 
         ' Read ecosim run length
-        bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacityMap (ScenarioID LONG, MapID LONG, Sequence LONG, MapName TEXT(50), VarName TEXT(50))")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMap ADD PRIMARY KEY (ScenarioID, MapID)")
-        bSuccess = bSuccess And db.Execute("CREATE UNIQUE INDEX idMaps ON EcospaceScenarioCapacityMap(MapID)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMap ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
+        bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioDriverLayer (ScenarioID LONG, LayerID LONG, Sequence LONG, LayerName TEXT(50), LayerDescription MEMO, LayerMAP MEMO)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioDriverLayer ADD PRIMARY KEY (ScenarioID, LayerID)")
+        bSuccess = bSuccess And db.Execute("CREATE UNIQUE INDEX idMap ON EcospaceScenarioDriverLayer(LayerID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioDriverLayer ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
 
-        Me.LogProgress("ADD TABLE EcospaceScenarioCapacityMap", bSuccess)
+        Me.LogProgress("ADD TABLE EcospaceScenarioDriverLayer", bSuccess)
         Return bSuccess
 
     End Function
@@ -104,14 +104,13 @@ Friend Class cDBUpdate6_02_00_02
         Dim bSuccess As Boolean = True
 
         ' Read ecosim run length
-        bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacityMapAssignments (ScenarioID LONG, MapID LONG, GroupID LONG, ShapeID LONG)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD PRIMARY KEY (ScenarioID, MapID, GroupID)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (MapID) REFERENCES EcospaceScenarioCapacityMap(MapID)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (GroupID) REFERENCES EcopathGroup(GroupID)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityMapAssignments ADD FOREIGN KEY (ShapeID) REFERENCES EcosimShape(ShapeID)")
+        bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacitDrivers (ScenarioID LONG, GroupID LONG, VarName TEXT(50), VarDBID LONG, ShapeID LONG)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacitDrivers ADD PRIMARY KEY (ScenarioID, GroupID, VarName, VarDBID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacitDrivers ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacitDrivers ADD FOREIGN KEY (GroupID) REFERENCES EcopathGroup(GroupID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacitDrivers ADD FOREIGN KEY (ShapeID) REFERENCES EcosimShape(ShapeID)")
 
-        Me.LogProgress("ADD TABLE EcospaceScenarioCapacityMapAssignments", bSuccess)
+        Me.LogProgress("ADD TABLE EcospaceScenarioCapacitDrivers", bSuccess)
         Return bSuccess
 
     End Function

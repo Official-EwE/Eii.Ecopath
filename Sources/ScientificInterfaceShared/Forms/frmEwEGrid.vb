@@ -31,6 +31,7 @@ Namespace Forms
         : Inherits frmEwE
 
 #Region " Helper classes "
+#If 0 Then
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
@@ -548,6 +549,7 @@ Namespace Forms
 
         End Class
 
+#End If
 #End Region ' Helper classes
 
 #Region " Variables "
@@ -626,24 +628,6 @@ Namespace Forms
                 End If
 
             End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns the toolstrip to host the <see cref="cQuickEditHandler">quick edit</see>
-        ''' toolbar controls. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks>By default, a new toolbar is created for grid forms,
-        ''' but inheriting forms can provide an existing toolbar for the quick edit
-        ''' interface to nest its controls by returning an instance of that toolstrip
-        ''' in an override of this method. Stukje taart.</remarks>
-        ''' -----------------------------------------------------------------------
-        Protected Overridable ReadOnly Property ToolStrip() As ToolStrip
-            Get
-                Return Nothing
-            End Get
         End Property
 
         ''' -----------------------------------------------------------------------
@@ -742,11 +726,14 @@ Namespace Forms
         ''' Get a reference to the on-board <see cref="cQuickEditHandler">Quick edit handler</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
+        <CLSCompliant(False)> _
         Protected ReadOnly Property QuickEditHandler() As cQuickEditHandler
             Get
                 Return Me.m_qeHandler
             End Get
         End Property
+
+        Private m_tsCreated As ToolStrip = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -763,26 +750,48 @@ Namespace Forms
         Private Sub SetQuickEditHandler(ByVal bSet As Boolean)
             If bSet Then
                 If (Me.m_qeHandler Is Nothing) Then
+
+                    Dim ts As ToolStrip = Me.FindToolstripRecursive(Me.Controls)
+                    ' Not found?
+                    If (ts Is Nothing) Then
+                        ' #Yes: create toolstrip
+                        ts = New cEwEToolstrip()
+                        ts.Name = "tsQuickEdit"
+                        Me.Controls.Add(ts)
+                        Me.m_tsCreated = ts
+                    End If
+
                     Me.m_qeHandler = New cQuickEditHandler()
-                    Me.m_qeHandler.Attach(Me, Me.UIContext, Me.ToolStrip)
+                    Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts, Me.Text)
+                    Me.m_qeHandler.IsOutputGrid = frmEwE.IsOutputForm(Me.CoreExecutionState)
+
                 End If
             Else
                 If (Me.m_qeHandler IsNot Nothing) Then
                     Me.m_qeHandler.Detach()
                     Me.m_qeHandler = Nothing
+
+                    If (Me.m_tsCreated IsNot Nothing) Then
+                        Me.Controls.Remove(Me.m_tsCreated)
+                        Me.m_tsCreated.Dispose()
+                        Me.m_tsCreated = Nothing
+                    End If
                 End If
             End If
+
+            Me.PerformAutoScale()
+
         End Sub
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Optional method to define the name of the data in the grid. This name
-        ''' is used for loading and saving data to CSV files.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' -----------------------------------------------------------------------
-        Protected Overridable Function GetDataName() As String
-            Return ""
+        Private Function FindToolstripRecursive(ByVal controls As Control.ControlCollection) As ToolStrip
+            If controls IsNot Nothing Then
+                For Each c As Control In controls
+                    If TypeOf c Is ToolStrip Then Return DirectCast(c, ToolStrip)
+                    Dim ts As ToolStrip = Me.FindToolstripRecursive(c.Controls)
+                    If ts IsNot Nothing Then Return ts
+                Next
+            End If
+            Return Nothing
         End Function
 
 #End Region ' Internals

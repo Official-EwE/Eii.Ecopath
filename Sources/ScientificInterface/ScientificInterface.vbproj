@@ -206,6 +206,17 @@
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorGroup.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Tools\Workflow\cDefineItemsBase.vb" />
+    <Compile Include="Tools\Workflow\IDefineItems.vb" />
+    <Compile Include="Ecospace\Input\dlgDefineImportanceLayers.Designer.vb">
+      <DependentUpon>dlgDefineImportanceLayers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgDefineImportanceLayers.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridDefineImportanceLayers.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecospace\Tools\frmMPAOptimizations.Designer.vb">
       <DependentUpon>frmMPAOptimizations.vb</DependentUpon>
     </Compile>
@@ -688,6 +699,10 @@
       <DependentUpon>ucLayerEditorGroup.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineImportanceLayers.resx">
+      <DependentUpon>dlgDefineImportanceLayers.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
@@ -992,10 +1007,6 @@
     <EmbeddedResource Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.resx">
       <DependentUpon>frmCapacityFunction.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgDefineCapacityMaps.resx">
-      <DependentUpon>dlgDefineCapacityMaps.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Panels\StartPanel\frmStartPanel.resx">
       <DependentUpon>frmStartPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1071,8 +1082,8 @@
       <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgEditImportanceLayers.resx">
-      <DependentUpon>dlgEditImportanceLayers.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineDriverLayers.resx">
+      <DependentUpon>dlgDefineDriverLayers.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgImportLayerData.resx">
@@ -1424,15 +1435,6 @@
     <Compile Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridDefineCapacityMaps.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineCapacityMaps.Designer.vb">
-      <DependentUpon>dlgDefineCapacityMaps.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineCapacityMaps.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1622,13 +1624,13 @@
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererSymbol.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererText.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererValue.vb" />
-    <Compile Include="Ecospace\Input\dlgEditImportanceLayers.Designer.vb">
-      <DependentUpon>dlgEditImportanceLayers.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\dlgDefineDriverLayers.Designer.vb">
+      <DependentUpon>dlgDefineDriverLayers.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgEditImportanceLayers.vb">
+    <Compile Include="Ecospace\Input\dlgDefineDriverLayers.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridEditImportanceLayers.vb">
+    <Compile Include="Ecospace\Input\gridDefineDriverLayers.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cEcospaceZedGraphHelper.vb">

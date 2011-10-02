@@ -219,29 +219,29 @@ Namespace DataSources
 
 #End Region ' Importance layers
 
-#Region " Capacity maps "
+#Region " Driver layers "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an ecospace capacity map to the datasource.
+        ''' Adds an ecospace driver layer to the datasource.
         ''' </summary>
-        ''' <param name="strName">Name to assign to new capacity map.</param>
-        ''' <param name="EcospaceVariable">Ecospace variable that the new capacity map is based on.</param>
-        ''' <param name="iDBID">Database ID assigned to the new capacity map.</param>
+        ''' <param name="strName">Name to assign to new driver layer.</param>
+        ''' <param name="strDescription">Description to assign to new driver layer.</param>
+        ''' <param name="iDBID">Database ID assigned to the new driver layer.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddEcospaceCapacityMap(ByVal strName As String, ByVal EcospaceVariable As eVarNameFlags, ByRef iDBID As Integer) As Boolean
+        Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes an ecospace capacity map from the datasource.
+        ''' Removes an ecospace driver layer from the datasource.
         ''' </summary>
-        ''' <param name="iDBID">Database ID of the capacity map to remove.</param>
+        ''' <param name="iDBID">Database ID of the driver layer to remove.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveEcospaceCapacityMap(ByVal iDBID As Integer) As Boolean
+        Function RemoveEcospaceDriverLayer(ByVal iDBID As Integer) As Boolean
 
-#End Region ' Capacity maps
+#End Region ' Driver layers
 
     End Interface
 

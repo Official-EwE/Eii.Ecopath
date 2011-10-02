@@ -27,19 +27,21 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyCapacity))
-            Me.m_tsMain = New cEwEToolstrip
-            Me.m_tsbnDefineMaps = New System.Windows.Forms.ToolStripButton
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnDefineMaps = New System.Windows.Forms.ToolStripButton()
             Me.m_grid = New ScientificInterface.Ecospace.ucApplyMapResponseGrid(Me.components)
             Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsMain
             '
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMaps})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
+            Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbnDefineMaps
             '

@@ -11,33 +11,33 @@ Public Class cEcospaceDataStructures
 
 #Region "Public Fields"
 
-#Region " Storage classes "
+    '#Region " Storage classes "
 
-    Public Class cLayerDriverData
+    '    Public Class cLayerDriverData
 
-        Public DBID As Integer
-        Public Data(,) As Single
-        Public strName As String
-        Public strDescription As String
+    '        Public DBID As Integer
+    '        Public Data(,) As Single
+    '        Public strName As String
+    '        Public strDescription As String
 
-        Public Sub New(ByVal inRow As Integer, ByVal inCol As Integer)
-            ReDim Data(inRow, inCol)
-        End Sub
+    '        Public Sub New(ByVal inRow As Integer, ByVal inCol As Integer)
+    '            ReDim Data(inRow, inCol)
+    '        End Sub
 
-    End Class
+    '    End Class
 
-    Public Class cLayerImportanceData
-        Inherits cLayerDriverData
+    '    Public Class cLayerImportanceData
+    '        Inherits cLayerDriverData
 
-        Public sWeight As Single
+    '        Public sWeight As Single
 
-        Public Sub New(ByVal inRow As Integer, ByVal inCol As Integer)
-            MyBase.New(inRow, inCol)
-        End Sub
+    '        Public Sub New(ByVal inRow As Integer, ByVal inCol As Integer)
+    '            MyBase.New(inRow, inCol)
+    '        End Sub
 
-    End Class
+    '    End Class
 
-#End Region
+    '#End Region
 
     Public EcosimScenarioDBID As Integer
     ''' <summary>Array of ecospace group database IDs.</summary>
@@ -101,12 +101,6 @@ Public Class cEcospaceDataStructures
     Public NoHabitats As Integer
 
     Public nLiving As Integer
-
-    ''' <summary>Number of Importance layers</summary>
-    Public nImportanceLayers As Integer
-
-    ''' <summary>Number of Driver layers</summary>
-    Public nDriverLayers As Integer
 
     ''' <summary>Descriptive text of habitat type (name) </summary>
     Public HabitatText() As String
@@ -234,13 +228,31 @@ Public Class cEcospaceDataStructures
     Public RelCinorig(,) As Single    'for use with habitat change
     Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
     Public Port(,,) As Boolean
-    Public DriverLayers As New List(Of cLayerDriverData)
-    Public ImportanceLayers As New List(Of cLayerImportanceData)
+    'Public DriverLayers As New List(Of cLayerDriverData)
+    'Public ImportanceLayers As New List(Of cLayerImportanceData)
 
     Public EffPower() As Single
 
     Public BBase() As Single
     Public NoRegions As Integer
+
+
+    ''' <summary>Number of Importance layers</summary>
+    Public nImportanceLayers As Integer
+    Public ImportanceLayerDBID() As Integer
+    Public ImportanceLayerName() As String
+    Public ImportanceLayerDescription() As String
+    Public ImportanceLayerWeight() As Single
+    ''' <summary>Importance layer data (layer, row, col)</summary>
+    Public ImportanceLayerMap(,,) As Single
+
+    ''' <summary>Number of Driver layers</summary>
+    Public nDriverLayers As Integer
+    Public DriverLayerDBID() As Integer
+    Public DriverLayerName() As String
+    Public DriverLayerDescription() As String
+    ''' <summary>Driver layer data (layer, row, col)</summary>
+    Public DriverLayerMap(,,) As Single
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Summary data
@@ -496,13 +508,14 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public bSaveASC As Boolean
 
-    Public NumCapMaps As Integer
-    Public CapMapDBID() As Integer
-    Public CapMapName() As String
-    Public CapMapVariable() As EwEUtils.Core.eVarNameFlags
-    Public CapMapVarIndex() As Integer
+    'Public NumCapMaps As Integer
+    'Public CapMapDBID() As Integer
+    'Public CapMapName() As String
+    'Public CapMapVariable() As EwEUtils.Core.eVarNameFlags
+    'Public CapMapVarIndex() As Integer
     Public CapMapFunctions(,) As Integer
 
+    ' Generate for each driver layer + 0 which is depth
     Public CapMaps As IEnviroInputMap() = Nothing
 
     Public CapCalType As EwEUtils.Core.eEcospaceCapacityCalType = EwEUtils.Core.eEcospaceCapacityCalType.Capacity
@@ -996,32 +1009,22 @@ Public Class cEcospaceDataStructures
             'jb PrefHab() was redimed here and redimHabitatVariables()
             '        ReDim PrefHab(nGroups, NoHabitats)
 
+            ReDim Me.CapMapFunctions(Me.nDriverLayers, Me.NGroups)
+
+            ReDim Me.ImportanceLayerDBID(nImportanceLayers)
+            ReDim Me.ImportanceLayerName(nImportanceLayers)
+            ReDim Me.ImportanceLayerDescription(nImportanceLayers)
+            ReDim Me.ImportanceLayerWeight(nImportanceLayers)
+
+            ReDim Me.DriverLayerDBID(nDriverLayers)
+            ReDim Me.DriverLayerName(nDriverLayers)
+            ReDim Me.DriverLayerDescription(nDriverLayers)
+
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimMapVars() Error: " & ex.Message)
             Throw New System.Exception(Me.ToString & ".ReDimMapVars() Error: " & ex.Message)
         End Try
 
-
-
-    End Sub
-
-    Sub RedimCapacityMaps()
-
-        Try
-
-            ReDim Me.CapMapDBID(Me.NumCapMaps)
-            ReDim Me.CapMapName(Me.NumCapMaps)
-            ReDim Me.CapMapVariable(Me.NumCapMaps)
-            ReDim Me.CapMapVarIndex(Me.NumCapMaps)
-            ReDim Me.CapMapFunctions(Me.NumCapMaps, Me.NGroups)
-
-            For i As Integer = 0 To Me.NumCapMaps - 1
-                Me.CapMapVarIndex(i) = cCore.NULL_VALUE
-            Next
-
-        Catch ex As Exception
-
-        End Try
     End Sub
 
     Public Sub ReDimFleets()
@@ -1166,15 +1169,8 @@ Public Class cEcospaceDataStructures
             ReDim Port(nFleets, InRow + 1, InCol + 1)
             ReDim DistributionEnvelope(InRow + 1, InCol + 1, NGroups)
 
-            ImportanceLayers.Clear()
-            For i = 0 To nImportanceLayers - 1
-                ImportanceLayers.Add(New cLayerImportanceData(InRow, InCol))
-            Next
-
-            DriverLayers.Clear()
-            For i = 0 To nDriverLayers - 1
-                DriverLayers.Add(New cLayerDriverData(InRow, InCol))
-            Next
+            ReDim ImportanceLayerMap(Me.nImportanceLayers, InRow + 1, InCol + 1)
+            ReDim DriverLayerMap(Me.nDriverLayers, InRow + 1, InCol + 1)
 
             ReDim MPAfishery(nFleets, 1)
             ReDim MPAmonth(12, 1)

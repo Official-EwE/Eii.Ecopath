@@ -33,12 +33,6 @@ Public Class frmMSEAssessFleets
         End Set
     End Property
 
-    Protected Overrides ReadOnly Property ToolStrip() As ToolStrip
-        Get
-            Return Me.m_tsMain
-        End Get
-    End Property
-
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
         Try

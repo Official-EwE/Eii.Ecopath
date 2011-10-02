@@ -7,16 +7,6 @@
 Public Interface IEnviroInputMap
 
     ''' <summary>
-    ''' Name of the underlying Map
-    ''' </summary>
-    Property Name() As String
-
-    ''' <summary>
-    ''' Variable of the underlying Map
-    ''' </summary>
-    Property Variable() As eVarNameFlags
-
-    ''' <summary>
     ''' Return the value of the map as a function of the applied Response Function
     ''' </summary>
     ''' <param name="igrp">Index of the Group that this Response is for</param>

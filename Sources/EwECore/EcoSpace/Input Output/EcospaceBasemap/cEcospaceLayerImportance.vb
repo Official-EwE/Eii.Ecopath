@@ -55,6 +55,19 @@ Public Class cEcospaceLayerImportance
 
 #End Region ' Constructor
 
+#Region " Overrides "
+
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+        Get
+            Return DirectCast(Me.Data, Single(,,))(Me.Index, iRow, iCol)
+        End Get
+        Set(ByVal value As Object)
+            DirectCast(Me.Data, Single(,,))(Me.Index, iRow, iCol) = CSng(value)
+        End Set
+    End Property
+
+#End Region ' Overrides
+
 #Region " Properties by dot (.) operator "
 
     Public Property Weight() As Single

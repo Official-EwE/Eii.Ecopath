@@ -7810,8 +7810,8 @@ Public Class cCore
         m_EcospaceResultsASCWriter = New cEcospaceASCResultsWriter
         m_EcospaceResultsASCWriter.Init(Me)
 
-        m_mapInteractionManager = New cMapResponseInteractionManager
-        m_mapInteractionManager.Init(Me, Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
+        m_mapInteractionManager = New cMapResponseInteractionManager(Me)
+        m_mapInteractionManager.Init(Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
 
         Return True
 
@@ -8029,7 +8029,7 @@ Public Class cCore
                 ' Connect variable status to group preferred habitat
                 strMsg = String.Format(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_AREA_GROUP, Me.m_EcoPathData.GroupName(igrp), Me.m_EcoSpaceData.MaxHabCap(igrp))
                 vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, _
-                                         eVarNameFlags.NotSet, eDataTypes.EcospaceMapResponse, eCoreComponentType.EcoSpace, igrp)
+                                         eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
 
                 msg.AddVariable(vs)
             Next
@@ -9146,35 +9146,33 @@ Public Class cCore
     End Function
 
     Private Function LoadEcospaceImportanceLayers() As Boolean
+
         Dim dest As cEcospaceLayerImportance = Nothing
-        Dim src As cEcospaceDataStructures.cLayerImportanceData = Nothing
+ 
+        For i As Integer = 1 To Me.m_EcoSpaceData.nImportanceLayers
 
-        For i As Integer = 0 To Me.m_EcoSpaceData.nImportanceLayers - 1
-            src = Me.m_EcoSpaceData.ImportanceLayers(i)
-            dest = Me.m_EcospaceBasemap.LayerImportance(i + 1)
-
+            dest = Me.m_EcospaceBasemap.LayerImportance(i)
             dest.AllowValidation = False
             dest.Index = i
-            dest.Weight = src.sWeight
-            dest.Name = src.strName
-            dest.Description = src.strDescription
+            dest.Weight = Me.m_EcoSpaceData.ImportanceLayerWeight(i)
+            dest.Name = Me.m_EcoSpaceData.ImportanceLayerName(i)
+            dest.Description = Me.m_EcoSpaceData.ImportanceLayerDescription(i)
             dest.AllowValidation = True
 
         Next i
     End Function
 
     Private Function LoadEcospaceDriverLayers() As Boolean
+
         Dim dest As cEcospaceLayerDriver = Nothing
-        Dim src As cEcospaceDataStructures.cLayerDriverData = Nothing
 
-        For i As Integer = 0 To Me.m_EcoSpaceData.nImportanceLayers - 1
-            src = Me.m_EcoSpaceData.DriverLayers(i)
-            dest = Me.m_EcospaceBasemap.LayerDriver(i + 1)
+        For i As Integer = 1 To Me.m_EcoSpaceData.nDriverLayers
 
+            dest = Me.m_EcospaceBasemap.LayerDriver(i)
             dest.AllowValidation = False
             dest.Index = i
-            dest.Name = src.strName
-            dest.Description = src.strDescription
+            dest.Name = Me.m_EcoSpaceData.DriverLayerName(i)
+            dest.Description = Me.m_EcoSpaceData.DriverLayerDescription(i)
             dest.AllowValidation = True
 
         Next i
@@ -9214,29 +9212,23 @@ Public Class cCore
     Private Sub UpdateEcospaceImportanceLayers()
 
         Dim src As cEcospaceLayerImportance = Nothing
-        Dim dest As cEcospaceDataStructures.cLayerImportanceData = Nothing
 
-        For i As Integer = 0 To Me.m_EcoSpaceData.nImportanceLayers - 1
-            src = Me.m_EcospaceBasemap.LayerImportance(i + 1)
-            dest = Me.m_EcoSpaceData.ImportanceLayers(i)
-
-            dest.sWeight = src.Weight
-            dest.strName = src.Name
-            dest.strDescription = src.Description
-
+        For i As Integer = 1 To Me.m_EcoSpaceData.nImportanceLayers
+            src = Me.m_EcospaceBasemap.LayerImportance(i)
+            Me.m_EcoSpaceData.ImportanceLayerName(i) = src.Name
+            Me.m_EcoSpaceData.ImportanceLayerDescription(i) = src.Description
+            Me.m_EcoSpaceData.ImportanceLayerWeight(i) = src.Weight
         Next i
     End Sub
 
     Private Sub UpdateEcospaceDriverLayers()
 
         Dim src As cEcospaceLayerDriver = Nothing
-        Dim dest As cEcospaceDataStructures.cLayerDriverData = Nothing
 
-        For i As Integer = 0 To Me.m_EcoSpaceData.nImportanceLayers - 1
-            src = Me.m_EcospaceBasemap.LayerDriver(i + 1)
-            dest = Me.m_EcoSpaceData.ImportanceLayers(i)
-            dest.strName = src.Name
-            dest.strDescription = src.Description
+        For i As Integer = 1 To Me.m_EcoSpaceData.nImportanceLayers
+            src = Me.m_EcospaceBasemap.LayerDriver(i)
+            Me.m_EcoSpaceData.DriverLayerName(i) = src.Name
+            Me.m_EcoSpaceData.DriverLayerDescription(i) = src.Description
         Next i
 
     End Sub
@@ -10216,15 +10208,15 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Add an <see cref="IEnviroInputMap">capacity map</see> to the current
+    ''' Add a <see cref="cEcospaceLayerDriver">driver layer</see> to the current
     ''' <see cref="DataSource">data source</see>.
     ''' </summary>
-    ''' <param name="strMap">Name of map to add.</param>
-    ''' <param name="variable">Variable to apply the map to.</param>
     ''' <param name="iDBID">DB id of the new map.</param>
+    ''' <param name="strName">Name of layer to add.</param>
+    ''' <param name="strDescription">Description of layer to add.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function AddEcospaceCapacityMap(ByVal strMap As String, ByVal variable As eVarNameFlags, ByRef iDBID As Integer) As Boolean
+    Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim obj As cCoreInputOutputBase = Nothing
         Dim bSucces As Boolean = True
@@ -10238,9 +10230,9 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        If ds.AddEcospaceCapacityMap(strMap, variable, iDBID) Then
+        If ds.AddEcospaceDriverLayer(strName, strDescription, iDBID) Then
             ' Broadcast update
-            Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace cap map {0} has been added", strMap), _
+            Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace driver layer {0} has been added", strName), _
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
@@ -10254,14 +10246,14 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Remove an <see cref="IEnviroInputMap">capacity map</see> from the current
+    ''' Remove a <see cref="cEcospaceLayerDriver">driver layer</see> from the current
     ''' <see cref="DataSource">data source</see>.
     ''' </summary>
     ''' <param name="iDBID">The <see cref="cCoreInputOutputBase.DBID"/> of the map
     ''' to remove.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceCapacityMap(ByVal iDBID As Integer) As Boolean
+    Public Function RemoveEcospaceDriverLayer(ByVal iDBID As Integer) As Boolean
         Dim bsucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
 
@@ -10277,11 +10269,11 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        bsucces = ds.RemoveEcospaceCapacityMap(iDBID)
+        bsucces = ds.RemoveEcospaceDriverLayer(iDBID)
 
         If bsucces Then
             ' Broadcast update
-            Me.m_publisher.AddMessage(New cMessage("Ecospace cap map has been removed", _
+            Me.m_publisher.AddMessage(New cMessage("Ecospace driver layer has been removed", _
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         End If
 

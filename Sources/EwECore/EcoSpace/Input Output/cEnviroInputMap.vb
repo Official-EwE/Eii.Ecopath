@@ -9,22 +9,18 @@ Imports EwECore.ValueWrapper
 ''' <summary>
 ''' Joins an input map(row,col) with a list(by group) of Environmental Response functions (mediation functions).
 ''' </summary>
-''' <typeparam name="T">Type of map</typeparam>
 ''' <remarks>
 ''' Set the Map to the input map then tell it which response functions to use for which groups setShapeForGroup(igroup) = iResponseFunction
 ''' </remarks>
-Public Class cEnviroInputMap(Of T)
-    Inherits cCoreInputOutputBase
+Public Class cEnviroInputMap
     Implements IEnviroInputMap
 
 #Region " Private vars "
 
-    Private m_map(,) As T
+    Private m_source As cEcospaceLayer = Nothing
     Private m_GrpToShape() As Integer
     Private m_MedData As cMediationDataStructures
     Private m_spaceData As cEcospaceDataStructures
-    Private m_strName As String
-    Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
     Private m_min As Single
     Private m_max As Single
     Private m_mean As Single
@@ -33,41 +29,12 @@ Public Class cEnviroInputMap(Of T)
 
 #End Region ' Private vars
 
-    Friend Sub New(ByVal core As cCore, ByVal iDBID As Integer, ByVal iIndex As Integer, ByVal strName As String, _
-                   ByVal theManager As cMapResponseInteractionManager, ByVal MapArray(,) As T, _
-                   ByVal varName As eVarNameFlags, _
-                   Optional ByVal iVarIndex As Integer = cCore.NULL_VALUE)
-
-        MyBase.New(core)
-
-        Dim val As cValue
-        Dim meta As cVariableMetaData
-
-        Me.AllowValidation = False
-
-        Me.m_coreComponent = EwEUtils.Core.eCoreComponentType.EcoSpace
-        Me.m_dataType = EwEUtils.Core.eDataTypes.EcospaceMapResponse
-        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
-
-        'VarName
-        meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.VariableName, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
-
-        Me.Index = iIndex
-        Me.DBID = iDBID
-        Me.Name = strName
-        Me.Variable = varName
-        Me.m_map = MapArray
+    Friend Sub New(ByVal theManager As cMapResponseInteractionManager, ByVal source As cEcospaceLayer)
+        Me.m_source = source
         Me.setManager(theManager)
-
         ' Init to the data in the manager
         Me.Init(Me.m_manager.MediationData, Me.m_manager.SpaceData)
         Me.Update()
-
-        Me.ResetStatusFlags()
-        Me.AllowValidation = True
-
     End Sub
 
     ''' <inheritdocs cref="IEnviroInputMap.Init"/>
@@ -91,9 +58,9 @@ Public Class cEnviroInputMap(Of T)
         Try
             For ir As Integer = 1 To Me.m_spaceData.InRow
                 For ic As Integer = 1 To Me.m_spaceData.InCol
-                    Dim ob As Object = Me.m_map(ir, ic)
-                    Me.m_min = Math.Min(CSng(ob), Me.m_min)
-                    Me.m_max = Math.Max(CSng(ob), Me.m_max)
+                    Dim sCell As Single = CSng(Me.m_source.Cell(ir, ic))
+                    Me.m_min = Math.Min(sCell, Me.m_min)
+                    Me.m_max = Math.Max(sCell, Me.m_max)
                 Next
             Next
         Catch ex As Exception
@@ -105,7 +72,8 @@ Public Class cEnviroInputMap(Of T)
     End Sub
 
     ''' <inheritdocs cref="IEnviroInputMap.setManager"/>
-    Friend Sub setManager(ByVal theManager As cMapResponseInteractionManager) Implements IEnviroInputMap.setManager
+    Friend Sub setManager(ByVal theManager As cMapResponseInteractionManager) _
+        Implements IEnviroInputMap.setManager
         Me.m_manager = theManager
     End Sub
 
@@ -116,8 +84,10 @@ Public Class cEnviroInputMap(Of T)
     ''' <param name="iMapRow">Row of the input map</param>
     ''' <param name="iMapCol">Col of the input map</param>
     ''' <returns>Y = F(x)</returns>
-    Public Function ResponseFunction(ByVal igrp As Integer, ByVal iMapRow As Integer, ByVal iMapCol As Integer) As Single Implements IEnviroInputMap.ResponseFunction
-        Dim iShp As Integer, MedX As Single ', ip As Long
+    Public Function ResponseFunction(ByVal igrp As Integer, ByVal iMapRow As Integer, ByVal iMapCol As Integer) As Single _
+        Implements IEnviroInputMap.ResponseFunction
+
+        Dim iShp As Integer = 0
 
         Try
             iShp = Me.ResponseIndexForGroup(igrp)
@@ -128,10 +98,7 @@ Public Class cEnviroInputMap(Of T)
                 Return 0
             End If
 
-            Dim obj As Object = Me.m_map(iMapRow, iMapCol)
-            MedX = CType(obj, Single)
-
-            Return Me.m_MedData.getEnviroResponse(iShp, MedX)
+            Return Me.m_MedData.getEnviroResponse(iShp, CSng(Me.m_source.Cell(iMapRow, iMapCol)))
 
         Catch ex As Exception
             Debug.Assert(False)
@@ -146,7 +113,8 @@ Public Class cEnviroInputMap(Of T)
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>The Index of the ResponseFunction must exist in the underlying mediation data.</remarks>
-    Public Property ResponseIndexForGroup(ByVal GrpIndex As Integer) As Integer Implements IEnviroInputMap.ResponseIndexForGroup
+    Public Property ResponseIndexForGroup(ByVal GrpIndex As Integer) As Integer _
+        Implements IEnviroInputMap.ResponseIndexForGroup
         Get
             Return Me.m_GrpToShape(GrpIndex)
         End Get
@@ -158,7 +126,7 @@ Public Class cEnviroInputMap(Of T)
 
                 'If the manager is nothing the response index was set during initialization
                 'The manager is not initialized until an Ecospace scenarion is loaded
-                If (Not Me.m_manager Is Nothing) And (Me.AllowValidation = True) Then
+                If (Not Me.m_manager Is Nothing) Then
                     Me.m_manager.onChanged()
                 End If
 
@@ -189,7 +157,7 @@ Public Class cEnviroInputMap(Of T)
             For ir As Integer = 1 To Me.m_spaceData.InRow
                 For ic As Integer = 1 To Me.m_spaceData.InCol
                     If Me.m_spaceData.Depth(ir, ic) > 0 Then
-                        Dim cell As Single = CSng(CObj(Me.m_map(ir, ic)))
+                        Dim cell As Single = CSng(Me.m_source.Cell(ir, ic))
                         ipt = CInt(Math.Truncate(cell / m_binWidth)) + 1
                         If ipt >= nBins Then ipt = nBins
                         If ipt <= 0 Then ipt = 1
@@ -218,6 +186,12 @@ Public Class cEnviroInputMap(Of T)
 
     End Function
 
+    Public ReadOnly Property Source As cEcospaceLayer
+        Get
+            Return Me.m_source
+        End Get
+    End Property
+
     Public ReadOnly Property HistogramBinWidth As Single Implements IEnviroInputMap.HistogramBinWidth
         Get
             Return Me.m_binWidth
@@ -239,41 +213,6 @@ Public Class cEnviroInputMap(Of T)
             Return Me.m_spaceData.nFleets
         End Get
     End Property
-
-    ''' <inheritdocs cref="IEnviroInputMap.Name"/>
-    Public Shadows Property Name() As String _
-        Implements IEnviroInputMap.Name
-        Get
-            Return MyBase.Name
-        End Get
-        Set(ByVal value As String)
-            MyBase.Name = value
-        End Set
-    End Property
-
-    Public Property Variable() As eVarNameFlags _
-        Implements IEnviroInputMap.Variable
-        Get
-            Return DirectCast(Me.GetVariable(eVarNameFlags.VariableName), eVarNameFlags)
-        End Get
-        Set(ByVal value As eVarNameFlags)
-            Me.SetVariable(eVarNameFlags.VariableName, value)
-        End Set
-    End Property
-
-    ''' <summary>
-    ''' Get/set the input map that the response function will use to look up its input value
-    ''' </summary>
-    Friend Property Map() As T(,)
-        Get
-            Return Me.m_map
-        End Get
-        Set(ByVal value As T(,))
-            Me.m_map = value
-        End Set
-    End Property
-
-#End Region ' Properties
 
     ''' <inheritdocs cref="IEnviroInputMap.Max"/>
     Public ReadOnly Property Max() As Single _
@@ -299,6 +238,8 @@ Public Class cEnviroInputMap(Of T)
         End Get
     End Property
 
+#End Region ' Properties
+
     ''' <inheritdocs cref="IEnviroInputMap.Update"/>
     Public Function Update() As Boolean Implements IEnviroInputMap.Update
         Dim bReturn As Boolean = False
@@ -312,5 +253,4 @@ Public Class cEnviroInputMap(Of T)
 
     End Function
 
-    
 End Class

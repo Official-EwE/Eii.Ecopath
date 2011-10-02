@@ -14,6 +14,9 @@ Public Class cEcospaceLayerDepth
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal meta As cVariableMetaData)
         MyBase.New(theCore, manager, EwEUtils.Core.eVarNameFlags.LayerDepth, cCore.NULL_VALUE)
         Me.m_dataType = eDataTypes.EcospaceLayerDepth
+        Me.AllowValidation = False
+        Me.Name = "Depth" ' Hack
+        Me.AllowValidation = True
     End Sub
 
     ''' -----------------------------------------------------------------------

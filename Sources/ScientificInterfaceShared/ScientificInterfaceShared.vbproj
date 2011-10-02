@@ -136,6 +136,7 @@
     <Compile Include="Controls\EwEGrid\EwERowHeaderCell.vb" />
     <Compile Include="Controls\EwEGrid\EwEHeaderCell.vb" />
     <Compile Include="Controls\EwEGrid\EwEGridCell.vb" />
+    <Compile Include="Controls\EwEGrid\QuickEdit\EwEGridQuickEditor.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridColumnHeaderVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridRowHeaderVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridVisualizer.vb" />

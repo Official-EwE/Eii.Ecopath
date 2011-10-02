@@ -375,7 +375,6 @@ Public Class dlgDefineMapResponseAssignments
 
             If ob IsNot Nothing Then
                 If TypeOf ob Is IEnviroInputMap Then
-                    System.Console.WriteLine("Selected map " & DirectCast(ob, IEnviroInputMap).Name)
                     Return DirectCast(ob, IEnviroInputMap)
                 End If
             End If

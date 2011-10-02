@@ -140,17 +140,6 @@ Namespace Ecopath.Tools
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Overridden to make the form quick edit handler use the existing toolstrip.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Protected Overrides ReadOnly Property ToolStrip() As System.Windows.Forms.ToolStrip
-            Get
-                Return Me.m_tsMain
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Overridden to respond to changes in the number of, or details of,
         ''' pedigree levels.
         ''' </summary>
