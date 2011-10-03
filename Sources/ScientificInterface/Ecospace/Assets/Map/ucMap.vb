@@ -186,6 +186,8 @@ Namespace Ecospace
             Me.Clear()
         End Sub
 
+        Private m_thread As Threading.Thread
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Paint handler; selectively redraws the bitmap.
@@ -197,12 +199,26 @@ Namespace Ecospace
 
             If (Me.m_bNeedsUpdate = True) Then
                 Me.m_bNeedsUpdate = False
-                Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.m_basemap.InCol, Me.m_basemap.InRow))
-                Me.BackgroundImage = Me.m_bmp
+
+                If Me.m_thread IsNot Nothing Then
+                    If Me.m_thread.IsAlive Then
+                        Me.m_thread.Abort()
+                    End If
+                    Me.m_thread = Nothing
+                End If
+
+                Me.m_thread = New Threading.Thread(AddressOf RedrawMap)
+                Me.m_thread.Start()
             End If
 
-            MyBase.OnPaint(e)
+            'MyBase.OnPaint(e)
 
+        End Sub
+
+        Private Sub RedrawMap()
+            Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.m_basemap.InCol, Me.m_basemap.InRow))
+            Me.Invalidate()
+            Me.m_thread = Nothing
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -277,6 +293,7 @@ Namespace Ecospace
 
             ' Create new bitmap
             Me.m_bmp = New Bitmap(Me.Width, Me.Height)
+            Me.BackgroundImage = Me.m_bmp
 
             ' Sanity check
             If Object.ReferenceEquals(Me.m_basemap, Nothing) Then Return

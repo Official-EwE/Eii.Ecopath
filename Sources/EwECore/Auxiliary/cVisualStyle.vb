@@ -56,18 +56,21 @@ Namespace Auxiliary
         Public Function Clone() As cVisualStyle
 
             Dim vs As New cVisualStyle()
+            SyncLock GetType(cVisualStyle)
 
-            vs.ForeColour = Me.ForeColour
-            vs.BackColour = Me.BackColour
-            vs.HatchStyle = Me.HatchStyle
-            vs.FontName = Me.FontName
-            vs.FontSize = Me.FontSize
-            vs.FontStyle = Me.FontStyle
-            If Not Object.ReferenceEquals(Me.Image, Nothing) Then
-                vs.Image = DirectCast(Me.Image.Clone(), Image)
-            Else
-                vs.Image = Nothing
-            End If
+                vs.ForeColour = Me.ForeColour
+                vs.BackColour = Me.BackColour
+                vs.HatchStyle = Me.HatchStyle
+                vs.FontName = Me.FontName
+                vs.FontSize = Me.FontSize
+                vs.FontStyle = Me.FontStyle
+                If Not Object.ReferenceEquals(Me.Image, Nothing) Then
+                    vs.Image = DirectCast(Me.Image.Clone(), Image)
+                Else
+                    vs.Image = Nothing
+                End If
+            End SyncLock
+
             Return vs
 
         End Function
