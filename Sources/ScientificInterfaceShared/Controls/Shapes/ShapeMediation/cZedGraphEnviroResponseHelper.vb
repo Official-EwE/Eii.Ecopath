@@ -44,7 +44,6 @@ Namespace Controls
             'instead pass out the X and Y Axis value(s) and let the container figure out how to show the data
             Try
 
-                'WARNING this only works if the curve is labeled "Response"
                 Dim bUseBase As Boolean = True
 
                 If curve.Tag IsNot Nothing Then
@@ -75,7 +74,7 @@ Namespace Controls
 
                 Dim pp As PointPair = curve(iPoint)
                 sb.AppendLine("Map input " & Me.StyleGuide.FormatNumber(pp.X))
-                sb.AppendLine("Capacity " & Me.StyleGuide.FormatNumber(pp.Y))
+                sb.AppendLine("Capacity multiplier" & Me.StyleGuide.FormatNumber(pp.Y))
                 Return sb.ToString
             Catch ex As Exception
 
