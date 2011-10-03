@@ -186,7 +186,10 @@ Public Class cEnviroInputMap
 
     End Function
 
-    Public ReadOnly Property Source As cEcospaceLayer
+    ''' <summary>
+    ''' The basemap layer that provides the data that this map operates onto.
+    ''' </summary>
+    Public ReadOnly Property Layer As cEcospaceLayer
         Get
             Return Me.m_source
         End Get

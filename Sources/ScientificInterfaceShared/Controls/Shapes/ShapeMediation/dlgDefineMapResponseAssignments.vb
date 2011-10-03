@@ -20,7 +20,7 @@ Public Class dlgDefineMapResponseAssignments
     Private m_zgh As cZedGraphEnviroResponseHelper 'cZedGraphHelper
     Private m_uic As cUIContext
     Private m_bHasInit As Boolean
-    Private m_map As IEnviroInputMap
+    Private m_map As cEnviroInputMap
     Private m_fpXMin As cEwEFormatProvider = Nothing
     Private m_fpXMax As cEwEFormatProvider = Nothing
 
@@ -317,7 +317,7 @@ Public Class dlgDefineMapResponseAssignments
             For imap As Integer = 1 To Me.m_manager.nMaps
 
                 map = Me.m_manager.Map(imap)
-                Dim ndApply As TreeNode = Me.m_tvMaps.Nodes.Add(fmt.GetDescriptor(map))
+                Dim ndApply As TreeNode = Me.m_tvMaps.Nodes.Add(fmt.GetDescriptor(DirectCast(map, cEnviroInputMap).Layer))
                 ndApply.Tag = map
 
                 For igrp As Integer = 1 To Me.m_uic.Core.nGroups
@@ -360,7 +360,7 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-    Private Function GetSelectedMap(ByVal node As TreeNode) As IEnviroInputMap
+    Private Function GetSelectedMap(ByVal node As TreeNode) As cEnviroInputMap
         Try
 
             Dim ob As Object
@@ -374,8 +374,8 @@ Public Class dlgDefineMapResponseAssignments
             ob = node.Tag
 
             If ob IsNot Nothing Then
-                If TypeOf ob Is IEnviroInputMap Then
-                    Return DirectCast(ob, IEnviroInputMap)
+                If TypeOf ob Is cEnviroInputMap Then
+                    Return DirectCast(ob, cEnviroInputMap)
                 End If
             End If
 
@@ -386,38 +386,6 @@ Public Class dlgDefineMapResponseAssignments
         Return Nothing
 
     End Function
-
-    'Private Function getSelMap() As IEnviroInputMap
-    '    Try
-
-    '        '  Dim ob As Object
-    '        Dim node As TreeNode
-    '        node = Me.trvMapTree.SelectedNode
-
-    '        Me.getSelMap(node)
-
-    '        ''No node has been selected just return nothing
-    '        'If node Is Nothing Then Return Nothing
-
-    '        'Do While node.Parent IsNot Nothing
-    '        '    node = node.Parent
-    '        'Loop
-    '        'ob = node.Tag
-
-    '        'If ob IsNot Nothing Then
-    '        '    If TypeOf ob Is IEnviroInputMap Then
-    '        '        System.Console.WriteLine("Seleted map " & DirectCast(ob, IEnviroInputMap).Name)
-    '        '        Return DirectCast(ob, IEnviroInputMap)
-    '        '    End If
-    '        'End If
-
-    '    Catch ex As Exception
-
-    '    End Try
-
-    '    Return Nothing
-
-    'End Function
 
     Private Sub PlotMap()
         Try
@@ -441,7 +409,7 @@ Public Class dlgDefineMapResponseAssignments
                 y2max = Math.Max(histPts(ipt).Y, y2max)
             Next
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map)), _
+            Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map.Layer)), _
                                                          Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts, eLines.Histogram)
 
             il.IsY2Axis = True

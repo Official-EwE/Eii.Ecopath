@@ -19,7 +19,7 @@ Namespace Style
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(cCoreInputOutputBase)
+            Return GetType(ICoreInterface)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, _
