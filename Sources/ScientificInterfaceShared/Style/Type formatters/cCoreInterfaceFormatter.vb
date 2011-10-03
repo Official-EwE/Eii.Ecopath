@@ -27,7 +27,10 @@ Namespace Style
                                       Implements ITypeFormatter.GetDescriptor
             Try
                 Dim obj As ICoreInterface = DirectCast(value, ICoreInterface)
-                Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
+                If (obj.Index >= 1) Then
+                    Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
+                End If
+                Return obj.Name
             Catch ex As Exception
                 Debug.Assert(False)
             End Try
