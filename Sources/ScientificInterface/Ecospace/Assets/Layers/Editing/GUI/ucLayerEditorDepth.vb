@@ -31,9 +31,12 @@ Namespace Ecospace.Basemap.Layers
         Public Overrides Sub Initialize(ByVal editor As cLayerEditor)
             MyBase.Initialize(editor)
 
+            Debug.Assert(TypeOf editor Is cLayerEditorDepth, "Depth editor expected")
             Me.m_nudDepth.DecimalPlaces = 0
             Me.m_nudDepth.Maximum = Convert.ToDecimal(Me.Editor.CellValueMax)
             Me.m_nudDepth.Minimum = Math.Max(1, Convert.ToDecimal(Me.Editor.CellValueMin))
+
+            Me.m_cbProtectCoastline.Checked = DirectCast(editor, cLayerEditorDepth).ProtectCoastLine
 
             If CSng(Me.Editor.CellValue) > 0 Then
                 Me.m_rbWater.Checked = True
@@ -78,7 +81,7 @@ Namespace Ecospace.Basemap.Layers
             Me.UpdateValue()
         End Sub
 
-        Private Sub OnEditWaterOnly(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnProtectCoastlineCheckChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbProtectCoastline.CheckedChanged
             If (Me.UIContext Is Nothing) Then Return
             If (TypeOf Me.Editor Is cLayerEditorDepth) Then
