@@ -2,15 +2,10 @@
 
 Option Strict On
 
-Imports System.Drawing
-Imports System.Globalization
 Imports System.IO
 Imports System.Text
-Imports System.Threading
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Commands
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
