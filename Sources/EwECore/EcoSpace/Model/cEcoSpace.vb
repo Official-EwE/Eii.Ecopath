@@ -5621,7 +5621,8 @@ exitline:
                 MapDataType = eDataTypes.CapacityMediation Or _
                 MapDataType = eDataTypes.EcospaceMapResponse Or _
                 MapDataType = eDataTypes.EcospaceModelParameter Or _
-                MapDataType = eDataTypes.EcospaceGroup Then
+                MapDataType = eDataTypes.EcospaceGroup Or
+                MapDataType = eDataTypes.EcospaceLayerDriver Then
 
                 Me.SetHabCap()
 

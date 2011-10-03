@@ -12704,16 +12704,6 @@ Public Class cCore
 
                 Case eDataTypes.CapacityMediation
 
-                    If TypeOfChange = eMessageType.DataModified Then
-                        'Capacity response function (Shape) has changed 
-                        'Let Ecospace decide what to update in response
-                        If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
-                            'Capacity layer has changed
-                            'send out a message
-                            Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
-                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
-                        End If
-                    End If
                     Me.m_publisher.AddMessage(New cMessage("Capacity shape has changed", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, obj.DataType))
 
                 Case eDataTypes.PredPreyInteraction
@@ -12789,14 +12779,14 @@ Public Class cCore
                     'update the map/response interactions to the new data
                     Me.m_mapInteractionManager.Update()
 
-                    'Input map(s) may have change
-                    'Let Ecospace decide what to update in response
-                    If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
-                        'Capacity layer has changed
-                        'send out a message
-                        Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
-                                                               eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
-                    End If
+                    ''Input map(s) may have change
+                    ''Let Ecospace decide what to update in response
+                    'If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
+                    '    'Capacity layer has changed
+                    '    'send out a message
+                    '    Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
+                    '                                           eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
+                    'End If
 
                     Me.m_publisher.AddMessage(New cMessage("Ecospace basemap changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerDepth))
                     Me.m_publisher.AddMessage(New cMessage("Ecospace habitats changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceHabitat))
@@ -12817,16 +12807,6 @@ Public Class cCore
 
                     'update the map/response interactions to the new data
                     Me.m_mapInteractionManager.Update()
-
-                    'Input map(s) may have change
-                    'Let Ecospace decide what to update in response
-                    If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
-                        'Capacity layer has changed
-                        'send out a message
-                        Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
-                                                               eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
-
-                    End If
 
                     Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
@@ -12901,17 +12881,21 @@ Public Class cCore
                 Case eDataTypes.EcospaceMapResponse
                     If obj.CoreComponent = eCoreComponentType.MapResponseInteractionManager Then
 
-                        Me.m_Ecospace.UpdateMaps(obj.DataType)
-
-                        'Capacity layer has changed
-                        Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
-                                                               eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
 
                         Me.m_publisher.AddMessage(New cMessage("Capacity map data has changed.", TypeOfChange, _
                                       eCoreComponentType.MapResponseInteractionManager, eMessageImportance.Maintenance))
                     End If
 
             End Select
+
+            'Ecospace map input map(s) may have change
+            'Let Ecospace decide what to update in response
+            If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
+                'Capacity layer has changed
+                'send out a message
+                Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
+                                                       eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
+            End If
 
             ' JS 31aug07: DataAddedOrRemoved messages are initialized by the db, thus the db should not get flagged as dirty
             If TypeOfChange <> eMessageType.DataAddedOrRemoved Then
