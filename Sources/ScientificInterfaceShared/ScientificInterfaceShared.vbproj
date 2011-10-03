@@ -232,6 +232,7 @@
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cForcingFunctionShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cLandingsShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cTimeSerieShapeGUIHandler.vb" />
+    <Compile Include="Controls\Shapes\ShapeMediation\cZedGraphEnviroResponseHelper.vb" />
     <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineMapResponseAssignments.Designer.vb">
       <DependentUpon>dlgDefineMapResponseAssignments.vb</DependentUpon>
     </Compile>

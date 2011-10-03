@@ -24,11 +24,6 @@ Public Class dlgDefineMapResponseAssignments
     Private m_fpXMin As cEwEFormatProvider = Nothing
     Private m_fpXMax As cEwEFormatProvider = Nothing
 
-    Public Enum eLines As Integer
-        Response
-        Histogram
-    End Enum
-
 #End Region
 
 #Region "Construction Initialization"
@@ -293,7 +288,7 @@ Public Class dlgDefineMapResponseAssignments
             lstPts.Add(Xmax, Me.m_shape.ShapeData(Me.m_shape.XMax) * YScale)
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(Me.m_shape)), _
-                                                         Definitions.eLineType.NotSet, Color.SandyBrown, lstPts, eLines.Response)
+                                                         lstPts, cZedGraphEnviroResponseHelper.eEnvResponseLineType.Response)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Xmax
@@ -410,7 +405,7 @@ Public Class dlgDefineMapResponseAssignments
             Next
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map.Layer)), _
-                                                         Definitions.eLineType.NotSet, Color.RoyalBlue, lstPts, eLines.Histogram)
+                                                         lstPts, cZedGraphEnviroResponseHelper.eEnvResponseLineType.Histogram)
 
             il.IsY2Axis = True
             il.Line.Fill = New Fill(System.Drawing.Color.Gray)
@@ -428,74 +423,6 @@ Public Class dlgDefineMapResponseAssignments
 #End Region
 
 End Class
-
-#Region "ZedGraph helper for Response tool tips"
-
-
-'ToDo_jb cZedGraphEnviroResponseHelper is used by both dlgDefineMapResponseAssignments and ucMediationAssignments
-'it should be located in it's own file some place in the SI Shared...
-
-
-''' <summary>
-''' Derived Zedgraph helper class that just overrides the ToolTip formating for the EnvironmentalResponse graphs
-''' </summary>
-''' <remarks></remarks>
-<CLSCompliant(False)> _
-Public Class cZedGraphEnviroResponseHelper
-    Inherits cZedGraphHelper
-
-    Protected Overrides Function FormatTooltip(ByVal pane As ZedGraph.GraphPane, ByVal curve As ZedGraph.CurveItem, ByVal iPoint As Integer) As String
-
-        ' ToDo: localize this
-
-        'This is not a very good way to do this 
-        'It may be better to not use a tool tip at all 
-        'instead pass out the X and Y Axis value(s) and let the container figure out how to show the data
-        Try
-
-            'WARNING this only works if the curve is labeled "Response"
-            Dim bUseBase As Boolean = True
-
-            If curve.Tag IsNot Nothing Then
-                If TypeOf curve.Tag Is cCurveInfo Then
-                    Dim ci As cCurveInfo = DirectCast(curve.Tag, cCurveInfo)
-                    Dim tag As dlgDefineMapResponseAssignments.eLines = DirectCast(ci.Tag, dlgDefineMapResponseAssignments.eLines)
-
-                    Select Case tag
-                        Case dlgDefineMapResponseAssignments.eLines.Response
-                            bUseBase = False
-                        Case dlgDefineMapResponseAssignments.eLines.Histogram
-                            Return ""
-                        Case Else
-                            Debug.Assert(False, "Unsupported line type")
-                    End Select
-                End If ' If TypeOf curve.Tag Is cCurveInfo Then
-            End If ' If curve.Tag IsNot Nothing Then
-
-            If bUseBase Then
-                Return MyBase.FormatTooltip(pane, curve, iPoint)
-            End If
-
-            Debug.Assert(curve.IsLine, "ToolTip wrong line type.")
-
-            ' ToDo: localize this
-            Dim sb As New System.Text.StringBuilder()
-            sb.AppendLine("Capacity for Map input.")
-
-            Dim pp As PointPair = curve(iPoint)
-            sb.AppendLine("Map input " & Me.StyleGuide.FormatNumber(pp.X))
-            sb.AppendLine("Capacity " & Me.StyleGuide.FormatNumber(pp.Y))
-            Return sb.ToString
-        Catch ex As Exception
-
-        End Try
-        Return ""
-
-    End Function
-
-End Class
-
-#End Region
 
 
 

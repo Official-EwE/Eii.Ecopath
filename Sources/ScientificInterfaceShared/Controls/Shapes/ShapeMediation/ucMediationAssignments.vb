@@ -350,7 +350,8 @@ Namespace Controls
                 lstPts.Add(Xmax, resShape.ShapeData(resShape.XMax))
 
                 'need a way to find the color of the shape
-                Dim il As LineItem = Me.m_zgh.CreateLineItem("Response", Definitions.eLineType.NotSet, Color.SandyBrown, lstPts)
+                Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(resShape)), _
+                                                             lstPts, cZedGraphEnviroResponseHelper.eEnvResponseLineType.Response)
                 pane.CurveList.Add(il)
 
                 Me.m_zgh.XScaleMax = Xmax
