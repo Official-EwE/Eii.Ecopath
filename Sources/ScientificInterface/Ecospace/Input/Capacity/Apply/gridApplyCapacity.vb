@@ -33,7 +33,7 @@ Namespace Ecospace
 
             Dim group As cCoreGroupBase = Nothing
             Dim mapManager As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
-            Dim src As IEnviroInputMap = Nothing
+            Dim map As IEnviroInputMap = Nothing
             Dim fmt As New cCoreInterfaceFormatter()
 
             ' Define grid dimensions
@@ -41,8 +41,8 @@ Namespace Ecospace
 
             For imap As Integer = 1 To mapManager.nMaps
 
-                src = mapManager.Map(imap)
-                Me(0, 1 + imap) = New PropertyColumnHeaderCell(Me.PropertyManager, DirectCast(src, cEnviroInputMap).Source, eVarNameFlags.Name)
+                map = mapManager.Map(imap)
+                Me(0, 1 + imap) = New PropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name)
                 Me(0, 1 + imap).Behaviors.Add(Me.m_RowColClick)
 
             Next imap
