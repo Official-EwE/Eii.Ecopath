@@ -70,6 +70,11 @@ Public Class dlgDefineMapResponseAssignments
 
             Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
+            'Yaxis (left) grid lines
+            'the cool thing to do here would be to only show the 1.0 grid line
+            'not all the grid line....
+            Me.m_zgh.GetPane(1).YAxis.MajorGrid.IsVisible = True
+
             Me.m_zgh.GetPane(1).Y2Axis.IsVisible = True
             Me.m_zgh.GetPane(1).Y2Axis.Title.Text = "Map histogram"
             Me.m_zgh.GetPane(1).Y2Axis.Title.IsVisible = True
@@ -78,8 +83,8 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsAllTics = False
             Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsOpposite = False
             Me.m_zgh.GetPane(1).Y2Axis.MajorTic.IsOpposite = False
-            'somehow set the Y2Axis label font size
 
+            'somehow set the Y2Axis label font size
             Me.m_zgh.GetPane(1).Y2Axis.Scale.MaxAuto = True
 
             Me.m_lbxGroups.Attach(Me.m_uic)
