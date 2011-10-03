@@ -186,7 +186,9 @@ Namespace Ecospace
             Me.Clear()
         End Sub
 
+#If DRAW_THREADED Then
         Private m_thread As Threading.Thread
+#End If
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -200,6 +202,7 @@ Namespace Ecospace
             If (Me.m_bNeedsUpdate = True) Then
                 Me.m_bNeedsUpdate = False
 
+#If DRAW_THREADED Then
                 If Me.m_thread IsNot Nothing Then
                     If Me.m_thread.IsAlive Then
                         Me.m_thread.Abort()
@@ -207,19 +210,24 @@ Namespace Ecospace
                     Me.m_thread = Nothing
                 End If
 
-                Me.m_thread = New Threading.Thread(AddressOf RedrawMap)
+                Me.m_thread = New Threading.Thread(AddressOf RedrawMapThreaded)
                 Me.m_thread.Start()
+#Else
+                Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.m_basemap.InCol, Me.m_basemap.InRow))
+#End If
             End If
 
             'MyBase.OnPaint(e)
 
         End Sub
 
-        Private Sub RedrawMap()
+#If DRAW_THREADED Then
+        Private Sub RedrawMapThreaded()
             Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.m_basemap.InCol, Me.m_basemap.InRow))
             Me.Invalidate()
             Me.m_thread = Nothing
         End Sub
+#End If
 
         ''' -------------------------------------------------------------------
         ''' <summary>
