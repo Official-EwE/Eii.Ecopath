@@ -27,6 +27,7 @@ Namespace Style
                                       Implements ITypeFormatter.GetDescriptor
             Try
                 Dim obj As ICoreInterface = DirectCast(value, ICoreInterface)
+                ' Only include index in desciptor only if object has a valid index
                 If (obj.Index >= 1) Then
                     Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
                 End If
