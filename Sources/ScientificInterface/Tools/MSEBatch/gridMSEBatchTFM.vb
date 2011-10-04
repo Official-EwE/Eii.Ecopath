@@ -41,7 +41,7 @@ Public Class gridMSEBatchTFM
 
     Public Sub New()
         MyBase.new()
-        Me.iCurIter = 1
+        Me.m_iter = 1
     End Sub
 
 #Region " Overrides "
@@ -90,18 +90,20 @@ Public Class gridMSEBatchTFM
 
             Me(iGroup, eColumnTypes.BLimLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
             Me(iGroup, eColumnTypes.BLimValue) = New EwECell(group.BLimValue(iCurIter), GetType(Single))
+            Me(iGroup, eColumnTypes.BLimValue).Behaviors.Add(Me.EwEEditHandler)
             Me(iGroup, eColumnTypes.BLimUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimUpper)
 
             Me(iGroup, eColumnTypes.BBaseLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseLower)
             Me(iGroup, eColumnTypes.BBaseValue) = New EwECell(group.BBaseValue(iCurIter), GetType(Single))
+            Me(iGroup, eColumnTypes.BBaseValue).Behaviors.Add(Me.EwEEditHandler)
             Me(iGroup, eColumnTypes.BBaseUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseUpper)
 
             Me(iGroup, eColumnTypes.FOptLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptLower)
             Me(iGroup, eColumnTypes.FOptValue) = New EwECell(group.BBaseValue(iCurIter), GetType(Single))
+            Me(iGroup, eColumnTypes.FOptValue).Behaviors.Add(Me.EwEEditHandler)
             Me(iGroup, eColumnTypes.FOptUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
 
-
-            Me.Rows(iGroup).Tag = group
+            '    Me.Rows(iGroup).Tag = group
 
         Next iGroup
 
@@ -114,7 +116,7 @@ Public Class gridMSEBatchTFM
 
     Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
         Get
-            Return eCoreComponentType.EcoSim
+            Return eCoreComponentType.MSE
         End Get
     End Property
 
@@ -125,6 +127,7 @@ Public Class gridMSEBatchTFM
         End Get
         Set(value As Integer)
             m_iter = value
+            ' Me.FillData()
         End Set
     End Property
 

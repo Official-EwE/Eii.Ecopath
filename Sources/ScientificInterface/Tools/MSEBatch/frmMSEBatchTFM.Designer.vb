@@ -54,9 +54,10 @@ Partial Class frmMSEBatchTFM
         Me.Grid.FixedColumnWidths = False
         Me.Grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.Grid.GridToolTipActive = True
-        Me.Grid.Location = New System.Drawing.Point(1, 81)
+        Me.Grid.iCurIter = 1
+        Me.Grid.Location = New System.Drawing.Point(2, 83)
         Me.Grid.Name = "Grid"
-        Me.Grid.Size = New System.Drawing.Size(438, 270)
+        Me.Grid.Size = New System.Drawing.Size(782, 389)
         Me.Grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -114,7 +115,7 @@ Partial Class frmMSEBatchTFM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(440, 352)
+        Me.ClientSize = New System.Drawing.Size(787, 475)
         Me.Controls.Add(Me.txNTFM)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Button1)
