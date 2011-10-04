@@ -22,21 +22,23 @@ Partial Class dlgChangeShape
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgChangeShape))
-            Me.m_tbxC = New System.Windows.Forms.TextBox
-            Me.m_lblC = New System.Windows.Forms.Label
-            Me.m_tbxA = New System.Windows.Forms.TextBox
-            Me.m_lblA = New System.Windows.Forms.Label
-            Me.m_tbxD = New System.Windows.Forms.TextBox
-            Me.m_tbxB = New System.Windows.Forms.TextBox
-            Me.m_lblD = New System.Windows.Forms.Label
-            Me.m_lblB = New System.Windows.Forms.Label
-            Me.m_btnOk = New System.Windows.Forms.Button
-            Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.m_plPreview = New System.Windows.Forms.Panel
-            Me.m_lbShapeFunctionTypes = New System.Windows.Forms.ListBox
-            Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_btnDefaults = New System.Windows.Forms.Button
+            Me.m_tbxC = New System.Windows.Forms.TextBox()
+            Me.m_lblC = New System.Windows.Forms.Label()
+            Me.m_tbxA = New System.Windows.Forms.TextBox()
+            Me.m_lblA = New System.Windows.Forms.Label()
+            Me.m_tbxD = New System.Windows.Forms.TextBox()
+            Me.m_tbxB = New System.Windows.Forms.TextBox()
+            Me.m_lblD = New System.Windows.Forms.Label()
+            Me.m_lblB = New System.Windows.Forms.Label()
+            Me.m_btnOk = New System.Windows.Forms.Button()
+            Me.m_btnCancel = New System.Windows.Forms.Button()
+            Me.m_plPreview = New System.Windows.Forms.Panel()
+            Me.m_lbShapeFunctionTypes = New System.Windows.Forms.ListBox()
+            Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnDefaults = New System.Windows.Forms.Button()
+            Me.m_tlpParams = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tlpParams.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tbxC
@@ -128,6 +130,19 @@ Partial Class dlgChangeShape
             Me.m_btnDefaults.Name = "m_btnDefaults"
             Me.m_btnDefaults.UseVisualStyleBackColor = True
             '
+            'm_tlpParams
+            '
+            resources.ApplyResources(Me.m_tlpParams, "m_tlpParams")
+            Me.m_tlpParams.Controls.Add(Me.m_lblA, 0, 0)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxA, 1, 0)
+            Me.m_tlpParams.Controls.Add(Me.m_lblD, 0, 3)
+            Me.m_tlpParams.Controls.Add(Me.m_lblB, 0, 1)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxB, 1, 1)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxC, 1, 2)
+            Me.m_tlpParams.Controls.Add(Me.m_lblC, 0, 2)
+            Me.m_tlpParams.Controls.Add(Me.m_tbxD, 1, 3)
+            Me.m_tlpParams.Name = "m_tlpParams"
+            '
             'dlgChangeShape
             '
             Me.AcceptButton = Me.m_btnOk
@@ -135,26 +150,20 @@ Partial Class dlgChangeShape
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_tlpParams)
             Me.Controls.Add(Me.m_lbShapeFunctionTypes)
-            Me.Controls.Add(Me.m_lblA)
-            Me.Controls.Add(Me.m_lblD)
             Me.Controls.Add(Me.m_hdrShape)
             Me.Controls.Add(Me.m_hdrParams)
-            Me.Controls.Add(Me.m_tbxB)
             Me.Controls.Add(Me.m_plPreview)
-            Me.Controls.Add(Me.m_tbxC)
-            Me.Controls.Add(Me.m_lblB)
             Me.Controls.Add(Me.m_btnDefaults)
             Me.Controls.Add(Me.m_btnOk)
-            Me.Controls.Add(Me.m_lblC)
             Me.Controls.Add(Me.m_btnCancel)
-            Me.Controls.Add(Me.m_tbxD)
-            Me.Controls.Add(Me.m_tbxA)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.Name = "dlgChangeShape"
             Me.ShowInTaskbar = False
+            Me.m_tlpParams.ResumeLayout(False)
+            Me.m_tlpParams.PerformLayout()
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_tbxC As System.Windows.Forms.TextBox
@@ -172,6 +181,7 @@ Partial Class dlgChangeShape
         Private WithEvents m_hdrShape As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_lbShapeFunctionTypes As System.Windows.Forms.ListBox
         Private WithEvents m_btnDefaults As System.Windows.Forms.Button
+        Private WithEvents m_tlpParams As System.Windows.Forms.TableLayoutPanel
 
     End Class
 

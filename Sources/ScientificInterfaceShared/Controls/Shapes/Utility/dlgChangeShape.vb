@@ -158,10 +158,13 @@ Namespace Controls
                 Case eShapeFunctionType.Linear
                     sA = 1.0! : sB = 1.0!
                 Case eShapeFunctionType.Exponential
+                    sA = 1.0! : sB = 5.0! : sC = 0.2!
                 Case eShapeFunctionType.Hyperbolic
+                    sA = 1.0! : sB = 1.0! : sD = 0.5!
                 Case eShapeFunctionType.Sigmoid
                 Case eShapeFunctionType.Betapdf
                 Case eShapeFunctionType.Normal
+                    sB = 1.0! : sB = 1.0! : sC = 0.5!
             End Select
 
             Me.m_fpA.Value = sA
@@ -328,6 +331,8 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
 
+            Me.SuspendLayout()
+
             Dim bEnableA As Boolean = False
             Dim bEnableB As Boolean = False
             Dim bEnableC As Boolean = False
@@ -368,17 +373,24 @@ Namespace Controls
                     Debug.Assert(False)
             End Select
 
-            'labels
+            ' Update labels
             Me.m_lblA.Text = strLabelA
             Me.m_lblB.Text = strLabelB
             Me.m_lblC.Text = strLabelC
             Me.m_lblD.Text = strLabelD
 
-            ' Enable controls
-            Me.m_fpA.Enabled = bEnableD
-            Me.m_fpC.Enabled = bEnableB
-            Me.m_fpB.Enabled = bEnableC
-            Me.m_fpD.Enabled = bEnableA
+            ' Show/hide controls
+            Me.m_lblA.Visible = bEnableA : Me.m_tbxA.Visible = bEnableA
+            Me.m_lblB.Visible = bEnableB : Me.m_tbxB.Visible = bEnableB
+            Me.m_lblC.Visible = bEnableC : Me.m_tbxC.Visible = bEnableC
+            Me.m_lblD.Visible = bEnableD : Me.m_tbxD.Visible = bEnableD
+
+            'Me.m_fpA.Enabled = bEnableA
+            'Me.m_fpC.Enabled = bEnableB
+            'Me.m_fpB.Enabled = bEnableC
+            'Me.m_fpD.Enabled = bEnableD
+
+            Me.ResumeLayout(True)
 
         End Sub
 
