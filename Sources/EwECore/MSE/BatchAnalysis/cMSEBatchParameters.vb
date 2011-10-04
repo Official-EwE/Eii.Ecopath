@@ -13,7 +13,6 @@ Public Class cMSEBatchParameters
     Inherits cCoreGroupBase
 
 
-
     Public Sub New(ByRef theCore As cCore, ByRef MSEBatchData As MSEBatchManager.cMSEBatchDataStructures, ByVal DBID As Integer)
         MyBase.New(theCore)
 
@@ -33,7 +32,7 @@ Public Class cMSEBatchParameters
         val = New cValue(New Integer, eVarNameFlags.MSETFMNIteration, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMNIteration))
         m_values.Add(val.varName, val)
 
-
+        Me.AllowValidation = True
 
     End Sub
 

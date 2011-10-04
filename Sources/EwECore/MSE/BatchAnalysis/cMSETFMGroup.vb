@@ -17,7 +17,6 @@ Namespace MSE
         Private m_FMaxValues() As Single
         Private m_BatchData As MSEBatchManager.cMSEBatchDataStructures
 
-
         Public Sub New(ByRef theCore As cCore, ByRef MSEBatchData As MSEBatchManager.cMSEBatchDataStructures, ByVal theGroupDBID As Integer)
             MyBase.New(theCore)
 
@@ -76,6 +75,8 @@ Namespace MSE
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.MSEFmin, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFmin))
             m_values.Add(val.varName, val)
+
+            Me.AllowValidation = True
 
         End Sub
 
@@ -251,6 +252,20 @@ Namespace MSE
                 For i As Integer = 1 To n
                     values(i) = LowB + dx * (i - 1)
                 Next
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+
+        Friend Sub updateN()
+            Try
+
+                ReDim Preserve Me.m_BLimValues(Me.m_BatchData.nTFM)
+                ReDim Preserve Me.m_BBaseValues(Me.m_BatchData.nTFM)
+                ReDim Preserve Me.m_FMaxValues(Me.m_BatchData.nTFM)
+
             Catch ex As Exception
 
             End Try

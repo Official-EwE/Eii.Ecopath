@@ -168,10 +168,15 @@ Namespace MSEBatchManager
         ''' <remarks></remarks>
         Public Sub Load()
 
+            Me.Parameters.AllowValidation = False
             Me.Parameters.nTFMIteration = Me.m_BatchData.nTFM
+            Me.Parameters.AllowValidation = True
+
 
             For igrp As Integer = 1 To Me.nGroups
                 Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
+                tfm.AllowValidation = False
+
                 tfm.BLim = Me.m_MSEdata.Blim(igrp)
                 tfm.BLimLower = Me.m_BatchData.BlimLower(igrp)
                 tfm.BLimUpper = Me.m_BatchData.BlimUpper(igrp)
@@ -184,6 +189,8 @@ Namespace MSEBatchManager
                 tfm.FMaxLower = Me.m_BatchData.FOptLower(igrp)
                 tfm.FMaxUpper = Me.m_BatchData.FOptUpper(igrp)
 
+                tfm.AllowValidation = True
+
             Next
 
             Me.m_BatchData.isInit = True
@@ -194,7 +201,24 @@ Namespace MSEBatchManager
         ''' Update core data with data from input objects
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub Update()
+        Public Sub Update(DataType As eDataTypes, VarName As eVarNameFlags)
+            Try
+
+                If VarName = eVarNameFlags.MSETFMNIteration Then
+                    Me.m_BatchData.nTFM = Me.Parameters.nTFMIteration
+                    Me.UpdateNParameterIters()
+                End If
+
+                Me.update()
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+
+        Private Sub update()
 
             Me.m_BatchData.nTFM = Me.Parameters.nTFMIteration
 
@@ -224,18 +248,14 @@ Namespace MSEBatchManager
 
             Next igrp
 
-                'Control types
-                Me.m_BatchData.redimControlTypes(Me.m_BatchData.nControlTypes, Me.nFleets)
-                For icon As Integer = 1 To Me.m_BatchData.nControlTypes
-                    For iflt As Integer = 1 To Me.m_MSEdata.nFleets
-                        'set the control type to what ever is currently loaded
-                        Me.BatchData.ControlType(icon, iflt) = Me.m_MSEdata.QuotaType(iflt)
-                    Next iflt
-                Next icon
-
-
-
-
+            'Control types
+            Me.m_BatchData.redimControlTypes(Me.m_BatchData.nControlTypes, Me.nFleets)
+            For icon As Integer = 1 To Me.m_BatchData.nControlTypes
+                For iflt As Integer = 1 To Me.m_MSEdata.nFleets
+                    'set the control type to what ever is currently loaded
+                    Me.BatchData.ControlType(icon, iflt) = Me.m_MSEdata.QuotaType(iflt)
+                Next iflt
+            Next icon
 
         End Sub
 
@@ -250,6 +270,18 @@ Namespace MSEBatchManager
             Me.m_BatchData.nControlTypes = 1
             Me.m_BatchData.nForcing = 1
 
+        End Sub
+
+
+        ''' <summary>
+        ''' Update the Input/Ouput objects to the number of Iteration set by the interface
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Sub UpdateNParameterIters()
+
+            For Each grp As cMSETFMGroup In Me.m_lstTFMs
+                grp.updateN()
+            Next
 
         End Sub
 

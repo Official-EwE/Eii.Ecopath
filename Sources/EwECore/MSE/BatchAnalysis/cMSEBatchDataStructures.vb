@@ -161,7 +161,7 @@ Namespace MSEBatchManager
             ReDim FOptLower(nGroups)
             ReDim FOptUpper(nGroups)
 
-            Me.setDefaultTFM()
+            '    Me.setDefaultTFM()
 
         End Sub
 
@@ -200,6 +200,7 @@ Namespace MSEBatchManager
         End Sub
 
         Public Sub setDefaultTFM()
+            'maybe not set the number of parameter iterations????
             Me.nTFM = 10
             Dim defautlLL As Single = 0.5
             Dim defautlUp As Single = 1.0

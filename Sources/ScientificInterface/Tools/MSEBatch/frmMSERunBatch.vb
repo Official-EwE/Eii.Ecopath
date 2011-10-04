@@ -23,15 +23,27 @@ Public Class frmMSERunBatch
 
         Me.lstMsgs.Items.Clear()
 
-        Me.m_BatchManager.Parameters.nTFMIteration = Integer.Parse(Me.txNTFMIters.Text)
+        ' Me.m_BatchManager.Parameters.nTFMIteration = Integer.Parse(Me.txNTFMIters.Text)
         Me.m_BatchManager.setDefaults()
         Me.m_BatchManager.Run()
 
     End Sub
 
 
+
+
     Private Sub onMSEBatchMessage(msg As String)
         Me.lstMsgs.Items.Add(msg)
+    End Sub
+
+
+    Private Sub txNTFMIters_TextChanged(sender As Object, e As System.EventArgs) Handles txNTFMIters.TextChanged
+
+        Dim newValue As Integer = Integer.Parse(Me.txNTFMIters.Text)
+        If newValue > 0 And newValue <> Me.m_BatchManager.Parameters.nTFMIteration Then
+            Me.m_BatchManager.Parameters.nTFMIteration = newValue
+        End If
+
     End Sub
 
 
