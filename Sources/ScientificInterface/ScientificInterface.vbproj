@@ -100,6 +100,9 @@
     <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EwE6, Version=6.3.1004.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=x86">
+      <ExecutableExtension>.exe</ExecutableExtension>
+    </Reference>
     <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ScientificInterfaceShared\Includes\SAUPUtil.dll</HintPath>
@@ -204,6 +207,15 @@
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorGroup.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\frmMSEBatchTFM.Designer.vb">
+      <DependentUpon>frmMSEBatchTFM.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\frmMSEBatchTFM.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\gridMSEBatchTFM.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\Workflow\cDefineItemsBase.vb" />
     <Compile Include="Tools\Workflow\IDefineItems.vb" />
@@ -1013,6 +1025,9 @@
     <EmbeddedResource Include="Other\Options\ucOptionsPresentation.resx">
       <DependentUpon>ucOptionsPresentation.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\MSEBatch\frmMSEBatchTFM.resx">
+      <DependentUpon>frmMSEBatchTFM.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSEBatch\frmMSERunBatch.resx">
       <DependentUpon>frmMSERunBatch.vb</DependentUpon>

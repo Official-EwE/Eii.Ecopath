@@ -235,9 +235,9 @@ Namespace MSEBatchManager
             Me.redimControlTypes(1, MSEdata.nFleets)
 
             Me.redimOuputTypes()
-            Me.redimTAC(0, MSEdata.nGroups)
-            Me.redimTFM(0, MSEdata.NGroups)
-            Me.redimFixedF(0, MSEdata.NGroups)
+            Me.redimTAC(1, MSEdata.NGroups)
+            Me.redimTFM(1, MSEdata.NGroups)
+            Me.redimFixedF(1, MSEdata.NGroups)
 
         End Sub
 

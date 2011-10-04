@@ -113,7 +113,7 @@ Namespace MSE
 
         Public Property BLimValue(IterationIndex As Integer) As Single
             Get
-                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
                 If IterationIndex <= Me.m_BatchData.nTFM Then
                     Return Me.m_BLimValues(IterationIndex)
                 End If
@@ -122,7 +122,7 @@ Namespace MSE
             End Get
 
             Set(ByVal value As Single)
-                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
                 If IterationIndex <= Me.m_BatchData.nTFM Then
                     Me.m_BLimValues(IterationIndex) = value
                 End If
@@ -164,7 +164,7 @@ Namespace MSE
 
         Public Property BBaseValue(IterationIndex As Integer) As Single
             Get
-                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
                 If IterationIndex <= Me.m_BatchData.nTFM Then
                     Return Me.m_BBaseValues(IterationIndex)
                 End If
@@ -173,7 +173,7 @@ Namespace MSE
             End Get
 
             Set(ByVal value As Single)
-                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
                 If IterationIndex <= Me.m_BatchData.nTFM Then
                     Me.m_BBaseValues(IterationIndex) = value
                 End If
@@ -215,7 +215,7 @@ Namespace MSE
 
         Public Property FMaxValue(IterationIndex As Integer) As Single
             Get
-                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
                 If IterationIndex <= Me.m_BatchData.nTFM Then
                     Return Me.m_FMaxValues(IterationIndex)
                 End If
@@ -224,13 +224,17 @@ Namespace MSE
             End Get
 
             Set(ByVal value As Single)
-                Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
                 If IterationIndex <= Me.m_BatchData.nTFM Then
                     Me.m_FMaxValues(IterationIndex) = value
                 End If
             End Set
         End Property
 
+
+        Public Overrides Function SetVariable(VarName As EwEUtils.Core.eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
+            Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
+        End Function
 
         Public Sub SetToDefaults()
 
