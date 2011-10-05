@@ -5297,6 +5297,15 @@ Public Class cCore
                         objCascade.Name = strName
                         objCascade.AllowValidation = bAllowValidationOrg
                     End If
+
+                    ' Ugh
+                    objCascade = Me.MSEBatchManager.TFMGroups(obj.Index)
+                    If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                        bAllowValidationOrg = objCascade.AllowValidation
+                        objCascade.AllowValidation = False
+                        objCascade.Name = strName
+                        objCascade.AllowValidation = bAllowValidationOrg
+                    End If
                 End If
 
                 If Me.m_StateMonitor.HasEcospaceLoaded() Then
