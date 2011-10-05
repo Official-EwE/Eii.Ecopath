@@ -99,7 +99,7 @@ Public Class gridMSEBatchTFM
             Me(iGroup, eColumnTypes.BBaseUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseUpper)
 
             Me(iGroup, eColumnTypes.FOptLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptLower)
-            Me(iGroup, eColumnTypes.FOptValue) = New EwECell(group.BBaseValue(iCurIter), GetType(Single))
+            Me(iGroup, eColumnTypes.FOptValue) = New EwECell(group.FMaxValue(iCurIter), GetType(Single))
             Me(iGroup, eColumnTypes.FOptValue).Behaviors.Add(Me.EwEEditHandler)
             Me(iGroup, eColumnTypes.FOptUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
 

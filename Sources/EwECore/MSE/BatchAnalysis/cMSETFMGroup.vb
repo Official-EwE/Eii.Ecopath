@@ -231,9 +231,46 @@ Namespace MSE
             End Set
         End Property
 
+        Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
+
+            Select Case VarName
+                Case eVarNameFlags.MSETFMBLimValues
+                    Return Me.BLimValue(Index)
+                Case eVarNameFlags.MSETFMBBaseValues
+                    Return Me.BBaseValue(Index)
+                Case eVarNameFlags.MSETFMFOptValues
+                    Return Me.FMaxValue(Index)
+            End Select
+
+            Return MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3)
+
+        End Function
+
 
         Public Overrides Function SetVariable(VarName As EwEUtils.Core.eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
+
+            Select Case VarName
+                Case eVarNameFlags.MSETFMBLimValues
+                    Me.BLimValue(iSecondaryIndex) = CSng(newValue)
+                    Return True
+                Case eVarNameFlags.MSETFMBBaseValues
+                    Me.BBaseValue(Index) = CSng(newValue)
+                    Return True
+                Case eVarNameFlags.MSETFMFOptValues
+                    Me.FMaxValue(Index) = CSng(newValue)
+                    Return True
+            End Select
+
             Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
+
+        End Function
+
+        Private Function getValue(VarName As EwEUtils.Core.eVarNameFlags, iIndex As Integer) As Single
+
+            
+            If VarName = eVarNameFlags.MSETFMBLimValues Then
+
+            End If
         End Function
 
         Public Sub SetToDefaults()
