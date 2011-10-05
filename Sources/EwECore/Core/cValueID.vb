@@ -41,6 +41,9 @@ Public Class cValueID
                    Optional ByVal dtSec As eDataTypes = eDataTypes.NotSet, _
                    Optional ByVal iDBIDSec As Integer = -1)
 
+        ' Pre
+        Debug.Assert(iDBIDPrim > 0, "Unique object must have a primary ID")
+
         Me.m_dtPrim = dtPrim
         Me.m_iDBIDPrim = iDBIDPrim
         Me.m_strVarName = strVarName
@@ -64,6 +67,9 @@ Public Class cValueID
                    Optional ByVal objSec As ICoreInterface = Nothing)
 
         MyBase.New()
+
+        ' Pre
+        Debug.Assert(obj.DBID > 0, "Unique object must have a primary ID")
 
         Me.m_dtPrim = obj.DataType
         Me.m_iDBIDPrim = obj.DBID
