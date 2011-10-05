@@ -172,10 +172,12 @@ Namespace MSEBatchManager
             Me.Parameters.nTFMIteration = Me.m_BatchData.nTFM
             Me.Parameters.AllowValidation = True
 
-
             For igrp As Integer = 1 To Me.nGroups
                 Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
                 tfm.AllowValidation = False
+
+                tfm.Index = igrp
+                tfm.Name = Me.m_core.m_EcoPathData.GroupName(igrp)
 
                 tfm.BLim = Me.m_MSEdata.Blim(igrp)
                 tfm.BLimLower = Me.m_BatchData.BlimLower(igrp)
@@ -189,6 +191,7 @@ Namespace MSEBatchManager
                 tfm.FMaxLower = Me.m_BatchData.FOptLower(igrp)
                 tfm.FMaxUpper = Me.m_BatchData.FOptUpper(igrp)
 
+                tfm.ResetStatusFlags()
                 tfm.AllowValidation = True
 
             Next

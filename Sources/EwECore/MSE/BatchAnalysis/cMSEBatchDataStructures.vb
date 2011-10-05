@@ -152,6 +152,11 @@ Namespace MSEBatchManager
 
             ReDim TFMDBIDs(nGroups)
 
+            ' Temporary fix: set group dbids to bogus values; needs to be configured from Datasource
+            For i As Integer = 1 To nGroups
+                TFMDBIDs(i) = i
+            Next
+
             ReDim BlimLower(nGroups)
             ReDim BlimUpper(nGroups)
 
