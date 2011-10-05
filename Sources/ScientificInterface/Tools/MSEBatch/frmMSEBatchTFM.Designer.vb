@@ -67,7 +67,7 @@ Partial Class frmMSEBatchTFM
                     Or SourceGrid2.GridSpecialKeys.Enter) _
                     Or SourceGrid2.GridSpecialKeys.Escape) _
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.TabIndex = 0
+        Me.m_grid.TabIndex = 5
         Me.m_grid.UIContext = Nothing
         '
         'NumericUpDown1
@@ -75,7 +75,7 @@ Partial Class frmMSEBatchTFM
         Me.NumericUpDown1.Location = New System.Drawing.Point(92, 57)
         Me.NumericUpDown1.Name = "NumericUpDown1"
         Me.NumericUpDown1.Size = New System.Drawing.Size(51, 20)
-        Me.NumericUpDown1.TabIndex = 1
+        Me.NumericUpDown1.TabIndex = 4
         '
         'Label1
         '
@@ -83,7 +83,7 @@ Partial Class frmMSEBatchTFM
         Me.Label1.Location = New System.Drawing.Point(9, 59)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(77, 13)
-        Me.Label1.TabIndex = 2
+        Me.Label1.TabIndex = 3
         Me.Label1.Text = "Show iteration "
         '
         'Button1
@@ -91,7 +91,7 @@ Partial Class frmMSEBatchTFM
         Me.Button1.Location = New System.Drawing.Point(243, 2)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(96, 26)
-        Me.Button1.TabIndex = 3
+        Me.Button1.TabIndex = 2
         Me.Button1.Text = "Set to defaults"
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -101,7 +101,7 @@ Partial Class frmMSEBatchTFM
         Me.Label2.Location = New System.Drawing.Point(9, 9)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(151, 13)
-        Me.Label2.TabIndex = 4
+        Me.Label2.TabIndex = 0
         Me.Label2.Text = "Number of parameter iterations"
         '
         'txNTFM
@@ -109,7 +109,7 @@ Partial Class frmMSEBatchTFM
         Me.txNTFM.Location = New System.Drawing.Point(166, 4)
         Me.txNTFM.Name = "txNTFM"
         Me.txNTFM.Size = New System.Drawing.Size(50, 20)
-        Me.txNTFM.TabIndex = 5
+        Me.txNTFM.TabIndex = 1
         '
         'frmMSEBatchTFM
         '
