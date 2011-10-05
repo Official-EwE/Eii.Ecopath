@@ -265,14 +265,6 @@ Namespace MSE
 
         End Function
 
-        Private Function getValue(VarName As EwEUtils.Core.eVarNameFlags, iIndex As Integer) As Single
-
-            
-            If VarName = eVarNameFlags.MSETFMBLimValues Then
-
-            End If
-        End Function
-
         Public Sub SetToDefaults()
 
             Me.calcDefaults(BLim, BLimLower, BLimUpper, Me.m_BatchData.nTFM, Me.m_BLimValues)
