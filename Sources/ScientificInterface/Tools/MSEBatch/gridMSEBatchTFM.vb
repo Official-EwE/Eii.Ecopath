@@ -55,17 +55,17 @@ Public Class gridMSEBatchTFM
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.BLimLow) = New EwEColumnHeaderCell("Min Biomass lower limit")
-        Me(0, eColumnTypes.BLimValue) = New EwEColumnHeaderCell("Min Biomass value")
-        Me(0, eColumnTypes.BLimUp) = New EwEColumnHeaderCell("Min Biomass upper limit")
+        Me(0, eColumnTypes.BLimLow) = New EwEColumnHeaderCell("B Limit(%-)")
+        Me(0, eColumnTypes.BLimValue) = New EwEColumnHeaderCell("B Limit")
+        Me(0, eColumnTypes.BLimUp) = New EwEColumnHeaderCell("B Limit(%+)")
 
-        Me(0, eColumnTypes.BBaseLow) = New EwEColumnHeaderCell("Base Biomass lower limit")
-        Me(0, eColumnTypes.BBaseValue) = New EwEColumnHeaderCell("Base Biomass value")
-        Me(0, eColumnTypes.BBaseUp) = New EwEColumnHeaderCell("Base Biomass upper limit")
+        Me(0, eColumnTypes.BBaseLow) = New EwEColumnHeaderCell("B Base(%-)")
+        Me(0, eColumnTypes.BBaseValue) = New EwEColumnHeaderCell("B Base")
+        Me(0, eColumnTypes.BBaseUp) = New EwEColumnHeaderCell("B Base(%+)")
 
-        Me(0, eColumnTypes.FOptLow) = New EwEColumnHeaderCell("F lower limit")
-        Me(0, eColumnTypes.FOptValue) = New EwEColumnHeaderCell("F value")
-        Me(0, eColumnTypes.FOptUp) = New EwEColumnHeaderCell("F upper limit")
+        Me(0, eColumnTypes.FOptLow) = New EwEColumnHeaderCell("F(%-)")
+        Me(0, eColumnTypes.FOptValue) = New EwEColumnHeaderCell("F")
+        Me(0, eColumnTypes.FOptUp) = New EwEColumnHeaderCell("F(%+)")
 
 
         Me.FixedColumns = 2

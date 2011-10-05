@@ -269,6 +269,50 @@ Namespace MSE
 
         End Function
 
+
+        Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+            MyBase.ResetStatusFlags(bForceReset)
+
+            Me.AllowValidation = False
+            Dim tcatch As Single
+
+            For iflt As Integer = 1 To Me.m_core.nFleets
+                Dim fleet As cFleetInput = Me.m_core.FleetInputs(iflt)
+                tcatch += fleet.Landings(Me.Index) + fleet.Discards(Me.Index)
+            Next
+
+            If tcatch = 0.0! Then
+
+                For Each var As cValue In Me.m_values.Values
+
+
+                    var.Status = var.Status Or eStatusFlags.NotEditable
+                    'Me.SetStatusFlags(eVarNameFlags.MSEFixedF, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    'Me.SetStatusFlags(eVarNameFlags.MSETAC, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    'Me.SetStatusFlags(eVarNameFlags.MSEBioCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
+
+                    'Me.SetStatusFlags(eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    'Me.SetStatusFlags(eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null Or eStatusFlags.NotEditable)
+
+                    'Me.SetStatusFlags(eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    'Me.SetStatusFlags(eVarNameFlags.MSEForcastGain, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    'Me.SetStatusFlags(eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null Or eStatusFlags.NotEditable)
+
+                    'Me.SetStatusFlags(eVarNameFlags.MSEBBase, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    'Me.SetStatusFlags(eVarNameFlags.MSEBLim, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    'Me.SetStatusFlags(eVarNameFlags.MSEFmax, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    'Me.SetStatusFlags(eVarNameFlags.MSEFmin, eStatusFlags.Null Or eStatusFlags.NotEditable)
+
+                    'Else
+                    '    var.Status = eStatusFlags.Null Or eStatusFlags.NotEditable
+
+                Next
+            End If
+            Return True
+
+        End Function
+
+
         Public Sub SetToDefaults()
 
             Me.calcDefaults(BLim, BLimLower, BLimUpper, Me.m_BatchData.nTFM, Me.m_BatchData.tfmBlim)
