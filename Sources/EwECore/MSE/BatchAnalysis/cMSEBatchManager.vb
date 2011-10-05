@@ -147,8 +147,11 @@ Namespace MSEBatchManager
         Public Sub LoadScenario()
             Try
 
+                Me.m_BatchData.redimTFM(10, Me.nGroups)
+                Me.m_BatchData.setDefaultTFM()
+
                 Me.m_parameters = New cMSEBatchParameters(Me.m_core, Me.m_BatchData, Me.m_BatchData.ScenarioDBID)
-            
+
                 Me.m_lstTFMs.Clear()
                 For igrp As Integer = 1 To Me.nGroups
                     Me.m_lstTFMs.Add(New cMSETFMGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
@@ -156,6 +159,8 @@ Namespace MSEBatchManager
 
                 'Load the values into the input objects
                 Me.Load()
+
+                Me.UpdateNParameterIters()
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".LoadScenario() Exception: " & ex.Message)
@@ -209,6 +214,7 @@ Namespace MSEBatchManager
 
                 If VarName = eVarNameFlags.MSETFMNIteration Then
                     Me.m_BatchData.nTFM = Me.Parameters.nTFMIteration
+                    Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
                     Me.UpdateNParameterIters()
                 End If
 
@@ -264,6 +270,10 @@ Namespace MSEBatchManager
 
 
         Public Sub setDefaults()
+
+            Me.m_BatchData.redimTFM(10, Me.nGroups)
+            Me.m_BatchData.setDefaultTFM()
+
             For Each tfm As cMSETFMGroup In Me.m_lstTFMs
                 tfm.SetToDefaults()
             Next
@@ -282,9 +292,10 @@ Namespace MSEBatchManager
         ''' <remarks></remarks>
         Public Sub UpdateNParameterIters()
 
-            For Each grp As cMSETFMGroup In Me.m_lstTFMs
-                grp.updateN()
-            Next
+            Debug.Assert(False, "UpdateNParameterIters Still needs to be implemented.")
+            'For Each grp As cMSETFMGroup In Me.m_lstTFMs
+            '    grp.updateN()
+            'Next
 
         End Sub
 

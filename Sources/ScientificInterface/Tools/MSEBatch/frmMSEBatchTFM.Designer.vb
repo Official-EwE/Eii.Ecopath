@@ -27,20 +27,20 @@ Partial Class frmMSEBatchTFM
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.m_grid = New ScientificInterface.gridMSEBatchTFM()
-        Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
+        Me.UpDwnIter = New System.Windows.Forms.NumericUpDown()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txNTFM = New System.Windows.Forms.TextBox()
-        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.UpDwnIter, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_grid
         '
         Me.m_grid.AllowBlockSelect = True
         Me.m_grid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
         Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -48,8 +48,8 @@ Partial Class frmMSEBatchTFM
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
@@ -59,23 +59,25 @@ Partial Class frmMSEBatchTFM
         Me.m_grid.Name = "m_grid"
         Me.m_grid.Size = New System.Drawing.Size(782, 389)
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.TabIndex = 5
         Me.m_grid.UIContext = Nothing
         '
-        'NumericUpDown1
+        'UpDwnIter
         '
-        Me.NumericUpDown1.Location = New System.Drawing.Point(92, 57)
-        Me.NumericUpDown1.Name = "NumericUpDown1"
-        Me.NumericUpDown1.Size = New System.Drawing.Size(51, 20)
-        Me.NumericUpDown1.TabIndex = 4
+        Me.UpDwnIter.Location = New System.Drawing.Point(92, 57)
+        Me.UpDwnIter.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.UpDwnIter.Name = "UpDwnIter"
+        Me.UpDwnIter.Size = New System.Drawing.Size(51, 20)
+        Me.UpDwnIter.TabIndex = 4
+        Me.UpDwnIter.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'Label1
         '
@@ -120,17 +122,17 @@ Partial Class frmMSEBatchTFM
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.NumericUpDown1)
+        Me.Controls.Add(Me.UpDwnIter)
         Me.Controls.Add(Me.m_grid)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEBatchTFM"
         Me.Text = "frmMSEBatchTFM"
-        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.UpDwnIter, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents NumericUpDown1 As System.Windows.Forms.NumericUpDown
+    Friend WithEvents UpDwnIter As System.Windows.Forms.NumericUpDown
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents Label2 As System.Windows.Forms.Label

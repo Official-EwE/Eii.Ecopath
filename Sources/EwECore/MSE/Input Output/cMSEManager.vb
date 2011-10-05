@@ -770,7 +770,7 @@ Namespace MSE
 
                 'WARNING: this will overwrite any data loaded by the database
                 'Right now it's used for debugging to load data into the objects
-                Me.m_Batch.setDefaults()
+                'Me.m_Batch.setDefaults()
 
                 breturn = True
             Catch ex As Exception

@@ -39,4 +39,22 @@
 
 
 
+    Private Sub Button1_Click(sender As Object, e As System.EventArgs) Handles Button1.Click
+
+        Me.m_BatchManager.setDefaults()
+
+    End Sub
+
+    Private Sub UpDwnIter_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles UpDwnIter.Validating
+
+    End Sub
+
+  
+    Private Sub UpDwnIter_ValueChanged(sender As System.Object, e As System.EventArgs) Handles UpDwnIter.ValueChanged
+        Dim iter As Integer = CInt(Me.UpDwnIter.Value)
+        If Me.m_BatchManager Is Nothing Then Exit Sub
+        If iter <= Me.m_BatchManager.Parameters.nTFMIteration Then
+            Me.m_grid.iCurIter = iter
+        End If
+    End Sub
 End Class

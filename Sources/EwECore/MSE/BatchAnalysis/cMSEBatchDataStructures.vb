@@ -206,7 +206,7 @@ Namespace MSEBatchManager
 
         Public Sub setDefaultTFM()
             'maybe not set the number of parameter iterations????
-            Me.nTFM = 10
+            '  Me.nTFM = 10
             Dim defautlLL As Single = 0.5
             Dim defautlUp As Single = 1.0
             For igrp As Integer = 1 To Me.nGroups

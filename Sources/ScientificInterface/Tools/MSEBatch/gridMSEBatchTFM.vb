@@ -125,10 +125,18 @@ Public Class gridMSEBatchTFM
         Get
             Return m_iter
         End Get
+
         Set(value As Integer)
-            m_iter = value
-            ' Me.FillData()
+
+            If Me.UIContext IsNot Nothing Then
+                If value <= Me.UIContext.Core.MSEBatchManager.Parameters.nTFMIteration Then
+                    m_iter = value
+                    Me.RefreshContent()
+                End If
+            End If
+
         End Set
+
     End Property
 
 

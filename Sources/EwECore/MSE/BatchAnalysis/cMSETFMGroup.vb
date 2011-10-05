@@ -12,9 +12,9 @@ Namespace MSE
     Public Class cMSETFMGroup
         Inherits cCoreGroupBase
 
-        Private m_BLimValues() As Single
-        Private m_BBaseValues() As Single
-        Private m_FMaxValues() As Single
+        'Private m_BLimValues() As Single
+        'Private m_BBaseValues() As Single
+        'Private m_FMaxValues() As Single
         Private m_BatchData As MSEBatchManager.cMSEBatchDataStructures
 
         Public Sub New(ByRef theCore As cCore, ByRef MSEBatchData As MSEBatchManager.cMSEBatchDataStructures, ByVal theGroupDBID As Integer)
@@ -111,24 +111,7 @@ Namespace MSE
             End Set
         End Property
 
-        Public Property BLimValue(IterationIndex As Integer) As Single
-            Get
-                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Return Me.m_BLimValues(IterationIndex)
-                End If
-                'OH My.....
-                Return cCore.NULL_VALUE
-            End Get
-
-            Set(ByVal value As Single)
-                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Me.m_BLimValues(IterationIndex) = value
-                End If
-            End Set
-        End Property
-
+      
 
         Public Property BBase As Single
             Get
@@ -161,24 +144,6 @@ Namespace MSE
         End Property
 
 
-
-        Public Property BBaseValue(IterationIndex As Integer) As Single
-            Get
-                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Return Me.m_BBaseValues(IterationIndex)
-                End If
-                'OH My.....
-                Return cCore.NULL_VALUE
-            End Get
-
-            Set(ByVal value As Single)
-                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Me.m_BBaseValues(IterationIndex) = value
-                End If
-            End Set
-        End Property
 
 
         Public Property FMax As Single
@@ -217,7 +182,7 @@ Namespace MSE
             Get
                 ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
                 If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Return Me.m_FMaxValues(IterationIndex)
+                    Return Me.m_BatchData.tfmFmax(IterationIndex, Me.Index)
                 End If
                 'OH My.....
                 Return cCore.NULL_VALUE
@@ -226,10 +191,49 @@ Namespace MSE
             Set(ByVal value As Single)
                 ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
                 If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Me.m_FMaxValues(IterationIndex) = value
+                    Me.m_BatchData.tfmFmax(IterationIndex, Me.Index) = value
                 End If
             End Set
         End Property
+
+        Public Property BLimValue(IterationIndex As Integer) As Single
+            Get
+                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nTFM Then
+                    Return Me.m_BatchData.tfmBlim(IterationIndex, Me.Index)
+                End If
+                'OH My.....
+                Return cCore.NULL_VALUE
+            End Get
+
+            Set(ByVal value As Single)
+                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nTFM Then
+                    Me.m_BatchData.tfmBlim(IterationIndex, Me.Index) = value
+                End If
+            End Set
+        End Property
+
+
+        Public Property BBaseValue(IterationIndex As Integer) As Single
+            Get
+                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nTFM Then
+                    Return Me.m_BatchData.tfmBbase(IterationIndex, Me.Index)
+                End If
+                'OH My.....
+                Return cCore.NULL_VALUE
+            End Get
+
+            Set(ByVal value As Single)
+                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nTFM Then
+                    Me.m_BatchData.tfmBbase(IterationIndex, Me.Index) = value
+                End If
+            End Set
+        End Property
+
+
 
         Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
 
@@ -267,23 +271,23 @@ Namespace MSE
 
         Public Sub SetToDefaults()
 
-            Me.calcDefaults(BLim, BLimLower, BLimUpper, Me.m_BatchData.nTFM, Me.m_BLimValues)
-            Me.calcDefaults(BBase, BBaseLower, BBaseUpper, Me.m_BatchData.nTFM, Me.m_BBaseValues)
-            Me.calcDefaults(FMax, FMaxLower, FMaxUpper, Me.m_BatchData.nTFM, Me.m_FMaxValues)
+            Me.calcDefaults(BLim, BLimLower, BLimUpper, Me.m_BatchData.nTFM, Me.m_BatchData.tfmBlim)
+            Me.calcDefaults(BBase, BBaseLower, BBaseUpper, Me.m_BatchData.nTFM, Me.m_BatchData.tfmBbase)
+            Me.calcDefaults(FMax, FMaxLower, FMaxUpper, Me.m_BatchData.nTFM, Me.m_BatchData.tfmFmax)
 
         End Sub
 
 
-        Private Sub calcDefaults(Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, ByRef values() As Single)
+        Private Sub calcDefaults(Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, ByRef values(,) As Single)
 
             Try
-                ReDim values(n)
+
                 Dim LowB As Single, UpB As Single
                 LowB = Value - Value * LowPercent
                 UpB = Value + Value * UPPercent
                 Dim dx As Single = (UpB - LowB) / (n - 1)
                 For i As Integer = 1 To n
-                    values(i) = LowB + dx * (i - 1)
+                    values(i, Me.Index) = LowB + dx * (i - 1)
                 Next
             Catch ex As Exception
 
@@ -295,9 +299,9 @@ Namespace MSE
         Friend Sub updateN()
             Try
 
-                ReDim Preserve Me.m_BLimValues(Me.m_BatchData.nTFM)
-                ReDim Preserve Me.m_BBaseValues(Me.m_BatchData.nTFM)
-                ReDim Preserve Me.m_FMaxValues(Me.m_BatchData.nTFM)
+                'ReDim Preserve Me.m_BLimValues(Me.m_BatchData.nTFM)
+                'ReDim Preserve Me.m_BBaseValues(Me.m_BatchData.nTFM)
+                'ReDim Preserve Me.m_FMaxValues(Me.m_BatchData.nTFM)
 
             Catch ex As Exception
 
