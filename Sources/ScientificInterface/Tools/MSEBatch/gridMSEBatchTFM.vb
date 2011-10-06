@@ -25,14 +25,17 @@ Public Class gridMSEBatchTFM
     Private Enum eColumnTypes As Integer
         Index = 0
         Name
-        BLimLow
+        BLim
         BLimValue
+        BLimLow
         BLimUp
-        BBaseLow
+        BBase
         BBaseValue
+        BBaseLow
         BBaseUp
-        FOptLow
+        FOpt
         FOptValue
+        FOptLow
         FOptUp
     End Enum
 
@@ -55,17 +58,20 @@ Public Class gridMSEBatchTFM
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.BLimLow) = New EwEColumnHeaderCell("B Limit(%-)")
-        Me(0, eColumnTypes.BLimValue) = New EwEColumnHeaderCell("B Limit")
-        Me(0, eColumnTypes.BLimUp) = New EwEColumnHeaderCell("B Limit(%+)")
+        Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit") 'B lim(-)
+        Me(0, eColumnTypes.BLimValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
+        Me(0, eColumnTypes.BLimLow) = New EwEColumnHeaderCell("Lower %") 'B lim(-)
+        Me(0, eColumnTypes.BLimUp) = New EwEColumnHeaderCell("Upper %") 'B Lim(+)
 
-        Me(0, eColumnTypes.BBaseLow) = New EwEColumnHeaderCell("B Base(%-)")
-        Me(0, eColumnTypes.BBaseValue) = New EwEColumnHeaderCell("B Base")
-        Me(0, eColumnTypes.BBaseUp) = New EwEColumnHeaderCell("B Base(%+)")
+        Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Biomass base")
+        Me(0, eColumnTypes.BBaseValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
+        Me(0, eColumnTypes.BBaseLow) = New EwEColumnHeaderCell("Lower %")
+        Me(0, eColumnTypes.BBaseUp) = New EwEColumnHeaderCell("Upper %")
 
-        Me(0, eColumnTypes.FOptLow) = New EwEColumnHeaderCell("F(%-)")
-        Me(0, eColumnTypes.FOptValue) = New EwEColumnHeaderCell("F")
-        Me(0, eColumnTypes.FOptUp) = New EwEColumnHeaderCell("F(%+)")
+        Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F max.")
+        Me(0, eColumnTypes.FOptValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
+        Me(0, eColumnTypes.FOptLow) = New EwEColumnHeaderCell("Lower %")
+        Me(0, eColumnTypes.FOptUp) = New EwEColumnHeaderCell("Upper %")
 
 
         Me.FixedColumns = 2
@@ -89,16 +95,19 @@ Public Class gridMSEBatchTFM
             Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
             Me(iGroup, eColumnTypes.BLimLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
+            Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
             Me(iGroup, eColumnTypes.BLimValue) = New EwECell(group.BLimValue(iCurIter), GetType(Single))
             Me(iGroup, eColumnTypes.BLimValue).Behaviors.Add(Me.EwEEditHandler)
             Me(iGroup, eColumnTypes.BLimUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimUpper)
 
             Me(iGroup, eColumnTypes.BBaseLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseLower)
+            Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
             Me(iGroup, eColumnTypes.BBaseValue) = New EwECell(group.BBaseValue(iCurIter), GetType(Single))
             Me(iGroup, eColumnTypes.BBaseValue).Behaviors.Add(Me.EwEEditHandler)
             Me(iGroup, eColumnTypes.BBaseUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseUpper)
 
             Me(iGroup, eColumnTypes.FOptLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptLower)
+            Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
             Me(iGroup, eColumnTypes.FOptValue) = New EwECell(group.FMaxValue(iCurIter), GetType(Single))
             Me(iGroup, eColumnTypes.FOptValue).Behaviors.Add(Me.EwEEditHandler)
             Me(iGroup, eColumnTypes.FOptUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
