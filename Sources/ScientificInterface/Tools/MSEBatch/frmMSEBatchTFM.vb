@@ -54,8 +54,6 @@ Public Class frmMSEBatchTFM
 
     End Sub
 
-
-
     Private Sub onCalcIterValues(sender As Object, e As System.EventArgs) Handles btCalcIters.Click
 
         Me.m_BatchManager.CalculateIterationValues()
@@ -96,7 +94,6 @@ Public Class frmMSEBatchTFM
         End Try
 
     End Sub
-
 
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()

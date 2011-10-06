@@ -219,7 +219,14 @@ Namespace MSEBatchManager
                     Me.UpdateNParameterIters()
                 End If
 
+
                 Me.update()
+
+                If VarName = eVarNameFlags.MSEBatchIterCalcType Then
+                    'swap the Upper and Lower limits between Percentage and Values
+                    Me.SwapCalcType()
+                    Load()
+                End If
 
             Catch ex As Exception
 
@@ -285,8 +292,6 @@ Namespace MSEBatchManager
             Me.m_BatchData.redimTFM(10, Me.nGroups)
             Me.m_BatchData.setDefaultTFM()
 
-          
-
             Me.m_BatchData.RunType = eMSEBatchRunTypes.TFM
             Me.m_BatchData.nParIters = Me.m_BatchData.nTFM
             Me.m_BatchData.nControlTypes = 1
@@ -307,6 +312,32 @@ Namespace MSEBatchManager
             'Next
 
         End Sub
+
+        Private Sub SwapCalcType()
+
+            For igrp As Integer = 1 To nGroups
+
+                If Me.m_BatchData.IterCalcType = eMSEBatchIterCalcTypes.Percent Then
+                    ToPercent(Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp))
+                Else
+                    ToValue(Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp))
+                End If
+
+            Next
+
+        End Sub
+
+        Private Sub ToValue(ByVal mean As Single, ByRef Lower As Single, ByRef Upper As Single)
+            Lower = mean - mean * Lower
+            Upper = mean + mean * Upper
+        End Sub
+
+
+        Private Sub ToPercent(ByVal mean As Single, ByRef Lower As Single, ByRef Upper As Single)
+            Lower = (mean - Lower) / mean
+            Upper = (Upper - mean) / mean
+        End Sub
+
 
         ''' <summary>
         ''' Vary the Primary Production forcing function value of the current time step
