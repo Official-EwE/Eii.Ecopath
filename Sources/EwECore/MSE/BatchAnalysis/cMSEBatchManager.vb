@@ -226,6 +226,10 @@ Namespace MSEBatchManager
                     'swap the Upper and Lower limits between Percentage and Values
                     Me.SwapCalcType()
                     Load()
+
+                    'maybe this will update the interface???? bitch....
+                    Me.m_core.Messages.AddMessage(New cMessage("Update MSEBatch TFM.", eMessageType.DataModified, _
+                                                               eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
                 End If
 
             Catch ex As Exception
@@ -319,8 +323,12 @@ Namespace MSEBatchManager
 
                 If Me.m_BatchData.IterCalcType = eMSEBatchIterCalcTypes.Percent Then
                     ToPercent(Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp))
+                    ToPercent(Me.m_MSEdata.Bbase(igrp), Me.m_BatchData.BBaseLower(igrp), Me.m_BatchData.BBaseUpper(igrp))
+                    ToPercent(Me.m_MSEdata.Fopt(igrp), Me.m_BatchData.FOptLower(igrp), Me.m_BatchData.FOptUpper(igrp))
                 Else
                     ToValue(Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp))
+                    ToValue(Me.m_MSEdata.Bbase(igrp), Me.m_BatchData.BBaseLower(igrp), Me.m_BatchData.BBaseUpper(igrp))
+                    ToValue(Me.m_MSEdata.Fopt(igrp), Me.m_BatchData.FOptLower(igrp), Me.m_BatchData.FOptUpper(igrp))
                 End If
 
             Next
