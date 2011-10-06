@@ -1959,7 +1959,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Leading group not specified for &apos;(0}&apos;.
+        '''  Looks up a localized string similar to Leading group not specified for &apos;{0}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property STANZA_LEADING_MISSING() As String
             Get
