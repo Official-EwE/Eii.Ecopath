@@ -69,7 +69,9 @@ Public Class cValueID
         MyBase.New()
 
         ' Pre
-        Debug.Assert(obj.DBID > 0, "Unique object must have a primary ID")
+        If (obj.Index > 0) Then
+            Debug.Assert(obj.DBID > 0, "Unique indexed object must have a primary ID")
+        End If
 
         Me.m_dtPrim = obj.DataType
         Me.m_iDBIDPrim = obj.DBID
