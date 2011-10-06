@@ -1210,6 +1210,11 @@ Namespace Core
         MSETFMFOptUpper
         MSETFMFOptValues
 
+        ''' <summary>
+        ''' Type of calculation to use when setting MSE Batch iterations % or +- Value 
+        ''' </summary>
+        MSEBatchIterCalcType
+
         ' Pedigree
         VariableName
         IndexValue
@@ -2474,5 +2479,14 @@ Namespace Core
     End Enum
 
 #End Region ' Ecospace Capacity and Habitat
+
+#Region "MSE Batch"
+
+    Public Enum eMSEBatchIterCalcTypes As Integer
+        Percent
+        UpperLowerValues
+    End Enum
+
+#End Region
 
 End Namespace ' Core

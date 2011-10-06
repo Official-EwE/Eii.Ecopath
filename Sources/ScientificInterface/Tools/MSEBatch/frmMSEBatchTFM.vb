@@ -1,4 +1,14 @@
-﻿Public Class frmMSEBatchTFM
+﻿
+Option Explicit On
+Option Strict On
+
+
+Imports EwECore
+Imports EwEUtils.Core
+Imports EwECore.MSEBatchManager
+
+
+Public Class frmMSEBatchTFM
 
     Private m_BatchManager As EwECore.MSEBatchManager.cMSEBatchManager
 
@@ -25,6 +35,13 @@
 
         Me.txNTFM.Text = Me.m_BatchManager.Parameters.nTFMIteration.ToString
 
+
+        Me.rbCalcTypePercent.Tag = eMSEBatchIterCalcTypes.Percent
+        Me.rbCalcTypeValue.Tag = eMSEBatchIterCalcTypes.UpperLowerValues
+
+        UpdateControls()
+
+
     End Sub
 
 
@@ -39,9 +56,9 @@
 
 
 
-    Private Sub Button1_Click(sender As Object, e As System.EventArgs) Handles Button1.Click
+    Private Sub onCalcIterValues(sender As Object, e As System.EventArgs) Handles btCalcIters.Click
 
-        Me.m_BatchManager.setDefaults()
+        Me.m_BatchManager.CalculateIterationValues()
 
     End Sub
 
@@ -49,7 +66,7 @@
 
     End Sub
 
-  
+
     Private Sub UpDwnIter_ValueChanged(sender As System.Object, e As System.EventArgs) Handles UpDwnIter.ValueChanged
         Dim iter As Integer = CInt(Me.UpDwnIter.Value)
         If Me.m_BatchManager Is Nothing Then Exit Sub
@@ -57,4 +74,39 @@
             Me.m_grid.iCurIter = iter
         End If
     End Sub
+
+
+    Private Sub OnIterCalcTypeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+          Handles rbCalcTypePercent.CheckedChanged, rbCalcTypeValue.CheckedChanged
+
+        Try
+
+            Dim rb As RadioButton = DirectCast(sender, RadioButton)
+
+            If rb.Tag IsNot Nothing Then
+                ' Debug.Assert(rb.Tag IsNot Nothing, "Oppssss RadioButton missing its eMSEBatchIterCalcTypes tag.")
+
+                If rb.Checked Then
+                    Me.m_BatchManager.Parameters.IterCalcType = DirectCast(rb.Tag, EwEUtils.Core.eMSEBatchIterCalcTypes)
+
+                    Me.m_grid.RefreshContent()
+                End If
+            End If
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+
+    Protected Overrides Sub UpdateControls()
+        MyBase.UpdateControls()
+
+        Dim pars As cMSEBatchParameters = Me.m_BatchManager.Parameters
+        Me.rbCalcTypePercent.Checked = (CType(pars.IterCalcType, eMSEBatchIterCalcTypes) = eMSEBatchIterCalcTypes.Percent)
+        Me.rbCalcTypeValue.Checked = (CType(pars.IterCalcType, eMSEBatchIterCalcTypes) = eMSEBatchIterCalcTypes.UpperLowerValues)
+
+    End Sub
+
+
 End Class

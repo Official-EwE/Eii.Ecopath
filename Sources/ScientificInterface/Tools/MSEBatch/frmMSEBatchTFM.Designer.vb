@@ -29,9 +29,11 @@ Partial Class frmMSEBatchTFM
         Me.m_grid = New ScientificInterface.gridMSEBatchTFM()
         Me.UpDwnIter = New System.Windows.Forms.NumericUpDown()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btCalcIters = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txNTFM = New System.Windows.Forms.TextBox()
+        Me.rbCalcTypePercent = New System.Windows.Forms.RadioButton()
+        Me.rbCalcTypeValue = New System.Windows.Forms.RadioButton()
         CType(Me.UpDwnIter, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -88,14 +90,14 @@ Partial Class frmMSEBatchTFM
         Me.Label1.TabIndex = 3
         Me.Label1.Text = "Show iteration "
         '
-        'Button1
+        'btCalcIters
         '
-        Me.Button1.Location = New System.Drawing.Point(243, 2)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(96, 26)
-        Me.Button1.TabIndex = 2
-        Me.Button1.Text = "Set to defaults"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btCalcIters.Location = New System.Drawing.Point(222, 5)
+        Me.btCalcIters.Name = "btCalcIters"
+        Me.btCalcIters.Size = New System.Drawing.Size(212, 20)
+        Me.btCalcIters.TabIndex = 2
+        Me.btCalcIters.Text = "Calculate iteration values"
+        Me.btCalcIters.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -113,14 +115,39 @@ Partial Class frmMSEBatchTFM
         Me.txNTFM.Size = New System.Drawing.Size(50, 20)
         Me.txNTFM.TabIndex = 1
         '
+        'rbCalcTypePercent
+        '
+        Me.rbCalcTypePercent.AutoSize = True
+        Me.rbCalcTypePercent.Checked = True
+        Me.rbCalcTypePercent.Location = New System.Drawing.Point(222, 30)
+        Me.rbCalcTypePercent.Name = "rbCalcTypePercent"
+        Me.rbCalcTypePercent.Size = New System.Drawing.Size(80, 17)
+        Me.rbCalcTypePercent.TabIndex = 6
+        Me.rbCalcTypePercent.TabStop = True
+        Me.rbCalcTypePercent.Text = "Percentage"
+        Me.rbCalcTypePercent.UseVisualStyleBackColor = True
+        '
+        'rbCalcTypeValue
+        '
+        Me.rbCalcTypeValue.AutoSize = True
+        Me.rbCalcTypeValue.Location = New System.Drawing.Point(324, 30)
+        Me.rbCalcTypeValue.Name = "rbCalcTypeValue"
+        Me.rbCalcTypeValue.Size = New System.Drawing.Size(120, 17)
+        Me.rbCalcTypeValue.TabIndex = 7
+        Me.rbCalcTypeValue.TabStop = True
+        Me.rbCalcTypeValue.Text = "Upper lower bounds"
+        Me.rbCalcTypeValue.UseVisualStyleBackColor = True
+        '
         'frmMSEBatchTFM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(787, 475)
+        Me.Controls.Add(Me.rbCalcTypeValue)
+        Me.Controls.Add(Me.rbCalcTypePercent)
         Me.Controls.Add(Me.txNTFM)
         Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btCalcIters)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.UpDwnIter)
         Me.Controls.Add(Me.m_grid)
@@ -134,8 +161,10 @@ Partial Class frmMSEBatchTFM
     End Sub
     Friend WithEvents UpDwnIter As System.Windows.Forms.NumericUpDown
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btCalcIters As System.Windows.Forms.Button
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents txNTFM As System.Windows.Forms.TextBox
     Private WithEvents m_grid As ScientificInterface.gridMSEBatchTFM
+    Friend WithEvents rbCalcTypePercent As System.Windows.Forms.RadioButton
+    Friend WithEvents rbCalcTypeValue As System.Windows.Forms.RadioButton
 End Class

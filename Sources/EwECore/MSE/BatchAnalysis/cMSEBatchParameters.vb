@@ -29,8 +29,14 @@ Public Class cMSEBatchParameters
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.MSETFMNIteration, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMNIteration))
+        val = New cValue(New Integer, eVarNameFlags.MSETFMNIteration, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMNIteration))
         m_values.Add(val.varName, val)
+
+        Dim nTypes As Integer = [Enum].GetValues(GetType(eMSEBatchIterCalcTypes)).Length
+        meta = New cVariableMetaData(0, nTypes, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Integer, eVarNameFlags.MSEBatchIterCalcType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchIterCalcType))
+        m_values.Add(val.varName, val)
+
 
         Me.AllowValidation = True
 
@@ -46,6 +52,19 @@ Public Class cMSEBatchParameters
             SetVariable(eVarNameFlags.MSETFMNIteration, value)
         End Set
     End Property
+
+    Public Property IterCalcType As Integer
+        Get
+            Return CInt(GetVariable(eVarNameFlags.MSEBatchIterCalcType))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.MSEBatchIterCalcType, value)
+        End Set
+    End Property
+
+
+
 
 
 End Class

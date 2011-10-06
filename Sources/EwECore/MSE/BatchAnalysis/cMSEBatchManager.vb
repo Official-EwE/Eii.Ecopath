@@ -175,6 +175,7 @@ Namespace MSEBatchManager
 
             Me.Parameters.AllowValidation = False
             Me.Parameters.nTFMIteration = Me.m_BatchData.nTFM
+            Me.Parameters.IterCalcType = Me.m_BatchData.IterCalcType
             Me.Parameters.AllowValidation = True
 
             For igrp As Integer = 1 To Me.nGroups
@@ -230,6 +231,7 @@ Namespace MSEBatchManager
         Private Sub update()
 
             Me.m_BatchData.nTFM = Me.Parameters.nTFMIteration
+            Me.m_BatchData.IterCalcType = CType(Me.Parameters.IterCalcType, eMSEBatchIterCalcTypes)
 
             Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
 
@@ -269,14 +271,21 @@ Namespace MSEBatchManager
         End Sub
 
 
+        Public Sub CalculateIterationValues()
+
+            For Each tfm As cMSETFMGroup In Me.m_lstTFMs
+                tfm.CalcValues()
+            Next
+
+        End Sub
+
+
         Public Sub setDefaults()
 
             Me.m_BatchData.redimTFM(10, Me.nGroups)
             Me.m_BatchData.setDefaultTFM()
 
-            For Each tfm As cMSETFMGroup In Me.m_lstTFMs
-                tfm.SetToDefaults()
-            Next
+          
 
             Me.m_BatchData.RunType = eMSEBatchRunTypes.TFM
             Me.m_BatchData.nParIters = Me.m_BatchData.nTFM
@@ -292,7 +301,7 @@ Namespace MSEBatchManager
         ''' <remarks></remarks>
         Public Sub UpdateNParameterIters()
 
-            Debug.Assert(False, "UpdateNParameterIters Still needs to be implemented.")
+            ' Debug.Assert(False, "UpdateNParameterIters Still needs to be implemented.")
             'For Each grp As cMSETFMGroup In Me.m_lstTFMs
             '    grp.updateN()
             'Next

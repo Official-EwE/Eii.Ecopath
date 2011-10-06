@@ -296,23 +296,34 @@ Namespace MSE
         End Function
 
 
-        Public Sub SetToDefaults()
+        Public Sub CalcValues()
 
-            Me.calcDefaults(BLim, BLimLower, BLimUpper, Me.m_BatchData.nTFM, Me.m_BatchData.tfmBlim)
-            Me.calcDefaults(BBase, BBaseLower, BBaseUpper, Me.m_BatchData.nTFM, Me.m_BatchData.tfmBbase)
-            Me.calcDefaults(FMax, FMaxLower, FMaxUpper, Me.m_BatchData.nTFM, Me.m_BatchData.tfmFmax)
+            Me.calcDefaults(BLim, BLimLower, BLimUpper, Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmBlim)
+            Me.calcDefaults(BBase, BBaseLower, BBaseUpper, Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmBbase)
+            Me.calcDefaults(FMax, FMaxLower, FMaxUpper, Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmFmax)
 
         End Sub
 
 
-        Private Sub calcDefaults(Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, ByRef values(,) As Single)
+        Private Sub calcDefaults(Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, CalcType As eMSEBatchIterCalcTypes, ByRef values(,) As Single)
 
             Try
 
                 Dim LowB As Single, UpB As Single
-                LowB = Value - Value * LowPercent
-                UpB = Value + Value * UPPercent
-                Dim dx As Single = (UpB - LowB) / (n - 1)
+                Dim dx As Single
+
+                If CalcType = eMSEBatchIterCalcTypes.Percent Then
+                    LowB = Value - Value * LowPercent
+                    UpB = Value + Value * UPPercent
+                    dx = (UpB - LowB) / (n - 1)
+
+                ElseIf CalcType = eMSEBatchIterCalcTypes.UpperLowerValues Then
+                    LowB = LowPercent
+                    UpB = UPPercent
+                    dx = (UpB - LowB) / (n - 1)
+
+                End If
+
                 For i As Integer = 1 To n
                     values(i, Me.Index) = LowB + dx * (i - 1)
                 Next

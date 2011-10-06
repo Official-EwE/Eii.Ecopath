@@ -123,6 +123,8 @@ Namespace MSEBatchManager
         Public FOptLower() As Single
         Public FOptUpper() As Single
 
+        Public IterCalcType As eMSEBatchIterCalcTypes = eMSEBatchIterCalcTypes.Percent
+
         Public Sub redimForcing(ByVal nForcingFunctions As Integer)
             nForcing = nForcingFunctions
             If nForcing = 0 Then nForcing = 1

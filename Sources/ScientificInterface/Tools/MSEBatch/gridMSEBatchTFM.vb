@@ -55,23 +55,27 @@ Public Class gridMSEBatchTFM
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
 
         Me.Redim(1, iNumCols)
+        Dim limitStr As String = "%"
+        If Me.UIContext.Core.MSEBatchManager.Parameters.IterCalcType = eMSEBatchIterCalcTypes.UpperLowerValues Then
+            limitStr = "Value"
+        End If
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit") 'B lim(-)
         Me(0, eColumnTypes.BLimValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
-        Me(0, eColumnTypes.BLimLow) = New EwEColumnHeaderCell("Lower %") 'B lim(-)
-        Me(0, eColumnTypes.BLimUp) = New EwEColumnHeaderCell("Upper %") 'B Lim(+)
+        Me(0, eColumnTypes.BLimLow) = New EwEColumnHeaderCell("Lower " & limitStr) 'B lim(-)
+        Me(0, eColumnTypes.BLimUp) = New EwEColumnHeaderCell("Upper " & limitStr) 'B Lim(+)
 
         Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Biomass base")
         Me(0, eColumnTypes.BBaseValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
-        Me(0, eColumnTypes.BBaseLow) = New EwEColumnHeaderCell("Lower %")
-        Me(0, eColumnTypes.BBaseUp) = New EwEColumnHeaderCell("Upper %")
+        Me(0, eColumnTypes.BBaseLow) = New EwEColumnHeaderCell("Lower " & limitStr)
+        Me(0, eColumnTypes.BBaseUp) = New EwEColumnHeaderCell("Upper " & limitStr)
 
         Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F max.")
         Me(0, eColumnTypes.FOptValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
-        Me(0, eColumnTypes.FOptLow) = New EwEColumnHeaderCell("Lower %")
-        Me(0, eColumnTypes.FOptUp) = New EwEColumnHeaderCell("Upper %")
+        Me(0, eColumnTypes.FOptLow) = New EwEColumnHeaderCell("Lower " & limitStr)
+        Me(0, eColumnTypes.FOptUp) = New EwEColumnHeaderCell("Upper " & limitStr)
 
 
         Me.FixedColumns = 2
