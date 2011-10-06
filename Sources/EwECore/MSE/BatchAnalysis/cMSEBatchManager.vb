@@ -231,7 +231,7 @@ Namespace MSEBatchManager
         Private Sub update()
 
             Me.m_BatchData.nTFM = Me.Parameters.nTFMIteration
-            Me.m_BatchData.IterCalcType = CType(Me.Parameters.IterCalcType, eMSEBatchIterCalcTypes)
+            Me.m_BatchData.IterCalcType = Me.Parameters.IterCalcType
 
             Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
 

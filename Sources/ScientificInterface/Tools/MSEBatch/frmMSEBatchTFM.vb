@@ -84,7 +84,6 @@ Public Class frmMSEBatchTFM
             Dim rb As RadioButton = DirectCast(sender, RadioButton)
 
             If rb.Tag IsNot Nothing Then
-                ' Debug.Assert(rb.Tag IsNot Nothing, "Oppssss RadioButton missing its eMSEBatchIterCalcTypes tag.")
 
                 If rb.Checked Then
                     Me.m_BatchManager.Parameters.IterCalcType = DirectCast(rb.Tag, EwEUtils.Core.eMSEBatchIterCalcTypes)
@@ -103,8 +102,8 @@ Public Class frmMSEBatchTFM
         MyBase.UpdateControls()
 
         Dim pars As cMSEBatchParameters = Me.m_BatchManager.Parameters
-        Me.rbCalcTypePercent.Checked = (CType(pars.IterCalcType, eMSEBatchIterCalcTypes) = eMSEBatchIterCalcTypes.Percent)
-        Me.rbCalcTypeValue.Checked = (CType(pars.IterCalcType, eMSEBatchIterCalcTypes) = eMSEBatchIterCalcTypes.UpperLowerValues)
+        Me.rbCalcTypePercent.Checked = (pars.IterCalcType = eMSEBatchIterCalcTypes.Percent)
+        Me.rbCalcTypeValue.Checked = (pars.IterCalcType = eMSEBatchIterCalcTypes.UpperLowerValues)
 
     End Sub
 
