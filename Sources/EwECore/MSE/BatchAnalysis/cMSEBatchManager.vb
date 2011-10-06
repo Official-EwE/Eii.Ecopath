@@ -651,7 +651,12 @@ Namespace MSEBatchManager
             End Get
         End Property
 
-        Friend ReadOnly Property BatchData() As cMSEBatchDataStructures
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks>JS: changed to public to make sure existing plug-ins keep working</remarks>
+        Public ReadOnly Property BatchData() As cMSEBatchDataStructures
             Get
                 Return Me.m_BatchData
             End Get
