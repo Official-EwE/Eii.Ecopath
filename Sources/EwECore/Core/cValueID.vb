@@ -42,7 +42,9 @@ Public Class cValueID
                    Optional ByVal iDBIDSec As Integer = -1)
 
         ' Pre
-        Debug.Assert(iDBIDPrim > 0, "Unique object must have a primary ID")
+        If (dtSec <> eDataTypes.NotSet) Then
+            Debug.Assert(iDBIDPrim > 0, "Unique indexed object must have a primary ID")
+        End If
 
         Me.m_dtPrim = dtPrim
         Me.m_iDBIDPrim = iDBIDPrim
