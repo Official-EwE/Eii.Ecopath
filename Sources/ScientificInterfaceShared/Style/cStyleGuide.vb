@@ -585,6 +585,8 @@ Namespace Style
                     strUnitString = Me.AreaUnitText(Me.AreaUnit)
                 Case eUnitType.Biomass
                     strUnitString = My.Resources.UNIT_BIOMASS ' Fixed
+                Case eUnitType.None
+                    ' NOP
                 Case Else
                     Debug.Assert(False)
             End Select
