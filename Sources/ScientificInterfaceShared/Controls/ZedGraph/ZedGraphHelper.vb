@@ -487,6 +487,17 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get the <see cref="cUIContext"/> attached to this instance.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property UIContext() As cUIContext
+            Get
+                Return Me.m_uic
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns a graph pane.
         ''' </summary>
         ''' <param name="iPane">The one-based index of the pane to return. This 
@@ -1322,6 +1333,8 @@ Namespace Controls
                         strUnitString = sg.MonetaryUnit
                     Case cStyleGuide.eUnitType.Nominal
                         strUnitString = sg.NominalUnitText()
+                    Case cStyleGuide.eUnitType.None
+                        ' NOP
                     Case Else
                         Debug.Assert(False)
                 End Select
