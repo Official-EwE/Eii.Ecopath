@@ -17,7 +17,7 @@ Namespace Controls
     ''' </summary>
     ''' <remarks></remarks>
     <CLSCompliant(False)> _
-    Public Class cZedGraphEnviroResponseHelper
+    Public Class cZedGraphMediationHelper
         Inherits cZedGraphHelper
 
         Public Enum eEnvResponseLineType As Integer

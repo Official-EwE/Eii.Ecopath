@@ -15,12 +15,12 @@ Public Class dlgDefineMapResponseAssignments
 
 #Region "Private variables"
 
-    Private m_shape As EwECore.cEnviroResponseFunction
-    Private m_manager As cMapResponseInteractionManager
-    Private m_zgh As cZedGraphEnviroResponseHelper 'cZedGraphHelper
-    Private m_uic As cUIContext
+    Private m_shape As EwECore.cEnviroResponseFunction = Nothing
+    Private m_manager As cMapResponseInteractionManager = Nothing
+    Private m_zgh As cZedGraphMediationHelper = Nothing
+    Private m_uic As cUIContext = Nothing
     Private m_bHasInit As Boolean
-    Private m_map As cEnviroInputMap
+    Private m_map As cEnviroInputMap = Nothing
     Private m_fpXMin As cEwEFormatProvider = Nothing
     Private m_fpXMax As cEwEFormatProvider = Nothing
 
@@ -36,7 +36,7 @@ Public Class dlgDefineMapResponseAssignments
 
         Me.m_uic = UIC
 
-        Me.m_zgh = New cZedGraphEnviroResponseHelper 'cZedGraphHelper
+        Me.m_zgh = New cZedGraphMediationHelper()
         Me.m_zgh.Attach(Me.m_uic, Me.m_graph)
         Me.m_zgh.ShowPointValue = True
 
@@ -293,7 +293,7 @@ Public Class dlgDefineMapResponseAssignments
             lstPts.Add(Xmax, Me.m_shape.ShapeData(Me.m_shape.XMax) * YScale)
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(Me.m_shape)), _
-                                                         lstPts, cZedGraphEnviroResponseHelper.eEnvResponseLineType.Response)
+                                                         lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             Me.m_zgh.XScaleMax = Xmax
@@ -410,7 +410,7 @@ Public Class dlgDefineMapResponseAssignments
             Next
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map.Layer)), _
-                                                         lstPts, cZedGraphEnviroResponseHelper.eEnvResponseLineType.Histogram)
+                                                         lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Histogram)
 
             il.IsY2Axis = True
             il.Line.Fill = New Fill(System.Drawing.Color.Gray)

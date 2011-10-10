@@ -22,7 +22,7 @@ Namespace Controls
 
         Private m_uic As cUIContext = Nothing
         Private m_medfn As cMediationBaseFunction = Nothing
-        Private m_zgh As cZedGraphEnviroResponseHelper 'cZedGraphHelper = Nothing
+        Private m_zgh As cZedGraphMediationHelper 'cZedGraphHelper = Nothing
         Private m_strXAxisLabel As String = ""
         Private m_strYAxisLabel As String = ""
         Private m_strTitle As String = ""
@@ -113,7 +113,7 @@ Namespace Controls
         ''' </remarks>
         ''' -------------------------------------------------------------------
         <Browsable(False)> _
-         Public Property Data() As cBioPercentData
+        Public Property Data() As cBioPercentData
             Get
                 Return Me.m_data
             End Get
@@ -140,7 +140,7 @@ Namespace Controls
                 Me.m_uic = value
 
                 If Me.m_uic IsNot Nothing Then
-                    Me.m_zgh = New cZedGraphEnviroResponseHelper 'cZedGraphHelper()
+                    Me.m_zgh = New cZedGraphMediationHelper 'cZedGraphHelper()
                     Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph, 1)
                     Me.LoadGraphData(Me.m_data)
 
@@ -346,12 +346,12 @@ Namespace Controls
                     lstPts.Add(Xmin + dx * (ipt - 1), resShape.ShapeData(ipt) * YScale)
                 Next
 
-                'add the last point out at the end of the graph
-                lstPts.Add(Xmax, resShape.ShapeData(resShape.XMax))
+                ''add the last point out at the end of the graph
+                'lstPts.Add(Xmax, resShape.ShapeData(resShape.XMax))
 
                 'need a way to find the color of the shape
                 Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(resShape)), _
-                                                             lstPts, cZedGraphEnviroResponseHelper.eEnvResponseLineType.Response)
+                                                             lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
                 pane.CurveList.Add(il)
 
                 Me.m_zgh.XScaleMax = Xmax
