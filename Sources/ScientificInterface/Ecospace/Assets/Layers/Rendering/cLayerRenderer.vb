@@ -85,7 +85,7 @@ Namespace Ecospace.Basemap.Layers
         ''' -----------------------------------------------------------------------
         Public Property VisualStyle() As cVisualStyle
             Get
-                Return Me.m_vs.Clone
+                Return Me.m_vs
             End Get
             Set(ByVal value As cVisualStyle)
                 Me.m_vs = value
