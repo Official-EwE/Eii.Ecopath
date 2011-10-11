@@ -594,7 +594,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Capacity shape {0}.
+        '''  Looks up a localized string similar to Foraging response {0}.
         '''</summary>
         Public ReadOnly Property ECOSIM_DEFAULT_NEWCAPACITYSHAPE() As String
             Get
@@ -5263,7 +5263,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Capacity.
+        '''  Looks up a localized string similar to % of Area.
         '''</summary>
         Public ReadOnly Property RESPONSE_GRAPH_YLABEL() As String
             Get

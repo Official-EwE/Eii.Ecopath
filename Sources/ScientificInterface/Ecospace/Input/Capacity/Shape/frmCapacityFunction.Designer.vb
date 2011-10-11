@@ -161,7 +161,7 @@ Partial Class frmCapacityFunction
         Me.m_assignments.UIContext = Nothing
         Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Line
         Me.m_assignments.XAxisLabel = "Input"
-        Me.m_assignments.YAxisLabel = "Capacity"
+        Me.m_assignments.YAxisLabel = "% of Area"
         '
         'm_assignmentsToolbar
         '

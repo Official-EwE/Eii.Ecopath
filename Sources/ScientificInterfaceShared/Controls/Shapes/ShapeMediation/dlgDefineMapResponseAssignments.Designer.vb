@@ -24,23 +24,22 @@ Partial Class dlgDefineMapResponseAssignments
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineMapResponseAssignments))
-        Me.m_btnOk = New System.Windows.Forms.Button
-        Me.m_lblMaps = New System.Windows.Forms.Label
-        Me.m_tbxXMax = New System.Windows.Forms.TextBox
-        Me.m_lblXMax = New System.Windows.Forms.Label
-        Me.m_graph = New ZedGraph.ZedGraphControl
-        Me.m_tbxXMin = New System.Windows.Forms.TextBox
-        Me.m_lblXMin = New System.Windows.Forms.Label
-        Me.m_btnDefaultMinMax = New System.Windows.Forms.Button
-        Me.m_tvMaps = New System.Windows.Forms.TreeView
-        Me.m_lblGroups = New System.Windows.Forms.Label
-        Me.m_btnRemove = New System.Windows.Forms.Button
-        Me.m_btnAdd = New System.Windows.Forms.Button
-        Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox
-        Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_btnOk = New System.Windows.Forms.Button()
+        Me.m_lblMaps = New System.Windows.Forms.Label()
+        Me.m_tbxXMax = New System.Windows.Forms.TextBox()
+        Me.m_lblXMax = New System.Windows.Forms.Label()
+        Me.m_graph = New ZedGraph.ZedGraphControl()
+        Me.m_tbxXMin = New System.Windows.Forms.TextBox()
+        Me.m_lblXMin = New System.Windows.Forms.Label()
+        Me.m_btnDefaultMinMax = New System.Windows.Forms.Button()
+        Me.m_tvMaps = New System.Windows.Forms.TreeView()
+        Me.m_lblGroups = New System.Windows.Forms.Label()
+        Me.m_btnRemove = New System.Windows.Forms.Button()
+        Me.m_btnAdd = New System.Windows.Forms.Button()
+        Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
+        Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -68,13 +67,13 @@ Partial Class dlgDefineMapResponseAssignments
         resources.ApplyResources(Me.m_graph, "m_graph")
         Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0
-        Me.m_graph.ScrollMaxX = 0
-        Me.m_graph.ScrollMaxY = 0
-        Me.m_graph.ScrollMaxY2 = 0
-        Me.m_graph.ScrollMinX = 0
-        Me.m_graph.ScrollMinY = 0
-        Me.m_graph.ScrollMinY2 = 0
+        Me.m_graph.ScrollGrace = 0.0R
+        Me.m_graph.ScrollMaxX = 0.0R
+        Me.m_graph.ScrollMaxY = 0.0R
+        Me.m_graph.ScrollMaxY2 = 0.0R
+        Me.m_graph.ScrollMinX = 0.0R
+        Me.m_graph.ScrollMinY = 0.0R
+        Me.m_graph.ScrollMinY2 = 0.0R
         '
         'm_tbxXMin
         '

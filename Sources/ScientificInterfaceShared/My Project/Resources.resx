@@ -2157,7 +2157,7 @@
     <value>Normal</value>
   </data>
   <data name="ECOSIM_DEFAULT_NEWCAPACITYSHAPE" xml:space="preserve">
-    <value>Capacity shape {0}</value>
+    <value>Foraging response {0}</value>
     <comment>The default name for a new Ecosim capacity shape. {0}: autonumber</comment>
   </data>
   <data name="CAPACITY_PROMPT" xml:space="preserve">
@@ -2179,7 +2179,7 @@
     <value>Map values</value>
   </data>
   <data name="RESPONSE_GRAPH_YLABEL" xml:space="preserve">
-    <value>Capacity</value>
+    <value>% of Area</value>
   </data>
   <data name="DEFAULT_NEWMAP_NUM" xml:space="preserve">
     <value>Capacity map {0}</value>
