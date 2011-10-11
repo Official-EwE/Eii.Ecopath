@@ -112,20 +112,20 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tlpSketchPad.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_sketchPadToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_sketchPadToolbar.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -142,7 +142,7 @@
     <value>m_sketchPadToolbar</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.3.0.802, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
     <value>m_tlpSketchPad</value>
@@ -169,7 +169,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationSketchPad, ScientificInterfaceShared, Version=6.3.0.802, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationSketchPad, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_tlpSketchPad</value>
@@ -199,7 +199,7 @@
     <value>m_tlpSketchPad</value>
   </data>
   <data name="&gt;&gt;m_tlpSketchPad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tlpSketchPad.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -223,7 +223,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
     <value>m_scMain</value>
@@ -259,7 +259,7 @@
     <value>m_shapeToolBox</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.3.0.802, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Parent" xml:space="preserve">
     <value>m_tlpToolbox</value>
@@ -286,7 +286,7 @@
     <value>m_shapeToolboxToolbar</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.3.0.802, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
     <value>m_tlpToolbox</value>
@@ -316,7 +316,7 @@
     <value>m_tlpToolbox</value>
   </data>
   <data name="&gt;&gt;m_tlpToolbox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tlpToolbox.Parent" xml:space="preserve">
     <value>m_scBottomBits.Panel1</value>
@@ -331,7 +331,7 @@
     <value>m_scBottomBits.Panel1</value>
   </data>
   <data name="&gt;&gt;m_scBottomBits.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scBottomBits.Panel1.Parent" xml:space="preserve">
     <value>m_scBottomBits</value>
@@ -361,7 +361,7 @@
     <value>m_assignments</value>
   </data>
   <data name="&gt;&gt;m_assignments.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationAssignments, ScientificInterfaceShared, Version=6.3.0.802, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationAssignments, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_assignments.Parent" xml:space="preserve">
     <value>m_tlpAssingments</value>
@@ -391,7 +391,7 @@
     <value>m_assignmentsToolbar</value>
   </data>
   <data name="&gt;&gt;m_assignmentsToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar, ScientificInterfaceShared, Version=6.3.0.802, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_assignmentsToolbar.Parent" xml:space="preserve">
     <value>m_tlpAssingments</value>
@@ -421,7 +421,7 @@
     <value>m_tlpAssingments</value>
   </data>
   <data name="&gt;&gt;m_tlpAssingments.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tlpAssingments.Parent" xml:space="preserve">
     <value>m_scBottomBits.Panel2</value>
@@ -436,7 +436,7 @@
     <value>m_scBottomBits.Panel2</value>
   </data>
   <data name="&gt;&gt;m_scBottomBits.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scBottomBits.Panel2.Parent" xml:space="preserve">
     <value>m_scBottomBits</value>
@@ -457,7 +457,7 @@
     <value>m_scBottomBits</value>
   </data>
   <data name="&gt;&gt;m_scBottomBits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scBottomBits.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -469,7 +469,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
     <value>m_scMain</value>
@@ -490,7 +490,7 @@
     <value>m_scMain</value>
   </data>
   <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -498,7 +498,7 @@
   <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -511,12 +511,12 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Capacity</value>
+    <value>Capacity response</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmCapacityFunction</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.0.802, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

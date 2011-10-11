@@ -13,7 +13,7 @@ Imports SourceGrid2
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class gridDefineImportanceLayers
+    Public Class gridDefineInputMaps
         Inherits EwEGrid
 
         ''' <summary>A number representing the row that contains the first Layer</summary>
@@ -29,10 +29,9 @@ Namespace Ecospace
         Private m_iUpdateLock As Integer = 0
 
         ''' <summary>Enumerated type defining the columns in this grid.</summary>
-        Private Enum eColumnTypes
+        Private Enum eColumnTypes As Integer
             LayerIndex = 0
             LayerName
-            LayerWeight
             LayerDescription
             LayerStatus
         End Enum
@@ -41,7 +40,7 @@ Namespace Ecospace
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Administrative unit representing a <see cref="cEcospaceBasemap">Importance layer</see>
+        ''' Administrative unit representing a <see cref="cEcospaceLayerDriver"/>
         ''' in the EwE model.
         ''' </summary>
         ''' <remarks>
@@ -54,13 +53,11 @@ Namespace Ecospace
         Private Class cLayerInfo
 
             ''' <summary><see cref="cEcospaceBasemap">cEcospaceBasemap</see> associated with this Layer, if any.</summary>
-            Private m_Layer As cEcospaceLayerImportance = Nothing
+            Private m_Layer As cEcospaceLayerDriver = Nothing
             ''' <summary>Name for this Layer.</summary>
             Private m_strName As String = ""
             ''' <summary>Description for this Layer.</summary>
             Private m_strDescription As String = ""
-            ''' <summary>Weight for this Layer.</summary>
-            Private m_sWeight As Single = 0.0
             ''' <summary>Flag stating whether a user action is confirmed</summary>
             Private m_bConfirmed As Boolean = True
             ''' <summary>The status of a Layer in the interface.</summary>
@@ -70,16 +67,15 @@ Namespace Ecospace
             ''' <summary>
             ''' Constructor, initializes a new instanze of this class.
             ''' </summary>
-            ''' <param name="Layer">The <see cref="cEcospaceBasemap">cEcospaceBasemap</see> to
+            ''' <param name="Layer">The <see cref="cEcospaceLayerDriver"/> to
             ''' initialize this instance from. If set, this instance represents a
             ''' Layer currently active in the EwE model.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal Layer As cEcospaceLayerImportance)
+            Public Sub New(ByVal Layer As cEcospaceLayerDriver)
                 Debug.Assert(Layer IsNot Nothing)
                 Me.m_Layer = Layer
                 Me.m_strName = Layer.Name
                 Me.m_strDescription = Layer.Description
-                Me.m_sWeight = Layer.Weight
                 Me.m_status = eItemStatusTypes.Original
             End Sub
 
@@ -93,7 +89,6 @@ Namespace Ecospace
                 Me.m_Layer = Nothing
                 Me.m_strName = strName
                 Me.m_strDescription = strDescription
-                Me.m_sWeight = sWeight
                 Me.m_status = eItemStatusTypes.Added
             End Sub
 
@@ -127,25 +122,11 @@ Namespace Ecospace
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Get/set the weight of this administrative unit.
-            ''' </summary>
-            ''' -------------------------------------------------------------------
-            Public Property Weight() As Single
-                Get
-                    Return Me.m_sWeight
-                End Get
-                Set(ByVal value As Single)
-                    Me.m_sWeight = value
-                End Set
-            End Property
-
-            ''' -------------------------------------------------------------------
-            ''' <summary>
             ''' Get the <see cref="cEcospaceBasemap">EwE Layer</see> associated
             ''' with this administrative unit.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Layer() As cEcospaceLayerImportance
+            Public ReadOnly Property Layer() As cEcospaceLayerDriver
                 Get
                     Return Me.m_Layer
                 End Get
@@ -188,8 +169,7 @@ Namespace Ecospace
             Public Function IsChanged() As Boolean
                 If (Me.IsNew()) Then Return False
                 Return (Me.m_Layer.Name <> Me.m_strName) Or _
-                       (Me.Layer.Description <> Me.m_strDescription) Or _
-                       (Me.Layer.Weight <> Me.m_sWeight)
+                       (Me.Layer.Description <> Me.m_strDescription)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -271,7 +251,6 @@ Namespace Ecospace
             Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
             ' Layer name cell, editable this time
             Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.LayerWeight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
             Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
 
             ' Layer index cell
@@ -291,14 +270,14 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub FillData()
 
-            Dim Layer As cEcospaceLayerImportance = Nothing
+            Dim Layer As cEcospaceLayerDriver = Nothing
             Dim li As cLayerInfo = Nothing
 
             ' Populate local administration from a snapshot of the live data
 
             ' Make snapshot of Layer configuration
-            For iLayer As Integer = 1 To Me.Core.nImportanceLayers
-                Layer = Me.Core.EcospaceBasemap.LayerImportance(iLayer)
+            For iLayer As Integer = 1 To Me.Core.nDriverLayers
+                Layer = Me.Core.EcospaceBasemap.LayerDriver(iLayer)
                 li = New cLayerInfo(Layer)
                 Me.m_alLayers.Add(li)
             Next
@@ -313,7 +292,6 @@ Namespace Ecospace
 
             Me.Columns(eColumnTypes.LayerIndex).Width = 40
             Me.Columns(eColumnTypes.LayerName).Width = 120
-            Me.Columns(eColumnTypes.LayerWeight).Width = 60
             Me.Columns(eColumnTypes.LayerDescription).Width = 278
 
         End Sub
@@ -346,9 +324,6 @@ Namespace Ecospace
 
                 Me(iRow, eColumnTypes.LayerDescription) = New Cells.Real.Cell("", GetType(String))
                 Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
-
-                Me(iRow, eColumnTypes.LayerWeight) = New Cells.Real.Cell(0.0!, GetType(Single))
-                Me(iRow, eColumnTypes.LayerWeight).Behaviors.Add(Me.EwEEditHandler)
 
                 ' Status
                 vm = New VisualModels.Common()
@@ -405,9 +380,6 @@ Namespace Ecospace
 
             pos = New Position(iRow, eColumnTypes.LayerDescription)
             aCells(eColumnTypes.LayerDescription).SetValue(pos, CStr(li.Description))
-
-            pos = New Position(iRow, eColumnTypes.LayerWeight)
-            aCells(eColumnTypes.LayerWeight).SetValue(pos, CSng(li.Weight))
 
             Select Case li.Status
                 Case eItemStatusTypes.Original
@@ -471,11 +443,6 @@ Namespace Ecospace
 
                 Case eColumnTypes.LayerDescription
                     li.Description = CStr(cell.GetValue(p))
-
-                Case eColumnTypes.LayerWeight
-                    Dim sWeight As Single = CSng(cell.GetValue(p))
-                    If sWeight < 0 Then Me.UpdateRow(p.Row) : Return False
-                    li.Weight = sWeight
 
             End Select
 
@@ -683,7 +650,7 @@ Namespace Ecospace
             Dim bLayersChanged As Boolean = False
             Dim li As cLayerInfo = Nothing
             Dim iDBID As Integer = Nothing
-            Dim Layer As cEcospaceLayerImportance = Nothing
+            Dim Layer As cEcospaceLayerDriver = Nothing
             Dim iLayer As Integer = 0
             Dim bSuccess As Boolean = True
 
@@ -756,7 +723,7 @@ Namespace Ecospace
                 For iLayer = 0 To Me.m_alLayers.Count - 1
                     li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
                     If (li.IsNew()) Then
-                        bSuccess = bSuccess And Me.Core.AddEcospaceImportanceLayer(li.Name, li.Description, li.Weight, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddEcospaceDriverLayer(li.Name, li.Description, iDBID)
                     End If
                 Next
 
@@ -769,7 +736,7 @@ Namespace Ecospace
                     Debug.Assert(Not li.IsNew())
 
                     If (li.Confirmed()) Then
-                        If (Me.Core.RemoveEcospaceImportanceLayer(li.Layer)) Then
+                        If (Me.Core.RemoveEcospaceDriverLayer(li.Layer.DBID)) Then
                             Me.m_alLayers.Remove(li)
                             Me.m_alLayersRemoved.Remove(li)
                         Else
@@ -784,7 +751,7 @@ Namespace Ecospace
                 cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 ' Test whether new Layers were loaded correctly 
-                Debug.Assert(Me.m_alLayers.Count = Me.Core.nImportanceLayers, ">> Internal panic: Dialog and core out of sync on Layers")
+                Debug.Assert(Me.m_alLayers.Count = Me.Core.nDriverLayers, ">> Internal panic: Dialog and core out of sync on Layers")
             End If
 
             ' Update core objects
@@ -798,15 +765,14 @@ Namespace Ecospace
                         ' Find core layer with same BDID (cannot use cached cEcospaceBasemap instances since the core has reloaded)
                         Dim bFound As Boolean = False
                         ' For every core layer instance (and yes, this array is one-based)
-                        For iLayTest As Integer = 1 To Me.Core.nImportanceLayers
+                        For iLayTest As Integer = 1 To Me.Core.nDriverLayers
                             ' Get core layer instance
-                            Dim layTest As cEcospaceLayerImportance = Me.Core.EcospaceBasemap.LayerImportance(iLayTest)
+                            Dim layTest As cEcospaceLayerDriver = Me.Core.EcospaceBasemap.LayerDriver(iLayTest)
                             ' Has matching ID?
                             If (layTest.getID = li.Layer.getID) Then
                                 ' #Yes: Update
                                 layTest.Name = li.Name
                                 layTest.Description = li.Description
-                                layTest.Weight = li.Weight
                                 ' Are we relieved or what!
                                 bFound = True
                             End If

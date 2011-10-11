@@ -121,7 +121,7 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_tsbnDefineMaps.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="m_tsbnDefineInputMaps.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIISURBVDhPpZP7S1NxGMbPPxKaXVUkMEq8IpKUCoY/hGgI
@@ -136,14 +136,14 @@
         KlSA8/zRh9ABIDUG+1JpAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="m_tsbnDefineMaps.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbnDefineInputMaps.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="m_tsbnDefineMaps.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 22</value>
+  <data name="m_tsbnDefineInputMaps.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 22</value>
   </data>
-  <data name="m_tsbnDefineMaps.Text" xml:space="preserve">
-    <value>Define environmental driver maps...</value>
+  <data name="m_tsbnDefineInputMaps.Text" xml:space="preserve">
+    <value>Define environmental input maps...</value>
   </data>
   <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -162,7 +162,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.930.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -187,7 +187,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucApplyMapResponseGrid, EwE6, Version=6.3.930.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.ucApplyMapResponseGrid, EwE6, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -205,18 +205,18 @@
     <value>292, 273</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Apply Capacity</value>
+    <value>Apply environmental response</value>
   </data>
-  <data name="&gt;&gt;m_tsbnDefineMaps.Name" xml:space="preserve">
-    <value>m_tsbnDefineMaps</value>
+  <data name="&gt;&gt;m_tsbnDefineInputMaps.Name" xml:space="preserve">
+    <value>m_tsbnDefineInputMaps</value>
   </data>
-  <data name="&gt;&gt;m_tsbnDefineMaps.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsbnDefineInputMaps.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmApplyCapacity</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.frmApplyShapeBase, EwE6, Version=6.3.930.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.frmApplyShapeBase, EwE6, Version=6.3.1011.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
 </root>

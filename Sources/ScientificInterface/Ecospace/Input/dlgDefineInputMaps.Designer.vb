@@ -1,7 +1,7 @@
 Namespace Ecospace
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class dlgDefineDriverLayers
+    Partial Class dlgDefineInputMaps
         Inherits System.Windows.Forms.Form
 
         'Form overrides dispose to clean up the component list.
@@ -22,8 +22,8 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineDriverLayers))
-            Me.m_grid = New ScientificInterface.Ecospace.gridDefineDriverLayers()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineInputMaps))
+            Me.m_grid = New ScientificInterface.Ecospace.gridDefineInputMaps()
             Me.epNumHabitats = New System.Windows.Forms.ErrorProvider(Me.components)
             Me.m_btnAddHabitat = New System.Windows.Forms.Button()
             Me.m_btnRemoveHabitat = New System.Windows.Forms.Button()
@@ -102,7 +102,7 @@ Namespace Ecospace
             Me.m_btnKeep.Name = "m_btnKeep"
             Me.m_btnKeep.UseVisualStyleBackColor = True
             '
-            'dlgDefineDriverLayers
+            'dlgDefineInputMaps
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -114,7 +114,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_grid)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "dlgDefineDriverLayers"
+            Me.Name = "dlgDefineInputMaps"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             CType(Me.epNumHabitats, System.ComponentModel.ISupportInitialize).EndInit()
@@ -122,7 +122,7 @@ Namespace Ecospace
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_grid As gridDefineDriverLayers
+        Private WithEvents m_grid As gridDefineInputMaps
         Private WithEvents epNumHabitats As System.Windows.Forms.ErrorProvider
         Private WithEvents m_btnRemoveHabitat As System.Windows.Forms.Button
         Private WithEvents m_btnAddHabitat As System.Windows.Forms.Button

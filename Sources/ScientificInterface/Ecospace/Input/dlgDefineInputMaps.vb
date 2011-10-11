@@ -11,10 +11,10 @@ Namespace Ecospace
 
     ''' =======================================================================
     ''' <summary>
-    ''' Dialog, implementing the Ecospace Edit Importance Layers user interface.
+    ''' Dialog, implementing the Ecospace Edit Input Maps user interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class dlgDefineDriverLayers
+    Public Class dlgDefineInputMaps
 
 #Region " Private variables "
 

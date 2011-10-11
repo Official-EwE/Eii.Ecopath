@@ -35,17 +35,17 @@ Namespace Ecospace
             ' For this form only
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MapResponseInteractionManager}
 
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditCapacityMaps")
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditInputMaps")
             If (cmd IsNot Nothing) Then
-                cmd.AddControl(Me.m_tsbnDefineMaps)
+                cmd.AddControl(Me.m_tsbnDefineInputMaps)
             End If
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditCapacityMaps")
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditInputMaps")
             If (cmd IsNot Nothing) Then
-                cmd.RemoveControl(Me.m_tsbnDefineMaps)
+                cmd.RemoveControl(Me.m_tsbnDefineInputMaps)
             End If
             MyBase.OnFormClosed(e)
         End Sub

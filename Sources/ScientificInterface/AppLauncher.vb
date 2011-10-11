@@ -142,8 +142,8 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditHabitats As cCommand = Nothing
     Private WithEvents m_cmdEditRegions As cCommand = Nothing
     Private WithEvents m_cmdEditMPAs As cCommand = Nothing
-    Private WithEvents m_cmdDefineImportanceLayers As cCommand = Nothing
-    Private WithEvents m_cmdDefineDriverLayers As cCommand = Nothing
+    Private WithEvents m_cmdDefineImportanceMaps As cCommand = Nothing
+    Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
     Private WithEvents m_cmdImportLayerData As cCommand = Nothing
     Private WithEvents m_cmdExportLayerData As cCommand = Nothing
     Private WithEvents m_cmdImportTimeSeries As cCommand = Nothing
@@ -453,11 +453,11 @@ Public Class AppLauncher
         Me.m_cmdEditMPAs = New cCommand(cmdh, "EditMPAs")
         Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceDefineMPAs)
 
-        Me.m_cmdDefineImportanceLayers = New cCommand(cmdh, "EditImportanceLayers")
-        Me.m_cmdDefineImportanceLayers.AddControl(Me.m_tsmiEcospaceDefineImportanceLayers)
+        Me.m_cmdDefineImportanceMaps = New cCommand(cmdh, "EditImportanceMaps")
+        Me.m_cmdDefineImportanceMaps.AddControl(Me.m_tsmiEcospaceDefineImportanceMaps)
 
-        Me.m_cmdDefineDriverLayers = New cCommand(cmdh, "EditCapacityMaps")
-        Me.m_cmdDefineDriverLayers.AddControl(Me.m_tsmiEcospaceDefineDriverLayers)
+        Me.m_cmdDefineInputLayers = New cCommand(cmdh, "EditInputMaps")
+        Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceInputMaps)
 
         Me.m_cmdImportLayerData = New cCommand(cmdh, "ImportLayerData")
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
@@ -3422,30 +3422,30 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit importance layers dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdDefineImportanceLayers.OnInvoke
-        Dim dlg As New dlgDefineImportanceLayers(Me.UIContext)
+    Private Sub OnEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdDefineImportanceMaps.OnInvoke
+        Dim dlg As New dlgDefineImportanceMaps(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 
     ''' <summary>
     ''' Command handler; updates the Ecospace edit importance layers command.
     ''' </summary>
-    Private Sub OnUpdateEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdDefineImportanceLayers.OnUpdate
+    Private Sub OnUpdateEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdDefineImportanceMaps.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit importance layers dialog.
     ''' </summary>
-    Private Sub OnUpdateDefineDriverLayers(ByVal cmd As cCommand) Handles m_cmdDefineDriverLayers.OnUpdate
+    Private Sub OnUpdateDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; invokes the Ecospace define capacity maps dialog.
     ''' </summary>
-    Private Sub OnEditDefineDriverLayers(ByVal cmd As cCommand) Handles m_cmdDefineDriverLayers.OnInvoke
-        Dim dlg As New dlgDefineDriverLayers(Me.UIContext)
+    Private Sub OnInvokeDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnInvoke
+        Dim dlg As New dlgDefineInputMaps(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 

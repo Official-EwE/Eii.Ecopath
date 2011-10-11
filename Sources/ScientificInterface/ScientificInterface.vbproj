@@ -222,13 +222,13 @@
     </Compile>
     <Compile Include="Tools\Workflow\cDefineItemsBase.vb" />
     <Compile Include="Tools\Workflow\IDefineItems.vb" />
-    <Compile Include="Ecospace\Input\dlgDefineImportanceLayers.Designer.vb">
-      <DependentUpon>dlgDefineImportanceLayers.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\dlgDefineImportanceMaps.Designer.vb">
+      <DependentUpon>dlgDefineImportanceMaps.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineImportanceLayers.vb">
+    <Compile Include="Ecospace\Input\dlgDefineImportanceMaps.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridDefineImportanceLayers.vb">
+    <Compile Include="Ecospace\Input\gridDefineImportanceMaps.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Tools\frmMPAOptimizations.Designer.vb">
@@ -713,8 +713,8 @@
       <DependentUpon>ucLayerEditorGroup.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgDefineImportanceLayers.resx">
-      <DependentUpon>dlgDefineImportanceLayers.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineImportanceMaps.resx">
+      <DependentUpon>dlgDefineImportanceMaps.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -1102,8 +1102,8 @@
       <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgDefineDriverLayers.resx">
-      <DependentUpon>dlgDefineDriverLayers.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineInputMaps.resx">
+      <DependentUpon>dlgDefineInputMaps.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgImportLayerData.resx">
@@ -1644,13 +1644,13 @@
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererSymbol.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererText.vb" />
     <Compile Include="Ecospace\Assets\Layers\Rendering\cLayerRendererValue.vb" />
-    <Compile Include="Ecospace\Input\dlgDefineDriverLayers.Designer.vb">
-      <DependentUpon>dlgDefineDriverLayers.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\dlgDefineInputMaps.Designer.vb">
+      <DependentUpon>dlgDefineInputMaps.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineDriverLayers.vb">
+    <Compile Include="Ecospace\Input\dlgDefineInputMaps.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridDefineDriverLayers.vb">
+    <Compile Include="Ecospace\Input\gridDefineInputMaps.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cEcospaceZedGraphHelper.vb">

@@ -293,7 +293,7 @@ Namespace Ecospace
             ' preparing Ecoseed. Yes, it's a half-ass solution while in fact the entire GUI should become aware the 
             ' running of a model by blocking out any possibility to enter/edit data.
             Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmd As cCommand = cmdh.GetCommand("EditImportanceLayers")
+            Dim cmd As cCommand = cmdh.GetCommand("EditImportanceMaps")
             If cmd IsNot Nothing Then cmd.Invoke()
 
         End Sub

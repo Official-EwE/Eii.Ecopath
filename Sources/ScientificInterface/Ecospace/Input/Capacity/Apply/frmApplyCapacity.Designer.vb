@@ -30,7 +30,7 @@ Namespace Ecospace
             Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyCapacity))
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnDefineMaps = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnDefineInputMaps = New System.Windows.Forms.ToolStripButton()
             Me.m_grid = New ScientificInterface.Ecospace.ucApplyMapResponseGrid(Me.components)
             Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
@@ -38,16 +38,16 @@ Namespace Ecospace
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMaps})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineInputMaps})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
-            'm_tsbnDefineMaps
+            'm_tsbnDefineInputMaps
             '
-            Me.m_tsbnDefineMaps.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnDefineMaps, "m_tsbnDefineMaps")
-            Me.m_tsbnDefineMaps.Name = "m_tsbnDefineMaps"
+            Me.m_tsbnDefineInputMaps.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnDefineInputMaps, "m_tsbnDefineInputMaps")
+            Me.m_tsbnDefineInputMaps.Name = "m_tsbnDefineInputMaps"
             '
             'm_grid
             '
@@ -93,7 +93,7 @@ Namespace Ecospace
         End Sub
 
         Private WithEvents m_tsMain As cEwEToolstrip
-        Private WithEvents m_tsbnDefineMaps As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnDefineInputMaps As System.Windows.Forms.ToolStripButton
         Private WithEvents m_grid As ScientificInterface.Ecospace.ucApplyMapResponseGrid
 
     End Class

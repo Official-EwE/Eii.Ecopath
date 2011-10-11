@@ -80,9 +80,13 @@ Public Class cMapResponseInteractionManager
             ' Hard-code the depth map at position 0
             layer = Me.m_core.EcospaceBasemap.LayerDepth()
             map = New cEnviroInputMap(Me.m_core.CapacitMapInteractionManager, layer)
+
+            ' Bad hack: disable updates from the layer
+            map.setManager(Nothing)
             For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
                 map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapMapFunctions(0, iGroup)
             Next
+            map.setManager(Me.m_core.CapacitMapInteractionManager)
             Me.m_maps.Add(map)
 
             'populate the list of IEnviroInputMap objects that the user will interact with 
@@ -92,9 +96,12 @@ Public Class cMapResponseInteractionManager
 
                     layer = Me.m_core.EcospaceBasemap.LayerDriver(iMap)
                     map = New cEnviroInputMap(Me.m_core.CapacitMapInteractionManager, layer)
+                    ' Bad hack: disable updates from the layer
+                    map.setManager(Nothing)
                     For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
                         map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapMapFunctions(iMap, iGroup)
                     Next
+                    map.setManager(Me.m_core.CapacitMapInteractionManager)
                     Me.m_maps.Add(map)
 
                 Catch ex As Exception
@@ -123,9 +130,9 @@ Public Class cMapResponseInteractionManager
 
         Try
 
-            For iMap As Integer = 1 To Me.m_SpaceData.nDriverLayers
+            For iMap As Integer = 0 To Me.m_maps.Count - 1
                 For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
-                    Me.m_SpaceData.CapMapFunctions(iMap, iGroup) = Me.Map(iMap).ResponseIndexForGroup(iGroup)
+                    Me.m_SpaceData.CapMapFunctions(iMap, iGroup) = Me.m_maps(iMap).ResponseIndexForGroup(iGroup)
                 Next
             Next
 
