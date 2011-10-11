@@ -153,7 +153,7 @@ Partial Class frmMSEBatchTFM
         Me.Controls.Add(Me.m_grid)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEBatchTFM"
-        Me.Text = "frmMSEBatchTFM"
+        Me.Text = "MSE batch TFM"
         CType(Me.UpDwnIter, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()

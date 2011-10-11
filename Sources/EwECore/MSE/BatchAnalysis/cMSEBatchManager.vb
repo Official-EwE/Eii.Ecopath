@@ -176,6 +176,14 @@ Namespace MSEBatchManager
             Me.Parameters.AllowValidation = False
             Me.Parameters.nTFMIteration = Me.m_BatchData.nTFM
             Me.Parameters.IterCalcType = Me.m_BatchData.IterCalcType
+
+            Me.Parameters.bSaveBiomass = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.Biomass)
+            Me.Parameters.bSaveCatch = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.CatchByGroup)
+            Me.Parameters.bSaveFeedingTime = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime)
+            Me.Parameters.bSaveFishingMort = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FishingMortRate)
+            Me.Parameters.bSaveFeedingTime = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime)
+            Me.Parameters.bSaveConsumptBio = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.QB)
+
             Me.Parameters.AllowValidation = True
 
             For igrp As Integer = 1 To Me.nGroups
@@ -243,6 +251,20 @@ Namespace MSEBatchManager
 
             Me.m_BatchData.nTFM = Me.Parameters.nTFMIteration
             Me.m_BatchData.IterCalcType = Me.Parameters.IterCalcType
+
+            'Biomass()
+            'QB() 'consumption/biomass
+            'FeedingTime()
+            'FishingMortRate()
+            'PredRate()
+            'CatchByGroup()
+
+            Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.Biomass) = Me.Parameters.bSaveBiomass
+            Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.CatchByGroup) = Me.Parameters.bSaveCatch
+            Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime) = Me.Parameters.bSaveFeedingTime
+            Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FishingMortRate) = Me.Parameters.bSaveFishingMort
+            Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime) = Me.Parameters.bSaveFeedingTime
+            Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.QB) = Me.Parameters.bSaveConsumptBio
 
             Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
 

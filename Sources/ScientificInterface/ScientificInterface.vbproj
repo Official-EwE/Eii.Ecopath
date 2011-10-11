@@ -205,6 +205,12 @@
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorGroup.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Tools\MSEBatch\frmMSEBatchParameters.Designer.vb">
+      <DependentUpon>frmMSEBatchParameters.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\frmMSEBatchParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Tools\MSEBatch\frmMSEBatchTFM.Designer.vb">
       <DependentUpon>frmMSEBatchTFM.vb</DependentUpon>
     </Compile>
@@ -1022,6 +1028,9 @@
     <EmbeddedResource Include="Other\Options\ucOptionsPresentation.resx">
       <DependentUpon>ucOptionsPresentation.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\MSEBatch\frmMSEBatchParameters.resx">
+      <DependentUpon>frmMSEBatchParameters.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSEBatch\frmMSEBatchTFM.resx">
       <DependentUpon>frmMSEBatchTFM.vb</DependentUpon>

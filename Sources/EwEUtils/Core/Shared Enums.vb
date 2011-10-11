@@ -1197,6 +1197,7 @@ Namespace Core
         MSYEvaluateFleet
 
         'MSE Batch Variables
+        'Target Fishing Mortality(hockey stick)
         MSETFMNIteration
         MSETFMBLimLower
         MSETFMBLimUpper
@@ -1210,8 +1211,22 @@ Namespace Core
         MSETFMFOptUpper
         MSETFMFOptValues
 
+        'TAC total allowable catch
+        MSETACNIteration
+        MSETACLower
+        MSETACUpper
+
+        'MSE Batch output types
+        MSEBatchOutputBiomass
+        MSEBatchOutputConBio
+        MSEBatchOutputFeedingTime
+        MSEBatchOutputPredRate
+        MSEBatchOutputCatch
+        MSEBatchOutputFishingMortRate
+
+
         ''' <summary>
-        ''' Type of calculation to use when setting MSE Batch iterations % or +- Value 
+        ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 
         ''' </summary>
         MSEBatchIterCalcType
 

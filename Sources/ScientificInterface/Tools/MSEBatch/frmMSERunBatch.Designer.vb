@@ -71,7 +71,7 @@ Partial Class frmMSERunBatch
         Me.Controls.Add(Me.btRunBatch)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSERunBatch"
-        Me.Text = "frmMSERunBatch"
+        Me.Text = "MSE batch run"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
