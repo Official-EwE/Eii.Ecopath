@@ -1224,6 +1224,8 @@ Namespace Core
         MSEBatchOutputCatch
         MSEBatchOutputFishingMortRate
 
+        MSEBatchOuputDir
+
 
         ''' <summary>
         ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 

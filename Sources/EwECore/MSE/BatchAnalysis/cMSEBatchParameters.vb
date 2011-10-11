@@ -76,6 +76,11 @@ Public Class cMSEBatchParameters
         val.Stored = False
         m_values.Add(val.varName, val)
 
+        meta = New cVariableMetaData()
+        val = New cValue("", eVarNameFlags.MSEBatchOuputDir, eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchOuputDir))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
         Me.AllowValidation = True
 
     End Sub
@@ -161,6 +166,13 @@ Public Class cMSEBatchParameters
         End Set
     End Property
 
-
+    Public Property OutputDir As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.MSEBatchOuputDir))
+        End Get
+        Set(value As String)
+            SetVariable(eVarNameFlags.MSEBatchOuputDir, value)
+        End Set
+    End Property
 
 End Class

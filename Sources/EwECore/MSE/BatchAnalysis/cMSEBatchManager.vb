@@ -266,6 +266,13 @@ Namespace MSEBatchManager
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime) = Me.Parameters.bSaveFeedingTime
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.QB) = Me.Parameters.bSaveConsumptBio
 
+
+            ' Me.m_BatchData.OuputDir(eMSEBatchOuputTypes.QB) = Me.Parameters.OutputDir
+
+
+
+
+
             Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
 
             For igrp As Integer = 1 To Me.nGroups
