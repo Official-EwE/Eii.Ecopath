@@ -32,6 +32,7 @@ Namespace Ecopath.Input
             Organism
             Ecology
             Occurrence
+            PropBiomass
             PropCatch
             Conservation
             VulIndex
@@ -64,6 +65,7 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_COMMON_NAME)
             Me(0, eColumnTypes.Ecology) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOLOGY)
             Me(0, eColumnTypes.Organism) = New EwEColumnHeaderCell(SharedResources.HEADER_ORGANISM)
+            Me(0, eColumnTypes.PropBiomass) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_B)
             Me(0, eColumnTypes.PropCatch) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_CATCH)
             Me(0, eColumnTypes.Conservation) = New EwEColumnHeaderCell(SharedResources.HEADER_IUCN_CONSERVATION_STATUS)
             Me(0, eColumnTypes.Occurrence) = New EwEColumnHeaderCell(SharedResources.HEADER_OCCURRENCE_STATUS)
@@ -193,6 +195,10 @@ Namespace Ecopath.Input
             Me(iRow, eColumnTypes.Conservation).Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.Occurrence) = New SourceGrid2.Cells.Real.Cell(taxon.OccurrenceStatus, Me.m_editorOccurrence)
             Me(iRow, eColumnTypes.Occurrence).Behaviors.Add(Me.EwEEditHandler)
+
+            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonProp)
+            cell.SuppressZero = True
+            Me(iRow, eColumnTypes.PropBiomass) = cell
 
             cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonPropCatch)
             cell.SuppressZero = True
