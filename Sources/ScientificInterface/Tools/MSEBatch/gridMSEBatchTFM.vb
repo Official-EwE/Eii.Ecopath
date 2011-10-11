@@ -56,8 +56,11 @@ Public Class gridMSEBatchTFM
 
         Me.Redim(1, iNumCols)
         Dim limitStr As String = "%"
-        If Me.UIContext.Core.MSEBatchManager.Parameters.IterCalcType = eMSEBatchIterCalcTypes.UpperLowerValues Then
-            limitStr = "Value"
+        If Me.UIContext IsNot Nothing Then
+            'UIContext can be nothing in the development enviro
+            If Me.UIContext.Core.MSEBatchManager.Parameters.IterCalcType = eMSEBatchIterCalcTypes.UpperLowerValues Then
+                limitStr = "Value"
+            End If
         End If
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
