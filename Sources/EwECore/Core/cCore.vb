@@ -210,8 +210,8 @@ Public Class cCore
                     Return Me.nTimeSeriesDatasets
                 Case eCoreCounterTypes.nImportanceLayers
                     Return Me.nImportanceLayers
-                Case eCoreCounterTypes.nDriverLayers
-                    Return Me.nDriverLayers
+                Case eCoreCounterTypes.nEnvironmentalLayers
+                    Return Me.nEnvironmentalLayers
                     ' Case eCoreCounterTypes.nTrophicLevels
                     '     Return m_NetworkManager.nTrophicLevels
                 Case eCoreCounterTypes.nRows
@@ -385,11 +385,11 @@ Public Class cCore
     ''' Number of Ecospace external driver layers.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nDriverLayers"/>.
+    ''' See <see cref="eCoreCounterTypes.nEnvironmentalLayers"/>.
     ''' </remarks>
-    Public ReadOnly Property nDriverLayers() As Integer
+    Public ReadOnly Property nEnvironmentalLayers() As Integer
         Get
-            Return Me.m_EcoSpaceData.nDriverLayers
+            Return Me.m_EcoSpaceData.nEnvironmentalLayers
         End Get
     End Property
 
@@ -9175,13 +9175,13 @@ Public Class cCore
 
         Dim dest As cEcospaceLayerDriver = Nothing
 
-        For i As Integer = 1 To Me.m_EcoSpaceData.nDriverLayers
+        For i As Integer = 1 To Me.m_EcoSpaceData.nEnvironmentalLayers
 
             dest = Me.m_EcospaceBasemap.LayerDriver(i)
             dest.AllowValidation = False
             dest.Index = i
-            dest.Name = Me.m_EcoSpaceData.DriverLayerName(i)
-            dest.Description = Me.m_EcoSpaceData.DriverLayerDescription(i)
+            dest.Name = Me.m_EcoSpaceData.EnvironmentalLayerName(i)
+            dest.Description = Me.m_EcoSpaceData.EnvironmentalLayerDescription(i)
             dest.AllowValidation = True
 
         Next i
@@ -9236,8 +9236,8 @@ Public Class cCore
 
         For i As Integer = 1 To Me.m_EcoSpaceData.nImportanceLayers
             src = Me.m_EcospaceBasemap.LayerDriver(i)
-            Me.m_EcoSpaceData.DriverLayerName(i) = src.Name
-            Me.m_EcoSpaceData.DriverLayerDescription(i) = src.Description
+            Me.m_EcoSpaceData.EnvironmentalLayerName(i) = src.Name
+            Me.m_EcoSpaceData.EnvironmentalLayerDescription(i) = src.Description
         Next i
 
     End Sub

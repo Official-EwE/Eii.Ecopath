@@ -215,8 +215,8 @@ Public Class cEcospaceBasemap
             For i As Integer = 1 To ecospaceDS.nImportanceLayers
                 Me.m_lLayerImportance.Add(New cEcospaceLayerImportance(Me.m_core, ecospaceDS.ImportanceLayerDBID(i), Me, i))
             Next
-            For i As Integer = 1 To ecospaceDS.nDriverLayers
-                Me.m_lLayerDriver.Add(New cEcospaceLayerDriver(Me.m_core, ecospaceDS.DriverLayerDBID(i), Me, i))
+            For i As Integer = 1 To ecospaceDS.nEnvironmentalLayers
+                Me.m_lLayerDriver.Add(New cEcospaceLayerDriver(Me.m_core, ecospaceDS.EnvironmentalLayerDBID(i), Me, i))
             Next
 
             ' Migration
@@ -715,7 +715,7 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerImportance
                 Return Me.m_core.m_EcoSpaceData.ImportanceLayerMap
             Case eVarNameFlags.LayerDriver
-                Return Me.m_core.m_EcoSpaceData.DriverLayerMap
+                Return Me.m_core.m_EcoSpaceData.EnvironmentalLayerMap
             Case eVarNameFlags.LayerPort
                 Return Me.m_core.m_EcoSpaceData.Port
             Case eVarNameFlags.LayerSail

@@ -498,7 +498,7 @@ Namespace Ecospace.Basemap.Layers
 
                 Case eVarNameFlags.LayerDriver
 
-                    For iLayer As Integer = 1 To core.nDriverLayers
+                    For iLayer As Integer = 1 To core.nEnvironmentalLayers
 
                         Dim src As cEcospaceLayerDriver = core.EcospaceBasemap.LayerDriver(iLayer)
                         key = New cValueID(src.DataType, src.DBID, eVarNameFlags.Name)

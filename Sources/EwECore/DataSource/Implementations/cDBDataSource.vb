@@ -7154,7 +7154,7 @@ Namespace DataSources
             ecospaceDS.nFleets = ecopathDS.NumFleet
             ecospaceDS.nLiving = ecopathDS.NumLiving
             ecospaceDS.nImportanceLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioWeightLayer WHERE ScenarioID={0}", iScenarioID)))
-            ecospaceDS.nDriverLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID)))
+            ecospaceDS.nEnvironmentalLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID)))
 
             ' Next is a dangerous solution that may need to be revamped. It is assumed that
             ' SetDefaults properly redimensions the ecospaceDS group variables, which
@@ -9476,12 +9476,12 @@ Namespace DataSources
                 While readerLayer.Read()
 
                     iLayer += 1
-                    ecospaceDS.DriverLayerDBID(iLayer) = CInt(readerLayer("LayerID"))
-                    ecospaceDS.DriverLayerName(iLayer) = CStr(readerLayer("LayerName"))
-                    ecospaceDS.DriverLayerDescription(iLayer) = CStr(readerLayer("LayerDescription"))
+                    ecospaceDS.EnvironmentalLayerDBID(iLayer) = CInt(readerLayer("LayerID"))
+                    ecospaceDS.EnvironmentalLayerName(iLayer) = CStr(readerLayer("LayerName"))
+                    ecospaceDS.EnvironmentalLayerDescription(iLayer) = CStr(readerLayer("LayerDescription"))
 
                     Dim strMap As String = CStr(Me.m_db.ReadSafe(readerLayer, "LayerMap", ""))
-                    bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.DriverLayerMap, ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.EnvironmentalLayerMap, ecospaceDS.Depth)
                 End While
 
             Catch ex As Exception
@@ -9509,7 +9509,7 @@ Namespace DataSources
                 While reader.Read()
                     Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
                     Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacitMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ShapeID")))
-                    Dim iMap As Integer = Array.IndexOf(ecospaceDS.DriverLayerDBID, CInt(reader("VarDBID")))
+                    Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(reader("VarDBID")))
                     Dim varName As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
 
                     If (iGroup > 0) And (iShape > 0) And (varName <> eVarNameFlags.NotSet) Then
@@ -9558,10 +9558,10 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcospaceScenarioDriverLayer")
                 dt = writer.GetDataTable()
 
-                For iLayer As Integer = 1 To ecospaceDS.nDriverLayers
+                For iLayer As Integer = 1 To ecospaceDS.nEnvironmentalLayers
 
                     ' Try to find existing row
-                    objKeys(1) = idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.DriverLayerDBID(iLayer))
+                    objKeys(1) = idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iLayer))
                     drow = dt.Rows.Find(objKeys)
 
                     bNewRow = (iScenarioIDSrc <> iScenarioIDdest) Or (drow Is Nothing)
@@ -9570,16 +9570,16 @@ Namespace DataSources
                         drow = writer.NewRow()
                         drow("ScenarioID") = iScenarioIDdest
                         drow("LayerID") = lID
-                        idm.Add(eDataTypes.EcospaceLayerDriver, ecospaceDS.DriverLayerDBID(iLayer), lID)
+                        idm.Add(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iLayer), lID)
                         lID += 1
                     Else
                         drow.BeginEdit()
                     End If
 
                     drow("Sequence") = iLayer
-                    drow("LayerName") = ecospaceDS.DriverLayerName(iLayer)
-                    drow("LayerDescription") = ecospaceDS.DriverLayerDescription(iLayer)
-                    drow("LayerMap") = cStringUtils.ArrayToString(ecospaceDS.DriverLayerMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.Depth)
+                    drow("LayerName") = ecospaceDS.EnvironmentalLayerName(iLayer)
+                    drow("LayerDescription") = ecospaceDS.EnvironmentalLayerDescription(iLayer)
+                    drow("LayerMap") = cStringUtils.ArrayToString(ecospaceDS.EnvironmentalLayerMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.Depth)
 
                     If bNewRow Then
                         writer.AddRow(drow)
@@ -9616,7 +9616,7 @@ Namespace DataSources
             writer = Me.m_db.GetWriter("EcospaceScenarioCapacitDrivers")
 
             Try
-                For iMap As Integer = 0 To ecospaceDS.nDriverLayers
+                For iMap As Integer = 0 To ecospaceDS.nEnvironmentalLayers
                     For iGroup As Integer = 1 To ecopathDS.NumGroups
                         If (ecospaceDS.CapMapFunctions(iMap, iGroup) > 0) Then
                             drow = writer.NewRow()
@@ -9624,7 +9624,7 @@ Namespace DataSources
                             drow("GroupID") = ecopathDS.GroupDBID(iGroup)
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
                             drow("VarName") = cin.GetVarName(DirectCast(IIf(iMap = 0, eVarNameFlags.LayerDepth, eVarNameFlags.LayerDriver), eVarNameFlags))
-                            drow("VarDBID") = CInt(IIf(iMap = 0, 0, ecospaceDS.DriverLayerDBID(iMap)))
+                            drow("VarDBID") = CInt(IIf(iMap = 0, 0, ecospaceDS.EnvironmentalLayerDBID(iMap)))
                             writer.AddRow(drow)
                         End If
                     Next iGroup

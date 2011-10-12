@@ -246,13 +246,16 @@ Public Class cEcospaceDataStructures
     ''' <summary>Importance layer data (layer, row, col)</summary>
     Public ImportanceLayerMap(,,) As Single
 
-    ''' <summary>Number of Driver layers</summary>
-    Public nDriverLayers As Integer
-    Public DriverLayerDBID() As Integer
-    Public DriverLayerName() As String
-    Public DriverLayerDescription() As String
-    ''' <summary>Driver layer data (layer, row, col)</summary>
-    Public DriverLayerMap(,,) As Single
+    ''' <summary>Number of environmental layers</summary>
+    Public nEnvironmentalLayers As Integer
+    ''' <summary>Environmental layer database IDS</summary>
+    Public EnvironmentalLayerDBID() As Integer
+    ''' <summary>Environmental layer names</summary>
+    Public EnvironmentalLayerName() As String
+    ''' <summary>Environmental layer descriptions</summary>
+    Public EnvironmentalLayerDescription() As String
+    ''' <summary>Environmental layer data (layer, row, col)</summary>
+    Public EnvironmentalLayerMap(,,) As Single
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Summary data
@@ -1009,16 +1012,17 @@ Public Class cEcospaceDataStructures
             'jb PrefHab() was redimed here and redimHabitatVariables()
             '        ReDim PrefHab(nGroups, NoHabitats)
 
-            ReDim Me.CapMapFunctions(Me.nDriverLayers, Me.NGroups)
+            ' Allocate room for Depth map
+            ReDim Me.CapMapFunctions(Me.nEnvironmentalLayers + 1, Me.NGroups)
 
             ReDim Me.ImportanceLayerDBID(nImportanceLayers)
             ReDim Me.ImportanceLayerName(nImportanceLayers)
             ReDim Me.ImportanceLayerDescription(nImportanceLayers)
             ReDim Me.ImportanceLayerWeight(nImportanceLayers)
 
-            ReDim Me.DriverLayerDBID(nDriverLayers)
-            ReDim Me.DriverLayerName(nDriverLayers)
-            ReDim Me.DriverLayerDescription(nDriverLayers)
+            ReDim Me.EnvironmentalLayerDBID(nEnvironmentalLayers)
+            ReDim Me.EnvironmentalLayerName(nEnvironmentalLayers)
+            ReDim Me.EnvironmentalLayerDescription(nEnvironmentalLayers)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimMapVars() Error: " & ex.Message)
@@ -1170,7 +1174,7 @@ Public Class cEcospaceDataStructures
             ReDim DistributionEnvelope(InRow + 1, InCol + 1, NGroups)
 
             ReDim ImportanceLayerMap(Me.nImportanceLayers, InRow + 1, InCol + 1)
-            ReDim DriverLayerMap(Me.nDriverLayers, InRow + 1, InCol + 1)
+            ReDim EnvironmentalLayerMap(Me.nEnvironmentalLayers, InRow + 1, InCol + 1)
 
             ReDim MPAfishery(nFleets, 1)
             ReDim MPAmonth(12, 1)

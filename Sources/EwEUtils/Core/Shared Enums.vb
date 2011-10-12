@@ -2057,7 +2057,7 @@ Namespace Core
         ''' <summary>Number of importance layers.</summary>
         nImportanceLayers
         ''' <summary>Number of driver layers.</summary>
-        nDriverLayers
+        nEnvironmentalLayers
         ''' <summary>Number of years the game simulation can run for.</summary>
         nGameSimYears
         ''' <summary>Number of timesteps the game simulation can run for.</summary>
