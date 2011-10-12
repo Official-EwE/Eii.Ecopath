@@ -100,6 +100,9 @@
     <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EwE6, Version=6.3.1012.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=x86">
+      <ExecutableExtension>.exe</ExecutableExtension>
+    </Reference>
     <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ScientificInterfaceShared\Includes\SAUPUtil.dll</HintPath>
@@ -204,6 +207,9 @@
     </Compile>
     <Compile Include="Ecospace\Assets\Layers\Editing\GUI\ucLayerEditorGroup.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\gridMSEBatchTFMIter.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSEBatch\frmMSEBatchParameters.Designer.vb">
       <DependentUpon>frmMSEBatchParameters.vb</DependentUpon>

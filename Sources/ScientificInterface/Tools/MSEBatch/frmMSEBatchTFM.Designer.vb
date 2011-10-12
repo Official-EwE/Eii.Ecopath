@@ -26,69 +26,25 @@ Partial Class frmMSEBatchTFM
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.m_grid = New ScientificInterface.gridMSEBatchTFM()
-        Me.UpDwnIter = New System.Windows.Forms.NumericUpDown()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.btCalcIters = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txNTFM = New System.Windows.Forms.TextBox()
         Me.rbCalcTypePercent = New System.Windows.Forms.RadioButton()
         Me.rbCalcTypeValue = New System.Windows.Forms.RadioButton()
+        Me.tbGrids = New System.Windows.Forms.TabControl()
+        Me.pageGroups = New System.Windows.Forms.TabPage()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.UpDwnIter = New System.Windows.Forms.NumericUpDown()
+        Me.grdGroups = New ScientificInterface.gridMSEBatchTFM()
+        Me.pageIters = New System.Windows.Forms.TabPage()
+        Me.grdIters = New ScientificInterface.gridMSEBatchTFMIter()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.cbGroups = New System.Windows.Forms.ComboBox()
+        Me.tbGrids.SuspendLayout()
+        Me.pageGroups.SuspendLayout()
         CType(Me.UpDwnIter, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pageIters.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'm_grid
-        '
-        Me.m_grid.AllowBlockSelect = True
-        Me.m_grid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
-        Me.m_grid.AutoStretchRowsToFitHeight = False
-        Me.m_grid.BackColor = System.Drawing.Color.White
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_grid.CustomSort = False
-        Me.m_grid.FixedColumnWidths = False
-        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_grid.GridToolTipActive = True
-        Me.m_grid.iCurIter = 1
-        Me.m_grid.Location = New System.Drawing.Point(2, 83)
-        Me.m_grid.Name = "m_grid"
-        Me.m_grid.Size = New System.Drawing.Size(782, 389)
-        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.TabIndex = 5
-        Me.m_grid.UIContext = Nothing
-        '
-        'UpDwnIter
-        '
-        Me.UpDwnIter.Location = New System.Drawing.Point(92, 57)
-        Me.UpDwnIter.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.UpDwnIter.Name = "UpDwnIter"
-        Me.UpDwnIter.Size = New System.Drawing.Size(51, 20)
-        Me.UpDwnIter.TabIndex = 4
-        Me.UpDwnIter.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(9, 59)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(77, 13)
-        Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Show iteration "
         '
         'btCalcIters
         '
@@ -138,33 +94,186 @@ Partial Class frmMSEBatchTFM
         Me.rbCalcTypeValue.Text = "Upper lower bounds"
         Me.rbCalcTypeValue.UseVisualStyleBackColor = True
         '
+        'tbGrids
+        '
+        Me.tbGrids.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbGrids.Controls.Add(Me.pageGroups)
+        Me.tbGrids.Controls.Add(Me.pageIters)
+        Me.tbGrids.Location = New System.Drawing.Point(2, 79)
+        Me.tbGrids.Name = "tbGrids"
+        Me.tbGrids.SelectedIndex = 0
+        Me.tbGrids.Size = New System.Drawing.Size(882, 460)
+        Me.tbGrids.TabIndex = 10
+        '
+        'pageGroups
+        '
+        Me.pageGroups.Controls.Add(Me.Label1)
+        Me.pageGroups.Controls.Add(Me.UpDwnIter)
+        Me.pageGroups.Controls.Add(Me.grdGroups)
+        Me.pageGroups.Location = New System.Drawing.Point(4, 22)
+        Me.pageGroups.Name = "pageGroups"
+        Me.pageGroups.Padding = New System.Windows.Forms.Padding(3)
+        Me.pageGroups.Size = New System.Drawing.Size(874, 434)
+        Me.pageGroups.TabIndex = 0
+        Me.pageGroups.Text = "By groups"
+        Me.pageGroups.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(0, 7)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(77, 13)
+        Me.Label1.TabIndex = 7
+        Me.Label1.Text = "Show iteration "
+        '
+        'UpDwnIter
+        '
+        Me.UpDwnIter.Location = New System.Drawing.Point(80, 5)
+        Me.UpDwnIter.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.UpDwnIter.Name = "UpDwnIter"
+        Me.UpDwnIter.Size = New System.Drawing.Size(60, 20)
+        Me.UpDwnIter.TabIndex = 8
+        Me.UpDwnIter.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'grdGroups
+        '
+        Me.grdGroups.AllowBlockSelect = True
+        Me.grdGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.grdGroups.AutoSizeMinHeight = 10
+        Me.grdGroups.AutoSizeMinWidth = 10
+        Me.grdGroups.AutoStretchColumnsToFitWidth = False
+        Me.grdGroups.AutoStretchRowsToFitHeight = False
+        Me.grdGroups.BackColor = System.Drawing.Color.White
+        Me.grdGroups.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.grdGroups.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.grdGroups.CustomSort = False
+        Me.grdGroups.FixedColumnWidths = False
+        Me.grdGroups.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.grdGroups.GridToolTipActive = True
+        Me.grdGroups.iCurIter = 1
+        Me.grdGroups.Location = New System.Drawing.Point(0, 28)
+        Me.grdGroups.Name = "grdGroups"
+        Me.grdGroups.Size = New System.Drawing.Size(874, 406)
+        Me.grdGroups.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.grdGroups.TabIndex = 6
+        Me.grdGroups.UIContext = Nothing
+        '
+        'pageIters
+        '
+        Me.pageIters.Controls.Add(Me.Label3)
+        Me.pageIters.Controls.Add(Me.cbGroups)
+        Me.pageIters.Controls.Add(Me.grdIters)
+        Me.pageIters.Location = New System.Drawing.Point(4, 22)
+        Me.pageIters.Name = "pageIters"
+        Me.pageIters.Padding = New System.Windows.Forms.Padding(3)
+        Me.pageIters.Size = New System.Drawing.Size(874, 434)
+        Me.pageIters.TabIndex = 1
+        Me.pageIters.Text = "By iterations"
+        Me.pageIters.UseVisualStyleBackColor = True
+        '
+        'grdIters
+        '
+        Me.grdIters.AllowBlockSelect = True
+        Me.grdIters.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.grdIters.AutoSizeMinHeight = 10
+        Me.grdIters.AutoSizeMinWidth = 10
+        Me.grdIters.AutoStretchColumnsToFitWidth = False
+        Me.grdIters.AutoStretchRowsToFitHeight = False
+        Me.grdIters.BackColor = System.Drawing.Color.White
+        Me.grdIters.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.grdIters.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.grdIters.CustomSort = False
+        Me.grdIters.FixedColumnWidths = False
+        Me.grdIters.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.grdIters.GridToolTipActive = True
+        Me.grdIters.iSelGroup = 1
+        Me.grdIters.Location = New System.Drawing.Point(0, 29)
+        Me.grdIters.Name = "grdIters"
+        Me.grdIters.Size = New System.Drawing.Size(871, 402)
+        Me.grdIters.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.grdIters.TabIndex = 9
+        Me.grdIters.UIContext = Nothing
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(9, 9)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(64, 13)
+        Me.Label3.TabIndex = 11
+        Me.Label3.Text = "Show group"
+        '
+        'cbGroups
+        '
+        Me.cbGroups.FormattingEnabled = True
+        Me.cbGroups.Location = New System.Drawing.Point(79, 3)
+        Me.cbGroups.Name = "cbGroups"
+        Me.cbGroups.Size = New System.Drawing.Size(164, 21)
+        Me.cbGroups.TabIndex = 10
+        '
         'frmMSEBatchTFM
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(787, 475)
+        Me.ClientSize = New System.Drawing.Size(884, 539)
+        Me.Controls.Add(Me.tbGrids)
         Me.Controls.Add(Me.rbCalcTypeValue)
         Me.Controls.Add(Me.rbCalcTypePercent)
         Me.Controls.Add(Me.txNTFM)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.btCalcIters)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.UpDwnIter)
-        Me.Controls.Add(Me.m_grid)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEBatchTFM"
         Me.Text = "MSE batch TFM"
+        Me.tbGrids.ResumeLayout(False)
+        Me.pageGroups.ResumeLayout(False)
+        Me.pageGroups.PerformLayout()
         CType(Me.UpDwnIter, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pageIters.ResumeLayout(False)
+        Me.pageIters.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents UpDwnIter As System.Windows.Forms.NumericUpDown
-    Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents btCalcIters As System.Windows.Forms.Button
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents txNTFM As System.Windows.Forms.TextBox
-    Private WithEvents m_grid As ScientificInterface.gridMSEBatchTFM
     Friend WithEvents rbCalcTypePercent As System.Windows.Forms.RadioButton
     Friend WithEvents rbCalcTypeValue As System.Windows.Forms.RadioButton
+    Friend WithEvents tbGrids As System.Windows.Forms.TabControl
+    Friend WithEvents pageGroups As System.Windows.Forms.TabPage
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents UpDwnIter As System.Windows.Forms.NumericUpDown
+    Private WithEvents grdGroups As ScientificInterface.gridMSEBatchTFM
+    Friend WithEvents pageIters As System.Windows.Forms.TabPage
+    Friend WithEvents grdIters As ScientificInterface.gridMSEBatchTFMIter
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents cbGroups As System.Windows.Forms.ComboBox
 End Class

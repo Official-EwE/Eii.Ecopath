@@ -10,6 +10,24 @@ Imports EwECore.MSEBatchManager
 
 Public Class frmMSEBatchTFM
 
+
+    Private Class cCBWrapper
+        Private m_grp As cEcoPathGroupInput
+        Public Sub New(Group As cEcoPathGroupInput)
+            Me.m_grp = Group
+        End Sub
+
+        Public Overrides Function ToString() As String
+            Return m_grp.name
+        End Function
+
+        Public ReadOnly Property theGroup As cEcoPathGroupInput
+            Get
+                Return Me.m_grp
+            End Get
+        End Property
+    End Class
+
     Private m_BatchManager As EwECore.MSEBatchManager.cMSEBatchManager
 
     Public Sub New()
@@ -22,7 +40,8 @@ Public Class frmMSEBatchTFM
         End Get
         Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
             MyBase.UIContext = value
-            Me.m_grid.UIContext = Me.UIContext
+            Me.grdGroups.UIContext = Me.UIContext
+            Me.grdIters.UIContext = Me.UIContext
         End Set
     End Property
 
@@ -60,7 +79,7 @@ Public Class frmMSEBatchTFM
 
     End Sub
 
-    Private Sub UpDwnIter_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles UpDwnIter.Validating
+    Private Sub UpDwnIter_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs)
 
     End Sub
 
@@ -69,7 +88,7 @@ Public Class frmMSEBatchTFM
         Dim iter As Integer = CInt(Me.UpDwnIter.Value)
         If Me.m_BatchManager Is Nothing Then Exit Sub
         If iter <= Me.m_BatchManager.Parameters.nTFMIteration Then
-            Me.m_grid.iCurIter = iter
+            Me.grdGroups.iCurIter = iter
         End If
     End Sub
 
@@ -86,7 +105,7 @@ Public Class frmMSEBatchTFM
                 If rb.Checked Then
                     Me.m_BatchManager.Parameters.IterCalcType = DirectCast(rb.Tag, EwEUtils.Core.eMSEBatchIterCalcTypes)
 
-                    Me.m_grid.RefreshContent()
+                    Me.grdGroups.RefreshContent()
                 End If
             End If
         Catch ex As Exception
@@ -102,6 +121,20 @@ Public Class frmMSEBatchTFM
         Me.rbCalcTypePercent.Checked = (pars.IterCalcType = eMSEBatchIterCalcTypes.Percent)
         Me.rbCalcTypeValue.Checked = (pars.IterCalcType = eMSEBatchIterCalcTypes.UpperLowerValues)
 
+        For igrp As Integer = 1 To Me.UIContext.Core.nGroups
+            Dim grp As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(igrp)
+            If grp.IsFished Then
+                Me.cbGroups.Items.Add(New cCBWrapper(grp))
+            End If
+        Next
+
+    End Sub
+
+
+    Private Sub cbGroups_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cbGroups.SelectedIndexChanged
+        If Me.m_BatchManager Is Nothing Then Exit Sub
+        Dim grp As cEcoPathGroupInput = DirectCast(Me.cbGroups.SelectedItem, cCBWrapper).theGroup
+        Me.grdIters.iSelGroup = grp.Index
     End Sub
 
 
