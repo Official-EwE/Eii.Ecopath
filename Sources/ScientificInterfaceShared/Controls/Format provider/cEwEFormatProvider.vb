@@ -160,6 +160,13 @@ Namespace Controls
             ''' -----------------------------------------------------------------------
             Property Items() As Object()
 
+            ''' -----------------------------------------------------------------------
+            ''' <summary>
+            ''' Get the wrapped control.
+            ''' </summary>
+            ''' -----------------------------------------------------------------------
+            ReadOnly Property Control As Control
+
         End Interface
 
 #End Region ' Interface IControlWrapper
@@ -314,6 +321,12 @@ Namespace Controls
                 End Get
                 Set(ByVal value As Object())
                 End Set
+            End Property
+
+            Public ReadOnly Property Control As System.Windows.Forms.Control Implements IControlWrapper.Control
+                Get
+                    Return Me.m_tb
+                End Get
             End Property
 
 #End Region ' Implementation
@@ -508,6 +521,12 @@ Namespace Controls
                 End Set
             End Property
 
+            Public ReadOnly Property Control As System.Windows.Forms.Control Implements IControlWrapper.Control
+                Get
+                    Return Me.m_ud
+                End Get
+            End Property
+
 #End Region ' Implementation
 
 #Region " NumericUpDown events "
@@ -554,7 +573,7 @@ Namespace Controls
 
 #End Region ' Style guide events
 
-        End Class
+       End Class
 
 #End Region ' Class NumericUpDownWrapper
 
@@ -747,6 +766,12 @@ Namespace Controls
                 End Set
             End Property
 
+            Public ReadOnly Property Control As System.Windows.Forms.Control Implements IControlWrapper.Control
+                Get
+                    Return Me.m_cmb
+                End Get
+            End Property
+
 #End Region ' Implementation 
 
 #Region " ComboBox events "
@@ -915,6 +940,12 @@ Namespace Controls
                 End Set
             End Property
 
+            Public ReadOnly Property Control As System.Windows.Forms.Control Implements IControlWrapper.Control
+                Get
+                    Return Me.m_cb
+                End Get
+            End Property
+
 #End Region ' Implementation
 
 #Region " Control events "
@@ -1064,6 +1095,12 @@ Namespace Controls
                 End Set
             End Property
 
+            Public ReadOnly Property Control As System.Windows.Forms.Control Implements IControlWrapper.Control
+                Get
+                    Return Me.m_lb
+                End Get
+            End Property
+
 #End Region ' Implementation
 
         End Class
@@ -1093,12 +1130,12 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Create a format provider for a control.
         ''' </summary>
-        ''' <param name="ctrl"></param>
-        ''' <param name="tValue"></param>
-        ''' <param name="aItems"></param>
-        ''' <param name="metadata"></param>
+        ''' <param name="uic">The UI context to use.</param>
+        ''' <param name="ctrl">The control to wrap.</param>
+        ''' <param name="metadata">Optional metadata to limit value ranges in the
+        ''' control.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal ctrl As Control, _
@@ -1118,6 +1155,8 @@ Namespace Controls
             Me.UIContext = uic
             ' Respond to styleguide changes
             AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            ' Respond to control closure events
+            AddHandler Me.m_ctrlWrapper.Control.HandleDestroyed, AddressOf OnControlClosing
 
         End Sub
 
@@ -1138,9 +1177,15 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Create a format provider for a control, deriving its value from an 
+        ''' enumerated type.
         ''' </summary>
-        ''' <param name="ctrl"></param>
+        ''' <param name="uic">The UI context to use.</param>
+        ''' <param name="ctrl">The control to wrap.</param>
+        ''' <param name="formatter"><see cref="IFormatProvider"/> that provides
+        ''' a range of values to display in the control.</param>
+        ''' <param name="metadata">Optional metadata to limit value ranges in the
+        ''' control.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal ctrl As Control, _
@@ -1159,7 +1204,8 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Sub Release()
-            If Me.m_ctrlWrapper IsNot Nothing Then
+            If (Me.m_ctrlWrapper IsNot Nothing) Then
+                RemoveHandler Me.m_ctrlWrapper.Control.HandleDestroyed, AddressOf OnControlClosing
                 Me.m_ctrlWrapper.Release()
                 Me.m_ctrlWrapper = Nothing
             End If
@@ -1310,6 +1356,22 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
             Me.UpdateContent()
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler, responded 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnControlClosing(ByVal sender As Object, ByVal args As EventArgs)
+
+            ' Pre
+            Debug.Assert(Me.m_ctrlWrapper IsNot Nothing)
+            Debug.Assert(Me.m_ctrlWrapper.Control IsNot Nothing)
+
+            Console.WriteLine("Format provider for control " & Me.m_ctrlWrapper.Control.Name & " auto-releasing")
+            Me.Release()
+
         End Sub
 
         ''' -----------------------------------------------------------------------
