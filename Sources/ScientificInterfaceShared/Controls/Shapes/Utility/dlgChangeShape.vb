@@ -144,38 +144,39 @@ Namespace Controls
 
         End Sub
 
-        'Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btDefaults.Click
+            Dim sA As Single = 0.0
+            Dim sB As Single = 0.0
+            Dim sC As Single = 0.0
+            Dim sD As Single = 0.0
 
+            Select Case Me.SelectedShapeType
+                Case eShapeFunctionType.NotSet
+                    sA = Me.m_shape.YZero : sB = Me.m_shape.YEnd : sC = Me.m_shape.YBase : sD = Me.m_shape.Steep
+                Case eShapeFunctionType.Linear
+                    sA = 1.0! : sB = 1.0!
+                Case eShapeFunctionType.Exponential
+                    sA = 1.0! : sB = 5.0! : sC = 0.2!
+                Case eShapeFunctionType.Hyperbolic
+                    sA = 1.0! : sB = 3.0! : sC = 0.75
+                Case eShapeFunctionType.Sigmoid
+                    sA = 0.0! : sB = 1.0! : sC = 4.0 : sD = 2.0
+                Case eShapeFunctionType.Betapdf
+                    sA = 2.0F
+                    sB = 3.0F
+                Case eShapeFunctionType.Normal
+                    sA = 1.0! : sB = 1.0! : sC = 10.0!
+            End Select
 
-        '    Dim sA As Single = 0.0
-        '    Dim sB As Single = 0.0
-        '    Dim sC As Single = 0.0
-        '    Dim sD As Single = 0.0
+            Me.m_fpA.Value = sA
+            Me.m_fpB.Value = sB
+            Me.m_fpC.Value = sC
+            Me.m_fpD.Value = sD
 
-        '    Select Case Me.SelectedShapeType
-        '        Case eShapeFunctionType.NotSet
-        '            sA = Me.m_shape.YZero : sB = Me.m_shape.YEnd : sC = Me.m_shape.YBase : sD = Me.m_shape.Steep
-        '        Case eShapeFunctionType.Linear
-        '            sA = 1.0! : sB = 1.0!
-        '        Case eShapeFunctionType.Exponential
-        '            sA = 1.0! : sB = 5.0! : sC = 0.2!
-        '        Case eShapeFunctionType.Hyperbolic
-        '            sA = 1.0! : sB = 1.0! : sD = 0.5!
-        '        Case eShapeFunctionType.Sigmoid
-        '        Case eShapeFunctionType.Betapdf
-        '        Case eShapeFunctionType.Normal
-        '            sB = 1.0! : sB = 1.0! : sC = 0.5!
-        '    End Select
+            Me.UpdatePreview()
+            Me.UpdateControls()
 
-        '    Me.m_fpA.Value = sA
-        '    Me.m_fpB.Value = sB
-        '    Me.m_fpC.Value = sC
-        '    Me.m_fpD.Value = sD
-
-        '    Me.UpdatePreview()
-        '    Me.UpdateControls()
-
-        'End Sub
+        End Sub
 
         Private Sub OnOk(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnOk.Click
@@ -326,7 +327,6 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
-
             Me.SuspendLayout()
 
             Dim bEnableA As Boolean = False
@@ -349,7 +349,11 @@ Namespace Controls
                     bEnableA = True : bEnableB = True : bEnableC = True : bEnableD = True
 
                 Case eShapeFunctionType.Hyperbolic
+
+                    '                 bEnableA = True : bEnableB = True : bEnableC = True : bEnableD = True
+
                     bEnableA = True : bEnableB = True : bEnableC = True
+
 
                 Case eShapeFunctionType.Exponential
                     bEnableA = True : bEnableC = True
@@ -566,29 +570,29 @@ Namespace Controls
             d = 1.0F / d
             h = d
 
-            For m = 1 To MAXIT ' - 1 '(m=1;m<=MAXIT;m++) 
-                m2 = 2 * m
-                aa = m * (b - m) * x / ((qam + m2) * (a + m2))
-                d = 1.0F + aa * d ' One step (the even one) of the recurrence.
-                If (Math.Abs(d) < FPMIN) Then d = FPMIN
-                c = 1.0F + aa / c
-                If (Math.Abs(c) < FPMIN) Then c = FPMIN 'if (fabs(c) < FPMIN) c=FPMIN;
-                d = 1.0F / d
-                h *= d * c
-                aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
-                d = 1.0F + aa * d ' Next step of the recurrence (the odd one).
-                If (Math.Abs(d) < FPMIN) Then d = FPMIN
-                c = 1.0F + aa / c
-                If (Math.Abs(c) < FPMIN) Then c = FPMIN
-                d = 1.0F / d
-                del = d * c
-                h *= del
-                If (Math.Abs(del - 1.0) < EPS) Then Exit For ' Are we done?'if (fabs(del-1.0) < EPS) break; Are we done?
+                    For m = 1 To MAXIT ' - 1 '(m=1;m<=MAXIT;m++) 
+                        m2 = 2 * m
+                        aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+                        d = 1.0F + aa * d ' One step (the even one) of the recurrence.
+                        If (Math.Abs(d) < FPMIN) Then d = FPMIN
+                        c = 1.0F + aa / c
+                        If (Math.Abs(c) < FPMIN) Then c = FPMIN 'if (fabs(c) < FPMIN) c=FPMIN;
+                        d = 1.0F / d
+                        h *= d * c
+                        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+                        d = 1.0F + aa * d ' Next step of the recurrence (the odd one).
+                        If (Math.Abs(d) < FPMIN) Then d = FPMIN
+                        c = 1.0F + aa / c
+                        If (Math.Abs(c) < FPMIN) Then c = FPMIN
+                        d = 1.0F / d
+                        del = d * c
+                        h *= del
+                        If (Math.Abs(del - 1.0) < EPS) Then Exit For ' Are we done?'if (fabs(del-1.0) < EPS) break; Are we done?
 
-            Next
+                    Next
 
-            'if (m > MAXIT) nrerror("a or b too big, or MAXIT too small in betacf");
-            Return h
+                    'if (m > MAXIT) nrerror("a or b too big, or MAXIT too small in betacf");
+                    Return h
 
         End Function
 
@@ -657,6 +661,7 @@ Namespace Controls
 
 #End Region ' Private method helpers
 
+        
     End Class
 
 End Namespace

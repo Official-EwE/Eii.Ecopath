@@ -37,6 +37,7 @@ Partial Class dlgChangeShape
             Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpParams = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_btDefaults = New System.Windows.Forms.Button()
             Me.m_tlpParams.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -136,6 +137,12 @@ Partial Class dlgChangeShape
             Me.m_tlpParams.Controls.Add(Me.m_tbxD, 1, 3)
             Me.m_tlpParams.Name = "m_tlpParams"
             '
+            'm_btDefaults
+            '
+            resources.ApplyResources(Me.m_btDefaults, "m_btDefaults")
+            Me.m_btDefaults.Name = "m_btDefaults"
+            Me.m_btDefaults.UseVisualStyleBackColor = True
+            '
             'dlgChangeShape
             '
             Me.AcceptButton = Me.m_btnOk
@@ -143,6 +150,7 @@ Partial Class dlgChangeShape
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_btDefaults)
             Me.Controls.Add(Me.m_tlpParams)
             Me.Controls.Add(Me.m_lbShapeFunctionTypes)
             Me.Controls.Add(Me.m_hdrShape)
@@ -173,6 +181,7 @@ Partial Class dlgChangeShape
         Private WithEvents m_hdrShape As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_lbShapeFunctionTypes As System.Windows.Forms.ListBox
         Private WithEvents m_tlpParams As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents m_btDefaults As System.Windows.Forms.Button
 
     End Class
 
