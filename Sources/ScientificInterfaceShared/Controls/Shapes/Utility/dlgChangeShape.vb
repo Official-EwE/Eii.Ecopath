@@ -144,38 +144,38 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnDefaults.Click
+        'Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-            Dim sA As Single = 0.0
-            Dim sB As Single = 0.0
-            Dim sC As Single = 0.0
-            Dim sD As Single = 0.0
 
-            Select Case Me.SelectedShapeType
-                Case eShapeFunctionType.NotSet
-                    sA = Me.m_shape.YZero : sB = Me.m_shape.YEnd : sC = Me.m_shape.YBase : sD = Me.m_shape.Steep
-                Case eShapeFunctionType.Linear
-                    sA = 1.0! : sB = 1.0!
-                Case eShapeFunctionType.Exponential
-                    sA = 1.0! : sB = 5.0! : sC = 0.2!
-                Case eShapeFunctionType.Hyperbolic
-                    sA = 1.0! : sB = 1.0! : sD = 0.5!
-                Case eShapeFunctionType.Sigmoid
-                Case eShapeFunctionType.Betapdf
-                Case eShapeFunctionType.Normal
-                    sB = 1.0! : sB = 1.0! : sC = 0.5!
-            End Select
+        '    Dim sA As Single = 0.0
+        '    Dim sB As Single = 0.0
+        '    Dim sC As Single = 0.0
+        '    Dim sD As Single = 0.0
 
-            Me.m_fpA.Value = sA
-            Me.m_fpB.Value = sB
-            Me.m_fpC.Value = sC
-            Me.m_fpD.Value = sD
+        '    Select Case Me.SelectedShapeType
+        '        Case eShapeFunctionType.NotSet
+        '            sA = Me.m_shape.YZero : sB = Me.m_shape.YEnd : sC = Me.m_shape.YBase : sD = Me.m_shape.Steep
+        '        Case eShapeFunctionType.Linear
+        '            sA = 1.0! : sB = 1.0!
+        '        Case eShapeFunctionType.Exponential
+        '            sA = 1.0! : sB = 5.0! : sC = 0.2!
+        '        Case eShapeFunctionType.Hyperbolic
+        '            sA = 1.0! : sB = 1.0! : sD = 0.5!
+        '        Case eShapeFunctionType.Sigmoid
+        '        Case eShapeFunctionType.Betapdf
+        '        Case eShapeFunctionType.Normal
+        '            sB = 1.0! : sB = 1.0! : sC = 0.5!
+        '    End Select
 
-            Me.UpdatePreview()
-            Me.UpdateControls()
+        '    Me.m_fpA.Value = sA
+        '    Me.m_fpB.Value = sB
+        '    Me.m_fpC.Value = sC
+        '    Me.m_fpD.Value = sD
 
-        End Sub
+        '    Me.UpdatePreview()
+        '    Me.UpdateControls()
+
+        'End Sub
 
         Private Sub OnOk(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnOk.Click
@@ -211,12 +211,8 @@ Namespace Controls
 
         Private Sub OnShapeFunctionTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_lbShapeFunctionTypes.SelectedIndexChanged
-            Try
-                Me.UpdateControls()
-                Me.UpdatePreview()
-            Catch ex As Exception
-
-            End Try
+            Me.UpdateControls()
+            Me.UpdatePreview()
         End Sub
 
         Private Sub OnInputValidated(ByVal sender As Object, ByVal e As System.EventArgs) _
@@ -347,24 +343,24 @@ Namespace Controls
                 Case eShapeFunctionType.NotSet
                     ' All input controls disabled
                 Case eShapeFunctionType.Linear
-                    bEnableD = True : bEnableC = True
+                    bEnableA = True : bEnableB = True
 
                 Case eShapeFunctionType.Sigmoid
                     bEnableA = True : bEnableB = True : bEnableC = True : bEnableD = True
 
                 Case eShapeFunctionType.Hyperbolic
-                    bEnableB = True : bEnableC = True : bEnableD = True
+                    bEnableA = True : bEnableB = True : bEnableC = True
 
                 Case eShapeFunctionType.Exponential
-                    bEnableB = True : bEnableD = True : bEnableC = True
+                    bEnableA = True : bEnableC = True
 
                 Case eShapeFunctionType.Betapdf
-                    bEnableD = True : bEnableC = True
+                    bEnableA = True : bEnableB = True
                     strLabelA = My.Resources.LABEL_A
                     strLabelB = My.Resources.LABEL_B
 
                 Case eShapeFunctionType.Normal
-                    bEnableB = True : bEnableC = True : bEnableD = True
+                    bEnableA = True : bEnableB = True : bEnableC = True
                     strLabelA = My.Resources.LABEL_SD_LEFT
                     strLabelB = My.Resources.LABEL_SD_RIGHT
                     strLabelC = My.Resources.LABEL_SD_WIDTH
@@ -373,22 +369,17 @@ Namespace Controls
                     Debug.Assert(False)
             End Select
 
-            ' Update labels
-            Me.m_lblA.Text = strLabelA
-            Me.m_lblB.Text = strLabelB
-            Me.m_lblC.Text = strLabelC
-            Me.m_lblD.Text = strLabelD
-
             ' Show/hide controls
             Me.m_lblA.Visible = bEnableA : Me.m_tbxA.Visible = bEnableA
             Me.m_lblB.Visible = bEnableB : Me.m_tbxB.Visible = bEnableB
             Me.m_lblC.Visible = bEnableC : Me.m_tbxC.Visible = bEnableC
             Me.m_lblD.Visible = bEnableD : Me.m_tbxD.Visible = bEnableD
 
-            'Me.m_fpA.Enabled = bEnableA
-            'Me.m_fpC.Enabled = bEnableB
-            'Me.m_fpB.Enabled = bEnableC
-            'Me.m_fpD.Enabled = bEnableD
+            ' Update labels
+            Me.m_lblA.Text = strLabelA
+            Me.m_lblB.Text = strLabelB
+            Me.m_lblC.Text = strLabelC
+            Me.m_lblD.Text = strLabelD
 
             Me.ResumeLayout(True)
 
