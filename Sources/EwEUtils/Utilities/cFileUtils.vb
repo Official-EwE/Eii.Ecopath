@@ -297,6 +297,48 @@ Namespace Utilities
 
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert an absolute path to a relative path.
+        ''' </summary>
+        ''' <param name="strRoot">The root path to translate the absolute path to.</param>
+        ''' <param name="strAbs">The absolute path to translate.</param>
+        ''' <returns>A path relative to <paramref name="strRoot"/></returns>
+        ''' -----------------------------------------------------------------------
+        Shared Function RelativePath(ByVal strRoot As String, ByVal strAbs As String) As String
+
+            Dim astrRoot As String() = Path.GetFullPath(strRoot).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
+            Dim astrAbs As String() = Path.GetFullPath(strAbs).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
+
+            Dim nShared As Integer = 0
+            For i As Integer = 0 To Math.Min(astrRoot.Length, astrAbs.Length) - 1
+                If String.Compare(astrRoot(i), astrAbs(i), True) = 0 Then
+                    nShared += 1
+                Else
+                    Exit For
+                End If
+            Next i
+
+            If nShared = 0 Then Return strAbs
+
+            Dim sbPathRel As New StringBuilder()
+            For i As Integer = nShared To astrRoot.Length - 1
+                If (i > nShared) Then sbPathRel.Append(Path.DirectorySeparatorChar)
+                sbPathRel.Append("..")
+            Next
+
+            If sbPathRel.Length = 0 Then
+                sbPathRel.Append(".")
+            End If
+
+            For i As Integer = nShared To astrAbs.Length - 1
+                sbPathRel.Append(Path.DirectorySeparatorChar)
+                sbPathRel.Append(astrAbs(i))
+            Next
+
+            Return sbPathRel.ToString
+        End Function
+
     End Class
 
 End Namespace
