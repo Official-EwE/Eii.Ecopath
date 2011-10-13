@@ -47,7 +47,7 @@ Public Class gridMSEBatchTFMIter
         Me.Redim(1, iNumCols)
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME & "-iteration# ")
         Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit") 'B lim(-)
         Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Biomass base")
         Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F max.")
