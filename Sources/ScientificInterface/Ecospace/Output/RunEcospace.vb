@@ -615,6 +615,8 @@ Namespace Ecospace
                     Dim icc As Single
 
                     icc = baseMap(iFleet, i, j) * cScaler
+                    'Convert to effort per unit of area
+                    icc = baseMap(iFleet, i, j) * cScaler '/ cEcospaceDataStructures.Width(i)
 
                     'Boundary check
                     icc = Math.Max(Math.Min(cColourBins, icc), 0)

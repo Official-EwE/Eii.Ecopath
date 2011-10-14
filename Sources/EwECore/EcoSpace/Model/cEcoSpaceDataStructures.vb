@@ -106,9 +106,19 @@ Public Class cEcospaceDataStructures
     Public HabitatText() As String
 
     ''' <summary>The proportion to which a group prefers a habitat.</summary>
+    ''' ''' <remarks>Indexed Group,Habitat</remarks>
     Public PrefHab(,) As Single
 
-    ''' <summary> Does this Fishing fleet use this habitat type </summary>
+    ''' <summary>The proportion of habitat type in a map cell.</summary>
+    ''' <remarks>Indexed Row,Col,Habitat</remarks>
+    Public PHabType(,,) As Single
+
+    ''' <summary>The proportion of map cell that is fished.</summary>
+    ''' <remarks>Indexed Row,Col,Gear</remarks>
+    Public PAreaFished(,,) As Single
+
+    ''' <summary>Does this Fishing fleet use this habitat type </summary>
+    ''' <remarks>Indexed Fleet,Habitat</remarks>
     Public GearHab(,) As Boolean
 
     ''' <summary>
@@ -906,6 +916,8 @@ Public Class cEcospaceDataStructures
                 ReDim HabAreaProportion(NoHabitats)
                 ReDim HabitatDBID(NoHabitats)
 
+                ReDim PHabType(Me.InRow, Me.InCol, NoHabitats)
+
                 ' JS 15oct07: fix for bug 289 - By default, GearHab and PrefHab are True for 'All' habitat
                 For iGroup As Integer = 0 To NGroups
                     PrefHab(iGroup, 0) = 1.0! ' True
@@ -929,7 +941,14 @@ Public Class cEcospaceDataStructures
 
             ReDim HabTime(NoHabChanges)
             ReDim HabChange(3, NoHabChanges)
-
+            ReDim PHabType(InRow, InCol, NoHabitats)
+            'For i As Integer = 1 To InRow
+            '    For j As Integer = 1 To InCol
+            '        For ihab As Integer = 1 To NoHabitats
+            '            PHabType(i, j, ihab) = 1.0F / NoHabitats
+            '        Next
+            '    Next
+            'Next
 
             'jb From EwE5
             'If NoHabitats = 1 Then 'this is first entry
@@ -1167,6 +1186,10 @@ Public Class cEcospaceDataStructures
 
             Me.allocate(CatchMap, InRow, InCol, nvartot)
 
+            ReDim PHabType(Me.InRow, Me.InCol, NoHabitats)
+            ReDim PAreaFished(Me.InRow, Me.InCol, nFleets)
+
+
             For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
             'Boolean maps
@@ -1188,7 +1211,7 @@ Public Class cEcospaceDataStructures
             Next 'set preferred habitat to 1 (pelagic) by default
 
             For i = 1 To InRow
-                Lat(i) = 0
+                Lat(i) = Lat1 - Me.CellLength * (i - 1) / (60 * 1.855F)
                 Width(i) = CSng(Math.Cos(Lat(i) / 90.0 * Math.PI / 2.0))
                 For j = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
@@ -1205,8 +1228,12 @@ Public Class cEcospaceDataStructures
                         DistributionEnvelope(i, j, igrp) = True
                     Next
 
-                Next
-            Next
+                    For ihab As Integer = 1 To NoHabitats
+                        PHabType(i, j, ihab) = 1.0F / NoHabitats
+                    Next
+
+                Next j
+            Next i
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimMapDims() Error: " & ex.Message)
@@ -1660,6 +1687,14 @@ Public Class cEcospaceDataStructures
     Public Sub setDebugCapMaps(ByVal CapEnvResData As cMediationDataStructures)
 
         Try
+            'set PHabType(,,) to 100% for cells that are loaded as a HabType from the database 
+            For irow As Integer = 1 To InRow
+                For icol As Integer = 1 To InCol
+
+                    PHabType(irow, icol, HabType(irow, icol)) = 1
+
+                Next icol
+            Next irow
 
             ' JS: removed, can now be created 'live'
             ''4 response functions
