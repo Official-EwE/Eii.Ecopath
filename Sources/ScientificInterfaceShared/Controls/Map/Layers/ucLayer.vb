@@ -5,6 +5,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -115,9 +116,9 @@ Namespace Controls.Map
         End Sub
 
         Public Sub EditLayer()
-            ' ToDo: send command
-            'Dim dlg As New dlgEditLayer(Me.m_uic, Me.m_layer, Nothing, openType)
-            'dlg.ShowDialog()
+            Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand("EditLayer")
+            cmd.Tag = Me.m_layer
+            cmd.Invoke()
         End Sub
 
         ''' <summary>

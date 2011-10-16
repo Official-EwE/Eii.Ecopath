@@ -139,6 +139,10 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditFleets As cCommand = Nothing
     Private WithEvents m_cmdEditTaxa As cCommand = Nothing
     Private WithEvents m_cmdEditPedigree As cEditPedigreeCommand = Nothing
+    Private WithEvents m_cmdImportTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdLoadTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdWeightTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdExportTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdEditBasemap As cCommand = Nothing
     Private WithEvents m_cmdEditHabitats As cCommand = Nothing
     Private WithEvents m_cmdEditRegions As cCommand = Nothing
@@ -147,10 +151,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
     Private WithEvents m_cmdImportLayerData As cCommand = Nothing
     Private WithEvents m_cmdExportLayerData As cCommand = Nothing
-    Private WithEvents m_cmdImportTimeSeries As cCommand = Nothing
-    Private WithEvents m_cmdLoadTimeSeries As cCommand = Nothing
-    Private WithEvents m_cmdWeightTimeSeries As cCommand = Nothing
-    Private WithEvents m_cmdExportTimeSeries As cCommand = Nothing
+    Private WithEvents m_cmdEditLayer As cCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
@@ -461,9 +462,8 @@ Public Class AppLauncher
         Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceInputMaps)
 
         Me.m_cmdImportLayerData = New cCommand(cmdh, "ImportLayerData")
-        Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
-
         Me.m_cmdExportLayerData = New cCommand(cmdh, "ExportLayerData")
+        Me.m_cmdEditLayer = New cCommand(cmdh, "EditLayer")
 
         'Create and configure ImportTimeSeries command
         Me.m_cmdImportTimeSeries = New cCommand(cmdh, "ImportTimeSeries")
@@ -3505,6 +3505,32 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
     End Sub
 
+    ''' <summary>
+    ''' Command handler; invokes the export layers dialog.
+    ''' </summary>
+    Private Sub OnInvokeEditLayer(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEditLayer.OnInvoke
+
+        Try
+            Dim fact As New cLayerFactoryInternal()
+            Dim dlg As New dlgEditLayer(Me.UIContext, DirectCast(cmd.Tag, cLayer), _
+                                        fact.GetLayers(Me.UIContext, eVarNameFlags.LayerDepth)(0), _
+                                        dlgEditLayer.eOpenDialogTypes.Data)
+            dlg.ShowDialog()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the 
+    ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
+    ''' </summary>
+    Private Sub OnUpdateEditLayer(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Handles m_cmdEditLayer.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
+    End Sub
 #End Region ' Ecospace commands
 
 #Region " Ecotracer commands "
