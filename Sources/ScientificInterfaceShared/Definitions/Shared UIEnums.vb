@@ -153,5 +153,10 @@ Namespace Definitions
         Line
     End Enum
 
+    Public Enum eLayerEditTypes As Byte
+        EditData
+        EditVisuals
+    End Enum
+
 End Namespace
 

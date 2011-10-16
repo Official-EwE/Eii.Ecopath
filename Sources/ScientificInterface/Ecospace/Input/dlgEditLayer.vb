@@ -35,7 +35,7 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>Original layer this dialog was invoked for.</summary>
         Private m_layerOriginal As cLayer = Nothing
         Private m_layerDepth As cLayer = Nothing
-        Private m_openType As eOpenDialogTypes
+        Private m_edittype As eLayerEditTypes
 
         ''' <summary>Work layer (a copy of the original) for this dialog to work on.</summary>
         Private m_layerWork As cLayer = Nothing
@@ -52,11 +52,6 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Constructors "
 
-        Public Enum eOpenDialogTypes As Integer
-            Appearance = 0
-            Data
-        End Enum
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' 
@@ -67,7 +62,7 @@ Namespace Ecospace.Basemap.Layers
         Public Sub New(ByVal uic As cUIContext, _
                        ByRef layer As cLayer, _
                        ByVal layerDepth As cLayer, _
-                       ByVal opentype As eOpenDialogTypes)
+                       ByVal edittype As eLayerEditTypes)
 
             Debug.Assert(layer IsNot Nothing)
 
@@ -76,7 +71,7 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_layerOriginal = layer
             Me.m_layerDepth = layerDepth
-            Me.m_openType = opentype
+            Me.m_edittype = edittype
 
             Me.m_layerWork = New cLayer(uic, layer) ' Work on a clone
             Me.m_layerWork.AllowValidation = False
@@ -108,7 +103,7 @@ Namespace Ecospace.Basemap.Layers
             End If
             Me.m_zoommap.PositionMode = ucMapZoom.ePositionModeTypes.Center
 
-            Me.m_tcLayerView.SelectedIndex = CInt(Me.m_openType)
+            Me.m_tcLayerView.SelectedIndex = CInt(Me.m_edittype)
 
             If Me.m_ucEditVisualStyle IsNot Nothing Then
                 AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged

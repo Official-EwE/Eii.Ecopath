@@ -36,8 +36,12 @@ Namespace Ecospace.Basemap.Layers
             Me.m_btnDataExport = New System.Windows.Forms.Button()
             Me.m_plEditVisualStyle = New System.Windows.Forms.Panel()
             Me.m_tcLayerView = New System.Windows.Forms.TabControl()
-            Me.m_tbAppearance = New System.Windows.Forms.TabPage()
-            Me.m_zoommap = New ucMapZoom()
+            Me.m_tpData = New System.Windows.Forms.TabPage()
+            Me.m_tsGrid = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_hdrStaticData = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_grid = New ScientificInterface.gridLayerData()
+            Me.m_tpAppearance = New System.Windows.Forms.TabPage()
+            Me.m_zoommap = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
             Me.m_scDetails = New System.Windows.Forms.SplitContainer()
             Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
@@ -46,20 +50,16 @@ Namespace Ecospace.Basemap.Layers
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_tpData = New System.Windows.Forms.TabPage()
-            Me.m_tsGrid = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_hdrStaticData = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_grid = New ScientificInterface.gridLayerData()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
-            Me.m_tbAppearance.SuspendLayout()
+            Me.m_tpData.SuspendLayout()
+            Me.m_tpAppearance.SuspendLayout()
             CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scDetails.Panel1.SuspendLayout()
             Me.m_scDetails.Panel2.SuspendLayout()
             Me.m_scDetails.SuspendLayout()
             Me.m_tlpDetails.SuspendLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_tpData.SuspendLayout()
             Me.SuspendLayout()
             '
             'TableLayoutPanel1
@@ -127,24 +127,77 @@ Namespace Ecospace.Basemap.Layers
             'm_tcLayerView
             '
             resources.ApplyResources(Me.m_tcLayerView, "m_tcLayerView")
-            Me.m_tcLayerView.Controls.Add(Me.m_tbAppearance)
             Me.m_tcLayerView.Controls.Add(Me.m_tpData)
+            Me.m_tcLayerView.Controls.Add(Me.m_tpAppearance)
             Me.m_tcLayerView.Name = "m_tcLayerView"
             Me.m_tcLayerView.SelectedIndex = 0
             '
-            'm_tbAppearance
+            'm_tpData
             '
-            Me.m_tbAppearance.Controls.Add(Me.m_zoommap)
-            Me.m_tbAppearance.Controls.Add(Me.m_scDetails)
-            resources.ApplyResources(Me.m_tbAppearance, "m_tbAppearance")
-            Me.m_tbAppearance.Name = "m_tbAppearance"
-            Me.m_tbAppearance.UseVisualStyleBackColor = True
+            Me.m_tpData.Controls.Add(Me.m_tsGrid)
+            Me.m_tpData.Controls.Add(Me.m_hdrStaticData)
+            Me.m_tpData.Controls.Add(Me.m_btnDataExport)
+            Me.m_tpData.Controls.Add(Me.m_btnDataImport)
+            Me.m_tpData.Controls.Add(Me.m_grid)
+            resources.ApplyResources(Me.m_tpData, "m_tpData")
+            Me.m_tpData.Name = "m_tpData"
+            Me.m_tpData.UseVisualStyleBackColor = True
+            '
+            'm_tsGrid
+            '
+            resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
+            Me.m_tsGrid.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsGrid.Name = "m_tsGrid"
+            Me.m_tsGrid.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_hdrStaticData
+            '
+            resources.ApplyResources(Me.m_hdrStaticData, "m_hdrStaticData")
+            Me.m_hdrStaticData.CanCollapseParent = False
+            Me.m_hdrStaticData.CollapsedParentHeight = 0
+            Me.m_hdrStaticData.IsCollapsed = False
+            Me.m_hdrStaticData.Name = "m_hdrStaticData"
+            '
+            'm_grid
+            '
+            Me.m_grid.AllowBlockSelect = True
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.CustomSort = False
+            Me.m_grid.FixedColumnWidths = True
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Layer = Nothing
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                        Or SourceGrid2.GridSpecialKeys.Delete) _
+                        Or SourceGrid2.GridSpecialKeys.Arrows) _
+                        Or SourceGrid2.GridSpecialKeys.Tab) _
+                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                        Or SourceGrid2.GridSpecialKeys.Enter) _
+                        Or SourceGrid2.GridSpecialKeys.Escape) _
+                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = False
+            Me.m_grid.UIContext = Nothing
+            '
+            'm_tpAppearance
+            '
+            Me.m_tpAppearance.Controls.Add(Me.m_zoommap)
+            Me.m_tpAppearance.Controls.Add(Me.m_scDetails)
+            resources.ApplyResources(Me.m_tpAppearance, "m_tpAppearance")
+            Me.m_tpAppearance.Name = "m_tpAppearance"
+            Me.m_tpAppearance.UseVisualStyleBackColor = True
             '
             'm_zoommap
             '
             resources.ApplyResources(Me.m_zoommap, "m_zoommap")
             Me.m_zoommap.Name = "m_zoommap"
-            Me.m_zoommap.PositionMode = ucMapZoom.ePositionModeTypes.Center
+            Me.m_zoommap.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
             Me.m_zoommap.UIContext = Nothing
             Me.m_zoommap.ZoomPercentage = 100.0!
             '
@@ -212,59 +265,6 @@ Namespace Ecospace.Basemap.Layers
             Me.m_hdrAppearance.IsCollapsed = False
             Me.m_hdrAppearance.Name = "m_hdrAppearance"
             '
-            'm_tpData
-            '
-            Me.m_tpData.Controls.Add(Me.m_tsGrid)
-            Me.m_tpData.Controls.Add(Me.m_hdrStaticData)
-            Me.m_tpData.Controls.Add(Me.m_btnDataExport)
-            Me.m_tpData.Controls.Add(Me.m_btnDataImport)
-            Me.m_tpData.Controls.Add(Me.m_grid)
-            resources.ApplyResources(Me.m_tpData, "m_tpData")
-            Me.m_tpData.Name = "m_tpData"
-            Me.m_tpData.UseVisualStyleBackColor = True
-            '
-            'm_tsGrid
-            '
-            resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
-            Me.m_tsGrid.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsGrid.Name = "m_tsGrid"
-            Me.m_tsGrid.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_hdrStaticData
-            '
-            resources.ApplyResources(Me.m_hdrStaticData, "m_hdrStaticData")
-            Me.m_hdrStaticData.CanCollapseParent = False
-            Me.m_hdrStaticData.CollapsedParentHeight = 0
-            Me.m_hdrStaticData.IsCollapsed = False
-            Me.m_hdrStaticData.Name = "m_hdrStaticData"
-            '
-            'm_grid
-            '
-            Me.m_grid.AllowBlockSelect = True
-            resources.ApplyResources(Me.m_grid, "m_grid")
-            Me.m_grid.AutoSizeMinHeight = 10
-            Me.m_grid.AutoSizeMinWidth = 10
-            Me.m_grid.AutoStretchColumnsToFitWidth = False
-            Me.m_grid.AutoStretchRowsToFitHeight = False
-            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
-            Me.m_grid.CustomSort = False
-            Me.m_grid.FixedColumnWidths = True
-            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_grid.GridToolTipActive = True
-            Me.m_grid.Layer = Nothing
-            Me.m_grid.Name = "m_grid"
-            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = False
-            Me.m_grid.UIContext = Nothing
-            '
             'dlgEditLayer
             '
             resources.ApplyResources(Me, "$this")
@@ -280,7 +280,8 @@ Namespace Ecospace.Basemap.Layers
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.m_tcLayerView.ResumeLayout(False)
-            Me.m_tbAppearance.ResumeLayout(False)
+            Me.m_tpData.ResumeLayout(False)
+            Me.m_tpAppearance.ResumeLayout(False)
             Me.m_scDetails.Panel1.ResumeLayout(False)
             Me.m_scDetails.Panel2.ResumeLayout(False)
             CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).EndInit()
@@ -288,7 +289,6 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tlpDetails.ResumeLayout(False)
             Me.m_tlpDetails.PerformLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_tpData.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -304,7 +304,7 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_btnDataExport As System.Windows.Forms.Button
         Private WithEvents m_tbNameValue As System.Windows.Forms.TextBox
         Private WithEvents m_tcLayerView As System.Windows.Forms.TabControl
-        Private WithEvents m_tbAppearance As System.Windows.Forms.TabPage
+        Private WithEvents m_tpAppearance As System.Windows.Forms.TabPage
         Private WithEvents m_tpData As System.Windows.Forms.TabPage
         Private WithEvents m_hdrStaticData As cEwEHeaderLabel
         Private WithEvents m_grid As gridLayerData

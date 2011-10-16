@@ -914,7 +914,13 @@ Namespace Ecosim
             Dim shape As cShapeData = Nothing
 
             ' Mortality shapes are 0-base indexed, fleets are 1-base indexed
-            shape = Core.FishingEffortShapeManager.Item(item.Index - 1)
+            If (item Is Nothing) Then
+                ' Get 'all fleets' effort shape
+                shape = Core.FishingEffortShapeManager.Item(Me.Core.nFleets)
+            Else
+                ' Get individual effort shape
+                shape = Core.FishingEffortShapeManager.Item(item.Index - 1)
+            End If
 
             If (Not TypeOf Me.m_shapeGUIHandler Is cFishingEffortShapeGUIHandler) Then
                 If (Not Me.m_shapeGUIHandler Is Nothing) Then
@@ -1088,6 +1094,7 @@ Namespace Ecosim
 
             Select Case Me.SelectionMode
                 Case eSelectionModeType.Fleets
+                    Me.m_tscbTarget.Items.Add(New cCoreInputOutputControlItem(SharedResources.GENERIC_VALUE_ALL))
                     For i As Integer = 1 To Me.Core.nFleets
                         Dim fleet As cFleetInput = Me.Core.FleetInputs(i)
                         Me.m_tscbTarget.Items.Add(New cCoreInputOutputControlItem(fleet))

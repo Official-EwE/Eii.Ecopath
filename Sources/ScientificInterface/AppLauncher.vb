@@ -151,7 +151,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
     Private WithEvents m_cmdImportLayerData As cCommand = Nothing
     Private WithEvents m_cmdExportLayerData As cCommand = Nothing
-    Private WithEvents m_cmdEditLayer As cCommand = Nothing
+    Private WithEvents m_cmdEditLayer As cEditLayerCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
@@ -463,7 +463,7 @@ Public Class AppLauncher
 
         Me.m_cmdImportLayerData = New cCommand(cmdh, "ImportLayerData")
         Me.m_cmdExportLayerData = New cCommand(cmdh, "ExportLayerData")
-        Me.m_cmdEditLayer = New cCommand(cmdh, "EditLayer")
+        Me.m_cmdEditLayer = New cEditLayerCommand(cmdh)
 
         'Create and configure ImportTimeSeries command
         Me.m_cmdImportTimeSeries = New cCommand(cmdh, "ImportTimeSeries")
@@ -3512,10 +3512,8 @@ Public Class AppLauncher
         Handles m_cmdEditLayer.OnInvoke
 
         Try
-            Dim fact As New cLayerFactoryInternal()
-            Dim dlg As New dlgEditLayer(Me.UIContext, DirectCast(cmd.Tag, cLayer), _
-                                        fact.GetLayers(Me.UIContext, eVarNameFlags.LayerDepth)(0), _
-                                        dlgEditLayer.eOpenDialogTypes.Data)
+            Dim cmdEditLayer As cEditLayerCommand = DirectCast(cmd, cEditLayerCommand)
+            Dim dlg As New dlgEditLayer(Me.UIContext, cmdEditLayer.Layer, cmdEditLayer.LayerDepth, cmdEditLayer.EditType)
             dlg.ShowDialog()
         Catch ex As Exception
 
@@ -3531,6 +3529,7 @@ Public Class AppLauncher
         Handles m_cmdEditLayer.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
     End Sub
+
 #End Region ' Ecospace commands
 
 #Region " Ecotracer commands "

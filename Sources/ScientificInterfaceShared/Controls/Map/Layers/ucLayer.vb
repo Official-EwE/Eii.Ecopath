@@ -2,10 +2,11 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -115,10 +116,14 @@ Namespace Controls.Map
             End If
         End Sub
 
-        Public Sub EditLayer()
-            Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand("EditLayer")
-            cmd.Tag = Me.m_layer
-            cmd.Invoke()
+        Public Sub EditLayer(ByVal edittype As eLayerEditTypes)
+
+            Try
+                Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
+                cmd.Invoke(Me.Layer, Nothing, edittype)
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         ''' <summary>
@@ -304,7 +309,7 @@ Namespace Controls.Map
 
                 Case eAreaTypes.Preview
                     Me.m_layer.Update(flag) : flag = 0
-                    Me.EditLayer()
+                    Me.EditLayer(eLayerEditTypes.EditVisuals)
 
                 Case eAreaTypes.Editable
                     Me.m_layer.Editor.IsEditable = Not Me.m_layer.Editor.IsEditable
@@ -326,7 +331,7 @@ Namespace Controls.Map
         End Sub
 
         Private Sub ucLayer_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.DoubleClick
-            Me.EditLayer()
+            Me.EditLayer(eLayerEditTypes.EditData)
         End Sub
 
         Private Sub ucLayer_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
