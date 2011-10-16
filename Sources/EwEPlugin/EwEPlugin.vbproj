@@ -113,6 +113,7 @@
     <Compile Include="Plugin templates\Ecopath\IEcopathClosedPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathRunCompletedPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathMassBalancePlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimLifespanPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimDataInitialized.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimModifyFGearPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimRunCompletedPostPlugin.vb" />
@@ -127,6 +128,7 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimRecruitmentPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimSubTimestepsPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceLifespanPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceCalcCostOfSailingPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceRunCompletedPlugin.vb" />
@@ -137,6 +139,7 @@
     <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospacePlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospacePostFishingEffortModTimestepPlugin.vb" />
+    <Compile Include="Plugin templates\Ecotracer\IEcotracerLifespanPlugin.vb" />
     <Compile Include="Plugin templates\Ecotracer\IEcotracerInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecotracer\IEcotracerPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IAutolaunchPlugin.vb" />
@@ -207,7 +210,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils</Name>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -6001,7 +6001,7 @@ Public Class cCore
         Try
 
             ' Update core state
-            Me.CloseEcosimScenario()
+             Me.CloseEcosimScenario()
 
             Me.m_EcoPathData.ActiveEcospaceScenario = -1
             Me.m_EcoPathData.ActiveEcotracerScenario = -1
@@ -6098,7 +6098,7 @@ Public Class cCore
 
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
-                Me.PluginManager.LoadEcosimScenario(ds)
+                Me.PluginManager.EcosimLoadScenario(ds)
                 Me.PluginManager.EcosimInitialized(m_EcoSimData)
             End If
 
@@ -6120,6 +6120,9 @@ Public Class cCore
     End Function
 
     Public Sub CloseEcosimScenario()
+
+        Me.CloseEcoSpaceScenario()
+        Me.CloseEcotracerScenario()
 
         Me.m_EcoPathData.ActiveEcosimScenario = -1
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -6175,6 +6178,11 @@ Public Class cCore
         If Me.m_EcosimStats IsNot Nothing Then
             Me.m_EcosimStats.Clear()
             Me.m_EcosimStats = Nothing
+        End If
+
+        ' Invoke plugin point
+        If (Me.PluginManager IsNot Nothing) Then
+            Me.PluginManager.EcosimCloseScenario()
         End If
 
         'Last thing Setting the state monitor can fire events that use the Ecosim and Ecospace data
@@ -8670,7 +8678,7 @@ Public Class cCore
 
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
-                Me.PluginManager.LoadEcospaceScenario(ds)
+                Me.PluginManager.EcospaceLoadScenario(ds)
                 Me.PluginManager.EcospaceInitialized(Me.m_EcoSpaceData)
             End If
 
@@ -8722,6 +8730,11 @@ Public Class cCore
             Me.m_EcospaceModelParams = Nothing
 
             Me.m_Ecospace.Clear()
+
+            ' Invoke plugin point
+            If (Me.PluginManager IsNot Nothing) Then
+                Me.PluginManager.EcospaceCloseScenario()
+            End If
 
             Me.m_StateMonitor.SetEcospaceLoaded(False)
 
@@ -10932,7 +10945,7 @@ Public Class cCore
             SendEcotracerLoadMessage(strScenarioName)
 
             ' Invoke plugin point
-            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.LoadEcotracerScenario(ds)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcotracerLoadScenario(ds)
             ' Update core state
             Me.m_StateMonitor.SetEcotracerLoaded(bSuccess)
 
@@ -10949,9 +10962,16 @@ Public Class cCore
 
     Public Sub CloseEcotracerScenario()
         Me.m_EcoPathData.ActiveEcotracerScenario = -1
+
+        ' Invoke plugin point
+        If (Me.PluginManager IsNot Nothing) Then
+            Me.PluginManager.EcotracerCloseScenario()
+        End If
+
         Me.m_StateMonitor.SetEcotracerLoaded(False)
         cLog.Write("Ecotracer scenario closed")
     End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Save the current Ecotracer scenario.

@@ -1033,7 +1033,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub LoadEcosimScenario(ByVal dataSource As Object)
+    Public Sub EcosimLoadScenario(ByVal dataSource As Object)
 
         ' Invoke IEcosimPlugin.LoadEcosimScenario(datasource)
         Me.TryInvokeMethod(GetType(IEcosimPlugin), "LoadEcosimScenario", New Object() {dataSource})
@@ -1055,6 +1055,18 @@ Public Class cPluginManager
 
         ' Invoke IEcosimPlugin.SaveEcosimScenario(datasource)
         Me.TryInvokeMethod(GetType(IEcosimPlugin), "SaveEcosimScenario", New Object() {dataSource})
+
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the CloseEcosimScenario plug-in point on any available and responsive 
+    ''' <see cref="IEcosimLifespanPlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Sub EcosimCloseScenario()
+
+        Me.TryInvokeMethod(GetType(IEcosimLifespanPlugin), "CloseEcosimScenario")
 
     End Sub
 
@@ -1230,7 +1242,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub LoadEcospaceScenario(ByVal dataSource As Object)
+    Public Sub EcospaceLoadScenario(ByVal dataSource As Object)
 
         ' Invoke IEcospacePlugin.LoadEcospaceScenario(dataSource)
         Me.TryInvokeMethod(GetType(IEcospacePlugin), "LoadEcospaceScenario", New Object() {dataSource})
@@ -1255,14 +1267,12 @@ Public Class cPluginManager
 
     End Function
 
-
     Public Function EcospaceRunCompleted(ByVal EcospaceDatastructures As Object) As Boolean
 
         ' Invoke IEcospaceInitializedPlugin.EcospaceInitialized(EcospaceDatastructures)
         Me.TryInvokeMethod(GetType(IEcospaceRunCompletedPlugin), "EcospaceRunCompleted", New Object() {EcospaceDatastructures})
 
     End Function
-
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -1281,6 +1291,20 @@ Public Class cPluginManager
         Me.TryInvokeMethod(GetType(IEcospacePlugin), "SaveEcospaceScenario", New Object() {dataSource})
 
     End Sub
+
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the CloseEcospaceScenario plug-in point on any available and responsive 
+    ''' <see cref="IEcospaceLifespanPlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Sub EcospaceCloseScenario()
+
+        Me.TryInvokeMethod(GetType(IEcospaceLifespanPlugin), "CloseEcospaceScenario")
+
+    End Sub
+
 
     Public Function EcospaceBeginTimeStep(ByVal EcospaceDataStructures As Object, ByVal iTimeStep As Integer) As Boolean
 
@@ -1347,7 +1371,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub LoadEcotracerScenario(ByVal dataSource As Object)
+    Public Sub EcotracerLoadScenario(ByVal dataSource As Object)
 
         ' Invoke IEcotracerPlugin.LoadEcotracerScenario(dataSource)
         Me.TryInvokeMethod(GetType(IEcotracerPlugin), "LoadEcotracerScenario", New Object() {dataSource})
@@ -1386,6 +1410,18 @@ Public Class cPluginManager
 
         ' Invoke IEcotracerPlugin.SaveEcotracerScenario(dataSource)
         Me.TryInvokeMethod(GetType(IEcotracerPlugin), "SaveEcotracerScenario", New Object() {dataSource})
+
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the CloseEcotracerScenario plug-in point on any available and responsive 
+    ''' <see cref="IEcotracerLifespanPlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Sub EcotracerCloseScenario()
+
+        Me.TryInvokeMethod(GetType(IEcotracerLifespanPlugin), "CloseEcotracerScenario")
 
     End Sub
 
