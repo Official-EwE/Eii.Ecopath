@@ -1,4 +1,6 @@
-﻿Namespace Ecospace.Advection
+﻿Imports ScientificInterfaceShared.Controls.Map
+
+Namespace Ecospace.Advection
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucAdvectionMap
@@ -24,7 +26,7 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_zoomctrl = New ScientificInterface.Ecospace.ucMapZoom
+            Me.m_zoomctrl = New ucMapZoom
             Me.m_hdrTitle = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.SuspendLayout()
             '
@@ -38,7 +40,7 @@
             Me.m_zoomctrl.Location = New System.Drawing.Point(0, 18)
             Me.m_zoomctrl.Margin = New System.Windows.Forms.Padding(0)
             Me.m_zoomctrl.Name = "m_zoomctrl"
-            Me.m_zoomctrl.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
+            Me.m_zoomctrl.PositionMode = ucMapZoom.ePositionModeTypes.Center
             Me.m_zoomctrl.Size = New System.Drawing.Size(360, 383)
             Me.m_zoomctrl.TabIndex = 0
             Me.m_zoomctrl.UIContext = Nothing
@@ -67,7 +69,7 @@
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_zoomctrl As ScientificInterface.Ecospace.ucMapZoom
+        Private WithEvents m_zoomctrl As ScientificInterfaceShared.Controls.Map.ucMapZoom
         Private WithEvents m_hdrTitle As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
     End Class

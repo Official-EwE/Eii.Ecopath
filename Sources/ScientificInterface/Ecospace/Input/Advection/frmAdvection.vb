@@ -2,10 +2,11 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Ecospace.Advection
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports EwECore.Ecospace.Advection
+Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Controls.Map
 
 #End Region ' Imports
 
@@ -274,7 +275,7 @@ Namespace Ecospace.Advection
         End Sub
 
         Public Sub StartEdit(ByVal editor As cLayerEditor) _
-            Implements Basemap.Layers.ILayerEditorGUI.StartEdit
+            Implements ILayerEditorGUI.StartEdit
 
             If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
                 Me.m_edtWind.ScaleFactor = CSng(Me.m_nudWind.Value)
@@ -287,12 +288,12 @@ Namespace Ecospace.Advection
         End Sub
 
         Public Sub EndEdit(ByVal editor As cLayerEditor) _
-            Implements Basemap.Layers.ILayerEditorGUI.EndEdit
+            Implements ILayerEditorGUI.EndEdit
             ' NOP
         End Sub
 
         Public Sub UpdateLayerEditorContent(ByVal editor As cLayerEditor) _
-            Implements Basemap.Layers.ILayerEditorGUI.UpdateContent
+            Implements ILayerEditorGUI.UpdateContent
 
             If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
                 Me.m_nudWind.Value = CDec(Me.m_edtWind.ScaleFactor)

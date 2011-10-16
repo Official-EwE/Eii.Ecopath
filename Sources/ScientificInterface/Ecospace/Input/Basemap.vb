@@ -11,6 +11,8 @@ Imports SAUPUtil.Misc.Colours
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 
@@ -32,8 +34,6 @@ Namespace Ecospace.Basemap
         Private m_layers As New List(Of cLayer)
         ''' <summary>The one and only control that renders the basemap.</summary>
         Private m_ucBasemap As ucMap = Nothing
-        ''' <summary>The one and only control that provides the layers interface.</summary>
-        Private m_ucLayers As ucLayersControl = Nothing
  
         Private m_cmdEditBasemap As cCommand = Nothing
         Private m_cmdEditHabitats As cCommand = Nothing
@@ -79,10 +79,7 @@ Namespace Ecospace.Basemap
             Me.m_ucBasemap = Me.m_zoomContainer.Map()
             Me.m_ucBasemap.UIContext = Me.UIContext
             Me.m_ucBasemap.Title = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex).Name
-
-            ' Add LayersControl
-            Me.m_ucLayers = New ucLayersControl(Me.UIContext)
-            m_plLayers.Controls.Add(Me.m_ucLayers)
+            Me.m_ucLayers.UIContext = Me.UIContext
 
             Me.Basemap = Me.Core.EcospaceBasemap
             Me.m_ucBasemap.Editable = True
@@ -237,8 +234,9 @@ Namespace Ecospace.Basemap
         ''' -------------------------------------------------------------------
         Private Sub AddData(ByVal varName As eVarNameFlags, Optional ByVal bClearGroup As Boolean = True)
 
-            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.UIContext, varName)
-            Dim strGroup As String = cLayerFactory.GetLayerGroup(varName)
+            Dim factory As New cLayerFactoryInternal()
+            Dim alayers As cLayer() = factory.GetLayers(Me.UIContext, varName)
+            Dim strGroup As String = factory.GetLayerGroup(varName)
 
             ' Define group
             Me.m_ucLayers.AddGroup(strGroup, True, bClearGroup)
@@ -325,7 +323,7 @@ Namespace Ecospace.Basemap
                 If Object.ReferenceEquals(layer, Me.m_layerSelected) Then Return
 
                 Me.SuspendLayout()
- 
+
                 If (Me.m_layerSelected IsNot Nothing) Then
                     ' Has editor GUI?
                     If (Me.m_editorGUISelected IsNot Nothing) Then

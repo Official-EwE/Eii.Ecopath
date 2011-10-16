@@ -1,8 +1,9 @@
+Imports ScientificInterfaceShared.Controls.Map
 
 Namespace Ecospace.Basemap.Layers
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class dlgEditLayer
+    Partial Class dlgEditLayer
         Inherits System.Windows.Forms.Form
 
         'Form overrides dispose to clean up the component list.
@@ -36,7 +37,7 @@ Partial Class dlgEditLayer
             Me.m_plEditVisualStyle = New System.Windows.Forms.Panel()
             Me.m_tcLayerView = New System.Windows.Forms.TabControl()
             Me.m_tbAppearance = New System.Windows.Forms.TabPage()
-            Me.m_zoommap = New ScientificInterface.Ecospace.ucMapZoom()
+            Me.m_zoommap = New ucMapZoom()
             Me.m_scDetails = New System.Windows.Forms.SplitContainer()
             Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
@@ -143,7 +144,7 @@ Partial Class dlgEditLayer
             '
             resources.ApplyResources(Me.m_zoommap, "m_zoommap")
             Me.m_zoommap.Name = "m_zoommap"
-            Me.m_zoommap.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
+            Me.m_zoommap.PositionMode = ucMapZoom.ePositionModeTypes.Center
             Me.m_zoommap.UIContext = Nothing
             Me.m_zoommap.ZoomPercentage = 100.0!
             '
@@ -314,7 +315,7 @@ Partial Class dlgEditLayer
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
         Private WithEvents m_lblWeight As System.Windows.Forms.Label
         Private WithEvents m_scDetails As System.Windows.Forms.SplitContainer
-        Private WithEvents m_zoommap As ScientificInterface.Ecospace.ucMapZoom
+        Private WithEvents m_zoommap As ucMapZoom
         Private WithEvents m_tsGrid As cEwEToolstrip
         Private WithEvents m_nudWeight As ScientificInterfaceShared.Controls.cEwENumericUpDown
 

@@ -6,6 +6,7 @@ Imports ScientificInterface.Ecospace
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 

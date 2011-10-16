@@ -135,10 +135,6 @@
   <data name="STATUS_PREVIEW_LOADING" xml:space="preserve">
     <value>Loading preview...</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="glyph_blocks_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blocks_small.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="OPTIONS_COLORDLG_PROMPT_REMARKS" xml:space="preserve">
     <value>Values with remarks|Values that have a remark attached. Remarks can be edited via the Remark panel.</value>
   </data>
@@ -157,9 +153,6 @@
   </data>
   <data name="GENERIC_STATUS_APPLYCHANGES" xml:space="preserve">
     <value>Applying changes...</value>
-  </data>
-  <data name="glyph_deep_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_deep_green.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_TOOLTIP_PREY" xml:space="preserve">
     <value>Prey {0}</value>
@@ -187,6 +180,7 @@
   <data name="PROMPT_ERROR_IMPORTFAILED" xml:space="preserve">
     <value>Failed to convert Ewe5 database to EwE6.</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="fimr_logo_50px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\fimr_logo_50px.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -201,9 +195,6 @@
   </data>
   <data name="ECOSPACE_LOAD_SCENARIO_CAPTION" xml:space="preserve">
     <value>Load Ecospace scenario - Ecopath model {0}</value>
-  </data>
-  <data name="glyph_rubble_lightblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_rubble_lightblue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="STATUS_ADDTIMESERIES" xml:space="preserve">
     <value>Adding time series {0} ...</value>
@@ -233,15 +224,9 @@
     <value>({0}, {1}): slope={2}</value>
     <comment>{0}: x coord, {1}: y coord, {2}:slope</comment>
   </data>
-  <data name="glyph_blue4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue4.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="FLOWDIAGRAM_LABEL_BIOMASS" xml:space="preserve">
     <value>B: {0}</value>
     <comment>{0}: biomass value</comment>
-  </data>
-  <data name="glyph_muddy_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_muddy_blue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SELECTION_NONE" xml:space="preserve">
     <value>(no selection)</value>
@@ -257,9 +242,6 @@
 Name: {0}
 Description: {1}</value>
     <comment>Ecospace scenario status tooltip. Fields: {0}=scenario name, {1}=scenario description</comment>
-  </data>
-  <data name="glyph_muddy_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_muddy_green.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ECOSPACE_SCENARIO_NEW_CAPTION" xml:space="preserve">
     <value>New Ecospace scenario - Ecopath model {0}</value>
@@ -327,12 +309,6 @@ Description: {1}</value>
   <data name="DATASOURCE_DUPLICATE_ERROR_NODATABASE" xml:space="preserve">
     <value>Only models stored in databases can be duplicated.</value>
   </data>
-  <data name="glyph_deep_beige" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_deep_beige.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="glyph_rubble_sand" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_sand.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="CAPTION_SIZEWT" xml:space="preserve">
     <value>Size/Weight</value>
   </data>
@@ -354,9 +330,6 @@ Description: {1}</value>
   </data>
   <data name="ECOSIM_GROUPINFO_PREDATORFEEDINGTIME" xml:space="preserve">
     <value>Predator effect on feeding time [0,1]</value>
-  </data>
-  <data name="glyph_deep_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_deep_blue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_TOOLTIP_PREDPREY" xml:space="preserve">
     <value>Predator {0}, prey {1}</value>
@@ -385,12 +358,6 @@ Description: {1}</value>
   <data name="INVALID_VUL_NUM_ENTERED" xml:space="preserve">
     <value>Value should be &gt;=1. A low (~1) value makes the interactions donor-controlled, while a large (&gt;&gt;1) value leads to top-down control and Lotka-Volterra cyclic dynamics. Intermediate values (~2) leads to mixed control. </value>
   </data>
-  <data name="glyph_dots_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_dots_large.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="glyph_rubble_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_rubble_blue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ECOSIM_PROMPT_SAVEDESTINATION" xml:space="preserve">
     <value>Please select the destination to save Ecosim results.</value>
   </data>
@@ -412,9 +379,6 @@ Description: {1}</value>
   <data name="OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR" xml:space="preserve">
     <value>Image background|Background colour to use for images</value>
   </data>
-  <data name="glyph_blue7" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue7.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="SEARCH_STATUS_COMPLETED" xml:space="preserve">
     <value>Search completed</value>
   </data>
@@ -423,9 +387,6 @@ Description: {1}</value>
   </data>
   <data name="ECOSPACE_DISPERSAL_NSCONT" xml:space="preserve">
     <value>Mig. N/S concentration</value>
-  </data>
-  <data name="glyph_dots_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_dots_small.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MPAOPT_AXISLABEL_ECOSEED" xml:space="preserve">
     <value>Number of cells closed</value>
@@ -441,23 +402,14 @@ Description: {1}</value>
     <value>&amp;Run</value>
     <comment>Generic 'Run' button text</comment>
   </data>
-  <data name="glyph_muddy_bw" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_muddy_bw.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="OPTIONS_FONTDLG_TITLE" xml:space="preserve">
     <value>Title|Font for titles of graphs and figures</value>
-  </data>
-  <data name="glyph_seagrass_brown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_seagrass_brown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OPTIONS_COLORDLG_ECOSPACE_MAPLOT_BACKGROUND_COLOR" xml:space="preserve">
     <value>Map background|Background colour to use for maps</value>
   </data>
   <data name="STATUS_MODEL_COMPACTING_TEMPFILE" xml:space="preserve">
     <value>Unable to create a temporary file while compacting database. Please check if you are low in disk space.</value>
-  </data>
-  <data name="glyph_seagrass_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_seagrass_red.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ECOPATH_GRAPH_LEGEND_STANZA_SEP" xml:space="preserve">
     <value>Stanza separation</value>
@@ -471,9 +423,6 @@ Description: {1}</value>
   </data>
   <data name="STATUS_MODEL_ACCESS_READONLY" xml:space="preserve">
     <value>EwE6 will be unable to write to this model. Please check if you have correct permissions, or if the database is not read-only.</value>
-  </data>
-  <data name="glyph_seagrass_bw" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_seagrass_bw.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MPAOPT_AXISLABEL_BESTITERATIONS" xml:space="preserve">
     <value>Best iterations</value>
@@ -512,9 +461,6 @@ Name: {0}
 Description: {1}</value>
     <comment>Ecotracer scenario status tooltip. Fields: {0}=scenario name, {1}=scenario description</comment>
   </data>
-  <data name="glyph_arrows_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_arrows_down.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HABITAT_DELETE_CONFIRMATION" xml:space="preserve">
     <value>You are about to delete the selected habitat. This action cannot be undone. Are you sure you want to do this?</value>
   </data>
@@ -535,9 +481,6 @@ Description: {1}</value>
   </data>
   <data name="PROMPT_FILETYPEDEPRECATED" xml:space="preserve">
     <value>This type of file is no longer supported in EwE6</value>
-  </data>
-  <data name="glyph_blocks_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blocks_large.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FIT2TS_PROGRESS_RUNCOMPLETED" xml:space="preserve">
     <value>Run completed at {0}</value>
@@ -569,12 +512,6 @@ Description: {1}</value>
   <data name="GENERIC_CAPTION" xml:space="preserve">
     <value>Ecopath with Ecosim</value>
   </data>
-  <data name="glyph_blue1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue1.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="glyph_rubble_bw" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_rubble_bw.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="STATUS_MODEL_COMPACTING_OS" xml:space="preserve">
     <value>Your Windows installation does not have the necessary components installed to compact this type of database.</value>
   </data>
@@ -586,9 +523,6 @@ Description: {1}</value>
   </data>
   <data name="RUN_ECOSIM_F_VALUE_MSG" xml:space="preserve">
     <value>Enter F~value (or enter a string of comma separated F's for all fleets)</value>
-  </data>
-  <data name="glyph_blue3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue3.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SELECTION_INDEXEDVAR" xml:space="preserve">
     <value>{0} ({1},  {2})</value>
@@ -652,9 +586,6 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   <data name="IMPORT_ERROR_CAPTION" xml:space="preserve">
     <value>EwE5 database import</value>
   </data>
-  <data name="glyph_deep_lightblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_deep_lightblue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="PROMPT_MODELNOTFOUND" xml:space="preserve">
     <value>Model '{0}' cannot be found.</value>
   </data>
@@ -709,9 +640,6 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
     <value>The plug-in '{0}' uses outdated EwE components, and is likely to be incompatible with this version of EwE6. Do you wish to disable this plug-in?</value>
     <comment>{0}: plug-in name</comment>
   </data>
-  <data name="glyph_squares_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_squares_large.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="PROMPT_MODEL_COMPACT" xml:space="preserve">
     <value>To compact your database your model will need to be closed. Are you sure you want to compact your database?</value>
   </data>
@@ -761,9 +689,6 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   </data>
   <data name="ECOSPACE_LAYER_RANDOMSEARCH" xml:space="preserve">
     <value>Random search</value>
-  </data>
-  <data name="glyph_blue6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue6.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SCENARIO_CONFIRMDELETE_CAPTION" xml:space="preserve">
     <value>Delete scenario</value>
@@ -891,9 +816,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="Basemap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Web.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="glyph_deep_bw" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_deep_bw.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="STATUS_ECOSPACE_RUNNING" xml:space="preserve">
     <value>Running Ecospace...</value>
   </data>
@@ -902,9 +824,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="OPTIONS_FEEDBACK_POPUP_AND_STATUS" xml:space="preserve">
     <value>As popup message and in status panel</value>
-  </data>
-  <data name="glyph_blue9" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue9.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PROMPT_STATUS_FURTHERDETAILS" xml:space="preserve">
     <value>(for further details refer to the status panel)</value>
@@ -915,18 +834,12 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="Regions" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Regions.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="glyph_seagrass_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_seagrass_dark.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="GENERIC_ITEMSTATUS_DELETEPENDING" xml:space="preserve">
     <value>To delete</value>
     <comment>Used in complex item management dialogs. States that an item will be deleted once the dialog is applied</comment>
   </data>
   <data name="LABEL_GROUP" xml:space="preserve">
     <value>&amp;Group:</value>
-  </data>
-  <data name="PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH" xml:space="preserve">
-    <value>The selected file cannot be used for this purpose. Note that images cannot exceed 100 pixels in width or height.</value>
   </data>
   <data name="STATUS_APPLYVALUES" xml:space="preserve">
     <value>Applying values, please wait</value>
@@ -980,21 +893,12 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="ECOSPACE_DISPERSAL_EWCONT" xml:space="preserve">
     <value>Mig. E/W concentration</value>
   </data>
-  <data name="glyph_muddy_brown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_muddy_brown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="glyph_rubble_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_rubble_green.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="REGION_DELETE_CAPTION" xml:space="preserve">
     <value>Delete region?</value>
   </data>
   <data name="ECOSPACE_EDITREGION_CONFIRMDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete region '{0}'? This action cannot be undone.</value>
     <comment>{0}: region name</comment>
-  </data>
-  <data name="glyph_blue2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue2.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_INVALIDDB" xml:space="preserve">
     <value>The selected database does not appear to be a valid EwE5 or EwE6 database.</value>
@@ -1013,9 +917,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>For all pairs with group {0}: {1} as a prey</value>
     <comment>{0}:prey name, {1}:predator name</comment>
   </data>
-  <data name="glyph_blue8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue8.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="OPTIONS_COLORDLG_PROMPT_DEFAULT" xml:space="preserve">
     <value>Default text|Colour scheme to use for default text</value>
   </data>
@@ -1026,9 +927,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="LABEL_STOP" xml:space="preserve">
     <value>&amp;Stop</value>
     <comment>Generic 'Stop' button text</comment>
-  </data>
-  <data name="glyph_arrows_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_arrows_up.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="INVALID_Y_SCALE_NUMBER_ENTERED" xml:space="preserve">
     <value>Y scale for plot: {0} should be greater than or equal to {1}</value>
@@ -1107,9 +1005,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="STATUS_MODEL_COMPACTING_FAILED" xml:space="preserve">
     <value>Failed to compact database.</value>
   </data>
-  <data name="glyph_deep_brown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_deep_brown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="LEGEND_BYNUM" xml:space="preserve">
     <value>By number</value>
   </data>
@@ -1134,9 +1029,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Loading Ecosim scenario '{0}'...</value>
     <comment>{0}: scenario name</comment>
   </data>
-  <data name="glyph_squares_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_squares_small.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="MPAOPT_AXISLABEL_OBJECTIVEVALUE" xml:space="preserve">
     <value>Objective value</value>
   </data>
@@ -1157,9 +1049,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="SET_VUL_CAPTION" xml:space="preserve">
     <value>EwE vulnerabilities</value>
   </data>
-  <data name="glyph_circles_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_circles_large.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="PROMPT_CREATE_GENERICERROR" xml:space="preserve">
     <value>A generic error occurred while trying to create an EwE6 model at '{0}'</value>
     <comment>{0}: model path</comment>
@@ -1171,18 +1060,12 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="OPTIONS_COLORDLG_PROMPT_SUM_DESCRIPTION" xml:space="preserve">
     <value>Cells that contain a summary of row(s) and/or column(s) in a grid</value>
   </data>
-  <data name="glyph_blue5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue5.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="STATUS_DATASET_REMOVING" xml:space="preserve">
     <value>Removing existing Time Series dataset {0}</value>
     <comment>{0}: dataset name</comment>
   </data>
   <data name="CAPTION_MSEFLEETREF" xml:space="preserve">
     <value>MSE fleet ref. levels</value>
-  </data>
-  <data name="glyph_rubble_brown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_rubble_brown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ECOSIM_GROUPINFO_OPTTEMP" xml:space="preserve">
     <value>Optimum temperature(&gt;0)</value>
@@ -1213,9 +1096,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="OPTIONS_COLORDLG_PROMPT_READONLY" xml:space="preserve">
     <value>Read-only values|Values that cannot be edited by you, the user</value>
   </data>
-  <data name="glyph_circles_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_circles_small.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="STATUS_ECOSPACE_PROGRESS" xml:space="preserve">
     <value>Computed {0} of {1} years</value>
     <comment>{0}: computed #years, {1}: total #years</comment>
@@ -1236,9 +1116,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="Importance" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Importance.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="glyph_blue10" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\glyph_blue10.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="STATUS_MODEL_COMPACT_SUCCESS" xml:space="preserve">
     <value>Your database was compacted succesfully.</value>
@@ -1605,40 +1482,13 @@ Description: {2}</value>
   <data name="Ecopath_beta" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ecopath_beta.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ECOSPACE_LAYERGROUP_DEPTH" xml:space="preserve">
-    <value>Bathymetry</value>
-  </data>
-  <data name="ECOSPACE_LAYERGROUP_DRIVERS" xml:space="preserve">
-    <value>Environmental drivers</value>
+  <data name="ECOSPACE_LAYER_MPABESTCOUNT" xml:space="preserve">
+    <value>Best count {0}</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_ECOSEED" xml:space="preserve">
     <value>EcoSeed</value>
   </data>
-  <data name="ECOSPACE_LAYERGROUP_FISHING" xml:space="preserve">
-    <value>Fishing</value>
-  </data>
-  <data name="ECOSPACE_LAYERGROUP_HABCAP" xml:space="preserve">
-    <value>Habitat capacity</value>
-  </data>
-  <data name="ECOSPACE_LAYERGROUP_HABITATS" xml:space="preserve">
-    <value>Habitats</value>
-  </data>
-  <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
-    <value>Importance</value>
-  </data>
-  <data name="ECOSPACE_LAYERGROUP_MISC" xml:space="preserve">
-    <value>Miscellaneous</value>
-  </data>
   <data name="ECOSPACE_LAYERGROUP_MPARANDOM" xml:space="preserve">
     <value>Random cells</value>
-  </data>
-  <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
-    <value>Marine Protected Areas</value>
-  </data>
-  <data name="ECOSPACE_LAYERGROUP_REGIONS" xml:space="preserve">
-    <value>Regions</value>
-  </data>
-  <data name="ECOSPACE_LAYER_MPABESTCOUNT" xml:space="preserve">
-    <value>Best count {0}</value>
   </data>
 </root>

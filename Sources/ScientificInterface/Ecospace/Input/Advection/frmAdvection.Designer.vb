@@ -1,4 +1,5 @@
 ﻿Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Controls.Map
 
 Namespace Ecospace.Advection
 
@@ -57,7 +58,7 @@ Namespace Ecospace.Advection
             Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
             Me.m_tslMonth = New System.Windows.Forms.ToolStripLabel
             Me.m_tscmMonth = New System.Windows.Forms.ToolStripComboBox
-            Me.m_ucZoomToolbar = New ScientificInterface.Ecospace.ucMapZoomToolbar
+            Me.m_ucZoomToolbar = New ucMapZoomToolbar
             Me.m_ucWind = New ScientificInterface.Ecospace.Advection.ucWind
             Me.m_ucMLD = New ScientificInterface.Ecospace.Advection.ucMLD
             Me.m_ucMap = New ScientificInterface.Ecospace.Advection.ucMap
@@ -420,7 +421,7 @@ Namespace Ecospace.Advection
             Me.m_ucZoomToolbar.Location = New System.Drawing.Point(422, 3)
             Me.m_ucZoomToolbar.MinimumSize = New System.Drawing.Size(100, 25)
             Me.m_ucZoomToolbar.Name = "m_ucZoomToolbar"
-            Me.m_ucZoomToolbar.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
+            Me.m_ucZoomToolbar.PositionMode = ucMapZoom.ePositionModeTypes.Center
             Me.m_ucZoomToolbar.Size = New System.Drawing.Size(379, 27)
             Me.m_ucZoomToolbar.TabIndex = 1
             Me.m_ucZoomToolbar.UIContext = Nothing
@@ -508,12 +509,12 @@ Namespace Ecospace.Advection
         Private WithEvents m_ucUpwelling As ScientificInterface.Ecospace.Advection.ucUpwelling
         Private WithEvents m_ucWind As ScientificInterface.Ecospace.Advection.ucWind
         Private WithEvents m_ucMap As ScientificInterface.Ecospace.Advection.ucMap
-        Private WithEvents m_tsControls As cEwEToolStrip
+        Private WithEvents m_tsControls As cEwEToolstrip
         Private WithEvents m_tsmiToggleOptions As System.Windows.Forms.ToolStripButton
         Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tslMonth As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tscmMonth As System.Windows.Forms.ToolStripComboBox
-        Private WithEvents m_ucZoomToolbar As ScientificInterface.Ecospace.ucMapZoomToolbar
+        Private WithEvents m_ucZoomToolbar As ucMapZoomToolbar
         Private WithEvents m_lblCursor As System.Windows.Forms.Label
         Private WithEvents m_sliderCursor As ScientificInterfaceShared.Controls.ucSlider
         Private WithEvents m_lblWind As System.Windows.Forms.Label

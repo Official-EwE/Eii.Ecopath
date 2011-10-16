@@ -674,6 +674,8 @@ Namespace Ecosim
             If (Not Me.m_zgp.isReady) Then Me.m_zgp.Clear() : Return
             If (Not Me.Core.StateMonitor.HasEcosimRan) Then Return
 
+            Dim groupPathOut As cEcoPathGroupOutput = Nothing
+
             ' Clear curves out of current run, if applicable
             Me.m_zgp.ResetRun()
 
@@ -710,7 +712,8 @@ Namespace Ecosim
 
                     ' Yes: Create data list
                     pplData = New PointPairList
-                    pplData.Add(Me.Core.EcosimFirstYear, 0) ' Brute force to make 0 TS 1
+
+                    pplData.Add(Me.Core.EcosimFirstYear, Me.GetStartValue(iGroup))
                     src = Me.Core.EcoSimGroupOutputs(iGroup)
 
                     For iTimeStep As Integer = 1 To Core.nEcosimTimeSteps
@@ -811,6 +814,32 @@ Namespace Ecosim
             Next iTS
 
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get an Ecosim value for a given group and time step.
+        ''' </summary>
+        ''' <param name="iGroup"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetStartValue(ByVal iGroup As Integer) As Single
+
+            Dim src As cEcoPathGroupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+
+            ' Get data point value
+            Select Case Me.m_plotData
+                Case ePlotData.Biomass
+                    Return CSng(IIf(Me.m_bIsCumulative, src.Biomass, 1))
+                Case ePlotData.GroupCatch
+                    Return CSng(IIf(Me.m_bIsCumulative, src.TcatchOutput, 1))
+                Case ePlotData.Value
+                    ' ToDo: resolve group value
+                    Return CSng(IIf(Me.m_bIsCumulative, 0, 1))
+            End Select
+
+            Return cCore.NULL_VALUE
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

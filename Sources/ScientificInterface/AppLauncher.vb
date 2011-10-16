@@ -34,6 +34,7 @@ Imports System.ComponentModel
 Imports ScientificInterfaceShared.Commands
 Imports System.Drawing.Printing
 Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 

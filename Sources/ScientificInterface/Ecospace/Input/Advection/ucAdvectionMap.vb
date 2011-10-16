@@ -1,12 +1,11 @@
 ﻿#Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.ComponentModel
 
 #End Region ' Imports
 
@@ -62,10 +61,10 @@ Namespace Ecospace.Advection
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="Ecospace.ucMap">Map control</see> displayed here.
+        ''' Get the <see cref="ucMap">Map control</see> displayed here.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Map() As Ecospace.ucMap
+        Public ReadOnly Property Map() As ScientificInterfaceShared.Controls.Map.ucMap
             Get
                 Return Me.m_zoomctrl.Map
             End Get
@@ -211,7 +210,8 @@ Namespace Ecospace.Advection
 
         Private Function AddLayer(ByVal vn As eVarNameFlags, ByVal bEditable As Boolean) As cLayer
 
-            Dim layers() As cLayer = cLayerFactory.GetLayers(Me.m_uic, vn)
+            Dim factory As New cLayerFactoryInternal()
+            Dim layers() As cLayer = factory.GetLayers(Me.m_uic, vn)
             Dim l As cLayer = Nothing
 
             If (layers Is Nothing) Then Return Nothing

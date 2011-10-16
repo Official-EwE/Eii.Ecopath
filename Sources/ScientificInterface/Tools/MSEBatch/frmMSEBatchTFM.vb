@@ -10,24 +10,6 @@ Imports EwECore.MSEBatchManager
 
 Public Class frmMSEBatchTFM
 
-
-    Private Class cCBWrapper
-        Private m_grp As cEcoPathGroupInput
-        Public Sub New(Group As cEcoPathGroupInput)
-            Me.m_grp = Group
-        End Sub
-
-        Public Overrides Function ToString() As String
-            Return m_grp.name
-        End Function
-
-        Public ReadOnly Property theGroup As cEcoPathGroupInput
-            Get
-                Return Me.m_grp
-            End Get
-        End Property
-    End Class
-
     Private m_BatchManager As EwECore.MSEBatchManager.cMSEBatchManager
 
     Public Sub New()
@@ -124,7 +106,7 @@ Public Class frmMSEBatchTFM
         For igrp As Integer = 1 To Me.UIContext.Core.nGroups
             Dim grp As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(igrp)
             If grp.IsFished Then
-                Me.cbGroups.Items.Add(New cCBWrapper(grp))
+                Me.cbGroups.Items.Add(New cCoreInputOutputControlItem(grp))
             End If
         Next
 
@@ -133,7 +115,7 @@ Public Class frmMSEBatchTFM
 
     Private Sub cbGroups_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cbGroups.SelectedIndexChanged
         If Me.m_BatchManager Is Nothing Then Exit Sub
-        Dim grp As cEcoPathGroupInput = DirectCast(Me.cbGroups.SelectedItem, cCBWrapper).theGroup
+        Dim grp As cCoreInputOutputBase = DirectCast(Me.cbGroups.SelectedItem, cCoreInputOutputControlItem).Source
         Me.grdIters.iSelGroup = grp.Index
     End Sub
 

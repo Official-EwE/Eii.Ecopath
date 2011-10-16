@@ -207,6 +207,178 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
+    <Compile Include="Controls\Map\Layers\cLayer.vb" />
+    <Compile Include="Controls\Map\Layers\cLayerFactoryBase.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditor.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorAdvection.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorDepth.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorFleet.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorGroup.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorMigration.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorMLD.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorRange.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorTwoState.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorVector.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\UI\ILayerEditorGUI.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.Designer.vb">
+      <DependentUpon>ucLayerEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorAdvection.Designer.vb">
+      <DependentUpon>ucLayerEditorAdvection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorAdvection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDefault.Designer.vb">
+      <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDefault.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDepth.Designer.vb">
+      <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDepth.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorFleet.Designer.vb">
+      <DependentUpon>ucLayerEditorFleet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorFleet.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorGroup.Designer.vb">
+      <DependentUpon>ucLayerEditorGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorGroup.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorHabitatCapacity.Designer.vb">
+      <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorHabitatCapacity.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMigration.Designer.vb">
+      <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMigration.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorPort.Designer.vb">
+      <DependentUpon>ucLayerEditorPort.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorPort.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRange.Designer.vb">
+      <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRange.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegion.Designer.vb">
+      <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegion.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.Designer.vb">
+      <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorVector.Designer.vb">
+      <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorVector.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Rendering\cEwEBrushProvider.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererArrow.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererBitmap.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererDepth.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererHatched.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererSymbol.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererText.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererUpwelling.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererValue.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererWindEwE5.vb" />
+    <Compile Include="Controls\Map\Layers\ucLayer.Designer.vb">
+      <DependentUpon>ucLayer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\ucLayer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\ucLayerGroup.Designer.vb">
+      <DependentUpon>ucLayerGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\ucLayerGroup.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\ucLayersControl.Designer.vb">
+      <DependentUpon>ucLayersControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\ucLayersControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditFont.Designer.vb">
+      <DependentUpon>ucEditFont.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditFont.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditHatch.Designer.vb">
+      <DependentUpon>ucEditHatch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditHatch.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditImage.Designer.vb">
+      <DependentUpon>ucEditImage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditImage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditVisualStyle.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatch.Designer.vb">
+      <DependentUpon>ucHatch.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatch.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatchSelect.designer.vb">
+      <DependentUpon>ucHatchSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatchSelect.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Legend\cLegend.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRenderer.vb" />
+    <Compile Include="Controls\Map\ucMap.Designer.vb">
+      <DependentUpon>ucMap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\ucMap.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\ucMapZoom.designer.vb">
+      <DependentUpon>ucMapZoom.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\ucMapZoom.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\ucMapZoomToolbar.Designer.vb">
+      <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\ucMapZoomToolbar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\MessageBox\cCustomMessageBox.vb" />
     <Compile Include="Controls\MessageBox\frmCustomMessageBox.vb">
       <SubType>Form</SubType>
@@ -448,6 +620,98 @@
       <DependentUpon>ucGlyphSelect.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.resx">
+      <DependentUpon>ucLayerEditor.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorAdvection.resx">
+      <DependentUpon>ucLayerEditorAdvection.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDefault.resx">
+      <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDepth.resx">
+      <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorFleet.resx">
+      <DependentUpon>ucLayerEditorFleet.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorGroup.resx">
+      <DependentUpon>ucLayerEditorGroup.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorHabitatCapacity.resx">
+      <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMigration.resx">
+      <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorPort.resx">
+      <DependentUpon>ucLayerEditorPort.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRange.resx">
+      <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegion.resx">
+      <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.resx">
+      <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorVector.resx">
+      <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\ucLayer.resx">
+      <DependentUpon>ucLayer.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\ucLayerGroup.resx">
+      <DependentUpon>ucLayerGroup.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\ucLayersControl.resx">
+      <DependentUpon>ucLayersControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\VisualStyleEditors\ucEditHatch.resx">
+      <DependentUpon>ucEditHatch.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\VisualStyleEditors\ucEditImage.resx">
+      <DependentUpon>ucEditImage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\VisualStyleEditors\ucHatch.resx">
+      <DependentUpon>ucHatch.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\VisualStyleEditors\ucHatchSelect.resx">
+      <DependentUpon>ucHatchSelect.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\ucMap.resx">
+      <DependentUpon>ucMap.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\ucMapZoom.resx">
+      <DependentUpon>ucMapZoom.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\ucMapZoomToolbar.resx">
+      <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\MessageBox\frmCustomMessageBox.resx">
       <DependentUpon>frmCustomMessageBox.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -578,6 +842,47 @@
     <Content Include="Resources\Fill.png" />
     <None Include="Resources\History.png" />
     <None Include="Resources\forward.png" />
+    <None Include="Resources\glyph_arrows_down.png" />
+    <None Include="Resources\glyph_squares_small.png" />
+    <None Include="Resources\glyph_arrows_up.png" />
+    <None Include="Resources\glyph_blocks_large.png" />
+    <None Include="Resources\glyph_blocks_small.png" />
+    <None Include="Resources\glyph_blue1.PNG" />
+    <None Include="Resources\glyph_blue10.PNG" />
+    <None Include="Resources\glyph_blue2.PNG" />
+    <None Include="Resources\glyph_blue3.PNG" />
+    <None Include="Resources\glyph_blue4.PNG" />
+    <None Include="Resources\glyph_blue5.PNG" />
+    <None Include="Resources\glyph_blue6.PNG" />
+    <None Include="Resources\glyph_blue7.PNG" />
+    <None Include="Resources\glyph_blue8.PNG" />
+    <None Include="Resources\glyph_blue9.PNG" />
+    <None Include="Resources\glyph_circles_large.png" />
+    <None Include="Resources\glyph_circles_small.png" />
+    <None Include="Resources\glyph_deep_beige.png" />
+    <None Include="Resources\glyph_deep_blue.png" />
+    <None Include="Resources\glyph_deep_brown.png" />
+    <None Include="Resources\glyph_deep_bw.png" />
+    <None Include="Resources\glyph_deep_green.png" />
+    <None Include="Resources\glyph_deep_lightblue.png" />
+    <None Include="Resources\glyph_dots_large.png" />
+    <None Include="Resources\glyph_dots_small.png" />
+    <None Include="Resources\glyph_muddy_blue.png" />
+    <None Include="Resources\glyph_muddy_brown.png" />
+    <None Include="Resources\glyph_muddy_bw.png" />
+    <None Include="Resources\glyph_muddy_green.png" />
+    <None Include="Resources\glyph_rubble_blue.png" />
+    <None Include="Resources\glyph_rubble_brown.png" />
+    <None Include="Resources\glyph_rubble_bw.png" />
+    <None Include="Resources\glyph_rubble_green.png" />
+    <None Include="Resources\glyph_rubble_lightblue.png" />
+    <None Include="Resources\glyph_rubble_sand.png" />
+    <None Include="Resources\glyph_seagrass_brown.png" />
+    <None Include="Resources\glyph_seagrass_bw.png" />
+    <None Include="Resources\glyph_seagrass_dark.png" />
+    <None Include="Resources\glyph_seagrass_light.png" />
+    <None Include="Resources\glyph_seagrass_red.png" />
+    <None Include="Resources\glyph_squares_large.png" />
     <Content Include="Resources\Info.ico" />
     <None Include="Resources\rss_icon.gif" />
     <None Include="Resources\multistanza.png" />
@@ -660,6 +965,7 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controls\Spatial\" />
     <Folder Include="Controls\WebBrowser\" />
   </ItemGroup>
   <ItemGroup>

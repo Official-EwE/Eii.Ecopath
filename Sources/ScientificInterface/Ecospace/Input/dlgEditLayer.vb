@@ -13,6 +13,8 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports EwECore.Auxiliary
+Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Controls.Map
 
 #End Region ' Imports
 
@@ -168,7 +170,7 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Private Sub OnVisualStyleChanged(ByVal sender As Controls.ucEditVisualStyle)
+        Private Sub OnVisualStyleChanged(ByVal sender As ucEditVisualStyle)
 
             ' Update work layer Visual Style
             Me.m_ucEditVisualStyle.Apply(Me.m_layerWork.Renderer.VisualStyle)

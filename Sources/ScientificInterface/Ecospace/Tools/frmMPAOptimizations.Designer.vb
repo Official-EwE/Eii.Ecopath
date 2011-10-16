@@ -1,10 +1,11 @@
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterface.Ecosim
+Imports ScientificInterfaceShared.Controls.Map
 
 Namespace Ecospace
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-        Partial Class frmMPAOptimizations
+    Partial Class frmMPAOptimizations
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
@@ -28,7 +29,7 @@ Namespace Ecospace
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMPAOptimizations))
             Me.m_btnRun = New System.Windows.Forms.Button
             Me.m_btnStop = New System.Windows.Forms.Button
-            Me.m_tsMap = New cEwEToolStrip
+            Me.m_tsMap = New cEwEToolstrip
             Me.m_tsbMPA = New System.Windows.Forms.ToolStripDropDownButton
             Me.m_tsmClearMPA = New System.Windows.Forms.ToolStripMenuItem
             Me.m_tsmSetAllMPA = New System.Windows.Forms.ToolStripMenuItem
@@ -87,7 +88,7 @@ Namespace Ecospace
             Me.m_lblGroup = New System.Windows.Forms.Label
             Me.m_tabMap = New System.Windows.Forms.TabPage
             Me.m_scMap = New System.Windows.Forms.SplitContainer
-            Me.m_ucZoom = New ScientificInterface.Ecospace.ucMapZoom
+            Me.m_ucZoom = New ucMapZoom
             Me.m_tlbLayers = New System.Windows.Forms.TableLayoutPanel
             Me.m_plLayers = New System.Windows.Forms.Panel
             Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -659,7 +660,7 @@ Namespace Ecospace
             Me.m_ucZoom.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_ucZoom, "m_ucZoom")
             Me.m_ucZoom.Name = "m_ucZoom"
-            Me.m_ucZoom.PositionMode = ScientificInterface.Ecospace.ucMapZoom.ePositionModeTypes.Center
+            Me.m_ucZoom.PositionMode = ucMapZoom.ePositionModeTypes.Center
             Me.m_ucZoom.UIContext = Nothing
             Me.m_ucZoom.ZoomPercentage = 100.0!
             '
@@ -782,7 +783,7 @@ Namespace Ecospace
         End Sub
         Private WithEvents m_tlbLayers As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_hdrLayers As cEwEHeaderLabel
-        Private WithEvents m_tsMap As cEwEToolStrip
+        Private WithEvents m_tsMap As cEwEToolstrip
         Private WithEvents m_tsbMPA As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents m_tsmClearMPA As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmSetAllMPA As System.Windows.Forms.ToolStripMenuItem
@@ -814,7 +815,7 @@ Namespace Ecospace
         Private WithEvents m_tlbParameters As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lbMPA As System.Windows.Forms.Label
         Private WithEvents m_scMap As System.Windows.Forms.SplitContainer
-        Private WithEvents m_ucZoom As ScientificInterface.Ecospace.ucMapZoom
+        Private WithEvents m_ucZoom As ucMapZoom
         Private WithEvents m_plLayers As System.Windows.Forms.Panel
         Private WithEvents m_btnRun As System.Windows.Forms.Button
         Private WithEvents m_btnStop As System.Windows.Forms.Button

@@ -2223,4 +2223,157 @@
   <data name="History" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\History.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="glyph_arrows_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_arrows_down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_arrows_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_arrows_up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blocks_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blocks_large.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blocks_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blocks_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_blue9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_blue9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_circles_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_circles_large.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_circles_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_circles_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_deep_beige" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_deep_beige.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_deep_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_deep_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_deep_brown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_deep_brown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_deep_bw" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_deep_bw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_deep_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_deep_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_deep_lightblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_deep_lightblue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_dots_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_dots_large.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_dots_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_dots_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_muddy_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_muddy_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_muddy_brown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_muddy_brown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_muddy_bw" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_muddy_bw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_muddy_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_muddy_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_rubble_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_rubble_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_rubble_brown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_rubble_brown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_rubble_bw" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_rubble_bw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_rubble_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_rubble_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_rubble_lightblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_rubble_lightblue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_seagrass_brown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_seagrass_brown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_seagrass_bw" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_seagrass_bw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_seagrass_dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_seagrass_dark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_seagrass_light" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_seagrass_light.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_seagrass_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_seagrass_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_squares_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_squares_large.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_squares_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_squares_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_rubble_sand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_rubble_sand.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_DEPTH" xml:space="preserve">
+    <value>Bathymetry</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_DRIVERS" xml:space="preserve">
+    <value>Environmental drivers</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_FISHING" xml:space="preserve">
+    <value>Fishing</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_HABCAP" xml:space="preserve">
+    <value>Habitat capacity</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_HABITATS" xml:space="preserve">
+    <value>Habitats</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
+    <value>Importance</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MISC" xml:space="preserve">
+    <value>Miscellaneous</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
+    <value>Marine Protected Areas</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_REGIONS" xml:space="preserve">
+    <value>Regions</value>
+  </data>
+  <data name="PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH" xml:space="preserve">
+    <value>The selected file cannot be used for this purpose. Note that images cannot exceed 100 pixels in width or height.</value>
+  </data>
 </root>

@@ -12,6 +12,8 @@ Imports SAUPUtil.SAUPData
 Imports SAUPUtil.SAUPFile
 Imports System.Collections.Generic
 Imports ZedGraph
+Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Controls.Map
 
 #End Region ' Import
 
@@ -152,8 +154,9 @@ Namespace Ecospace
             MPAOpt = Me.m_manager.MPAOptimizationParamters
 
             ' Add LayersControl
-            Me.m_ucLayers = New ucLayersControl(Me.UIContext)
-            m_plLayers.Controls.Add(Me.m_ucLayers)
+            Me.m_ucLayers = New ucLayersControl()
+            Me.m_ucLayers.UIContext = Me.UIContext
+            Me.m_plLayers.Controls.Add(Me.m_ucLayers)
 
             ' Configure objective grids
             Me.m_gridObjectives.ShowMPAOptParams = True
@@ -668,6 +671,8 @@ Namespace Ecospace
                 Me.ClearMapFeedback()
                 Me.ClearResults()
 
+                Dim factory As New cLayerFactoryInternal()
+
                 ' Set search type
                 If (Me.m_propSearchType IsNot Nothing) Then Me.m_propSearchType.SetValue(value)
 
@@ -675,11 +680,11 @@ Namespace Ecospace
                 Me.InitMapFeedback()
 
                 ' Update visible state of existing layers
-                Me.ShowLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPASeed), _
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPASeed), _
                     SearchType = eMPAOptimizationModels.EcoSeed, SearchType = eMPAOptimizationModels.EcoSeed)
-                Me.ShowLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPARandom), _
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPARandom), _
                     SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
-                Me.ShowLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerImportance), _
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance), _
                      SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
 
                 ' Update graph labels
@@ -794,8 +799,10 @@ Namespace Ecospace
             Me.AddBaseLayers(eVarNameFlags.LayerImportance)
             Me.AddBaseLayers(eVarNameFlags.LayerHabitat)
             Me.AddBaseLayers(eVarNameFlags.LayerDepth)
+
             ' Hide habitat layers at startup
-            Me.ShowLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerHabitat), False, True)
+            Dim factory As New cLayerFactoryInternal()
+            Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerHabitat), False, True)
 
             Me.m_ucLayers.UnlockUpdates()
             Me.m_ucZoom.Map.ResumeLayout()
@@ -848,15 +855,15 @@ Namespace Ecospace
                         ' Populate run state layer with current row/col results
                         For iRow As Integer = 0 To Me.m_basemap.InRow
                             For iCol As Integer = 0 To Me.m_basemap.InCol
-                                Me.m_aiFeedback(iRow, iCol) = cLayerFactory.cECOSEED_LAYER_NOVALUE
+                                Me.m_aiFeedback(iRow, iCol) = cLayerFactoryInternal.cECOSEED_LAYER_NOVALUE
                             Next iCol
                         Next iRow
 
                         If output.CurRow > 0 And output.CurCol > 0 Then
-                            Me.m_aiFeedback(output.CurRow, output.CurCol) = cLayerFactory.cECOSEED_LAYER_CURRENTVALUE
+                            Me.m_aiFeedback(output.CurRow, output.CurCol) = cLayerFactoryInternal.cECOSEED_LAYER_CURRENTVALUE
                         End If
                         If output.BestRow > 0 And output.BestCol > 0 Then
-                            Me.m_aiFeedback(output.BestRow, output.BestCol) = cLayerFactory.cECOSEED_LAYER_BESTVALUE
+                            Me.m_aiFeedback(output.BestRow, output.BestCol) = cLayerFactoryInternal.cECOSEED_LAYER_BESTVALUE
                         End If
 
                         ' Make the map redraw itself
@@ -939,15 +946,15 @@ Namespace Ecospace
                         ' Populate run state layer with current row/col results
                         For iRow As Integer = 0 To Me.m_basemap.InRow
                             For iCol As Integer = 0 To Me.m_basemap.InCol
-                                Me.m_aiFeedback(iRow, iCol) = cLayerFactory.cECOSEED_LAYER_NOVALUE
+                                Me.m_aiFeedback(iRow, iCol) = cLayerFactoryInternal.cECOSEED_LAYER_NOVALUE
                             Next iCol
                         Next iRow
 
                         If output.CurRow > 0 And output.CurCol > 0 Then
-                            Me.m_aiFeedback(output.CurRow, output.CurCol) = cLayerFactory.cECOSEED_LAYER_CURRENTVALUE
+                            Me.m_aiFeedback(output.CurRow, output.CurCol) = cLayerFactoryInternal.cECOSEED_LAYER_CURRENTVALUE
                         End If
                         If output.BestRow > 0 And output.BestCol > 0 Then
-                            Me.m_aiFeedback(output.BestRow, output.BestCol) = cLayerFactory.cECOSEED_LAYER_BESTVALUE
+                            Me.m_aiFeedback(output.BestRow, output.BestCol) = cLayerFactoryInternal.cECOSEED_LAYER_BESTVALUE
                         End If
 
                         ' Make the map redraw itself
@@ -976,8 +983,9 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cLayer()
 
-            Dim strGroup As String = cLayerFactory.GetLayerGroup(varName)
-            Dim alayers As cLayer() = cLayerFactory.GetLayers(Me.UIContext, varName)
+            Dim factory As New cLayerFactoryInternal()
+            Dim strGroup As String = factory.GetLayerGroup(varName)
+            Dim alayers As cLayer() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cLayer = Nothing
 
             ' Add group, and collapse and hide habitat layers
@@ -1006,6 +1014,7 @@ Namespace Ecospace
             Dim l As cLayer = Nothing
             Dim alayers As cLayer() = Nothing
             Dim lRunStateLayers As New List(Of cLayer)
+            Dim factory As New cLayerFactoryInternal()
 
             Me.m_ucLayers.LockUpdates()
 
@@ -1021,14 +1030,14 @@ Namespace Ecospace
                     Case eMPAOptimizationModels.EcoSeed
 
                         ' Get group
-                        strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPASeed)
+                        strGroup = factory.GetLayerGroup(eVarNameFlags.LayerMPASeed)
 
                         ' DO NOT CHANGE THE ORDER OF LAYERS HERE TO ENSURE THAT THE 
                         ' SEED PROGRESS INDICATORS SHOW UP ON TOP OF THE RUNNING SEED CELLS,
                         ' AND THAT THE BEST CELL SHOWS UP ON TOP OF THE CURRENT CELL
 
                         ' Create best cell layer
-                        alayers = cLayerFactory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
+                        alayers = factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
@@ -1037,7 +1046,7 @@ Namespace Ecospace
                         lRunStateLayers.AddRange(alayers)
 
                         ' Create current cell layer(s)
-                        alayers = cLayerFactory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
+                        alayers = factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
@@ -1049,10 +1058,10 @@ Namespace Ecospace
                     Case eMPAOptimizationModels.RandomSearch
 
                         ' Create random output layer
-                        strGroup = cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPARandom)
+                        strGroup = factory.GetLayerGroup(eVarNameFlags.LayerMPARandom)
 
                         ' Create current cell layer(s)
-                        alayers = cLayerFactory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPARandom, datalayerTemp)
+                        alayers = factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPARandom, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
@@ -1536,6 +1545,7 @@ Namespace Ecospace
             Dim bIsEcoseed As Boolean = (Me.SearchType = eMPAOptimizationModels.EcoSeed)
             Dim bIsRandom As Boolean = (Me.SearchType = eMPAOptimizationModels.RandomSearch)
             Dim bMPALayerSelected As Boolean = (Me.SelectedMPA() > 0)
+            Dim factory As New cLayerFactoryInternal()
 
             ' Update input controls
             Me.m_rbEcoseed.Enabled = (bIsPreparing)
@@ -1574,12 +1584,12 @@ Namespace Ecospace
             Me.m_tsbEditLayers.Enabled = bIsPreparing And bIsRandom
 
             ' Layers enabled state
-            Me.EnableLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerDepth), Not bIsRunning)
-            Me.EnableLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPA), Not bIsRunning)
-            Me.EnableLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerHabitat), Not bIsRunning)
-            Me.EnableLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPASeed), Not bIsRunning)
-            Me.EnableLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerMPARandom), Not bIsRunning)
-            Me.EnableLayerGroup(cLayerFactory.GetLayerGroup(eVarNameFlags.LayerImportance), Not bIsRunning)
+            Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerDepth), Not bIsRunning)
+            Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPA), Not bIsRunning)
+            Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerHabitat), Not bIsRunning)
+            Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPASeed), Not bIsRunning)
+            Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPARandom), Not bIsRunning)
+            Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance), Not bIsRunning)
 
             ' Update map
             Me.m_ucZoom.Map.Editable = bIsPreparing

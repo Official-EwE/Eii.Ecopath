@@ -13,6 +13,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SourceGrid2
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 
@@ -219,15 +220,17 @@ Namespace Ecospace.Basemap
 
             Debug.Assert(Me.m_uic IsNot Nothing)
 
+            Dim f As New cLayerFactoryInternal()
+
             If (Me.m_lLayers.Count = 0) Then
 
                 ' Add default layers
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerMPA))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
-                Me.m_lLayers.AddRange(cLayerFactory.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
+                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
+                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
+                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
+                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerMPA))
+                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
+                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
 
             End If
 
