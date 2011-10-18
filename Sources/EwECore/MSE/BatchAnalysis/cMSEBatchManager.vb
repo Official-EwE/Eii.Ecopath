@@ -184,7 +184,7 @@ Namespace MSEBatchManager
             Me.Parameters.bSaveFeedingTime = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime)
             Me.Parameters.bSaveConsumptBio = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.QB)
 
-            Me.Parameters.AllowValidation = True
+
 
             For igrp As Integer = 1 To Me.nGroups
                 Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
@@ -208,8 +208,11 @@ Namespace MSEBatchManager
                 tfm.ResetStatusFlags()
                 tfm.AllowValidation = True
 
+                Me.Parameters.GroupOutputType(igrp) = Me.m_BatchData.GroupRunType(igrp)
+
             Next
 
+            Me.Parameters.AllowValidation = True
             Me.m_BatchData.isInit = True
 
         End Sub
@@ -267,10 +270,6 @@ Namespace MSEBatchManager
 
 
             ' Me.m_BatchData.OuputDir(eMSEBatchOuputTypes.QB) = Me.Parameters.OutputDir
-
-
-
-
 
             Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
 

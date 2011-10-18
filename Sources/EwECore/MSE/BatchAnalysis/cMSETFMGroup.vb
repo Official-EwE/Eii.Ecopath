@@ -282,15 +282,13 @@ Namespace MSE
             Next
 
             If tcatch = 0.0! Then
-
                 For Each var As cValue In Me.m_values.Values
-
                     If var.varName <> eVarNameFlags.Name And var.varName <> eVarNameFlags.Index And var.varName <> eVarNameFlags.DBID Then
                         Me.SetStatusFlags(var.varName, eStatusFlags.Null Or eStatusFlags.NotEditable)
                     End If
-
                 Next
             End If
+
             Return True
 
         End Function

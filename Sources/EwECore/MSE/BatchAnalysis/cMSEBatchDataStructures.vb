@@ -125,6 +125,8 @@ Namespace MSEBatchManager
 
         Public IterCalcType As eMSEBatchIterCalcTypes = eMSEBatchIterCalcTypes.Percent
 
+        Public GroupRunType() As Integer
+
         Public Sub redimForcing(ByVal nForcingFunctions As Integer)
             nForcing = nForcingFunctions
             If nForcing = 0 Then nForcing = 1
@@ -212,6 +214,9 @@ Namespace MSEBatchManager
             Dim defautlLL As Single = 0.5
             Dim defautlUp As Single = 1.0
             For igrp As Integer = 1 To Me.nGroups
+
+                GroupRunType(igrp) = eMSEBatchRunTypes.TFM
+
                 BlimLower(igrp) = defautlLL
                 BlimUpper(igrp) = defautlUp
 
@@ -237,6 +242,8 @@ Namespace MSEBatchManager
         End Sub
 
         Private Sub redimToMSE(MSEdata As MSE.cMSEDataStructures)
+
+            ReDim GroupRunType(MSEdata.NGroups)
 
             Me.redimForcing(1)
             Me.redimControlTypes(1, MSEdata.nFleets)

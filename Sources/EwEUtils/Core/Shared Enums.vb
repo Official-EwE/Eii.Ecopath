@@ -1225,7 +1225,7 @@ Namespace Core
         MSEBatchOutputFishingMortRate
 
         MSEBatchOuputDir
-
+        MSEBatchGroupRunType
 
         ''' <summary>
         ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 

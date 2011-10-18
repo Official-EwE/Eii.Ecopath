@@ -25,6 +25,7 @@ Public Class gridMSEBatchTFM
     Private Enum eColumnTypes As Integer
         Index = 0
         Name
+        RunType
         BLim
         BLimValue
         BLimLow
@@ -65,6 +66,8 @@ Public Class gridMSEBatchTFM
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.RunType) = New EwEColumnHeaderCell("Run type")
+
         Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit") 'B lim(-)
         Me(0, eColumnTypes.BLimValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
         Me(0, eColumnTypes.BLimLow) = New EwEColumnHeaderCell("Lower " & limitStr) 'B lim(-)
@@ -99,6 +102,7 @@ Public Class gridMSEBatchTFM
 
             Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
             Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+            Me(iGroup, eColumnTypes.RunType) = New PropertyCell(Me.PropertyManager, Core.MSEBatchManager.Parameters, eVarNameFlags.MSEBatchGroupRunType)
 
             Me(iGroup, eColumnTypes.BLimLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
             Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
