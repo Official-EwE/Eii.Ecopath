@@ -80,7 +80,6 @@ Public Class gridMSEBatchTFM
         Me(0, eColumnTypes.FOptLow) = New EwEColumnHeaderCell("Lower " & limitStr)
         Me(0, eColumnTypes.FOptUp) = New EwEColumnHeaderCell("Upper " & limitStr)
 
-
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
 

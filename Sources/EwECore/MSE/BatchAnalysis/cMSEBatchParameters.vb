@@ -96,12 +96,12 @@ Public Class cMSEBatchParameters
         End Set
     End Property
 
-    Public Property IterCalcType As eMSEBatchIterCalcTypes
+    Public Property IterCalcType As Integer
         Get
             Return CType(GetVariable(eVarNameFlags.MSEBatchIterCalcType), eMSEBatchIterCalcTypes)
         End Get
 
-        Set(ByVal value As eMSEBatchIterCalcTypes)
+        Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.MSEBatchIterCalcType, value)
         End Set
     End Property

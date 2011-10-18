@@ -10,8 +10,8 @@ Namespace MSEBatchManager
 
     Public Enum eMSEBatchRunTypes
         Any = 0
-        Constant_F = 1
-        Constant_Y = 2
+        FixedF = 1
+        TAC = 2
         TFM = 3
     End Enum
 
@@ -175,7 +175,7 @@ Namespace MSEBatchManager
 
             Me.Parameters.AllowValidation = False
             Me.Parameters.nTFMIteration = Me.m_BatchData.nTFM
-            Me.Parameters.IterCalcType = Me.m_BatchData.IterCalcType
+            Me.Parameters.IterCalcType = DirectCast(Me.m_BatchData.IterCalcType, Integer)
 
             Me.Parameters.bSaveBiomass = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.Biomass)
             Me.Parameters.bSaveCatch = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.CatchByGroup)
@@ -226,7 +226,6 @@ Namespace MSEBatchManager
                     Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
                     Me.UpdateNParameterIters()
                 End If
-
 
                 Me.update()
 
@@ -487,7 +486,6 @@ Namespace MSEBatchManager
             Dim f As Single, tac As Single
             Me.m_BatchData.iCurRun = iParIter
 
-
             For igrp = 1 To Me.m_MSEdata.NGroups
 
                 Select Case Me.BatchData.RunType
@@ -498,10 +496,10 @@ Namespace MSEBatchManager
                         fmax = Me.BatchData.tfmFmax(iParIter, igrp)
                         fmin = Me.BatchData.tfmFmin(iParIter, igrp)
 
-                    Case eMSEBatchRunTypes.Constant_F
+                    Case eMSEBatchRunTypes.FixedF
                         f = Me.BatchData.FixedF(iParIter, igrp)
 
-                    Case eMSEBatchRunTypes.Constant_Y
+                    Case eMSEBatchRunTypes.TAC
                         tac = Me.BatchData.TAC(iParIter, igrp)
 
                     Case eMSEBatchRunTypes.Any
@@ -589,13 +587,13 @@ Namespace MSEBatchManager
                         If Me.m_MSEdata.TAC(igrp) <> 0 Then bTAC = True
                     Next
 
-                Case eMSEBatchRunTypes.Constant_Y
+                Case eMSEBatchRunTypes.TAC
                     For igrp = 1 To Me.MSEData.NGroups
                         If Me.m_MSEdata.FixedEscapement(igrp) <> 0 Then bFixedEsc = True
                         If Me.m_MSEdata.FixedF(igrp) <> 0 Then bFixedF = True
                     Next
 
-                Case eMSEBatchRunTypes.Constant_F
+                Case eMSEBatchRunTypes.FixedF
                     For igrp = 1 To Me.MSEData.NGroups
                         If Me.m_MSEdata.FixedEscapement(igrp) <> 0 Then bFixedEsc = True
                         If Me.m_MSEdata.TAC(igrp) <> 0 Then bTAC = True

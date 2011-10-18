@@ -114,7 +114,7 @@ Namespace MSEBatchManager
 
                     header.AppendLine("Fleet_Name, Fleet_Index, Control_Type")
                     For iflt As Integer = 1 To Me.m_MSEdata.nFleets
-                        header.AppendLine(quote & epdata.FleetName(iflt) & quote & ", " & iflt.ToString & "," & CInt(Me.m_BatchData.ControlType(iControl, iflt)).ToString)
+                        header.AppendLine(quote & epdata.FleetName(iflt) & quote & "," & iflt.ToString & "," & CInt(Me.m_BatchData.ControlType(iControl, iflt)).ToString)
                     Next
                     header.AppendLine()
 
@@ -294,10 +294,10 @@ Namespace MSEBatchManager
             Dim header As String
 
             Select Case Me.m_BatchData.RunType
-                Case eMSEBatchRunTypes.Constant_F
-                    header = "Constant_F"
-                Case eMSEBatchRunTypes.Constant_Y
-                    header = "Constant_Y"
+                Case eMSEBatchRunTypes.FixedF
+                    header = "Fixed_F"
+                Case eMSEBatchRunTypes.TAC
+                    header = "TAC"
                 Case eMSEBatchRunTypes.TFM
                     header = "Blim, Bbase, Fmin, Fmax"
             End Select
@@ -311,12 +311,12 @@ Namespace MSEBatchManager
             Dim ouputStr As String
 
             Select Case Me.m_BatchData.RunType
-                Case eMSEBatchRunTypes.Constant_F
+                Case eMSEBatchRunTypes.FixedF
                     ouputStr = Math.Round(Me.m_MSEdata.FixedF(iGroup), 5).ToString
                     If Not Me.isGroupControlled(iGroup) Then
                         ouputStr = "0"
                     End If
-                Case eMSEBatchRunTypes.Constant_Y
+                Case eMSEBatchRunTypes.TAC
                     ouputStr = Math.Round(Me.m_MSEdata.TAC(iGroup), 5).ToString
                     If Not Me.isGroupControlled(iGroup) Then
                         ouputStr = "0"
@@ -643,9 +643,9 @@ Namespace MSEBatchManager
             Dim header As String
 
             Select Case Me.m_BatchData.RunType
-                Case eMSEBatchRunTypes.Constant_F
+                Case eMSEBatchRunTypes.FixedF
                     header = "Group Name, F"
-                Case eMSEBatchRunTypes.Constant_Y
+                Case eMSEBatchRunTypes.TAC
                     header = "Group Name, Y"
                 Case eMSEBatchRunTypes.TFM
                     header = "Group Name, Blim, Bbase, Fmax"
@@ -660,9 +660,9 @@ Namespace MSEBatchManager
             Dim ouputStr As String
 
             Select Case Me.m_BatchData.RunType
-                Case eMSEBatchRunTypes.Constant_F
+                Case eMSEBatchRunTypes.FixedF
                     ouputStr = Me.m_core.m_EcoPathData.GroupName(iGroup) & ", " & Me.m_MSEdata.FixedF(iGroup).ToString
-                Case eMSEBatchRunTypes.Constant_Y
+                Case eMSEBatchRunTypes.TAC
                     ouputStr = Me.m_core.m_EcoPathData.GroupName(iGroup) & ", " & Me.m_MSEdata.TAC(iGroup).ToString
                 Case eMSEBatchRunTypes.TFM
                     ouputStr = Me.m_core.m_EcoPathData.GroupName(iGroup) & ", " & Me.m_MSEdata.Blim(iGroup).ToString & ", " & Me.m_MSEdata.Bbase(iGroup).ToString & ", " & Me.m_MSEdata.Fopt(iGroup).ToString

@@ -69,8 +69,8 @@ Namespace MSECommandFile
 
             Me.m_RunTypeLookup = New Dictionary(Of Integer, eMSEBatchRunTypes)
             Me.m_RunTypeLookup.Add(0, eMSEBatchRunTypes.Any)
-            Me.m_RunTypeLookup.Add(1, eMSEBatchRunTypes.Constant_F)
-            Me.m_RunTypeLookup.Add(2, eMSEBatchRunTypes.Constant_Y)
+            Me.m_RunTypeLookup.Add(1, eMSEBatchRunTypes.FixedF)
+            Me.m_RunTypeLookup.Add(2, eMSEBatchRunTypes.TAC)
             Me.m_RunTypeLookup.Add(3, eMSEBatchRunTypes.TFM)
 
             Me.m_OuputTagToEnumLookup = New Dictionary(Of String, eMSEBatchOuputTypes)
@@ -198,8 +198,8 @@ Namespace MSECommandFile
             'Is there data for the RunType
             Dim bMissing As Boolean ' = True
             bMissing = False
-            bMissing = bMissing Or (Me.BatchData.RunType = eMSEBatchRunTypes.Constant_F And Me.getTagData(F_DATA_TAG).Count = 0)
-            bMissing = bMissing Or (Me.BatchData.RunType = eMSEBatchRunTypes.Constant_Y And Me.getTagData(Y_DATA_TAG).Count = 0)
+            bMissing = bMissing Or (Me.BatchData.RunType = eMSEBatchRunTypes.FixedF And Me.getTagData(F_DATA_TAG).Count = 0)
+            bMissing = bMissing Or (Me.BatchData.RunType = eMSEBatchRunTypes.TAC And Me.getTagData(Y_DATA_TAG).Count = 0)
             bMissing = bMissing Or (Me.BatchData.RunType = eMSEBatchRunTypes.TFM And Me.getTagData(TFM_DATA_TAG).Count = 0)
 
             If bMissing Then
@@ -370,9 +370,9 @@ Namespace MSECommandFile
                 'Number of parameters iterations based on run type
                 Select Case Me.BatchData.RunType
 
-                    Case eMSEBatchRunTypes.Constant_F
+                    Case eMSEBatchRunTypes.FixedF
                         Me.BatchData.nParIters = Me.BatchData.nFixedF
-                    Case eMSEBatchRunTypes.Constant_Y
+                    Case eMSEBatchRunTypes.TAC
                         Me.BatchData.nParIters = Me.BatchData.nTAC
                     Case eMSEBatchRunTypes.TFM
                         Me.BatchData.nParIters = Me.BatchData.nTFM

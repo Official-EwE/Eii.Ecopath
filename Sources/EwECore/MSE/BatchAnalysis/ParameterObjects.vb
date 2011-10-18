@@ -539,7 +539,7 @@ Namespace MSECommandFile
                 'update the batch data with the values from the command file 
                 For i As Integer = 0 To indexs.Length - 1
                     val = Me.m_lstPs(i)
-                    If batchDat.RunType = eMSEBatchRunTypes.Constant_F And val = 0 Then val = Single.Epsilon
+                    If batchDat.RunType = eMSEBatchRunTypes.FixedF And val = 0 Then val = Single.Epsilon
                     batchDat.FixedF(Me.Index, indexs(i)) = val
                 Next
 
@@ -696,7 +696,7 @@ Namespace MSECommandFile
                 'update the batch data with the values from the command file 
                 For i As Integer = 0 To indexs.Length - 1
                     tac = Me.m_lstPs(i)
-                    If batchDat.RunType = eMSEBatchRunTypes.Constant_Y And tac = 0 Then tac = Single.Epsilon
+                    If batchDat.RunType = eMSEBatchRunTypes.TAC And tac = 0 Then tac = Single.Epsilon
                     batchDat.TAC(Me.Index, indexs(i)) = tac
                 Next
 
