@@ -84,6 +84,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+<<<<<<< .mine
+=======
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3373.24277, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
@@ -92,6 +94,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Sources\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
     </Reference>
+>>>>>>> .r6742
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
