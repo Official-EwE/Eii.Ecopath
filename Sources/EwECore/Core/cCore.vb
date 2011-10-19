@@ -12913,10 +12913,8 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Monte carlo data has changed.", eMessageType.DataModified, _
                                        eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Maintenance))
 
-
                 Case eDataTypes.EcospaceMapResponse
                     If obj.CoreComponent = eCoreComponentType.MapResponseInteractionManager Then
-
 
                         Me.m_publisher.AddMessage(New cMessage("Capacity map data has changed.", TypeOfChange, _
                                       eCoreComponentType.MapResponseInteractionManager, eMessageImportance.Maintenance))
