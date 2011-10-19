@@ -5062,6 +5062,12 @@ exitline:
 #End Region
 
 #Region " New Multistanza Stuff"
+
+    ''' <summary>
+    '''  updates numbers, weight, and biomass for multiple stanza species using information 
+    '''  on average performance (eatenby, loss) over ecospace grid cells used by the species
+    ''' </summary>
+    ''' <remarks></remarks>
     Sub SpaceSplitUpdate()
         'updates numbers, weight, and biomass for multiple stanza species using information
         'on average performance (eatenby, loss) over ecospace grid cells used by the species
