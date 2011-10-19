@@ -38,12 +38,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-<<<<<<< .mine
     <TargetFrameworkProfile />
-=======
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
->>>>>>> .r6743
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -158,7 +153,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-<<<<<<< .mine
   <ItemGroup>
     <ProjectReference Include="..\..\Sources\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
@@ -173,18 +167,6 @@
       <Name>EwEUtils</Name>
     </ProjectReference>
   </ItemGroup>
-=======
-  <ItemGroup>
-    <ProjectReference Include="..\..\Sources\EwECore\EwECore.vbproj">
-      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
-      <Name>EwECore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources\EwEUtils\EwEUtils.vbproj">
-      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils</Name>
-    </ProjectReference>
-  </ItemGroup>
->>>>>>> .r6743
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
