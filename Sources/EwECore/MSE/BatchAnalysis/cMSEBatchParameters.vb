@@ -81,16 +81,9 @@ Public Class cMSEBatchParameters
         val.Stored = False
         m_values.Add(val.varName, val)
 
-        'MSEBatchGroupRunType
-        meta = New cVariableMetaData(1, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo))
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.MSEBatchGroupRunType, eStatusFlags.OK, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-
         Me.AllowValidation = True
 
     End Sub
-
 
     Public Property nTFMIteration As Integer
         Get
@@ -182,19 +175,8 @@ Public Class cMSEBatchParameters
     End Property
 
 
-    Public Property GroupOutputType(ByVal iGroup As Integer) As Integer
-        Get
-            Return CInt((GetVariable(eVarNameFlags.MSEBatchGroupRunType, iGroup)))
-        End Get
-        Set(value As Integer)
-            SetVariable(eVarNameFlags.MSEBatchGroupRunType, value, iGroup)
-        End Set
-    End Property
-
-
     Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
         MyBase.ResetStatusFlags(bForceReset)
-
         Me.AllowValidation = False
         Dim tcatch As Single
 
@@ -204,13 +186,12 @@ Public Class cMSEBatchParameters
         Next
 
         If tcatch = 0.0! Then
-
             For Each var As cValue In Me.m_values.Values
-
-                If var.varName <> eVarNameFlags.MSEBatchGroupRunType Then
-                    Me.SetStatusFlags(var.varName, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                If var.varName = eVarNameFlags.MSEBatchGroupRunType Then
+                    For igrp As Integer = 1 To Me.m_core.nGroups
+                        Me.SetStatusFlags(var.varName, eStatusFlags.Null Or eStatusFlags.NotEditable, igrp)
+                    Next
                 End If
-
             Next
         End If
         Return True

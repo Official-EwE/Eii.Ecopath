@@ -76,6 +76,11 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MSEFmin, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEFmin))
             m_values.Add(val.varName, val)
 
+            'Used
+            meta = New cVariableMetaData()
+            val = New cValue(New Boolean, eVarNameFlags.MSEBatchTFMManaged, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchTFMManaged))
+            m_values.Add(val.varName, val)
+
             Me.AllowValidation = True
 
         End Sub
@@ -143,9 +148,6 @@ Namespace MSE
             End Set
         End Property
 
-
-
-
         Public Property FMax As Single
             Get
                 Return CSng(GetVariable(eVarNameFlags.MSEFmax))
@@ -166,6 +168,16 @@ Namespace MSE
             End Set
         End Property
 
+        Public Property isManaged As Boolean
+            Get
+                Return CBool(GetVariable(eVarNameFlags.MSEBatchTFMManaged))
+            End Get
+
+            Set(ByVal value As Boolean)
+                SetVariable(eVarNameFlags.MSEBatchTFMManaged, value)
+            End Set
+        End Property
+
         Public Property FMaxUpper As Single
             Get
                 Return CSng(GetVariable(eVarNameFlags.MSETFMFOptUpper))
@@ -175,8 +187,6 @@ Namespace MSE
                 SetVariable(eVarNameFlags.MSETFMFOptUpper, value)
             End Set
         End Property
-
-
 
         Public Property FMaxValue(IterationIndex As Integer) As Single
             Get
@@ -232,8 +242,6 @@ Namespace MSE
                 End If
             End Set
         End Property
-
-
 
         Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
 

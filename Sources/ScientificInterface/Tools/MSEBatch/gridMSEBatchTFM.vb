@@ -66,7 +66,7 @@ Public Class gridMSEBatchTFM
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.RunType) = New EwEColumnHeaderCell("Run type")
+        Me(0, eColumnTypes.RunType) = New EwEColumnHeaderCell("Managed")
 
         Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit") 'B lim(-)
         Me(0, eColumnTypes.BLimValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
@@ -102,12 +102,13 @@ Public Class gridMSEBatchTFM
 
             Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
             Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
-            Me(iGroup, eColumnTypes.RunType) = New PropertyCell(Me.PropertyManager, Core.MSEBatchManager.Parameters, eVarNameFlags.MSEBatchGroupRunType)
+            Me(iGroup, eColumnTypes.RunType) = New SourceGrid2.Cells.Real.CheckBox(group.isManaged)
+            Me(iGroup, eColumnTypes.RunType).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.BLimLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
             Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
             Me(iGroup, eColumnTypes.BLimValue) = New EwECell(group.BLimValue(iCurIter), GetType(Single))
-            Me(iGroup, eColumnTypes.BLimValue).Behaviors.Add(Me.EwEEditHandler)
+            '   Me(iGroup, eColumnTypes.BLimValue).Behaviors.Add()
             Me(iGroup, eColumnTypes.BLimUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimUpper)
 
             Me(iGroup, eColumnTypes.BBaseLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseLower)

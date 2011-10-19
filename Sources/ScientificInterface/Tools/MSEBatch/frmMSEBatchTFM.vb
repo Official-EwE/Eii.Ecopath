@@ -2,11 +2,9 @@
 Option Explicit On
 Option Strict On
 
-
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwECore.MSEBatchManager
-
 
 Public Class frmMSEBatchTFM
 
@@ -36,12 +34,10 @@ Public Class frmMSEBatchTFM
 
         Me.txNTFM.Text = Me.m_BatchManager.Parameters.nTFMIteration.ToString
 
-
         Me.rbCalcTypePercent.Tag = eMSEBatchIterCalcTypes.Percent
         Me.rbCalcTypeValue.Tag = eMSEBatchIterCalcTypes.UpperLowerValues
 
         UpdateControls()
-
 
     End Sub
 

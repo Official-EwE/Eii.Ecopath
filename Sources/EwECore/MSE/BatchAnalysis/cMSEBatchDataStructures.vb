@@ -125,7 +125,7 @@ Namespace MSEBatchManager
 
         Public IterCalcType As eMSEBatchIterCalcTypes = eMSEBatchIterCalcTypes.Percent
 
-        Public GroupRunType() As Integer
+        Public GroupRunType() As eMSEBatchRunTypes
 
         Public Sub redimForcing(ByVal nForcingFunctions As Integer)
             nForcing = nForcingFunctions

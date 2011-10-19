@@ -13,6 +13,7 @@ Namespace MSEBatchManager
         FixedF = 1
         TAC = 2
         TFM = 3
+        NotManaged = 4
     End Enum
 
     Public Enum eMSEBatchOuputTypes
@@ -184,8 +185,6 @@ Namespace MSEBatchManager
             Me.Parameters.bSaveFeedingTime = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime)
             Me.Parameters.bSaveConsumptBio = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.QB)
 
-
-
             For igrp As Integer = 1 To Me.nGroups
                 Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
                 tfm.AllowValidation = False
@@ -205,15 +204,19 @@ Namespace MSEBatchManager
                 tfm.FMaxLower = Me.m_BatchData.FOptLower(igrp)
                 tfm.FMaxUpper = Me.m_BatchData.FOptUpper(igrp)
 
+                tfm.isManaged = (Me.m_BatchData.GroupRunType(igrp) = eMSEBatchRunTypes.TFM)
+
                 tfm.ResetStatusFlags()
                 tfm.AllowValidation = True
 
-                Me.Parameters.GroupOutputType(igrp) = Me.m_BatchData.GroupRunType(igrp)
+                '  Me.Parameters.GroupOutputType(igrp) = Me.m_BatchData.GroupRunType(igrp)
 
             Next
 
             Me.Parameters.AllowValidation = True
             Me.m_BatchData.isInit = True
+
+            Me.Parameters.ResetStatusFlags()
 
         End Sub
 

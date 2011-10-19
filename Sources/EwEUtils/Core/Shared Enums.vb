@@ -1228,6 +1228,12 @@ Namespace Core
         MSEBatchGroupRunType
 
         ''' <summary>
+        ''' Boolean is this group managed using the TFM
+        ''' </summary>
+        ''' <remarks></remarks>
+        MSEBatchTFMManaged
+
+        ''' <summary>
         ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 
         ''' </summary>
         MSEBatchIterCalcType
