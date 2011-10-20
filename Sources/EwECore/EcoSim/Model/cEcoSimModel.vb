@@ -3236,16 +3236,8 @@ Namespace Ecosim
 
 
         Friend Sub RedimForSearchRun()
-            'Dim i As Integer
-            'Dim j As Integer
-            'Redim variables that are used in more than one analysis
-            'ReDim amat(NumGroups + 3 * npairs, NumGroups + 3 * npairs) As Single
             ReDim BB(nGroups)
-            ' ReDim bchange(nGroups)
-            '    ReDim Biomass(nGroups + 3 * npairs)
             ReDim biomeq(nGroups)
-            '   ReDim cbbase(nGroups)
-            'ReDim cchange(nGroups)
             ReDim m_Data.Consumption(nGroups, nGroups)
             ReDim m_Data.Consumpt(nGroups, nGroups)
             ReDim dydx(nGroups)
@@ -3254,22 +3246,10 @@ Namespace Ecosim
             ReDim m_Data.Eatenby(nGroups)
             ReDim m_Data.Eatenof(nGroups)
             ReDim EatenByBase(nGroups)
-            'ReDim eatperjuvbase(nGroups)
             ReDim m_Data.FishTime(nGroups)
-            '   ReDim m_Data.ImmigNo(nGroups)
             ReDim m_Data.loss(nGroups)
             ReDim m_Data.pred(nGroups)
-            'ReDim RecSlope(nGroups)
-            'ReDim m_Data.rZero(nGroups)
-            'ReDim SaveEats(nGroups + 3 * npairs)
-            'ReDim SaveSizeAd(nGroups + 3 * npairs)
-            'ReDim SaveSizeJuv(nGroups + 3 * npairs)
-            'ReDim Temp1(nGroups + 3 * npairs)
-            'ReDim wbar(nGroups)
-            'ReDim wzero(nGroups)  'weight at recruitment to juvenile stage
             ReDim yt(nGroups)
-            'ReDim Zadult(nGroups)
-            'ReDim Zjuv(nGroups)
 
         End Sub
 

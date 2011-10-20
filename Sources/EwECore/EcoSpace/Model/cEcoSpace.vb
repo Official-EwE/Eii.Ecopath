@@ -780,7 +780,13 @@ Public Class cEcoSpace
 #End Region
 
 #Region "Private modeling code"
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks>
+    ''' This routine attempts to seek spatial equilibrium in ecosim biomasses, given mpa pattern
+    ''' and start density map based on no movement
+    '''</remarks>
     Private Sub FindSpatialEquilibrium()
         'this routine attempts to seek spatial equilibrium in ecosim biomasses, given mpa pattern
         'and start density map based on no movement
@@ -1122,8 +1128,9 @@ Public Class cEcoSpace
             SpaceSS = CalculateSpaceSS()
             'End If
 
-            m_Ecosim.PlotDataInfo(False, m_Data.SS)
 
+
+            m_Ecosim.PlotDataInfo(False, m_Data.SS)
             Dim totalIter As Single
             For i = 1 To m_Data.nGridSolverThreads
                 totalIter = totalIter + totalIterThread(i)
