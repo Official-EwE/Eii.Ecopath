@@ -2185,8 +2185,16 @@ Namespace Controls
 
         Protected Overridable Sub UpdateStyle()
 
+            Dim lAxis As New List(Of ZedGraph.Axis)
             For iPane As Integer = 1 To Me.m_nPanels
                 With Me.GetPane(iPane)
+
+                    lAxis.Clear()
+                    lAxis.Add(.YAxis)
+                    lAxis.Add(.Y2Axis)
+                    lAxis.Add(.XAxis)
+                    lAxis.Add(.X2Axis)
+
                     .IsFontsScaled = False
 
                     .Title.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.Title)
@@ -2195,27 +2203,19 @@ Namespace Controls
                     .Title.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Italic) = FontStyle.Italic)
                     .Title.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Title) And FontStyle.Underline) = FontStyle.Underline)
 
-                    .XAxis.Title.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.SubTitle)
-                    .YAxis.Title.FontSpec.Family = .XAxis.Title.FontSpec.Family
-                    .XAxis.Title.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.SubTitle)
-                    .YAxis.Title.FontSpec.Size = .XAxis.Title.FontSpec.Size
-                    .XAxis.Title.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Bold) = FontStyle.Bold)
-                    .YAxis.Title.FontSpec.IsBold = .XAxis.Title.FontSpec.IsBold
-                    .XAxis.Title.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Italic) = FontStyle.Italic)
-                    .YAxis.Title.FontSpec.IsItalic = .XAxis.Title.FontSpec.IsItalic
-                    .XAxis.Title.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Underline) = FontStyle.Underline)
-                    .YAxis.Title.FontSpec.IsUnderline = .XAxis.Title.FontSpec.IsUnderline
+                    For Each ax As Axis In lAxis
+                        ax.Title.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.SubTitle)
+                        ax.Title.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.SubTitle)
+                        ax.Title.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Bold) = FontStyle.Bold)
+                        ax.Title.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Italic) = FontStyle.Italic)
+                        ax.Title.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Underline) = FontStyle.Underline)
 
-                    .XAxis.Scale.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.Scale)
-                    .YAxis.Scale.FontSpec.Family = .XAxis.Scale.FontSpec.Family
-                    .XAxis.Scale.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.Scale)
-                    .YAxis.Scale.FontSpec.Size = .XAxis.Scale.FontSpec.Size
-                    .XAxis.Scale.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Bold) = FontStyle.Bold)
-                    .YAxis.Scale.FontSpec.IsBold = .XAxis.Scale.FontSpec.IsBold
-                    .XAxis.Scale.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Italic) = FontStyle.Italic)
-                    .YAxis.Scale.FontSpec.IsItalic = .XAxis.Scale.FontSpec.IsItalic
-                    .XAxis.Scale.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Underline) = FontStyle.Underline)
-                    .YAxis.Scale.FontSpec.IsUnderline = .XAxis.Scale.FontSpec.IsUnderline
+                        ax.Scale.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.Scale)
+                        ax.Scale.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.Scale)
+                        ax.Scale.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Bold) = FontStyle.Bold)
+                        ax.Scale.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Italic) = FontStyle.Italic)
+                        ax.Scale.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Underline) = FontStyle.Underline)
+                    Next
 
                     .Legend.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.Legend)
                     .Legend.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.Legend)
