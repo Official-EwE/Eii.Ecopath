@@ -104,7 +104,10 @@ Public Class cEcoSpace
     'the analog of habgrad, but for migration, and has a monthly component
     Private MigGrad(,,,) As Single
 
-
+    ''' <summary>
+    ''' Sum of Ecopath Effort across the map modified by width and proportion of habitat area in the cell
+    ''' </summary>
+    ''' <remarks>Set in <see cref="SetEffortParameters"> SetEffortParameter()</see></remarks>
     Private TotEffort() As Single
 
     Private RelMoveFit(,) As Single 'populated in SetKmove()
@@ -2579,22 +2582,15 @@ Public Class cEcoSpace
                         End If
                     Next
 
-
                     If m_Data.Depth(i, j) > 0 Then
                         'TotEffort(ig) = TotEffort(ig) + m_Data.Width(i)
                         If ResetTotEffort Then
                             TotEffort(ig) += 1 * m_Data.Width(i) * PFished
                         End If
+                        'set the Proportion of area fished by this fleet for the habitats in the cell 
                         Me.m_Data.PAreaFished(i, j, ig) = 1 * m_Data.Width(i) * PFished
                     End If
 
-                    'No PHabArea(i,j,k)
-                    'If (m_Data.GearHab(ig, m_Data.HabType(i, j)) Or m_Data.GearHab(ig, 0)) And m_Data.Depth(i, j) > 0 Then
-                    '    TotEffort(ig) = TotEffort(ig) + m_Data.Width(i)
-                    'End If
-
-                    'No Width(i)
-                    ' If m_data.Depth(i, j) > 0 Then TotEffort(ig) = TotEffort(ig) + 1
                 Next
             Next
             'TotEffort(ig) = TotEffort(ig) * SEmult(ig)
@@ -5091,7 +5087,6 @@ exitline:
                     Su = Math.Exp(-TotLoss(ieco) / 12.0# / TotBiom(ieco))
                     Gf = TotEatenBy(ieco) / TotPred(ieco)  '(month factor here included in splitalpha scaling setup)
 
-                    'Debug.Assert(isp <> 1 And ist <> 1)
                     For ia = m_Stanza.Age1(isp, ist) To m_Stanza.Age2(isp, ist)
                         m_Stanza.NageS(isp, ia) = m_Stanza.NageS(isp, ia) * Su
                         m_Stanza.WageS(isp, ia) = m_Stanza.vBM(isp) * m_Stanza.WageS(isp, ia) + Gf * m_Stanza.SplitAlpha(isp, ia)

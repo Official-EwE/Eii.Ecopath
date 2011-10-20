@@ -113,7 +113,7 @@ Public Class cEcospaceDataStructures
     ''' <remarks>Indexed Row,Col,Habitat</remarks>
     Public PHabType(,,) As Single
 
-    ''' <summary>The proportion of map cell that is fished.</summary>
+    ''' <summary>The proportion of map cell that is fished by a fleet.</summary>
     ''' <remarks>Indexed Row,Col,Gear</remarks>
     Public PAreaFished(,,) As Single
 
@@ -496,6 +496,8 @@ Public Class cEcospaceDataStructures
     ''' User defined input habitat capacity.
     ''' </summary>
     Public HabCapInput(,,) As Single
+
+    ''' <summary> Sum of Capacity across the map cells by group </summary>
     Public TotHabCap() As Single
 
     '''<summary>max capacity by group</summary>
