@@ -339,6 +339,14 @@ Public MustInherit Class cThreadWaitBase
         'if WaitTimeInMillSec = 0 then wait for zero time even if WaitOne returns False, process has not completed
         'WaitTimeInMillSec > 0 (any positive integer) then wait for WaitTimeInMillSec or until WaitOne returns True
         If waitTime > 0 Then waitTime = 100
+
+        'Wait is in a loop because
+        'm_SignalState is signaled when a thread running
+        'm_SignalState.WaitOne will block the calling thread (the interface) while the signal is set
+        'this allows the running thread to keep going.
+        'If the running thread calls out to the interface there will be a deadlock, it is block by WaitOne.
+        'The loop allows the interface to unblock and process any calls from the thread 
+        'then reblock and finish any processing on the thread
         Do
             n += 1
 
@@ -348,7 +356,6 @@ Public MustInherit Class cThreadWaitBase
             'True if the wait was completed or there was no wait 
             result = Me.m_SignalState.WaitOne(waitTime)
             totTime += waitTime
-            'System.Console.WriteLine("Waited " & totTime.ToString)
 
             If result = True Then processing = False
             If totTime >= WaitTimeInMillSec Then processing = False
