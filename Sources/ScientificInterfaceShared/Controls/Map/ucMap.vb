@@ -62,7 +62,16 @@ Namespace Controls.Map
                 Return Me.m_uic
             End Get
             Set(ByVal uic As cUIContext)
+                If (Me.m_uic IsNot Nothing) Then
+                    Me.m_basemap = Nothing
+                End If
+
                 Me.m_uic = uic
+                Me.Clear()
+
+                If (Me.m_uic IsNot Nothing) Then
+                    Me.m_basemap = Me.m_uic.Core.EcospaceBasemap
+                End If
             End Set
         End Property
 
@@ -92,24 +101,6 @@ Namespace Controls.Map
 #End Region ' Public interfaces
 
 #Region " Public properties "
-
-        Public Property Basemap() As cEcospaceBasemap
-            Get
-                Return Me.m_basemap
-            End Get
-            Set(ByVal value As cEcospaceBasemap)
-
-                If (Me.m_basemap IsNot Nothing) Then
-                End If
-
-                Me.m_basemap = value
-
-                If (Me.m_basemap IsNot Nothing) Then
-                End If
-
-                Me.Refresh()
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>

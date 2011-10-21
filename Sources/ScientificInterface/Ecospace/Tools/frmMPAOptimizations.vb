@@ -780,10 +780,9 @@ Namespace Ecospace
         Private Sub Reload()
             ' Store ref
             Me.m_basemap = Me.UIContext.Core.EcospaceBasemap
-            ' Initalize the m_ucBasemap
-            Me.m_ucZoom.Map.Basemap = Me.m_basemap
             Me.ReloadMap()
             Me.ReloadMPAChoices()
+            Me.Invalidate(True)
         End Sub
 
         Private Sub ReloadMap()

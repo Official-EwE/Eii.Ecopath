@@ -663,7 +663,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="My Project\ApplicationEvents.vb" />
-    <Compile Include="EwEProgram.vb" />
     <Compile Include="Other\AboutBox\frmAboutEwE.Designer.vb">
       <DependentUpon>frmAboutEwE.vb</DependentUpon>
     </Compile>

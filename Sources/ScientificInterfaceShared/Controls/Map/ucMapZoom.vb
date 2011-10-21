@@ -79,11 +79,9 @@ Namespace Controls.Map
                 Return Me.m_uic
             End Get
             Set(ByVal value As cUIContext)
-
                 Me.m_uic = value
-
-                If (Me.m_uic IsNot Nothing) Then
-                    Me.Map.Clear()
+                If (Me.m_map IsNot Nothing) Then
+                    Me.m_map.UIContext = Me.m_uic
                 End If
             End Set
         End Property

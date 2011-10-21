@@ -95,7 +95,6 @@ Namespace Ecospace.Basemap.Layers
 
             ' Show your stuff
             Me.m_ucPreview = Me.m_zoommap.Map()
-            Me.m_ucPreview.Basemap = Me.m_uic.Core.EcospaceBasemap
             Me.m_ucPreview.AddLayer(Me.m_layerWork)
             If ((Not Object.ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And _
                 (Not Object.ReferenceEquals(Me.m_layerDepth, Nothing))) Then

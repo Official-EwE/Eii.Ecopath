@@ -58,7 +58,6 @@ Namespace Controls.Map
             'm_map
             '
             Me.m_map.BackColor = System.Drawing.SystemColors.Window
-            Me.m_map.Basemap = Nothing
             Me.m_map.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_map.Editable = False
             Me.m_map.Location = New System.Drawing.Point(0, 0)

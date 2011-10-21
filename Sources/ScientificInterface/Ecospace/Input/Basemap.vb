@@ -29,7 +29,6 @@ Namespace Ecospace.Basemap
 
 #Region " Private vars "
 
-        Private m_basemapData As cEcospaceBasemap = Nothing
         ''' <summary>The one and only administration of layers.</summary>
         Private m_layers As New List(Of cLayer)
         ''' <summary>The one and only control that renders the basemap.</summary>
@@ -71,6 +70,8 @@ Namespace Ecospace.Basemap
 
             MyBase.OnLoad(e)
 
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim pm As cPropertyManager = Me.PropertyManager
             Dim source As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
@@ -81,7 +82,6 @@ Namespace Ecospace.Basemap
             Me.m_ucBasemap.Title = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex).Name
             Me.m_ucLayers.UIContext = Me.UIContext
 
-            Me.Basemap = Me.Core.EcospaceBasemap
             Me.m_ucBasemap.Editable = True
             Me.m_zoomToolbar.AddZoomContainer(Me.m_zoomContainer)
 
@@ -112,6 +112,9 @@ Namespace Ecospace.Basemap
                 AddHandler Me.m_cmdEditRegions.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 AddHandler Me.m_cmdEditRegions.OnPostInvoke, AddressOf OnPostIvokeEditcommand
             End If
+
+            ' Initialize layers from core data
+            Me.LoadCoreValuesToBasemap()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
@@ -290,25 +293,6 @@ Namespace Ecospace.Basemap
 
 #Region " Internals "
 
-        Private Property Basemap() As cEcospaceBasemap
-
-            Get
-                Return Me.m_basemapData
-            End Get
-
-            Set(ByVal value As cEcospaceBasemap)
-
-                ' Store ref
-                Me.m_basemapData = value
-                ' Initalize the m_ucBasemap
-                Me.m_ucBasemap.Basemap = value
-                ' Initialize layers from core data
-                Me.LoadCoreValuesToBasemap()
-
-            End Set
-
-        End Property
-
         ''' <summary>The layer currently selected by the user.</summary>
         Private m_layerSelected As cLayer = Nothing
         ''' <summary>The editor belonging to the selected layer, if any.</summary>
@@ -367,7 +351,7 @@ Namespace Ecospace.Basemap
             ' Refresh basemap on ANY data added or removed message from Ecospace
             If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
                 ' Refresh it all
-                Me.Basemap = Me.Core.EcospaceBasemap
+                Me.Invalidate()
             End If
         End Sub
 

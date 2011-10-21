@@ -35,6 +35,7 @@ Imports ScientificInterfaceShared.Commands
 Imports System.Drawing.Printing
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports System.Globalization
 
 #End Region ' Imports
 

@@ -41,9 +41,7 @@ Namespace Ecospace.Advection
                     Me.ClearMap()
                 End If
                 Me.m_uic = value
-                If Me.m_uic IsNot Nothing Then
-                    Me.PopulateMap()
-                End If
+                Me.m_zoomctrl.UIContext = Me.m_uic
             End Set
         End Property
 
@@ -153,6 +151,7 @@ Namespace Ecospace.Advection
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
             If (Me.DesignMode = True) Then Return
+            Me.PopulateMap()
             Me.UpdateControls()
         End Sub
 
@@ -173,9 +172,6 @@ Namespace Ecospace.Advection
 
             ' Sanity checks
             Debug.Assert(Me.DataLayerVariable <> eVarNameFlags.NotSet)
-
-            ' Set basemap
-            Me.m_zoomctrl.Map.Basemap = Me.m_uic.Core.EcospaceBasemap
 
             ' Add data layer
             Me.m_layerData = Me.AddLayer(Me.DataLayerVariable, Me.IsDataInput)
@@ -204,7 +200,6 @@ Namespace Ecospace.Advection
             End If
 
             Me.m_zoomctrl.Map.Clear()
-            Me.m_zoomctrl.Map.Basemap = Nothing
 
         End Sub
 
