@@ -7,7 +7,6 @@ Imports EwECore.MSECommandFile
 
 Namespace MSEBatchManager
 
-
     Public Enum eMSEBatchRunTypes
         Any = 0
         FixedF = 1
@@ -28,11 +27,6 @@ Namespace MSEBatchManager
 
     Public Class cMSEBatchManager
         Implements ICoreInterface
-
-
-        'ToDo_jb 17-Aug-2010 MSEBatchManager add run header to outputs
-        'ToDo_jb 17-Aug-2010 MSEBatchManager Validation of model and scenario
-        'ToDo_jb 17-Aug-2010 MSEBatchManager figure out how to prompt user if validation failed
 
         'ToDo_jb 24-Aug-2010 MSEBatchManager Why does the list box in the interface not update after the first run
         Public Delegate Sub MSEBatchMessage(ByVal strMessage As String)

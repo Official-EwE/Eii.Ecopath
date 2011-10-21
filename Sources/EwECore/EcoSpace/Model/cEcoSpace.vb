@@ -19,11 +19,6 @@ Public Class cEcoSpace
 
     'ToDo_jb Change summary values to be across all time steps
 
-    'ToDo_jb 21-Sept-2011 Capacity Add a Capacity Input layer and Capacity Compute/Output layer
-    'ToDo_jb 21-Sept-2011 Add a Not Used Habitat layer that is the default assignment 
-    'ToDo_jb 21-Sept-2011 Added User defined Capacity layers...
-
-
 #Region "Solver threads"
 
     Public Delegate Sub SolverErrorDelegate(ByVal ThreadID As Integer, ByVal msg As String)
@@ -50,8 +45,6 @@ Public Class cEcoSpace
     Private m_spaceSolvers As List(Of cSpaceSolver)
     Private m_IBMSolvers As List(Of cIBMSolver)
 
-    Private iTotalCells As Integer 'this is the total number of spatial cells i.e. rows*columns
-
     Private m_TimestepDelegate As EcoSpaceTimeStepDelegate
 
     Private m_OnRunCompletedDelegate As EcoSpaceRunCompletedDelegate
@@ -62,25 +55,25 @@ Public Class cEcoSpace
 
     Private m_PauseSignal As System.Threading.ManualResetEvent
 
+    ''' <summary>
+    ''' Message Publisher for Ecospace messages
+    ''' </summary>
+    ''' <remarks>
+    ''' </remarks>
     Private m_publisher As New cMessagePublisher
 
-    'Ecosim and EcoPath data will be via m_ESData and m_EPData references NOT through the model reference (m_Ecosim)
-    'I still need to sort out how Ecosim needs to be intialized for Ecospace to access this data.
-    'Ecosim must have a scenario loaded!!!! This will have to be handled by the core
     Private m_EPdata As cEcopathDataStructures
     Private m_SimData As cEcosimDatastructures
     Private m_Data As cEcospaceDataStructures
     Private m_Stanza As cStanzaDatastructures
     Private m_Ecosim As Ecosim.cEcoSimModel
     Private m_search As cSearchDatastructures
-    '  Private m_indic As Ecosim.cEcosimIndicies
     Private m_tracerData As cContaminantTracerDataStructures
     Private m_OptMPA As IMPASearchModel
 
     Private m_refdata As cEcospaceTimeSeriesDataStructures
 
     Private m_StopRun As Boolean
-
 
     'new multiStanza stuff
     Private TotLoss() As Single
@@ -310,7 +303,11 @@ Public Class cEcoSpace
     ''' <summary>
     ''' Exposes the MessagePublisher instance so that the core can add message handlers
     ''' </summary>
-    ''' -----------------------------------------------------------------------
+    ''' <remarks>
+    '''  All messages from EcoSpace to the core are passed via this MessagePublisher. 
+    '''  The core adds a message handler during Ecospace initialization <see cref="cCore.InitEcoSpace"> InitEcospace()</see> 
+    ''' </remarks>
+    ''' ----------------------------------------------------------------------- 
     Public ReadOnly Property Messages() As cMessagePublisher
         Get
             Return m_publisher

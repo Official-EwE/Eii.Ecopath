@@ -3351,7 +3351,14 @@ Namespace Ecosim
             'Next
 
         End Sub
-
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' call calculatestanzaparameters whenever going from ecopath to ecosim
+        ''' to set up multistanza initial state variables
+        ''' </remarks>
         Public Function InitStanza() As Boolean
             ' call calculatestanzaparameters whenever going from ecopath to ecosim
             'to set up multistanza initial state variables
