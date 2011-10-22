@@ -826,7 +826,7 @@ Public Class cEcoSpace
             'it is used for stanza data that is stored after groups (any variable that is dimed by nvartot)
             nvar2 = m_Data.NGroups
 
-            iTotalCells = m_Data.InCol * m_Data.InRow
+            Dim iTotalCells = m_Data.InCol * m_Data.InRow
 
             ReDim ebb(m_Data.nvartot)
             ReDim BB(m_Data.nvartot)
