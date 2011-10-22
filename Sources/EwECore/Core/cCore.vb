@@ -6180,14 +6180,14 @@ Public Class cCore
             Me.m_EcosimStats = Nothing
         End If
 
-        ' Invoke plugin point
-        If (Me.PluginManager IsNot Nothing) Then
-            Me.PluginManager.EcosimCloseScenario()
-        End If
-
-        'Last thing Setting the state monitor can fire events that use the Ecosim and Ecospace data
+        ' Set the state monitor can fire events that use the Ecosim and Ecospace data
         Me.m_StateMonitor.SetEcoSimLoaded(False)
         cLog.Write("Ecosim scenario closed")
+
+        ' Invoke plugin point to allow plug-ins to clean up now Ecosim has gone
+        If (Me.PluginManager IsNot Nothing) Then
+            Me.PluginManager.EcosimClosedScenario()
+        End If
 
     End Sub
 
@@ -8730,13 +8730,12 @@ Public Class cCore
             Me.m_EcospaceModelParams = Nothing
 
             Me.m_Ecospace.Clear()
+            Me.m_StateMonitor.SetEcospaceLoaded(False)
 
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
-                Me.PluginManager.EcospaceCloseScenario()
+                Me.PluginManager.EcospaceClosedScenario()
             End If
-
-            Me.m_StateMonitor.SetEcospaceLoaded(False)
 
             'delegates
             Me.m_SpaceInterfaceCallBack = Nothing
@@ -10965,7 +10964,7 @@ Public Class cCore
 
         ' Invoke plugin point
         If (Me.PluginManager IsNot Nothing) Then
-            Me.PluginManager.EcotracerCloseScenario()
+            Me.PluginManager.EcotracerClosedScenario()
         End If
 
         Me.m_StateMonitor.SetEcotracerLoaded(False)
