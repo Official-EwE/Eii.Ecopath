@@ -69,10 +69,16 @@ Namespace Controls
 
         Private m_brHightLightDefault As Brush = Brushes.Red
 
+        ''' <summary>Enumerated type providing supported types of brushes.</summary>
         Enum eBrushType As Integer
+            ''' <summary>Items are rendered as a single colour.</summary>
             Color
+            ''' <summary>Items are rendered as a hatch pattern.</summary>
             HatchPattern
+            ''' <summary>Items are rendered as an image.</summary>
             Glyphs
+            ''' <summary>Items are rendered as gradients.</summary>
+            Gradient
         End Enum
 
         Public Function GetVisualStyles(ByVal nBrushes As Integer, _
@@ -94,6 +100,8 @@ Namespace Controls
                     If (nBrushes < 0) Then nBrushes = m_abrDefaultHatchPatterns.Length
                     ReDim avs(nBrushes)
                     Me.GetPatterns(avs)
+
+                Case eBrushType.Gradient
 
             End Select
 

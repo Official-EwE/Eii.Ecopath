@@ -45,7 +45,7 @@ Public Class cEcospaceHabitat
     Public ReadOnly Property NumCells() As Integer 
         Get
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim layerHab As cEcospaceLayerHabitat = bm.LayerHabitat
+            Dim layerHab As cEcospaceLayerHabitat = bm.LayerHabitat(Me.Index)
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
             Dim iIndex As Integer = Me.Index
             Dim iNumCells As Integer = 0
@@ -53,7 +53,7 @@ Public Class cEcospaceHabitat
             For iRow As Integer = 1 To bm.InRow
                 For iCol As Integer = 1 To bm.InCol
                     If (layerDepth.IsWaterCell(iRow, iCol)) And _
-                       (CInt(layerHab.Cell(iRow, iCol)) = iIndex) Then
+                       (CSng(layerHab.Cell(iRow, iCol)) > 0) Then
                         iNumCells += 1
                     End If
                 Next

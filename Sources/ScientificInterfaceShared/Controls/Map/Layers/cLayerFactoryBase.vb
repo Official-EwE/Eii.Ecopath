@@ -91,10 +91,9 @@ Namespace Controls.Map
                         End If
 
                         ' Create layer
-                        renderer = New cLayerRendererBitmap(vs)
-                        editor = New cLayerEditorTwoState()
-                        If layerData Is Nothing Then layerData = bmd.LayerHabitat
-                        layer = New cLayer(uic, layerData, renderer, editor, iHabitat, 0, hab, eVarNameFlags.Name)
+                        renderer = New cLayerRendererValue(vs)
+                        editor = New cLayerEditorRange()
+                        layer = New cLayer(uic, bmd.LayerHabitat(iHabitat), renderer, editor, hab, eVarNameFlags.Name)
                         lLayers.Add(layer)
 
                     Next iHabitat

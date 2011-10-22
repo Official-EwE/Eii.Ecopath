@@ -36,10 +36,6 @@ Namespace Controls.Map.Layers
     ''' via cell(row, col) interaction. Poking around in a basemap layer in fact modifies Ecospace
     ''' spatial cells of spatial data array that the the layer is connected to.
     ''' </para>
-    ''' <para>
-    ''' To obtain a layer from the basemap, call <see cref="cEcospaceBasemap.Layers">cEcospaceBasemap.Layers</see>
-    ''' or one of the Layer-exposing properties of that class.
-    ''' </para>
     ''' </description></item>
     ''' <item><description>
     ''' <para>

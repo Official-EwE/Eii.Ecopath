@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -121,35 +121,35 @@
     <value>False</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="ts1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="ts1.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>6, 25</value>
   </data>
   <metadata name="ts2.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
-  <data name="ts2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="ts2.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>6, 25</value>
   </data>
   <metadata name="ts3.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
-  <data name="ts3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="ts3.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>6, 25</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_scNetworkAnalysis.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_scNetworkAnalysis.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_scNetworkAnalysis.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 21</value>
   </data>
   <data name="m_tvNetworkAnalysis.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_tvNetworkAnalysis.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tvNetworkAnalysis.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </data>
-  <data name="m_tvNetworkAnalysis.Nodes" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvNetworkAnalysis.Nodes" mimetype="application/x-microsoft.net.object.binary.base64" xml:space="preserve">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -168,7 +168,7 @@
         dGUgZmxvd3MGDQAAAA9uZEFic29sdXRlRmxvd3MA/////wkLAAAA/////wkLAAAAAAAAAAs=
 </value>
   </data>
-  <data name="m_tvNetworkAnalysis.Nodes1" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvNetworkAnalysis.Nodes1" mimetype="application/x-microsoft.net.object.binary.base64" xml:space="preserve">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -233,7 +233,7 @@
         aGljc1VuaXQBAAAAB3ZhbHVlX18ACC8AAAADAAAACw==
 </value>
   </data>
-  <data name="m_tvNetworkAnalysis.Nodes2" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvNetworkAnalysis.Nodes2" mimetype="application/x-microsoft.net.object.binary.base64" xml:space="preserve">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -253,7 +253,7 @@
         CQoAAAD/////CQoAAAAAAAAACw==
 </value>
   </data>
-  <data name="m_tvNetworkAnalysis.Nodes3" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvNetworkAnalysis.Nodes3" mimetype="application/x-microsoft.net.object.binary.base64" xml:space="preserve">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -291,7 +291,7 @@
         b3NvZnQgU2FucyBTZXJpZgAABEEB4f///+T///8AAAAAAeD////j////AwAAAAs=
 </value>
   </data>
-  <data name="m_tvNetworkAnalysis.Nodes4" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvNetworkAnalysis.Nodes4" mimetype="application/x-microsoft.net.object.binary.base64" xml:space="preserve">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -309,7 +309,7 @@
         BUdyYXBoBgwAAAATbmRLZXlzdG9uZW5lc3NHcmFwaAD/////CQoAAAD/////CQoAAAAAAAAACw==
 </value>
   </data>
-  <data name="m_tvNetworkAnalysis.Nodes5" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvNetworkAnalysis.Nodes5" mimetype="application/x-microsoft.net.object.binary.base64" xml:space="preserve">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -327,7 +327,7 @@
         ZEJ5R3JvdXAA/////wkKAAAA/////wkKAAAAAAAAAAs=
 </value>
   </data>
-  <data name="m_tvNetworkAnalysis.Nodes6" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvNetworkAnalysis.Nodes6" mimetype="application/x-microsoft.net.object.binary.base64" xml:space="preserve">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -337,7 +337,7 @@
         AP////8GBQAAAAD/////CQUAAAAAAAAACw==
 </value>
   </data>
-  <data name="m_tvNetworkAnalysis.Nodes7" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvNetworkAnalysis.Nodes7" mimetype="application/x-microsoft.net.object.binary.base64" xml:space="preserve">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -417,7 +417,7 @@
         ABduZFN1bW1hcnlPZlBhdGh3YXlzX2FsbAD/////CScAAAD/////CScAAAAAAAAACw==
 </value>
   </data>
-  <data name="m_tvNetworkAnalysis.Nodes8" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="m_tvNetworkAnalysis.Nodes8" mimetype="application/x-microsoft.net.object.binary.base64" xml:space="preserve">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
@@ -438,7 +438,7 @@
         UmVxdWlyZWRFc3RpbWF0ZQD/////CQoAAAD/////CQoAAAAAAAAACw==
 </value>
   </data>
-  <data name="m_tvNetworkAnalysis.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tvNetworkAnalysis.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>204, 531</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -472,7 +472,7 @@
   <data name="m_scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 25</value>
   </data>
   <data name="m_tlpInfo.ColumnCount" type="System.Int32, mscorlib">
@@ -484,13 +484,13 @@
   <data name="PictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="PictureBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="PictureBox1.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>81, 16</value>
   </data>
   <data name="PictureBox1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="PictureBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="PictureBox1.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>210, 400</value>
   </data>
   <data name="PictureBox1.TabIndex" type="System.Int32, mscorlib">
@@ -508,7 +508,7 @@
   <data name="&gt;&gt;PictureBox1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_tlpInfo.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tlpInfo.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>302, 10</value>
   </data>
   <data name="m_tlpInfo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
@@ -517,7 +517,7 @@
   <data name="m_tlpInfo.RowCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_tlpInfo.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tlpInfo.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>373, 433</value>
   </data>
   <data name="m_tlpInfo.TabIndex" type="System.Int32, mscorlib">
@@ -538,13 +538,13 @@
   <data name="m_tlpInfo.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="PictureBox1" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Absolute,210,Percent,50" /&gt;&lt;Rows Styles="Percent,50,Absolute,400,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="m_plot.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_plot.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>9, 9</value>
   </data>
   <data name="m_plot.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_plot.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_plot.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>105, 178</value>
   </data>
   <data name="m_plot.TabIndex" type="System.Int32, mscorlib">
@@ -562,13 +562,13 @@
   <data name="&gt;&gt;m_plot.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>126, 10</value>
   </data>
   <data name="m_graph.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>164, 433</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
@@ -586,13 +586,13 @@
   <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_datagrid.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_datagrid.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>9, 204</value>
   </data>
   <data name="m_datagrid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_datagrid.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_datagrid.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>105, 239</value>
   </data>
   <data name="m_datagrid.TabIndex" type="System.Int32, mscorlib">
@@ -634,7 +634,7 @@
   <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>838, 506</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
@@ -658,7 +658,7 @@
   <metadata name="m_toolstrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
-  <data name="tsmiRun.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tsmiRun.Image" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIISURBVDhPpZP7S1NxGMbPPxKaXVUkMEq8IpKUCoY/hGgI
@@ -676,7 +676,7 @@
   <data name="tsmiRun.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsmiRun.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tsmiRun.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>50, 22</value>
   </data>
   <data name="tsmiRun.Text" xml:space="preserve">
@@ -685,7 +685,7 @@
   <data name="tsmiRun.ToolTipText" xml:space="preserve">
     <value>Recalculate Network Analysis data when data has changed</value>
   </data>
-  <data name="tsbtnOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tsbtnOptions.Image" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIISURBVDhPpZP7S1NxGMbPPxKaXVUkMEq8IpKUCoY/hGgI
@@ -703,13 +703,13 @@
   <data name="tsbtnOptions.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsbtnOptions.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tsbtnOptions.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>53, 22</value>
   </data>
   <data name="tsbtnOptions.Text" xml:space="preserve">
     <value>Options</value>
   </data>
-  <data name="tsmiDisplayGroups.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tsmiDisplayGroups.Image" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIISURBVDhPpZP7S1NxGMbPPxKaXVUkMEq8IpKUCoY/hGgI
@@ -727,31 +727,31 @@
   <data name="tsmiDisplayGroups.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsmiDisplayGroups.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tsmiDisplayGroups.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>98, 22</value>
   </data>
   <data name="tsmiDisplayGroups.Text" xml:space="preserve">
     <value>&amp;Display groups...</value>
   </data>
-  <data name="tslblSelection1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tslblSelection1.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>61, 22</value>
   </data>
   <data name="tslblSelection1.Text" xml:space="preserve">
     <value>&lt;group1&gt;</value>
   </data>
-  <data name="tscmbSelection1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tscmbSelection1.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>121, 25</value>
   </data>
-  <data name="tslblSelection2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tslblSelection2.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>61, 22</value>
   </data>
   <data name="tslblSelection2.Text" xml:space="preserve">
     <value>&lt;group2&gt;</value>
   </data>
-  <data name="tscmbSelection2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tscmbSelection2.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>121, 25</value>
   </data>
-  <data name="tsbtnOutputIndicesCSV.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tsbtnOutputIndicesCSV.Image" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIISURBVDhPpZP7S1NxGMbPPxKaXVUkMEq8IpKUCoY/hGgI
@@ -769,13 +769,13 @@
   <data name="tsbtnOutputIndicesCSV.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsbtnOutputIndicesCSV.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tsbtnOutputIndicesCSV.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>92, 22</value>
   </data>
   <data name="tsbtnOutputIndicesCSV.Text" xml:space="preserve">
     <value>Save to &amp;CSV file</value>
   </data>
-  <data name="tsbtnOutputGraphEMF.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tsbtnOutputGraphEMF.Image" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIISURBVDhPpZP7S1NxGMbPPxKaXVUkMEq8IpKUCoY/hGgI
@@ -793,16 +793,16 @@
   <data name="tsbtnOutputGraphEMF.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="tsbtnOutputGraphEMF.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tsbtnOutputGraphEMF.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>94, 22</value>
   </data>
   <data name="tsbtnOutputGraphEMF.Text" xml:space="preserve">
     <value>Save to &amp;EMF file</value>
   </data>
-  <data name="m_toolstrip.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_toolstrip.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </data>
-  <data name="m_toolstrip.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_toolstrip.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>838, 25</value>
   </data>
   <data name="m_toolstrip.TabIndex" type="System.Int32, mscorlib">
@@ -832,7 +832,7 @@
   <data name="&gt;&gt;m_scNetworkAnalysis.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_scNetworkAnalysis.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_scNetworkAnalysis.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>838, 531</value>
   </data>
   <data name="m_scNetworkAnalysis.SplitterDistance" type="System.Int32, mscorlib">
@@ -856,13 +856,13 @@
   <data name="m_hdrPage.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_hdrPage.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrPage.Location" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </data>
   <data name="m_hdrPage.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_hdrPage.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrPage.Size" type="System.Drawing.Size, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>838, 18</value>
   </data>
   <data name="m_hdrPage.TabIndex" type="System.Int32, mscorlib">
@@ -901,7 +901,7 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAgAMDAAAAEACACoDgAAhgAAACAgAAABAAgAqAgAAC4PAAAQEAAAAQAIAGgFAADWFwAAgIAAAAEA
         GAAoyAAAPh0AAICAAAABACAAKAgBAGblAAAwMAAAAQAgAKglAACO7QEAICAAAAEAIACoEAAANhMCABAQ

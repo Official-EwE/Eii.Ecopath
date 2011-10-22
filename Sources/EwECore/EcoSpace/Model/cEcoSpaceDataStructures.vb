@@ -225,7 +225,14 @@ Public Class cEcospaceDataStructures
     Public dNomig(,,) As Single
     Public Enomig(,,) As Single
     Public F(,,) As Single
+
+    ' ----------------
+    ' ToDo JOE: The datasource now interacts with 3-dim HabTypeJoe, no longer with 2-dim HabType.
+    '           The user interface also uses HabTypeJoe.
     Public HabType(,) As Integer
+    Public HabTypeJoe(,,) As Single
+    ' ----------------
+
     Public RegionName() As String
     Public Region(,) As Integer
     Public MPA(,) As Integer
@@ -944,6 +951,8 @@ Public Class cEcospaceDataStructures
             ReDim HabTime(NoHabChanges)
             ReDim HabChange(3, NoHabChanges)
             ReDim PHabType(InRow, InCol, NoHabitats)
+            ReDim HabTypeJoe(InRow, InCol, NoHabitats)
+
             'For i As Integer = 1 To InRow
             '    For j As Integer = 1 To InCol
             '        For ihab As Integer = 1 To NoHabitats

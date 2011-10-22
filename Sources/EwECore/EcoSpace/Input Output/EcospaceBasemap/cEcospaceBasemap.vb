@@ -16,6 +16,9 @@ Public Class cEcospaceBasemap
 
     ''' <summary>The layers maintained in a basemap.</summary>
     Private m_dictLayers As New Dictionary(Of eVarNameFlags, cEcospaceLayer)
+
+    ''' <summary>Habitat layers maintained in a basemap.</summary>
+    Private m_lLayerHabitat As New List(Of cEcospaceLayerHabitat)
     ''' <summary>Importance layers maintained in a basemap.</summary>
     Private m_lLayerImportance As New List(Of cEcospaceLayerImportance)
     ''' <summary>External driver layers maintained in a basemap.</summary>
@@ -95,7 +98,7 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' LayerHabitat
-            meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nHabitats), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
             val = New cValue(0, eVarNameFlags.LayerHabitat, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -134,10 +137,6 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            '' IBMPackets
-            'val = New cValueArray(eValueTypes.LayerArray, eVarNameFlags.LayerIBMPackets, eStatusFlags.OK, eCoreCounterTypes.nStanzas, AddressOf m_core.GetCoreCounter)
-            'm_values.Add(val.varName, val)
-
             ' LayerPort
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerPort, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -172,46 +171,46 @@ Public Class cEcospaceBasemap
             ' ----------------
             ' Init layers
             ' ----------------
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
 
             ' Depth layer
             meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             layer = New cEcospaceLayerDepth(theCore, Me, meta)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
-            ' Habitat layers
-            layer = New cEcospaceLayerHabitat(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            For i As Integer = 1 To ecospaceDS.NoHabitats
+                Me.m_lLayerHabitat.Add(New cEcospaceLayerHabitat(theCore, Me, i))
+            Next
 
             ' Habitat capacity input layer
             layer = New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacityInput, eVarNameFlags.LayerHabitatCapacityInput)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' Habitat capacity output layer
             layer = New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacity)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' MPA layer
             layer = New cEcospaceLayerMPA(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' Region layer
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nRegions), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             layer = New cEcospaceLayerRegion(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' RelPP layer
             layer = New cEcospaceLayerRelPP(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' RelCin layer
             layer = New cEcospaceLayerRelCin(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' MPA Seed
             layer = New cEcospaceLayerMPASeed(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             For i As Integer = 1 To ecospaceDS.nImportanceLayers
                 Me.m_lLayerImportance.Add(New cEcospaceLayerImportance(Me.m_core, ecospaceDS.ImportanceLayerDBID(i), Me, i))
             Next
@@ -221,39 +220,31 @@ Public Class cEcospaceBasemap
 
             ' Migration
             layer = New cEcospaceLayerMigration(theCore, Me, eVarNameFlags.LayerMigration)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' Port
             layer = New cEcospaceLayerPort(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' Sailing cost
             layer = New cEcospaceLayerSail(theCore, Me)
-            Me.Layers(layer.VarName) = layer
-
-            '' IBM layers
-            'For i As Integer = 1 To Me.m_core.nStanzas
-            '    Me.m_lstLayerIBM.Add(New cEcospaceLayerIBMPackets(theCore, Me, i))
-            'Next
-
-            'layer = New cEcospaceLayerDistribution(theCore, Me)
-            'Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' Advection
             layer = New cEcospaceLayerAdvection(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' Wind
             layer = New cEcospaceLayerWind(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' Upwelling
             layer = New cEcospaceLayerUpwelling(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             ' MLD
             layer = New cEcospaceLayerMLD(theCore, Me)
-            Me.Layers(layer.VarName) = layer
+            Me.m_dictLayers(layer.VarName) = layer
 
             'set status flags to default values
             ResetStatusFlags()
@@ -433,22 +424,6 @@ Public Class cEcospaceBasemap
 
 #Region " Layer interface "
 
-    Public Property Layers(ByVal varName As eVarNameFlags) As cEcospaceLayer
-        Get
-            If Me.m_dictLayers.ContainsKey(varName) Then
-                Return Me.m_dictLayers(varName)
-            End If
-            Return Nothing
-        End Get
-        Private Set(ByVal value As cEcospaceLayer)
-            If Me.m_dictLayers.ContainsKey(varName) Then
-                Debug.Assert(False, String.Format("Layer (0) already defined", varName))
-                Return
-            End If
-            Me.m_dictLayers(varName) = value
-        End Set
-    End Property
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns a copy of the layers maintained by this class.
@@ -459,6 +434,9 @@ Public Class cEcospaceBasemap
         For Each o As cEcospaceLayer In Me.m_dictLayers.Values
             l.Add(o)
         Next
+        l.AddRange(Me.m_lLayerHabitat.ToArray)
+        l.AddRange(Me.m_lLayerImportance.ToArray)
+        l.AddRange(Me.m_lLayerDriver.ToArray)
         Return l
     End Function
 
@@ -499,15 +477,16 @@ Public Class cEcospaceBasemap
     ''' <summary>
     ''' Get the Ecospace Habitat layer.
     ''' </summary>
+    ''' <param name="iHabitat">One-based habitat index</param>
     ''' <remarks>
     ''' This layer provides access to the one and only array that holds all
     ''' Habitats in Ecospace. At the moment (Nov '08), Habitats cannot overlap
     ''' and are stored in one two-dimensional array.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerHabitat() As cEcospaceLayerHabitat
+    Public ReadOnly Property LayerHabitat(ByVal iHabitat As Integer) As cEcospaceLayerHabitat
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerHabitat), cEcospaceLayerHabitat)
+            Return Me.m_lLayerHabitat(iHabitat - 1)
         End Get
     End Property
 
@@ -664,30 +643,13 @@ Public Class cEcospaceBasemap
         End Get
     End Property
 
-    '''' -----------------------------------------------------------------------
-    '''' <summary>
-    '''' 
-    '''' </summary>
-    '''' <param name="iStanza">Stanza group index</param>
-    '''' -----------------------------------------------------------------------
-    'Public ReadOnly Property LayerIBMPackets(ByVal iStanza As Integer) As cEcospaceLayerIBMPackets
-    '    Get
-    '        Return Me.m_lstLayerIBM(iStanza)
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property LayerDistribution() As cEcospaceLayerDistribution
-    '    Get
-    '        Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerDistribution), cEcospaceLayerDistribution)
-    '    End Get
-    'End Property
-
     Friend Function GetLayerData(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Object
         Select Case varName
             Case eVarNameFlags.LayerDepth
                 Return Me.m_core.m_EcoSpaceData.Depth
             Case eVarNameFlags.LayerHabitat
-                Return Me.m_core.m_EcoSpaceData.HabType
+                ' ToDo: reroute this
+                Return Me.m_core.m_EcoSpaceData.HabTypeJoe
             Case eVarNameFlags.LayerHabitatCapacity
                 Return Me.m_core.m_EcoSpaceData.HabCap
             Case eVarNameFlags.LayerHabitatCapacityInput

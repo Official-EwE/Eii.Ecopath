@@ -901,8 +901,7 @@ Namespace Ecospace
 
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
             Dim bmlRegions As cEcospaceLayer = bm.LayerRegion()
-            Dim bmlHabitats As cEcospaceLayer = bm.LayerHabitat()
-            Dim iHab As Integer = 0
+            Dim bmlHabitats As cEcospaceLayer = Nothing
             Dim iHabDBID As Integer = 0
             Dim hab As cEcospaceHabitat = Nothing
             Dim iReg As Integer = 0
@@ -912,42 +911,49 @@ Namespace Ecospace
             ' Ugh
             Dim drm As Dictionary(Of Integer, cEcospaceRegion) = Me.GetRegionMappings()
 
-            ' For each row
-            For iRow As Integer = 1 To bm.InRow
-                ' For each col
-                For iCol As Integer = 1 To bm.InCol
-                    ' Get habitat for cell
-                    iHab = CInt(bmlHabitats.Cell(iRow, iCol))
-                    ' Get default region
-                    iReg = 0
-                    ' Is habitat present at this cell?
-                    If (iHab > 0) Then
-                        ' #Yes: get habitat
-                        hab = Me.Core.EcospaceHabitats(iHab)
-                        ' Get DBID for habitat
-                        iHabDBID = CInt(hab.GetVariable(eVarNameFlags.DBID))
-                        ' Find if there is a region mapping
-                        If (dtHabitatIDToRegionID.ContainsKey(iHabDBID)) Then
-                            ' #Yes: get mapped region DBID
-                            iRegDBID = dtHabitatIDToRegionID(iHabDBID)
-                            ' Try to get region (this should work but hey, still good to check)
-                            If drm.ContainsKey(iRegDBID) Then
-                                ' #Yes: found a region
-                                reg = drm(iRegDBID)
-                                ' Finally get region index
-                                iReg = reg.Index
+            ' For each habitat
+            For iHab As Integer = 1 To Me.Core.nHabitats
+                ' Get hab layer
+                bmlHabitats = bm.LayerHabitat(iHab)
+                ' For each row
+                For iRow As Integer = 1 To bm.InRow
+                    ' For each col
+                    For iCol As Integer = 1 To bm.InCol
+                        ' Get default region
+                        iReg = 0
+                        ' Is habitat present at this cell?
+
+                        ' JS 2011/10/22 Habitats can now overlap. This code will assign a region to the last habitat to overlap a cell, that is not good
+                        ' ToDo_JS: fix region from habitat logic
+
+                        If (CSng(bmlHabitats.Cell(iRow, iCol)) > 0) Then
+                            ' #Yes: get habitat
+                            hab = Me.Core.EcospaceHabitats(iHab)
+                            ' Get DBID for habitat
+                            iHabDBID = CInt(hab.GetVariable(eVarNameFlags.DBID))
+                            ' Find if there is a region mapping
+                            If (dtHabitatIDToRegionID.ContainsKey(iHabDBID)) Then
+                                ' #Yes: get mapped region DBID
+                                iRegDBID = dtHabitatIDToRegionID(iHabDBID)
+                                ' Try to get region (this should work but hey, still good to check)
+                                If drm.ContainsKey(iRegDBID) Then
+                                    ' #Yes: found a region
+                                    reg = drm(iRegDBID)
+                                    ' Finally get region index
+                                    iReg = reg.Index
+                                End If
                             End If
                         End If
-                    End If
 
-                    ' Sanity check
-                    Debug.Assert((iHab <> 0) = (iReg <> 0))
+                        ' Sanity check
+                        Debug.Assert((iHab <> 0) = (iReg <> 0))
 
-                    ' Assign or clear region, depending on what has been found
-                    bmlRegions.Cell(iRow, iCol) = iReg
+                        ' Assign or clear region, depending on what has been found
+                        bmlRegions.Cell(iRow, iCol) = iReg
 
-                Next iCol
-            Next iRow
+                    Next iCol
+                Next iRow
+            Next iHab
 
             Me.Core.onChanged(bmlRegions)
 

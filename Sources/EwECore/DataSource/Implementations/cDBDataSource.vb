@@ -7706,7 +7706,6 @@ Namespace DataSources
             Dim i As Integer = 0
 
             ' Start loading
-            ' Note that 'All' habitat should arrive at array pos 0, therefore i starts at 0
             Try
                 ' Allocate space for habitat data
                 ecospaceDS.NoHabitats = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitat WHERE ScenarioID={0}", iScenarioID)))
@@ -7720,9 +7719,10 @@ Namespace DataSources
 
                     strMap = CStr(Me.m_db.ReadSafe(reader, "HabitatMap", ""))
                     ' Read only water cells with values for this habitat index
-                    cStringUtils.StringToArray(strMap, ecospaceDS.HabType, ecospaceDS.Depth, True, i)
+                    cStringUtils.StringToArray(strMap, i, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.HabTypeJoe, ecospaceDS.Depth, True)
                     i += 1
                 End While
+
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
@@ -7819,8 +7819,7 @@ Namespace DataSources
 
                     drow("HabitatName") = ecospaceDS.HabitatText(iHabitat)
                     drow("Sequence") = iHabitat
-                    ' Write map for only water cells for this habitat index
-                    drow("HabitatMap") = cStringUtils.ArrayToString(ecospaceDS.HabType, ecospaceDS.Depth, True, iHabitat)
+                    drow("HabitatMap") = cStringUtils.ArrayToString(ecospaceDS.HabTypeJoe, iHabitat, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Depth, True)
 
                     If bNewRow Then
                         writer.AddRow(drow)
