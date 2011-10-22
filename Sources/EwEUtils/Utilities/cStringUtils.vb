@@ -676,14 +676,15 @@ Namespace Utilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Read a map from a string, and poulate a 2-dimensional array with this data.
         ''' </summary>
-        ''' <param name="strData"></param>
-        ''' <param name="data"></param>
-        ''' <param name="land"></param>
-        ''' <param name="bWaterOnly"></param>
-        ''' <param name="valueGet"></param>
-        ''' <returns></returns>
+        ''' <param name="strData">The string containing the map.</param>
+        ''' <param name="data">The 2-dimensional array to populate.</param>
+        ''' <param name="land">Optional land layer to use.</param>
+        ''' <param name="bWaterOnly">States whether only water cells (true) or land cells (false) should be written.</param>
+        ''' <param name="valueGet">Optional value to filter map values by. If specified, only map values equalling this
+        ''' filter value will be copied to the data array.</param>
+        ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function StringToArray(ByVal strData As String, ByVal data As Array, _
                                              Optional ByVal land As Integer(,) = Nothing, _
@@ -752,6 +753,7 @@ Namespace Utilities
             Return True
 
         End Function
+
 
         ''' <summary>
         ''' Enumerated type, stating where to find the data filter in a 3D map array.
@@ -860,26 +862,27 @@ Namespace Utilities
 
         End Function
 
-        ''' -----------------------------------------------------------------------
+      ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Read a map from a string, and poulate a 3-dimensional array with this data.
         ''' </summary>
-        ''' <param name="strData"></param>
-        ''' <param name="iFilter"></param>
-        ''' <param name="filterIndex"></param>
-        ''' <param name="data"></param>
-        ''' <param name="land"></param>
-        ''' <param name="bWaterOnly"></param>
-        ''' <param name="valueGet"></param>
-        ''' <returns></returns>
+        ''' <param name="strData">The string containing the map.</param>
+        ''' <param name="iFilter">Index of third dimension to set.</param>
+        ''' <param name="filterIndex">Position of third dimension in the array (first, e.g. (#,,) or last (,,#))</param>
+        ''' <param name="data">The 2-dimensional array to populate.</param>
+        ''' <param name="land">Optional land layer to use.</param>
+        ''' <param name="bWaterOnly">States whether only water cells (true) or land cells (false) should be written.</param>
+        ''' <param name="valueGet">Optional value to filter map values by. If specified, only map values equalling this
+        ''' filter value will be copied to the data array.</param>
+        ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function StringToArray(ByVal strData As String, _
-                                             ByVal iFilter As Integer, _
-                                             ByVal filterIndex As eFilterIndexTypes, _
-                                             ByVal data As Array, _
-                                             Optional ByVal land As Integer(,) = Nothing, _
-                                             Optional ByVal bWaterOnly As Boolean = True, _
-                                             Optional ByVal valueGet As Object = Nothing) As Boolean
+                                            ByVal iFilter As Integer, _
+                                            ByVal filterIndex As eFilterIndexTypes, _
+                                            ByVal data As Array, _
+                                            Optional ByVal land As Integer(,) = Nothing, _
+                                            Optional ByVal bWaterOnly As Boolean = True, _
+                                            Optional ByVal valueGet As Object = Nothing) As Boolean
 
             ' Need 3 dim array
             Debug.Assert(data.Rank = 3)
