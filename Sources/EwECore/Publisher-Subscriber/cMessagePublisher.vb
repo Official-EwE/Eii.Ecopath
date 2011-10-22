@@ -33,6 +33,7 @@ Public Class cMessagePublisher
     Public Function AddMessageHandler(ByVal MessageHandler As cMessageHandler) As Boolean
 
         Try
+            Debug.Assert(MessageHandler IsNot Nothing, "Need valid message handler")
             m_handlers.Add(MessageHandler)
 
             Return True
@@ -202,7 +203,7 @@ Public Class cMessagePublisher
 
         Dim bFound As Boolean
         Try
-
+            Debug.Assert(MessageHandlerToRemove IsNot Nothing, "Need valid message handler")
             bFound = m_handlers.Remove(MessageHandlerToRemove)
 
             Return bFound
