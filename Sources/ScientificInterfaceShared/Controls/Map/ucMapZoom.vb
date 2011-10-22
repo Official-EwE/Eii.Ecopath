@@ -130,6 +130,12 @@ Namespace Controls.Map
             End Set
         End Property
 
+        Public Overrides Sub Refresh()
+            'Re-evaluate map size etc
+            Me.SetZoomLevel()
+            MyBase.Refresh()
+        End Sub
+
 #End Region ' Public access
 
 #Region " Events "
@@ -148,6 +154,7 @@ Namespace Controls.Map
         Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
             MyBase.OnResize(e)
             Me.SetZoomLevel()
+            Me.Invalidate(True)
         End Sub
 
 #End Region ' Form events

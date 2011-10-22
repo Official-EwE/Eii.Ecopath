@@ -28,10 +28,8 @@ Namespace Controls.Map
         ''' <summary>UI context to work against.</summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary>The bitmap to draw on.</summary>
-        Private m_bmp As Bitmap
-        ''' <summary>The basemap.</summary>
-        Private m_basemap As cEcospaceBasemap = Nothing
-        ''' <summary>Map title.</summary>
+        Private m_bmp As Bitmap = Nothing
+         ''' <summary>Map title.</summary>
         Private m_strTitle As String = ""
         ''' <summary>List of layers.</summary>
         Private m_layers As New List(Of cLayer)
@@ -62,16 +60,8 @@ Namespace Controls.Map
                 Return Me.m_uic
             End Get
             Set(ByVal uic As cUIContext)
-                If (Me.m_uic IsNot Nothing) Then
-                    Me.m_basemap = Nothing
-                End If
-
                 Me.m_uic = uic
                 Me.Clear()
-
-                If (Me.m_uic IsNot Nothing) Then
-                    Me.m_basemap = Me.m_uic.Core.EcospaceBasemap
-                End If
             End Set
         End Property
 
@@ -81,8 +71,8 @@ Namespace Controls.Map
 
             Dim szCellSize As SizeF = Me.GetCellSize()
             Try
-                Dim bmp As New Bitmap(CInt(Me.m_basemap.InCol * szCellSize.Width), CInt(Me.m_basemap.InRow * szCellSize.Height))
-                Me.UpdateMap(bmp, New Point(1, 1), New Point(Me.m_basemap.InCol, Me.m_basemap.InRow))
+                Dim bmp As New Bitmap(CInt(Me.Basemap.InCol * szCellSize.Width), CInt(Me.Basemap.InRow * szCellSize.Height))
+                Me.UpdateMap(bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
                 bmp.Save(strFileName, format)
             Catch ex As Exception
                 Return False
@@ -130,8 +120,16 @@ Namespace Controls.Map
         '    End Get
         'End Property
 
-        Public Overrides Sub Refresh()
-            Me.UpdateMap()
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Refresh the map.
+        ''' </summary>
+        ''' <param name="bInvalidateOnly">True to trigger a map invalidation only, false to
+        ''' fully redraw the map.</param>
+        ''' <remarks>Redrawing the map entirely may be slow!</remarks>
+        ''' -------------------------------------------------------------------
+        Public Overloads Sub Refresh(Optional ByVal bInvalidateOnly As Boolean = True)
+            Me.UpdateMap(bInvalidateOnly)
             Me.UpdateCursorFeedback()
         End Sub
 
@@ -149,15 +147,15 @@ Namespace Controls.Map
 
         Public ReadOnly Property NumCols() As Integer
             Get
-                If (Me.m_basemap Is Nothing) Then Return 20
-                Return Me.m_basemap.InCol
+                If (Me.Basemap Is Nothing) Then Return 20
+                Return Me.Basemap.InCol
             End Get
         End Property
 
         Public ReadOnly Property NumRows() As Integer
             Get
-                If (Me.m_basemap Is Nothing) Then Return 20
-                Return Me.m_basemap.InRow
+                If (Me.Basemap Is Nothing) Then Return 20
+                Return Me.Basemap.InRow
             End Get
         End Property
 
@@ -202,7 +200,7 @@ Namespace Controls.Map
                 Me.m_thread = New Threading.Thread(AddressOf RedrawMapThreaded)
                 Me.m_thread.Start()
 #Else
-                Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.m_basemap.InCol, Me.m_basemap.InRow))
+                Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
 #End If
             End If
 
@@ -293,7 +291,7 @@ Namespace Controls.Map
             Me.BackgroundImage = Me.m_bmp
 
             ' Sanity check
-            If Object.ReferenceEquals(Me.m_basemap, Nothing) Then Return
+            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             ' Redraw it entirely
             Me.UpdateMap()
@@ -336,6 +334,13 @@ Namespace Controls.Map
 #End Region ' Event handlers
 
 #Region " Internals "
+
+        Protected ReadOnly Property Basemap As cEcospaceBasemap
+            Get
+                If (Me.m_uic Is Nothing) Then Return Nothing
+                Return Me.m_uic.Core.EcospaceBasemap
+            End Get
+        End Property
 
         ''' <summary>Draw helper flag: previous draw point.</summary>
         Private m_ptScreenPrevious As Point = Nothing
@@ -386,7 +391,7 @@ Namespace Controls.Map
         Private Sub UpdateMap(Optional ByVal bInvalidateOnly As Boolean = True)
 
             ' Sanity check
-            If Object.ReferenceEquals(Me.m_basemap, Nothing) Then Return
+            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             If (bInvalidateOnly = True) Then
                 ' Only invalidate map
@@ -394,7 +399,7 @@ Namespace Controls.Map
                 Me.Invalidate()
             Else
                 ' Update entire map
-                Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.m_basemap.InCol, Me.m_basemap.InRow))
+                Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
             End If
 
         End Sub
@@ -411,12 +416,12 @@ Namespace Controls.Map
         Private Sub UpdateMap(ByVal bmp As Bitmap, ByVal ptCellFrom As Point, ByVal ptCellTo As Point)
 
             ' Sanity check
-            If Object.ReferenceEquals(Me.m_basemap, Nothing) Then Return
+            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             Dim g As Graphics = Graphics.FromImage(bmp)
             Dim l As cLayer = Nothing
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-            Dim ldDepth As cEcospaceLayer = Me.m_basemap.LayerDepth()
+            Dim ldDepth As cEcospaceLayer = Me.Basemap.LayerDepth()
             Dim szCell As SizeF = Me.GetCellSize()
             Dim ptCell As Point = Nothing
             Dim rcScreen As Rectangle = Nothing
@@ -440,8 +445,8 @@ Namespace Controls.Map
             ' Draw surrounding cells as well to avoid anomalies
             iXFrom = Math.Max(0, Math.Min(ptCellFrom.X, ptCellTo.X) - 1)
             iYFrom = Math.Max(0, Math.Min(ptCellFrom.Y, ptCellTo.Y) - 1)
-            iXTo = Math.Min(Me.m_basemap.InCol, Math.Max(ptCellFrom.X, ptCellTo.X) + 1)
-            iYTo = Math.Min(Me.m_basemap.InRow, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
+            iXTo = Math.Min(Me.Basemap.InCol, Math.Max(ptCellFrom.X, ptCellTo.X) + 1)
+            iYTo = Math.Min(Me.Basemap.InRow, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
 
             For X As Integer = iXFrom To iXTo
                 For Y As Integer = iYFrom To iYTo
@@ -487,7 +492,7 @@ Namespace Controls.Map
         Private Sub UpdateSelection(ByVal l As cLayer)
 
             ' Sanity check
-            If Object.ReferenceEquals(Me.m_basemap, Nothing) Then Return
+            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             ' New selection?
             If l.IsSelected Then
@@ -507,7 +512,7 @@ Namespace Controls.Map
         Public Sub UpdateCursorFeedback()
 
             ' Sanity check
-            If Object.ReferenceEquals(Me.m_basemap, Nothing) Then Return
+            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             If Me.CanEdit Then
                 Me.Cursor = Me.m_layerSelected.Editor.Cursor(Me.GetCellSize())
@@ -584,7 +589,7 @@ Namespace Controls.Map
                             Optional ByVal layerPosition As cLayer = Nothing)
 
             ' Sanity check
-            If layer Is Nothing Then Debug.Assert(False, "Need valid layer")
+            If (layer Is Nothing) Then Return
 
             If layerPosition IsNot Nothing Then
                 Me.m_layers.Insert(Me.m_layers.IndexOf(layerPosition), layer)
@@ -608,7 +613,7 @@ Namespace Controls.Map
         Public Sub RemoveLayer(ByVal layer As cLayer)
 
             ' Sanity check
-            If layer Is Nothing Then Debug.Assert(False, "Need valid layer")
+            If (layer Is Nothing) Then Return
 
             RemoveHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
 
@@ -643,7 +648,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Function GetCellSize() As SizeF
-            Return New SizeF(CSng(Me.Width / Me.m_basemap.InCol), CSng(Me.Height / Me.m_basemap.InRow))
+            Return New SizeF(CSng(Me.Width / Me.Basemap.InCol), CSng(Me.Height / Me.Basemap.InRow))
         End Function
 
         ''' -------------------------------------------------------------------
@@ -692,8 +697,8 @@ Namespace Controls.Map
             Dim iRowIndex As Integer = CInt((ptScreen.Y + 0.5 * szCell.Height) / szCell.Height)
 
             ' Truncate
-            iRowIndex = Math.Max(Math.Min(iRowIndex, Me.m_basemap.InRow), 1)
-            iColIndex = Math.Max(Math.Min(iColIndex, Me.m_basemap.InCol), 1)
+            iRowIndex = Math.Max(Math.Min(iRowIndex, Me.Basemap.InRow), 1)
+            iColIndex = Math.Max(Math.Min(iColIndex, Me.Basemap.InCol), 1)
 
             Return New Point(iColIndex, iRowIndex)
 
