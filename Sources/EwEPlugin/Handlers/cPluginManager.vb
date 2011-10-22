@@ -1064,9 +1064,9 @@ Public Class cPluginManager
     ''' <see cref="IEcosimLifespanPlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcosimCloseScenario()
+    Public Sub EcosimClosedScenario()
 
-        Me.TryInvokeMethod(GetType(IEcosimLifespanPlugin), "CloseEcosimScenario")
+        Me.TryInvokeMethod(GetType(IEcosimLifespanPlugin), "ClosedEcosimScenario")
 
     End Sub
 
@@ -1299,9 +1299,9 @@ Public Class cPluginManager
     ''' <see cref="IEcospaceLifespanPlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcospaceCloseScenario()
+    Public Sub EcospaceClosedScenario()
 
-        Me.TryInvokeMethod(GetType(IEcospaceLifespanPlugin), "CloseEcospaceScenario")
+        Me.TryInvokeMethod(GetType(IEcospaceLifespanPlugin), "ClosedEcospaceScenario")
 
     End Sub
 
@@ -1419,9 +1419,9 @@ Public Class cPluginManager
     ''' <see cref="IEcotracerLifespanPlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcotracerCloseScenario()
+    Public Sub EcotracerClosedScenario()
 
-        Me.TryInvokeMethod(GetType(IEcotracerLifespanPlugin), "CloseEcotracerScenario")
+        Me.TryInvokeMethod(GetType(IEcotracerLifespanPlugin), "ClosedEcotracerScenario")
 
     End Sub
 

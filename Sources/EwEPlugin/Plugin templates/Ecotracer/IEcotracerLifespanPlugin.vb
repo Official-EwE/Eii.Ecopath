@@ -13,6 +13,6 @@ Public Interface IEcotracerLifespanPlugin
     ''' Ecotracer scenario is closed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Sub CloseEcospaceScenario()
+    Sub ClosedEcospaceScenario()
 
 End Interface

@@ -13,6 +13,6 @@ Public Interface IEcospaceLifespanPlugin
     ''' Ecospace scenario is closed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Sub CloseEcospaceScenario()
+    Sub ClosedEcospaceScenario()
 
 End Interface
