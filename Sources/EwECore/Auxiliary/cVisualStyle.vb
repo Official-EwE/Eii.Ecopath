@@ -37,6 +37,8 @@ Namespace Auxiliary
         Private m_strFontName As String = "Arial"
         Private m_sFontSize As Single = 8.0!
         Private m_fontstyle As FontStyle = FontStyle.Regular
+        Private m_gradientColors As Color()
+        Private m_gradientBreaks As Single()
         <NonSerialized()> _
         Private m_container As cAuxiliaryData = Nothing
 
@@ -69,6 +71,15 @@ Namespace Auxiliary
                 Else
                     vs.Image = Nothing
                 End If
+
+                If (Not Object.ReferenceEquals(Me.m_gradientBreaks, Nothing) And Not Object.ReferenceEquals(Me.m_gradientColors, Nothing)) Then
+                    vs.GradientBreaks = Me.GradientBreaks
+                    vs.GradientColors = Me.GradientColors
+                Else
+                    vs.GradientBreaks = Nothing
+                    vs.GradientColors = Nothing
+                End If
+
             End SyncLock
 
             Return vs
@@ -191,6 +202,42 @@ Namespace Auxiliary
                     Me.m_fontstyle = value
                     Me.Update()
                 End If
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the break values for a gradient.
+        ''' </summary>
+        ''' <remarks>
+        ''' The number of gradient breaks should match the number of <see cref="GradientColors">
+        ''' gradient colours</see>.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Property GradientBreaks As Single()
+            Get
+                Return Me.m_gradientBreaks
+            End Get
+            Set(ByVal value As Single())
+                Me.m_gradientBreaks = value
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the color values for a gradient.
+        ''' </summary>
+        ''' <remarks>
+        ''' The number of gradient colours should match the number of <see cref="GradientBreaks">
+        ''' gradient breaks</see>.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Property GradientColors As Color()
+            Get
+                Return Me.m_gradientColors
+            End Get
+            Set(ByVal value As Color())
+                Me.m_gradientColors = value
             End Set
         End Property
 
