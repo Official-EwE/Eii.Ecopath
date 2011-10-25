@@ -23,8 +23,8 @@ Namespace Controls
                 Return New ucEditImage(uic, vs, style)
             End If
 
-            If ((style And cVisualStyle.eVisualStyleTypes.Font) = cVisualStyle.eVisualStyleTypes.Image) Then
-                Return New ucEditFont(uic, vs, style)
+            If ((style And cVisualStyle.eVisualStyleTypes.Gradient) = cVisualStyle.eVisualStyleTypes.Gradient) Then
+                Return New ucEditGradient(uic, vs, style)
             End If
 
             Return New ucEditHatch(uic, vs, style)

@@ -8,6 +8,8 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 
+' ToDo: create default colour ramps!
+
 Namespace Controls.Map
 
     ''' =======================================================================

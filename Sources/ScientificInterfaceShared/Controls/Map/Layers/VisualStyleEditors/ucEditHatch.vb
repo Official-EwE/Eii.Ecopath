@@ -175,14 +175,16 @@ Namespace Controls
 
             Dim br As Brush = Nothing
 
+            e.Graphics.FillRectangle(Brushes.White, e.ClipRectangle)
+
             If ((Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.Hatch) > 0) Then
                 br = New HatchBrush(Me.m_hbs, Me.m_clrFore, Me.m_clrBack)
             Else
                 br = New SolidBrush(Me.m_clrFore)
             End If
-
-            e.Graphics.FillRectangle(New SolidBrush(Color.White), e.ClipRectangle)
             e.Graphics.FillRectangle(br, e.ClipRectangle)
+            br.Dispose()
+            br = Nothing
 
         End Sub
 
@@ -192,13 +194,15 @@ Namespace Controls
             Dim rcInner As New Rectangle(e.ClipRectangle.X + 3, e.ClipRectangle.Y + 3, e.ClipRectangle.Width - 6, e.ClipRectangle.Height - 6)
 
             If plForeColor.Enabled Then
-                e.Graphics.FillRectangle(New SolidBrush(Color.White), e.ClipRectangle)
-                e.Graphics.FillRectangle(New SolidBrush(Me.m_clrFore), rcInner)
+                e.Graphics.FillRectangle(Brushes.White, e.ClipRectangle)
+                Using br As New SolidBrush(Me.m_clrFore)
+                    e.Graphics.FillRectangle(br, rcInner)
+                End Using
                 If Me.m_selectionType = eSelectionType.ForeColor Then
-                    e.Graphics.DrawRectangle(New Pen(Color.Black, 2), rcOuter)
+                    e.Graphics.DrawRectangle(Pens.Black, rcOuter)
                 End If
             Else
-                e.Graphics.FillRectangle(New SolidBrush(SystemColors.Control), e.ClipRectangle)
+                e.Graphics.FillRectangle(SystemBrushes.Control, e.ClipRectangle)
             End If
 
         End Sub
@@ -209,13 +213,15 @@ Namespace Controls
             Dim rcInner As New Rectangle(e.ClipRectangle.X + 3, e.ClipRectangle.Y + 3, e.ClipRectangle.Width - 6, e.ClipRectangle.Height - 6)
 
             If plBackColor.Enabled Then
-                e.Graphics.FillRectangle(New SolidBrush(Color.White), e.ClipRectangle)
-                e.Graphics.FillRectangle(New SolidBrush(Me.m_clrBack), rcInner)
+                e.Graphics.FillRectangle(Brushes.White, e.ClipRectangle)
+                Using br As New SolidBrush(Me.m_clrBack)
+                    e.Graphics.FillRectangle(br, rcInner)
+                End Using
                 If Me.m_selectionType = eSelectionType.BackColor Then
-                    e.Graphics.DrawRectangle(New Pen(Color.Black, 2), rcOuter)
+                    e.Graphics.DrawRectangle(Pens.Black, rcOuter)
                 End If
             Else
-                e.Graphics.FillRectangle(New SolidBrush(SystemColors.Control), e.ClipRectangle)
+                e.Graphics.FillRectangle(SystemBrushes.Control, e.ClipRectangle)
             End If
 
         End Sub

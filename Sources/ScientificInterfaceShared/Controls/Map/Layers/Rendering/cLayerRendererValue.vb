@@ -24,12 +24,18 @@ Namespace Controls.Map.Layers
         Private m_ft As Font = Nothing
         Private m_bDrawAlways As Boolean = False
 
-        Private m_colorRamp As New SAUPColorRamp
+        Private m_colorRamp As ARGBColorRamp = Nothing
 
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or _
                     cVisualStyle.eVisualStyleTypes.Font Or _
                     cVisualStyle.eVisualStyleTypes.Gradient)
+
+            If (vs.GradientBreaks IsNot Nothing) And (vs.GradientColors IsNot Nothing) Then
+                Me.m_colorRamp = New ARGBColorRamp(vs.GradientColors, vs.GradientBreaks)
+            Else
+                Me.m_colorRamp = New ARGBColorRamp(New Color() {Color.LightBlue, Color.DarkBlue}, New Double() {0, 1})
+            End If
         End Sub
 
         Public Property DrawAlways() As Boolean

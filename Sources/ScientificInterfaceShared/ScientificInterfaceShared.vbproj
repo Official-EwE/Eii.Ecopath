@@ -327,10 +327,10 @@
     <Compile Include="Controls\Map\Layers\ucLayersControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditFont.Designer.vb">
-      <DependentUpon>ucEditFont.vb</DependentUpon>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditGradient.Designer.vb">
+      <DependentUpon>ucEditGradient.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditFont.vb">
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditGradient.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditHatch.Designer.vb">
@@ -683,6 +683,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\ucLayersControl.resx">
       <DependentUpon>ucLayersControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\VisualStyleEditors\ucEditGradient.resx">
+      <DependentUpon>ucEditGradient.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\VisualStyleEditors\ucEditHatch.resx">
