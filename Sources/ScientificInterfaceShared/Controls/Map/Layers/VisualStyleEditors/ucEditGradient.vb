@@ -43,6 +43,7 @@ Namespace Controls
                 Me.m_clrStart = vs.GradientColors(0)
                 Me.m_clrEnd = vs.GradientColors(1)
             Catch ex As Exception
+                MsgBox("This code is not implemented yet.")
             End Try
 
             Me.UpdateControls()
