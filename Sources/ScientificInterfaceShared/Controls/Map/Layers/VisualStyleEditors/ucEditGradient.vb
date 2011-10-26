@@ -39,12 +39,13 @@ Namespace Controls
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
             Me.SetStyle(ControlStyles.ResizeRedraw, True)
 
-            Try
+            If (vs.GradientBreaks IsNot Nothing And vs.GradientColors IsNot Nothing) Then
                 Me.m_clrStart = vs.GradientColors(0)
                 Me.m_clrEnd = vs.GradientColors(1)
-            Catch ex As Exception
-                MsgBox("This code is not implemented yet.")
-            End Try
+                Me.m_rbCustomGradient.Checked = True
+            Else
+                Me.m_rbDefaultGradient.Checked = True
+            End If
 
             Me.UpdateControls()
 
@@ -55,9 +56,17 @@ Namespace Controls
 #Region " Overrides "
 
         Public Overrides Function Apply(ByVal vs As cVisualStyle) As Boolean
-            vs.GradientBreaks = New Double() {0, 1}
-            vs.GradientColors = New Color() {Me.m_clrStart, Me.m_clrEnd}
+
+            If Me.m_rbDefaultGradient.Checked Then
+                vs.GradientBreaks = Nothing
+                vs.GradientColors = Nothing
+            Else
+                vs.GradientBreaks = New Double() {0, 1}
+                vs.GradientColors = New Color() {Me.m_clrStart, Me.m_clrEnd}
+            End If
+
             Return True
+
         End Function
 
 #End Region ' Overrides
@@ -97,6 +106,13 @@ Namespace Controls
 #End Region ' Internals
 
 #Region " Events "
+
+        Private Sub OnGradOptionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_rbDefaultGradient.CheckedChanged, m_rbCustomGradient.CheckedChanged
+
+            Me.UpdateControls()
+
+        End Sub
 
         Private Sub pbForeColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_plStart.Click

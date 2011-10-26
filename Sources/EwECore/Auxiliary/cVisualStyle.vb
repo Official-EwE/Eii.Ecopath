@@ -37,8 +37,8 @@ Namespace Auxiliary
         Private m_strFontName As String = "Arial"
         Private m_sFontSize As Single = 8.0!
         Private m_fontstyle As FontStyle = FontStyle.Regular
-        Private m_gradientColors As Color()
-        Private m_gradientBreaks As Single()
+        Private m_gradientColors As Color() = Nothing
+        Private m_gradientBreaks As Double() = Nothing
         <NonSerialized()> _
         Private m_container As cAuxiliaryData = Nothing
 
@@ -48,6 +48,13 @@ Namespace Auxiliary
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New()
+        End Sub
+
+        Public Sub New(ByVal container As cAuxiliaryData, Optional ByVal bUpdate As Boolean = False)
+            Me.m_container = container
+            container.AllowValidation = bUpdate
+            container.VisualStyle = Me
+            container.AllowValidation = True
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -71,14 +78,8 @@ Namespace Auxiliary
                 Else
                     vs.Image = Nothing
                 End If
-
-                If (Not Object.ReferenceEquals(Me.m_gradientBreaks, Nothing) And Not Object.ReferenceEquals(Me.m_gradientColors, Nothing)) Then
-                    vs.GradientBreaks = Me.GradientBreaks
-                    vs.GradientColors = Me.GradientColors
-                Else
-                    vs.GradientBreaks = Nothing
-                    vs.GradientColors = Nothing
-                End If
+                vs.GradientBreaks = Me.GradientBreaks
+                vs.GradientColors = Me.GradientColors
 
             End SyncLock
 
@@ -214,12 +215,13 @@ Namespace Auxiliary
         ''' gradient colours</see>.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Property GradientBreaks As Single()
+        Public Property GradientBreaks As Double()
             Get
                 Return Me.m_gradientBreaks
             End Get
-            Set(ByVal value As Single())
+            Set(ByVal value As Double())
                 Me.m_gradientBreaks = value
+                Me.Update()
             End Set
         End Property
 
@@ -238,6 +240,7 @@ Namespace Auxiliary
             End Get
             Set(ByVal value As Color())
                 Me.m_gradientColors = value
+                Me.Update()
             End Set
         End Property
 

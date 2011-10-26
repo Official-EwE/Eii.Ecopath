@@ -42,6 +42,12 @@ Namespace Controls
 
 #Region " Constructor "
 
+        ''' <summary>
+        ''' Default constructor.
+        ''' </summary>
+        Public Sub New()
+        End Sub
+
         Public Sub New(ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes)
             ' Sanity check
             Debug.Assert(vs IsNot Nothing)

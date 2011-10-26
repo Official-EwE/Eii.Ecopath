@@ -55,18 +55,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerDepth, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        vs.BackColour = Color.Transparent
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
-                    ' Represent depth as a .. depth layer! Whoohoo!
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererDepth(vs)
                     editor = New cLayerEditorDepth()
                     If layerData Is Nothing Then layerData = bmd.LayerDepth
@@ -105,17 +95,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerHabitatCapacityInput, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        vs.BackColour = Color.Transparent
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
                     layerData = bmd.LayerHabitatCapacityInput
@@ -128,17 +109,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerHabitatCapacity, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        vs.BackColour = Color.Transparent
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorGroup(GetType(ucLayerEditorGroup))
                     editor.IsReadOnly = True
@@ -153,18 +125,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerRegion, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        vs.BackColour = Color.Transparent
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
-                    ' Represent regions as a gradient
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorRange(GetType(ucLayerEditorRegion))
                     editor.CellValueMax = core.nRegions
@@ -185,7 +147,7 @@ Namespace Controls.Map
 
                         ' Get or create Visual Style
                         vs = ad.VisualStyle
-                        If vs Is Nothing Then
+                        If (vs Is Nothing) Then
                             vs = avs(iMPA)
                             ad.AllowValidation = False
                             ad.VisualStyle = vs
@@ -207,17 +169,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerRelPP, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
-                    ' Represent as a solid colour
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerRelPP
@@ -230,17 +183,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerRelCin, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
-                    ' Represent as a solid colour
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerRelCin
@@ -255,14 +199,7 @@ Namespace Controls.Map
 
                     ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorMigration()
                     If layerData Is Nothing Then layerData = bmd.LayerMigration
@@ -275,16 +212,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerAdvection, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
                     If layerData Is Nothing Then layerData = bmd.LayerAdvection
                     layer = New cLayer(uic, layerData, renderer, Nothing, bmd, eVarNameFlags.LayerAdvection)
@@ -296,16 +225,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerWind, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
                     editor = New cLayerEditorVector(GetType(ucLayerEditorVector))
                     If layerData Is Nothing Then layerData = bmd.LayerWind
@@ -318,16 +239,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerFlow, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererUpwelling(vs)
                     editor = New cLayerEditorRange()
                     If layerData Is Nothing Then layerData = bmd.LayerUpwelling
@@ -341,16 +254,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerMLD, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererText(vs) ' MLD rendered as text on top of gradiented layers such as habitats, etc
                     editor = New cLayerEditorMLD()
                     If layerData Is Nothing Then layerData = bmd.LayerMixedLayerDepths
@@ -364,16 +269,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerPort, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.BurlyWood
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorFleet(GetType(ucLayerEditorPort))
                     If layerData Is Nothing Then layerData = bmd.LayerPort
@@ -386,17 +283,8 @@ Namespace Controls.Map
                     key = New cValueID(eDataTypes.EcospaceLayerSail, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
                     vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
-                    ' Represent as a solid colour
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorFleet(GetType(ucLayerEditorSailCost))
                     If layerData Is Nothing Then layerData = bmd.LayerSailingCost
@@ -412,17 +300,8 @@ Namespace Controls.Map
                         key = New cValueID(src.DataType, src.DBID, eVarNameFlags.Name)
                         ad = core.AuxillaryData(key)
 
-                        ' Get or create Visual Style
                         vs = ad.VisualStyle
-                        If vs Is Nothing Then
-                            vs = New cVisualStyle()
-                            vs.ForeColour = Color.Black
-                            ad.AllowValidation = False
-                            ad.VisualStyle = vs
-                            ad.AllowValidation = True
-                        End If
-
-                        ' Create layer
+                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorTwoState()
                         layer = New cLayer(uic, src, renderer, editor, src, eVarNameFlags.Name)
@@ -439,17 +318,8 @@ Namespace Controls.Map
                         key = New cValueID(src.DataType, src.DBID, eVarNameFlags.Name)
                         ad = core.AuxillaryData(key)
 
-                        ' Get or create Visual Style
                         vs = ad.VisualStyle
-                        If vs Is Nothing Then
-                            vs = New cVisualStyle()
-                            vs.ForeColour = Color.Black
-                            ad.AllowValidation = False
-                            ad.VisualStyle = vs
-                            ad.AllowValidation = True
-                        End If
-
-                        ' Create layer
+                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorRange()
                         layer = New cLayer(uic, src, renderer, editor, src, eVarNameFlags.Name)

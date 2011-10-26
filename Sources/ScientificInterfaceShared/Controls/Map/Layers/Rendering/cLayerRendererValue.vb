@@ -24,18 +24,13 @@ Namespace Controls.Map.Layers
         Private m_ft As Font = Nothing
         Private m_bDrawAlways As Boolean = False
 
-        Private m_colorRamp As New SAUPColorRamp()
+        Private m_colorRamp As ColorRamp = New SAUPColorRamp()
 
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or _
                     cVisualStyle.eVisualStyleTypes.Font Or _
                     cVisualStyle.eVisualStyleTypes.Gradient)
 
-            'If (vs.GradientBreaks IsNot Nothing) And (vs.GradientColors IsNot Nothing) Then
-            '    Me.m_colorRamp = New ARGBColorRamp(vs.GradientColors, vs.GradientBreaks)
-            'Else
-            '    Me.m_colorRamp = New ARGBColorRamp(New Color() {Color.LightBlue, Color.DarkBlue}, New Double() {0, 1})
-            'End If
         End Sub
 
         Public Property DrawAlways() As Boolean
@@ -139,12 +134,24 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub Update()
-            If Me.VisualStyle Is Nothing Then
+
+            Dim vs As cVisualStyle = Me.VisualStyle
+
+            If vs Is Nothing Then
                 Me.m_brFore = cLayerRenderer.brDEFAULT
             Else
-                Me.m_brFore = New SolidBrush(Me.VisualStyle.ForeColour)
-                Me.m_ft = New Font(Me.VisualStyle.FontName, Me.VisualStyle.FontSize, Me.VisualStyle.FontStyle)
+                Me.m_brFore = New SolidBrush(vs.ForeColour)
+
+                If (Me.m_ft IsNot Nothing) Then Me.m_ft.Dispose()
+                Me.m_ft = New Font(vs.FontName, Me.VisualStyle.FontSize, Me.VisualStyle.FontStyle)
+
+                If (vs.GradientBreaks IsNot Nothing) And (vs.GradientColors IsNot Nothing) Then
+                    Me.m_colorRamp = New ARGBColorRamp(vs.GradientColors, vs.GradientBreaks)
+                Else
+                    Me.m_colorRamp = New SAUPColorRamp()
+                End If
             End If
+
         End Sub
 
         Protected Overrides Function IsStyleValid() As Boolean

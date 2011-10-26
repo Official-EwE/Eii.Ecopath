@@ -39,6 +39,8 @@ Namespace Controls
             Me.m_lbGreen = New System.Windows.Forms.Label()
             Me.m_lbRed = New System.Windows.Forms.Label()
             Me.m_plEnd = New System.Windows.Forms.Panel()
+            Me.m_rbDefaultGradient = New System.Windows.Forms.RadioButton()
+            Me.m_rbCustomGradient = New System.Windows.Forms.RadioButton()
             CType(Me.m_nudAlpha, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudBlue, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudGreen, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -48,7 +50,7 @@ Namespace Controls
             'm_nudAlpha
             '
             Me.m_nudAlpha.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudAlpha.Location = New System.Drawing.Point(283, 101)
+            Me.m_nudAlpha.Location = New System.Drawing.Point(282, 148)
             Me.m_nudAlpha.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudAlpha.Name = "m_nudAlpha"
             Me.m_nudAlpha.Size = New System.Drawing.Size(54, 20)
@@ -57,7 +59,7 @@ Namespace Controls
             'm_nudBlue
             '
             Me.m_nudBlue.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudBlue.Location = New System.Drawing.Point(283, 78)
+            Me.m_nudBlue.Location = New System.Drawing.Point(282, 125)
             Me.m_nudBlue.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudBlue.Name = "m_nudBlue"
             Me.m_nudBlue.Size = New System.Drawing.Size(54, 20)
@@ -66,7 +68,7 @@ Namespace Controls
             'm_nudGreen
             '
             Me.m_nudGreen.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudGreen.Location = New System.Drawing.Point(283, 55)
+            Me.m_nudGreen.Location = New System.Drawing.Point(282, 102)
             Me.m_nudGreen.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudGreen.Name = "m_nudGreen"
             Me.m_nudGreen.Size = New System.Drawing.Size(54, 20)
@@ -75,7 +77,7 @@ Namespace Controls
             'm_nudRed
             '
             Me.m_nudRed.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_nudRed.Location = New System.Drawing.Point(283, 31)
+            Me.m_nudRed.Location = New System.Drawing.Point(282, 78)
             Me.m_nudRed.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudRed.Name = "m_nudRed"
             Me.m_nudRed.Size = New System.Drawing.Size(54, 20)
@@ -85,11 +87,11 @@ Namespace Controls
             '
             Me.m_slAlpha.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_slAlpha.Location = New System.Drawing.Point(49, 101)
+            Me.m_slAlpha.Location = New System.Drawing.Point(64, 148)
             Me.m_slAlpha.Maximum = 255
             Me.m_slAlpha.Minimum = 0
             Me.m_slAlpha.Name = "m_slAlpha"
-            Me.m_slAlpha.Size = New System.Drawing.Size(228, 20)
+            Me.m_slAlpha.Size = New System.Drawing.Size(213, 20)
             Me.m_slAlpha.TabIndex = 28
             Me.m_slAlpha.Value = 50
             '
@@ -97,11 +99,11 @@ Namespace Controls
             '
             Me.m_slBlue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_slBlue.Location = New System.Drawing.Point(49, 78)
+            Me.m_slBlue.Location = New System.Drawing.Point(64, 125)
             Me.m_slBlue.Maximum = 255
             Me.m_slBlue.Minimum = 0
             Me.m_slBlue.Name = "m_slBlue"
-            Me.m_slBlue.Size = New System.Drawing.Size(228, 20)
+            Me.m_slBlue.Size = New System.Drawing.Size(213, 20)
             Me.m_slBlue.TabIndex = 25
             Me.m_slBlue.Value = 50
             '
@@ -109,11 +111,11 @@ Namespace Controls
             '
             Me.m_slGreen.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_slGreen.Location = New System.Drawing.Point(49, 55)
+            Me.m_slGreen.Location = New System.Drawing.Point(64, 102)
             Me.m_slGreen.Maximum = 255
             Me.m_slGreen.Minimum = 0
             Me.m_slGreen.Name = "m_slGreen"
-            Me.m_slGreen.Size = New System.Drawing.Size(228, 20)
+            Me.m_slGreen.Size = New System.Drawing.Size(213, 20)
             Me.m_slGreen.TabIndex = 22
             Me.m_slGreen.Value = 50
             '
@@ -121,11 +123,11 @@ Namespace Controls
             '
             Me.m_slRed.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                         Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_slRed.Location = New System.Drawing.Point(49, 31)
+            Me.m_slRed.Location = New System.Drawing.Point(64, 78)
             Me.m_slRed.Maximum = 255
             Me.m_slRed.Minimum = 0
             Me.m_slRed.Name = "m_slRed"
-            Me.m_slRed.Size = New System.Drawing.Size(228, 23)
+            Me.m_slRed.Size = New System.Drawing.Size(213, 23)
             Me.m_slRed.TabIndex = 19
             Me.m_slRed.Value = 50
             '
@@ -136,9 +138,9 @@ Namespace Controls
             Me.m_plPreview.BackColor = System.Drawing.SystemColors.Control
             Me.m_plPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plPreview.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.m_plPreview.Location = New System.Drawing.Point(31, 3)
+            Me.m_plPreview.Location = New System.Drawing.Point(52, 50)
             Me.m_plPreview.Name = "m_plPreview"
-            Me.m_plPreview.Size = New System.Drawing.Size(278, 22)
+            Me.m_plPreview.Size = New System.Drawing.Size(257, 22)
             Me.m_plPreview.TabIndex = 15
             Me.m_plPreview.TabStop = True
             '
@@ -147,7 +149,7 @@ Namespace Controls
             Me.m_plStart.BackColor = System.Drawing.SystemColors.Control
             Me.m_plStart.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plStart.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.m_plStart.Location = New System.Drawing.Point(3, 3)
+            Me.m_plStart.Location = New System.Drawing.Point(24, 50)
             Me.m_plStart.Name = "m_plStart"
             Me.m_plStart.Size = New System.Drawing.Size(22, 22)
             Me.m_plStart.TabIndex = 16
@@ -156,7 +158,7 @@ Namespace Controls
             'm_lbAlpha
             '
             Me.m_lbAlpha.AutoSize = True
-            Me.m_lbAlpha.Location = New System.Drawing.Point(3, 103)
+            Me.m_lbAlpha.Location = New System.Drawing.Point(21, 149)
             Me.m_lbAlpha.Name = "m_lbAlpha"
             Me.m_lbAlpha.Size = New System.Drawing.Size(37, 13)
             Me.m_lbAlpha.TabIndex = 27
@@ -165,7 +167,7 @@ Namespace Controls
             'm_lbBlue
             '
             Me.m_lbBlue.AutoSize = True
-            Me.m_lbBlue.Location = New System.Drawing.Point(4, 80)
+            Me.m_lbBlue.Location = New System.Drawing.Point(22, 126)
             Me.m_lbBlue.Name = "m_lbBlue"
             Me.m_lbBlue.Size = New System.Drawing.Size(31, 13)
             Me.m_lbBlue.TabIndex = 24
@@ -174,7 +176,7 @@ Namespace Controls
             'm_lbGreen
             '
             Me.m_lbGreen.AutoSize = True
-            Me.m_lbGreen.Location = New System.Drawing.Point(4, 57)
+            Me.m_lbGreen.Location = New System.Drawing.Point(22, 103)
             Me.m_lbGreen.Name = "m_lbGreen"
             Me.m_lbGreen.Size = New System.Drawing.Size(39, 13)
             Me.m_lbGreen.TabIndex = 21
@@ -183,7 +185,7 @@ Namespace Controls
             'm_lbRed
             '
             Me.m_lbRed.AutoSize = True
-            Me.m_lbRed.Location = New System.Drawing.Point(3, 34)
+            Me.m_lbRed.Location = New System.Drawing.Point(21, 80)
             Me.m_lbRed.Name = "m_lbRed"
             Me.m_lbRed.Size = New System.Drawing.Size(30, 13)
             Me.m_lbRed.TabIndex = 18
@@ -195,16 +197,40 @@ Namespace Controls
             Me.m_plEnd.BackColor = System.Drawing.SystemColors.Control
             Me.m_plEnd.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plEnd.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.m_plEnd.Location = New System.Drawing.Point(315, 3)
+            Me.m_plEnd.Location = New System.Drawing.Point(314, 50)
             Me.m_plEnd.Name = "m_plEnd"
             Me.m_plEnd.Size = New System.Drawing.Size(22, 22)
             Me.m_plEnd.TabIndex = 17
             Me.m_plEnd.TabStop = True
             '
+            'm_rbDefaultGradient
+            '
+            Me.m_rbDefaultGradient.AutoSize = True
+            Me.m_rbDefaultGradient.Location = New System.Drawing.Point(4, 4)
+            Me.m_rbDefaultGradient.Name = "m_rbDefaultGradient"
+            Me.m_rbDefaultGradient.Size = New System.Drawing.Size(125, 17)
+            Me.m_rbDefaultGradient.TabIndex = 30
+            Me.m_rbDefaultGradient.TabStop = True
+            Me.m_rbDefaultGradient.Text = "&Default EwE gradient"
+            Me.m_rbDefaultGradient.UseVisualStyleBackColor = True
+            '
+            'm_rbCustomGradient
+            '
+            Me.m_rbCustomGradient.AutoSize = True
+            Me.m_rbCustomGradient.Location = New System.Drawing.Point(4, 27)
+            Me.m_rbCustomGradient.Name = "m_rbCustomGradient"
+            Me.m_rbCustomGradient.Size = New System.Drawing.Size(101, 17)
+            Me.m_rbCustomGradient.TabIndex = 30
+            Me.m_rbCustomGradient.TabStop = True
+            Me.m_rbCustomGradient.Text = "&Custom gradient"
+            Me.m_rbCustomGradient.UseVisualStyleBackColor = True
+            '
             'ucEditGradient
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_rbCustomGradient)
+            Me.Controls.Add(Me.m_rbDefaultGradient)
             Me.Controls.Add(Me.m_nudAlpha)
             Me.Controls.Add(Me.m_nudBlue)
             Me.Controls.Add(Me.m_nudGreen)
@@ -221,7 +247,7 @@ Namespace Controls
             Me.Controls.Add(Me.m_lbRed)
             Me.Controls.Add(Me.m_plEnd)
             Me.Name = "ucEditGradient"
-            Me.Size = New System.Drawing.Size(340, 130)
+            Me.Size = New System.Drawing.Size(340, 179)
             CType(Me.m_nudAlpha, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudBlue, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudGreen, System.ComponentModel.ISupportInitialize).EndInit()
@@ -245,6 +271,8 @@ Namespace Controls
         Private WithEvents m_nudRed As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_plStart As System.Windows.Forms.Panel
         Private WithEvents m_plPreview As System.Windows.Forms.Panel
+        Private WithEvents m_rbDefaultGradient As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbCustomGradient As System.Windows.Forms.RadioButton
 
     End Class
 
