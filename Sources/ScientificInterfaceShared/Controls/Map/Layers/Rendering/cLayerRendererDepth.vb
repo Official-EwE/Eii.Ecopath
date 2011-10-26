@@ -3,7 +3,6 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
-Imports SAUPUtil.Misc.Colours
 Imports ScientificInterfaceShared.Style
 
 #End Region 'Imports
@@ -23,7 +22,7 @@ Namespace Controls.Map.Layers
         Private m_brFore As Brush = Nothing
         Private m_ft As Font = Nothing
 
-        Private m_colorRamp As New SAUPColorRamp
+        Private m_colorRamp As New cEwEColorRamp()
 
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or _

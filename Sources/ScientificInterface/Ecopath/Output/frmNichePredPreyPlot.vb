@@ -8,7 +8,6 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-Imports SAUPUtil.Misc.Colours
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
 
@@ -50,7 +49,7 @@ Namespace Ecopath.Output
         ''' <summary>User-provided <see cref="eColourType">colour</see> behaviour.</summary>
         Private m_colourType As eColourType = eColourType.ByPredator
         ''' <summary>Colour ramp for rendering a <see cref="eColourType.ByOverlap"/> graph.</summary>
-        Private m_crColor As New ARGBColorRamp(New Color() {Color.White, Color.Gray, Color.Black}, New Double() {0, 0.6, 0.4})
+        Private m_crColor As New cARGBColorRamp(New Color() {Color.White, Color.Gray, Color.Black}, New Double() {0, 0.6, 0.4})
 
         ''' <summary>Flag stating whether value labels should be shown on the plot.</summary>
         Private m_bShowLabels As Boolean = True

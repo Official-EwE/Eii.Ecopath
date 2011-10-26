@@ -4,6 +4,7 @@ Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports System.Drawing.Drawing2D
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -153,17 +154,22 @@ Namespace Controls
             Me.UpdateColors()
         End Sub
 
-        Private Sub ColourPicker_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
             Me.UpdateControls()
         End Sub
 
-        Private Sub pbBrush_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles m_plPreview.Paint
+        Protected Overrides Sub OnPaintBackground(ByVal e As System.Windows.Forms.PaintEventArgs)
 
-            Dim br As Brush = Nothing
+            MyBase.OnPaintBackground(e)
 
-            e.Graphics.FillRectangle(New SolidBrush(Color.White), e.ClipRectangle)
-            e.Graphics.FillRectangle(br, e.ClipRectangle)
+            Dim ramp As New cARGBColorRamp(New Color() {Me.m_clrStart, Me.m_clrEnd}, New Double() {0, 1})
+            Dim rc As Rectangle = Me.m_plPreview.ClientRectangle
+            rc.X = Me.m_plPreview.Location.X
+            rc.Y = Me.m_plPreview.Location.Y
 
+            e.Graphics.FillRectangle(New SolidBrush(Color.White), rc)
+            cColorRampIndicator.DrawColorRamp(e.Graphics, ramp, rc)
         End Sub
 
         Private Sub pbForeColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
@@ -211,6 +217,7 @@ Namespace Controls
 #Region " Internal implementation "
 
         Private Sub UpdateControls()
+            Me.m_plPreview.Visible = False
             Me.UpdateColors()
         End Sub
 

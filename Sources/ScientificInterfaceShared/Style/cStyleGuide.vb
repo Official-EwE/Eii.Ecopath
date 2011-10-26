@@ -4,14 +4,11 @@ Option Strict On
 
 Imports System.Globalization
 Imports System.Threading
-Imports System.Drawing
-Imports System.Text
-Imports VB = Microsoft.VisualBasic
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
 Imports EwEUtils.Utilities
-Imports SAUPUtil.Misc.Colours
+Imports VB = Microsoft.VisualBasic
 
 #End Region ' Imports
 
@@ -58,11 +55,11 @@ Namespace Style
         ''' <summary>Application colour scheme.</summary>
         Private m_dtApplicationColors As New Dictionary(Of cStyleGuide.eApplicationColorType, Color)
         ''' <summary>Color ramp for obtaining EwE5 group colors</summary>
-        Private m_colorrampGroups As New SAUPColorRamp()
+        Private m_colorrampGroups As New cEwEColorRamp()
         ''' <summary>Color ramp for obtaining fleet colors</summary>
-        Private m_colorrampFleets As New ARGBColorRamp(New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#})
+        Private m_colorrampFleets As New cARGBColorRamp(New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#})
         ''' <summary>Color ramp for obtaining pedigree colors</summary>
-        Private m_colorrampPedigree As New SAUPColorRamp() '  New ARGBColorRamp(New Color() {Color.FromArgb(255, 210, 210, 255), Color.FromArgb(255, 80, 80, 200), Color.FromArgb(255, 0, 0, 130)}, New Double() {0.0#, 0.6#, 0.4#})
+        Private m_colorrampPedigree As New cEwEColorRamp()
         ''' <summary>Start offset for colour ramp.</summary>
         Private Const c_sRampOffsetStart As Single = 0.15!
         ''' <summary>End offset for colour ramp.</summary>

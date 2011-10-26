@@ -193,6 +193,7 @@
     <Compile Include="Controls\GlyphSelect\ucGlyphSelect.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Indicator renderers\cColorRampIndicator.vb" />
     <Compile Include="Controls\IUIElement.vb" />
     <Compile Include="Controls\Label\cEwEHeaderLabel.vb">
       <SubType>Component</SubType>
@@ -587,6 +588,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Settings\cFormSetting.vb" />
+    <Compile Include="Style\ColorRamps\cARGBColorRamp.vb" />
+    <Compile Include="Style\ColorRamps\cColorRamp.vb" />
+    <Compile Include="Style\ColorRamps\cSAUPColorRamp.vb" />
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
     <Compile Include="Style\Type formatters\cCoreInterfaceFormatter.vb" />

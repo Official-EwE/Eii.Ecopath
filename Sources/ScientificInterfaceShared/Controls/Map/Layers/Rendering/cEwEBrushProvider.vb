@@ -2,12 +2,9 @@
 
 Option Strict On
 
-Imports EwECore
-Imports SAUPUtil.SAUPData
-Imports SAUPUtil.SAUPData.Mapping
-Imports SAUPUtil.Misc.Colours
 Imports System.Drawing.Drawing2D
 Imports EwECore.Auxiliary
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -67,6 +64,14 @@ Namespace Controls
                                                   HatchStyle.DashedVertical, _
                                                   HatchStyle.Plaid}
 
+        Private m_agrads As cARGBColorRamp() = { _
+            New cARGBColorRamp(New Color() {Color.LightSkyBlue, Color.DarkBlue}, New Double() {0, 1}), _
+            New cARGBColorRamp(New Color() {Color.LightSeaGreen, Color.DarkGreen}, New Double() {0, 1}), _
+            New cARGBColorRamp(New Color() {Color.LightSteelBlue, Color.DarkGreen}, New Double() {0, 1}), _
+            New cARGBColorRamp(New Color() {Color.LightYellow, Color.DarkRed}, New Double() {0, 1}), _
+            New cARGBColorRamp(New Color() {Color.SandyBrown, Color.SaddleBrown}, New Double() {0, 1}) _
+        }
+
         Private m_brHightLightDefault As Brush = Brushes.Red
 
         ''' <summary>Enumerated type providing supported types of brushes.</summary>
@@ -92,16 +97,19 @@ Namespace Controls
                     Me.GetColors(avs)
 
                 Case cEwEBrushProvider.eBrushType.Glyphs
-                    If (nBrushes < 0) Then nBrushes = m_abrDefaultGlyphs.Length
+                    If (nBrushes <= 0) Then nBrushes = m_abrDefaultGlyphs.Length
                     ReDim avs(nBrushes)
-                    Me.GetGlyphs(avs)
+                    Me.GetGlyphs(avs, m_abrDefaultGlyphs)
 
                 Case cEwEBrushProvider.eBrushType.HatchPattern
-                    If (nBrushes < 0) Then nBrushes = m_abrDefaultHatchPatterns.Length
+                    If (nBrushes <= 0) Then nBrushes = m_abrDefaultHatchPatterns.Length
                     ReDim avs(nBrushes)
-                    Me.GetPatterns(avs)
+                    Me.GetPatterns(avs, m_abrDefaultHatchPatterns)
 
                 Case eBrushType.Gradient
+                    If (nBrushes <= 0) Then nBrushes = m_agrads.Length
+                    ReDim avs(nBrushes)
+                    Me.GetGradients(avs, m_agrads)
 
             End Select
 
@@ -114,7 +122,7 @@ Namespace Controls
         Private Sub GetColors(ByVal avs() As cVisualStyle)
 
             Dim vs As cVisualStyle = Nothing
-            Dim clrramp As New SAUPColorRamp()
+            Dim clrramp As New cEwEColorRamp()
 
             ' Loop through number of requested visual styles
             For i As Integer = 0 To avs.Length - 1
@@ -126,7 +134,7 @@ Namespace Controls
             Next i
         End Sub
 
-        Private Sub GetGlyphs(ByVal avs() As cVisualStyle)
+        Private Sub GetGlyphs(ByVal avs() As cVisualStyle, ByVal images() As Image)
 
             Dim vs As cVisualStyle = Nothing
             Dim iGlyphIndex As Integer = 0
@@ -137,18 +145,18 @@ Namespace Controls
                 vs = New cVisualStyle()
                 vs.ForeColour = Color.Gray
                 vs.BackColour = Color.Transparent
-                vs.Image = m_abrDefaultGlyphs(iGlyphIndex)
+                vs.Image = images(iGlyphIndex)
 
                 avs(i) = vs
 
                 ' increment counter
                 iGlyphIndex += 1
-                If iGlyphIndex = m_abrDefaultGlyphs.Length Then iGlyphIndex = 0
+                If iGlyphIndex = images.Length Then iGlyphIndex = 0
             Next i
 
         End Sub
 
-        Private Sub GetPatterns(ByVal avs() As cVisualStyle)
+        Private Sub GetPatterns(ByVal avs() As cVisualStyle, ByVal hatches As HatchStyle())
 
             Dim vs As cVisualStyle = Nothing
             Dim iPatternIndex As Integer = 0
@@ -157,15 +165,33 @@ Namespace Controls
             For i As Integer = 0 To avs.Length - 1
 
                 vs = New cVisualStyle()
-                vs.ForeColour = Color.Gray
-                vs.BackColour = Color.Transparent
-                vs.HatchStyle = m_abrDefaultHatchPatterns(iPatternIndex)
+                vs.HatchStyle = hatches(iPatternIndex)
+                avs(i) = vs
+
+                ' increment counter
+                iPatternIndex += 1
+                If iPatternIndex = hatches.Length Then iPatternIndex = 0
+            Next i
+
+        End Sub
+
+        Private Sub GetGradients(ByVal avs() As cVisualStyle, ByVal ramps As cARGBColorRamp())
+
+            Dim vs As cVisualStyle = Nothing
+            Dim iPatternIndex As Integer = 0
+
+            ' Loop through number of brushes
+            For i As Integer = 0 To avs.Length - 1
+
+                vs = New cVisualStyle()
+                vs.GradientColors = ramps(i).GradientColors
+                vs.GradientBreaks = ramps(i).GradientBreaks
 
                 avs(i) = vs
 
                 ' increment counter
                 iPatternIndex += 1
-                If iPatternIndex = m_abrDefaultHatchPatterns.Length Then iPatternIndex = 0
+                If iPatternIndex = ramps.Length Then iPatternIndex = 0
             Next i
 
         End Sub

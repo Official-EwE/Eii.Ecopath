@@ -140,7 +140,7 @@ Namespace Controls
             Me.m_plPreview.Cursor = System.Windows.Forms.Cursors.Hand
             Me.m_plPreview.Location = New System.Drawing.Point(52, 50)
             Me.m_plPreview.Name = "m_plPreview"
-            Me.m_plPreview.Size = New System.Drawing.Size(257, 22)
+            Me.m_plPreview.Size = New System.Drawing.Size(256, 22)
             Me.m_plPreview.TabIndex = 15
             Me.m_plPreview.TabStop = True
             '

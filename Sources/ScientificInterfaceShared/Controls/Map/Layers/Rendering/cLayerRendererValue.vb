@@ -24,7 +24,7 @@ Namespace Controls.Map.Layers
         Private m_ft As Font = Nothing
         Private m_bDrawAlways As Boolean = False
 
-        Private m_colorRamp As ColorRamp = New SAUPColorRamp()
+        Private m_colorRamp As cColorRamp = New cEwEColorRamp()
 
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or _
@@ -146,9 +146,9 @@ Namespace Controls.Map.Layers
                 Me.m_ft = New Font(vs.FontName, Me.VisualStyle.FontSize, Me.VisualStyle.FontStyle)
 
                 If (vs.GradientBreaks IsNot Nothing) And (vs.GradientColors IsNot Nothing) Then
-                    Me.m_colorRamp = New ARGBColorRamp(vs.GradientColors, vs.GradientBreaks)
+                    Me.m_colorRamp = New cARGBColorRamp(vs.GradientColors, vs.GradientBreaks)
                 Else
-                    Me.m_colorRamp = New SAUPColorRamp()
+                    Me.m_colorRamp = New cEwEColorRamp()
                 End If
             End If
 

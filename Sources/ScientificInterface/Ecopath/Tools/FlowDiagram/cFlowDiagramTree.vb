@@ -1,15 +1,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing.Color
-Imports System.IO
-Imports System.Math
-Imports System.Threading
 Imports System.ComponentModel
-Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SAUPUtil.Misc.Colours
+Imports System.Drawing.Color
+Imports System.Math
 Imports SAUPUtil.SAUPData.Mapping
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -191,7 +187,7 @@ Namespace Ecopath.Controls.FlowDiagram
 #Region " Privates "
 
         Private m_data As cFlowDiagramData = Nothing
-        Private m_colorramp As New SAUPColorRamp()
+        Private m_colorramp As New cEwEColorRamp()
         Private m_iNumTrophicLevels As Integer = 6
         Private m_sAngle() As Single            '' To store where the angle is relative to 0
         Private m_asLabelOffsetX() As Single
