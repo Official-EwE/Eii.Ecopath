@@ -936,10 +936,11 @@ Public Class cEcoSpace
                     End If
                 Next
 
-                ''TN is a pointer being used to decide which sum to work with
-                ' SetSummaryTimeStep(Tn)
+                If m_Data.PredictEffort Then
+                    If its = 3 Then Me.AdjustTotalEffort(m_Data.MonthNow, its)
+                    Me.PredictEffortDistribution(m_Data.MonthNow, its)
+                End If
 
-                If m_Data.PredictEffort Then PredictEffortDistribution(m_Data.MonthNow, its)
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospacePostFishingEffortModTimestep(m_Data, itt)
 
@@ -3294,6 +3295,84 @@ exitline:
         Next ig
     End Sub
 
+
+    Sub AdjustTotalEffort(ByVal iMonth As Integer, ByVal iCumMonth As Integer)
+        'this is a modified version of PredictEffortDistribution, to be called only once at around simulation
+        'month 2 or 3; it resets totaleffort(gear) so as to avoid overfishing (relative to ecopath base) on concentrated species
+        'modifications to PredictEffortDistribution are ahown as '***
+        Dim ig As Integer, i As Integer, j As Integer, TotAttract As Single
+        Dim Valt As Single, isp As Integer
+        Dim Effort() As Single
+        Dim EffortCost As Single
+        Dim SailCost As Single
+        Dim CatGear As Single, CatLoc(,) As Single, WtCat As Single
+
+        ReDim Effort(m_Data.nFleets)
+        'ReDim m_Data.Ftot(m_Data.NGroups, m_Data.InRow, m_Data.InCol)
+        'ReDim m_Data.EffortSpace(m_Data.nFleets, m_Data.InRow, m_Data.InCol)
+
+        For ig = 1 To m_Data.nFleets
+            'jb Attract() gets cleared out for each fleet
+            ReDim m_Data.Attract(m_Data.InRow, m_Data.InCol)
+            TotAttract = 0.0000000001
+
+            'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
+            If m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail) = 0 Then
+                EffortCost = 0
+                SailCost = 1
+            Else
+                EffortCost = m_EPdata.cost(ig, eCostIndex.CUPE) / (m_EPdata.cost(ig, eCostIndex.Fixed) + m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail))
+                SailCost = m_EPdata.cost(ig, eCostIndex.Sail) / (m_EPdata.cost(ig, eCostIndex.Fixed) + m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail))
+            End If
+
+            CatGear = 0 '*****ecopath base total catch for this gear
+            For isp = 1 To m_Data.NGroups  '***
+                CatGear = CatGear + m_EPdata.Landing(ig, isp) + m_EPdata.Discard(ig, isp) '****
+            Next  '***
+
+            ReDim CatLoc(m_Data.InRow, m_Data.InCol) '****
+
+            '
+            For i = 1 To m_Data.InRow
+                For j = 1 To m_Data.InCol
+                    'Is this cell fished
+                    If m_Data.Depth(i, j) > 0 And (m_Data.GearHab(ig, 0) Or (Me.m_Data.PAreaFished(i, j, ig) > 0)) Then
+
+                        Valt = 0
+                        CatLoc(i, j) = 0
+                        For isp = 1 To m_Data.NGroups
+                            'Catch
+                            CatLoc(i, j) = CatLoc(i, j) + m_Data.Bcell(i, j, isp) * m_SimData.relQ(ig, isp) '****
+                            'Value of catch
+                            Valt = Valt + m_EPdata.Market(ig, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(ig, isp)
+                        Next
+
+                        If m_Data.Sail(ig, i, j) = 0 Then m_Data.Sail(ig, i, j) = 0.000001
+                        'VC Sail() above: to avoid dividing with zero
+                        Valt = (Valt ^ m_Data.EffPower(ig)) / (EffortCost + SailCost * m_Data.Sail(ig, i, j) / m_Data.SailScale(ig))
+                        m_Data.Attract(i, j) = Valt '* Me.m_Data.PAreaFished(i, j, ig) 'may want to modify this by dividing by a site cost factor for cell i,j
+                        TotAttract = TotAttract + Valt ' * Me.m_Data.PAreaFished(i, j, ig)
+                    End If
+                Next
+            Next
+
+            WtCat = 0.0000000001 '****
+            For i = 1 To m_Data.InRow
+                For j = 1 To m_Data.InCol
+                    If m_Data.Depth(i, j) > 0 And (m_Data.GearHab(ig, 0) Or (Me.m_Data.PAreaFished(i, j, ig) > 0)) Then
+                        WtCat = WtCat + m_Data.Attract(i, j) / TotAttract * CatLoc(i, j) '***
+                    End If
+                Next j
+            Next i
+
+            '*** finally reset total effort using number of water cells, Ecopath base catch, and WtCat summed catch/effort x attraction weight
+            '***note ThabArea below is total number of cells with depth>0 (water cells)
+            TotEffort(ig) = ThabArea * CatGear / WtCat  '***
+
+        Next ig
+
+    End Sub
+
     ''' <summary>
     ''' solvetime() is not called at this time. It has been left in for reference
     ''' </summary>
@@ -5574,21 +5653,28 @@ exitline:
                     For j = 1 To Me.m_Data.InCol
 
                         If m_Data.Depth(i, j) > 0.0 Then
-                            For ihab As Integer = 0 To Me.m_Data.NoHabitats
-                                'habitat preference * proportion of habitat in cell
-                                Dim cap As Single = Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
-                                'if PrefHab is all habitats (PrefHab(K, 0) > 0) then  PrefHab for this HabType will be 0 ( PrefHab(K, HabType(i, j)) = 0)
-                                'So the cap needs to come from PrefHab(K, 0) in that case
-                                If Me.m_Data.PrefHab(K, 0) > 0 Then cap = Me.m_Data.PrefHab(K, 0) * Me.m_Data.PHabType(i, j, ihab)
 
-                                'sum into the existing capacity
-                                Me.m_Data.HabCap(i, j, K) += cap
+                            If Me.m_Data.PrefHab(K, 0) = 0.0 Then
+                                For ihab As Integer = 0 To Me.m_Data.NoHabitats
+                                    'habitat preference * proportion of habitat in cell
+                                    Dim cap As Single = Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
+                                    'if PrefHab is all habitats (PrefHab(K, 0) > 0) then  PrefHab for this HabType will be 0 ( PrefHab(K, HabType(i, j)) = 0)
+                                    'So the cap needs to come from PrefHab(K, 0) in that case
+                                    If Me.m_Data.PrefHab(K, 0) > 0 Then cap = Me.m_Data.PrefHab(K, 0) * Me.m_Data.PHabType(i, j, ihab)
 
-                            Next ihab
+                                    'sum into the existing capacity
+                                    Me.m_Data.HabCap(i, j, K) += cap
+
+                                Next ihab
+
+                            Else
+                                Me.m_Data.HabCap(i, j, K) = 1
+                            End If
                         End If
 
-                        'get max for rescaling to 0-1 range
-                        m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
+
+                            'get max for rescaling to 0-1 range
+                            m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
                     Next j
                 Next i
             Next K
