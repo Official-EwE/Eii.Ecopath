@@ -2250,7 +2250,7 @@ Public Class cEcoSpace
     End Sub
 
     Public Sub CalcHabitatArea()
-        Dim i As Integer, j As Integer ', Cnt As Object
+        Dim i As Integer, j As Integer
 
         ReDim m_Data.HabArea(m_Data.NoHabitats)
         ReDim m_Data.HabAreaProportion(m_Data.NoHabitats)
@@ -2261,23 +2261,25 @@ Public Class cEcoSpace
         For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then
+
+                    'ThabArea total usable area of the map
                     ThabArea = ThabArea + 1
-                    m_Data.HabArea(m_Data.HabType(i, j)) = m_Data.HabArea(m_Data.HabType(i, j)) + 1
+                    For ihab As Integer = 1 To Me.m_Data.NoHabitats
+                        Me.m_Data.HabArea(ihab) = m_Data.HabArea(ihab) + 1 * m_Data.PHabType(i, j, ihab)
+                    Next
+                    'ThabArea = ThabArea + 1
+                    'm_Data.HabArea(m_Data.PHabType(i, j)) = m_Data.HabArea(m_Data.PHabType(i, j)) + 1
                 End If
             Next
         Next
 
-        '    Cnt = 0
         If ThabArea = 0 Then Exit Sub
         For i = 1 To m_Data.NoHabitats
             m_Data.HabAreaProportion(i) = m_Data.HabArea(i) / ThabArea
-            ' If Trim(m_Data.HabitatText(i)) <> "" Then Cnt = Cnt + 1
         Next
-        'If Cnt > 0 Then
-        '    ReDim habColr(Cnt)
-        '    TF = ColorGrad(habColr)
-        'End If
+
         m_Data.HabAreaProportion(0) = 1
+
     End Sub
 
 
@@ -2580,25 +2582,37 @@ Public Class cEcoSpace
 
                     'sum of habitat type in a cell fished by this gear
                     PFished = 0
-                    For ihab As Integer = 1 To Me.m_Data.NoHabitats
-                        If m_Data.GearHab(ig, ihab) Or m_Data.GearHab(ig, 0) Then
-                            PFished += Me.m_Data.PHabType(i, j, ihab)
-                        End If
-                    Next
-
-                    If m_Data.Depth(i, j) > 0 Then
-                        'TotEffort(ig) = TotEffort(ig) + m_Data.Width(i)
-                        If ResetTotEffort Then
-                            TotEffort(ig) += 1 * m_Data.Width(i) * PFished
-                        End If
-                        'set the Proportion of area fished by this fleet for the habitats in the cell 
-                        Me.m_Data.PAreaFished(i, j, ig) = 1 * m_Data.Width(i) * PFished
+                    'Is this Fleet habitat restricted
+                    If m_Data.GearHab(ig, 0) = False Then
+                        'Yes habitat restricted so sum the proportion of habitat types in this cell
+                        For ihab As Integer = 1 To Me.m_Data.NoHabitats
+                            If m_Data.GearHab(ig, ihab) Then
+                                PFished += Me.m_Data.PHabType(i, j, ihab)
+                            End If
+                        Next
+                    Else
+                        'No this Fleet has no area restrictions
+                        'So it fishes all cells 100%
+                        PFished = 1
                     End If
 
-                Next
-            Next
-            'TotEffort(ig) = TotEffort(ig) * SEmult(ig)
-        Next
+                    Debug.Assert(PFished <= 1.0, "Proportion of habitat in a cell not set correctly. It should sum to one for all habitat types.")
+
+                    If m_Data.Depth(i, j) > 0 Then
+
+                        'set the Proportion of area fished by this fleet for all the habitats in the cell 
+                        Me.m_Data.PAreaFished(i, j, ig) = 1 * m_Data.Width(i) * PFished
+
+                        'sum the total effort
+                        If ResetTotEffort Then
+                            TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
+                        End If
+
+                    End If
+
+                Next j 'map cols
+            Next i 'map rows
+        Next ig ' fleets
 
     End Sub
 
@@ -2782,15 +2796,51 @@ Public Class cEcoSpace
         End If
     End Sub
 
+
+    ''' <summary>
+    ''' Returns the relative movement from bad habitat multiplier based on preferred habitat and percentage of habitat type in the cell.
+    ''' <see cref="cEcospaceDataStructures.PrefHab">Preferred habitat</see>
+    ''' <see cref="cEcospaceDataStructures.PHabType">Percentage of habitat type in a cell</see>
+    ''' </summary>
+    ''' <param name="ip">Group index</param>
+    ''' <param name="i">Map Row</param>
+    ''' <param name="j">Map Col</param>
+    ''' <returns>
+    ''' One if this cell contains any preferred habitat for this group.
+    ''' Otherwise returns Relative movement from bad habitat from the interface.
+    ''' </returns>
+    ''' <remarks>
+    ''' This is only used for the migration movement <see cref="cEcoSpace.VaryMigMovementParameters"> Migration movement</see>. 
+    ''' Movement/difussion rates across cells are set in <see cref="cEcoSpace.SetMovementParameters">SetMovementParameters</see> 
+    ''' based on habitat capacity <see cref="cEcospaceDataStructures.HabCap">HabCap</see>.
+    ''' </remarks>
     Function RelMove(ByVal ip As Integer, ByVal i As Integer, ByVal j As Integer) As Single
         'calculates relative movemement rate out of cell i,j for pool/species ip, as function of
         'habitat state in cell i,j
-        ' To JB: Converted PrefHab from boolean to single, please assess
-        If (m_Data.PrefHab(ip, m_Data.HabType(i, j)) > 0) Or (m_Data.PrefHab(ip, 0) > 0) Then
-            RelMove = 1
-        Else
-            RelMove = m_Data.RelMoveBad(ip)
+
+        If m_Data.PrefHab(ip, 0) > 0 Then
+            'this group uses all habitats
+            Return 1.0F
         End If
+
+        'If there is any preferred habitat in this cell then don't move out
+        For ihab As Integer = 1 To Me.m_Data.NoHabitats
+            If m_Data.PrefHab(ip, ihab) > 0 And m_Data.PHabType(i, j, ihab) > 0 Then
+                'There is some preferred habitat in this cell 
+                'so return one
+                Return 1.0F
+            End If
+        Next
+
+        'No preferred habitat in this cell 
+        Return m_Data.RelMoveBad(ip)
+
+        'jb before PHabType() percentage of each habitat type in a cell
+        'If (m_Data.PrefHab(ip, m_Data.HabType(i, j)) > 0) Or (m_Data.PrefHab(ip, 0) > 0) Then
+        '    RelMove = 1
+        'Else
+        '    RelMove = m_Data.RelMoveBad(ip)
+        'End If
 
     End Function
 
@@ -3197,7 +3247,11 @@ exitline:
                     If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
                     If m_Data.Depth(i, j) > 0 And _
                         (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
-                        And (m_Data.GearHab(ig, m_Data.HabType(i, j)) Or m_Data.GearHab(ig, 0)) Then
+                         Or m_Data.GearHab(ig, 0) Then
+                        'jb before PHabType()
+                        'If m_Data.Depth(i, j) > 0 And _
+                        '(m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
+                        '  And (m_Data.GearHab(ig, m_Data.HabType(i, j)) Or m_Data.GearHab(ig, 0)) Then
                         'mpamonth(mpatype, month) is false if closed, True if open.
 
                         Valt = 0
@@ -3219,7 +3273,11 @@ exitline:
                     'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
                     If m_Data.Depth(i, j) > 0 And _
                         (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
-                        And (m_Data.GearHab(ig, m_Data.HabType(i, j)) Or m_Data.GearHab(ig, 0)) Then
+                        Or m_Data.GearHab(ig, 0) Then
+
+                        'If m_Data.Depth(i, j) > 0 And _
+                        '(m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
+                        'And (m_Data.GearHab(ig, m_Data.HabType(i, j)) Or m_Data.GearHab(ig, 0)) Then
                         '  water               (not MPA       or fished MPA)     and ( habitat       =  fish here or  this gear doen not fish here??)
                         'EffortSpace(ig, i, j) = TotEffort(ig) * Attract(i, j) / TotAttract
                         'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
@@ -3737,27 +3795,27 @@ exitline:
         'get habitat areas
         ReDim BRatio(m_Data.NGroups)
 
-
         CalcHabitatArea()
         'calculate habitat area used by each biomass type
         ReDim HabAreaUsed(m_Data.NGroups)
         'VC Hobart Sep 2008; Adding distribution envelopes by functional group makes it necessary 
         'to change how Habareaused is calculated. 
-        ThabArea = 0
-        For iRo As Integer = 1 To m_Data.InRow
-            For iCo As Integer = 1 To m_Data.InCol
-                If m_Data.Depth(iRo, iCo) > 0 Then
-                    ThabArea = ThabArea + 1
-                    'm_Data.HabArea(m_Data.HabType(i, j)) = m_Data.HabArea(m_Data.HabType(i, j)) + 1
-                    For iGr As Integer = 1 To m_Data.NGroups
-                        ' To JB: Converted PrefHab from boolean to single, please assess
-                        'If (m_Data.PrefHab(iGr, m_Data.HabType(iRo, iCo)) Or m_Data.PrefHab(iGr, 0)) And _
-                        If ((m_Data.PrefHab(iGr, m_Data.HabType(iRo, iCo)) > 0) Or (m_Data.PrefHab(iGr, 0)) > 0) And _
-                        m_Data.DistributionEnvelope(iRo, iCo, iGr) Then HabAreaUsed(iGr) += 1
-                    Next iGr
-                End If ' m_Data.Depth(iRo, iCo) > 0
-            Next iCo
-        Next iRo
+        'ThabArea = 0
+        'For iRo As Integer = 1 To m_Data.InRow
+        '    For iCo As Integer = 1 To m_Data.InCol
+        '        If m_Data.Depth(iRo, iCo) > 0 Then
+        '            ThabArea = ThabArea + 1
+        '            'm_Data.HabArea(m_Data.HabType(i, j)) = m_Data.HabArea(m_Data.HabType(i, j)) + 1
+        '            For iGr As Integer = 1 To m_Data.NGroups
+        '                If ((m_Data.PrefHab(iGr, m_Data.HabType(iRo, iCo)) > 0) Or (m_Data.PrefHab(iGr, 0)) > 0) And _
+        '                m_Data.DistributionEnvelope(iRo, iCo, iGr) Then
+        '                    HabAreaUsed(iGr) += 1
+        '                End If
+
+        '            Next iGr
+        '        End If ' m_Data.Depth(iRo, iCo) > 0
+        '    Next iCo
+        'Next iRo
 
         For i = 1 To m_Data.NGroups
             'VC Hobart Sep 2008: next replaced by calculation above with Distribution Envelope
@@ -3833,8 +3891,6 @@ exitline:
                 PbSpace(i) = m_SimData.pbbiomass(i) / BRatio(i)
             End If
         Next
-
-        '#If 0 Then ' Need to figure out what tothab represents
 
         ' CJW 12Jun2011: This might fix that jumping problem with multistanza groups
         Dim ir As Integer, ic As Integer, Pbar(m_Data.NGroups) As Single, Atemp(m_SimData.inlinks) As Single, Vtemp(m_SimData.Narena) As Single, MeanBP(m_SimData.inlinks) As Single
@@ -5703,7 +5759,7 @@ exitline:
 
 
     ''' <summary>
-    ''' Set Capacity base on enviromental response functions
+    ''' Set Capacity based on enviromental response functions
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>

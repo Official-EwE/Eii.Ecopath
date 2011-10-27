@@ -649,7 +649,7 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Depth
             Case eVarNameFlags.LayerHabitat
                 ' ToDo: reroute this
-                Return Me.m_core.m_EcoSpaceData.HabTypeJoe
+                Return Me.m_core.m_EcoSpaceData.PHabType
             Case eVarNameFlags.LayerHabitatCapacity
                 Return Me.m_core.m_EcoSpaceData.HabCap
             Case eVarNameFlags.LayerHabitatCapacityInput

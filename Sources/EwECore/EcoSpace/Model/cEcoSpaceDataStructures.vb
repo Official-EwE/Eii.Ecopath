@@ -128,7 +128,7 @@ Public Class cEcospaceDataStructures
     Public HabArea() As Single
 
     ''' <summary>
-    ''' Proportion of total habitat area by Habitat type
+    ''' Proportion of total area used by a habitat type
     ''' </summary>
     ''' <remarks>HabAreaProportion(iHab) = HabArea(iHab) / TotalHabitatArea </remarks>
     Public HabAreaProportion() As Single
@@ -229,8 +229,8 @@ Public Class cEcospaceDataStructures
     ' ----------------
     ' ToDo JOE: The datasource now interacts with 3-dim HabTypeJoe, no longer with 2-dim HabType.
     '           The user interface also uses HabTypeJoe.
-    Public HabType(,) As Integer
-    Public HabTypeJoe(,,) As Single
+    Public HabType_old(,) As Integer
+    'Public HabType(,,) As Single
     ' ----------------
 
     Public RegionName() As String
@@ -496,7 +496,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Habitat Capacity by Row,Col,Group
     ''' </summary>
-    ''' <remarks>Habitat capacity is the normalized sum of all Capacity inputs (maps)  <see cref="cEcoSpace.SetHabCap">Ecospace.SetHabCap</see> </remarks>
+    ''' <remarks>Habitat capacity is the normalized Capacity of all inputs (maps and response functions)  <see cref="cEcoSpace.SetHabCap">Ecospace.SetHabCap</see> </remarks>
     Public HabCap(,,) As Single
 
     ''' <summary>
@@ -648,7 +648,6 @@ Public Class cEcospaceDataStructures
             dNomig = Nothing
             Enomig = Nothing
             F = Nothing
-            HabType = Nothing
             Region = Nothing
             MPA = Nothing
             RelPP = Nothing
@@ -703,6 +702,10 @@ Public Class cEcospaceDataStructures
             HabTime = Nothing
             HabAreaProportion = Nothing
             HabArea = Nothing
+
+            PHabType = Nothing
+            ' HabType = Nothing
+
 
             'SumStart = Nothing
 
@@ -787,12 +790,17 @@ Public Class cEcospaceDataStructures
                 For j As Integer = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
                     DepthA(i, j) = Depth(i, j)
-                    HabType(i, j) = 1
                     RelPP(i, j) = 1
                     RelCin(i, j) = 1
                     For K As Integer = 1 To nFleets
                         Sail(K, i, j) = 1
                     Next
+
+                    'Proportion of habitat in a cell 
+                    'All Habitats(zero index) = 1
+                    'There is no preference for any one habitat
+                    PHabType(i, j, 0) = 1.0F
+
                 Next
             Next
 
@@ -906,7 +914,7 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <param name="PreserveHabitat">True to preserve the existing data in the habitat array. False to clear out this data (load a new model)</param>
     ''' <remarks>
-    ''' This is called when ever the number of groups or number of habitat types changes.
+    ''' This is called when ever the number of groups or habitat types changes.
     ''' Called when a new model is loaded (PreserveHabitat = False) or the user has changed the number of habitat types (PreserveHabitat = True).
     ''' If only the number of habitats has changed then it will keep the existing data (PreserveHabitat = True). 
     ''' If the number of groups has changed then all the data must be re-initialized (from the datasource).
@@ -951,32 +959,7 @@ Public Class cEcospaceDataStructures
             ReDim HabTime(NoHabChanges)
             ReDim HabChange(3, NoHabChanges)
             ReDim PHabType(InRow, InCol, NoHabitats)
-            ReDim HabTypeJoe(InRow, InCol, NoHabitats)
-
-            'For i As Integer = 1 To InRow
-            '    For j As Integer = 1 To InCol
-            '        For ihab As Integer = 1 To NoHabitats
-            '            PHabType(i, j, ihab) = 1.0F / NoHabitats
-            '        Next
-            '    Next
-            'Next
-
-            'jb From EwE5
-            'If NoHabitats = 1 Then 'this is first entry
-            '    ReDim PrefHab(nGroups, NoHabitats)  'new model is being read
-            '    ReDim GearHab(nFleets, NoHabitats)
-            'Else
-            '    If UBound(PrefHab, 1) = nGroups Then
-            '        ReDim Preserve PrefHab(nGroups, NoHabitats)   'CJW had nvar not n1
-            '    Else
-            '        ReDim PrefHab(nGroups, NoHabitats)   'new model is being read
-            '    End If
-            '    If UBound(GearHab, 1) = nFleets Then
-            '        ReDim Preserve GearHab(nFleets, NoHabitats)
-            '    Else
-            '        ReDim GearHab(nFleets, NoHabitats)
-            '    End If
-            'End If
+            'ReDim HabType(InRow, InCol, NoHabitats)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RedimHabitatVariables() Error: " & ex.Message)
@@ -1179,7 +1162,6 @@ Public Class cEcospaceDataStructures
             Me.allocate(dNomig, InRow + 1, InCol + 1, nvartot)
             Me.allocate(Enomig, InRow + 1, InCol + 1, nvartot)
             Me.allocate(F, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(HabType, InRow + 1, InCol + 1)
             Me.allocate(Region, InRow + 1, InCol + 1)
             Me.allocate(MPA, InRow + 1, InCol + 1)
             Me.allocate(RelPP, InRow + 1, InCol + 1)
@@ -1196,6 +1178,9 @@ Public Class cEcospaceDataStructures
             Me.allocate(Me.HabCapInput, InRow + 1, InCol + 1, nvartot)
 
             Me.allocate(CatchMap, InRow, InCol, nvartot)
+
+            ' Me.allocate(HabType, InRow + 1, InCol + 1)
+
 
             ReDim PHabType(Me.InRow, Me.InCol, NoHabitats)
             ReDim PAreaFished(Me.InRow, Me.InCol, nFleets)
@@ -1227,7 +1212,7 @@ Public Class cEcospaceDataStructures
                 For j = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
                     DepthA(i, j) = Depth(i, j)
-                    HabType(i, j) = 1
+                    ' HabType(i, j) = 1
                     RelPP(i, j) = 1
                     RelCin(i, j) = 1
                     For k = 1 To nFleets
@@ -1699,97 +1684,13 @@ Public Class cEcospaceDataStructures
 
         Try
             'set PHabType(,,) to 100% for cells that are loaded as a HabType from the database 
-            For irow As Integer = 1 To InRow
-                For icol As Integer = 1 To InCol
+            'For irow As Integer = 1 To InRow
+            '    For icol As Integer = 1 To InCol
 
-                    PHabType(irow, icol, HabType(irow, icol)) = 1
+            '        PHabType(irow, icol, HabType(irow, icol)) = 1
 
-                Next icol
-            Next irow
-
-            ' JS: removed, can now be created 'live'
-            ''4 response functions
-            'CapEnvResData.MediationShapes = 4
-            'CapEnvResData.ReDimMediation(Me.NGroups, Me.nFleets)
-
-            ''hardwire a database ID to the shape index
-            ''this allows the manager and shape to function as though the shape came from the database
-            'CapEnvResData.MediationDBIDs(1) = 1
-
-            ''create a linear increasing shape to use as the Environmental Response function (mediation function)
-            'Dim dx As Double = 1.0F / (CapEnvResData.NMedPoints - 1)
-            'For ipt As Integer = 1 To CapEnvResData.NMedPoints
-            '    CapEnvResData.Medpoints(ipt, 1) = CSng(dx * (ipt - 1))
-            'Next
-            'CapEnvResData.IMedBase(1) = CapEnvResData.NMedPoints \ 2
-            'CapEnvResData.MedXbase(1) = 5
-            'CapEnvResData.MedYbase(1) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(1), 1)
-            'CapEnvResData.MediationTitles(1) = "Increasing"
-
-            ''decreasing
-            'CapEnvResData.MediationDBIDs(2) = 2
-            'For ipt As Integer = 1 To CapEnvResData.NMedPoints
-            '    CapEnvResData.Medpoints(ipt, 2) = CSng(dx * (CapEnvResData.NMedPoints - ipt))
-            'Next
-            'CapEnvResData.IMedBase(2) = CapEnvResData.NMedPoints \ 2
-            'CapEnvResData.MedXbase(2) = 5
-            'CapEnvResData.MedYbase(2) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(2), 2)
-            'CapEnvResData.MediationTitles(2) = "Decreasing"
-
-            ''Flat
-            'CapEnvResData.MediationDBIDs(3) = 3
-            'For ipt As Integer = 1 To CapEnvResData.NMedPoints
-            '    CapEnvResData.Medpoints(ipt, 3) = 1
-            'Next
-            'CapEnvResData.IMedBase(3) = CapEnvResData.NMedPoints \ 2
-            'CapEnvResData.MedXbase(3) = 5
-            'CapEnvResData.MedYbase(3) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(3), 3)
-            'CapEnvResData.MediationTitles(3) = "Flat"
-
-            ''
-            'CapEnvResData.MediationDBIDs(4) = 4
-            ''For ipt As Integer = 1 To CapEnvResData.NMedPoints
-            ''    CapEnvResData.Medpoints(ipt, 3) = 1
-            ''Next
-            'CapEnvResData.IMedBase(4) = CapEnvResData.NMedPoints \ 2
-            'CapEnvResData.MedXbase(4) = 5
-            'CapEnvResData.MedYbase(4) = CapEnvResData.Medpoints(CapEnvResData.IMedBase(4), 4)
-            'CapEnvResData.MediationTitles(4) = "Normal"
-            'CapEnvResData.MediationShapeParams(4).ShapeFunctionType = eShapeFunctionType.Normal
-            'CapEnvResData.MediationShapeParams(4).YBase = 5 'width
-            'CapEnvResData.MediationShapeParams(4).YZero = 2 'sd left
-            'CapEnvResData.MediationShapeParams(4).YEnd = 2 'sd right
-
-            'Depth Map
-            'Dim depthMap As New cEnviroInputMap(Of Integer)
-            'depthMap.Map = Me.Depth
-            'depthMap.Init(CapEnvResData, Me)
-            'depthMap.Name = "Depth"
-
-            'If CapEnvResData.MediationShapes >= 1 Then
-            '    'all groups use the first response function (mediation shape)
-            '    For igrp As Integer = 1 To Me.NGroups
-            '        depthMap.ResponseIndexForGroup(igrp) = 1
-            '    Next
-            'End If
-
-            ''PP map
-            'Dim PPmap As New cEnviroInputMap(Of Single)
-            'PPmap.Map = Me.RelPP
-            'PPmap.Name = "Relative PP"
-            'PPmap.Init(CapEnvResData, Me)
-
-            'If CapEnvResData.MediationShapes >= 2 Then
-            '    'use the second function for all groups
-            '    For igrp As Integer = 1 To Me.NGroups
-            '        PPmap.ResponseIndexForGroup(igrp) = 2
-            '    Next
-            'End If
-
-            ''clear out the old data
-            'Me.CapMaps.Clear()
-            'Me.CapMaps.Add(PPmap)
-            'Me.CapMaps.Add(depthMap)
+            '    Next icol
+            'Next irow
 
         Catch ex As Exception
             Debug.Assert(False, "Failed to init debug capacity map")

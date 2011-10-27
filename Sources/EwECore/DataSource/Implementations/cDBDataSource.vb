@@ -7719,7 +7719,7 @@ Namespace DataSources
 
                     strMap = CStr(Me.m_db.ReadSafe(reader, "HabitatMap", ""))
                     ' Read only water cells with values for this habitat index
-                    cStringUtils.StringToArray(strMap, i, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.HabTypeJoe, ecospaceDS.Depth, True)
+                    cStringUtils.StringToArray(strMap, i, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.PHabType, ecospaceDS.Depth, True)
                     i += 1
                 End While
 
@@ -7819,7 +7819,7 @@ Namespace DataSources
 
                     drow("HabitatName") = ecospaceDS.HabitatText(iHabitat)
                     drow("Sequence") = iHabitat
-                    drow("HabitatMap") = cStringUtils.ArrayToString(ecospaceDS.HabTypeJoe, iHabitat, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Depth, True)
+                    drow("HabitatMap") = cStringUtils.ArrayToString(ecospaceDS.PHabType, iHabitat, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Depth, True)
 
                     If bNewRow Then
                         writer.AddRow(drow)
