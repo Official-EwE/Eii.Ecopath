@@ -91,8 +91,9 @@ Public Class gridMSEBatchTFM
     Protected Overrides Sub FillData()
 
         Dim group As MSE.cMSETFMGroup = Nothing
+        Dim valueCell As EwECell, checkCell As SourceGrid2.Cells.Real.CheckBox
+        Dim RowStyle As cStyleGuide.eStyleFlags
 
-        ' For each group
         For iGroup As Integer = 1 To Core.nLivingGroups
 
             'Get the group info
@@ -100,26 +101,42 @@ Public Class gridMSEBatchTFM
 
             Me.AddRow()
 
+            RowStyle = DirectCast(group.GetStatus(eVarNameFlags.MSEBLim), cStyleGuide.eStyleFlags)
             Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
             Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
-            Me(iGroup, eColumnTypes.RunType) = New SourceGrid2.Cells.Real.CheckBox(group.isManaged)
+
+            checkCell = New SourceGrid2.Cells.Real.CheckBox(group.isManaged)
+            'ToDo_jb gridMSEBatchTFM Find a way to set the style of a SourceGrid Checkbox
+            ' checkCell.Style = style
+            Me(iGroup, eColumnTypes.RunType) = checkCell
             Me(iGroup, eColumnTypes.RunType).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.BLimLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
             Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
-            Me(iGroup, eColumnTypes.BLimValue) = New EwECell(group.BLimValue(iCurIter), GetType(Single))
-            '   Me(iGroup, eColumnTypes.BLimValue).Behaviors.Add()
+
+            valueCell = New EwECell(group.BLimValue(iCurIter), GetType(Single))
+            valueCell.Style = RowStyle
+            Me(iGroup, eColumnTypes.BLimValue) = valueCell
+            Me(iGroup, eColumnTypes.BLimValue).Behaviors.Add(Me.EwEEditHandler)
+
             Me(iGroup, eColumnTypes.BLimUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimUpper)
 
             Me(iGroup, eColumnTypes.BBaseLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseLower)
             Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
-            Me(iGroup, eColumnTypes.BBaseValue) = New EwECell(group.BBaseValue(iCurIter), GetType(Single))
+
+            valueCell = New EwECell(group.BBaseValue(iCurIter), GetType(Single))
+            valueCell.Style = RowStyle
+            Me(iGroup, eColumnTypes.BBaseValue) = valueCell
             Me(iGroup, eColumnTypes.BBaseValue).Behaviors.Add(Me.EwEEditHandler)
+
             Me(iGroup, eColumnTypes.BBaseUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseUpper)
 
             Me(iGroup, eColumnTypes.FOptLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptLower)
             Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
-            Me(iGroup, eColumnTypes.FOptValue) = New EwECell(group.FMaxValue(iCurIter), GetType(Single))
+
+            valueCell = New EwECell(group.FMaxValue(iCurIter), GetType(Single))
+            valueCell.Style = RowStyle
+            Me(iGroup, eColumnTypes.FOptValue) = valueCell
             Me(iGroup, eColumnTypes.FOptValue).Behaviors.Add(Me.EwEEditHandler)
             Me(iGroup, eColumnTypes.FOptUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
 
@@ -160,8 +177,6 @@ Public Class gridMSEBatchTFM
     End Property
 
 
-
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Called when the user has finished editing a cell. Handled to update 
@@ -177,9 +192,6 @@ Public Class gridMSEBatchTFM
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
-
-
-
         Dim val As Object = Me(p.Row, p.Column).Value
 
         'Select Case DirectCast(p.Column, eColumnTypes)
@@ -201,6 +213,13 @@ Public Class gridMSEBatchTFM
 
     End Function
 
+    Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+        'MyBase.OnCellValueChanged(p, cell)
+
+        ' Me.UIContext.Core.MSEBatchManager.TFMGroups(
+
+
+    End Function
 
 #End Region ' Overrides
 
