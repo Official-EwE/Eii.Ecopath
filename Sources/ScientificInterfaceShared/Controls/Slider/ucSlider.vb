@@ -1,7 +1,22 @@
 Option Strict On
 
+Imports EwECore
+
 Namespace Controls
 
+    Public Class SliderKnobChangedEventArgs
+        Inherits EventArgs
+
+        Private m_iKnob As Integer
+        Public Sub New(ByVal iKnob As Integer)
+            Me.m_iKnob = iKnob
+        End Sub
+        ReadOnly Property Knob As Integer
+            Get
+                Return Me.m_iKnob
+            End Get
+        End Property
+    End Class
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Custom slider control that was whipped up 'cause the .NET TrackBar
@@ -34,14 +49,20 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Property Value(Optional ByVal iIndex As Integer = 0) As Integer
             Get
+                If (iIndex < 0 Or iIndex >= Me.NumKnobs) Then Return cCore.NULL_VALUE
                 Return Me.m_aValues(iIndex)
             End Get
             Set(ByVal value As Integer)
+                If (iIndex < 0 Or iIndex >= Me.NumKnobs) Then Return
                 value = Math.Max(Me.Minimum, Math.Min(value, Me.Maximum))
                 If (value <> Me.m_aValues(iIndex)) Then
                     Me.m_aValues(iIndex) = value
                     Me.Invalidate()
-                    RaiseEvent ValueChanged(Me, New System.EventArgs())
+                    Try
+                        RaiseEvent ValueChanged(Me, New System.EventArgs())
+                    Catch ex As Exception
+
+                    End Try
                 End If
             End Set
         End Property
@@ -88,12 +109,67 @@ Namespace Controls
             End Get
             Set(ByVal value As Integer)
                 ReDim Preserve Me.m_aValues(Math.Max(1, value) - 1)
-                Me.m_iKnobCurr = Math.Min(Me.m_iKnobCurr, Me.m_aValues.Length - 1)
+                Me.CurrentKnob = Math.Min(Me.m_iKnobCurr, Me.m_aValues.Length - 1)
                 Me.Invalidate()
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a knob to the slider.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Add()
+            Me.NumKnobs += 1
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Remove a given knob from the slider
+        ''' </summary>
+        ''' <param name="iKnob">Index of the knob to remove.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub Remove(ByVal iKnob As Integer)
+            For i As Integer = 1 To Me.NumKnobs - 1
+                If (i > iKnob) Then
+                    Me.m_aValues(i - 1) = Me.m_aValues(i)
+                End If
+            Next
+            Me.NumKnobs -= 1
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the index of the knob that currently has the 'focus'
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property CurrentKnob As Integer
+            Get
+                Return Me.m_iKnobCurr
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_iKnobCurr = Math.Max(0, Math.Min(Me.NumKnobs - 1, value))
+                Me.Invalidate()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event to notify the world that a value in the slider has changed.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' -------------------------------------------------------------------
         Public Event ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event to notify the world that the current selected knob has been changed.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e">Args informing which knob was selected.</param>
+        ''' -------------------------------------------------------------------
+        Public Event CurrentKnobChanged(ByVal sender As Object, ByVal e As SliderKnobChangedEventArgs)
 
 #End Region ' Public interfaces
 
@@ -155,7 +231,14 @@ Namespace Controls
                 End If
             Next
 
-            Me.m_iKnobCurr = iKnobNearest
+            If (Me.m_iKnobCurr <> iKnobNearest) Then
+                Me.m_iKnobCurr = iKnobNearest
+                Try
+                    RaiseEvent CurrentKnobChanged(Me, New SliderKnobChangedEventArgs(Me.m_iKnobCurr))
+                Catch ex As Exception
+                    Debug.Assert(False)
+                End Try
+            End If
             Me.Value(Me.m_iKnobCurr) = iValue
 
         End Sub
