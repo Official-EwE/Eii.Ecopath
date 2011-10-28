@@ -112,6 +112,12 @@
     <Compile Include="Controls\ColorDialog\cEwEColorDialog.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.Designer.vb">
+      <DependentUpon>cCustomToolstripComboBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ComboBox\cGeocodeLookupComboBox.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -162,18 +168,6 @@
     </Compile>
     <Compile Include="Controls\FileDialog\cEwEFileDialogHelper.vb" />
     <Compile Include="Controls\Indicator renderers\cArrowIndicator.vb" />
-    <Compile Include="Controls\ComboBox\cCustomComboBox.Designer.vb">
-      <DependentUpon>cCustomComboBox.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ComboBox\cCustomComboBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.Designer.vb">
-      <DependentUpon>cCustomToolstripComboBox.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\EwEGrid\EwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -300,7 +294,6 @@
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorVector.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Rendering\cEwEBrushProvider.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererArrow.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererBitmap.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererDepth.vb" />

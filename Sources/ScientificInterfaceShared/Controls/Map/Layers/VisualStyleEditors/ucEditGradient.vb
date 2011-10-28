@@ -14,10 +14,7 @@ Namespace Controls
 
 #Region " Private parts "
 
-        Private m_uic As cUIContext = Nothing
-        Private m_clrStart As Color = Color.White
-        Private m_clrEnd As Color = Color.White
-        Private m_iSelectedColor As Integer = 0
+        Private m_lColors As New List(Of Color)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -32,21 +29,15 @@ Namespace Controls
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal vs As cVisualStyle, _
                        ByVal style As cVisualStyle.eVisualStyleTypes)
-            MyBase.New(vs, style)
 
+            MyBase.New(uic, vs, style)
             Me.InitializeComponent()
 
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
             Me.SetStyle(ControlStyles.ResizeRedraw, True)
 
-            If (vs.GradientBreaks IsNot Nothing And vs.GradientColors IsNot Nothing) Then
-                Me.m_clrStart = vs.GradientColors(0)
-                Me.m_clrEnd = vs.GradientColors(1)
-                Me.m_rbCustomGradient.Checked = True
-            Else
-                Me.m_rbDefaultGradient.Checked = True
-            End If
+            Me.SetGradient(vs.GradientBreaks, vs.GradientColors)
 
             Me.UpdateControls()
 
@@ -56,14 +47,52 @@ Namespace Controls
 
 #Region " Overrides "
 
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim aGrads() As cVisualStyle = Me.UIContext.StyleGuide.GetVisualStyles(-1, cStyleGuide.eBrushType.Gradient)
+            For Each vs As cVisualStyle In aGrads
+                Me.m_cmbGradient.Items.Add(New cARGBColorRamp(vs.GradientColors, vs.GradientBreaks))
+            Next
+
+            Me.UpdateControls()
+        End Sub
+
+        ''' <summary>
+        ''' Paint the control background to render the current gradient.
+        ''' </summary>
+        Protected Overrides Sub OnPaintBackground(ByVal e As System.Windows.Forms.PaintEventArgs)
+
+            MyBase.OnPaintBackground(e)
+
+            Dim rc As Rectangle = Me.m_plGradient.ClientRectangle
+            Dim ramp As cColorRamp = Nothing
+
+            rc.X = Me.m_plGradient.Location.X
+            rc.Y = Me.m_plGradient.Location.Y
+            e.Graphics.FillRectangle(New SolidBrush(Color.White), rc)
+
+            If Me.m_rbDefaultGradient.Checked Then
+                ramp = New cEwEColorRamp()
+            Else
+                ramp = Me.CreateGradient()
+            End If
+            cColorRampIndicator.DrawColorRamp(e.Graphics, ramp, rc)
+            ControlPaint.DrawBorder3D(e.Graphics, rc)
+
+        End Sub
+
         Public Overrides Function Apply(ByVal vs As cVisualStyle) As Boolean
 
             If Me.m_rbDefaultGradient.Checked Then
                 vs.GradientBreaks = Nothing
                 vs.GradientColors = Nothing
             Else
-                vs.GradientBreaks = New Double() {0, 1}
-                vs.GradientColors = New Color() {Me.m_clrStart, Me.m_clrEnd}
+                Dim grad As cARGBColorRamp = Me.CreateGradient()
+                vs.GradientBreaks = grad.GradientBreaks
+                vs.GradientColors = grad.GradientColors
             End If
 
             Return True
@@ -72,153 +101,219 @@ Namespace Controls
 
 #End Region ' Overrides
 
-#Region " Internals "
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property SelectedForeColor() As Color
-            Get
-                Return Me.m_clrStart
-            End Get
-            Set(ByVal value As Color)
-                Me.m_clrStart = value
-                Me.UpdateControls()
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property SelectedBackColor() As Color
-            Get
-                Return Me.m_clrEnd
-            End Get
-            Set(ByVal value As Color)
-                Me.m_clrEnd = value
-                Me.UpdateControls()
-            End Set
-        End Property
-
-#End Region ' Internals
-
 #Region " Events "
 
-        Private Sub OnGradOptionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnGradientTypeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_rbDefaultGradient.CheckedChanged, m_rbCustomGradient.CheckedChanged
-
             Me.UpdateControls()
-
         End Sub
 
-        Private Sub pbForeColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_plStart.Click
-            Me.PickColor(0)
+        ''' <summary>
+        ''' User clicked CurrentColor box to pick a colour
+        ''' </summary>
+        Private Sub OnPickColour(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_pbCurrentColor.Click
+            Try
+                Me.PickColor()
+            Catch ex As Exception
+            End Try
         End Sub
 
-        Private Sub pbBackColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_plEnd.Click
-            Me.PickColor(1)
-        End Sub
-
-        Private Sub nud_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        ''' <summary>
+        ''' User altered a colour value via a numeric up/down control.
+        ''' </summary>
+        Private Sub OnColorValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_nudRed.ValueChanged, m_nudGreen.ValueChanged, m_nudBlue.ValueChanged, m_nudAlpha.ValueChanged
+
+            If (Me.m_bInUpdate) Then Return
+
             Dim clr As Color = Color.FromArgb(CInt(m_nudAlpha.Value), CInt(m_nudRed.Value), CInt(m_nudGreen.Value), CInt(m_nudBlue.Value))
-
-            Select Case Me.m_iSelectedColor
-                Case 0
-                    Me.m_clrStart = clr
-                Case 1
-                    Me.m_clrEnd = clr
-            End Select
-
+            Me.m_lColors(Me.m_slGradient.CurrentKnob) = clr
             Me.UpdateColors()
+
         End Sub
 
-        Private Sub tb_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        ''' <summary>
+        ''' User altered a colour value via a slider.
+        ''' </summary>
+        Private Sub OnColourSliderChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_slRed.ValueChanged, m_slBlue.ValueChanged, m_slGreen.ValueChanged, m_slAlpha.ValueChanged
 
+            If (Me.m_bInUpdate) Then Return
+
             Dim clr As Color = Color.FromArgb(CInt(m_slAlpha.Value), CInt(m_slRed.Value), CInt(m_slGreen.Value), CInt(m_slBlue.Value))
-
-            Select Case Me.m_iSelectedColor
-                Case 0
-                    Me.m_clrStart = clr
-                Case 1
-                    Me.m_clrEnd = clr
-            End Select
-
+            Me.m_lColors(Me.m_slGradient.CurrentKnob) = clr
             Me.UpdateColors()
+
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-            MyBase.OnLoad(e)
+        ''' <summary>
+        ''' User added a gradient break.
+        ''' </summary>
+        Private Sub OnAddBreak(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnAdd.Click
+
+            Dim grad As cColorRamp = Me.CreateGradient()
+            Me.m_slGradient.Add()
+            Me.m_lColors.Add(grad.GetColor(Me.m_slGradient.Value(0) / Me.m_slGradient.Maximum))
             Me.UpdateControls()
+
         End Sub
 
-        Protected Overrides Sub OnPaintBackground(ByVal e As System.Windows.Forms.PaintEventArgs)
+        ''' <summary>
+        ''' User removed a gradient break.
+        ''' </summary>
+        Private Sub OnRemoveBreak(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnRemove.Click
 
-            MyBase.OnPaintBackground(e)
+            Dim iKnob As Integer = Me.m_slGradient.CurrentKnob
+            If Me.m_lColors.Count > 2 Then
+                Me.m_slGradient.Remove(iKnob)
+                Me.m_lColors.RemoveAt(iKnob)
+            End If
+            Me.UpdateControls()
 
-            Dim ramp As New cARGBColorRamp(New Color() {Me.m_clrStart, Me.m_clrEnd}, New Double() {0, 1})
-            Dim rc As Rectangle = Me.m_plPreview.ClientRectangle
-            rc.X = Me.m_plPreview.Location.X
-            rc.Y = Me.m_plPreview.Location.Y
-
-            e.Graphics.FillRectangle(New SolidBrush(Color.White), rc)
-            cColorRampIndicator.DrawColorRamp(e.Graphics, ramp, rc)
         End Sub
 
-        Private Sub pbForeColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-            Handles m_plStart.Paint
+        ''' <summary>
+        ''' User selected a different knob in the gradient slider.
+        ''' </summary>
+        Private Sub OnGradientSliderCurrentKnobChanged(ByVal sender As Object, ByVal e As SliderKnobChangedEventArgs) _
+            Handles m_slGradient.CurrentKnobChanged
 
-            Dim rcOuter As New Rectangle(e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.Width, e.ClipRectangle.Height)
-            Dim rcInner As New Rectangle(e.ClipRectangle.X + 3, e.ClipRectangle.Y + 3, e.ClipRectangle.Width - 6, e.ClipRectangle.Height - 6)
+            If (Me.m_bInUpdate) Then Return
+            Me.UpdateColors()
 
-            If m_plStart.Enabled Then
-                e.Graphics.FillRectangle(Brushes.White, e.ClipRectangle)
-                Using br As New SolidBrush(Me.m_clrStart)
-                    e.Graphics.FillRectangle(br, rcInner)
-                End Using
-                If Me.m_iSelectedColor = 0 Then
-                    e.Graphics.DrawRectangle(Pens.Black, rcOuter)
-                End If
+        End Sub
+
+        ''' <summary>
+        ''' User selected a different value in the gradient slider.
+        ''' </summary>
+        Private Sub OnGradientSliderValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_slGradient.ValueChanged
+
+            If (Me.m_bInUpdate) Then Return
+            Me.UpdateColors()
+
+        End Sub
+
+        ''' <summary>
+        ''' Draw an item in the gradient combo box.
+        ''' </summary>
+        Private Sub OnDrawGradientComboBoxItem(ByVal sender As Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) _
+            Handles m_cmbGradient.DrawItem
+
+            Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.Items(e.Index), cARGBColorRamp)
+            Dim rc As Rectangle = e.Bounds
+
+            If (e.Index < 0) Then
+                e.DrawBackground()
+                e.DrawFocusRectangle()
+                Return
+            End If
+
+            e.DrawBackground()
+            rc.Inflate(-2, -2)
+            cColorRampIndicator.DrawColorRamp(e.Graphics, grad, rc)
+            e.DrawFocusRectangle()
+
+        End Sub
+
+        ''' <summary>
+        ''' User selected a gradient from the combo box.
+        ''' </summary>
+        Private Sub OnGradientSelected(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_cmbGradient.SelectedIndexChanged
+
+            Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cARGBColorRamp)
+            If (grad Is Nothing) Then
+                Me.SetGradient(Nothing, Nothing)
             Else
-                e.Graphics.FillRectangle(SystemBrushes.Control, e.ClipRectangle)
+                Me.SetGradient(grad.GradientBreaks, grad.GradientColors)
             End If
 
         End Sub
 
-        Private Sub pbBackColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-            Handles m_plEnd.Paint
+        Private Sub OnFlipGradient(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnFlip.Click
 
-            Dim rcOuter As New Rectangle(e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.Width, e.ClipRectangle.Height)
-            Dim rcInner As New Rectangle(e.ClipRectangle.X + 3, e.ClipRectangle.Y + 3, e.ClipRectangle.Width - 6, e.ClipRectangle.Height - 6)
+            Me.m_bInUpdate = True
+            Try
+                For i As Integer = 0 To Me.m_slGradient.NumKnobs - 1
+                    Me.m_slGradient.Value(i) = (100 - Me.m_slGradient.Value(i))
+                Next
+                Me.Invalidate(True)
+            Catch ex As Exception
 
-            If m_plEnd.Enabled Then
-                e.Graphics.FillRectangle(Brushes.White, e.ClipRectangle)
-                Using br As New SolidBrush(Me.m_clrEnd)
-                    e.Graphics.FillRectangle(br, rcInner)
-                End Using
-                If Me.m_iSelectedColor = 1 Then
-                    e.Graphics.DrawRectangle(Pens.Black, rcOuter)
-                End If
-            Else
-                e.Graphics.FillRectangle(SystemBrushes.Control, e.ClipRectangle)
-            End If
+            End Try
+            Me.m_bInUpdate = False
 
         End Sub
 
 #End Region ' Events 
 
-#Region " Internal implementation "
+#Region " Internals "
+
+        Private Sub SetGradient(ByVal adBreaks() As Double, ByVal colors() As Color)
+
+            Me.m_bInUpdate = True
+
+            If (adBreaks Is Nothing) Or (colors Is Nothing) Then
+                Me.m_rbDefaultGradient.Checked = True
+                adBreaks = New Double() {0, 1}
+                colors = New Color() {Color.White, Color.DarkBlue}
+            Else
+                Me.m_rbCustomGradient.Checked = True
+            End If
+
+            Dim iPos As Integer = 0
+
+            Me.m_lColors.Clear()
+            Me.m_slGradient.NumKnobs = adBreaks.Length
+
+            For i As Integer = 0 To adBreaks.Length - 1
+                iPos += CInt(adBreaks(i) * 100)
+                Me.m_lColors.Add(colors(i))
+                Me.m_slGradient.Value(i) = iPos
+            Next
+
+            Me.m_bInUpdate = False
+            Me.Invalidate(True)
+
+        End Sub
 
         Private Sub UpdateControls()
-            Me.m_plPreview.Visible = False
+
+            Dim iNumKnobs As Integer = Me.m_slGradient.NumKnobs
+            Dim bEnabled As Boolean = (Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.Gradient) > 0
+
+            If Me.m_rbDefaultGradient.Checked Then
+                bEnabled = False
+            End If
+
+            Me.m_slRed.Enabled = bEnabled
+            Me.m_nudRed.Enabled = bEnabled
+
+            Me.m_slGreen.Enabled = bEnabled
+            Me.m_nudGreen.Enabled = bEnabled
+
+            Me.m_slBlue.Enabled = bEnabled
+            Me.m_nudBlue.Enabled = bEnabled
+
+            Me.m_slAlpha.Enabled = bEnabled
+            Me.m_nudAlpha.Enabled = bEnabled
+
+            Me.m_slGradient.Enabled = bEnabled
+            Me.m_pbCurrentColor.Enabled = bEnabled
+
+            Me.m_btnAdd.Enabled = (iNumKnobs < 6) And bEnabled
+            Me.m_btnRemove.Enabled = (iNumKnobs > 2) And bEnabled
+            Me.m_btnFlip.Enabled = bEnabled
+
+            Me.m_plGradient.Visible = False
+
             Me.UpdateColors()
+
         End Sub
 
         ''' <summary>Loop prevention flag.</summary>
@@ -230,64 +325,86 @@ Namespace Controls
 
             Me.m_bInUpdate = True
 
-            Dim clr As Color = DirectCast(IIf(Me.m_iSelectedColor = 0, Me.m_clrStart, Me.m_clrEnd), Color)
-            Dim bEnabled As Boolean = (Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.Gradient) > 0
+            Dim clr As Color = Color.Gray
+
+            If Me.m_rbCustomGradient.Checked Then
+                clr = Me.m_lColors(Me.m_slGradient.CurrentKnob)
+            End If
+
+            Me.m_pbCurrentColor.BackColor = clr
 
             Me.m_slRed.Value = clr.R
-            Me.m_slRed.Enabled = bEnabled
             Me.m_nudRed.Value = clr.R
-            Me.m_nudRed.Enabled = bEnabled
 
             Me.m_slGreen.Value = clr.G
-            Me.m_slGreen.Enabled = bEnabled
             Me.m_nudGreen.Value = clr.G
-            Me.m_nudGreen.Enabled = bEnabled
 
             Me.m_slBlue.Value = clr.B
-            Me.m_slBlue.Enabled = bEnabled
             Me.m_nudBlue.Value = clr.B
-            Me.m_nudBlue.Enabled = bEnabled
 
             Me.m_slAlpha.Value = clr.A
-            Me.m_slAlpha.Enabled = bEnabled
             Me.m_nudAlpha.Value = clr.A
-            Me.m_nudAlpha.Enabled = bEnabled
-
-            Me.m_plEnd.Refresh()
-            Me.m_plStart.Refresh()
-            Me.m_plPreview.Refresh()
 
             Me.FireStyleChangedEvent()
 
             Me.m_bInUpdate = False
 
+            Me.Refresh()
+
         End Sub
 
-        Private Sub PickColor(ByVal iSel As Integer)
+        Private Sub PickColor()
 
-            If (Me.m_iSelectedColor <> iSel) Then
-                Me.m_iSelectedColor = iSel
-                Me.UpdateControls()
-                Return
-            End If
-
-            Dim dlg As New ColorDialog()
-
-            Select Case Me.m_iSelectedColor
-                Case 0 : dlg.Color = Me.m_clrStart
-                Case 1 : dlg.Color = Me.m_clrEnd
-            End Select
-
+            Dim dlg As New cEwEColorDialog()
+            dlg.Color = Me.m_lColors(Me.m_slGradient.CurrentKnob)
             If dlg.ShowDialog(Me) <> DialogResult.OK Then Return
+            Me.m_lColors(Me.m_slGradient.CurrentKnob) = dlg.Color
 
-            Select Case Me.m_iSelectedColor
-                Case 0 : Me.m_clrStart = dlg.Color
-                Case 1 : Me.m_clrEnd = dlg.Color
-            End Select
-
-            Me.UpdateControls()
+            Me.UpdateColors()
 
         End Sub
+
+        Private Function CreateGradient() As cARGBColorRamp
+
+            ' Sort knobs indexes in ascending order by knob value. This will be the basis 
+            ' for creating the gradient positions and corresponding colours.
+            Dim lKnobsSorted As New List(Of Integer)
+
+            ' For all knobs:
+            For i As Integer = 0 To Me.m_lColors.Count - 1
+                ' Find position for a knob in the lKnobsSorted list
+                Dim iPos As Integer = -1
+                Dim j As Integer = 0
+                While (j <= lKnobsSorted.Count - 1) And (iPos = -1)
+                    ' Does knob at this position represent a smaller value
+                    If Me.m_slGradient.Value(i) < Me.m_slGradient.Value(lKnobsSorted(j)) Then
+                        iPos = j
+                    End If
+                    j += 1
+                End While
+                If iPos = -1 Then
+                    lKnobsSorted.Add(i)
+                Else
+                    lKnobsSorted.Insert(iPos, i)
+                End If
+            Next
+
+            ' Create breaks and colours arrays for gradient from sorted knob list
+            Dim lPos As New List(Of Double)
+            Dim lColor As New List(Of Color)
+            Dim iLast As Integer = 0
+
+            For i As Integer = 0 To lKnobsSorted.Count - 1
+                Dim iValue As Integer = Me.m_slGradient.Value(lKnobsSorted(i))
+                lPos.Add((iValue - iLast) / Me.m_slGradient.Maximum)
+                iLast = iValue
+                lColor.Add(Me.m_lColors(lKnobsSorted(i)))
+            Next
+
+            ' Create gradient
+            Return New cARGBColorRamp(lColor.ToArray, lPos.ToArray)
+
+        End Function
 
 #End Region ' Internal implementation
 

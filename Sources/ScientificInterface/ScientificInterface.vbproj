@@ -296,9 +296,6 @@
     <Compile Include="Ecosim\Output\ShowAllFits\dlgChangeYScale.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\CustomComboBoxFleetGroupTree.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecosim\Tools\MonteCarlo\frmMCRun.Designer.vb">
       <DependentUpon>frmMCRun.vb</DependentUpon>
     </Compile>

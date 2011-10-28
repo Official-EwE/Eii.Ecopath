@@ -38,7 +38,7 @@ Namespace Controls
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal vs As cVisualStyle, _
                        ByVal style As cVisualStyle.eVisualStyleTypes)
-            MyBase.New(vs, style)
+            MyBase.New(uic, vs, style)
 
             Me.InitializeComponent()
 

@@ -10,6 +10,7 @@ Namespace Controls
 
     Public Class ucEditVisualStyle
         Inherits UserControl
+        Implements IUIElement
 
 #Region " Factory "
 
@@ -35,6 +36,7 @@ Namespace Controls
 
 #Region " Private vars "
 
+        Private m_uic As cUIContext = Nothing
         Private m_visualStyle As cVisualStyle = Nothing
         Private m_style As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet
 
@@ -48,17 +50,22 @@ Namespace Controls
         Public Sub New()
         End Sub
 
-        Public Sub New(ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes)
-            ' Sanity check
-            Debug.Assert(vs IsNot Nothing)
+        Public Sub New(ByVal uic As cUIContext, ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes)
 
+            ' Sanity checks
+            Debug.Assert(uic IsNot Nothing)
+            Debug.Assert(vs IsNot Nothing)
+            Debug.Assert(style <> cVisualStyle.eVisualStyleTypes.NotSet)
+
+            Me.m_uic = uic
             Me.m_visualStyle = vs
             Me.m_style = style
+
         End Sub
 
 #End Region ' Constructor
 
-#Region " Event "
+#Region " Events "
 
         Public Event OnVisualStyleChanged(ByVal sender As ucEditVisualStyle)
 
@@ -66,10 +73,15 @@ Namespace Controls
             RaiseEvent OnVisualStyleChanged(Me)
         End Sub
 
-#End Region
+#End Region ' Events
 
 #Region " Properties "
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="cVisualStyle"/> that is being edited.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Public Property VisualStyle() As cVisualStyle
             Get
                 Return Me.m_visualStyle
@@ -81,15 +93,25 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Get/set how this editor represents its content
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overridable Property RepresentationStyles() As cVisualStyle.eVisualStyleTypes
+        Public ReadOnly Property RepresentationStyles() As cVisualStyle.eVisualStyleTypes
             Get
                 Return Me.m_style
             End Get
-            Set(ByVal value As cVisualStyle.eVisualStyleTypes)
-                Me.m_style = value
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -----------------------------------------------------------------------
+        Public Property UIContext As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(ByVal value As cUIContext)
+                Me.m_uic = value
             End Set
         End Property
 

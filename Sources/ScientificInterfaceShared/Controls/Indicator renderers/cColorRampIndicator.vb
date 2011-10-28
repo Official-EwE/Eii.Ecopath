@@ -25,6 +25,8 @@ Namespace Controls
                                         ByVal ramp As cColorRamp, _
                                         ByVal rc As Rectangle)
 
+            If (ramp Is Nothing) Then Return
+
             For i As Integer = 0 To rc.Width - 1
                 Using p As New Pen(ramp.GetColor(i / rc.Width), 1)
                     g.DrawLine(p, rc.X + i, rc.Y, rc.X + i, rc.Y + rc.Height - 1)

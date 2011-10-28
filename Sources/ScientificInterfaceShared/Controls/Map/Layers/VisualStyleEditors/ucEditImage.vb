@@ -9,6 +9,7 @@ Imports EwECore.Auxiliary
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -16,15 +17,12 @@ Namespace Controls
 
     Public Class ucEditImage
 
-        Private m_uic As cUIContext = Nothing
-
 #Region " Constructor "
 
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal vs As cVisualStyle, _
                        ByVal style As cVisualStyle.eVisualStyleTypes)
-            MyBase.New(vs, style)
-            Me.m_uic = uic
+            MyBase.New(uic, vs, style)
             Me.InitializeComponent()
         End Sub
 
@@ -35,8 +33,9 @@ Namespace Controls
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Dim prov As New cEwEBrushProvider()
-            Dim avs As cVisualStyle() = prov.GetVisualStyles(-1, cEwEBrushProvider.eBrushType.Glyphs)
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim avs As cVisualStyle() = Me.UIContext.StyleGuide.GetVisualStyles(-1, cStyleGuide.eBrushType.Glyphs)
 
             For Each vs As cVisualStyle In avs
                 Me.m_glyphSelect.AddImage(vs.Image)
@@ -50,7 +49,7 @@ Namespace Controls
         Private Sub btnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImport.Click
 
             Dim img As Image = Nothing
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Invoke(SharedResources.FILEFILTER_IMAGE)

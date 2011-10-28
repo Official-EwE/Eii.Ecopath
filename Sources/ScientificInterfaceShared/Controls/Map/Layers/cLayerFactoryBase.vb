@@ -5,6 +5,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -45,7 +46,6 @@ Namespace Controls.Map
             Dim renderer As cLayerRenderer = Nothing
             Dim editor As cLayerEditor = Nothing
             Dim vs As cVisualStyle = Nothing
-            Dim brushProvider As New cEwEBrushProvider
 
             Select Case varName
 
@@ -65,7 +65,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerHabitat
 
-                    avs = brushProvider.GetVisualStyles(core.nHabitats, cEwEBrushProvider.eBrushType.Glyphs)
+                    avs = uic.StyleGuide.GetVisualStyles(core.nHabitats, cStyleGuide.eBrushType.Glyphs)
 
                     For iHabitat As Integer = 1 To core.nHabitats - 1
                         Dim hab As cEcospaceHabitat = core.EcospaceHabitats(iHabitat)
@@ -137,7 +137,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerMPA
 
-                    avs = brushProvider.GetVisualStyles(core.nMPAs, cEwEBrushProvider.eBrushType.HatchPattern)
+                    avs = uic.StyleGuide.GetVisualStyles(core.nMPAs, cStyleGuide.eBrushType.HatchPattern)
 
                     For iMPA As Integer = 1 To core.nMPAs
 

@@ -49,8 +49,7 @@ Namespace Ecospace.Basemap.Layers
             Dim renderer As cLayerRenderer = Nothing
             Dim editor As cLayerEditor = Nothing
             Dim vs As cVisualStyle = Nothing
-            Dim brushProvider As New cEwEBrushProvider
-
+ 
             Select Case varName
 
                 Case eVarNameFlags.LayerMPASeed
