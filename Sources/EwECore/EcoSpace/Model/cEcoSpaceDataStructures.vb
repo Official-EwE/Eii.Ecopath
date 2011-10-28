@@ -749,7 +749,6 @@ Public Class cEcospaceDataStructures
             'its value is then changed from an option radio button SpaceInit() on the run tab
             AdjustSpace = True
 
-
             'jb SpaceTime and CurrentForce defaults from EwE5 frmSpace.Load()
             SpaceTime = True 'in EwE5 the check box that controls this is labled 'Integrate' on the run tab
             CurrentForce = False

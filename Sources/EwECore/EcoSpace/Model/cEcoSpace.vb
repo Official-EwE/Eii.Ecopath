@@ -2257,7 +2257,7 @@ Public Class cEcoSpace
         ReDim m_Data.HabAreaProportion(m_Data.NoHabitats)
         ThabArea = 0
 
-        If m_Data.NoHabitats = 0 Then Exit Sub
+        If m_Data.NoHabitats = 0 Then Return
 
         For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
@@ -2267,17 +2267,15 @@ Public Class cEcoSpace
                     ThabArea = ThabArea + 1
                     For ihab As Integer = 1 To Me.m_Data.NoHabitats
                         Me.m_Data.HabArea(ihab) = m_Data.HabArea(ihab) + 1 * m_Data.PHabType(i, j, ihab)
-                    Next
-                    'ThabArea = ThabArea + 1
-                    'm_Data.HabArea(m_Data.PHabType(i, j)) = m_Data.HabArea(m_Data.PHabType(i, j)) + 1
-                End If
-            Next
-        Next
+                    Next ihab
+                End If 'm_Data.Depth(i, j) > 0
+            Next j
+        Next i
 
         If ThabArea = 0 Then Exit Sub
         For i = 1 To m_Data.NoHabitats
             m_Data.HabAreaProportion(i) = m_Data.HabArea(i) / ThabArea
-        Next
+        Next i
 
         m_Data.HabAreaProportion(0) = 1
 
@@ -2592,7 +2590,7 @@ Public Class cEcoSpace
                             End If
                         Next
                     Else
-                        'No this Fleet has no area restrictions
+                        'No this Fleet has no area/habitat restrictions
                         'So it fishes all cells 100%
                         PFished = 1
                     End If
@@ -2603,6 +2601,8 @@ Public Class cEcoSpace
 
                         'set the Proportion of area fished by this fleet for all the habitats in the cell 
                         Me.m_Data.PAreaFished(i, j, ig) = 1 * m_Data.Width(i) * PFished
+                        'constrain percentage of area fished to 1.0
+                        If Me.m_Data.PAreaFished(i, j, ig) > 1.0 Then Me.m_Data.PAreaFished(i, j, ig) = 1
 
                         'sum the total effort
                         If ResetTotEffort Then
@@ -5640,46 +5640,44 @@ exitline:
     ''' <summary>
     ''' Set the capacity of each cell in the map based on habitat inputs Habitat Preference and Proportion of Habitat type in cell
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>Habitat capacity of a map cell = sum product of habitat preference and habitat area in cell</remarks>
     Private Sub setHabCapFromHabitat()
-        Dim i As Integer, j As Integer, K As Integer, bReturn As Boolean
+        Dim i As Integer, j As Integer, K As Integer
 
         'If the CapCalType = Capacity then ONLY Capacity Inputs are used to calculate Capacity 
         If Me.m_Data.CapCalType <> eEcospaceCapacityCalType.Capacity Then
-
-            bReturn = True
-            For K = 1 To Me.m_Data.NGroups
-                For i = 1 To Me.m_Data.InRow
-                    For j = 1 To Me.m_Data.InCol
-
-                        If m_Data.Depth(i, j) > 0.0 Then
-
-                            If Me.m_Data.PrefHab(K, 0) = 0.0 Then
-                                For ihab As Integer = 0 To Me.m_Data.NoHabitats
-                                    'habitat preference * proportion of habitat in cell
-                                    Dim cap As Single = Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
-                                    'if PrefHab is all habitats (PrefHab(K, 0) > 0) then  PrefHab for this HabType will be 0 ( PrefHab(K, HabType(i, j)) = 0)
-                                    'So the cap needs to come from PrefHab(K, 0) in that case
-                                    If Me.m_Data.PrefHab(K, 0) > 0 Then cap = Me.m_Data.PrefHab(K, 0) * Me.m_Data.PHabType(i, j, ihab)
-
-                                    'sum into the existing capacity
-                                    Me.m_Data.HabCap(i, j, K) += cap
-
-                                Next ihab
-
-                            Else
-                                Me.m_Data.HabCap(i, j, K) = 1
-                            End If
-                        End If
-
-
-                            'get max for rescaling to 0-1 range
-                            m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
-                    Next j
-                Next i
-            Next K
-
+            Return
         End If 'Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat
+
+        For K = 1 To Me.m_Data.NGroups
+            For i = 1 To Me.m_Data.InRow
+                For j = 1 To Me.m_Data.InCol
+
+                    If m_Data.Depth(i, j) > 0.0 Then
+
+                        'Does this group use 'All Habitats'
+                        If Me.m_Data.PrefHab(K, 0) = 0.0 Then
+                            'No this group has habitat preferrences
+                            For ihab As Integer = 1 To Me.m_Data.NoHabitats
+                                '[capacity of cell] = sumof([habitat preference] * [percentage of habitat in cell])
+                                Me.m_Data.HabCap(i, j, K) += Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
+
+                            Next ihab
+
+                        Else
+
+                            'Group uses All Habitats at 100% (PrefHab(K, 0) = 1.0)
+                            Me.m_Data.HabCap(i, j, K) = 1.0
+
+                        End If 'Me.m_Data.PrefHab(K, 0) = 0.0
+                    End If 'm_Data.Depth(i, j) > 0.0
+
+                    'get max for rescaling to 0-1 range
+                    m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
+
+                Next j
+            Next i
+        Next K
 
     End Sub
 
@@ -5689,14 +5687,18 @@ exitline:
     ''' Set capacity maps from all input sources 
     ''' Habitats, habitat preference, habitat proportion in cell, Input Capacity Maps and enviromental response functions.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>
+    ''' 1.)The Capacity input map and Habitat preferences are summed into the capacity map.
+    ''' 2.)The Enviromental input maps are multiplied onto the existing capacity. This allows the Enviromental maps to reduce the capacity.
+    ''' 3.)The capacity map is normalized.
+    ''' 4.)Capacity gradients are set to from low to high capacity cells
+    ''' </remarks>
     Public Sub SetHabCap()
         'set up array of relative habitat capacities by cell and group
         ReDim m_Data.HabCap(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
         ReDim m_Data.TotHabCap(m_Data.NGroups)
         ReDim m_Data.MaxHabCap(m_Data.NGroups)
 
-        'set capacities from user input capacity, habitats and input maps
         'Capacity from user defined input capacity map
         Me.setHabCapFromCapInputMap()
 
@@ -5723,23 +5725,25 @@ exitline:
 
         'If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
         If Me.m_Data.CapCalType <> eEcospaceCapacityCalType.Habitat Then
-
-            bReturn = True
-            For igrp = 1 To Me.m_Data.NGroups
-                For irow = 1 To Me.m_Data.InRow
-                    For icol = 1 To Me.m_Data.InCol
-
-                        'Sum the values from the user input capacity map into the HabCap map
-                        Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
-
-                        'get max for rescaling to 0-1 range
-                        m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
-
-                    Next icol
-                Next irow
-            Next igrp
-
+            Return False
         End If
+
+        bReturn = True
+        For igrp = 1 To Me.m_Data.NGroups
+            For irow = 1 To Me.m_Data.InRow
+                For icol = 1 To Me.m_Data.InCol
+
+                    'Sum the values from the user input capacity map into the HabCap map
+                    Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
+
+                    'get max for rescaling to 0-1 range
+                    m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+
+                Next icol
+            Next irow
+        Next igrp
+
+
 
         Return bReturn
 
