@@ -18,18 +18,20 @@ Namespace Style
     Public Class cARGBColorRamp
         Inherits cColorRamp
 
-        Private m_aclr() As Color ' Colors for steps 
-        Private m_adPositions() As Double ' Step pos
+        ''' <summary>Gradient break colours</summary>
+        Private m_aclr() As Color
+        ''' <summary>Gradient break values - ABSOLUTE</summary>
+        Private m_adBreakAbs() As Double
+        ''' <summary>Gradient break values - RELATIVE</summary>
+        Private m_adBreakRel() As Double
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Initializes a new instance of the ARGBColorRamp class.
         ''' </summary>
-        ''' <param name="aColors">The colour gradients to use.</param>
-        ''' <param name="adPositions">The position of each colour gradient, 
+        ''' <param name="aColors">The colour breaks to use.</param>
+        ''' <param name="adPositions">The position of each colour break, 
         ''' relative to its predessesor.</param>
-        ''' <param name="dScale">The factor to which to scale the positions. This
-        ''' value cannot be 0.</param>
         ''' <remarks>
         ''' The following snippet illustrates how to create a valid ARGB color ramp:
         ''' <code>
@@ -55,7 +57,7 @@ Namespace Style
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal aColors() As Color, ByVal adPositions() As Double, Optional ByVal dScale As Double = 1.0#)
+        Public Sub New(ByVal aColors() As Color, ByVal adPositions() As Double)
 
             MyBase.New()
 
@@ -66,16 +68,9 @@ Namespace Style
             If (aColors Is Nothing) Then Throw New Exception("Missing required parameter aColors")
             If (adPositions Is Nothing) Then Throw New Exception("Missing required parameter adPositions")
             If (aColors.Length <> adPositions.Length) Then Throw New Exception("Number of colors and positions do not match")
-            If (dScale <= 0.0#) Then Throw New Exception("Scaling factor must be greater than 0")
 
-            ReDim Me.m_aclr(adPositions.Length - 1)
-            ReDim Me.m_adPositions(adPositions.Length - 1)
-
-            For nPos As Integer = 0 To adPositions.Length - 1
-                dTotalPos += CDbl(Math.Abs(adPositions(nPos)))
-                Me.m_aclr(nPos) = aColors(nPos)
-                Me.m_adPositions(nPos) = dTotalPos / dScale
-            Next
+            Me.GradientColors = aColors
+            Me.GradientBreaks = adPositions
 
         End Sub
 
@@ -89,6 +84,9 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Overrides Function GetColor(ByVal dValue As Double, Optional ByVal dValueMax As Double = 1.0) As Color
 
+            ' Pre
+            Debug.Assert(Me.m_adBreakRel.Length = Me.m_aclr.Length)
+
             ' Normalize nValue to nValueMax
             Dim nIndex As Integer = 0
             Dim bFound As Boolean = False
@@ -98,27 +96,27 @@ Namespace Style
             dValueMax = 1.0
 
             ' Find first index
-            bFound = (dValue <= Me.m_adPositions(0))
+            bFound = (dValue <= Me.m_adBreakAbs(0))
             While Not bFound
                 nIndex += 1
-                bFound = (nIndex = Me.m_adPositions.Length)
+                bFound = (nIndex = Me.m_adBreakAbs.Length)
                 If Not bFound Then
-                    bFound = (dValue <= Me.m_adPositions(nIndex))
+                    bFound = (dValue <= Me.m_adBreakAbs(nIndex))
                 End If
             End While
 
             ' Below first level? Return first colour without interpolating
             If (nIndex = 0) Then Return Me.m_aclr(0)
             ' Past last level? Return formar-last level without interpolating
-            If (nIndex = Me.m_adPositions.Length) Then Return Me.m_aclr(nIndex - 1)
+            If (nIndex = Me.m_adBreakAbs.Length) Then Return Me.m_aclr(nIndex - 1)
             ' Exactly at a known level? Return the level colour withour interpolating
-            If dValue = Me.m_adPositions(nIndex) Then Return Me.m_aclr(nIndex)
+            If dValue = Me.m_adBreakAbs(nIndex) Then Return Me.m_aclr(nIndex)
 
             ' must interpolate
             Dim c1 As Color = Me.m_aclr(nIndex - 1)
             Dim c2 As Color = Me.m_aclr(nIndex)
-            Dim dX As Double = Me.m_adPositions(nIndex) - Me.m_adPositions(nIndex - 1)
-            Dim dPosX As Double = dValue - Me.m_adPositions(nIndex - 1)
+            Dim dX As Double = Me.m_adBreakAbs(nIndex) - Me.m_adBreakAbs(nIndex - 1)
+            Dim dPosX As Double = dValue - Me.m_adBreakAbs(nIndex - 1)
 
             Dim dRatio As Double = (dPosX / dX)
 
@@ -141,9 +139,15 @@ Namespace Style
             End Try
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the colours to use for every <see cref="GradientBreaks">gradient stop</see>.
         ''' </summary>
+        ''' <remarks>
+        ''' Note that the number of breaks and colors must match when trying to
+        ''' use the gradient.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Property GradientColors As Color()
             Get
                 Return Me.m_aclr
@@ -153,18 +157,28 @@ Namespace Style
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the offset to use for every <see cref="GradientColors">gradient color</see>.
+        ''' Get/set the position for gradient breaks, relative to its predessesor.
         ''' </summary>
         ''' <remarks>
-        ''' Note that every offset must be specified as the distance from the previous offset.
+        ''' Note that the number of breaks and colors must match when trying to
+        ''' use the gradient.
         ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Property GradientBreaks() As Double()
             Get
-                Return Me.m_adPositions
+                Return Me.m_adBreakRel
             End Get
             Set(ByVal value As Double())
-                Me.m_adPositions = value
+                ReDim Me.m_adBreakAbs(value.Length - 1)
+                ReDim Me.m_adBreakRel(value.Length - 1)
+                Dim dTotalPos As Double = 0.0#
+                For i As Integer = 0 To value.Length - 1
+                    dTotalPos += CDbl(Math.Abs(value(i)))
+                    Me.m_adBreakAbs(i) = dTotalPos
+                    Me.m_adBreakRel(i) = value(i)
+                Next
             End Set
         End Property
 
