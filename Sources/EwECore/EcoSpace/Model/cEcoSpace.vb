@@ -3194,36 +3194,29 @@ exitline:
 
     End Sub
 
-
+    ''' <summary>
+    ''' This routine predicts spatial effort and fishing mortality rate
+    ''' distribution by gear type; called at each iteration
+    ''' step in finding biomass spatial equilibrium
+    ''' model below is a gravity attraction model, distributing
+    ''' total efforts TotEffort(gear) over all cells where each gear can fish
+    ''' in proportion to relative profitability (catch rate x price sum) for that cell for the gear
+    ''' </summary>
+    ''' <param name="iMonth"></param>
+    ''' <param name="iCumMonth"></param>
+    ''' <remarks></remarks>
     Sub PredictEffortDistribution(ByVal iMonth As Integer, ByVal iCumMonth As Integer)
-
-        'ToDo_jb PredictEffortDistribution in EwE5 the cumulative month counter (iCumMonth) starts at zero
-        'on the first call Month = Zero not one!!!! 
-        'this means that the values retrieved from FishRateGear(igear, month) are indexed from zero
-
-        'this routine predicts spatial effort and fishing mortality rate
-        'distribution by gear type; called at each iteration
-        'step in finding biomass spatial equilibrium
-        'model below is a gravity attraction model, distributing
-        'total efforts TotEffort(gear) over all cells where each gear can fish
-        'in proportion to relative profitability (catch rate x price sum) for that cell for the gear
         Dim ig As Integer, i As Integer, j As Integer, TotAttract As Single
         Dim Valt As Single, isp As Integer
-        Dim Effort() As Single
         Dim EffortCost As Single
         Dim SailCost As Single
         Static NoSailing As Boolean, TotE As Single
 
-
-        ReDim Effort(m_Data.nFleets)
         ReDim m_Data.Ftot(m_Data.NGroups, m_Data.InRow, m_Data.InCol)
         ReDim m_Data.EffortSpace(m_Data.nFleets, m_Data.InRow, m_Data.InCol)
 
-        'replaced by iMonth
-        '   MM = (Month()) Mod 12 + 1 'used for mpaseason business
         For ig = 1 To m_Data.nFleets
             TotE = TotEffort(ig) * m_Data.SEmult(ig)
-            Effort(ig) = 0
             'jb Attract() gets cleared out for each fleet
             ReDim m_Data.Attract(m_Data.InRow, m_Data.InCol)
             TotAttract = 0.0000000001
@@ -3248,12 +3241,9 @@ exitline:
                     If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
                     If m_Data.Depth(i, j) > 0 And _
                         (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
-                         Or m_Data.GearHab(ig, 0) Then
-                        'jb before PHabType()
-                        'If m_Data.Depth(i, j) > 0 And _
-                        '(m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
-                        '  And (m_Data.GearHab(ig, m_Data.HabType(i, j)) Or m_Data.GearHab(ig, 0)) Then
-                        'mpamonth(mpatype, month) is false if closed, True if open.
+                         And (Me.m_Data.PAreaFished(i, j, ig) > 0 Or m_Data.GearHab(ig, 0)) Then
+                        'Water and (Not closed by MPA) and (Fished by this gear)
+                        'mpamonth(Month, MPAType) is false if closed, True if open.
 
                         Valt = 0
                         For isp = 1 To m_Data.NGroups
@@ -3274,21 +3264,16 @@ exitline:
                     'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
                     If m_Data.Depth(i, j) > 0 And _
                         (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
-                        Or m_Data.GearHab(ig, 0) Then
+                        And (Me.m_Data.PAreaFished(i, j, ig) > 0 Or m_Data.GearHab(ig, 0)) Then
 
-                        'If m_Data.Depth(i, j) > 0 And _
-                        '(m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
-                        'And (m_Data.GearHab(ig, m_Data.HabType(i, j)) Or m_Data.GearHab(ig, 0)) Then
-                        '  water               (not MPA       or fished MPA)     and ( habitat       =  fish here or  this gear doen not fish here??)
-                        'EffortSpace(ig, i, j) = TotEffort(ig) * Attract(i, j) / TotAttract
                         'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
                         m_Data.EffortSpace(ig, i, j) = m_SimData.FishRateGear(ig, iCumMonth) * TotE * m_Data.Attract(i, j) / TotAttract
-                        Effort(ig) = Effort(ig) + m_Data.EffortSpace(ig, i, j)
-                        If Me.m_Data.PAreaFished(i, j, ig) > 0 Then
-                            For isp = 1 To m_Data.NGroups
-                                m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(ig, i, j) * m_SimData.relQ(ig, isp) / Me.m_Data.PAreaFished(i, j, ig)
-                            Next isp
-                        End If
+                        'If Me.m_Data.PAreaFished(i, j, ig) > 0 Then
+                        For isp = 1 To m_Data.NGroups
+                            'Fishing Mort
+                            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(ig, i, j) * m_SimData.relQ(ig, isp) / Me.m_Data.PAreaFished(i, j, ig)
+                        Next isp
+                        'End If
                     End If
                 Next j
             Next i
@@ -3335,9 +3320,8 @@ exitline:
             '
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
-                    'Is this cell fished
                     If m_Data.Depth(i, j) > 0 And (m_Data.GearHab(ig, 0) Or (Me.m_Data.PAreaFished(i, j, ig) > 0)) Then
-
+                        'This cell is water and it is fished by this gear
                         Valt = 0
                         CatLoc(i, j) = 0
                         For isp = 1 To m_Data.NGroups
@@ -3350,8 +3334,8 @@ exitline:
                         If m_Data.Sail(ig, i, j) = 0 Then m_Data.Sail(ig, i, j) = 0.000001
                         'VC Sail() above: to avoid dividing with zero
                         Valt = (Valt ^ m_Data.EffPower(ig)) / (EffortCost + SailCost * m_Data.Sail(ig, i, j) / m_Data.SailScale(ig))
-                        m_Data.Attract(i, j) = Valt '* Me.m_Data.PAreaFished(i, j, ig) 'may want to modify this by dividing by a site cost factor for cell i,j
-                        TotAttract = TotAttract + Valt ' * Me.m_Data.PAreaFished(i, j, ig)
+                        m_Data.Attract(i, j) = Valt
+                        TotAttract = TotAttract + Valt
                     End If
                 Next
             Next
@@ -3360,6 +3344,7 @@ exitline:
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     If m_Data.Depth(i, j) > 0 And (m_Data.GearHab(ig, 0) Or (Me.m_Data.PAreaFished(i, j, ig) > 0)) Then
+                        'This cell is water and it is fished by this gear
                         WtCat = WtCat + m_Data.Attract(i, j) / TotAttract * CatLoc(i, j) '***
                     End If
                 Next j
@@ -5645,9 +5630,10 @@ exitline:
         Dim i As Integer, j As Integer, K As Integer
 
         'If the CapCalType = Capacity then ONLY Capacity Inputs are used to calculate Capacity 
-        If Me.m_Data.CapCalType <> eEcospaceCapacityCalType.Capacity Then
+        If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Capacity Then
+            'Habitat not used to compute capacity
             Return
-        End If 'Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat
+        End If
 
         For K = 1 To Me.m_Data.NGroups
             For i = 1 To Me.m_Data.InRow
@@ -5699,7 +5685,7 @@ exitline:
         ReDim m_Data.TotHabCap(m_Data.NGroups)
         ReDim m_Data.MaxHabCap(m_Data.NGroups)
 
-        'Capacity from user defined input capacity map
+        'Sum the capacity input map into HabCap
         Me.setHabCapFromCapInputMap()
 
         'Capacity from Habitats
@@ -5724,7 +5710,8 @@ exitline:
         Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
 
         'If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
-        If Me.m_Data.CapCalType <> eEcospaceCapacityCalType.Habitat Then
+        If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
+            'Capacity input maps not used
             Return False
         End If
 
@@ -5851,38 +5838,42 @@ exitline:
     ''' <summary>
     ''' Set Capacity based on enviromental response functions
     ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>True if enviromental response functions were used to set habitat capacity. False otherwise.</returns>
+    ''' <remarks>
+    ''' Enviromental response functions are multiplied onto the existing capacity. 
+    ''' This allows the response function to reduce the capacity.
+    ''' </remarks>
     Private Function SetHabCapFromMaps() As Boolean
         Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
 
         If (Me.m_Data.CapMaps Is Nothing) Then Return False
 
         'If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
-        If Me.m_Data.CapCalType <> eEcospaceCapacityCalType.Habitat Then
-
-            For Each map As IEnviroInputMap In Me.m_Data.CapMaps
-                For igrp = 1 To Me.m_Data.NGroups
-                    'Does this group contain a response function for this map
-                    If map.ResponseIndexForGroup(igrp) > 0 Then
-                        For irow = 1 To Me.m_Data.InRow
-                            For icol = 1 To Me.m_Data.InCol
-                                '28-Sept-2011 jb Changed to multiple response with the existing capacity
-                                'this allows the enviromental response function to reduce the capacity
-                                Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
-                                'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
-                                m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
-
-                            Next
-                        Next
-                    End If
-                Next igrp
-
-            Next map
-
-            bReturn = True
-
+        If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
+            'Enviromental response maps not used
+            Return False
         End If
+
+        For Each map As IEnviroInputMap In Me.m_Data.CapMaps
+            For igrp = 1 To Me.m_Data.NGroups
+                'Does this group contain a response function for this map
+                If map.ResponseIndexForGroup(igrp) > 0 Then
+                    For irow = 1 To Me.m_Data.InRow
+                        For icol = 1 To Me.m_Data.InCol
+                            '28-Sept-2011 jb Changed to multiple response with the existing capacity
+                            'this allows the enviromental response function to reduce the capacity
+                            Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
+                            'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
+                            m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+
+                        Next
+                    Next
+                End If
+            Next igrp
+
+        Next map
+
+        bReturn = True
 
         Return bReturn
 
