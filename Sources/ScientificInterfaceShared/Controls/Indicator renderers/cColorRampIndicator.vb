@@ -1,5 +1,6 @@
 ﻿Option Strict On
 Imports ScientificInterfaceShared.Style
+Imports System.Drawing.Imaging
 
 Namespace Controls
 
@@ -27,11 +28,19 @@ Namespace Controls
 
             If (ramp Is Nothing) Then Return
 
+            Dim bmp As New Bitmap(rc.Width, rc.Height, PixelFormat.Format32bppArgb)
+            Dim gtmp As Graphics = Graphics.FromImage(bmp)
+
             For i As Integer = 0 To rc.Width - 1
                 Using p As New Pen(ramp.GetColor(i / rc.Width), 1)
-                    g.DrawLine(p, rc.X + i, rc.Y, rc.X + i, rc.Y + rc.Height - 1)
+                    gtmp.DrawLine(p, i, 0, i, rc.Height - 1)
                 End Using
             Next
+
+            g.DrawImage(bmp, rc.X, rc.Y)
+
+            gtmp.Dispose()
+            bmp.Dispose()
 
         End Sub
 
