@@ -15,10 +15,23 @@ Imports ScientificInterfaceShared.Style
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' User control for editing the image part of a <see cref="cVisualStyle"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class ucEditImage
 
 #Region " Constructor "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor.
+        ''' </summary>
+        ''' <param name="uic">UIContext to operate onto.</param>
+        ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
+        ''' <param name="style">Aspect of the style that needs editing.</param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal vs As cVisualStyle, _
                        ByVal style As cVisualStyle.eVisualStyleTypes)

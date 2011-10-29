@@ -8,12 +8,26 @@ Imports EwECore.Auxiliary
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Base class for implementing a <see cref="cVisualStyle"/> editor.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class ucEditVisualStyle
         Inherits UserControl
         Implements IUIElement
 
 #Region " Factory "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Factory method for visual style editors.
+        ''' </summary>
+        ''' <param name="uic">UIContext to operate onto.</param>
+        ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
+        ''' <param name="style">Aspect of the style that needs editing.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function GetEditor(ByVal uic As cUIContext, _
                                          ByVal vs As cVisualStyle, _
                                          ByVal style As cVisualStyle.eVisualStyleTypes) As ucEditVisualStyle
@@ -44,12 +58,24 @@ Namespace Controls
 
 #Region " Constructor "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Default constructor.
+        ''' Default constructor for Visual Studio designer only.
         ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Obsolete("Do not use this constructor, it's for the VS editor only")> _
         Public Sub New()
+            Debug.Assert(Me.DesignMode = True, "Please do not use this constructor!")
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor.
+        ''' </summary>
+        ''' <param name="uic">UIContext to operate onto.</param>
+        ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
+        ''' <param name="style">Aspect of the style that needs editing.</param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes)
 
             ' Sanity checks

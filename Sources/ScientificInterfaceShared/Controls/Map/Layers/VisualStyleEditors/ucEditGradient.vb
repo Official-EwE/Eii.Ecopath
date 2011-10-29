@@ -10,6 +10,11 @@ Imports ScientificInterfaceShared.Style
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' User control for editing the gradient part of a <see cref="cVisualStyle"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class ucEditGradient
 
 #Region " Private parts "
@@ -26,9 +31,17 @@ Namespace Controls
 
 #Region " Constructor "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor.
+        ''' </summary>
+        ''' <param name="uic">UIContext to operate onto.</param>
+        ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
+        ''' <param name="style">Aspect of the style that needs editing.</param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
-                       ByVal vs As cVisualStyle, _
-                       ByVal style As cVisualStyle.eVisualStyleTypes)
+                        ByVal vs As cVisualStyle, _
+                        ByVal style As cVisualStyle.eVisualStyleTypes)
 
             MyBase.New(uic, vs, style)
             Me.InitializeComponent()
@@ -234,6 +247,9 @@ Namespace Controls
 
         End Sub
 
+        ''' <summary>
+        ''' Flip gradient
+        ''' </summary>
         Private Sub OnFlipGradient(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnFlip.Click
 
@@ -325,28 +341,33 @@ Namespace Controls
 
             Me.m_bInUpdate = True
 
-            Dim clr As Color = Color.Gray
+            Try
 
-            If Me.m_rbCustomGradient.Checked Then
-                clr = Me.m_lColors(Me.m_slGradient.CurrentKnob)
-            End If
+                If Me.m_rbCustomGradient.Checked Then
 
-            Me.m_pbCurrentColor.BackColor = clr
+                    Dim clr As Color = Me.m_lColors(Me.m_slGradient.CurrentKnob)
+                    Me.m_pbCurrentColor.BackColor = clr
 
-            Me.m_slRed.Value = clr.R
-            Me.m_nudRed.Value = clr.R
+                    Me.m_slRed.Value = clr.R
+                    Me.m_nudRed.Value = clr.R
 
-            Me.m_slGreen.Value = clr.G
-            Me.m_nudGreen.Value = clr.G
+                    Me.m_slGreen.Value = clr.G
+                    Me.m_nudGreen.Value = clr.G
 
-            Me.m_slBlue.Value = clr.B
-            Me.m_nudBlue.Value = clr.B
+                    Me.m_slBlue.Value = clr.B
+                    Me.m_nudBlue.Value = clr.B
 
-            Me.m_slAlpha.Value = clr.A
-            Me.m_nudAlpha.Value = clr.A
+                    Me.m_slAlpha.Value = clr.A
+                    Me.m_nudAlpha.Value = clr.A
+                Else
+                    Me.m_pbCurrentColor.BackColor = SystemColors.Control
+                End If
+
+            Catch ex As Exception
+
+            End Try
 
             Me.FireStyleChangedEvent()
-
             Me.m_bInUpdate = False
 
             Me.Refresh()

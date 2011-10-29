@@ -9,6 +9,11 @@ Imports System.Drawing.Drawing2D
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' User control for editing the hatch part of a <see cref="cVisualStyle"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class ucEditHatch
 
 #Region " Private parts "
@@ -26,7 +31,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Enum eSelectionType
+        Private Enum eSelectionType As Byte
             ForeColor
             BackColor
         End Enum
@@ -35,9 +40,17 @@ Namespace Controls
 
 #Region " Constructor "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor.
+        ''' </summary>
+        ''' <param name="uic">UIContext to operate onto.</param>
+        ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
+        ''' <param name="style">Aspect of the style that needs editing.</param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
-                       ByVal vs As cVisualStyle, _
-                       ByVal style As cVisualStyle.eVisualStyleTypes)
+                         ByVal vs As cVisualStyle, _
+                         ByVal style As cVisualStyle.eVisualStyleTypes)
             MyBase.New(uic, vs, style)
 
             Me.InitializeComponent()
