@@ -57,7 +57,7 @@ Namespace Commands
         ''' ---------------------------------------------------------------------------
         Public ReadOnly Property LayerDepth() As cLayer
             Get
-                Return Me.m_layer
+                Return Me.m_layerDepth
             End Get
         End Property
 
