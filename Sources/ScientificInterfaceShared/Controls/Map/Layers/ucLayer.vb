@@ -120,7 +120,7 @@ Namespace Controls.Map
 
             Try
                 Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
-                cmd.Invoke(Me.Layer, Nothing, edittype)
+                cmd.Invoke(Me.Layer, edittype)
             Catch ex As Exception
 
             End Try

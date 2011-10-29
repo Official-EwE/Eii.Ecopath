@@ -3514,7 +3514,7 @@ Public Class AppLauncher
 
         Try
             Dim cmdEditLayer As cEditLayerCommand = DirectCast(cmd, cEditLayerCommand)
-            Dim dlg As New dlgEditLayer(Me.UIContext, cmdEditLayer.Layer, cmdEditLayer.LayerDepth, cmdEditLayer.EditType)
+            Dim dlg As New dlgEditLayer(Me.UIContext, cmdEditLayer.Layer, cmdEditLayer.EditType)
             dlg.ShowDialog()
         Catch ex As Exception
 

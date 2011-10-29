@@ -21,12 +21,6 @@ Namespace Controls
 
         Private m_lColors As New List(Of Color)
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-
 #End Region ' Private parts
 
 #Region " Constructor "

@@ -39,8 +39,6 @@ Namespace Ecospace.Basemap.Layers
 
         ''' <summary>Work layer (a copy of the original) for this dialog to work on.</summary>
         Private m_layerWork As cLayer = Nothing
-        '''' <summary>Preview pane</summary>
-        Private m_ucPreview As ucMap = Nothing
         ''' <summary>Editor to transmogrify the representation of the layer.</summary>
         Private m_ucEditVisualStyle As ucEditVisualStyle = Nothing
 
@@ -56,27 +54,33 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' 
         ''' </summary>
+        ''' <param name="uic"></param>
         ''' <param name="layer"></param>
-        ''' <param name="layerDepth"></param>
+        ''' <param name="edittype"></param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
                        ByRef layer As cLayer, _
-                       ByVal layerDepth As cLayer, _
                        ByVal edittype As eLayerEditTypes)
 
             Debug.Assert(layer IsNot Nothing)
 
+            Me.InitializeComponent()
+
             ' Set the references
             Me.m_uic = uic
+            Me.m_grid.UIContext = Me.m_uic
+            Me.m_zoommap.UIContext = Me.m_uic
 
             Me.m_layerOriginal = layer
-            Me.m_layerDepth = layerDepth
+            ' Resolve depth layer
+            If Not (TypeOf layer.Data Is cEcospaceLayerDepth) Then
+                Dim fact As New cLayerFactoryInternal()
+                Me.m_layerDepth = fact.GetLayers(uic, eVarNameFlags.LayerDepth)(0)
+            End If
             Me.m_edittype = edittype
 
             Me.m_layerWork = New cLayer(uic, layer) ' Work on a clone
             Me.m_layerWork.AllowValidation = False
-
-            Me.InitializeComponent()
 
         End Sub
 
@@ -87,20 +91,15 @@ Namespace Ecospace.Basemap.Layers
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Me.m_zoommap.UIContext = Me.m_uic
-            Me.m_grid.UIContext = Me.m_uic
-
             Me.m_qehGrid = New cQuickEditHandler()
             Me.m_qehGrid.Attach(Me.m_grid, Me.m_uic, Me.m_tsGrid, Me.m_layerOriginal.Name)
 
             ' Show your stuff
-            Me.m_ucPreview = Me.m_zoommap.Map()
-            Me.m_ucPreview.AddLayer(Me.m_layerWork)
+            Me.m_zoommap.Map.AddLayer(Me.m_layerWork)
             If ((Not Object.ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And _
                 (Not Object.ReferenceEquals(Me.m_layerDepth, Nothing))) Then
-                Me.m_ucPreview.AddLayer(Me.m_layerDepth)
+                Me.m_zoommap.Map.AddLayer(Me.m_layerDepth)
             End If
-            Me.m_zoommap.PositionMode = ucMapZoom.ePositionModeTypes.Center
 
             Me.m_tcLayerView.SelectedIndex = CInt(Me.m_edittype)
 
@@ -271,7 +270,7 @@ Namespace Ecospace.Basemap.Layers
         End Sub
 
         Private Sub DrawPreview()
-            m_ucPreview.Refresh()
+            Me.m_zoommap.Map.Refresh(False)
         End Sub
 
         Private Sub UpdateControls()

@@ -17,10 +17,10 @@ Namespace Controls
             End Get
         End Property
     End Class
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Custom slider control that was whipped up 'cause the .NET TrackBar
-    ''' is just too ugly.
+    ''' Custom slider class that provides one or more knobs on a track.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class ucSlider
@@ -173,29 +173,6 @@ Namespace Controls
 
 #End Region ' Public interfaces
 
-#Region " Internals "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Filter useful input key presses for a slider.
-        ''' </summary>
-        ''' <param name="keyData">The key to validate.</param>
-        ''' <returns>True if the given key should be considered an input key.</returns>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Function IsInputKey(ByVal keyData As System.Windows.Forms.Keys) As Boolean
-            Select Case keyData
-                Case Keys.Left, Keys.Right, Keys.Up, Keys.Down
-                    Return True
-            End Select
-            Return MyBase.IsInputKey(keyData)
-        End Function
-
-        Protected Function RenderScale() As Single
-            Return CSng((Me.Maximum - Me.Minimum) / Math.Max(1, Me.Width - cKNOBSIZE - Me.Margin.Left - Me.Margin.Right))
-        End Function
-
-#End Region ' Internals 
-
 #Region " Events "
 
         Protected Overrides Sub OnGotFocus(ByVal e As System.EventArgs)
@@ -278,48 +255,51 @@ Namespace Controls
             lKnobIndexes.Remove(Me.m_iKnobCurr)
             lKnobIndexes.Add(Me.m_iKnobCurr)
 
-            For Each i As Integer In lKnobIndexes
+            If Me.Enabled Then
 
-                Dim iX0 As Integer = CInt((Me.Value(i) - Me.m_iValueMin) / Me.RenderScale()) + Me.Margin.Left
-                Dim aptKnobOutline(5) As Point
+                For Each i As Integer In lKnobIndexes
 
-                '    2
-                ' 1 / \ 3
-                '  |___|
-                ' 0     4
-                aptKnobOutline(0) = New Point(iX0, 14)
-                aptKnobOutline(1) = New Point(iX0, 8)
-                aptKnobOutline(2) = New Point(iX0 + CInt(cKNOBSIZE / 2), CInt(8 - cKNOBSIZE / 2))
-                aptKnobOutline(3) = New Point(iX0 + cKNOBSIZE, 8)
-                aptKnobOutline(4) = New Point(iX0 + cKNOBSIZE, 14)
-                aptKnobOutline(5) = aptKnobOutline(0)
+                    Dim iX0 As Integer = CInt((Me.Value(i) - Me.m_iValueMin) / Me.RenderScale()) + Me.Margin.Left
+                    Dim aptKnobOutline(5) As Point
 
-                ' - Body
-                ' Is current selected knob?
-                If (i = Me.m_iKnobCurr) And (Me.NumKnobs > 1) Then
-                    ' #Yes: render with highlighted background
-                    e.Graphics.FillPolygon(SystemBrushes.Highlight, aptKnobOutline)
-                Else
-                    ' #Yes: render as regular control
-                    e.Graphics.FillPolygon(SystemBrushes.Control, aptKnobOutline)
-                End If
-                ' - Outline
-                e.Graphics.DrawLine(SystemPens.ControlLightLight, aptKnobOutline(0), aptKnobOutline(1))
-                e.Graphics.DrawLine(SystemPens.ControlLightLight, aptKnobOutline(1), aptKnobOutline(2))
-                e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(2), aptKnobOutline(3))
-                e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(3), aptKnobOutline(4))
-                e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(4), aptKnobOutline(0))
-                ' - Fancy bits
-                aptKnobOutline(2).Y += 1
-                aptKnobOutline(3).X -= 1
-                aptKnobOutline(4).X -= 1 : aptKnobOutline(4).Y -= 1
-                aptKnobOutline(0).X += 1 : aptKnobOutline(0).Y -= 1
-                e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(2), aptKnobOutline(3))
-                e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(3), aptKnobOutline(4))
-                e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(4), aptKnobOutline(0))
+                    '    2
+                    ' 1 / \ 3
+                    '  |___|
+                    ' 0     4
+                    aptKnobOutline(0) = New Point(iX0, 14)
+                    aptKnobOutline(1) = New Point(iX0, 8)
+                    aptKnobOutline(2) = New Point(iX0 + CInt(cKNOBSIZE / 2), CInt(8 - cKNOBSIZE / 2))
+                    aptKnobOutline(3) = New Point(iX0 + cKNOBSIZE, 8)
+                    aptKnobOutline(4) = New Point(iX0 + cKNOBSIZE, 14)
+                    aptKnobOutline(5) = aptKnobOutline(0)
 
+                    ' - Body
+                    ' Is current selected knob?
+                    If (i = Me.m_iKnobCurr) And (Me.NumKnobs > 1) Then
+                        ' #Yes: render with highlighted background
+                        e.Graphics.FillPolygon(SystemBrushes.Highlight, aptKnobOutline)
+                    Else
+                        ' #Yes: render as regular control
+                        e.Graphics.FillPolygon(SystemBrushes.Control, aptKnobOutline)
+                    End If
+                    ' - Outline
+                    e.Graphics.DrawLine(SystemPens.ControlLightLight, aptKnobOutline(0), aptKnobOutline(1))
+                    e.Graphics.DrawLine(SystemPens.ControlLightLight, aptKnobOutline(1), aptKnobOutline(2))
+                    e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(2), aptKnobOutline(3))
+                    e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(3), aptKnobOutline(4))
+                    e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(4), aptKnobOutline(0))
+                    ' - Fancy bits
+                    aptKnobOutline(2).Y += 1
+                    aptKnobOutline(3).X -= 1
+                    aptKnobOutline(4).X -= 1 : aptKnobOutline(4).Y -= 1
+                    aptKnobOutline(0).X += 1 : aptKnobOutline(0).Y -= 1
+                    e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(2), aptKnobOutline(3))
+                    e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(3), aptKnobOutline(4))
+                    e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(4), aptKnobOutline(0))
 
-            Next
+                Next
+
+            End If
 
         End Sub
 
@@ -332,13 +312,31 @@ Namespace Controls
 
 #Region " Internals "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Filter useful input key presses for a slider.
+        ''' </summary>
+        ''' <param name="keyData">The key to validate.</param>
+        ''' <returns>True if the given key should be considered an input key.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function IsInputKey(ByVal keyData As System.Windows.Forms.Keys) As Boolean
+            Select Case keyData
+                Case Keys.Left, Keys.Right, Keys.Up, Keys.Down
+                    Return True
+            End Select
+            Return MyBase.IsInputKey(keyData)
+        End Function
+
+        Protected Function RenderScale() As Single
+            Return CSng((Me.Maximum - Me.Minimum) / Math.Max(1, Me.Width - cKNOBSIZE - Me.Margin.Left - Me.Margin.Right))
+        End Function
+
         Private Function GetValueAtPoint(ByVal ptMouse As Point) As Integer
             Dim sMouseX As Single = CSng(Math.Max(0, Math.Min(Me.Width - cKNOBSIZE - Me.Margin.Left - Me.Margin.Right, ptMouse.X - cKNOBSIZE / 2)))
             Dim iValue As Integer = Me.Minimum + CInt(sMouseX * Me.RenderScale())
             Return iValue
         End Function
-
-#End Region ' Internals
+#End Region ' Internals 
 
     End Class
 

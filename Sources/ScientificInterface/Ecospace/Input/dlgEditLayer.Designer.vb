@@ -41,25 +41,27 @@ Namespace Ecospace.Basemap.Layers
             Me.m_hdrStaticData = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_grid = New ScientificInterface.gridLayerData()
             Me.m_tpAppearance = New System.Windows.Forms.TabPage()
+            Me.m_scAppearance = New System.Windows.Forms.SplitContainer()
             Me.m_zoommap = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
-            Me.m_scDetails = New System.Windows.Forms.SplitContainer()
-            Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tbDescription = New System.Windows.Forms.TextBox()
             Me.m_lblWeight = New System.Windows.Forms.Label()
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpBits = New System.Windows.Forms.TableLayoutPanel()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tpData.SuspendLayout()
             Me.m_tpAppearance.SuspendLayout()
-            CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_scDetails.Panel1.SuspendLayout()
-            Me.m_scDetails.Panel2.SuspendLayout()
-            Me.m_scDetails.SuspendLayout()
+            CType(Me.m_scAppearance, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_scAppearance.Panel1.SuspendLayout()
+            Me.m_scAppearance.Panel2.SuspendLayout()
+            Me.m_scAppearance.SuspendLayout()
             Me.m_tlpDetails.SuspendLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tlpBits.SuspendLayout()
             Me.SuspendLayout()
             '
             'TableLayoutPanel1
@@ -187,11 +189,23 @@ Namespace Ecospace.Basemap.Layers
             '
             'm_tpAppearance
             '
-            Me.m_tpAppearance.Controls.Add(Me.m_zoommap)
-            Me.m_tpAppearance.Controls.Add(Me.m_scDetails)
+            Me.m_tpAppearance.Controls.Add(Me.m_scAppearance)
             resources.ApplyResources(Me.m_tpAppearance, "m_tpAppearance")
             Me.m_tpAppearance.Name = "m_tpAppearance"
             Me.m_tpAppearance.UseVisualStyleBackColor = True
+            '
+            'm_scAppearance
+            '
+            resources.ApplyResources(Me.m_scAppearance, "m_scAppearance")
+            Me.m_scAppearance.Name = "m_scAppearance"
+            '
+            'm_scAppearance.Panel1
+            '
+            Me.m_scAppearance.Panel1.Controls.Add(Me.m_zoommap)
+            '
+            'm_scAppearance.Panel2
+            '
+            Me.m_scAppearance.Panel2.Controls.Add(Me.m_tlpBits)
             '
             'm_zoommap
             '
@@ -201,28 +215,13 @@ Namespace Ecospace.Basemap.Layers
             Me.m_zoommap.UIContext = Nothing
             Me.m_zoommap.ZoomPercentage = 100.0!
             '
-            'm_scDetails
+            'm_hdrAppearance
             '
-            resources.ApplyResources(Me.m_scDetails, "m_scDetails")
-            Me.m_scDetails.Name = "m_scDetails"
-            '
-            'm_scDetails.Panel1
-            '
-            Me.m_scDetails.Panel1.Controls.Add(Me.m_hdrDescription)
-            Me.m_scDetails.Panel1.Controls.Add(Me.m_tlpDetails)
-            '
-            'm_scDetails.Panel2
-            '
-            Me.m_scDetails.Panel2.Controls.Add(Me.m_hdrAppearance)
-            Me.m_scDetails.Panel2.Controls.Add(Me.m_plEditVisualStyle)
-            '
-            'm_hdrDescription
-            '
-            resources.ApplyResources(Me.m_hdrDescription, "m_hdrDescription")
-            Me.m_hdrDescription.CanCollapseParent = False
-            Me.m_hdrDescription.CollapsedParentHeight = 0
-            Me.m_hdrDescription.IsCollapsed = False
-            Me.m_hdrDescription.Name = "m_hdrDescription"
+            Me.m_hdrAppearance.CanCollapseParent = False
+            Me.m_hdrAppearance.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrAppearance, "m_hdrAppearance")
+            Me.m_hdrAppearance.IsCollapsed = False
+            Me.m_hdrAppearance.Name = "m_hdrAppearance"
             '
             'm_tlpDetails
             '
@@ -257,13 +256,22 @@ Namespace Ecospace.Basemap.Layers
             resources.ApplyResources(Me.m_nudWeight, "m_nudWeight")
             Me.m_nudWeight.Name = "m_nudWeight"
             '
-            'm_hdrAppearance
+            'm_hdrDescription
             '
-            resources.ApplyResources(Me.m_hdrAppearance, "m_hdrAppearance")
-            Me.m_hdrAppearance.CanCollapseParent = False
-            Me.m_hdrAppearance.CollapsedParentHeight = 0
-            Me.m_hdrAppearance.IsCollapsed = False
-            Me.m_hdrAppearance.Name = "m_hdrAppearance"
+            Me.m_hdrDescription.CanCollapseParent = False
+            Me.m_hdrDescription.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrDescription, "m_hdrDescription")
+            Me.m_hdrDescription.IsCollapsed = False
+            Me.m_hdrDescription.Name = "m_hdrDescription"
+            '
+            'm_tlpBits
+            '
+            resources.ApplyResources(Me.m_tlpBits, "m_tlpBits")
+            Me.m_tlpBits.Controls.Add(Me.m_hdrDescription, 0, 0)
+            Me.m_tlpBits.Controls.Add(Me.m_tlpDetails, 0, 1)
+            Me.m_tlpBits.Controls.Add(Me.m_plEditVisualStyle, 0, 3)
+            Me.m_tlpBits.Controls.Add(Me.m_hdrAppearance, 0, 2)
+            Me.m_tlpBits.Name = "m_tlpBits"
             '
             'dlgEditLayer
             '
@@ -282,13 +290,14 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tcLayerView.ResumeLayout(False)
             Me.m_tpData.ResumeLayout(False)
             Me.m_tpAppearance.ResumeLayout(False)
-            Me.m_scDetails.Panel1.ResumeLayout(False)
-            Me.m_scDetails.Panel2.ResumeLayout(False)
-            CType(Me.m_scDetails, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_scDetails.ResumeLayout(False)
+            Me.m_scAppearance.Panel1.ResumeLayout(False)
+            Me.m_scAppearance.Panel2.ResumeLayout(False)
+            CType(Me.m_scAppearance, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_scAppearance.ResumeLayout(False)
             Me.m_tlpDetails.ResumeLayout(False)
             Me.m_tlpDetails.PerformLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tlpBits.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -314,10 +323,11 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
         Private WithEvents m_lblWeight As System.Windows.Forms.Label
-        Private WithEvents m_scDetails As System.Windows.Forms.SplitContainer
         Private WithEvents m_zoommap As ucMapZoom
         Private WithEvents m_tsGrid As cEwEToolstrip
         Private WithEvents m_nudWeight As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_scAppearance As System.Windows.Forms.SplitContainer
+        Private WithEvents m_tlpBits As System.Windows.Forms.TableLayoutPanel
 
     End Class
 End Namespace

@@ -163,6 +163,11 @@ Namespace Controls.Map
 
 #Region " Event handlers "
 
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+            Me.OnResized(Me, e)
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Clean-up.
@@ -286,6 +291,12 @@ Namespace Controls.Map
         Private Sub OnResized(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Me.Resize
 
+            If (Me.m_bmp IsNot Nothing) Then
+                Me.BackgroundImage = Nothing
+                Me.m_bmp.Dispose()
+                Me.m_bmp = Nothing
+            End If
+
             ' Create new bitmap
             Me.m_bmp = New Bitmap(Me.Width, Me.Height)
             Me.BackgroundImage = Me.m_bmp
@@ -297,6 +308,7 @@ Namespace Controls.Map
             Me.UpdateMap()
             ' Update cursor
             Me.UpdateCursorFeedback()
+
         End Sub
 
         ''' -------------------------------------------------------------------
