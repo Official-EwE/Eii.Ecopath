@@ -34,7 +34,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tbRemarks = New System.Windows.Forms.TextBox()
             Me.m_btnDataImport = New System.Windows.Forms.Button()
             Me.m_btnDataExport = New System.Windows.Forms.Button()
-            Me.m_plEditVisualStyle = New System.Windows.Forms.Panel()
+            Me.m_plAppearance = New System.Windows.Forms.Panel()
             Me.m_tcLayerView = New System.Windows.Forms.TabControl()
             Me.m_tpData = New System.Windows.Forms.TabPage()
             Me.m_tsGrid = New ScientificInterfaceShared.Controls.cEwEToolstrip()
@@ -43,14 +43,14 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tpAppearance = New System.Windows.Forms.TabPage()
             Me.m_scAppearance = New System.Windows.Forms.SplitContainer()
             Me.m_zoommap = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
-            Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpBits = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tbDescription = New System.Windows.Forms.TextBox()
             Me.m_lblWeight = New System.Windows.Forms.Label()
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_tlpBits = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tpData.SuspendLayout()
@@ -59,9 +59,9 @@ Namespace Ecospace.Basemap.Layers
             Me.m_scAppearance.Panel1.SuspendLayout()
             Me.m_scAppearance.Panel2.SuspendLayout()
             Me.m_scAppearance.SuspendLayout()
+            Me.m_tlpBits.SuspendLayout()
             Me.m_tlpDetails.SuspendLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_tlpBits.SuspendLayout()
             Me.SuspendLayout()
             '
             'TableLayoutPanel1
@@ -121,10 +121,10 @@ Namespace Ecospace.Basemap.Layers
             Me.m_btnDataExport.Name = "m_btnDataExport"
             Me.m_btnDataExport.UseVisualStyleBackColor = True
             '
-            'm_plEditVisualStyle
+            'm_plAppearance
             '
-            resources.ApplyResources(Me.m_plEditVisualStyle, "m_plEditVisualStyle")
-            Me.m_plEditVisualStyle.Name = "m_plEditVisualStyle"
+            resources.ApplyResources(Me.m_plAppearance, "m_plAppearance")
+            Me.m_plAppearance.Name = "m_plAppearance"
             '
             'm_tcLayerView
             '
@@ -215,13 +215,22 @@ Namespace Ecospace.Basemap.Layers
             Me.m_zoommap.UIContext = Nothing
             Me.m_zoommap.ZoomPercentage = 100.0!
             '
-            'm_hdrAppearance
+            'm_tlpBits
             '
-            Me.m_hdrAppearance.CanCollapseParent = False
-            Me.m_hdrAppearance.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrAppearance, "m_hdrAppearance")
-            Me.m_hdrAppearance.IsCollapsed = False
-            Me.m_hdrAppearance.Name = "m_hdrAppearance"
+            resources.ApplyResources(Me.m_tlpBits, "m_tlpBits")
+            Me.m_tlpBits.Controls.Add(Me.m_hdrDescription, 0, 0)
+            Me.m_tlpBits.Controls.Add(Me.m_tlpDetails, 0, 1)
+            Me.m_tlpBits.Controls.Add(Me.m_plAppearance, 0, 3)
+            Me.m_tlpBits.Controls.Add(Me.m_hdrAppearance, 0, 2)
+            Me.m_tlpBits.Name = "m_tlpBits"
+            '
+            'm_hdrDescription
+            '
+            Me.m_hdrDescription.CanCollapseParent = False
+            Me.m_hdrDescription.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrDescription, "m_hdrDescription")
+            Me.m_hdrDescription.IsCollapsed = False
+            Me.m_hdrDescription.Name = "m_hdrDescription"
             '
             'm_tlpDetails
             '
@@ -256,22 +265,13 @@ Namespace Ecospace.Basemap.Layers
             resources.ApplyResources(Me.m_nudWeight, "m_nudWeight")
             Me.m_nudWeight.Name = "m_nudWeight"
             '
-            'm_hdrDescription
+            'm_hdrAppearance
             '
-            Me.m_hdrDescription.CanCollapseParent = False
-            Me.m_hdrDescription.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrDescription, "m_hdrDescription")
-            Me.m_hdrDescription.IsCollapsed = False
-            Me.m_hdrDescription.Name = "m_hdrDescription"
-            '
-            'm_tlpBits
-            '
-            resources.ApplyResources(Me.m_tlpBits, "m_tlpBits")
-            Me.m_tlpBits.Controls.Add(Me.m_hdrDescription, 0, 0)
-            Me.m_tlpBits.Controls.Add(Me.m_tlpDetails, 0, 1)
-            Me.m_tlpBits.Controls.Add(Me.m_plEditVisualStyle, 0, 3)
-            Me.m_tlpBits.Controls.Add(Me.m_hdrAppearance, 0, 2)
-            Me.m_tlpBits.Name = "m_tlpBits"
+            Me.m_hdrAppearance.CanCollapseParent = False
+            Me.m_hdrAppearance.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrAppearance, "m_hdrAppearance")
+            Me.m_hdrAppearance.IsCollapsed = False
+            Me.m_hdrAppearance.Name = "m_hdrAppearance"
             '
             'dlgEditLayer
             '
@@ -294,10 +294,10 @@ Namespace Ecospace.Basemap.Layers
             Me.m_scAppearance.Panel2.ResumeLayout(False)
             CType(Me.m_scAppearance, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scAppearance.ResumeLayout(False)
+            Me.m_tlpBits.ResumeLayout(False)
             Me.m_tlpDetails.ResumeLayout(False)
             Me.m_tlpDetails.PerformLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_tlpBits.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -308,7 +308,7 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_lblRemarks As System.Windows.Forms.Label
         Private WithEvents m_tbRemarks As System.Windows.Forms.TextBox
         Private WithEvents Apply_Button As System.Windows.Forms.Button
-        Private WithEvents m_plEditVisualStyle As System.Windows.Forms.Panel
+        Private WithEvents m_plAppearance As System.Windows.Forms.Panel
         Private WithEvents m_btnDataImport As System.Windows.Forms.Button
         Private WithEvents m_btnDataExport As System.Windows.Forms.Button
         Private WithEvents m_tbNameValue As System.Windows.Forms.TextBox

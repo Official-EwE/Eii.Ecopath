@@ -221,8 +221,6 @@ Namespace Ecospace.Basemap.Layers
             Dim vs As cVisualStyle = Me.m_layerWork.Renderer.VisualStyle
             Dim src As cCoreInputOutputBase = Me.m_layerWork.Source
 
-            Me.m_tlpDetails.SuspendLayout()
-
             Me.m_lblWeight.Visible = False
             Me.m_nudWeight.Visible = False
             Me.m_lblDescription.Visible = False
@@ -259,13 +257,14 @@ Namespace Ecospace.Basemap.Layers
             Me.m_ucEditVisualStyle = ucEditVisualStyle.GetEditor(Me.m_uic, vs, Me.m_layerWork.Renderer.VisualStyleFlags)
 
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then
+                Me.m_plAppearance.Height = Me.m_ucEditVisualStyle.Height
                 Me.m_ucEditVisualStyle.Dock = DockStyle.Fill
-                Me.m_plEditVisualStyle.Controls.Add(Me.m_ucEditVisualStyle)
+                Me.m_plAppearance.Controls.Add(Me.m_ucEditVisualStyle)
             End If
 
             Me.m_grid.Layer = Me.m_layerWork
-
-            Me.m_tlpDetails.ResumeLayout()
+            Me.m_tlpDetails.PerformLayout()
+            Me.m_tlpBits.PerformLayout()
 
         End Sub
 
