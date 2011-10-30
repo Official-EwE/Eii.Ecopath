@@ -103,19 +103,20 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_tcLayerView.SelectedIndex = CInt(Me.m_edittype)
 
-            If Me.m_ucEditVisualStyle IsNot Nothing Then
-                AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
-            End If
-
             Me.LoadLayer()
             Me.UpdateControls()
             Me.DrawPreview()
+
+
+            If (Me.m_ucEditVisualStyle IsNot Nothing) Then
+                AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
+            End If
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            If Me.m_ucEditVisualStyle IsNot Nothing Then
+            If (Me.m_ucEditVisualStyle IsNot Nothing) Then
                 RemoveHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
             End If
 

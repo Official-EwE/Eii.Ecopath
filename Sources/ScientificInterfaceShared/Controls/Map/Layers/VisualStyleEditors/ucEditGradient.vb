@@ -256,7 +256,9 @@ Namespace Controls
             Catch ex As Exception
 
             End Try
+
             Me.m_bInUpdate = False
+            Me.UpdateColors()
 
         End Sub
 
@@ -353,8 +355,16 @@ Namespace Controls
 
                     Me.m_slAlpha.Value = clr.A
                     Me.m_nudAlpha.Value = clr.A
+
+                    Dim grad As cARGBColorRamp = Me.CreateGradient()
+
+                    Me.VisualStyle.GradientBreaks = grad.GradientBreaks
+                    Me.VisualStyle.GradientColors = grad.GradientColors
+
                 Else
                     Me.m_pbCurrentColor.BackColor = SystemColors.Control
+                    Me.VisualStyle.GradientBreaks = Nothing
+                    Me.VisualStyle.GradientColors = Nothing
                 End If
 
             Catch ex As Exception
