@@ -7,7 +7,7 @@ Namespace Controls.EwEGrid
 
     <CLSCompliant(False)> _
     Public Class EwECheckboxCell
-        : Inherits SourceGrid2.Cells.Real.CheckBox
+        Inherits SourceGrid2.Cells.Real.CheckBox
         Implements IUIElement
         Implements IDisposable
 
@@ -44,6 +44,7 @@ Namespace Controls.EwEGrid
             End If
             GC.SuppressFinalize(Me)
         End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Custom cell style
@@ -97,7 +98,8 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnAddToGrid(ByVal e As System.EventArgs)
             MyBase.OnAddToGrid(e)
-            If TypeOf Me.Grid Is IUIElement Then
+            If (TypeOf Me.Grid Is IUIElement) Then
+                ' Grab UI context from parent grid
                 Me.UIContext = DirectCast(Me.Grid, IUIElement).UIContext
             End If
         End Sub

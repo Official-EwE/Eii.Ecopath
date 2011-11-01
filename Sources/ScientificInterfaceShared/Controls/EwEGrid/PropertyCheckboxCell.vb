@@ -8,20 +8,23 @@ Namespace Controls.EwEGrid
 
     <CLSCompliant(False)> _
     Public Class PropertyCheckboxCell
-        : Inherits EwECheckboxCell
+        Inherits EwECheckboxCell
 
         ''' <summary>Connected property.</summary>
-        Private m_property As cProperty = Nothing
+        Private m_property As cBooleanProperty = Nothing
+        ''' <summary>Flag to detect recursive updates.</summary>
+        Private m_bInUpdate As Boolean = False
 
 #Region " Construction and destruction "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor
+        ''' Constructor. Note that the indicated property should be a <see cref="cBooleanProperty"/>.
         ''' </summary>
         ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to extract data from.</param>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
+        ''' <param name="source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
+        ''' <param name="varName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the source to acces</param>
+        ''' <param name="sourceSec">Optional secundary index to use.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal pm As cPropertyManager, _
                        ByVal source As cCoreInputOutputBase, _
@@ -38,17 +41,17 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal prop As cBooleanProperty)
             ' Call baseclass constructor
-            MyBase.New(CBool(prop.GetValue()))
+            MyBase.New(False)
+
+            Debug.Assert(TypeOf prop Is cBooleanProperty)
+
             ' Store the property
-            ' Set the property
             Me.m_property = prop
-            ' Valid assignment?
-            If (prop IsNot Nothing) Then
-                ' Fire a change notification
-                Me.OnPropertyChanged(prop, cProperty.eChangeFlags.All)
-                ' Register property
-                AddHandler Me.m_property.PropertyChanged, AddressOf Me.OnPropertyChanged
-            End If
+            ' Fire a change notification
+            Me.OnPropertyChanged(prop, cProperty.eChangeFlags.All)
+            ' Register property
+            AddHandler Me.m_property.PropertyChanged, AddressOf Me.OnPropertyChanged
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -73,23 +76,14 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the property in the cell
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Function GetProperty() As cProperty
-            Return Me.m_property
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Commonly called in response to end edit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub SetValue(ByVal p_Position As SourceGrid2.Position, ByVal p_Value As Object)
-            ' Sanity check
+        Public Overrides Sub SetValue(ByVal pos As SourceGrid2.Position, ByVal val As Object)
+            ' Intervention
             If (Me.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable Then Return
-            ' Apply edited value
-            Me.Value = p_Value
+            ' Continue
+            Me.Value = val
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -101,24 +95,33 @@ Namespace Controls.EwEGrid
             Get
 
                 ' Does property exist?
-                If (m_property IsNot Nothing) Then
+                If (Me.m_property IsNot Nothing) Then
                     ' #Yes: return value
-                    Return m_property.GetValue()
+                    Return CBool(Me.m_property.GetValue())
                 End If
                 ' #No: return default
-                Return Nothing
+                Return MyBase.Value
 
             End Get
             Set(ByVal value As Object)
 
-                Dim bChanged As Boolean = True
+                ' Avoid loops
+                If Me.m_bInUpdate Then Return
+                Me.m_bInUpdate = True
+                Try
+                    MyBase.Value = CBool(value)
+                Catch ex As Exception
 
+                End Try
+                Me.m_bInUpdate = False
+
+                ' Now update property
+                Dim bChanged As Boolean = True
                 ' Does property exist?
-                If (m_property IsNot Nothing) Then
+                If (Me.m_property IsNot Nothing) Then
                     ' #Yes: update the property. The property will take care of dispatching any changes
                     bChanged = Me.m_property.SetValue(value, TriState.UseDefault)
                 End If
-
                 ' Anything changed?
                 If (bChanged) Then
                     ' #Yes: redraw the cell
@@ -145,7 +148,9 @@ Namespace Controls.EwEGrid
         Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
                 Dim s As cStyleGuide.eStyleFlags = MyBase.Style
-                If s = 0 Then s = Me.m_property.GetStyle()
+                If (s = 0) And (Me.m_property IsNot Nothing) Then
+                    s = Me.m_property.GetStyle()
+                End If
                 Return s
             End Get
             Set(ByVal s As cStyleGuide.eStyleFlags)

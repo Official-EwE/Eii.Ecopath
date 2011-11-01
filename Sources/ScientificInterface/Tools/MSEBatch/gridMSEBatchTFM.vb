@@ -105,8 +105,8 @@ Public Class gridMSEBatchTFM
             Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
             ' ToDo: replace by property style
-            'Me(iGroup, eColumnTypes.RunType) = New PropertyCheckboxCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchTFMManaged)
-            Me(iGroup, eColumnTypes.RunType) = New EwECheckboxCell(group.isManaged, RowStyle)
+            Me(iGroup, eColumnTypes.RunType) = New PropertyCheckboxCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchTFMManaged)
+            'Me(iGroup, eColumnTypes.RunType) = New EwECheckboxCell(group.isManaged, RowStyle)
             Me(iGroup, eColumnTypes.RunType).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.BLimLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
