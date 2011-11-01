@@ -91,7 +91,6 @@ Public Class gridMSEBatchTFM
     Protected Overrides Sub FillData()
 
         Dim group As MSE.cMSETFMGroup = Nothing
-        Dim valueCell As EwECell, checkCell As SourceGrid2.Cells.Real.CheckBox
         Dim RowStyle As cStyleGuide.eStyleFlags
 
         For iGroup As Integer = 1 To Core.nLivingGroups
@@ -105,18 +104,15 @@ Public Class gridMSEBatchTFM
             Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
             Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-            checkCell = New SourceGrid2.Cells.Real.CheckBox(group.isManaged)
-            'ToDo_jb gridMSEBatchTFM Find a way to set the style of a SourceGrid Checkbox
-            ' checkCell.Style = style
-            Me(iGroup, eColumnTypes.RunType) = checkCell
+            ' ToDo: replace by property style
+            'Me(iGroup, eColumnTypes.RunType) = New PropertyCheckboxCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchTFMManaged)
+            Me(iGroup, eColumnTypes.RunType) = New EwECheckboxCell(group.isManaged, RowStyle)
             Me(iGroup, eColumnTypes.RunType).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.BLimLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
             Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
 
-            valueCell = New EwECell(group.BLimValue(iCurIter), GetType(Single))
-            valueCell.Style = RowStyle
-            Me(iGroup, eColumnTypes.BLimValue) = valueCell
+            Me(iGroup, eColumnTypes.BLimValue) = New EwECell(group.BLimValue(iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.BLimValue).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.BLimUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimUpper)
@@ -124,9 +120,7 @@ Public Class gridMSEBatchTFM
             Me(iGroup, eColumnTypes.BBaseLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseLower)
             Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
 
-            valueCell = New EwECell(group.BBaseValue(iCurIter), GetType(Single))
-            valueCell.Style = RowStyle
-            Me(iGroup, eColumnTypes.BBaseValue) = valueCell
+            Me(iGroup, eColumnTypes.BBaseValue) = New EwECell(group.BBaseValue(iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.BBaseValue).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.BBaseUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseUpper)
@@ -134,9 +128,7 @@ Public Class gridMSEBatchTFM
             Me(iGroup, eColumnTypes.FOptLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptLower)
             Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
 
-            valueCell = New EwECell(group.FMaxValue(iCurIter), GetType(Single))
-            valueCell.Style = RowStyle
-            Me(iGroup, eColumnTypes.FOptValue) = valueCell
+            Me(iGroup, eColumnTypes.FOptValue) = New EwECell(group.FMaxValue(iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.FOptValue).Behaviors.Add(Me.EwEEditHandler)
             Me(iGroup, eColumnTypes.FOptUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
 

@@ -127,10 +127,12 @@
     <Compile Include="Controls\ComboBox\ucFieldPicker.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\EwEGrid\PropertyCheckboxCell.vb" />
     <Compile Include="Controls\EwEGrid\cPropertyInfoHelper.vb" />
     <Compile Include="Controls\EwEGrid\Editors\EwEComboBoxCellEditor.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\EwEGrid\EwECheckboxCell.vb" />
     <Compile Include="Controls\EwEGrid\PropertyInfoCell.vb" />
     <Compile Include="Controls\EwEGrid\PropertyRowHeaderChildCell.vb" />
     <Compile Include="Controls\EwEGrid\PropertyRowHeaderParentCell.vb" />
@@ -142,7 +144,7 @@
     <Compile Include="Controls\EwEGrid\EwEColumnHeaderCell.vb" />
     <Compile Include="Controls\EwEGrid\EwERowHeaderCell.vb" />
     <Compile Include="Controls\EwEGrid\EwEHeaderCell.vb" />
-    <Compile Include="Controls\EwEGrid\EwEGridCell.vb" />
+    <Compile Include="Controls\EwEGrid\EwCell.vb" />
     <Compile Include="Controls\EwEGrid\QuickEdit\EwEGridQuickEditor.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridColumnHeaderVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridRowHeaderVisualizer.vb" />
@@ -151,6 +153,7 @@
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridProportionVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridRowIndexVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridShapeThumbnailVisualizer.vb" />
+    <Compile Include="Controls\EwEGrid\Visualizers\cEwECheckBoxVisualizer.vb" />
     <Compile Include="Controls\Format provider\cPropertyFormatProvider.vb" />
     <Compile Include="Controls\Graph renderers\ArrayGraph.vb" />
     <Compile Include="Controls\Format provider\cEwEFormatProvider.vb" />

@@ -1,32 +1,17 @@
-#Region " Imports "
-
-Option Strict On
-Imports EwECore
+﻿Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
-Imports EwEUtils.Commands
-Imports EwEUtils.Core
-
-#End Region ' Imports
 
 Namespace Controls.EwEGrid
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' A standard EwE grid cell for <see cref="cProperty">cProperty</see>-driven values.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Public Class PropertyCell
-        : Inherits EwECellBase
+    Public Class PropertyCheckboxCell
+        : Inherits EwECheckboxCell
 
         ''' <summary>Connected property.</summary>
         Private m_property As cProperty = Nothing
-        ''' <summary>Flag stating how property and cell styles should be merged.</summary>
-        Private m_bJoinStyles As Boolean = False
 
 #Region " Construction and destruction "
 
@@ -42,7 +27,7 @@ Namespace Controls.EwEGrid
                        ByVal source As cCoreInputOutputBase, _
                        ByVal varname As eVarNameFlags, _
                        Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
-            Me.New(pm.GetProperty(source, varname, sourceSec))
+            Me.New(CType(pm.GetProperty(source, varname, sourceSec), cBooleanProperty))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -51,16 +36,14 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop">The property to assign to the cell.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty)
+        Public Sub New(ByVal prop As cBooleanProperty)
             ' Call baseclass constructor
-            MyBase.New(Nothing, prop.GetValueType())
+            MyBase.New(CBool(prop.GetValue()))
             ' Store the property
             ' Set the property
             Me.m_property = prop
             ' Valid assignment?
             If (prop IsNot Nothing) Then
-                ' Configure the cell
-                Me.ConfigureCell(prop.GetVariableMetadata())
                 ' Fire a change notification
                 Me.OnPropertyChanged(prop, cProperty.eChangeFlags.All)
                 ' Register property
@@ -133,7 +116,7 @@ Namespace Controls.EwEGrid
                 ' Does property exist?
                 If (m_property IsNot Nothing) Then
                     ' #Yes: update the property. The property will take care of dispatching any changes
-                    bChanged = m_property.SetValue(value, TriState.UseDefault)
+                    bChanged = Me.m_property.SetValue(value, TriState.UseDefault)
                 End If
 
                 ' Anything changed?
@@ -142,22 +125,6 @@ Namespace Controls.EwEGrid
                     Me.Invalidate()
                 End If
 
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set whether the cell style and property style should be joined
-        ''' (True) or whether the cell style overrides the property style if
-        ''' present (False).
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property JoinStyles() As Boolean
-            Get
-                Return Me.m_bJoinStyles
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bJoinStyles = value
             End Set
         End Property
 
@@ -178,11 +145,7 @@ Namespace Controls.EwEGrid
         Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
                 Dim s As cStyleGuide.eStyleFlags = MyBase.Style
-                If Me.m_bJoinStyles Then
-                    s = s Or Me.m_property.GetStyle()
-                Else
-                    If s = 0 Then s = Me.m_property.GetStyle()
-                End If
+                If s = 0 Then s = Me.m_property.GetStyle()
                 Return s
             End Get
             Set(ByVal s As cStyleGuide.eStyleFlags)
