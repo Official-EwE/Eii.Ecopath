@@ -6,9 +6,10 @@ Imports System.Drawing.Text
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
 
+''' <summary>
+''' Draws an array graph used for Mixed Trophic Index plots.
+''' </summary>
 Public Class ArrayGraph
-
-    Private m_nodes As Boolean
 
     ''' <summary>Spacer between cells, expressed in cell size</summary>
     ''' <remarks></remarks>
