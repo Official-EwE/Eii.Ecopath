@@ -9,6 +9,7 @@ Imports SourceGrid2.Cells.Real
 Imports SourceGrid2.VisualModels
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports SourceGrid2.Cells
 
 #End Region ' Imports
 
@@ -51,17 +52,31 @@ Namespace Controls.EwEGrid
 
                     ' Allowed to advance?
                     If bAdvance Then
-                        ' #Yes: advance to next row
-                        Dim iRow As Integer = e.Position.Row + 1
-                        ' Past last row?
-                        If iRow > e.Grid.RowsCount Then
-                            ' #Yes: switch to the first top row that is not frozen (e.g. skip headers)
-                            iRow = e.Grid.FixedRows
-                        End If
-                        ' Perform Mod operation as a safety catch in case the number of frozen rows is misconfigured.
-                        Dim p As New Position(iRow Mod e.Grid.RowsCount, e.Position.Column)
+                        ' #Yes: advance to next editable row
+                        Dim bFound As Boolean = False
+                        Dim iRow As Integer = e.Position.Row
+                        Dim p As Position = Nothing
+                        Dim grid As GridVirtual = e.Grid
+                        Dim cell As ICellVirtual = Nothing
+
+                        While Not bFound
+                            ' Next
+                            iRow += 1
+                            ' Past last row?
+                            If iRow > grid.RowsCount Then
+                                ' #Yes: switch to the first top row that is not frozen (e.g. skip headers)
+                                iRow = grid.FixedRows
+                            End If
+                            ' Perform Mod operation as a safety catch in case the number of frozen rows is misconfigured.
+                            p = New Position(iRow Mod grid.RowsCount, e.Position.Column)
+                            ' Get cell
+                            cell = grid.GetCell(p)
+                            ' Stop searching if cell is editable OR back at start position
+                            bFound = (iRow = e.Position.Row) Or (cell.DataModel.EnableEdit = True)
+                        End While
+
                         ' Advance focus
-                        e.Grid.SetFocusCell(p)
+                        grid.SetFocusCell(p)
                     End If
                 End If
             End Sub
