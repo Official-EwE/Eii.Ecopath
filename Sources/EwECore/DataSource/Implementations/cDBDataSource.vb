@@ -6328,16 +6328,21 @@ Namespace DataSources
                 End If
 
                 ' Specific bits
-                Select Case shapeType
-                    Case eDataTypes.FishingEffort
-                    Case eDataTypes.FishMort
-                    Case Else
-                        drow("YZero") = sYZero
-                        drow("YBase") = sYBase
-                        drow("YEnd") = sYend
-                        drow("Steep") = sSteep
-                        drow("FunctionType") = CInt(functionType)
-                End Select
+                If (shapeType <> eDataTypes.FishMort) And (shapeType <> eDataTypes.FishingEffort) Then
+
+                    drow("YZero") = sYZero
+                    drow("YBase") = sYBase
+                    drow("YEnd") = sYend
+                    drow("Steep") = sSteep
+                    drow("FunctionType") = CInt(functionType)
+
+                    If (shapeType = eDataTypes.Mediation) Or _
+                       (shapeType = eDataTypes.PriceMediation) Or _
+                       (shapeType = eDataTypes.CapacityMediation) Then
+                        drow("IMedBase") = 1200 / 3
+                    End If
+
+                End If
 
                 writerShape.AddRow(drow)
 
