@@ -91,6 +91,12 @@ Namespace Controls.EwEGrid
         Private Shared g_visualizer As New cEwECellVisualizer()
         ''' <summary>UI context to operate onto.</summary>
         Private m_uic As cUIContext = Nothing
+        ''' <summary>Custom cell style.</summary>
+        Private m_style As cStyleGuide.eStyleFlags = 0
+        ''' <summary>Number of decimal digits to display</summary>
+        Private m_iNumDigits As Integer = -1
+        ''' <summary>If true, the cell will not show numerical '0' values.</summary>
+        Private m_bSuppressZero As Boolean = False
         ''' <summary>Behaviour model to catch [ENTER] key presses.</summary>
         Private m_bmCatchEnter As BehaviorModels.IBehaviorModel = Nothing
         ''' <summary>Behaviour model to catch cell resize events.</summary>
@@ -104,6 +110,7 @@ Namespace Controls.EwEGrid
 
             ' Configure data model
             Me.DataModel.AllowNull = True
+            Me.DataModel.DefaultValue = cCore.NULL_VALUE
 
             ' Catch ENTER presses
             Me.m_bmCatchEnter = New cCatchEnterPressBehaviour()
@@ -120,8 +127,10 @@ Namespace Controls.EwEGrid
 
             ' Set shared visualizer
             Me.VisualModel = g_visualizer
+
             ' Configure data model
             Me.DataModel.AllowNull = True
+            Me.DataModel.DefaultValue = cCore.NULL_VALUE
 
             ' Catch ENTER presses
             Me.m_bmCatchEnter = New cCatchEnterPressBehaviour()
@@ -134,36 +143,33 @@ Namespace Controls.EwEGrid
         End Sub
 
         Public Overridable Sub Dispose() Implements IDisposable.Dispose
-            If UIContext IsNot Nothing Then
 
+            If (Me.m_uic IsNot Nothing) Then
                 Me.UIContext = Nothing
+            End If
 
+            If (Me.m_bmCatchEnter IsNot Nothing) Then
                 ' Remove all bahaviour models
                 Me.Behaviors.Remove(Me.m_bmCatchEnter)
                 Me.m_bmCatchEnter = Nothing
 
                 Me.Behaviors.Remove(Me.m_bmResize)
                 Me.m_bmResize = Nothing
+            End If
 
+            If (Me.DataModel IsNot Nothing) Then
                 ' Release any editors
                 Me.DataModel.EnableEdit = False
                 Me.DataModel.EditableMode = SourceGrid2.EditableMode.None
                 Me.DataModel = Nothing
-
             End If
             GC.SuppressFinalize(Me)
+
         End Sub
 
 #End Region ' Construction
 
 #Region " Data (value, style, remarks) "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Custom cell style
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private m_style As cStyleGuide.eStyleFlags = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -202,18 +208,6 @@ Namespace Controls.EwEGrid
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <summary>If true, the cell will not show numerical '0' values.</summary>
-        ''' -------------------------------------------------------------------
-        Private m_bSuppressZero As Boolean = False
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Zero value to suppress
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private m_sZeroValue As Single = 0.0
-
-        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' When set to True, cells will not show numerical '0' values
         ''' </summary>
@@ -226,18 +220,11 @@ Namespace Controls.EwEGrid
             Set(ByVal bSuppress As Boolean)
                 If (bSuppress <> Me.m_bSuppressZero) Then
                     Me.m_bSuppressZero = bSuppress
-                    Me.m_sZeroValue = sZeroValue
+                    Me.DataModel.DefaultValue = sZeroValue
                     Me.Invalidate()
                 End If
             End Set
         End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Number of decimal digits to display
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private m_iNumDigits As Integer = -1
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -291,7 +278,7 @@ Namespace Controls.EwEGrid
 
                     End Try
                     ' Must suppress true zero?
-                    If (Me.SuppressZero And (sValue = Me.m_sZeroValue)) Then
+                    If (Me.SuppressZero And (sValue = CSng(Me.DataModel.DefaultValue))) Then
                         ' #Yes: return empty cell
                         Return ""
                     End If
@@ -311,7 +298,7 @@ Namespace Controls.EwEGrid
 
                     End Try
                     ' Must suppress true zero?
-                    If (Me.SuppressZero And (dValue = CDbl(Me.m_sZeroValue))) Then
+                    If (Me.SuppressZero And (dValue = CDbl(Me.DataModel.DefaultValue))) Then
                         ' #Yes: return empty cell
                         Return ""
                     End If
@@ -331,7 +318,7 @@ Namespace Controls.EwEGrid
 
                     End Try
                     ' Must suppress true zero?
-                    If (Me.SuppressZero And (iValue = CInt(Me.m_sZeroValue))) Then
+                    If (Me.SuppressZero And (iValue = CInt(Me.DataModel.DefaultValue))) Then
                         ' #Yes: return empty cell
                         Return ""
                     End If
@@ -353,7 +340,7 @@ Namespace Controls.EwEGrid
         Public Sub ConfigureCell(ByVal md As cVariableMetaData)
 
             ' Sanity check
-            If md Is Nothing Then Return
+            If (md Is Nothing) Then Return
             ' Set default val
             Me.DataModel.DefaultValue = md.NullValue
 
@@ -404,27 +391,11 @@ Namespace Controls.EwEGrid
             Me.UIContext = Nothing
         End Sub
 
-        Protected ReadOnly Property Core() As cCore
-            Get
-                If (Me.UIContext Is Nothing) Then Return Nothing
-                Return Me.UIContext.Core
-            End Get
-        End Property
-
-        Protected ReadOnly Property PropertyManager() As cPropertyManager
-            Get
-                If (Me.UIContext Is Nothing) Then Return Nothing
-                Return Me.UIContext.PropertyManager
-            End Get
-        End Property
-
-        Protected ReadOnly Property StyleGuide() As cStyleGuide
-            Get
-                If (Me.UIContext Is Nothing) Then Return Nothing
-                Return Me.UIContext.StyleGuide
-            End Get
-        End Property
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the UI Context to operate onto.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -447,6 +418,42 @@ Namespace Controls.EwEGrid
 
             End Set
 
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a reference to the <see cref="cCore"/>, attached to the cell.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected ReadOnly Property Core() As cCore
+            Get
+                If (Me.UIContext Is Nothing) Then Return Nothing
+                Return Me.UIContext.Core
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a reference to the <see cref="cPropertyManager"/>, attached to the cell.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected ReadOnly Property PropertyManager() As cPropertyManager
+            Get
+                If (Me.UIContext Is Nothing) Then Return Nothing
+                Return Me.UIContext.PropertyManager
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a reference to the <see cref="cStyleGuide"/>, attached to the cell.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected ReadOnly Property StyleGuide() As cStyleGuide
+            Get
+                If (Me.UIContext Is Nothing) Then Return Nothing
+                Return Me.UIContext.StyleGuide
+            End Get
         End Property
 
 #End Region ' UIContext connection

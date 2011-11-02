@@ -1229,9 +1229,11 @@ Namespace Controls.EwEGrid
                                     If (cell.DataModel.EnableEdit) Then
                                         ' #Yes: attempt to set value
                                         strValue = astrCols(iColData).Trim
-                                        If (String.Compare(strValue, "") = 0) And _
-                                            ((cell.DataModel.ValueType Is GetType(Single) Or cell.DataModel.ValueType Is GetType(Double) Or cell.DataModel.ValueType Is GetType(Integer))) Then
-                                            strValue = cCore.NULL_VALUE.ToString()
+                                        ' Is empty value?
+                                        If (String.IsNullOrWhiteSpace(strValue)) And _
+                                            ((cell.DataModel.ValueType Is GetType(Single)) Or (cell.DataModel.ValueType Is GetType(Double)) Or (cell.DataModel.ValueType Is GetType(Integer))) Then
+                                            ' #Yes: Convert to cell default value
+                                            strValue = Convert.ToString(cell.DataModel.DefaultValue)
                                         End If
 
                                         ' Try to convert

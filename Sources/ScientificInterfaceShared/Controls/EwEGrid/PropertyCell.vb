@@ -118,9 +118,9 @@ Namespace Controls.EwEGrid
             Get
 
                 ' Does property exist?
-                If (m_property IsNot Nothing) Then
+                If (Me.m_property IsNot Nothing) Then
                     ' #Yes: return value
-                    Return m_property.GetValue()
+                    Return Me.m_property.GetValue()
                 End If
                 ' #No: return default
                 Return Nothing
@@ -131,9 +131,9 @@ Namespace Controls.EwEGrid
                 Dim bChanged As Boolean = True
 
                 ' Does property exist?
-                If (m_property IsNot Nothing) Then
+                If (Me.m_property IsNot Nothing) Then
                     ' #Yes: update the property. The property will take care of dispatching any changes
-                    bChanged = m_property.SetValue(value, TriState.UseDefault)
+                    bChanged = Me.m_property.SetValue(value, TriState.UseDefault)
                 End If
 
                 ' Anything changed?
