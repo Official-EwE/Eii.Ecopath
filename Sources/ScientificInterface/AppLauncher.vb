@@ -1076,6 +1076,7 @@ Public Class AppLauncher
 
         Dim dst As eDataSourceTypes = eDataSourceTypes.NotSet
         Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
+        Dim access As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
         ' Detect file type
         dst = cDataSourceFactory.GetSupportedType(strFileName)
@@ -1085,7 +1086,8 @@ Public Class AppLauncher
                  eDataSourceTypes.Access2003
                 ' Is database, whoohoo
                 Dim db As New cEwEAccessDatabase()
-                If db.Open(strFileName) = eDatasourceAccessType.Opened Then
+                access = db.Open(strFileName)
+                If (access = eDatasourceAccessType.Opened) Then
                     comp = db.Compatibility
                     db.Close()
                 End If
@@ -1100,6 +1102,15 @@ Public Class AppLauncher
 
         End Select
 
+        ' Has access problems?
+        If access <> eDatasourceAccessType.Opened Then
+            ' #Yes: report access error
+            Me.ReportFileAccessError(access, strFileName)
+            ' Abort
+            Return cEwEDatabase.eCompatibilityTypes.Unknown
+        End If
+
+        ' Able to access ok; assess compatibility next
         Select Case comp
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
