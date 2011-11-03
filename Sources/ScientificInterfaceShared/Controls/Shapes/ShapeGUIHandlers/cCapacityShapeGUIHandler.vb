@@ -105,7 +105,8 @@ Namespace Controls
 
             MyBase.Attach(uic, stb, stbtb, sp, sptb, ma, mat)
 
-            Me.SketchPad.ShowXMark = False
+            Me.SketchPad.ShowXMark = True
+
             ' Tooltip does not make much sense for mediation functions
             Me.SketchPad.ShowValueTooltip = False
 
