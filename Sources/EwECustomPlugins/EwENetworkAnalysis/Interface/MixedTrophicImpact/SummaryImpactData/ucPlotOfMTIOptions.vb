@@ -9,6 +9,7 @@ Public Class ucPlotOfMTIOptions
     Private WithEvents m_rbRectangles As System.Windows.Forms.RadioButton
     Private WithEvents m_cbShowGrid As System.Windows.Forms.CheckBox
     Private WithEvents m_cbSlantingLabels As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbFitToScreen As System.Windows.Forms.CheckBox
     Private m_content As cPlotOfMixedTrophicImpact = Nothing
 
     Public Sub New(ByVal content As cPlotOfMixedTrophicImpact)
@@ -17,17 +18,21 @@ Public Class ucPlotOfMTIOptions
     End Sub
 
     Private Sub InitializeComponent()
-        Me.m_hdrOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_rbCircles = New System.Windows.Forms.RadioButton
-        Me.m_rbRectangles = New System.Windows.Forms.RadioButton
-        Me.m_cbShowGrid = New System.Windows.Forms.CheckBox
-        Me.m_cbSlantingLabels = New System.Windows.Forms.CheckBox
+        Me.m_hdrOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_rbCircles = New System.Windows.Forms.RadioButton()
+        Me.m_rbRectangles = New System.Windows.Forms.RadioButton()
+        Me.m_cbShowGrid = New System.Windows.Forms.CheckBox()
+        Me.m_cbSlantingLabels = New System.Windows.Forms.CheckBox()
+        Me.m_cbFitToScreen = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'm_hdrOptions
         '
         Me.m_hdrOptions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrOptions.CanCollapseParent = False
+        Me.m_hdrOptions.CollapsedParentHeight = 0
+        Me.m_hdrOptions.IsCollapsed = False
         Me.m_hdrOptions.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrOptions.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrOptions.Name = "m_hdrOptions"
@@ -54,7 +59,7 @@ Public Class ucPlotOfMTIOptions
         Me.m_rbRectangles.Location = New System.Drawing.Point(6, 50)
         Me.m_rbRectangles.Name = "m_rbRectangles"
         Me.m_rbRectangles.Size = New System.Drawing.Size(79, 17)
-        Me.m_rbRectangles.TabIndex = 1
+        Me.m_rbRectangles.TabIndex = 2
         Me.m_rbRectangles.TabStop = True
         Me.m_rbRectangles.Text = "&Rectangles"
         Me.m_rbRectangles.UseVisualStyleBackColor = True
@@ -65,7 +70,7 @@ Public Class ucPlotOfMTIOptions
         Me.m_cbShowGrid.Location = New System.Drawing.Point(6, 89)
         Me.m_cbShowGrid.Name = "m_cbShowGrid"
         Me.m_cbShowGrid.Size = New System.Drawing.Size(95, 17)
-        Me.m_cbShowGrid.TabIndex = 2
+        Me.m_cbShowGrid.TabIndex = 3
         Me.m_cbShowGrid.Text = "Draw &grid lines"
         Me.m_cbShowGrid.UseVisualStyleBackColor = True
         '
@@ -74,24 +79,35 @@ Public Class ucPlotOfMTIOptions
         Me.m_cbSlantingLabels.AutoSize = True
         Me.m_cbSlantingLabels.Checked = True
         Me.m_cbSlantingLabels.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.m_cbSlantingLabels.Location = New System.Drawing.Point(6, 112)
+        Me.m_cbSlantingLabels.Location = New System.Drawing.Point(6, 135)
         Me.m_cbSlantingLabels.Name = "m_cbSlantingLabels"
         Me.m_cbSlantingLabels.Size = New System.Drawing.Size(120, 17)
-        Me.m_cbSlantingLabels.TabIndex = 2
+        Me.m_cbSlantingLabels.TabIndex = 5
         Me.m_cbSlantingLabels.Text = "Draw slanting &labels"
         Me.m_cbSlantingLabels.UseVisualStyleBackColor = True
         Me.m_cbSlantingLabels.Visible = False
+        '
+        'm_cbFitToScreen
+        '
+        Me.m_cbFitToScreen.AutoSize = True
+        Me.m_cbFitToScreen.Location = New System.Drawing.Point(6, 112)
+        Me.m_cbFitToScreen.Name = "m_cbFitToScreen"
+        Me.m_cbFitToScreen.Size = New System.Drawing.Size(118, 17)
+        Me.m_cbFitToScreen.TabIndex = 4
+        Me.m_cbFitToScreen.Text = "&Fit to available area"
+        Me.m_cbFitToScreen.UseVisualStyleBackColor = True
         '
         'ucPlotOfMTIOptions
         '
         Me.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Controls.Add(Me.m_cbSlantingLabels)
+        Me.Controls.Add(Me.m_cbFitToScreen)
         Me.Controls.Add(Me.m_cbShowGrid)
         Me.Controls.Add(Me.m_rbRectangles)
         Me.Controls.Add(Me.m_rbCircles)
         Me.Controls.Add(Me.m_hdrOptions)
         Me.Name = "ucPlotOfMTIOptions"
-        Me.Size = New System.Drawing.Size(125, 133)
+        Me.Size = New System.Drawing.Size(125, 158)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -140,4 +156,12 @@ Public Class ucPlotOfMTIOptions
         Me.m_content.DrawSlanted = Me.m_cbSlantingLabels.Checked
     End Sub
 
+
+    Private Sub OnFitToScreenChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_cbFitToScreen.CheckedChanged
+
+        If (Me.m_content Is Nothing) Then Return
+
+        Me.m_content.FillPlotToArea = Me.m_cbFitToScreen.Checked
+    End Sub
 End Class

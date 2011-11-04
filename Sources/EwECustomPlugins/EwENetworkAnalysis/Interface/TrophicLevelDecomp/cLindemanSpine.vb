@@ -23,7 +23,6 @@ Public Class cLindemanSpine
     Inherits cContentManager
 
     Private m_graph As cLindemanSpineDiagram = Nothing
-    Private m_plGraph As Panel = Nothing
 
     ''' <summary>Custom toolstrip item</summary>
     Private m_tsStyle As ToolStripDropDownButton = Nothing
@@ -66,12 +65,9 @@ Public Class cLindemanSpine
         Me.AddToolstripItems()
 
         Me.m_graph = New cLindemanSpineDiagram(manager, Me.StyleGuide)
-        Me.m_plGraph = New Panel()
-        Me.Plot.Controls.Add(Me.m_plGraph)
-        Me.Plot.AutoScroll = True
 
-        AddHandler Me.m_plGraph.Paint, AddressOf PaintUC
-        AddHandler Me.m_plGraph.Resize, AddressOf ResizeUC
+        AddHandler Me.Plot.Content.Paint, AddressOf PaintUC
+        AddHandler Me.Plot.Content.Resize, AddressOf ResizeUC
 
         Return bSucces
 
@@ -79,12 +75,9 @@ Public Class cLindemanSpine
 
     Public Overrides Sub Detach()
 
-        RemoveHandler Me.m_plGraph.Paint, AddressOf PaintUC
-        RemoveHandler Me.m_plGraph.Resize, AddressOf ResizeUC
+        RemoveHandler Me.Plot.Content.Paint, AddressOf PaintUC
+        RemoveHandler Me.Plot.Content.Resize, AddressOf ResizeUC
 
-        Me.Plot.Controls.Remove(Me.m_plGraph)
-
-        Me.m_plGraph = Nothing
         Me.m_graph = Nothing
 
         Me.RemoveToolstripItems()
@@ -94,8 +87,8 @@ Public Class cLindemanSpine
     End Sub
 
     Public Overrides Sub DisplayData()
-        Me.m_plGraph.Size = Me.m_graph.Size
-        Me.m_plGraph.Refresh()
+        Me.Plot.Content.Size = Me.m_graph.Size
+        Me.Plot.Content.Refresh()
         Me.UpdateControls()
     End Sub
 

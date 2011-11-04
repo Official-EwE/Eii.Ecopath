@@ -220,6 +220,9 @@
     <Compile Include="Remote control\cNetworkAnalysisRemote.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\ucPlot.resx">
+      <DependentUpon>ucPlot.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interface\frmNetworkAnalysis.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmNetworkAnalysis.vb</DependentUpon>

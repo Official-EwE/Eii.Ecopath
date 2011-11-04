@@ -297,7 +297,6 @@ Public MustInherit Class cContentManager
         Me.Graph.Visible = False
         Me.Plot.Visible = False
         Me.Grid.Visible = False
-        Me.Plot.Visible = False
         Me.Toolstrip.Visible = False
 
         ' Clear grid

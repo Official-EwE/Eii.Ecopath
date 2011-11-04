@@ -27,6 +27,7 @@ Public Class cPlotOfMixedTrophicImpact
     Private m_astrLabelsX() As String
     Private m_astrLabelsY() As String
     Private m_style As ArrayGraph.eRenderStyle = ArrayGraph.eRenderStyle.Circles
+    Private m_bFillPlot As Boolean = False
     Private m_bDrawGrid As Boolean = False
     Private m_bDrawSlanted As Boolean = False
 
@@ -50,14 +51,16 @@ Public Class cPlotOfMixedTrophicImpact
         Me.ToolstripShowOptionEMF()
         Me.ToolstripShowOptionOptions()
 
-        AddHandler Me.Plot.Paint, AddressOf PaintUC
-        AddHandler Me.Plot.Resize, AddressOf ResizeUC
+        AddHandler Me.Plot.Content.Paint, AddressOf OnPaintPlot
+        AddHandler Me.Plot.Resize, AddressOf OnResizePlot
         Return bSucces
     End Function
 
     Public Overrides Sub Detach()
-        RemoveHandler Me.Plot.Paint, AddressOf PaintUC
-        RemoveHandler Me.Plot.Resize, AddressOf ResizeUC
+        RemoveHandler Me.Plot.Content.Paint, AddressOf OnPaintPlot
+        RemoveHandler Me.Plot.Resize, AddressOf OnResizePlot
+        ' Restore fill
+        Me.Plot.Content.Dock = DockStyle.Fill
         MyBase.Detach()
     End Sub
 
@@ -93,9 +96,9 @@ Public Class cPlotOfMixedTrophicImpact
         Dim hdc As IntPtr = Nothing ' :)
         Dim mf As Metafile = Nothing
 
-        Me.Plot.Refresh() 'm_Panel.Refresh()
+        Me.Plot.Refresh()
         fs = New FileStream(strFileName, FileMode.Create)
-        bmp = New Bitmap(Me.Plot.Width, Me.Plot.Height, PixelFormat.Format32bppArgb)
+        bmp = New Bitmap(Me.Plot.Content.Width, Me.Plot.Content.Height, PixelFormat.Format32bppArgb)
         Using g As Graphics = Graphics.FromImage(bmp)
             hdc = g.GetHdc()
             mf = New Metafile(fs, hdc, EmfType.EmfOnly)
@@ -113,12 +116,12 @@ Public Class cPlotOfMixedTrophicImpact
         Return New ucPlotOfMTIOptions(Me)
     End Function
 
-    Private Sub PaintUC(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
+    Private Sub OnPaintPlot(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
         PlotToScreen(e.Graphics)
     End Sub
 
-    Private Sub ResizeUC(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.Plot.Invalidate()
+    Private Sub OnResizePlot(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.Plot.Invalidate(True)
     End Sub
 
     Private Sub PlotToScreen(ByVal g As Graphics)
@@ -126,7 +129,20 @@ Public Class cPlotOfMixedTrophicImpact
         Dim ag As New ArrayGraph()
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
-        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.ClientRectangle, Me.m_style, _
+        If Me.m_bFillPlot Then
+            Me.Plot.Content.Dock = DockStyle.Fill
+        Else
+            Me.Plot.Content.Dock = DockStyle.None
+            Me.Plot.Content.Size = ag.MeasureGraph(Me.UIContext.StyleGuide, g, Me.m_style, _
+                                                   Me.m_asData, _
+                                                   My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, _
+                                                   My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
+                                                   astrLegends, _
+                                                   Me.m_bDrawGrid, _
+                                                   CSng(IIf(Me.m_bDrawSlanted, 30, 0)))
+        End If
+
+        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.Content.ClientRectangle, Me.m_style, _
                 Me.m_asData, _
                 My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, _
                 My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
@@ -157,7 +173,7 @@ Public Class cPlotOfMixedTrophicImpact
         End Get
         Set(ByVal value As Boolean)
             Me.m_style = ArrayGraph.eRenderStyle.Circles
-            Me.Plot.Invalidate()
+            Me.Plot.Invalidate(True)
         End Set
     End Property
 
@@ -167,7 +183,7 @@ Public Class cPlotOfMixedTrophicImpact
         End Get
         Set(ByVal value As Boolean)
             Me.m_style = ArrayGraph.eRenderStyle.Bars
-            Me.Plot.Invalidate()
+            Me.Plot.Invalidate(True)
         End Set
     End Property
 
@@ -177,7 +193,7 @@ Public Class cPlotOfMixedTrophicImpact
         End Get
         Set(ByVal value As Boolean)
             Me.m_bDrawGrid = value
-            Me.Plot.Invalidate()
+            Me.Plot.Invalidate(True)
         End Set
     End Property
 
@@ -187,7 +203,36 @@ Public Class cPlotOfMixedTrophicImpact
         End Get
         Set(ByVal value As Boolean)
             Me.m_bDrawSlanted = value
-            Me.Plot.Invalidate()
+            Me.Plot.Invalidate(True)
+        End Set
+    End Property
+
+    Public Property FillPlotToArea As Boolean
+        Get
+            Return Me.m_bFillPlot
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bFillPlot = value
+            If Me.m_bFillPlot Then
+                Me.Plot.Content.Dock = DockStyle.Fill
+            Else
+                Dim ag As New ArrayGraph()
+                Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
+                Dim g As Graphics = Graphics.FromHwnd(Me.Plot.Content.Handle)
+
+                Me.Plot.Content.Dock = DockStyle.None
+                Me.Plot.Content.Size = ag.MeasureGraph(Me.UIContext.StyleGuide, g, Me.m_style, _
+                                                       Me.m_asData, _
+                                                       My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, _
+                                                       My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
+                                                       astrLegends, _
+                                                       Me.m_bDrawGrid, _
+                                                       CSng(IIf(Me.m_bDrawSlanted, 30, 0)))
+
+                g.Dispose()
+            End If
+
+            Me.Plot.Invalidate(True)
         End Set
     End Property
 
