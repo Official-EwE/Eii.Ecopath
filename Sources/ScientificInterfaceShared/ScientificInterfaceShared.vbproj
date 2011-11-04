@@ -155,7 +155,7 @@
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridShapeThumbnailVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwECheckBoxVisualizer.vb" />
     <Compile Include="Controls\Format provider\cPropertyFormatProvider.vb" />
-    <Compile Include="Controls\Graph renderers\ArrayGraph.vb" />
+    <Compile Include="Controls\Graph renderers\cArrayGraphRenderer.vb" />
     <Compile Include="Controls\Format provider\cEwEFormatProvider.vb" />
     <Compile Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.Designer.vb">
       <DependentUpon>ucCollapsiblePanelController.vb</DependentUpon>

@@ -13,7 +13,7 @@ Imports ScientificInterfaceShared.Style
 ''' <summary>
 ''' Draws an array graph used for Mixed Trophic Index plots.
 ''' </summary>
-Public Class ArrayGraph
+Public Class cArrayGraphRenderer
 
     ''' <summary>Enumerated type, specifying the different styles the graph can use for rendering.</summary>
     Public Enum eRenderStyle As Integer
@@ -399,12 +399,12 @@ Public Class ArrayGraph
 
         Select Case style
             Case eRenderStyle.Circles
-                For y As Integer = 0 To asData.GetUpperBound(1)
+                For y As Integer = 0 To asData.GetUpperBound(1) + 1
                     g.DrawLine(Pens.LightGray, _
                                rect.X, rect.Y + CInt(y * szCellSize.Height), _
                                rect.X + rect.Width, rect.Y + CInt(y * szCellSize.Height))
                 Next y
-                For x As Integer = 0 To asData.GetUpperBound(0)
+                For x As Integer = 0 To asData.GetUpperBound(0) + 1
                     g.DrawLine(Pens.LightGray, _
                                rect.X + CInt(x * szCellSize.Width), rect.Y, _
                                rect.X + CInt(x * szCellSize.Width), rect.Y + rect.Height)
@@ -418,7 +418,7 @@ Public Class ArrayGraph
                                         CInt(szCellSize.Width), rect.Height)
                     Next x
                 End Using
-                For y As Integer = 0 To asData.GetUpperBound(1)
+                For y As Integer = 0 To asData.GetUpperBound(1) + 1
                     g.DrawLine(Pens.LightGray, _
                                rect.X, rect.Y + CInt((y + 0.5) * szCellSize.Height), _
                                rect.X + rect.Width, rect.Y + CInt((y + 0.5) * szCellSize.Height))

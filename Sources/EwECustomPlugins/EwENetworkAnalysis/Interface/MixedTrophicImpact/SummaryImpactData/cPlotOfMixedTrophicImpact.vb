@@ -26,7 +26,7 @@ Public Class cPlotOfMixedTrophicImpact
     Private m_asData(,) As Single
     Private m_astrLabelsX() As String
     Private m_astrLabelsY() As String
-    Private m_style As ArrayGraph.eRenderStyle = ArrayGraph.eRenderStyle.Circles
+    Private m_style As cArrayGraphRenderer.eRenderStyle = cArrayGraphRenderer.eRenderStyle.Circles
     Private m_bFillPlot As Boolean = False
     Private m_bDrawGrid As Boolean = False
     Private m_bDrawSlanted As Boolean = False
@@ -126,7 +126,7 @@ Public Class cPlotOfMixedTrophicImpact
 
     Private Sub PlotToScreen(ByVal g As Graphics)
 
-        Dim ag As New ArrayGraph()
+        Dim ag As New cArrayGraphRenderer()
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
         If Me.m_bFillPlot Then
@@ -153,7 +153,7 @@ Public Class cPlotOfMixedTrophicImpact
 
     Private Sub PlotToEMF(ByVal g As Graphics)
 
-        Dim ag As New ArrayGraph()
+        Dim ag As New cArrayGraphRenderer()
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
 
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
@@ -169,20 +169,20 @@ Public Class cPlotOfMixedTrophicImpact
 
     Public Property DrawCircles() As Boolean
         Get
-            Return Me.m_style = ArrayGraph.eRenderStyle.Circles
+            Return Me.m_style = cArrayGraphRenderer.eRenderStyle.Circles
         End Get
         Set(ByVal value As Boolean)
-            Me.m_style = ArrayGraph.eRenderStyle.Circles
+            Me.m_style = cArrayGraphRenderer.eRenderStyle.Circles
             Me.Plot.Invalidate(True)
         End Set
     End Property
 
     Public Property DrawRectangles() As Boolean
         Get
-            Return Me.m_style = ArrayGraph.eRenderStyle.Bars
+            Return Me.m_style = cArrayGraphRenderer.eRenderStyle.Bars
         End Get
         Set(ByVal value As Boolean)
-            Me.m_style = ArrayGraph.eRenderStyle.Bars
+            Me.m_style = cArrayGraphRenderer.eRenderStyle.Bars
             Me.Plot.Invalidate(True)
         End Set
     End Property
@@ -216,7 +216,7 @@ Public Class cPlotOfMixedTrophicImpact
             If Me.m_bFillPlot Then
                 Me.Plot.Content.Dock = DockStyle.Fill
             Else
-                Dim ag As New ArrayGraph()
+                Dim ag As New cArrayGraphRenderer()
                 Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
                 Dim g As Graphics = Graphics.FromHwnd(Me.Plot.Content.Handle)
 
