@@ -24,20 +24,20 @@ Namespace Other
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsColors))
-            Me.m_lbItems = New System.Windows.Forms.ListBox
-            Me.m_btnResetAll = New System.Windows.Forms.Button
-            Me.m_lblItemForeColor = New System.Windows.Forms.Label
-            Me.m_cmbItemForeground = New System.Windows.Forms.ComboBox
-            Me.m_lblItemBackColor = New System.Windows.Forms.Label
-            Me.m_btnCustomForeColor = New System.Windows.Forms.Button
-            Me.m_cmbItemBackground = New System.Windows.Forms.ComboBox
-            Me.m_btnCustomBackColor = New System.Windows.Forms.Button
-            Me.m_grpExample = New System.Windows.Forms.GroupBox
-            Me.m_lblExample = New System.Windows.Forms.Label
-            Me.m_hdrCaption = New cEwEHeaderLabel
-            Me.m_lblDescription = New System.Windows.Forms.Label
-            Me.m_lblSelection = New System.Windows.Forms.Label
-            Me.m_lblColorItem = New System.Windows.Forms.Label
+            Me.m_lbItems = New System.Windows.Forms.ListBox()
+            Me.m_btnResetAll = New System.Windows.Forms.Button()
+            Me.m_lblItemForeColor = New System.Windows.Forms.Label()
+            Me.m_cmbItemForeground = New System.Windows.Forms.ComboBox()
+            Me.m_lblItemBackColor = New System.Windows.Forms.Label()
+            Me.m_btnCustomForeColor = New System.Windows.Forms.Button()
+            Me.m_cmbItemBackground = New System.Windows.Forms.ComboBox()
+            Me.m_btnCustomBackColor = New System.Windows.Forms.Button()
+            Me.m_grpExample = New System.Windows.Forms.GroupBox()
+            Me.m_lblExample = New System.Windows.Forms.Label()
+            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblDescription = New System.Windows.Forms.Label()
+            Me.m_lblSelection = New System.Windows.Forms.Label()
+            Me.m_lblColorItem = New System.Windows.Forms.Label()
             Me.m_grpExample.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -107,7 +107,10 @@ Namespace Other
             '
             'm_hdrCaption
             '
+            Me.m_hdrCaption.CanCollapseParent = False
+            Me.m_hdrCaption.CollapsedParentHeight = 0
             resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
+            Me.m_hdrCaption.IsCollapsed = False
             Me.m_hdrCaption.Name = "m_hdrCaption"
             '
             'm_lblDescription
@@ -125,7 +128,7 @@ Namespace Other
             resources.ApplyResources(Me.m_lblColorItem, "m_lblColorItem")
             Me.m_lblColorItem.Name = "m_lblColorItem"
             '
-            'ucAppColors
+            'ucOptionsColors
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -142,7 +145,7 @@ Namespace Other
             Me.Controls.Add(Me.m_lblItemForeColor)
             Me.Controls.Add(Me.m_btnResetAll)
             Me.Controls.Add(Me.m_lbItems)
-            Me.Name = "ucAppColors"
+            Me.Name = "ucOptionsColors"
             Me.m_grpExample.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
