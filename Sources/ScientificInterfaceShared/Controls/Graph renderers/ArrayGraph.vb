@@ -1,4 +1,6 @@
-﻿Option Strict On
+﻿#Region " Imports "
+
+Option Strict On
 Option Explicit On
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
@@ -6,17 +8,20 @@ Imports System.Drawing.Text
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
 
+#End Region ' Imports
+
 ''' <summary>
 ''' Draws an array graph used for Mixed Trophic Index plots.
 ''' </summary>
 Public Class ArrayGraph
 
-    ''' <summary>Spacer between cells, expressed in cell size</summary>
-    ''' <remarks></remarks>
-    Private Const cCELL_PADDING_RATIO As Single = 0.2!
-
+    ''' <summary>Enumerated type, specifying the different styles the graph can use for rendering.</summary>
     Public Enum eRenderStyle As Integer
+        ''' <summary>Values in the array grid are rendered as circles, scaled to the maximum absolute value in the graph.
+        ''' Positive values are rendered as clear circles, negative values are rendered as filled circles.</summary>
         Circles
+        ''' <summary>Values in the array grid are rendered as bars. Bar heights are scaled to the maximum absolute value in the graph.
+        ''' Positive values are rendered as clear bars above a central divider line, negative values are rendered as filled bars below a central divider line.</summary>
         Bars
     End Enum
 
@@ -25,17 +30,86 @@ Public Class ArrayGraph
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Returns the minimum area required to draw all items in a legible manner.
     ''' </summary>
-    ''' <param name="g">Graphics to write onto.</param>
-    ''' <param name="rcRender">Area the rendition is allowed to use.</param>
-    ''' <param name="asData">Array (NxN) of single values to render.</param>
-    ''' <param name="strTitleX">Title to render along the X axis.</param>
-    ''' <param name="astrLabelsX">Labels to render along the X axis.</param>
-    ''' <param name="strTitleY">Title to render along the Y axis.</param>
-    ''' <param name="astrLabelsY">Labels to render along the Y axis. If this parameter is omitted,
-    ''' the X-axis labels are plotted along the Y axis and the grid is presumed to be square.</param>
-    ''' <param name="astrLegends">Legends to render</param>
+    ''' <param name="sg">StyleGuide to use for rendering.</param>
+    ''' <param name="g">Graphics to measure onto.</param>
+    ''' <param name="style"><see cref="eRenderStyle"/> to use.</param>
+    ''' <param name="asData">Data to render.</param>
+    ''' <param name="strTitleX">X-axis title to render.</param>
+    ''' <param name="astrLabelsX">X-axis labels to render.</param>
+    ''' <param name="strTitleY">Y-axis title to render.</param>
+    ''' <param name="astrLabelsY">Y-axis labels to render.</param>
+    ''' <param name="astrLegends">Legend strings to render.</param>
+    ''' <param name="bShowGrid">Flag, indicating whether grid lines should be rendered.</param>
+    ''' <param name="sLabelAngle">Top label angle to use.</param>
+    ''' <returns>A size giving the minimum dimensions required to draw the graph.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function MeasureGraph(ByVal sg As cStyleGuide, _
+                    ByVal g As Graphics, ByVal style As eRenderStyle, _
+                    ByVal asData As Single(,), ByVal strTitleX As String, ByVal astrLabelsX As String(), _
+                    Optional ByVal strTitleY As String = Nothing, Optional ByVal astrLabelsY As String() = Nothing, _
+                    Optional ByVal astrLegends As String() = Nothing, _
+                    Optional ByVal bShowGrid As Boolean = False, _
+                    Optional ByVal sLabelAngle As Single = 0) As Size
+
+        ' Use system fonts
+        Dim ftScale As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
+        Dim ftLegend As Font = sg.Font(cStyleGuide.eApplicationFontType.Legend)
+        Dim ftSubtitle As Font = sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
+
+        ' ToDo: take right-to-left reading order into account
+        ' ToDo: allow side label positioning (left or right)
+
+        ' == Fix defaults ==
+        ' Use X-axis labels for both axis if Y-axis labels are omitted
+        If astrLabelsY Is Nothing Then astrLabelsY = astrLabelsX
+
+        ' == Sanity checks ==
+        ' Make sure data and label dimensions fit
+        Debug.Assert(asData.GetUpperBound(0) = astrLabelsX.Length - 1, "Data dimension not compatible with X-axis labels")
+        Debug.Assert(asData.GetUpperBound(1) = astrLabelsY.Length - 1, "Data dimension not compatible with Y-axis labels")
+
+        ' Measure max label sizes
+        Dim szLabelTopMaxSize As Size = Me.CalcLabelMaxSize(g, ftScale, astrLabelsX)
+        Dim szLabelSideMaxSize As Size = Me.CalcLabelMaxSize(g, ftScale, astrLabelsY)
+        Dim szLegendTop As Size = Me.CalcLegendMaxSize(g, ftLegend, strTitleX)
+        Dim szLegendSide As Size = Me.CalcLegendMaxSize(g, ftLegend, strTitleY)
+
+        ' Graph layout explanation:
+        '
+        '   / Area 1:        / Area 4:
+        '  / Slanted labels / Graph legends
+        ' +----------------+-------------
+        ' |                |
+        ' | Area 2:        | Area 3:
+        ' | Grid           | Horz. labels
+        ' |                |
+        ' +----------------+-------------
+        Dim iArea3Width As Integer = szLabelSideMaxSize.Width + szLegendSide.Height * 2
+        Dim iArea1Height As Integer = szLabelTopMaxSize.Width + szLegendTop.Height * 2
+
+        Return New Size(CInt(astrLabelsX.Length * (szLabelTopMaxSize.Height + 2)) + iArea3Width, _
+                        CInt(astrLabelsY.Length * (szLabelSideMaxSize.Height + 2)) + iArea1Height)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Render the graph.
+    ''' </summary>
+    ''' <param name="sg">StyleGuide to use for rendering.</param>
+    ''' <param name="g">Graphics to measure onto.</param>
+    ''' <param name="rcRender">Rectangle to render onto.</param>
+    ''' <param name="style"><see cref="eRenderStyle"/> to use.</param>
+    ''' <param name="asData">Data to render.</param>
+    ''' <param name="strTitleX">X-axis title to render.</param>
+    ''' <param name="astrLabelsX">X-axis labels to render.</param>
+    ''' <param name="strTitleY">Y-axis title to render.</param>
+    ''' <param name="astrLabelsY">Y-axis labels to render.</param>
+    ''' <param name="astrLegends">Legend strings to render.</param>
+    ''' <param name="bShowGrid">Flag, indicating whether grid lines should be rendered.</param>
+    ''' <param name="sLabelAngle">Top label angle to use.</param>
+    ''' <returns>A size giving the minimum dimensions required to draw the graph.</returns>
     ''' -----------------------------------------------------------------------
     Public Sub Draw(ByVal sg As cStyleGuide, _
                     ByVal g As Graphics, ByVal rcRender As Rectangle, _
