@@ -89,8 +89,8 @@ Public Class cArrayGraphRenderer
         Dim iArea3Width As Integer = szLabelSideMaxSize.Width + szLegendSide.Height * 2
         Dim iArea1Height As Integer = szLabelTopMaxSize.Width + szLegendTop.Height * 2
 
-        Return New Size(CInt(astrLabelsX.Length * (szLabelTopMaxSize.Height + 2)) + iArea3Width, _
-                        CInt(astrLabelsY.Length * (szLabelSideMaxSize.Height + 2)) + iArea1Height)
+        Return New Size(CInt(astrLabelsX.Length * (szLabelTopMaxSize.Height + 2)) + iArea3Width + 1, _
+                        CInt(astrLabelsY.Length * (szLabelSideMaxSize.Height + 2)) + iArea1Height + 1)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -109,7 +109,6 @@ Public Class cArrayGraphRenderer
     ''' <param name="astrLegends">Legend strings to render.</param>
     ''' <param name="bShowGrid">Flag, indicating whether grid lines should be rendered.</param>
     ''' <param name="sLabelAngle">Top label angle to use.</param>
-    ''' <returns>A size giving the minimum dimensions required to draw the graph.</returns>
     ''' -----------------------------------------------------------------------
     Public Sub Draw(ByVal sg As cStyleGuide, _
                     ByVal g As Graphics, ByVal rcRender As Rectangle, _
@@ -119,6 +118,8 @@ Public Class cArrayGraphRenderer
                     Optional ByVal astrLegends As String() = Nothing, _
                     Optional ByVal bShowGrid As Boolean = False, _
                     Optional ByVal sLabelAngle As Single = 0)
+
+        rcRender.Height -= 1
 
         ' Use system fonts
         Dim ftScale As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
@@ -319,10 +320,7 @@ Public Class cArrayGraphRenderer
         ' must be moved by {szLabelMaxSize.height} * Math.Cos(sAngle)
 
         For i As Integer = 0 To astrLabels.GetUpperBound(0)
-            'DrawAngledText(g, astrLabels(i), _
-            '            CInt(i * sCellSize + sCellSize * cCELL_PADDING_RATIO), _
-            '            CInt(rect.Height + Math.Cos(sAngle) * szLabelMaxSize.Height), sAngle)
-            DrawAngledText(g, ftScale, astrLabels(i), _
+             DrawAngledText(g, ftScale, astrLabels(i), _
                  CInt(i * szCellSize.Width), _
                  CInt(rect.Height + Math.Cos(sAngle) * szLabelMaxSize.Height), sAngle)
         Next
