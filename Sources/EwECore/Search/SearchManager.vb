@@ -333,7 +333,7 @@ Public MustInherit Class cThreadWaitBase
         Dim totTime As Integer
         Dim processing As Boolean = True
         Dim n As Integer
-        System.Console.WriteLine("Starting Waiting.")
+        'System.Console.WriteLine("Starting Waiting.")
 
         'if WaitTimeInMillSec  = -1 wait until completed(WaitOne returns True) no matter how long
         'if WaitTimeInMillSec = 0 then wait for zero time even if WaitOne returns False, process has not completed
@@ -362,7 +362,7 @@ Public MustInherit Class cThreadWaitBase
 
         Loop While processing
 
-        System.Console.WriteLine("Finished waiting " & totTime.ToString & " milliseconds, " & n.ToString & " iterations")
+        'System.Console.WriteLine("Finished waiting " & totTime.ToString & " milliseconds, " & n.ToString & " iterations")
         Return result
 
     End Function
