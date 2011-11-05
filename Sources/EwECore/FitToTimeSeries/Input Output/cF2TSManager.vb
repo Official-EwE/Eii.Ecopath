@@ -557,12 +557,12 @@ Public Class cF2TSManager
     ''' <remarks>This can be used by an interface to call the model then wait for results before continuing processing.</remarks>
     Public Function Wait(Optional ByVal WaitTimeInMilSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
         Dim result As Boolean
-        System.Console.WriteLine("Fit to time series: Waiting.")
+        'System.Console.WriteLine("Fit to time series: Waiting.")
 
         'block until m_SignalState changes
         result = Me.m_SignalState.WaitOne(WaitTimeInMilSec)
 
-        System.Console.WriteLine("Fit to time series: Finished waiting.")
+        'System.Console.WriteLine("Fit to time series: Finished waiting.")
         Return result
 
     End Function
