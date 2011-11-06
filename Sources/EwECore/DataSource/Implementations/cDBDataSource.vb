@@ -1519,8 +1519,9 @@ Namespace DataSources
             If (stanzaDS.Nsplit > 0) Then
                 Try
                     ' Get the highest number of groups in all split groups. Note that the sequence value field is not used here.
-                    stanzaDS.MaxStanza = CInt(Me.m_db.GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID)"))
-                Catch ex As Exception
+                    ' JS 50Nov2011: appended 'AS X' for SQL server and the likes. Works with MS Access.
+                    stanzaDS.MaxStanza = CInt(Me.m_db.GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X"))
+                 Catch ex As Exception
                     ' There are probably no stanza groups defined yet
                     stanzaDS.MaxStanza = 0
                 End Try
@@ -1537,13 +1538,14 @@ Namespace DataSources
             stanzaDS.redimStanza()
 
             ' First read Stanza
+            ' JS 05Nov11: SQL Server does not allow readers for StanzaLifeStage to be opened after the master table Stanza has been opened
+            '             This is unfortunate and will require some serious refactoring throughout this class. Basically, child table readers
+            '             will need to be opened before master tables, or readers will have to operate on joined select statements. Not fun.
             rdStanza = Me.m_db.GetReader("SELECT * FROM Stanza")
+
             If rdStanza IsNot Nothing Then
                 iStanza = 0
                 While rdStanza.Read()
-
-                    ' Is valid stanza?
-                    iLifeStage = CInt(Me.m_db.GetValue(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0})", CInt(rdStanza("StanzaID")))))
 
                     ' JS 11May2010: Stanza configs without stanza groups are now loaded.
                     '               This *could* screw up the core calculations, but in a way
@@ -1552,7 +1554,6 @@ Namespace DataSources
                     '               even if stanzaDS.MaxStanza were 0. Based on this behaviour
                     '               there seems little harm by allowing the empty stanza group
                     '               names to be available in the core and to an interface.
-                    ''If (iLifeStage > 0) Then
 
                     ' Read this stanza
                     iStanza += 1
@@ -1560,8 +1561,8 @@ Namespace DataSources
                     Try
 
                         stanzaDS.StanzaDBID(iStanza) = CInt(rdStanza("StanzaID"))
-                        ' JS 06jun20: StanzaName array 1-dimensional. GroupNames only seem to matter to the EwE5 GUI.
-                        '             EwE6 will resolve stanza group names via iCoreInputOutput objects to keep track of 'live' changes.
+                        ' JS 20jun06: StanzaName array 1-dimensional. GroupNames only seem to matter to the EwE5 GUI.
+                        '             EwE6 will resolve stanza group names via ICoreInputOutput objects to keep track of 'live' changes.
                         stanzaDS.StanzaName(iStanza) = CStr(rdStanza("StanzaName"))
 
                         stanzaDS.RecPowerSplit(iStanza) = CSng(rdStanza("RecPower"))
@@ -1592,7 +1593,7 @@ Namespace DataSources
 
                             ' Resolve group index
                             iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(rdLifeStage("GroupID")))
-                            ' JS 06jun20: Disabled (see comment above)
+                            ' JS 20jun06: Disabled (see comment above)
                             ' ecosimDS.StanzaName(nStanza, nGroup) = ecopathDS.GroupName(iGroup)
                             stanzaDS.EcopathCode(iStanza, iLifeStage) = iGroup
                             stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rdLifeStage("Mortality"))
@@ -1613,13 +1614,6 @@ Namespace DataSources
 
                     ' Update number of groups in this stanza
                     stanzaDS.Nstanza(iStanza) = iLifeStage
-
-                    ' JS11May2010 disabled (see iLifestage > 0 test above)
-                    ''Debug.Assert(iLifeStage >= 1, String.Format("Stanza group {0}, ID {1} has no life stages!", stanzaDS.StanzaName(iStanza), stanzaDS.StanzaDBID(iStanza)))
-                    ''Else
-                    ''Me.LogMessage(String.Format("Stanza group {0}, ID {1} has no life stages. This group is not read", rdStanza("StanzaName"), rdStanza("StanzaID")), eMessageType.Any, eMessageImportance.Maintenance)
-                    ''stanzaDS.Nsplit -= 1
-                    ''End If
 
                 End While
 
@@ -1917,16 +1911,17 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroup ORDER BY Sequence ASC")
-            Dim iGroup As Integer = 1
-            Dim sTemp As Single = 0.0
-            Dim strTemp As String = ""
-            Dim bSucces As Boolean = True
 
             ' Init data structure
             ecopathDS.NumGroups = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup"))
             ecopathDS.NumLiving = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup WHERE (TYPE <= 1)"))
             ecopathDS.NumDetrit = ecopathDS.NumGroups - ecopathDS.NumLiving
+
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroup ORDER BY Sequence ASC")
+            Dim iGroup As Integer = 1
+            Dim sTemp As Single = 0.0
+            Dim strTemp As String = ""
+            Dim bSucces As Boolean = True
 
             ' Allocate space
             If (Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables()) Then

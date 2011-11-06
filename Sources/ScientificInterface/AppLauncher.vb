@@ -1069,41 +1069,21 @@ Public Class AppLauncher
     ''' <param name="strFileName">File name of the Access database to convert. If a
     ''' conversion is necessary this parameter will receive the file name of the
     ''' converted file.</param>
-    ''' <returns>One of the following <see cref="cEwEDatabase.eCompatibilityTypes"/>
-    ''' </returns>
+    ''' <returns>A <see cref="cEwEDatabase.eCompatibilityTypes"/> value</returns>
+    ''' <remarks>
+    ''' This logic will need to change entirely. A database 
+    ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Private Function CovertToEwE6(ByRef strFileName As String) As cEwEDatabase.eCompatibilityTypes
 
-        Dim dst As eDataSourceTypes = eDataSourceTypes.NotSet
         Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
         Dim access As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
-        ' Detect file type
-        dst = cDataSourceFactory.GetSupportedType(strFileName)
-        Select Case dst
-
-            Case eDataSourceTypes.Access2007, _
-                 eDataSourceTypes.Access2003
-                ' Is database, whoohoo
-                Dim db As New cEwEAccessDatabase()
-                access = db.Open(strFileName)
-                If (access = eDatasourceAccessType.Opened) Then
-                    comp = db.Compatibility
-                    db.Close()
-                End If
-
-            Case eDataSourceTypes.EII
-                ' Is EII
-                comp = cEwEDatabase.eCompatibilityTypes.EwE5Supported
-
-            Case eDataSourceTypes.NotSet
-                ' ?Que?
-                Return comp
-
-        End Select
+        ' Get compatibility
+        comp = cDataSourceFactory.GetCompatibility(strFileName, access)
 
         ' Has access problems?
-        If access <> eDatasourceAccessType.Opened Then
+        If (access <> eDatasourceAccessType.Opened) Then
             ' #Yes: report access error
             Me.ReportFileAccessError(access, strFileName)
             ' Abort

@@ -113,6 +113,7 @@
     <Compile Include="Auxiliary\cAuxiliaryData.vb" />
     <Compile Include="Auxiliary\cReference.vb" />
     <Compile Include="Auxiliary\cVisualStyle.vb" />
+    <Compile Include="Database\cEwESQLServerDatabase.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchParameters.vb" />
     <Compile Include="Contaminant Tracer\cContaminantTracer.vb" />

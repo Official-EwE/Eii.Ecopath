@@ -32,6 +32,9 @@ Namespace DataSources
                 Case ".eii" : Return eDataSourceTypes.EII
                 Case ".mdb", ".ewemdb" : Return eDataSourceTypes.Access2003
                 Case ".accdb", ".eweaccdb" : Return eDataSourceTypes.Access2007
+#If DEBUG Then
+                Case ".mdf" : Return eDataSourceTypes.SQLServer
+#End If
             End Select
             Return eDataSourceTypes.NotSet
         End Function
@@ -49,8 +52,59 @@ Namespace DataSources
                 Case eDataSourceTypes.Access2003 : Return ".ewemdb"
                 Case eDataSourceTypes.EII : Return ".eii"
                 Case eDataSourceTypes.Access2007 : Return ".eweaccdb"
+#If DEBUG Then
+                Case eDataSourceTypes.SQLServer : Return ".mdf"
+#End If
             End Select
             Return ""
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the compatibility of a given database with the current code.
+        ''' </summary>
+        ''' <param name="strDatabase"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetCompatibility(strDatabase As String, ByRef access As eDatasourceAccessType) As cEwEDatabase.eCompatibilityTypes
+
+            Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
+            Dim dst As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strDatabase)
+
+            ' Detect file type
+            Select Case dst
+
+                Case eDataSourceTypes.Access2007, _
+                     eDataSourceTypes.Access2003
+                    ' Is database, whoohoo
+                    Dim db As New cEwEAccessDatabase()
+                    access = db.Open(strDatabase)
+                    If (access = eDatasourceAccessType.Opened) Then
+                        comp = db.Compatibility
+                        db.Close()
+                    End If
+
+                Case eDataSourceTypes.SQLServer
+                    ' Is database, whoohoo
+                    Dim db As New cEwESQLServerDatabase()
+                    access = db.Open(strDatabase)
+                    If (access = eDatasourceAccessType.Opened) Then
+                        comp = db.Compatibility
+                        db.Close()
+                    End If
+
+                Case eDataSourceTypes.EII
+                    ' Is EII
+                    comp = cEwEDatabase.eCompatibilityTypes.EwE5Supported
+
+                Case eDataSourceTypes.NotSet
+                    ' ?Que?
+                    comp = cEwEDatabase.eCompatibilityTypes.Unknown
+            End Select
+
+            Return comp
+
         End Function
 
         ''' -------------------------------------------------------------------
@@ -89,9 +143,15 @@ Namespace DataSources
                 ' EII files need to be imported instead
                 'Case eDataSourceTypes.EII
                 '    Return New cEIIDataSource()
-                Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
+                Case eDataSourceTypes.Access2003, _
+                     eDataSourceTypes.Access2007
                     ' Create a DB datasource on a MS Access database
                     Return New cDBDataSource(New cEwEAccessDatabase())
+#If DEBUG Then
+                Case eDataSourceTypes.SQLServer
+                    ' Create a DB datasource on a MS Access database
+                    Return New cDBDataSource(New cEwESQLServerDatabase())
+#End If
                 Case Else
                     '
             End Select
