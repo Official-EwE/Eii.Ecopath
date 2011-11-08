@@ -2214,8 +2214,10 @@ Namespace Core
         ''' <summary>Datasource capable of handling ACCDB and MDB formatted data.</summary>
         <System.Obsolete("Deprecated; use eDataSourceTypes.Access2007 instead")> _
         ACCDB = Access2007
+#If DEBUG Then
         ''' <summary>Datasource capable of connection to SQL Server-like databases.</summary>
         SQLServer = 4
+#End If
     End Enum
 
     ''' -------------------------------------------------------------------
