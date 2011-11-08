@@ -85,6 +85,7 @@ Namespace DataSources
                         db.Close()
                     End If
 
+#If debug Then
                 Case eDataSourceTypes.SQLServer
                     ' Is database, whoohoo
                     Dim db As New cEwESQLServerDatabase()
@@ -93,6 +94,7 @@ Namespace DataSources
                         comp = db.Compatibility
                         db.Close()
                     End If
+#End If
 
                 Case eDataSourceTypes.EII
                     ' Is EII
