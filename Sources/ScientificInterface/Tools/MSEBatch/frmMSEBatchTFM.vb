@@ -39,6 +39,9 @@ Public Class frmMSEBatchTFM
 
         UpdateControls()
 
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.EcoSim}
+
+
     End Sub
 
 
@@ -114,6 +117,32 @@ Public Class frmMSEBatchTFM
         If Me.m_BatchManager Is Nothing Then Exit Sub
         Dim grp As cCoreInputOutputBase = DirectCast(Me.cbGroups.SelectedItem, cCoreInputOutputControlItem).Source
         Me.grdIters.iSelGroup = grp.Index
+    End Sub
+
+
+    Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+
+        Select Case msg.Source
+
+            Case eCoreComponentType.MSE
+
+                If msg.DataType = eDataTypes.MSEBatchTFMInput Then
+                    'Something has update the TFM inputs
+
+                    If Me.grdGroups.iCurIter > Me.m_BatchManager.Parameters.nTFMIteration Then
+                        Me.UpDwnIter.Maximum = Me.m_BatchManager.Parameters.nTFMIteration
+                        Me.UpDwnIter.Value = Me.m_BatchManager.Parameters.nTFMIteration
+                        Me.grdGroups.iCurIter = Me.m_BatchManager.Parameters.nTFMIteration
+                    End If
+
+                    Me.grdGroups.RefreshContent()
+
+                    Me.grdIters.RefreshContent()
+                End If
+
+
+        End Select
+
     End Sub
 
 

@@ -312,6 +312,9 @@ Namespace MSEBatchManager
                 tfm.CalcValues()
             Next
 
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
+                                                        eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
+
         End Sub
 
 
@@ -356,6 +359,9 @@ Namespace MSEBatchManager
                 End If
 
             Next
+
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
+                                                       eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
 
         End Sub
 
