@@ -774,11 +774,11 @@ Public Class cData
             Return Nothing
         End If
 
-        ' Check for already present link
-        If unitSource.HasTarget(unitTarget) Then
-            MsgBox("Link already present", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
-            Return Nothing
-        End If
+        '' Check for already present link
+        'If unitSource.HasTarget(unitTarget) Then
+        '    MsgBox("Link already present", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+        '    Return Nothing
+        'End If
 
         Dim link As New cLink()
 

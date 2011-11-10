@@ -26,41 +26,42 @@ Partial Class ucEditFlow
     'Do not modify it using the code editor.
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucEditFlow))
-        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
-        Me.m_tsbSave = New System.Windows.Forms.ToolStripSplitButton
-        Me.m_tsmiSave = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiExportToImage = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsbAdd = New System.Windows.Forms.ToolStripDropDownButton
-        Me.m_tsbCreateProducersForFleets = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsbCreateProducer = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsbCreateProcessing = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsbCreateDistribution = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsbCreateWholesaler = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsbCreateRetailer = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsbCreateConsumer = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsbMove = New System.Windows.Forms.ToolStripButton
-        Me.m_tsbLink = New System.Windows.Forms.ToolStripButton
-        Me.m_tsbDelete = New System.Windows.Forms.ToolStripButton
-        Me.m_tsSeparator = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsbShowGrid = New System.Windows.Forms.ToolStripButton
-        Me.m_tsbArrange = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsddZoom = New System.Windows.Forms.ToolStripDropDownButton
-        Me.m_tsmiZoom50 = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiZoom75 = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiZoom100 = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiZoom125 = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiZoom150 = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_tsmiZoom200 = New System.Windows.Forms.ToolStripMenuItem
-        Me.m_split = New System.Windows.Forms.SplitContainer
-        Me.m_plFlow = New EwEValueChainPlugin.plFlow
-        Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel
-        Me.m_pgDetails = New System.Windows.Forms.PropertyGrid
-        Me.m_selector = New EwEValueChainPlugin.ucSelector2
+        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tsbSave = New System.Windows.Forms.ToolStripSplitButton()
+        Me.m_tsmiSave = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiExportToImage = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbAdd = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.m_tsbCreateProducersForFleets = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbCreateProducer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsbCreateProcessing = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsbCreateDistribution = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsbCreateWholesaler = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsbCreateRetailer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsbCreateConsumer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbMove = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbLink = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbDelete = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsSeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbShowGrid = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbArrange = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsddZoom = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.m_tsmiZoom50 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiZoom75 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiZoom100 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiZoom125 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiZoom150 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiZoom200 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_split = New System.Windows.Forms.SplitContainer()
+        Me.m_plFlow = New EwEValueChainPlugin.plFlow()
+        Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pgDetails = New System.Windows.Forms.PropertyGrid()
+        Me.m_selector = New EwEValueChainPlugin.ucSelector2()
         Me.m_tsMain.SuspendLayout()
+        CType(Me.m_split, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_split.Panel1.SuspendLayout()
         Me.m_split.Panel2.SuspendLayout()
         Me.m_split.SuspendLayout()
@@ -73,6 +74,7 @@ Partial Class ucEditFlow
         Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator3, Me.m_tsbAdd, Me.ToolStripSeparator1, Me.m_tsbMove, Me.m_tsbLink, Me.m_tsbDelete, Me.m_tsSeparator, Me.m_tsbShowGrid, Me.m_tsbArrange, Me.ToolStripSeparator5, Me.m_tsddZoom})
         Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
         Me.m_tsMain.Name = "m_tsMain"
+        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.m_tsMain.Size = New System.Drawing.Size(756, 38)
         Me.m_tsMain.TabIndex = 1
         '
@@ -133,7 +135,7 @@ Partial Class ucEditFlow
         '
         Me.m_tsbCreateProducer.Name = "m_tsbCreateProducer"
         Me.m_tsbCreateProducer.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Shift) _
-                    Or System.Windows.Forms.Keys.D1), System.Windows.Forms.Keys)
+            Or System.Windows.Forms.Keys.D1), System.Windows.Forms.Keys)
         Me.m_tsbCreateProducer.Size = New System.Drawing.Size(234, 22)
         Me.m_tsbCreateProducer.Text = "New &producer"
         '
@@ -141,7 +143,7 @@ Partial Class ucEditFlow
         '
         Me.m_tsbCreateProcessing.Name = "m_tsbCreateProcessing"
         Me.m_tsbCreateProcessing.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Shift) _
-                    Or System.Windows.Forms.Keys.D2), System.Windows.Forms.Keys)
+            Or System.Windows.Forms.Keys.D2), System.Windows.Forms.Keys)
         Me.m_tsbCreateProcessing.Size = New System.Drawing.Size(234, 22)
         Me.m_tsbCreateProcessing.Text = "New pro&cessing"
         '
@@ -149,7 +151,7 @@ Partial Class ucEditFlow
         '
         Me.m_tsbCreateDistribution.Name = "m_tsbCreateDistribution"
         Me.m_tsbCreateDistribution.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Shift) _
-                    Or System.Windows.Forms.Keys.D3), System.Windows.Forms.Keys)
+            Or System.Windows.Forms.Keys.D3), System.Windows.Forms.Keys)
         Me.m_tsbCreateDistribution.Size = New System.Drawing.Size(234, 22)
         Me.m_tsbCreateDistribution.Text = "New d&istribution"
         '
@@ -157,7 +159,7 @@ Partial Class ucEditFlow
         '
         Me.m_tsbCreateWholesaler.Name = "m_tsbCreateWholesaler"
         Me.m_tsbCreateWholesaler.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Shift) _
-                    Or System.Windows.Forms.Keys.D4), System.Windows.Forms.Keys)
+            Or System.Windows.Forms.Keys.D4), System.Windows.Forms.Keys)
         Me.m_tsbCreateWholesaler.Size = New System.Drawing.Size(234, 22)
         Me.m_tsbCreateWholesaler.Text = "New &wholesaler"
         '
@@ -165,7 +167,7 @@ Partial Class ucEditFlow
         '
         Me.m_tsbCreateRetailer.Name = "m_tsbCreateRetailer"
         Me.m_tsbCreateRetailer.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Shift) _
-                    Or System.Windows.Forms.Keys.D5), System.Windows.Forms.Keys)
+            Or System.Windows.Forms.Keys.D5), System.Windows.Forms.Keys)
         Me.m_tsbCreateRetailer.Size = New System.Drawing.Size(234, 22)
         Me.m_tsbCreateRetailer.Text = "New &retailer"
         '
@@ -173,7 +175,7 @@ Partial Class ucEditFlow
         '
         Me.m_tsbCreateConsumer.Name = "m_tsbCreateConsumer"
         Me.m_tsbCreateConsumer.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Shift) _
-                    Or System.Windows.Forms.Keys.D6), System.Windows.Forms.Keys)
+            Or System.Windows.Forms.Keys.D6), System.Windows.Forms.Keys)
         Me.m_tsbCreateConsumer.Size = New System.Drawing.Size(234, 22)
         Me.m_tsbCreateConsumer.Text = "New &consumer"
         '
@@ -332,7 +334,7 @@ Partial Class ucEditFlow
         Me.m_tlpDetails.Margin = New System.Windows.Forms.Padding(0)
         Me.m_tlpDetails.Name = "m_tlpDetails"
         Me.m_tlpDetails.RowCount = 2
-        Me.m_tlpDetails.RowStyles.Add(New System.Windows.Forms.RowStyle)
+        Me.m_tlpDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.m_tlpDetails.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.m_tlpDetails.Size = New System.Drawing.Size(181, 425)
         Me.m_tlpDetails.TabIndex = 0
@@ -340,9 +342,9 @@ Partial Class ucEditFlow
         'm_pgDetails
         '
         Me.m_pgDetails.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_pgDetails.Location = New System.Drawing.Point(3, 3)
+        Me.m_pgDetails.Location = New System.Drawing.Point(3, 123)
         Me.m_pgDetails.Name = "m_pgDetails"
-        Me.m_pgDetails.Size = New System.Drawing.Size(175, 419)
+        Me.m_pgDetails.Size = New System.Drawing.Size(175, 299)
         Me.m_pgDetails.TabIndex = 0
         '
         'm_selector
@@ -351,8 +353,8 @@ Partial Class ucEditFlow
         Me.m_selector.Location = New System.Drawing.Point(0, 0)
         Me.m_selector.Margin = New System.Windows.Forms.Padding(0)
         Me.m_selector.Name = "m_selector"
-        Me.m_selector.Selection = New Object() {Nothing}
-        Me.m_selector.Size = New System.Drawing.Size(181, 23)
+        Me.m_selector.Selection = New EwEUtils.Database.cEwEDatabase.cOOPStorable(-1) {}
+        Me.m_selector.Size = New System.Drawing.Size(181, 120)
         Me.m_selector.TabIndex = 1
         '
         'ucEditFlow
@@ -368,6 +370,7 @@ Partial Class ucEditFlow
         Me.m_tsMain.PerformLayout()
         Me.m_split.Panel1.ResumeLayout(False)
         Me.m_split.Panel2.ResumeLayout(False)
+        CType(Me.m_split, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_split.ResumeLayout(False)
         Me.m_tlpDetails.ResumeLayout(False)
         Me.ResumeLayout(False)

@@ -24,11 +24,11 @@ Partial Class ucSelector2
     Private Sub InitializeComponent()
         Me.m_lbxBits = New System.Windows.Forms.ListBox()
         Me.m_tlpBits = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_plControls = New System.Windows.Forms.Panel()
-        Me.m_btnAdd = New System.Windows.Forms.Button()
         Me.m_btnRemove = New System.Windows.Forms.Button()
+        Me.m_btnAdd = New System.Windows.Forms.Button()
+        Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel()
         Me.m_tlpBits.SuspendLayout()
-        Me.m_plControls.SuspendLayout()
+        Me.m_tlpButtons.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_lbxBits
@@ -36,55 +36,64 @@ Partial Class ucSelector2
         Me.m_lbxBits.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lbxBits.FormattingEnabled = True
         Me.m_lbxBits.IntegralHeight = False
-        Me.m_lbxBits.Location = New System.Drawing.Point(0, 0)
-        Me.m_lbxBits.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
+        Me.m_lbxBits.Location = New System.Drawing.Point(3, 3)
         Me.m_lbxBits.Name = "m_lbxBits"
-        Me.m_lbxBits.Size = New System.Drawing.Size(181, 258)
+        Me.m_lbxBits.Size = New System.Drawing.Size(260, 223)
         Me.m_lbxBits.TabIndex = 0
         '
         'm_tlpBits
         '
-        Me.m_tlpBits.ColumnCount = 2
+        Me.m_tlpBits.ColumnCount = 1
         Me.m_tlpBits.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpBits.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.m_tlpBits.Controls.Add(Me.m_tlpButtons, 0, 1)
         Me.m_tlpBits.Controls.Add(Me.m_lbxBits, 0, 0)
-        Me.m_tlpBits.Controls.Add(Me.m_plControls, 1, 0)
         Me.m_tlpBits.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_tlpBits.Location = New System.Drawing.Point(0, 0)
         Me.m_tlpBits.Margin = New System.Windows.Forms.Padding(0)
         Me.m_tlpBits.Name = "m_tlpBits"
-        Me.m_tlpBits.RowCount = 1
+        Me.m_tlpBits.RowCount = 2
         Me.m_tlpBits.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.m_tlpBits.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.m_tlpBits.Size = New System.Drawing.Size(266, 258)
         Me.m_tlpBits.TabIndex = 1
         '
-        'm_plControls
+        'm_btnRemove
         '
-        Me.m_plControls.Controls.Add(Me.m_btnRemove)
-        Me.m_plControls.Controls.Add(Me.m_btnAdd)
-        Me.m_plControls.Location = New System.Drawing.Point(184, 0)
-        Me.m_plControls.Margin = New System.Windows.Forms.Padding(0)
-        Me.m_plControls.Name = "m_plControls"
-        Me.m_plControls.Size = New System.Drawing.Size(82, 58)
-        Me.m_plControls.TabIndex = 1
+        Me.m_btnRemove.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_btnRemove.Location = New System.Drawing.Point(136, 3)
+        Me.m_btnRemove.Name = "m_btnRemove"
+        Me.m_btnRemove.Size = New System.Drawing.Size(127, 23)
+        Me.m_btnRemove.TabIndex = 0
+        Me.m_btnRemove.Text = "&Remove"
+        Me.m_btnRemove.UseVisualStyleBackColor = True
         '
         'm_btnAdd
         '
+        Me.m_btnAdd.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_btnAdd.Location = New System.Drawing.Point(3, 3)
         Me.m_btnAdd.Name = "m_btnAdd"
-        Me.m_btnAdd.Size = New System.Drawing.Size(75, 23)
+        Me.m_btnAdd.Size = New System.Drawing.Size(127, 23)
         Me.m_btnAdd.TabIndex = 0
         Me.m_btnAdd.Text = "&Add"
         Me.m_btnAdd.UseVisualStyleBackColor = True
         '
-        'm_btnRemove
+        'm_tlpButtons
         '
-        Me.m_btnRemove.Location = New System.Drawing.Point(3, 32)
-        Me.m_btnRemove.Name = "m_btnRemove"
-        Me.m_btnRemove.Size = New System.Drawing.Size(75, 23)
-        Me.m_btnRemove.TabIndex = 0
-        Me.m_btnRemove.Text = "&Remove"
-        Me.m_btnRemove.UseVisualStyleBackColor = True
+        Me.m_tlpButtons.ColumnCount = 2
+        Me.m_tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.m_tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.m_tlpButtons.Controls.Add(Me.m_btnAdd, 0, 0)
+        Me.m_tlpButtons.Controls.Add(Me.m_btnRemove, 1, 0)
+        Me.m_tlpButtons.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_tlpButtons.Location = New System.Drawing.Point(0, 229)
+        Me.m_tlpButtons.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_tlpButtons.Name = "m_tlpButtons"
+        Me.m_tlpButtons.RowCount = 1
+        Me.m_tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.m_tlpButtons.Size = New System.Drawing.Size(266, 29)
+        Me.m_tlpButtons.TabIndex = 1
         '
         'ucSelector2
         '
@@ -94,14 +103,14 @@ Partial Class ucSelector2
         Me.Name = "ucSelector2"
         Me.Size = New System.Drawing.Size(266, 258)
         Me.m_tlpBits.ResumeLayout(False)
-        Me.m_plControls.ResumeLayout(False)
+        Me.m_tlpButtons.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
     Private WithEvents m_lbxBits As System.Windows.Forms.ListBox
     Private WithEvents m_tlpBits As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_plControls As System.Windows.Forms.Panel
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
+    Private WithEvents m_tlpButtons As System.Windows.Forms.TableLayoutPanel
 
 End Class

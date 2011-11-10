@@ -348,6 +348,8 @@ Public Class plFlow
             Me.RemoveUnit(u)
         Next
 
+        Me.m_selector.Selection = Nothing
+
         Debug.Assert(Me.Controls.Count = 0)
         Debug.Assert(Me.m_dtControls.Count = 0)
         Debug.Assert(Me.m_lDiagramLinks.Count = 0)
