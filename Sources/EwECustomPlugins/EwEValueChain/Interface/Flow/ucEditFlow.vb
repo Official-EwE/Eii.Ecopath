@@ -239,7 +239,7 @@ Public Class ucEditFlow
         Set(ByVal value As cFlowDiagram)
             If Object.ReferenceEquals(value, Me.m_diagram) Then Return
             Me.m_diagram = value
-            Me.m_selector.PropertyGrid = Me.m_pgDetails
+            Me.m_selector.Init(Me.m_uic, Me.m_data, Me.m_pgDetails)
             Me.m_plFlow.Init(Me.m_uic, Me.m_data, Me.m_diagram, Me.m_selector)
         End Set
     End Property

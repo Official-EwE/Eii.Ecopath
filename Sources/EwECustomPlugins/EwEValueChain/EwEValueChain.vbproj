@@ -157,6 +157,12 @@
     <Compile Include="Interface\Controls\ucUnitGrid.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Interface\Flow\ucSelector2.Designer.vb">
+      <DependentUpon>ucSelector2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Flow\ucSelector2.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Interface\Flow\dlgAddUnits.Designer.vb">
       <DependentUpon>dlgAddUnits.vb</DependentUpon>
     </Compile>
@@ -173,12 +179,6 @@
       <DependentUpon>ucEditFlow.vb</DependentUpon>
     </Compile>
     <Compile Include="Interface\Flow\ucEditFlow.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Interface\Flow\ucSelector.Designer.vb">
-      <DependentUpon>ucSelector.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Interface\Flow\ucSelector.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Interface\Flow\LinkWrapper.vb" />
@@ -244,6 +244,10 @@
     <Compile Include="Plugin\Input\cNTCPluginTabCons.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Interface\Flow\ucSelector2.resx">
+      <DependentUpon>ucSelector2.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -270,10 +274,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\Flow\ucEditFlow.resx">
       <DependentUpon>ucEditFlow.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Interface\Flow\ucSelector.resx">
-      <DependentUpon>ucSelector.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\frmMain.resx">

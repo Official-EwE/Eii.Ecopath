@@ -59,7 +59,7 @@ Partial Class ucEditFlow
         Me.m_plFlow = New EwEValueChainPlugin.plFlow
         Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel
         Me.m_pgDetails = New System.Windows.Forms.PropertyGrid
-        Me.m_selector = New EwEValueChainPlugin.ucSelector
+        Me.m_selector = New EwEValueChainPlugin.ucSelector2
         Me.m_tsMain.SuspendLayout()
         Me.m_split.Panel1.SuspendLayout()
         Me.m_split.Panel2.SuspendLayout()
@@ -351,7 +351,6 @@ Partial Class ucEditFlow
         Me.m_selector.Location = New System.Drawing.Point(0, 0)
         Me.m_selector.Margin = New System.Windows.Forms.Padding(0)
         Me.m_selector.Name = "m_selector"
-        Me.m_selector.PropertyGrid = Nothing
         Me.m_selector.Selection = New Object() {Nothing}
         Me.m_selector.Size = New System.Drawing.Size(181, 23)
         Me.m_selector.TabIndex = 1
@@ -408,6 +407,6 @@ Partial Class ucEditFlow
     Private WithEvents m_tsmiExportToImage As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiSave As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tlpDetails As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_selector As EwEValueChainPlugin.ucSelector
+    Private WithEvents m_selector As EwEValueChainPlugin.ucSelector2
 
 End Class

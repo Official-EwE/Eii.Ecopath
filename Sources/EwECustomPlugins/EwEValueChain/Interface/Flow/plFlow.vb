@@ -42,7 +42,7 @@ Public Class plFlow
     ''' <summary>UI Context</summary>
     Private m_uic As cUIContext = Nothing
     ''' <summary>Data selector</summary>
-    Private m_selector As ucSelector = Nothing
+    Private m_selector As ucSelector2 = Nothing
     ''' <summary>Fleet to filter for in the flow, if any.</summary>
     Private m_fleetFilter As cFleetInput = Nothing
 
@@ -174,7 +174,7 @@ Public Class plFlow
     Public Sub Init(ByVal uic As cUIContext, _
                     ByVal data As cData, _
                     ByVal fd As cFlowDiagram, _
-                    ByVal sel As ucSelector)
+                    ByVal sel As ucSelector2)
 
         If (Not Me.m_data Is Nothing) Then
             ' Init only once!
