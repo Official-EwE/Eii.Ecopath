@@ -801,7 +801,9 @@ Namespace DataSources
                 drow("MinLon") = ecopathDS.ModelWest
                 drow("MaxLon") = ecopathDS.ModelEast
                 drow("AreaName") = ecopathDS.ModelAreaName
+                ' ------------------------------------------
                 drow("LastSaved") = cDateUtils.DateToJulian()
+                drow("LastSavedVersion") = cAssemblyUtils.GetVersion().ToString
 
                 If bNewRow Then
                     writer.AddRow(drow)
@@ -3718,7 +3720,9 @@ Namespace DataSources
                 drow("TemperatureForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.TemperatureForceNo)
                 drow("NutPBmax") = ecosimDS.NutPBmax
                 'drow("UseVarPQ") = ecosimDS.UseVarPQ
+                ' ------------------------------------------
                 drow("LastSaved") = cDateUtils.DateToJulian()
+                drow("LastSavedVersion") = cAssemblyUtils.GetVersion().ToString
 
                 ' Save changes
                 Me.m_db.ReleaseWriter(writer)
@@ -7382,8 +7386,10 @@ Namespace DataSources
                 If Me.m_sVersion >= 6.01 Then
                     drow("Tolerance") = ecospaceDS.Tol
                 End If
-                drow("LastSaved") = cDateUtils.DateToJulian()
                 drow("CapacityCalType") = ecospaceDS.CapCalType
+                ' ------------------------------------------
+                drow("LastSaved") = cDateUtils.DateToJulian()
+                drow("LastSavedVersion") = cAssemblyUtils.GetVersion().ToString
 
                 drow.EndEdit()
 
@@ -9915,7 +9921,9 @@ Namespace DataSources
                 drow("Coutflow") = tracerDS.CoutFlow(0)
                 drow("Cdecay") = tracerDS.cdecay(0)
                 drow("ConForcingShapeID") = ecosimDS.ForcingDBIDs(tracerDS.ConForceNumber)
+                ' ------------------------------------------
                 drow("LastSaved") = cDateUtils.DateToJulian()
+                drow("LastSavedVersion") = cAssemblyUtils.GetVersion().ToString
                 drow.EndEdit()
 
                 ' Save changes

@@ -66,11 +66,14 @@ Namespace Utilities
         ''' Returns the version number of an assembly.
         ''' </summary>
         ''' <param name="an">The <see cref="AssemblyName">AssemblyName</see> to return
-        ''' the version for.</param>
+        ''' the version for. If not specified, the version of the 
+        ''' <see cref="Assembly.GetExecutingAssembly">executing assembly</see> is returned.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetVersion(ByVal an As AssemblyName) As Version
-            If (an Is Nothing) Then Return Nothing
+        Public Shared Function GetVersion(Optional ByVal an As AssemblyName = Nothing) As Version
+            If (an Is Nothing) Then
+                an = Assembly.GetExecutingAssembly.GetName
+            End If
             Return an.Version
         End Function
 
