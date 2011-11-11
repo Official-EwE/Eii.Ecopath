@@ -3037,15 +3037,16 @@ Namespace Database
         ''' <summary>
         ''' Updates the version of the database
         ''' </summary>
-        ''' <param name="sVersion">The version to set</param>
-        ''' <param name="strComments">The description to use</param>
+        ''' <param name="sVersion">The version to set.</param>
+        ''' <param name="strRemark">The remark to add to the update.</param>
         ''' <returns>True if succesful</returns>
         ''' <remarks>This method only allows setting the version on an EwE6 database.</remarks>
         ''' -------------------------------------------------------------------
-        Public Function SetVersion(ByVal sVersion As Single, ByVal strComments As String) As Boolean
+        Public Function SetVersion(ByVal sVersion As Single, ByVal strRemark As String) As Boolean
 
             Dim dtNow As Date = Date.Now()
-            Dim strSQL As String = String.Format("INSERT INTO UpdateLog VALUES('{0}', '{2}', '{1}')", sVersion, strComments, dtNow.ToShortDateString())
+            Dim strEwEVersion As String = Assembly.GetExecutingAssembly.GetName.Version.ToString
+            Dim strSQL As String = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date], [EwEVersion]) VALUES('{0}', '{1}', '{2}', '{3}')", sVersion, strRemark, dtNow.ToShortDateString(), strEwEVersion)
             Dim bSucces As Boolean = True
             Try
                 bSucces = Me.Execute(strSQL)
