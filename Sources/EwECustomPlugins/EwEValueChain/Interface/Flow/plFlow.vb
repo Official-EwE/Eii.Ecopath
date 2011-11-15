@@ -216,7 +216,6 @@ Public Class plFlow
             If Me.m_editMode <> value Then
                 Me.m_editMode = value
                 Me.Selection = Nothing
-                Me.Hover = Nothing
                 RaiseEvent EditModeChanged(Me, Me.m_editMode)
             End If
         End Set
@@ -382,10 +381,8 @@ Public Class plFlow
         Dim uc As LinkWrapper = ConnectorFromPoint(e.Location)
         If (uc IsNot Nothing) Then
             Me.Cursor = Cursors.Hand
-            Me.Hover = uc
         Else
             Me.Cursor = Cursors.Default
-            Me.Hover = Nothing
         End If
     End Sub
 
@@ -435,13 +432,17 @@ Public Class plFlow
                 Dim ptT As Point = Me.FindIntersect(ctrlSource.Center, ctrlTarget.Center, ctrlTarget)
 
                 ' Paint link on visible canvas
-                If Object.ReferenceEquals(Me.Selection, c) Or Object.ReferenceEquals(Me.Selection, ctrlSource) Or Object.ReferenceEquals(Me.Selection, ctrlTarget) Then
+                If Object.ReferenceEquals(Me.Selection, c) Then
                     clrFore = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
-                ElseIf Object.ReferenceEquals(Hover, c) Then
-                    clrFore = Color.RoyalBlue
+                ElseIf Object.ReferenceEquals(Me.Selection, ctrlSource) Then
+                    clrFore = Color.Blue
+                ElseIf Object.ReferenceEquals(Me.Selection, ctrlTarget) Then
+                    clrFore = Color.Green
                 Else
-                    Me.m_uic.StyleGuide.GetStyleColors(c.Style, clrFore, clrBack)
+                    clrFore = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+                    'Me.m_uic.StyleGuide.GetStyleColors(c.Style, clrFore, clrBack)
                 End If
+
                 PaintLink(e.Graphics, ctrlSource.Center, ptT, clrFore, c.Width, c.External)
 
                 ' Paint detection link on detection bitmap with a fixed width to make the link better clickable
@@ -513,20 +514,6 @@ Public Class plFlow
             ' Redraw
             Me.Invalidate()
 
-        End Set
-    End Property
-
-    Private Property Hover() As LinkWrapper
-        Get
-            If Me.m_editMode = eEditMode.Link Then
-                Return Me.m_hover
-            Else
-                Return Nothing
-            End If
-        End Get
-        Set(ByVal value As LinkWrapper)
-            Me.m_hover = value
-            Me.Invalidate()
         End Set
     End Property
 
@@ -872,7 +859,6 @@ Public Class plFlow
     End Sub
 
     Public Sub OnUnitMouseHover(ByVal uc As plUnitControl, ByVal bHover As Boolean)
-        Me.Hover = Nothing
     End Sub
 
 #End Region ' Units
@@ -1148,7 +1134,7 @@ Public Class plFlow
             ' 'No: Render a line of a width representing this weight. Weight is a value between
             '      0 and 1. Pen sizes of this magnitude do not show up well, therefore the actual
             '      pen width is an arbitrary 3 * sWeight to make it look better.
-            p = New Pen(clr, sWeight * 3)
+            p = New Pen(clr, sWeight * 2.5!)
         End If
 
         ' External link?
