@@ -433,7 +433,7 @@ Public Class plFlow
                 Dim ptT As Point = Me.FindIntersect(ctrlSource.Center, ctrlTarget.Center, ctrlTarget)
 
                 ' Paint link on visible canvas
-                If Object.ReferenceEquals(Me.Selection, c) Then
+                If Object.ReferenceEquals(Me.Selection, c) Or Object.ReferenceEquals(Me.Selection, ctrlSource) Or Object.ReferenceEquals(Me.Selection, ctrlTarget) Then
                     clrFore = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                 ElseIf Object.ReferenceEquals(Hover, c) Then
                     clrFore = Color.RoyalBlue

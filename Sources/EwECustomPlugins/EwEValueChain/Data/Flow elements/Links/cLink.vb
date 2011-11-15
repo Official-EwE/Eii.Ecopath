@@ -111,6 +111,13 @@ Public Class cLink
         cPropertySorter.PropertyOrder(1)> _
     Public Overrides Property Name() As String
         Get
+            If String.IsNullOrWhiteSpace(Me.m_strName) Then
+                Try
+                    Return String.Format("{0} to {1}", Me.Source.ToString, Me.Target.ToString)
+                Catch ex As Exception
+                    Return "<unnamed link>"
+                End Try
+            End If
             Return Me.m_strName
         End Get
         Set(ByVal value As String)

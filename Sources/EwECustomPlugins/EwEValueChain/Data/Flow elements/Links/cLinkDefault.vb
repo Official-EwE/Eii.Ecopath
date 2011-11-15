@@ -58,7 +58,7 @@ Public Class cLinkDefault
        cPropertySorter.PropertyOrder(1)> _
     Public Overridable Property Name() As String
         Get
-            Return Me.m_linkType.ToString()
+            Return ""
         End Get
         Set(ByVal strName As String)
             '
@@ -131,6 +131,15 @@ Public Class cLinkDefault
     ''' -----------------------------------------------------------------------
     Public Overridable Function IsVisible() As Boolean
         Return True
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function ToString() As String
+        Return Me.m_linkType.ToString()
     End Function
 
 #End Region ' Properties

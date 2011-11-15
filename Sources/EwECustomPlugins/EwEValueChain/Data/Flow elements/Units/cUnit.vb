@@ -428,4 +428,8 @@ Public MustInherit Class cUnit
 
 #End Region ' Properties
 
+    Public Overrides Function ToString() As String
+        Return Me.Name
+    End Function
+
 End Class
