@@ -27,6 +27,8 @@ Public Class ucEditFlow
         Debug.Assert(data IsNot Nothing)
         Debug.Assert(diagram IsNot Nothing, "Cannot created diagram editor without a valid diagram")
 
+        Me.m_selector.Visible = False
+
         Me.m_uic = uic
         Me.Data = data
         Me.Diagram = diagram

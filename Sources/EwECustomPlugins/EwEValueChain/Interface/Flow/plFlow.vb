@@ -645,8 +645,8 @@ Public Class plFlow
             End If
 
             fp.AllowEvents = False
-            fp.Xpos = (10 + m_iNumControls * 10)
-            fp.Ypos = fp.Xpos
+            fp.Xpos = 10
+            fp.Ypos = 10
             fp.Width = CInt(Me.m_iCellWidth * (1 - Me.m_sGridMarginRatio))
             fp.Height = CInt(Me.m_iCellHeight * (1 - Me.m_sGridMarginRatio))
             fp.AllowEvents = True

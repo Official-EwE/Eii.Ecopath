@@ -72,10 +72,9 @@ Public Class plUnitControl
 
     End Sub
 
-    Private Sub UnitControl_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.Disposed
+    Protected Overrides Sub Dispose(disposing As Boolean)
 
-        If Me.m_fp IsNot Nothing Then
+        If (Me.m_fp IsNot Nothing) Then
 
             RemoveHandler Me.m_fp.OnChanged, AddressOf OnPositionChanged
             RemoveHandler Me.m_fp.Unit.OnChanged, AddressOf OnDataChanged
@@ -85,6 +84,7 @@ Public Class plUnitControl
             Me.m_uic = Nothing
 
         End If
+        MyBase.Dispose(disposing)
 
     End Sub
 
@@ -97,8 +97,8 @@ Public Class plUnitControl
     ''' based on the current interaction mode.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub UnitControl_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
-        Handles Me.MouseDown
+    Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
+        MyBase.OnMouseDown(e)
         Debug.Assert(Me.FlowPanel IsNot Nothing)
         Me.FlowPanel.OnUnitMouseDown(Me)
     End Sub
@@ -112,8 +112,8 @@ Public Class plUnitControl
     ''' based on the current interaction mode.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub plUnitControl_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) _
-         Handles Me.MouseEnter
+    Protected Overrides Sub OnMouseEnter(e As System.EventArgs)
+        MyBase.OnMouseEnter(e)
         If (Me.FlowPanel IsNot Nothing) Then
             Me.FlowPanel.OnUnitMouseHover(Me, True)
         End If
@@ -128,8 +128,8 @@ Public Class plUnitControl
     ''' based on the current interaction mode.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub plUnitControl_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles Me.MouseLeave
+    Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
+        MyBase.OnMouseLeave(e)
         ' Could be due to deletion
         If (Me.FlowPanel IsNot Nothing) Then
             Me.FlowPanel.OnUnitMouseHover(Me, False)
