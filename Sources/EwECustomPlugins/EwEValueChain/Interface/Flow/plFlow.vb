@@ -348,7 +348,9 @@ Public Class plFlow
             Me.RemoveUnit(u)
         Next
 
-        Me.m_selector.Selection = Nothing
+        If (Me.m_selector IsNot Nothing) Then
+            Me.m_selector.Selection = Nothing
+        End If
 
         Debug.Assert(Me.Controls.Count = 0)
         Debug.Assert(Me.m_dtControls.Count = 0)
@@ -487,20 +489,17 @@ Public Class plFlow
             ' Assign
             Me.m_selection = value
 
-            If TypeOf (Me.m_selection) Is plUnitControl Then
-                If Me.m_selector IsNot Nothing Then
+            If (Me.m_selector IsNot Nothing) Then
+
+                If TypeOf (Me.m_selection) Is plUnitControl Then
                     ' Update property grid
                     Me.m_selector.Selection = DirectCast(Me.m_selection, plUnitControl).Unit
-                End If
-                ' Update selected state
-                DirectCast(Me.m_selection, plUnitControl).Selected = True
-            ElseIf TypeOf (Me.m_selection) Is LinkWrapper Then
-                If Me.m_selector IsNot Nothing Then
+                    ' Update selected state
+                    DirectCast(Me.m_selection, plUnitControl).Selected = True
+                ElseIf TypeOf (Me.m_selection) Is LinkWrapper Then
                     ' Update property grid
                     Me.m_selector.Selection = DirectCast(Me.m_selection, LinkWrapper).Links
-                End If
-            ElseIf TypeOf (Me.m_selection) Is Array Then
-                If Me.m_selector IsNot Nothing Then
+                ElseIf TypeOf (Me.m_selection) Is Array Then
                     Dim lSel As New List(Of cLink)
                     For Each conn As LinkWrapper In DirectCast(Me.m_selection, LinkWrapper())
                         lSel.AddRange(conn.Links)
