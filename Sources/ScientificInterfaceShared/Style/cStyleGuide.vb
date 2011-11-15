@@ -1852,7 +1852,7 @@ Namespace Style
                 Case eApplicationColorType.DEFAULT_TEXT : Return Color.Black
                 Case eApplicationColorType.DEFAULT_BACKGROUND : Return Color.White
                 Case eApplicationColorType.NAMES_TEXT : Return Color.Black
-                Case eApplicationColorType.NAMES_BACKGROUND : Return Color.FromArgb(255, 232, 232, 232)
+                Case eApplicationColorType.NAMES_BACKGROUND : Return Color.FromArgb(255, 233, 245, 255)
                 Case eApplicationColorType.HIGHLIGHT : Return Color.Orange
                 Case eApplicationColorType.INVALIDMODELRESULT_TEXT : Return Color.DarkViolet
                 Case eApplicationColorType.FAILEDVALIDATION_TEXT : Return Color.DarkGoldenrod
@@ -1866,7 +1866,7 @@ Namespace Style
                 Case eApplicationColorType.REMARKS_BACKGROUND : Return Color.White
                 Case eApplicationColorType.SUM_BACKGROUND : Return Color.FromArgb(255, 255, 254, 225)
                 Case eApplicationColorType.READONLY_BACKGROUND : Return Color.FromArgb(255, 231, 235, 250)
-                Case eApplicationColorType.MISSINGPARAMETER_BACKGROUND : Return Color.MediumPurple
+                Case eApplicationColorType.MISSINGPARAMETER_BACKGROUND : Return Color.LightGray
                 Case eApplicationColorType.IMAGE_BACKGROUND : Return Color.White
                 Case eApplicationColorType.PLOT_BACKGROUND : Return Color.White
                 Case eApplicationColorType.MAP_BACKGROUND : Return SystemColors.ControlDark
