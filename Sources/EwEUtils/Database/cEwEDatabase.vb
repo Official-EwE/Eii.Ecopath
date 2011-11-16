@@ -2702,10 +2702,9 @@ Namespace Database
             ' All good so far?
             If bSucces Then
                 ' #Yes: read this specific class from the database
+                strSQL = String.Format("SELECT * FROM {0} WHERE DBID={1}", strTable, iDBID)
+                reader = Me.GetReader(strSQL)
                 Try
-                    strSQL = String.Format("SELECT * FROM {0} WHERE DBID={1}", strTable, iDBID)
-                    reader = Me.GetReader(strSQL)
-
                     ' Grab one single record
                     reader.Read()
 
@@ -2771,6 +2770,10 @@ Namespace Database
                     Console.WriteLine("Read: error when reading {0}: {1}", strTable, ex.Message)
                     bSucces = False
                 End Try
+
+                Me.ReleaseReader(reader)
+                reader = Nothing
+
             End If
 
             If GetType(cOOPStorableList).Equals(t) Then
