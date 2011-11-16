@@ -146,7 +146,9 @@ Public Class ucEditFlow
 
     Private Sub OnArrangeLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbArrange.Click
-        Me.m_plFlow.Arrange()
+        If MsgBox("Are you sure you want to arrange the diagram layout?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            Me.m_plFlow.Arrange()
+        End If
         Me.UpdateControls()
     End Sub
 
