@@ -74,7 +74,7 @@ Namespace Controls.EwEGrid
         ''' <param name="pos"></param>
         ''' <param name="objValue"></param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub SetValue(ByVal pos As SourceGrid2.Position, ByVal objValue As Object)
+        Public Overrides Sub SetValue(ByVal pos As SourceGrid2.Position, ByVal objValue As Object)
 
             ' Update the cell value
             MyBase.SetValue(pos, objValue)
