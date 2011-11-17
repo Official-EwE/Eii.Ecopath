@@ -42,18 +42,12 @@ Friend Class cDBUpdate6_02_00_03
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added ewe version to updatelog" & vbNewLine & _
-                   "Added pb, qb to taxon"
+            Return "Added ewe version to updatelog, scenarios"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-        Return Me.AddLastSavedEwEVersions(db) And _
-               Me.UpdateTaxon(db)
-    End Function
-
-    Private Function UpdateLog(ByVal db As cEwEDatabase) As Boolean
-        Return db.Execute("ALTER TABLE UpdateLog ADD COLUMN EwEVersion TEXT(40)")
+        Return Me.AddLastSavedEwEVersions(db)
     End Function
 
     Private Function AddLastSavedEwEVersions(ByVal db As cEwEDatabase) As Boolean
@@ -65,9 +59,5 @@ Friend Class cDBUpdate6_02_00_03
         Return bSucces
     End Function
 
-    Private Function UpdateTaxon(db As cEwEDatabase) As Boolean
-        Return db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN ProdBiom SINGLE") And _
-               db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN ConsBiom SINGLE")
-    End Function
 
 End Class
