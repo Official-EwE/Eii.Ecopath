@@ -60,6 +60,7 @@ Partial Class ucEditFlow
         Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pgDetails = New System.Windows.Forms.PropertyGrid()
         Me.m_selector = New EwEValueChainPlugin.ucSelector2()
+        Me.m_hdrDetails = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tsMain.SuspendLayout()
         CType(Me.m_split, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_split.Panel1.SuspendLayout()
@@ -321,19 +322,22 @@ Partial Class ucEditFlow
         Me.m_plFlow.ShowGrid = False
         Me.m_plFlow.Size = New System.Drawing.Size(571, 425)
         Me.m_plFlow.TabIndex = 0
+        Me.m_plFlow.ZoomFactor = 1.0!
         '
         'm_tlpDetails
         '
         Me.m_tlpDetails.ColumnCount = 1
         Me.m_tlpDetails.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpDetails.Controls.Add(Me.m_pgDetails, 0, 1)
+        Me.m_tlpDetails.Controls.Add(Me.m_pgDetails, 0, 2)
         Me.m_tlpDetails.Controls.Add(Me.m_selector, 0, 0)
+        Me.m_tlpDetails.Controls.Add(Me.m_hdrDetails, 0, 1)
         Me.m_tlpDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_tlpDetails.Location = New System.Drawing.Point(0, 0)
         Me.m_tlpDetails.Margin = New System.Windows.Forms.Padding(0)
         Me.m_tlpDetails.Name = "m_tlpDetails"
-        Me.m_tlpDetails.RowCount = 2
+        Me.m_tlpDetails.RowCount = 3
         Me.m_tlpDetails.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.m_tlpDetails.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.m_tlpDetails.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.m_tlpDetails.Size = New System.Drawing.Size(181, 425)
         Me.m_tlpDetails.TabIndex = 0
@@ -341,9 +345,9 @@ Partial Class ucEditFlow
         'm_pgDetails
         '
         Me.m_pgDetails.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_pgDetails.Location = New System.Drawing.Point(3, 123)
+        Me.m_pgDetails.Location = New System.Drawing.Point(3, 143)
         Me.m_pgDetails.Name = "m_pgDetails"
-        Me.m_pgDetails.Size = New System.Drawing.Size(175, 299)
+        Me.m_pgDetails.Size = New System.Drawing.Size(175, 279)
         Me.m_pgDetails.TabIndex = 0
         '
         'm_selector
@@ -355,6 +359,19 @@ Partial Class ucEditFlow
         Me.m_selector.Selection = New EwEUtils.Database.cEwEDatabase.cOOPStorable(-1) {}
         Me.m_selector.Size = New System.Drawing.Size(181, 120)
         Me.m_selector.TabIndex = 1
+        '
+        'm_hdrDetails
+        '
+        Me.m_hdrDetails.CanCollapseParent = False
+        Me.m_hdrDetails.CollapsedParentHeight = 0
+        Me.m_hdrDetails.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_hdrDetails.IsCollapsed = False
+        Me.m_hdrDetails.Location = New System.Drawing.Point(3, 120)
+        Me.m_hdrDetails.Name = "m_hdrDetails"
+        Me.m_hdrDetails.Size = New System.Drawing.Size(175, 20)
+        Me.m_hdrDetails.TabIndex = 2
+        Me.m_hdrDetails.Text = "Selection details"
+        Me.m_hdrDetails.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'ucEditFlow
         '
@@ -410,5 +427,6 @@ Partial Class ucEditFlow
     Private WithEvents m_tsmiSave As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tlpDetails As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_selector As EwEValueChainPlugin.ucSelector2
+    Private WithEvents m_hdrDetails As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
 End Class

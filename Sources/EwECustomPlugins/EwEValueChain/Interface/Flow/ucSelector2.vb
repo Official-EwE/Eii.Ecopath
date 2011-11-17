@@ -12,8 +12,8 @@ Public Class ucSelector2
     Private m_iSel As Integer = 0
     Private m_bCanAddRemoveItems As Boolean = False
 
-    Private m_unitAddSrc As cUnit = Nothing
-    Private m_unitAddTgt As cUnit = Nothing
+    Private m_unitSrc As cUnit = Nothing
+    Private m_unitTgt As cUnit = Nothing
 
     Public Sub Init(uic As cUIContext, data As cData, pl As plFlow, pg As PropertyGrid)
         Me.m_uic = uic
@@ -39,8 +39,8 @@ Public Class ucSelector2
 
             ' Assume the worst
             Me.m_bCanAddRemoveItems = False
-            Me.m_unitAddSrc = Nothing
-            Me.m_unitAddTgt = Nothing
+            Me.m_unitSrc = Nothing
+            Me.m_unitTgt = Nothing
 
             ' Explore incoming parameters
             If (value IsNot Nothing) Then
@@ -52,9 +52,10 @@ Public Class ucSelector2
 
                                 If (TypeOf (obj) Is cLink And Not TypeOf (obj) Is cLinkLandings) Then
                                     Me.m_bCanAddRemoveItems = True
-                                    Me.m_unitAddSrc = DirectCast(obj, cLink).Source
-                                    Me.m_unitAddTgt = DirectCast(obj, cLink).Target
                                 End If
+
+                                Me.m_unitSrc = DirectCast(obj, cLink).Source
+                                Me.m_unitTgt = DirectCast(obj, cLink).Target
 
                             End If
                         ElseIf (TypeOf obj Is cEwEDatabase.cOOPStorable) Then
@@ -77,6 +78,7 @@ Public Class ucSelector2
             End If
 
             Me.PopulateListbox()
+
         End Set
     End Property
 
@@ -138,7 +140,7 @@ Public Class ucSelector2
     Private Sub OnAddItem(sender As System.Object, e As System.EventArgs) _
         Handles m_btnAdd.Click
 
-        Dim link As cLink = Me.m_data.CreateLink(Me.m_unitAddSrc, Me.m_unitAddTgt)
+        Dim link As cLink = Me.m_data.CreateLink(Me.m_unitSrc, Me.m_unitTgt)
         Me.m_pl.AddLink(link)
 
         ' Ugh, this is getting ugly
