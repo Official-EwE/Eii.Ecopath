@@ -830,6 +830,8 @@ Public Class plFlow
                             If link IsNot Nothing Then
                                 Me.AddLink(link)
                                 Me.CheckMissingParameters()
+                            Else
+                                Exit For
                             End If
                         Next
                     Else
