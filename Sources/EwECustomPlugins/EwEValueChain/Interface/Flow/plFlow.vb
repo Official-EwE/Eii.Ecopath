@@ -8,6 +8,7 @@ Imports EwEUtils.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 Imports System.Drawing.Drawing2D
+Imports System.ComponentModel
 
 #End Region ' Imports
 
@@ -58,7 +59,9 @@ Public Class plFlow
     Private m_ptMouseOffset As Point = Nothing
     ''' <summary>Unit control being dragged.</summary>
     Private m_ucDrag As plUnitControl = Nothing
-    Private m_sScale As Single = 1.0!
+
+    ''' <summary>Zoom factor</summary>
+    Private Shared g_sScale As Single = 1.0!
 
     ' Grid bits
     Private m_iCellWidth As Integer = 80
@@ -132,12 +135,13 @@ Public Class plFlow
 
 #Region " Scale "
 
+    <Browsable(False)> _
     Public Property ZoomFactor() As Single
         Get
-            Return Me.m_sScale
+            Return plFlow.g_sScale
         End Get
         Set(ByVal value As Single)
-            Me.m_sScale = value
+            plFlow.g_sScale = value
             For Each uc As plUnitControl In Me.m_dtControls.Values
                 uc.ZoomFactor = value
             Next
@@ -412,10 +416,10 @@ Public Class plFlow
             ' #Yes: Let's draw that grid then
             ' Use a subtle colour variation on the background by inverting the third bit of its RGB values
             Using p As New Pen(Color.FromArgb(255, Me.BackColor.R Xor 16, Me.BackColor.G Xor 16, Me.BackColor.B Xor 16), 1)
-                For i As Integer = CInt(Me.m_sScale * Me.m_iCellHeight) To Me.Height Step CInt(Me.m_sScale * Me.m_iCellHeight)
+                For i As Integer = CInt(plFlow.g_sScale * Me.m_iCellHeight) To Me.Height Step CInt(plFlow.g_sScale * Me.m_iCellHeight)
                     e.Graphics.DrawLine(p, 0, i, Me.Width, i)
                 Next
-                For i As Integer = CInt(Me.m_sScale * Me.m_iCellWidth) To Me.Width Step CInt(Me.m_sScale * Me.m_iCellWidth)
+                For i As Integer = CInt(plFlow.g_sScale * Me.m_iCellWidth) To Me.Width Step CInt(plFlow.g_sScale * Me.m_iCellWidth)
                     e.Graphics.DrawLine(p, i, 0, i, Me.Height)
                 Next
             End Using
@@ -1017,8 +1021,8 @@ Public Class plFlow
         ' Drag via flow position
         With Me.m_ucDrag.FlowPos
             .AllowEvents = False
-            .Xpos = CInt((ptMouse.X - Me.m_ptMouseOffset.X) / Me.m_sScale)
-            .Ypos = CInt((ptMouse.Y - Me.m_ptMouseOffset.Y) / Me.m_sScale)
+            .Xpos = CInt((ptMouse.X - Me.m_ptMouseOffset.X) / plFlow.g_sScale)
+            .Ypos = CInt((ptMouse.Y - Me.m_ptMouseOffset.Y) / plFlow.g_sScale)
             If Me.m_bShowGrid Then
                 ' Truncate pos
                 .Xpos = ptUnitMargin.X + CInt(Me.m_iCellWidth * Math.Round(.Xpos / Me.m_iCellWidth))

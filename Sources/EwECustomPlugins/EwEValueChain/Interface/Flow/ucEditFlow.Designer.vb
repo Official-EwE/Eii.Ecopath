@@ -321,7 +321,6 @@ Partial Class ucEditFlow
         Me.m_plFlow.ShowGrid = False
         Me.m_plFlow.Size = New System.Drawing.Size(571, 425)
         Me.m_plFlow.TabIndex = 0
-        Me.m_plFlow.ZoomFactor = 1.0!
         '
         'm_tlpDetails
         '

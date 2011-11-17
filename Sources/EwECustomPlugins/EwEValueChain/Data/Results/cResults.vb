@@ -243,6 +243,8 @@ Public Class cResults
 
         NumberOfWorkerFemales
         NumberOfWorkerMales
+        NumberOfWorkerPartTime
+        NumberOfWorkerOther
 
         NumberOfOwnerFemales
         NumberOfOwnerMales

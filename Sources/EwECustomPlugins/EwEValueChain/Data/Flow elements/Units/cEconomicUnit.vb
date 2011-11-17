@@ -23,8 +23,9 @@ Public MustInherit Class cEconomicUnit
     Private m_WorkerMaleShare As Single = 0.0!
     Private m_WorkerFemaleShare As Single = 0.0!
     Private m_WorkerOtherShare As Single = 0.0!
-    Private m_WorkerMaleDependents As Single = 0
-    Private m_WorkerFemaleDependents As Single = 0
+    Private m_WorkerMaleDependents As Single = 0.0!
+    Private m_WorkerFemaleDependents As Single = 0.0!
+    Private m_WorkerParttime As Single = 0.0!
     Private m_OwnerMale As Single = 0.0!
     Private m_OwnerFemale As Single = 0.0!
     Private m_OwnerMalePay As Single = 0.0!
@@ -123,6 +124,8 @@ Public MustInherit Class cEconomicUnit
         'Social
         bSucces = bSucces And Me.CalcWorkerFemales(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
         bSucces = bSucces And Me.CalcWorkerMales(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
+        bSucces = bSucces And Me.CalcWorkerParttime(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
+        bSucces = bSucces And Me.CalcWorkerOther(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
         bSucces = bSucces And Me.CalcOwnerFemales(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
         bSucces = bSucces And Me.CalcOwnerMales(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
         bSucces = bSucces And Me.CalcWorkerDependents(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
@@ -214,7 +217,7 @@ Public MustInherit Class cEconomicUnit
                 ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
                 ByVal iTimeStep As Integer) As Boolean
 
-        Dim sSum As Single = sOutputBiomass * (Me.TaxEnvironmental + Me.TaxExport + Me.TaxProduction + Me.TaxVAT + Me.m_TaxesImport + Me.LicenseTax)
+        Dim sSum As Single = sOutputBiomass * (Me.TaxEnvironmental + Me.TaxExport + Me.TaxProduction + Me.TaxVAT + Me.m_TaxesImport + Me.LicenseTax + Me.ProfitTax)
         results.Store(Me, cResults.eVariableType.CostTaxes, sSum, iTimeStep)
         Return True
     End Function
@@ -270,6 +273,27 @@ Public MustInherit Class cEconomicUnit
 
         Dim sSum As Single = sOutputBiomass * Me.m_WorkerMale
         results.Store(Me, cResults.eVariableType.NumberOfWorkerMales, sSum, iTimeStep)
+
+        Return True
+    End Function
+
+    Protected Overridable Function CalcWorkerParttime(ByVal results As cResults, _
+                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
+                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
+                ByVal iTimeStep As Integer) As Boolean
+
+        Dim sSum As Single = sOutputBiomass * Me.m_WorkerParttime
+        results.Store(Me, cResults.eVariableType.NumberOfWorkerPartTime, sSum, iTimeStep)
+        Return True
+    End Function
+
+    Protected Overridable Function CalcWorkerOther(ByVal results As cResults, _
+                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
+                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
+                ByVal iTimeStep As Integer) As Boolean
+
+        Dim sSum As Single = sOutputBiomass * Me.m_WorkerOther
+        results.Store(Me, cResults.eVariableType.NumberOfWorkerOther, sSum, iTimeStep)
 
         Return True
     End Function
@@ -825,16 +849,32 @@ Public Property CertificationCost() As Single
 
     <Browsable(True), _
         Category(sPROPCAT_SOCIAL), _
+        DisplayName("No part-time workers"), _
+        Description("Number of part-time workers per tonnes of product"), _
+        DefaultValue(0.0!), _
+        cPropertySorter.PropertyOrder(3)> _
+    Public Property WorkerParttime() As Single
+        Get
+            Return Me.m_WorkerParttime
+        End Get
+        Set(ByVal value As Single)
+            Me.m_WorkerParttime = value
+            SetChanged()
+        End Set
+    End Property
+
+    <Browsable(True), _
+        Category(sPROPCAT_SOCIAL), _
         DisplayName("No. other workers"), _
         Description("Number of other workers per tonnes of product"), _
         DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(3)> _
+        cPropertySorter.PropertyOrder(4)> _
     Public Property WorkerOther() As Single
         Get
-            Return Me.m_WorkerMale
+            Return Me.m_WorkerOther
         End Get
         Set(ByVal value As Single)
-            Me.m_WorkerMale = value
+            Me.m_WorkerOther = value
             SetChanged()
         End Set
     End Property

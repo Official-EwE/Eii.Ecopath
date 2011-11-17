@@ -175,6 +175,19 @@ Public Class cLinkLandings
         End Set
     End Property
 
+    <Browsable(True), _
+     Category(cCATEGORY_TRANSFER), _
+     DisplayName("Group"), _
+     Description("Landed Ecopath group"), _
+     cPropertySorter.PropertyOrder(5)> _
+    Public ReadOnly Property EcopathGroupName() As String
+        Get
+            If (Me.m_group Is Nothing) Then Return "! No group"
+            Dim fmt As New cCoreInterfaceFormatter()
+            Return fmt.GetDescriptor(Me.m_group, eDescriptorTypes.Name)
+        End Get
+    End Property
+
 #End Region ' Ecopath integration
 
 #Region " Overrides "

@@ -29,7 +29,6 @@ Public MustInherit Class cUnit
     Protected Const sPROPCAT_TAXES As String = "7. Taxes ($/t)"
     Protected Const sPROPCAT_SOCIAL As String = "8. Social (#/t)"
 
-
     ''' <summary>Index of the unit, which this unit needs to store its values in the Results object</summary>
     Private m_iSequence As Integer = 0
     ''' <summary>List of input variables that this unit needs in order to perform its calculations.</summary>

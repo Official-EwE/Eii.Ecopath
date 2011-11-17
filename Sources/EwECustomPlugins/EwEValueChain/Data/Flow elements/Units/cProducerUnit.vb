@@ -500,8 +500,8 @@ Public Class cProducerUnit
 
     <Browsable(True), _
     Category(sPROPCAT_INPUTCOST), _
-    DisplayName("Observer cost"), _
-    Description("Cost for observers (if on board) per tonnes. Assumed to vary with effort"), _
+    DisplayName("Monitoring cost"), _
+    Description("Cost for monitors (if on board) per tonnes. Assumed to vary with effort"), _
     DefaultValue(0.0!), _
     cPropertySorter.PropertyOrder(20)> _
     Public Property ObserverCost() As Single
@@ -516,8 +516,8 @@ Public Class cProducerUnit
 
     <Browsable(True), _
      Category(sPROPCAT_INPUTCOST), _
-     DisplayName("Observer coverage rate"), _
-     Description("Observer coverage rate, (proportion of boats with observers onboard)"), _
+     DisplayName("Monitor coverage rate"), _
+     Description("Monitor coverage rate, (proportion of boats with observers onboard)"), _
      DefaultValue(0.0!), _
      cPropertySorter.PropertyOrder(21)> _
     Public Property ObserverRate() As Single
@@ -545,22 +545,6 @@ Public Class cProducerUnit
             SetChanged()
         End Set
     End Property
-
-    '<Browsable(True), _
-    '    Category(sPROPCAT_INPUTCOST), _
-    '    DisplayName("Observer cost"), _
-    '    Description("Cost for observers (if on board) per tonnes of product (at baseline unity effort)"), _
-    '    DefaultValue(0.0!), _
-    '    cPropertySorter.PropertyOrder(20)> _
-    'Public Property ObserverVariableCost() As Single
-    '    Get
-    '        Return Me.m_sObserverVariableCost
-    '    End Get
-    '    Set(ByVal value As Single)
-    '        Me.m_sObserverVariableCost = value
-    '        Me.SetChanged()
-    '    End Set
-    'End Property
 
     <Browsable(True), _
         Category(cUnit.sPROPCAT_GENERAL), _
