@@ -49,6 +49,8 @@ Public Class cDistributionUnit
 
 #End If
 
+    Private m_bBroker As Boolean = False
+
     Public Sub New()
         MyBase.New()
     End Sub
@@ -60,8 +62,13 @@ Public Class cDistributionUnit
             ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
             ByVal iTimeStep As Integer) As Boolean
 
-        'The production unit needs to do the same calculations as the MyBase=cEconomicUnit, but:
-        Return MyBase.Calculate(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
+        If Me.m_bBroker Then
+            ' Do broker variant computations
+            Return MyBase.Calculate(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
+        Else
+            ' Use generic computations
+            Return MyBase.Calculate(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
+        End If
 
     End Function
 
@@ -70,6 +77,21 @@ Public Class cDistributionUnit
 #Region " Properties "
 
 #Region " General "
+
+    <Browsable(True), _
+     Category(sPROPCAT_GENERAL), _
+     DisplayName("Broker"), _
+     Description("States whether this distributor functions as a broker"), _
+     cPropertySorter.PropertyOrder(1)> _
+    Public Overridable Property Broker() As Boolean
+        Get
+            Return m_bBroker
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bBroker = value
+            Me.SetChanged()
+        End Set
+    End Property
 
     Public Overrides ReadOnly Property Category() As String
         Get
