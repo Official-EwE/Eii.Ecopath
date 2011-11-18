@@ -46,6 +46,11 @@ Public Delegate Sub MonteCarloSendMessageDelegate(ByRef Message As cMessage)
 ''' <remarks></remarks>
 Public Class cEcosimMonteCarlo
 
+    'ToDo jb 18-Nov-2011 Monte Carlo Vulnerabilities if the vulnerabilities are changed in the vulnerability grid interface 
+    'the ParLimit() array will not contain the new values.
+    'ParLimit() is only set during Initailization me.Init() 
+    'the model has to be saved then reloaded for the new limits to be set
+
     Public CVpar(,) As Single
     Public ParLimit(,,) As Single
 
@@ -246,16 +251,22 @@ Public Class cEcosimMonteCarlo
 
             m_core.m_EcoSimData.bTimestepOutput = True
             m_ecosim.TimeStepDelegate = Nothing
-            'run ecosim to get the fit (SS) of the ref data to the current ecopath parameters
 
+            'Set the all vulnerabilities to a predator to the max across all prey
+            'This is the same as setting all the columns in the Vulnerabiltiy matrix to the same value
             For iPred As Integer = 1 To m_core.nGroups
                 Dim vul As Single = 0
                 For iPrey As Integer = 1 To m_core.nGroups
-                    If m_core.m_EcoSimData.VulMult(iPrey, iPred) > 0 Then vul = m_core.m_EcoSimData.VulMult(iPrey, iPred) : Exit For
+                    'jb 18-Nov-2011 Changed from first non zero vulnerability 
+                    'To max vulnerability across all prey for this pred  
+                    vul = Math.Max(vul, m_core.m_EcoSimData.VulMult(iPrey, iPred))
+                    'If m_core.m_EcoSimData.VulMult(iPrey, iPred) > 0 Then vul = m_core.m_EcoSimData.VulMult(iPrey, iPred) : Exit For
                 Next
+                'Max vulnerability to this predator
                 m_core.m_EcoSimData.VulnerabilityPredator(iPred) = vul
             Next
 
+            'run ecosim to get the fit (SS) of the ref data to the current ecopath parameters
             m_ecosim.Run()
 
             For iGrp As Integer = 1 To m_core.nGroups
@@ -601,20 +612,20 @@ Public Class cEcosimMonteCarlo
                                                              ParLimit(0, eMCParams.BA, igrp), _
                                                              ParLimit(1, eMCParams.BA, igrp))
                     End If
-                        If m_ecopath.missing(igrp, 2) = False Then                   ' Then PB is an input par
-                            m_epdata.PB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.PB, igrp), _
-                                                                  CVpar(eMCParams.PB, igrp), _
-                                                                  ParLimit(0, eMCParams.PB, igrp), _
-                                                                  ParLimit(1, eMCParams.PB, igrp), _
-                                                                  False)
-                        End If
-                        If m_ecopath.missing(igrp, 4) = False Then                   ' Then EE is an input par
-                            m_epdata.EE(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.EE, igrp), _
-                                                                  CVpar(4, igrp), _
-                                                                  ParLimit(0, eMCParams.EE, igrp), _
-                                                                  ParLimit(1, eMCParams.EE, igrp), _
-                                                                  False)
-                        End If
+                    If m_ecopath.missing(igrp, 2) = False Then                   ' Then PB is an input par
+                        m_epdata.PB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.PB, igrp), _
+                                                              CVpar(eMCParams.PB, igrp), _
+                                                              ParLimit(0, eMCParams.PB, igrp), _
+                                                              ParLimit(1, eMCParams.PB, igrp), _
+                                                              False)
+                    End If
+                    If m_ecopath.missing(igrp, 4) = False Then                   ' Then EE is an input par
+                        m_epdata.EE(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.EE, igrp), _
+                                                              CVpar(4, igrp), _
+                                                              ParLimit(0, eMCParams.EE, igrp), _
+                                                              ParLimit(1, eMCParams.EE, igrp), _
+                                                              False)
+                    End If
                 Next igrp
 
                 m_ecosim.InitStanza()
