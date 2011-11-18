@@ -135,7 +135,8 @@ Public Class plFlow
 
 #Region " Scale "
 
-    <Browsable(False)> _
+    <Browsable(False), _
+     DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
     Public Property ZoomFactor() As Single
         Get
             Return plFlow.g_sScale
