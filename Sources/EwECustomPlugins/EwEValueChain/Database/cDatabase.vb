@@ -142,14 +142,13 @@ Public Class cDatabase
     Public Function SaveModel(ByVal data As cData) As Boolean
 
         Dim bSucces As Boolean = True
+        Dim ass As Assembly = Assembly.GetAssembly(GetType(cUnit))
 
         Me.OOPFlushObjectCache()
         Me.OOPFlushSchemaCache()
 
-        ' JS 14apr09: save logic broken up in separate transactions. Each transaction saves
-        '             a set of unrelated objects (objects that are not linked). This 
-        '
-        If Me.BeginTransaction() Then
+        ' JS 17Nov11: Use OOP transaction to minimize time on getting and releasing adapters
+        If Me.OOPBeginTransaction(ass) Then
 
             Try
                 ' Store model parameters
@@ -177,18 +176,6 @@ Public Class cDatabase
                 bSucces = False
             End Try
 
-            If bSucces Then
-                bSucces = Me.CommitTransaction(True)
-            Else
-                Me.RollbackTransaction()
-            End If
-
-        End If
-
-        If bSucces = False Then Return False
-
-        If Me.BeginTransaction() Then
-
             Try
 
                 ' Store default links
@@ -207,30 +194,15 @@ Public Class cDatabase
                 bSucces = False
             End Try
 
-            If bSucces Then
-                bSucces = Me.CommitTransaction(True)
-            Else
-                Me.RollbackTransaction()
-            End If
-        End If
-
-        If Me.BeginTransaction() Then
-
-            Try
-
-            Catch ex As Exception
-                bSucces = False
-            End Try
-
             ' Store flow positions
             For i As Integer = 0 To data.FlowPositionCount - 1
                 bSucces = bSucces And Me.WriteObject(data.FlowPosition(i))
             Next
 
             If bSucces Then
-                bSucces = Me.CommitTransaction(True)
+                bSucces = Me.OOPCommitTransaction(ass, True)
             Else
-                Me.RollbackTransaction()
+                Me.OOPRollbackTransaction(ass)
             End If
 
         End If

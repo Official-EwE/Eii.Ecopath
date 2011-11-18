@@ -1675,6 +1675,55 @@ Namespace Database
 
 #Region " OOP Write "
 
+        Public Function OOPBeginTransaction(ass As Assembly) As Boolean
+
+            If Not Me.BeginTransaction() Then Return False
+
+            For Each t As Type In ass.GetTypes()
+                If t.IsAssignableFrom(GetType(cOOPStorable)) Then
+                    Dim strTable As String = Me.OOPGetTableName(t)
+                    While Not OOPIsBaseClass(t)
+                        Me.OOPGetAdapter(strTable)
+                        t = t.BaseType
+                    End While
+                End If
+            Next
+            Return True
+
+        End Function
+
+        Public Function OOPCommitTransaction(ass As Assembly, Optional bCommit As Boolean = True) As Boolean
+
+            For Each t As Type In ass.GetTypes()
+                If t.IsAssignableFrom(GetType(cOOPStorable)) Then
+                    Dim strTable As String = Me.OOPGetTableName(t)
+                    While Not OOPIsBaseClass(t)
+                        Me.OOPReleaseAdapter(strTable)
+                        t = t.BaseType
+                    End While
+                End If
+            Next
+
+            Debug.Assert(Not OOPHasOpenAdapters())
+            Return Me.CommitTransaction(bCommit)
+
+        End Function
+
+        Public Function OOPRollbackTransaction(ass As Assembly) As Boolean
+
+            For Each t As Type In ass.GetTypes()
+                If t.IsAssignableFrom(GetType(cOOPStorable)) Then
+                    Dim strTable As String = Me.OOPGetTableName(t)
+                    While Not OOPIsBaseClass(t)
+                        Me.OOPReleaseAdapter(strTable)
+                        t = t.BaseType
+                    End While
+                End If
+            Next
+            Return Me.RollbackTransaction()
+
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Write an <see cref="cOOPStorable">OOPstorable-derived</see> instance 
