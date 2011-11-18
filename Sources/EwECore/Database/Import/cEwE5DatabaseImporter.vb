@@ -3745,7 +3745,7 @@ Namespace Database
                     keys(1) = iKey
                     drow = dtSub.Rows.Find(keys)
                     drow.BeginEdit()
-                    drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, dataDepth, True, iCell)
+                    drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, dataDepth, True, iCell, 1.0!)
                     drow.EndEdit()
                 End While
                 dtSub = Nothing

@@ -598,8 +598,9 @@ Namespace Utilities
         ''' water cells or land cells are stored based on the value of <paramref name="bWaterOnly"/>.</param>
         ''' <param name="bWaterOnly">Flag, stating whether only values should be written
         ''' for water cells (true) or land cells (false), as indicated by parameter <paramref name="dataDepth"/>.</param>
-        ''' <param name="valueSet">Value to find in the data and to write to the string,
+        ''' <param name="valueFilter">Value to find in the data and to write to the string,
         ''' or Nothing if any value from the data must be written to the string.</param>
+        ''' <param name="valueSet">Value to set, if any.</param>
         ''' <returns>The resulting converted string.</returns>
         ''' <remarks>This code is optimized to include as few characters as possible
         ''' in the output string without having to revert to run-length encoding.
@@ -608,6 +609,7 @@ Namespace Utilities
         Public Shared Function ArrayToString(ByVal data As Array, _
                                              Optional ByVal dataDepth As Integer(,) = Nothing, _
                                              Optional ByVal bWaterOnly As Boolean = True, _
+                                             Optional ByVal valueFilter As Object = Nothing, _
                                              Optional ByVal valueSet As Object = Nothing) As String
 
             ' Can only handle 2-dimensional arrays
@@ -653,8 +655,9 @@ Namespace Utilities
                             bHasRowValues = bHasRowValues Or (CBool(value))
                         Else
                             ' Is an allowed value?
-                            If ((value.Equals(valueSet) Or (valueSet Is Nothing))) Then
+                            If ((value.Equals(valueFilter) Or (valueFilter Is Nothing))) Then
                                 ' #Yes: convert value to a fixed en-US representation text
+                                If (valueSet IsNot Nothing) Then value = valueSet
                                 sbRow.Append(cStringUtils.FormatNumber(value))
                                 bHasRowValues = True
                             End If
@@ -682,14 +685,16 @@ Namespace Utilities
         ''' <param name="data">The 2-dimensional array to populate.</param>
         ''' <param name="land">Optional land layer to use.</param>
         ''' <param name="bWaterOnly">States whether only water cells (true) or land cells (false) should be written.</param>
-        ''' <param name="valueGet">Optional value to filter map values by. If specified, only map values equalling this
+        ''' <param name="valueFilter">Optional value to filter map values by. If specified, only map values equalling this
         ''' filter value will be copied to the data array.</param>
+        ''' <param name="valueSet">Value to set, if any.</param>
         ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function StringToArray(ByVal strData As String, ByVal data As Array, _
                                              Optional ByVal land As Integer(,) = Nothing, _
                                              Optional ByVal bWaterOnly As Boolean = True, _
-                                             Optional ByVal valueGet As Object = Nothing) As Boolean
+                                             Optional ByVal valueFilter As Object = Nothing, _
+                                             Optional ByVal valueSet As Object = Nothing) As Boolean
 
             ' Need 2 dim array
             Debug.Assert(data.Rank = 2)
@@ -732,8 +737,9 @@ Namespace Utilities
                                     End If
 
                                     ' Does this value match the value to get if provided?
-                                    If (value.Equals(valueGet) Or (valueGet Is Nothing)) Then
+                                    If (value.Equals(valueFilter) Or (valueFilter Is Nothing)) Then
                                         ' #Yes: update array
+                                        If (valueSet IsNot Nothing) Then value = valueSet
                                         data.SetValue(value, i, j)
                                     End If
                                 Catch ex As Exception

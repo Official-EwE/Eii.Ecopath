@@ -381,7 +381,6 @@ Namespace Ecosim
             Dim pplMortTotal As New PointPairList()
             Dim pplMortPredation As New PointPairList()
             Dim pplMortFishing As New PointPairList()
-            Dim pplValue As New PointPairList()
 
             'Set the master pane title
             Me.m_zgh.Configure(groupSimOut.Name)
