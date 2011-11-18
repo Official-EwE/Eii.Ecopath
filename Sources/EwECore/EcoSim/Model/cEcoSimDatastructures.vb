@@ -139,6 +139,11 @@ Public Class cEcosimDatastructures
     Public NutFreeBase() As Single
 
     Public VulMultAll As Single
+
+    ''' <summary>
+    ''' Vulnerability multiplier of a prey to a predator
+    ''' </summary>
+    ''' <remarks>VulMult(iPrey,iPred) User entered value to increase the vulnerability of a prey</remarks>
     Public VulMult(,) As Single
     Public vulrate(,) As Single
 
@@ -208,11 +213,16 @@ Public Class cEcosimDatastructures
     Public PBmaxs() As Single 'max relative P/B
 
     Public RecPower() As Single
-    ' Public RecPowerSplit() As Single
 
     Public Emig() As Single    'relative to biomass,
-    'Public DCMean(,) As Single
 
+    ''' <summary>
+    ''' Base consumption on a prey by a predator 
+    ''' </summary>
+    ''' <remarks>
+    ''' Consumption(iPrey,iPred) 
+    ''' computed in <see cref="Ecosim.cEcoSimModel.CalcEatenOfBy">Ecosim.CalcEatenOfBy</see>
+    ''' </remarks>
     Public Consumption(,) As Single
 
     Public Htime() As Single
