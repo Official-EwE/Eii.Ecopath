@@ -3805,10 +3805,9 @@ Namespace Ecosim
                 'VC040708: if no biomass for detritus is given, then the below may explode, will put a trap
                 If multiplier > 100 And m_Data.StartBiomass(i) < 10 ^ -10 And i > m_EPData.NumLiving Then
                     m_Data.vulrate(i, j) = 1
-                ElseIf m_Data.StartBiomass(i) > 0 Then
 
+                ElseIf m_Data.StartBiomass(i) > 0 Then
                     m_Data.vulrate(i, j) = CSng(multiplier * m_Data.Consumption(i, j) / m_Data.StartBiomass(i))
-                    '    System.Console.WriteLine("Vulrate " & i & ", " & j & " = " & m_Data.vulrate(i, j).ToString("##.000000000000000"))
 
                 End If
 
