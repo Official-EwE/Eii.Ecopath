@@ -4043,4 +4043,17 @@ QmCCCw==</value>
   <data name="NAVTREE_INPUT_TABLE_LINKS" xml:space="preserve">
     <value>Links</value>
   </data>
+  <data name="ERROR_LINK_DUPLICATE" xml:space="preserve">
+    <value>Link already present for group '{0}'</value>
+    <comment>{0} = group name</comment>
+  </data>
+  <data name="ERROR_LINK_LOOP" xml:space="preserve">
+    <value>This will create a loop which is not allowed</value>
+  </data>
+  <data name="ERROR_LINK_NEEDUNITS" xml:space="preserve">
+    <value>A link needs a source and a target</value>
+  </data>
+  <data name="ERROR_LINK_NOTALLOWED" xml:space="preserve">
+    <value>This type of link is not allowed</value>
+  </data>
 </root>

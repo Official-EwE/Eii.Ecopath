@@ -8,6 +8,7 @@ Imports EwEUtils.Database
 Imports EwEUtils.Database.cEwEDatabase
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -45,8 +46,6 @@ Public Class cData
     Private Shared s_inst As cData = Nothing
 
 #End Region ' Private vars 
-
-    ' ToDo: Globalize this class
 
     Public Sub New(ByVal core As cCore)
         MyBase.New(core)
@@ -734,29 +733,28 @@ Public Class cData
 
     Public Function CreateLandingsLink(ByVal unitSource As cProducerUnit, ByVal unitTarget As cUnit, ByVal group As cEcoPathGroupInput) As cLinkLandings
 
-        ' ToDo: globalize this
-
         ' Sanity check
         If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
-            MsgBox("Need a source and a target", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Me.SendMessage(My.Resources.ERROR_LINK_NEEDUNITS)
             Return Nothing
         End If
 
         ' Check if link is allowed
         If Not cLinkFactory.CanCreateLink(unitSource, unitTarget) Then
-            MsgBox("This type of link is not allowed", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Me.SendMessage(My.Resources.ERROR_LINK_NOTALLOWED)
             Return Nothing
         End If
 
         ' Check for loop
         If unitTarget.IsLoop(unitSource) Then
-            MsgBox("This will create a loop which is not allowed", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Me.SendMessage(My.Resources.ERROR_LINK_LOOP)
             Return Nothing
         End If
 
         ' Check for already present link
         If unitSource.HasTarget(unitTarget, group) Then
-            MsgBox("Link already present for group " & group.Name, MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Dim fmt As New cCoreInterfaceFormatter()
+            Me.SendMessage(String.Format(My.Resources.ERROR_LINK_DUPLICATE, fmt.GetDescriptor(group)))
             Return Nothing
         End If
 
@@ -783,31 +781,23 @@ Public Class cData
     ''' <returns></returns>
     Public Function CreateLink(ByVal unitSource As cUnit, ByVal unitTarget As cUnit) As cLink
 
-        ' ToDo: globalize this
-
         ' Sanity check
         If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
-            MsgBox("Need a source and a target", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Me.SendMessage(My.Resources.ERROR_LINK_NEEDUNITS)
             Return Nothing
         End If
 
         ' Check if link is allowed
         If Not cLinkFactory.CanCreateLink(unitSource, unitTarget) Then
-            MsgBox("This type of link is not allowed", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Me.SendMessage(My.Resources.ERROR_LINK_NOTALLOWED)
             Return Nothing
         End If
 
         ' Check for loop
         If unitTarget.IsLoop(unitSource) Then
-            MsgBox("This will create a loop which is not allowed", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+            Me.SendMessage(My.Resources.ERROR_LINK_LOOP)
             Return Nothing
         End If
-
-        '' Check for already present link
-        'If unitSource.HasTarget(unitTarget) Then
-        '    MsgBox("Link already present", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
-        '    Return Nothing
-        'End If
 
         Dim link As New cLink()
 
@@ -1157,6 +1147,17 @@ Public Class cData
                 Me.GetTargetUnits(unitTarget, lUnits)
             End If
         Next
+    End Sub
+
+    Private Sub SendMessage(strMessage As String)
+        Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+        If (Me.m_core IsNot Nothing) Then
+            Try
+                Me.m_core.Messages.SendMessage(msg)
+            Catch ex As Exception
+                ' Whoah
+            End Try
+        End If
     End Sub
 
 #End Region ' Internals

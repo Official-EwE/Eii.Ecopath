@@ -74,6 +74,42 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Link already present for group &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property ERROR_LINK_DUPLICATE() As String
+            Get
+                Return ResourceManager.GetString("ERROR_LINK_DUPLICATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This will create a loop which is not allowed.
+        '''</summary>
+        Friend ReadOnly Property ERROR_LINK_LOOP() As String
+            Get
+                Return ResourceManager.GetString("ERROR_LINK_LOOP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to A link needs a source and a target.
+        '''</summary>
+        Friend ReadOnly Property ERROR_LINK_NEEDUNITS() As String
+            Get
+                Return ResourceManager.GetString("ERROR_LINK_NEEDUNITS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This type of link is not allowed.
+        '''</summary>
+        Friend ReadOnly Property ERROR_LINK_NOTALLOWED() As String
+            Get
+                Return ResourceManager.GetString("ERROR_LINK_NOTALLOWED", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property EU_50px() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("EU_50px", resourceCulture)
