@@ -839,6 +839,8 @@ Public Class cData
 
         ' Sanity check
         Debug.Assert(link IsNot Nothing)
+        Debug.Assert(link.Target IsNot Nothing)
+        Debug.Assert(link.Source IsNot Nothing)
 
         Me.m_lLinks.Add(link)
         link.Source.AddLink(link)
