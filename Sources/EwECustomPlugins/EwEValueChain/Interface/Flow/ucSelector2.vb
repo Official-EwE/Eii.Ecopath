@@ -9,7 +9,7 @@ Public Class ucSelector2
     Private m_pg As PropertyGrid = Nothing
     Private m_pl As plFlow = Nothing
     Private m_selection As cEwEDatabase.cOOPStorable() = Nothing
-    Private m_iSel As Integer = 0
+    Private m_iSel As Integer = -1
     Private m_bCanAddRemoveItems As Boolean = False
 
     Private m_unitSrc As cUnit = Nothing
@@ -94,7 +94,7 @@ Public Class ucSelector2
                         Me.m_lbxBits.Items.Add(Me.m_selection(i))
                     Next
                 End If
-                Me.m_lbxBits.SelectedIndex = Me.m_iSel
+                Me.m_lbxBits.SelectedIndex = Math.Min(Me.m_selection.Length - 1, Me.m_iSel)
             Catch ex As Exception
 
             End Try
