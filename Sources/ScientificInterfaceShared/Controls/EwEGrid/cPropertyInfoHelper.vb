@@ -32,7 +32,7 @@ Namespace Controls.EwEGrid
             Dim piOut As New List(Of PropertyInfo)
 
             For i As Integer = 0 To pdc.Count - 1
-                If pdc(i).IsBrowsable And Not pdc(i).IsReadOnly Then piOut.Add(cPropertyConverter.FindOrigPropertyInfo(t, pdc(i)))
+                If pdc(i).IsBrowsable Then piOut.Add(cPropertyConverter.FindOrigPropertyInfo(t, pdc(i)))
             Next
 
             Return piOut.ToArray
