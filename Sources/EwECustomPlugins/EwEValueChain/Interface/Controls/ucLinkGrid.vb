@@ -56,6 +56,7 @@ Public Class ucLinkGrid
         Me.FixedColumnWidths = False
 
     End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' 

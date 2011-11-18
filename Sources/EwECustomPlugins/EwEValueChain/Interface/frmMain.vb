@@ -78,25 +78,42 @@ Public Class frmMain
             Case eValueChainPageTypes.Parameters
                 Me.ShowForm(New ucParameters(Me.m_plugin.Data, Me.m_plugin.Context))
             Case eValueChainPageTypes.TableProducers
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Producer))
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Producer)
+                Dim view As New ucGridView(grid)
+                Me.ShowForm(view)
             Case eValueChainPageTypes.TableProcessors
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Processing))
+                Me.ShowForm(New ucGridView(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Processing)))
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Producer)
+                Dim view As New ucGridView(grid)
+                Me.ShowForm(view)
             Case eValueChainPageTypes.TableDistributors
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Distribution))
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Distribution)
+                Dim view As New ucGridView(grid)
+                Me.ShowForm(view)
             Case eValueChainPageTypes.TableWholesellers
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Wholesaler))
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Wholesaler)
+                Dim view As New ucGridView(grid)
+                Me.ShowForm(view)
             Case eValueChainPageTypes.TableRetailer
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Retailer))
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Retailer)
+                Dim view As New ucGridView(grid)
+                Me.ShowForm(view)
             Case eValueChainPageTypes.TableConsumers
-                Me.ShowForm(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Consumer))
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Consumer)
+                Dim view As New ucGridView(grid)
+                Me.ShowForm(view)
             Case eValueChainPageTypes.Flow
                 Me.ShowForm(New ucEditFlow(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Data.FlowDiagram(0)))
             Case eValueChainPageTypes.Defaults
                 Me.ShowForm(New ucDefaults(Me.m_plugin.Context, Me.m_plugin.Data))
             Case eValueChainPageTypes.TableLinks
-                Me.ShowForm(New ucLinkGrid(Me.m_plugin.Context, Me.m_plugin.Data, GetType(cLink)))
+                Dim grid As New ucLinkGrid(Me.m_plugin.Context, Me.m_plugin.Data, GetType(cLink))
+                Dim view As New ucGridView(grid)
+                Me.ShowForm(view)
             Case eValueChainPageTypes.TableLandingsLinks
-                Me.ShowForm(New ucLinkGrid(Me.m_plugin.Context, Me.m_plugin.Data, GetType(cLinkLandings)))
+                Dim grid As New ucLinkGrid(Me.m_plugin.Context, Me.m_plugin.Data, GetType(cLinkLandings))
+                Dim view As New ucGridView(grid)
+                Me.ShowForm(view)
             Case eValueChainPageTypes.Run
                 Me.ShowForm(New ucResults(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results))
             Case Else
@@ -142,6 +159,7 @@ Public Class frmMain
             Me.Controls.Remove(ctrl)
             ctrl.Dispose()
         End While
+
         Me.Controls.Add(f)
 
         Me.ResumeLayout()

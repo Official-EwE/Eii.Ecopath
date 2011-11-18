@@ -688,6 +688,13 @@ Public Class cData
 
 #Region " Links "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get all visible links of a given type.
+    ''' </summary>
+    ''' <param name="t"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Public Function GetLinks(ByVal t As Type) As cLink()
         Dim lLinks As New List(Of cLink)
         Dim link As cLink = Nothing
@@ -696,8 +703,8 @@ Public Class cData
             link = Me.m_lLinks(i)
             ' Need to filter by unit type?
             If (t IsNot Nothing) Then
-                ' #Yes: check unit type
-                bAdd = (t.Equals(link.GetType))
+                ' #Yes: check link type
+                bAdd = (t.Equals(link.GetType)) And link.IsVisible
             Else
                 ' #No: assume all is well
                 bAdd = True

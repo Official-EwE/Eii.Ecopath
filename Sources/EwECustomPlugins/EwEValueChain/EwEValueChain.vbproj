@@ -148,6 +148,12 @@
     <Compile Include="Interface\Controls\ucLinkGrid.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Interface\Controls\ucGridView.Designer.vb">
+      <DependentUpon>ucGridView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Controls\ucGridView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Interface\Controls\ucUnitDefault.Designer.vb">
       <DependentUpon>ucUnitDefault.vb</DependentUpon>
     </Compile>
@@ -246,6 +252,9 @@
     <Compile Include="Plugin\Input\cNTCPluginTabCons.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Interface\Controls\ucGridView.resx">
+      <DependentUpon>ucGridView.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interface\Flow\ucSelector2.resx">
       <DependentUpon>ucSelector2.vb</DependentUpon>
       <SubType>Designer</SubType>
