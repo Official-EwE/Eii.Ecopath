@@ -1675,11 +1675,31 @@ Namespace Database
 
 #Region " OOP Write "
 
+        ''' <summary>Assembly for OOP transaction.</summary>
+        Private m_assTransaction As Assembly = Nothing
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Starts an OOP database transaction. In addition to a regular 
+        ''' <see cref="BeginTransaction">transaction</see> this method also
+        ''' opens all adapters for <see cref="cOOPStorable"/>-derived classes
+        ''' in a given assembly to reduce the amount of adapter traffic while
+        ''' the transaction is open.
+        ''' </summary>
+        ''' <param name="ass">The assembly to load types from.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
         Public Function OOPBeginTransaction(ass As Assembly) As Boolean
+
+            ' Sanity checks
+            Debug.Assert(ass IsNot Nothing)
+            Debug.Assert(Me.m_assTransaction Is Nothing)
 
             If Not Me.BeginTransaction() Then Return False
 
-            For Each t As Type In ass.GetTypes()
+            Me.m_assTransaction = ass
+
+            For Each t As Type In Me.m_assTransaction.GetTypes()
                 If t.IsAssignableFrom(GetType(cOOPStorable)) Then
                     Dim strTable As String = Me.OOPGetTableName(t)
                     While Not OOPIsBaseClass(t)
@@ -1692,9 +1712,12 @@ Namespace Database
 
         End Function
 
-        Public Function OOPCommitTransaction(ass As Assembly, Optional bCommit As Boolean = True) As Boolean
+        Public Function OOPCommitTransaction(Optional bCommit As Boolean = True) As Boolean
 
-            For Each t As Type In ass.GetTypes()
+            ' Sanity checks
+            Debug.Assert(Me.m_assTransaction IsNot Nothing)
+
+            For Each t As Type In Me.m_assTransaction.GetTypes()
                 If t.IsAssignableFrom(GetType(cOOPStorable)) Then
                     Dim strTable As String = Me.OOPGetTableName(t)
                     While Not OOPIsBaseClass(t)
@@ -1703,15 +1726,19 @@ Namespace Database
                     End While
                 End If
             Next
-
             Debug.Assert(Not OOPHasOpenAdapters())
+
+            Me.m_assTransaction = Nothing
             Return Me.CommitTransaction(bCommit)
 
         End Function
 
-        Public Function OOPRollbackTransaction(ass As Assembly) As Boolean
+        Public Function OOPRollbackTransaction() As Boolean
 
-            For Each t As Type In ass.GetTypes()
+            ' Sanity checks
+            Debug.Assert(Me.m_assTransaction IsNot Nothing)
+
+            For Each t As Type In Me.m_assTransaction.GetTypes()
                 If t.IsAssignableFrom(GetType(cOOPStorable)) Then
                     Dim strTable As String = Me.OOPGetTableName(t)
                     While Not OOPIsBaseClass(t)
@@ -1720,6 +1747,9 @@ Namespace Database
                     End While
                 End If
             Next
+            Debug.Assert(Not OOPHasOpenAdapters())
+
+            Me.m_assTransaction = Nothing
             Return Me.RollbackTransaction()
 
         End Function

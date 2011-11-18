@@ -200,9 +200,9 @@ Public Class cDatabase
             Next
 
             If bSucces Then
-                bSucces = Me.OOPCommitTransaction(ass, True)
+                bSucces = Me.OOPCommitTransaction(True)
             Else
-                Me.OOPRollbackTransaction(ass)
+                Me.OOPRollbackTransaction()
             End If
 
         End If
