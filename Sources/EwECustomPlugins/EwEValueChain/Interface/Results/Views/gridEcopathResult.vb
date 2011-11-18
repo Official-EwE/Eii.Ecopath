@@ -276,14 +276,21 @@ Public Class gridEcopathResult
     End Function
 
     Private Function CreateDataCell(Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As EwECell
+
         Dim cell As New EwECell(0, GetType(Single))
+
+        ' Prettinize
         cell.Style = style
         cell.EditableMode = EditableMode.None
         cell.EnableEdit = False
         cell.SuppressZero(0.0!) = True
         ' No decimals in results
         cell.NumDigits = 0
+        ' Group digits
+        cell.GroupDigits = TriState.True
+
         Return cell
+
     End Function
 
     Private Sub UpdateDataCell(ByVal cell As Cells.ICell, _

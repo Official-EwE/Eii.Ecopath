@@ -95,6 +95,8 @@ Namespace Controls.EwEGrid
         Private m_style As cStyleGuide.eStyleFlags = 0
         ''' <summary>Number of decimal digits to display</summary>
         Private m_iNumDigits As Integer = -1
+        ''' <summary>Group digits by thousands.</summary>
+        Private m_tsGroupDigits As TriState = TriState.UseDefault
         ''' <summary>If true, the cell will not show numerical '0' values.</summary>
         Private m_bSuppressZero As Boolean = False
         ''' <summary>Behaviour model to catch [ENTER] key presses.</summary>
@@ -247,6 +249,25 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether numbers should be grouped by thousands. Set this value 
+        ''' to a <see cref="TriState.UseDefault"/> to use the default dictated by
+        ''' the <see cref="cStyleGuide.GroupDigits">style guide</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property GroupDigits As TriState
+            Get
+                Return Me.m_tsGroupDigits
+            End Get
+            Set(value As TriState)
+                If (Me.m_tsGroupDigits <> value) Then
+                    Me.m_tsGroupDigits = value
+                    Me.Invalidate()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the text to display in the cell.
         ''' </summary>
         ''' <returns>The formatted value of the cell.</returns>
@@ -285,7 +306,7 @@ Namespace Controls.EwEGrid
 
                     If (Me.StyleGuide Is Nothing) Then Return "#.#!"
 
-                    Return Me.StyleGuide.FormatNumber(sValue, Me.Style, Me.m_iNumDigits)
+                    Return Me.StyleGuide.FormatNumber(sValue, Me.Style, Me.m_iNumDigits, Me.m_tsGroupDigits)
                 End If
 
                 ' Is this a double?
@@ -305,7 +326,7 @@ Namespace Controls.EwEGrid
 
                     If (Me.StyleGuide Is Nothing) Then Return "#.##"
 
-                    Return Me.StyleGuide.FormatNumber(dValue, Me.Style, Me.m_iNumDigits)
+                    Return Me.StyleGuide.FormatNumber(dValue, Me.Style, Me.m_iNumDigits, Me.m_tsGroupDigits)
                 End If
 
                 ' Is this an integer?
@@ -322,7 +343,7 @@ Namespace Controls.EwEGrid
                         ' #Yes: return empty cell
                         Return ""
                     End If
-                    Return CStr(iValue)
+                    Return Me.StyleGuide.FormatNumber(iValue, Me.Style, Me.m_iNumDigits, Me.m_tsGroupDigits)
                 End If
 
                 ' Return value as-is

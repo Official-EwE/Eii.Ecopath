@@ -93,7 +93,6 @@ Public Class cData
 
     Public Function Load(ByVal strModelName As String) As Boolean
 
-        Dim msg As cMessage = Nothing
         Dim strOldDBName As String = cData.GetDatabaseFileName(strModelName)
         Dim strDBName As String = ""
         Dim bMigrate As Boolean = False
@@ -128,10 +127,8 @@ Public Class cData
                 Catch ex As Exception
 
                 End Try
-                msg = New cMessage(String.Format(My.Resources.STATUS_MERGED, _
-                                                 Path.GetFileName(strOldDBName), Path.GetFileName(strModelName)), _
-                                                 eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Information)
-                Me.m_core.Messages.SendMessage(msg)
+                Me.SendMessage(String.Format(My.Resources.STATUS_MERGED, Path.GetFileName(strOldDBName), Path.GetFileName(strModelName)), _
+                               eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Information)
 
             End If
             Me.m_bInitializing = False
@@ -694,7 +691,8 @@ Public Class cData
     ''' <param name="t"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetLinks(ByVal t As Type) As cLink()
+    Public Function GetLinks(ByVal t As Type, Optional bVisibleOnly As Boolean = True) As cLink()
+
         Dim lLinks As New List(Of cLink)
         Dim link As cLink = Nothing
         Dim bAdd As Boolean = False
@@ -703,7 +701,7 @@ Public Class cData
             ' Need to filter by unit type?
             If (t IsNot Nothing) Then
                 ' #Yes: check link type
-                bAdd = (t.Equals(link.GetType)) And link.IsVisible
+                bAdd = (t.Equals(link.GetType)) And (link.IsVisible Or Not bVisibleOnly)
             Else
                 ' #No: assume all is well
                 bAdd = True
@@ -714,6 +712,7 @@ Public Class cData
             End If
         Next
         Return lLinks.ToArray
+
     End Function
 
     Public Function LinkCount() As Integer
@@ -1149,8 +1148,11 @@ Public Class cData
         Next
     End Sub
 
-    Private Sub SendMessage(strMessage As String)
-        Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+    Private Sub SendMessage(strMessage As String, _
+                            Optional msgtype As eMessageType = eMessageType.Any, _
+                            Optional corecomp As eCoreComponentType = eCoreComponentType.External, _
+                            Optional importance As eMessageImportance = eMessageImportance.Warning)
+        Dim msg As New cMessage(strMessage, msgtype, corecomp, importance)
         If (Me.m_core IsNot Nothing) Then
             Try
                 Me.m_core.Messages.SendMessage(msg)
