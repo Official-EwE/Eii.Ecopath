@@ -78,6 +78,8 @@ Public MustInherit Class cEconomicUnit
     'Public WageFemale As Single     '$ per year
     'Public WageMale As Single       '$ per year
 
+    Private m_bBroker As Boolean = False
+
 #End Region ' Private variables
 
 #Region " Constructor "
@@ -427,6 +429,20 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
+    <Browsable(True), _
+     Category(sPROPCAT_GENERAL), _
+     DisplayName("Broker"), _
+     Description("States whether this unit functions as a broker"), _
+     cPropertySorter.PropertyOrder(5)> _
+    Public Overridable Property Broker() As Boolean
+        Get
+            Return m_bBroker
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_bBroker = value
+            Me.SetChanged()
+        End Set
+    End Property
 #End Region ' Products
 
 #Region " Pay "

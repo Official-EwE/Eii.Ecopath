@@ -49,49 +49,13 @@ Public Class cDistributionUnit
 
 #End If
 
-    Private m_bBroker As Boolean = False
-
     Public Sub New()
         MyBase.New()
     End Sub
 
-#Region " Calculations "
-
-    Protected Overrides Function Calculate(ByVal results As cResults, _
-            ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-            ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-            ByVal iTimeStep As Integer) As Boolean
-
-        If Me.m_bBroker Then
-            ' Do broker variant computations
-            Return MyBase.Calculate(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
-        Else
-            ' Use generic computations
-            Return MyBase.Calculate(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
-        End If
-
-    End Function
-
-#End Region ' Calculations
-
 #Region " Properties "
 
 #Region " General "
-
-    <Browsable(True), _
-     Category(sPROPCAT_GENERAL), _
-     DisplayName("Broker"), _
-     Description("States whether this distributor functions as a broker"), _
-     cPropertySorter.PropertyOrder(1)> _
-    Public Overridable Property Broker() As Boolean
-        Get
-            Return m_bBroker
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_bBroker = value
-            Me.SetChanged()
-        End Set
-    End Property
 
     Public Overrides ReadOnly Property Category() As String
         Get
