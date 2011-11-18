@@ -830,7 +830,7 @@ Public Class plFlow
                         ' Create link for every group
                         For iGroup As Integer = 1 To Me.m_data.Core.nGroups
                             Dim group As cEcoPathGroupInput = Me.m_data.Core.EcoPathGroupInputs(iGroup)
-                            Dim link As cLinkLandings = Me.m_data.CreateSpeciesLink(DirectCast(unitSelected, cProducerUnit), uc.Unit, group)
+                            Dim link As cLinkLandings = Me.m_data.CreateLandingsLink(DirectCast(unitSelected, cProducerUnit), uc.Unit, group)
                             If link IsNot Nothing Then
                                 Me.AddLink(link)
                                 Me.CheckMissingParameters()

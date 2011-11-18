@@ -1,14 +1,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports SourceGrid2
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports System.Drawing
-Imports System.Reflection
 Imports System.ComponentModel
+Imports System.Reflection
 Imports System.Windows.Forms
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -21,7 +20,6 @@ Imports ScientificInterfaceShared.Controls
 Public Class ucUnitGrid
     : Inherits EwEGrid
 
-    Private m_uic As cUIContext = Nothing
     Private m_data As cData = Nothing
     Private m_unitType As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Producer
     Private m_lUnits As List(Of cUnit) = Nothing
@@ -40,7 +38,6 @@ Public Class ucUnitGrid
                    ByVal data As cData, _
                    ByVal unitType As cUnitFactory.eUnitType)
 
-        Me.m_uic = uic
         Me.m_data = data
         Me.m_unitType = unitType
 
@@ -49,6 +46,9 @@ Public Class ucUnitGrid
 
         ' Get list of properties supported by this type
         Me.m_api = cPropertyInfoHelper.GetAllowedProperties(cUnitFactory.MapType(Me.m_unitType))
+
+        ' Go!
+        Me.UIContext = uic
 
     End Sub
 
@@ -67,11 +67,6 @@ Public Class ucUnitGrid
 
         Me.GridToolTipActive = True
         Me.Selection.SelectionMode = GridSelectionMode.Cell
-        'Me.ContextMenuStyle = SourceGrid2.ContextMenuStyle.AutoSize Or _
-        '                      SourceGrid2.ContextMenuStyle.CellContextMenu Or _
-        '                      SourceGrid2.ContextMenuStyle.CopyPasteSelection
-        'Me.Selection.AutoCopyPaste = False
-        'Me.Selection.AutoClear = False
         Me.Selection.ProtectReadOnly = True
 
         Me.FixedColumnWidths = False
@@ -80,6 +75,9 @@ Public Class ucUnitGrid
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
+        Me.FixedRows = 1
+        Me.FixedColumns = 1
+        Me.AutoSize = True
         Me.AutoSizeMode = Windows.Forms.AutoSizeMode.GrowAndShrink
     End Sub
 
@@ -95,9 +93,7 @@ Public Class ucUnitGrid
         Dim pd As PropertyDescriptor = Nothing
 
         Me.Redim(Me.m_api.Length + 1, Me.m_lUnits.Count + 1)
-        Me.FixedRows = 1
-        Me.FixedColumns = 1
-        Me.AutoSize = True
+
 
         ' For every row
         For iRow As Integer = 0 To Me.RowsCount - 1

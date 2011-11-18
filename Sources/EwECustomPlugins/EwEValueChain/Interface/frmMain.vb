@@ -28,6 +28,8 @@ Public Class frmMain
         TableWholesellers
         TableRetailer
         TableConsumers
+        TableLinks
+        TableLandingsLinks
         Run
     End Enum
 
@@ -91,6 +93,10 @@ Public Class frmMain
                 Me.ShowForm(New ucEditFlow(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Data.FlowDiagram(0)))
             Case eValueChainPageTypes.Defaults
                 Me.ShowForm(New ucDefaults(Me.m_plugin.Context, Me.m_plugin.Data))
+            Case eValueChainPageTypes.TableLinks
+                Me.ShowForm(New ucLinkGrid(Me.m_plugin.Context, Me.m_plugin.Data, GetType(cLink)))
+            Case eValueChainPageTypes.TableLandingsLinks
+                Me.ShowForm(New ucLinkGrid(Me.m_plugin.Context, Me.m_plugin.Data, GetType(cLinkLandings)))
             Case eValueChainPageTypes.Run
                 Me.ShowForm(New ucResults(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results))
             Case Else

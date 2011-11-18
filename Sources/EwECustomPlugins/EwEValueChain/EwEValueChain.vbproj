@@ -235,6 +235,8 @@
     <Compile Include="Plugin\Input\cNTCPluginFlow.vb" />
     <Compile Include="Plugin\Input\cNTCPluginParameters.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTabRetailer.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginLandingsLink.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginLink.vb" />
     <Compile Include="Plugin\Output\cNTCPluginRun.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTables.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTabProd.vb" />

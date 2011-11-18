@@ -112,13 +112,13 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ValueChain" type="System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ValueChain" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABNTeXN0
 ZW0uRHJhd2luZy5JY29uAgAAAAhJY29uRGF0YQhJY29uU2l6ZQcEAhNTeXN0ZW0uRHJhd2luZy5T
@@ -2048,7 +2048,8 @@ e4PV9pmf4v+Yn+P/e4Ta9Fdiz6xEUMg1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAADtIxgREUckeRVLKHT5LyAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgBwAAwAMAAMAD
 AADAAwAAgAEAAIABAAAAAQAAAAAAAAAAAAAAAQAAgAEAAIABAADAAwAAwAcAAPAPAAD8PwAACw==</value>
   </data>
-  <data name="distribution" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="distribution" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAZAEAAAKJUE5HDQoaCgAA
@@ -2060,7 +2061,7 @@ hV2udV9VBUFgSoFRuHrf5TCitiudMCnxPeYAtuMPIDQ9+RpyDnf7Pu+AnEBrXvD/5TOrtIuDLD/c
 tQTQnII++A4PIw9VFIcIi++NGC2kAMcF9L5vCSWTUJP5Ld+h9p4//ADeIAmZluTwlwAAAABJRU5E
 rkJgggs=</value>
   </data>
-  <data name="processing" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="processing" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAggEAAAKJUE5HDQoaCgAA
@@ -2072,7 +2073,7 @@ h+n2i7JLAMoTjgICgJWblNwBuBVgAFZObOM7AF1qVAwK01jltNe8G2DVJq19/DqfFzeAZ1Y8EEcA
 iNzTDvs6QM450YCC1rb+eAugVRAI4QawhoxPuNVrBEAIFwDdWpob0h+2YLcB6EK+11EBfs/qO7SB
 r52GkE7swfOjf/fFYg/CPOZLAIHqkQAAAABJRU5ErkJgggs=</value>
   </data>
-  <data name="Lenfest_Logo_50px" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="Lenfest_Logo_50px" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAe4sAAAL/2P/gABBKRklG
@@ -2704,7 +2705,7 @@ pJgCbrdD/wCHdBEbwjRNPEUsDW0sX1WLi0LyGVomHGhQuxYqduRJ648R70eHHlQTCCztbaW5ngtY
 YZ7xle7mjRVeVkUIpkYAFiFAAr22xtkABuisCX//1fv5irR6HFVP/P3wKv8Av7YVW9/64qqYq7FX
 Yq7FXYq7FXYq7FXYq//ZCw==</value>
   </data>
-  <data name="EU_50px" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="EU_50px" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAY4QAAAL/2P/gABBKRklG
@@ -3304,7 +3305,7 @@ erDkCiKnOZf0hrsx6sECiKBMzMvzaY7+34I/3x+qvThWgxCFsmZw+uPwfZuNOt+n9UYnhP8A1K7h
 B80jqKfJ7B80jqKfJ7B80jqKfJ7B80jqKfJ7B80jqKfJ7B80jqL5PrD+DzrV67i4uj0oUf7aOorf
 f8B/8/8A0/0aOb6/r+X31N6t3l5l/9kL</value>
   </data>
-  <data name="sautxt_50px" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="sautxt_50px" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAqYMAAAL/2P/gABBKRklG
@@ -3901,7 +3902,7 @@ Jxtb/cy+n/O+n4v5mfzF/wCUo1H/AJQz+9b/AJQX/jk9f91e3hn3B2J/i0f7/l/l/rfLdZ9X8P8A
 m8n6T/8APv3/AI7dv/5JbqOn/Kaf88f454n/AMF7+5P+O/H/ABb4vUezv1f5P/fv2WPXPm97MLn7
 YlWv6YVf/9kL</value>
   </data>
-  <data name="consumer" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="consumer" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAZgIAAAKJUE5HDQoaCgAA
@@ -3917,7 +3918,7 @@ yru5xmmQAM4DAHC9Xu8hMnoHCPpMuwvACvAgBaPRyN1wGNVF42sgogB9IaIT9M2K/6H9AwDj8Xie
 6x4qfR0nA5DoVUtm3W73uSiKV1Q7/Z4Gg8Ej026+BckpCB6U5NcwCoBVpcazmvw9cLQLQmf/zTnP
 /ovolLPm90CqgXPP/QI8oMncUYviwwAAAABJRU5ErkJgggs=</value>
   </data>
-  <data name="producer" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="producer" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAvwEAAAKJUE5HDQoaCgAA
@@ -3930,7 +3931,7 @@ rfYDEO66bjP1uCgH019BURSPvXXCtbZwgHEPgoRdbvmOE/S6I1pc8ILYC6ZrDE3SnnITQg7g44RL
 yDSO51oBWBZk0zT1fGEtpdzUEVF+jy/Ac75whQCIrXRA2zndj8ZQxlewhuI9IxRE27YK5OwyApA9
 y3H0TXPodVwnekcU+7cM978Acm1+R5HJt4MAAAAASUVORK5CYIIL</value>
   </data>
-  <data name="ValueChain_32x32" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="ValueChain_32x32" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAdQMAAAKJUE5HDQoaCgAA
@@ -4013,7 +4014,7 @@ vS7i4T8dTiUAAAAASUVORK5CYIIL</value>
   <data name="NAVTREE_INPUT_TABLE_RETAILERS" xml:space="preserve">
     <value>Retailers</value>
   </data>
-  <data name="retailer" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="retailer" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAVQEAAAKJUE5HDQoaCgAA
@@ -4024,7 +4025,7 @@ l55A1AAtZzAIh7UZa0sBeHQj/0sBSL5WxHy95fxzFWuPIYyNRDyS/ymAMp8mChDAqAqS/NsVkKp/
 +hiS0Vajqa1Ld426CLUX15YUaCD+E0CTf3MFeumaLsIQwrsX3cieKQBqxzHGrxcORQznaFbSnp8a
 EQxLxgHZ2zMNUDYjKce1N+CWF1Gv0Hqd8AYEhTstZjmf+AAAAABJRU5ErkJgggs=</value>
   </data>
-  <data name="wholesaler" type="System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="wholesaler" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
 ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAYwEAAAKJUE5HDQoaCgAA
@@ -4035,5 +4036,11 @@ GNAQgJYDpUSWA6VULwdAJRs2XFVVdQSXHFUTIQMZgKoOwOVLfOJUdcCAp4HRumBQhAC2eiAzM/Mj
 NvHRumD4NUgGvE2IrVWclZW1HlQXoLeWadIqJqMqIKq1jbdjQk75T07dgNelHR0dR5YvX/547969
 fsgYVtGA5GfPnn0NnzxIP76KiSQHoBuE7gBs8mQ7YFBEAbF1OiXqAGxVqMowGrgsAAAAAElFTkSu
 QmCCCw==</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_LANDINGLINKS" xml:space="preserve">
+    <value>Landing links</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_LINKS" xml:space="preserve">
+    <value>Links</value>
   </data>
 </root>

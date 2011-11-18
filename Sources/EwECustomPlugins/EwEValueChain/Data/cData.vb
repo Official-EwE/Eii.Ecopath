@@ -688,6 +688,28 @@ Public Class cData
 
 #Region " Links "
 
+    Public Function GetLinks(ByVal t As Type) As cLink()
+        Dim lLinks As New List(Of cLink)
+        Dim link As cLink = Nothing
+        Dim bAdd As Boolean = False
+        For i As Integer = 0 To Me.m_lLinks.Count - 1
+            link = Me.m_lLinks(i)
+            ' Need to filter by unit type?
+            If (t IsNot Nothing) Then
+                ' #Yes: check unit type
+                bAdd = (t.Equals(link.GetType))
+            Else
+                ' #No: assume all is well
+                bAdd = True
+            End If
+
+            If bAdd Then
+                lLinks.Add(link)
+            End If
+        Next
+        Return lLinks.ToArray
+    End Function
+
     Public Function LinkCount() As Integer
         Return Me.m_lLinks.Count
     End Function
@@ -703,7 +725,7 @@ Public Class cData
         Return Me.m_lLinks(iIndex)
     End Function
 
-    Public Function CreateSpeciesLink(ByVal unitSource As cProducerUnit, ByVal unitTarget As cUnit, ByVal group As cEcoPathGroupInput) As cLinkLandings
+    Public Function CreateLandingsLink(ByVal unitSource As cProducerUnit, ByVal unitTarget As cUnit, ByVal group As cEcoPathGroupInput) As cLinkLandings
 
         ' ToDo: globalize this
 
