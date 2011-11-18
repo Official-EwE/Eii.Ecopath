@@ -126,7 +126,16 @@ Public Class cResults
                         sCostManagementRoyaltyCertificationObserver
 
                 ' Profit
+                Dim grossProfit As Single = sRevenue - sCost
+                'tax on profit:
+                If grossProfit > 0 And TypeOf unit Is cEconomicUnit Then
+                    Dim TaxOnProfit As Single = DirectCast(unit, cEconomicUnit).ProfitTax * grossProfit
+                    Me.m_results(eVariableType.CostTaxes, unit.Sequence) += TaxOnProfit
+                    sCost += TaxOnProfit
+                End If
+
                 sProfit = sRevenue - sCost
+
 
                 ' TotalUtility a.k.a. Throughput = cost when (profit < 0), revenue otherwise
                 sTotalUtility = CSng(IIf(sProfit < 0, sCost, sRevenue))

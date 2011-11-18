@@ -219,7 +219,8 @@ Public MustInherit Class cEconomicUnit
                 ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
                 ByVal iTimeStep As Integer) As Boolean
 
-        Dim sSum As Single = sOutputBiomass * (Me.TaxEnvironmental + Me.TaxExport + Me.TaxProduction + Me.TaxVAT + Me.m_TaxesImport + Me.LicenseTax + Me.ProfitTax)
+        Dim sSum As Single = sOutputBiomass * (Me.TaxEnvironmental + Me.TaxExport + Me.TaxProduction + Me.TaxVAT + Me.m_TaxesImport + Me.LicenseTax)
+        ' profit tax is calculated later, after all revenue and (other) cost is known (VC111117)
         results.Store(Me, cResults.eVariableType.CostTaxes, sSum, iTimeStep)
         Return True
     End Function
@@ -798,7 +799,7 @@ Public Property CertificationCost() As Single
     <Browsable(True), _
         Category(sPROPCAT_TAXES), _
         DisplayName("Profit tax"), _
-        Description("Profit tax per tonnes of product"), _
+        Description("Tax as proportion of profit"), _
         DefaultValue(0.0!), _
         cPropertySorter.PropertyOrder(6)> _
     Public Property ProfitTax() As Single

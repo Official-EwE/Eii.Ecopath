@@ -633,7 +633,7 @@ Public Class cProducerUnit
                 sBTot += Me.m_asLandings(iGroup)
                 sValTot += Me.m_asLandingsValue(iGroup)
             Next
-            Me.Calculate(results, sBTot, sValTot, sBTot, sTotalOutputValue, iTimeStep)
+            Me.Calculate(results, sBTot, 0, sBTot, sValTot, iTimeStep)
         End If
 
         ' Determine outgoing biomass ratios for each group
@@ -669,7 +669,17 @@ Public Class cProducerUnit
             End If
 
             ' Process every link to ensure that target units receive all inputs!
-            link.Target.Process(results, New cInput(sBiomass, sPrice, sPrice), iTimeStep, iFleet)
+            If sBiomass > 0 Then
+                link.Target.Process(results, New cInput(sBiomass, sPrice, sPrice / sBiomass), iTimeStep, iFleet)
+
+                'VC: I changed the line above to pass price/biomass as the third parameter (instead of price). 
+                'it is supposed to be the price per unit biomass
+                'it was multiplying an extra time with the total catches (sBiomass) as it was.
+            Else
+                link.Target.Process(results, New cInput(sBiomass, sPrice), iTimeStep, iFleet)
+
+            End If
+
             sTotalOutputValue += sPrice * sBiomass
 
         Next

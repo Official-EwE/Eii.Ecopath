@@ -219,7 +219,10 @@ Public MustInherit Class cUnit
                 ' Is default link value?
                 If (sValuePerTon = 1.0!) And (inputTotal.Tons <> 0.0!) Then
                     ' #Yes: use aggregated input value
-                    sValuePerTon = inputTotal.Value / inputTotal.Tons
+                    sValuePerTon = (link.ValueRatio * inputTotal.Value) / inputTotal.Tons
+                    ' this was: sValuePerTon = inputTotal.Value / inputTotal.Tons
+                    ' but it should consider the value addition in the link, so be based on outputvalue, not input value, VC therefore changed this 111117
+
                 End If
 
                 sTotalOutputValue += sValuePerTon * sOutputBiomass
