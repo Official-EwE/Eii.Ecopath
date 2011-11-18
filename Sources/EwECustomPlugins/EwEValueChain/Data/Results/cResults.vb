@@ -100,15 +100,20 @@ Public Class cResults
                 ' Dependents total
                 Dim sDependentsTotal As Single = 0.0!
 
+                'Dim isBroker As Boolean = False
+                'If DirectCast(unit, cEconomicUnit).Broker = True Then isBroker = True
+
                 sRevenueProductsOther = Me.m_results(eVariableType.RevenueProductsOther, unit.Sequence) + _
                         Me.m_results(eVariableType.RevenueAgriculture, unit.Sequence)
 
                 sRevenueTickets = Me.m_results(eVariableType.RevenueTickets, unit.Sequence)
 
                 sRevenue = sRevenueProductsOther + sRevenueTickets + _
-                        Me.m_results(eVariableType.RevenueProductsMain, unit.Sequence) + _
                         Me.m_results(eVariableType.RevenueSubsidies, unit.Sequence)
 
+                'If isBroker = False Then  'this is not a broker, so the revenus from selling the product is theirs, and it counts in the utility
+                sRevenue += Me.m_results(eVariableType.RevenueProductsMain, unit.Sequence)
+                'End If
                 ' Cost
                 sCostSalariesShares = Me.m_results(eVariableType.CostWorker, unit.Sequence) + _
                         Me.m_results(eVariableType.CostOwner, unit.Sequence)
@@ -120,10 +125,13 @@ Public Class cResults
                         Me.m_results(eVariableType.CostInput, unit.Sequence)
 
                 sCost = sCostSalariesShares + _
-                        Me.m_results(eVariableType.CostRawmaterial, unit.Sequence) + _
                         sCostlInputOther + _
                         Me.m_results(eVariableType.CostTaxes, unit.Sequence) + _
                         sCostManagementRoyaltyCertificationObserver
+
+                'If isBroker = False Then 'it is not a broker, so they pay for the fish: (and it is added to the utility)
+                sCost += Me.m_results(eVariableType.CostRawmaterial, unit.Sequence)
+                'End If
 
                 ' Profit
                 Dim grossProfit As Single = sRevenue - sCost

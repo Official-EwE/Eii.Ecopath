@@ -213,20 +213,28 @@ Public MustInherit Class cUnit
             ' Determine outgoing biomass
             For Each link As cLink In Me.m_llinkOutput
                 ' Determing output biomass for a single link
-                Dim sOutputBiomass As Single = link.BiomassRatio * inputTotal.Tons
+                If inputTotal.Tons > 0 Then
+                    Dim sOutputBiomass As Single = link.BiomassRatio * inputTotal.Tons
+                    Dim sOutputValue As Single = 0
+                    If link.ValuePerTon <> 1.0! Then
+                        sOutputValue = link.ValuePerTon * sOutputBiomass
+                    Else
+                        sOutputValue = (inputTotal.Value / inputTotal.Tons) * link.ValueRatio * sOutputBiomass
+                    End If
 
-                sValuePerTon = link.ValuePerTon
-                ' Is default link value?
-                If (sValuePerTon = 1.0!) And (inputTotal.Tons <> 0.0!) Then
+                    ' sValuePerTon = link.ValuePerTon
+                    ' Is default link value?
+                    ' If (sValuePerTon = 1.0!) Then
                     ' #Yes: use aggregated input value
-                    sValuePerTon = (link.ValueRatio * inputTotal.Value) / inputTotal.Tons
+                    'sValuePerTon = (link.ValueRatio * inputTotal.Value) / inputTotal.Tons
                     ' this was: sValuePerTon = inputTotal.Value / inputTotal.Tons
                     ' but it should consider the value addition in the link, so be based on outputvalue, not input value, VC therefore changed this 111117
 
-                End If
+                    'End If
 
-                sTotalOutputValue += sValuePerTon * sOutputBiomass
-                sTotalOutputBiomass += sOutputBiomass
+                    sTotalOutputBiomass += sOutputBiomass
+                    sTotalOutputValue += sOutputValue
+                End If
             Next
 
             results.StoreFleetContribution(iFleet, Me, iTimeStep, inputTotal.Value)
@@ -243,18 +251,21 @@ Public MustInherit Class cUnit
             ' Pass biomass to all targets in the flow
             For Each outputLink As cLink In Me.m_llinkOutput
                 ' Pass resulting data to the next unit in the flow, and tell it to process
+                If inputTotal.Tons > 0 Then
+                    ' Get system-defined value per ton
+                    'sValuePerTon = outputLink.ValuePerTon
+                    ' Is default value?
+                    If outputLink.ValuePerTon = 1.0! Then
+                        ' #Yes: use aggregated input value
+                        sValuePerTon = (inputTotal.Value / inputTotal.Tons) * outputLink.ValueRatio
+                    Else
+                        sValuePerTon = outputLink.ValuePerTon
+                    End If
 
-                ' Get system-defined value per ton
-                sValuePerTon = outputLink.ValuePerTon
-                ' Is default value?
-                If (sValuePerTon = 1.0!) And (inputTotal.Tons <> 0.0!) Then
-                    ' #Yes: use aggregated input value
-                    sValuePerTon = inputTotal.Value / inputTotal.Tons
+                    outputLink.Target.Process(results, _
+                            New cInput(inputTotal.Tons * outputLink.BiomassRatio, _
+                                       inputTotal.Tons * outputLink.BiomassRatio * sValuePerTon), iTimeStep, iFleet)
                 End If
-
-                outputLink.Target.Process(results, _
-                        New cInput(inputTotal.Tons * outputLink.BiomassRatio, _
-                                   inputTotal.Tons * outputLink.BiomassRatio * sValuePerTon), iTimeStep, iFleet)
             Next outputLink
         End If
 
@@ -264,11 +275,14 @@ Public MustInherit Class cUnit
         Dim sTonsTotal As Single = 0.0
         Dim sValueTotal As Single = 0.0
         For Each input As cInput In lInputs
-            sTonsTotal += input.Tons
-            If (input.CustomValuePerTon <> 1) Then
-                sValueTotal += (input.Tons * input.CustomValuePerTon)
-            Else
-                sValueTotal += input.Value
+            If input.Tons > 0 Then
+                sTonsTotal += input.Tons
+
+                If (input.CustomValuePerTon <> 1) Then
+                    sValueTotal += (input.Tons * input.CustomValuePerTon)
+                Else
+                    sValueTotal += input.Value
+                End If
             End If
         Next
         Return New cInput(sTonsTotal, sValueTotal)

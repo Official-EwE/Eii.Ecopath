@@ -162,8 +162,9 @@ Public MustInherit Class cEconomicUnit
         Dim sSum As Single = sOutputBiomass * (Me.EnergyProducts + Me.IndustrialProducts + Me.ServiceProducts)
 
         results.Store(Me, cResults.eVariableType.RevenueProductsOther, sSum, iTimeStep)
-        results.Store(Me, cResults.eVariableType.RevenueProductsMain, sOutputValue, iTimeStep)
-
+        If Me.Broker = False Then
+            results.Store(Me, cResults.eVariableType.RevenueProductsMain, sOutputValue, iTimeStep)
+        End If
         'Console.WriteLine("Unit {0} sOutputValue {1}", Me.Sequence, sOutputValue)
         Return True
     End Function
@@ -187,8 +188,10 @@ Public MustInherit Class cEconomicUnit
                 ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
                 ByVal iTimeStep As Integer) As Boolean
 
-        'Dim sSum As Single = sInputBiomass * sInputValue
-        results.Store(Me, cResults.eVariableType.CostRawmaterial, sInputValue, iTimeStep)
+        If Me.Broker = False Then
+            'Dim sSum As Single = sInputBiomass * sInputValue
+            results.Store(Me, cResults.eVariableType.CostRawmaterial, sInputValue, iTimeStep)
+        End If
         Return True
     End Function
 
@@ -798,7 +801,7 @@ Public Property CertificationCost() As Single
 
     <Browsable(True), _
         Category(sPROPCAT_TAXES), _
-        DisplayName("Profit tax"), _
+        DisplayName("Profit tax (prop.)"), _
         Description("Tax as proportion of profit"), _
         DefaultValue(0.0!), _
         cPropertySorter.PropertyOrder(6)> _
