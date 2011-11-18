@@ -39,12 +39,12 @@ Namespace Controls.EwEGrid
         ''' <param name="obj">The object instance to manage the property value for.</param>
         ''' <param name="pi">The PropertyInfo instance to manage the value for.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal obj As Object, _
-                       ByVal pi As PropertyInfo, _
-                       Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
+        Public Sub New(ByVal obj As Object, ByVal pi As PropertyInfo)
 
             ' Set the cell value to the intial property value and type
-            MyBase.New(pi.GetValue(obj, Nothing), pi.PropertyType, style)
+            MyBase.New(pi.GetValue(obj, Nothing), _
+                       pi.PropertyType, _
+                       DirectCast(IIf(pi.CanWrite, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable), cStyleGuide.eStyleFlags))
 
             ' Sanity checks
             Debug.Assert(obj IsNot Nothing)
@@ -54,9 +54,6 @@ Namespace Controls.EwEGrid
             Me.m_obj = obj
             Me.m_pi = pi
 
-            ' Update cell edit state
-            Me.EditableMode = DirectCast(IIf(pi.CanWrite(), SourceGrid2.EditableMode.Default, SourceGrid2.EditableMode.None), SourceGrid2.EditableMode)
-            Me.EnableEdit = pi.CanWrite()
             Me.SuppressZero = True
 
             ' ToDo: respond to property changes by refreshing the cell value
