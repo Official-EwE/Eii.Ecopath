@@ -1866,7 +1866,7 @@ Namespace Style
                 Case eApplicationColorType.REMARKS_BACKGROUND : Return Color.White
                 Case eApplicationColorType.SUM_BACKGROUND : Return Color.FromArgb(255, 255, 254, 225)
                 Case eApplicationColorType.READONLY_BACKGROUND : Return Color.FromArgb(255, 231, 235, 250)
-                Case eApplicationColorType.MISSINGPARAMETER_BACKGROUND : Return Color.LightGray
+                Case eApplicationColorType.MISSINGPARAMETER_BACKGROUND : Return Color.FromArgb(255, 182, 134, 221)
                 Case eApplicationColorType.IMAGE_BACKGROUND : Return Color.White
                 Case eApplicationColorType.PLOT_BACKGROUND : Return Color.White
                 Case eApplicationColorType.MAP_BACKGROUND : Return SystemColors.ControlDark

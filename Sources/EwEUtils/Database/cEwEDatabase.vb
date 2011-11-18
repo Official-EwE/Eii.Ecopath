@@ -937,6 +937,9 @@ Namespace Database
 
             If (reader Is Nothing) Then Return objValueDefault
 
+            ' ToDo: implement reader class with index of columns
+            'If (Not ColumnExists(reader, strField)) Then Return objValueDefault
+
             Try
                 objResult = reader.Item(strField)
             Catch ex As InvalidOperationException
@@ -1057,6 +1060,12 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Protected Overridable Function ReleaseDataSet(ByVal dset As DataSet, Optional ByVal adapter As IDataAdapter = Nothing, Optional ByVal strTable As String = "") As Boolean
             Return Me.CommitDataSet(dset, adapter, strTable)
+        End Function
+
+        Public Function ColumnExists(reader As IDataReader, strColumnName As String) As Boolean
+            If reader Is Nothing Then Return False
+            reader.GetSchemaTable().DefaultView.RowFilter = "ColumnName= '" + strColumnName + "'"
+            Return (reader.GetSchemaTable().DefaultView.Count > 0)
         End Function
 
 #End Region ' Internals
@@ -1622,6 +1631,9 @@ Namespace Database
         ''' instance, or null if an error occurred.</returns>
         ''' -------------------------------------------------------------------
         Public Function ReadObject(ByVal key As cOOPKey) As cOOPStorable
+            If (key Is Nothing) Then
+                Return Nothing
+            End If
             Return Me.ReadObject(key.OriginatingType, key.DBID)
         End Function
 
@@ -2814,6 +2826,8 @@ Namespace Database
 #If VERBOSE_LEVEL >= 1 Then
                                                     Console.WriteLine("Read: fk object {0} failed to load for {1}.{2}", iLinkedDBID, strColumnName, strTable)
 #End If
+                                                    ' Links could not be restored
+                                                    Return False
                                                 End If
                                             End If
                                             ' Get the object
@@ -2828,18 +2842,25 @@ Namespace Database
                                     End Try
                                 Else ' Me.OOPIsForeignKeyProperty(pi)
                                     ' #No: just read the property value
-                                    Try
-                                        ' Special cases
-                                        If pi.PropertyType Is GetType(Boolean) Then
-                                            pi.SetValue(objRead, Convert.ToBoolean(reader(strColumnName)), Nothing)
-                                        Else
-                                            pi.SetValue(objRead, reader(strColumnName), Nothing)
-                                        End If
-                                    Catch ex As Exception
+                                    Dim bRead As Boolean = False
+                                    If Me.ColumnExists(reader, strColumnName) Then
+                                        Try
+                                            ' Special cases
+                                            If pi.PropertyType Is GetType(Boolean) Then
+                                                pi.SetValue(objRead, Convert.ToBoolean(reader(strColumnName)), Nothing)
+                                            Else
+                                                pi.SetValue(objRead, Me.ReadSafe(reader, strColumnName, Nothing), Nothing)
+                                            End If
+                                        Catch ex As Exception
+                                            bRead = False
+                                        End Try
+                                    End If
+
+                                    If Not bRead Then
                                         ' ToDo: assign property default value (which can be obtained from pi.Attributes
                                         'pi.SetValue(objRead, pi.Attributes, Nothing)
-                                        Console.WriteLine("Read: skipped col {0}.{1} ({2})", strColumnName, strTable, strColumnType)
-                                    End Try
+                                        'Console.WriteLine("Read: skipped col {0}.{1} ({2})", strColumnName, strTable, strColumnType)
+                                    End If
                                 End If
                             End If
                         End If

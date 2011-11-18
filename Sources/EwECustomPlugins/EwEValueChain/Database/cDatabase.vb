@@ -125,7 +125,9 @@ Public Class cDatabase
 
             ' Load flow positions
             aObjects = Me.ReadObjects(GetType(cFlowPosition), False)
-            For Each obj As cOOPStorable In aObjects : data.AddFlowPosition(DirectCast(obj, cFlowPosition)) : Next
+            For Each obj As cOOPStorable In aObjects
+                data.AddFlowPosition(DirectCast(obj, cFlowPosition))
+            Next
 
         Catch ex As Exception
             bSucces = False
