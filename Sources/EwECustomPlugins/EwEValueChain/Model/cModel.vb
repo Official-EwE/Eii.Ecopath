@@ -41,6 +41,8 @@ Public Class cModel
 
     Public Event OnRunCompleted(ByVal iTimeStep As Integer)
 
+    ' ToDo: insert landings manager and listen to core messages
+
     Public Sub New()
     End Sub
 
@@ -369,9 +371,10 @@ Public Class cModel
             Dim fleet As cFleetInput = core.FleetInputs(iFleet)
             Return fleet.OffVesselPrice(iGroup) * fleet.Landings(iGroup) * sArea
         Else
-            ' Yes: run for Ecosim
-            Dim fleetPath As cFleetInput = core.FleetInputs(iFleet)
-            Return fleetPath.OffVesselPrice(iGroup) * ecosimresults.BCatch(iGroup, iFleet) * sArea
+            ' #Yes: run for Ecosim
+            ' JS 19Nov11: use Ecosim value for time step
+            Dim groupSim As cEcosimGroupOutput = core.EcoSimGroupOutputs(iGroup)
+            Return groupSim.ValueByFleet(iFleet, iTimeStep) * ecosimresults.BCatch(iGroup, iFleet) * sArea
         End If
 
     End Function
