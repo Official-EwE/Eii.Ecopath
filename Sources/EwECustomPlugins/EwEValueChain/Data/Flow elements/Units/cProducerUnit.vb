@@ -663,8 +663,8 @@ Public Class cProducerUnit
                 Dim ll As cLinkLandings = DirectCast(link, cLinkLandings)
                 If (ll.Group IsNot Nothing) And (ll.IsVisible) Then
                     Dim iGroup As Integer = ll.Group.Index
-                    sBiomass = Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
-                    sPrice = Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                    sBiomass += Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                    sPrice += Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
                 End If
             End If
 
