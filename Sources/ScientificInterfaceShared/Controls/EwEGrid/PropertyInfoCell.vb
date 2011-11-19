@@ -83,12 +83,6 @@ Namespace Controls.EwEGrid
                 '       property in the underlying object.
 
                 Try
-                    ' PropertyInfo cannot perform type casts, we'll have to do this
-                    ' manually.
-
-                    ' Amazingly, Val is still the most robust value converter for
-                    ' converting strings to numerical values in VB.NET
-
                     If (Me.m_pi.PropertyType Is GetType(Single)) Then
                         Me.m_pi.SetValue(Me.m_obj, CSng(Val(Me.Value)), Nothing)
                     ElseIf (Me.m_pi.PropertyType Is GetType(String)) Then
@@ -102,7 +96,6 @@ Namespace Controls.EwEGrid
                     Else
                         Debug.Assert(False, String.Format("Value type '{0}' not supported yet in PICell", Me.m_pi.PropertyType))
                     End If
-
                 Catch ex As Exception
                     ' Kaboom
                     Debug.Assert(False, ex.Message)
