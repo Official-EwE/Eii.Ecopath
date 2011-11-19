@@ -100,6 +100,11 @@ Public Class cTaxon
         val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
+        ' Search fields
+        meta = New cVariableMetaData(0, Long.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+        val = New cValue(New Long, eVarNameFlags.TaxonSearchFields, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        m_values.Add(val.varName, val)
+
         ' Proportion
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.TaxonProp, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonProp))
@@ -304,6 +309,19 @@ Public Class cTaxon
         End Get
         Set(ByVal value As String)
             Me.SetVariable(eVarNameFlags.Species, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set flags last used to search the taxon.
+    ''' </summary>
+    Public Property SearchFields() As eTaxonFieldType _
+        Implements ITaxonDetailsData.SearchFields
+        Get
+            Return DirectCast(Me.GetVariable(eVarNameFlags.TaxonSearchFields), eTaxonFieldType)
+        End Get
+        Set(ByVal value As eTaxonFieldType)
+            Me.SetVariable(eVarNameFlags.TaxonSearchFields, value)
         End Set
     End Property
 

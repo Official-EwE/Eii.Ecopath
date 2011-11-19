@@ -146,6 +146,7 @@ Public Class dlgDefineTaxa
         Me.m_cmbFilter.Items.Add(SharedResources.HEADER_COMMON_NAME)
         Me.m_cmbFilter.Items.Add(SharedResources.HEADER_SPECIES)
         Me.m_cmbFilter.Items.Add(SharedResources.HEADER_FAMILY)
+        Me.m_cmbFilter.SelectedIndex = 0
 
         Me.UpdateControls()
     End Sub
@@ -340,6 +341,8 @@ Public Class dlgDefineTaxa
         Me.m_cmbEngine.Enabled = Me.m_bHasSearchEngines
         Me.m_btnConnect.Enabled = bCanConfig
         Me.m_tbSearch.Enabled = bCanSearch
+        Me.m_lblIn.Enabled = bCanSearch
+        Me.m_cmbFilter.Enabled = bCanSearch
         Me.m_cbIncludeExtent.Enabled = bCanSearch
         Me.m_gridResults.Enabled = bCanSearch
 
@@ -452,14 +455,22 @@ Public Class dlgDefineTaxa
             '#Yes: populate term
             Select Case Me.m_cmbFilter.SelectedIndex
                 Case 0 ' all fields
+                    searchterm.SearchFields = eTaxonFieldType.Any
                     searchterm.Common = strTerm
                     searchterm.Species = strTerm
                     searchterm.Family = strTerm
+                    searchterm.Genus = strTerm
+                    searchterm.Order = strTerm
+                    searchterm.Class = strTerm
+                    searchterm.Phylum = strTerm
                 Case 1 ' common name
+                    searchterm.SearchFields = eTaxonFieldType.Common
                     searchterm.Common = strTerm
                 Case 2 ' species
+                    searchterm.SearchFields = eTaxonFieldType.Species
                     searchterm.Species = strTerm
                 Case 3 ' family
+                    searchterm.SearchFields = eTaxonFieldType.Family
                     searchterm.Family = strTerm
             End Select
             ' Update UI

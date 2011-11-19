@@ -87,6 +87,7 @@ Public Class gridDefineTaxonomy
         Private m_sMeanLifespan As Single = cCore.NULL_VALUE
         Private m_sMeanWeight As Single = cCore.NULL_VALUE
         Private m_iVulnerabilityIndex As Integer = 0
+        Private m_searchfields As eTaxonFieldType = 0
 
         ''' <summary>Index of the ecopath group that this taxon contributes to.</summary>
         Private m_iGroup As Integer = 0
@@ -160,6 +161,7 @@ Public Class gridDefineTaxonomy
             Me.m_dLastUpdated = taxon.LastUpdated
             Me.m_strSource = taxon.Source
             Me.m_strKey = taxon.SourceKey
+            Me.m_searchfields = taxon.SearchFields
             Me.m_status = eItemStatusTypes.Original
         End Sub
 
@@ -198,6 +200,7 @@ Public Class gridDefineTaxonomy
                 Me.m_sMaxLength = details.MaxLength
                 Me.m_sMeanWeight = details.MeanWeight
                 Me.m_sMeanLifespan = details.MeanLifespan
+                Me.m_searchfields = details.SearchFields
                 Me.m_dLastUpdated = details.LastUpdated
             End If
             Me.m_strKey = taxon.SourceKey
@@ -702,6 +705,17 @@ Public Class gridDefineTaxonomy
             End Get
             Set(ByVal value As Integer)
                 Me.m_iVulnerabilityIndex = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.SearchFields"/>
+        Public Property SearchFields As eTaxonFieldType _
+            Implements ITaxonSearchData.SearchFields
+            Get
+                Return Me.m_searchfields
+            End Get
+            Set(value As eTaxonFieldType)
+                Me.m_searchfields = value
             End Set
         End Property
 

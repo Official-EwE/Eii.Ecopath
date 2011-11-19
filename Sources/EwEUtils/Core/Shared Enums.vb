@@ -1440,6 +1440,7 @@ Namespace Core
         TaxonMaxLength
         TaxonMeanLifespan
         TaxonVulnerabilityIndex
+        TaxonSearchFields
 
         ''' <summary>Taxa assigned to a given group</summary>
         GroupTaxa

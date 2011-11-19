@@ -2,10 +2,26 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports System
 
 #End Region ' Imports
 
 Namespace Core
+
+    ''' <summary>Enumerated type, identifying taxonomy searchable fields.</summary>
+    Public Enum eTaxonFieldType As Long
+        NotSet = 0
+        Common = &H1
+        Species = &H10
+        Genus = &H100
+        Family = &H1000
+        Order = &H10000
+        [Class] = &H100000
+        Phylum = &H1000000
+        <Obsolete("Kingdom not supported yet but added for future use")> _
+        Kingdom = &H10000000
+        Any = Common Or Species Or Genus Or Family Or Order Or [Class] Or Phylum
+    End Enum
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -13,6 +29,11 @@ Namespace Core
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Interface ITaxonSearchData
+
+        ''' <summary>Bitwise flag pattern indicating which fields to search, and
+        ''' which fields have been searched.
+        ''' </summary>
+        Property SearchFields As eTaxonFieldType
 
         ''' <summary>Class name of a taxon.</summary>
         Property [Class]() As String
