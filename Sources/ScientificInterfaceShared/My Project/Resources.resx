@@ -2376,4 +2376,10 @@
   <data name="PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH" xml:space="preserve">
     <value>The selected file cannot be used for this purpose. Note that images cannot exceed 100 pixels in width or height.</value>
   </data>
+  <data name="GENERIC_VALUE_ALLFIELDS" xml:space="preserve">
+    <value>(All fields)</value>
+  </data>
+  <data name="GENERIC_VALUE_NOSEARCHENGINES" xml:space="preserve">
+    <value>(No search engines installed)</value>
+  </data>
 </root>

@@ -25,23 +25,26 @@ Partial Class dlgDefineTaxa
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineTaxa))
-        Me.m_btnAdd = New System.Windows.Forms.Button
-        Me.m_btnRemove = New System.Windows.Forms.Button
-        Me.m_btnKeep = New System.Windows.Forms.Button
-        Me.Cancel_Button = New System.Windows.Forms.Button
-        Me.OK_Button = New System.Windows.Forms.Button
-        Me.m_lbTerm = New System.Windows.Forms.Label
-        Me.m_tbSearch = New System.Windows.Forms.TextBox
-        Me.m_cmbEngine = New System.Windows.Forms.ComboBox
-        Me.m_btnConnect = New System.Windows.Forms.Button
-        Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox
-        Me.m_scMain = New System.Windows.Forms.SplitContainer
-        Me.m_gridGroups = New ScientificInterface.gridDefineTaxonomy
-        Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults
-        Me.m_lblEngine = New System.Windows.Forms.Label
-        Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_btnProps = New System.Windows.Forms.Button
+        Me.m_btnAdd = New System.Windows.Forms.Button()
+        Me.m_btnRemove = New System.Windows.Forms.Button()
+        Me.m_btnKeep = New System.Windows.Forms.Button()
+        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.m_lbTerm = New System.Windows.Forms.Label()
+        Me.m_tbSearch = New System.Windows.Forms.TextBox()
+        Me.m_cmbEngine = New System.Windows.Forms.ComboBox()
+        Me.m_btnConnect = New System.Windows.Forms.Button()
+        Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox()
+        Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.m_gridGroups = New ScientificInterface.gridDefineTaxonomy()
+        Me.m_cmbFilter = New System.Windows.Forms.ComboBox()
+        Me.m_lblIn = New System.Windows.Forms.Label()
+        Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults()
+        Me.m_lblEngine = New System.Windows.Forms.Label()
+        Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_btnProps = New System.Windows.Forms.Button()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
@@ -117,6 +120,8 @@ Partial Class dlgDefineTaxa
         '
         'm_scMain.Panel2
         '
+        Me.m_scMain.Panel2.Controls.Add(Me.m_cmbFilter)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_lblIn)
         Me.m_scMain.Panel2.Controls.Add(Me.m_btnConnect)
         Me.m_scMain.Panel2.Controls.Add(Me.m_cbIncludeExtent)
         Me.m_scMain.Panel2.Controls.Add(Me.m_gridResults)
@@ -135,8 +140,8 @@ Partial Class dlgDefineTaxa
         Me.m_gridGroups.BackColor = System.Drawing.Color.White
         Me.m_gridGroups.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_gridGroups.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridGroups.CustomSort = False
         resources.ApplyResources(Me.m_gridGroups, "m_gridGroups")
         Me.m_gridGroups.FixedColumnWidths = False
@@ -145,15 +150,27 @@ Partial Class dlgDefineTaxa
         Me.m_gridGroups.Name = "m_gridGroups"
         Me.m_gridGroups.SelectedTaxon = Nothing
         Me.m_gridGroups.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridGroups.UIContext = Nothing
+        '
+        'm_cmbFilter
+        '
+        resources.ApplyResources(Me.m_cmbFilter, "m_cmbFilter")
+        Me.m_cmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbFilter.FormattingEnabled = True
+        Me.m_cmbFilter.Name = "m_cmbFilter"
+        '
+        'm_lblIn
+        '
+        resources.ApplyResources(Me.m_lblIn, "m_lblIn")
+        Me.m_lblIn.Name = "m_lblIn"
         '
         'm_gridResults
         '
@@ -166,22 +183,22 @@ Partial Class dlgDefineTaxa
         Me.m_gridResults.BackColor = System.Drawing.Color.White
         Me.m_gridResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_gridResults.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridResults.CustomSort = False
         Me.m_gridResults.FixedColumnWidths = False
         Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridResults.GridToolTipActive = True
         Me.m_gridResults.Name = "m_gridResults"
         Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridResults.UIContext = Nothing
         '
         'm_lblEngine
@@ -192,11 +209,17 @@ Partial Class dlgDefineTaxa
         'm_hdrEdit
         '
         resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+        Me.m_hdrEdit.CanCollapseParent = False
+        Me.m_hdrEdit.CollapsedParentHeight = 0
+        Me.m_hdrEdit.IsCollapsed = False
         Me.m_hdrEdit.Name = "m_hdrEdit"
         '
         'm_hdrProps
         '
         resources.ApplyResources(Me.m_hdrProps, "m_hdrProps")
+        Me.m_hdrProps.CanCollapseParent = False
+        Me.m_hdrProps.CollapsedParentHeight = 0
+        Me.m_hdrProps.IsCollapsed = False
         Me.m_hdrProps.Name = "m_hdrProps"
         '
         'm_btnProps
@@ -227,6 +250,7 @@ Partial Class dlgDefineTaxa
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel2.ResumeLayout(False)
         Me.m_scMain.Panel2.PerformLayout()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -248,5 +272,7 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_hdrProps As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_btnProps As System.Windows.Forms.Button
+    Private WithEvents m_cmbFilter As System.Windows.Forms.ComboBox
+    Private WithEvents m_lblIn As System.Windows.Forms.Label
 
 End Class

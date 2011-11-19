@@ -1264,6 +1264,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (All fields).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_ALLFIELDS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_ALLFIELDS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (All groups).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_ALLGROUPS() As String
@@ -1341,6 +1350,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VALUE_NONE() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_NONE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (No search engines installed).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_NOSEARCHENGINES() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_NOSEARCHENGINES", resourceCulture)
             End Get
         End Property
         

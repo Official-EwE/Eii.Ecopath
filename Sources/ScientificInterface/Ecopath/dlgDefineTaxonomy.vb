@@ -67,7 +67,7 @@ Public Class dlgDefineTaxa
 
         Public Overrides Function ToString() As String
             If Me.m_prod IsNot Nothing Then Return Me.m_prod.Name
-            Return "No search engines installed"
+            Return SharedResources.GENERIC_VALUE_NOSEARCHENGINES
         End Function
 
     End Class
@@ -140,6 +140,12 @@ Public Class dlgDefineTaxa
         AddHandler Me.m_gridResults.OnResultSelected, AddressOf OnResultSelected
 
         If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
+
+        ' Do not change the order here please
+        Me.m_cmbFilter.Items.Add(SharedResources.GENERIC_VALUE_ALLFIELDS)
+        Me.m_cmbFilter.Items.Add(SharedResources.HEADER_COMMON_NAME)
+        Me.m_cmbFilter.Items.Add(SharedResources.HEADER_SPECIES)
+        Me.m_cmbFilter.Items.Add(SharedResources.HEADER_FAMILY)
 
         Me.UpdateControls()
     End Sub
@@ -372,14 +378,6 @@ Public Class dlgDefineTaxa
 
     End Sub
 
-    Private Sub AddText(ByVal cmb As ComboBox, ByVal strText As String)
-
-        If cmb.FindStringExact(strText) = -1 Then
-            cmb.Items.Add(strText)
-        End If
-
-    End Sub
-
     Private ReadOnly Property SelectedDataProducer() As IDataSearchProducerPlugin
         Get
             Dim item As cDataProducerSearchItem = DirectCast(Me.m_cmbEngine.SelectedItem, cDataProducerSearchItem)
@@ -452,7 +450,19 @@ Public Class dlgDefineTaxa
         ' Successful?
         If searchterm IsNot Nothing Then
             '#Yes: populate term
-            searchterm.Common = strTerm
+            Select Case Me.m_cmbFilter.SelectedIndex
+                Case 0 ' all fields
+                    searchterm.Common = strTerm
+                    searchterm.Species = strTerm
+                    searchterm.Family = strTerm
+                Case 1 ' common name
+                    searchterm.Common = strTerm
+                Case 2 ' species
+                    searchterm.Species = strTerm
+                Case 3 ' family
+                    searchterm.Family = strTerm
+            End Select
+            ' Update UI
             Me.m_tbSearch.Text = strTerm
             ' Go Jimmy
             Me.Search(searchterm)
