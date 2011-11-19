@@ -82,8 +82,7 @@ Public Class frmMain
                 Dim view As New ucGridView(grid)
                 Me.ShowForm(view)
             Case eValueChainPageTypes.TableProcessors
-                Me.ShowForm(New ucGridView(New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Processing)))
-                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Producer)
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Processing)
                 Dim view As New ucGridView(grid)
                 Me.ShowForm(view)
             Case eValueChainPageTypes.TableDistributors
