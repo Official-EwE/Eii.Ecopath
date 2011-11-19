@@ -51,6 +51,23 @@ Public Class ucParameters
         Try
             If disposing Then
 
+                Me.ConfigureEcosimControls(False)
+
+                If (Me.m_fpFMin IsNot Nothing) Then
+                    Me.m_fpFMin.Release()
+                    Me.m_fpFMin = Nothing
+                End If
+
+                If (Me.m_fpFMax IsNot Nothing) Then
+                    Me.m_fpFMax.Release()
+                    Me.m_fpFMax = Nothing
+                End If
+
+                If (Me.m_fpIncr IsNot Nothing) Then
+                    Me.m_fpIncr.Release()
+                    Me.m_fpIncr = Nothing
+                End If
+
                 If (Me.m_uic IsNot Nothing) Then
 
                     ' Stop listening to core state changes
