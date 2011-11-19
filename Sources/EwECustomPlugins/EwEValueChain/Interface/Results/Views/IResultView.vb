@@ -17,7 +17,7 @@ Public Interface IResultView
     ''' <param name="result"></param>
     ''' -----------------------------------------------------------------------
     Sub ShowResults(ByVal iFleet As Integer, _
-                    ByVal lUnits As List(Of cUnit), _
+                    ByVal lUnits As cUnit(), _
                     ByVal result As cResults)
 
 End Interface

@@ -42,7 +42,8 @@ Public Class ucUnitGrid
         Me.m_unitType = unitType
 
         ' Get all defined units of this type
-        Me.m_lUnits = Me.m_data.GetUnits(Me.m_unitType)
+        Me.m_lUnits = New List(Of cUnit)
+        Me.m_lUnits.AddRange(Me.m_data.GetUnits(Me.m_unitType))
 
         ' Get list of properties supported by this type
         Me.m_api = cPropertyInfoHelper.GetAllowedProperties(cUnitFactory.MapType(Me.m_unitType))

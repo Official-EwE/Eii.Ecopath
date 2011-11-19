@@ -38,7 +38,7 @@ Public Class ucEquilibriumGraph
         MyBase.Finalize()
     End Sub
 
-    Public Sub ShowResults(ByVal iFleet As Integer, ByVal lUnits As List(Of cUnit), ByVal result As cResults) _
+    Public Sub ShowResults(ByVal iFleet As Integer, ByVal lUnits As cUnit(), ByVal result As cResults) _
         Implements IResultView.ShowResults
 
         Dim cr As New ZedGraph.ColorSymbolRotator()

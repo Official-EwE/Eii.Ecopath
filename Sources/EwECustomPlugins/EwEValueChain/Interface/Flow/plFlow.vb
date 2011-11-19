@@ -290,10 +290,10 @@ Public Class plFlow
         ' #No: has fleet and/or group filter?
         If (Me.FleetFilter IsNot Nothing) Then
             ' #Yes: grab flow operating on the requested fleet/group
-            lUnits = Me.m_data.GetUnits(Me.FleetFilter)
+            lUnits.AddRange(Me.m_data.GetUnits(Me.FleetFilter))
         Else
             ' #No: grab all units
-            lUnits = Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
+            lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.All))
         End If
 
         Me.ClearFlow()
@@ -318,10 +318,10 @@ Public Class plFlow
     ''' </summary>
     ''' <returns>A list with all units currently in the flow.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetFlowUnits() As List(Of cUnit)
+    Public Function GetFlowUnits() As cUnit()
         Dim lUnits As New List(Of cUnit)
         lUnits.AddRange(Me.m_dtControls.Keys)
-        Return lUnits
+        Return lUnits.ToArray
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -537,7 +537,7 @@ Public Class plFlow
 
         ' For all Ecopath fleets:
 
-        Dim lUnits As List(Of cUnit) = Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
+        Dim lUnits As cUnit() = Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
         Dim core As cCore = Me.m_data.Core
         Dim fleet As cFleetInput = Nothing
         Dim pu As cProducerUnit = Nothing

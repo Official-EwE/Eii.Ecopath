@@ -175,7 +175,7 @@ Public Class gridEcopathResult
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub ShowResults(ByVal iFleet As Integer, _
-                           ByVal lUnits As List(Of cUnit), _
+                           ByVal lUnits As cUnit(), _
                            ByVal results As cResults) _
         Implements IResultView.ShowResults
 
@@ -206,31 +206,31 @@ Public Class gridEcopathResult
         ' Populate data cells
         For i As Integer = 0 To 4
 
-            Me.UpdateDataCell(Me(1, 2 + i), results, cResults.eVariableType.Production, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(2, 2 + i), results, cResults.eVariableType.ProductionLive, alUnits(i), iFleet)
+            Me.UpdateDataCell(Me(1, 2 + i), results, cResults.eVariableType.Production, alUnits(i).ToArray, iFleet)
+            Me.UpdateDataCell(Me(2, 2 + i), results, cResults.eVariableType.ProductionLive, alUnits(i).ToArray(), iFleet)
 
-            Me.UpdateDataCell(Me(3, 2 + i), results, cResults.eVariableType.RevenueProductsMain, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(4, 2 + i), results, cResults.eVariableType.RevenueProductsOther, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(5, 2 + i), results, cResults.eVariableType.RevenueTickets, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(6, 2 + i), results, cResults.eVariableType.RevenueSubsidies, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(7, 2 + i), results, cResults.eVariableType.RevenueTotal, alUnits(i), iFleet)
+            Me.UpdateDataCell(Me(3, 2 + i), results, cResults.eVariableType.RevenueProductsMain, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(4, 2 + i), results, cResults.eVariableType.RevenueProductsOther, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(5, 2 + i), results, cResults.eVariableType.RevenueTickets, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(6, 2 + i), results, cResults.eVariableType.RevenueSubsidies, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(7, 2 + i), results, cResults.eVariableType.RevenueTotal, alUnits(i).ToArray(), iFleet)
 
-            Me.UpdateDataCell(Me(8, 2 + i), results, cResults.eVariableType.CostSalariesShares, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(9, 2 + i), results, cResults.eVariableType.CostRawmaterial, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(10, 2 + i), results, cResults.eVariableType.CostInput, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(11, 2 + i), results, cResults.eVariableType.CostTaxes, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(12, 2 + i), results, cResults.eVariableType.CostManagementRoyaltyCertificationObservers, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(13, 2 + i), results, cResults.eVariableType.Cost, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(14, 2 + i), results, cResults.eVariableType.Profit, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(15, 2 + i), results, cResults.eVariableType.TotalUtility, alUnits(i), iFleet)
+            Me.UpdateDataCell(Me(8, 2 + i), results, cResults.eVariableType.CostSalariesShares, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(9, 2 + i), results, cResults.eVariableType.CostRawmaterial, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(10, 2 + i), results, cResults.eVariableType.CostInput, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(11, 2 + i), results, cResults.eVariableType.CostTaxes, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(12, 2 + i), results, cResults.eVariableType.CostManagementRoyaltyCertificationObservers, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(13, 2 + i), results, cResults.eVariableType.Cost, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(14, 2 + i), results, cResults.eVariableType.Profit, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(15, 2 + i), results, cResults.eVariableType.TotalUtility, alUnits(i).ToArray(), iFleet)
 
-            Me.UpdateDataCell(Me(16, 2 + i), results, cResults.eVariableType.NumberOfJobsFemaleTotal, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(17, 2 + i), results, cResults.eVariableType.NumberOfJobsMaleTotal, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(18, 2 + i), results, cResults.eVariableType.NumberOfJobsTotal, alUnits(i), iFleet)
+            Me.UpdateDataCell(Me(16, 2 + i), results, cResults.eVariableType.NumberOfJobsFemaleTotal, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(17, 2 + i), results, cResults.eVariableType.NumberOfJobsMaleTotal, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(18, 2 + i), results, cResults.eVariableType.NumberOfJobsTotal, alUnits(i).ToArray(), iFleet)
 
-            Me.UpdateDataCell(Me(19, 2 + i), results, cResults.eVariableType.NumberOfWorkerDependents, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(20, 2 + i), results, cResults.eVariableType.NumberOfOwnerDependents, alUnits(i), iFleet)
-            Me.UpdateDataCell(Me(21, 2 + i), results, cResults.eVariableType.NumberOfDependentsTotal, alUnits(i), iFleet)
+            Me.UpdateDataCell(Me(19, 2 + i), results, cResults.eVariableType.NumberOfWorkerDependents, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(20, 2 + i), results, cResults.eVariableType.NumberOfOwnerDependents, alUnits(i).ToArray(), iFleet)
+            Me.UpdateDataCell(Me(21, 2 + i), results, cResults.eVariableType.NumberOfDependentsTotal, alUnits(i).ToArray(), iFleet)
 
         Next i
 
@@ -296,7 +296,7 @@ Public Class gridEcopathResult
     Private Sub UpdateDataCell(ByVal cell As Cells.ICell, _
                                     ByVal results As cResults, _
                                     ByVal vn As cResults.eVariableType, _
-                                    ByVal lUnits As List(Of cUnit), _
+                                    ByVal lUnits As cUnit(), _
                                     ByVal iFleet As Integer)
 
         Me.UpdateDataCell(cell, results.GetTimeStepTotal(vn, 1, lUnits, iFleet))

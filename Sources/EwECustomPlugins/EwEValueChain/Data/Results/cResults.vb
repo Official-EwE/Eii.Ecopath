@@ -321,7 +321,7 @@ Public Class cResults
     Public Sub Reset(ByVal runType As cModel.eRunTypes)
 
         Dim core As cCore = Me.m_data.Core
-        Dim nNumUnits As Integer = Me.m_data.GetUnits(cUnitFactory.eUnitType.All).Count
+        Dim nNumUnits As Integer = Me.m_data.GetUnits(cUnitFactory.eUnitType.All).Length
 
         Me.m_dtResultTimeStep.Clear()
         Me.m_dtSnapshots.Clear()
@@ -471,7 +471,7 @@ Public Class cResults
 
     Public Function GetSnapshotTotal(ByVal vartype As eVariableType, _
                                     ByVal objKey As Object, _
-                                    Optional ByVal lUnits As List(Of cUnit) = Nothing) As Single
+                                    Optional ByVal lUnits As cUnit() = Nothing) As Single
         Dim sTotal As Single = 0.0!
 
         If lUnits Is Nothing Then
@@ -498,7 +498,7 @@ Public Class cResults
     ''' -----------------------------------------------------------------------
     Public Function GetTimeStepTotal(ByVal vartype As eVariableType, _
                              Optional ByVal iTimeStep As Integer = 1, _
-                             Optional ByVal lUnits As List(Of cUnit) = Nothing, _
+                             Optional ByVal lUnits As cUnit() = Nothing, _
                              Optional ByVal iFleet As Integer = 0) As Single
 
         Dim sTotal As Single = 0.0!
@@ -524,7 +524,7 @@ Public Class cResults
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function GetTotal(ByVal vartype As eVariableType, _
-                             Optional ByVal lUnits As List(Of cUnit) = Nothing, _
+                             Optional ByVal lUnits As cUnit() = Nothing, _
                              Optional ByVal iFleet As Integer = 0) As Single
 
         Dim sTotal As Single = 0.0!

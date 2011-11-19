@@ -16,6 +16,7 @@ Imports EwEUtils
 
 Public Class cPluginPoint
     Inherits cNavTreeControlPlugin
+    Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
@@ -24,7 +25,7 @@ Public Class cPluginPoint
     Implements EwEPlugin.Data.IDatabasePlugin
     Implements EwEPlugin.Data.IDataProducerPlugin
     Implements EwEPlugin.ISearchPlugin
-    Implements EwEPlugin.IUIContextPlugin
+    Implements EwEPlugin.IDisposedPlugin
 
 #Region " Privates "
 
@@ -37,6 +38,7 @@ Public Class cPluginPoint
     Private m_model As cModel = Nothing
     Private m_result As cResults = Nothing
     Private m_mhEcopath As cMessageHandler = Nothing
+    Private m_linkman As cLandingsLinkManager = Nothing
     Private m_syncobj As SynchronizationContext = Nothing
 
     ' Data exchange
@@ -132,6 +134,7 @@ Public Class cPluginPoint
     Public Overrides Sub Initialize(ByVal core As Object)
 
         ' Sanity checks
+        Debug.Assert(core IsNot Nothing)
         Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
         Debug.Assert(Me.m_bInitOK = False)
 
@@ -139,23 +142,26 @@ Public Class cPluginPoint
         Me.m_bInitOK = False
 
         Try
-            If TypeOf core Is EwECore.cCore Then
+            If (TypeOf core Is EwECore.cCore) Then
 
                 Me.m_core = DirectCast(core, EwECore.cCore)
                 Me.m_ddx = New cPluginData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
                 Me.m_data = New cData(Me.m_core)
                 Me.m_model = New cModel()
                 Me.m_result = New cResults(Me.m_data)
+                Me.m_linkman = New cLandingsLinkManager(Me.m_data, Me.m_core)
                 Me.m_syncobj = SynchronizationContext.Current
 
                 If (Me.m_syncobj Is Nothing) Then
                     Me.m_syncobj = New SynchronizationContext()
                 End If
-                Me.m_mhEcopath = New cMessageHandler(AddressOf EcopathMessageHandler, _
+                Me.m_mhEcopath = New cMessageHandler(AddressOf OnEcopathMessage, _
                                                      eCoreComponentType.EcoPath, _
-                                                     eMessageType.DataAddedOrRemoved, _
+                                                     eMessageType.DataValidation, _
                                                      Me.m_syncobj)
                 Me.m_mhEcopath.Name = "ValueChain::Ecopath"
+                Me.m_core.Messages.AddMessageHandler(Me.m_mhEcopath)
+
                 ' Done initializing
                 Me.m_bInitOK = True
 
@@ -173,6 +179,16 @@ Public Class cPluginPoint
 
         End Try
 
+    End Sub
+
+    Public Sub Dispose() _
+    Implements EwEPlugin.IDisposedPlugin.Dispose
+        ' Clean up message handler
+        If (Me.m_mhEcopath IsNot Nothing) Then
+            Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcopath)
+            Me.m_mhEcopath.Dispose()
+            Me.m_mhEcopath = Nothing
+        End If
     End Sub
 
 #Region " GUI "
@@ -240,7 +256,10 @@ Public Class cPluginPoint
         ' Sanity checks
         Debug.Assert(Me.m_data.IsChanged() = False)
 
-        Return Me.m_data.Load(Me.m_core.DataSource.ToString)
+        If Me.m_data.Load(Me.m_core.DataSource.ToString) Then
+            ' Manage incoming DB to weed out dead stuff
+            Me.m_linkman.ManageLinks()
+        End If
 
     End Function
 
@@ -633,12 +652,15 @@ Public Class cPluginPoint
 
 #Region " Helpers "
 
-    Private Sub EcopathMessageHandler(ByRef msg As cMessage)
+    Private Sub OnEcopathMessage(ByRef msg As cMessage)
+
+        ' Something in Ecopath has changed
         Try
-            ' Take care of deleted groups and fleets
+            Me.m_linkman.OnEcopathMessage(msg)
         Catch ex As Exception
             cLog.Write(ex)
         End Try
+
     End Sub
 
     Private Function HasInterface() As Boolean

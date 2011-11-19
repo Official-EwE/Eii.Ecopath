@@ -467,7 +467,7 @@ Public Class cData
         Return Me.m_lUnits(iIndex)
     End Function
 
-    Public Function GetUnits(ByVal unitType As cUnitFactory.eUnitType) As List(Of cUnit)
+    Public Function GetUnits(ByVal unitType As cUnitFactory.eUnitType) As cUnit()
         Dim lUnits As New List(Of cUnit)
         Dim unit As cUnit = Nothing
         Dim tUnit As Type = cUnitFactory.MapType(unitType)
@@ -496,7 +496,7 @@ Public Class cData
                 lUnits.Add(unit)
             End If
         Next
-        Return lUnits
+        Return lUnits.ToArray
     End Function
 
     ''' <summary>
@@ -1068,7 +1068,7 @@ Public Class cData
     ''' <param name="fleet"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetUnits(ByVal fleet As cFleetInput) As List(Of cUnit)
+    Public Function GetUnits(ByVal fleet As cFleetInput) As cUnit()
 
         Dim lUnits As New List(Of cUnit)
         Dim pu As cProducerUnit = Nothing
@@ -1104,7 +1104,7 @@ Public Class cData
 
         Next unit
 
-        Return lUnits
+        Return lUnits.ToArray()
 
     End Function
 
