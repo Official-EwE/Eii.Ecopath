@@ -95,6 +95,7 @@ Public Class cData
 
         Dim strOldDBName As String = cData.GetDatabaseFileName(strModelName)
         Dim strDBName As String = ""
+        Dim dst As eDataSourceTypes = eDataSourceTypes.NotSet
         Dim bMigrate As Boolean = False
         Dim bSucces As Boolean = False
 
@@ -105,12 +106,16 @@ Public Class cData
         ' Open for migration
         If File.Exists(strOldDBName) Then
             strDBName = strOldDBName
+            Select Case Path.GetExtension(strDBName).ToLower
+                Case ".ewevcmdb" : dst = eDataSourceTypes.Access2003
+                Case ".ewevcaccdb" : dst = eDataSourceTypes.Access2007
+            End Select
             bMigrate = True
         Else
             strDBName = strModelName
         End If
 
-        If Me.m_db.Open(strDBName) = eDatasourceAccessType.Success Then
+        If Me.m_db.Open(strDBName, dst) = eDatasourceAccessType.Success Then
 
             Me.m_bInitializing = True
             bSucces = Me.m_db.LoadModel(Me)

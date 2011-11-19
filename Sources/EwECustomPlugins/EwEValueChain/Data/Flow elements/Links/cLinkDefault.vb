@@ -81,7 +81,7 @@ Public Class cLinkDefault
      Description("Ratio of biomass change (proportion, [0-1])"), _
      DefaultValue(1.0!), _
      cPropertySorter.PropertyOrder(1)> _
-    Public Property BiomassRatio() As Single
+    Public Overridable Property BiomassRatio() As Single
         Get
             Return Me.m_sBiomassRatio
         End Get
@@ -97,7 +97,7 @@ Public Class cLinkDefault
         Description("Value per ton"), _
         DefaultValue(1.0!), _
         cPropertySorter.PropertyOrder(2)> _
-    Public Property ValuePerTon() As Single
+    Public Overridable Property ValuePerTon() As Single
         Get
             Return Me.m_sValuePerTon
         End Get
@@ -113,7 +113,7 @@ Public Class cLinkDefault
         Description("Value ratio, the ratio between value of product and value of raw material (the input to the previous box)"), _
         DefaultValue(1.0!), _
         cPropertySorter.PropertyOrder(3)> _
-     Public Property ValueRatio() As Single
+    Public Overridable Property ValueRatio() As Single
         Get
             Return Me.m_sValueRatio
         End Get

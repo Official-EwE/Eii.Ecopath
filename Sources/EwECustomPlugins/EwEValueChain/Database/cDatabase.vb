@@ -53,19 +53,22 @@ Public Class cDatabase
         Dim bSucces As Boolean = True
 
         Me.OOPFlushObjectCache()
+        data.Clear()
 
         Try
-            data.Clear()
-
             aObjects = Me.ReadObjects(GetType(cParameters))
-            If aObjects.Length = 0 Then
-                data.AddParameters(New cParameters())
-            Else
-                data.AddParameters(DirectCast(aObjects(0), cParameters))
-            End If
+        Catch ex As Exception
+            bSucces = False
+        End Try
+        If aObjects.Length = 0 Then
+            data.AddParameters(New cParameters())
+        Else
+            data.AddParameters(DirectCast(aObjects(0), cParameters))
+        End If
+
+        Try
 
             ' Load default units
-
             aObjects = Me.ReadObjects(GetType(cProducerUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
             aObjects = Me.ReadObjects(GetType(cProcessingUnitDefault), False)
@@ -112,7 +115,15 @@ Public Class cDatabase
             ' Load links
             aObjects = Me.ReadObjects(GetType(cLink), False)
             For Each obj As cOOPStorable In aObjects
-                data.AddLink(DirectCast(obj, cLink))
+                ' Is old-fashioned producer link?
+                Dim l As cLink = DirectCast(obj, cLink)
+                If (l.Source.GetType Is GetType(cProducerUnit)) Then
+                    ' #Yes: dump it
+                    l.Source.RemoveLink(l)
+                Else
+                    ' #No: use it
+                    data.AddLink(DirectCast(obj, cLink))
+                End If
             Next
             aObjects = Me.ReadObjects(GetType(cLinkLandings), False)
             For Each obj As cOOPStorable In aObjects

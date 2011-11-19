@@ -139,7 +139,6 @@ Public Class cLinkLandings
     ''' <summary>Link species.</summary>
     Private m_iEcopathGroupID As Integer = 0
     Private m_group As cEcoPathGroupInput = Nothing
-    Private m_sLandings As Single = 0.0
 
 #End Region ' Private bits
 
@@ -159,10 +158,6 @@ Public Class cLinkLandings
             ' NOP
         End Set
     End Property
-
-    Friend Sub SetLandings(ByVal sLandings As Single)
-        Me.m_sLandings = sLandings
-    End Sub
 
     <Browsable(False), _
         TypeConverter(GetType(cGroupConverter))> _
@@ -193,6 +188,26 @@ Public Class cLinkLandings
 #Region " Overrides "
 
     <Browsable(False)> _
+    Public Overrides Property ValuePerTon() As Single
+        Get
+            Return 0
+        End Get
+        Set(ByVal value As Single)
+            ' nop
+        End Set
+    End Property
+
+    <Browsable(False)> _
+    Public Overrides Property ValueRatio() As Single
+        Get
+            Return 0
+        End Get
+        Set(ByVal value As Single)
+            ' nop
+        End Set
+    End Property
+
+    <Browsable(False)> _
     Public Overridable Property Group() As cEcoPathGroupInput
         Get
             Return Me.m_group
@@ -205,17 +220,6 @@ Public Class cLinkLandings
                 Me.m_iEcopathGroupID = 0
             End If
         End Set
-    End Property
-
-    <Browsable(True), _
-    Category(cCATEGORY_GENERIC), _
-    DisplayName("Landings"), _
-    Description("Landings for this link."), _
-    cPropertySorter.PropertyOrder(6)> _
-    Public ReadOnly Property Landings() As Single
-        Get
-            Return Me.m_sLandings
-        End Get
     End Property
 
     Public Overrides Function IsVisible() As Boolean
