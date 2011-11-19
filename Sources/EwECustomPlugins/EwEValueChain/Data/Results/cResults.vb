@@ -194,8 +194,8 @@ Public Class cResults
     Private m_dtSnapshots As New Dictionary(Of Object, cTimeStepResults)
 
     ''' <summary>Contributions of a fleet to a unit per timestep.</summary>
-    ''' <remarks>Indexed as (fleet, time step, unit sequence).</remarks>
-    Private m_asFleetBiomassContribution As Single(,,)
+    ''' <remarks>Indexed as (fleet, time step, unit sequence). Can be biomass or value; this is determined by the units.</remarks>
+    Private m_asFleetContribution As Single(,,)
 
     ''' <summary>Max no of time steps</summary>
     Private m_iMaxTimeStep As Integer = 0
@@ -328,7 +328,7 @@ Public Class cResults
         Me.m_iMaxTimeStep = 0
         Me.m_runType = runType
 
-        ReDim Me.m_asFleetBiomassContribution(core.nFleets, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Me.m_asFleetContribution(core.nFleets, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
 
     End Sub
 
@@ -601,7 +601,8 @@ Public Class cResults
 
         If bOkidoki Then
             Try
-                Me.m_asFleetBiomassContribution(iFleet, unit.Sequence, iTimeStep) = sContribution
+                ' Append contribution in case this is called multiple times for a single fleet + unit combo
+                Me.m_asFleetContribution(iFleet, unit.Sequence, iTimeStep) += sContribution
             Catch ex As Exception
                 ' Whoah!
             End Try
@@ -638,8 +639,8 @@ Public Class cResults
 
         If bOkidoki Then
             Try
-                sTotal = Me.m_asFleetBiomassContribution(0, unit.Sequence, iTimestep)
-                sContr = Me.m_asFleetBiomassContribution(iFleet, unit.Sequence, iTimestep)
+                sTotal = Me.m_asFleetContribution(0, unit.Sequence, iTimestep)
+                sContr = Me.m_asFleetContribution(iFleet, unit.Sequence, iTimestep)
             Catch ex As Exception
                 Debug.Assert(False, "VC: Failure obtaining contribution for fleet")
             End Try

@@ -8,9 +8,6 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
-' Experimental flag to allow multi-fleet calculations
-#Const RUN_MULTIFLEET = 1
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Interface between Ecopath and the Ecost flow.
@@ -231,19 +228,18 @@ Public Class cModel
 
         Dim prodUnit As cProducerUnit = Nothing
         Dim iFleetRun As Integer = 0
-        Dim iFleetSrc As Integer = 0
+        Dim iFleetSrc As Integer = 0 ' Fleet that is the landings source for a given producer unit
         Dim iNumFleetRun As Integer = 0
         Dim iBaseYear As Integer = 0
         Dim bAllowedToRun As Boolean = False
 
-        ' Check if having to run for multiple fleets
+        ' Respond to ResultsByFleet setting
+        '  * To aggregate results over all fleets only a full run is done for fleet 0
+        '  * To gather results by fleet a full run is done first. Then the chain is ran for every additional
+        '    fleet, passing in only landings and prices for that particular fleet, and gathering the contributions
+        '    for only that fleet.
         If data.Parameters.ResultsByFleet Then
-
-#If RUN_MULTIFLEET Then
             iNumFleetRun = data.Core.nFleets
-#Else
-            Console.WriteLine(">> WARNING: Running multiple fleets is not active in the code")
-#End If
         End If
 
         ' Sanity check
@@ -292,10 +288,12 @@ Public Class cModel
                             ' Get index
                             iFleetSrc = prodUnit.Fleet.Index
                             For iGroupSrc = 1 To data.Core.nGroups
-                                ' Need to clear landings?
+                                ' Gathering results for a fleet that does not serve the current producer?
                                 If (iFleetRun > 0) And (iFleetRun <> iFleetSrc) Then
+                                    ' #Yes: run this fleet without landings and price
                                     prodUnit.SetLandings(iGroupSrc, 0, 0)
                                 Else
+                                    ' #No: Run this fleet using standard landings and price
                                     prodUnit.SetLandings(iGroupSrc, _
                                                          Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults), _
                                                          Me.GetLandingPrice(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults))

@@ -188,6 +188,7 @@ Public MustInherit Class cUnit
     ''' <param name="results"></param>
     ''' <param name="input"></param>
     ''' <param name="iTimeStep"></param>
+    ''' <param name="iFleet">The fleet to run the chain for.</param>
     ''' -----------------------------------------------------------------------
     Public Overridable Sub Process(ByVal results As cResults, _
                                    ByVal input As cInput, _
@@ -212,7 +213,7 @@ Public MustInherit Class cUnit
 
             ' Determine outgoing biomass
             For Each link As cLink In Me.m_llinkOutput
-                ' Determing output biomass for a single link
+                ' Determine output biomass for a single link
                 If inputTotal.Tons > 0 Then
                     Dim sOutputBiomass As Single = link.BiomassRatio * inputTotal.Tons
                     Dim sOutputValue As Single = 0
@@ -237,11 +238,13 @@ Public MustInherit Class cUnit
                 End If
             Next
 
+            ' Store the amount that each fleet contributes to the total
             results.StoreFleetContribution(iFleet, Me, iTimeStep, inputTotal.Value)
 
-            ' No fleet specified?
+            ' Running for all fleet?
             If iFleet = 0 Then
-                ' #Yes: make all calculations
+                ' #Yes: make all calculations. Calculations are not necessary when running for individual fleets
+                '       where only transfer ratios are collected.
                 Me.Calculate(results, _
                     inputTotal.Tons, inputTotal.Value, _
                     sTotalOutputBiomass, sTotalOutputValue, iTimeStep)
