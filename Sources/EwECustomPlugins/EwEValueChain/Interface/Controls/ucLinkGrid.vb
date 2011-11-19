@@ -79,7 +79,7 @@ Public Class ucLinkGrid
         For iCol As Integer = 0 To nCols - 1
             If iCol = 0 Then
                 ' Index row
-                strHeader = "Link"
+                strHeader = ""
             Else
                 strHeader = Me.m_api(iCol - 1).Name
             End If
