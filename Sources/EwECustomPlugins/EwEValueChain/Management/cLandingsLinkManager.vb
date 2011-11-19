@@ -37,7 +37,7 @@ Public Class cLandingsLinkManager
         Dim landings As List(Of Integer) = Nothing
 
         ' Delete all invisible links
-        aLinks = Me.m_data.GetLinks(GetType(cLinkLandings), False)
+        aLinks = Me.m_data.GetLinks(GetType(cLinkLandings), True)
         For Each link In aLinks
             If (Not link.IsVisible) Then
                 ' Delete link

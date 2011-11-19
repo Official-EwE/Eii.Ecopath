@@ -689,9 +689,11 @@ Public Class cData
     ''' Get all visible links of a given type.
     ''' </summary>
     ''' <param name="t"></param>
+    ''' <param name="bIncludeInvisible">Flag stating that also links that are not
+    ''' <see cref="cLink.IsVisible">visible</see> may be included.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetLinks(ByVal t As Type, Optional bVisibleOnly As Boolean = True) As cLink()
+    Public Function GetLinks(ByVal t As Type, Optional bIncludeInvisible As Boolean = False) As cLink()
 
         Dim lLinks As New List(Of cLink)
         Dim link As cLink = Nothing
@@ -701,7 +703,7 @@ Public Class cData
             ' Need to filter by unit type?
             If (t IsNot Nothing) Then
                 ' #Yes: check link type
-                bAdd = (t.Equals(link.GetType)) And (link.IsVisible Or Not bVisibleOnly)
+                bAdd = (t.Equals(link.GetType)) And (link.IsVisible Or bIncludeInvisible)
             Else
                 ' #No: assume all is well
                 bAdd = True
@@ -731,6 +733,9 @@ Public Class cData
     End Function
 
     Public Function CreateLandingsLink(ByVal unitSource As cProducerUnit, ByVal unitTarget As cUnit, ByVal group As cEcoPathGroupInput) As cLinkLandings
+
+        ' Do not create link if there are no landings
+        If (unitSource.Fleet.Landings(group.Index) = 0) Then Return Nothing
 
         ' Sanity check
         If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
