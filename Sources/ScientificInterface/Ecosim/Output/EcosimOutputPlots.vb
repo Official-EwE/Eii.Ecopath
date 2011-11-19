@@ -199,7 +199,7 @@ Namespace Ecosim
                             Case ePlot.Prey
                                 aResults.Add(cEcosimResultWriter.eResultTypes.Prey)
                             Case ePlot.Value
-                                ' Not supported by result writer
+                                aResults.Add(cEcosimResultWriter.eResultTypes.Value)
                         End Select
                     End If
                 Next

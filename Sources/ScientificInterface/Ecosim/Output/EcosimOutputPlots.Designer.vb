@@ -24,27 +24,27 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimOutputPlots))
-            Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
-            Me.m_btnSaveData = New System.Windows.Forms.Button
-            Me.m_lbPredators = New ScientificInterfaceShared.Controls.cGroupListBox
-            Me.m_lbPrey = New ScientificInterfaceShared.Controls.cGroupListBox
-            Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
-            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.m_tsDDShowHidePlots = New System.Windows.Forms.ToolStripSplitButton
-            Me.m_plGroups = New System.Windows.Forms.Panel
-            Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_plFleets = New System.Windows.Forms.Panel
-            Me.m_lbFleets = New ScientificInterfaceShared.Controls.cFleetListBox
-            Me.m_hdrFleets = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_plPredators = New System.Windows.Forms.Panel
-            Me.m_hdrPredators = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_plPrey = New System.Windows.Forms.Panel
-            Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_cbSaveVisibleOnly = New System.Windows.Forms.CheckBox
+            Me.m_graph = New ZedGraph.ZedGraphControl()
+            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
+            Me.m_btnSaveData = New System.Windows.Forms.Button()
+            Me.m_lbPredators = New ScientificInterfaceShared.Controls.cGroupListBox()
+            Me.m_lbPrey = New ScientificInterfaceShared.Controls.cGroupListBox()
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsDDShowHidePlots = New System.Windows.Forms.ToolStripSplitButton()
+            Me.m_plGroups = New System.Windows.Forms.Panel()
+            Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_plFleets = New System.Windows.Forms.Panel()
+            Me.m_lbFleets = New ScientificInterfaceShared.Controls.cFleetListBox()
+            Me.m_hdrFleets = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_plPredators = New System.Windows.Forms.Panel()
+            Me.m_hdrPredators = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_plPrey = New System.Windows.Forms.Panel()
+            Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbSaveVisibleOnly = New System.Windows.Forms.CheckBox()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -61,13 +61,13 @@ Namespace Ecosim
             Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0
-            Me.m_graph.ScrollMaxX = 0
-            Me.m_graph.ScrollMaxY = 0
-            Me.m_graph.ScrollMaxY2 = 0
-            Me.m_graph.ScrollMinX = 0
-            Me.m_graph.ScrollMinY = 0
-            Me.m_graph.ScrollMinY2 = 0
+            Me.m_graph.ScrollGrace = 0.0R
+            Me.m_graph.ScrollMaxX = 0.0R
+            Me.m_graph.ScrollMaxY = 0.0R
+            Me.m_graph.ScrollMaxY2 = 0.0R
+            Me.m_graph.ScrollMinX = 0.0R
+            Me.m_graph.ScrollMinY = 0.0R
+            Me.m_graph.ScrollMinY2 = 0.0R
             '
             'm_lbGroups
             '
@@ -257,6 +257,7 @@ Namespace Ecosim
             Me.ShowIcon = False
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.m_tlpMain.ResumeLayout(False)
             Me.m_tlpMain.PerformLayout()

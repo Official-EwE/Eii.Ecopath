@@ -33,6 +33,7 @@ Namespace Ecosim
             PredationMortality
             Prey
             TL
+            Value
         End Enum
 
 #End Region ' Private vars
@@ -124,7 +125,8 @@ Namespace Ecosim
                      eResultTypes.ConsumptionBiomass, _
                      eResultTypes.FeedingTime, _
                      eResultTypes.AvgWeightOrProdCons, _
-                     eResultTypes.TL
+                     eResultTypes.TL, _
+                     eResultTypes.Value
 
                     Dim data(m_core.nGroups, m_core.nEcosimTimeSteps) As Single
                     For i As Integer = 1 To m_core.nGroups
@@ -149,6 +151,9 @@ Namespace Ecosim
                                     End If
                                 Case eResultTypes.TL
                                     data(i, j) = grpOutput.TL(j)
+                                Case eResultTypes.Value
+                                    data(i, j) = grpOutput.Value(j)
+
                             End Select
                         Next
 
@@ -267,6 +272,8 @@ Namespace Ecosim
                         strFileName = Me.m_core.EcosimOutputFileName("Prey_annual", GroupName, strExt)
                     Case eResultTypes.TL
                         strFileName = Me.m_core.EcosimOutputFileName("TL_annual", "", strExt)
+                    Case eResultTypes.Value
+                        strFileName = Me.m_core.EcosimOutputFileName("Value_annual", "", strExt)
                 End Select
             Else
                 Select Case outputtype
@@ -288,6 +295,8 @@ Namespace Ecosim
                         strFileName = Me.m_core.EcosimOutputFileName("Prey", GroupName, strExt)
                     Case eResultTypes.TL
                         strFileName = Me.m_core.EcosimOutputFileName("TL", "", strExt)
+                    Case eResultTypes.Value
+                        strFileName = Me.m_core.EcosimOutputFileName("Value", "", strExt)
                 End Select
             End If
             Return Path.Combine(strPath, strFileName)
