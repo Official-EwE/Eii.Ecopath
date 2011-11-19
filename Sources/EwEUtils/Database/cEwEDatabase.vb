@@ -625,7 +625,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function RollbackTransaction() As Boolean
             Try
-                Transaction.Rollback()
+                Me.m_transaction.Rollback()
                 Me.m_transaction = Nothing
                 Return True
             Catch ex As Exception
