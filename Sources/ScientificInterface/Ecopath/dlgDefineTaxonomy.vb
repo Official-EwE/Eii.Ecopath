@@ -142,10 +142,10 @@ Public Class dlgDefineTaxa
         If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
 
         ' Do not change the order here please
-        Me.m_cmbFilter.Items.Add(SharedResources.GENERIC_VALUE_ALLFIELDS)
-        Me.m_cmbFilter.Items.Add(SharedResources.HEADER_COMMON_NAME)
-        Me.m_cmbFilter.Items.Add(SharedResources.HEADER_SPECIES)
-        Me.m_cmbFilter.Items.Add(SharedResources.HEADER_FAMILY)
+        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Any)
+        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Common)
+        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Species)
+        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Family)
         Me.m_cmbFilter.SelectedIndex = 0
 
         Me.UpdateControls()
@@ -302,6 +302,21 @@ Public Class dlgDefineTaxa
 
         Me.m_gridResults.AddResults(results)
 
+    End Sub
+
+    Private Sub OnTaxonLevelFormat(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_cmbFilter.Format
+        Dim fmt As New cTaxonLevelTypeFormatter()
+        e.Value = fmt.GetDescriptor(e.ListItem)
+    End Sub
+
+    Private Sub OnTaxonLevelSelected(sender As Object, e As System.EventArgs) _
+        Handles m_cmbFilter.SelectedIndexChanged
+        Try
+            Me.RefreshSearch()
+        Catch ex As Exception
+            cLog.Write(ex, "dlgDefineTaxa::OnTaxonLevelSelected")
+        End Try
     End Sub
 
 #End Region ' Events

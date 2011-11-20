@@ -48,7 +48,8 @@ Public Class gridTaxonSearchResults
 
         Try
             Me.m_results = results
-            Me.RefreshContent()
+            Me.RowsCount = 1
+            Me.FillData()
         Catch ex As Exception
             ' Aargh
         End Try
@@ -106,20 +107,20 @@ Public Class gridTaxonSearchResults
             Me.AddResult(DirectCast(Me.m_results.SearchResults(iRow), ITaxonSearchData))
         Next
 
+        For iCol As Integer = 1 To Me.ColumnsCount - 1
+            Select Case DirectCast(iCol, eColumnTypes)
+                Case eColumnTypes.Index
+                    Me.Columns(iCol).Width = 20
+                Case Else
+                    Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                    Me.AutoSizeColumn(iCol, 80)
+            End Select
+        Next
+
     End Sub
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
-
-        For i As Integer = 0 To Me.ColumnsCount - 1
-            Select Case i
-                Case eColumnTypes.Index ' Nop
-                Case Else
-                    Me.Columns(i).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                    Me.AutoSizeColumn(i, 100)
-            End Select
-        Next
-
     End Sub
 
     Protected Overrides Sub OnCellDoubleClicked(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual)
