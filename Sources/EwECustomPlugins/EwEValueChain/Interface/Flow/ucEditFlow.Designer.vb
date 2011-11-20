@@ -5,17 +5,6 @@ Imports ScientificInterfaceShared.Controls
 Partial Class ucEditFlow
     Inherits System.Windows.Forms.UserControl
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            RemoveHandler Me.m_plFlow.EditModeChanged, AddressOf OnEditModeChanged
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
-    End Sub
-
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
