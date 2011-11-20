@@ -235,6 +235,9 @@ Public MustInherit Class cUnit
 
                     sTotalOutputBiomass += sOutputBiomass
                     sTotalOutputValue += sOutputValue
+
+                    link.Target.Process(results, New cInput(sOutputBiomass, sOutputBiomass * sValuePerTon), iTimeStep, iFleet)
+
                 End If
             Next
 
@@ -250,26 +253,26 @@ Public MustInherit Class cUnit
                     sTotalOutputBiomass, sTotalOutputValue, iTimeStep)
             End If
 
+            '' Pass biomass to all targets in the flow
+            'For Each outputLink As cLink In Me.m_llinkOutput
+            '    ' Pass resulting data to the next unit in the flow, and tell it to process
+            '    If inputTotal.Tons > 0 Then
+            '        ' Get system-defined value per ton
+            '        'sValuePerTon = outputLink.ValuePerTon
+            '        ' Is default value?
+            '        If outputLink.ValuePerTon = 1.0! Then
+            '            ' #Yes: use aggregated input value
+            '            sValuePerTon = (inputTotal.Value / inputTotal.Tons) * outputLink.ValueRatio
+            '        Else
+            '            sValuePerTon = outputLink.ValuePerTon
+            '        End If
 
-            ' Pass biomass to all targets in the flow
-            For Each outputLink As cLink In Me.m_llinkOutput
-                ' Pass resulting data to the next unit in the flow, and tell it to process
-                If inputTotal.Tons > 0 Then
-                    ' Get system-defined value per ton
-                    'sValuePerTon = outputLink.ValuePerTon
-                    ' Is default value?
-                    If outputLink.ValuePerTon = 1.0! Then
-                        ' #Yes: use aggregated input value
-                        sValuePerTon = (inputTotal.Value / inputTotal.Tons) * outputLink.ValueRatio
-                    Else
-                        sValuePerTon = outputLink.ValuePerTon
-                    End If
+            '        outputLink.Target.Process(results, _
+            '                New cInput(inputTotal.Tons * outputLink.BiomassRatio, _
+            '                           inputTotal.Tons * outputLink.BiomassRatio * sValuePerTon), iTimeStep, iFleet)
+            '    End If
+            'Next outputLink
 
-                    outputLink.Target.Process(results, _
-                            New cInput(inputTotal.Tons * outputLink.BiomassRatio, _
-                                       inputTotal.Tons * outputLink.BiomassRatio * sValuePerTon), iTimeStep, iFleet)
-                End If
-            Next outputLink
         End If
 
     End Sub
