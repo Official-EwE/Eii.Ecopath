@@ -111,16 +111,15 @@ Friend Class cDBUpdate6_01_01_004
         Dim loc As cModelLocation = Nothing
 
         ' Get default lat and lon
+        reader = db.GetReader("SELECT * FROM EcopathModel")
+        reader.Read()
         Try
-            reader = db.GetReader("SELECT * FROM EcopathModel")
-            reader.Read()
             sLonDefault = CSng(reader("MinLon"))
             sLatDefault = CSng(reader("MinLat"))
-            db.ReleaseReader(reader)
         Catch ex As Exception
-            Me.LogProgress(ex.Message, False)
-            bSucces = False
+            ' Swallow this
         End Try
+        db.ReleaseReader(reader)
 
         ' Read all maps
         reader = db.GetReader("SELECT * FROM EcospaceScenario")
