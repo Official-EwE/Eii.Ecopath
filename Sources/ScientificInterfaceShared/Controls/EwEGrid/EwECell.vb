@@ -1,15 +1,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
-Imports EwEUtils.Commands
-Imports EwEUtils.Core
-Imports SourceGrid2.DataModels
 
 #End Region ' Imports
 

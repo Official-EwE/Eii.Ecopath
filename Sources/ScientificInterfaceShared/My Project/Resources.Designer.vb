@@ -482,6 +482,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property DeletedItem() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("DeletedItem", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property DeleteHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("DeleteHS", resourceCulture)
@@ -5301,6 +5308,13 @@ Namespace My.Resources
         Public ReadOnly Property NewDocumentHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("NewDocumentHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property NewItem() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("NewItem", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

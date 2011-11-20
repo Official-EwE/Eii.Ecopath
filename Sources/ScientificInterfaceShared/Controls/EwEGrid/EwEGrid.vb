@@ -3,21 +3,19 @@
 Option Strict On
 Option Explicit On
 
-Imports System.Drawing
 Imports System.ComponentModel
-Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceLibrary
-Imports ScientificInterfaceShared.Properties
-Imports System.Text
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.Commands
-Imports System.IO
-Imports SourceGrid2.Cells
 Imports System.Globalization
+Imports System.IO
+Imports System.Text
 Imports System.Threading
+Imports EwECore
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
+Imports SourceGrid2
+Imports SourceGrid2.Cells
+Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -1361,6 +1359,32 @@ Namespace Controls.EwEGrid
             arSelection = selection.Item(0)
             iSelectedRow = arSelection.Start.Row
             Return iSelectedRow
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the indices of the current selected rows, sorted in 
+        ''' ascending order.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function SelectedRows() As Integer()
+
+            Dim selection As SourceGrid2.Selection = Me.Selection
+            Dim lSelectedRows As New List(Of Integer)
+
+            If (selection Is Nothing) Then Return lSelectedRows.ToArray
+            If (selection.Count = 0) Then Return lSelectedRows.ToArray
+
+            For Each ri As RowInfo In selection.SelectedRows
+                lSelectedRows.Add(ri.Index)
+            Next
+
+            ' Sort asc
+            lSelectedRows.Sort()
+            ' Done
+            Return lSelectedRows.ToArray()
 
         End Function
 

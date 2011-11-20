@@ -845,6 +845,7 @@
     <None Include="Resources\fishing_gear.png" />
     <None Include="Resources\fish.png" />
     <None Include="Resources\Back.png" />
+    <None Include="Resources\DeletedItem.png" />
     <Content Include="Resources\Fill.png" />
     <None Include="Resources\History.png" />
     <None Include="Resources\forward.png" />
@@ -889,9 +890,9 @@
     <None Include="Resources\glyph_seagrass_light.png" />
     <None Include="Resources\glyph_seagrass_red.png" />
     <None Include="Resources\glyph_squares_large.png" />
-    <Content Include="Resources\Info.ico" />
     <None Include="Resources\rss_icon.gif" />
     <None Include="Resources\multistanza.png" />
+    <None Include="Resources\NewItem.png" />
     <Content Include="Resources\Seasonal.png" />
     <None Include="Resources\PieChart.bmp" />
     <None Include="Resources\ani_loader.gif" />
