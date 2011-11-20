@@ -120,6 +120,16 @@ Public Class cDatabase
                 If (l.Source.GetType Is GetType(cProducerUnit)) Then
                     ' #Yes: dump it
                     l.Source.RemoveLink(l)
+                    Try
+                        For iGroup As Integer = 1 To data.Core.nGroups
+                            Dim ll As cLinkLandings = data.CreateLandingsLink(DirectCast(l.Source, cProducerUnit), l.Target, data.Core.EcoPathGroupInputs(iGroup))
+                            ll.BiomassRatio = l.BiomassRatio
+                            ll.ValueRatio = l.ValueRatio
+                            ll.ValuePerTon = l.ValuePerTon
+                        Next
+                    Catch ex As Exception
+
+                    End Try
                 Else
                     ' #No: use it
                     data.AddLink(DirectCast(obj, cLink))
