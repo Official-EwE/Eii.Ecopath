@@ -23,6 +23,7 @@ Public Class cParameters
     Private m_sEffortMax As Single = 4.0!
     Private m_sEffortInc As Single = 0.25!
     Private m_liFleets As New List(Of Integer)
+    Private m_sZoomFactor As Single = 1.0!
 
 #Region " Properties "
 
@@ -92,6 +93,15 @@ Public Class cParameters
                 Me.m_bRunSearches = bRunWithFishingPolicySearch
                 Me.SetChanged()
             End If
+        End Set
+    End Property
+
+    Public Property ZoomFactor As Single
+        Get
+            Return Me.m_sZoomFactor
+        End Get
+        Set(value As Single)
+            Me.m_sZoomFactor = value
         End Set
     End Property
 

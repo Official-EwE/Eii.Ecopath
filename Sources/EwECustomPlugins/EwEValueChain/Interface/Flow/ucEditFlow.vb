@@ -18,8 +18,6 @@ Public Class ucEditFlow
     Private m_data As cData = Nothing
     Private m_diagram As cFlowDiagram = Nothing
 
-    Private Shared g_sLastZoom As Single = 1.0!
-
     Public Sub New(ByVal uic As cUIContext, _
                    ByVal data As cData, _
                    ByVal diagram As cFlowDiagram)
@@ -34,9 +32,11 @@ Public Class ucEditFlow
         Me.m_uic = uic
         Me.Data = data
         Me.Diagram = diagram
-        Me.UpdateControls()
 
-        Me.m_plFlow.ZoomFactor = ucEditFlow.g_sLastZoom
+        If (data.Parameters IsNot Nothing) Then
+            Me.m_plFlow.ZoomFactor = data.Parameters.ZoomFactor
+        End If
+        Me.UpdateControls()
 
         AddHandler Me.m_plFlow.EditModeChanged, AddressOf Me.OnEditModeChanged
 
@@ -45,7 +45,14 @@ Public Class ucEditFlow
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             ' Store zoom factor
-            ucEditFlow.g_sLastZoom = Me.m_plFlow.ZoomFactor
+            If (Data.Parameters IsNot Nothing) Then
+                Data.Parameters.ZoomFactor = Me.m_plFlow.ZoomFactor
+            End If
+
+            Me.m_diagram = Nothing
+            Me.m_data = Nothing
+            Me.m_uic = Nothing
+
             ' Disconnect
             RemoveHandler Me.m_plFlow.EditModeChanged, AddressOf OnEditModeChanged
             ' Default cleanup
@@ -56,6 +63,7 @@ Public Class ucEditFlow
             MyBase.Dispose(disposing)
         End Try
     End Sub
+
 #Region " Event handling "
 
 #Region " Saving "

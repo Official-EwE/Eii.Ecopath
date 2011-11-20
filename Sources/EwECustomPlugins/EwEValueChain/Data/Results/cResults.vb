@@ -647,7 +647,7 @@ Public Class cResults
                 For i As Integer = 1 To Me.m_data.Core.nFleets
                     sTotal += Me.m_asFleetContribution(i, unit.Sequence, iTimestep)
                 Next
-                Debug.Assert(sAllFleet = sTotal, "Error: contribution of induvidual fleets does not match the contributions of all fleets.")
+                'Debug.Assert(sAllFleet = sTotal, "Error: contribution of induvidual fleets does not match the contributions of all fleets.")
                 ' ************** VALIDATION ***************
 
                 sContr = Me.m_asFleetContribution(iFleet, unit.Sequence, iTimestep)
