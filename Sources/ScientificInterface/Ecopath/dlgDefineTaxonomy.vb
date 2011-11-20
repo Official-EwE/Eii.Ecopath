@@ -145,7 +145,11 @@ Public Class dlgDefineTaxa
         Me.m_cmbFilter.Items.Add(eTaxonLevelType.Any)
         Me.m_cmbFilter.Items.Add(eTaxonLevelType.Common)
         Me.m_cmbFilter.Items.Add(eTaxonLevelType.Species)
+        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Genus)
         Me.m_cmbFilter.Items.Add(eTaxonLevelType.Family)
+        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Order)
+        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Class)
+        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Phylum)
         Me.m_cmbFilter.SelectedIndex = 0
 
         Me.UpdateControls()
