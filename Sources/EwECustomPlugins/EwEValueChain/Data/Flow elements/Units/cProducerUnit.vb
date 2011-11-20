@@ -657,30 +657,31 @@ Public Class cProducerUnit
         For Each link As cLink In Me.m_llinkOutput
 
             Dim sBiomass As Single = 0.0
-            Dim sPrice As Single = 0.0
+            Dim sValue As Single = 0.0
+            'the above was called sPrice, but it is value, so renamed
 
             If (TypeOf link Is cLinkLandings) Then
                 Dim ll As cLinkLandings = DirectCast(link, cLinkLandings)
                 If (ll.Group IsNot Nothing) And (ll.IsVisible) Then
                     Dim iGroup As Integer = ll.Group.Index
                     sBiomass += Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
-                    sPrice += Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                    sValue += Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
                 End If
             End If
 
             ' Process every link to ensure that target units receive all inputs!
             If sBiomass > 0 Then
-                link.Target.Process(results, New cInput(sBiomass, sPrice, sPrice / sBiomass), iTimeStep, iFleet)
+                link.Target.Process(results, New cInput(sBiomass, sValue, sValue / sBiomass), iTimeStep, iFleet)
 
                 'VC: I changed the line above to pass price/biomass as the third parameter (instead of price). 
                 'it is supposed to be the price per unit biomass
                 'it was multiplying an extra time with the total catches (sBiomass) as it was.
             Else
-                link.Target.Process(results, New cInput(sBiomass, sPrice), iTimeStep, iFleet)
+                link.Target.Process(results, New cInput(sBiomass, sValue), iTimeStep, iFleet)
 
             End If
 
-            sTotalOutputValue += sPrice * sBiomass
+            sTotalOutputValue += sValue '* sBiomass
 
         Next
 
