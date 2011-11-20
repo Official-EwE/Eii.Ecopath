@@ -236,7 +236,7 @@ Public MustInherit Class cUnit
                     sTotalOutputBiomass += sOutputBiomass
                     sTotalOutputValue += sOutputValue
 
-                    link.Target.Process(results, New cInput(sOutputBiomass, sOutputBiomass * sValuePerTon), iTimeStep, iFleet)
+                    link.Target.Process(results, New cInput(sOutputBiomass, sOutputValue), iTimeStep, iFleet)
 
                 End If
             Next
