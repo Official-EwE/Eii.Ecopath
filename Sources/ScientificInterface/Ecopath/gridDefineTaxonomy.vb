@@ -810,6 +810,7 @@ Public Class gridDefineTaxonomy
             If grp.isMultiStanza Then
 
                 If Not abStanzaHandled(grp.iStanza) Then
+                    ' Create row for multi-stanza group
                     iRow = Me.AddRow()
                     stz = Me.Core.StanzaGroups(grp.iStanza)
 
@@ -832,7 +833,7 @@ Public Class gridDefineTaxonomy
 
                 End If
             Else
-
+                ' Add regular group row
                 iRow = Me.AddRow()
 
                 hgcParent = New EwEHierarchyGridCell()
@@ -1200,43 +1201,47 @@ Public Class gridDefineTaxonomy
     ''' Set the delete state of all selected rows
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub ToggleDeleteRow()
+    Public Sub ToggleDeleteRows()
 
         Dim sel As Selection = Me.Selection
         Dim ti As cTaxonInfo = Nothing
+        Dim aiRows As Integer() = Me.SelectedRows
 
-        Dim iRow As Integer = Me.SelectedRow
-        ti = Me.TaxonInfo(iRow)
+        For i As Integer = aiRows.Count - 1 To 0 Step -1
 
-        If (ti IsNot Nothing) Then
-            ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
+            Dim iRow As Integer = aiRows(i)
+            ti = Me.TaxonInfo(iRow)
 
-            ' Check to see what is to happen to the MPA now
-            Select Case ti.Status
+            If (ti IsNot Nothing) Then
+                ti.FlaggedForDeletion = Not ti.FlaggedForDeletion
 
-                Case eItemStatusTypes.Original
-                    ' Clear removed status 
-                    Me.m_lTaxonInfoRemoved.Remove(ti)
-                    Me.UpdateRow(iRow)
+                ' Check to see what is to happen to the MPA now
+                Select Case ti.Status
 
-                Case eItemStatusTypes.Added
-                    ' Remove new item
-                    Me.m_lTaxonInfo.Remove(ti)
-                    Me.RemoveTaxonRow(iRow)
+                    Case eItemStatusTypes.Original
+                        ' Clear removed status 
+                        Me.m_lTaxonInfoRemoved.Remove(ti)
+                        Me.UpdateRow(iRow)
 
-                Case eItemStatusTypes.Removed
-                    ' Set removed status
-                    Me.m_lTaxonInfoRemoved.Add(ti)
-                    Me.UpdateRow(iRow)
+                    Case eItemStatusTypes.Added
+                        ' Remove new item
+                        Me.m_lTaxonInfo.Remove(ti)
+                        Me.RemoveTaxonRow(iRow)
 
-                Case eItemStatusTypes.Invalid
-                    ' Set removed status
-                    Me.m_lTaxonInfo.Remove(ti)
-                    Me.RemoveTaxonRow(iRow)
+                    Case eItemStatusTypes.Removed
+                        ' Set removed status
+                        Me.m_lTaxonInfoRemoved.Add(ti)
+                        Me.UpdateRow(iRow)
 
-            End Select
+                    Case eItemStatusTypes.Invalid
+                        ' Set removed status
+                        Me.m_lTaxonInfo.Remove(ti)
+                        Me.RemoveTaxonRow(iRow)
 
-        End If
+                End Select
+
+            End If
+        Next
 
     End Sub
 
