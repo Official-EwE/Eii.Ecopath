@@ -599,6 +599,7 @@
     <Compile Include="Style\Type formatters\cShapeFunctionTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cOrganismTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cShapeDataFormatter.vb" />
+    <Compile Include="Style\Type formatters\cTaxonLevelTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cTimeSeriesTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cTypeFormatterFactory.vb" />
     <Compile Include="Style\Type formatters\cVarnameTypeFormatter.vb" />

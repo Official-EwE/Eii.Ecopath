@@ -455,24 +455,15 @@ Public Class dlgDefineTaxa
             '#Yes: populate term
             Select Case Me.m_cmbFilter.SelectedIndex
                 Case 0 ' all fields
-                    searchterm.SearchFields = eTaxonFieldType.Any
-                    searchterm.Common = strTerm
-                    searchterm.Species = strTerm
-                    searchterm.Family = strTerm
-                    searchterm.Genus = strTerm
-                    searchterm.Order = strTerm
-                    searchterm.Class = strTerm
-                    searchterm.Phylum = strTerm
+                    searchterm.SearchFields = eTaxonLevelType.Any
                 Case 1 ' common name
-                    searchterm.SearchFields = eTaxonFieldType.Common
-                    searchterm.Common = strTerm
+                    searchterm.SearchFields = eTaxonLevelType.Common
                 Case 2 ' species
-                    searchterm.SearchFields = eTaxonFieldType.Species
-                    searchterm.Species = strTerm
+                    searchterm.SearchFields = eTaxonLevelType.Species
                 Case 3 ' family
-                    searchterm.SearchFields = eTaxonFieldType.Family
-                    searchterm.Family = strTerm
+                    searchterm.SearchFields = eTaxonLevelType.Family
             End Select
+            searchterm.Common = strTerm
             ' Update UI
             Me.m_tbSearch.Text = strTerm
             ' Go Jimmy
