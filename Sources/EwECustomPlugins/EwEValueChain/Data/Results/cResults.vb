@@ -624,7 +624,8 @@ Public Class cResults
                                               ByVal unit As cUnit, _
                                               ByVal iTimestep As Integer) As Single
 
-        Dim sTotal As Single = 0 ' Total contribution for all fleets
+        Dim sAllFleet As Single = 0 ' Contribution for 'all fleets' calculation
+        Dim sTotal As Single = 0 ' Total contribution for fleets - should equal sAllFleet!
         Dim sContr As Single = 0 ' COntribution for a single fleet
 
         If (iFleet = 0) Then Return 1
@@ -639,7 +640,16 @@ Public Class cResults
 
         If bOkidoki Then
             Try
-                sTotal = Me.m_asFleetContribution(0, unit.Sequence, iTimestep)
+                sAllFleet = Me.m_asFleetContribution(0, unit.Sequence, iTimestep)
+
+                ' ************** VALIDATION ***************
+                ' Constributions of all fleets [1..n] should equal the contribution of fleet 0
+                For i As Integer = 1 To Me.m_data.Core.nFleets
+                    sTotal += Me.m_asFleetContribution(i, unit.Sequence, iTimestep)
+                Next
+                Debug.Assert(sAllFleet = sTotal, "Error: contribution of induvidual fleets does not match the contributions of all fleets.")
+                ' ************** VALIDATION ***************
+
                 sContr = Me.m_asFleetContribution(iFleet, unit.Sequence, iTimestep)
             Catch ex As Exception
                 Debug.Assert(False, "VC: Failure obtaining contribution for fleet")
