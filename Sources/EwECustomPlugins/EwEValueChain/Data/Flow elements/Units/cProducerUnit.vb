@@ -687,13 +687,6 @@ Public Class cProducerUnit
 
         results.StoreFleetContribution(iFleet, Me, iTimeStep, sTotalOutputValue)
 
-        ' Running for all fleet?
-        If iFleet = 0 Then
-            ' #Yes: make all calculations. Calculations are not necessary when running for individual fleets
-            '       where only transfer ratios are collected.
-            Me.Calculate(results, 0, 0, sTotalOutputBiomass, sTotalOutputValue, iTimeStep)
-        End If
-
     End Sub
 
 #End Region ' Landings
