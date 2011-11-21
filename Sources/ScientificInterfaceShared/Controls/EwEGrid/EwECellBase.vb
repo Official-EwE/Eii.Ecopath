@@ -169,7 +169,7 @@ Namespace Controls.EwEGrid
 
 #End Region ' Construction
 
-#Region " Data (value, style, remarks) "
+#Region " Data (value, style, remarks, image) "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -369,7 +369,29 @@ Namespace Controls.EwEGrid
 
         End Sub
 
-#End Region ' Data (value, style, remarks)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the image to display in the cell
+        ''' </summary>
+        ''' <remarks>This method provides a shortcut to the image in the 
+        ''' <see cref="VisualModel"/> of the cell.</remarks>
+        ''' -------------------------------------------------------------------
+        Public Property Image() As Image
+            Get
+                If TypeOf Me.VisualModel Is VisualModels.Common Then
+                    Return DirectCast(Me.VisualModel, VisualModels.Common).Image
+                End If
+                Return Nothing
+            End Get
+            Set(value As Image)
+                If TypeOf Me.VisualModel Is VisualModels.Common Then
+                    DirectCast(Me.VisualModel, VisualModels.Common).Image = value
+                    Me.Invalidate()
+                End If
+            End Set
+        End Property
+
+#End Region ' Data (value, style, remarks, image)
 
 #Region " Updates (StyleGuide)"
 
