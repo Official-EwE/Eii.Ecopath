@@ -36,10 +36,6 @@ Public Class cModel
 
 #End Region ' Private vars
 
-    Public Event OnRunCompleted(ByVal iTimeStep As Integer)
-
-    ' ToDo: insert landings manager and listen to core messages
-
     Public Sub New()
     End Sub
 
@@ -313,9 +309,6 @@ Public Class cModel
 
             ' Finish results
             result.CalculateDerivedValues(iTimeStep)
-
-            ' Done, tell everyone!
-            RaiseEvent OnRunCompleted(iTimeStep)
 
         Catch ex As Exception
             ' BOMB
