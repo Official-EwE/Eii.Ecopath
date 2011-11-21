@@ -18,7 +18,7 @@ Imports ScientificInterfaceShared.Style
 ''' -------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class cEwEGridShapeThumbnailVisualizer
-    Inherits VisualModels.MultiImages
+    Inherits VisualModels.Common
 
 #Region " Private vars "
 
