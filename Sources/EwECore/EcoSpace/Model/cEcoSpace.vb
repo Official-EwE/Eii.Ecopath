@@ -1237,7 +1237,6 @@ Public Class cEcoSpace
         iLastPacket = 0
 
         Dim solvCtr As Integer = 1
-        Dim timerTemp As Single
 
         For Each solver In m_IBMSolvers
             ReDim solver.BcellThread(m_Data.InRow, m_Data.InCol, m_Data.nvartot)
@@ -1245,100 +1244,16 @@ Public Class cEcoSpace
         Next
         ReDim m_Stanza.EggCell(m_Data.InRow, m_Data.InCol, m_Stanza.Nsplit)
 
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'jb 18-Nov-2011 Changed calling order of GrowSurvivePackets() and MovePackets()
+        're Carls email
+        'Yes, assuming that the IBM updates are done after all the solvegrid calls (as in ewe5)
+        ' then growsurvivepackets must be called before movepackets.  
+        'Otherwise the growth-survival calculations for each packet will be based on the cell position after the move, 
+        'rather than the cell position used to predict food consumption and mortality rates from derivt in the solvegrid loop.
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+
         Try
-
-
-            ''this loop should only excecute once
-            'Do While iLstgrp < m_Stanza.Nsplit
-            '    'loop through each solver object, make sure it's okay to run, and run it
-            '    'each thread will do several groups at a time
-            '    For Each solver In m_IBMSolvers
-
-            '        If solver.isOkToRun Then
-
-            '            iLstgrp = iFstGrp + m_Data.nIBMGroupsPerThread - 1
-            '            If iLstgrp > m_Stanza.Nsplit Then iLstgrp = m_Stanza.Nsplit
-
-            '            solver.FirstLastGroups(iFstGrp, iLstgrp)
-            '            solver.SignalState.Reset()
-
-            '            solver.isOkToRun = False
-            '            ThreadPool.QueueUserWorkItem(AddressOf solver.SolveFirst)
-
-            '            iFstGrp += m_Data.nIBMGroupsPerThread
-            '        Else
-            '            'System.Console.WriteLine("Solver thread blocked ID:" & solver.ThreadID & " Group:" & solver.iFirstIndex & " time:" & m_Data.TimeNow)
-            '        End If
-
-            '        If iLstgrp >= m_Stanza.Nsplit Then
-            '            Exit For
-            '        End If
-            '    Next solver
-            'Loop
-
-            '' wait for all the threads to finish before starting the next time step
-            'For Each solver In m_IBMSolvers
-            '    If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
-            '    solver.SignalState.WaitOne()
-            '    solvCtr = solvCtr + 1
-            'Next
-
-            'If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
-            'solvCtr = 1
-            'ibmThreadWaitTimer = ibmThreadWaitTimer + (Microsoft.VisualBasic.Timer - timerTemp)
-
-            'Dim ieco As Integer
-            'For isp As Integer = 1 To m_Stanza.Nsplit
-            '    For ist As Integer = 1 To m_Stanza.Nstanza(isp)
-
-            '        ieco = m_Stanza.EcopathCode(isp, ist)
-            '        For i As Integer = 1 To m_Data.InRow : For j As Integer = 1 To m_Data.InCol
-            '                m_Data.Bcell(i, j, ieco) = 0
-            '                m_Data.PredCell(i, j, ieco) = 0
-            '            Next : Next
-            '    Next
-            'Next
-
-            'this loop should only excecute once
-            Do While iLastPacket < m_Stanza.Npackets
-                'loop through each solver object, make sure it's okay to run, and run it
-                'each thread will do several groups at a time
-
-
-                For Each solver In m_IBMSolvers
-
-                    If solver.isOkToRun Then
-
-                        iLastPacket = iFirstPacket + m_Data.nIBMPacketsPerThread - 1
-                        If iLastPacket > m_Stanza.Npackets Then iLastPacket = m_Stanza.Npackets
-
-                        'solver.FirstLastGroups(iFstGrp, iLstgrp)
-                        solver.iFirstPacket = iFirstPacket
-                        solver.iLastPacket = iLastPacket
-                        solver.SignalState.Reset()
-
-                        solver.isOkToRun = False
-                        ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
-
-                        iFirstPacket += m_Data.nIBMPacketsPerThread
-                    Else
-                        'System.Console.WriteLine("Solver thread blocked ID:" & solver.ThreadID & " Group:" & solver.iFirstIndex & " time:" & m_Data.TimeNow)
-                    End If
-
-                    If iLastPacket >= m_Stanza.Npackets Then
-                        Exit For
-                    End If
-                Next solver
-            Loop
-
-            ' wait for all the threads to finish before starting the next time step
-            For Each solver In m_IBMSolvers
-                If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
-                solver.SignalState.WaitOne()
-                solvCtr = solvCtr + 1
-            Next
-            If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
-            ibmThreadWaitTimer2 = ibmThreadWaitTimer2 + (Microsoft.VisualBasic.Timer - timerTemp)
 
             'this loop should only excecute once
             Do While iLstgrp < m_Stanza.Nsplit
@@ -1355,7 +1270,7 @@ Public Class cEcoSpace
                         solver.SignalState.Reset()
 
                         solver.isOkToRun = False
-                        ThreadPool.QueueUserWorkItem(AddressOf solver.SolveFirst)
+                        ThreadPool.QueueUserWorkItem(AddressOf solver.runGrowSurvivePackets)
 
                         iFstGrp += m_Data.nIBMGroupsPerThread
                     Else
@@ -1370,39 +1285,71 @@ Public Class cEcoSpace
 
             ' wait for all the threads to finish before starting the next time step
             For Each solver In m_IBMSolvers
-                If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
                 solver.SignalState.WaitOne()
-                solvCtr = solvCtr + 1
             Next
 
-            If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
-            solvCtr = 1
-            ibmThreadWaitTimer = ibmThreadWaitTimer + (Microsoft.VisualBasic.Timer - timerTemp)
+            'this loop should only excecute once
+            Do While iLastPacket < m_Stanza.Npackets
+                'loop through each solver object, make sure it's okay to run, and run it
+                'each thread will do several groups at a time
+
+                For Each solver In m_IBMSolvers
+
+                    If solver.isOkToRun Then
+
+                        iLastPacket = iFirstPacket + m_Data.nIBMPacketsPerThread - 1
+                        If iLastPacket > m_Stanza.Npackets Then iLastPacket = m_Stanza.Npackets
+
+                        'solver.FirstLastGroups(iFstGrp, iLstgrp)
+                        solver.iFirstPacket = iFirstPacket
+                        solver.iLastPacket = iLastPacket
+                        solver.SignalState.Reset()
+
+                        solver.isOkToRun = False
+                        ThreadPool.QueueUserWorkItem(AddressOf solver.runMovePackets)
+
+                        iFirstPacket += m_Data.nIBMPacketsPerThread
+                    Else
+                        'System.Console.WriteLine("Solver thread blocked ID:" & solver.ThreadID & " Group:" & solver.iFirstIndex & " time:" & m_Data.TimeNow)
+                    End If
+
+                    If iLastPacket >= m_Stanza.Npackets Then
+                        Exit For
+                    End If
+                Next solver
+            Loop
+
+            ' wait for all the threads to finish before starting the next time step
+            For Each solver In m_IBMSolvers
+                solver.SignalState.WaitOne()
+            Next
 
             Dim ieco As Integer
             For isp As Integer = 1 To m_Stanza.Nsplit
                 For ist As Integer = 1 To m_Stanza.Nstanza(isp)
-
                     ieco = m_Stanza.EcopathCode(isp, ist)
-                    For i As Integer = 1 To m_Data.InRow : For j As Integer = 1 To m_Data.InCol
+                    For i As Integer = 1 To m_Data.InRow
+                        For j As Integer = 1 To m_Data.InCol
                             m_Data.Bcell(i, j, ieco) = 0
                             m_Data.PredCell(i, j, ieco) = 0
-                        Next : Next
-                Next
-            Next
-
+                        Next j
+                    Next i
+                Next ist
+            Next isp
 
             For Each solver In m_IBMSolvers
                 For isp As Integer = 1 To m_Stanza.Nsplit
                     For ist As Integer = 1 To m_Stanza.Nstanza(isp)
                         ieco = m_Stanza.EcopathCode(isp, ist)
-                        For i As Integer = 1 To m_Data.InRow : For j As Integer = 1 To m_Data.InCol
+                        For i As Integer = 1 To m_Data.InRow
+                            For j As Integer = 1 To m_Data.InCol
                                 m_Data.Bcell(i, j, ieco) = m_Data.Bcell(i, j, ieco) + solver.BcellThread(i, j, ieco)
                                 m_Data.PredCell(i, j, ieco) = m_Data.PredCell(i, j, ieco) + solver.PredCellThread(i, j, ieco)
-                            Next : Next
-                    Next
-                Next
-            Next
+                            Next j
+                        Next i
+                    Next ist
+                Next isp
+            Next solver
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1412,7 +1359,6 @@ Public Class cEcoSpace
 
 
     End Sub
-
 
     Private Sub runGridSolverThreads()
         Dim solver As cGridSolver

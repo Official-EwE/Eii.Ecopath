@@ -75,7 +75,7 @@ Public Class cIBMSolver
     ''' It must have the object argument to match the Delegate signature required by ThreadPool.QueueUserWorkItem()
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub Solve(ByVal obParam As Object)
+    Public Sub runMovePackets(ByVal obParam As Object)
         'For our purposes here we are ignoring the obParam argument 
         'this sub signature is required by the ThreadPool.QueueUserWorkItem(...)
 
@@ -125,7 +125,7 @@ Public Class cIBMSolver
 
     End Sub
 
-    Public Sub SolveFirst(ByVal obParam As Object)
+    Public Sub runGrowSurvivePackets(ByVal obParam As Object)
         'For our purposes here we are ignoring the obParam argument 
         'this sub signature is required by the ThreadPool.QueueUserWorkItem(...)
 
