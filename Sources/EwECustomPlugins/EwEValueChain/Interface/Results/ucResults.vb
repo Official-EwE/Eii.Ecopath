@@ -101,9 +101,6 @@ Public Class ucResults
 
         Dim cmdH As cCommandHandler = Me.m_uic.CommandHandler
 
-        ' Start listening for model events
-        AddHandler Me.m_model.OnRunCompleted, AddressOf OnModelRunCompleted
-
         ' Set up commands
         Me.m_cmdRunEcopath = New cCommand(cmdH, "VC_RunEcopath")
         Me.m_cmdRunEcopath.AddControl(Me.m_btnRunEcopath)
@@ -144,10 +141,10 @@ Public Class ucResults
                 RemoveHandler Me.m_cmdRunEqulibrium.OnUpdate, AddressOf OnUpdateRunEquilibrium
                 Me.m_cmdRunEcosim = Nothing
 
-                RemoveHandler Me.m_model.OnRunCompleted, AddressOf OnModelRunCompleted
                 If components IsNot Nothing Then
                     components.Dispose()
                 End If
+
             End If
         Finally
             MyBase.Dispose(disposing)
@@ -176,6 +173,9 @@ Public Class ucResults
             Case cModel.eRunTypes.Ecosim : Me.SetViewMode(eViewModeType.Graph)
             Case cModel.eRunTypes.Equilibrium : Me.SetViewMode(eViewModeType.GraphEquilibrium)
         End Select
+
+        Me.UpdateResults()
+        Me.UpdateControls()
 
     End Sub
 
@@ -217,20 +217,22 @@ Public Class ucResults
     Private Sub OnShowEcopath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbEcopath.Click
         Me.SetViewMode(eViewModeType.Grid)
+        Me.UpdateResults()
+        Me.UpdateControls()
     End Sub
 
     Private Sub OnShowEcosim(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbEcosim.Click
         Me.SetViewMode(eViewModeType.Graph)
+        Me.UpdateResults()
+        Me.UpdateControls()
     End Sub
 
     Private Sub OnShowEquilibrium(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbEquilibrium.Click
         Me.SetViewMode(eViewModeType.GraphEquilibrium)
-    End Sub
-
-    Private Sub OnModelRunCompleted(ByVal iTimeStep As Integer)
-        ' NOP
+        Me.UpdateResults()
+        Me.UpdateControls()
     End Sub
 
     Private Sub OnGraphDataSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -260,8 +262,6 @@ Public Class ucResults
             Me.SetViewMode(eViewModeType.Grid)
             ' Run Ecopath
             Me.m_data.Core.RunEcoPath()
-            ' Reflect results
-            Me.UpdateResults()
 
         Catch ex As Exception
 
@@ -272,6 +272,10 @@ Public Class ucResults
         Me.m_data.Parameters.RunWithEcopath = bOldRunFlag
 
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+
+        ' Reflect results
+        Me.UpdateResults()
+        Me.UpdateControls()
 
     End Sub
 
@@ -299,8 +303,6 @@ Public Class ucResults
             Me.SetViewMode(eViewModeType.Graph)
             ' Run Ecosim
             Me.m_data.Core.RunEcoSim(AddressOf EcosimTimestepHandler)
-            ' Update results
-            Me.UpdateResults()
 
         Catch ex As Exception
 
@@ -312,6 +314,10 @@ Public Class ucResults
 
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
+        ' Update results
+        Me.UpdateResults()
+        Me.UpdateControls()
+
     End Sub
 
     Private Sub OnUpdateRunEcosim(ByVal cmd As EwEUtils.Commands.cCommand)
@@ -322,24 +328,31 @@ Public Class ucResults
     Private Sub OnInvokeRunEquilibrium(ByVal cmd As EwEUtils.Commands.cCommand)
 
         cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_RUNNING_EQUILIBRIUM)
-
         ' Switch to manual run mode
         Me.m_model.IsManualRunMode = True
 
-        ' Reset cached results
-        '    In manual mode the calling process becomes responsible for resetting results
-        Me.m_result.Reset(cModel.eRunTypes.Equilibrium)
-        ' Prepare view
-        Me.SetViewMode(eViewModeType.GraphEquilibrium)
-        ' Run
-        Me.m_model.RunEquilibrium(Me.m_data, Me.m_result)
-        ' Process results
-        Me.UpdateResults()
+        Try
+
+
+            ' Reset cached results
+            '    In manual mode the calling process becomes responsible for resetting results
+            Me.m_result.Reset(cModel.eRunTypes.Equilibrium)
+            ' Prepare view
+            Me.SetViewMode(eViewModeType.GraphEquilibrium)
+            ' Run
+            Me.m_model.RunEquilibrium(Me.m_data, Me.m_result)
+        Catch ex As Exception
+
+        End Try
 
         ' Switch back to auto run mode
         Me.m_model.IsManualRunMode = False
 
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+
+        '' Process results
+        'Me.UpdateResults()
+        'Me.UpdateControls()
 
     End Sub
 
@@ -409,6 +422,7 @@ Public Class ucResults
     Private Sub UpdateResults()
 
         If Me.m_bInitializing Then Return
+        If Me.m_bInUpdate Then Return
 
         Dim fleet As cFleetInput = Me.m_plFlow.FleetFilter
         Dim iFleet As Integer = 0
@@ -483,8 +497,6 @@ Public Class ucResults
 
         ' Yippee
         Me.SetGraphData(Me.m_graphmode)
-        Me.UpdateResults()
-        Me.UpdateControls()
 
     End Sub
 
