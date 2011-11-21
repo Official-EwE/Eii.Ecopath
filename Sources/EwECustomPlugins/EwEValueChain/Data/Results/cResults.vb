@@ -212,11 +212,8 @@ Public Class cResults
     Public Enum eVariableType As Integer
 
         ''' <summary> Production of fish products in tonnes </summary>
-        ''' <remarks></remarks>
         Production
-
         ''' <summary> Production of fish products in corresponding live weight </summary>
-        ''' <remarks></remarks>
         ProductionLive
 
         CostRawmaterial
@@ -347,8 +344,11 @@ Public Class cResults
                           ByVal iTimeStep As Integer) As Boolean
 
         Try
+
             Me.m_iMaxTimeStep = Math.Max(Me.m_iMaxTimeStep, iTimeStep)
-            Me.GetTimeStepResult(iTimeStep).Results(var, unit.Sequence) = sValue
+            Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep)
+            rs.Results(var, unit.Sequence) = sValue
+
         Catch ex As Exception
             Return False
         End Try
@@ -426,8 +426,11 @@ Public Class cResults
                            ByVal iTimeStep As Integer, _
                            ByVal iFleet As Integer) As Single
 
-        Return Me.GetTimeStepResult(iTimeStep).Results(var, unit.Sequence) * _
-               Me.GetFleetContributionRatio(iFleet, unit, iTimeStep)
+        Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep)
+        Dim sValue As Single = rs.Results(var, unit.Sequence)
+        Dim sContr As Single = Me.GetFleetContributionRatio(iFleet, unit, iTimeStep)
+
+        Return sValue * sContr
 
     End Function
 
