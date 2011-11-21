@@ -155,7 +155,7 @@ Public Class cComputeLandingPortions
                                 'sum value = landing x marketprice (which is really landingprice
                                 m_sumValue(m_ProducerReference(iSp, iFt)) += _
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) _
-                                    * EwECore.FleetInputs(iFt).OffVesselPrice(iSp)
+                                    * EwECore.FleetInputs(iFt).OffVesselValue(iSp)
                             Else        'if not then use the Ecosim landing
                                 m_sumCatch(m_ProducerReference(iSp, iFt)) += _
                                     EwECore.EcoSimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcoSimGroupOutputs(iSp).FishMort(iTimeStep) _
@@ -163,7 +163,7 @@ Public Class cComputeLandingPortions
                                 'sum value = landing x marketprice (which is really landingprice
                                 m_sumValue(m_ProducerReference(iSp, iFt)) += _
                                     EwECore.EcoSimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcoSimGroupOutputs(iSp).FishMort(iTimeStep) _
-                                    * EwECore.FleetInputs(iFt).OffVesselPrice(iSp) * sArea
+                                    * EwECore.FleetInputs(iFt).OffVesselValue(iSp) * sArea
                             End If
                         End If
                     Next 'fleet

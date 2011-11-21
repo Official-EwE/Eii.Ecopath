@@ -2189,7 +2189,7 @@ Public Class frmResults
             TotalValueSum = 0
 
             For Col = 1 To Core.nFleets
-                ValueFleetGroup = Core.FleetInputs(Col).Landings(Row) * Core.FleetInputs(Col).OffVesselPrice(Row)
+                ValueFleetGroup = Core.FleetInputs(Col).Landings(Row) * Core.FleetInputs(Col).OffVesselValue(Row)
                 AInitFishVals(1 + Col, y) = ValueFleetGroup
                 MarketValueSum += ValueFleetGroup
                 TotalValueFleet(Col) += ValueFleetGroup

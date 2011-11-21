@@ -286,13 +286,13 @@ Public Class cModel
                             For iGroupSrc = 1 To data.Core.nGroups
                                 ' Gathering results for a fleet that does not serve the current producer?
                                 If (iFleetRun > 0) And (iFleetRun <> iFleetSrc) Then
-                                    ' #Yes: run this fleet without landings and price
+                                    ' #Yes: run this fleet without landings and value
                                     prodUnit.SetLandings(iGroupSrc, 0, 0)
                                 Else
-                                    ' #No: Run this fleet using standard landings and price
+                                    ' #No: Run this fleet using standard landings and value
                                     prodUnit.SetLandings(iGroupSrc, _
                                                          Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults), _
-                                                         Me.GetLandingPrice(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults))
+                                                         Me.GetLandingValue(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults))
                                 End If
 
                             Next iGroupSrc
@@ -346,7 +346,7 @@ Public Class cModel
 
     End Function
 
-    Private Function GetLandingPrice(ByVal core As cCore, _
+    Private Function GetLandingValue(ByVal core As cCore, _
                                      ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer, _
                                      ByVal ecosimresults As cEcoSimResults) As Single
 
@@ -360,7 +360,7 @@ Public Class cModel
             'VC changed the calc below, it just summed up the marketprices, but it should sum
             'up the values and later divide by landings to get average price
             Dim fleet As cFleetInput = core.FleetInputs(iFleet)
-            Return fleet.OffVesselPrice(iGroup) * fleet.Landings(iGroup) * sArea
+            Return fleet.OffVesselValue(iGroup) * fleet.Landings(iGroup) * sArea
         Else
             ' #Yes: run for Ecosim
             ' JS 19Nov11: use Ecosim value for time step

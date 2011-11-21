@@ -592,7 +592,8 @@ Public Class cResults
     Public Sub StoreFleetContribution(ByVal iFleet As Integer, _
                                       ByVal unit As cUnit, _
                                       ByVal iTimeStep As Integer, _
-                                      ByVal sContribution As Single)
+                                      ByVal sValueContribution As Single, _
+                                      ByVal sBiomassContribution As Single)
 
         Dim bOkidoki As Boolean = False
 
@@ -605,7 +606,7 @@ Public Class cResults
         If bOkidoki Then
             Try
                 ' Append contribution in case this is called multiple times for a single fleet + unit combo
-                Me.m_asFleetContribution(iFleet, unit.Sequence, iTimeStep) += sContribution
+                Me.m_asFleetContribution(iFleet, unit.Sequence, iTimeStep) += sValueContribution
             Catch ex As Exception
                 ' Whoah!
             End Try

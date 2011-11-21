@@ -146,7 +146,7 @@ Public Class cFleetInput
 
 #Region "Indexed Variables"
 
-    Public Property OffVesselPrice(ByVal iGroup As Integer) As Single
+    Public Property OffVesselValue(ByVal iGroup As Integer) As Single
 
         Get
             Return CSng(GetVariable(eVarNameFlags.OffVesselPrice, iGroup))

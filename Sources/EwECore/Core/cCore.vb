@@ -3953,7 +3953,7 @@ Public Class cCore
 
             For iGroup As Integer = 1 To m_EcoPathData.NumLiving
                 Me.m_EcoPathData.Landing(iFleet, iGroup) = fleet.Landings(iGroup)
-                Me.m_EcoPathData.Market(iFleet, iGroup) = fleet.OffVesselPrice(iGroup)
+                Me.m_EcoPathData.Market(iFleet, iGroup) = fleet.OffVesselValue(iGroup)
                 Me.m_EcoPathData.Discard(iFleet, iGroup) = fleet.Discards(iGroup)
                 Me.m_EcoPathData.PropDiscardMort(iFleet, iGroup) = fleet.DiscardMortality(iGroup)
             Next
@@ -3998,7 +3998,7 @@ Public Class cCore
 
                 For iGroup = 1 To m_EcoPathData.NumGroups
                     fleet.Landings(iGroup) = CSng(m_EcoPathData.Landing(iFleet, iGroup))
-                    fleet.OffVesselPrice(iGroup) = m_EcoPathData.Market(iFleet, iGroup)
+                    fleet.OffVesselValue(iGroup) = m_EcoPathData.Market(iFleet, iGroup)
                     fleet.Discards(iGroup) = CSng(m_EcoPathData.Discard(iFleet, iGroup))
                     fleet.DiscardMortality(iGroup) = m_EcoPathData.PropDiscardMort(iFleet, iGroup)
                 Next

@@ -611,10 +611,10 @@ Public Class cProducerUnit
     ''' </summary>
     ''' <param name="iGroup"></param>
     ''' <param name="sBiomass">Total biomass landed in area</param>
-    ''' <param name="sPrice">Total price landed in area</param>
-    Public Sub SetLandings(ByVal iGroup As Integer, ByVal sBiomass As Single, ByVal sPrice As Single)
+    ''' <param name="sValue">Total value landed in area</param>
+    Public Sub SetLandings(ByVal iGroup As Integer, ByVal sBiomass As Single, ByVal sValue As Single)
         Me.m_asLandings(iGroup) = sBiomass
-        Me.m_asLandingsValue(iGroup) = sPrice
+        Me.m_asLandingsValue(iGroup) = sValue
     End Sub
 
     Public Overloads Sub Process(ByVal results As cResults, _
@@ -649,9 +649,9 @@ Public Class cProducerUnit
         Next
 
         ' Quick fix to avoid divisions by zero later on
-        For iGroup As Integer = 1 To Me.Core.nGroups
-            If asTotalBGroup(iGroup) = 0.0! Then asTotalBGroup(iGroup) = 1.0!
-        Next
+        'For iGroup As Integer = 1 To Me.Core.nGroups
+        '  If asTotalBGroup(iGroup) = 0.0! Then asTotalBGroup(iGroup) = 1.0!
+        'Next
 
         ' Determine outgoing biomass
         For Each link As cLink In Me.m_llinkOutput
@@ -664,8 +664,10 @@ Public Class cProducerUnit
                 Dim ll As cLinkLandings = DirectCast(link, cLinkLandings)
                 If (ll.Group IsNot Nothing) And (ll.IsVisible) Then
                     Dim iGroup As Integer = ll.Group.Index
-                    sBiomass += Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
-                    sValue += Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                    If asTotalBGroup(iGroup) > 0 Then
+                        sBiomass += Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                        sValue += Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                    End If
                 End If
             End If
 
@@ -673,7 +675,7 @@ Public Class cProducerUnit
             If sBiomass > 0 Then
                 link.Target.Process(results, New cInput(sBiomass, sValue, sValue / sBiomass), iTimeStep, iFleet)
 
-                'VC: I changed the line above to pass price/biomass as the third parameter (instead of price). 
+                'VC: I changed the line above to pass sPrice/sBiomass as the third parameter (instead of sPrice). 
                 'it is supposed to be the price per unit biomass
                 'it was multiplying an extra time with the total catches (sBiomass) as it was.
             Else
@@ -681,6 +683,7 @@ Public Class cProducerUnit
 
             End If
 
+            sTotalOutputBiomass += sBiomass
             sTotalOutputValue += sValue '* sBiomass
 
         Next
