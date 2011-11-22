@@ -148,18 +148,22 @@ Public Class frmMain
 
         Me.SuspendLayout()
 
-        If TypeOf f Is IUIElement Then
-            DirectCast(f, IUIElement).UIContext = Me.m_plugin.Context
-        End If
+        Try
+            If TypeOf f Is IUIElement Then
+                DirectCast(f, IUIElement).UIContext = Me.m_plugin.Context
+            End If
 
-        f.Dock = DockStyle.Fill
-        While Me.Controls.Count > 0
-            ctrl = Me.Controls(0)
-            Me.Controls.Remove(ctrl)
-            ctrl.Dispose()
-        End While
+            f.Dock = DockStyle.Fill
+            While Me.Controls.Count > 0
+                ctrl = Me.Controls(0)
+                Me.Controls.Remove(ctrl)
+                ctrl.Dispose()
+            End While
 
-        Me.Controls.Add(f)
+            Me.Controls.Add(f)
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
 
         Me.ResumeLayout()
 
