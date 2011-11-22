@@ -193,9 +193,12 @@ Public Class cResults
     ''' <summary>Dictionary[key, result] of results for an equilbrium run.</summary>
     Private m_dtSnapshots As New Dictionary(Of Object, cTimeStepResults)
 
-    ''' <summary>Contributions of a fleet to a unit per timestep.</summary>
-    ''' <remarks>Indexed as (fleet, time step, unit sequence). Can be biomass or value; this is determined by the units.</remarks>
-    Private m_asFleetContribution As Single(,,)
+    ''' <summary>Contributions of a fleet to a unit per timestep to the total value.</summary>
+    ''' <remarks>Indexed as (fleet, time step, unit sequence).</remarks>
+    Private m_asFleetValueContribution As Single(,,)
+    ''' <summary>Contributions of a fleet to a unit per timestep to the total biomass.</summary>
+    ''' <remarks>Indexed as (fleet, time step, unit sequence).</remarks>
+    Private m_asFleetBiomassContribution As Single(,,)
 
     ''' <summary>Max no of time steps</summary>
     Private m_iMaxTimeStep As Integer = 0
@@ -232,23 +235,15 @@ Public Class cResults
         CostSalariesShares
         CostTotalInputOther
 
-
-
         ''' <summary> The value of the fish products  </summary>
         RevenueProductsMain
-
         ''' <summary> Revenue from Agricultural products, should they be making any such as a byproduct </summary>
         RevenueAgriculture
-
         ''' <summary> Revenue from ticket sale, which will be a function of effort </summary>
         RevenueTickets
-
-
         ''' <summary> The value of other products than the actual fish </summary>
         ''' <remarks>over tonnes</remarks>
         RevenueProductsOther
-
-
         ''' <remarks>over tonnes</remarks>
         RevenueSubsidies
         RevenueTotal
@@ -308,6 +303,31 @@ Public Class cResults
 
 #Region " Public access "
 
+    Public Shared Function GetVariableContributionType(var As eVariableType) As eContributionType
+
+        Select Case var
+            Case eVariableType.NumberOfDependentsTotal, _
+                eVariableType.NumberOfJobsFemaleTotal, _
+                eVariableType.NumberOfJobsMaleTotal, _
+                eVariableType.NumberOfJobsTotal, _
+                eVariableType.NumberOfOwnerDependents, _
+                eVariableType.NumberOfOwnerFemales, _
+                eVariableType.NumberOfOwnerMales, _
+                eVariableType.NumberOfWorkerDependents, _
+                eVariableType.NumberOfWorkerFemales, _
+                eVariableType.NumberOfWorkerMales, _
+                eVariableType.NumberOfWorkerOther, _
+                eVariableType.NumberOfWorkerPartTime
+                Return eContributionType.Biomass
+            Case eVariableType.Production, _
+                eVariableType.ProductionLive
+                Return eContributionType.Biomass
+        End Select
+
+        Return eContributionType.Value
+
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Reset results by destroying all cached computated data in preparation
@@ -325,7 +345,8 @@ Public Class cResults
         Me.m_iMaxTimeStep = 0
         Me.m_runType = runType
 
-        ReDim Me.m_asFleetContribution(core.nFleets, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Me.m_asFleetValueContribution(core.nFleets, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Me.m_asFleetBiomassContribution(core.nFleets, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
 
     End Sub
 
@@ -410,6 +431,11 @@ Public Class cResults
 
     End Function
 
+    Public Enum eContributionType
+        Value
+        Biomass
+    End Enum
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get result for a given unit and variable at a given time step, optionally
@@ -424,13 +450,22 @@ Public Class cResults
     Public Function Result(ByVal unit As cUnit, _
                            ByVal var As eVariableType, _
                            ByVal iTimeStep As Integer, _
-                           ByVal iFleet As Integer) As Single
+                           ByVal iFleet As Integer, _
+                           ByVal contr As eContributionType) As Single
 
         Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep)
         Dim sValue As Single = rs.Results(var, unit.Sequence)
-        Dim sContr As Single = Me.GetFleetContributionRatio(iFleet, unit, iTimeStep)
+        Dim sContrVal As Single = 0
+        Dim sContrBio As Single = 0
 
-        Return sValue * sContr
+        Me.GetFleetContributionRatios(iFleet, unit, iTimeStep, sContrVal, sContrBio)
+
+        Select Case contr
+            Case eContributionType.Value
+                Return sValue * sContrVal
+            Case eContributionType.Biomass
+                Return sValue * sContrBio
+        End Select
 
     End Function
 
@@ -497,12 +532,15 @@ Public Class cResults
     ''' <param name="vartype"></param>
     ''' <param name="iTimeStep"></param>
     ''' <param name="lUnits"></param>
+    ''' <param name="iFleet">Fleet to extract contribution for.</param>
+    ''' <param name="contr"><see cref="eContributionType"/> to extract contribution for.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function GetTimeStepTotal(ByVal vartype As eVariableType, _
-                             Optional ByVal iTimeStep As Integer = 1, _
-                             Optional ByVal lUnits As cUnit() = Nothing, _
-                             Optional ByVal iFleet As Integer = 0) As Single
+                                     ByVal iTimeStep As Integer, _
+                                     ByVal lUnits As cUnit(), _
+                                     ByVal iFleet As Integer, _
+                                     ByVal contr As eContributionType) As Single
 
         Dim sTotal As Single = 0.0!
 
@@ -511,7 +549,7 @@ Public Class cResults
         End If
 
         For Each unit As cUnit In lUnits
-            sTotal += Me.Result(unit, vartype, iTimeStep, iFleet)
+            sTotal += Me.Result(unit, vartype, iTimeStep, iFleet, contr)
         Next
 
         Return sTotal
@@ -528,7 +566,8 @@ Public Class cResults
     ''' -----------------------------------------------------------------------
     Public Function GetTotal(ByVal vartype As eVariableType, _
                              Optional ByVal lUnits As cUnit() = Nothing, _
-                             Optional ByVal iFleet As Integer = 0) As Single
+                             Optional ByVal iFleet As Integer = 0, _
+                             Optional contr As eContributionType = eContributionType.Value) As Single
 
         Dim sTotal As Single = 0.0!
 
@@ -538,7 +577,7 @@ Public Class cResults
 
         For iTimestep = 0 To Me.m_iMaxTimeStep
             For Each unit As cUnit In lUnits
-                sTotal += Me.Result(unit, vartype, iTimestep, iFleet)
+                sTotal += Me.Result(unit, vartype, iTimestep, iFleet, contr)
             Next
         Next iTimestep
 
@@ -583,7 +622,8 @@ Public Class cResults
     ''' <param name="iFleet">The fleet to store the contribution for.</param>
     ''' <param name="unit">The unit to store the contribution for.</param>
     ''' <param name="iTimeStep">The time step to store the contribution for.</param>
-    ''' <param name="sContribution">The contribution to store.</param>
+    ''' <param name="sValueContribution">The value contribution to store.</param>
+    ''' <param name="sBiomassContribution">The biomass contribution to store.</param>
     ''' <remarks>
     ''' The sum of contributions of all fleets [1..n] should equal (or very,
     ''' very closely approximate) the value for the unit for the default chain.
@@ -606,7 +646,8 @@ Public Class cResults
         If bOkidoki Then
             Try
                 ' Append contribution in case this is called multiple times for a single fleet + unit combo
-                Me.m_asFleetContribution(iFleet, unit.Sequence, iTimeStep) += sValueContribution
+                Me.m_asFleetValueContribution(iFleet, unit.Sequence, iTimeStep) += sValueContribution
+                Me.m_asFleetBiomassContribution(iFleet, unit.Sequence, iTimeStep) += sBiomassContribution
             Catch ex As Exception
                 ' Whoah!
             End Try
@@ -615,26 +656,35 @@ Public Class cResults
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the value * biomass ratio that a single fleet contributed for a 
-    ''' single unit and time step, relative to the total contribution for all 
-    ''' fleets.
+    ''' Get the value ratio that a single fleet contributed for a given unit and 
+    ''' time step, relative to the total value contribution for all fleets.
     ''' </summary>
     ''' <param name="iFleet"></param>
     ''' <param name="unit"></param>
     ''' <param name="iTimestep"></param>
-    ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetFleetContributionRatio(ByVal iFleet As Integer, _
-                                              ByVal unit As cUnit, _
-                                              ByVal iTimestep As Integer) As Single
+    Public Sub GetFleetContributionRatios(ByVal iFleet As Integer, _
+                                          ByVal unit As cUnit, _
+                                          ByVal iTimestep As Integer, _
+                                          ByRef sValueContribution As Single, _
+                                          ByRef sBiomassContribution As Single)
 
-        Dim sAllFleet As Single = 0 ' Contribution for 'all fleets' calculation
-        Dim sTotal As Single = 0 ' Total contribution for fleets - should equal sAllFleet!
-        Dim sContr As Single = 0 ' COntribution for a single fleet
-
-        If (iFleet = 0) Then Return 1
-
+        Dim sAllFleetValue As Single = 0 ' Value contribution for 'all fleets' calculation
+        Dim sAllFleetBiomass As Single = 0 ' Biomass contribution for 'all fleets' calculation
+        Dim sTotalValue As Single = 0 ' Total value contribution for fleets - should equal sAllFleet!
+        Dim sTotalBiomass As Single = 0 ' Total biomass contribution for fleets - should equal sAllFleet!
+        Dim sContrValue As Single = 0 ' Value contribution for a single fleet
+        Dim sContrBiomass As Single = 0 ' Biomass contribution for a single fleet
         Dim bOkidoki As Boolean = False
+
+        If (iFleet = 0) Then
+            sValueContribution = 1
+            sBiomassContribution = 1
+            Return
+        End If
+
+        sValueContribution = 0
+        sBiomassContribution = 0
 
         Select Case Me.RunType
             Case cModel.eRunTypes.Ecopath : bOkidoki = (iTimestep = 1)
@@ -644,32 +694,35 @@ Public Class cResults
 
         If bOkidoki Then
             Try
-                sAllFleet = Me.m_asFleetContribution(0, unit.Sequence, iTimestep)
+                sAllFleetValue = Me.m_asFleetValueContribution(0, unit.Sequence, iTimestep)
+                sAllFleetBiomass = Me.m_asFleetBiomassContribution(0, unit.Sequence, iTimestep)
 
                 ' ************** VALIDATION ***************
                 ' Constributions of all fleets [1..n] should equal the contribution of fleet 0
                 For i As Integer = 1 To Me.m_data.Core.nFleets
-                    sTotal += Me.m_asFleetContribution(i, unit.Sequence, iTimestep)
+                    sTotalValue += Me.m_asFleetValueContribution(i, unit.Sequence, iTimestep)
+                    sTotalBiomass += Me.m_asFleetBiomassContribution(i, unit.Sequence, iTimestep)
                 Next
-                'Debug.Assert(sAllFleet = sTotal, "Error: contribution of induvidual fleets does not match the contributions of all fleets.")
+                Debug.Assert(sAllFleetValue = sTotalValue, "Error: contribution of individual fleets does not match the contributions of all fleets.")
+                Debug.Assert(sAllFleetBiomass = sTotalBiomass, "Error: contribution of individual fleets does not match the contributions of all fleets.")
                 ' ************** VALIDATION ***************
 
-                sContr = Me.m_asFleetContribution(iFleet, unit.Sequence, iTimestep)
+                sContrValue = Me.m_asFleetValueContribution(iFleet, unit.Sequence, iTimestep)
+                sContrBiomass = Me.m_asFleetBiomassContribution(iFleet, unit.Sequence, iTimestep)
             Catch ex As Exception
                 Debug.Assert(False, "VC: Failure obtaining contribution for fleet")
             End Try
         End If
 
-        ' Any contribution?
-        If ((sTotal > 0) And (sContr > 0)) Then
-            ' #Yes: do the math
-            Return (sContr / sTotal)
-        Else
-            ' #No: return 0
-            Return 0
+        ' Calc contributions
+        If (sTotalValue > 0) Then
+            sValueContribution = (sContrValue / sTotalValue)
+        End If
+        If (sTotalBiomass > 0) Then
+            sBiomassContribution = (sContrBiomass / sTotalBiomass)
         End If
 
-    End Function
+    End Sub
 
 #End Region ' EXPERIMENTAL
 

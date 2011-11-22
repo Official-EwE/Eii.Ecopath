@@ -50,20 +50,20 @@ Public Class ucEcosimGraph
 
         iBaseYear = Me.m_data.Core.EcosimFirstYear
 
-        For Each var As cResults.eVariableType In Me.m_aVars
+        For Each vn As cResults.eVariableType In Me.m_aVars
 
-            line = New LineItem(var.ToString())
+            line = New LineItem(vn.ToString())
             line.Color = cr.NextColor()
             line.Symbol = New ZedGraph.Symbol(SymbolType.None, line.Color)
 
             For iTimeStep As Integer = 1 To result.NumTimeSteps
                 line.AddPoint(CDbl(iBaseYear + ((iTimeStep - 1) / cCore.N_MONTHS)), _
-                              result.GetTimeStepTotal(var, iTimeStep, lUnits, iFleet))
+                              result.GetTimeStepTotal(vn, iTimeStep, lUnits, iFleet, cResults.GetVariableContributionType(vn)))
             Next iTimeStep
 
             lLines.Add(line)
 
-        Next var
+        Next vn
 
         ' Fix scale
         If result.NumTimeSteps > 1 Then

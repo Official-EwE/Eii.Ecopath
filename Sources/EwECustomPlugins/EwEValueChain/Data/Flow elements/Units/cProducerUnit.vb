@@ -688,7 +688,7 @@ Public Class cProducerUnit
 
         Next
 
-        results.StoreFleetContribution(iFleet, Me, iTimeStep, sTotalOutputValue)
+        results.StoreFleetContribution(iFleet, Me, iTimeStep, sTotalOutputValue, sTotalOutputBiomass)
 
     End Sub
 

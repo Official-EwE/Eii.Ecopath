@@ -416,28 +416,33 @@ Public Class cPluginPoint
 
     Private Sub Populate(ByVal data As cPluginData.cVCEconomicData, ByVal iTimeStep As Integer, ByVal iFleet As Integer)
 
-        data.m_sCost = Me.m_result.GetTimeStepTotal(cResults.eVariableType.Cost, iTimeStep, Nothing, iFleet)
-        data.m_sCostInput = Me.m_result.GetTimeStepTotal(cResults.eVariableType.CostRawmaterial, iTimeStep, Nothing, iFleet)
-        data.m_sCostLicenseObservers = Me.m_result.GetTimeStepTotal(cResults.eVariableType.CostManagementRoyaltyCertificationObservers, iTimeStep, Nothing, iFleet)
-        data.m_sCostSalariesShares = Me.m_result.GetTimeStepTotal(cResults.eVariableType.CostSalariesShares, iTimeStep, Nothing, iFleet)
-        data.m_sCostTaxes = Me.m_result.GetTimeStepTotal(cResults.eVariableType.CostTaxes, iTimeStep, Nothing, iFleet)
-        data.m_sCostTotalInputOther = Me.m_result.GetTimeStepTotal(cResults.eVariableType.CostTotalInputOther, iTimeStep, Nothing, iFleet)
-        data.m_sNumberOfDependentsTotal = Me.m_result.GetTimeStepTotal(cResults.eVariableType.NumberOfDependentsTotal, iTimeStep, Nothing, iFleet)
-        data.m_sNumberOfJobsFemaleTotal = Me.m_result.GetTimeStepTotal(cResults.eVariableType.NumberOfJobsFemaleTotal, iTimeStep, Nothing, iFleet)
-        data.m_sNumberOfJobsMaleTotal = Me.m_result.GetTimeStepTotal(cResults.eVariableType.NumberOfJobsMaleTotal, iTimeStep, Nothing, iFleet)
-        data.m_sNumberOfJobsTotal = Me.m_result.GetTimeStepTotal(cResults.eVariableType.NumberOfJobsTotal, iTimeStep, Nothing, iFleet)
-        data.m_sNumberOfOwnerDependents = Me.m_result.GetTimeStepTotal(cResults.eVariableType.NumberOfOwnerDependents, iTimeStep, Nothing, iFleet)
-        data.m_sNumberOfWorkerDependents = Me.m_result.GetTimeStepTotal(cResults.eVariableType.NumberOfWorkerDependents, iTimeStep, Nothing, iFleet)
-        data.m_sProduction = Me.m_result.GetTimeStepTotal(cResults.eVariableType.Production, iTimeStep, Nothing, iFleet)
-        data.m_sProductionLive = Me.m_result.GetTimeStepTotal(cResults.eVariableType.ProductionLive, iTimeStep, Nothing, iFleet)
-        data.m_sProfit = Me.m_result.GetTimeStepTotal(cResults.eVariableType.Profit, iTimeStep, Nothing, iFleet)
-        data.m_sRevenueProductsMain = Me.m_result.GetTimeStepTotal(cResults.eVariableType.RevenueProductsMain, iTimeStep, Nothing, iFleet)
-        data.m_sRevenueProductsOther = Me.m_result.GetTimeStepTotal(cResults.eVariableType.RevenueProductsOther, iTimeStep, Nothing, iFleet)
-        data.m_sRevenueSubsidies = Me.m_result.GetTimeStepTotal(cResults.eVariableType.RevenueSubsidies, iTimeStep, Nothing, iFleet)
-        data.m_sRevenueTotal = Me.m_result.GetTimeStepTotal(cResults.eVariableType.RevenueTotal, iTimeStep, Nothing, iFleet)
-        data.m_sThroughput = Me.m_result.GetTimeStepTotal(cResults.eVariableType.TotalUtility, iTimeStep, Nothing, iFleet)
+        data.m_sCost = Me.GetValue(cResults.eVariableType.Cost, iTimeStep, iFleet)
+        data.m_sCostInput = Me.GetValue(cResults.eVariableType.CostRawmaterial, iTimeStep, iFleet)
+        data.m_sCostLicenseObservers = Me.GetValue(cResults.eVariableType.CostManagementRoyaltyCertificationObservers, iTimeStep, iFleet)
+        data.m_sCostSalariesShares = Me.GetValue(cResults.eVariableType.CostSalariesShares, iTimeStep, iFleet)
+        data.m_sCostTaxes = Me.GetValue(cResults.eVariableType.CostTaxes, iTimeStep, iFleet)
+        data.m_sCostTotalInputOther = Me.GetValue(cResults.eVariableType.CostTotalInputOther, iTimeStep, iFleet)
+        data.m_sNumberOfDependentsTotal = Me.GetValue(cResults.eVariableType.NumberOfDependentsTotal, iTimeStep, iFleet)
+        data.m_sNumberOfJobsFemaleTotal = Me.GetValue(cResults.eVariableType.NumberOfJobsFemaleTotal, iTimeStep, iFleet)
+        data.m_sNumberOfJobsMaleTotal = Me.GetValue(cResults.eVariableType.NumberOfJobsMaleTotal, iTimeStep, iFleet)
+        data.m_sNumberOfJobsTotal = Me.GetValue(cResults.eVariableType.NumberOfJobsTotal, iTimeStep, iFleet)
+        data.m_sNumberOfOwnerDependents = Me.GetValue(cResults.eVariableType.NumberOfOwnerDependents, iTimeStep, iFleet)
+        data.m_sNumberOfWorkerDependents = Me.GetValue(cResults.eVariableType.NumberOfWorkerDependents, iTimeStep, iFleet)
+        data.m_sProduction = Me.GetValue(cResults.eVariableType.Production, iTimeStep, iFleet)
+        data.m_sProductionLive = Me.GetValue(cResults.eVariableType.ProductionLive, iTimeStep, iFleet)
+        data.m_sProfit = Me.GetValue(cResults.eVariableType.Profit, iTimeStep, iFleet)
+        data.m_sRevenueProductsMain = Me.GetValue(cResults.eVariableType.RevenueProductsMain, iTimeStep, iFleet)
+        data.m_sRevenueProductsOther = Me.GetValue(cResults.eVariableType.RevenueProductsOther, iTimeStep, iFleet)
+        data.m_sRevenueSubsidies = Me.GetValue(cResults.eVariableType.RevenueSubsidies, iTimeStep, iFleet)
+        data.m_sRevenueTotal = Me.GetValue(cResults.eVariableType.RevenueTotal, iTimeStep, iFleet)
+        data.m_sThroughput = Me.GetValue(cResults.eVariableType.TotalUtility, iTimeStep, iFleet)
 
     End Sub
+
+    Private Function GetValue(vn As cResults.eVariableType, iTimeStep As Integer, iFleet As Integer) As Single
+        Return Me.m_result.GetTimeStepTotal(vn, iTimeStep, Nothing, iFleet, cResults.GetVariableContributionType(vn))
+    End Function
+
 
     Public Sub Broadcaster(ByVal broadcaster As EwEPlugin.Data.IDataBroadcaster) _
         Implements EwEPlugin.Data.IDataProducerPlugin.Broadcaster

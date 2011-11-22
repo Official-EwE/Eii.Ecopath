@@ -242,7 +242,7 @@ Public MustInherit Class cUnit
             Next
 
             ' Store the amount that each fleet contributes to the total
-            results.StoreFleetContribution(iFleet, Me, iTimeStep, inputTotal.Value)
+            results.StoreFleetContribution(iFleet, Me, iTimeStep, inputTotal.Value, inputTotal.Tons)
 
             ' Running for all fleet?
             If iFleet = 0 Then

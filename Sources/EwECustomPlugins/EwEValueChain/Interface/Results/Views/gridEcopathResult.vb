@@ -299,7 +299,7 @@ Public Class gridEcopathResult
                                     ByVal lUnits As cUnit(), _
                                     ByVal iFleet As Integer)
 
-        Me.UpdateDataCell(cell, results.GetTimeStepTotal(vn, 1, lUnits, iFleet))
+        Me.UpdateDataCell(cell, results.GetTimeStepTotal(vn, 1, lUnits, iFleet, cResults.GetVariableContributionType(vn)))
 
     End Sub
 
