@@ -23,16 +23,14 @@ Namespace Controls.EwEGrid
     Public Class EwEColumnHeaderCell
         : Inherits EwEHeaderCell
 
-        ''' <summary>One visualizer for all cells</summary>
-        Private Shared g_visualizer As New cEwEGridColumnHeaderVisualizer()
-        Private m_vizDefault As IVisualModel = Nothing
+         Private m_vizDefault As IVisualModel = Nothing
 
 #Region " Construction / destruction "
 
         Public Sub New(Optional ByVal strValue As String = "")
             MyBase.New(strValue)
             Me.m_vizDefault = Me.VisualModel
-            Me.VisualModel = g_visualizer
+            Me.VisualModel = New cEwEGridColumnHeaderVisualizer()
         End Sub
 
         Public Sub New(ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)

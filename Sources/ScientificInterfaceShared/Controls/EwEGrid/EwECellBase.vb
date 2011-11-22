@@ -85,8 +85,6 @@ Namespace Controls.EwEGrid
 
 #Region " Construction and destruction"
 
-        ''' <summary>Default visualizer for EwECells</summary>
-        Private Shared g_visualizer As New cEwECellVisualizer()
         ''' <summary>UI context to operate onto.</summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary>Custom cell style.</summary>
@@ -106,7 +104,7 @@ Namespace Controls.EwEGrid
             MyBase.New(Nothing, t)
 
             ' Set shared visualizer
-            Me.VisualModel = g_visualizer
+            Me.VisualModel = New cEwECellVisualizer()
 
             ' Configure data model
             Me.DataModel.AllowNull = True
@@ -126,7 +124,7 @@ Namespace Controls.EwEGrid
             MyBase.New(objVal, editor)
 
             ' Set shared visualizer
-            Me.VisualModel = g_visualizer
+            Me.VisualModel = New cEwECellVisualizer()
 
             ' Configure data model
             Me.DataModel.AllowNull = True

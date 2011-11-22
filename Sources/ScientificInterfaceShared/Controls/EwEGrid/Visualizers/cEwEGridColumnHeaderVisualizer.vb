@@ -51,6 +51,10 @@ Namespace Controls.EwEGrid
 
         End Sub
 
+        Protected Overrides Sub DrawCell_ImageAndText(p_Cell As SourceGrid2.Cells.ICellVirtual, p_CellPosition As SourceGrid2.Position, e As System.Windows.Forms.PaintEventArgs, p_ClientRectangle As System.Drawing.Rectangle, p_Status As SourceGrid2.DrawCellStatus)
+            MyBase.DrawCell_ImageAndText(p_Cell, p_CellPosition, e, p_ClientRectangle, p_Status)
+        End Sub
+
     End Class
 
 End Namespace
