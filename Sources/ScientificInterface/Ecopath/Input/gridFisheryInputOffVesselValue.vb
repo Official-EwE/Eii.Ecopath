@@ -17,7 +17,7 @@ Namespace Ecopath.Input
     ''' </summary>
     ''' =======================================================================
     <CLSCompliant(False)> _
-      Public Class FisheryInputOffVesselPriceEwEGrid
+    Public Class gridFisheryOffVesselValue
         : Inherits EwEGrid
 
         Public Sub New()

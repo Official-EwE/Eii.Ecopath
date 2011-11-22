@@ -565,7 +565,7 @@
     <Compile Include="Ecopath\Input\FisheryInputLandingsEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\FisheryInputOffVesselPriceEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridFisheryInputOffVesselValue.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\FisheryInputNonMarketPriceEwEGrid.vb">
