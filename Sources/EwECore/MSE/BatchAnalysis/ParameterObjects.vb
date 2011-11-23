@@ -165,7 +165,7 @@ Namespace MSECommandFile
 
             Try
                 Dim lstIndexes As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
-                If lstIndexes.Count < 1 Then
+                If lstIndexes.Count = 0 Then
                     Me.SendMessage("ERROR: Tag '" & Me.m_IndexTag & "' failed to find tag in command file.")
                     Return False
                 End If
@@ -427,6 +427,31 @@ Namespace MSECommandFile
 
     End Class
 
+    Public Class cStartYearParameter
+        Inherits cParameterNumericBase
+
+
+        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+            MyBase.New(FileReader)
+
+            Me.m_DataTag = cMSECommandFileReader.STARTYEAR_DATA_TAG
+
+        End Sub
+
+        Public Overrides Sub Update()
+
+            Me.Manager.MSEData.StartYear = Integer.Parse(Me.m_data)
+
+        End Sub
+
+        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+
+            Return cMSECommandFileReader.CanRead(cMSECommandFileReader.STARTYEAR_DATA_TAG, ControlString)
+
+        End Function
+
+    End Class
+
 
     Public Class cRunTypeParameter
         Inherits cParameterNumericBase
@@ -527,6 +552,11 @@ Namespace MSECommandFile
             Try
                 Dim batchDat As cMSEBatchDataStructures = Me.m_manager.BatchData
                 Dim lstIndexs As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
+                If lstIndexs.Count < 1 Then
+                    Me.SendMessage("Warning F tag not in command file.")
+                    Return
+                End If
+
                 Dim indexs() As Integer = lstIndexs.Item(0).getIndexes
                 Dim igrp As Integer
 
@@ -613,6 +643,11 @@ Namespace MSECommandFile
             Try
                 Dim data As cMSEBatchDataStructures = Me.m_manager.BatchData
                 Dim lstIndexs As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
+                If lstIndexs.Count = 0 Then
+                    Me.SendMessage("Control_Type tag not found in command file. Currently loaded values will be used")
+                    Return
+                End If
+
                 Dim fltIndexes() As Integer = lstIndexs.Item(0).getIndexes
                 Dim i As Integer
 
@@ -684,6 +719,9 @@ Namespace MSECommandFile
             Try
                 Dim batchDat As cMSEBatchDataStructures = Me.m_manager.BatchData
                 Dim lstIndexs As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
+                If lstIndexs.Count = 0 Then
+                    Me.SendMessage("TAC tag not found in command file.")
+                End If
                 Dim indexs() As Integer = lstIndexs.Item(0).getIndexes
                 Dim tac As Single
                 Dim igrp As Integer
@@ -886,8 +924,11 @@ Namespace MSECommandFile
                 Next
 
                 Dim lstIndexs As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
-                Dim index() As Integer = lstIndexs.Item(0).getIndexes
+                If lstIndexs.Count = 0 Then
+                    Return
+                End If
 
+                Dim index() As Integer = lstIndexs.Item(0).getIndexes
                 Dim i As Integer
                 For Each igrp As Integer In index
                     batchDat.tfmBlim(Me.Index, igrp) = Me.m_blims.Item(i)
@@ -1015,6 +1056,10 @@ Namespace MSECommandFile
             m_FFName = values(ips + 1)
             m_GroupIndex = Integer.Parse(values(ips + 2))
 
+            If Me.m_FFIndex >= 1 Then
+                Me.m_manager.BatchData.bForcingLoaded = True
+            End If
+
             Return True
 
         End Function
@@ -1031,6 +1076,7 @@ Namespace MSECommandFile
                 data.ForcingGroup(Me.Index) = Me.m_GroupIndex
                 data.ForcingIndexes(Me.Index) = Me.m_FFIndex
                 data.ForcingNames(Me.Index) = Me.m_FFName
+
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)

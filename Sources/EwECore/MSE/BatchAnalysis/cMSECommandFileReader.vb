@@ -20,8 +20,10 @@ Namespace MSECommandFile
         Public Const PPDEV_DATA_TAG As String = "PP_STDEV"
         Public Const ENDYEAR_DATA_TAG As String = "End_Year"
         Public Const VERSION_DATA_TAG As String = "Control_File_Version"
+        Public Const STARTYEAR_DATA_TAG As String = "Start_Year"
 
-        Public Const OUTPUT_DATA_TAG As String = "Ouput_Directory"
+
+        Public Const OUTPUT_DATA_TAG As String = "Output_Directory"
 
         Public Const F_INDEX_TAG As String = "Constant_F_INDEX"
         Public Const Y_INDEX_TAG As String = "Constant_Y_INDEX"
@@ -37,6 +39,7 @@ Namespace MSECommandFile
         Public Const MORT_OUTPUT_TAG As String = "FishingMortRate_OUTPUT"
         Public Const PRED_OUTPUT_TAG As String = "PredationRates_OUTPUT"
         Public Const CATCH_OUTPUT_TAG As String = "CatchByGroup_OUTPUT"
+        Public Const EFFORT_OUTPUT_TAG As String = "Effort_OUTPUT"
 
         Private m_core As cCore
 
@@ -80,6 +83,8 @@ Namespace MSECommandFile
             Me.m_OuputTagToEnumLookup.Add(MORT_OUTPUT_TAG, eMSEBatchOuputTypes.FishingMortRate)
             Me.m_OuputTagToEnumLookup.Add(PRED_OUTPUT_TAG, eMSEBatchOuputTypes.PredRate)
             Me.m_OuputTagToEnumLookup.Add(CATCH_OUTPUT_TAG, eMSEBatchOuputTypes.CatchByGroup)
+
+            Me.m_OuputTagToEnumLookup.Add(EFFORT_OUTPUT_TAG, eMSEBatchOuputTypes.Effort)
 
         End Sub
 
@@ -290,6 +295,10 @@ Namespace MSECommandFile
                 Return New cModelNameParameter(Me)
             End If
 
+            If cStartYearParameter.CanRead(controlString) Then
+                Return New cStartYearParameter(Me)
+            End If
+
             Dim values() As String = controlString.Split(",")
             Dim tag As String = values(0)
 
@@ -301,6 +310,29 @@ Namespace MSECommandFile
 
         End Function
 
+        Private Function updateDataByTag(ByVal DataTag As String) As Boolean
+            Dim lst As List(Of IMSEParameter)
+            Try
+                lst = Me.getTagData(DataTag)
+                If lst.Count > 0 Then
+                    For Each par As IMSEParameter In lst
+                        par.Update()
+                    Next
+                Else
+                    Me.Manager.MarshallMessage("WARNING:")
+                    Me.Manager.MarshallMessage(vbTab & "Failed to find tag '" & DataTag & "' in command file.")
+                End If
+
+            Catch ex As Exception
+                Me.Manager.MarshallMessage("WARNING:")
+                Me.Manager.MarshallMessage(vbTab & "Error updating '" & DataTag & "' in command file.")
+                Return False
+            End Try
+
+            Return True
+
+        End Function
+
         Public Function updateDataStructures() As Boolean
             Dim bSuccess As Boolean = True
             Dim errMsg As String
@@ -308,64 +340,79 @@ Namespace MSECommandFile
             Try
 
                 'Run Type
-                Me.getTagData(RUNTYPE_DATA_TAG).Item(0).Update()
+                Me.updateDataByTag(RUNTYPE_DATA_TAG)
 
                 'update the number of simulation
-                Me.getTagData(NSIMS_DATA_TAG).Item(0).Update()
+                Me.updateDataByTag(NSIMS_DATA_TAG)
 
                 'update Error CV
-                Me.getTagData(CV_DATA_TAG).Item(0).Update()
+                Me.updateDataByTag(CV_DATA_TAG)
 
                 'Primary Production variation
-                Me.getTagData(PPDEV_DATA_TAG).Item(0).Update()
+                Me.updateDataByTag(PPDEV_DATA_TAG)
 
                 'Output Directory
-                Me.getTagData(OUTPUT_DATA_TAG).Item(0).Update()
+                Me.updateDataByTag(OUTPUT_DATA_TAG)
+
+                'Start Year
+                Me.updateDataByTag(STARTYEAR_DATA_TAG)
 
                 'End Year
-                Me.getTagData(ENDYEAR_DATA_TAG).Item(0).Update()
+                Me.updateDataByTag(ENDYEAR_DATA_TAG)
 
                 'Output files
                 lst = Me.getTagData(SAVE_OUTPUT_TAG)
-                Me.m_BatchData.redimOuputTypes()
-                For Each par As IMSEParameter In lst
-                    par.Update()
-                Next
+                If lst.Count > 0 Then
+                    Me.m_BatchData.redimOuputTypes()
+                    For Each par As IMSEParameter In lst
+                        par.Update()
+                    Next
+                End If
 
                 'Primary production
                 lst = Me.getTagData(PP_DATA_TAG)
-                Me.m_BatchData.redimForcing(lst.Count)
-                For Each par As IMSEParameter In lst
-                    par.Update()
-                Next
+                If lst.Count > 0 Then
+                    Me.m_BatchData.redimForcing(lst.Count)
+                    For Each par As IMSEParameter In lst
+                        par.Update()
+                    Next
+                End If
 
                 'Control type
                 lst = Me.getTagData(CONTROLTYPE_DATA_TAG)
-                Me.m_BatchData.redimControlTypes(lst.Count, Me.m_MSEdata.nFleets)
-                For Each par As IMSEParameter In lst
-                    par.Update()
-                Next
+                If lst.Count > 0 Then
+                    Me.m_BatchData.redimControlTypes(lst.Count, Me.m_MSEdata.nFleets)
+                    For Each par As IMSEParameter In lst
+                        par.Update()
+                    Next
+                End If
 
                 'Target Fishing Mortality
                 lst = Me.getTagData(TFM_DATA_TAG)
-                Me.m_BatchData.redimTFM(lst.Count, Me.m_MSEdata.NGroups)
-                For Each par As IMSEParameter In lst
-                    par.Update()
-                Next
+                If lst.Count > 0 Then
+                    Me.m_BatchData.redimTFM(lst.Count, Me.m_MSEdata.NGroups)
+                    For Each par As IMSEParameter In lst
+                        par.Update()
+                    Next
+                End If
 
                 'Fixed Fishing Mort
                 lst = Me.getTagData(F_DATA_TAG)
-                Me.m_BatchData.redimFixedF(lst.Count, Me.m_MSEdata.NGroups)
-                For Each par As IMSEParameter In lst
-                    par.Update()
-                Next
+                If lst.Count > 0 Then
+                    Me.m_BatchData.redimFixedF(lst.Count, Me.m_MSEdata.NGroups)
+                    For Each par As IMSEParameter In lst
+                        par.Update()
+                    Next
+                End If
 
                 'Total Allowable Catch
                 lst = Me.getTagData(Y_DATA_TAG)
-                Me.m_BatchData.redimTAC(lst.Count, Me.m_MSEdata.NGroups)
-                For Each par As IMSEParameter In lst
-                    par.Update()
-                Next
+                If lst.Count > 0 Then
+                    Me.m_BatchData.redimTAC(lst.Count, Me.m_MSEdata.NGroups)
+                    For Each par As IMSEParameter In lst
+                        par.Update()
+                    Next
+                End If
 
                 'Number of parameters iterations based on run type
                 Select Case Me.BatchData.RunType
@@ -379,7 +426,7 @@ Namespace MSECommandFile
                     Case eMSEBatchRunTypes.Any
                         'Max of all the types
                         Me.BatchData.nParIters = Math.Max(Me.BatchData.nTFM, Me.BatchData.nFixedF)
-                        Me.BatchData.nParIters = Math.Max(Me.BatchData.nTAC, Me.BatchData.nParIters)
+                        Me.BatchData.nParIters = Math.Max(Me.BatchData.nParIters, Me.BatchData.nTAC)
 
                 End Select
 
@@ -479,7 +526,10 @@ Namespace MSECommandFile
         ''' </summary>
         ''' <param name="tag"></param>
         ''' <returns>Returns List(Of IMSEParameter) </returns>
-        ''' <remarks></remarks>
+        ''' <remarks>
+        ''' If no data was found for this TAG then return a list with zero IMSEParameter objects.
+        ''' The user is responsible for checking then number of objects in the list
+        ''' </remarks>
         Friend Function getTagData(ByVal tag As String) As List(Of IMSEParameter)
 
             Dim list As List(Of IMSEParameter)
@@ -487,6 +537,8 @@ Namespace MSECommandFile
                 list = Me.m_dicControls.Item(tag)
             End If
 
+            'no data for this tag
+            'return an empty list
             If list Is Nothing Then
                 list = New List(Of IMSEParameter)
                 System.Console.WriteLine(Me.ToString & ".getTagData(" & tag & ") No data for tag!")
@@ -496,7 +548,7 @@ Namespace MSECommandFile
 
         End Function
 
-    
+
         Friend ReadOnly Property Core() As cCore
             Get
                 Return Me.m_core

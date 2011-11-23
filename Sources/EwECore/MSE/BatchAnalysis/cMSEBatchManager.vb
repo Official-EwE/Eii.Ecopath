@@ -22,6 +22,7 @@ Namespace MSEBatchManager
         FishingMortRate
         PredRate
         CatchByGroup
+        Effort
         NotSet
     End Enum
 
@@ -84,6 +85,9 @@ Namespace MSEBatchManager
             Me.m_fileReader = New cMSECommandFileReader(Me.Core, Me)
 
             MSE.BatchManager = Me
+
+            Me.m_BatchData.redimForcing(1)
+            Me.m_BatchData.redimControlTypes(1, Me.m_core.nFleets)
 
             Try
                 If (Me.Core.PluginManager IsNot Nothing) Then
@@ -383,6 +387,11 @@ Namespace MSEBatchManager
         ''' <param name="ForcingMultTime"></param>
         ''' <remarks></remarks>
         Public Sub varyForcing(ByRef ForcingMultTime() As Single)
+
+            If Not Me.BatchData.bForcingLoaded Then
+                Return
+            End If
+
             Dim iGrp As Integer = Me.BatchData.ForcingGroup(Me.m_curForceIter)
             Dim simData As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
@@ -462,8 +471,9 @@ Namespace MSEBatchManager
 
 
         Private Sub setForcing(ByVal iForcing As Integer)
-
-            Me.LoadPPForcing(Me.BatchData.ForcingIndexes(iForcing), Me.BatchData.ForcingGroup(iForcing))
+            If Me.BatchData.bForcingLoaded Then
+                Me.LoadPPForcing(Me.BatchData.ForcingIndexes(iForcing), Me.BatchData.ForcingGroup(iForcing))
+            End If
 
         End Sub
 
@@ -774,6 +784,10 @@ Namespace MSEBatchManager
         ''' <param name="iPPGroupIndex">Ecosim index of the Primary Production group this forcing function applies to</param>
         ''' <remarks></remarks>
         Private Sub LoadPPForcing(ByVal iShapeIndex As Integer, ByVal iPPGroupIndex As Integer)
+
+            'no forcing data loaded from the command file
+            If Not BatchData.bForcingLoaded Then Exit Sub
+
             'shapes are held in a list Indexed from 0
             If iShapeIndex < 1 Or iPPGroupIndex < 1 Then
                 'no shape and or PredPrey index defined

@@ -14,6 +14,12 @@ Namespace MSEBatchManager
         Public nForcing As Integer
 
         ''' <summary>
+        ''' Is there forcing data in the command file
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public bForcingLoaded As Boolean
+
+        ''' <summary>
         ''' Number of Control type iterations
         ''' </summary>
         ''' <remarks></remarks>
@@ -104,7 +110,6 @@ Namespace MSEBatchManager
         Public CommandFilename As String
 
         Public VersionNumber As Single
-
 
         ''' <summary>
         ''' Database ID of the currently loaded Batch Scenario
@@ -229,7 +234,7 @@ Namespace MSEBatchManager
         End Sub
 
         Public Sub New()
-
+            Me.bForcingLoaded = False
         End Sub
 
 

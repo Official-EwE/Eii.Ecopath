@@ -27,6 +27,8 @@ Namespace MSEBatchManager
         Private Const QB_FILENAME As String = "MSEBatch_QB"
         Private Const FEEDINGTIME_FILENAME As String = "MSEBatch_FeedingTime"
 
+        Private Const EFFORT_FILENAME As String = "MSEBatch_Effort"
+
         Public Sub New(ByVal theCore As cCore, ByVal MSEData As cMSEDataStructures, ByVal MSEBatchData As cMSEBatchDataStructures)
             Me.m_core = theCore
             Me.m_MSEdata = MSEData
@@ -117,9 +119,14 @@ Namespace MSEBatchManager
                         header.AppendLine(quote & epdata.FleetName(iflt) & quote & "," & iflt.ToString & "," & CInt(Me.m_BatchData.ControlType(iControl, iflt)).ToString)
                     Next
                     header.AppendLine()
-
-                    header.Append("Group_Name, Group_Index, ")
-                    header.Append(Me.getRunTypeHeader() & ", ")
+                    If Me.m_BatchData.OuputType(iOut) <> eMSEBatchOuputTypes.Effort Then
+                        'NOT the Effort header
+                        header.Append("Group_Name, Group_Index, ")
+                        header.Append(Me.getRunTypeHeader() & ", ")
+                    Else
+                        'Effort iteration header
+                        header.Append("Fleet_Name, Fleet_Index, ")
+                    End If
                     header.Append("Sim_Num")
                     For it As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                         header.Append(", " & it.ToString)
@@ -159,30 +166,59 @@ Namespace MSEBatchManager
                     'only save outputs where isOuputSaved() = True
                     If Me.m_BatchData.isOuputSaved(iOut) Then
 
-                        'WARNING: this only saves outputs that are by Group
-                        For igrp As Integer = 1 To Me.m_MSEdata.NGroups
-                            Try
+                        If Me.m_BatchData.OuputType(iOut) <> eMSEBatchOuputTypes.Effort Then
+                            'WARNING: this only saves outputs that are by Group
+                            For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+                                Try
 
-                                buff = New StringBuilder()
-                                buff.Append(quote & epData.GroupName(igrp) & quote & ", ")
-                                buff.Append(igrp.ToString & ", ")
-                                buff.Append(Me.getHarvestRuleValues(igrp) & ", ")
-                                buff.Append(Me.m_nSim)
+                                    buff = New StringBuilder()
+                                    buff.Append(quote & epData.GroupName(igrp) & quote & ", ")
+                                    buff.Append(igrp.ToString & ", ")
+                                    buff.Append(Me.getHarvestRuleValues(igrp) & ", ")
+                                    buff.Append(Me.m_nSim)
 
-                                Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
-                                For its As Integer = 1 To n
-                                    buff.Append(", ")
-                                    'get the value for this output type as a string
-                                    buff.Append(Me.getOuputValue(Me.m_BatchData.OuputType(iOut), igrp, its))
-                                Next
+                                    Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+                                    For its As Integer = 1 To n
+                                        buff.Append(", ")
+                                        'get the value for this output type as a string
+                                        buff.Append(Me.getOuputValue(Me.m_BatchData.OuputType(iOut), igrp, its))
+                                    Next
 
-                                strm(istrm).WriteLine(buff)
-                                buff = Nothing
-                            Catch ex As Exception
-                                ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, epdata.GroupName(igrp)))
-                                '     System.Console.WriteLine(Me.ToString & " Failed to write data to file " & getOutputFileName(BIOMASS_FILENAME, Me.getModelName()) & " Exception: " & ex.Message)
-                            End Try
-                        Next igrp
+                                    strm(istrm).WriteLine(buff)
+                                    buff = Nothing
+                                Catch ex As Exception
+                                    ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, epdata.GroupName(igrp)))
+                                    '     System.Console.WriteLine(Me.ToString & " Failed to write data to file " & getOutputFileName(BIOMASS_FILENAME, Me.getModelName()) & " Exception: " & ex.Message)
+                                End Try
+                            Next igrp
+
+                        Else
+
+                            For iflt As Integer = 1 To Me.m_MSEdata.nFleets
+                                Try
+
+                                    buff = New StringBuilder()
+                                    buff.Append(quote & epData.FleetName(iflt) & quote & ", ")
+                                    buff.Append(iflt.ToString & ", ")
+                                    'buff.Append(Me.getHarvestRuleValues(igrp) & ", ")
+                                    buff.Append(Me.m_nSim)
+
+                                    Dim n As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+                                    For its As Integer = 1 To n
+                                        buff.Append(", ")
+                                        'get the value for this output type as a string
+                                        buff.Append(Me.getOuputValue(Me.m_BatchData.OuputType(iOut), iflt, its))
+                                    Next
+
+                                    strm(istrm).WriteLine(buff)
+                                    buff = Nothing
+                                Catch ex As Exception
+                                    ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, epdata.GroupName(igrp)))
+                                    '     System.Console.WriteLine(Me.ToString & " Failed to write data to file " & getOutputFileName(BIOMASS_FILENAME, Me.getModelName()) & " Exception: " & ex.Message)
+                                End Try
+                            Next iflt
+
+                        End If
 
                         istrm += 1
 
@@ -239,6 +275,9 @@ Namespace MSEBatchManager
                 Case eMSEBatchOuputTypes.PredRate
                     Return PREDMORT_FILENAME
 
+                Case eMSEBatchOuputTypes.Effort
+                    Return EFFORT_FILENAME
+
             End Select
 
             Debug.Assert(False, "Invalid output type " & OutputType.ToString)
@@ -272,6 +311,9 @@ Namespace MSEBatchManager
 
                 Case eMSEBatchOuputTypes.PredRate
                     Return cStringUtils.FormatSingle(Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, igrp, iTime))
+
+                Case eMSEBatchOuputTypes.Effort
+                    Return cStringUtils.FormatSingle(Me.m_core.m_EcoSimData.ResultsEffort(igrp, iTime))
 
             End Select
 
