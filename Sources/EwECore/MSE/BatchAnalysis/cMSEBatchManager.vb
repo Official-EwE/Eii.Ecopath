@@ -16,6 +16,7 @@ Namespace MSEBatchManager
     End Enum
 
     Public Enum eMSEBatchOuputTypes
+        NotSet
         Biomass
         QB 'consumption/biomass
         FeedingTime
@@ -23,7 +24,6 @@ Namespace MSEBatchManager
         PredRate
         CatchByGroup
         Effort
-        NotSet
     End Enum
 
     Public Class cMSEBatchManager
@@ -31,6 +31,7 @@ Namespace MSEBatchManager
 
         'ToDo_jb 24-Aug-2010 MSEBatchManager Why does the list box in the interface not update after the first run
         Public Delegate Sub MSEBatchMessage(ByVal strMessage As String)
+        Public Delegate Sub onMSEBatchProgress()
 
 #Region "Private data"
 
@@ -57,9 +58,19 @@ Namespace MSEBatchManager
 
         Private m_parameters As cMSEBatchParameters
         Private m_lstTFMs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBatchTFMInput, 1)
+        Private m_OnProgressDelegate As onMSEBatchProgress
 #End Region
 
 #Region "Construction, Initialization and Destruction"
+
+        Public Sub Connect(ByRef OnProgress As onMSEBatchProgress)
+            Me.m_OnProgressDelegate = Nothing
+            Me.m_OnProgressDelegate = OnProgress
+        End Sub
+
+        Public Sub DisConnect()
+            '  Me.m_OnProgressDelegate = Nothing
+        End Sub
 
         Public Sub New()
             Me.m_SyncOb = System.Threading.SynchronizationContext.Current
@@ -132,7 +143,7 @@ Namespace MSEBatchManager
                     Return
                 End If
 
-                Me.Update()
+                Me.update()
 
                 m_thrdRun = New System.Threading.Thread(AddressOf Me.RunThreaded)
                 m_thrdRun.Start()
@@ -207,8 +218,6 @@ Namespace MSEBatchManager
                 tfm.ResetStatusFlags()
                 tfm.AllowValidation = True
 
-                '  Me.Parameters.GroupOutputType(igrp) = Me.m_BatchData.GroupRunType(igrp)
-
             Next
 
             Me.Parameters.AllowValidation = True
@@ -250,8 +259,29 @@ Namespace MSEBatchManager
         End Sub
 
 
-        Private Sub update()
+        Private Sub OnMSEProgress(ByVal RunStateType As eMSERunStates)
 
+            If RunStateType = eMSERunStates.RunCompleted Then
+                If Me.m_SyncOb IsNot Nothing Then
+                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), Nothing)
+                End If
+            End If
+
+        End Sub
+
+        Private Sub fireProgress(ob As Object)
+            Try
+                Me.m_OnProgressDelegate.Invoke()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+
+
+        Private Sub update()
+            Dim igrp As Integer
+            Dim irep As Integer
             Me.m_BatchData.nTFM = Me.Parameters.nTFMIteration
             Me.m_BatchData.IterCalcType = Me.Parameters.IterCalcType
 
@@ -269,12 +299,21 @@ Namespace MSEBatchManager
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime) = Me.Parameters.bSaveFeedingTime
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.QB) = Me.Parameters.bSaveConsumptBio
 
+            Dim t As eMSEBatchOuputTypes
+            For iout As Integer = 1 To Me.m_BatchData.nOuputTypes
+                t = eMSEBatchOuputTypes.NotSet
+                If Me.m_BatchData.isOuputSaved(iout) Then
+                    t = iout
+                End If
+                Me.m_BatchData.OuputType(iout) = t
+            Next
+
 
             ' Me.m_BatchData.OuputDir(eMSEBatchOuputTypes.QB) = Me.Parameters.OutputDir
 
-            Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
+            'Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
 
-            For igrp As Integer = 1 To Me.nGroups
+            For igrp = 1 To Me.nGroups
                 'TFM's
                 Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
                 Me.m_MSEdata.Blim(igrp) = tfm.BLim
@@ -289,6 +328,16 @@ Namespace MSEBatchManager
                 Me.m_BatchData.FOptLower(igrp) = tfm.FMaxLower
                 Me.m_BatchData.FOptUpper(igrp) = tfm.FMaxUpper
 
+                'isManaged The concept is to set this flag for the type of Quota TMF, F, TAC... for a group
+                'However the MSE does not work this way
+                'It sets the Quota for a group base on > zero values in F, TAC see cMMSEUpdateQuotas
+                'Here we need some kind of a flag that tells what type to use when setting the Quota
+                If tfm.isManaged Then
+                    'this should be exclusive only TFM should have its isManaged Flag set to True
+                    'Other Quota types should update to the new value
+                    Me.m_BatchData.GroupRunType(igrp) = eMSEBatchRunTypes.TFM
+
+                End If
 
                 For iTFM As Integer = 1 To Me.m_BatchData.nTFM
                     Me.m_BatchData.tfmBlim(iTFM, igrp) = tfm.BLimValue(iTFM)
@@ -307,6 +356,21 @@ Namespace MSEBatchManager
                 Next iflt
             Next icon
 
+            'Clear out the FixedF and TAC values if the GroupRunType is TFM
+            For igrp = 1 To Me.nGroups
+                If Me.m_BatchData.GroupRunType(igrp) = eMSEBatchRunTypes.TFM Then
+                    'clear out all the other Quota 
+                    For irep = 1 To Me.m_BatchData.nFixedF
+                        Me.m_BatchData.FixedF(irep, igrp) = 0.0
+                    Next irep
+
+                    For irep = 1 To Me.m_BatchData.nTAC
+                        Me.m_BatchData.TAC(irep, igrp) = 0.0
+                    Next irep
+
+                End If
+            Next
+
         End Sub
 
 
@@ -321,16 +385,21 @@ Namespace MSEBatchManager
 
         End Sub
 
-
+        ''' <summary>
+        ''' Sets Default values that are needed when the MSE Batch is run from the interface 
+        ''' instead of the Batch Command file
+        ''' </summary>
+        ''' <remarks></remarks>
         Public Sub setDefaults()
 
-            Me.m_BatchData.redimTFM(10, Me.nGroups)
-            Me.m_BatchData.setDefaultTFM()
+            'Me.m_BatchData.redimTFM(10, Me.nGroups)
+            'Me.m_BatchData.setDefaultTFM()
 
             Me.m_BatchData.RunType = eMSEBatchRunTypes.TFM
             Me.m_BatchData.nParIters = Me.m_BatchData.nTFM
             Me.m_BatchData.nControlTypes = 1
             Me.m_BatchData.nForcing = 1
+            Me.m_BatchData.bForcingLoaded = False
 
         End Sub
 
@@ -641,6 +710,8 @@ Namespace MSEBatchManager
 
             Try
 
+                Me.m_MSE.Connect(AddressOf Me.OnMSEProgress, Nothing)
+
                 cLog.Write("MSE batch run started.")
 
                 Me.BatchData.StoreMSEState(Me.MSEData)
@@ -707,6 +778,8 @@ Namespace MSEBatchManager
             If Me.BatchData.StopRun Then msg = "Batch run stopped."
 
             Me.MarshallMessage(msg)
+
+            Me.m_MSE.Disconnect(AddressOf Me.OnMSEProgress, Nothing)
 
         End Sub
 

@@ -329,12 +329,15 @@ Namespace MSE
 
             Try
 
+
+
                 If Me.IsRunning Then
                     Me.m_core.Messages.SendMessage(New cMessage("A Management Strategy Evaluation is already running. Only one evaluation can be run at a time.", _
                                                                 eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical, eDataTypes.MSEManager))
                     Return False
                 End If
 
+                Me.m_MSE.Connect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
 
                 Try
                     Me.m_core.PluginManager.MSERunStarted()
@@ -530,7 +533,9 @@ Namespace MSE
             Me.m_MSE.setTime(1, 1)
 
             'connect the MSE model to the manager
-            Me.m_MSE.Connect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
+            'jb move to connect at start of run 
+            'to prevent loss of connection when the mse is run be the batch manager
+            'Me.m_MSE.Connect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
 
             'set the MSE model in Ecosim
             'Ecosim calls MSE.AssessFs() if the Search is turned On
@@ -1086,6 +1091,8 @@ Namespace MSE
                     Catch ex As Exception
                         System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
                     End Try
+
+                    Me.m_MSE.Disconnect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
 
             End Select
 

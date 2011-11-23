@@ -66,7 +66,7 @@ Public Class gridMSEBatchTFM
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.RunType) = New EwEColumnHeaderCell("Managed")
+        Me(0, eColumnTypes.RunType) = New EwEColumnHeaderCell("Managed via TFM")
 
         Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit") 'B lim(-)
         Me(0, eColumnTypes.BLimValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
