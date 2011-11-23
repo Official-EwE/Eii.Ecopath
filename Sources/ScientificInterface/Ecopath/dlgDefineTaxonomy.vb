@@ -345,6 +345,8 @@ Public Class dlgDefineTaxa
 
         ' == SEARCH ==
 
+        Me.m_scMain.Panel2Collapsed = (Not Me.m_bHasSearchEngines)
+
         If (Me.m_bHasSearchEngines) Then
             Dim prod As IDataProducerPlugin = Me.SelectedDataProducer
             If prod IsNot Nothing Then

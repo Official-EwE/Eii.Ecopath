@@ -445,7 +445,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>880, 329</value>
+    <value>879, 348</value>
   </data>
   <data name="m_gridGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -454,7 +454,7 @@
     <value>m_gridGroups</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.3.1118.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.3.1122.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -535,7 +535,7 @@
     <value>0, 61</value>
   </data>
   <data name="m_gridResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>880, 152</value>
+    <value>880, 133</value>
   </data>
   <data name="m_gridResults.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -544,7 +544,7 @@
     <value>m_gridResults</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.3.1118.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.3.1122.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -595,10 +595,10 @@
     <value>1</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>880, 549</value>
+    <value>879, 549</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>329</value>
+    <value>348</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -640,7 +640,7 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1118.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1122.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>$this</value>
@@ -673,7 +673,7 @@
     <value>m_hdrProps</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1118.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1122.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Parent" xml:space="preserve">
     <value>$this</value>
