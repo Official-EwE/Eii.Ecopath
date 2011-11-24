@@ -245,6 +245,9 @@ Namespace MSEBatchManager
                 'only save outputs where isOuputSaved() = True
                 If Me.m_BatchData.isOuputSaved(iOut) Then
                     Dim outfileName As String = Me.getOutputFileName(Me.OuputTypeToFileName(Me.m_BatchData.OuputType(iOut)), Me.getModelName)
+                    If Not Directory.Exists(Me.m_BatchData.OuputDir) Then
+                        Directory.CreateDirectory(Me.m_BatchData.OuputDir)
+                    End If
                     lstStreams.Add(New StreamWriter(outfileName, True))
                 End If
 

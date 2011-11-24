@@ -9,7 +9,11 @@ Public Class frmMSERunBatch
 
     Private m_BatchManager As EwECore.MSEBatchManager.cMSEBatchManager
     Private m_MSE As EwECore.MSE.cMSEManager
-    Private m_zgh As cZedGraphHelper = New cZedGraphHelper()
+    Private m_zgh As cZedGraphHelper
+
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
@@ -18,7 +22,7 @@ Public Class frmMSERunBatch
 
         m_BatchManager = Me.UIContext.Core.MSEBatchManager
         m_MSE = Me.UIContext.Core.MSEManager
-
+        m_zgh = New cZedGraphHelper()
         m_zgh.Attach(Me.UIContext, Me.m_ZedGraph)
 
         Me.m_BatchManager.onMessageDelegate = AddressOf Me.onMSEBatchMessage
@@ -30,6 +34,10 @@ Public Class frmMSERunBatch
 
         Me.lstMsgs.Items.Clear()
 
+        If Not Me.m_zgh.IsAttached Then
+            Me.m_zgh.Attach(Me.UIContext, Me.m_ZedGraph)
+        End If
+
         Me.m_zgh.GetPane(1).CurveList.Clear()
 
         Me.m_BatchManager.setDefaults()
@@ -39,9 +47,31 @@ Public Class frmMSERunBatch
 
     End Sub
 
-    Private Sub onProgress()
-        'For it As Integer = 1 To Me.m_MSE.NumGroups
-        Me.plotMean(Me.m_MSE.BiomassStats(4), 1)
+    Private Sub onProgress(ByVal ProgressEnum As EwECore.MSEBatchManager.eMSEBatchProgress)
+
+        Try
+
+            Select Case ProgressEnum
+
+                Case EwECore.MSEBatchManager.eMSEBatchProgress.MSEIteration
+                    Me.plotMean(Me.m_MSE.BiomassStats(4), 1)
+
+                Case EwECore.MSEBatchManager.eMSEBatchProgress.RunStarted
+                    Me.m_btStop.Enabled = True
+                    Me.btRunBatch.Enabled = False
+
+                Case EwECore.MSEBatchManager.eMSEBatchProgress.RunCompleted
+                    Me.m_btStop.Enabled = False
+                    Me.btRunBatch.Enabled = True
+
+
+            End Select
+        Catch ex As Exception
+
+        End Try
+
+
+
         ' Next
 
     End Sub
@@ -71,4 +101,13 @@ Public Class frmMSERunBatch
         Me.lstMsgs.Items.Add(msg)
     End Sub
 
+    Private Sub frmMSERunBatch_Activated(sender As Object, e As System.EventArgs) Handles Me.Activated
+        If Not Me.m_zgh.IsAttached Then
+            ' Me.m_zgh.Attach(Me.UIContext, Me.m_ZedGraph)
+        End If
+    End Sub
+
+    Private Sub m_btStop_Click(sender As System.Object, e As System.EventArgs) Handles m_btStop.Click
+        Me.m_BatchManager.StopRun()
+    End Sub
 End Class

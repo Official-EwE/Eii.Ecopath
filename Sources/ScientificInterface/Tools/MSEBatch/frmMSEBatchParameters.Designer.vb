@@ -33,12 +33,14 @@ Partial Class frmMSEBatchParameters
         Me.chkQB = New System.Windows.Forms.CheckBox()
         Me.chkFeedingTime = New System.Windows.Forms.CheckBox()
         Me.eweHdrSave = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lbOutputDir = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'chkSaveBiomass
         '
         Me.chkSaveBiomass.AutoSize = True
-        Me.chkSaveBiomass.Location = New System.Drawing.Point(18, 36)
+        Me.chkSaveBiomass.Location = New System.Drawing.Point(17, 62)
         Me.chkSaveBiomass.Name = "chkSaveBiomass"
         Me.chkSaveBiomass.Size = New System.Drawing.Size(65, 17)
         Me.chkSaveBiomass.TabIndex = 0
@@ -48,7 +50,7 @@ Partial Class frmMSEBatchParameters
         'chkCatch
         '
         Me.chkCatch.AutoSize = True
-        Me.chkCatch.Location = New System.Drawing.Point(18, 59)
+        Me.chkCatch.Location = New System.Drawing.Point(17, 85)
         Me.chkCatch.Name = "chkCatch"
         Me.chkCatch.Size = New System.Drawing.Size(54, 17)
         Me.chkCatch.TabIndex = 1
@@ -58,7 +60,7 @@ Partial Class frmMSEBatchParameters
         'chkFishingMort
         '
         Me.chkFishingMort.AutoSize = True
-        Me.chkFishingMort.Location = New System.Drawing.Point(18, 82)
+        Me.chkFishingMort.Location = New System.Drawing.Point(17, 108)
         Me.chkFishingMort.Name = "chkFishingMort"
         Me.chkFishingMort.Size = New System.Drawing.Size(85, 17)
         Me.chkFishingMort.TabIndex = 2
@@ -68,7 +70,7 @@ Partial Class frmMSEBatchParameters
         'chkPredMort
         '
         Me.chkPredMort.AutoSize = True
-        Me.chkPredMort.Location = New System.Drawing.Point(141, 59)
+        Me.chkPredMort.Location = New System.Drawing.Point(140, 85)
         Me.chkPredMort.Name = "chkPredMort"
         Me.chkPredMort.Size = New System.Drawing.Size(97, 17)
         Me.chkPredMort.TabIndex = 3
@@ -78,7 +80,7 @@ Partial Class frmMSEBatchParameters
         'chkQB
         '
         Me.chkQB.AutoSize = True
-        Me.chkQB.Location = New System.Drawing.Point(141, 36)
+        Me.chkQB.Location = New System.Drawing.Point(140, 62)
         Me.chkQB.Name = "chkQB"
         Me.chkQB.Size = New System.Drawing.Size(131, 17)
         Me.chkQB.TabIndex = 4
@@ -88,7 +90,7 @@ Partial Class frmMSEBatchParameters
         'chkFeedingTime
         '
         Me.chkFeedingTime.AutoSize = True
-        Me.chkFeedingTime.Location = New System.Drawing.Point(141, 82)
+        Me.chkFeedingTime.Location = New System.Drawing.Point(140, 108)
         Me.chkFeedingTime.Name = "chkFeedingTime"
         Me.chkFeedingTime.Size = New System.Drawing.Size(86, 17)
         Me.chkFeedingTime.TabIndex = 5
@@ -102,18 +104,40 @@ Partial Class frmMSEBatchParameters
         Me.eweHdrSave.CanCollapseParent = False
         Me.eweHdrSave.CollapsedParentHeight = 0
         Me.eweHdrSave.IsCollapsed = False
-        Me.eweHdrSave.Location = New System.Drawing.Point(12, 9)
+        Me.eweHdrSave.Location = New System.Drawing.Point(17, 9)
         Me.eweHdrSave.Name = "eweHdrSave"
         Me.eweHdrSave.Size = New System.Drawing.Size(446, 24)
         Me.eweHdrSave.TabIndex = 6
         Me.eweHdrSave.Text = "Save"
         Me.eweHdrSave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'm_lbOutputDir
+        '
+        Me.m_lbOutputDir.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_lbOutputDir.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_lbOutputDir.Location = New System.Drawing.Point(105, 37)
+        Me.m_lbOutputDir.Name = "m_lbOutputDir"
+        Me.m_lbOutputDir.Size = New System.Drawing.Size(358, 15)
+        Me.m_lbOutputDir.TabIndex = 7
+        Me.m_lbOutputDir.Text = "ouput dir"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(17, 37)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(82, 13)
+        Me.Label1.TabIndex = 8
+        Me.Label1.Text = "Output directory"
+        '
         'frmMSEBatchParameters
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(470, 416)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.m_lbOutputDir)
         Me.Controls.Add(Me.eweHdrSave)
         Me.Controls.Add(Me.chkFeedingTime)
         Me.Controls.Add(Me.chkQB)
@@ -135,4 +159,6 @@ Partial Class frmMSEBatchParameters
     Friend WithEvents chkQB As System.Windows.Forms.CheckBox
     Friend WithEvents chkFeedingTime As System.Windows.Forms.CheckBox
     Friend WithEvents eweHdrSave As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents m_lbOutputDir As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 End Class

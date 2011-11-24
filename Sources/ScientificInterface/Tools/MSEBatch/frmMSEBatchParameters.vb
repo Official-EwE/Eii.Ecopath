@@ -45,6 +45,8 @@ Public Class frmMSEBatchParameters
         Me.m_fpQB = New cPropertyFormatProvider(Me.UIContext, Me.chkQB, Me.m_batchManager.Parameters, eVarNameFlags.MSEBatchOutputConBio)
         Me.m_fpFeeding = New cPropertyFormatProvider(Me.UIContext, Me.chkFeedingTime, Me.m_batchManager.Parameters, eVarNameFlags.MSEBatchOutputFeedingTime)
 
+        Me.m_lbOutputDir.Text = m_batchManager.Parameters.OutputDir
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)

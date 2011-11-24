@@ -6,6 +6,11 @@ Imports EwECore.MSECommandFile
 
 
 Namespace MSEBatchManager
+    Public Enum eMSEBatchProgress
+        MSEIteration
+        RunStarted
+        RunCompleted
+    End Enum
 
     Public Enum eMSEBatchRunTypes
         Any = 0
@@ -27,11 +32,14 @@ Namespace MSEBatchManager
     End Enum
 
     Public Class cMSEBatchManager
+        Inherits cThreadWaitBase
         Implements ICoreInterface
+
+
 
         'ToDo_jb 24-Aug-2010 MSEBatchManager Why does the list box in the interface not update after the first run
         Public Delegate Sub MSEBatchMessage(ByVal strMessage As String)
-        Public Delegate Sub onMSEBatchProgress()
+        Public Delegate Sub onMSEBatchProgress(ByVal ProgressEnum As eMSEBatchProgress)
 
 #Region "Private data"
 
@@ -99,6 +107,7 @@ Namespace MSEBatchManager
 
             Me.m_BatchData.redimForcing(1)
             Me.m_BatchData.redimControlTypes(1, Me.m_core.nFleets)
+            Me.m_BatchData.OuputDir = Me.m_core.OutputPath
 
             Try
                 If (Me.Core.PluginManager IsNot Nothing) Then
@@ -143,9 +152,16 @@ Namespace MSEBatchManager
                     Return
                 End If
 
+                If Me.m_SyncOb IsNot Nothing Then
+                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), eMSEBatchProgress.RunStarted)
+                End If
+
+                Me.SetWait()
+
                 Me.update()
 
                 m_thrdRun = New System.Threading.Thread(AddressOf Me.RunThreaded)
+                m_thrdRun.Name = "MSEBatch.Run"
                 m_thrdRun.Start()
 
             Catch ex As Exception
@@ -193,6 +209,8 @@ Namespace MSEBatchManager
             Me.Parameters.bSaveFishingMort = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FishingMortRate)
             Me.Parameters.bSaveFeedingTime = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime)
             Me.Parameters.bSaveConsumptBio = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.QB)
+
+            Me.Parameters.OutputDir = Me.m_BatchData.OuputDir
 
             For igrp As Integer = 1 To Me.nGroups
                 Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
@@ -258,20 +276,21 @@ Namespace MSEBatchManager
 
         End Sub
 
-
         Private Sub OnMSEProgress(ByVal RunStateType As eMSERunStates)
 
             If RunStateType = eMSERunStates.RunCompleted Then
+                System.Console.WriteLine("MSEBatch Calling Interface.")
                 If Me.m_SyncOb IsNot Nothing Then
-                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), Nothing)
+                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), eMSEBatchProgress.MSEIteration)
                 End If
+                System.Console.WriteLine("MSEBatch Interface completed.")
             End If
 
         End Sub
 
         Private Sub fireProgress(ob As Object)
             Try
-                Me.m_OnProgressDelegate.Invoke()
+                Me.m_OnProgressDelegate.Invoke(ob)
             Catch ex As Exception
 
             End Try
@@ -291,6 +310,8 @@ Namespace MSEBatchManager
             'FishingMortRate()
             'PredRate()
             'CatchByGroup()
+
+            Me.m_BatchData.OuputDir = Me.Parameters.OutputDir
 
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.Biomass) = Me.Parameters.bSaveBiomass
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.CatchByGroup) = Me.Parameters.bSaveCatch
@@ -400,6 +421,7 @@ Namespace MSEBatchManager
             Me.m_BatchData.nControlTypes = 1
             Me.m_BatchData.nForcing = 1
             Me.m_BatchData.bForcingLoaded = False
+            Me.m_BatchData.OuputDir = Me.m_core.OutputPath
 
         End Sub
 
@@ -779,7 +801,11 @@ Namespace MSEBatchManager
 
             Me.MarshallMessage(msg)
 
-            Me.m_MSE.Disconnect(AddressOf Me.OnMSEProgress, Nothing)
+            Me.ReleaseWait()
+
+            If Me.m_SyncOb IsNot Nothing Then
+                m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), eMSEBatchProgress.RunCompleted)
+            End If
 
         End Sub
 
@@ -971,6 +997,24 @@ Namespace MSEBatchManager
         End Property
 
 #End Region
+
+        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
+            Dim result As Boolean = True
+
+            Try
+                'Me.m_core.m_EcoSim.bStopRunning = True
+                Me.m_MSEdata.StopRun = True
+                Me.m_BatchData.StopRun = True
+
+                'Do Until Me.Wait(10)
+                '    Windows.Forms.Application.DoEvents()
+                'Loop
+
+            Catch ex As Exception
+                result = False
+            End Try
+            Return result
+        End Function
 
     End Class
 

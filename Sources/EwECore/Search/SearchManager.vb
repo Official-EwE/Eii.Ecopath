@@ -341,7 +341,7 @@ Public MustInherit Class cThreadWaitBase
         If waitTime > 0 Then waitTime = 100
 
         'Wait is in a loop because
-        'm_SignalState is signaled when a thread running
+        'm_SignalState is signaled when a thread is running
         'm_SignalState.WaitOne will block the calling thread (the interface) while the signal is set
         'this allows the running thread to keep going.
         'If the running thread calls out to the interface there will be a deadlock, it is block by WaitOne.
