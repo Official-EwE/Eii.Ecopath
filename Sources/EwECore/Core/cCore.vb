@@ -3906,6 +3906,11 @@ Public Class cCore
 
     End Function
 
+    Public Function TaxonAnalysis() As cTaxonAnalysis
+        If Not Me.m_StateMonitor.HasEcopathLoaded Then Return Nothing
+        Return New cTaxonAnalysis(Me.m_TaxonData)
+    End Function
+
 #End Region ' Taxon
 
 #Region " Fleets "

@@ -218,6 +218,7 @@
     <Compile Include="Shapes\TimeSeries\Readers\cTimeSeriesCSVReader.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesTextReader.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeries.vb" />
+    <Compile Include="Taxon\cTaxonAnalysis.vb" />
     <Compile Include="Validators\cValidatorBase.vb" />
   </ItemGroup>
   <ItemGroup>
