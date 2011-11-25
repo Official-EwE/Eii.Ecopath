@@ -1150,13 +1150,16 @@ Public Class gridDefineTaxonomy
             Else
                 ti = New cTaxonInfo(grp)
             End If
-            Me.m_lTaxonInfo.Add(ti)
         Else
             ti = New cTaxonInfo(taxon)
-            ti.Group = Me.SelectedGroup.Index
-            Me.m_lTaxonInfo.Add(ti)
+            If (grp Is Nothing) Then
+                ti.Stanza = stz.Index
+            Else
+                ti.Group = grp.Index
+            End If
         End If
 
+        Me.m_lTaxonInfo.Add(ti)
         Me.AddTaxonRow(ti)
         Me.SelectedTaxon = ti
 
