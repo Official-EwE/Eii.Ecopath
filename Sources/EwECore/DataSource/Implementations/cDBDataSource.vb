@@ -2221,7 +2221,7 @@ Namespace DataSources
                 Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iGroupID))
                 If (reader IsNot Nothing) Then
                     While reader.Read()
-                        bSucces = Me.RemoveEcosimGroup(CInt(reader("GroupID")))
+                        bSucces = bSucces And Me.RemoveEcosimGroup(CInt(reader("GroupID")))
                     End While
                 End If
                 Me.m_db.ReleaseReader(reader)
@@ -2231,7 +2231,7 @@ Namespace DataSources
                 reader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcospaceScenarioGroup WHERE EcopathGroupID={0}", iGroupID))
                 If (reader IsNot Nothing) Then
                     While reader.Read()
-                        bSucces = Me.RemoveEcospaceGroup(CInt(reader("GroupID")))
+                        bSucces = bSucces And Me.RemoveEcospaceGroup(CInt(reader("GroupID")))
                     End While
                 End If
                 Me.m_db.ReleaseReader(reader)
@@ -2878,7 +2878,7 @@ Namespace DataSources
         ''' <summary>
         ''' Removes a fleet from the data source.
         ''' </summary>
-        ''' <param name="iFleetID">Database ID of the fleet to remove.</param>
+        ''' <param name="iFleetID">Ecopath ID of the fleet to remove.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Function RemoveFleet(ByVal iFleetID As Integer) As Boolean _
@@ -2886,7 +2886,8 @@ Namespace DataSources
 
             Dim bSucces As Boolean = True
             Try
-                bSucces = Me.RemoveEcosimFleet(iFleetID)
+                bSucces = bSucces And Me.RemoveEcospaceFleet(iFleetID)
+                bSucces = bSucces And Me.RemoveEcosimFleet(iFleetID)
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathFleet WHERE (FleetID={0})", iFleetID))
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing fleet {1}", ex.Message, iFleetID))
@@ -4132,14 +4133,26 @@ Namespace DataSources
         ''' <returns>True if succesful.</returns>
         ''' -----------------------------------------------------------------------
         Private Function RemoveEcosimFleet(ByVal iEcopathFleetID As Integer) As Boolean
+
+            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT FleetID FROM EcosimScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
+            Dim iFleetID As Integer = 0
             Dim bSucces As Boolean = True
+
+            ' Year info stored by sim fleet ID, aargh
             Try
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcoSimScenarioFleetYear WHERE FleetID={0}", iEcopathFleetID))
+                While reader.Read
+                    iFleetID = CInt(reader("FleetID"))
+                    bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcoSimScenarioFleetYear WHERE FleetID={0}", iFleetID))
+                End While
             Catch ex As Exception
                 bSucces = False
             End Try
+            Me.m_db.ReleaseReader(reader)
+            reader = Nothing
+
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
+
             Return bSucces
         End Function
 
@@ -4163,8 +4176,8 @@ Namespace DataSources
 
                 ' Big sigh, it's even worse...
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE EcosimGroupID={0}", iGroupID))
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroupYear WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
 
             Catch ex As Exception
                 bSucces = False
@@ -8566,14 +8579,15 @@ Namespace DataSources
         ''' delete. Hence, we need to eradicate linked groups and fleets via code.
         ''' </para> 
         ''' </summary>
-        ''' <param name="iGroupID">DBID of the Ecosim group to remove.</param>
+        ''' <param name="iGroupID">DBID of the Ecospace group to remove.</param>
         ''' <returns>True if succesful.</returns>
         ''' -----------------------------------------------------------------------
         Private Function RemoveEcospaceGroup(ByVal iGroupID As Integer) As Boolean
             Dim bSucces As Boolean = True
             Try
 
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMap WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroup WHERE GroupID={0}", iGroupID))
 
             Catch ex As Exception
                 bSucces = False
@@ -9001,6 +9015,34 @@ Namespace DataSources
             Return bSucces
 
         End Function
+
+        ''' <summary>
+        ''' Remove an ecospace fleet.
+        ''' </summary>
+        ''' <param name="iEcopathFleetID">Ecopath Fleet DBID.</param>
+        Private Function RemoveEcospaceFleet(ByVal iEcopathFleetID As Integer) As Boolean
+
+            Dim bSucces As Boolean = True
+            Dim reader As IDataReader = Nothing
+            Dim iFleetID As Integer = 0
+
+            reader = Me.m_db.GetReader(String.Format("SELECT FleetID FROM EcospaceScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
+            Try
+                While reader.Read()
+                    iFleetID = CInt(reader("FleetID"))
+                    bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioHabitatFishery WHERE (FleetID={0})", iFleetID))
+                    bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioMPAFishery WHERE (FleetID={0})", iFleetID))
+                End While
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Me.m_db.ReleaseReader(reader)
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
+
+            Return bSucces
+
+        End Function
+
 
 #End Region ' Modify
 
