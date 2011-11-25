@@ -4978,7 +4978,7 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_MarketPrice_Flags(ByVal obj As cFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_OffVesselValue_Flags(ByVal obj As cFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
         obj.AllowValidation = False
 
@@ -6008,7 +6008,7 @@ Public Class cCore
         Try
 
             ' Update core state
-             Me.CloseEcosimScenario()
+            Me.CloseEcosimScenario()
 
             Me.m_EcoPathData.ActiveEcospaceScenario = -1
             Me.m_EcoPathData.ActiveEcotracerScenario = -1
@@ -9176,7 +9176,7 @@ Public Class cCore
     Private Function LoadEcospaceImportanceLayers() As Boolean
 
         Dim dest As cEcospaceLayerImportance = Nothing
- 
+
         For i As Integer = 1 To Me.m_EcoSpaceData.nImportanceLayers
 
             dest = Me.m_EcospaceBasemap.LayerImportance(i)
@@ -11842,7 +11842,7 @@ Public Class cCore
                     'Something in the MSE Batch interface has changed
                     'Update all the underlying core data
                     Me.MSEBatchManager.Update(dtAffected, value.varName)
-                   
+
 
             End Select
 
@@ -12562,7 +12562,7 @@ Public Class cCore
                         Me.Update_Stanza_Catches()
                         Me.Update_Taxon_Catches()
                         Me.Set_DiscardMort_Flags(flt, True)
-                        Me.Set_MarketPrice_Flags(flt, True)
+                        Me.Set_OffVesselValue_Flags(flt, True)
 
                         'Landing and/or discards has changed so Quota share has changed
                         If Me.m_StateMonitor.HasEcosimLoaded Then
@@ -12575,7 +12575,7 @@ Public Class cCore
                         End If
 
                     Case eVarNameFlags.OffVesselPrice
-                        Me.Set_MarketPrice_Flags(flt, True)
+                        Me.Set_OffVesselValue_Flags(flt, True)
 
                 End Select
 

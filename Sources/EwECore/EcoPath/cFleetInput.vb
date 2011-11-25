@@ -83,7 +83,7 @@ Public Class cFleetInput
 
     Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
         If Not MyBase.ResetStatusFlags(bForceReset) Then Return False
-        Return Me.m_core.Set_MarketPrice_Flags(Me, False) And Me.m_core.Set_DiscardMort_Flags(Me, False)
+        Return Me.m_core.Set_OffVesselValue_Flags(Me, False) And Me.m_core.Set_DiscardMort_Flags(Me, False)
     End Function
 
 #End Region ' Overrides
@@ -157,8 +157,19 @@ Public Class cFleetInput
 
     End Property
 
-
+    <Obsolete("Use OffVesselStatus instead")> _
     Public Property OffVesselPrice() As Single()
+
+        Get
+            Return Me.OffVesselValue()
+        End Get
+        Set(ByVal value() As Single)
+            Me.OffVesselValue() = value
+        End Set
+
+    End Property
+
+    Public Property OffVesselValue() As Single()
 
         Get
             Return DirectCast(GetVariable(eVarNameFlags.OffVesselPrice), Single())
@@ -168,7 +179,6 @@ Public Class cFleetInput
         End Set
 
     End Property
-
 
 
     Public Property Discards(ByVal iGroup As Integer) As Single
@@ -270,7 +280,17 @@ Public Class cFleetInput
         End Set
     End Property
 
+    <Obsolete("Use OffVesselValueStatus instead")> _
     Public Property OffVesselPriceStatus() As eStatusFlags
+        Get
+            Return Me.OffVesselValueStatus
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            Me.OffVesselValueStatus = value
+        End Set
+    End Property
+
+    Public Property OffVesselValueStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.OffVesselPrice)
         End Get
