@@ -62,7 +62,7 @@ Public Class cCore
     ''' <summary>Max number of years ecosim or ecospace can run for</summary>
     Public Const MAX_RUN_LENGTH As Integer = 500
     ''' <summary>The global build number, set from an outside tool.</summary>
-    Public Const BUILD_NUMBER As String = "7004"
+    Public Const BUILD_NUMBER As String = "7019"
 
 #End Region ' Shared consts
 
