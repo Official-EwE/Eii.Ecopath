@@ -512,7 +512,7 @@ Namespace MSEBatchManager
             Me.m_BatchData.setDefaultLimits()
 
             Me.m_BatchData.nParIters = Me.m_BatchData.nTFM
-            Me.m_BatchData.RunType = eMSEBatchRunTypes.TFM
+            Me.m_BatchData.RunType = eMSEBatchRunTypes.Any
 
             Me.m_BatchData.bForcingLoaded = False
 
@@ -703,17 +703,26 @@ Namespace MSEBatchManager
                     Case eMSEBatchRunTypes.Any
                         'If RunType is Any then set Any of the MSE parameters to values from the command file 
                         'If the parameter iteration is > number of parameters then use the last value from the file
-                        Dim itfm As Integer = Math.Min(iParIter, Me.BatchData.nTFM)
-                        blim = Me.BatchData.tfmBlim(itfm, igrp)
-                        bbase = Me.BatchData.tfmBbase(itfm, igrp)
-                        fmax = Me.BatchData.tfmFmax(itfm, igrp)
-                        fmin = Me.BatchData.tfmFmin(itfm, igrp)
+                        Select Case Me.m_BatchData.GroupRunType(igrp)
 
-                        Dim iFx As Integer = Math.Min(iParIter, Me.BatchData.nFixedF)
-                        f = Me.BatchData.FixedF(iFx, igrp)
+                            Case eMSEBatchRunTypes.TFM
 
-                        Dim itac As Integer = Math.Min(iParIter, Me.BatchData.nTAC)
-                        tac = Me.BatchData.TAC(itac, igrp)
+                                Dim itfm As Integer = Math.Min(iParIter, Me.BatchData.nTFM)
+                                blim = Me.BatchData.tfmBlim(itfm, igrp)
+                                bbase = Me.BatchData.tfmBbase(itfm, igrp)
+                                fmax = Me.BatchData.tfmFmax(itfm, igrp)
+                                fmin = Me.BatchData.tfmFmin(itfm, igrp)
+
+                            Case eMSEBatchRunTypes.FixedF
+
+                                Dim iFx As Integer = Math.Min(iParIter, Me.BatchData.nFixedF)
+                                f = Me.BatchData.FixedF(iFx, igrp)
+
+                            Case eMSEBatchRunTypes.TAC
+                                Dim itac As Integer = Math.Min(iParIter, Me.BatchData.nTAC)
+                                tac = Me.BatchData.TAC(itac, igrp)
+
+                        End Select
 
                 End Select
 
