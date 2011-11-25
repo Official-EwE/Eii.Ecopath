@@ -2888,7 +2888,7 @@ Public Class AppLauncher
     ''' Command handler; invokes the edit groups interface
     ''' </summary>
     Private Sub OnEditGroups(ByVal cmd As cCommand) Handles m_cmdEditGroups.OnInvoke
-        Dim dlg As New EditGroups(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
+        Dim dlg As New dlgEditGroups(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
         Me.Help.HelpTopic(dlg) = "Edit groups.htm"
         dlg.ShowDialog(Me)
     End Sub
