@@ -51,7 +51,8 @@ Friend Class cDBUpdate6_02_00_03
     End Function
 
     Private Function AddLastSavedEwEVersions(ByVal db As cEwEDatabase) As Boolean
-        Dim bSucces As Boolean = db.Execute("ALTER TABLE EcopathModel ADD COLUMN LastSavedVersion TEXT(40)")
+        Dim bSucces As Boolean = db.Execute("ALTER TABLE UpdateVersion ADD COLUMN EwEVersion TEXT(40)")
+        bSucces = bSucces And db.Execute("ALTER TABLE EcopathModel ADD COLUMN LastSavedVersion TEXT(40)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenario ADD COLUMN LastSavedVersion TEXT(40)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN LastSavedVersion TEXT(40)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcotracerScenario ADD COLUMN LastSavedVersion TEXT(40)")

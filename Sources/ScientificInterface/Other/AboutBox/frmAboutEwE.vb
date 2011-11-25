@@ -38,7 +38,7 @@ Namespace Other
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
-            Me.m_lbVersion.Text = String.Format(My.Resources.GENERIC_VERSION, an.Version.ToString())
+            Me.m_lbVersion.Text = String.Format(My.Resources.GENERIC_VERSION, an.Version.ToString(), cCore.BUILD_NUMBER)
             Me.m_lbCopyright.Text = String.Format(My.Resources.GENERIC_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format technical page

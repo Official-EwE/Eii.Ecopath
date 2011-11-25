@@ -3147,8 +3147,10 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function SetVersion(ByVal sVersion As Single, ByVal strRemark As String) As Boolean
 
+            Dim version As Version = cAssemblyUtils.GetVersion()
             Dim dtNow As Date = Date.Now()
-            Dim strSQL As String = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date]) VALUES('{0}', '{1}', '{2}')", sVersion, strRemark, dtNow.ToShortDateString())
+            Dim strSQL As String = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date], [EwEVersion]) VALUES('{0}', '{1}', '{2}', '{3}')", _
+                                                 sVersion, strRemark, dtNow.ToShortDateString(), version.ToString())
             Dim bSucces As Boolean = True
             Try
                 bSucces = Me.Execute(strSQL)

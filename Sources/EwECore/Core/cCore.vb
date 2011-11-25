@@ -59,8 +59,10 @@ Public Class cCore
     Public Const MAX_AGE As Integer = 400 '1200 '
     ''' <summary>The number of months in a year.</summary><remarks type="bs">A petition to change the number of months per year to 10 has been submitted to the international organization for standardization (ISO) dd Jun02, 2007. We sincerely hope that the next addendum to ISO 9000 will include this change to facilitate our computational models. Unfortunately, until this change has globally been implemented issued, Ecopath will be using the more conventional assumption of 12 months per year.</remarks>
     Public Const N_MONTHS As Integer = 12
-    ''' <summary>Max number of year ecosim or ecospace can run for</summary>
+    ''' <summary>Max number of years ecosim or ecospace can run for</summary>
     Public Const MAX_RUN_LENGTH As Integer = 500
+    ''' <summary>The global build number, set from an outside tool.</summary>
+    Public Const BUILD_NUMBER As String = "7004"
 
 #End Region ' Shared consts
 
@@ -4917,14 +4919,14 @@ Public Class cCore
     ''' <para>To: Villy Christensen</para>
     ''' <para>Subject: problem with migration for multistanza groups</para>
     ''' <para>Villy,</para>
-    ''' <para>That Cowan student uncovered a “bug” in the “other production” interface in ecopath. 
+    ''' <para>That Cowan student uncovered a ï¿½bugï¿½ in the ï¿½other productionï¿½ interface in ecopath. 
     ''' We do not include immigration accounting in Ecosim, so if a user sets nonzero 
     ''' immigration and emigration rates, only the emigration contribution to Z is included
     ''' in the multistanza dynamics. The problem with modeling immigration is how to specify
     ''' age-specific immigration rates for each age within any stanza specified to have
     ''' immigrating biomass; there is no obvious way to do the rates in a robustway,
     ''' especially considering that weights at age of immigrants may differ from those of
-    ''' “resident” creatures. I think the best strategy is just to not allow rates to be set
+    ''' ï¿½residentï¿½ creatures. I think the best strategy is just to not allow rates to be set
     ''' to nonzero values in the other production interface.</para>
     ''' <para>Carl</para>
     ''' </remarks>
