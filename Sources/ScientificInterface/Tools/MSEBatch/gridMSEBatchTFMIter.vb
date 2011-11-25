@@ -59,7 +59,7 @@ Public Class gridMSEBatchTFMIter
 
     Protected Overrides Sub FillData()
 
-        Dim group As MSE.cMSETFMGroup = Nothing
+        Dim group As MSE.cMSEBatchTFMGroup = Nothing
 
         ' For each group
         For iParIter As Integer = 1 To Core.MSEBatchManager.Parameters.nTFMIteration

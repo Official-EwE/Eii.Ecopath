@@ -40,7 +40,7 @@ Public Class frmMSERunBatch
 
         Me.m_zgh.GetPane(1).CurveList.Clear()
 
-        Me.m_BatchManager.setDefaults()
+        ' Me.m_BatchManager.setDefaults()
         Me.m_BatchManager.Connect(AddressOf Me.onProgress)
         Me.m_BatchManager.Run()
         Me.m_BatchManager.DisConnect()

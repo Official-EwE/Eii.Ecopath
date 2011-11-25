@@ -17,7 +17,6 @@ Imports SourceGrid2.Cells.Real
 Public Class gridMSEBatchTFM
     Inherits EwEGrid
 
-
     Private m_iter As Integer
 
 #Region " Internal defs "
@@ -90,7 +89,7 @@ Public Class gridMSEBatchTFM
 
     Protected Overrides Sub FillData()
 
-        Dim group As MSE.cMSETFMGroup = Nothing
+        Dim group As MSE.cMSEBatchTFMGroup = Nothing
         Dim RowStyle As cStyleGuide.eStyleFlags
 
         For iGroup As Integer = 1 To Core.nLivingGroups
@@ -184,31 +183,33 @@ Public Class gridMSEBatchTFM
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
-        Dim val As Object = Me(p.Row, p.Column).Value
+        Dim iGrp As Integer
+        Dim ColType As eColumnTypes
 
-        'Select Case DirectCast(p.Column, eColumnTypes)
-        '    Case eColumnTypes.Name : ti.Common = CStr(val)
-        '    Case eColumnTypes.Class : ti.Class = CStr(val)
-        '    Case eColumnTypes.Family : ti.Family = CStr(val)
-        '    Case eColumnTypes.Order : ti.Order = CStr(val)
-        '    Case eColumnTypes.Genus : ti.Genus = CStr(val)
-        '    Case eColumnTypes.Species : ti.Species = CStr(val)
-        '    Case eColumnTypes.Phylum : ti.Phylum = CStr(val)
-        '    Case eColumnTypes.Proportion : ti.Proportion = CSng(val)
-        '    Case eColumnTypes.Code : ti.CodeTaxon = CStr(val)
-        'End Select
+        Try
 
-        '' Perhaps redundant but hey
-        'Me.UpdateRow(p.Row)
+            Dim val As Object = Me(p.Row, p.Column).Value
+            iGrp = p.Row
+            ColType = CType(p.Column, eColumnTypes)
+
+            Select Case ColType
+                Case eColumnTypes.BBaseValue
+                    Core.MSEBatchManager.TFMGroups(iGrp).BBaseValue(Me.iCurIter) = CSng(val)
+                Case eColumnTypes.BLimValue
+                    Core.MSEBatchManager.TFMGroups(iGrp).BLimValue(Me.iCurIter) = CSng(val)
+                Case eColumnTypes.FOptValue
+                    Core.MSEBatchManager.TFMGroups(iGrp).FMaxValue(Me.iCurIter) = CSng(val)
+            End Select
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".OnCellEdited() Exception " & ex.Message)
+        End Try
 
         Return True
 
     End Function
 
     Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
-        'MyBase.OnCellValueChanged(p, cell)
-
-        ' Me.UIContext.Core.MSEBatchManager.TFMGroups(
 
 
     End Function

@@ -56,7 +56,7 @@ Public Class frmMSEBatchTFM
 
     Private Sub onCalcIterValues(sender As Object, e As System.EventArgs) Handles btCalcIters.Click
 
-        Me.m_BatchManager.CalculateIterationValues()
+        Me.m_BatchManager.CalculateTFMIterationValues()
 
     End Sub
 
