@@ -1054,8 +1054,8 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <comment>{0}: model path</comment>
   </data>
   <data name="GENERIC_VERSION" xml:space="preserve">
-    <value>Version {0}</value>
-    <comment>{0}: version number</comment>
+    <value>Version {0}, build {1}</value>
+    <comment>{0}: version number, {1}: build number</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_SUM_DESCRIPTION" xml:space="preserve">
     <value>Cells that contain a summary of row(s) and/or column(s) in a grid</value>

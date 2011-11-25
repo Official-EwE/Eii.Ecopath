@@ -1681,7 +1681,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Version {0}.
+        '''  Looks up a localized string similar to Version {0}, build {1}.
         '''</summary>
         Friend ReadOnly Property GENERIC_VERSION() As String
             Get
