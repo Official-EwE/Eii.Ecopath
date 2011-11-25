@@ -100,6 +100,9 @@
     <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EwE6, Version=6.3.1125.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=MSIL">
+      <ExecutableExtension>.exe</ExecutableExtension>
+    </Reference>
     <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ScientificInterfaceShared\Includes\SAUPUtil.dll</HintPath>
@@ -207,6 +210,15 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridLayerData.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\frmMSEBatchFixedF.Designer.vb">
+      <DependentUpon>frmMSEBatchFixedF.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\frmMSEBatchFixedF.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\MSEBatch\gridMSEBatchFixedF.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tools\MSEBatch\gridMSEBatchTFMIter.vb">
@@ -957,6 +969,9 @@
     <EmbeddedResource Include="Other\Options\ucOptionsPresentation.resx">
       <DependentUpon>ucOptionsPresentation.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\MSEBatch\frmMSEBatchFixedF.resx">
+      <DependentUpon>frmMSEBatchFixedF.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\MSEBatch\frmMSEBatchParameters.resx">
       <DependentUpon>frmMSEBatchParameters.vb</DependentUpon>
