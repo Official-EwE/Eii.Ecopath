@@ -678,6 +678,7 @@ Public Class gridDefineGroups
 
         'Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
+        Me.AllowBlockSelect = False
 
         ' Redim columns
         Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
