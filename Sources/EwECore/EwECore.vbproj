@@ -116,13 +116,15 @@
     <Compile Include="Database\cEwESQLServerDatabase.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_02_00_03.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
+    <Compile Include="MSE\BatchAnalysis\cMSEBatchFGroup.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchParameters.vb" />
     <Compile Include="Contaminant Tracer\cContaminantTracer.vb" />
     <Compile Include="Database\cDatabaseUpdater.vb" />
     <Compile Include="Database\cEwEAccessDatabase.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimGroupOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimStats.vb" />
-    <Compile Include="MSE\BatchAnalysis\cMSETFMGroup.vb" />
+    <Compile Include="MSE\BatchAnalysis\cMSEBatchTFMGroup.vb" />
+    <Compile Include="MSE\BatchAnalysis\cMSEBatchTACGroup.vb" />
     <Compile Include="Search\cSearchDatastructures.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceStats.vb" />
     <Compile Include="EcoSpace\Model\cGridSolver.vb" />
