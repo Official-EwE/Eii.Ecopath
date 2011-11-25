@@ -213,6 +213,9 @@ Public Class frmNavigationPanel
             'MSE Batch
             .Add("ndRunBatch", eCoreExecutionState.EcosimLoaded, GetType(frmMSERunBatch), "") ' ToDo: connect to help
             .Add("ndMSEBatchTFM", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchTFM), "") ' ToDo: connect to help
+            .Add("ndMSEBatchFixedF", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchFixedF), "") ' ToDo: connect to help
+            'jb Form not done yet
+            '' .Add("ndMSEBatchTAC", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchTAC), "") ' ToDo: connect to help
             .Add("ndMSEBatchParameters", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchParameters), "") ' ToDo: connect to help
 
             'Ecospace habitat capacity stuff...
