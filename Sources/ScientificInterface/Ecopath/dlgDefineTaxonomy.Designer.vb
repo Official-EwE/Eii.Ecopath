@@ -267,12 +267,12 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_btnConnect As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Private WithEvents m_cbIncludeExtent As System.Windows.Forms.CheckBox
-    Friend WithEvents m_gridResults As ScientificInterface.gridTaxonSearchResults
     Private WithEvents m_lblEngine As System.Windows.Forms.Label
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_hdrProps As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_btnProps As System.Windows.Forms.Button
     Private WithEvents m_cmbFilter As System.Windows.Forms.ComboBox
     Private WithEvents m_lblIn As System.Windows.Forms.Label
+    Private WithEvents m_gridResults As ScientificInterface.gridTaxonSearchResults
 
 End Class

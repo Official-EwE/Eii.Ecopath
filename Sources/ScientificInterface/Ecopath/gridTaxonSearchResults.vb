@@ -178,8 +178,7 @@ Public Class gridTaxonSearchResults
                 strValue = result.SourceKey
 
             Case eColumnTypes.Phylum
-                strValue = ""
-                style = style Or cStyleGuide.eStyleFlags.Null
+                strValue = result.Phylum
 
         End Select
 

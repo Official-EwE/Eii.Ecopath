@@ -181,7 +181,7 @@ Namespace Ecopath.Input
             Dim cell As EwECellBase = Nothing
 
             Me.Rows.Insert(iRow)
-            Me(iRow, eColumnTypes.Hierarchy) = New PropertyRowHeaderCell(Me.PropertyManager, taxon, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(CStr(taxon.Index))
 
             Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, taxon, eVarNameFlags.Name)
             Me(iRow, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
