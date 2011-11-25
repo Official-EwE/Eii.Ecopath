@@ -339,7 +339,7 @@ Namespace Controls.EwEGrid
                         ' #Yes: return empty cell
                         Return ""
                     End If
-                    Return Me.StyleGuide.FormatNumber(iValue, Me.Style, Me.m_iNumDigits, Me.m_tsGroupDigits)
+                    Return Me.StyleGuide.FormatNumber(iValue, Me.Style, 0, Me.m_tsGroupDigits)
                 End If
 
                 ' Return value as-is
