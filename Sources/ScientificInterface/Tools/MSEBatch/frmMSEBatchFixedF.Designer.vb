@@ -3,7 +3,7 @@ Imports ScientificInterfaceShared.Forms
 
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmMSEBatchTFM
+Partial Class frmMSEBatchFixedF
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -28,14 +28,14 @@ Partial Class frmMSEBatchTFM
     Private Sub InitializeComponent()
         Me.btCalcIters = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.txNTFM = New System.Windows.Forms.TextBox()
+        Me.txNFixedF = New System.Windows.Forms.TextBox()
         Me.rbCalcTypePercent = New System.Windows.Forms.RadioButton()
         Me.rbCalcTypeValue = New System.Windows.Forms.RadioButton()
         Me.tbGrids = New System.Windows.Forms.TabControl()
         Me.pageGroups = New System.Windows.Forms.TabPage()
-        Me.grdGroups = New ScientificInterface.gridMSEBatchTFM()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.UpDwnIter = New System.Windows.Forms.NumericUpDown()
+        Me.grdGroups = New ScientificInterface.gridMSEBatchFixedF()
         Me.pageIters = New System.Windows.Forms.TabPage()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cbGroups = New System.Windows.Forms.ComboBox()
@@ -64,12 +64,12 @@ Partial Class frmMSEBatchTFM
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "Number of parameter iterations"
         '
-        'txNTFM
+        'txNFixedF
         '
-        Me.txNTFM.Location = New System.Drawing.Point(166, 4)
-        Me.txNTFM.Name = "txNTFM"
-        Me.txNTFM.Size = New System.Drawing.Size(50, 20)
-        Me.txNTFM.TabIndex = 1
+        Me.txNFixedF.Location = New System.Drawing.Point(166, 4)
+        Me.txNFixedF.Name = "txNFixedF"
+        Me.txNFixedF.Size = New System.Drawing.Size(50, 20)
+        Me.txNFixedF.TabIndex = 1
         '
         'rbCalcTypePercent
         '
@@ -104,21 +104,39 @@ Partial Class frmMSEBatchTFM
         Me.tbGrids.Location = New System.Drawing.Point(2, 79)
         Me.tbGrids.Name = "tbGrids"
         Me.tbGrids.SelectedIndex = 0
-        Me.tbGrids.Size = New System.Drawing.Size(885, 455)
+        Me.tbGrids.Size = New System.Drawing.Size(882, 460)
         Me.tbGrids.TabIndex = 10
         '
         'pageGroups
         '
-        Me.pageGroups.Controls.Add(Me.grdGroups)
         Me.pageGroups.Controls.Add(Me.Label1)
         Me.pageGroups.Controls.Add(Me.UpDwnIter)
+        Me.pageGroups.Controls.Add(Me.grdGroups)
         Me.pageGroups.Location = New System.Drawing.Point(4, 22)
         Me.pageGroups.Name = "pageGroups"
         Me.pageGroups.Padding = New System.Windows.Forms.Padding(3)
-        Me.pageGroups.Size = New System.Drawing.Size(877, 429)
+        Me.pageGroups.Size = New System.Drawing.Size(874, 434)
         Me.pageGroups.TabIndex = 0
         Me.pageGroups.Text = "By groups"
         Me.pageGroups.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(0, 7)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(77, 13)
+        Me.Label1.TabIndex = 7
+        Me.Label1.Text = "Show iteration "
+        '
+        'UpDwnIter
+        '
+        Me.UpDwnIter.Location = New System.Drawing.Point(80, 5)
+        Me.UpDwnIter.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.UpDwnIter.Name = "UpDwnIter"
+        Me.UpDwnIter.Size = New System.Drawing.Size(60, 20)
+        Me.UpDwnIter.TabIndex = 8
+        Me.UpDwnIter.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'grdGroups
         '
@@ -140,9 +158,9 @@ Partial Class frmMSEBatchTFM
         Me.grdGroups.FocusStyle = SourceGrid2.FocusStyle.None
         Me.grdGroups.GridToolTipActive = True
         Me.grdGroups.iCurIter = 1
-        Me.grdGroups.Location = New System.Drawing.Point(0, 31)
+        Me.grdGroups.Location = New System.Drawing.Point(0, 28)
         Me.grdGroups.Name = "grdGroups"
-        Me.grdGroups.Size = New System.Drawing.Size(877, 398)
+        Me.grdGroups.Size = New System.Drawing.Size(874, 406)
         Me.grdGroups.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -152,26 +170,8 @@ Partial Class frmMSEBatchTFM
             Or SourceGrid2.GridSpecialKeys.Enter) _
             Or SourceGrid2.GridSpecialKeys.Escape) _
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.grdGroups.TabIndex = 9
+        Me.grdGroups.TabIndex = 6
         Me.grdGroups.UIContext = Nothing
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(0, 7)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(77, 13)
-        Me.Label1.TabIndex = 7
-        Me.Label1.Text = "Show iteration "
-        '
-        'UpDwnIter
-        '
-        Me.UpDwnIter.Location = New System.Drawing.Point(80, 5)
-        Me.UpDwnIter.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.UpDwnIter.Name = "UpDwnIter"
-        Me.UpDwnIter.Size = New System.Drawing.Size(60, 20)
-        Me.UpDwnIter.TabIndex = 8
-        Me.UpDwnIter.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'pageIters
         '
@@ -181,7 +181,7 @@ Partial Class frmMSEBatchTFM
         Me.pageIters.Location = New System.Drawing.Point(4, 22)
         Me.pageIters.Name = "pageIters"
         Me.pageIters.Padding = New System.Windows.Forms.Padding(3)
-        Me.pageIters.Size = New System.Drawing.Size(877, 429)
+        Me.pageIters.Size = New System.Drawing.Size(874, 434)
         Me.pageIters.TabIndex = 1
         Me.pageIters.Text = "By iterations"
         Me.pageIters.UseVisualStyleBackColor = True
@@ -238,19 +238,19 @@ Partial Class frmMSEBatchTFM
         Me.grdIters.TabIndex = 9
         Me.grdIters.UIContext = Nothing
         '
-        'frmMSEBatchTFM
+        'frmMSEBatchFixedF
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(887, 534)
+        Me.ClientSize = New System.Drawing.Size(884, 539)
         Me.Controls.Add(Me.tbGrids)
         Me.Controls.Add(Me.rbCalcTypeValue)
         Me.Controls.Add(Me.rbCalcTypePercent)
-        Me.Controls.Add(Me.txNTFM)
+        Me.Controls.Add(Me.txNFixedF)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.btCalcIters)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Name = "frmMSEBatchTFM"
+        Me.Name = "frmMSEBatchFixedF"
         Me.Text = "MSE batch TFM"
         Me.tbGrids.ResumeLayout(False)
         Me.pageGroups.ResumeLayout(False)
@@ -264,16 +264,16 @@ Partial Class frmMSEBatchTFM
     End Sub
     Friend WithEvents btCalcIters As System.Windows.Forms.Button
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents txNTFM As System.Windows.Forms.TextBox
+    Friend WithEvents txNFixedF As System.Windows.Forms.TextBox
     Friend WithEvents rbCalcTypePercent As System.Windows.Forms.RadioButton
     Friend WithEvents rbCalcTypeValue As System.Windows.Forms.RadioButton
     Friend WithEvents tbGrids As System.Windows.Forms.TabControl
     Friend WithEvents pageGroups As System.Windows.Forms.TabPage
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents UpDwnIter As System.Windows.Forms.NumericUpDown
+    Private WithEvents grdGroups As ScientificInterface.gridMSEBatchFixedF
     Friend WithEvents pageIters As System.Windows.Forms.TabPage
     Friend WithEvents grdIters As ScientificInterface.gridMSEBatchTFMIter
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents cbGroups As System.Windows.Forms.ComboBox
-    Friend WithEvents grdGroups As ScientificInterface.gridMSEBatchTFM
 End Class
