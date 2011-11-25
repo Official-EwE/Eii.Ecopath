@@ -1,0 +1,227 @@
+﻿
+#Region " Imports "
+
+Option Strict On
+Imports EwECore.ValueWrapper
+Imports EwEUtils.Core
+
+#End Region
+
+Namespace MSE
+
+    Public Class cMSEBatchFGroup
+        Inherits cCoreGroupBase
+
+        'Private m_BLimValues() As Single
+        'Private m_BBaseValues() As Single
+        'Private m_FMaxValues() As Single
+        Private m_BatchData As MSEBatchManager.cMSEBatchDataStructures
+
+        Public Sub New(ByRef theCore As cCore, ByRef MSEBatchData As MSEBatchManager.cMSEBatchDataStructures, ByVal theGroupDBID As Integer)
+            MyBase.New(theCore)
+
+            Dim val As cValue
+            Dim meta As cVariableMetaData
+
+            Me.m_dataType = eDataTypes.MSEBatchFixedFInput
+            Me.m_coreComponent = eCoreComponentType.MSE
+            Me.AllowValidation = False
+            Me.DBID = theGroupDBID
+
+            Me.m_BatchData = MSEBatchData
+
+            'default OK status used for setVariable
+            'see comment setVariable(...)
+            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEBatchFLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchFLower))
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEBatchFUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchFUpper))
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.MSEFixedF, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMBBaseLower))
+            m_values.Add(val.varName, val)
+
+
+            'Used
+            meta = New cVariableMetaData()
+            val = New cValue(New Boolean, eVarNameFlags.MSEBatchFManaged, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchTFMManaged))
+            m_values.Add(val.varName, val)
+
+            Me.AllowValidation = True
+
+        End Sub
+
+
+        Public Property FixedMort As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEFixedF))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEFixedF, value)
+            End Set
+        End Property
+
+        Public Property FLower As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEBatchFLower))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEBatchFLower, value)
+            End Set
+        End Property
+
+        Public Property FUpper As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEBatchFUpper))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEBatchFUpper, value)
+            End Set
+        End Property
+
+
+
+        Public Property isManaged As Boolean
+            Get
+                Return CBool(GetVariable(eVarNameFlags.MSEBatchFManaged))
+            End Get
+
+            Set(ByVal value As Boolean)
+                SetVariable(eVarNameFlags.MSEBatchFManaged, value)
+            End Set
+        End Property
+
+
+        Public Property FixedFValue(IterationIndex As Integer) As Single
+            Get
+                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nFixedF Then
+                    Return Me.m_BatchData.FixedF(IterationIndex, Me.Index)
+                End If
+                'OH My.....
+                Return cCore.NULL_VALUE
+            End Get
+
+            Set(ByVal value As Single)
+                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+                If IterationIndex <= Me.m_BatchData.nFixedF Then
+                    Me.m_BatchData.FixedF(IterationIndex, Me.Index) = value
+                End If
+            End Set
+        End Property
+
+
+
+        Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
+
+            Select Case VarName
+                Case eVarNameFlags.MSEBatchFValues
+                    Return Me.m_BatchData.FixedF(iIndex, Index)
+
+            End Select
+
+            Return MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3)
+
+        End Function
+
+
+        Public Overrides Function SetVariable(VarName As EwEUtils.Core.eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
+
+            Select Case VarName
+
+                Case eVarNameFlags.MSEBatchFValues
+
+                    Me.m_BatchData.FixedF(iSecondaryIndex, Index) = CSng(newValue)
+                    Return True
+            End Select
+
+            Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
+
+        End Function
+
+
+        Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+            MyBase.ResetStatusFlags(bForceReset)
+
+            Me.AllowValidation = False
+            Dim tcatch As Single
+
+            For iflt As Integer = 1 To Me.m_core.nFleets
+                Dim fleet As cFleetInput = Me.m_core.FleetInputs(iflt)
+                tcatch += fleet.Landings(Me.Index) + fleet.Discards(Me.Index)
+            Next
+
+            If tcatch = 0.0! Then
+                For Each var As cValue In Me.m_values.Values
+                    If var.varName <> eVarNameFlags.Name And var.varName <> eVarNameFlags.Index And var.varName <> eVarNameFlags.DBID Then
+                        Me.SetStatusFlags(var.varName, eStatusFlags.Null Or eStatusFlags.NotEditable)
+                    End If
+                Next
+            End If
+
+            Return True
+
+        End Function
+
+
+        Public Sub CalcValues()
+
+            Me.calcDefaults(Me.FixedMort, Me.FLower, Me.FUpper, Me.m_BatchData.nFixedF, Me.m_BatchData.IterCalcType, Me.m_BatchData.FixedF)
+
+        End Sub
+
+
+        Private Sub calcDefaults(Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, CalcType As eMSEBatchIterCalcTypes, ByRef values(,) As Single)
+
+            Try
+
+                Dim LowB As Single, UpB As Single
+                Dim dx As Single
+
+                If CalcType = eMSEBatchIterCalcTypes.Percent Then
+                    LowB = Value - Value * LowPercent
+                    UpB = Value + Value * UPPercent
+                    dx = (UpB - LowB) / (n - 1)
+
+                ElseIf CalcType = eMSEBatchIterCalcTypes.UpperLowerValues Then
+                    LowB = LowPercent
+                    UpB = UPPercent
+                    dx = (UpB - LowB) / (n - 1)
+
+                End If
+
+                For i As Integer = 1 To n
+                    values(i, Me.Index) = LowB + dx * (i - 1)
+                Next
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+
+        Friend Sub updateN()
+            Try
+
+                'ReDim Preserve Me.m_BLimValues(Me.m_BatchData.nTFM)
+                'ReDim Preserve Me.m_BBaseValues(Me.m_BatchData.nTFM)
+                'ReDim Preserve Me.m_FMaxValues(Me.m_BatchData.nTFM)
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+
+    End Class
+
+End Namespace
