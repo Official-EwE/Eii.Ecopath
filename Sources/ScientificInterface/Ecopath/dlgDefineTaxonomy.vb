@@ -474,16 +474,7 @@ Public Class dlgDefineTaxa
         ' Successful?
         If searchterm IsNot Nothing Then
             '#Yes: populate term
-            Select Case Me.m_cmbFilter.SelectedIndex
-                Case 0 ' all fields
-                    searchterm.SearchFields = eTaxonLevelType.Any
-                Case 1 ' common name
-                    searchterm.SearchFields = eTaxonLevelType.Common
-                Case 2 ' species
-                    searchterm.SearchFields = eTaxonLevelType.Species
-                Case 3 ' family
-                    searchterm.SearchFields = eTaxonLevelType.Family
-            End Select
+            searchterm.SearchFields = DirectCast(Me.m_cmbFilter.SelectedItem, eTaxonLevelType)
             searchterm.Common = strTerm
             ' Update UI
             Me.m_tbSearch.Text = strTerm
