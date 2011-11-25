@@ -1212,9 +1212,18 @@ Namespace Core
         MSETFMFOptValues
 
         'TAC total allowable catch
-        MSETACNIteration
-        MSETACLower
-        MSETACUpper
+        MSEBatchTACNIteration
+        MSEBatchTACLower
+        MSEBatchTACUpper
+        MSEBatchTACValues
+        MSEBatchTACManaged
+
+        'F fishing mortality
+        MSEBatchFNIteration
+        MSEBatchFLower
+        MSEBatchFUpper
+        MSEBatchFValues
+        MSEBatchFManaged
 
         'MSE Batch output types
         MSEBatchOutputBiomass
@@ -1992,8 +2001,10 @@ Namespace Core
         MSEBatchManager = 101
         MSEBatchParameters = 102
         MSEBatchTFMInput = 103
+        MSEBatchFixedFInput = 104
+        MSEBatchTACInput = 105
 
-        EcospaceLayerDriver = 104
+        EcospaceLayerDriver = 106
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
