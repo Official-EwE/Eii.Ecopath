@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="EwECore.MSE.cMSETFMGroup">
+  <Class Name="EwECore.MSE.cMSEFGroup">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAABAAAAAABIAAAAAgAAAAAABAAAABQAAAAA=</HashCode>
-      <FileName>MSE\BatchAnalysis\cMSETFMGroup.vb</FileName>
+      <HashCode>CAAAIAAAAAAAAAEAJBYAAAQAhgAAAAQhCAAAAQAAQhA=</HashCode>
+      <FileName>MSE\BatchAnalysis\cMSEBatchFGroup.vb</FileName>
+      <NewMemberFileName>MSE\BatchAnalysis\cMSETFMGroup.vb</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EwECore.cMSEBatchParameters">
     <Position X="3.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>MAEAAAAAAAAAAAEAAABIAAAAAACAAAAAQgAAAAAAAgA=</HashCode>
       <FileName>MSE\BatchAnalysis\cMSEBatchParameters.vb</FileName>
     </TypeIdentifier>
   </Class>

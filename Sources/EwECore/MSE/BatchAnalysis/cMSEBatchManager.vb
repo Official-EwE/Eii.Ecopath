@@ -66,6 +66,8 @@ Namespace MSEBatchManager
 
         Private m_parameters As cMSEBatchParameters
         Private m_lstTFMs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBatchTFMInput, 1)
+        Private m_lstFixedFs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBatchFixedFInput, 1)
+        Private m_lstTACs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBatchTACInput, 1)
         Private m_OnProgressDelegate As onMSEBatchProgress
 #End Region
 
@@ -105,8 +107,8 @@ Namespace MSEBatchManager
 
             MSE.BatchManager = Me
 
-            Me.m_BatchData.redimForcing(1)
-            Me.m_BatchData.redimControlTypes(1, Me.m_core.nFleets)
+            'Me.m_BatchData.redimForcing(1)
+            'Me.m_BatchData.redimControlTypes(1, Me.m_core.nFleets)
             Me.m_BatchData.OuputDir = Me.m_core.OutputPath
 
             Try
@@ -173,20 +175,33 @@ Namespace MSEBatchManager
         Public Sub LoadScenario()
             Try
 
-                Me.m_BatchData.redimTFM(10, Me.nGroups)
-                Me.m_BatchData.setDefaultTFM()
+                Me.setDefaults()
 
                 Me.m_parameters = New cMSEBatchParameters(Me.m_core, Me.m_BatchData, Me.m_BatchData.ScenarioDBID)
 
                 Me.m_lstTFMs.Clear()
                 For igrp As Integer = 1 To Me.nGroups
-                    Me.m_lstTFMs.Add(New cMSETFMGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
+                    Me.m_lstTFMs.Add(New cMSEBatchTFMGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
+                Next
+
+                Me.m_lstFixedFs.Clear()
+                For igrp As Integer = 1 To Me.nGroups
+                    Me.m_lstFixedFs.Add(New cMSEBatchFGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
+                Next
+
+                Me.m_lstTACs.Clear()
+                For igrp As Integer = 1 To Me.nGroups
+                    Me.m_lstTACs.Add(New cMSEBatchTACGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
                 Next
 
                 'Load the values into the input objects
                 Me.Load()
 
-                Me.UpdateNParameterIters()
+                'Calculate Iteration values base on defaults set above
+                Me.CalculateTFMIterationValues()
+                Me.CalculateFIterationValues()
+                Me.CalculateTACIterationValues()
+
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".LoadScenario() Exception: " & ex.Message)
@@ -213,7 +228,7 @@ Namespace MSEBatchManager
             Me.Parameters.OutputDir = Me.m_BatchData.OuputDir
 
             For igrp As Integer = 1 To Me.nGroups
-                Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
+                Dim tfm As cMSEBatchTFMGroup = Me.m_lstTFMs.Item(igrp)
                 tfm.AllowValidation = False
 
                 tfm.Index = igrp
@@ -236,7 +251,31 @@ Namespace MSEBatchManager
                 tfm.ResetStatusFlags()
                 tfm.AllowValidation = True
 
-            Next
+                'Fixed Fishing Mortality
+                Dim FixedF As cMSEBatchFGroup = Me.m_lstFixedFs.Item(igrp)
+                FixedF.AllowValidation = False
+
+                FixedF.Index = igrp
+                FixedF.Name = Me.m_core.m_EcoPathData.GroupName(igrp)
+
+                FixedF.FixedMort = Me.m_MSEdata.FixedF(igrp)
+                FixedF.FLower = Me.m_BatchData.FixedFLower(igrp)
+                FixedF.FUpper = Me.m_BatchData.FixedFUpper(igrp)
+                FixedF.AllowValidation = True
+
+                'Total Allowable Catch
+                Dim TAC As cMSEBatchTACGroup = Me.m_lstTACs.Item(igrp)
+                TAC.AllowValidation = False
+
+                TAC.Index = igrp
+                TAC.Name = Me.m_core.m_EcoPathData.GroupName(igrp)
+
+                TAC.TAC = Me.m_MSEdata.TAC(igrp)
+                TAC.TACLower = Me.m_BatchData.TACLower(igrp)
+                TAC.TACUpper = Me.m_BatchData.TACUpper(igrp)
+                TAC.AllowValidation = True
+
+            Next igrp
 
             Me.Parameters.AllowValidation = True
             Me.m_BatchData.isInit = True
@@ -336,7 +375,7 @@ Namespace MSEBatchManager
 
             For igrp = 1 To Me.nGroups
                 'TFM's
-                Dim tfm As cMSETFMGroup = Me.m_lstTFMs.Item(igrp)
+                Dim tfm As cMSEBatchTFMGroup = Me.m_lstTFMs.Item(igrp)
                 Me.m_MSEdata.Blim(igrp) = tfm.BLim
                 Me.m_BatchData.BlimLower(igrp) = tfm.BLimLower
                 Me.m_BatchData.BlimUpper(igrp) = tfm.BLimUpper
@@ -395,14 +434,38 @@ Namespace MSEBatchManager
         End Sub
 
 
-        Public Sub CalculateIterationValues()
+        Public Sub CalculateTFMIterationValues()
 
-            For Each tfm As cMSETFMGroup In Me.m_lstTFMs
+            For Each tfm As cMSEBatchTFMGroup In Me.m_lstTFMs
                 tfm.CalcValues()
             Next
 
             Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
                                                         eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
+
+        End Sub
+
+
+        Public Sub CalculateFIterationValues()
+
+            For Each FixedF As cMSEBatchFGroup In Me.m_lstFixedFs
+                FixedF.CalcValues()
+            Next
+
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
+                                                        eMessageImportance.Maintenance, eDataTypes.MSEBatchFixedFInput))
+
+        End Sub
+
+
+        Public Sub CalculateTACIterationValues()
+
+            For Each TAC As cMSEBatchTACGroup In Me.m_lstTACs
+                TAC.CalcValues()
+            Next
+
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
+                                                        eMessageImportance.Maintenance, eDataTypes.MSEBatchTACInput))
 
         End Sub
 
@@ -413,14 +476,20 @@ Namespace MSEBatchManager
         ''' <remarks></remarks>
         Public Sub setDefaults()
 
-            'Me.m_BatchData.redimTFM(10, Me.nGroups)
-            'Me.m_BatchData.setDefaultTFM()
+            Me.m_BatchData.redimTFM(10, Me.nGroups)
+            Me.m_BatchData.redimFixedF(10, Me.nGroups)
+            Me.m_BatchData.redimTAC(10, Me.nGroups)
 
-            Me.m_BatchData.RunType = eMSEBatchRunTypes.TFM
+            Me.m_BatchData.redimControlTypes(1, Me.m_core.nFleets)
+            Me.m_BatchData.redimForcing(1)
+
+            Me.m_BatchData.setDefaultLimits()
+
             Me.m_BatchData.nParIters = Me.m_BatchData.nTFM
-            Me.m_BatchData.nControlTypes = 1
-            Me.m_BatchData.nForcing = 1
+            Me.m_BatchData.RunType = eMSEBatchRunTypes.TFM
+
             Me.m_BatchData.bForcingLoaded = False
+
             Me.m_BatchData.OuputDir = Me.m_core.OutputPath
 
         End Sub
@@ -831,11 +900,25 @@ Namespace MSEBatchManager
             End Get
         End Property
 
-        Public ReadOnly Property TFMGroups(GroupIndex As Integer) As cMSETFMGroup
+        Public ReadOnly Property TFMGroups(GroupIndex As Integer) As cMSEBatchTFMGroup
             Get
                 Return Me.m_lstTFMs.Item(GroupIndex)
             End Get
         End Property
+
+        Public ReadOnly Property FixedFGroups(GroupIndex As Integer) As cMSEBatchFGroup
+            Get
+                Return Me.m_lstFixedFs.Item(GroupIndex)
+            End Get
+        End Property
+
+
+        Public ReadOnly Property TACGroups(GroupIndex As Integer) As cMSEBatchTACGroup
+            Get
+                Return Me.m_lstTACs.Item(GroupIndex)
+            End Get
+        End Property
+
 
         ''' <summary>
         ''' 
@@ -942,9 +1025,9 @@ Namespace MSEBatchManager
         End Sub
 
 
-        Public ReadOnly Property TFMInputs(ByVal iGroup As Integer) As cMSETFMGroup
+        Public ReadOnly Property TFMInputs(ByVal iGroup As Integer) As cMSEBatchTFMGroup
             Get
-                Return DirectCast(Me.m_lstTFMs(iGroup), cMSETFMGroup)
+                Return DirectCast(Me.m_lstTFMs(iGroup), cMSEBatchTFMGroup)
             End Get
         End Property
 

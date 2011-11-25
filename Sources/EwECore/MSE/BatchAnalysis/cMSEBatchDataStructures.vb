@@ -95,8 +95,8 @@ Namespace MSEBatchManager
 
         Public StopRun As Boolean
 
-        Public nGroups As Integer
-        Public nFleets As Integer
+        Public m_nGroups As Integer
+        Public m_nFleets As Integer
 
 
         Public m_orgBlim() As Single
@@ -128,9 +128,28 @@ Namespace MSEBatchManager
         Public FOptLower() As Single
         Public FOptUpper() As Single
 
+        Public FixedFLower() As Single
+        Public FixedFUpper() As Single
+
+        Public TACLower() As Single
+        Public TACUpper() As Single
+
         Public IterCalcType As eMSEBatchIterCalcTypes = eMSEBatchIterCalcTypes.Percent
 
         Public GroupRunType() As eMSEBatchRunTypes
+
+
+        Public ReadOnly Property nGroups As Integer
+            Get
+                Return Me.m_nGroups
+            End Get
+        End Property
+
+        Public ReadOnly Property nFleets As Integer
+            Get
+                Return Me.m_nFleets
+            End Get
+        End Property
 
         Public Sub redimForcing(ByVal nForcingFunctions As Integer)
             nForcing = nForcingFunctions
@@ -152,7 +171,6 @@ Namespace MSEBatchManager
         Public Sub redimTFM(ByVal nTFM As Integer, ByVal nGroups As Integer)
             Me.nTFM = nTFM
             If nTFM = 0 Then nTFM = 1
-            Me.nGroups = nGroups
 
             ReDim tfmBlim(Me.nTFM, nGroups)
             ReDim tfmBbase(Me.nTFM, nGroups)
@@ -182,25 +200,26 @@ Namespace MSEBatchManager
         Public Sub redimFixedF(ByVal nFIters As Integer, ByVal nGroups As Integer)
             Me.nFixedF = nFIters
             If nFixedF = 0 Then nFixedF = 1
-            Me.nGroups = nGroups
 
             ReDim FixedF(nFixedF, nGroups)
+            ReDim FixedFLower(nGroups)
+            ReDim FixedFUpper(nGroups)
 
         End Sub
 
         Public Sub redimTAC(ByVal nTACIters As Integer, ByVal nGroups As Integer)
             Me.nTAC = nTACIters
             If nTAC = 0 Then nTAC = 1
-            Me.nGroups = nGroups
 
             ReDim TAC(nTAC, nGroups)
+            ReDim TACLower(nGroups)
+            ReDim TACUpper(nGroups)
 
         End Sub
 
         Public Sub redimControlTypes(ByVal nTypes As Integer, ByVal nFleets As Integer)
             nControlTypes = nTypes
             If nControlTypes = 0 Then nControlTypes = 1
-            Me.nFleets = nFleets
 
             ReDim ControlType(nControlTypes, nFleets)
 
@@ -213,9 +232,7 @@ Namespace MSEBatchManager
 
         End Sub
 
-        Public Sub setDefaultTFM()
-            'maybe not set the number of parameter iterations????
-            '  Me.nTFM = 10
+        Public Sub setDefaultLimits()
             Dim defautlLL As Single = 0.5
             Dim defautlUp As Single = 1.0
             For igrp As Integer = 1 To Me.nGroups
@@ -230,12 +247,19 @@ Namespace MSEBatchManager
 
                 FOptLower(igrp) = defautlLL
                 FOptUpper(igrp) = defautlUp
+
+                FixedFLower(igrp) = defautlLL
+                FixedFUpper(igrp) = defautlUp
+
+                TACLower(igrp) = defautlLL
+                TACUpper(igrp) = defautlUp
+
             Next
         End Sub
 
-        Public Sub New()
-            Me.bForcingLoaded = False
-        End Sub
+        'Public Sub New()
+        '    Me.bForcingLoaded = False
+        'End Sub
 
 
         Public Sub New(MSEdata As MSE.cMSEDataStructures)
@@ -247,6 +271,9 @@ Namespace MSEBatchManager
         End Sub
 
         Private Sub redimToMSE(MSEdata As MSE.cMSEDataStructures)
+
+            Me.m_nGroups = MSEdata.NGroups
+            Me.m_nFleets = MSEdata.nFleets
 
             ReDim GroupRunType(MSEdata.NGroups)
 
