@@ -32,6 +32,14 @@ Public Class cMSEBatchParameters
         val = New cValue(New Integer, eVarNameFlags.MSETFMNIteration, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMNIteration))
         m_values.Add(val.varName, val)
 
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Integer, eVarNameFlags.MSEBatchFNIteration, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchFNIteration))
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Integer, eVarNameFlags.MSEBatchTACNIteration, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchTACNIteration))
+        m_values.Add(val.varName, val)
+
         Dim nTypes As Integer = [Enum].GetValues(GetType(eMSEBatchIterCalcTypes)).Length
         meta = New cVariableMetaData(0, nTypes, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Integer, eVarNameFlags.MSEBatchIterCalcType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchIterCalcType))
@@ -94,6 +102,27 @@ Public Class cMSEBatchParameters
             SetVariable(eVarNameFlags.MSETFMNIteration, value)
         End Set
     End Property
+
+    Public Property nFixedFIteration As Integer
+        Get
+            Return CInt(GetVariable(eVarNameFlags.MSEBatchFNIteration))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.MSEBatchFNIteration, value)
+        End Set
+    End Property
+
+    Public Property nTACIteration As Integer
+        Get
+            Return CInt(GetVariable(eVarNameFlags.MSEBatchTACNIteration))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.MSEBatchTACNIteration, value)
+        End Set
+    End Property
+
 
     Public Property IterCalcType As Integer
         Get

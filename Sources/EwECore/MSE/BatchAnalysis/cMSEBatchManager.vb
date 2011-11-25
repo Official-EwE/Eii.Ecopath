@@ -186,12 +186,12 @@ Namespace MSEBatchManager
 
                 Me.m_lstFixedFs.Clear()
                 For igrp As Integer = 1 To Me.nGroups
-                    Me.m_lstFixedFs.Add(New cMSEBatchFGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
+                    Me.m_lstFixedFs.Add(New cMSEBatchFGroup(Me.m_core, Me.m_BatchData, igrp))
                 Next
 
                 Me.m_lstTACs.Clear()
                 For igrp As Integer = 1 To Me.nGroups
-                    Me.m_lstTACs.Add(New cMSEBatchTACGroup(Me.m_core, Me.m_BatchData, Me.m_BatchData.TFMDBIDs(igrp)))
+                    Me.m_lstTACs.Add(New cMSEBatchTACGroup(Me.m_core, Me.m_BatchData, igrp))
                 Next
 
                 'Load the values into the input objects
@@ -216,6 +216,8 @@ Namespace MSEBatchManager
 
             Me.Parameters.AllowValidation = False
             Me.Parameters.nTFMIteration = Me.m_BatchData.nTFM
+            Me.Parameters.nFixedFIteration = Me.m_BatchData.nFixedF
+            Me.Parameters.nTACIteration = Me.m_BatchData.nTAC
             Me.Parameters.IterCalcType = DirectCast(Me.m_BatchData.IterCalcType, Integer)
 
             Me.Parameters.bSaveBiomass = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.Biomass)
@@ -261,6 +263,7 @@ Namespace MSEBatchManager
                 FixedF.FixedMort = Me.m_MSEdata.FixedF(igrp)
                 FixedF.FLower = Me.m_BatchData.FixedFLower(igrp)
                 FixedF.FUpper = Me.m_BatchData.FixedFUpper(igrp)
+                FixedF.ResetStatusFlags()
                 FixedF.AllowValidation = True
 
                 'Total Allowable Catch
@@ -273,6 +276,7 @@ Namespace MSEBatchManager
                 TAC.TAC = Me.m_MSEdata.TAC(igrp)
                 TAC.TACLower = Me.m_BatchData.TACLower(igrp)
                 TAC.TACUpper = Me.m_BatchData.TACUpper(igrp)
+                TAC.ResetStatusFlags()
                 TAC.AllowValidation = True
 
             Next igrp
@@ -369,10 +373,6 @@ Namespace MSEBatchManager
             Next
 
 
-            ' Me.m_BatchData.OuputDir(eMSEBatchOuputTypes.QB) = Me.Parameters.OutputDir
-
-            'Me.m_BatchData.redimTFM(Me.m_BatchData.nTFM, Me.nGroups)
-
             For igrp = 1 To Me.nGroups
                 'TFM's
                 Dim tfm As cMSEBatchTFMGroup = Me.m_lstTFMs.Item(igrp)
@@ -404,6 +404,32 @@ Namespace MSEBatchManager
                     Me.m_BatchData.tfmBbase(iTFM, igrp) = tfm.BBaseValue(iTFM)
                     Me.m_BatchData.tfmFmax(iTFM, igrp) = tfm.FMaxValue(iTFM)
                 Next iTFM
+
+            Next igrp
+
+
+            For igrp = 1 To Me.nGroups
+                'TFM's
+                Dim FixedF As cMSEBatchFGroup = Me.m_lstFixedFs.Item(igrp)
+                Me.m_MSEdata.FixedF(igrp) = FixedF.FixedMort
+                Me.m_BatchData.FixedFLower(igrp) = FixedF.FLower
+                Me.m_BatchData.FixedFUpper(igrp) = FixedF.FUpper
+
+               
+                'isManaged The concept is to set this flag for the type of Quota TMF, F, TAC... for a group
+                'However the MSE does not work this way
+                'It sets the Quota for a group base on > zero values in F, TAC see cMMSEUpdateQuotas
+                'Here we need some kind of a flag that tells what type to use when setting the Quota
+                If FixedF.isManaged Then
+                    'this should be exclusive only TFM should have its isManaged Flag set to True
+                    'Other Quota types should update to the new value
+                    Me.m_BatchData.GroupRunType(igrp) = eMSEBatchRunTypes.FixedF
+
+                End If
+
+                For iFixed As Integer = 1 To Me.m_BatchData.nFixedF
+                    Me.m_BatchData.tfmBlim(iFixed, igrp) = FixedF.FixedFValue(iFixed)
+                Next iFixed
 
             Next igrp
 
