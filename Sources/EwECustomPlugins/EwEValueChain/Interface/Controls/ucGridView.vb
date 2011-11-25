@@ -1,4 +1,7 @@
-﻿Imports ScientificInterfaceShared.Controls.EwEGrid
+﻿Imports EwECore
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Friend Class ucGridView
 
@@ -14,9 +17,38 @@ Friend Class ucGridView
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
+
         MyBase.OnLoad(e)
+
+        Dim core As cCore = Me.m_grid.UIContext.Core
+        Dim group As cEcoPathGroupInput = Nothing
+        Dim fleet As cFleetInput = Nothing
+
         Me.m_qe = New cQuickEditHandler()
         Me.m_qe.Attach(Me.m_grid, Me.m_grid.UIContext, Me.m_ts, "")
+
+        If Me.CanFilter Then
+
+            Me.m_tscmbGroup.Items.Add(New cCoreInputOutputControlItem(SharedResources.GENERIC_VALUE_ALL))
+            For igroup As Integer = 1 To core.nGroups
+                group = core.EcoPathGroupInputs(igroup)
+                If (group.IsFished) Then
+                    Me.m_tscmbGroup.Items.Add(New cCoreInputOutputControlItem(group))
+                End If
+            Next
+            Me.m_tscmbGroup.SelectedIndex = 0
+
+            Me.m_tscmbFleet.Items.Add(New cCoreInputOutputControlItem(SharedResources.GENERIC_VALUE_ALL))
+            For ifleet As Integer = 1 To core.nFleets
+                fleet = core.FleetInputs(ifleet)
+                Me.m_tscmbFleet.Items.Add(New cCoreInputOutputControlItem(fleet))
+            Next
+            Me.m_tscmbFleet.SelectedIndex = 0
+
+        End If
+
+        Me.UpdateControls()
+
     End Sub
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -40,5 +72,37 @@ Friend Class ucGridView
         End Try
 
     End Sub
+
+    Private Sub OnSelectGroup(sender As System.Object, e As System.EventArgs) _
+        Handles m_tscmbGroup.SelectedIndexChanged
+        If Me.CanFilter Then
+            DirectCast(Me.m_grid, ucLinkGrid).Group = DirectCast(Me.m_tscmbGroup.SelectedItem, cCoreInputOutputControlItem).Source
+        End If
+    End Sub
+
+    Private Sub OnSelectFleet(sender As System.Object, e As System.EventArgs) _
+        Handles m_tscmbFleet.SelectedIndexChanged
+        If Me.CanFilter Then
+            DirectCast(Me.m_grid, ucLinkGrid).Fleet = DirectCast(Me.m_tscmbFleet.SelectedItem, cCoreInputOutputControlItem).Source
+        End If
+    End Sub
+
+    Private Sub UpdateControls()
+
+        Dim bCanFilter As Boolean = Me.CanFilter
+
+        Me.m_tslGroup.Visible = bCanFilter
+        Me.m_tscmbGroup.Visible = bCanFilter
+        Me.m_tslFleet.Visible = bCanFilter
+        Me.m_tscmbFleet.Visible = bCanFilter
+
+    End Sub
+
+    Private Function CanFilter() As Boolean
+        If (TypeOf Me.m_grid Is ucLinkGrid) Then
+            Return DirectCast(Me.m_grid, ucLinkGrid).CanFilter
+        End If
+        Return False
+    End Function
 
 End Class

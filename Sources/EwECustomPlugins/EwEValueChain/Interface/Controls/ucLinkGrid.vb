@@ -6,6 +6,7 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports System.Reflection
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Database.cEwEDatabase
+Imports EwECore
 
 #End Region ' Imports
 
@@ -21,6 +22,9 @@ Public Class ucLinkGrid
     Private m_data As cData = Nothing
     Private m_api As PropertyInfo() = Nothing
     Private m_links As cLink() = Nothing
+    Private m_group As cCoreInputOutputBase = Nothing
+    Private m_fleet As cCoreInputOutputBase = Nothing
+    Private m_typeData As Type = Nothing
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -37,12 +41,44 @@ Public Class ucLinkGrid
 
         Me.m_data = data
         Me.m_api = cPropertyInfoHelper.GetAllowedProperties(t)
-        Me.m_links = Me.m_data.GetLinks(t)
+        Me.m_typeData = t
 
         ' Go!
         Me.UIContext = uic
 
     End Sub
+
+#Region " Properties "
+
+    Public Property Group As cCoreInputOutputBase
+        Get
+            Return Me.m_group
+        End Get
+        Set(value As cCoreInputOutputBase)
+            If (Object.ReferenceEquals(value, Me.m_group)) Then Return
+            Me.m_group = value
+            Me.RefreshContent()
+        End Set
+    End Property
+
+    Public Property Fleet As cCoreInputOutputBase
+        Get
+            Return Me.m_fleet
+        End Get
+        Set(value As cCoreInputOutputBase)
+            If (Object.ReferenceEquals(value, Me.m_fleet)) Then Return
+            Me.m_fleet = value
+            Me.RefreshContent()
+        End Set
+    End Property
+
+    Public ReadOnly Property CanFilter As Boolean
+        Get
+            Return (Me.m_typeData Is GetType(cLinkLandings))
+        End Get
+    End Property
+
+#End Region ' Properties
 
 #Region " Internals "
 
@@ -65,6 +101,7 @@ Public Class ucLinkGrid
     Protected Overrides Sub FillData()
 
         ' Properties show as columns, links listed on rows
+        Me.m_links = Me.GetLinks()
 
         Dim nCols As Integer = 1 + Me.m_api.Length
         Dim nRows As Integer = 1 + Me.m_links.Length
@@ -120,7 +157,6 @@ Public Class ucLinkGrid
 
     Protected Sub AddCell(ByVal link As cLink, ByVal iRow As Integer, ByVal iCol As Integer)
 
-
         Dim cell As Cells.Real.Cell = Nothing
 
         If iCol = 0 Then
@@ -145,6 +181,33 @@ Public Class ucLinkGrid
         Me(iRow, iCol) = cell
 
     End Sub
+
+    Private Function GetLinks() As cLink()
+
+        Dim lLinks As New List(Of cLink)
+        Dim bUse As Boolean
+
+        For Each l As cLink In Me.m_data.GetLinks(Me.m_typeData)
+            bUse = True
+
+            If (TypeOf l Is cLinkLandings) Then
+                Dim ll As cLinkLandings = DirectCast(l, cLinkLandings)
+                If (Me.m_group IsNot Nothing) Then
+                    bUse = bUse And (Object.Equals(ll.Group, Me.m_group))
+                End If
+                If (Me.m_fleet IsNot Nothing) Then
+                    bUse = bUse And (Object.Equals(DirectCast(ll.Source, cProducerUnit).Fleet, Me.m_fleet))
+                End If
+            End If
+
+            If (bUse) Then
+                lLinks.Add(l)
+            End If
+
+        Next
+        Return lLinks.ToArray
+
+    End Function
 
 #End Region ' Internals
 
