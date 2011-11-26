@@ -9,7 +9,8 @@ Imports EwECore.MSEBatchManager
 
 Namespace MSEBatchManager
 
-
+    'ToDo_jb 25-Nov-2011 MSEBatch OutputWriter need to figure out how to write parameter headers when RunType = Any
+    'Each row could have a different parameter set TFM, Fixed F...
     Public Class cMSEBatchOutputWriter
         Implements EwECore.MSE.IMSEOutputWriter
 
@@ -69,7 +70,8 @@ Namespace MSEBatchManager
                 If Me.m_BatchData.isOuputSaved(iOut) Then
 
                     header = New StringBuilder()
-
+                    Dim ver As String = System.Reflection.Assembly.GetAssembly(GetType(cCore)).GetName.Version.ToString
+                    header.AppendLine("EwE Core version," & quote & ver & quote)
                     header.AppendLine("Command_File," & quote & Me.m_BatchData.CommandFilename & quote)
                     Dim model As String = DirectCast(Me.m_core.DataSource.Connection, Database.cEwEAccessDatabase).Name
                     header.AppendLine("Model_Name," & quote & model & quote)
