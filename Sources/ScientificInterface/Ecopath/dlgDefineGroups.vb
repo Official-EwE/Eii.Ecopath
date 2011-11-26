@@ -17,7 +17,7 @@ Namespace Ecopath
     ''' and change multi-stanza compositions, in the EwE Scientific Interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class EditGroups
+    Public Class dlgDefineGroups
 
 #Region " Constructor "
 

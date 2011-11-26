@@ -3,7 +3,7 @@ Imports ScientificInterfaceShared
 Namespace Ecopath
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class EditGroups
+    Partial Class dlgDefineGroups
         Inherits System.Windows.Forms.Form
 
         'Form overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Namespace Ecopath
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EditGroups))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineGroups))
             Me.m_grid = New ScientificInterface.gridDefineGroups
             Me.m_btnInsert = New System.Windows.Forms.Button
             Me.m_btnMoveUp = New System.Windows.Forms.Button
