@@ -3958,7 +3958,7 @@ Public Class cCore
             Me.m_EcoPathData.CostPct(iFleet, eCostIndex.Sail) = fleet.SailCost
             Me.m_EcoPathData.FleetColor(iFleet) = fleet.PoolColor
 
-            For iGroup As Integer = 1 To m_EcoPathData.NumLiving
+            For iGroup As Integer = 1 To m_EcoPathData.NumGroups
                 Me.m_EcoPathData.Landing(iFleet, iGroup) = fleet.Landings(iGroup)
                 Me.m_EcoPathData.Market(iFleet, iGroup) = fleet.OffVesselValue(iGroup)
                 Me.m_EcoPathData.Discard(iFleet, iGroup) = fleet.Discards(iGroup)
