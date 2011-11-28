@@ -1749,7 +1749,9 @@ Public Class cPluginManager
         End Get
         Set(ByVal value As XmlDocument)
             Debug.Assert(Not Me.m_bLoaded, "Settings should be configured before any plug-in is loaded")
-            Me.m_settingsDoc = value
+            If (value IsNot Nothing) Then
+                Me.m_settingsDoc = value
+            End If
         End Set
     End Property
 
