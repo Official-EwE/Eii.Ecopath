@@ -165,13 +165,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property chain_vert() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("chain_vert", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         '''<summary>
         '''  Looks up a localized string similar to Only models stored in databases can be duplicated..
         '''</summary>

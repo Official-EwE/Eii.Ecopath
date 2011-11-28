@@ -7,6 +7,7 @@ Imports EwECore
 Imports EwEUtils.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Drawing.Drawing2D
 Imports System.ComponentModel
 
@@ -71,6 +72,14 @@ Public Class plFlow
 
     Private m_iNumControls As Integer = 0
 
+    ' Private stock cursors
+    Private m_crsDeleteGeneric As Cursor = cCursorFactory.GetCursorOverlay(Cursors.Arrow, SharedResources.DeleteHS)
+    Private m_crsDeleteItem As Cursor = cCursorFactory.GetCursorOverlay(Cursors.Hand, SharedResources.DeleteHS)
+    Private m_crsLinkGeneric As Cursor = cCursorFactory.GetCursorOverlay(Cursors.Arrow, SharedResources.chain_horz)
+    Private m_crsLinkItem As Cursor = cCursorFactory.GetCursorOverlay(Cursors.Hand, SharedResources.chain_horz)
+    Private m_crsMoveGeneric As Cursor = cCursorFactory.GetCursorOverlay(Cursors.Arrow, SharedResources.move)
+    Private m_crsMoveItem As Cursor = cCursorFactory.GetCursorOverlay(Cursors.Hand, SharedResources.move)
+
 #End Region ' Private variables
 
     ''' -----------------------------------------------------------------------
@@ -118,6 +127,13 @@ Public Class plFlow
             If Me.m_uic IsNot Nothing Then
                 RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
             End If
+
+            Me.m_crsDeleteGeneric.Dispose()
+            Me.m_crsDeleteItem.Dispose()
+            Me.m_crsLinkGeneric.Dispose()
+            Me.m_crsLinkItem.Dispose()
+            Me.m_crsMoveGeneric.Dispose()
+            Me.m_crsMoveItem.Dispose()
 
             Me.m_selector = Nothing
             Me.m_data = Nothing
@@ -384,11 +400,27 @@ Public Class plFlow
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
         Dim uc As LinkWrapper = ConnectorFromPoint(e.Location)
-        If (uc IsNot Nothing) Then
-            Me.Cursor = Cursors.Hand
-        Else
-            Me.Cursor = Cursors.Default
-        End If
+
+        Select Case Me.m_editMode
+
+            Case eEditMode.Link
+                If (Me.Selection IsNot Nothing) Then
+                    Me.Cursor = Me.m_crsLinkItem
+                Else
+                    Me.Cursor = Me.m_crsLinkGeneric
+                End If
+
+            Case eEditMode.Delete
+                If (uc IsNot Nothing) Then
+                    Me.Cursor = Me.m_crsDeleteItem
+                Else
+                    Me.Cursor = Me.m_crsDeleteItem
+                End If
+
+            Case Else
+                Me.Cursor = Cursors.Default
+
+        End Select
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -824,6 +856,7 @@ Public Class plFlow
                 Me.Selection = uc
 
             Case eEditMode.Link
+                uc.Cursor = cCursorFactory.GetCursorOverlay(Cursors.Hand, SharedResources.chain_horz)
                 If TypeOf Me.Selection Is plUnitControl Then
                     Dim unitSelected As cUnit = DirectCast(Me.Selection, plUnitControl).Unit
 
@@ -864,6 +897,23 @@ Public Class plFlow
     End Sub
 
     Public Sub OnUnitMouseHover(ByVal uc As plUnitControl, ByVal bHover As Boolean)
+
+        Select Case Me.EditMode
+
+            Case eEditMode.Move
+                uc.Cursor = Me.m_crsMoveItem
+
+            Case eEditMode.Link
+                uc.Cursor = Me.m_crsLinkItem
+
+            Case eEditMode.Delete
+                uc.Cursor = Me.m_crsDeleteItem
+
+            Case Else
+                uc.Cursor = Cursors.Hand
+
+        End Select
+
     End Sub
 
 #End Region ' Units

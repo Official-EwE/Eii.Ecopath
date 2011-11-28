@@ -1571,7 +1571,6 @@
     <None Include="Resources\ewe_home.url.txt" />
     <None Include="Resources\certificate.png" />
     <None Include="Resources\Ecopath_hohoho.ico" />
-    <None Include="Resources\chain_vert.png" />
     <None Include="Resources\EditTaxa.png" />
     <Content Include="Resources\EU_50px.jpg" />
     <None Include="Resources\ewe_wiki.url.txt" />

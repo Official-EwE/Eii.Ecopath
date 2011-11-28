@@ -127,6 +127,7 @@
     <Compile Include="Controls\ComboBox\ucFieldPicker.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Cursor\cCursorOverlay.vb" />
     <Compile Include="Controls\EwEGrid\PropertyCheckboxCell.vb" />
     <Compile Include="Controls\EwEGrid\cPropertyInfoHelper.vb" />
     <Compile Include="Controls\EwEGrid\Editors\EwEComboBoxCellEditor.vb">
@@ -845,6 +846,8 @@
     <None Include="Resources\fishing_gear.png" />
     <None Include="Resources\fish.png" />
     <None Include="Resources\Back.png" />
+    <None Include="Resources\chain_vert.png" />
+    <None Include="Resources\chain_horz.png" />
     <Content Include="Resources\Fill.png" />
     <None Include="Resources\History.png" />
     <None Include="Resources\forward.png" />
@@ -892,6 +895,7 @@
     <None Include="Resources\rss_icon.gif" />
     <None Include="Resources\multistanza.png" />
     <None Include="Resources\NewItem.png" />
+    <None Include="Resources\move.png" />
     <Content Include="Resources\Seasonal.png" />
     <None Include="Resources\PieChart.bmp" />
     <None Include="Resources\ani_loader.gif" />

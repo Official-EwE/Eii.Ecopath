@@ -233,6 +233,20 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property chain_horz() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("chain_horz", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property chain_vert() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("chain_vert", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property CheckBoxHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("CheckBoxHS", resourceCulture)
@@ -5225,6 +5239,13 @@ Namespace My.Resources
         Public ReadOnly Property MENU_SHOW_LEGEND() As String
             Get
                 Return ResourceManager.GetString("MENU_SHOW_LEGEND", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property move() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("move", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

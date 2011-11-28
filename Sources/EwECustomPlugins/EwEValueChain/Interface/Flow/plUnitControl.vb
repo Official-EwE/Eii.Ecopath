@@ -36,7 +36,6 @@ Public Class plUnitControl
 
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         Me.AllowDrop = True
-        Me.Cursor = Cursors.Hand
 
         Me.m_fp = fp
         Me.Name = Me.m_fp.Unit.Name
