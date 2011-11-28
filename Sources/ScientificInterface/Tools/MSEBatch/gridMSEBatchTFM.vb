@@ -91,22 +91,22 @@ Public Class gridMSEBatchTFM
 
         Dim group As MSE.cMSEBatchTFMGroup = Nothing
         Dim RowStyle As cStyleGuide.eStyleFlags
+        Dim iRow As Integer
 
         For iGroup As Integer = 1 To Core.nLivingGroups
 
             'Get the group info
             group = Core.MSEBatchManager.TFMGroups(iGroup)
 
-            Me.AddRow()
+            iRow = Me.AddRow()
+
+            Debug.Assert(iGroup = iRow)
 
             RowStyle = DirectCast(group.GetStatus(eVarNameFlags.MSEBLim), cStyleGuide.eStyleFlags)
             Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
             Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-            ' ToDo: replace by property style
             Me(iGroup, eColumnTypes.RunType) = New PropertyCheckboxCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchTFMManaged)
-            'Me(iGroup, eColumnTypes.RunType) = New EwECheckboxCell(group.isManaged, RowStyle)
-            Me(iGroup, eColumnTypes.RunType).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.BLimLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
             Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
@@ -129,9 +129,8 @@ Public Class gridMSEBatchTFM
 
             Me(iGroup, eColumnTypes.FOptValue) = New EwECell(group.FMaxValue(iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.FOptValue).Behaviors.Add(Me.EwEEditHandler)
-            Me(iGroup, eColumnTypes.FOptUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
 
-            '    Me.Rows(iGroup).Tag = group
+            Me(iGroup, eColumnTypes.FOptUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
 
         Next iGroup
 
@@ -156,11 +155,11 @@ Public Class gridMSEBatchTFM
 
         Set(value As Integer)
 
-            If Me.UIContext IsNot Nothing Then
-                If value <= Me.UIContext.Core.MSEBatchManager.Parameters.nTFMIteration Then
-                    m_iter = value
-                    Me.RefreshContent()
-                End If
+            If (Me.UIContext Is Nothing) Then Return ' Could assert here; should not happen
+
+            If (value <= Me.UIContext.Core.MSEBatchManager.Parameters.nTFMIteration) Then
+                Me.m_iter = value
+                Me.RefreshContent()
             End If
 
         End Set
@@ -206,11 +205,6 @@ Public Class gridMSEBatchTFM
         End Try
 
         Return True
-
-    End Function
-
-    Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
-
 
     End Function
 

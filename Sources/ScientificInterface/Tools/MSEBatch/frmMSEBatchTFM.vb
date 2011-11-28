@@ -47,10 +47,14 @@ Public Class frmMSEBatchTFM
 
     Private Sub txNTFM_TextChanged(sender As System.Object, e As System.EventArgs) Handles txNTFM.TextChanged
 
-        Dim newValue As Integer = Integer.Parse(Me.txNTFM.Text)
-        If newValue > 0 And newValue <> Me.m_BatchManager.Parameters.nTFMIteration Then
-            Me.m_BatchManager.Parameters.nTFMIteration = newValue
-        End If
+        Try
+            Dim newValue As Integer = Integer.Parse(Me.txNTFM.Text)
+            If newValue > 0 And newValue <> Me.m_BatchManager.Parameters.nTFMIteration Then
+                Me.m_BatchManager.Parameters.nTFMIteration = newValue
+            End If
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -127,17 +131,19 @@ Public Class frmMSEBatchTFM
             Case eCoreComponentType.MSE
 
                 If msg.DataType = eDataTypes.MSEBatchTFMInput Then
-                    'Something has update the TFM inputs
 
                     If Me.grdGroups.iCurIter > Me.m_BatchManager.Parameters.nTFMIteration Then
-                        Me.UpDwnIter.Maximum = Me.m_BatchManager.Parameters.nTFMIteration
+                        ' Truncate number of iterations to any new allowed max
                         Me.UpDwnIter.Value = Me.m_BatchManager.Parameters.nTFMIteration
                         Me.grdGroups.iCurIter = Me.m_BatchManager.Parameters.nTFMIteration
                     End If
+                    ' Adjust max allowed iterations
+                    Me.UpDwnIter.Maximum = Me.m_BatchManager.Parameters.nTFMIteration
 
-                    Me.grdGroups.RefreshContent()
-
+                    ' JS29Nov11: do not refresh; this message may very well have been triggered from an edit in the groups grid.
+                    'Me.grdGroups.RefreshContent()
                     Me.grdIters.RefreshContent()
+
                 End If
 
 
