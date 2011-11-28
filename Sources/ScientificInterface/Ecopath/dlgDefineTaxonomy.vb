@@ -245,7 +245,7 @@ Public Class dlgDefineTaxa
     'End Sub
 
     Private Sub OnSearchTextChanged(ByVal sender As System.Object, ByVal e As EventArgs) _
-        Handles m_tbSearch.TextChanged
+        Handles m_tbxSearchTerm.TextChanged
         Try
             Me.RefreshSearch()
         Catch ex As Exception
@@ -364,7 +364,8 @@ Public Class dlgDefineTaxa
         ' Config search controls
         Me.m_cmbEngine.Enabled = Me.m_bHasSearchEngines
         Me.m_btnConnect.Enabled = bCanConfig
-        Me.m_tbSearch.Enabled = bCanSearch
+        Me.m_lblSearchTerm.Enabled = bCanSearch
+        Me.m_tbxSearchTerm.Enabled = bCanSearch
         Me.m_lblIn.Enabled = bCanSearch
         Me.m_cmbFilter.Enabled = bCanSearch
         Me.m_cbIncludeExtent.Enabled = bCanSearch
@@ -456,7 +457,7 @@ Public Class dlgDefineTaxa
     End Sub
 
     Private Sub RefreshSearch()
-        Me.Search(Me.m_tbSearch.Text)
+        Me.Search(Me.m_tbxSearchTerm.Text)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -488,7 +489,7 @@ Public Class dlgDefineTaxa
             searchterm.SearchFields = DirectCast(Me.m_cmbFilter.SelectedItem, eTaxonLevelType)
             searchterm.Common = strTerm
             ' Update UI
-            Me.m_tbSearch.Text = strTerm
+            Me.m_tbxSearchTerm.Text = strTerm
             ' Go Jimmy
             Me.Search(searchterm)
         End If

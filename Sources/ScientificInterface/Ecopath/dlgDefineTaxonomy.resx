@@ -276,58 +276,58 @@
   <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_lbTerm.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblSearchTerm.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lbTerm.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblSearchTerm.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lbTerm.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblSearchTerm.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 38</value>
   </data>
-  <data name="m_lbTerm.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblSearchTerm.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 13</value>
   </data>
-  <data name="m_lbTerm.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblSearchTerm.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_lbTerm.Text" xml:space="preserve">
+  <data name="m_lblSearchTerm.Text" xml:space="preserve">
     <value>&amp;Search term:</value>
   </data>
-  <data name="&gt;&gt;m_lbTerm.Name" xml:space="preserve">
-    <value>m_lbTerm</value>
+  <data name="&gt;&gt;m_lblSearchTerm.Name" xml:space="preserve">
+    <value>m_lblSearchTerm</value>
   </data>
-  <data name="&gt;&gt;m_lbTerm.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblSearchTerm.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lbTerm.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblSearchTerm.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;m_lbTerm.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblSearchTerm.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="m_tbSearch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tbxSearchTerm.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_tbSearch.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tbxSearchTerm.Location" type="System.Drawing.Point, System.Drawing">
     <value>119, 35</value>
   </data>
-  <data name="m_tbSearch.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tbxSearchTerm.Size" type="System.Drawing.Size, System.Drawing">
     <value>479, 20</value>
   </data>
-  <data name="m_tbSearch.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tbxSearchTerm.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_tbSearch.Name" xml:space="preserve">
-    <value>m_tbSearch</value>
+  <data name="&gt;&gt;m_tbxSearchTerm.Name" xml:space="preserve">
+    <value>m_tbxSearchTerm</value>
   </data>
-  <data name="&gt;&gt;m_tbSearch.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxSearchTerm.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tbSearch.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxSearchTerm.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;m_tbSearch.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxSearchTerm.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="m_cmbEngine.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -373,13 +373,13 @@
     <value>769, 8</value>
   </data>
   <data name="m_btnConnect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 23</value>
+    <value>110, 23</value>
   </data>
   <data name="m_btnConnect.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_btnConnect.Text" xml:space="preserve">
-    <value>&amp;Connect...</value>
+    <value>&amp;Connection...</value>
   </data>
   <data name="&gt;&gt;m_btnConnect.Name" xml:space="preserve">
     <value>m_btnConnect</value>
@@ -454,7 +454,7 @@
     <value>m_gridGroups</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.3.1121.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.3.1125.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -544,7 +544,7 @@
     <value>m_gridResults</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.3.1121.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.3.1125.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -640,7 +640,7 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1121.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1125.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>$this</value>
@@ -673,7 +673,7 @@
     <value>m_hdrProps</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1121.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1125.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Parent" xml:space="preserve">
     <value>$this</value>

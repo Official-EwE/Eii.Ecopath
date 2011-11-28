@@ -30,8 +30,8 @@ Partial Class dlgDefineTaxa
         Me.m_btnKeep = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.OK_Button = New System.Windows.Forms.Button()
-        Me.m_lbTerm = New System.Windows.Forms.Label()
-        Me.m_tbSearch = New System.Windows.Forms.TextBox()
+        Me.m_lblSearchTerm = New System.Windows.Forms.Label()
+        Me.m_tbxSearchTerm = New System.Windows.Forms.TextBox()
         Me.m_cmbEngine = New System.Windows.Forms.ComboBox()
         Me.m_btnConnect = New System.Windows.Forms.Button()
         Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox()
@@ -79,15 +79,15 @@ Partial Class dlgDefineTaxa
         resources.ApplyResources(Me.OK_Button, "OK_Button")
         Me.OK_Button.Name = "OK_Button"
         '
-        'm_lbTerm
+        'm_lblSearchTerm
         '
-        resources.ApplyResources(Me.m_lbTerm, "m_lbTerm")
-        Me.m_lbTerm.Name = "m_lbTerm"
+        resources.ApplyResources(Me.m_lblSearchTerm, "m_lblSearchTerm")
+        Me.m_lblSearchTerm.Name = "m_lblSearchTerm"
         '
-        'm_tbSearch
+        'm_tbxSearchTerm
         '
-        resources.ApplyResources(Me.m_tbSearch, "m_tbSearch")
-        Me.m_tbSearch.Name = "m_tbSearch"
+        resources.ApplyResources(Me.m_tbxSearchTerm, "m_tbxSearchTerm")
+        Me.m_tbxSearchTerm.Name = "m_tbxSearchTerm"
         '
         'm_cmbEngine
         '
@@ -126,9 +126,9 @@ Partial Class dlgDefineTaxa
         Me.m_scMain.Panel2.Controls.Add(Me.m_cbIncludeExtent)
         Me.m_scMain.Panel2.Controls.Add(Me.m_gridResults)
         Me.m_scMain.Panel2.Controls.Add(Me.m_lblEngine)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_tbSearch)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tbxSearchTerm)
         Me.m_scMain.Panel2.Controls.Add(Me.m_cmbEngine)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_lbTerm)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_lblSearchTerm)
         '
         'm_gridGroups
         '
@@ -261,8 +261,8 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_hdrEdit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents Cancel_Button As System.Windows.Forms.Button
     Private WithEvents OK_Button As System.Windows.Forms.Button
-    Private WithEvents m_lbTerm As System.Windows.Forms.Label
-    Private WithEvents m_tbSearch As System.Windows.Forms.TextBox
+    Private WithEvents m_lblSearchTerm As System.Windows.Forms.Label
+    Private WithEvents m_tbxSearchTerm As System.Windows.Forms.TextBox
     Private WithEvents m_cmbEngine As System.Windows.Forms.ComboBox
     Private WithEvents m_btnConnect As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
