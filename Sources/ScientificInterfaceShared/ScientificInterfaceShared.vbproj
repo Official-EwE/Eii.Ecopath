@@ -127,7 +127,7 @@
     <Compile Include="Controls\ComboBox\ucFieldPicker.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Cursor\cCursorOverlay.vb" />
+    <Compile Include="Controls\Cursor\cCursorFactory.vb" />
     <Compile Include="Controls\EwEGrid\PropertyCheckboxCell.vb" />
     <Compile Include="Controls\EwEGrid\cPropertyInfoHelper.vb" />
     <Compile Include="Controls\EwEGrid\Editors\EwEComboBoxCellEditor.vb">
