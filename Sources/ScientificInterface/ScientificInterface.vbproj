@@ -100,9 +100,6 @@
     <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EwE6, Version=6.3.1125.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=MSIL">
-      <ExecutableExtension>.exe</ExecutableExtension>
-    </Reference>
     <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ScientificInterfaceShared\Includes\SAUPUtil.dll</HintPath>
@@ -212,6 +209,7 @@
     <Compile Include="Ecospace\Input\gridLayerData.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="My Project\Resources.Designer.vb" />
     <Compile Include="Tools\MSEBatch\frmMSEBatchFixedF.Designer.vb">
       <DependentUpon>frmMSEBatchFixedF.vb</DependentUpon>
     </Compile>
@@ -698,12 +696,6 @@
       <DependentUpon>dlgEditLayer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -745,6 +737,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>EcosimResults.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx" />
     <EmbeddedResource Include="Other\dlgShowHideItems.resx">
       <SubType>Designer</SubType>
       <DependentUpon>dlgShowHideItems.vb</DependentUpon>
@@ -1289,11 +1282,6 @@
     <Compile Include="Ecospace\Input\Capacity\Shape\frmCapacityFunction.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Other\AboutBox\DatabaseGrid.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1572,6 +1560,8 @@
     <None Include="Resources\certificate.png" />
     <None Include="Resources\Ecopath_hohoho.ico" />
     <None Include="Resources\EditTaxa.png" />
+    <None Include="Resources\EWE_forever.jpg" />
+    <Content Include="Resources\Ecopath_beta.ico" />
     <Content Include="Resources\EU_50px.jpg" />
     <None Include="Resources\ewe_wiki.url.txt" />
     <Content Include="Resources\fimr_logo_50px.jpg" />
