@@ -583,7 +583,7 @@ Public Class AppLauncher
         Try
             Me.m_pluginManager.Settings = My.Settings.PluginConfiguration
         Catch ex As Exception
-            Me.m_pluginManager.Settings = Nothing
+            ' Ignore
         End Try
 
         ' Config plugin manager
