@@ -3203,8 +3203,8 @@ Namespace DataSources
                     If (iTaxon > 0 And iStanza > 0) Then
                         taxonDS.TaxonTarget(iTaxon) = iStanza
                         taxonDS.IsTaxonStanza(iTaxon) = True
-                        taxonDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
-                        taxonDS.TaxonPropCatch(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "PropCatch", 0))
+                        taxonDS.TaxonProp(iTaxon) = 1
+                        taxonDS.TaxonPropCatch(iTaxon) = 1
                     End If
                 End While
 
@@ -3428,7 +3428,7 @@ Namespace DataSources
                 drow("TaxonID") = iDBID
                 drow("EcopathGroupID") = iTargetDBID
                 drow("Proportion") = sProportion
-                drow("PropCatch") = 0
+                drow("PropCatch") = sProportion
                 writer.AddRow(drow)
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
             Else
@@ -3436,7 +3436,6 @@ Namespace DataSources
                 drow = writer.NewRow()
                 drow("TaxonID") = iDBID
                 drow("StanzaID") = iTargetDBID
-                drow("Proportion") = sProportion
                 writer.AddRow(drow)
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
             End If
