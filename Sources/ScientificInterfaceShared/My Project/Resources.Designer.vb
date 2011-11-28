@@ -508,15 +508,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Belagic-oceanic.
-        '''</summary>
-        Public ReadOnly Property ECOLOGY_BELAGICOCEANIC() As String
-            Get
-                Return ResourceManager.GetString("ECOLOGY_BELAGICOCEANIC", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Benthic.
         '''</summary>
         Public ReadOnly Property ECOLOGY_BENTHIC() As String
@@ -567,6 +558,15 @@ Namespace My.Resources
         Public ReadOnly Property ECOLOGY_PELAGICNERITIC() As String
             Get
                 Return ResourceManager.GetString("ECOLOGY_PELAGICNERITIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Pelagic-oceanic.
+        '''</summary>
+        Public ReadOnly Property ECOLOGY_PELAGICOCEANIC() As String
+            Get
+                Return ResourceManager.GetString("ECOLOGY_PELAGICOCEANIC", resourceCulture)
             End Get
         End Property
         

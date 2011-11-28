@@ -1780,8 +1780,8 @@
   <data name="ECOLOGY_BATHYPELAGIC" xml:space="preserve">
     <value>Bathypelagic</value>
   </data>
-  <data name="ECOLOGY_BELAGICOCEANIC" xml:space="preserve">
-    <value>Belagic-oceanic</value>
+  <data name="ECOLOGY_PELAGICOCEANIC" xml:space="preserve">
+    <value>Pelagic-oceanic</value>
   </data>
   <data name="ECOLOGY_BENTHIC" xml:space="preserve">
     <value>Benthic</value>
