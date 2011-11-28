@@ -5203,6 +5203,7 @@ Public Class cCore
         Dim bIsNotFish As Boolean = False
         Dim bIshigherOrganism As Boolean = False
         Dim bIsFished As Boolean = True
+        Dim bIsStanza As Boolean = (t.Stanza > 0)
         Dim bClearVI As Boolean = False
 
         ' Cheung Vulnerability index is only available for fish (per FishBase)
@@ -5211,7 +5212,7 @@ Public Class cCore
 
         t.AllowValidation = False
 
-        If t.Stanza > 0 Then
+        If bIsStanza Then
             bIsFished = Me.StanzaGroups(t.Stanza - 1).IsFished
         Else
             bIsFished = Me.EcoPathGroupInputs(t.Group).IsFished
@@ -5231,8 +5232,15 @@ Public Class cCore
             t.SetStatusFlags(eVarNameFlags.TaxonMeanWeight, eStatusFlags.NotEditable)
         End If
 
-        ' == Prop of catch
-        If bIsFished Then
+        ' == Prop of biomass
+        If bIsStanza Then
+            t.SetStatusFlags(eVarNameFlags.TaxonProp, eStatusFlags.NotEditable)
+        Else
+            t.ClearStatusFlags(eVarNameFlags.TaxonProp, eStatusFlags.NotEditable)
+        End If
+
+        ' == Prop of catch (not editable when not fished or a stanza taxon)
+        If bIsFished And Not bIsStanza Then
             t.ClearStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.NotEditable)
         Else
             t.SetStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.NotEditable)
