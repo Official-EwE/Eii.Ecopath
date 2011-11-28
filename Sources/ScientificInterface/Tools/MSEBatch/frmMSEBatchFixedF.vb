@@ -8,6 +8,8 @@ Imports EwECore.MSEBatchManager
 
 Public Class frmMSEBatchFixedF
 
+    ' ToDo: Add XML comments
+
     Private m_BatchManager As EwECore.MSEBatchManager.cMSEBatchManager
 
     Public Sub New()

@@ -17,6 +17,9 @@ Imports SourceGrid2.Cells.Real
 Public Class gridMSEBatchTFMIter
     Inherits EwEGrid
 
+    ' ToDo: Globalize this class 
+    ' ToDo: Add XML comments
+
     Private m_iSelGroup As Integer
 
 #Region " Internal defs "

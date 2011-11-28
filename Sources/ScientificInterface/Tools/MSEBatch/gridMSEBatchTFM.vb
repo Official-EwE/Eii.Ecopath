@@ -17,6 +17,9 @@ Imports SourceGrid2.Cells.Real
 Public Class gridMSEBatchTFM
     Inherits EwEGrid
 
+    ' ToDo: Globalize this class 
+    ' ToDo: Add XML comments
+
     Private m_iter As Integer
 
 #Region " Internal defs "
@@ -40,7 +43,6 @@ Public Class gridMSEBatchTFM
     End Enum
 
 #End Region ' Internal defs
-
 
     Public Sub New()
         MyBase.new()

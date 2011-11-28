@@ -7,6 +7,8 @@ Imports ZedGraph
 
 Public Class frmMSERunBatch
 
+    ' ToDo: Add XML comments
+
     Private m_BatchManager As EwECore.MSEBatchManager.cMSEBatchManager
     Private m_MSE As EwECore.MSE.cMSEManager
     Private m_zgh As cZedGraphHelper

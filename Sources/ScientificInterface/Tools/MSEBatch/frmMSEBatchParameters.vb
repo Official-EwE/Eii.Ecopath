@@ -12,6 +12,8 @@ Imports EwEUtils.Core
 
 Public Class frmMSEBatchParameters
 
+    ' ToDo: Add XML comments
+
     ' Properties to monitor for setting radio button check states
     Private WithEvents m_fpBiomass As cPropertyFormatProvider = Nothing
     Private WithEvents m_fpCatch As cPropertyFormatProvider = Nothing
