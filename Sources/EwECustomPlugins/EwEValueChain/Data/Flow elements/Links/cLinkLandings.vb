@@ -197,7 +197,7 @@ Public Class cLinkLandings
         End Set
     End Property
 
-    <Browsable(False)> _
+    <Browsable(True)> _
     Public Overrides Property ValueRatio() As Single
         Get
             Return 0
