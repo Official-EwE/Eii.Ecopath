@@ -351,8 +351,11 @@ Public Class dlgDefineTaxa
             Dim prod As IDataProducerPlugin = Me.SelectedDataProducer
             If prod IsNot Nothing Then
                 bCanSearch = (TypeOf prod Is IDataSearchProducerPlugin) And (prod.IsDataAvailable(GetType(ITaxonSearchData)))
-                If TypeOf prod Is IConfigurablePlugin Then
-                    bCanSearch = bCanSearch And DirectCast(prod, IConfigurablePlugin).IsConfigured
+                If (TypeOf prod Is IConfigurablePlugin) Then
+                    Try
+                        bCanSearch = bCanSearch And DirectCast(prod, IConfigurablePlugin).IsConfigured
+                    Catch ex As Exception
+                    End Try
                 End If
                 bCanConfig = (TypeOf prod Is IConfigurablePlugin)
             End If
@@ -387,11 +390,15 @@ Public Class dlgDefineTaxa
 
         ' Only show data producers that provide taxon data
         For Each pi In coll
-            dpi = DirectCast(pi, IDataSearchProducerPlugin)
-            If (dpi.IsDataAvailable(GetType(ITaxonSearchData))) Then
-                Me.m_cmbEngine.Items.Add(New cDataProducerSearchItem(dpi))
-                Me.m_bHasSearchEngines = True
-            End If
+            Try
+                dpi = DirectCast(pi, IDataSearchProducerPlugin)
+                If (dpi.IsDataAvailable(GetType(ITaxonSearchData))) Then
+                    Me.m_cmbEngine.Items.Add(New cDataProducerSearchItem(dpi))
+                    Me.m_bHasSearchEngines = True
+                End If
+            Catch ex As Exception
+
+            End Try
         Next
 
         If Not Me.m_bHasSearchEngines Then
@@ -417,7 +424,11 @@ Public Class dlgDefineTaxa
         If (prod Is Nothing) Then Return
         If Not (TypeOf prod Is IConfigurablePlugin) Then Return
 
-        frm = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
+        Try
+            frm = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
+        Catch ex As Exception
+            frm = Nothing
+        End Try
 
         If (frm Is Nothing) Then Return
 
