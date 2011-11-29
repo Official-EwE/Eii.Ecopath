@@ -197,16 +197,6 @@ Public Class cLinkLandings
         End Set
     End Property
 
-    <Browsable(True)> _
-    Public Overrides Property ValueRatio() As Single
-        Get
-            Return 0
-        End Get
-        Set(ByVal value As Single)
-            ' nop
-        End Set
-    End Property
-
     <Browsable(False)> _
     Public Overridable Property Group() As cEcoPathGroupInput
         Get

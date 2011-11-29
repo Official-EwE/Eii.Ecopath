@@ -666,7 +666,13 @@ Public Class cProducerUnit
                     Dim iGroup As Integer = ll.Group.Index
                     If asTotalBGroup(iGroup) > 0 Then
                         sBiomass += Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
-                        sValue += Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+
+                        If (ll.ValueRatio = 1.0!) Then
+                            sValue += Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                        Else
+                            sValue += ll.ValueRatio * Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                        End If
+
                     End If
                 End If
             End If
