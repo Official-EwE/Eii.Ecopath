@@ -358,7 +358,7 @@ Public Class cPluginPoint
         If (parms.RunWithEcosim = False) Then Return
 
         ' Run VC model
-        Me.m_model.RunTimeStep(Me.m_data, Me.m_result, iTimeStep, DirectCast(ecosimresults, cEcoSimResults))
+        Me.m_model.RunTimeStep(Me.m_data, Me.m_result, iTimeStep, DirectCast(ecosimresults, cEcoSimResults), DirectCast(EcosimDatastructures, cEcosimDatastructures))
         ' Send out data
         Me.BroadcastResults(iTimeStep)
 

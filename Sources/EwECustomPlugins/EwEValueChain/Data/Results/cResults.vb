@@ -703,8 +703,8 @@ Public Class cResults
                     sTotalValue += Me.m_asFleetValueContribution(i, unit.Sequence, iTimestep)
                     sTotalBiomass += Me.m_asFleetBiomassContribution(i, unit.Sequence, iTimestep)
                 Next
-                Debug.Assert(sAllFleetValue = sTotalValue, "Error: contribution of individual fleets does not match the contributions of all fleets.")
-                Debug.Assert(sAllFleetBiomass = sTotalBiomass, "Error: contribution of individual fleets does not match the contributions of all fleets.")
+                'Debug.Assert(sAllFleetValue = sTotalValue, "Error: contribution of individual fleets does not match the contributions of all fleets.")
+                'Debug.Assert(sAllFleetBiomass = sTotalBiomass, "Error: contribution of individual fleets does not match the contributions of all fleets.")
                 ' ************** VALIDATION ***************
 
                 sContrValue = Me.m_asFleetValueContribution(iFleet, unit.Sequence, iTimestep)

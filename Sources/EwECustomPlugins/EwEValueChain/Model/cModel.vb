@@ -215,12 +215,13 @@ Public Class cModel
     ''' <param name="result"></param>
     ''' <param name="iTimeStep">1 when running Ecopath.</param>
     ''' <param name="ecosimResults"></param>
+    ''' <param name="ecosimDS"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function RunTimeStep(ByVal data As cData, _
                         ByVal result As cResults, _
                         ByVal iTimeStep As Integer, _
-                        Optional ByVal ecosimResults As cEcoSimResults = Nothing) As Boolean
+                        Optional ByVal ecosimResults As cEcoSimResults = Nothing, _
+                        Optional ByVal ecosimDS As cEcosimDatastructures = Nothing) As Boolean
 
         Dim prodUnit As cProducerUnit = Nothing
         Dim iFleetRun As Integer = 0
@@ -291,8 +292,8 @@ Public Class cModel
                                 Else
                                     ' #No: Run this fleet using standard landings and value
                                     prodUnit.SetLandings(iGroupSrc, _
-                                                         Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults), _
-                                                         Me.GetLandingValue(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults))
+                                                         Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS), _
+                                                         Me.GetLandingValue(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS))
                                 End If
 
                             Next iGroupSrc
@@ -324,7 +325,8 @@ Public Class cModel
 
     Private Function GetLandings(ByVal core As cCore, _
                                  ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer, _
-                                 ByVal ecosimresults As cEcoSimResults) As Single
+                                 ByVal ecosimresults As cEcoSimResults, _
+                                 ByVal ecosimDS As cEcosimDatastructures) As Single
 
         Dim model As cEwEModel = core.EwEModel
         Dim sArea As Single = model.Area
@@ -348,7 +350,8 @@ Public Class cModel
 
     Private Function GetLandingValue(ByVal core As cCore, _
                                      ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer, _
-                                     ByVal ecosimresults As cEcoSimResults) As Single
+                                     ByVal ecosimresults As cEcoSimResults, _
+                                     ByVal ecosimDS As cEcosimDatastructures) As Single
 
         Dim model As cEwEModel = core.EwEModel
         Dim sArea As Single = model.Area
@@ -364,8 +367,7 @@ Public Class cModel
         Else
             ' #Yes: run for Ecosim
             ' JS 19Nov11: use Ecosim value for time step
-            Dim groupSim As cEcosimGroupOutput = core.EcoSimGroupOutputs(iGroup)
-            Return groupSim.ValueByFleet(iFleet, iTimeStep) * ecosimresults.BCatch(iGroup, iFleet) * sArea
+            Return ecosimDS.ResultsSumValueByGroupGear(iGroup, iFleet, iTimeStep) * ecosimresults.BCatch(iGroup, iFleet) * sArea
         End If
 
     End Function
