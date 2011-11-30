@@ -391,19 +391,6 @@ Namespace Controls.EwEGrid
 
 #End Region ' Data (value, style, remarks, image)
 
-#Region " Updates (StyleGuide)"
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' StyleGuide change event handler; makes sure cells are redrawn
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
-            Me.Invalidate()
-        End Sub
-
-#End Region ' Updated (StyleGuide)
-
 #Region " UIContext connection "
 
         ''' -------------------------------------------------------------------
@@ -442,17 +429,23 @@ Namespace Controls.EwEGrid
             End Get
             Protected Set(ByVal value As cUIContext)
 
+                ' JS 29Nov11: dramatically improved grid performace by handling styleguide updates 
+                '             in the grid instead of in the individual cells. StyleGuide changes
+                '             are observed only once per grid, issuing a total invalidate which
+                '             offers no loss in performance in rendering, yet tremendously reduces
+                '             the amount of time needed to register and unregister change handlers
+                '             per cell. Yippee.
+
                 If (Me.m_uic IsNot Nothing) Then
-                    ' Clean up
                     ' Release style guide event handler
-                    RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+                    'RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
 
                 Me.m_uic = value
 
                 If (Me.m_uic IsNot Nothing) Then
-                    ' Release style guide event handler
-                    AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+                    ' Set style guide event handler
+                    'AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
 
             End Set

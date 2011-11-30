@@ -411,6 +411,7 @@ Namespace Controls.EwEGrid
 
                 ' Clean-up
                 If (Me.m_uic IsNot Nothing) Then
+                    RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                     Me.ClearData()
                 End If
 
@@ -420,6 +421,7 @@ Namespace Controls.EwEGrid
                 ' Refresh when setting
                 If (Me.m_uic IsNot Nothing) Then
                     Me.RefreshContent()
+                    AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
 
             End Set
@@ -642,7 +644,6 @@ Namespace Controls.EwEGrid
                                   SourceGrid2.ContextMenuStyle.CopyPasteSelection Or _
                                   SourceGrid2.ContextMenuStyle.ColumnResize Or _
                                   SourceGrid2.ContextMenuStyle.AutoSize
-
             Me.AutoStretchRowsToFitHeight = False
 
             ' JS 05aug07: this flag controls whether selections can be made with cell nav keys and [ctrl] and/or [shift]
@@ -1528,6 +1529,19 @@ Namespace Controls.EwEGrid
         End Function
 
 #End Region ' Selection behavior
+
+#Region " Updates (StyleGuide)"
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' StyleGuide change event handler; makes sure cells are redrawn
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+            Me.Invalidate(True)
+        End Sub
+
+#End Region ' Updated (StyleGuide)
 
     End Class
 
