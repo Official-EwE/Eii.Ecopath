@@ -176,6 +176,12 @@ Public Class cEcospaceModelParameters
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData()
+            val = New cValue(1, eVarNameFlags.EcospaceIBMMovePacketOnStanza, eStatusFlags.Null, eValueTypes.Bool, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+
 
             'set status flags to default values
             ResetStatusFlags()
@@ -549,6 +555,18 @@ Public Class cEcospaceModelParameters
 
     End Property
 
+    Public Property IBMMovePacketOnStanza() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceIBMMovePacketOnStanza))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceIBMMovePacketOnStanza, value)
+        End Set
+
+    End Property
+
 
     ''' <summary>
     ''' Set the inputs that Ecospace uses to calculate capacity
@@ -568,12 +586,6 @@ Public Class cEcospaceModelParameters
         End Set
 
     End Property
-
-
-
-
-
-
 
 #End Region ' Variables by dot (.) operator
 

@@ -185,9 +185,30 @@ Public Class cIBMSolver
         Try
             For isp = 1 To m_Stanza.Nsplit
                 For iaa = 0 To m_Stanza.MaxAgeSpecies(isp)
-                    ia = m_Stanza.AgeIndex1(isp) + iaa : If ia > m_Stanza.MaxAgeSpecies(isp) Then ia = ia - m_Stanza.MaxAgeSpecies(isp) - 1
+                    ia = m_Stanza.AgeIndex1(isp) + iaa
+                    If ia > m_Stanza.MaxAgeSpecies(isp) Then
+                        ia = ia - m_Stanza.MaxAgeSpecies(isp) - 1
+                    End If
+
                     ist = m_Stanza.StanzaNo(isp, ia)
                     ieco = m_Stanza.EcopathCode(isp, ist)
+
+                    If Me.m_Data.MovePacketsAtStanzaEntry Then
+                        'Move packets into good habitat 
+                        'as they enter the next stanza group
+                        If Math.Abs(ia - m_Stanza.Age1(isp, ist)) < 2 Then
+
+                            i = Int(Me.m_Stanza.iPacket(isp, iaa, ip))
+                            j = Int(Me.m_Stanza.jPacket(isp, iaa, ip))
+
+                            If HabIsOk(ieco, i, j) = False And Me.m_Data.ItoUse(isp, ist, i, j) <> 0 Then
+                                'System.Console.WriteLine("Moving Stanza " & isp.ToString & " Group " & ist.ToString & " To " & Me.m_Data.ItoUse(isp, ist, i, j).ToString & "," & Me.m_Data.JtoUse(isp, ist, i, j).ToString)
+                                Me.m_Stanza.iPacket(isp, iaa, ip) = Me.m_Data.ItoUse(isp, ist, i, j) + Rnd()
+                                Me.m_Stanza.jPacket(isp, iaa, ip) = Me.m_Data.JtoUse(isp, ist, i, j) + Rnd()
+                            End If
+
+                        End If 'Math.Abs(ia - m_Stanza.Age1(isp, ist)) < 2
+                    End If 'Me.m_Data.MovePacketsAtStanzaEntry
 
                     Mrat = m_Data.Mrate(ieco)
                     Dmove = m_Stanza.IBMdistmove(isp, ia)
@@ -226,12 +247,11 @@ Public Class cIBMSolver
                         End If
 
                         MoveThePacket(isp, ieco, iaa, ip, Dmove, aa, bb, cc, dd)
-                        'i = Int(m_Stanza.iPacket(isp, ia, ip)) : j = Int(m_Stanza.jPacket(isp, ia, ip))
 
-                    Next
-                    'Next
-                Next
-            Next
+                    Next imm
+                Next iaa
+            Next isp
+
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
@@ -340,9 +360,13 @@ Public Class cIBMSolver
 
             m_Stanza.EggsStanza(isp) = Be
             'WageS(iSp, 0) = 0
-            'update age of fish for first iaa array element
 
-            m_Stanza.AgeIndex1(isp) = m_Stanza.AgeIndex1(isp) + 1 : If m_Stanza.AgeIndex1(isp) > m_Stanza.MaxAgeSpecies(isp) Then m_Stanza.AgeIndex1(isp) = 0
+            'update age of fish for first iaa array element
+            m_Stanza.AgeIndex1(isp) = m_Stanza.AgeIndex1(isp) + 1
+            If m_Stanza.AgeIndex1(isp) > m_Stanza.MaxAgeSpecies(isp) Then
+                m_Stanza.AgeIndex1(isp) = 0
+            End If
+
 
             'finally set abundance at youngest age to recruitment rate
             If m_Stanza.BaseEggsStanza(isp) > 0 Then TotRecruits = m_Stanza.RscaleSplit(isp) * m_ESData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_ESData.tval(m_Stanza.HatchCode(isp))
@@ -418,6 +442,15 @@ Public Class cIBMSolver
         End Try
 
     End Sub
+
+    Function HabIsOk(ieco As Integer, i As Integer, j As Integer) As Boolean
+        'If Depth(i, j) > 0 And (PrefHab(ieco, HabType(i, j)) = True Or PrefHab(ieco, 0) = True) Then
+        If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, ieco) > 0.5 Then
+            HabIsOk = True
+        Else
+            HabIsOk = False
+        End If
+    End Function
 
     Public Sub New(ByVal ThreadNumber As Integer)
         isOkToRun = True

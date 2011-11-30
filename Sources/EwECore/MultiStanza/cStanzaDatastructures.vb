@@ -13,8 +13,17 @@ Public Class cStanzaDatastructures
     Public Wpacket(,,) As Single ' weight of fish in the packet
     Public IBMMovesPerMonth() As Integer
     Public IBMdistmove(,) As Single
-    Public iPacket(,,) As Single ' i position index of the packet
-    Public jPacket(,,) As Single 'j position index of the packet
+
+    ''' <summary>
+    ''' i (map row) position index of the packet
+    ''' </summary>
+    Public iPacket(,,) As Single
+
+    ''' <summary>
+    ''' i (map col) position index of the packet
+    ''' </summary>
+    Public jPacket(,,) As Single
+
     Public iNursery(,) As Integer
     Public jNursery(,) As Integer
     Public Nnursery() As Integer

@@ -835,7 +835,8 @@ Public Class cEcoSpace
             Dim bdump(,) As Single
             ReDim bdump(m_Data.InRow, m_Data.InCol)
 
-            If m_Data.UseIBM Then InitPackets()
+            'Initialize IBM 
+            Me.InitIBM()
             m_Data.nIBMPacketsPerThread = (m_Stanza.Npackets + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
 
             tTimeLoop = Microsoft.VisualBasic.Timer '* 1000
@@ -5205,10 +5206,30 @@ exitline:
 
     End Sub
 
+    ''' <summary>
+    ''' Wraps the initialization of Ecospace IBM 
+    ''' </summary>
+    ''' <remarks>Initialize IMB packet numbers, weights, and positions</remarks>
+    Private Sub InitIBM()
+        Try
+            If Me.m_Data.UseIBM Then
+                'Packet number weights and iPacket, jPacket positions
+                InitPackets()
+                '
+                SetNearestOKcellforIBM()
+            End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Initialize numbers, weights, and positions ipacket,jpacket for IBM representation
+    ''' note must be called in findspatialequilibrium after calls to initialize ecospace
+    ''' variables
+    ''' </summary>
+    ''' <remarks></remarks>
     Sub InitPackets()
-        'initialize numbers, weights, and positions ipacket,jpacket for IBM representation
-        'note must be called in findspatialequilibrium after calls to initialize ecospace
-        'variables
 
         Dim ia As Integer, isp As Integer, ist As Integer, iaa As Integer
         Dim ip As Integer, i As Integer, j As Integer, Nused As Integer, i1 As Integer
@@ -5257,7 +5278,8 @@ exitline:
                 isc = isc + 1
                 'make up temporary list of suitable cells for this stanza
                 Nused = 0
-                For i = 1 To m_Data.InRow : For j = 1 To m_Data.InCol
+                For i = 1 To m_Data.InRow
+                    For j = 1 To m_Data.InCol
                         m_Data.Bcell(i, j, ieco) = 0 ' NOTE call to initpackets must be after any other Bcell initialization for multistanza biomasses
                         m_Data.PredCell(i, j, ieco) = 0
                         'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
@@ -5268,7 +5290,9 @@ exitline:
                             If ist = 1 Then m_Stanza.iNursery(isp, Nused) = i : m_Stanza.jNursery(isp, Nused) = j
                         End If
 
-                    Next : Next
+                    Next j
+                Next i
+
                 If ist = 1 Then m_Stanza.Nnursery(isp) = Nused
                 'then loop over ages to initialize numbers by age in stanza and distribute spatially
                 For iaa = m_Stanza.Age1(isp, ist) To m_Stanza.Age2(isp, ist)
@@ -5302,6 +5326,112 @@ exitline:
         'For i = 1 To 6: Debug.Print PredCell(1, 1, i), pred(i): Next
         'Stop
     End Sub
+
+    ''' <summary>
+    ''' Finds nearest suitable cell for IBM packets entering a stanza in a cell not suitable for that stanza
+    ''' </summary>
+    ''' <remarks>
+    ''' 
+    ''' </remarks>
+    Sub SetNearestOKcellforIBM()
+
+        Dim isp As Integer, ist As Integer, ieco As Integer, i As Integer, j As Integer
+        Dim i1 As Integer, i2 As Integer, j1 As Integer, j2 As Integer, ii As Integer, jj As Integer
+        Dim dmin As Integer, Dist As Integer
+        Dim MaxIter As Integer
+        Dim iter As Integer
+
+        MaxIter = Math.Max(Me.m_Data.InRow, Me.m_Data.InCol)
+        'MaxIter = Inrow : If Incol > Inrow Then MaxIter = Incol
+
+        ReDim Me.m_Data.ItoUse(Me.m_Stanza.Nsplit, Me.m_Stanza.MaxStanza, Me.m_Data.InRow, Me.m_Data.InCol)
+        ReDim Me.m_Data.JtoUse(Me.m_Stanza.Nsplit, Me.m_Stanza.MaxStanza, Me.m_Data.InRow, Me.m_Data.InCol)
+
+        For isp = 1 To Me.m_Stanza.Nsplit
+            For ist = 2 To Me.m_Stanza.Nstanza(isp)
+                ieco = Me.m_Stanza.EcopathCode(isp, ist)
+                For i = 1 To Me.m_Data.InRow
+                    For j = 1 To Me.m_Data.InCol
+                        ' zero value will be used to indicate packet should not be moved on entry to stanza
+                        Me.m_Data.ItoUse(isp, ist, i, j) = 0
+                        Me.m_Data.ItoUse(isp, ist, i, j) = 0
+                        'Does the packet need to be moved, only reset itouse and jtouse if so
+                        If HabIsOk(ieco, i, j) = False Then
+                            'Yes move the packet
+                            dmin = 10000
+                            i1 = i
+                            i2 = i
+                            j1 = j
+                            j2 = j
+                            iter = 0
+                            Do While iter <= MaxIter
+                                iter = iter + 1
+                                i1 = i1 - 1 : If i1 < 1 Then i1 = 1
+                                i2 = i2 + 1 : If i2 > Me.m_Data.InRow Then i2 = Me.m_Data.InRow
+                                j1 = j1 - 1 : If j1 < 1 Then j1 = 1
+                                j2 = j2 + 1 : If j2 > Me.m_Data.InCol Then j2 = Me.m_Data.InCol
+                                For ii = i1 To i2
+                                    If HabIsOk(ieco, ii, j1) Then 'check first column for row ii
+                                        Dist = Abs(ii - i) + Abs(j1 - j)
+                                        If Dist < dmin Then
+                                            dmin = Dist
+                                            Me.m_Data.ItoUse(isp, ist, i, j) = ii
+                                            Me.m_Data.JtoUse(isp, ist, i, j) = j1
+                                        End If
+                                    End If
+                                    If HabIsOk(ieco, ii, j2) Then 'check last column for row ii
+                                        Dist = Abs(ii - i) + Abs(j2 - j)
+                                        If Dist < dmin Then
+                                            dmin = Dist
+                                            Me.m_Data.ItoUse(isp, ist, i, j) = ii
+                                            Me.m_Data.JtoUse(isp, ist, i, j) = j2
+                                        End If
+
+                                    End If
+                                Next
+                                For jj = j1 + 1 To j2 - 1
+                                    If HabIsOk(ieco, i1, jj) Then 'check first row for column jj
+                                        Dist = Abs(i1 - i) + Abs(jj - j)
+                                        If Dist < dmin Then
+                                            dmin = Dist
+                                            Me.m_Data.ItoUse(isp, ist, i, j) = i1
+                                            Me.m_Data.JtoUse(isp, ist, i, j) = jj
+                                        End If
+
+                                    End If
+                                    If HabIsOk(ieco, i2, jj) Then 'check last row for column jj
+                                        Dist = Abs(i2 - i) + Abs(jj - j)
+                                        If Dist < dmin Then
+                                            dmin = Dist
+                                            Me.m_Data.ItoUse(isp, ist, i, j) = i2
+                                            Me.m_Data.JtoUse(isp, ist, i, j) = jj
+                                        End If
+
+                                    End If
+                                Next
+                                'If ieco = 15 Then Stop
+                                If dmin < 10000 Then Exit Do 'have found the best move
+                            Loop
+                        End If
+                    Next j 'Map cols
+                Next i 'Map rows
+            Next ist 'Number of stanzas in this group
+        Next isp ' number of multistanza groups
+
+    End Sub
+
+
+    Function HabIsOk(ieco As Integer, i As Integer, j As Integer) As Boolean
+        'If Depth(i, j) > 0 And (PrefHab(ieco, HabType(i, j)) = True Or PrefHab(ieco, 0) = True) Then
+        If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, ieco) > 0.5 Then
+            HabIsOk = True
+        Else
+            HabIsOk = False
+        End If
+    End Function
+
+
+
 #End Region
 
 #Region "Sailing Costs"

@@ -667,6 +667,8 @@ Namespace Core
         ''' <summary>How Capacity is calculated in Ecospace.</summary>
         EcospaceCapCalType
 
+        EcospaceIBMMovePacketOnStanza
+
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time
         '''''''''''''''''''''

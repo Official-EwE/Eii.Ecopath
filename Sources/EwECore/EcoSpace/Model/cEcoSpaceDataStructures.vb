@@ -542,6 +542,21 @@ Public Class cEcospaceDataStructures
 
     Public CapCalType As EwEUtils.Core.eEcospaceCapacityCalType = EwEUtils.Core.eEcospaceCapacityCalType.Capacity
 
+    ''' <summary>
+    ''' Nearest suitable map row (iPacket) for an IBM Packet by nStanzaGroups(nSplit), MaxStanzas, row, col
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public ItoUse(,,,) As Integer
+
+    ''' <summary>
+    ''' Nearest suitable map col (jPacket) for an IBM Packet by nStanzaGroups(nSplit), MaxStanzas, row, col
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public JtoUse(,,,) As Integer
+
+    Public MovePacketsAtStanzaEntry As Boolean
+
+
 #End Region
 
 #Region "Private Data"

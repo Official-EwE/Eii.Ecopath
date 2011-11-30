@@ -38,6 +38,9 @@ Namespace Ecospace
         Private m_fpMaxIterations As cEwEFormatProvider = Nothing
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
         Private m_fpUseExact As cEwEFormatProvider = Nothing
+
+        Private m_fpMovePackets As cEwEFormatProvider = Nothing
+
         Private WithEvents m_bpConTracing As cBooleanProperty = Nothing
 
         Private m_fpSaveCSV As cEwEFormatProvider = Nothing
@@ -89,6 +92,7 @@ Namespace Ecospace
             Me.m_fpMaxIterations.Release()
             Me.m_fpPredictEffort.Release()
             Me.m_fpUseExact.Release()
+            Me.m_fpMovePackets.Release()
 
             MyBase.OnFormClosed(e)
         End Sub
@@ -133,6 +137,8 @@ Namespace Ecospace
             Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_cbPredictEffort, ecospaceModelParams, eVarNameFlags.PredictEffort)
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
+
+            Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, ecospaceModelParams, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
 
             Me.m_fpSaveCSV = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSaveCSV, ecospaceModelParams, eVarNameFlags.EcospaceSaveCSV)
             Me.m_fpSaveASC = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSaveASC, ecospaceModelParams, eVarNameFlags.EcospaceSaveASC)
@@ -350,6 +356,7 @@ Namespace Ecospace
 
 #End Region ' Internals
 
+     
     End Class
 
 End Namespace

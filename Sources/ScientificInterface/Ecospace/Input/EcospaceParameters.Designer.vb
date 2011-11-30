@@ -34,14 +34,9 @@ Namespace Ecospace
             Me.m_rbBaseBiomass = New System.Windows.Forms.RadioButton()
             Me.m_rbAdjustedBiomass = New System.Windows.Forms.RadioButton()
             Me.m_cbPredictEffort = New System.Windows.Forms.CheckBox()
-            Me.m_lbNumThreads = New System.Windows.Forms.Label()
-            Me.m_nudNumThreads = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.lbPacketsMultiplier = New System.Windows.Forms.Label()
             Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_gbThreading = New System.Windows.Forms.GroupBox()
-            Me.m_tbNumPackets = New System.Windows.Forms.TextBox()
             Me.m_gbCapCalcs = New System.Windows.Forms.GroupBox()
             Me.m_rbHab = New System.Windows.Forms.RadioButton()
             Me.m_rbCap = New System.Windows.Forms.RadioButton()
@@ -71,15 +66,23 @@ Namespace Ecospace
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plBiomass = New System.Windows.Forms.Panel()
+            Me.m_gbThreading = New System.Windows.Forms.GroupBox()
+            Me.m_lbNumThreads = New System.Windows.Forms.Label()
+            Me.m_nudNumThreads = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_gbIMB = New System.Windows.Forms.GroupBox()
+            Me.m_tbNumPackets = New System.Windows.Forms.TextBox()
+            Me.lbPacketsMultiplier = New System.Windows.Forms.Label()
+            Me.m_cbMovePackets = New System.Windows.Forms.CheckBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
-            CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpModelTop.SuspendLayout()
-            Me.m_gbThreading.SuspendLayout()
             Me.m_gbCapCalcs.SuspendLayout()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbRunTime.SuspendLayout()
             Me.m_plBiomass.SuspendLayout()
+            Me.m_gbThreading.SuspendLayout()
+            CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_gbIMB.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -131,24 +134,6 @@ Namespace Ecospace
             Me.m_cbPredictEffort.Name = "m_cbPredictEffort"
             Me.m_cbPredictEffort.UseVisualStyleBackColor = True
             '
-            'm_lbNumThreads
-            '
-            resources.ApplyResources(Me.m_lbNumThreads, "m_lbNumThreads")
-            Me.m_lbNumThreads.Name = "m_lbNumThreads"
-            '
-            'm_nudNumThreads
-            '
-            resources.ApplyResources(Me.m_nudNumThreads, "m_nudNumThreads")
-            Me.m_nudNumThreads.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-            Me.m_nudNumThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.m_nudNumThreads.Name = "m_nudNumThreads"
-            Me.m_nudNumThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
-            '
-            'lbPacketsMultiplier
-            '
-            resources.ApplyResources(Me.lbPacketsMultiplier, "lbPacketsMultiplier")
-            Me.lbPacketsMultiplier.Name = "lbPacketsMultiplier"
-            '
             'm_hdrInitialization
             '
             resources.ApplyResources(Me.m_hdrInitialization, "m_hdrInitialization")
@@ -168,25 +153,11 @@ Namespace Ecospace
             'm_tlpModelTop
             '
             resources.ApplyResources(Me.m_tlpModelTop, "m_tlpModelTop")
-            Me.m_tlpModelTop.Controls.Add(Me.m_gbThreading, 1, 0)
+            Me.m_tlpModelTop.Controls.Add(Me.m_gbThreading, 3, 0)
             Me.m_tlpModelTop.Controls.Add(m_gbModel, 0, 0)
             Me.m_tlpModelTop.Controls.Add(Me.m_gbCapCalcs, 2, 0)
+            Me.m_tlpModelTop.Controls.Add(Me.m_gbIMB, 1, 0)
             Me.m_tlpModelTop.Name = "m_tlpModelTop"
-            '
-            'm_gbThreading
-            '
-            Me.m_gbThreading.Controls.Add(Me.m_tbNumPackets)
-            Me.m_gbThreading.Controls.Add(Me.m_lbNumThreads)
-            Me.m_gbThreading.Controls.Add(Me.m_nudNumThreads)
-            Me.m_gbThreading.Controls.Add(Me.lbPacketsMultiplier)
-            resources.ApplyResources(Me.m_gbThreading, "m_gbThreading")
-            Me.m_gbThreading.Name = "m_gbThreading"
-            Me.m_gbThreading.TabStop = False
-            '
-            'm_tbNumPackets
-            '
-            resources.ApplyResources(Me.m_tbNumPackets, "m_tbNumPackets")
-            Me.m_tbNumPackets.Name = "m_tbNumPackets"
             '
             'm_gbCapCalcs
             '
@@ -370,6 +341,52 @@ Namespace Ecospace
             Me.m_plBiomass.Controls.Add(Me.m_rbAdjustedBiomass)
             Me.m_plBiomass.Name = "m_plBiomass"
             '
+            'm_gbThreading
+            '
+            Me.m_gbThreading.Controls.Add(Me.m_lbNumThreads)
+            Me.m_gbThreading.Controls.Add(Me.m_nudNumThreads)
+            resources.ApplyResources(Me.m_gbThreading, "m_gbThreading")
+            Me.m_gbThreading.Name = "m_gbThreading"
+            Me.m_gbThreading.TabStop = False
+            '
+            'm_lbNumThreads
+            '
+            resources.ApplyResources(Me.m_lbNumThreads, "m_lbNumThreads")
+            Me.m_lbNumThreads.Name = "m_lbNumThreads"
+            '
+            'm_nudNumThreads
+            '
+            resources.ApplyResources(Me.m_nudNumThreads, "m_nudNumThreads")
+            Me.m_nudNumThreads.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudNumThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudNumThreads.Name = "m_nudNumThreads"
+            Me.m_nudNumThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            '
+            'm_gbIMB
+            '
+            Me.m_gbIMB.Controls.Add(Me.m_cbMovePackets)
+            Me.m_gbIMB.Controls.Add(Me.m_tbNumPackets)
+            Me.m_gbIMB.Controls.Add(Me.lbPacketsMultiplier)
+            resources.ApplyResources(Me.m_gbIMB, "m_gbIMB")
+            Me.m_gbIMB.Name = "m_gbIMB"
+            Me.m_gbIMB.TabStop = False
+            '
+            'm_tbNumPackets
+            '
+            resources.ApplyResources(Me.m_tbNumPackets, "m_tbNumPackets")
+            Me.m_tbNumPackets.Name = "m_tbNumPackets"
+            '
+            'lbPacketsMultiplier
+            '
+            resources.ApplyResources(Me.lbPacketsMultiplier, "lbPacketsMultiplier")
+            Me.lbPacketsMultiplier.Name = "lbPacketsMultiplier"
+            '
+            'm_cbMovePackets
+            '
+            resources.ApplyResources(Me.m_cbMovePackets, "m_cbMovePackets")
+            Me.m_cbMovePackets.Name = "m_cbMovePackets"
+            Me.m_cbMovePackets.UseVisualStyleBackColor = True
+            '
             'EcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
@@ -391,10 +408,7 @@ Namespace Ecospace
             Me.Name = "EcospaceParameters"
             m_gbModel.ResumeLayout(False)
             m_gbModel.PerformLayout()
-            CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpModelTop.ResumeLayout(False)
-            Me.m_gbThreading.ResumeLayout(False)
-            Me.m_gbThreading.PerformLayout()
             Me.m_gbCapCalcs.ResumeLayout(False)
             Me.m_gbCapCalcs.PerformLayout()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).EndInit()
@@ -402,11 +416,15 @@ Namespace Ecospace
             Me.m_gbRunTime.PerformLayout()
             Me.m_plBiomass.ResumeLayout(False)
             Me.m_plBiomass.PerformLayout()
+            Me.m_gbThreading.ResumeLayout(False)
+            Me.m_gbThreading.PerformLayout()
+            CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_gbIMB.ResumeLayout(False)
+            Me.m_gbIMB.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
         Private WithEvents m_plBiomass As System.Windows.Forms.Panel
         Private WithEvents m_lbScenarioName As System.Windows.Forms.Label
         Private WithEvents m_hdrScenario As cEwEHeaderLabel
@@ -422,12 +440,9 @@ Namespace Ecospace
         Private WithEvents m_rbAdjustedBiomass As System.Windows.Forms.RadioButton
         Private WithEvents m_hdrModel As cEwEHeaderLabel
         Private WithEvents m_tlpModelTop As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_gbThreading As System.Windows.Forms.GroupBox
         Private WithEvents m_rbNewStanzaModel As System.Windows.Forms.RadioButton
         Private WithEvents m_rbIBM As System.Windows.Forms.RadioButton
         Private WithEvents m_rbOldSchool As System.Windows.Forms.RadioButton
-        Private WithEvents m_lbNumThreads As System.Windows.Forms.Label
-        Private WithEvents m_tbNumPackets As System.Windows.Forms.TextBox
         Private WithEvents m_gbRunTime As System.Windows.Forms.GroupBox
         Private WithEvents m_lbTotalTime As System.Windows.Forms.Label
         Private WithEvents m_tbTotalTime As System.Windows.Forms.TextBox
@@ -441,7 +456,6 @@ Namespace Ecospace
         Private WithEvents m_cbPredictEffort As System.Windows.Forms.CheckBox
         Private WithEvents m_cbUseExact As System.Windows.Forms.CheckBox
         Private WithEvents m_cbContaminantTracing As System.Windows.Forms.CheckBox
-        Private WithEvents m_nudNumThreads As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMaxIterations As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_gbCapCalcs As System.Windows.Forms.GroupBox
         Private WithEvents m_rbHab As System.Windows.Forms.RadioButton
@@ -449,6 +463,13 @@ Namespace Ecospace
         Private WithEvents m_rbCapHap As System.Windows.Forms.RadioButton
         Private WithEvents m_cbSaveCSV As System.Windows.Forms.CheckBox
         Private WithEvents m_cbSaveASC As System.Windows.Forms.CheckBox
+        Private WithEvents m_gbThreading As System.Windows.Forms.GroupBox
+        Private WithEvents m_lbNumThreads As System.Windows.Forms.Label
+        Private WithEvents m_nudNumThreads As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Friend WithEvents m_gbIMB As System.Windows.Forms.GroupBox
+        Friend WithEvents m_cbMovePackets As System.Windows.Forms.CheckBox
+        Private WithEvents m_tbNumPackets As System.Windows.Forms.TextBox
+        Private WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
     End Class
 
 End Namespace
