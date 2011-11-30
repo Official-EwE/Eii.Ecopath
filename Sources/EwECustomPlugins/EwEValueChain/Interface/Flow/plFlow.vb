@@ -399,7 +399,7 @@ Public Class plFlow
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
-        Dim uc As LinkWrapper = ConnectorFromPoint(e.Location)
+        Dim lw As LinkWrapper = ConnectorFromPoint(e.Location)
 
         Select Case Me.m_editMode
 
@@ -411,10 +411,10 @@ Public Class plFlow
                 End If
 
             Case eEditMode.Delete
-                If (uc IsNot Nothing) Then
+                If (lw IsNot Nothing) Then
                     Me.Cursor = Me.m_crsDeleteItem
                 Else
-                    Me.Cursor = Me.m_crsDeleteItem
+                    Me.Cursor = Me.m_crsDeleteGeneric
                 End If
 
             Case Else
