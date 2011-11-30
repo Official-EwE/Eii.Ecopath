@@ -152,6 +152,8 @@ Public Class dlgDefineTaxa
         Me.m_cmbFilter.Items.Add(eTaxonLevelType.Phylum)
         Me.m_cmbFilter.SelectedIndex = 0
 
+        Me.m_pbSearching.Image = SharedResources.ani_loader
+
         Me.UpdateControls()
     End Sub
 
@@ -304,7 +306,14 @@ Public Class dlgDefineTaxa
             Return
         End If
 
-        Me.m_gridResults.AddResults(results)
+        Me.Cursor = Cursors.WaitCursor
+        Try
+            Me.UpdateControls()
+            Me.m_gridResults.AddResults(results)
+        Catch ex As Exception
+
+        End Try
+        Me.Cursor = Cursors.Default
 
     End Sub
 
@@ -331,6 +340,7 @@ Public Class dlgDefineTaxa
 
         Dim bCanSearch As Boolean = False
         Dim bCanConfig As Boolean = False
+        Dim bIsSearching As Boolean = False
 
         Me.m_bInUpdate = True
 
@@ -357,6 +367,7 @@ Public Class dlgDefineTaxa
                     Catch ex As Exception
                     End Try
                 End If
+                bIsSearching = bIsSearching Or (DirectCast(prod, IDataSearchProducerPlugin).IsSeaching)
                 bCanConfig = (TypeOf prod Is IConfigurablePlugin)
             End If
         End If
@@ -371,6 +382,7 @@ Public Class dlgDefineTaxa
         Me.m_cbIncludeExtent.Enabled = bCanSearch
         Me.m_gridResults.Enabled = bCanSearch
 
+        Me.m_pbSearching.Visible = bIsSearching
         Me.m_bInUpdate = False
 
     End Sub
@@ -532,6 +544,8 @@ Public Class dlgDefineTaxa
         Catch ex As Exception
 
         End Try
+
+        Me.UpdateControls()
 
     End Sub
 

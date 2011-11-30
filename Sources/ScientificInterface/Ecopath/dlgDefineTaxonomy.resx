@@ -304,7 +304,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_lblSearchTerm.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_tbxSearchTerm.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -328,7 +328,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_tbxSearchTerm.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_cmbEngine.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -361,7 +361,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_cmbEngine.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_btnConnect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -370,7 +370,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>769, 8</value>
+    <value>769, 7</value>
   </data>
   <data name="m_btnConnect.Size" type="System.Drawing.Size, System.Drawing">
     <value>110, 23</value>
@@ -391,7 +391,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_btnConnect.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_cbIncludeExtent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -424,7 +424,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_cbIncludeExtent.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_scMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -474,6 +474,27 @@
   <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_pbSearching.Location" type="System.Drawing.Point, System.Drawing">
+    <value>97, 37</value>
+  </data>
+  <data name="m_pbSearching.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="m_pbSearching.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;m_pbSearching.Name" xml:space="preserve">
+    <value>m_pbSearching</value>
+  </data>
+  <data name="&gt;&gt;m_pbSearching.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbSearching.Parent" xml:space="preserve">
+    <value>m_scMain.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_pbSearching.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_cmbFilter.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -496,7 +517,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_cmbFilter.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lblIn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -526,7 +547,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_lblIn.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_gridResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -550,7 +571,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_gridResults.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lblEngine.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -580,7 +601,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_lblEngine.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
     <value>m_scMain.Panel2</value>

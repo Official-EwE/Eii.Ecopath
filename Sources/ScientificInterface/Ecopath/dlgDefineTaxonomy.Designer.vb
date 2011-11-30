@@ -44,10 +44,12 @@ Partial Class dlgDefineTaxa
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnProps = New System.Windows.Forms.Button()
+        Me.m_pbSearching = New System.Windows.Forms.PictureBox()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
+        CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_btnAdd
@@ -120,6 +122,7 @@ Partial Class dlgDefineTaxa
         '
         'm_scMain.Panel2
         '
+        Me.m_scMain.Panel2.Controls.Add(Me.m_pbSearching)
         Me.m_scMain.Panel2.Controls.Add(Me.m_cmbFilter)
         Me.m_scMain.Panel2.Controls.Add(Me.m_lblIn)
         Me.m_scMain.Panel2.Controls.Add(Me.m_btnConnect)
@@ -228,6 +231,12 @@ Partial Class dlgDefineTaxa
         Me.m_btnProps.Name = "m_btnProps"
         Me.m_btnProps.UseVisualStyleBackColor = True
         '
+        'm_pbSearching
+        '
+        resources.ApplyResources(Me.m_pbSearching, "m_pbSearching")
+        Me.m_pbSearching.Name = "m_pbSearching"
+        Me.m_pbSearching.TabStop = False
+        '
         'dlgDefineTaxa
         '
         resources.ApplyResources(Me, "$this")
@@ -252,6 +261,7 @@ Partial Class dlgDefineTaxa
         Me.m_scMain.Panel2.PerformLayout()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
+        CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -274,5 +284,6 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_cmbFilter As System.Windows.Forms.ComboBox
     Private WithEvents m_lblIn As System.Windows.Forms.Label
     Private WithEvents m_gridResults As ScientificInterface.gridTaxonSearchResults
+    Private WithEvents m_pbSearching As System.Windows.Forms.PictureBox
 
 End Class
