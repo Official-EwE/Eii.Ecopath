@@ -27,9 +27,7 @@ Public Class gridMSEBatchFixedFIter
     Private Enum eColumnTypes As Integer
         Index = 0
         Name
-        BLim
-        BBase
-        FOpt
+        FixedF
     End Enum
 
 #End Region ' Internal defs
@@ -51,9 +49,7 @@ Public Class gridMSEBatchFixedFIter
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME & "-iteration# ")
-        Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit") 'B lim(-)
-        Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Biomass base")
-        Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F max.")
+        Me(0, eColumnTypes.FixedF) = New EwEColumnHeaderCell("Fixed F") 'B lim(-)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -62,48 +58,22 @@ Public Class gridMSEBatchFixedFIter
 
     Protected Overrides Sub FillData()
 
-        Dim group As MSE.cMSEBatchTFMGroup = Nothing
+        Dim group As MSE.cMSEBatchFGroup = Nothing
 
         ' For each group
-        For iParIter As Integer = 1 To Core.MSEBatchManager.Parameters.nTFMIteration
+        For iParIter As Integer = 1 To Core.MSEBatchManager.Parameters.nFixedFIteration
 
             'Get the group info
-            group = Core.MSEBatchManager.TFMGroups(iSelGroup)
+            group = Core.MSEBatchManager.FixedFGroups(iSelGroup)
 
 
             Me.AddRow()
 
             Me(iParIter, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iParIter))
-            ' Me(iParIter, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Me(iParIter, eColumnTypes.Name) = New EwECell(group.Name & " " & iParIter.ToString, GetType(String), cStyleGuide.eStyleFlags.Names)
 
-            Me(iParIter, eColumnTypes.BLim) = New EwECell(group.BLimValue(iParIter), GetType(Single))
-            Me(iParIter, eColumnTypes.BLim).Behaviors.Add(Me.EwEEditHandler)
-
-            Me(iParIter, eColumnTypes.BBase) = New EwECell(group.BBaseValue(iParIter), GetType(Single))
-            Me(iParIter, eColumnTypes.BBase).Behaviors.Add(Me.EwEEditHandler)
-
-
-            Me(iParIter, eColumnTypes.FOpt) = New EwECell(group.FMaxValue(iParIter), GetType(Single))
-            Me(iParIter, eColumnTypes.FOpt).Behaviors.Add(Me.EwEEditHandler)
-
-
-
-            'Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
-
-            'Me(iGroup, eColumnTypes.BBaseLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseLower)
-            'Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
-            'Me(iGroup, eColumnTypes.BBaseValue) = New EwECell(group.BBaseValue(iCurIter), GetType(Single))
-            'Me(iGroup, eColumnTypes.BBaseValue).Behaviors.Add(Me.EwEEditHandler)
-            'Me(iGroup, eColumnTypes.BBaseUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseUpper)
-
-            'Me(iGroup, eColumnTypes.FOptLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptLower)
-            'Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
-            'Me(iGroup, eColumnTypes.FOptValue) = New EwECell(group.FMaxValue(iCurIter), GetType(Single))
-            'Me(iGroup, eColumnTypes.FOptValue).Behaviors.Add(Me.EwEEditHandler)
-            'Me(iGroup, eColumnTypes.FOptUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
-
-            '    Me.Rows(iGroup).Tag = group
+            Me(iParIter, eColumnTypes.FixedF) = New EwECell(group.FixedFValue(iParIter), GetType(Single))
+            Me(iParIter, eColumnTypes.FixedF).Behaviors.Add(Me.EwEEditHandler)
 
         Next iParIter
 
@@ -158,24 +128,18 @@ Public Class gridMSEBatchFixedFIter
     ''' -----------------------------------------------------------------------
     Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
 
+        Try
 
+            Dim val As Object = Me(p.Row, p.Column).Value
+            Dim iIter As Integer = p.Row
+            Dim igrp As Integer = Me.iSelGroup
 
-        Dim val As Object = Me(p.Row, p.Column).Value
+            Dim group As MSE.cMSEBatchFGroup = Core.MSEBatchManager.FixedFGroups(iSelGroup)
+            group.FixedFValue(iIter) = CSng(val)
 
-        'Select Case DirectCast(p.Column, eColumnTypes)
-        '    Case eColumnTypes.Name : ti.Common = CStr(val)
-        '    Case eColumnTypes.Class : ti.Class = CStr(val)
-        '    Case eColumnTypes.Family : ti.Family = CStr(val)
-        '    Case eColumnTypes.Order : ti.Order = CStr(val)
-        '    Case eColumnTypes.Genus : ti.Genus = CStr(val)
-        '    Case eColumnTypes.Species : ti.Species = CStr(val)
-        '    Case eColumnTypes.Phylum : ti.Phylum = CStr(val)
-        '    Case eColumnTypes.Proportion : ti.Proportion = CSng(val)
-        '    Case eColumnTypes.Code : ti.CodeTaxon = CStr(val)
-        'End Select
+        Catch ex As Exception
 
-        '' Perhaps redundant but hey
-        'Me.UpdateRow(p.Row)
+        End Try
 
         Return True
 
