@@ -147,9 +147,11 @@ Public Class frmMSEBatchFixedF
                         Me.grdGroups.iCurIter = Me.NIters
                     End If
 
-                    Me.grdGroups.RefreshContent()
+                    If msg.Type = eMessageType.MSEBatch_IterationDataUpdated Then
+                        Me.grdGroups.RefreshContent()
+                        Me.grdIters.RefreshContent()
+                    End If
 
-                    Me.grdIters.RefreshContent()
                 End If
 
 

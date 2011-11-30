@@ -213,6 +213,13 @@ Public Enum eMessageType
     Estimate_BA
     Estimate_Net_Migration
 
+    ''' <summary>MSE Batch has updated the iteration values </summary>
+    ''' <remarks>
+    ''' This was added to deal with a bug in the interface that caused the grid to assert 
+    ''' when it refreshed in response to edits. This prevents that by only updating when the message is of this type.
+    ''' </remarks>
+    MSEBatch_IterationDataUpdated
+
 End Enum
 
 #End Region

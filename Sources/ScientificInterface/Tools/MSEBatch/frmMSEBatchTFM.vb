@@ -142,9 +142,10 @@ Public Class frmMSEBatchTFM
                     ' Adjust max allowed iterations
                     Me.UpDwnIter.Maximum = Me.m_BatchManager.Parameters.nTFMIteration
 
-                    ' JS29Nov11: do not refresh; this message may very well have been triggered from an edit in the groups grid.
-                    'Me.grdGroups.RefreshContent()
-                    Me.grdIters.RefreshContent()
+                    If msg.Type = eMessageType.MSEBatch_IterationDataUpdated Then
+                        Me.grdGroups.RefreshContent()
+                        Me.grdIters.RefreshContent()
+                    End If
 
                 End If
 

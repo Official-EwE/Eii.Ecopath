@@ -466,7 +466,7 @@ Namespace MSEBatchManager
                 tfm.CalcValues()
             Next
 
-            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
                                                         eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
 
         End Sub
@@ -478,7 +478,7 @@ Namespace MSEBatchManager
                 FixedF.CalcValues()
             Next
 
-            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
                                                         eMessageImportance.Maintenance, eDataTypes.MSEBatchFixedFInput))
 
         End Sub
@@ -490,7 +490,7 @@ Namespace MSEBatchManager
                 TAC.CalcValues()
             Next
 
-            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
                                                         eMessageImportance.Maintenance, eDataTypes.MSEBatchTACInput))
 
         End Sub
