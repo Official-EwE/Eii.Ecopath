@@ -35,21 +35,6 @@ Namespace Ecospace
             MyBase.Dispose(disposing)
         End Sub
 
-        Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
-            Get
-                Return MyBase.UIContext
-            End Get
-            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
-                If value IsNot Nothing Then
-                    RemoveHandler value.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                End If
-                MyBase.UIContext = value
-                If value IsNot Nothing Then
-                    AddHandler value.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                End If
-            End Set
-        End Property
-
         Public Property SelFleetIndex() As Integer
             Get
                 Return Me.m_iFleetSelected
@@ -182,7 +167,7 @@ Namespace Ecospace
 
 #Region " Events "
 
-        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
                 Me.RefreshContent()
             End If
