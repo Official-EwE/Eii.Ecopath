@@ -210,6 +210,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb" />
+    <Compile Include="Tools\MSEBatch\gridMSEBatchFixedFIter.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tools\MSEBatch\frmMSEBatchFixedF.Designer.vb">
       <DependentUpon>frmMSEBatchFixedF.vb</DependentUpon>
     </Compile>
