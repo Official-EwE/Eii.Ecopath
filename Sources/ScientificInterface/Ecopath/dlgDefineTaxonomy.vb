@@ -540,7 +540,7 @@ Public Class dlgDefineTaxa
             End If
 
             ' Start searching
-            Me.SelectedDataProducer.StartSearch(taxonSearch)
+            Me.SelectedDataProducer.StartSearch(taxonSearch, 100)
         Catch ex As Exception
 
         End Try
@@ -558,7 +558,7 @@ Public Class dlgDefineTaxa
             If (Not String.IsNullOrEmpty(term.SourceKey)) And _
                (String.Compare(term.Source, Me.SelectedDataProducer.Name, True) = 0) Then
                 ' #Yes: Start searching (expected to return only one result)
-                Me.SelectedDataProducer.StartSearch(Me.m_gridGroups.GetSearchTerm(term))
+                Me.SelectedDataProducer.StartSearch(Me.m_gridGroups.GetSearchTerm(term), 100)
             End If
         Catch ex As Exception
             ' Woops

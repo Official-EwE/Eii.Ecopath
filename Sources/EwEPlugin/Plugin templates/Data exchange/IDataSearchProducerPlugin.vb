@@ -21,9 +21,10 @@ Namespace Data
         ''' Starts an asynchronous search for data.
         ''' </summary>
         ''' <param name="data">The data providing search terms.</param>
+        ''' <param name="iMaxResults">The max number of results to return.</param>
         ''' <returns>True if started succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function StartSearch(ByVal data As Object) As Boolean
+        Function StartSearch(ByVal data As Object, iMaxResults As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
