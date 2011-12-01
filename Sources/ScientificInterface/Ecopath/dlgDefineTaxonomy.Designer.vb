@@ -33,10 +33,11 @@ Partial Class dlgDefineTaxa
         Me.m_lblSearchTerm = New System.Windows.Forms.Label()
         Me.m_tbxSearchTerm = New System.Windows.Forms.TextBox()
         Me.m_cmbEngine = New System.Windows.Forms.ComboBox()
-        Me.m_btnConnect = New System.Windows.Forms.Button()
+        Me.m_btnConfigure = New System.Windows.Forms.Button()
         Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox()
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_gridGroups = New ScientificInterface.gridDefineTaxonomy()
+        Me.m_pbSearching = New System.Windows.Forms.PictureBox()
         Me.m_cmbFilter = New System.Windows.Forms.ComboBox()
         Me.m_lblIn = New System.Windows.Forms.Label()
         Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults()
@@ -44,7 +45,6 @@ Partial Class dlgDefineTaxa
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnProps = New System.Windows.Forms.Button()
-        Me.m_pbSearching = New System.Windows.Forms.PictureBox()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -99,11 +99,11 @@ Partial Class dlgDefineTaxa
         Me.m_cmbEngine.Items.AddRange(New Object() {resources.GetString("m_cmbEngine.Items"), resources.GetString("m_cmbEngine.Items1"), resources.GetString("m_cmbEngine.Items2")})
         Me.m_cmbEngine.Name = "m_cmbEngine"
         '
-        'm_btnConnect
+        'm_btnConfigure
         '
-        resources.ApplyResources(Me.m_btnConnect, "m_btnConnect")
-        Me.m_btnConnect.Name = "m_btnConnect"
-        Me.m_btnConnect.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnConfigure, "m_btnConfigure")
+        Me.m_btnConfigure.Name = "m_btnConfigure"
+        Me.m_btnConfigure.UseVisualStyleBackColor = True
         '
         'm_cbIncludeExtent
         '
@@ -125,7 +125,7 @@ Partial Class dlgDefineTaxa
         Me.m_scMain.Panel2.Controls.Add(Me.m_pbSearching)
         Me.m_scMain.Panel2.Controls.Add(Me.m_cmbFilter)
         Me.m_scMain.Panel2.Controls.Add(Me.m_lblIn)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_btnConnect)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_btnConfigure)
         Me.m_scMain.Panel2.Controls.Add(Me.m_cbIncludeExtent)
         Me.m_scMain.Panel2.Controls.Add(Me.m_gridResults)
         Me.m_scMain.Panel2.Controls.Add(Me.m_lblEngine)
@@ -162,6 +162,12 @@ Partial Class dlgDefineTaxa
             Or SourceGrid2.GridSpecialKeys.Escape) _
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridGroups.UIContext = Nothing
+        '
+        'm_pbSearching
+        '
+        resources.ApplyResources(Me.m_pbSearching, "m_pbSearching")
+        Me.m_pbSearching.Name = "m_pbSearching"
+        Me.m_pbSearching.TabStop = False
         '
         'm_cmbFilter
         '
@@ -231,12 +237,6 @@ Partial Class dlgDefineTaxa
         Me.m_btnProps.Name = "m_btnProps"
         Me.m_btnProps.UseVisualStyleBackColor = True
         '
-        'm_pbSearching
-        '
-        resources.ApplyResources(Me.m_pbSearching, "m_pbSearching")
-        Me.m_pbSearching.Name = "m_pbSearching"
-        Me.m_pbSearching.TabStop = False
-        '
         'dlgDefineTaxa
         '
         resources.ApplyResources(Me, "$this")
@@ -274,7 +274,7 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_lblSearchTerm As System.Windows.Forms.Label
     Private WithEvents m_tbxSearchTerm As System.Windows.Forms.TextBox
     Private WithEvents m_cmbEngine As System.Windows.Forms.ComboBox
-    Private WithEvents m_btnConnect As System.Windows.Forms.Button
+    Private WithEvents m_btnConfigure As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Private WithEvents m_cbIncludeExtent As System.Windows.Forms.CheckBox
     Private WithEvents m_lblEngine As System.Windows.Forms.Label

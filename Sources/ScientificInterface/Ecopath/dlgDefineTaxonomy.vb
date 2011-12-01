@@ -265,7 +265,7 @@ Public Class dlgDefineTaxa
     End Sub
 
     Private Sub OnConnect(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnConnect.Click
+        Handles m_btnConfigure.Click
         Try
             Me.ConnectSelectedDataProducer()
         Catch ex As Exception
@@ -374,7 +374,7 @@ Public Class dlgDefineTaxa
 
         ' Config search controls
         Me.m_cmbEngine.Enabled = Me.m_bHasSearchEngines
-        Me.m_btnConnect.Enabled = bCanConfig
+        Me.m_btnConfigure.Enabled = bCanConfig
         Me.m_lblSearchTerm.Enabled = bCanSearch
         Me.m_tbxSearchTerm.Enabled = bCanSearch
         Me.m_lblIn.Enabled = bCanSearch

@@ -363,34 +363,34 @@
   <data name="&gt;&gt;m_cmbEngine.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="m_btnConnect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnConfigure.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnConnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnConfigure.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnConnect.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnConfigure.Location" type="System.Drawing.Point, System.Drawing">
     <value>769, 7</value>
   </data>
-  <data name="m_btnConnect.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnConfigure.Size" type="System.Drawing.Size, System.Drawing">
     <value>110, 23</value>
   </data>
-  <data name="m_btnConnect.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnConfigure.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_btnConnect.Text" xml:space="preserve">
-    <value>&amp;Connection...</value>
+  <data name="m_btnConfigure.Text" xml:space="preserve">
+    <value>&amp;Configure...</value>
   </data>
-  <data name="&gt;&gt;m_btnConnect.Name" xml:space="preserve">
-    <value>m_btnConnect</value>
+  <data name="&gt;&gt;m_btnConfigure.Name" xml:space="preserve">
+    <value>m_btnConfigure</value>
   </data>
-  <data name="&gt;&gt;m_btnConnect.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnConfigure.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnConnect.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnConfigure.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;m_btnConnect.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnConfigure.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_cbIncludeExtent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
