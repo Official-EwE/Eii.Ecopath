@@ -60,16 +60,24 @@ Public Class cTaxon
         val = New cValue(New String(cbuf), eVarNameFlags.Species, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData(2)
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeISSCAAP, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+        val = New cValue(New Integer, eVarNameFlags.CodeSAUP, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+        val = New cValue(New Integer, eVarNameFlags.CodeFB, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+        val = New cValue(New Integer, eVarNameFlags.CodeSLB, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        m_values.Add(val.varName, val)
+
+        meta = New cVariableMetaData(250)
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeLCID, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(13)
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeTaxon, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
-        m_values.Add(val.varName, val)
-
-        meta = New cVariableMetaData(3)
-        val = New cValue(New String(cbuf), eVarNameFlags.Code3A, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeFAO, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
@@ -287,19 +295,6 @@ Public Class cTaxon
     End Property
 
     ''' <summary>
-    ''' Get/set the species common name.
-    ''' </summary>
-    Public Property Common() As String _
-        Implements ITaxonDetailsData.Common
-        Get
-            Return Me.Name
-        End Get
-        Set(ByVal value As String)
-            Me.Name = value
-        End Set
-    End Property
-
-    ''' <summary>
     ''' Get/set the species of a taxonomy definition.
     ''' </summary>
     Public Property Species() As String _
@@ -309,6 +304,19 @@ Public Class cTaxon
         End Get
         Set(ByVal value As String)
             Me.SetVariable(eVarNameFlags.Species, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the species common name.
+    ''' </summary>
+    Public Property Common() As String _
+        Implements ITaxonDetailsData.Common
+        Get
+            Return Me.Name
+        End Get
+        Set(ByVal value As String)
+            Me.Name = value
         End Set
     End Property
 
@@ -325,42 +333,58 @@ Public Class cTaxon
         End Set
     End Property
 
-    ''' <summary>
-    ''' Get/set the 2 digit ISSCAAP code of a taxonomy definition.
-    ''' </summary>
-    Public Property CodeISSCAAP() As String _
-        Implements ITaxonDetailsData.CodeISSCAAP
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeSAUP"/>
+    Public Property CodeSAUP() As Long _
+        Implements ITaxonDetailsData.CodeSAUP
         Get
-            Return CStr(Me.GetVariable(eVarNameFlags.CodeISSCAAP))
+            Return CLng(Me.GetVariable(eVarNameFlags.CodeSAUP))
         End Get
-        Set(ByVal value As String)
-            Me.SetVariable(eVarNameFlags.CodeISSCAAP, value)
+        Set(ByVal value As Long)
+            Me.SetVariable(eVarNameFlags.CodeSAUP, value)
         End Set
     End Property
 
-    ''' <summary>
-    ''' Get/set the 10 digit Taxonomy code of a taxonomy definition.
-    ''' </summary>
-    Public Property CodeTaxon() As String _
-        Implements ITaxonDetailsData.CodeTaxon
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeFB"/>
+    Public Property CodeFishBase() As Long _
+        Implements ITaxonDetailsData.CodeFB
         Get
-            Return CStr(Me.GetVariable(eVarNameFlags.CodeTaxon))
+            Return CLng(Me.GetVariable(eVarNameFlags.CodeFB))
         End Get
-        Set(ByVal value As String)
-            Me.SetVariable(eVarNameFlags.CodeTaxon, value)
+        Set(ByVal value As Long)
+            Me.SetVariable(eVarNameFlags.CodeFB, value)
         End Set
     End Property
 
-    ''' <summary>
-    ''' Get/set the 3 character 3A code of a taxonomy definition.
-    ''' </summary>
-    Public Property Code3A() As String _
-        Implements ITaxonDetailsData.Code3A
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeSLB"/>
+    Public Property CodeSeaLifeBase() As Long _
+        Implements ITaxonDetailsData.CodeSLB
         Get
-            Return CStr(Me.GetVariable(eVarNameFlags.Code3A))
+            Return CLng(Me.GetVariable(eVarNameFlags.CodeSLB))
+        End Get
+        Set(ByVal value As Long)
+            Me.SetVariable(eVarNameFlags.CodeSLB, value)
+        End Set
+    End Property
+
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeFAO"/>
+    Public Property CodeFAO() As String _
+        Implements ITaxonDetailsData.CodeFAO
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.CodeFAO))
         End Get
         Set(ByVal value As String)
-            Me.SetVariable(eVarNameFlags.Code3A, value)
+            Me.SetVariable(eVarNameFlags.CodeFAO, value)
+        End Set
+    End Property
+
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeLCID"/>
+    Public Property CodeLCID() As String _
+        Implements ITaxonDetailsData.CodeLCID
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.CodeLCID))
+        End Get
+        Set(ByVal value As String)
+            Me.SetVariable(eVarNameFlags.CodeLCID, value)
         End Set
     End Property
 

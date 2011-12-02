@@ -1436,9 +1436,11 @@ Namespace Core
         Family
         Genus
         Species
-        CodeISSCAAP
-        CodeTaxon
-        Code3A
+        CodeSAUP
+        CodeSLB
+        CodeFB
+        CodeFAO
+        CodeLCID
         Source
         SourceKey
         LastUpdated

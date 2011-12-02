@@ -3111,9 +3111,11 @@ Namespace DataSources
             Try
                 While reader.Read()
                     taxonDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
-                    taxonDS.TaxonCodeISCAAP(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeISCAAP", ""))
-                    taxonDS.TaxonCodeTaxon(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeTaxon", ""))
-                    taxonDS.TaxonCode3A(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "Code3A", ""))
+                    taxonDS.TaxonCodeSAUP(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeSAUP", cCore.NULL_VALUE))
+                    taxonDS.TaxonCodeFB(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeFB", cCore.NULL_VALUE))
+                    taxonDS.TaxonCodeSLB(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeSLB", cCore.NULL_VALUE))
+                    taxonDS.TaxonCodeFAO(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeTaxon", ""))
+                    taxonDS.TaxonCodeLCID(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeLCID", ""))
                     taxonDS.TaxonClass(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "ClassName", ""))
                     taxonDS.TaxonOrder(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "OrderName", ""))
                     taxonDS.TaxonFamily(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "FamilyName", ""))
@@ -3249,9 +3251,11 @@ Namespace DataSources
 
                         drow = writer.NewRow()
                         drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
-                        drow("CodeISCAAP") = taxonDS.TaxonCodeISCAAP(iTaxon)
-                        drow("CodeTaxon") = taxonDS.TaxonCodeTaxon(iTaxon)
-                        drow("Code3A") = taxonDS.TaxonCode3A(iTaxon)
+                        drow("CodeSAUP") = taxonDS.TaxonCodeSAUP(iTaxon)
+                        drow("CodeFB") = taxonDS.TaxonCodeFB(iTaxon)
+                        drow("CodeSLB") = taxonDS.TaxonCodeSLB(iTaxon)
+                        drow("CodeTaxon") = taxonDS.TaxonCodeFAO(iTaxon)
+                        drow("CodeLCID") = taxonDS.TaxonCodeLCID(iTaxon)
                         drow("ClassName") = taxonDS.TaxonClass(iTaxon)
                         drow("OrderName") = taxonDS.TaxonOrder(iTaxon)
                         drow("FamilyName") = taxonDS.TaxonFamily(iTaxon)
@@ -3392,9 +3396,11 @@ Namespace DataSources
 
             drow = writer.NewRow()
             drow("TaxonID") = iDBID
-            drow("CodeISCAAP") = data.CodeISSCAAP
-            drow("CodeTaxon") = data.CodeTaxon
-            drow("Code3A") = data.Code3A
+            drow("CodeSAUP") = data.CodeSAUP
+            drow("CodeSLB") = data.CodeSLB
+            drow("CodeFB") = data.CodeFB
+            drow("CodeTaxon") = data.CodeFAO
+            drow("CodeLCID") = data.CodeLCID
             drow("ClassName") = data.Class
             drow("OrderName") = data.Order
             drow("FamilyName") = data.Family

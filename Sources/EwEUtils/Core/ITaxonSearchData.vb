@@ -22,6 +22,17 @@ Namespace Core
         Kingdom = &H10000000
     End Enum
 
+    ''' <summary>Type 
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum eTaxonCodeType As Integer
+        FAOTaxon
+        FishBase
+        SeaLifeBase
+        SeaAroundUs
+        TDWG_LCID
+    End Enum
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Template for searching Taxonomy data from external data sources.
@@ -29,10 +40,19 @@ Namespace Core
     ''' -----------------------------------------------------------------------
     Public Interface ITaxonSearchData
 
+        ' -- Reference --
+
+        ''' <summary>Data source that a taxon was obtained for.</summary>
+        Property Source() As String
+        ''' <summary>Key to update this taxonomy from the source.</summary>
+        Property SourceKey() As String
+
         ''' <summary>Bitwise flag pattern indicating which fields to search, and
         ''' which fields have been searched.
         ''' </summary>
         Property SearchFields As eTaxonLevelType
+
+        ' -- Data fields --
 
         ''' <summary>Class name of a taxon.</summary>
         Property [Class]() As String
@@ -48,18 +68,22 @@ Namespace Core
         Property Common() As String
         ''' <summary>Phylum of a taxon.</summary>
         Property Phylum() As String
-        ''' <summary>ISSCAAP code of a taxon.</summary>
-        ''' <remarks>http://www.fao.org/docrep/w7283e/W7283E07.htm</remarks>
-        Property CodeISSCAAP() As String
-        ''' <summary>Taxonomy code of a taxon.</summary>
-        ''' <remarks>http://www.fao.org/fishery/collection/asfis/en</remarks>
-        Property CodeTaxon() As String
-        ''' <summary>3A code of a taxon.</summary>
-        Property Code3A() As String
-        ''' <summary>Data source that a taxon was obtained for.</summary>
-        Property Source() As String
-        ''' <summary>Key to update this taxonomy from the source.</summary>
-        Property SourceKey() As String
+
+        ' -- Identification --
+
+        ''' <summary>FAO taxon code (http://www.fao.org/fishery/collection/asfis/en).</summary>
+        Property CodeFAO() As String
+        ''' <summary>FishBase SpecCode.</summary>
+        Property CodeFB() As Long
+        ''' <summary>Sea Life Base SpecCode.</summary>
+        Property CodeSLB As Long
+        ''' <summary>Sea Around Us project Taxon ID</summary>
+        Property CodeSAUP As Long
+        ''' <summary>Taxonomy Databases Working Group Life Catalogue ID (http://lsid.tdwg.org/)</summary>
+        Property CodeLCID As String
+
+        ' -- Spatial extent --
+
         ''' <summary>Northern limit of the bounding box where this taxon occurs.</summary>
         Property North() As Single
         ''' <summary>Southern limit of the bounding box where this taxon occurs.</summary>

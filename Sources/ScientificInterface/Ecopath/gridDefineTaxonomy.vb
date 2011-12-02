@@ -61,9 +61,12 @@ Public Class gridDefineTaxonomy
         Private m_iDBIDTaxon As Integer = cCore.NULL_VALUE
         Private m_iTaxon As Integer = -1
 
-        Private m_strCode3A As String = ""
-        Private m_strCodeISSCAAP As String = ""
-        Private m_strCodeTaxon As String = ""
+        Private m_lCodeSAUP As Long = 0
+        Private m_lCodeFB As Long = 0
+        Private m_lCodeSLB As Long = 0
+        Private m_strCodeLCID As String = ""
+        Private m_strCodeFAO As String = ""
+
         Private m_strPhylum As String = ""
         Private m_strClass As String = ""
         Private m_strOrder As String = ""
@@ -137,9 +140,11 @@ Public Class gridDefineTaxonomy
             Me.m_iGroup = taxon.Group
             Me.m_iStanza = taxon.Stanza
             Me.m_sProportion = taxon.Proportion
-            Me.m_strCode3A = taxon.Code3A
-            Me.m_strCodeISSCAAP = taxon.CodeISSCAAP
-            Me.m_strCodeTaxon = taxon.CodeTaxon
+            Me.m_lCodeSAUP = taxon.CodeSAUP
+            Me.m_lCodeFB = taxon.CodeFishBase
+            Me.m_lCodeSLB = taxon.CodeSeaLifeBase
+            Me.m_strCodeFAO = taxon.CodeFAO
+            Me.m_strCodeLCID = taxon.CodeLCID
             Me.m_strCommon = taxon.Name
             Me.m_strClass = taxon.Class
             Me.m_strOrder = taxon.Order
@@ -176,9 +181,11 @@ Public Class gridDefineTaxonomy
         ''' <param name="taxon"></param>
         ''' -------------------------------------------------------------------
         Public Sub Update(ByVal taxon As ITaxonSearchData)
-            Me.m_strCode3A = taxon.Code3A
-            Me.m_strCodeISSCAAP = taxon.CodeISSCAAP
-            Me.m_strCodeTaxon = taxon.CodeTaxon
+            Me.m_lCodeSAUP = taxon.CodeSAUP
+            Me.m_lCodeFB = taxon.CodeFB
+            Me.m_lCodeSLB = taxon.CodeSLB
+            Me.m_strCodeFAO = taxon.CodeFAO
+            Me.m_strCodeLCID = taxon.CodeLCID
             Me.m_strCommon = taxon.Common
             Me.m_strPhylum = taxon.Phylum
             Me.m_strClass = taxon.Class
@@ -252,6 +259,12 @@ Public Class gridDefineTaxonomy
 
                 If (taxon.Proportion <> Me.m_sProportion) Then Return True
                 If (taxon.Group <> Me.m_iGroup) Then Return True
+                If (taxon.CodeSAUP <> Me.m_lCodeSAUP) Then Return True
+                If (taxon.CodeFishBase <> Me.m_lCodeFB) Then Return True
+                If (taxon.CodeSeaLifeBase <> Me.m_lCodeSLB) Then Return True
+                If (String.Compare(taxon.CodeLCID, Me.m_strCodeLCID) <> 0) Then Return True
+                If (String.Compare(taxon.CodeFAO, Me.m_strCodeFAO) <> 0) Then Return True
+
                 If (String.Compare(taxon.Name, Me.m_strCommon) <> 0) Then Return True
                 If (String.Compare(taxon.Phylum, Me.m_strPhylum) <> 0) Then Return True
                 If (String.Compare(taxon.Class, Me.m_strClass) <> 0) Then Return True
@@ -260,9 +273,7 @@ Public Class gridDefineTaxonomy
                 If (String.Compare(taxon.Genus, Me.m_strGenus) <> 0) Then Return True
                 If (String.Compare(taxon.Species, Me.m_strSpecies) <> 0) Then Return True
                 If (String.Compare(taxon.Source, Me.m_strSource) <> 0) Then Return True
-                If (String.Compare(taxon.CodeTaxon, Me.m_strCodeTaxon) <> 0) Then Return True
-                If (String.Compare(taxon.CodeISSCAAP, Me.m_strCodeISSCAAP) <> 0) Then Return True
-                If (String.Compare(taxon.Code3A, Me.m_strCode3A) <> 0) Then Return True
+
                 Return False
             End Get
         End Property
@@ -309,7 +320,10 @@ Public Class gridDefineTaxonomy
         Public Overrides Function Equals(ByVal obj As Object) As Boolean
             If (obj Is Nothing) Then Return False
             If (TypeOf obj Is cTaxon) Then
-                Return DirectCast(obj, cTaxon).CodeTaxon = Me.CodeTaxon
+                Dim t As cTaxon = DirectCast(obj, cTaxon)
+                Return (t.CodeSAUP = Me.CodeSAUP) Or (t.CodeFishBase = Me.CodeFB) Or (t.CodeSeaLifeBase = Me.CodeSLB) Or _
+                       (String.Compare(t.CodeLCID, Me.CodeLCID, True) = 0) Or _
+                       (String.Compare(t.CodeFAO, Me.CodeFAO, True) = 0)
             End If
             Return MyBase.Equals(obj)
         End Function
@@ -339,6 +353,64 @@ Public Class gridDefineTaxonomy
             End Get
             Set(ByVal value As Integer)
                 Me.m_iStanza = value
+            End Set
+        End Property
+
+
+        ''' <inheritdocs cref="ITaxonSearchData.CodeSAUP"/>
+        Public Property CodeSAUP() As Long _
+            Implements ITaxonSearchData.CodeSAUP
+            Get
+                Return Me.m_lCodeSAUP
+            End Get
+            Private Set(ByVal value As Long)
+                Me.m_lCodeSAUP = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonSearchData.CodeFB"/>
+        Public Property CodeFB As Long _
+            Implements ITaxonSearchData.CodeFB
+            Get
+                Return Me.m_lCodeFB
+            End Get
+            Set(value As Long)
+                Me.m_lCodeFB = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonSearchData.CodeSLB"/>
+        Public Property CodeSLB As Long _
+            Implements ITaxonSearchData.CodeSLB
+            Get
+                Return Me.m_lCodeSLB
+            End Get
+            Set(value As Long)
+                Me.m_lCodeSLB = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonSearchData.CodeLCID"/>
+        Public Property CodeLCID() As String _
+            Implements ITaxonSearchData.CodeLCID
+            Get
+                Return Me.m_strCodeLCID
+            End Get
+            Friend Set(ByVal value As String)
+                Me.m_strCodeLCID = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonSearchData.CodeFAO"/>
+        Public Property CodeFAO() As String _
+            Implements ITaxonSearchData.CodeFAO
+            Get
+                ' Rerouted to source key
+                Return Me.m_strCodeFAO
+            End Get
+            Private Set(ByVal value As String)
+                ' Rerouted to source key
+                Me.m_strCodeFAO = value
             End Set
         End Property
 
@@ -380,45 +452,6 @@ Public Class gridDefineTaxonomy
             End Get
             Set(ByVal value As String)
                 m_strClass = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.Code3A"/>
-        ''' -------------------------------------------------------------------
-        Public Property Code3A() As String _
-            Implements ITaxonSearchData.Code3A
-            Get
-                Return m_strCode3A
-            End Get
-            Set(ByVal value As String)
-                m_strCode3A = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.CodeISSCAAP"/>
-        ''' -------------------------------------------------------------------
-        Public Property CodeISSCAAP() As String _
-            Implements ITaxonSearchData.CodeISSCAAP
-            Get
-                Return m_strCodeISSCAAP
-            End Get
-            Set(ByVal value As String)
-                Me.m_strCodeISSCAAP = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.CodeTaxon"/>
-        ''' -------------------------------------------------------------------
-        Public Property CodeTaxon() As String _
-            Implements ITaxonSearchData.CodeTaxon
-            Get
-                Return Me.m_strCodeTaxon
-            End Get
-            Set(ByVal value As String)
-                Me.m_strCodeTaxon = value
             End Set
         End Property
 
@@ -571,9 +604,11 @@ Public Class gridDefineTaxonomy
                     .Name = Me.m_strCommon
                     .Group = Me.m_iGroup
                     .Proportion = Me.m_sProportion
-                    .Code3A = Me.m_strCode3A
-                    .CodeISSCAAP = Me.m_strCodeISSCAAP
-                    .CodeTaxon = Me.m_strCodeTaxon
+                    .CodeSAUP = Me.m_lCodeSAUP
+                    .CodeFishBase = Me.m_lCodeFB
+                    .CodeSeaLifeBase = Me.m_lCodeSLB
+                    .CodeLCID = Me.m_strCodeLCID
+                    .CodeFAO = Me.m_strCodeFAO
                     .Species = Me.m_strSpecies
                     .Family = Me.m_strFamily
                     .Genus = Me.m_strGenus
@@ -979,13 +1014,7 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
         ' == CODE cell
-        ' Allow custom taxon code when not obtained from external source, e.g. when no source key provided
-        If String.IsNullOrEmpty(ti.SourceKey) Then
-            cell = New EwECell(ti.CodeTaxon, GetType(String))
-            cell.Behaviors.Add(Me.EwEEditHandler)
-        Else
-            cell = New EwECell(ti.CodeTaxon, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-        End If
+        cell = New EwECell(ti.SourceKey, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
         Me(iRow, eColumnTypes.Code) = cell
 
         hgcParent.AddChildRow(iRow)
@@ -1042,7 +1071,7 @@ Public Class gridDefineTaxonomy
             Case eColumnTypes.Species : ti.Species = CStr(val)
             Case eColumnTypes.Phylum : ti.Phylum = CStr(val)
             Case eColumnTypes.Proportion : ti.Proportion = CSng(val)
-            Case eColumnTypes.Code : ti.CodeTaxon = CStr(val)
+                'Case eColumnTypes.Code : ti.CodeTaxon = CStr(val)
         End Select
 
         ' Perhaps redundant but hey

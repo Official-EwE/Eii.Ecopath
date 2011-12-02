@@ -32,12 +32,16 @@ Public Class cTaxonDataStructures
     Public TaxonSpecies() As String
     ''' <summary>Taxonomy (common) names (xNumTaxa).</summary>
     Public TaxonName() As String
-    ''' <summary>Taxonomy ISCAAP codes (xNumTaxa).</summary>
-    Public TaxonCodeISCAAP() As String
-    ''' <summary>Taxonomy taxon names (xNumTaxa).</summary>
-    Public TaxonCodeTaxon() As String
-    ''' <summary>Taxonomy 3A names (xNumTaxa).</summary>
-    Public TaxonCode3A() As String
+    ''' <summary>Taxonomy FAO codes (xNumTaxa).</summary>
+    Public TaxonCodeFAO() As String
+    ''' <summary>Taxonomy TDWG LCID codes (xNumTaxa).</summary>
+    Public TaxonCodeLCID() As String
+    ''' <summary>Taxonomy SAUP codes (xNumTaxa).</summary>
+    Public TaxonCodeSAUP() As Long
+    ''' <summary>Taxonomy FishBase codes (xNumTaxa).</summary>
+    Public TaxonCodeFB() As Long
+    ''' <summary>Taxonomy SeaLifeBase codes (xNumTaxa).</summary>
+    Public TaxonCodeSLB() As Long
     ''' <summary>Taxonomy source names where Taxon information was derived from (xNumTaxa).</summary>
     Public TaxonSource() As String
     ''' <summary>Taxonomy source keys to access Taxon information in <see cref="TaxonSource">a source</see>(xNumTaxa).</summary>
@@ -97,9 +101,11 @@ Public Class cTaxonDataStructures
         ReDim Me.TaxonProp(Me.NumTaxon)
         ReDim Me.TaxonPropCatch(Me.NumTaxon)
         ReDim Me.TaxonClass(Me.NumTaxon)
-        ReDim Me.TaxonCode3A(Me.NumTaxon)
-        ReDim Me.TaxonCodeISCAAP(Me.NumTaxon)
-        ReDim Me.TaxonCodeTaxon(Me.NumTaxon)
+        ReDim Me.TaxonCodeSAUP(Me.NumTaxon)
+        ReDim Me.TaxonCodeFB(Me.NumTaxon)
+        ReDim Me.TaxonCodeSLB(Me.NumTaxon)
+        ReDim Me.TaxonCodeFAO(Me.NumTaxon)
+        ReDim Me.TaxonCodeLCID(Me.NumTaxon)
         ReDim Me.TaxonName(Me.NumTaxon)
         ReDim Me.TaxonFamily(Me.NumTaxon)
         ReDim Me.TaxonGenus(Me.NumTaxon)
