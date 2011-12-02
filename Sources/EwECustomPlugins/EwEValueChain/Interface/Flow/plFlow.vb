@@ -429,6 +429,10 @@ Public Class plFlow
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+
+        e.Graphics.TextRenderingHint = Drawing.Text.TextRenderingHint.AntiAliasGridFit
+        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias
+
         MyBase.OnPaint(e)
 
         If (Me.m_uic Is Nothing) Then Return
