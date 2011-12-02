@@ -230,6 +230,10 @@ Namespace MSEBatchManager
             Me.Parameters.OutputDir = Me.m_BatchData.OuputDir
 
             For igrp As Integer = 1 To Me.nGroups
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Target Fishing Mortality
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 Dim tfm As cMSEBatchTFMGroup = Me.m_lstTFMs.Item(igrp)
                 tfm.AllowValidation = False
 
@@ -248,12 +252,20 @@ Namespace MSEBatchManager
                 tfm.FMaxLower = Me.m_BatchData.FOptLower(igrp)
                 tfm.FMaxUpper = Me.m_BatchData.FOptUpper(igrp)
 
+                For it As Integer = 1 To Me.m_BatchData.nTFM
+                    tfm.FMaxValue(it) = Me.m_BatchData.tfmFmax(it, igrp)
+                    tfm.BLimValue(it) = Me.m_BatchData.tfmBlim(it, igrp)
+                    tfm.BBaseValue(it) = Me.m_BatchData.tfmBbase(it, igrp)
+                Next
+
                 tfm.isManaged = (Me.m_BatchData.GroupRunType(igrp) = eMSEBatchRunTypes.TFM)
 
                 tfm.ResetStatusFlags()
                 tfm.AllowValidation = True
 
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Fixed Fishing Mortality
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 Dim FixedF As cMSEBatchFGroup = Me.m_lstFixedFs.Item(igrp)
                 FixedF.AllowValidation = False
 
@@ -263,10 +275,17 @@ Namespace MSEBatchManager
                 FixedF.FixedMort = Me.m_MSEdata.FixedF(igrp)
                 FixedF.FLower = Me.m_BatchData.FixedFLower(igrp)
                 FixedF.FUpper = Me.m_BatchData.FixedFUpper(igrp)
+
+                For it As Integer = 1 To Me.m_BatchData.nTFM
+                    FixedF.FixedFValue(it) = Me.m_BatchData.FixedF(it, igrp)
+                Next
+
                 FixedF.ResetStatusFlags()
                 FixedF.AllowValidation = True
 
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Total Allowable Catch
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 Dim TAC As cMSEBatchTACGroup = Me.m_lstTACs.Item(igrp)
                 TAC.AllowValidation = False
 
@@ -276,6 +295,11 @@ Namespace MSEBatchManager
                 TAC.TAC = Me.m_MSEdata.TAC(igrp)
                 TAC.TACLower = Me.m_BatchData.TACLower(igrp)
                 TAC.TACUpper = Me.m_BatchData.TACUpper(igrp)
+
+                'For it As Integer = 1 To Me.m_BatchData.nTFM
+                '    TAC.TACValue(it) = Me.m_BatchData.TAC(it, igrp)
+                'Next
+
                 TAC.ResetStatusFlags()
                 TAC.AllowValidation = True
 
@@ -347,13 +371,6 @@ Namespace MSEBatchManager
             Me.m_BatchData.nTFM = Me.Parameters.nTFMIteration
             Me.m_BatchData.IterCalcType = Me.Parameters.IterCalcType
 
-            'Biomass()
-            'QB() 'consumption/biomass
-            'FeedingTime()
-            'FishingMortRate()
-            'PredRate()
-            'CatchByGroup()
-
             Me.m_BatchData.OuputDir = Me.Parameters.OutputDir
 
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.Biomass) = Me.Parameters.bSaveBiomass
@@ -362,6 +379,7 @@ Namespace MSEBatchManager
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FishingMortRate) = Me.Parameters.bSaveFishingMort
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.FeedingTime) = Me.Parameters.bSaveFeedingTime
             Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.QB) = Me.Parameters.bSaveConsumptBio
+            'Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.Effort) = Me.Parameters.bsaveEffort
 
             Dim t As eMSEBatchOuputTypes
             For iout As Integer = 1 To Me.m_BatchData.nOuputTypes
@@ -372,7 +390,9 @@ Namespace MSEBatchManager
                 Me.m_BatchData.OuputType(iout) = t
             Next
 
-
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'TFM
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For igrp = 1 To Me.nGroups
                 'TFM's
                 Dim tfm As cMSEBatchTFMGroup = Me.m_lstTFMs.Item(igrp)
@@ -407,15 +427,17 @@ Namespace MSEBatchManager
 
             Next igrp
 
-
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Fixed F
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For igrp = 1 To Me.nGroups
-                'TFM's
+                'Fixed F
                 Dim FixedF As cMSEBatchFGroup = Me.m_lstFixedFs.Item(igrp)
                 Me.m_MSEdata.FixedF(igrp) = FixedF.FixedMort
                 Me.m_BatchData.FixedFLower(igrp) = FixedF.FLower
                 Me.m_BatchData.FixedFUpper(igrp) = FixedF.FUpper
 
-               
+
                 'isManaged The concept is to set this flag for the type of Quota TMF, F, TAC... for a group
                 'However the MSE does not work this way
                 'It sets the Quota for a group base on > zero values in F, TAC see cMMSEUpdateQuotas
@@ -429,6 +451,34 @@ Namespace MSEBatchManager
 
                 For iFixed As Integer = 1 To Me.m_BatchData.nFixedF
                     Me.m_BatchData.tfmBlim(iFixed, igrp) = FixedF.FixedFValue(iFixed)
+                Next iFixed
+
+            Next igrp
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'TAC
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            For igrp = 1 To Me.nGroups
+
+                Dim tac As cMSEBatchTACGroup = Me.m_lstTACs.Item(igrp)
+                Me.m_MSEdata.TAC(igrp) = tac.TAC
+                Me.m_BatchData.TACLower(igrp) = tac.TACLower
+                Me.m_BatchData.TACUpper(igrp) = tac.TACUpper
+
+
+                'isManaged The concept is to set this flag for the type of Quota TMF, F, TAC... for a group
+                'However the MSE does not work this way
+                'It sets the Quota for a group base on > zero values in F, TAC see cMMSEUpdateQuotas
+                'Here we need some kind of a flag that tells what type to use when setting the Quota
+                If tac.isManaged Then
+                    'this should be exclusive only TFM should have its isManaged Flag set to True
+                    'Other Quota types should update to the new value
+                    Me.m_BatchData.GroupRunType(igrp) = eMSEBatchRunTypes.TAC
+
+                End If
+
+                For iFixed As Integer = 1 To Me.m_BatchData.nFixedF
+                    Me.m_BatchData.TAC(iFixed, igrp) = tac.TACValue(iFixed)
                 Next iFixed
 
             Next igrp
@@ -460,23 +510,72 @@ Namespace MSEBatchManager
         End Sub
 
 
-        Public Sub CalculateTFMIterationValues()
+        Private Sub calcIterationValues(iGroup As Integer, Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, CalcType As eMSEBatchIterCalcTypes, ByRef values(,) As Single)
 
-            For Each tfm As cMSEBatchTFMGroup In Me.m_lstTFMs
-                tfm.CalcValues()
-            Next
+            Try
 
-            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
-                                                        eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
+                Dim LowB As Single, UpB As Single
+                Dim dx As Single
+
+                If CalcType = eMSEBatchIterCalcTypes.Percent Then
+                    LowB = Value - Value * LowPercent
+                    UpB = Value + Value * UPPercent
+                    dx = (UpB - LowB) / (n - 1)
+
+                ElseIf CalcType = eMSEBatchIterCalcTypes.UpperLowerValues Then
+                    LowB = LowPercent
+                    UpB = UPPercent
+                    dx = (UpB - LowB) / (n - 1)
+
+                End If
+
+                For i As Integer = 1 To n
+                    values(i, iGroup) = LowB + dx * (i - 1)
+                Next
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
 
+        Public Sub CalculateTFMIterationValues()
+
+            Try
+
+                For igrp As Integer = 1 To Me.m_BatchData.nGroups
+                    Me.calcIterationValues(igrp, Me.m_MSEdata.Fopt(igrp), Me.m_BatchData.FOptLower(igrp), Me.m_BatchData.FOptUpper(igrp), _
+                                        Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmFmax)
+
+                    Me.calcIterationValues(igrp, Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp), _
+                                        Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmBlim)
+
+                    Me.calcIterationValues(igrp, Me.m_MSEdata.Bbase(igrp), Me.m_BatchData.BBaseLower(igrp), Me.m_BatchData.BBaseUpper(igrp), _
+                                        Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmBbase)
+
+                Next
+
+                Me.Load()
+
+                Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
+                                                            eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
+
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
         Public Sub CalculateFIterationValues()
 
-            For Each FixedF As cMSEBatchFGroup In Me.m_lstFixedFs
-                FixedF.CalcValues()
+            For igrp As Integer = 1 To Me.m_BatchData.nGroups
+                Me.calcIterationValues(igrp, Me.m_MSEdata.FixedF(igrp), Me.m_BatchData.FixedFLower(igrp), Me.m_BatchData.FixedFUpper(igrp), _
+                                    Me.m_BatchData.nFixedF, Me.m_BatchData.IterCalcType, Me.m_BatchData.FixedF)
+
             Next
+
+            Me.Load()
 
             Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
                                                         eMessageImportance.Maintenance, eDataTypes.MSEBatchFixedFInput))
@@ -486,9 +585,14 @@ Namespace MSEBatchManager
 
         Public Sub CalculateTACIterationValues()
 
-            For Each TAC As cMSEBatchTACGroup In Me.m_lstTACs
-                TAC.CalcValues()
+
+            For igrp As Integer = 1 To Me.m_BatchData.nGroups
+                Me.calcIterationValues(igrp, Me.m_MSEdata.TAC(igrp), Me.m_BatchData.TACLower(igrp), Me.m_BatchData.TACUpper(igrp), _
+                                    Me.m_BatchData.nTAC, Me.m_BatchData.IterCalcType, Me.m_BatchData.TAC)
+
             Next
+
+            'Me.Load()
 
             Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
                                                         eMessageImportance.Maintenance, eDataTypes.MSEBatchTACInput))

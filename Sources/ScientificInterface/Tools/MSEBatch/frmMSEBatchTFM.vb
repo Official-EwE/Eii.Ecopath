@@ -127,7 +127,7 @@ Public Class frmMSEBatchTFM
 
 
     Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-
+        Dim brefresh As Boolean
         Select Case msg.Source
 
             Case eCoreComponentType.MSE
@@ -142,7 +142,22 @@ Public Class frmMSEBatchTFM
                     ' Adjust max allowed iterations
                     Me.UpDwnIter.Maximum = Me.m_BatchManager.Parameters.nTFMIteration
 
+                    'Iteration data has been updated
                     If msg.Type = eMessageType.MSEBatch_IterationDataUpdated Then
+                        brefresh = True
+                    End If
+
+                    'Has one of the iteration values has been edited
+                    For Each var As cVariableStatus In msg.Variables
+                        If var.VarName = eVarNameFlags.MSETFMFOptValues Or _
+                           var.VarName = eVarNameFlags.MSETFMBLimValues Or _
+                           var.VarName = eVarNameFlags.MSETFMBBaseValues Then
+                            brefresh = True
+                            Exit For
+                        End If
+                    Next
+
+                    If brefresh Then
                         Me.grdGroups.RefreshContent()
                         Me.grdIters.RefreshContent()
                     End If

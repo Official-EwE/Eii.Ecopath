@@ -171,57 +171,6 @@ Namespace MSE
 
         End Function
 
-
-        Public Sub CalcValues()
-
-            Me.calcDefaults(Me.FixedMort, Me.FLower, Me.FUpper, Me.m_BatchData.nFixedF, Me.m_BatchData.IterCalcType, Me.m_BatchData.FixedF)
-
-        End Sub
-
-
-        Private Sub calcDefaults(Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, CalcType As eMSEBatchIterCalcTypes, ByRef values(,) As Single)
-
-            Try
-
-                Dim LowB As Single, UpB As Single
-                Dim dx As Single
-
-                If CalcType = eMSEBatchIterCalcTypes.Percent Then
-                    LowB = Value - Value * LowPercent
-                    UpB = Value + Value * UPPercent
-                    dx = (UpB - LowB) / (n - 1)
-
-                ElseIf CalcType = eMSEBatchIterCalcTypes.UpperLowerValues Then
-                    LowB = LowPercent
-                    UpB = UPPercent
-                    dx = (UpB - LowB) / (n - 1)
-
-                End If
-
-                For i As Integer = 1 To n
-                    values(i, Me.Index) = LowB + dx * (i - 1)
-                Next
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
-
-        Friend Sub updateN()
-            Try
-
-                'ReDim Preserve Me.m_BLimValues(Me.m_BatchData.nTFM)
-                'ReDim Preserve Me.m_BBaseValues(Me.m_BatchData.nTFM)
-                'ReDim Preserve Me.m_FMaxValues(Me.m_BatchData.nTFM)
-
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
-
     End Class
 
 End Namespace

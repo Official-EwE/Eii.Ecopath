@@ -238,6 +238,14 @@ Public Class cCore
                     Return Me.nPedigreeVariables
                 Case eCoreCounterTypes.nCapacityMaps
                     Return Me.CapacitMapInteractionManager.nMaps
+
+                Case eCoreCounterTypes.nMSEBATCHFixedF
+                    Return Me.MSEBatchManager.BatchData.nFixedF
+                Case eCoreCounterTypes.nMSEBATCHTAC
+                    Return Me.MSEBatchManager.BatchData.nTAC
+                Case eCoreCounterTypes.nMSEBatchTFM
+                    Return Me.MSEBatchManager.BatchData.nTFM
+
                 Case Else
                     'Debug.Assert(False, String.Format("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
                     Return NULL_VALUE

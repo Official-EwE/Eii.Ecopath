@@ -321,7 +321,9 @@ Namespace Properties
                             sourceSec = Me.m_core.EcospaceMPAs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nMonths, _
                              eCoreCounterTypes.nEcosimYears, eCoreCounterTypes.nEcosimTimeSteps, _
-                             eCoreCounterTypes.nEcospaceYears, eCoreCounterTypes.nEcospaceTimeSteps
+                             eCoreCounterTypes.nEcospaceYears, eCoreCounterTypes.nEcospaceTimeSteps, _
+                             eCoreCounterTypes.nMSEBATCHFixedF, eCoreCounterTypes.nMSEBATCHTAC, eCoreCounterTypes.nMSEBatchTFM
+                            '1-Dec-2011 jb added MSEBatch counters
                             sourceSec = Nothing
                         Case eCoreCounterTypes.nStanzasForStanzaGroup
                             sourceSec = Me.m_core.StanzaGroups(vs.iArrayIndex)

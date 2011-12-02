@@ -81,6 +81,23 @@ Namespace MSE
             val = New cValue(New Boolean, eVarNameFlags.MSEBatchTFMManaged, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchTFMManaged))
             m_values.Add(val.varName, val)
 
+            'Iteration values 
+            meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSETFMFOptValues, eStatusFlags.Null, eCoreCounterTypes.nMSEBatchTFM, AddressOf m_core.GetCoreCounter, _
+                                  meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMFOptValues))
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSETFMBBaseValues, eStatusFlags.Null, eCoreCounterTypes.nMSEBatchTFM, AddressOf m_core.GetCoreCounter, _
+                                  meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMBBaseValues))
+            m_values.Add(val.varName, val)
+
+
+            meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSETFMBLimValues, eStatusFlags.Null, eCoreCounterTypes.nMSEBatchTFM, AddressOf m_core.GetCoreCounter, _
+                                  meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMBLimValues))
+            m_values.Add(val.varName, val)
+
             Me.AllowValidation = True
 
         End Sub
@@ -190,92 +207,109 @@ Namespace MSE
 
         Public Property FMaxValue(IterationIndex As Integer) As Single
             Get
-                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Return Me.m_BatchData.tfmFmax(IterationIndex, Me.Index)
-                End If
-                'OH My.....
-                Return cCore.NULL_VALUE
+                Return CSng(GetVariable(eVarNameFlags.MSETFMFOptValues, IterationIndex))
             End Get
 
             Set(ByVal value As Single)
-                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Me.m_BatchData.tfmFmax(IterationIndex, Me.Index) = value
-                End If
+                SetVariable(eVarNameFlags.MSETFMFOptValues, value, IterationIndex)
             End Set
+
         End Property
 
         Public Property BLimValue(IterationIndex As Integer) As Single
+
             Get
-                ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Return Me.m_BatchData.tfmBlim(IterationIndex, Me.Index)
-                End If
-                'OH My.....
-                Return cCore.NULL_VALUE
+                Return CSng(GetVariable(eVarNameFlags.MSETFMBLimValues, IterationIndex))
             End Get
 
             Set(ByVal value As Single)
-                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Me.m_BatchData.tfmBlim(IterationIndex, Me.Index) = value
-                End If
+                SetVariable(eVarNameFlags.MSETFMBLimValues, value, IterationIndex)
             End Set
+            'Get
+            '    ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+            '    If IterationIndex <= Me.m_BatchData.nTFM Then
+            '        Return Me.m_BatchData.tfmBlim(IterationIndex, Me.Index)
+            '    End If
+            '    'OH My.....
+            '    Return cCore.NULL_VALUE
+            'End Get
+
+            'Set(ByVal value As Single)
+            '    'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+            '    If IterationIndex <= Me.m_BatchData.nTFM Then
+            '        Me.m_BatchData.tfmBlim(IterationIndex, Me.Index) = value
+            '    End If
+            'End Set
         End Property
 
 
         Public Property BBaseValue(IterationIndex As Integer) As Single
+
             Get
-                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Return Me.m_BatchData.tfmBbase(IterationIndex, Me.Index)
-                End If
-                'OH My.....
-                Return cCore.NULL_VALUE
+                Return CSng(GetVariable(eVarNameFlags.MSETFMBBaseValues, IterationIndex))
             End Get
 
             Set(ByVal value As Single)
-                'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
-                If IterationIndex <= Me.m_BatchData.nTFM Then
-                    Me.m_BatchData.tfmBbase(IterationIndex, Me.Index) = value
-                End If
+                SetVariable(eVarNameFlags.MSETFMBBaseValues, value, IterationIndex)
             End Set
+
+            'Get
+            '    'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+            '    If IterationIndex <= Me.m_BatchData.nTFM Then
+            '        Return Me.m_BatchData.tfmBbase(IterationIndex, Me.Index)
+            '    End If
+            '    'OH My.....
+            '    Return cCore.NULL_VALUE
+            'End Get
+
+            'Set(ByVal value As Single)
+            '    'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
+            '    If IterationIndex <= Me.m_BatchData.nTFM Then
+            '        Me.m_BatchData.tfmBbase(IterationIndex, Me.Index) = value
+            '    End If
+            'End Set
         End Property
 
-        Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
+        'Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
 
-            Select Case VarName
-                Case eVarNameFlags.MSETFMBLimValues
-                    Return Me.BLimValue(Index)
-                Case eVarNameFlags.MSETFMBBaseValues
-                    Return Me.BBaseValue(Index)
-                Case eVarNameFlags.MSETFMFOptValues
-                    Return Me.FMaxValue(Index)
-            End Select
+        '    Select Case VarName
+        '        Case eVarNameFlags.MSETFMBLimValues
+        '            Return Me.BLimValue(Index)
+        '        Case eVarNameFlags.MSETFMBBaseValues
+        '            Return Me.BBaseValue(Index)
+        '            'Case eVarNameFlags.MSETFMFOptValues
+        '            '    Return Me.FMaxValue(Index)
+        '    End Select
 
-            Return MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3)
+        '    Return MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3)
 
-        End Function
+        'End Function
 
 
-        Public Overrides Function SetVariable(VarName As EwEUtils.Core.eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
+        'Public Overrides Function SetVariable(VarName As EwEUtils.Core.eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
+        '    Dim bdone As Boolean
+        '    Select Case VarName
+        '        Case eVarNameFlags.MSETFMBLimValues
+        '            Me.BLimValue(iSecondaryIndex) = CSng(newValue)
+        '            bdone = True
+        '        Case eVarNameFlags.MSETFMBBaseValues
+        '            Me.BBaseValue(Index) = CSng(newValue)
+        '            bdone = True
+        '            'Case eVarNameFlags.MSETFMFOptValues
+        '            '    Me.m_BatchData.tfmFmax(Index, iSecondaryIndex) = CSng(newValue)
+        '            '    bdone = True
+        '    End Select
 
-            Select Case VarName
-                Case eVarNameFlags.MSETFMBLimValues
-                    Me.BLimValue(iSecondaryIndex) = CSng(newValue)
-                    Return True
-                Case eVarNameFlags.MSETFMBBaseValues
-                    Me.BBaseValue(Index) = CSng(newValue)
-                    Return True
-                Case eVarNameFlags.MSETFMFOptValues
-                    Me.FMaxValue(Index) = CSng(newValue)
-                    Return True
-            End Select
+        '    If bdone Then
+        '        Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
+        '                                                eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
+        '        Return True
+        '    Else
+        '        Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
+        '    End If
 
-            Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
 
-        End Function
+        'End Function
 
 
         Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
@@ -300,59 +334,6 @@ Namespace MSE
             Return True
 
         End Function
-
-
-        Public Sub CalcValues()
-
-            Me.calcDefaults(BLim, BLimLower, BLimUpper, Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmBlim)
-            Me.calcDefaults(BBase, BBaseLower, BBaseUpper, Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmBbase)
-            Me.calcDefaults(FMax, FMaxLower, FMaxUpper, Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmFmax)
-
-        End Sub
-
-
-        Private Sub calcDefaults(Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, CalcType As eMSEBatchIterCalcTypes, ByRef values(,) As Single)
-
-            Try
-
-                Dim LowB As Single, UpB As Single
-                Dim dx As Single
-
-                If CalcType = eMSEBatchIterCalcTypes.Percent Then
-                    LowB = Value - Value * LowPercent
-                    UpB = Value + Value * UPPercent
-                    dx = (UpB - LowB) / (n - 1)
-
-                ElseIf CalcType = eMSEBatchIterCalcTypes.UpperLowerValues Then
-                    LowB = LowPercent
-                    UpB = UPPercent
-                    dx = (UpB - LowB) / (n - 1)
-
-                End If
-
-                For i As Integer = 1 To n
-                    values(i, Me.Index) = LowB + dx * (i - 1)
-                Next
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
-
-        Friend Sub updateN()
-            Try
-
-                'ReDim Preserve Me.m_BLimValues(Me.m_BatchData.nTFM)
-                'ReDim Preserve Me.m_BBaseValues(Me.m_BatchData.nTFM)
-                'ReDim Preserve Me.m_FMaxValues(Me.m_BatchData.nTFM)
-
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
 
     End Class
 
