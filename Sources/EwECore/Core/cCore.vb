@@ -11858,7 +11858,7 @@ Public Class cCore
                     If bValidatedOk Then DirectCast(objValidated, cPedigreeManager).UpdatePedigree()
 
 
-                Case eDataTypes.MSEBatchParameters, eDataTypes.MSEBatchTFMInput
+                Case eDataTypes.MSEBatchParameters, eDataTypes.MSEBatchTFMInput, eDataTypes.MSEBatchFixedFInput
                     'Something in the MSE Batch interface has changed
                     'Update all the underlying core data
                     Me.MSEBatchManager.Update(dtAffected, value.varName)

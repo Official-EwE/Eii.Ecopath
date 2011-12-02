@@ -133,7 +133,7 @@ Public Class frmMSEBatchFixedF
 
 
     Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-
+        Dim bRefresh As Boolean
         Select Case msg.Source
 
             Case eCoreComponentType.MSE
@@ -148,6 +148,18 @@ Public Class frmMSEBatchFixedF
                     End If
 
                     If msg.Type = eMessageType.MSEBatch_IterationDataUpdated Then
+                        bRefresh = True
+                    End If
+
+                    'Has one of the iteration values has been edited
+                    For Each var As cVariableStatus In msg.Variables
+                        If var.VarName = eVarNameFlags.MSEBatchFValues Then
+                            bRefresh = True
+                            Exit For
+                        End If
+                    Next
+
+                    If bRefresh Then
                         Me.grdGroups.RefreshContent()
                         Me.grdIters.RefreshContent()
                     End If

@@ -35,9 +35,6 @@ Namespace MSEBatchManager
         Inherits cThreadWaitBase
         Implements ICoreInterface
 
-
-
-        'ToDo_jb 24-Aug-2010 MSEBatchManager Why does the list box in the interface not update after the first run
         Public Delegate Sub MSEBatchMessage(ByVal strMessage As String)
         Public Delegate Sub onMSEBatchProgress(ByVal ProgressEnum As eMSEBatchProgress)
 
