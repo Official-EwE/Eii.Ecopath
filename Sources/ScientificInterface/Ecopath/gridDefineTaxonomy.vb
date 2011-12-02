@@ -321,9 +321,11 @@ Public Class gridDefineTaxonomy
             If (obj Is Nothing) Then Return False
             If (TypeOf obj Is cTaxon) Then
                 Dim t As cTaxon = DirectCast(obj, cTaxon)
-                Return (t.CodeSAUP = Me.CodeSAUP) Or (t.CodeFishBase = Me.CodeFB) Or (t.CodeSeaLifeBase = Me.CodeSLB) Or _
-                       (String.Compare(t.CodeLCID, Me.CodeLCID, True) = 0) Or _
-                       (String.Compare(t.CodeFAO, Me.CodeFAO, True) = 0)
+                Return (t.CodeSAUP > 0 And t.CodeSAUP = Me.CodeSAUP) Or _
+                       (t.CodeFishBase > 0 And t.CodeFishBase = Me.CodeFB) Or _
+                       (t.CodeSeaLifeBase > 0 And t.CodeSeaLifeBase = Me.CodeSLB) Or _
+                       (Not String.IsNullOrWhiteSpace(t.CodeLCID) And String.Compare(t.CodeLCID, Me.CodeLCID, True) = 0) Or _
+                       (Not String.IsNullOrWhiteSpace(t.CodeFAO) And String.Compare(t.CodeFAO, Me.CodeFAO, True) = 0)
             End If
             Return MyBase.Equals(obj)
         End Function
