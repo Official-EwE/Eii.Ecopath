@@ -192,7 +192,7 @@ Public Class frmStartPanel
     ''' -----------------------------------------------------------------------
     Private Function EwEBaseURL() As String
 
-        Dim aAssemblyNames As AssemblyName() = cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
+        Dim aAssemblyNames As AssemblyName() = cAssemblyUtils.GetSummary()
         Dim pm As cPluginManager = Me.Core.PluginManager
         Dim ub As New UrlBuilder(cBASEURL)
 

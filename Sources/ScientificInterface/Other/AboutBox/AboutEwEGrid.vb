@@ -32,7 +32,7 @@ Public Class AboutEwEGrid
 
         pm = Me.UIContext.Core.PluginManager()
         aanPlugins = pm.PluginAssemblyNames()
-        aanLoaded = cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
+        aanLoaded = cAssemblyUtils.GetSummary()
 
         ' Prepare grid
         Me.Redim(aanLoaded.Length + aanPlugins.Length + 2, 2)

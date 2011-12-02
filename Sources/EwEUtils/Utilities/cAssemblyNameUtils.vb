@@ -28,7 +28,8 @@ Namespace Utilities
         Private Class AssemblyNameComparer
             Implements IComparer(Of AssemblyName)
 
-            Public Function Compare(ByVal x As System.Reflection.AssemblyName, ByVal y As System.Reflection.AssemblyName) As Integer Implements System.Collections.Generic.IComparer(Of System.Reflection.AssemblyName).Compare
+            Public Function Compare(ByVal x As System.Reflection.AssemblyName, ByVal y As System.Reflection.AssemblyName) As Integer _
+                Implements System.Collections.Generic.IComparer(Of System.Reflection.AssemblyName).Compare
                 Return String.Compare(x.Name, y.Name)
             End Function
         End Class
@@ -95,22 +96,61 @@ Namespace Utilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Reports all referenced, proprietary <see cref="AssemblyName">assemblies</see> 
-        ''' for a given assembly.
+        ''' Reports all <see cref="AssemblyName">assemblies</see> referenced by the
+        ''' current <see cref="AppDomain">application domain</see>.
         ''' </summary>
-        ''' <param name="entry">The entry assembly to find the summary of referenced
-        ''' assemblies for.</param>
+        ''' <param name="bIncludeDotNet">Flag, stating that .NET framework assemblies 
+        ''' should be included in the summary.</param>
         ''' <remarks>
         ''' The array of assembly names will be sorted by name.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetSummary(ByVal entry As Assembly) As AssemblyName()
+        Public Shared Function GetSummary(Optional bIncludeDotNet As Boolean = False) As AssemblyName()
+
+            Dim ad As AppDomain = AppDomain.CurrentDomain
+            Dim aAssemblies() As Assembly = ad.GetAssemblies() '  entry.GetReferencedAssemblies()
+            Dim hsh As New HashSet(Of String)
+            Dim lSummary As New List(Of AssemblyName)
+            Dim strFullName As String = ""
+
+            For Each ass As Assembly In aAssemblies
+                For Each an As AssemblyName In GetSummary(ass, bIncludeDotNet)
+                    strFullName = an.FullName
+                    If Not hsh.Contains(strFullName) Then
+                        lSummary.Add(an)
+                        hsh.Add(strFullName)
+                    End If
+                Next
+            Next
+
+            lSummary.Sort(New AssemblyNameComparer())
+
+            Return lSummary.ToArray
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Reports all <see cref="AssemblyName">assemblies</see> referenced by a 
+        ''' given assembly.
+        ''' </summary>
+        ''' <param name="entry">The entry assembly to find the summary of referenced
+        ''' assemblies for.</param>
+        ''' <param name="bIncludeDotNet">Flag, stating that .NET framework assemblies 
+        ''' should be included in the summary.</param>
+        ''' <remarks>
+        ''' The array of assembly names will be sorted by name.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function GetSummary(ByVal entry As Assembly, _
+                                          Optional bIncludeDotNet As Boolean = False) As AssemblyName()
 
             ' List to hold collected summary data
             Dim lAssemblies As New List(Of AssemblyName)
             ' List of assembly name prefixes NOT to include in the list. These are all .NET framework prefixes.
-            Dim astrFrameworkPrefixes() As String = {"mscorlib", "system", "microsoft"}
+            Dim astrFrameworkPrefixes() As String = {"mscorlib", "system", "microsoft", "interop", "accessibility", "office", "stdole"}
             ' All required assemblies (not actually loaded!)
+            Dim ad As AppDomain = AppDomain.CurrentDomain
             Dim anRequired() As AssemblyName = entry.GetReferencedAssemblies()
 
             lAssemblies.Add(Assembly.GetEntryAssembly().GetName())
@@ -122,14 +162,17 @@ Namespace Utilities
                     ' #Yes: this is a new assembly
                     ' Assume that assembly can be added
                     Dim bAddAssembly As Boolean = True
-                    ' Check if this a blacklisted assembly
-                    For Each strName As String In astrFrameworkPrefixes
-                        ' Does name begin with a blacklisted string?
-                        If an.FullName.ToLower().IndexOf(strName) = 0 Then
-                            ' #Yes: can not add assembly
-                            bAddAssembly = False
-                        End If
-                    Next
+                    ' Need to filter out DotNet assemblies?
+                    If Not bIncludeDotNet Then
+                        ' #Yes: check if this a blacklisted assembly
+                        For Each strName As String In astrFrameworkPrefixes
+                            ' Does name begin with a blacklisted string?
+                            If (an.FullName.ToLower().IndexOf(strName) = 0) Then
+                                ' #Yes: can not add assembly
+                                bAddAssembly = False
+                            End If
+                        Next
+                    End If
                     ' So what did the jury decide?
                     If bAddAssembly Then lAssemblies.Add(an)
                 End If
