@@ -29,116 +29,48 @@ Public Class cTaxonAnalysis
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the proportion that a given organism type contributes to the 
-    ''' biomass of a functional group.
+    ''' Returns the biomass proportion of all taxa for a single group matching 
+    ''' a specific condition.
     ''' </summary>
-    ''' <param name="iGroup">The one-based index of the group to check.</param>
-    ''' <param name="organism">The <see cref="eOrganismTypes">organism type</see> to check.</param>
-    ''' <returns>A proportion [0, 1].</returns>
+    ''' <param name="iGroup">The group to obtain taxa for.</param>
+    ''' <param name="val">The value to test against. Supported value types are
+    ''' <see cref="eOccurrenceStatusTypes"/>, <see cref="eIUCNConservationStatusTypes"/>, 
+    ''' <see cref="eOrganismTypes"/> and <see cref="eEcologyTypes"/></param>
+    ''' <param name="op">The <see cref="eOperators">operation</see> to perform.
+    ''' If not provided <see cref="eOperators.EqualTo">'='</see> is used.</param>
+    ''' <returns>The proportion of biomass.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GroupOrganismProportion(ByVal iGroup As Integer, _
-                                            ByVal organism As eOrganismTypes) As Single
-
-        ' Iterate over all taxa attached to iGroup
-        '    if taxon matches organismType, add taxon proportion
-        ' return total added proportion
-
-        Dim sProportion As Single = 0
-        Dim sPropTot As Single = 0
-
-        For i As Integer = 1 To Me.m_taxonDS.NumGroupTaxa(iGroup)
-            Dim iTaxon As Integer = Me.m_taxonDS.GroupTaxa(iGroup, i)
-            If (Me.m_taxonDS.TaxonOrganismType(iTaxon) = organism) Then
-                sProportion = sProportion + Me.m_taxonDS.TaxonProp(iTaxon)
-            End If
-            sPropTot += Me.m_taxonDS.TaxonProp(iTaxon)
-        Next
-
-        If (sPropTot = 0) Then Return 0
-        Return sProportion / sPropTot
-
+    Public Function GroupBiomassProportion(iGroup As Integer, val As Object, _
+                                           Optional op As eOperators = eOperators.EqualTo) As Single
+        Return Me.GroupProportion(True, iGroup, val, op)
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the proportion that a given organism type contributes to the 
-    ''' catch of a functional group.
+    ''' Returns the catch proportion of all taxa for a single group matching 
+    ''' a specific condition.
     ''' </summary>
-    ''' <param name="iGroup">The one-based index of the group to check.</param>
-    ''' <param name="organism">The <see cref="eOrganismTypes">organism type</see> to check.</param>
-    ''' <returns>A proportion [0, 1].</returns>
+    ''' <param name="iGroup">The group to obtain taxa for.</param>
+    ''' <param name="val">The value to test against. Supported value types are
+    ''' <see cref="eOccurrenceStatusTypes"/>, <see cref="eIUCNConservationStatusTypes"/>, 
+    ''' <see cref="eOrganismTypes"/> and <see cref="eEcologyTypes"/></param>
+    ''' <param name="op">The <see cref="eOperators">operation</see> to perform.
+    ''' If not provided <see cref="eOperators.EqualTo">'='</see> is used.</param>
+    ''' <returns>The proportion of catch.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GroupOrganismCatchProportion(ByVal iGroup As Integer, _
-                                                 ByVal organism As eOrganismTypes) As Single
-
-        ' Iterate over all taxa attached to iGroup
-        '    if taxon matches organismType, add taxon catch proportion
-        ' return total added proportion
-
-        Dim sProportion As Single = 0
-        Dim sPropTot As Single = 0
-
-        For i As Integer = 1 To Me.m_taxonDS.NumGroupTaxa(iGroup)
-            Dim iTaxon As Integer = Me.m_taxonDS.GroupTaxa(iGroup, i)
-            If (Me.m_taxonDS.TaxonOrganismType(iTaxon) = organism) Then
-                sProportion = sProportion + Me.m_taxonDS.TaxonPropCatch(iTaxon)
-            End If
-            sPropTot += Me.m_taxonDS.TaxonProp(iTaxon)
-        Next
-
-        If (sPropTot = 0) Then Return 0
-        Return sProportion / sPropTot
-
-    End Function
-
-    Public Function GroupOrganismOcurrencestatus(ByVal iGroup As Integer, _
-                                                 ByVal status As eOccurrenceStatusTypes) As Single
-
-        ' Iterate over all taxa attached to iGroup
-        '    if taxon matches occurrenceType, add taxon catch proportion
-        ' return total added proportion
-
-        Dim sProportion As Single = 0
-        Dim sPropTot As Single = 0
-
-        For i As Integer = 1 To Me.m_taxonDS.NumGroupTaxa(iGroup)
-            Dim iTaxon As Integer = Me.m_taxonDS.GroupTaxa(iGroup, i)
-            If (Me.m_taxonDS.TaxonOccurrenceStatus(iTaxon) = status) Then
-                sProportion = sProportion + Me.m_taxonDS.TaxonPropCatch(iTaxon)
-            End If
-            sPropTot += Me.m_taxonDS.TaxonProp(iTaxon)
-        Next
-
-        If (sPropTot = 0) Then Return 0
-        Return sProportion / sPropTot
-
-    End Function
-
-
-    Public Function GroupOrganismIUCNstatus(ByVal iGroup As Integer, _
-                                            ByVal IUCN As eIUCNConservationStatusTypes) As Single
-
-        ' Iterate over all taxa attached to iGroup
-        '    if taxon matches IUCNconservationStatusTypes, add taxon catch proportion
-        ' return total added proportion
-
-        Dim sProportion As Single = 0
-        Dim sPropTot As Single = 0
-
-        For i As Integer = 1 To Me.m_taxonDS.NumGroupTaxa(iGroup)
-            Dim iTaxon As Integer = Me.m_taxonDS.GroupTaxa(iGroup, i)
-            If (Me.m_taxonDS.TaxonIUCNConservationStatus(iTaxon) >= IUCN) Then
-                sProportion = sProportion + Me.m_taxonDS.TaxonPropCatch(iTaxon)
-            End If
-            sPropTot += Me.m_taxonDS.TaxonProp(iTaxon)
-        Next
-
-        If (sPropTot = 0) Then Return 0
-        Return sProportion / sPropTot
-
+    Public Function GroupCatchProportion(iGroup As Integer, _
+                                       val As Object, _
+                                       Optional op As eOperators = eOperators.EqualTo) As Single
+        Return Me.GroupProportion(False, iGroup, val, op)
     End Function
 
 #Region " Filters "
+#If 0 Then
+
+    ' ToDo_JS: consider solving this using LINQ (custom IQueryable LINQ provider, custom operators, etc)
+
+    ' This would be ideal:
+    '    SELECT Taxa FROM group WHERE .Organism = eOrganismTypes.Fishes AND .IUCNStatus < eIUCNConservationStatusTypes.Endangered
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -212,6 +144,56 @@ Public Class cTaxonAnalysis
 
     End Function
 
+#End If
+
 #End Region ' Filters
+
+#Region " Internals "
+
+    Private Function GroupProportion(ByVal bBiomass As Boolean, _
+                                     ByVal iGroup As Integer, _
+                                     ByVal value As Object, _
+                                     Optional ByVal op As eOperators = eOperators.EqualTo) As Single
+
+        Dim sProportion As Single = 0
+        Dim sPropTot As Single = 0
+        Dim comp As cOperatorBase = cOperatorManager.getOperator(op)
+        Dim avals As Array = Nothing
+        Dim sVal As Single = CSng(value)
+
+        If TypeOf (value) Is eOrganismTypes Then
+            avals = Me.m_taxonDS.TaxonOrganismType
+        ElseIf TypeOf (value) Is eIUCNConservationStatusTypes Then
+            avals = Me.m_taxonDS.TaxonIUCNConservationStatus
+        ElseIf TypeOf (value) Is eEcologyTypes Then
+            avals = Me.m_taxonDS.TaxonEcologyType
+        ElseIf TypeOf (value) Is eOccurrenceStatusTypes Then
+            avals = m_taxonDS.TaxonOccurrenceStatus
+        End If
+
+        Debug.Assert(avals IsNot Nothing)
+
+        For i As Integer = 1 To Me.m_taxonDS.NumGroupTaxa(iGroup)
+            Dim iTaxon As Integer = Me.m_taxonDS.GroupTaxa(iGroup, i)
+            If (comp.Compare(CSng(avals.GetValue(iTaxon)), sVal)) Then
+                If bBiomass Then
+                    sProportion = sProportion + Me.m_taxonDS.TaxonProp(iTaxon)
+                Else
+                    sProportion = sProportion + Me.m_taxonDS.TaxonPropCatch(iTaxon)
+                End If
+            End If
+            If bBiomass Then
+                sPropTot += Me.m_taxonDS.TaxonProp(iTaxon)
+            Else
+                sPropTot += Me.m_taxonDS.TaxonPropCatch(iTaxon)
+            End If
+        Next
+
+        If (sPropTot = 0) Then Return 0
+        Return sProportion / sPropTot
+
+    End Function
+
+#End Region ' Internals
 
 End Class
