@@ -46,6 +46,14 @@ Public Class gridDefineTaxonomy
         Status
     End Enum
 
+    '' -- Dictionaries to detect already used taxa -- 
+
+    'Private m_dtSAUPKeys As New HashSet(Of Long)
+    'Private m_dtFKeys As New HashSet(Of Long)
+    'Private m_dtSLBKeys As New HashSet(Of Long)
+    'Private m_dtLCIDKeys As New HashSet(Of String)
+    'Private m_dtFAOKeys As New HashSet(Of String)
+
 #End Region ' Privates
 
 #Region " Private helper classes "
@@ -319,11 +327,11 @@ Public Class gridDefineTaxonomy
 
         Public Overrides Function Equals(ByVal obj As Object) As Boolean
             If (obj Is Nothing) Then Return False
-            If (TypeOf obj Is cTaxon) Then
-                Dim t As cTaxon = DirectCast(obj, cTaxon)
+            If (TypeOf obj Is ITaxonSearchData) Then
+                Dim t As ITaxonSearchData = DirectCast(obj, ITaxonSearchData)
                 Return (t.CodeSAUP > 0 And t.CodeSAUP = Me.CodeSAUP) Or _
-                       (t.CodeFishBase > 0 And t.CodeFishBase = Me.CodeFB) Or _
-                       (t.CodeSeaLifeBase > 0 And t.CodeSeaLifeBase = Me.CodeSLB) Or _
+                       (t.CodeFB > 0 And t.CodeFB = Me.CodeFB) Or _
+                       (t.CodeSLB > 0 And t.CodeSLB = Me.CodeSLB) Or _
                        (Not String.IsNullOrWhiteSpace(t.CodeLCID) And String.Compare(t.CodeLCID, Me.CodeLCID, True) = 0) Or _
                        (Not String.IsNullOrWhiteSpace(t.CodeFAO) And String.Compare(t.CodeFAO, Me.CodeFAO, True) = 0)
             End If
@@ -1314,6 +1322,22 @@ Public Class gridDefineTaxonomy
         If (ti Is Nothing) Then Return
         ti.Update(taxon)
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' States whether a taxon has already been used.
+    ''' </summary>
+    ''' <param name="taxon"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsTaxonUsed(taxon As ITaxonSearchData) As Boolean
+        For Each ti As cTaxonInfo In Me.m_lTaxonInfo
+            If ti.Equals(taxon) Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
 
 #End Region ' Data
 

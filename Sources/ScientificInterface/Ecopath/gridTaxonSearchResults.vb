@@ -15,9 +15,12 @@ Imports SourceGrid2
 Public Class gridTaxonSearchResults
     Inherits EwEGrid
 
-    Private m_results As IDataSearchResults = Nothing
+#Region " Private vars "
 
-    Public Enum eColumnTypes As Integer
+    Private m_results As IDataSearchResults = Nothing
+    Private m_dgtIsTaxonUseCallback As IsTaxonUsedDelegate = Nothing
+
+    Private Enum eColumnTypes As Integer
         Index = 0
         Common
         Species
@@ -29,12 +32,18 @@ Public Class gridTaxonSearchResults
         Code
     End Enum
 
+#End Region ' Private vars
+
     Public Sub New()
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext)
+    Public Delegate Function IsTaxonUsedDelegate(ti As ITaxonSearchData) As Boolean
+
+    Public Sub Init(ByVal uic As cUIContext, Optional dgt As IsTaxonUsedDelegate = Nothing)
 
         Me.UIContext = uic
+        Me.m_dgtIsTaxonUseCallback = dgt
+
         Try
             Me.m_results = Nothing
             Me.InitLayout()
@@ -58,13 +67,25 @@ Public Class gridTaxonSearchResults
 
     Public Event OnResultSelected(ByVal result As Object)
 
-    Public Function SelectedResult() As Object
+    Public Property TaxonAtRow(Optional iRow As Integer = -1) As ITaxonSearchData
+        Get
+            If (iRow <= 0) Then
+                iRow = Me.SelectedRow()
+            End If
+            If iRow < 1 Then
+                Return Nothing
+            End If
+            Return DirectCast(Me(iRow, eColumnTypes.Index).Tag, ITaxonSearchData)
+        End Get
+        Set(value As ITaxonSearchData)
+            If (iRow < 1) Then Return
+            Me(iRow, eColumnTypes.Index).Tag = value
+        End Set
+    End Property
 
-        Dim iRow As Integer = Me.SelectedRow()
-        If iRow < 1 Then Return Nothing
-        Return Me(iRow, 0).Tag
-
-    End Function
+    Public Sub OnUsedTaxaChanged()
+        Me.UpdateTaxaUsedStatus()
+    End Sub
 
 #Region " Internals "
 
@@ -125,7 +146,15 @@ Public Class gridTaxonSearchResults
 
     Protected Overrides Sub OnCellDoubleClicked(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual)
         Try
-            RaiseEvent OnResultSelected(Me.SelectedResult)
+            If (Me.m_dgtIsTaxonUseCallback IsNot Nothing) Then
+                If Me.m_dgtIsTaxonUseCallback.Invoke(Me.TaxonAtRow(p.Row)) Then
+                    Return
+                End If
+            End If
+
+            RaiseEvent OnResultSelected(Me.TaxonAtRow)
+            Me.UpdateTaxaUsedStatus()
+
         Catch ex As Exception
 
         End Try
@@ -138,17 +167,21 @@ Public Class gridTaxonSearchResults
     ''' <param name="result"></param>
     ''' -----------------------------------------------------------------------
     Private Sub AddResult(ByVal result As ITaxonSearchData)
+
         Dim iRow As Integer = Me.AddRow()
         For iCol As Integer = 0 To Me.ColumnsCount - 1
             Me.AddCell(result, iRow, DirectCast(iCol, eColumnTypes))
         Next
+        Me.TaxonAtRow(iRow) = result
+        Me.UpdateTaxaUsedStatus(iRow)
+
     End Sub
 
-    Protected Sub AddCell(ByVal result As ITaxonSearchData, ByVal iRow As Integer, ByVal col As eColumnTypes)
+    Private Sub AddCell(ByVal result As ITaxonSearchData, ByVal iRow As Integer, ByVal col As eColumnTypes)
 
         Dim strValue As String = ""
         Dim cell As EwECell = Nothing
-        Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.TaxonReg)
+        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         Select Case col
             Case eColumnTypes.Index
@@ -184,9 +217,35 @@ Public Class gridTaxonSearchResults
 
         cell = New EwECell(strValue, GetType(String), style)
         cell.Behaviors.Add(EwEEditHandler)
+        cell.EnableEdit = False
 
-        If (col = eColumnTypes.Index) Then cell.Tag = result
         Me(iRow, col) = cell
+
+    End Sub
+
+    Private Sub UpdateTaxaUsedStatus(Optional iRow As Integer = 0)
+
+        Dim ti As ITaxonSearchData = Nothing
+        Dim cell As EwECell = Nothing
+        Dim iRowMin As Integer = 1
+        Dim iRowMax As Integer = Me.RowsCount - 1
+
+        If (Me.m_dgtIsTaxonUseCallback Is Nothing) Then Return
+
+        If (iRow > 0) Then iRowMin = iRow : iRowMax = iRow
+
+        For iRow = iRowMin To iRowMax
+
+            cell = DirectCast(Me(iRow, eColumnTypes.Index), EwECell)
+            ti = Me.TaxonAtRow(iRow)
+
+            If Me.m_dgtIsTaxonUseCallback.Invoke(ti) Then
+                cell.Style = cell.Style Or cStyleGuide.eStyleFlags.Checked
+            Else
+                cell.Style = cell.Style And Not cStyleGuide.eStyleFlags.Checked
+            End If
+            cell.Invalidate()
+        Next
 
     End Sub
 

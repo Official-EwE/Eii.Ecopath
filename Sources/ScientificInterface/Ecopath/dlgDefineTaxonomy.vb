@@ -115,8 +115,10 @@ Public Class dlgDefineTaxa
 
         Me.InitializeComponent()
         Me.m_uic = uic
+
         Me.m_gridGroups.UIContext = uic
-        Me.m_gridResults.UIContext = uic
+        'Me.m_gridResults.UIContext = uic
+        Me.m_gridResults.Init(Me.m_uic, New gridTaxonSearchResults.IsTaxonUsedDelegate(AddressOf OnIsTaxonUsed))
 
     End Sub
 
@@ -204,6 +206,7 @@ Public Class dlgDefineTaxa
         Handles m_btnAdd.Click
         Try
             Me.m_gridGroups.AddTaxon()
+            Me.m_gridResults.OnUsedTaxaChanged()
         Catch ex As Exception
             cLog.Write(ex, "dlgDefineTaxa::m_btnAdd_Click")
         End Try
@@ -213,6 +216,7 @@ Public Class dlgDefineTaxa
         Handles m_btnRemove.Click
         Try
             Me.m_gridGroups.ToggleDeleteRows()
+            Me.m_gridResults.OnUsedTaxaChanged()
         Catch ex As Exception
             cLog.Write(ex, "dlgDefineTaxa::m_btnRemove_Click")
         End Try
@@ -302,9 +306,16 @@ Public Class dlgDefineTaxa
     Friend Sub OnProcessSearchResults(ByVal results As IDataSearchResults)
 
         If Me.InvokeRequired Then
-            Me.Invoke(New OnProcessSearchResultsDelegate(AddressOf OnProcessSearchResults), New Object() {results})
-            Return
+            Me.Invoke(New OnProcessSearchResultsDelegate(AddressOf ProcessSearchResults), New Object() {results})
+        Else
+            Me.ProcessSearchResults(results)
         End If
+
+    End Sub
+
+    Private Sub ProcessSearchResults(ByVal results As IDataSearchResults)
+
+        Debug.Assert(Not Me.InvokeRequired)
 
         Me.Cursor = Cursors.WaitCursor
         Try
@@ -346,7 +357,7 @@ Public Class dlgDefineTaxa
 
         ' == Manipulation controls ==
         Try
-            Me.m_btnAdd.Enabled = Me.m_gridGroups.CanAddTaxon(DirectCast(Me.m_gridResults.SelectedResult, ITaxonSearchData))
+            Me.m_btnAdd.Enabled = Me.m_gridGroups.CanAddTaxon(DirectCast(Me.m_gridResults.TaxonAtRow, ITaxonSearchData))
             Me.m_btnRemove.Enabled = Me.m_gridGroups.CanDeleteTaxon() And Not Me.m_gridGroups.IsFlaggedForDeletionRow()
             Me.m_btnKeep.Enabled = Me.m_gridGroups.IsFlaggedForDeletionRow()
         Catch ex As Exception
@@ -566,6 +577,16 @@ Public Class dlgDefineTaxa
 
     End Sub
 
+    Private Function OnIsTaxonUsed(ti As ITaxonSearchData) As Boolean
+        Debug.Assert(ti IsNot Nothing)
+        Return Me.m_gridGroups.IsTaxonUsed(ti)
+    End Function
+
 #End Region ' Internals
+
+#Region " Public bits "
+
+
+#End Region ' Public bits
 
 End Class
