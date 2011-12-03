@@ -133,6 +133,7 @@ Namespace Ecospace.Basemap
             Protected Overrides Sub FinishStyle()
                 MyBase.FinishStyle()
                 Me.FixedColumnWidths = False
+                Me.AutoSizeAll()
             End Sub
 
             Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
