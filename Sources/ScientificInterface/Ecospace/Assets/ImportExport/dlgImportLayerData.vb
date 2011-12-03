@@ -643,18 +643,18 @@ Namespace Ecospace.Basemap
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImportLayerData))
-            Me.m_lblSource = New System.Windows.Forms.Label
-            Me.m_tbInput = New System.Windows.Forms.TextBox
-            Me.m_btnBrowseInput = New System.Windows.Forms.Button
-            Me.m_lblMappings = New System.Windows.Forms.Label
-            Me.m_tlpOkCancel = New System.Windows.Forms.TableLayoutPanel
-            Me.m_bntOK = New System.Windows.Forms.Button
-            Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.m_grid = New gridMapLayerToAttribute
-            Me.m_lblRow = New System.Windows.Forms.Label
-            Me.m_cmbRow = New System.Windows.Forms.ComboBox
-            Me.m_cmbCol = New System.Windows.Forms.ComboBox
-            Me.m_lblCol = New System.Windows.Forms.Label
+            Me.m_lblSource = New System.Windows.Forms.Label()
+            Me.m_tbInput = New System.Windows.Forms.TextBox()
+            Me.m_btnBrowseInput = New System.Windows.Forms.Button()
+            Me.m_lblMappings = New System.Windows.Forms.Label()
+            Me.m_tlpOkCancel = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_bntOK = New System.Windows.Forms.Button()
+            Me.m_btnCancel = New System.Windows.Forms.Button()
+            Me.m_grid = New ScientificInterface.Ecospace.Basemap.dlgImportLayerData.gridMapLayerToAttribute()
+            Me.m_lblRow = New System.Windows.Forms.Label()
+            Me.m_cmbRow = New System.Windows.Forms.ComboBox()
+            Me.m_cmbCol = New System.Windows.Forms.ComboBox()
+            Me.m_lblCol = New System.Windows.Forms.Label()
             Me.m_tlpOkCancel.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -672,7 +672,6 @@ Namespace Ecospace.Basemap
             'm_btnBrowseInput
             '
             resources.ApplyResources(Me.m_btnBrowseInput, "m_btnBrowseInput")
-            Me.m_btnBrowseInput.Image = SharedResources.openHS
             Me.m_btnBrowseInput.Name = "m_btnBrowseInput"
             Me.m_btnBrowseInput.UseVisualStyleBackColor = True
             '
@@ -701,15 +700,18 @@ Namespace Ecospace.Basemap
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = True
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.Attributes = New String() {" "}
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
@@ -717,14 +719,15 @@ Namespace Ecospace.Basemap
             Me.m_grid.Layers = Nothing
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.UIContext = Nothing
             '
             'm_lblRow
             '
