@@ -24,6 +24,7 @@ Public Class cParameters
     Private m_sEffortInc As Single = 0.25!
     Private m_liFleets As New List(Of Integer)
     Private m_sZoomFactor As Single = 1.0!
+    Private m_bDeletePrompt As Boolean = True
 
 #Region " Properties "
 
@@ -112,6 +113,19 @@ Public Class cParameters
         Set(ByVal bResultsByFleet As Boolean)
             If (Me.m_bResultsByFleet <> bResultsByFleet) Then
                 Me.m_bResultsByFleet = bResultsByFleet
+                Me.SetChanged()
+            End If
+        End Set
+    End Property
+
+    <DefaultValue(True)> _
+    Public Property DeletePrompt As Boolean
+        Get
+            Return Me.m_bDeletePrompt
+        End Get
+        Set(value As Boolean)
+            If (value <> Me.m_bDeletePrompt) Then
+                Me.m_bDeletePrompt = value
                 Me.SetChanged()
             End If
         End Set

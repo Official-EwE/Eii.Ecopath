@@ -67,6 +67,60 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Consumer {0}.
+        '''</summary>
+        Friend ReadOnly Property CORE_DEFAULT_CONSUMER() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_CONSUMER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Distribution {0}.
+        '''</summary>
+        Friend ReadOnly Property CORE_DEFAULT_DISTRIBUTION() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_DISTRIBUTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Processing {0}.
+        '''</summary>
+        Friend ReadOnly Property CORE_DEFAULT_PROCESSING() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_PROCESSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Friend ReadOnly Property CORE_DEFAULT_PRODUCER() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_PRODUCER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Retailer {0}.
+        '''</summary>
+        Friend ReadOnly Property CORE_DEFAULT_RETAILER() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_RETAILER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Wholesaler {0}.
+        '''</summary>
+        Friend ReadOnly Property CORE_DEFAULT_WHOLESALER() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_WHOLESALER", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property distribution() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("distribution", resourceCulture)
@@ -273,6 +327,24 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Do you wish to delete link &apos;{0}&apos;? This action cannot be undone..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DELETELINK() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DELETELINK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Do you wish to delete unit &apos;{0}&apos;? This action cannot be undone..
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DELETEUNIT() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DELETEUNIT", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property retailer() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("retailer", resourceCulture)
@@ -347,6 +419,15 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_SAVING() As String
             Get
                 Return ResourceManager.GetString("STATUS_SAVING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Friend ReadOnly Property String1() As String
+            Get
+                Return ResourceManager.GetString("String1", resourceCulture)
             End Get
         End Property
         

@@ -4056,4 +4056,38 @@ QmCCCw==</value>
   <data name="ERROR_LINK_NOTALLOWED" xml:space="preserve">
     <value>This type of link is not allowed</value>
   </data>
+  <data name="CORE_DEFAULT_CONSUMER" xml:space="preserve">
+    <value>Consumer {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="CORE_DEFAULT_DISTRIBUTION" xml:space="preserve">
+    <value>Distribution {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="CORE_DEFAULT_PROCESSING" xml:space="preserve">
+    <value>Processing {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="CORE_DEFAULT_PRODUCER" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CORE_DEFAULT_RETAILER" xml:space="preserve">
+    <value>Retailer {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="CORE_DEFAULT_WHOLESALER" xml:space="preserve">
+    <value>Wholesaler {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="PROMPT_DELETELINK" xml:space="preserve">
+    <value>Do you wish to delete link '{0}'? This action cannot be undone.</value>
+    <comment>{0}: link name</comment>
+  </data>
+  <data name="PROMPT_DELETEUNIT" xml:space="preserve">
+    <value>Do you wish to delete unit '{0}'? This action cannot be undone.</value>
+    <comment>{0}: unit name</comment>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>

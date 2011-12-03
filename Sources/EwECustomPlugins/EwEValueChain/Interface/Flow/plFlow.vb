@@ -622,17 +622,17 @@ Public Class plFlow
         ' Determine mask name
         Select Case unitType
             Case cUnitFactory.eUnitType.Wholesaler
-                strMask = "Wholeseller {0}"
+                strMask = My.Resources.CORE_DEFAULT_WHOLESALER
             Case cUnitFactory.eUnitType.Retailer
-                strMask = "Retailer {0}"
+                strMask = My.Resources.CORE_DEFAULT_RETAILER
             Case cUnitFactory.eUnitType.Processing
-                strMask = "Processing {0}"
+                strMask = My.Resources.CORE_DEFAULT_PROCESSING
             Case cUnitFactory.eUnitType.Producer
                 strMask = ""
             Case cUnitFactory.eUnitType.Distribution
-                strMask = "Distribution {0}"
+                strMask = My.Resources.CORE_DEFAULT_DISTRIBUTION
             Case cUnitFactory.eUnitType.Consumer
-                strMask = "Consumer {0}"
+                strMask = My.Resources.CORE_DEFAULT_CONSUMER
         End Select
 
         ' Has a mask?
@@ -760,16 +760,15 @@ Public Class plFlow
     ''' -----------------------------------------------------------------------
     Public Function DeleteUnit(ByVal unit As cUnit, ByVal fp As cFlowPosition) As Boolean
 
-        'Select Case MessageBox.Show("Do you wish to entirely delete the unit? Click 'Yes' to delete the unit from the plugin, or 'No' to only remove the unit from this diagram", _
-        '                   "Delete unit", MessageBoxButtons.YesNoCancel)
-        '    Case DialogResult.Yes
-        '        Me.m_data.DeleteUnit(unit)
-        '    Case DialogResult.No
-        '        Me.m_data.DeleteFlowPosition(fp)
+        If Me.m_data.Parameters.DeletePrompt Then
 
-        '    Case DialogResult.Cancel
-        '        ' NOP
-        'End Select
+            Select Case MessageBox.Show(String.Format(My.Resources.PROMPT_DELETEUNIT, unit.Name), _
+                                        My.Resources.GENERIC_CAPTION, MessageBoxButtons.YesNo)
+                Case DialogResult.No
+                    Return False
+            End Select
+
+        End If
 
         Return Me.m_data.DeleteUnit(unit)
 
@@ -837,6 +836,17 @@ Public Class plFlow
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function DeleteLink(ByVal link As cLink) As Boolean
+
+        If Me.m_data.Parameters.DeletePrompt Then
+
+            Select Case MessageBox.Show(String.Format(My.Resources.PROMPT_DELETELINK, link.Name), _
+                                        My.Resources.GENERIC_CAPTION, MessageBoxButtons.YesNo)
+                Case DialogResult.No
+                    Return False
+            End Select
+
+        End If
+
         Me.RemoveLink(link)
         Me.m_data.DeleteLink(link)
         Me.Invalidate(True)

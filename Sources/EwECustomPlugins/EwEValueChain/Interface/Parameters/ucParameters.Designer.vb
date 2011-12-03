@@ -12,28 +12,30 @@ Partial Class ucParameters
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.m_tlpSponsors = New System.Windows.Forms.TableLayoutPanel
-        Me.m_pbLenfest = New System.Windows.Forms.PictureBox
-        Me.m_pbSAUP = New System.Windows.Forms.PictureBox
-        Me.m_pbEU = New System.Windows.Forms.PictureBox
-        Me.m_lblSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_lblBaseYear = New System.Windows.Forms.Label
-        Me.m_nudBaseYear = New cEwENumericUpDown
-        Me.m_hdrEcosimSettings = New cEwEHeaderLabel
-        Me.m_hdrIntegration = New cEwEHeaderLabel
-        Me.m_chkRunWithEcopath = New System.Windows.Forms.CheckBox
-        Me.m_chkRunWithEcosim = New System.Windows.Forms.CheckBox
-        Me.m_chkRunWithSearches = New System.Windows.Forms.CheckBox
-        Me.m_hdrEQ = New cEwEHeaderLabel
-        Me.m_clbFleets = New System.Windows.Forms.CheckedListBox
-        Me.m_lblFleets = New System.Windows.Forms.Label
-        Me.m_lblEffortMin = New System.Windows.Forms.Label
-        Me.m_lblEffortMax = New System.Windows.Forms.Label
-        Me.m_lbEffortIncr = New System.Windows.Forms.Label
-        Me.m_nudEffortMin = New cEwENumericUpDown
-        Me.m_nudEffortMax = New cEwENumericUpDown
-        Me.m_nudEffortIncr = New cEwENumericUpDown
-        Me.m_chkResultsByFleet = New System.Windows.Forms.CheckBox
+        Me.m_tlpSponsors = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbLenfest = New System.Windows.Forms.PictureBox()
+        Me.m_pbSAUP = New System.Windows.Forms.PictureBox()
+        Me.m_pbEU = New System.Windows.Forms.PictureBox()
+        Me.m_lblSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblBaseYear = New System.Windows.Forms.Label()
+        Me.m_nudBaseYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_hdrEcosimSettings = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrIntegration = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_chkRunWithEcopath = New System.Windows.Forms.CheckBox()
+        Me.m_chkRunWithEcosim = New System.Windows.Forms.CheckBox()
+        Me.m_chkRunWithSearches = New System.Windows.Forms.CheckBox()
+        Me.m_hdrEQ = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_clbFleets = New System.Windows.Forms.CheckedListBox()
+        Me.m_lblFleets = New System.Windows.Forms.Label()
+        Me.m_lblEffortMin = New System.Windows.Forms.Label()
+        Me.m_lblEffortMax = New System.Windows.Forms.Label()
+        Me.m_lbEffortIncr = New System.Windows.Forms.Label()
+        Me.m_nudEffortMin = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudEffortMax = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudEffortIncr = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_chkResultsByFleet = New System.Windows.Forms.CheckBox()
+        Me.m_hdrUI = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_cbConfirmDelete = New System.Windows.Forms.CheckBox()
         Me.m_tlpSponsors.SuspendLayout()
         CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbSAUP, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -47,7 +49,7 @@ Partial Class ucParameters
         'm_tlpSponsors
         '
         Me.m_tlpSponsors.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tlpSponsors.BackColor = System.Drawing.Color.White
         Me.m_tlpSponsors.ColumnCount = 3
         Me.m_tlpSponsors.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
@@ -103,8 +105,11 @@ Partial Class ucParameters
         'm_lblSponsors
         '
         Me.m_lblSponsors.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_lblSponsors.CanCollapseParent = False
+        Me.m_lblSponsors.CollapsedParentHeight = 0
         Me.m_lblSponsors.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_lblSponsors.IsCollapsed = False
         Me.m_lblSponsors.Location = New System.Drawing.Point(0, 374)
         Me.m_lblSponsors.Name = "m_lblSponsors"
         Me.m_lblSponsors.Size = New System.Drawing.Size(703, 18)
@@ -131,11 +136,11 @@ Partial Class ucParameters
         'm_hdrEcosimSettings
         '
         Me.m_hdrEcosimSettings.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_hdrEcosimSettings.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_hdrEcosimSettings.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.m_hdrEcosimSettings.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrEcosimSettings.CanCollapseParent = False
+        Me.m_hdrEcosimSettings.CollapsedParentHeight = 0
         Me.m_hdrEcosimSettings.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_hdrEcosimSettings.IsCollapsed = False
         Me.m_hdrEcosimSettings.Location = New System.Drawing.Point(0, 97)
         Me.m_hdrEcosimSettings.Name = "m_hdrEcosimSettings"
         Me.m_hdrEcosimSettings.Size = New System.Drawing.Size(703, 18)
@@ -146,11 +151,11 @@ Partial Class ucParameters
         'm_hdrIntegration
         '
         Me.m_hdrIntegration.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_hdrIntegration.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_hdrIntegration.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.m_hdrIntegration.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrIntegration.CanCollapseParent = False
+        Me.m_hdrIntegration.CollapsedParentHeight = 0
         Me.m_hdrIntegration.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_hdrIntegration.IsCollapsed = False
         Me.m_hdrIntegration.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrIntegration.Name = "m_hdrIntegration"
         Me.m_hdrIntegration.Size = New System.Drawing.Size(703, 18)
@@ -191,11 +196,11 @@ Partial Class ucParameters
         'm_hdrEQ
         '
         Me.m_hdrEQ.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_hdrEQ.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.m_hdrEQ.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.m_hdrEQ.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrEQ.CanCollapseParent = False
+        Me.m_hdrEQ.CollapsedParentHeight = 0
         Me.m_hdrEQ.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_hdrEQ.IsCollapsed = False
         Me.m_hdrEQ.Location = New System.Drawing.Point(0, 156)
         Me.m_hdrEQ.Name = "m_hdrEQ"
         Me.m_hdrEQ.Size = New System.Drawing.Size(703, 18)
@@ -285,10 +290,36 @@ Partial Class ucParameters
         Me.m_chkResultsByFleet.Text = "Produce results by &fleet"
         Me.m_chkResultsByFleet.UseVisualStyleBackColor = True
         '
+        'm_hdrUI
+        '
+        Me.m_hdrUI.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrUI.CanCollapseParent = False
+        Me.m_hdrUI.CollapsedParentHeight = 0
+        Me.m_hdrUI.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_hdrUI.IsCollapsed = False
+        Me.m_hdrUI.Location = New System.Drawing.Point(0, 268)
+        Me.m_hdrUI.Name = "m_hdrUI"
+        Me.m_hdrUI.Size = New System.Drawing.Size(703, 18)
+        Me.m_hdrUI.TabIndex = 8
+        Me.m_hdrUI.Text = "User interface"
+        Me.m_hdrUI.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'm_cbConfirmDelete
+        '
+        Me.m_cbConfirmDelete.AutoSize = True
+        Me.m_cbConfirmDelete.Location = New System.Drawing.Point(6, 293)
+        Me.m_cbConfirmDelete.Name = "m_cbConfirmDelete"
+        Me.m_cbConfirmDelete.Size = New System.Drawing.Size(181, 17)
+        Me.m_cbConfirmDelete.TabIndex = 19
+        Me.m_cbConfirmDelete.Text = "&Prompt for confirmation on delete"
+        Me.m_cbConfirmDelete.UseVisualStyleBackColor = True
+        '
         'ucParameters
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_cbConfirmDelete)
         Me.Controls.Add(Me.m_nudEffortIncr)
         Me.Controls.Add(Me.m_nudEffortMax)
         Me.Controls.Add(Me.m_nudEffortMin)
@@ -304,6 +335,7 @@ Partial Class ucParameters
         Me.Controls.Add(Me.m_tlpSponsors)
         Me.Controls.Add(Me.m_nudBaseYear)
         Me.Controls.Add(Me.m_lblBaseYear)
+        Me.Controls.Add(Me.m_hdrUI)
         Me.Controls.Add(Me.m_hdrEQ)
         Me.Controls.Add(Me.m_hdrIntegration)
         Me.Controls.Add(Me.m_hdrEcosimSettings)
@@ -327,7 +359,6 @@ Partial Class ucParameters
     Friend WithEvents m_pbSAUP As System.Windows.Forms.PictureBox
     Friend WithEvents m_pbEU As System.Windows.Forms.PictureBox
     Private WithEvents m_lblBaseYear As System.Windows.Forms.Label
-    Private WithEvents m_nudBaseYear As System.Windows.Forms.NumericUpDown
     Private WithEvents m_hdrEcosimSettings As cEwEHeaderLabel
     Private WithEvents m_hdrIntegration As cEwEHeaderLabel
     Private WithEvents m_chkRunWithEcopath As System.Windows.Forms.CheckBox
@@ -341,9 +372,12 @@ Partial Class ucParameters
     Private WithEvents m_lblEffortMin As System.Windows.Forms.Label
     Private WithEvents m_lbEffortIncr As System.Windows.Forms.Label
     Private WithEvents m_lblEffortMax As System.Windows.Forms.Label
-    Private WithEvents m_nudEffortMin As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudEffortMax As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudEffortIncr As System.Windows.Forms.NumericUpDown
     Private WithEvents m_chkResultsByFleet As System.Windows.Forms.CheckBox
+    Private WithEvents m_hdrUI As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_cbConfirmDelete As System.Windows.Forms.CheckBox
+    Private WithEvents m_nudBaseYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudEffortMin As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudEffortMax As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudEffortIncr As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
 End Class
