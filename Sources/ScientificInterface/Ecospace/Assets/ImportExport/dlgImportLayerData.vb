@@ -271,20 +271,13 @@ Namespace Ecospace.Basemap
 
             Debug.Assert(Me.m_uic IsNot Nothing)
 
-            Dim f As New cLayerFactoryInternal()
+            ' Set default file
+            Me.m_tbInput.Text = Path.Combine(Me.m_uic.Core.OutputPath, Me.m_uic.Core.EcospaceOutputFileName("layer"))
 
+            ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
-
-                ' Add default layers
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerMPA))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
-
+                Me.m_lLayers.AddRange(cImportExportData.DefaultLayers(Me.m_uic))
             End If
-
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
             Me.m_grid.UIContext = Me.m_uic
 
@@ -341,9 +334,7 @@ Namespace Ecospace.Basemap
             ' Sanity check
             If (foc Is Nothing) Then Return
 
-            foc.Directory = Me.m_uic.Core.OutputPath
-            foc.FileName = Me.m_tbInput.Text
-            foc.Invoke(SharedResources.FILEFILTER_CSV, 0, Me.Text)
+            foc.Invoke(Me.m_tbInput.Text, SharedResources.FILEFILTER_CSV, 0, Me.Text)
 
             If (foc.Result = Windows.Forms.DialogResult.OK) Then
                 Me.m_tbInput.Text = foc.FileName

@@ -9,6 +9,7 @@ Imports SAUPUtil.SAUPData
 Imports SAUPUtil.SAUPFile
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports System.IO
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 
@@ -110,6 +111,23 @@ Namespace Ecospace.Basemap
 
         Public Function IsRowColImplicit() As Boolean
             Return Me.m_bRowColImplicit
+        End Function
+
+        Public Shared Function DefaultLayers(uic As cUIContext) As cLayer()
+
+            Dim f As New cLayerFactoryInternal()
+            Dim lLayers As New List(Of cLayer)
+
+            lLayers.AddRange(f.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
+            lLayers.AddRange(f.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerMPA))
+            lLayers.AddRange(f.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
+            lLayers.AddRange(f.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerHabitatCapacityInput))
+            lLayers.AddRange(f.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
+            lLayers.AddRange(f.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
+            lLayers.AddRange(f.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
+
+            Return lLayers.ToArray()
+
         End Function
 
     End Class

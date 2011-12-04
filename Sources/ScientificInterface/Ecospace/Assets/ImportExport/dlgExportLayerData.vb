@@ -97,7 +97,9 @@ Namespace Ecospace.Basemap
 
                 Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
                 Me.Columns(eColumnTypes.ColumnAttribute).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+
                 Me.FixedColumns = 1
+                Me.FixedColumnWidths = False
 
             End Sub
 
@@ -132,8 +134,7 @@ Namespace Ecospace.Basemap
 
             Protected Overrides Sub FinishStyle()
                 MyBase.FinishStyle()
-                Me.FixedColumnWidths = False
-                Me.AutoSizeAll()
+                Me.StretchColumnsToFitWidth()
             End Sub
 
             Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
@@ -220,22 +221,16 @@ Namespace Ecospace.Basemap
 
             Debug.Assert(Me.m_uic IsNot Nothing)
 
-            Dim f As New cLayerFactoryInternal()
+            ' Set default file
+            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.OutputPath, Me.m_uic.Core.EcospaceOutputFileName("layer"))
 
+            ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
-
-                ' Add default layers
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerMPA))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
-                Me.m_lLayers.AddRange(f.GetLayers(Me.m_uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
-
+                Me.m_lLayers.AddRange(cImportExportData.DefaultLayers(Me.m_uic))
             End If
-
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
-            Me.m_tbTarget.Text = Me.m_uic.Core.EcospaceOutputFileName("layer")
+            Me.m_grid.UIContext = Me.m_uic
+
             Me.UpdateControls()
 
         End Sub
