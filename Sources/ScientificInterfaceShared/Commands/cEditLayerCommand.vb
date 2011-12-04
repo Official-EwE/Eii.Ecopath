@@ -12,7 +12,7 @@ Namespace Commands
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Command to invoke the 'EditPedigree' interface
+    ''' Command to invoke the 'Edit Ecospace Layer' interface
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cEditLayerCommand
