@@ -1629,8 +1629,8 @@
     <value>Run {0}</value>
     <comment>{0}=run number or name</comment>
   </data>
-  <data name="HEADER_ATTRIBUTE" xml:space="preserve">
-    <value>Attribute</value>
+  <data name="HEADER_FIELD" xml:space="preserve">
+    <value>Field</value>
   </data>
   <data name="HEADER_LAYER" xml:space="preserve">
     <value>Layer</value>

@@ -8,6 +8,7 @@ Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 
@@ -35,8 +36,32 @@ Namespace Controls.Map
         Private m_bInUpdate As Boolean = False
         ''' <summary>List of attached zoom maps that need to be synchronized.</summary>
         Private m_lZoomContainers As New List(Of ucMapZoom)
+        ''' <summary>List of attached layers.</summary>
+        Private m_lLayers As New List(Of cLayer)
 
 #End Region ' Private vars
+
+#Region " Construction / destruction "
+
+        Public Sub New()
+            MyBase.New()
+            Me.InitializeComponent()
+        End Sub
+
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                Debug.Assert(Me.m_lLayers.Count = 0)
+                Debug.Assert(Me.m_lZoomContainers.Count = 0)
+
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
+        End Sub
+
+#End Region ' Construction / destruction
 
 #Region " Public access "
 
@@ -66,7 +91,11 @@ Namespace Controls.Map
 
             AddHandler zoomContainer.MouseWheel, AddressOf OnMapMousewheel
             AddHandler zoomContainer.OnPositionChanged, AddressOf OnMapPositionChanged
+
             Me.m_lZoomContainers.Add(zoomContainer)
+
+            AddHandler zoomContainer.Map.LayerAdded, AddressOf OnMapLayerAdded
+            AddHandler zoomContainer.Map.LayerRemoved, AddressOf OnMapLayerRemoved
 
         End Sub
 
@@ -80,6 +109,9 @@ Namespace Controls.Map
         Public Sub RemoveZoomContainer(ByVal zoomContainer As ucMapZoom)
 
             Debug.Assert(Me.m_lZoomContainers.Contains(zoomContainer))
+
+            RemoveHandler zoomContainer.Map.LayerAdded, AddressOf OnMapLayerAdded
+            RemoveHandler zoomContainer.Map.LayerRemoved, AddressOf OnMapLayerRemoved
 
             RemoveHandler zoomContainer.MouseWheel, AddressOf OnMapMousewheel
             RemoveHandler zoomContainer.OnPositionChanged, AddressOf OnMapPositionChanged
@@ -244,6 +276,28 @@ Namespace Controls.Map
 
 #End Region ' Save
 
+#Region " Map events "
+
+        Private Sub OnMapLayerAdded(sender As ucMap, layer As cLayer)
+            Me.m_lLayers.Add(layer)
+            AddHandler layer.LayerChanged, AddressOf OnLayerChanged
+        End Sub
+
+        Private Sub OnMapLayerRemoved(sender As ucMap, layer As cLayer)
+            RemoveHandler layer.LayerChanged, AddressOf OnLayerChanged
+            Me.m_lLayers.Remove(layer)
+        End Sub
+
+        Private Sub OnLayerChanged(layer As cLayer, cf As cLayer.eChangeFlags)
+            Try
+                Me.UpdateControls()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+#End Region ' Map events
+
 #End Region ' Child control events
 
 #Region " Internal bits "
@@ -294,9 +348,53 @@ Namespace Controls.Map
             Me.m_tsmiViewStretch1.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Stretch)
             Me.m_tsmiViewStretch2.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Stretch)
 
+            ' ToDo: update import/export buttons viz + enabled states
+            Dim bHasSelectedLayers As Boolean = False
+            Dim bHasEditableLayers As Boolean = False
+
+            For Each l As cLayer In Me.m_lLayers
+                bHasSelectedLayers = bHasSelectedLayers Or l.IsSelected
+                bHasEditableLayers = bHasEditableLayers Or (l.IsSelected And l.Editor.IsEditable)
+            Next
+
+            Me.m_tsbnImport.Visible = bHasEditableLayers And bHasSelectedLayers
+            Me.m_tsbnExport.Visible = bHasSelectedLayers
+
         End Sub
 
 #End Region ' Internal bits
+
+        Private Sub OnImportLayer(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnImport.Click
+
+            Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
+            Dim lLayers As New List(Of cLayer)
+
+            For Each l As cLayer In Me.m_lLayers
+                If (l.IsSelected) Then
+                    lLayers.Add(l)
+                End If
+            Next
+
+            cmd.Invoke(lLayers.ToArray)
+
+        End Sub
+
+        Private Sub OnExportLayer(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnExport.Click
+
+            Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
+            Dim lLayers As New List(Of cLayer)
+
+            For Each l As cLayer In Me.m_lLayers
+                If (l.IsSelected) Then
+                    lLayers.Add(l)
+                End If
+            Next
+
+            cmd.Invoke(lLayers.ToArray)
+
+        End Sub
 
     End Class
 

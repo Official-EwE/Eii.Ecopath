@@ -98,12 +98,14 @@ Namespace Commands
             Me.m_strFileFilters = strFileFilter
             Me.m_iFilter = iFilter
 
-            Try
-                ' Only update directory if a diretory has been specified
-                strPath = Path.GetDirectoryName(strFileName)
-                If Not String.IsNullOrEmpty(strPath) Then Me.m_strDirectory = strPath
-            Catch ex As Exception
-            End Try
+            ' Only update directory if a diretory has been specified with the file name
+            If Not String.IsNullOrWhiteSpace(strFileName) Then
+                Try
+                    strPath = Path.GetDirectoryName(strFileName)
+                    If Not String.IsNullOrEmpty(strPath) Then Me.m_strDirectory = strPath
+                Catch ex As Exception
+                End Try
+            End If
 
             Me.Invoke()
 

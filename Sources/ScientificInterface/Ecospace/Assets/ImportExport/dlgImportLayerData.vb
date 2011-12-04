@@ -32,25 +32,18 @@ Namespace Ecospace.Basemap
         Public Class gridMapLayerToAttribute
             Inherits EwEGrid
 
-            ' ToDo: Sort and display layers by group
-            ' ToDo: Accept Attributes as delivered by SAUPUtil so datatype can be verified
-            ' ToDo: Do not allow incompatible data types to be linked
-
 #Region " Private vars "
-
-            Private Const cVALUE_NONE As String = " "
 
             ''' <summary>The layers to map upon.</summary>
             Private m_aLayers As cLayer()
             ''' <summary>The attribute names to map upon.</summary>
-            Private m_astrAttributes As String()
+            Private m_astrFields As String() = {}
             ''' <summary>Mappings. MAPPINGS!</summary>
             Private m_dtLayerMapping As New Dictionary(Of cLayer, String)
 
             Private Enum eColumnTypes As Integer
                 ColumnLayer = 0
-                ColumnAttribute
-                ' Show datatype columns?
+                ColumnField
             End Enum
 
 #End Region ' Private vars
@@ -58,12 +51,14 @@ Namespace Ecospace.Basemap
 #Region " Construction "
 
             Public Sub New()
-
+                MyBase.New()
             End Sub
 
 #End Region ' Construction
 
 #Region " Public interfaces "
+
+            Public Event MappingChanged()
 
             Public Property Layers() As cLayer()
                 Get
@@ -71,25 +66,33 @@ Namespace Ecospace.Basemap
                 End Get
                 Set(ByVal value As cLayer())
                     Me.m_aLayers = value
-                    Me.RefreshContent()
                 End Set
             End Property
 
-            Public Property Attributes() As String()
+            Public Property Fields() As String()
                 Get
-                    Return Me.m_astrAttributes
+                    Return Me.m_astrFields
                 End Get
                 Set(ByVal value As String())
                     Dim lstr As New List(Of String)
                     If (value IsNot Nothing) Then lstr.AddRange(value)
-                    If lstr.IndexOf(cVALUE_NONE) = -1 Then lstr.Insert(0, cVALUE_NONE)
-                    Me.m_astrAttributes = lstr.ToArray()
+                    If lstr.IndexOf(SharedResources.GENERIC_VALUE_NONE) = -1 Then lstr.Insert(0, SharedResources.GENERIC_VALUE_NONE)
+                    Me.m_astrFields = lstr.ToArray()
                     Me.RefreshContent()
                 End Set
             End Property
 
             Public Function Mappings() As Dictionary(Of cLayer, String)
                 Return Me.m_dtLayerMapping
+            End Function
+
+            Public Function HasMappings() As Boolean
+                For Each l As cLayer In Me.m_dtLayerMapping.Keys
+                    If Not String.IsNullOrWhiteSpace(Me.m_dtLayerMapping(l)) Then
+                        Return True
+                    End If
+                Next
+                Return False
             End Function
 
 #End Region ' Public interfaces
@@ -104,11 +107,13 @@ Namespace Ecospace.Basemap
                 Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
                 Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell(SharedResources.HEADER_LAYER)
-                Me(0, eColumnTypes.ColumnAttribute) = New EwEColumnHeaderCell(SharedResources.HEADER_ATTRIBUTE)
+                Me(0, eColumnTypes.ColumnField) = New EwEColumnHeaderCell(SharedResources.HEADER_FIELD)
 
                 Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                Me.Columns(eColumnTypes.ColumnAttribute).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+                Me.Columns(eColumnTypes.ColumnField).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+
                 Me.FixedColumns = 1
+                Me.FixedColumnWidths = False
 
             End Sub
 
@@ -131,10 +136,10 @@ Namespace Ecospace.Basemap
                     ewec.Style = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                     Me(iLayer + 1, eColumnTypes.ColumnLayer) = ewec
 
-                    cmb = New Cells.Real.ComboBox("", GetType(String), Me.m_astrAttributes, True)
+                    cmb = New Cells.Real.ComboBox("", GetType(String), Me.m_astrFields, True)
                     cmb.EditableMode = EditableMode.SingleClick
-                    Me(iLayer + 1, eColumnTypes.ColumnAttribute) = cmb
-                    Me(iLayer + 1, eColumnTypes.ColumnAttribute).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iLayer + 1, eColumnTypes.ColumnField) = cmb
+                    Me(iLayer + 1, eColumnTypes.ColumnField).Behaviors.Add(Me.EwEEditHandler)
 
                     Me.Rows(iLayer + 1).Tag = layer
 
@@ -146,16 +151,15 @@ Namespace Ecospace.Basemap
 
             Protected Overrides Sub FinishStyle()
                 MyBase.FinishStyle()
-                Me.FixedColumnWidths = False
+                Me.StretchColumnsToFitWidth()
             End Sub
 
             Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-                Dim strAttribute As String = Me.AttributeAtRow(p.Row)
+                Dim strAttribute As String = Me.FieldAtRow(p.Row)
                 Dim layer As cLayer = Me.LayerAtRow(p.Row)
 
                 Try
-                    ' ToDo: Clear existing mappings to this attribute?
                     Me.m_dtLayerMapping(layer) = strAttribute
                     Me.UpdateMappingsColumn()
                 Catch ex As Exception
@@ -176,18 +180,23 @@ Namespace Ecospace.Basemap
 
                     layer = Me.LayerAtRow(iRow)
 
-                    cmb = DirectCast(Me(iRow, eColumnTypes.ColumnAttribute), Cells.Real.ComboBox)
+                    cmb = DirectCast(Me(iRow, eColumnTypes.ColumnField), Cells.Real.ComboBox)
                     dm = DirectCast(cmb.DataModel, DataModels.EditorComboBox)
-                    dm.DefaultValue = cVALUE_NONE
+                    dm.DefaultValue = SharedResources.GENERIC_VALUE_NONE
 
                     Try
                         cmb.Value = Me.m_dtLayerMapping(layer)
                     Catch ex As Exception
-                        cmb.Value = cVALUE_NONE
+                        cmb.Value = SharedResources.GENERIC_VALUE_NONE
                     End Try
 
                 Next iRow
 
+                Try
+                    RaiseEvent MappingChanged()
+                Catch ex As Exception
+
+                End Try
             End Sub
 
             Private Function LayerAtRow(ByVal iRow As Integer) As cLayer
@@ -197,18 +206,19 @@ Namespace Ecospace.Basemap
                 Return Nothing
             End Function
 
-            Private Function AttributeAtRow(ByVal iRow As Integer) As String
+            Private Function FieldAtRow(ByVal iRow As Integer) As String
+                Dim strField As String = ""
                 If iRow > 0 And iRow < Me.RowsCount Then
-                    Return CStr(Me(iRow, eColumnTypes.ColumnAttribute).Value)
+                    strField = CStr(Me(iRow, eColumnTypes.ColumnField).Value)
+                    If (strField = SharedResources.GENERIC_VALUE_NONE) Then
+                        strField = ""
+                    End If
                 End If
-                Return ""
+                Return strField
             End Function
 
             Private Function HasData() As Boolean
-                If Me.m_aLayers Is Nothing Then Return False
-                If Me.m_astrAttributes Is Nothing Then Return False
-                If Me.m_astrAttributes.Length <= 1 Then Return False
-                Return True
+                Return (Me.m_aLayers IsNot Nothing)
             End Function
 
 #End Region ' Overrides
@@ -219,22 +229,8 @@ Namespace Ecospace.Basemap
 
 #Region " Private vars "
 
-        Private Enum eSpatialFileCompatibility As Integer
-            ''' <summary>File fits Ecospace.</summary>
-            Compatible = 0
-            ''' <summary>File could not be read.</summary>
-            Unreadable
-            ''' <summary>Incompatible number of cols and/or rows found.</summary>
-            IncompatibleDimensions
-            ''' <summary>Incompatible format.</summary>
-            IncompatibleFormat
-            ''' <summary>Incompatible number of cols and/or rows found.</summary>
-            IncompatibleEmpty
-        End Enum
-
         Private m_uic As cUIContext = Nothing
         Private m_lLayers As New List(Of cLayer)
-        Private m_bDataValid As Boolean = False
         Private m_data As cImportExportData = Nothing
 
 #End Region ' Private vars
@@ -266,7 +262,7 @@ Namespace Ecospace.Basemap
 
 #End Region ' Public properties
 
-#Region " Events "
+#Region " Form overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
@@ -292,8 +288,47 @@ Namespace Ecospace.Basemap
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
             Me.m_grid.UIContext = Me.m_uic
 
+            AddHandler Me.m_grid.MappingChanged, AddressOf UpdateControls
+
             Me.UpdateControls()
 
+        End Sub
+
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+
+            RemoveHandler Me.m_grid.MappingChanged, AddressOf UpdateControls
+
+            Me.m_grid.Layers = Nothing
+            Me.m_grid.UIContext = Nothing
+
+            MyBase.OnFormClosed(e)
+
+        End Sub
+
+#End Region ' Form overrides
+
+#Region " Events "
+
+        Private Sub OnFileDragEnter(sender As Object, e As DragEventArgs) _
+            Handles m_tbInput.DragEnter
+            If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+                e.Effect = DragDropEffects.All
+            End If
+        End Sub
+
+        Private Sub OnFileDragDrop(sender As Object, e As DragEventArgs) _
+            Handles m_tbInput.DragDrop
+            If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+                Try
+                    Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+                    If astrFiles.Length > 0 Then
+                        Me.m_tbInput.Text = astrFiles(0)
+                        Me.ReadCSVAttributes()
+                    End If
+                Catch ex As Exception
+
+                End Try
+            End If
         End Sub
 
         Private Sub OnBrowseInput(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -302,57 +337,17 @@ Namespace Ecospace.Basemap
             ' Browse via EwE6 open file dialog 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim foc As cFileOpenCommand = TryCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-            Dim strFileFilter As String = SharedResources.FILEFILTER_LOAD_RASTER
-            Dim sfc As eSpatialFileCompatibility = eSpatialFileCompatibility.Unreadable
-            Dim strMsg As String = ""
 
             ' Sanity check
-            If foc Is Nothing Then Return
+            If (foc Is Nothing) Then Return
 
-            If String.IsNullOrEmpty(Me.m_tbInput.Text) Then
-                foc.Invoke(strFileFilter)
-            Else
-                foc.Invoke(Me.m_tbInput.Text, strFileFilter)
-            End If
+            foc.Directory = Me.m_uic.Core.OutputPath
+            foc.FileName = Me.m_tbInput.Text
+            foc.Invoke(SharedResources.FILEFILTER_CSV, 0, Me.Text)
 
             If (foc.Result = Windows.Forms.DialogResult.OK) Then
-
                 Me.m_tbInput.Text = foc.FileName
-                Me.m_cmbRow.Items.Clear()
-                Me.m_cmbRow.Items.Clear()
-                Me.m_grid.Attributes = Nothing
-
-                Select Case Path.GetExtension(foc.FileName).ToLower
-                    Case ".asc"
-                        sfc = Me.ReadAscFile(Me.m_tbInput.Text)
-                    Case ".csv" ' csv
-                        sfc = Me.ReadCSVFile(Me.m_tbInput.Text)
-                    Case ".shp" ' shp
-                        sfc = Me.ReadShapeFile(Me.m_tbInput.Text)
-                End Select
-
-                Me.UpdateControls()
-
-                Select Case sfc
-                    Case eSpatialFileCompatibility.Compatible
-                        ' NOP
-
-                    Case eSpatialFileCompatibility.Unreadable
-                        strMsg = String.Format(SharedResources.FILE_LOAD_ERROR_READ, foc.FileName)
-
-                    Case eSpatialFileCompatibility.IncompatibleEmpty
-                        strMsg = String.Format(SharedResources.FILE_LOAD_ERROR_DATA, foc.FileName)
-
-                    Case eSpatialFileCompatibility.IncompatibleDimensions
-                        strMsg = String.Format(SharedResources.FILE_LOAD_ERROR_INCOMPATIBLE_MAP, foc.FileName)
-
-                End Select
-
-                If Not String.IsNullOrEmpty(strMsg) Then
-                    Dim msg As New cMessage(strMsg, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
-                    Me.m_uic.Core.Messages.SendMessage(msg)
-                End If
-
+                Me.ReadCSVAttributes()
             End If
 
         End Sub
@@ -369,21 +364,6 @@ Namespace Ecospace.Basemap
 
         Private Sub OnRowColAttributeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbRow.SelectedIndexChanged, m_cmbCol.SelectedIndexChanged
-
-            Select Case Me.ValidateData()
-
-                Case eSpatialFileCompatibility.Compatible
-                    Me.m_bDataValid = True
-
-                Case eSpatialFileCompatibility.IncompatibleDimensions
-                    Dim msg As New cFeedbackMessage(My.Resources.ECOSPACE_BASEMAP_SHAPECOMPATIBLE, _
-                                                    EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Information, _
-                                                    cFeedbackMessage.eReplyStyle.YES_NO, EwEUtils.Core.eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
-                    Me.m_uic.Core.Messages.SendMessage(msg)
-                    Me.m_bDataValid = (msg.Reply = cFeedbackMessage.eReply.YES)
-
-            End Select
-
             Me.UpdateControls()
         End Sub
 
@@ -391,7 +371,29 @@ Namespace Ecospace.Basemap
 
 #Region " Internals "
 
-        Private Function ReadCSVFile(ByVal strFile As String) As eSpatialFileCompatibility
+        Private Function ReadCSVAttributes() As Boolean
+
+            Dim bSuccess As Boolean = True
+
+            Me.m_cmbRow.Items.Clear()
+            Me.m_cmbRow.Items.Clear()
+            Me.m_grid.Fields = Nothing
+
+            Me.UpdateControls()
+
+            If Not Me.ReadCSVFile() Then
+                Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_READ, Me.m_tbInput.Text), eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
+                Me.m_uic.Core.Messages.SendMessage(msg)
+                bSuccess = False
+            End If
+
+            Me.UpdateControls()
+
+            Return True
+
+        End Function
+
+        Private Function ReadCSVFile() As Boolean
 
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim tr As TextReader = Nothing
@@ -400,12 +402,11 @@ Namespace Ecospace.Basemap
             Dim astrValues As String() = Nothing
             Dim iCell, iAttribute As Integer
             Dim sValue As Single = 0.0!
-            Dim result As eSpatialFileCompatibility = eSpatialFileCompatibility.Compatible
 
             Try
-                tr = New StreamReader(strFile)
+                tr = New StreamReader(Me.m_tbInput.Text)
             Catch ex As Exception
-                Return eSpatialFileCompatibility.Unreadable
+                Return False
             End Try
 
             ' Read attributes line
@@ -436,112 +437,98 @@ Namespace Ecospace.Basemap
 
             Me.m_cmbRow.Items.AddRange(astrAttributes) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
             Me.m_cmbCol.Items.AddRange(astrAttributes) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
-            Me.m_grid.Attributes = astrAttributes
+            Me.m_grid.Fields = astrAttributes
 
-            Return result
-
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Read the content of the shape file into cData.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' -----------------------------------------------------------------------
-        Private Function ReadShapeFile(ByVal strFile As String) As eSpatialFileCompatibility
-
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim sfio As New ShapeFileIO()
-            Dim lsd As New List(Of SpatialData)
-            Dim sd As SpatialData = Nothing
-            Dim sValue As Single = 0.0!
-
-            Dim lstrAttributes As New List(Of String)
-
-            If Not sfio.Read(strFile, lsd) Then
-                Return eSpatialFileCompatibility.Unreadable
-            End If
-
-            If (lsd.Count = 0) Then Return eSpatialFileCompatibility.IncompatibleEmpty
-
-            For Each strAttribute As String In sfio.AttributeDefintions.Keys
-                lstrAttributes.Add(strAttribute)
-            Next strAttribute
-            lstrAttributes.Sort()
-
-            Me.m_data = New cImportExportData(bm.InRow, bm.InCol, lstrAttributes.ToArray())
-
-            For iShape As Integer = 0 To lsd.Count - 1
-                sd = lsd(iShape)
-                For Each strAttribute As String In lstrAttributes
-                    sValue = CSng(Val(sd.GetAttribute(strAttribute)))
-                    Me.m_data.Value(iShape, strAttribute) = sValue
-                Next strAttribute
-            Next iShape
-
-            Me.m_cmbRow.Items.AddRange(lstrAttributes.ToArray()) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
-            Me.m_cmbCol.Items.AddRange(lstrAttributes.ToArray()) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
-            Me.m_grid.Attributes = lstrAttributes.ToArray()
-
-            Return eSpatialFileCompatibility.Compatible
+            Return True
 
         End Function
 
-        Private Function ReadAscFile(ByVal strFile As String) As eSpatialFileCompatibility
+        ' ''' -----------------------------------------------------------------------
+        ' ''' <summary>
+        ' ''' Read the content of the shape file into cData.
+        ' ''' </summary>
+        ' ''' <returns></returns>
+        ' ''' -----------------------------------------------------------------------
+        'Private Function ReadShapeFile(ByVal strFile As String) As eSpatialFileCompatibility
 
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim sfio As New ASCIIFileIO()
-            Dim rs As New Raster()
-            Dim sd As SpatialData = Nothing
-            Dim sValue As Single = 0.0!
+        '    Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+        '    Dim sfio As New ShapeFileIO()
+        '    Dim lsd As New List(Of SpatialData)
+        '    Dim sd As SpatialData = Nothing
+        '    Dim sValue As Single = 0.0!
 
-            If Not sfio.Read(strFile, rs) Then
-                sfio.Close()
-                Return eSpatialFileCompatibility.Unreadable
-            End If
+        '    Dim lstrAttributes As New List(Of String)
 
-            sfio.Close()
+        '    If Not sfio.Read(strFile, lsd) Then
+        '        Return eSpatialFileCompatibility.Unreadable
+        '    End If
 
-            If False Then
-                ' Ask VC: ignore spatial extent?
-                rs = rs.Project(New SpatialData.Extent(bm.Longitude, bm.Latitude, _
-                                                  bm.Longitude + bm.CellLength * bm.InCol, _
-                                                  bm.Latitude + bm.CellLength * bm.InRow))
+        '    If (lsd.Count = 0) Then Return eSpatialFileCompatibility.IncompatibleEmpty
 
-                If (rs Is Nothing) Then Return eSpatialFileCompatibility.IncompatibleFormat
-                If (rs.CellSize <> bm.CellLength) Then Return eSpatialFileCompatibility.IncompatibleDimensions
-            End If
+        '    For Each strAttribute As String In sfio.AttributeDefintions.Keys
+        '        lstrAttributes.Add(strAttribute)
+        '    Next strAttribute
+        '    lstrAttributes.Sort()
 
-            ' Create data without attributes, row and col pos are implicit
-            Me.m_data = New cImportExportData(bm.InRow, bm.InCol)
+        '    Me.m_data = New cImportExportData(bm.InRow, bm.InCol, lstrAttributes.ToArray())
 
-            For iRow As Integer = 1 To bm.InRow
-                For icol As Integer = 1 To bm.InCol
-                    Me.m_data.Value(iRow - 1, icol - 1, cImportExportData.cMAPPING_IMPLICIT) = rs.GetCell(icol - 1, iRow - 1)
-                Next
-            Next
+        '    For iShape As Integer = 0 To lsd.Count - 1
+        '        sd = lsd(iShape)
+        '        For Each strAttribute As String In lstrAttributes
+        '            sValue = CSng(Val(sd.GetAttribute(strAttribute)))
+        '            Me.m_data.Value(iShape, strAttribute) = sValue
+        '        Next strAttribute
+        '    Next iShape
 
-            Me.m_cmbRow.Items.Add(SharedResources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
-            Me.m_cmbCol.Items.Add(SharedResources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
-            Me.m_grid.Attributes = New String() {cImportExportData.cMAPPING_IMPLICIT}
+        '    Me.m_cmbRow.Items.AddRange(lstrAttributes.ToArray()) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
+        '    Me.m_cmbCol.Items.AddRange(lstrAttributes.ToArray()) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
+        '    Me.m_grid.Attributes = lstrAttributes.ToArray()
 
-            Return eSpatialFileCompatibility.Compatible
+        '    Return eSpatialFileCompatibility.Compatible
 
-        End Function
+        'End Function
 
-        Private Function ValidateData() As eSpatialFileCompatibility
+        'Private Function ReadAscFile(ByVal strFile As String) As eSpatialFileCompatibility
 
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            'Dim sd As SpatialData = Nothing
-            Dim iInRow As Integer = 0
-            Dim iInCol As Integer = 0
+        '    Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+        '    Dim sfio As New ASCIIFileIO()
+        '    Dim rs As New Raster()
+        '    Dim sd As SpatialData = Nothing
+        '    Dim sValue As Single = 0.0!
 
-            If String.IsNullOrEmpty(Me.RowAttribute) Then Return eSpatialFileCompatibility.Unreadable
-            If String.IsNullOrEmpty(Me.ColAttribute) Then Return eSpatialFileCompatibility.Unreadable
+        '    If Not sfio.Read(strFile, rs) Then
+        '        sfio.Close()
+        '        Return eSpatialFileCompatibility.Unreadable
+        '    End If
 
-            Return eSpatialFileCompatibility.Compatible
+        '    sfio.Close()
 
-        End Function
+        '    If False Then
+        '        ' Ask VC: ignore spatial extent?
+        '        rs = rs.Project(New SpatialData.Extent(bm.Longitude, bm.Latitude, _
+        '                                          bm.Longitude + bm.CellLength * bm.InCol, _
+        '                                          bm.Latitude + bm.CellLength * bm.InRow))
+
+        '        If (rs Is Nothing) Then Return eSpatialFileCompatibility.IncompatibleFormat
+        '        If (rs.CellSize <> bm.CellLength) Then Return eSpatialFileCompatibility.IncompatibleDimensions
+        '    End If
+
+        '    ' Create data without attributes, row and col pos are implicit
+        '    Me.m_data = New cImportExportData(bm.InRow, bm.InCol)
+
+        '    For iRow As Integer = 1 To bm.InRow
+        '        For icol As Integer = 1 To bm.InCol
+        '            Me.m_data.Value(iRow - 1, icol - 1, cImportExportData.cMAPPING_IMPLICIT) = rs.GetCell(icol - 1, iRow - 1)
+        '        Next
+        '    Next
+
+        '    Me.m_cmbRow.Items.Add(SharedResources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
+        '    Me.m_cmbCol.Items.Add(SharedResources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
+        '    Me.m_grid.Attributes = New String() {cImportExportData.cMAPPING_IMPLICIT}
+
+        '    Return eSpatialFileCompatibility.Compatible
+
+        'End Function
 
         Private Function LoadMappedLayers() As Boolean
 
@@ -613,11 +600,15 @@ Namespace Ecospace.Basemap
 
         Private Sub UpdateControls()
 
+            Dim bHasFile As Boolean = File.Exists(Me.m_tbInput.Text)
+            Dim bHasRowCol As Boolean = (Me.m_cmbCol.SelectedIndex >= 0) And (Me.m_cmbRow.SelectedIndex >= 0)
+            Dim bHasMappings As Boolean = (Me.m_grid.HasMappings())
+
             Me.m_cmbRow.Enabled = (Me.m_cmbRow.Items.Count > 0)
             Me.m_cmbCol.Enabled = (Me.m_cmbCol.Items.Count > 0)
 
-            Me.m_grid.Enabled = Me.m_bDataValid
-            Me.m_bntOK.Enabled = Me.m_bDataValid
+            Me.m_grid.Enabled = bHasFile
+            Me.m_bntOK.Enabled = bHasFile And bHasRowCol And bHasMappings
 
         End Sub
 
@@ -665,6 +656,7 @@ Namespace Ecospace.Basemap
             '
             'm_tbInput
             '
+            Me.m_tbInput.AllowDrop = True
             resources.ApplyResources(Me.m_tbInput, "m_tbInput")
             Me.m_tbInput.Name = "m_tbInput"
             Me.m_tbInput.ReadOnly = True
@@ -702,7 +694,6 @@ Namespace Ecospace.Basemap
             '
             Me.m_grid.AllowBlockSelect = True
             resources.ApplyResources(Me.m_grid, "m_grid")
-            Me.m_grid.Attributes = New String() {" "}
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -713,6 +704,7 @@ Namespace Ecospace.Basemap
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.Fields = New String() {"(none)", " "}
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True

@@ -571,6 +571,9 @@ Namespace Controls.Map
 
 #Region " Layers "
 
+        Public Event LayerAdded(sender As ucMap, layer As cLayer)
+        Public Event LayerRemoved(sender As ucMap, layer As cLayer)
+
         Public Sub Clear()
 
             ' Unplug background image
@@ -614,6 +617,12 @@ Namespace Controls.Map
             ' Manually update selected state on new layers
             If layer.IsSelected Then Me.UpdateSelection(layer)
 
+            Try
+                RaiseEvent LayerAdded(Me, layer)
+            Catch ex As Exception
+                cLog.Write(ex, "ucMap " & Me.Name & "::AddLayer")
+            End Try
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -636,6 +645,12 @@ Namespace Controls.Map
             End If
 
             Me.m_layers.Remove(layer)
+
+            Try
+                RaiseEvent LayerRemoved(Me, layer)
+            Catch ex As Exception
+                cLog.Write(ex, "ucMap " & Me.Name & "::RemoveLayer")
+            End Try
 
         End Sub
 

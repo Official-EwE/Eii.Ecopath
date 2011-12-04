@@ -150,8 +150,8 @@ Public Class AppLauncher
     Private WithEvents m_cmdEditMPAs As cCommand = Nothing
     Private WithEvents m_cmdDefineImportanceMaps As cCommand = Nothing
     Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
-    Private WithEvents m_cmdImportLayerData As cCommand = Nothing
-    Private WithEvents m_cmdExportLayerData As cCommand = Nothing
+    Private WithEvents m_cmdImportLayerData As cImportLayerCommand = Nothing
+    Private WithEvents m_cmdExportLayerData As cExportLayerCommand = Nothing
     Private WithEvents m_cmdEditLayer As cEditLayerCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
@@ -462,8 +462,12 @@ Public Class AppLauncher
         Me.m_cmdDefineInputLayers = New cCommand(cmdh, "EditInputMaps")
         Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceInputMaps)
 
-        Me.m_cmdImportLayerData = New cCommand(cmdh, "ImportLayerData")
-        Me.m_cmdExportLayerData = New cCommand(cmdh, "ExportLayerData")
+        Me.m_cmdImportLayerData = New cImportLayerCommand(cmdh)
+        Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
+
+        Me.m_cmdExportLayerData = New cExportLayerCommand(cmdh)
+        Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceExportLayers)
+
         Me.m_cmdEditLayer = New cEditLayerCommand(cmdh)
 
         'Create and configure ImportTimeSeries command
@@ -3449,15 +3453,8 @@ Public Class AppLauncher
         Handles m_cmdImportLayerData.OnInvoke
 
         Dim dlg As New dlgImportLayerData(Me.UIContext)
-
-        If cmd.Tag IsNot Nothing Then
-            Try
-                dlg.Layers = DirectCast(cmd.Tag, cLayer())
-            Catch ex As Exception
-                Debug.Assert(False, "Expected array of cLayer")
-            End Try
-        End If
-        dlg.ShowDialog()
+        dlg.Layers = Me.m_cmdImportLayerData.Layers
+        dlg.ShowDialog(Me)
 
     End Sub
 
@@ -3467,7 +3464,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdImportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded() And Not Me.Core.StateMonitor.IsEcospaceRunning
     End Sub
 
     ''' <summary>
@@ -3477,14 +3474,8 @@ Public Class AppLauncher
         Handles m_cmdExportLayerData.OnInvoke
 
         Dim dlg As New dlgExportLayerData(Me.UIContext)
-        If cmd.Tag IsNot Nothing Then
-            Try
-                dlg.Layers = DirectCast(cmd.Tag, cLayer())
-            Catch ex As Exception
-                Debug.Assert(False, "Expected array of cLayer")
-            End Try
-        End If
-        dlg.ShowDialog()
+        dlg.Layers = Me.m_cmdExportLayerData.Layers
+        dlg.ShowDialog(Me)
 
     End Sub
 

@@ -1887,15 +1887,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Attribute.
-        '''</summary>
-        Public ReadOnly Property HEADER_ATTRIBUTE() As String
-            Get
-                Return ResourceManager.GetString("HEADER_ATTRIBUTE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Available groups and fleets.
         '''</summary>
         Public ReadOnly Property HEADER_AVAILABLE_GROUPS_FLEETS() As String
@@ -2918,6 +2909,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_FEEDINGTIME() As String
             Get
                 Return ResourceManager.GetString("HEADER_FEEDINGTIME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Field.
+        '''</summary>
+        Public ReadOnly Property HEADER_FIELD() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FIELD", resourceCulture)
             End Get
         End Property
         

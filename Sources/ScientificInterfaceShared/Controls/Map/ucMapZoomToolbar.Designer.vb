@@ -6,18 +6,6 @@ Namespace Controls.Map
     Partial Class ucMapZoomToolbar
         Inherits System.Windows.Forms.UserControl
 
-        'UserControl overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            Try
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
-                End If
-            Finally
-                MyBase.Dispose(disposing)
-            End Try
-        End Sub
-
         'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
 
@@ -26,26 +14,28 @@ Namespace Controls.Map
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucMapZoomToolbar))
-            Me.m_tsZoom = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.m_tsbSaveImage = New System.Windows.Forms.ToolStripButton
-            Me.m_ts1 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsddbPosition = New System.Windows.Forms.ToolStripDropDownButton
-            Me.m_tsmiViewCenter1 = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiViewStretch1 = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_ts2 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsbZoomIn = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbZoomOut = New System.Windows.Forms.ToolStripButton
-            Me.m_tscbZoomPercent = New System.Windows.Forms.ToolStripComboBox
-            Me.m_tsbZoomReset = New System.Windows.Forms.ToolStripButton
+            Me.m_tsZoom = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbSaveImage = New System.Windows.Forms.ToolStripButton()
+            Me.m_ts1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsddbPosition = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmiViewCenter1 = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiViewStretch1 = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_ts2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbZoomIn = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbZoomOut = New System.Windows.Forms.ToolStripButton()
+            Me.m_tscbZoomPercent = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_tsbZoomReset = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
             Me.m_cmsZoom = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.m_tsmiViewCenter2 = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiViewStretch2 = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_ts3 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsmiZoomIn = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiZoomOut = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiZoomReset = New System.Windows.Forms.ToolStripMenuItem
+            Me.m_tsmiViewCenter2 = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiViewStretch2 = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_ts3 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiZoomIn = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiZoomOut = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiZoomReset = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsZoom.SuspendLayout()
             Me.m_cmsZoom.SuspendLayout()
             Me.SuspendLayout()
@@ -53,11 +43,11 @@ Namespace Controls.Map
             'm_tsZoom
             '
             Me.m_tsZoom.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSaveImage, Me.m_ts1, Me.m_tsddbPosition, Me.m_ts2, Me.m_tsbZoomIn, Me.m_tsbZoomOut, Me.m_tscbZoomPercent, Me.m_tsbZoomReset})
+            Me.m_tsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSaveImage, Me.m_ts1, Me.m_tsddbPosition, Me.m_ts2, Me.m_tsbZoomIn, Me.m_tsbZoomOut, Me.m_tscbZoomPercent, Me.m_tsbZoomReset, Me.m_tsbnImport, Me.m_tsbnExport})
             Me.m_tsZoom.Location = New System.Drawing.Point(0, 0)
             Me.m_tsZoom.Name = "m_tsZoom"
             Me.m_tsZoom.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            Me.m_tsZoom.Size = New System.Drawing.Size(377, 25)
+            Me.m_tsZoom.Size = New System.Drawing.Size(492, 25)
             Me.m_tsZoom.TabIndex = 1
             Me.m_tsZoom.Text = "m_tzZoom"
             '
@@ -133,6 +123,26 @@ Namespace Controls.Map
             Me.m_tsbZoomReset.Size = New System.Drawing.Size(55, 22)
             Me.m_tsbZoomReset.Text = "Reset"
             '
+            'm_tsbnExport
+            '
+            Me.m_tsbnExport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnExport.Image = Global.ScientificInterfaceShared.My.Resources.Resources.ExportXMLHS
+            Me.m_tsbnExport.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnExport.Name = "m_tsbnExport"
+            Me.m_tsbnExport.Size = New System.Drawing.Size(23, 22)
+            Me.m_tsbnExport.Text = "Export layer to file"
+            '
+            'm_tsbnImport
+            '
+            Me.m_tsbnImport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tsbnImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnImport.Image = Global.ScientificInterfaceShared.My.Resources.Resources.ImportXMLHS
+            Me.m_tsbnImport.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnImport.Name = "m_tsbnImport"
+            Me.m_tsbnImport.Size = New System.Drawing.Size(23, 22)
+            Me.m_tsbnImport.Text = "Import layer from file"
+            '
             'm_cmsZoom
             '
             Me.m_cmsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewCenter2, Me.m_tsmiViewStretch2, Me.m_ts3, Me.m_tsmiZoomIn, Me.m_tsmiZoomOut, Me.m_tsmiZoomReset})
@@ -188,7 +198,7 @@ Namespace Controls.Map
             Me.Controls.Add(Me.m_tsZoom)
             Me.MinimumSize = New System.Drawing.Size(100, 25)
             Me.Name = "ucMapZoomToolbar"
-            Me.Size = New System.Drawing.Size(377, 23)
+            Me.Size = New System.Drawing.Size(492, 25)
             Me.m_tsZoom.ResumeLayout(False)
             Me.m_tsZoom.PerformLayout()
             Me.m_cmsZoom.ResumeLayout(False)
@@ -214,6 +224,8 @@ Namespace Controls.Map
         Private WithEvents m_tsmiZoomReset As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiViewCenter2 As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiViewStretch2 As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnImport As System.Windows.Forms.ToolStripButton
 
     End Class
 
