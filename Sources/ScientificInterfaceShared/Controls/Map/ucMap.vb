@@ -35,8 +35,6 @@ Namespace Controls.Map
         Private m_layers As New List(Of cLayer)
         ''' <summary>Selected layer</summary>
         Private m_layerSelected As cLayer = Nothing
-        ''' <summary>Flag stating that map needs updating on next redraw.</summary>
-        Private m_bNeedsUpdate As Boolean = False
 
         Public Sub New()
 
@@ -124,12 +122,10 @@ Namespace Controls.Map
         ''' <summary>
         ''' Refresh the map.
         ''' </summary>
-        ''' <param name="bInvalidateOnly">True to trigger a map invalidation only, false to
-        ''' fully redraw the map.</param>
         ''' <remarks>Redrawing the map entirely may be slow!</remarks>
         ''' -------------------------------------------------------------------
-        Public Overloads Sub Refresh(Optional ByVal bInvalidateOnly As Boolean = True)
-            Me.UpdateMap(bInvalidateOnly)
+        Public Overloads Sub Refresh()
+            Me.UpdateMap()
             Me.UpdateCursorFeedback()
         End Sub
 
@@ -189,10 +185,13 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
 
-            If Object.ReferenceEquals(Me.m_bmp, Nothing) Then Return
+            ' If Object.ReferenceEquals(Me.m_bmp, Nothing) Then Return
 
-            If (Me.m_bNeedsUpdate = True) Then
-                Me.m_bNeedsUpdate = False
+            ' Needs new bitmap?
+            If (Me.m_bmp Is Nothing) Then
+                ' #Yes: create new bitmap
+                Me.m_bmp = New Bitmap(Me.Width, Me.Height)
+                Me.BackgroundImage = Me.m_bmp
 
 #If DRAW_THREADED Then
                 If Me.m_thread IsNot Nothing Then
@@ -205,11 +204,12 @@ Namespace Controls.Map
                 Me.m_thread = New Threading.Thread(AddressOf RedrawMapThreaded)
                 Me.m_thread.Start()
 #Else
+ 
                 Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
 #End If
             End If
 
-            'MyBase.OnPaint(e)
+            MyBase.OnPaint(e)
 
         End Sub
 
@@ -297,17 +297,10 @@ Namespace Controls.Map
                 Me.m_bmp = Nothing
             End If
 
-            ' Create new bitmap
-            Me.m_bmp = New Bitmap(Me.Width, Me.Height)
-            Me.BackgroundImage = Me.m_bmp
-
-            ' Sanity check
-            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
-
-            ' Redraw it entirely
-            Me.UpdateMap()
             ' Update cursor
             Me.UpdateCursorFeedback()
+            ' Schedule paint job
+            Me.Invalidate()
 
         End Sub
 
@@ -333,7 +326,7 @@ Namespace Controls.Map
                                  cLayer.eChangeFlags.VisualStyle Or _
                                  cLayer.eChangeFlags.Selected)) > 0) Then
                 ' Update Map
-                Me.UpdateMap(True)
+                Me.UpdateMap()
             End If
 
             If ((cf And (cLayer.eChangeFlags.Editable Or cLayer.eChangeFlags.Selected)) > 0) Then
@@ -400,19 +393,18 @@ Namespace Controls.Map
         ''' This will invalidate the entire map screen area.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateMap(Optional ByVal bInvalidateOnly As Boolean = True)
+        Private Sub UpdateMap()
 
             ' Sanity check
             If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
-            If (bInvalidateOnly = True) Then
-                ' Only invalidate map
-                Me.m_bNeedsUpdate = True
-                Me.Invalidate()
-            Else
-                ' Update entire map
-                Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
+            If (Me.m_bmp IsNot Nothing) Then
+                Me.BackgroundImage = Nothing
+                Me.m_bmp.Dispose()
+                Me.m_bmp = Nothing
             End If
+
+            Me.Invalidate()
 
         End Sub
 

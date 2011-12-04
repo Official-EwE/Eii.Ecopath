@@ -270,7 +270,7 @@ Namespace Ecospace.Basemap.Layers
         End Sub
 
         Private Sub DrawPreview()
-            Me.m_zoommap.Map.Refresh(False)
+            Me.m_zoommap.Map.Refresh()
         End Sub
 
         Private Sub UpdateControls()
