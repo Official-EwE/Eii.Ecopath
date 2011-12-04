@@ -672,21 +672,22 @@ Namespace Controls.EwEGrid
 
             'Add the selection of whole grid.
             If (Me.RowsCount > 0) And (Me.ColumnsCount > 0) Then
+
                 cell = Me(0, 0)
-                If cell IsNot Nothing Then cell.Behaviors.Add(Me.m_ceCellClick)
+                If (cell IsNot Nothing) Then cell.Behaviors.Add(Me.m_ceCellClick)
+
+                'Add the selection of whole row while clicking first column
+                For i As Integer = 1 To Me.RowsCount - 1
+                    cell = Me(i, 0)
+                    If (cell IsNot Nothing) Then cell.Behaviors.Add(Me.m_ceRowSelect)
+                Next
+
+                'Add the selection of whole column while clicking first row 
+                For i As Integer = 1 To Me.ColumnsCount - 1
+                    cell = Me(0, i)
+                    If (cell IsNot Nothing) Then cell.Behaviors.Add(Me.m_ceColSelect)
+                Next
             End If
-
-            'Add the selection of whole row while clicking first column
-            For i As Integer = 1 To Me.RowsCount - 1
-                cell = Me(i, 0)
-                If cell IsNot Nothing Then cell.Behaviors.Add(Me.m_ceRowSelect)
-            Next
-
-            'Add the selection of whole column while clicking first row 
-            For i As Integer = 1 To Me.ColumnsCount - 1
-                cell = Me(0, i)
-                If cell IsNot Nothing Then cell.Behaviors.Add(Me.m_ceColSelect)
-            Next
 
             Me.FixedColumnWidths = Me.m_bFixedColumnWidths
 
