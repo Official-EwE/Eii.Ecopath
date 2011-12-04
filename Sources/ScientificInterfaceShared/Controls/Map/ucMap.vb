@@ -161,7 +161,6 @@ Namespace Controls.Map
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
-            Me.OnResized(Me, e)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -288,8 +287,8 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Sub OnResized(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Resize
+        Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
+            MyBase.OnSizeChanged(e)
 
             If (Me.m_bmp IsNot Nothing) Then
                 Me.BackgroundImage = Nothing
