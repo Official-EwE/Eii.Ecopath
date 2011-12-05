@@ -38,7 +38,10 @@ Public Class gridLayerData
     End Property
 
     Protected Overrides Sub InitLayout()
-        If Me.m_layer Is Nothing Then Return
+
+        If (Me.UIContext Is Nothing) Then Return
+        If (Me.m_layer Is Nothing) Then Return
+
         Me.Redim(Me.m_basemap.InRow + 1, Me.m_basemap.InCol + 1)
 
         Me.FixedColumns = 1
@@ -76,13 +79,13 @@ Public Class gridLayerData
 
     Protected Overrides Sub FillData()
 
+        If (Me.UIContext Is Nothing) Then Return
+        If (Me.m_layer Is Nothing) Then Return
+
         Dim cell As Cells.ICell = Nothing
         Dim tCell As Type = Nothing
         Dim data As cEcospaceLayer = Nothing
         'Dim dataDepth As cEcospaceLayer = Me.m_core.EcospaceBasemap.LayerDepth
-
-        ' Sanity check
-        If Me.m_layer Is Nothing Then Return
 
         ' Grab the data
         data = Me.m_layer.Data
