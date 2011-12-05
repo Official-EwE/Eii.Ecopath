@@ -6,13 +6,10 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
-Imports SAUPUtil.SAUPData
-Imports SAUPUtil.SAUPFile
-Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -29,14 +26,14 @@ Namespace Ecospace.Basemap
 #Region " Private classes "
 
         <CLSCompliant(False)> _
-        Public Class gridMapLayerToAttribute
+        Public Class gridMapLayerToField
             Inherits EwEGrid
 
 #Region " Private vars "
 
             ''' <summary>The layers to map upon.</summary>
             Private m_aLayers As cLayer()
-            ''' <summary>The attribute names to map upon.</summary>
+            ''' <summary>The field names to map upon.</summary>
             Private m_astrFields As String() = {}
             ''' <summary>Mappings. MAPPINGS!</summary>
             Private m_dtLayerMapping As New Dictionary(Of cLayer, String)
@@ -156,11 +153,11 @@ Namespace Ecospace.Basemap
 
             Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-                Dim strAttribute As String = Me.FieldAtRow(p.Row)
+                Dim strField As String = Me.FieldAtRow(p.Row)
                 Dim layer As cLayer = Me.LayerAtRow(p.Row)
 
                 Try
-                    Me.m_dtLayerMapping(layer) = strAttribute
+                    Me.m_dtLayerMapping(layer) = strField
                     Me.UpdateMappingsColumn()
                 Catch ex As Exception
                 End Try
@@ -172,7 +169,7 @@ Namespace Ecospace.Basemap
             Private Sub UpdateMappingsColumn()
 
                 Dim layer As cLayer = Nothing
-                Dim strAttribute As String = ""
+                Dim strField As String = ""
                 Dim cmb As Cells.Real.ComboBox = Nothing
                 Dim dm As DataModels.EditorComboBox = Nothing
 
@@ -316,7 +313,7 @@ Namespace Ecospace.Basemap
                     Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
                     If astrFiles.Length > 0 Then
                         Me.m_tbInput.Text = astrFiles(0)
-                        Me.ReadCSVAttributes()
+                        Me.ReadCSVFields()
                     End If
                 Catch ex As Exception
 
@@ -338,7 +335,7 @@ Namespace Ecospace.Basemap
 
             If (foc.Result = Windows.Forms.DialogResult.OK) Then
                 Me.m_tbInput.Text = foc.FileName
-                Me.ReadCSVAttributes()
+                Me.ReadCSVFields()
             End If
 
         End Sub
@@ -353,7 +350,7 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Private Sub OnRowColAttributeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRowColFieldChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbRow.SelectedIndexChanged, m_cmbCol.SelectedIndexChanged
             Me.UpdateControls()
         End Sub
@@ -362,7 +359,7 @@ Namespace Ecospace.Basemap
 
 #Region " Internals "
 
-        Private Function ReadCSVAttributes() As Boolean
+        Private Function ReadCSVFields() As Boolean
 
             Dim bSuccess As Boolean = True
 
@@ -389,9 +386,9 @@ Namespace Ecospace.Basemap
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim tr As TextReader = Nothing
             Dim strLine As String = ""
-            Dim astrAttributes As String() = Nothing
+            Dim astrFields As String() = Nothing
             Dim astrValues As String() = Nothing
-            Dim iCell, iAttribute As Integer
+            Dim iCell, iField As Integer
             Dim sValue As Single = 0.0!
 
             Try
@@ -400,23 +397,24 @@ Namespace Ecospace.Basemap
                 Return False
             End Try
 
-            ' Read attributes line
+            ' Read fields line
             strLine = tr.ReadLine()
-            astrAttributes = strLine.Split(","c)
+            astrFields = cStringUtils.SplitQualified(strLine, (","c))
+
             ' Clean up
-            For i As Integer = 0 To astrAttributes.Length - 1
-                astrAttributes(i) = astrAttributes(i).Trim
+            For i As Integer = 0 To astrFields.Length - 1
+                astrFields(i) = astrFields(i).Trim
             Next
 
-            Me.m_data = New cImportExportData(bm.InRow, bm.InCol, astrAttributes)
+            Me.m_data = New cImportExportData(bm.InRow, bm.InCol, astrFields)
 
             iCell = 0
             While (tr.Peek() <> -1) And (iCell < Me.m_data.NumCells)
                 strLine = tr.ReadLine()
                 astrValues = strLine.Split(","c)
 
-                For iAttribute = 0 To astrAttributes.Length - 1
-                    Me.m_data.Value(iCell, astrAttributes(iAttribute)) = CSng(Val(astrValues(iAttribute)))
+                For iField = 0 To astrFields.Length - 1
+                    Me.m_data.Value(iCell, astrFields(iField)) = CSng(Val(astrValues(iField)))
                 Next
 
                 iCell += 1
@@ -424,119 +422,32 @@ Namespace Ecospace.Basemap
 
             tr.Close()
 
-            Array.Sort(astrAttributes)
+            Array.Sort(astrFields)
 
-            Me.m_cmbRow.Items.AddRange(astrAttributes) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
-            Me.m_cmbCol.Items.AddRange(astrAttributes) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
-            Me.m_grid.Fields = astrAttributes
+            Me.m_cmbRow.Items.AddRange(astrFields) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
+            Me.m_cmbCol.Items.AddRange(astrFields) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
+            Me.m_grid.Fields = astrFields
 
             Return True
 
         End Function
-
-        ' ''' -----------------------------------------------------------------------
-        ' ''' <summary>
-        ' ''' Read the content of the shape file into cData.
-        ' ''' </summary>
-        ' ''' <returns></returns>
-        ' ''' -----------------------------------------------------------------------
-        'Private Function ReadShapeFile(ByVal strFile As String) As eSpatialFileCompatibility
-
-        '    Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-        '    Dim sfio As New ShapeFileIO()
-        '    Dim lsd As New List(Of SpatialData)
-        '    Dim sd As SpatialData = Nothing
-        '    Dim sValue As Single = 0.0!
-
-        '    Dim lstrAttributes As New List(Of String)
-
-        '    If Not sfio.Read(strFile, lsd) Then
-        '        Return eSpatialFileCompatibility.Unreadable
-        '    End If
-
-        '    If (lsd.Count = 0) Then Return eSpatialFileCompatibility.IncompatibleEmpty
-
-        '    For Each strAttribute As String In sfio.AttributeDefintions.Keys
-        '        lstrAttributes.Add(strAttribute)
-        '    Next strAttribute
-        '    lstrAttributes.Sort()
-
-        '    Me.m_data = New cImportExportData(bm.InRow, bm.InCol, lstrAttributes.ToArray())
-
-        '    For iShape As Integer = 0 To lsd.Count - 1
-        '        sd = lsd(iShape)
-        '        For Each strAttribute As String In lstrAttributes
-        '            sValue = CSng(Val(sd.GetAttribute(strAttribute)))
-        '            Me.m_data.Value(iShape, strAttribute) = sValue
-        '        Next strAttribute
-        '    Next iShape
-
-        '    Me.m_cmbRow.Items.AddRange(lstrAttributes.ToArray()) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
-        '    Me.m_cmbCol.Items.AddRange(lstrAttributes.ToArray()) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
-        '    Me.m_grid.Attributes = lstrAttributes.ToArray()
-
-        '    Return eSpatialFileCompatibility.Compatible
-
-        'End Function
-
-        'Private Function ReadAscFile(ByVal strFile As String) As eSpatialFileCompatibility
-
-        '    Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-        '    Dim sfio As New ASCIIFileIO()
-        '    Dim rs As New Raster()
-        '    Dim sd As SpatialData = Nothing
-        '    Dim sValue As Single = 0.0!
-
-        '    If Not sfio.Read(strFile, rs) Then
-        '        sfio.Close()
-        '        Return eSpatialFileCompatibility.Unreadable
-        '    End If
-
-        '    sfio.Close()
-
-        '    If False Then
-        '        ' Ask VC: ignore spatial extent?
-        '        rs = rs.Project(New SpatialData.Extent(bm.Longitude, bm.Latitude, _
-        '                                          bm.Longitude + bm.CellLength * bm.InCol, _
-        '                                          bm.Latitude + bm.CellLength * bm.InRow))
-
-        '        If (rs Is Nothing) Then Return eSpatialFileCompatibility.IncompatibleFormat
-        '        If (rs.CellSize <> bm.CellLength) Then Return eSpatialFileCompatibility.IncompatibleDimensions
-        '    End If
-
-        '    ' Create data without attributes, row and col pos are implicit
-        '    Me.m_data = New cImportExportData(bm.InRow, bm.InCol)
-
-        '    For iRow As Integer = 1 To bm.InRow
-        '        For icol As Integer = 1 To bm.InCol
-        '            Me.m_data.Value(iRow - 1, icol - 1, cImportExportData.cMAPPING_IMPLICIT) = rs.GetCell(icol - 1, iRow - 1)
-        '        Next
-        '    Next
-
-        '    Me.m_cmbRow.Items.Add(SharedResources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
-        '    Me.m_cmbCol.Items.Add(SharedResources.GENERIC_VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
-        '    Me.m_grid.Attributes = New String() {cImportExportData.cMAPPING_IMPLICIT}
-
-        '    Return eSpatialFileCompatibility.Compatible
-
-        'End Function
 
         Private Function LoadMappedLayers() As Boolean
 
             Dim dtMappings As Dictionary(Of cLayer, String) = Me.m_grid.Mappings()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim layer As cLayer = Nothing
-            Dim strAttribute As String = ""
+            Dim strField As String = ""
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
 
-            ' For each mapped attribute
+            ' For each mapped field
             For Each layer In dtMappings.Keys
-                strAttribute = dtMappings(layer)
-                If Not String.IsNullOrEmpty(strAttribute.Trim) Then
+                strField = dtMappings(layer)
+                If Not String.IsNullOrEmpty(strField.Trim) Then
 
                     ' Clear layer
                     For iRow = 1 To bm.InRow
@@ -552,11 +463,11 @@ Namespace Ecospace.Basemap
                             iRow = CInt(Math.Floor(iCell / bm.InCol)) + 1
                             iCol = CInt(iCell Mod bm.InCol) + 1
                         Else
-                            ' Obtain row, col attribute values from data
-                            iRow = CInt(Me.m_data.Value(iCell, Me.RowAttribute()))
-                            iCol = CInt(Me.m_data.Value(iCell, Me.ColAttribute()))
+                            ' Obtain row, col field values from data
+                            iRow = CInt(Me.m_data.Value(iCell, Me.RowField()))
+                            iCol = CInt(Me.m_data.Value(iCell, Me.ColField()))
                         End If
-                        layer.Value(iRow, iCol) = Me.m_data.Value(iCell, strAttribute)
+                        layer.Value(iRow, iCol) = Me.m_data.Value(iCell, strField)
                     Next
 
                     layer.IsModified = True
@@ -571,7 +482,7 @@ Namespace Ecospace.Basemap
 
         End Function
 
-        Private Property RowAttribute() As String
+        Private Property RowField() As String
             Get
                 Return Me.m_cmbRow.Text
             End Get
@@ -580,7 +491,7 @@ Namespace Ecospace.Basemap
             End Set
         End Property
 
-        Private Property ColAttribute() As String
+        Private Property ColField() As String
             Get
                 Return Me.m_cmbCol.Text
             End Get
@@ -632,7 +543,7 @@ Namespace Ecospace.Basemap
             Me.m_tlpOkCancel = New System.Windows.Forms.TableLayoutPanel()
             Me.m_bntOK = New System.Windows.Forms.Button()
             Me.m_btnCancel = New System.Windows.Forms.Button()
-            Me.m_grid = New ScientificInterface.Ecospace.Basemap.dlgImportLayerData.gridMapLayerToAttribute()
+            Me.m_grid = New ScientificInterface.Ecospace.Basemap.dlgImportLayerData.gridMapLayerToField()
             Me.m_lblRow = New System.Windows.Forms.Label()
             Me.m_cmbRow = New System.Windows.Forms.ComboBox()
             Me.m_cmbCol = New System.Windows.Forms.ComboBox()
@@ -766,7 +677,7 @@ Namespace Ecospace.Basemap
         Private WithEvents m_tbInput As System.Windows.Forms.TextBox
         Private WithEvents m_btnBrowseInput As System.Windows.Forms.Button
         Private WithEvents m_lblMappings As System.Windows.Forms.Label
-        Private WithEvents m_grid As gridMapLayerToAttribute
+        Private WithEvents m_grid As gridMapLayerToField
         Private WithEvents m_tlpOkCancel As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_bntOK As System.Windows.Forms.Button
         Private WithEvents m_btnCancel As System.Windows.Forms.Button

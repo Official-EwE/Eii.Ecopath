@@ -2,13 +2,7 @@
 
 Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Commands
-Imports EwEUtils.Utilities
-Imports SAUPUtil.SAUPData
-Imports SAUPUtil.SAUPFile
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports System.IO
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
@@ -35,19 +29,19 @@ Namespace Ecospace.Basemap
         Private m_nRows As Integer = 0
         Private m_nCols As Integer = 0
         Private m_data As New Dictionary(Of String, Single())
-        Private m_astrAttributes As String() = Nothing
+        Private m_astrFields As String() = Nothing
         Private m_bRowColImplicit As Boolean = False
 
         Public Sub New(ByVal nRows As Integer, ByVal nCols As Integer, _
-                       Optional ByVal astrAttributes() As String = Nothing)
+                       Optional ByVal astrFields() As String = Nothing)
             Me.m_nRows = nRows
             Me.m_nCols = nCols
-            Me.Attributes = astrAttributes
+            Me.Fields = astrFields
         End Sub
 
-        Public Property Attributes() As String()
+        Public Property Fields() As String()
             Get
-                Return Me.m_astrAttributes
+                Return Me.m_astrFields
             End Get
             Set(ByVal value As String())
 
@@ -58,46 +52,46 @@ Namespace Ecospace.Basemap
                 End If
 
                 If (Me.m_bRowColImplicit) Then
-                    Me.m_astrAttributes = New String() {cImportExportData.cMAPPING_IMPLICIT}
+                    Me.m_astrFields = New String() {cImportExportData.cMAPPING_IMPLICIT}
                 Else
-                    Me.m_astrAttributes = value
+                    Me.m_astrFields = value
                 End If
 
                 ' Clear
                 Me.m_data.Clear()
 
                 ' Create storage
-                For Each strAttribute As String In Me.Attributes
+                For Each strField As String In Me.Fields
                     Dim asCells(Me.NumCells) As Single
-                    Me.m_data.Add(strAttribute, asCells)
+                    Me.m_data.Add(strField, asCells)
                 Next
 
             End Set
         End Property
 
         Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer, _
-                              Optional ByVal strAttribute As String = "") As Single
+                              Optional ByVal strField As String = "") As Single
             Get
-                Return Me.Value(Me.Cell(iRow, iCol), strAttribute)
+                Return Me.Value(Me.Cell(iRow, iCol), strField)
             End Get
             Set(ByVal value As Single)
-                Me.Value(Me.Cell(iRow, iCol), strAttribute) = value
+                Me.Value(Me.Cell(iRow, iCol), strField) = value
             End Set
         End Property
 
         Public Property Value(ByVal iCell As Integer, _
-                              Optional ByVal strAttribute As String = "") As Single
+                              Optional ByVal strField As String = "") As Single
             Get
-                If String.IsNullOrEmpty(strAttribute) Then
-                    strAttribute = cImportExportData.cMAPPING_IMPLICIT
+                If String.IsNullOrEmpty(strField) Then
+                    strField = cImportExportData.cMAPPING_IMPLICIT
                 End If
-                Return Me.m_data(strAttribute)(iCell)
+                Return Me.m_data(strField)(iCell)
             End Get
             Set(ByVal value As Single)
-                If String.IsNullOrEmpty(strAttribute) Then
-                    strAttribute = cImportExportData.cMAPPING_IMPLICIT
+                If String.IsNullOrEmpty(strField) Then
+                    strField = cImportExportData.cMAPPING_IMPLICIT
                 End If
-                Me.m_data(strAttribute)(iCell) = value
+                Me.m_data(strField)(iCell) = value
             End Set
         End Property
 

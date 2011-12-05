@@ -6,14 +6,10 @@ Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwEUtils.Commands
-Imports EwEUtils.Utilities
-Imports SAUPUtil.SAUPData
-Imports SAUPUtil.SAUPFile
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports SourceGrid2
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -42,7 +38,7 @@ Namespace Ecospace.Basemap
 
             Private Enum eColumnTypes As Integer
                 ColumnLayer = 0
-                ColumnAttribute
+                ColumnField
                 ' Show datatype columns?
             End Enum
 
@@ -93,10 +89,10 @@ Namespace Ecospace.Basemap
                 Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
                 Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell(SharedResources.HEADER_LAYER)
-                Me(0, eColumnTypes.ColumnAttribute) = New EwEColumnHeaderCell(SharedResources.HEADER_FIELD)
+                Me(0, eColumnTypes.ColumnField) = New EwEColumnHeaderCell(SharedResources.HEADER_FIELD)
 
                 Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                Me.Columns(eColumnTypes.ColumnAttribute).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+                Me.Columns(eColumnTypes.ColumnField).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
 
                 Me.FixedColumns = 1
                 Me.FixedColumnWidths = False
@@ -124,7 +120,7 @@ Namespace Ecospace.Basemap
 
                     ewec = New EwECell(layer.Name, GetType(String))
                     ewec.Behaviors.Add(Me.EwEEditHandler)
-                    Me(iLayer + 1, eColumnTypes.ColumnAttribute) = ewec
+                    Me(iLayer + 1, eColumnTypes.ColumnField) = ewec
 
                     Me.Rows(iLayer + 1).Tag = layer
 
@@ -139,11 +135,11 @@ Namespace Ecospace.Basemap
 
             Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-                Dim strAttribute As String = Me.AttributeAtRow(p.Row)
+                Dim strField As String = Me.FieldAtRow(p.Row)
                 Dim layer As cLayer = Me.LayerAtRow(p.Row)
 
                 Try
-                    Me.m_dtLayerMapping(layer) = strAttribute
+                    Me.m_dtLayerMapping(layer) = strField
                 Catch ex As Exception
                 End Try
 
@@ -158,9 +154,9 @@ Namespace Ecospace.Basemap
                 Return Nothing
             End Function
 
-            Private Function AttributeAtRow(ByVal iRow As Integer) As String
+            Private Function FieldAtRow(ByVal iRow As Integer) As String
                 If iRow > 0 And iRow < Me.RowsCount Then
-                    Return CStr(Me(iRow, eColumnTypes.ColumnAttribute).Value)
+                    Return CStr(Me(iRow, eColumnTypes.ColumnField).Value)
                 End If
                 Return ""
             End Function
@@ -292,20 +288,31 @@ Namespace Ecospace.Basemap
         Private Function WriteCSVFile(ByVal strFile As String) As Boolean
 
             Dim tw As TextWriter = Nothing
+            Dim strField As String = ""
             Dim sb As New StringBuilder()
 
             ' Write header line
-            For iAttribute As Integer = 0 To Me.m_data.Attributes.Count - 1
-                If iAttribute > 0 Then sb.Append(",")
-                sb.Append(Me.m_data.Attributes(iAttribute))
+            For iField As Integer = 0 To Me.m_data.Fields.Count - 1
+                If iField > 0 Then sb.Append(",")
+                strField = Me.m_data.Fields(iField).Trim
+
+                While strField.StartsWith(""""c) And strField.EndsWith("""")
+                    strField = strField.Substring(1, strField.Length - 2)
+                End While
+
+                If strField.Contains(""""c) Or strField.Contains(","c) Then
+                    strField = """" & strField & """"
+                End If
+
+                sb.Append(strField)
             Next
             sb.AppendLine()
 
             For iCell As Integer = 0 To Me.m_data.NumCells - 1
-                For iAttribute As Integer = 0 To Me.m_data.Attributes.Count - 1
-                    If iAttribute > 0 Then sb.Append(",")
-                    sb.Append(Me.m_data.Value(iCell, Me.m_data.Attributes(iAttribute)))
-                Next iAttribute
+                For iField As Integer = 0 To Me.m_data.Fields.Count - 1
+                    If iField > 0 Then sb.Append(",")
+                    sb.Append(Me.m_data.Value(iCell, Me.m_data.Fields(iField)))
+                Next iField
                 sb.AppendLine()
             Next iCell
 
@@ -321,97 +328,12 @@ Namespace Ecospace.Basemap
 
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Write data to a shape file.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' -----------------------------------------------------------------------
-        Private Function WriteShapeFile(ByVal strFile As String) As Boolean
-
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim sfio As New ShapeFileIO()
-            Dim lsd As New List(Of SpatialData)
-            Dim sd As SpatialData = Nothing
-            Dim sValue As Single = 0.0!
-
-            'Dim lstrAttributes As New List(Of String)
-
-            'If Not sfio.Read(strFile, lsd) Then
-            '    sfio.Close()
-            '    Return eSpatialFileCompatibility.Unreadable
-            'End If
-            'sfio.Close()
-
-            'If (lsd.Count = 0) Then Return eSpatialFileCompatibility.IncompatibleEmpty
-
-            'For Each strAttribute As String In sfio.AttributeDefintions.Keys
-            '    lstrAttributes.Add(strAttribute)
-            'Next strAttribute
-            'lstrAttributes.Sort()
-
-            'Me.m_data = New cImportExportData(bm.InRow, bm.InCol, lstrAttributes.ToArray())
-
-            'For iShape As Integer = 0 To lsd.Count - 1
-            '    sd = lsd(iShape)
-            '    For Each strAttribute As String In lstrAttributes
-            '        sValue = CSng(Val(sd.GetAttribute(strAttribute)))
-            '        Me.m_data.Value(iShape, strAttribute) = sValue
-            '    Next strAttribute
-            'Next iShape
-
-            Return True
-
-        End Function
-
-        Private Function WriteAscFile(ByVal strFile As String) As Boolean
-
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim sfio As New ASCIIFileIO()
-            Dim rs As New Raster()
-            Dim sd As SpatialData = Nothing
-            Dim sValue As Single = 0.0!
-
-            'If Not sfio.Read(strFile, rs) Then
-            '    sfio.Close()
-            '    Return eSpatialFileCompatibility.Unreadable
-            'End If
-
-            'sfio.Close()
-
-            'If False Then
-            '    ' Ask VC: ignore spatial extent?
-            '    rs = rs.Project(New SpatialData.Extent(bm.Longitude, bm.Latitude, _
-            '                                      bm.Longitude + bm.CellLength * bm.InCol, _
-            '                                      bm.Latitude + bm.CellLength * bm.InRow))
-
-            '    If (rs Is Nothing) Then Return eSpatialFileCompatibility.IncompatibleFormat
-            '    If (rs.CellSize <> bm.CellLength) Then Return eSpatialFileCompatibility.IncompatibleDimensions
-            'End If
-
-            '' Create data without attributes, row and col pos are implicit
-            'Me.m_data = New cImportExportData(bm.InRow, bm.InCol)
-
-            'For iRow As Integer = 1 To bm.InRow
-            '    For icol As Integer = 1 To bm.InCol
-            '        Me.m_data.Value(iRow - 1, icol - 1, cImportExportData.cMAPPING_IMPLICIT) = rs.GetCell(icol - 1, iRow - 1)
-            '    Next
-            'Next
-
-            'Me.m_cmbRow.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbRow.SelectedIndex = 0
-            'Me.m_cmbCol.Items.Add(My.Resources.VALUE_NOTAVAILABLE) : Me.m_cmbCol.SelectedIndex = 0
-            'Me.m_grid.Attributes = New String() {cImportExportData.cMAPPING_IMPLICIT}
-
-            Return True
-
-        End Function
-
         Private Function SaveMappedLayers() As Boolean
 
             Dim dtMappings As Dictionary(Of cLayer, String) = Me.m_grid.Mappings()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim lstrAttributes As New List(Of String)
-            Dim strAttribute As String = ""
+            Dim lstrFields As New List(Of String)
+            Dim strField As String = ""
             Dim strFile As String = Me.m_tbTarget.Text
             Dim layer As cLayer = Nothing
             Dim iRow As Integer = 0
@@ -422,46 +344,39 @@ Namespace Ecospace.Basemap
 
             ' Populate local data
             For Each layer In dtMappings.Keys
-                strAttribute = dtMappings(layer).Trim
-                If Not String.IsNullOrEmpty(strAttribute) Then
-                    If (lstrAttributes.IndexOf(strAttribute) = -1) Then
-                        lstrAttributes.Add(strAttribute)
+                strField = dtMappings(layer).Trim
+                If Not String.IsNullOrEmpty(strField) Then
+                    If (lstrFields.IndexOf(strField) = -1) Then
+                        lstrFields.Add(strField)
                     End If
                 End If
             Next
             ' Yippee
-            lstrAttributes.Sort()
-            lstrAttributes.Insert(0, Me.RowAttribute)
-            lstrAttributes.Insert(0, Me.ColAttribute)
+            lstrFields.Sort()
+            lstrFields.Insert(0, Me.RowField)
+            lstrFields.Insert(0, Me.ColField)
 
             ' Create data
-            Me.m_data = New cImportExportData(bm.InRow, bm.InCol, lstrAttributes.ToArray())
+            Me.m_data = New cImportExportData(bm.InRow, bm.InCol, lstrFields.ToArray())
 
             ' Store layer
             For iRow = 1 To bm.InRow
                 For iCol = 1 To bm.InCol
                     ' Populate row, col value (duh!)
-                    Me.m_data.Value(iRow - 1, iCol - 1, Me.RowAttribute) = CSng(iRow)
-                    Me.m_data.Value(iRow - 1, iCol - 1, Me.ColAttribute) = CSng(iCol)
+                    Me.m_data.Value(iRow - 1, iCol - 1, Me.RowField) = CSng(iRow)
+                    Me.m_data.Value(iRow - 1, iCol - 1, Me.ColField) = CSng(iCol)
 
                     ' Populate data
                     For Each layer In dtMappings.Keys
-                        strAttribute = dtMappings(layer)
-                        If Not String.IsNullOrEmpty(strAttribute.Trim) Then
-                            Me.m_data.Value(iRow - 1, iCol - 1, strAttribute) = CSng(layer.Value(iRow, iCol))
+                        strField = dtMappings(layer)
+                        If Not String.IsNullOrEmpty(strField.Trim) Then
+                            Me.m_data.Value(iRow - 1, iCol - 1, strField) = CSng(layer.Value(iRow, iCol))
                         End If
                     Next layer
                 Next iCol
             Next iRow
 
-            Select Case Path.GetExtension(strFile).ToLower
-                Case ".asc"
-                    Me.WriteAscFile(strFile)
-                Case ".csv" ' csv
-                    Me.WriteCSVFile(strFile)
-                Case ".shp" ' shp
-                    Me.WriteShapeFile(strFile)
-            End Select
+            Me.WriteCSVFile(strFile)
 
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
@@ -469,7 +384,7 @@ Namespace Ecospace.Basemap
 
         End Function
 
-        Private Property RowAttribute() As String
+        Private Property RowField() As String
             Get
                 Return Me.m_tbRow.Text
             End Get
@@ -478,7 +393,7 @@ Namespace Ecospace.Basemap
             End Set
         End Property
 
-        Private Property ColAttribute() As String
+        Private Property ColField() As String
             Get
                 Return Me.m_tbCol.Text
             End Get
