@@ -18,12 +18,14 @@ Namespace Controls.Map.Layers
         Inherits cLayerEditorTwoState
 
         Private m_iHab As Integer = 0
-        Private m_core As cCore = Nothing
 
-        Public Sub New(iHab As Integer, core As cCore)
+        Public Sub New()
+            Me.New(0)
+        End Sub
+
+        Public Sub New(iHab As Integer)
             MyBase.New(Nothing)
             Me.m_iHab = iHab
-            Me.m_core = core
         End Sub
 
         Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point, _
@@ -31,11 +33,17 @@ Namespace Controls.Map.Layers
                                              e As System.Windows.Forms.MouseEventArgs, _
                                              ptClick As System.Drawing.Point)
 
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_iHab = 0) Then Return
+
+            Dim core As cCore = Me.UIContext.Core
+            Dim bm As cEcospaceBasemap = core.EcospaceBasemap
+
             If (Me.Layer.ValueSet.Equals(value)) Then
                 ' Hackerdihack: clear cell for all other habitat layers
-                For i As Integer = 1 To Me.m_core.nHabitats
+                For i As Integer = 1 To core.nHabitats
                     If (i <> Me.m_iHab) Then
-                        Me.m_core.EcospaceBasemap.LayerHabitat(i).Cell(ptSet.Y, ptSet.X) = Me.Layer.ValueClear
+                        bm.LayerHabitat(i).Cell(ptSet.Y, ptSet.X) = Me.Layer.ValueClear
                     End If
                 Next
             End If

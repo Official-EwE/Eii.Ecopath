@@ -84,7 +84,7 @@ Namespace Controls.Map
 
                         ' Create layer
                         renderer = New cLayerRendererBitmap(vs)
-                        editor = New cLayerEditorHabitat(iHabitat, core)
+                        editor = New cLayerEditorHabitat(iHabitat)
                         layer = New cLayer(uic, bmd.LayerHabitat(iHabitat), renderer, editor, 1, 0, hab, eVarNameFlags.Name)
                         lLayers.Add(layer)
 
