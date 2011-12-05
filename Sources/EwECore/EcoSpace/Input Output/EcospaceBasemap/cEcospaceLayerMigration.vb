@@ -61,8 +61,7 @@ Public Class cEcospaceLayerMigration
             Return Me.m_asData(iRow, iCol)
         End Get
         Set(ByVal value As Object)
-            Dim i As Integer = CInt(value)
-            Debug.Assert(i >= 1 And i <= cCore.N_MONTHS)
+            Dim i As Integer = CInt(Math.Max(Math.Min(cCore.N_MONTHS, CInt(value)), 1))
 
             Me.PrefRow(Me.m_iGroup, i) = iRow
             Me.PrefCol(Me.m_iGroup, i) = iCol
