@@ -221,6 +221,7 @@
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorRange.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorTwoState.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorVector.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorHabitat.vb" />
     <Compile Include="Controls\Map\Layers\Editing\UI\ILayerEditorGUI.vb" />
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.Designer.vb">
       <DependentUpon>ucLayerEditor.vb</DependentUpon>
