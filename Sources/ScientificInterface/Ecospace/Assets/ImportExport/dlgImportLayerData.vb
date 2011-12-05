@@ -299,15 +299,14 @@ Namespace Ecospace.Basemap
 
 #Region " Events "
 
-        Private Sub OnFileDragEnter(sender As Object, e As DragEventArgs) _
-            Handles m_tbInput.DragEnter
+        Protected Overrides Sub OnDragEnter(e As System.Windows.Forms.DragEventArgs)
             If e.Data.GetDataPresent(DataFormats.FileDrop) Then
                 e.Effect = DragDropEffects.All
             End If
+            MyBase.OnDragEnter(e)
         End Sub
 
-        Private Sub OnFileDragDrop(sender As Object, e As DragEventArgs) _
-            Handles m_tbInput.DragDrop
+        Protected Overrides Sub OnDragDrop(e As System.Windows.Forms.DragEventArgs)
             If e.Data.GetDataPresent(DataFormats.FileDrop) Then
                 Try
                     Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
@@ -319,6 +318,7 @@ Namespace Ecospace.Basemap
 
                 End Try
             End If
+            MyBase.OnDragDrop(e)
         End Sub
 
         Private Sub OnBrowseInput(ByVal sender As System.Object, ByVal e As System.EventArgs) _
