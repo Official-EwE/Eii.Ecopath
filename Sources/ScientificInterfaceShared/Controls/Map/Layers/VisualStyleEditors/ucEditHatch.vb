@@ -180,7 +180,8 @@ Namespace Controls
             Me.UpdateColors()
         End Sub
 
-        Private Sub ColourPicker_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
+            MyBase.OnLoad(e)
             Me.UpdateControls()
         End Sub
 
@@ -201,7 +202,8 @@ Namespace Controls
 
         End Sub
 
-        Private Sub pbForeColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles plForeColor.Paint, pbBrush.Paint
+        Private Sub pbForeColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+            Handles plForeColor.Paint, pbBrush.Paint
 
             Dim rcOuter As New Rectangle(e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.Width, e.ClipRectangle.Height)
             Dim rcInner As New Rectangle(e.ClipRectangle.X + 3, e.ClipRectangle.Y + 3, e.ClipRectangle.Width - 6, e.ClipRectangle.Height - 6)
@@ -220,7 +222,8 @@ Namespace Controls
 
         End Sub
 
-        Private Sub pbBackColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles plBackColor.Paint
+        Private Sub pbBackColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+            Handles plBackColor.Paint
 
             Dim rcOuter As New Rectangle(e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.Width, e.ClipRectangle.Height)
             Dim rcInner As New Rectangle(e.ClipRectangle.X + 3, e.ClipRectangle.Y + 3, e.ClipRectangle.Width - 6, e.ClipRectangle.Height - 6)
