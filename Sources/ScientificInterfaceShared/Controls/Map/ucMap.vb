@@ -35,6 +35,8 @@ Namespace Controls.Map
         Private m_layers As New List(Of cLayer)
         ''' <summary>Selected layer</summary>
         Private m_layerSelected As cLayer = Nothing
+        ''' <summary>States whether map must be refreshed</summary>
+        Private m_bRefreshMap As Boolean = False
 
         Public Sub New()
 
@@ -184,14 +186,17 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
 
-            ' If Object.ReferenceEquals(Me.m_bmp, Nothing) Then Return
+            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             ' Needs new bitmap?
             If (Me.m_bmp Is Nothing) Then
                 ' #Yes: create new bitmap
                 Me.m_bmp = New Bitmap(Me.Width, Me.Height)
                 Me.BackgroundImage = Me.m_bmp
+                Me.m_bRefreshMap = True
+            End If
 
+            If (Me.m_bRefreshMap) Then
 #If DRAW_THREADED Then
                 If Me.m_thread IsNot Nothing Then
                     If Me.m_thread.IsAlive Then
@@ -203,9 +208,10 @@ Namespace Controls.Map
                 Me.m_thread = New Threading.Thread(AddressOf RedrawMapThreaded)
                 Me.m_thread.Start()
 #Else
- 
+
                 Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
 #End If
+                Me.m_bRefreshMap = False
             End If
 
             MyBase.OnPaint(e)
@@ -396,13 +402,9 @@ Namespace Controls.Map
 
             ' Sanity check
             If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
-
-            If (Me.m_bmp IsNot Nothing) Then
-                Me.BackgroundImage = Nothing
-                Me.m_bmp.Dispose()
-                Me.m_bmp = Nothing
-            End If
-
+            ' Set reminder
+            Me.m_bRefreshMap = True
+            ' Refresh
             Me.Invalidate()
 
         End Sub
