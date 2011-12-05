@@ -466,7 +466,7 @@ Public Class AppLauncher
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
 
         Me.m_cmdExportLayerData = New cExportLayerCommand(cmdh)
-        Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceExportLayers)
+        Me.m_cmdExportLayerData.AddControl(Me.m_tsmiEcospaceExportLayers)
 
         Me.m_cmdEditLayer = New cEditLayerCommand(cmdh)
 
