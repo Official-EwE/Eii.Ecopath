@@ -83,9 +83,9 @@ Namespace Controls.Map
                         End If
 
                         ' Create layer
-                        renderer = New cLayerRendererValue(vs)
-                        editor = New cLayerEditorRange()
-                        layer = New cLayer(uic, bmd.LayerHabitat(iHabitat), renderer, editor, hab, eVarNameFlags.Name)
+                        renderer = New cLayerRendererBitmap(vs)
+                        editor = New cLayerEditorHabitat(iHabitat, core)
+                        layer = New cLayer(uic, bmd.LayerHabitat(iHabitat), renderer, editor, 1, 0, hab, eVarNameFlags.Name)
                         lLayers.Add(layer)
 
                     Next iHabitat
