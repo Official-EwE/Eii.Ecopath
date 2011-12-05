@@ -197,6 +197,8 @@ Namespace Controls.Map
             End If
 
             If (Me.m_bRefreshMap) Then
+                Me.m_bRefreshMap = False
+                Try
 #If DRAW_THREADED Then
                 If Me.m_thread IsNot Nothing Then
                     If Me.m_thread.IsAlive Then
@@ -209,9 +211,12 @@ Namespace Controls.Map
                 Me.m_thread.Start()
 #Else
 
-                Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
+                    Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
 #End If
-                Me.m_bRefreshMap = False
+                Catch ex As Exception
+
+                End Try
+
             End If
 
             MyBase.OnPaint(e)
