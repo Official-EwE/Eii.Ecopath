@@ -853,6 +853,8 @@ Public Class AppLauncher
 
     End Sub
 
+#Region " KeyDown "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Cluck?
@@ -905,6 +907,38 @@ Public Class AppLauncher
 
         End Try
     End Sub
+
+#End Region ' KeyDown
+
+#Region " Drag and drop "
+
+    Protected Overrides Sub OnDragOver(e As System.Windows.Forms.DragEventArgs)
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            If astrFiles.Length > 0 Then
+                If cDataSourceFactory.GetSupportedType(astrFiles(0)) <> eDataSourceTypes.NotSet Then
+                    e.Effect = DragDropEffects.All
+                End If
+            End If
+        End If
+        MyBase.OnDragOver(e)
+    End Sub
+
+    Protected Overrides Sub OnDragDrop(e As System.Windows.Forms.DragEventArgs)
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            Try
+                Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+                If astrFiles.Length > 0 Then
+                    Me.LoadEcopathModel(astrFiles(0), eLoadSourceType.User)
+                End If
+            Catch ex As Exception
+
+            End Try
+        End If
+        MyBase.OnDragDrop(e)
+    End Sub
+
+#End Region ' Drag and drop
 
 #End Region ' Form overrides
 
@@ -3983,6 +4017,7 @@ Public Class AppLauncher
         End Try
     End Sub
 
-#End Region ' Big and evil event handlers
+#End Region  ' Big and evil event handlers
+
 
 End Class

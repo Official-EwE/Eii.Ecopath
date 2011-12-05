@@ -647,6 +647,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'AppLauncher
         '
+        Me.AllowDrop = True
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_ssMain)
