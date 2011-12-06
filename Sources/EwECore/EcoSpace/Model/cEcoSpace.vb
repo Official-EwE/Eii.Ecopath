@@ -5797,7 +5797,7 @@ exitline:
                 For icol = 1 To Me.m_Data.InCol
 
                     'Sum the values from the user input capacity map into the HabCap map
-                    Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
+                    If Me.m_Data.Depth(irow, icol) > 0 Then Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
 
                     'get max for rescaling to 0-1 range
                     m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
@@ -5910,6 +5910,48 @@ exitline:
         Next iGrp
     End Sub
 
+    ''' <summary>
+    ''' Normalize the proportion of habitat type in a cell that exceed 100% PHabType(ir,ic,ihab).
+    ''' </summary>
+    ''' <remarks>Sum of all habitat types in a cell must be 100% or less.</remarks>
+    Public Sub normalizePropHabType()
+        Dim TProp As Single
+        Dim ihab As Integer
+        Dim bChanged As Boolean
+
+        Try
+
+            For ir As Integer = 1 To Me.m_Data.InRow
+                For ic As Integer = 1 To Me.m_Data.InCol
+                    TProp = 0
+                    For ihab = 1 To Me.m_Data.NoHabitats
+                        TProp += Me.m_Data.PHabType(ir, ic, ihab)
+                    Next
+
+                    'Does the total proportion of habitats exceed 100%
+                    'Less than 100% is ok
+                    If TProp > 1 Then
+                        'Yes normalize this cell 
+                        For ihab = 1 To Me.m_Data.NoHabitats
+                            Me.m_Data.PHabType(ir, ic, ihab) = Me.m_Data.PHabType(ir, ic, ihab) / TProp
+                        Next
+                        bChanged = True
+                    End If
+
+                Next ic
+            Next ir
+
+            If bChanged Then
+                'maybe send a message
+                System.Console.WriteLine("Habitat proportions normalized.")
+            End If
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, ex.Message)
+        End Try
+
+    End Sub
 
     ''' <summary>
     ''' Set Capacity based on enviromental response functions

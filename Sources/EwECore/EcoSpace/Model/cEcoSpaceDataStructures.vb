@@ -1238,9 +1238,8 @@ Public Class cEcospaceDataStructures
                         DistributionEnvelope(i, j, igrp) = True
                     Next
 
-                    For ihab As Integer = 1 To NoHabitats
-                        PHabType(i, j, ihab) = 1.0F / NoHabitats
-                    Next
+                    'Use all habitats
+                    PHabType(i, j, 0) = 1.0F
 
                 Next j
             Next i
