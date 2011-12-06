@@ -589,7 +589,7 @@ Namespace MSEBatchManager
 
             Next
 
-            'Me.Load()
+            Me.Load()
 
             Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
                                                         eMessageImportance.Maintenance, eDataTypes.MSEBatchTACInput))
