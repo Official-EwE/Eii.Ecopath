@@ -96,7 +96,14 @@ Namespace Controls
         Public Event OnVisualStyleChanged(ByVal sender As ucEditVisualStyle)
 
         Protected Sub FireStyleChangedEvent()
-            RaiseEvent OnVisualStyleChanged(Me)
+
+            Try
+                RaiseEvent OnVisualStyleChanged(Me)
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".FireStyleChangedEvent() Exception " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".FireStyleChangedEvent() Exception " & ex.Message)
+            End Try
+
         End Sub
 
 #End Region ' Events

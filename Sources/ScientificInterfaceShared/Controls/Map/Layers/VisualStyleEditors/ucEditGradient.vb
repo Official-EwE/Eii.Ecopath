@@ -230,7 +230,8 @@ Namespace Controls
                 e.DrawFocusRectangle()
 
             Catch ex As Exception
-
+                Debug.Assert(False, Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
             End Try
 
         End Sub
@@ -241,12 +242,19 @@ Namespace Controls
         Private Sub OnGradientSelected(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_cmbGradient.SelectedIndexChanged
 
-            Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cARGBColorRamp)
-            If (grad Is Nothing) Then
-                Me.SetGradient(Nothing, Nothing)
-            Else
-                Me.SetGradient(grad.GradientBreaks, grad.GradientColors)
-            End If
+            Try
+
+                Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cARGBColorRamp)
+                If (grad Is Nothing) Then
+                    Me.SetGradient(Nothing, Nothing)
+                Else
+                    Me.SetGradient(grad.GradientBreaks, grad.GradientColors)
+                End If
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".OnGradientSelected() Exception " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".OnGradientSelected() Exception " & ex.Message)
+            End Try
 
         End Sub
 
@@ -263,7 +271,8 @@ Namespace Controls
                 Next
                 Me.Invalidate(True)
             Catch ex As Exception
-
+                Debug.Assert(False, Me.ToString & ".OnFlipGradient() Exception " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".OnFlipGradient() Exception " & ex.Message)
             End Try
 
             Me.m_bInUpdate = False
@@ -377,7 +386,8 @@ Namespace Controls
                 End If
 
             Catch ex As Exception
-
+                Debug.Assert(False, Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
             End Try
 
             Me.FireStyleChangedEvent()
