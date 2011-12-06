@@ -35,6 +35,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_plAppearance = New System.Windows.Forms.Panel()
             Me.m_tcLayerView = New System.Windows.Forms.TabControl()
             Me.m_tpData = New System.Windows.Forms.TabPage()
+            Me.m_grid = New ScientificInterface.gridLayerData()
             Me.m_tsGrid = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
@@ -49,7 +50,6 @@ Namespace Ecospace.Basemap.Layers
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_grid = New ScientificInterface.gridLayerData()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tpData.SuspendLayout()
@@ -130,11 +130,38 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tpData.Name = "m_tpData"
             Me.m_tpData.UseVisualStyleBackColor = True
             '
+            'm_grid
+            '
+            Me.m_grid.AllowBlockSelect = True
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = False
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.CustomSort = False
+            Me.m_grid.FixedColumnWidths = True
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.Layer = Nothing
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = False
+            Me.m_grid.UIContext = Nothing
+            '
             'm_tsGrid
             '
-            resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
             Me.m_tsGrid.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnImport, Me.m_tsbnExport})
+            resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
             Me.m_tsGrid.Name = "m_tsGrid"
             Me.m_tsGrid.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
@@ -236,33 +263,6 @@ Namespace Ecospace.Basemap.Layers
             Me.m_hdrAppearance.IsCollapsed = False
             Me.m_hdrAppearance.Name = "m_hdrAppearance"
             '
-            'm_grid
-            '
-            Me.m_grid.AllowBlockSelect = True
-            resources.ApplyResources(Me.m_grid, "m_grid")
-            Me.m_grid.AutoSizeMinHeight = 10
-            Me.m_grid.AutoSizeMinWidth = 10
-            Me.m_grid.AutoStretchColumnsToFitWidth = False
-            Me.m_grid.AutoStretchRowsToFitHeight = False
-            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
-            Me.m_grid.CustomSort = False
-            Me.m_grid.FixedColumnWidths = True
-            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_grid.GridToolTipActive = True
-            Me.m_grid.Layer = Nothing
-            Me.m_grid.Name = "m_grid"
-            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = False
-            Me.m_grid.UIContext = Nothing
-            '
             'dlgEditLayer
             '
             resources.ApplyResources(Me, "$this")
@@ -279,6 +279,7 @@ Namespace Ecospace.Basemap.Layers
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.m_tcLayerView.ResumeLayout(False)
             Me.m_tpData.ResumeLayout(False)
+            Me.m_tpData.PerformLayout()
             Me.m_tsGrid.ResumeLayout(False)
             Me.m_tsGrid.PerformLayout()
             Me.m_tpAppearance.ResumeLayout(False)
