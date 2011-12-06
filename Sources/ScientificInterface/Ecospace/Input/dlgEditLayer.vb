@@ -15,6 +15,7 @@ Imports EwEUtils.Commands
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -122,6 +123,7 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_qehGrid.Detach()
             Me.m_qehGrid = Nothing
+            Me.m_grid.UIContext = Nothing
 
             Me.m_fpName.Release()
             Me.m_fpWeight.Release()
@@ -172,8 +174,8 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Private Sub OnImportData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnDataImport.Click
+        Private Sub OnImportData(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("ImportLayerData")
@@ -186,8 +188,8 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Private Sub OnExportData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnDataExport.Click
+        Private Sub OnExportData(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("ExportLayerData")
@@ -281,7 +283,7 @@ Namespace Ecospace.Basemap.Layers
                 bEditable = (Me.m_layerOriginal.Editor.IsReadOnly = False)
             End If
 
-            Me.m_btnDataImport.Enabled = bEditable
+            Me.m_tsbnImport.Enabled = bEditable
 
         End Sub
 
@@ -324,6 +326,16 @@ Namespace Ecospace.Basemap.Layers
         End Function
 
 #End Region ' Internal implementation
+
+        Private Sub OnImportLayer(sender As System.Object, e As System.EventArgs) Handles m_tsbnImport.Click
+            Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
+            cmd.Invoke(New cLayer() {Me.m_layerWork})
+        End Sub
+
+        Private Sub OnExportLayer(sender As System.Object, e As System.EventArgs) Handles m_tsbnExport.Click
+            Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
+            cmd.Invoke(New cLayer() {Me.m_layerWork})
+        End Sub
 
     End Class
 
