@@ -108,7 +108,6 @@ Namespace Ecospace.Basemap.Layers
             Me.UpdateControls()
             Me.DrawPreview()
 
-
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then
                 AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
             End If
@@ -142,7 +141,7 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Local events "
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
 
             If Not Me.ApplyChanges() Then Return
@@ -151,7 +150,7 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles Cancel_Button.Click
 
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -159,7 +158,7 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Private Sub Apply_Button_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnApply(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles Apply_Button.Click
 
             Me.ApplyChanges()
@@ -174,31 +173,33 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Private Sub OnImportData(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnImportLayer(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnImport.Click
+            Try
+                Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
+                cmd.Invoke(New cLayer() {Me.m_layerWork})
+            Catch ex As Exception
 
-
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-            Dim cmd As cCommand = cmdh.GetCommand("ImportLayerData")
-
-            If cmd IsNot Nothing Then
-                cmd.Tag = New cLayer() {Me.m_layerWork}
-                cmd.Invoke()
-            End If
-            Me.m_grid.RefreshContent()
-
+            End Try
         End Sub
 
-        Private Sub OnExportData(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnExportLayer(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnExport.Click
+            Try
+                Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
+                cmd.Invoke(New cLayer() {Me.m_layerWork})
+            Catch ex As Exception
 
+            End Try
+        End Sub
 
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-            Dim cmd As cCommand = cmdh.GetCommand("ExportLayerData")
+        Private Sub OnNameChanged(sender As Object, e As System.EventArgs) _
+            Handles m_tbNameValue.TextChanged
+            Try
+                Me.UpdateControls()
+            Catch ex As Exception
 
-            If cmd IsNot Nothing Then
-                cmd.Tag = New cLayer() {Me.m_layerWork}
-                cmd.Invoke()
-            End If
-
+            End Try
         End Sub
 
 #End Region ' Local events
@@ -249,7 +250,7 @@ Namespace Ecospace.Basemap.Layers
                 End If
             Else
                 Me.m_fpName.Enabled = False
-
+                ' ToDo: globalize this
                 Me.m_tbRemarks.Text = "Remarks not supported for this layer"
                 Me.m_tbRemarks.Enabled = False
             End If
@@ -284,6 +285,8 @@ Namespace Ecospace.Basemap.Layers
             End If
 
             Me.m_tsbnImport.Enabled = bEditable
+            ' ToDo: globalize this
+            Me.Text = String.Format("Edit layer '{0}'", Me.m_tbNameValue.Text)
 
         End Sub
 
@@ -326,16 +329,6 @@ Namespace Ecospace.Basemap.Layers
         End Function
 
 #End Region ' Internal implementation
-
-        Private Sub OnImportLayer(sender As System.Object, e As System.EventArgs) Handles m_tsbnImport.Click
-            Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-            cmd.Invoke(New cLayer() {Me.m_layerWork})
-        End Sub
-
-        Private Sub OnExportLayer(sender As System.Object, e As System.EventArgs) Handles m_tsbnExport.Click
-            Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
-            cmd.Invoke(New cLayer() {Me.m_layerWork})
-        End Sub
 
     End Class
 
