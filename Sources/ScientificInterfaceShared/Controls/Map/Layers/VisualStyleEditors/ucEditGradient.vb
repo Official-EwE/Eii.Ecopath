@@ -210,19 +210,28 @@ Namespace Controls
         Private Sub OnDrawGradientComboBoxItem(ByVal sender As Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) _
             Handles m_cmbGradient.DrawItem
 
-            Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.Items(e.Index), cARGBColorRamp)
-            Dim rc As Rectangle = e.Bounds
+            ' Sanity check
+            If (e.Index < 0) Then Return
 
-            If (e.Index < 0) Then
+            Try
+
+                Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.Items(e.Index), cARGBColorRamp)
+                Dim rc As Rectangle = e.Bounds
+
+                If (e.Index < 0) Then
+                    e.DrawBackground()
+                    e.DrawFocusRectangle()
+                    Return
+                End If
+
                 e.DrawBackground()
+                rc.Inflate(-2, -2)
+                cColorRampIndicator.DrawColorRamp(e.Graphics, grad, rc)
                 e.DrawFocusRectangle()
-                Return
-            End If
 
-            e.DrawBackground()
-            rc.Inflate(-2, -2)
-            cColorRampIndicator.DrawColorRamp(e.Graphics, grad, rc)
-            e.DrawFocusRectangle()
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
