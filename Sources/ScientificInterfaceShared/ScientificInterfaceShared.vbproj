@@ -209,6 +209,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
+    <Compile Include="Controls\Map\cLayerSync.vb" />
     <Compile Include="Controls\Map\Layers\cLayer.vb" />
     <Compile Include="Controls\Map\Layers\cLayerFactoryBase.vb" />
     <Compile Include="Controls\Map\Layers\cLayerSynchronizer.vb" />
