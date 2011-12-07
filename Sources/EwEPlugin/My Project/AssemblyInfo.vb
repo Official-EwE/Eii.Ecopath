@@ -30,8 +30,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("Cannot launch svn process
-
-Usage: EwEGetBuildNumber 6.x.x {path to sources}
-       sources path is optional")> 
+<Assembly: AssemblyVersion("6.3.1125")> 
 <Assembly: AssemblyFileVersion("6.3.1125")> 

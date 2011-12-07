@@ -12839,7 +12839,6 @@ Public Class cCore
 
                 Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerHabitat
 
-                    Me.m_Ecospace.normalizePropHabType()
                     ' Recalc habitat area
                     Me.LoadEcospaceHabitats()
 
