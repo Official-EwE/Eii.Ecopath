@@ -30,5 +30,8 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("6.3.1125")> 
+<Assembly: AssemblyVersion("Cannot launch svn process
+
+Usage: EwEGetBuildNumber 6.x.x {path to sources}
+       sources path is optional")> 
 <Assembly: AssemblyFileVersion("6.3.1125")> 
