@@ -78,6 +78,8 @@ Namespace Controls
             ZoomOut = &H2
             ''' <summary>User wants to reset zoom.</summary>
             ZoomReset = &H4
+            ''' <summary>User wants to export a graph to CSV.</summary>
+            Export = &H8
         End Enum
 
         ''' -------------------------------------------------------------------
@@ -206,6 +208,20 @@ Namespace Controls
             End Try
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 'Export' button press handler.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub OnExport(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnExport.Click
+            Try
+                Me.InvokeCallback(eCommandTypes.Export)
+            Catch ex As Exception
+                ' Woops
+            End Try
+        End Sub
+
 #End Region ' Event handling
 
 #Region " Internals "
@@ -293,6 +309,7 @@ Namespace Controls
                     Case eCommandTypes.ZoomIn : Return Me.m_tsbnZoomIn
                     Case eCommandTypes.ZoomOut : Return Me.m_tsbnZoomOut
                     Case eCommandTypes.ZoomReset : Return Me.m_tsbnZoomReset
+                    Case eCommandTypes.Export : Return Me.m_tsbnExport
                 End Select
                 Debug.Assert(False)
                 Return Nothing

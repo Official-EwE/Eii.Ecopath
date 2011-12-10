@@ -2466,6 +2466,8 @@ Namespace Controls
                             zs = gp.ZoomStack.Pop(gp)
                             If zs IsNot Nothing Then zs.ApplyState(gp)
                         End While
+                    Case ucHoverMenu.eCommandTypes.Export
+                        Me.ExtractDataToCSV()
                 End Select
 
                 bCanZoomOut = bCanZoomOut Or (gp.ZoomStack.Count > 0)
