@@ -34,8 +34,8 @@ Public Class cTaxonDataStructures
     Public TaxonName() As String
     ''' <summary>Taxonomy FAO codes (xNumTaxa).</summary>
     Public TaxonCodeFAO() As String
-    ''' <summary>Taxonomy TDWG LCID codes (xNumTaxa).</summary>
-    Public TaxonCodeLCID() As String
+    ''' <summary>Taxonomy TDWG LSID codes (xNumTaxa).</summary>
+    Public TaxonCodeLSID() As String
     ''' <summary>Taxonomy SAUP codes (xNumTaxa).</summary>
     Public TaxonCodeSAUP() As Long
     ''' <summary>Taxonomy FishBase codes (xNumTaxa).</summary>
@@ -105,7 +105,7 @@ Public Class cTaxonDataStructures
         ReDim Me.TaxonCodeFB(Me.NumTaxon)
         ReDim Me.TaxonCodeSLB(Me.NumTaxon)
         ReDim Me.TaxonCodeFAO(Me.NumTaxon)
-        ReDim Me.TaxonCodeLCID(Me.NumTaxon)
+        ReDim Me.TaxonCodeLSID(Me.NumTaxon)
         ReDim Me.TaxonName(Me.NumTaxon)
         ReDim Me.TaxonFamily(Me.NumTaxon)
         ReDim Me.TaxonGenus(Me.NumTaxon)

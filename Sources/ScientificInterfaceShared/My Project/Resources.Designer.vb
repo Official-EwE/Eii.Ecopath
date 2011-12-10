@@ -2409,6 +2409,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to FAO code.
+        '''</summary>
+        Public ReadOnly Property HEADER_CODE_FAO() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CODE_FAO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to FishBase code.
+        '''</summary>
+        Public ReadOnly Property HEADER_CODE_FISHBASE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CODE_FISHBASE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to SeaAroundUs code.
+        '''</summary>
+        Public ReadOnly Property HEADER_CODE_SAUP() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CODE_SAUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to SeaLifeBase code.
+        '''</summary>
+        Public ReadOnly Property HEADER_CODE_SEALIFEBASE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CODE_SEALIFEBASE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Color.
         '''</summary>
         Public ReadOnly Property HEADER_COLOR() As String
@@ -3431,6 +3467,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_LOWERLIMIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_LOWERLIMIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Life Science Identifier.
+        '''</summary>
+        Public ReadOnly Property HEADER_LSID() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LSID", resourceCulture)
             End Get
         End Property
         

@@ -80,7 +80,7 @@ Namespace Core
         ''' <summary>Sea Around Us project Taxon ID</summary>
         Property CodeSAUP As Long
         ''' <summary>Taxonomy Databases Working Group Life Catalogue ID (http://lsid.tdwg.org/)</summary>
-        Property CodeLCID As String
+        Property CodeLSID As String
 
         ' -- Spatial extent --
 

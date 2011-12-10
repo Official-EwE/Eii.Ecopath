@@ -45,6 +45,7 @@ Partial Class dlgDefineTaxa
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnProps = New System.Windows.Forms.Button()
+        Me.m_cbShowCodes = New System.Windows.Forms.CheckBox()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -152,6 +153,7 @@ Partial Class dlgDefineTaxa
         Me.m_gridGroups.GridToolTipActive = True
         Me.m_gridGroups.Name = "m_gridGroups"
         Me.m_gridGroups.SelectedTaxon = Nothing
+        Me.m_gridGroups.ShowCodes = False
         Me.m_gridGroups.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -237,12 +239,19 @@ Partial Class dlgDefineTaxa
         Me.m_btnProps.Name = "m_btnProps"
         Me.m_btnProps.UseVisualStyleBackColor = True
         '
+        'm_cbShowCodes
+        '
+        resources.ApplyResources(Me.m_cbShowCodes, "m_cbShowCodes")
+        Me.m_cbShowCodes.Name = "m_cbShowCodes"
+        Me.m_cbShowCodes.UseVisualStyleBackColor = True
+        '
         'dlgDefineTaxa
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_cbShowCodes)
         Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
@@ -263,6 +272,7 @@ Partial Class dlgDefineTaxa
         Me.m_scMain.ResumeLayout(False)
         CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
@@ -285,5 +295,6 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_lblIn As System.Windows.Forms.Label
     Private WithEvents m_gridResults As ScientificInterface.gridTaxonSearchResults
     Private WithEvents m_pbSearching As System.Windows.Forms.PictureBox
+    Friend WithEvents m_cbShowCodes As System.Windows.Forms.CheckBox
 
 End Class

@@ -73,7 +73,7 @@ Public Class cTaxon
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeLCID, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeLSID, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(13)
@@ -377,14 +377,14 @@ Public Class cTaxon
         End Set
     End Property
 
-    ''' <inheritdocs cref=" ITaxonDetailsData.CodeLCID"/>
-    Public Property CodeLCID() As String _
-        Implements ITaxonDetailsData.CodeLCID
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeLSID"/>
+    Public Property CodeLSID() As String _
+        Implements ITaxonDetailsData.CodeLSID
         Get
-            Return CStr(Me.GetVariable(eVarNameFlags.CodeLCID))
+            Return CStr(Me.GetVariable(eVarNameFlags.CodeLSID))
         End Get
         Set(ByVal value As String)
-            Me.SetVariable(eVarNameFlags.CodeLCID, value)
+            Me.SetVariable(eVarNameFlags.CodeLSID, value)
         End Set
     End Property
 

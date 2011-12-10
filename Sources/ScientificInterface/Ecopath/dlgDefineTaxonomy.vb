@@ -172,6 +172,11 @@ Public Class dlgDefineTaxa
 
 #Region " Events "
 
+    Private Sub OnShowCodes(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbShowCodes.CheckedChanged
+        Me.m_gridGroups.ShowCodes = Me.m_cbShowCodes.Checked
+    End Sub
+
     Private Sub OnRowSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
         Me.UpdateControls()
     End Sub

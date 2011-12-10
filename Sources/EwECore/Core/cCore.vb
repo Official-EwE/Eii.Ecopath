@@ -3748,7 +3748,7 @@ Public Class cCore
                 taxon.CodeFishBase = Me.m_TaxonData.TaxonCodeFB(iTaxon)
                 taxon.CodeSeaLifeBase = Me.m_TaxonData.TaxonCodeSLB(iTaxon)
                 taxon.CodeFAO = Me.m_TaxonData.TaxonCodeFAO(iTaxon)
-                taxon.CodeLCID = Me.m_TaxonData.TaxonCodeLCID(iTaxon)
+                taxon.CodeLSID = Me.m_TaxonData.TaxonCodeLSID(iTaxon)
                 taxon.Source = Me.m_TaxonData.TaxonSource(iTaxon)
                 taxon.SourceKey = Me.m_TaxonData.TaxonSourceKey(iTaxon)
                 taxon.North = Me.m_TaxonData.TaxonNorth(iTaxon)
@@ -3810,7 +3810,7 @@ Public Class cCore
         Me.m_TaxonData.TaxonCodeFB(iTaxon) = taxon.CodeFishBase
         Me.m_TaxonData.TaxonCodeSLB(iTaxon) = taxon.CodeSeaLifeBase
         Me.m_TaxonData.TaxonCodeFAO(iTaxon) = taxon.CodeFAO
-        Me.m_TaxonData.TaxonCodeLCID(iTaxon) = taxon.CodeLCID
+        Me.m_TaxonData.TaxonCodeLSID(iTaxon) = taxon.CodeLSID
         Me.m_TaxonData.TaxonSource(iTaxon) = taxon.Source
         Me.m_TaxonData.TaxonSourceKey(iTaxon) = taxon.SourceKey
         Me.m_TaxonData.TaxonEcologyType(iTaxon) = taxon.EcologyType

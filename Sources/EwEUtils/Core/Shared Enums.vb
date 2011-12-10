@@ -1440,7 +1440,7 @@ Namespace Core
         CodeSLB
         CodeFB
         CodeFAO
-        CodeLCID
+        CodeLSID
         Source
         SourceKey
         LastUpdated

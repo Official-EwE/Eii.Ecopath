@@ -21,6 +21,8 @@ Public Class gridDefineTaxonomy
 
 #Region " Privates "
 
+    Private m_bShowCodes As Boolean = False
+
     ''' <summary>List of active taxa.</summary>
     Private m_lTaxonInfo As New List(Of cTaxonInfo)
     ''' <summary>List of removed taxa.</summary>
@@ -42,17 +44,14 @@ Public Class gridDefineTaxonomy
         Order
         [Class]
         Phylum
-        Code
         Status
+        'Code
+        CodeSAUP
+        CodeFB
+        CodeSLB
+        CodeFAO
+        CodeLSID
     End Enum
-
-    '' -- Dictionaries to detect already used taxa -- 
-
-    'Private m_dtSAUPKeys As New HashSet(Of Long)
-    'Private m_dtFKeys As New HashSet(Of Long)
-    'Private m_dtSLBKeys As New HashSet(Of Long)
-    'Private m_dtLCIDKeys As New HashSet(Of String)
-    'Private m_dtFAOKeys As New HashSet(Of String)
 
 #End Region ' Privates
 
@@ -72,7 +71,7 @@ Public Class gridDefineTaxonomy
         Private m_lCodeSAUP As Long = 0
         Private m_lCodeFB As Long = 0
         Private m_lCodeSLB As Long = 0
-        Private m_strCodeLCID As String = ""
+        Private m_strCodeLSID As String = ""
         Private m_strCodeFAO As String = ""
 
         Private m_strPhylum As String = ""
@@ -152,7 +151,7 @@ Public Class gridDefineTaxonomy
             Me.m_lCodeFB = taxon.CodeFishBase
             Me.m_lCodeSLB = taxon.CodeSeaLifeBase
             Me.m_strCodeFAO = taxon.CodeFAO
-            Me.m_strCodeLCID = taxon.CodeLCID
+            Me.m_strCodeLSID = taxon.CodeLSID
             Me.m_strCommon = taxon.Name
             Me.m_strClass = taxon.Class
             Me.m_strOrder = taxon.Order
@@ -193,7 +192,7 @@ Public Class gridDefineTaxonomy
             Me.m_lCodeFB = taxon.CodeFB
             Me.m_lCodeSLB = taxon.CodeSLB
             Me.m_strCodeFAO = taxon.CodeFAO
-            Me.m_strCodeLCID = taxon.CodeLCID
+            Me.m_strCodeLSID = taxon.CodeLSID
             Me.m_strCommon = taxon.Common
             Me.m_strPhylum = taxon.Phylum
             Me.m_strClass = taxon.Class
@@ -270,7 +269,7 @@ Public Class gridDefineTaxonomy
                 If (taxon.CodeSAUP <> Me.m_lCodeSAUP) Then Return True
                 If (taxon.CodeFishBase <> Me.m_lCodeFB) Then Return True
                 If (taxon.CodeSeaLifeBase <> Me.m_lCodeSLB) Then Return True
-                If (String.Compare(taxon.CodeLCID, Me.m_strCodeLCID) <> 0) Then Return True
+                If (String.Compare(taxon.CodeLSID, Me.m_strCodeLSID) <> 0) Then Return True
                 If (String.Compare(taxon.CodeFAO, Me.m_strCodeFAO) <> 0) Then Return True
 
                 If (String.Compare(taxon.Name, Me.m_strCommon) <> 0) Then Return True
@@ -332,7 +331,7 @@ Public Class gridDefineTaxonomy
                 Return (t.CodeSAUP > 0 And t.CodeSAUP = Me.CodeSAUP) Or _
                        (t.CodeFB > 0 And t.CodeFB = Me.CodeFB) Or _
                        (t.CodeSLB > 0 And t.CodeSLB = Me.CodeSLB) Or _
-                       (Not String.IsNullOrWhiteSpace(t.CodeLCID) And String.Compare(t.CodeLCID, Me.CodeLCID, True) = 0) Or _
+                       (Not String.IsNullOrWhiteSpace(t.CodeLSID) And String.Compare(t.CodeLSID, Me.CodeLSID, True) = 0) Or _
                        (Not String.IsNullOrWhiteSpace(t.CodeFAO) And String.Compare(t.CodeFAO, Me.CodeFAO, True) = 0)
             End If
             Return MyBase.Equals(obj)
@@ -366,14 +365,13 @@ Public Class gridDefineTaxonomy
             End Set
         End Property
 
-
         ''' <inheritdocs cref="ITaxonSearchData.CodeSAUP"/>
         Public Property CodeSAUP() As Long _
             Implements ITaxonSearchData.CodeSAUP
             Get
                 Return Me.m_lCodeSAUP
             End Get
-            Private Set(ByVal value As Long)
+            Set(ByVal value As Long)
                 Me.m_lCodeSAUP = value
             End Set
         End Property
@@ -400,14 +398,14 @@ Public Class gridDefineTaxonomy
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonSearchData.CodeLCID"/>
-        Public Property CodeLCID() As String _
-            Implements ITaxonSearchData.CodeLCID
+        ''' <inheritdocs cref="ITaxonSearchData.CodeLSID"/>
+        Public Property CodeLSID() As String _
+            Implements ITaxonSearchData.CodeLSID
             Get
-                Return Me.m_strCodeLCID
+                Return Me.m_strCodeLSID
             End Get
             Friend Set(ByVal value As String)
-                Me.m_strCodeLCID = value
+                Me.m_strCodeLSID = value
             End Set
         End Property
 
@@ -418,7 +416,7 @@ Public Class gridDefineTaxonomy
                 ' Rerouted to source key
                 Return Me.m_strCodeFAO
             End Get
-            Private Set(ByVal value As String)
+            Set(ByVal value As String)
                 ' Rerouted to source key
                 Me.m_strCodeFAO = value
             End Set
@@ -617,7 +615,7 @@ Public Class gridDefineTaxonomy
                     .CodeSAUP = Me.m_lCodeSAUP
                     .CodeFishBase = Me.m_lCodeFB
                     .CodeSeaLifeBase = Me.m_lCodeSLB
-                    .CodeLCID = Me.m_strCodeLCID
+                    .CodeLSID = Me.m_strCodeLSID
                     .CodeFAO = Me.m_strCodeFAO
                     .Species = Me.m_strSpecies
                     .Family = Me.m_strFamily
@@ -810,8 +808,13 @@ Public Class gridDefineTaxonomy
         Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(SharedResources.HEADER_FAMILY)
         Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
         Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
-        Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
+        'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+        Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FISHBASE)
+        Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SEALIFEBASE)
+        Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SAUP)
+        Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FAO)
+        Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(SharedResources.HEADER_LSID)
 
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False
@@ -915,6 +918,11 @@ Public Class gridDefineTaxonomy
                 Case Else
                     Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
                     Me.AutoSizeColumn(iCol, 80)
+
+                    If (iCol > eColumnTypes.Status) Then
+                        Me.Columns(iCol).Visible = Me.m_bShowCodes
+                    End If
+
             End Select
         Next
 
@@ -966,6 +974,11 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Genus).Value = ti.Genus
         Me(iRow, eColumnTypes.Species).Value = ti.Species
         Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
+        Me(iRow, eColumnTypes.CodeSAUP).Value = ti.CodeSAUP
+        Me(iRow, eColumnTypes.CodeFB).Value = ti.CodeFB
+        Me(iRow, eColumnTypes.CodeSLB).Value = ti.CodeSLB
+        Me(iRow, eColumnTypes.CodeFAO).Value = ti.CodeFAO
+        Me(iRow, eColumnTypes.CodeLSID).Value = ti.CodeLSID
 
         Select Case ti.Status
             Case eItemStatusTypes.Original
@@ -1023,9 +1036,14 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
         Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
-        ' == CODE cell
-        cell = New EwECell(ti.SourceKey, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-        Me(iRow, eColumnTypes.Code) = cell
+        ' == CODE cells
+        'Me(iRow, eColumnTypes.Code) = New EwECell(ti.SourceKey, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+
+        Me(iRow, eColumnTypes.CodeFB) = New EwECell(ti.CodeFB, GetType(Integer))
+        Me(iRow, eColumnTypes.CodeSLB) = New EwECell(ti.CodeSLB, GetType(Integer))
+        Me(iRow, eColumnTypes.CodeSAUP) = New EwECell(ti.CodeSAUP, GetType(Integer))
+        Me(iRow, eColumnTypes.CodeFAO) = New EwECell(ti.CodeFAO, GetType(String))
+        Me(iRow, eColumnTypes.CodeLSID) = New EwECell(ti.CodeLSID, GetType(String))
 
         hgcParent.AddChildRow(iRow)
         Me.UpdateRow(iRow)
@@ -1082,6 +1100,12 @@ Public Class gridDefineTaxonomy
             Case eColumnTypes.Phylum : ti.Phylum = CStr(val)
             Case eColumnTypes.Proportion : ti.Proportion = CSng(val)
                 'Case eColumnTypes.Code : ti.CodeTaxon = CStr(val)
+            Case eColumnTypes.CodeFB : ti.CodeFB = CLng(val)
+            Case eColumnTypes.CodeSLB : ti.CodeSLB = CLng(val)
+            Case eColumnTypes.CodeSAUP : ti.CodeSAUP = CLng(val)
+            Case eColumnTypes.CodeFAO : ti.CodeFAO = CStr(val)
+            Case eColumnTypes.CodeLSID : ti.CodeLSID = CStr(val)
+
         End Select
 
         ' Perhaps redundant but hey
@@ -1160,6 +1184,21 @@ Public Class gridDefineTaxonomy
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set whether the various keys need to be shown in the grid.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ShowCodes As Boolean
+        Get
+            Return Me.m_bShowCodes
+        End Get
+        Set(value As Boolean)
+            Me.m_bShowCodes = value
+            Me.RefreshContent()
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Returns an array of all available taxa.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -1204,6 +1243,7 @@ Public Class gridDefineTaxonomy
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' States whether a taxon can be added to the current selected row.
     ''' </summary>
@@ -1217,6 +1257,7 @@ Public Class gridDefineTaxonomy
     ''' <item><description>A taxon code can be used multiple times</description></item>
     ''' </list>
     ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Function CanAddTaxon(Optional ByVal taxon As ITaxonSearchData = Nothing) As Boolean
 
         Dim grp As cEcoPathGroupInput = Me.SelectedGroup
