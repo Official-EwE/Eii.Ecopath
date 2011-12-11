@@ -29,8 +29,15 @@ Public Class gridTaxonSearchResults
         Order
         [Class]
         Phylum
-        Code
+        'Code
+        CodeSAUP
+        CodeFB
+        CodeSLB
+        CodeFAO
+        CodeLSID
     End Enum
+
+    Private m_bShowCodes As Boolean = False
 
 #End Region ' Private vars
 
@@ -64,6 +71,23 @@ Public Class gridTaxonSearchResults
         End Try
 
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether the various keys need to be shown in the grid.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ShowCodes As Boolean
+        Get
+            Return Me.m_bShowCodes
+        End Get
+        Set(value As Boolean)
+            If (Me.m_bShowCodes <> value) Then
+                Me.m_bShowCodes = value
+                Me.RefreshContent()
+            End If
+        End Set
+    End Property
 
     Public Event OnResultSelected(ByVal result As Object)
 
@@ -103,7 +127,6 @@ Public Class gridTaxonSearchResults
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
         Me(0, eColumnTypes.Common) = New EwEColumnHeaderCell(SharedResources.HEADER_COMMON_NAME)
         Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
         Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(SharedResources.HEADER_FAMILY)
@@ -111,6 +134,12 @@ Public Class gridTaxonSearchResults
         Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(SharedResources.HEADER_CLASS)
         Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
         Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
+        'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
+        Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FISHBASE)
+        Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SEALIFEBASE)
+        Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SAUP)
+        Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FAO)
+        Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_LSID)
 
     End Sub
 
@@ -128,20 +157,35 @@ Public Class gridTaxonSearchResults
             Me.AddResult(DirectCast(Me.m_results.SearchResults(iRow), ITaxonSearchData))
         Next
 
+    End Sub
+
+    Protected Overrides Sub FinishStyle()
+        MyBase.FinishStyle()
+
+        Dim bShowCol As Boolean = True
+
         For iCol As Integer = 1 To Me.ColumnsCount - 1
             Select Case DirectCast(iCol, eColumnTypes)
                 Case eColumnTypes.Index
                     Me.Columns(iCol).Width = 20
                 Case Else
-                    Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                    Me.AutoSizeColumn(iCol, 80)
+
+                    bShowCol = True
+                    If (iCol > eColumnTypes.Phylum) Then
+                        bShowCol = Me.m_bShowCodes
+                    End If
+
+                    If (bShowCol) Then
+                        Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                        Me.AutoSizeColumn(iCol, 40)
+                    Else
+                        Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+                        Me.Columns(iCol).Width = 0
+                    End If
+                    Me.Columns(iCol).Visible = bShowCol
             End Select
         Next
 
-    End Sub
-
-    Protected Overrides Sub FinishStyle()
-        MyBase.FinishStyle()
     End Sub
 
     Protected Overrides Sub OnCellDoubleClicked(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual)
@@ -179,44 +223,31 @@ Public Class gridTaxonSearchResults
 
     Private Sub AddCell(ByVal result As ITaxonSearchData, ByVal iRow As Integer, ByVal col As eColumnTypes)
 
-        Dim strValue As String = ""
+        Dim value As Object = Nothing
         Dim cell As EwECell = Nothing
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         Select Case col
-            Case eColumnTypes.Index
-                strValue = CStr(iRow)
-
-            Case eColumnTypes.Common
-                strValue = result.Common
-
-            Case eColumnTypes.Species
-                strValue = result.Species
-                style = style Or cStyleGuide.eStyleFlags.TaxonItalics
-
-            Case eColumnTypes.Genus
-                strValue = result.Genus
-                style = style Or cStyleGuide.eStyleFlags.TaxonItalics
-
-            Case eColumnTypes.Family
-                strValue = result.Family
-
-            Case eColumnTypes.Order
-                strValue = result.Order
-
-            Case eColumnTypes.Class
-                strValue = result.Class
-
-            Case eColumnTypes.Code
-                strValue = result.SourceKey
-
-            Case eColumnTypes.Phylum
-                strValue = result.Phylum
+            Case eColumnTypes.Index : value = iRow
+            Case eColumnTypes.Common : value = result.Common
+            Case eColumnTypes.Species : value = result.Species : style = style Or cStyleGuide.eStyleFlags.TaxonItalics
+            Case eColumnTypes.Genus : value = result.Genus : style = style Or cStyleGuide.eStyleFlags.TaxonItalics
+            Case eColumnTypes.Family : value = result.Family
+            Case eColumnTypes.Order : value = result.Order
+            Case eColumnTypes.Class : value = result.Class
+            Case eColumnTypes.Phylum : value = result.Phylum
+                'Case eColumnTypes.Code: value = result.SourceKey
+            Case eColumnTypes.CodeFB : value = result.CodeFB
+            Case eColumnTypes.CodeSLB : value = result.CodeSLB
+            Case eColumnTypes.CodeSAUP : value = result.CodeSAUP
+            Case eColumnTypes.CodeFAO : value = result.CodeFAO
+            Case eColumnTypes.CodeLSID : value = result.CodeLSID
 
         End Select
 
-        cell = New EwECell(strValue, GetType(String), style)
+        cell = New EwECell(value, value.GetType(), style)
         cell.Behaviors.Add(EwEEditHandler)
+        cell.SuppressZero(0) = True
         cell.EnableEdit = False
 
         Me(iRow, col) = cell

@@ -295,6 +295,6 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_lblIn As System.Windows.Forms.Label
     Private WithEvents m_gridResults As ScientificInterface.gridTaxonSearchResults
     Private WithEvents m_pbSearching As System.Windows.Forms.PictureBox
-    Friend WithEvents m_cbShowCodes As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbShowCodes As System.Windows.Forms.CheckBox
 
 End Class

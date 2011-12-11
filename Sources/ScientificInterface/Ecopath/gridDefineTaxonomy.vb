@@ -779,6 +779,23 @@ Public Class gridDefineTaxonomy
 
     End Sub
 
+    Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
+        Get
+            Return MyBase.UIContext
+        End Get
+        Set(value As ScientificInterfaceShared.Controls.cUIContext)
+            Me.m_lTaxonInfo.Clear()
+            If (value IsNot Nothing) Then
+                ' Make snapshot of configuration 
+                For iTaxon As Integer = 1 To value.Core.nTaxon
+                    Dim ti As New cTaxonInfo(value.Core.Taxon(iTaxon))
+                    Me.m_lTaxonInfo.Add(ti)
+                Next
+            End If
+            MyBase.UIContext = value
+        End Set
+    End Property
+
 #End Region ' Constructor
 
 #Region " Internals "
@@ -814,7 +831,7 @@ Public Class gridDefineTaxonomy
         Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SEALIFEBASE)
         Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SAUP)
         Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FAO)
-        Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(SharedResources.HEADER_LSID)
+        Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_LSID)
 
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False
@@ -839,13 +856,6 @@ Public Class gridDefineTaxonomy
         Dim ti As cTaxonInfo = Nothing
 
         ' Populate local administration from a snapshot of the live data
-
-        ' Make snapshot of configuration 
-        For iTaxon As Integer = 1 To Me.Core.nTaxon
-            taxon = Me.Core.Taxon(iTaxon)
-            ti = New cTaxonInfo(taxon)
-            Me.m_lTaxonInfo.Add(ti)
-        Next
 
         Me.NormalizeProportions()
 
@@ -911,18 +921,27 @@ Public Class gridDefineTaxonomy
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
 
+        Dim bShowCol As Boolean = True
+
         For iCol As Integer = 1 To Me.ColumnsCount - 1
             Select Case DirectCast(iCol, eColumnTypes)
                 Case eColumnTypes.Hierarchy
                     Me.Columns(iCol).Width = 20
                 Case Else
-                    Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                    Me.AutoSizeColumn(iCol, 80)
 
+                    bShowCol = True
                     If (iCol > eColumnTypes.Status) Then
-                        Me.Columns(iCol).Visible = Me.m_bShowCodes
+                        bShowCol = Me.m_bShowCodes
                     End If
 
+                    If (bShowCol) Then
+                        Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                        Me.AutoSizeColumn(iCol, 40)
+                    Else
+                        Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+                        Me.Columns(iCol).Width = 0
+                    End If
+                    Me.Columns(iCol).Visible = bShowCol
             End Select
         Next
 
@@ -1039,9 +1058,18 @@ Public Class gridDefineTaxonomy
         ' == CODE cells
         'Me(iRow, eColumnTypes.Code) = New EwECell(ti.SourceKey, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
-        Me(iRow, eColumnTypes.CodeFB) = New EwECell(ti.CodeFB, GetType(Integer))
-        Me(iRow, eColumnTypes.CodeSLB) = New EwECell(ti.CodeSLB, GetType(Integer))
-        Me(iRow, eColumnTypes.CodeSAUP) = New EwECell(ti.CodeSAUP, GetType(Integer))
+        cell = New EwECell(ti.CodeFB, GetType(Long))
+        cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
+        Me(iRow, eColumnTypes.CodeFB) = cell
+
+        cell = New EwECell(ti.CodeSLB, GetType(Long))
+        cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
+        Me(iRow, eColumnTypes.CodeSLB) = cell
+
+        cell = New EwECell(ti.CodeSAUP, GetType(Long))
+        cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
+        Me(iRow, eColumnTypes.CodeSAUP) = cell
+
         Me(iRow, eColumnTypes.CodeFAO) = New EwECell(ti.CodeFAO, GetType(String))
         Me(iRow, eColumnTypes.CodeLSID) = New EwECell(ti.CodeLSID, GetType(String))
 
@@ -1192,8 +1220,10 @@ Public Class gridDefineTaxonomy
             Return Me.m_bShowCodes
         End Get
         Set(value As Boolean)
-            Me.m_bShowCodes = value
-            Me.RefreshContent()
+            If (Me.m_bShowCodes <> value) Then
+                Me.m_bShowCodes = value
+                Me.RefreshContent()
+            End If
         End Set
     End Property
 

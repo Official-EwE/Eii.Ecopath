@@ -2395,18 +2395,18 @@
     <value>..\Resources\move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HEADER_CODE_FAO" xml:space="preserve">
-    <value>FAO code</value>
+    <value>FAO id|Taxonomy code according to FAO</value>
   </data>
   <data name="HEADER_CODE_FISHBASE" xml:space="preserve">
-    <value>FishBase code</value>
+    <value>FB id|Taxonomy code in FishBase</value>
   </data>
   <data name="HEADER_CODE_SAUP" xml:space="preserve">
-    <value>SeaAroundUs code</value>
+    <value>SAUP id|Taxonomy code in the Sea Around Us databases</value>
   </data>
   <data name="HEADER_CODE_SEALIFEBASE" xml:space="preserve">
-    <value>SeaLifeBase code</value>
+    <value>SLB id|Taxonomy code in SeaLifeBase</value>
   </data>
-  <data name="HEADER_LSID" xml:space="preserve">
-    <value>Life Science Identifier</value>
+  <data name="HEADER_CODE_LSID" xml:space="preserve">
+    <value>LSID|Taxonomy Life Sciences Identifier, as defined by the Taxonomy Database Working Group</value>
   </data>
 </root>

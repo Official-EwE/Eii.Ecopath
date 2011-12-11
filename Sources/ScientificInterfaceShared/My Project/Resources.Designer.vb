@@ -2409,7 +2409,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to FAO code.
+        '''  Looks up a localized string similar to FAO id|Taxonomy code according to FAO.
         '''</summary>
         Public ReadOnly Property HEADER_CODE_FAO() As String
             Get
@@ -2418,7 +2418,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to FishBase code.
+        '''  Looks up a localized string similar to FB id|Taxonomy code in FishBase.
         '''</summary>
         Public ReadOnly Property HEADER_CODE_FISHBASE() As String
             Get
@@ -2427,7 +2427,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to SeaAroundUs code.
+        '''  Looks up a localized string similar to LSID|Taxonomy Life Sciences Identifier, as defined by the Taxonomy Database Working Group.
+        '''</summary>
+        Public ReadOnly Property HEADER_CODE_LSID() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CODE_LSID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to SAUP id|Taxonomy code in the Sea Around Us databases.
         '''</summary>
         Public ReadOnly Property HEADER_CODE_SAUP() As String
             Get
@@ -2436,7 +2445,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to SeaLifeBase code.
+        '''  Looks up a localized string similar to SLB id|Taxonomy code in SeaLifeBase.
         '''</summary>
         Public ReadOnly Property HEADER_CODE_SEALIFEBASE() As String
             Get
@@ -3467,15 +3476,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_LOWERLIMIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_LOWERLIMIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Life Science Identifier.
-        '''</summary>
-        Public ReadOnly Property HEADER_LSID() As String
-            Get
-                Return ResourceManager.GetString("HEADER_LSID", resourceCulture)
             End Get
         End Property
         

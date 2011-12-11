@@ -1799,8 +1799,5 @@
   <ItemGroup>
     <Folder Include="Ecopath\Controls\" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

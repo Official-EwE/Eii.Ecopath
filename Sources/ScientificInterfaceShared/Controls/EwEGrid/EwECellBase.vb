@@ -326,7 +326,7 @@ Namespace Controls.EwEGrid
                 End If
 
                 ' Is this an integer?
-                If (tValue Is GetType(Integer)) Then
+                If (tValue Is GetType(Integer) Or tValue Is GetType(Long)) Then
                     ' #Yes: apply format
                     Dim iValue As Integer = 0
                     Try

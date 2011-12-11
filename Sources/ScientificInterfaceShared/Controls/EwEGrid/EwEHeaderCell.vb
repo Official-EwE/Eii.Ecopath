@@ -103,12 +103,16 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the value for a header cell.
+        ''' Get/set the value for a header cell.
         ''' </summary>
         ''' <bugfix number="892">
         ''' Moved this functionality from DisplayText to make sure header values
         ''' are correctly picked up by Copy and Cut operations.
         ''' </bugfix>
+        ''' <remarks>If a header cell value contains a '|' character, the value 
+        ''' is split by this character. The first part (left side of '|') is used
+        ''' as value part, and the last part (right side of '|') is used as tooltip
+        ''' text.</remarks>
         ''' -------------------------------------------------------------------
         Public Overrides Property Value() As Object
             Get
@@ -119,6 +123,14 @@ Namespace Controls.EwEGrid
                 End If
             End Get
             Set(ByVal value As Object)
+                If TypeOf value Is String Then
+                    Dim strValue As String = CStr(value)
+                    If strValue.IndexOf("|"c) > -1 Then
+                        Dim astrBits As String() = strValue.Split("|"c)
+                        Me.ToolTipText = astrBits(1)
+                        value = astrBits(0)
+                    End If
+                End If
                 MyBase.Value = value
             End Set
         End Property
