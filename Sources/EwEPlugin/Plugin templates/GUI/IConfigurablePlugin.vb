@@ -13,9 +13,9 @@ Imports System.Xml
 ''' </summary>
 ''' ===========================================================================
 Public Interface IConfigurablePlugin
-    Inherits IGUIPlugin
+    Inherits IPlugin
 
     Function IsConfigured() As Boolean
-    Function GetConfigUI() As Form
+    Function GetConfigUI() As Control
 
 End Interface

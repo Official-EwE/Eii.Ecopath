@@ -449,19 +449,30 @@ Public Class dlgDefineTaxa
     Private Sub ConnectSelectedDataProducer()
 
         Dim prod As IDataSearchProducerPlugin = Me.SelectedDataProducer
-        Dim frm As Form = Nothing
+        Dim ui As Control = Nothing
         If (prod Is Nothing) Then Return
         If Not (TypeOf prod Is IConfigurablePlugin) Then Return
 
         Try
-            frm = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
+            ui = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
         Catch ex As Exception
-            frm = Nothing
+            ui = Nothing
         End Try
 
-        If (frm Is Nothing) Then Return
+        If (ui Is Nothing) Then Return
 
         Try
+            Dim frm As Form = Nothing
+
+            If TypeOf (ui) Is Form Then
+                frm = DirectCast(ui, Form)
+            Else
+                frm = New Form()
+                frm.AutoSize = True
+                frm.AutoSizeMode = Windows.Forms.AutoSizeMode.GrowAndShrink
+                ui.Dock = DockStyle.Fill
+                frm.Controls.Add(ui)
+            End If
 
             frm.ShowInTaskbar = False
             frm.ShowIcon = False
