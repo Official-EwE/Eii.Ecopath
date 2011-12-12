@@ -34,6 +34,9 @@ Public Class gridDefineTaxonomy
     Private m_tiSearchLinked As ITaxonSearchData = Nothing
 
     ''' <summary>Enumerated type defining the columns in this grid.</summary>
+    ''' <remarks>The logic that shows and hides code columns depends on the position 
+    ''' of the status column, which is presumed to reside before the code columns.
+    ''' Please do not alter the position of the status and code columns.</remarks>
     Private Enum eColumnTypes
         Hierarchy = 0
         Name
@@ -812,8 +815,10 @@ Public Class gridDefineTaxonomy
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
 
+        Dim iNumCols As Integer = CInt(IIf(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Status + 1))
+
         ' Redim columns
-        Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
+        Me.Redim(1, iNumCols)
 
         ' Group index cell
         Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
@@ -825,13 +830,16 @@ Public Class gridDefineTaxonomy
         Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(SharedResources.HEADER_FAMILY)
         Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
         Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
-        'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
-        Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FISHBASE)
-        Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SEALIFEBASE)
-        Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SAUP)
-        Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FAO)
-        Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_LSID)
+
+        If (Me.m_bShowCodes) Then
+            'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
+            Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FISHBASE)
+            Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SEALIFEBASE)
+            Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SAUP)
+            Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FAO)
+            Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_LSID)
+        End If
 
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False
@@ -928,20 +936,8 @@ Public Class gridDefineTaxonomy
                 Case eColumnTypes.Hierarchy
                     Me.Columns(iCol).Width = 20
                 Case Else
-
-                    bShowCol = True
-                    If (iCol > eColumnTypes.Status) Then
-                        bShowCol = Me.m_bShowCodes
-                    End If
-
-                    If (bShowCol) Then
-                        Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                        Me.AutoSizeColumn(iCol, 40)
-                    Else
-                        Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-                        Me.Columns(iCol).Width = 0
-                    End If
-                    Me.Columns(iCol).Visible = bShowCol
+                    Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                    Me.AutoSizeColumn(iCol, 40)
             End Select
         Next
 
@@ -993,11 +989,14 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Genus).Value = ti.Genus
         Me(iRow, eColumnTypes.Species).Value = ti.Species
         Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
-        Me(iRow, eColumnTypes.CodeSAUP).Value = ti.CodeSAUP
-        Me(iRow, eColumnTypes.CodeFB).Value = ti.CodeFB
-        Me(iRow, eColumnTypes.CodeSLB).Value = ti.CodeSLB
-        Me(iRow, eColumnTypes.CodeFAO).Value = ti.CodeFAO
-        Me(iRow, eColumnTypes.CodeLSID).Value = ti.CodeLSID
+
+        If (Me.m_bShowCodes) Then
+            Me(iRow, eColumnTypes.CodeSAUP).Value = ti.CodeSAUP
+            Me(iRow, eColumnTypes.CodeFB).Value = ti.CodeFB
+            Me(iRow, eColumnTypes.CodeSLB).Value = ti.CodeSLB
+            Me(iRow, eColumnTypes.CodeFAO).Value = ti.CodeFAO
+            Me(iRow, eColumnTypes.CodeLSID).Value = ti.CodeLSID
+        End If
 
         Select Case ti.Status
             Case eItemStatusTypes.Original
@@ -1055,23 +1054,27 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
         Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
-        ' == CODE cells
-        'Me(iRow, eColumnTypes.Code) = New EwECell(ti.SourceKey, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+        If (Me.m_bShowCodes) Then
 
-        cell = New EwECell(ti.CodeFB, GetType(Long))
-        cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
-        Me(iRow, eColumnTypes.CodeFB) = cell
+            ' == CODE cells
+            'Me(iRow, eColumnTypes.Code) = New EwECell(ti.SourceKey, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
-        cell = New EwECell(ti.CodeSLB, GetType(Long))
-        cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
-        Me(iRow, eColumnTypes.CodeSLB) = cell
+            cell = New EwECell(ti.CodeFB, GetType(Long))
+            cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
+            Me(iRow, eColumnTypes.CodeFB) = cell
 
-        cell = New EwECell(ti.CodeSAUP, GetType(Long))
-        cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
-        Me(iRow, eColumnTypes.CodeSAUP) = cell
+            cell = New EwECell(ti.CodeSLB, GetType(Long))
+            cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
+            Me(iRow, eColumnTypes.CodeSLB) = cell
 
-        Me(iRow, eColumnTypes.CodeFAO) = New EwECell(ti.CodeFAO, GetType(String))
-        Me(iRow, eColumnTypes.CodeLSID) = New EwECell(ti.CodeLSID, GetType(String))
+            cell = New EwECell(ti.CodeSAUP, GetType(Long))
+            cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
+            Me(iRow, eColumnTypes.CodeSAUP) = cell
+
+            Me(iRow, eColumnTypes.CodeFAO) = New EwECell(ti.CodeFAO, GetType(String))
+            Me(iRow, eColumnTypes.CodeLSID) = New EwECell(ti.CodeLSID, GetType(String))
+
+        End If
 
         hgcParent.AddChildRow(iRow)
         Me.UpdateRow(iRow)
@@ -1133,7 +1136,6 @@ Public Class gridDefineTaxonomy
             Case eColumnTypes.CodeSAUP : ti.CodeSAUP = CLng(val)
             Case eColumnTypes.CodeFAO : ti.CodeFAO = CStr(val)
             Case eColumnTypes.CodeLSID : ti.CodeLSID = CStr(val)
-
         End Select
 
         ' Perhaps redundant but hey

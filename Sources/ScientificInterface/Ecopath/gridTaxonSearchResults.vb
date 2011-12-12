@@ -20,6 +20,10 @@ Public Class gridTaxonSearchResults
     Private m_results As IDataSearchResults = Nothing
     Private m_dgtIsTaxonUseCallback As IsTaxonUsedDelegate = Nothing
 
+    ''' <summary>Enumerated type defining the columns in this grid.</summary>
+    ''' <remarks>The logic that shows and hides code columns depends on the position 
+    ''' of the status column, which is presumed to reside before the code columns.
+    ''' Please do not alter the position of the status and code columns.</remarks>
     Private Enum eColumnTypes As Integer
         Index = 0
         Common
@@ -125,7 +129,9 @@ Public Class gridTaxonSearchResults
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
-        Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
+        Dim iNumCols As Integer = CInt(IIf(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Phylum + 1))
+        Me.Redim(1, iNumCols)
+
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Common) = New EwEColumnHeaderCell(SharedResources.HEADER_COMMON_NAME)
         Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
@@ -134,12 +140,14 @@ Public Class gridTaxonSearchResults
         Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(SharedResources.HEADER_CLASS)
         Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
         Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
-        'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
-        Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FISHBASE)
-        Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SEALIFEBASE)
-        Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SAUP)
-        Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FAO)
-        Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_LSID)
+        If (Me.m_bShowCodes) Then
+            'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
+            Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FISHBASE)
+            Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SEALIFEBASE)
+            Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SAUP)
+            Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FAO)
+            Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_LSID)
+        End If
 
     End Sub
 
@@ -162,27 +170,13 @@ Public Class gridTaxonSearchResults
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
 
-        Dim bShowCol As Boolean = True
-
         For iCol As Integer = 1 To Me.ColumnsCount - 1
             Select Case DirectCast(iCol, eColumnTypes)
                 Case eColumnTypes.Index
                     Me.Columns(iCol).Width = 20
                 Case Else
-
-                    bShowCol = True
-                    If (iCol > eColumnTypes.Phylum) Then
-                        bShowCol = Me.m_bShowCodes
-                    End If
-
-                    If (bShowCol) Then
-                        Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                        Me.AutoSizeColumn(iCol, 40)
-                    Else
-                        Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-                        Me.Columns(iCol).Width = 0
-                    End If
-                    Me.Columns(iCol).Visible = bShowCol
+                    Me.Columns(iCol).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+                    Me.AutoSizeColumn(iCol, 40)
             End Select
         Next
 
