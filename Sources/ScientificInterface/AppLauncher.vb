@@ -35,7 +35,6 @@ Imports ScientificInterfaceShared.Commands
 Imports System.Drawing.Printing
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports System.Globalization
 
 #End Region ' Imports
 
@@ -161,6 +160,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
     Private WithEvents m_cmdExportEcosimResultsToCSV As cEcosimSaveDataCommand = Nothing
     Private WithEvents m_cmdPrint As cCommand = Nothing
+    Private WithEvents m_cmdEcospaceDataConnections As cCommand = Nothing
 
 #End Region ' Commands
 
@@ -462,6 +462,9 @@ Public Class AppLauncher
         Me.m_cmdDefineInputLayers = New cCommand(cmdh, "EditInputMaps")
         Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceInputMaps)
 
+        Me.m_cmdEcospaceDataConnections = New cCommand(cmdh, "DataConnections")
+        Me.m_cmdEcospaceDataConnections.AddControl(Me.m_tsmiEcospaceDataConnections)
+
         Me.m_cmdImportLayerData = New cImportLayerCommand(cmdh)
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
 
@@ -513,10 +516,14 @@ Public Class AppLauncher
     Private Sub InitPanels()
 
         ' Init panels
-        Me.m_dtPanels(cPANEL_NAV) = New frmNavigationPanel(Me.UIContext, Me.m_pluginManager)
-        Me.m_dtPanels(cPANEL_STATUS) = New frmStatusPanel(Me.UIContext, Me.m_MessageHistory)
-        Me.m_dtPanels(cPANEL_REMARKS) = New frmRemarkPanel(Me.UIContext)
-        Me.m_dtPanels(cPANEL_START) = New frmStartPanel(Me.UIContext)
+        Try
+            Me.m_dtPanels(cPANEL_NAV) = New frmNavigationPanel(Me.UIContext, Me.m_pluginManager)
+            Me.m_dtPanels(cPANEL_STATUS) = New frmStatusPanel(Me.UIContext, Me.m_MessageHistory)
+            Me.m_dtPanels(cPANEL_REMARKS) = New frmRemarkPanel(Me.UIContext)
+            Me.m_dtPanels(cPANEL_START) = New frmStartPanel(Me.UIContext)
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -767,6 +774,9 @@ Public Class AppLauncher
         Me.LoadPlugins()
         ' Auto-launch plugins
         Me.AutolaunchPlugins()
+
+        ' Load spatial data sets
+        Me.Core.SpatialDataConnectionManager.Load()
 
         Me.ProcessCommandLine()
         Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!
@@ -1965,6 +1975,11 @@ Public Class AppLauncher
 
             ' Take out the trash
             GC.Collect()
+
+            ' ToDo: globalize this
+            cApplicationStatusNotifier.StartProgress(Me.Core, "Removing temporary files")
+            cFileUtils.PurgeTempFiles()
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
             ' Redraw everything immediately
             Me.Refresh()
@@ -3466,14 +3481,14 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
-    ''' Command handler; handles access to the Ecospace edit importance layers dialog.
+    ''' Command handler; handles access to the Ecospace define input layers dialog.
     ''' </summary>
     Private Sub OnUpdateDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
-    ''' Command handler; invokes the Ecospace define capacity maps dialog.
+    ''' Command handler; invokes the Ecospace define input dialog.
     ''' </summary>
     Private Sub OnInvokeDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnInvoke
         Dim dlg As New dlgDefineInputMaps(Me.UIContext)
@@ -3481,8 +3496,17 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
-    ''' Command handler; invokes the import layer data dialog.
+    ''' Command handler
     ''' </summary>
+    Private Sub OnUpdateEcospaceDataConnections(ByVal cmd As cCommand) Handles m_cmdEcospaceDataConnections.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+    End Sub
+
+    Private Sub OnInvokeEcospaceDataConnections(ByVal cmd As cCommand) Handles m_cmdEcospaceDataConnections.OnInvoke
+        Dim dlg As New dlgExternalData(Me.UIContext)
+        dlg.ShowDialog(Me)
+    End Sub
+
     Private Sub OnImportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnInvoke
 
@@ -3493,10 +3517,9 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the 
-    ''' <see cref="m_cmdImportLayerData">import layer data command</see>.
+    ''' Command handler
     ''' </summary>
-    Private Sub m_cmdImportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnUpdateImportLayer(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded() And Not Me.Core.StateMonitor.IsEcospaceRunning
     End Sub
@@ -3504,7 +3527,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; invokes the export layers dialog.
     ''' </summary>
-    Private Sub m_cmdExportLayerData_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnExportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportLayerData.OnInvoke
 
         Dim dlg As New dlgExportLayerData(Me.UIContext)
@@ -3517,13 +3540,13 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
-    Private Sub m_cmdExportLayerData_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnUpdateExportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportLayerData.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
     End Sub
 
     ''' <summary>
-    ''' Command handler; invokes the export layers dialog.
+    ''' Command handler; invokes the edit layers dialog.
     ''' </summary>
     Private Sub OnInvokeEditLayer(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdEditLayer.OnInvoke

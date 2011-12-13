@@ -10,9 +10,9 @@ Public Interface IEcosimLifespanPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Ecosim is closed.
+    ''' Datasource load ecosim scenario plugin point.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Sub ClosedEcosimScenario()
+    Sub CloseEcosimScenario()
 
 End Interface

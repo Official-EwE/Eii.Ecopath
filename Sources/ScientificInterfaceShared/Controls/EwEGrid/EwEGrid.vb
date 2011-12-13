@@ -475,7 +475,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Browsable(False)> _
-        Public ReadOnly Property ComandHandler() As cCommandHandler
+        Public ReadOnly Property CommandHandler() As cCommandHandler
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
                 Return Me.UIContext.CommandHandler
@@ -1277,7 +1277,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs)
 
-            Dim cmdh As cCommandHandler = Me.ComandHandler
+            Dim cmdh As cCommandHandler = Me.CommandHandler
 
             If (cmdh IsNot Nothing) Then
 

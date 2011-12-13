@@ -223,10 +223,11 @@ Namespace Controls.Map.Layers
         ''' information.</param>
         ''' -------------------------------------------------------------------
         Public Overridable Sub StartEdit(ByVal ptClick As Point, ByVal args As MouseEventArgs)
+
+            If (Me.GUI Is Nothing) Or (Not Me.IsEditable) Then Return
             ' Notify the editor GUI, if any
-            If Me.GUI IsNot Nothing Then
-                Me.GUI.StartEdit(Me)
-            End If
+            Me.GUI.StartEdit(Me)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -251,6 +252,8 @@ Namespace Controls.Map.Layers
                                     ByVal args As MouseEventArgs, _
                                     ByRef ptUpdateMin As Point, _
                                     ByRef ptUpdateMax As Point)
+
+            If (Me.GUI Is Nothing) Or (Not Me.IsEditable) Then Return
 
             ' Calc positions between current and last draw point
             Dim iNumSteps As Integer = Math.Max(1, Math.Max(Math.Abs(ptFrom.X - ptTo.X), Math.Abs(ptFrom.Y - ptTo.Y)))
@@ -299,10 +302,9 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Sub EndEdit()
+            If (Me.GUI Is Nothing) Or (Not Me.IsEditable) Then Return
             ' Notify the editor GUI, if any
-            If Me.GUI IsNot Nothing Then
-                Me.GUI.EndEdit(Me)
-            End If
+            Me.GUI.EndEdit(Me)
             Me.Layer.Update(cLayer.eChangeFlags.Map)
         End Sub
 
@@ -334,6 +336,7 @@ Namespace Controls.Map.Layers
                                                ByVal value As Object, _
                                                ByVal e As MouseEventArgs, _
                                                ByVal ptClick As Point)
+            If (Not Me.IsEditable) Then Return
             Me.Layer.Value(ptSet.Y, ptSet.X) = value
         End Sub
 
@@ -348,7 +351,9 @@ Namespace Controls.Map.Layers
         ''' Smooth layer data across water cells.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Smooth()
+        Public Overridable Sub Smooth()
+
+            If (Not Me.IsEditable) Then Return
 
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
@@ -388,7 +393,9 @@ Namespace Controls.Map.Layers
         ''' Fill the layer with the current <see cref="CellValue"/>
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Fill()
+        Public Overridable Sub Fill()
+
+            If (Not Me.IsEditable) Then Return
 
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
@@ -416,9 +423,10 @@ Namespace Controls.Map.Layers
         Public Overridable Property IsEditable() As Boolean
             Get
                 Dim bEditable As Boolean = (Me.m_bEditable = True) And (Me.IsReadOnly = False)
-                'If (Me.m_propName IsNot Nothing) Then
-                '    bEditable = bEditable And ((m_propName.GetStyle() And StyleGuide.eStyleFlags.NotEditable) = 0)
-                'End If
+                If (Me.m_layer IsNot Nothing) Then
+                    ' External data cannot be edited
+                    bEditable = bEditable And (Not Me.m_layer.IsExternal)
+                End If
                 Return bEditable
             End Get
             Set(ByVal value As Boolean)

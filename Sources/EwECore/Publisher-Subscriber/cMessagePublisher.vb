@@ -32,6 +32,9 @@ Public Class cMessagePublisher
     ''' </remarks>
     Public Function AddMessageHandler(ByVal MessageHandler As cMessageHandler) As Boolean
 
+        ' Pre
+        Debug.Assert(MessageHandler IsNot Nothing)
+
         Try
             Debug.Assert(MessageHandler IsNot Nothing, "Need valid message handler")
             m_handlers.Add(MessageHandler)
@@ -173,6 +176,8 @@ Public Class cMessagePublisher
                     bMessageHandled = True
                     'even though the message has been handled 
                     'try all the handlers to see if there is another one that can handle this type of message
+                Else
+                    ' How on
                 End If
             Next handler
 
@@ -193,23 +198,24 @@ Public Class cMessagePublisher
     ''' <summary>
     ''' Remove ALL instances of a Message Handler
     ''' </summary>
-    ''' <param name="MessageHandlerToRemove">cMessageHandler object to remove</param>
+    ''' <param name="MessageHandler">cMessageHandler object to remove</param>
     ''' <returns>True if successful. False otherwise</returns>
     ''' <remarks>This tests the Delegate contained in MessageHandlerToRemove not the cMessageHandler itself. 
     ''' So it will remove All of the message handlers that use this delegate.
     ''' This calls cMessageHandler.Equals().
     ''' </remarks>
-    Public Function RemoveMessageHandler(ByVal MessageHandlerToRemove As cMessageHandler) As Boolean
+    Public Function RemoveMessageHandler(ByVal MessageHandler As cMessageHandler) As Boolean
 
-        Dim bFound As Boolean
+        ' Pre
+        Debug.Assert(MessageHandler IsNot Nothing)
+
         Try
-            Debug.Assert(MessageHandlerToRemove IsNot Nothing, "Need valid message handler")
-            bFound = m_handlers.Remove(MessageHandlerToRemove)
-
-            Return bFound
+            Debug.Assert(MessageHandler IsNot Nothing, "Need valid message handler")
+            Return m_handlers.Remove(MessageHandler)
         Catch ex As Exception
             Return False
         End Try
+
     End Function
 
     ' This method is too dangerous. Calling classes should properly call

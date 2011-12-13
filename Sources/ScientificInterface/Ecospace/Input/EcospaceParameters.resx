@@ -277,7 +277,7 @@
     <value>True</value>
   </data>
   <data name="m_rbBaseBiomass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 3</value>
+    <value>4, 23</value>
   </data>
   <data name="m_rbBaseBiomass.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 17</value>
@@ -304,7 +304,7 @@
     <value>True</value>
   </data>
   <data name="m_rbAdjustedBiomass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 26</value>
+    <value>4, 46</value>
   </data>
   <data name="m_rbAdjustedBiomass.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 17</value>
@@ -358,7 +358,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_hdrInitialization.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 216</value>
+    <value>0, 0</value>
   </data>
   <data name="m_hdrInitialization.Size" type="System.Drawing.Size, System.Drawing">
     <value>898, 18</value>
@@ -379,10 +379,10 @@
     <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1125.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_plBiomass</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>2</value>
   </data>
   <data name="m_hdrModel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -412,7 +412,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrModel.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_tlpModelTop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -670,7 +670,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tlpModelTop.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_tlpModelTop.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_gbThreading" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_gbModel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_gbCapCalcs" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_gbIMB" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333,Absolute,233" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -1231,7 +1231,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbContact.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_tbAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1258,7 +1258,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbAuthor.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lbContact.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1288,7 +1288,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lbContact.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lbAuthor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1318,7 +1318,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lbAuthor.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_tbName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1342,7 +1342,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbName.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_tbDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1369,7 +1369,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbDescription.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="m_lblDescription.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1399,7 +1399,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblDescription.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_lbScenarioName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1429,7 +1429,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lbScenarioName.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_hdrScenario.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1462,13 +1462,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrScenario.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_plBiomass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_plBiomass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 237</value>
+    <value>10, 218</value>
   </data>
   <data name="m_plBiomass.Size" type="System.Drawing.Size, System.Drawing">
     <value>898, 45</value>
@@ -1486,6 +1486,66 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_plBiomass.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_hdrExt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrExt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrExt.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 569</value>
+  </data>
+  <data name="m_hdrExt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>612, 18</value>
+  </data>
+  <data name="m_hdrExt.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="m_hdrExt.Text" xml:space="preserve">
+    <value>External data</value>
+  </data>
+  <data name="m_hdrExt.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrExt.Name" xml:space="preserve">
+    <value>m_hdrExt</value>
+  </data>
+  <data name="&gt;&gt;m_hdrExt.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1105.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrExt.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrExt.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="m_chkUseRelativeTime.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkUseRelativeTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 591</value>
+  </data>
+  <data name="m_chkUseRelativeTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>217, 17</value>
+  </data>
+  <data name="m_chkUseRelativeTime.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="m_chkUseRelativeTime.Text" xml:space="preserve">
+    <value>&amp;Use relative time to access external data</value>
+  </data>
+  <data name="&gt;&gt;m_chkUseRelativeTime.Name" xml:space="preserve">
+    <value>m_chkUseRelativeTime</value>
+  </data>
+  <data name="&gt;&gt;m_chkUseRelativeTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkUseRelativeTime.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_chkUseRelativeTime.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_lbNumThreads.AutoSize" type="System.Boolean, mscorlib">

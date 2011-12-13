@@ -5,6 +5,7 @@ Imports EwEPlugin
 Imports EwECore.EcoSeed
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.SpatialData
 
 
 ''' <summary>
@@ -1177,6 +1178,19 @@ Public Class cEcoSpace
             'clear out catch and landings data for each time step
             Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
             Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
+
+            ' Apply Ecospace datasources
+            ' * This will need to become much more sophisticated
+            For Each vn As eVarNameFlags In Me.m_Data.DataAdapters.Keys
+                Dim src As ISpatialDataAdapter = Me.m_Data.DataAdapters(vn)
+                If (src IsNot Nothing) Then
+                    Try
+                        ' ToDo: add error feedback
+                        src.Populate(itt)
+                    Catch ex As Exception
+                    End Try
+                End If
+            Next
 
             If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceBeginTimeStep(m_Data, itt)
 
@@ -2509,7 +2523,7 @@ Public Class cEcoSpace
     End Sub
 
 
-    Private Sub SetEffortParameters(ResetTotEffort As Boolean)
+    Private Sub SetEffortParameters(ByVal ResetTotEffort As Boolean)
         'this predicts total effort by gear type over model cells
         'accounting for habitat type restriction of each gear (gearhab(geartype,habitat))
         Dim i As Integer, j As Integer, ig As Integer

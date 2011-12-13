@@ -59,12 +59,16 @@ Namespace Controls.Map.Layers
             If (Me.m_cmbMonth Is Nothing) Then Return
             If (Me.m_chkAutoRotate Is Nothing) Then Return
 
-            Try
-                Me.m_cmbMonth.SelectedIndex = CInt(Me.Editor.CellValue) - 1
-                Me.m_cmbGroup.SelectedIndex = CInt(Me.Editor.Group) - 1
-            Catch ex As Exception
+            If (editor IsNot Nothing) Then
+                Try
+                    Me.m_cmbMonth.SelectedIndex = CInt(editor.CellValue) - 1
+                    Me.m_cmbGroup.SelectedIndex = CInt(Me.Editor.Group) - 1
 
-            End Try
+                    Me.m_chkAutoRotate.Enabled = editor.IsEditable
+                Catch ex As Exception
+
+                End Try
+            End If
 
         End Sub
 

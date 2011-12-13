@@ -101,6 +101,8 @@ Namespace Controls.Map.Layers
                                              ByVal e As MouseEventArgs, _
                                              ByVal ptClick As Point)
 
+            If (Not Me.IsEditable) Then Return
+
             ' Calc the distance the mouse has travelled
             Dim dx As Single = CSng(Math.Sqrt(Me.m_ptfDelta.X * Me.m_ptfDelta.X + Me.m_ptfDelta.Y * Me.m_ptfDelta.Y))
             ' Only process significant changes

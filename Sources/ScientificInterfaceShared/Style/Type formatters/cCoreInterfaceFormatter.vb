@@ -25,6 +25,9 @@ Namespace Style
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
+
+            If (value Is Nothing) Then Return My.Resources.GENERIC_VALUE_NONE
+
             Try
                 Dim obj As ICoreInterface = DirectCast(value, ICoreInterface)
                 ' Only include index in desciptor only if object has a valid index

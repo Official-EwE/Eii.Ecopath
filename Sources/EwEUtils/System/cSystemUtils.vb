@@ -126,9 +126,7 @@ Namespace SystemUtilities
         ''' -----------------------------------------------------------------------
         Public Shared Function Is64Bit() As Boolean
 
-            ' ToDo: activate .NET framework 4 test
-            'Return System.Environment.Is64BitOperatingSystem
-            Return (IntPtr.Size = 8)
+            Return System.Environment.Is64BitOperatingSystem
 
         End Function
 
@@ -146,6 +144,23 @@ Namespace SystemUtilities
             Dim identity As WindowsIdentity = WindowsIdentity.GetCurrent()
             Dim principal As New WindowsPrincipal(identity)
             Return principal.IsInRole(WindowsBuiltInRole.Administrator)
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' States if running Win 7 or higher.
+        ''' </summary>
+        ''' <returns>True if running Win 7 or higher.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsRunningWin7OrHigher() As Boolean
+
+            Dim os As System.OperatingSystem = System.Environment.OSVersion
+            Dim ver As Version = os.Version
+
+            If (os.Platform <> PlatformID.Win32NT) Then Return False
+            If (ver.Major < 6) Then Return False
+            Return True
 
         End Function
 

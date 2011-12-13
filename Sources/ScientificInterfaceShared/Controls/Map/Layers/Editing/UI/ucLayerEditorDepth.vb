@@ -58,6 +58,13 @@ Namespace Controls.Map.Layers
             ' Set control value
             Me.UpdatePreview(Me.m_pbPreviewWater, CSng(Me.m_nudDepth.Value))
 
+            Dim bEditable As Boolean = editor.IsEditable
+
+            Me.m_rbLand.Enabled = bEditable
+            Me.m_rbWater.Enabled = bEditable
+            Me.m_nudDepth.Enabled = bEditable
+            Me.m_cbProtectCoastline.Enabled = bEditable
+
         End Sub
 
 #End Region ' Overrides

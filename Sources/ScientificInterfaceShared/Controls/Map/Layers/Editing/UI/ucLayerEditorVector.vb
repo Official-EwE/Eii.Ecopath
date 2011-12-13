@@ -21,6 +21,8 @@ Namespace Controls.Map.Layers
             If (Me.m_nudValue Is Nothing) Then Return
 
             Me.m_nudValue.Value = editor.CursorSize
+            Me.m_nudValue.Enabled = editor.IsEditable
+
         End Sub
 
         Public Shadows Property Editor() As cLayerEditorVector

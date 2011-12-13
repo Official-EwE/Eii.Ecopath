@@ -371,7 +371,7 @@ Public Class cEcospaceBasemap
     ''' Get/set the top left position for this layer, expressed in (lon, lat)
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Position() As Drawing.PointF
+    Public Property PosTopLeft() As Drawing.PointF
 
         Get
             Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)), CSng(GetVariable(eVarNameFlags.Latitude)))
@@ -386,7 +386,26 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns an importance layer
+    ''' Get/set the top left position for this layer, expressed in (lon, lat)
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property PosBottomRight() As Drawing.PointF
+
+        Get
+            Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)) + Me.CellSize * Me.InCol, _
+                                      CSng(GetVariable(eVarNameFlags.Latitude)) + Me.CellSize * Me.InRow)
+        End Get
+
+        Set(ByVal value As Drawing.PointF)
+            SetVariable(eVarNameFlags.Longitude, value.X - Me.CellSize * Me.InCol)
+            SetVariable(eVarNameFlags.Latitude, value.Y - Me.CellSize * Me.InRow)
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a LayerImportance
     ''' </summary>
     ''' <param name="index">Index from 1 to nLayerImportance</param>
     ''' -----------------------------------------------------------------------
@@ -643,7 +662,64 @@ Public Class cEcospaceBasemap
         End Get
     End Property
 
-    Friend Function GetLayerData(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Object
+    Public Function Layers(ByVal varName As eVarNameFlags) As cEcospaceLayer()
+        Select Case varName
+            Case eVarNameFlags.LayerHabitat
+                Return Me.m_lLayerHabitat.ToArray
+            Case eVarNameFlags.LayerImportance
+                Return Me.m_lLayerImportance.ToArray
+            Case eVarNameFlags.LayerDriver
+                Return Me.m_lLayerDriver.ToArray
+            Case Else
+                Return New cEcospaceLayer() {Me.Layer(varName)}
+        End Select
+    End Function
+
+    Public Function Layer(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer
+        Select Case varName
+            Case eVarNameFlags.LayerDepth
+                Return Me.LayerDepth
+            Case eVarNameFlags.LayerHabitat
+                Return Me.LayerHabitat(iIndex)
+            Case eVarNameFlags.LayerHabitatCapacity
+                Return Me.LayerHabitatCapacity
+            Case eVarNameFlags.LayerHabitatCapacityInput
+                Return Me.LayerHabitatCapacityInput
+            Case eVarNameFlags.LayerMPA
+                Return Me.LayerMPA
+            Case eVarNameFlags.LayerRegion
+                Return Me.LayerRegion
+            Case eVarNameFlags.LayerRelPP
+                Return Me.LayerRelPP
+            Case eVarNameFlags.LayerRelCin
+                Return Me.LayerRelCin
+            Case eVarNameFlags.LayerMPASeed
+                Return Me.LayerMPASeed
+            Case eVarNameFlags.LayerAdvection
+                Return Me.LayerAdvection
+            Case eVarNameFlags.LayerMigration
+                Return Me.LayerMigration
+            Case eVarNameFlags.LayerWind
+                Return Me.LayerWind
+            Case eVarNameFlags.LayerUpwelling
+                Return Me.LayerUpwelling
+            Case eVarNameFlags.LayerMLD
+                Return Me.LayerMixedLayerDepths
+            Case eVarNameFlags.LayerImportance
+                Return Me.LayerImportance(iIndex)
+            Case eVarNameFlags.LayerDriver
+                Return Me.LayerDriver(iIndex)
+            Case eVarNameFlags.LayerPort
+                Return Me.LayerPort
+            Case eVarNameFlags.LayerSail
+                Return Me.LayerSailingCost
+            Case eVarNameFlags.LayerDistribution
+                Return Me.LayerImportance(iIndex)
+        End Select
+        Return Nothing
+    End Function
+
+    Friend Function GetLayerData(ByVal varName As eVarNameFlags) As Object
         Select Case varName
             Case eVarNameFlags.LayerDepth
                 Return Me.m_core.m_EcoSpaceData.Depth

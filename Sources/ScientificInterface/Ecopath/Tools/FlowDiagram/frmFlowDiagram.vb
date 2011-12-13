@@ -28,7 +28,7 @@ Namespace Ecopath.Controls.FlowDiagram
     ''' Form presenting the Ecopath Flow Diagram interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class FlowDiagram
+    Public Class frmFlowDiagram
         : Inherits frmEwE
 
 #Region " Private variables "
@@ -301,7 +301,7 @@ Namespace Ecopath.Controls.FlowDiagram
         End Sub
 
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FlowDiagram))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFlowDiagram))
             Me.m_pbFlowDiagram = New System.Windows.Forms.PictureBox
             Me.m_scContent = New System.Windows.Forms.SplitContainer
             Me.m_pgFlowDiagram = New System.Windows.Forms.PropertyGrid

@@ -30,6 +30,8 @@ Namespace Controls.Map.Layers
                                              ByVal e As MouseEventArgs, _
                                              ByVal ptClick As System.Drawing.Point)
 
+            If (Not Me.IsEditable) Then Return
+
             Dim layerDepth As cEcospaceLayerDepth = DirectCast(Me.Layer.Data, cEcospaceLayerDepth)
             Dim bIsLandCell As Boolean = (layerDepth.IsLandCell(ptSet.Y, ptSet.X))
             Dim bIsLandValue As Boolean = (CInt(value) = 0)

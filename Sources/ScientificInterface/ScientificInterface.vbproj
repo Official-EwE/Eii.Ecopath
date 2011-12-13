@@ -156,6 +156,12 @@
     <Compile Include="AppLauncher_helpers.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\dlgConfig.Designer.vb">
+      <DependentUpon>dlgConfig.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\dlgConfig.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\dlgDefineFleets.Designer.vb">
       <DependentUpon>dlgDefineFleets.vb</DependentUpon>
     </Compile>
@@ -195,13 +201,31 @@
     <Compile Include="Ecopath\frmModelDescription.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\DietComp.Designer.vb">
-      <DependentUpon>DietComp.vb</DependentUpon>
+    <Compile Include="Ecopath\Input\frmDietComp.Designer.vb">
+      <DependentUpon>frmDietComp.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Input\DietComp.vb">
+    <Compile Include="Ecopath\Input\frmDietComp.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\cLayerFactoryScInt.vb" />
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.Designer.vb">
+      <DependentUpon>dlgExternalData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.Designer.vb">
+      <DependentUpon>ucConfigAdapter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgDefineInputMaps.Designer.vb">
+      <DependentUpon>dlgDefineInputMaps.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgDefineInputMaps.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\dlgEditLayer.Designer.vb">
       <DependentUpon>dlgEditLayer.vb</DependentUpon>
     </Compile>
@@ -266,7 +290,7 @@
     <Compile Include="Ecotracer\Input\EcotracerInputGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\NichePropertyColourCell.vb" />
+    <Compile Include="Ecopath\Output\cellNichePropertyColour.vb" />
     <Compile Include="Ecosim\Input\EggProduction\ApplyEP.Designer.vb">
       <DependentUpon>ApplyEP.vb</DependentUpon>
     </Compile>
@@ -569,64 +593,64 @@
     <Compile Include="Other\Options\ucOptionsGeneral.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\DetritusFateEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridDetritusFate.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\FisheryInputDiscardFateEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridFisheryInputDiscardFate.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\FisheryInputDiscardsEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridFisheryInputDiscards.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\FisheryInputFleetDefinitionEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridFisheryInputFleetDefinition.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\FisheryInputLandingsEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridFisheryInputLandings.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\gridFisheryInputOffVesselValue.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\FisheryInputNonMarketPriceEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridFisheryInputNonMarketPrice.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\OtherProductionEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridOtherProduction.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\BasicEstimatesEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridBasicEstimates.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\ConsumptionEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridConsumption.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\ElectivityEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridElectivity.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\FisheryOutputQuantityEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridFisheryOutputQuantity.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\FisheryOutputValueEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridFisheryOutputValue.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\KeyIndicesEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridKeyIndices.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\MortalityCoefficientsEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridMortalityCoefficients.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\MortalityPredationEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridMortalityPredation.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\NicheOverlapPredatorEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridNicheOverlapPredator.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\NicheOverlapPreyEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridNicheOverlapPrey.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\RespirationEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridRespiration.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\SearchRatesEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridSearchRates.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\GroupInfoEwEGrid.vb">
@@ -660,10 +684,10 @@
     <Compile Include="Panels\StatusPanel\frmStatusPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\BasicInputEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridBasicInput.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\DietCompositionEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridDietComposition.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Panels\NavigationPanel\frmNavigationPanel.Designer.vb">
@@ -697,8 +721,21 @@
       <DependentUpon>AppLauncher.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\dlgConfig.resx">
+      <DependentUpon>dlgConfig.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.resx">
+      <DependentUpon>dlgExternalData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.resx">
+      <DependentUpon>ucConfigAdapter.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgDefineImportanceMaps.resx">
       <DependentUpon>dlgDefineImportanceMaps.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineInputMaps.resx">
+      <DependentUpon>dlgDefineInputMaps.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgEditLayer.resx">
@@ -726,8 +763,8 @@
       <DependentUpon>dlgEditMultiStanza.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\Input\DietComp.resx">
-      <DependentUpon>DietComp.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\Input\frmDietComp.resx">
+      <DependentUpon>frmDietComp.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ForcingFunction\frmForcingFunction.resx">
@@ -875,20 +912,20 @@
       <DependentUpon>frmPedigree.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\Output\PSDContributionPlot.resx">
-      <DependentUpon>PSDContributionPlot.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\Output\frmPSDContributionPlot.resx">
+      <DependentUpon>frmPSDContributionPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\Output\PSDPlotByGroup.resx">
-      <DependentUpon>PSDPlotByGroup.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\Output\frmPSDPlotByGroup.resx">
+      <DependentUpon>frmPSDPlotByGroup.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\Output\RunPSD.resx">
-      <DependentUpon>RunPSD.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\Output\frmRunPSD.resx">
+      <DependentUpon>frmRunPSD.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\Output\SizeWeightPlot.resx">
-      <DependentUpon>SizeWeightPlot.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\Output\frmSizeWeight.resx">
+      <DependentUpon>frmSizeWeight.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Tools\Taxon\frmTaxonInput.resx">
@@ -1015,14 +1052,6 @@
       <DependentUpon>ucSuitabilityPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgExportLayerData.resx">
-      <DependentUpon>dlgExportLayerData.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgDefineInputMaps.resx">
-      <DependentUpon>dlgDefineInputMaps.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgImportLayerData.resx">
       <DependentUpon>dlgImportLayerData.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1110,7 +1139,7 @@
     <Compile Include="Ecopath\Input\frmFisheryBasicInput.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\FisheryInputDiscardMortGrid.vb">
+    <Compile Include="Ecopath\Input\gridFisheryInputDiscardMort.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\frmBasicInput.Designer.vb">
@@ -1129,43 +1158,43 @@
     <Compile Include="Ecopath\Tools\Pedigree\gridPedigree.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Input\GrowthParametersEwEGrid.vb">
+    <Compile Include="Ecopath\Input\gridGrowthParameters.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\EcopathStatisticsEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridEcopathStatistics.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\FleetFishingMortalityGrid.vb">
+    <Compile Include="Ecopath\Output\gridFleetFishingMortality.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\GrowthEstimatesEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridGrowthEstimates.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\PSDContributionPlot.Designer.vb">
-      <DependentUpon>PSDContributionPlot.vb</DependentUpon>
+    <Compile Include="Ecopath\Output\frmPSDContributionPlot.Designer.vb">
+      <DependentUpon>frmPSDContributionPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Output\PSDContributionPlot.vb">
+    <Compile Include="Ecopath\Output\frmPSDContributionPlot.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\PSDContributionResultEwEGrid.vb">
+    <Compile Include="Ecopath\Output\gridPSDContributionResult.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\PSDPlotByGroup.Designer.vb">
-      <DependentUpon>PSDPlotByGroup.vb</DependentUpon>
+    <Compile Include="Ecopath\Output\frmPSDPlotByGroup.Designer.vb">
+      <DependentUpon>frmPSDPlotByGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Output\PSDPlotByGroup.vb">
+    <Compile Include="Ecopath\Output\frmPSDPlotByGroup.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\RunPSD.Designer.vb">
-      <DependentUpon>RunPSD.vb</DependentUpon>
+    <Compile Include="Ecopath\Output\frmRunPSD.Designer.vb">
+      <DependentUpon>frmRunPSD.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Output\RunPSD.vb">
+    <Compile Include="Ecopath\Output\frmRunPSD.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\SizeWeightPlot.Designer.vb">
-      <DependentUpon>SizeWeightPlot.vb</DependentUpon>
+    <Compile Include="Ecopath\Output\frmSizeWeight.Designer.vb">
+      <DependentUpon>frmSizeWeight.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Output\SizeWeightPlot.vb">
+    <Compile Include="Ecopath\Output\frmSizeWeight.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\ApplyLandingsShapeGrid.vb">
@@ -1413,12 +1442,6 @@
     <Compile Include="Ecospace\Input\gridDefineRegions.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineInputMaps.Designer.vb">
-      <DependentUpon>dlgDefineInputMaps.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineInputMaps.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Ecospace\Input\gridDefineInputMaps.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1572,6 +1595,7 @@
     <None Include="Resources\certificate.png" />
     <None Include="Resources\Ecopath_hohoho.ico" />
     <None Include="Resources\EditTaxa.png" />
+    <Content Include="Resources\Ecopath_beta.ico" />
     <None Include="Resources\EWE_forever.jpg" />
     <Content Include="Resources\Ecopath_beta.ico" />
     <Content Include="Resources\EU_50px.jpg" />
@@ -1796,8 +1820,9 @@
       <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Ecopath\Controls\" />
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

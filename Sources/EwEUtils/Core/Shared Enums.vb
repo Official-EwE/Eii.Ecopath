@@ -1239,6 +1239,7 @@ Namespace Core
         MSEBatchGroupRunType
 
         ''' <summary>
+        ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 
         ''' Boolean is this group managed using the TFM
         ''' </summary>
         ''' <remarks></remarks>
@@ -1470,6 +1471,8 @@ Namespace Core
         OtherMortInput
         ''' <summary>Helper flag to determine whether a group is fished</summary>
         IsFished
+        ''' <summary>Use relative or absolute time in Ecospace when accessing remote datasets</summary>
+        UseRelativeTime
 
     End Enum
 
@@ -1974,6 +1977,8 @@ Namespace Core
         ''' </summary>
         MSEValueTotalStats = 94
 
+        SpatialDataSource = 95
+
         ''' <summary>
         ''' Data belongs to a taxonomy definition.
         ''' </summary>
@@ -2140,6 +2145,8 @@ Namespace Core
         ''' </summary>
         ''' <remarks></remarks>
         nMSEBATCHTAC
+
+        nSpatialReaders
 
     End Enum
 

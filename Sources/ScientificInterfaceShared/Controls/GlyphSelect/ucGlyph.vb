@@ -103,9 +103,9 @@ Namespace Controls
 
             e.Graphics.FillRectangle(SystemBrushes.Window, Me.ClientRectangle)
             If Me.m_bSelected Then
-                e.Graphics.DrawRectangle(New Pen(SystemColors.Highlight, 2), rcHatch)
+                e.Graphics.DrawRectangle(New Pen(System.Drawing.SystemColors.Highlight, 2), rcHatch)
             End If
-            rcHatch.Offset(New Point(2, 2))
+            rcHatch.Offset(New System.Drawing.Point(2, 2))
             rcHatch.Width -= 5
             rcHatch.Height -= 5
 

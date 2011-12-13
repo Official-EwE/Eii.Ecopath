@@ -62,8 +62,12 @@ Public Class frmNavigationPanel
         Me.m_uic = uic
         Me.m_pluginManager = pluginManager
 
+        Try
         ' Hit 'em, Jimmy
         Me.InitializeComponent()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -94,40 +98,40 @@ Public Class frmNavigationPanel
             'Basic Parameters
             .Add("ndModelDescription", eCoreExecutionState.EcopathLoaded, GetType(frmModelDescription), "Model description.htm")
             .Add("ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(frmBasicInput), "Basic input.htm", True)
-            .Add("ndDietComposition", eCoreExecutionState.EcopathLoaded, GetType(DietComp), "Diet composition.htm")
-            .Add("ndDetritusFate", eCoreExecutionState.EcopathLoaded, GetType(DetritusFateEwEGrid), "Detritus fate.htm")
-            .Add("ndOtherProduction", eCoreExecutionState.EcopathLoaded, GetType(OtherProductionEwEGrid), "Other production.htm")
+            .Add("ndDietComposition", eCoreExecutionState.EcopathLoaded, GetType(frmDietComp), "Diet composition.htm")
+            .Add("ndDetritusFate", eCoreExecutionState.EcopathLoaded, GetType(gridDetritusFate), "Detritus fate.htm")
+            .Add("ndOtherProduction", eCoreExecutionState.EcopathLoaded, GetType(gridOtherProduction), "Other production.htm")
             .Add("ndDefFleets", eCoreExecutionState.EcopathLoaded, GetType(frmFisheryBasicInput), "Definition of fleets.htm")
-            .Add("ndLandings", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputLandingsEwEGrid), "Landings.htm")
-            .Add("ndDiscards", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardsEwEGrid), "Discards.htm")
-            .Add("ndDiscardFate", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardFateEwEGrid), "Discard fate.htm")
-            .Add("ndDiscardMortRate", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputDiscardMortGrid), "") ' ToDo: connect to help
+            .Add("ndLandings", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputLandings), "Landings.htm")
+            .Add("ndDiscards", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputDiscards), "Discards.htm")
+            .Add("ndDiscardFate", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputDiscardFate), "Discard fate.htm")
+            .Add("ndDiscardMortRate", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputDiscardMort), "") ' ToDo: connect to help
             .Add("ndOffVesselPrice", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryOffVesselValue), "Market price.htm")
-            .Add("ndNonMarketPrice", eCoreExecutionState.EcopathLoaded, GetType(FisheryInputNonMarketPriceEwEGrid), "Non market price.htm")
+            .Add("ndNonMarketPrice", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputNonMarketPrice), "Non market price.htm")
             .Add("ndPedigree", eCoreExecutionState.EcopathLoaded, GetType(frmPedigree), "pedigree.htm")
             .Add("ndEcopathInputTaxon", eCoreExecutionState.EcopathLoaded, GetType(frmTaxonInput), "") ' ToDo: connect to help
 
             ' Ecopath Output
-            .Add("ndBasicEstimates", eCoreExecutionState.EcopathCompleted, GetType(BasicEstimatesEwEGrid), "Basic estimates.htm")
-            .Add("ndKeyIndices", eCoreExecutionState.EcopathCompleted, GetType(KeyIndicesEwEGrid), "Key indices.htm")
-            .Add("ndMortCoef", eCoreExecutionState.EcopathCompleted, GetType(MortalityCoefficientsEwEGrid), "Mortalities.htm")
-            .Add("ndPredMort", eCoreExecutionState.EcopathCompleted, GetType(MortalityPredationEwEGrid), "Predation mortality.htm")
-            .Add("ndFleetFishingMortality", eCoreExecutionState.EcopathCompleted, GetType(FleetFishingMortalityGrid), "")
-            .Add("ndConsumption", eCoreExecutionState.EcopathCompleted, GetType(ConsumptionEwEGrid), "Consumption.htm")
-            .Add("ndRespiration", eCoreExecutionState.EcopathCompleted, GetType(RespirationEwEGrid), "Respiration.htm")
-            .Add("ndPreyOverlap", eCoreExecutionState.EcopathCompleted, GetType(NicheOverlapPreyEwEGrid), "Niche overlap.htm")
-            .Add("ndPredatorOverlap", eCoreExecutionState.EcopathCompleted, GetType(NicheOverlapPredatorEwEGrid), "Niche overlap.htm")
-            .Add("ndElectivity", eCoreExecutionState.EcopathCompleted, GetType(ElectivityEwEGrid), "Electivity.htm")
-            .Add("ndSearchRates", eCoreExecutionState.EcopathCompleted, GetType(SearchRatesEwEGrid), "Search rates.htm")
-            .Add("ndQuantity", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputQuantityEwEGrid), "Fishery (Ecopath parameterization).htm")
-            .Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(FisheryOutputValueEwEGrid), "Fishery (Ecopath parameterization).htm")
-            .Add("ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.FlowDiagram), "Flow diagram.htm")
-            .Add("ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(EcopathStatisticsEwEGrid), "")
+            .Add("ndBasicEstimates", eCoreExecutionState.EcopathCompleted, GetType(gridBasicEstimates), "Basic estimates.htm")
+            .Add("ndKeyIndices", eCoreExecutionState.EcopathCompleted, GetType(gridKeyIndices), "Key indices.htm")
+            .Add("ndMortCoef", eCoreExecutionState.EcopathCompleted, GetType(gridMortalityCoefficients), "Mortalities.htm")
+            .Add("ndPredMort", eCoreExecutionState.EcopathCompleted, GetType(gridMortalityPredation), "Predation mortality.htm")
+            .Add("ndFleetFishingMortality", eCoreExecutionState.EcopathCompleted, GetType(gridFleetFishingMortality), "")
+            .Add("ndConsumption", eCoreExecutionState.EcopathCompleted, GetType(gridConsumption), "Consumption.htm")
+            .Add("ndRespiration", eCoreExecutionState.EcopathCompleted, GetType(gridRespiration), "Respiration.htm")
+            .Add("ndPreyOverlap", eCoreExecutionState.EcopathCompleted, GetType(gridNicheOverlapPrey), "Niche overlap.htm")
+            .Add("ndPredatorOverlap", eCoreExecutionState.EcopathCompleted, GetType(gridNicheOverlapPredator), "Niche overlap.htm")
+            .Add("ndElectivity", eCoreExecutionState.EcopathCompleted, GetType(gridElectivity), "Electivity.htm")
+            .Add("ndSearchRates", eCoreExecutionState.EcopathCompleted, GetType(gridSearchRates), "Search rates.htm")
+            .Add("ndQuantity", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputQuantity), "Fishery (Ecopath parameterization).htm")
+            .Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputValue), "Fishery (Ecopath parameterization).htm")
+            .Add("ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.frmFlowDiagram), "Flow diagram.htm")
+            .Add("ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(gridEcopathStatistics), "")
             .Add("ndNichePredPreyPlot", eCoreExecutionState.EcopathCompleted, GetType(frmNichePredPreyPlot), "")
             ' Network Analysis PlugIn: "Network%20analysis%20indices%20in.htm"
 
             ' PSD Input
-            .Add("ndGrowthParameters", eCoreExecutionState.EcopathLoaded, GetType(GrowthParametersEwEGrid), "") ' ToDo: connect to help
+            .Add("ndGrowthParameters", eCoreExecutionState.EcopathLoaded, GetType(gridGrowthParameters), "") ' ToDo: connect to help
             .Add("ndRunPSD", eCoreExecutionState.EcopathLoaded, GetType(RunPSD), "") ' ToDo: connect to help
 
             ' PSD Output

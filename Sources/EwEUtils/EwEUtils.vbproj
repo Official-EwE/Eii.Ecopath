@@ -72,10 +72,28 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <!--
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      Collect_CustomFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+  </PropertyGroup>
+  <Target Name="Collect_CustomFiles">
+    <ItemGroup>
+      <_CustomFiles Include="Spatial\Includes\GDAL\**\*" />
+      <FilesForPackagingFromProject Include="%(_CustomFiles.Identity)">
+        <DestinationRelativePath>$(OutputPath)\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+    <Message Text="Joepie Collect_CustomFiles" />
+  </Target>
+  -->
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
@@ -85,6 +103,7 @@
     <Compile Include="Commands\cCommandHandler.vb" />
     <Compile Include="Commands\cControlHandler.vb" />
     <Compile Include="Core\IEcospaceResultsWriter.vb" />
+    <Compile Include="Core\IExternalDataSource.vb" />
     <Compile Include="Core\ITaxonDetailData.vb" />
     <Compile Include="Core\ICoreMonthFilter.vb" />
     <Compile Include="Core\IEconomicData.vb" />
@@ -95,8 +114,14 @@
     <Compile Include="Core\IRunType.vb" />
     <Compile Include="Core\Shared Enums.vb" />
     <Compile Include="Database\cEwEDatabase.vb" />
+    <Compile Include="Spatial\cSpatialDataCache.vb" />
+    <Compile Include="Spatial\cSpatialDataSetManager.vb" />
+    <Compile Include="Spatial\ISpatialRaster.vb" />
     <Compile Include="Drawing\DIBitmap32.vb" />
     <Compile Include="Drawing\HSV.vb" />
+    <Compile Include="Spatial\ISpatialDataAdapter.vb" />
+    <Compile Include="Spatial\ISpatialDataConverter.vb" />
+    <Compile Include="Spatial\ISpatialDataSet.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -176,11 +201,4 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

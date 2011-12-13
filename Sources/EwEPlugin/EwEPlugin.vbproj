@@ -133,12 +133,13 @@
     <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPostPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceRunCompletedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceEndTimestepPostPlugin.vb" />
-    <Compile Include="Plugin templates\Ecospace\IEcospaceLayerExchangePlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceEndTimestepPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospacePlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospacePostFishingEffortModTimestepPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\ISpatialDataConverterPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\ISpatialDataSetPlugin.vb" />
     <Compile Include="Plugin templates\Ecotracer\IEcotracerLifespanPlugin.vb" />
     <Compile Include="Plugin templates\Ecotracer\IEcotracerInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecotracer\IEcotracerPlugin.vb" />

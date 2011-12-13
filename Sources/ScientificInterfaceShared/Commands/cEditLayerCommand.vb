@@ -19,6 +19,7 @@ Namespace Commands
         Inherits cCommand
 
         Private m_layer As cLayer = Nothing
+        Private m_layerDepth As cLayer = Nothing
         Private m_edittype As eLayerEditTypes
 
         ''' <summary>Static name for this command.</summary>
@@ -31,8 +32,9 @@ Namespace Commands
         ''' ---------------------------------------------------------------------------
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal layer As cLayer, ByVal edittype As eLayerEditTypes)
+        Public Overloads Sub Invoke(ByVal layer As cLayer, ByVal layerDepth As cLayer, ByVal edittype As eLayerEditTypes)
             Me.m_layer = layer
+            Me.m_layerDepth = layerDepth
             Me.m_edittype = edittype
             MyBase.Invoke()
         End Sub
@@ -43,6 +45,17 @@ Namespace Commands
         ''' </summary>
         ''' ---------------------------------------------------------------------------
         Public ReadOnly Property Layer() As cLayer
+            Get
+                Return Me.m_layer
+            End Get
+        End Property
+
+        ''' ---------------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the reference depth layer that the command was invoked for.
+        ''' </summary>
+        ''' ---------------------------------------------------------------------------
+        Public ReadOnly Property LayerDepth() As cLayer
             Get
                 Return Me.m_layer
             End Get

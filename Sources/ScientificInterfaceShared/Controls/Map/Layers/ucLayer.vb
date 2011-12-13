@@ -6,7 +6,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -28,11 +27,12 @@ Namespace Controls.Map
         Private m_bHovering As Boolean = False
 
         ' Images cache for faster rendering
-        Protected Shared g_imgEye0 As Image = SharedResources.Eye_open
-        Protected Shared g_imgEye1 As Image = SharedResources.Eye_closed
-        Protected Shared g_imgPen0 As Image = SharedResources.Editable
-        Protected Shared g_imgPen1 As Image = SharedResources.NotEditable
-        Protected Shared g_imgLock As Image = SharedResources.ProtectFormHS
+        Protected Shared g_imgEye0 As Image = My.Resources.Eye_open
+        Protected Shared g_imgEye1 As Image = My.Resources.Eye_closed
+        Protected Shared g_imgPen0 As Image = My.Resources.Editable
+        Protected Shared g_imgPen1 As Image = My.Resources.NotEditable
+        Protected Shared g_imgLock As Image = My.Resources.ProtectFormHS
+        Protected Shared g_imgData As Image = My.Resources.Database
 
 #End Region ' Private vars
 
@@ -97,8 +97,11 @@ Namespace Controls.Map
 #Region " Internal implementation "
 
         Private Sub OnLayerChanged(ByVal l As cLayer, ByVal updateType As cLayer.eChangeFlags)
-            ' Ignore sole map changes
-            If (updateType = cLayer.eChangeFlags.Map) Then Return
+
+            If (updateType = cLayer.eChangeFlags.Map) Then
+                Me.Invalidate()
+                Return
+            End If
 
             If ((updateType And cLayer.eChangeFlags.Selected) = cLayer.eChangeFlags.Selected) Then
                 ' Provide instant feedback
@@ -120,7 +123,7 @@ Namespace Controls.Map
 
             Try
                 Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
-                cmd.Invoke(Me.Layer, edittype)
+                cmd.Invoke(Me.Layer, Nothing, edittype)
             Catch ex As Exception
 
             End Try
@@ -241,7 +244,9 @@ Namespace Controls.Map
             End If
 
             ' Draw editable indicator (only when selected or hovering)
-            If Me.m_layer.Editor.IsReadOnly Then
+            If (Me.m_layer.IsExternal) Then
+                img = g_imgData
+            ElseIf (Me.m_layer.Editor.IsReadOnly) Then
                 img = g_imgLock
             Else
                 If Me.m_bHovering Or Me.m_layer.IsSelected Then
@@ -252,45 +257,46 @@ Namespace Controls.Map
                     End If
                 End If
             End If
+
             If img IsNot Nothing Then e.Graphics.DrawImage(img, rcEditable)
 
-            ' Draw visible indicator
-            If Me.Layer.Renderer.IsVisible Then
-                img = g_imgEye0
-            Else
-                img = g_imgEye1
-            End If
-            e.Graphics.DrawImage(img, rcVisible)
+                ' Draw visible indicator
+                If Me.Layer.Renderer.IsVisible Then
+                    img = g_imgEye0
+                Else
+                    img = g_imgEye1
+                End If
+                e.Graphics.DrawImage(img, rcVisible)
 
-            ' Draw label
-            fmt.LineAlignment = StringAlignment.Center
-            fmt.Alignment = StringAlignment.Near
-            If Me.m_layer.IsSelected Then
-                e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.HighlightText, rcLabel, fmt)
-            Else
-                e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.ControlText, rcLabel, fmt)
-            End If
+                ' Draw label
+                fmt.LineAlignment = StringAlignment.Center
+                fmt.Alignment = StringAlignment.Near
+                If Me.m_layer.IsSelected Then
+                    e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.HighlightText, rcLabel, fmt)
+                Else
+                    e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.ControlText, rcLabel, fmt)
+                End If
 
-            ' Draw preview
-            ' - Render representation
-            e.Graphics.FillRectangle(Brushes.White, rcPreview)
-            Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview, Me.Layer.Data)
-            ' - Render remarks indicator
-            cRemarksIndicator.Paint(Me.m_uic.StyleGuide, rcPreview, e.Graphics, prop.HasRemark())
-            ' - Render border
-            ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken, _
-                Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
+                ' Draw preview
+                ' - Render representation
+                e.Graphics.FillRectangle(Brushes.White, rcPreview)
+                Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview, Me.Layer.Data)
+                ' - Render remarks indicator
+                cRemarksIndicator.Paint(Me.m_uic.StyleGuide, rcPreview, e.Graphics, prop.HasRemark())
+                ' - Render border
+                ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken, _
+                    Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
 
-            ' Draw button borders only when hovering
-            If Me.m_bHovering Then
-                ControlPaint.DrawBorder(e.Graphics, rcEditable, SystemColors.ControlDark, ButtonBorderStyle.Solid)
-                ControlPaint.DrawBorder(e.Graphics, rcVisible, SystemColors.ControlDark, ButtonBorderStyle.Solid)
-            End If
+                ' Draw button borders only when hovering
+                If Me.m_bHovering Then
+                    ControlPaint.DrawBorder(e.Graphics, rcEditable, SystemColors.ControlDark, ButtonBorderStyle.Solid)
+                    ControlPaint.DrawBorder(e.Graphics, rcVisible, SystemColors.ControlDark, ButtonBorderStyle.Solid)
+                End If
 
-            ' Highlight line at the top
-            e.Graphics.DrawLine(SystemPens.ButtonHighlight, 0, 0, rcControl.Width, 0)
-            ' Shadow line at the bottom
-            e.Graphics.DrawLine(SystemPens.ButtonShadow, 0, rcControl.Height - 1, rcControl.Width, rcControl.Height - 1)
+                ' Highlight line at the top
+                e.Graphics.DrawLine(SystemPens.ButtonHighlight, 0, 0, rcControl.Width, 0)
+                ' Shadow line at the bottom
+                e.Graphics.DrawLine(SystemPens.ButtonShadow, 0, rcControl.Height - 1, rcControl.Width, rcControl.Height - 1)
 
         End Sub
 

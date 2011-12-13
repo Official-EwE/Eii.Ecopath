@@ -91,6 +91,7 @@ Public MustInherit Class gridShapeBase
         End Set
     End Property
 
+    ' ToDo: replace with ScIntShared combo editor
     Protected Function CreateComboCell(ByVal value As Object, ByVal aiValuesOrg() As Integer, ByVal astrValuesDisplay As String()) As Cell
 
         Dim editor As New EditorComboBox(value.GetType)

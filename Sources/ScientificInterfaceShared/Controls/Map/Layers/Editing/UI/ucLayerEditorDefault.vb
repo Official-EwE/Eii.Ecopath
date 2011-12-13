@@ -22,10 +22,15 @@ Namespace Controls.Map.Layers
             MyBase.UpdateContent(editor)
 
             ' Sanity checks
-            If (Me.Editor Is Nothing) Then Return
+            If (editor Is Nothing) Then Return
             If (Me.m_ucSlider Is Nothing) Then Return
 
+            Dim bEnabled As Boolean = editor.IsEditable
+
             Me.m_ucSlider.Value = editor.CursorSize
+            Me.m_ucSlider.Enabled = bEnabled
+            Me.m_lblCursor.Enabled = bEnabled
+
         End Sub
 
         Private Sub OnSliderValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _

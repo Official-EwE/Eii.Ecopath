@@ -58,11 +58,6 @@ Namespace Utilities
             MyBase.New(strScheme, strHost, iPort, path, extraValue)
         End Sub
 
-        Public Sub New(ByVal page As System.Web.UI.Page)
-            MyBase.New(page.Request.Url.AbsoluteUri)
-            Me.PopulateQueryString()
-        End Sub
-
 #End Region
 
 #Region " Public methods "

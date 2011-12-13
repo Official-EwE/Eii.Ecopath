@@ -100,6 +100,12 @@ Namespace Controls.Map.Layers
 
             g.Dispose()
 
+            Dim bEditable As Boolean = editor.IsEditable
+            Me.m_nudValue.Enabled = bEditable
+            Me.m_btnFill.Enabled = bEditable
+            Me.m_btnSmooth.Enabled = bEditable
+            Me.m_lbValue.Enabled = bEditable
+
         End Sub
 
 #End Region ' Overrides

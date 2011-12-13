@@ -80,6 +80,12 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
+            ' RelativeTime
+            meta = New cVariableMetaData()
+            val = New cValue(1, eVarNameFlags.UseRelativeTime, eStatusFlags.Null, eValueTypes.Bool, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             ' Multi threading vars
 
@@ -569,20 +575,35 @@ Public Class cEcospaceModelParameters
 
 
     ''' <summary>
-    ''' Set the inputs that Ecospace uses to calculate capacity
+    ''' Set the <see cref="eEcospaceCapacityCalType">inputs</see> that Ecospace uses to calculate capacity.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks>
-    ''' </remarks>
-    Public Property CapacityCalculationType() As Integer
+    Public Property CapacityCalculationType() As eEcospaceCapacityCalType
 
         Get
-            Return CInt(GetVariable(eVarNameFlags.EcospaceCapCalType))
+            Return CType(GetVariable(eVarNameFlags.EcospaceCapCalType), eEcospaceCapacityCalType)
         End Get
 
-        Set(ByVal value As Integer)
+        Set(ByVal value As eEcospaceCapacityCalType)
             SetVariable(eVarNameFlags.EcospaceCapCalType, value)
+        End Set
+
+    End Property
+
+    ''' <summary>
+    ''' Use relative time when trying to match external data to Ecospace time steps.
+    ''' </summary>
+    ''' <remarks>
+    ''' If true, an Ecospace time step is interpreted as an offset to the start time of a remote dataset. 
+    ''' If false, an Ecospace time step is translated to an absolute time value for matching remote dataset data.
+    ''' </remarks>
+    Public Property UseRelativeTime() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.UseRelativeTime))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.UseRelativeTime, value)
         End Set
 
     End Property

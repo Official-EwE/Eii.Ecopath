@@ -81,6 +81,23 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Convert a text into a valid file extension.
+        ''' </summary>
+        ''' <param name="strText">Text to convert into a file extension.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToValidFileExt(ByVal strText As String, strDefault As String) As String
+
+            If (String.IsNullOrWhiteSpace(strText)) Then strText = strDefault
+            If (String.IsNullOrWhiteSpace(strText)) Then Return ""
+
+            If strText(0) <> "."c Then Return "." & strText
+            Return strText
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Find a file in a directory.
         ''' </summary>
         ''' <param name="strFile">Name of the file to locate.</param>
@@ -162,23 +179,55 @@ Namespace Utilities
 
         End Function
 
+        Private Shared g_files As New List(Of String)
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Create a zero-byte file in the %TEMP% folder, and return the path to the file.
+        ''' Create a random file in the %TEMP% folder, and return the path to the file.
         ''' </summary>
-        ''' <param name="strFileName">An optional file name to use.</param>
+        ''' <param name="strExt">An optional file extension to use.</param>
         ''' <returns>The full path to the file.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function MakeTempFile(Optional ByVal strFileName As String = "") As String
-
-            If String.IsNullOrEmpty(strFileName) Then
-                strFileName = Path.GetTempFileName()
-            End If
+        Public Shared Function MakeTempFile(Optional ByVal strExt As String = "") As String
 
             ' TODO: Check if file is writeable!!!
-            Return Path.Combine(System.IO.Path.GetTempPath(), strFileName)
+
+            Dim strFileName As String = Path.GetRandomFileName() & strExt
+
+            Dim strFile As String = Path.Combine(System.IO.Path.GetTempPath(), strFileName)
+            ' Add to temp file registry
+            If Not cFileUtils.g_files.Contains(strFile) Then cFileUtils.g_files.Add(strFile)
+            ' Done
+            Return strFile
 
         End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Purge all files created by <see cref="MakeTempFile"/>
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Shared Sub PurgeTempFiles()
+            Dim astrFiles As String() = cFileUtils.g_files.ToArray
+            For Each strTempFile As String In astrFiles
+                cFileUtils.PurgeTempFile(strTempFile)
+            Next
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Purge a single file created by <see cref="MakeTempFile"/>
+        ''' </summary>
+        ''' <param name="strTempFile"></param>
+        ''' -----------------------------------------------------------------------
+        Public Shared Sub PurgeTempFile(ByVal strTempFile As String)
+            Try
+                If File.Exists(strTempFile) Then File.Delete(strTempFile)
+                cFileUtils.g_files.Remove(strTempFile)
+            Catch ex As Exception
+                ' Hmm
+            End Try
+        End Sub
 
         Private Const cCHARS_NUMBER As String = "-0123456789E."
         Private Const cCHARS_STRING As String = "-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$."
@@ -337,6 +386,38 @@ Namespace Utilities
             Next
 
             Return sbPathRel.ToString
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Recursively delete a directory and everything in it. Dangerous!
+        ''' </summary>
+        ''' <param name="strPath">The folder to delete.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function DeleteDirectory(strPath As String) As Boolean
+
+            Dim bSucces As Boolean = True
+            Try
+
+                ' Recursively get rid off all subfolders
+                For Each strSubFolder As String In Directory.GetDirectories(strPath)
+                    bSucces = bSucces And cFileUtils.DeleteDirectory(strSubFolder)
+                Next strSubFolder
+
+                ' Now trash the content of this directory
+                For Each strFile As String In Directory.GetFiles(strPath)
+                    File.Delete(strFile)
+                Next strFile
+
+                ' Lastly trash directory itself
+                Directory.Delete(strPath)
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Return bSucces
+
         End Function
 
     End Class

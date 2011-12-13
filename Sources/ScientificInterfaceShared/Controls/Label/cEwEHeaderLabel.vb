@@ -11,8 +11,6 @@ Imports EwEUtils.Utilities
 
 Namespace Controls
 
-#Const style = win7
-
     ''' ===========================================================================
     ''' <summary>
     ''' Label control for showing header labels on EwE forms.
@@ -39,7 +37,6 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New()
-            Me.Text = "Header"
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         End Sub
 
@@ -51,7 +48,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Protected Overrides ReadOnly Property DefaultSize() As System.Drawing.Size
             Get
-                Return New Size(100, 18)
+                Return New System.Drawing.Size(100, 18)
             End Get
         End Property
 
@@ -64,11 +61,7 @@ Namespace Controls
         <Browsable(False)> _
         Public Overrides Property BackColor() As System.Drawing.Color
             Get
-#If Style = win7 Then
                 Return MyBase.BackColor
-#Else
-                Return SystemColors.ActiveCaption
-#End If
             End Get
             Set(ByVal value As System.Drawing.Color)
                 ' NOP
@@ -84,11 +77,7 @@ Namespace Controls
         <Browsable(False)> _
         Public Overrides Property ForeColor() As System.Drawing.Color
             Get
-#If Style = win7 Then
                 Return MyBase.ForeColor
-#Else
-                Return SystemColors.ActiveCaptionText
-#End If
             End Get
             Set(ByVal value As System.Drawing.Color)
                 ' NOP
@@ -296,8 +285,6 @@ Namespace Controls
                     e.Graphics.DrawString(Me.Text, ft, br, rcText, fmt)
                 End Using
 
-#If Style = win7 Then
-
                 ' Draw line
                 Dim x1 As Integer = rcText.X
                 Dim x2 As Integer = rcText.X + rcText.Width
@@ -312,7 +299,6 @@ Namespace Controls
 
                 e.Graphics.DrawLine(SystemPens.ButtonShadow, x1, y, x2, y)
                 e.Graphics.DrawLine(SystemPens.ButtonHighlight, x1, y + 1, x2, y + 1)
-#End If
             End Using
 
         End Sub

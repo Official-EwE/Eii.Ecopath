@@ -6965,7 +6965,7 @@ Namespace DataSources
             Dim sbValues As New StringBuilder
 
             If tsDS.ActiveDatasetIndex < 0 Then
-                Console.WriteLine("No dataset loaded, cannot add time series")
+                'Console.WriteLine("No dataset loaded, cannot add time series")
                 Return False
             End If
 

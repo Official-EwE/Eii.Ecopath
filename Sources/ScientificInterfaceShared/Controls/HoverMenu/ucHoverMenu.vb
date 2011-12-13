@@ -112,7 +112,7 @@ Namespace Controls
 
             ' Set up mouse movement message filter
             Me.m_filter = New cMouseHoverFilter(Me)
-            Application.AddMessageFilter(Me.m_filter)
+            System.Windows.Forms.Application.AddMessageFilter(Me.m_filter)
 
         End Sub
 
@@ -126,7 +126,7 @@ Namespace Controls
 
             If (Not Me.IsAttached()) Then Return
 
-            Application.RemoveMessageFilter(Me.m_filter)
+            System.Windows.Forms.Application.RemoveMessageFilter(Me.m_filter)
             Me.m_filter = Nothing
 
             Me.m_ctrlParent.Controls.Remove(Me)
@@ -247,7 +247,7 @@ Namespace Controls
             ' Optimization
             If bShow = Me.Visible Then Return
 
-            Dim ptHover As Point = Me.m_ctrlTarget.ClientRectangle.Location
+            Dim ptHover As System.Drawing.Point = Me.m_ctrlTarget.ClientRectangle.Location
 
             If (Me.m_uic IsNot Nothing) Then
 
@@ -295,7 +295,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Function IsMouseOverTarget() As Boolean
             'If Not Me.m_ctrlTarget.Focused Then Return False
-            Dim pt As Point = Me.m_ctrlTarget.PointToClient(MousePosition)
+            Dim pt As System.Drawing.Point = Me.m_ctrlTarget.PointToClient(MousePosition)
             Return Me.m_ctrlTarget.ClientRectangle.Contains(pt)
         End Function
 

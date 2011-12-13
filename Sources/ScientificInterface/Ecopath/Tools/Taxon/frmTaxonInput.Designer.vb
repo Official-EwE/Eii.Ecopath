@@ -95,6 +95,7 @@ Namespace Ecopath.Input
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_ts)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.ShowInTaskbar = False
             Me.Name = "frmTaxonInput"
             Me.Text = "Taxonomy"
             Me.m_ts.ResumeLayout(False)

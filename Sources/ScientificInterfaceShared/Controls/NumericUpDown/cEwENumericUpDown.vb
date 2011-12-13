@@ -20,7 +20,7 @@ Namespace Controls
 #Region " Private vars "
 
         ''' <summary>Most recent mouse position while dragging.</summary>
-        Private m_ptLast As Point = Nothing
+        Private m_ptLast As System.Drawing.Point = Nothing
 
 #End Region ' Private vars
 

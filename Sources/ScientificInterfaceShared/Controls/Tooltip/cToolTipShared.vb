@@ -62,12 +62,12 @@ Namespace Controls
         End Sub
 
         <Obsolete("Please use ToolTip.SetToolTip instead")> _
-        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal pt As Point)
+        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal pt As System.Drawing.Point)
             Debug.Assert(False)
         End Sub
 
         <Obsolete("Please use ToolTip.SetToolTip instead")> _
-        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal pt As Point, ByVal iTimeout As Integer)
+        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal pt As System.Drawing.Point, ByVal iTimeout As Integer)
             Debug.Assert(False)
         End Sub
 

@@ -397,6 +397,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Database() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Database", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to New Ecosim scenario.
         '''</summary>
@@ -3480,6 +3487,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Life Science Identifier.
+        '''</summary>
+        Public ReadOnly Property HEADER_LSID() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LSID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Mandat..
         '''</summary>
         Public ReadOnly Property HEADER_MANDATED_ABBR() As String
@@ -5260,6 +5276,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property map() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("map", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to Extract data to C&amp;lipboard....
         '''</summary>
@@ -5933,6 +5956,13 @@ Namespace My.Resources
         Public ReadOnly Property TableHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("TableHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property tag() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("tag", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

@@ -69,8 +69,8 @@ Public Class cFormSettings
 
             If frm.Parent Is Nothing Then
 
-                Dim ptTL As New Point(Me.m_iPosX, Me.m_iPosY)
-                Dim ptBR As New Point(Me.m_iPosX + Me.m_iWidth, Me.m_iPosY + Me.m_iHeight)
+                Dim ptTL As New System.Drawing.Point(Me.m_iPosX, Me.m_iPosY)
+                Dim ptBR As New System.Drawing.Point(Me.m_iPosX + Me.m_iWidth, Me.m_iPosY + Me.m_iHeight)
                 Dim scTL As Screen = Nothing
                 Dim scBR As Screen = Nothing
 
@@ -84,7 +84,7 @@ Public Class cFormSettings
                     frm.DesktopBounds = New Rectangle(Me.m_iPosX, Me.m_iPosY, Me.m_iWidth, Me.m_iHeight)
                 End If
             Else
-                frm.Location = New Point(Me.m_iPosX, Me.m_iPosY)
+                frm.Location = New System.Drawing.Point(Me.m_iPosX, Me.m_iPosY)
                 frm.Width = Me.m_iWidth
                 frm.Height = Me.m_iHeight
             End If

@@ -62,6 +62,7 @@ Namespace Controls.Map.Layers
                                              ByVal ptClick As System.Drawing.Point)
             ' Sanity checks
             Debug.Assert(Me.m_layerDepth IsNot Nothing)
+            If (Not Me.IsEditable) Then Return
 
             MyBase.SetCellValue(ptSet, Math.Min(CSng(value), CSng(Me.m_layerDepth.Cell(ptSet.Y, ptSet.X))), e, ptClick)
 

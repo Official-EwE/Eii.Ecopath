@@ -215,9 +215,9 @@ Namespace Controls.Map.Layers
 
             Me.m_uic = uic
 
-            Me.m_mh = New cMessageHandler(AddressOf Me.EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
 #If DEBUG Then
-            Me.m_mh.Name = "Layer " & varName
+            Me.m_mh.Name = "UI::cLayer " & Me.Name
 #End If
             Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mh)
 
@@ -600,6 +600,18 @@ Namespace Controls.Map.Layers
             Set(ByVal value As Boolean)
                 Me.m_bSelected = value
             End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get whether the underlying data is 
+        ''' <see cref="cEcospaceLayer.IsExternalData">driven externally</see>.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property IsExternal As Boolean
+            Get
+                Return Me.m_data.IsExternalData
+            End Get
         End Property
 
         ''' -----------------------------------------------------------------------

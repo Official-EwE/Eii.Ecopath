@@ -1,5 +1,7 @@
 Option Strict On
 Imports System.Math
+Imports EwEUtils.Core
+Imports EwEUtils.SpatialData
 
 Public Class cEcospaceDataStructures
 
@@ -10,34 +12,6 @@ Public Class cEcospaceDataStructures
     Public Const KM_TO_DEGRESS As Single = 1 / (40007.86291736 / 360.0)
 
 #Region "Public Fields"
-
-    '#Region " Storage classes "
-
-    '    Public Class cLayerDriverData
-
-    '        Public DBID As Integer
-    '        Public Data(,) As Single
-    '        Public strName As String
-    '        Public strDescription As String
-
-    '        Public Sub New(ByVal inRow As Integer, ByVal inCol As Integer)
-    '            ReDim Data(inRow, inCol)
-    '        End Sub
-
-    '    End Class
-
-    '    Public Class cLayerImportanceData
-    '        Inherits cLayerDriverData
-
-    '        Public sWeight As Single
-
-    '        Public Sub New(ByVal inRow As Integer, ByVal inCol As Integer)
-    '            MyBase.New(inRow, inCol)
-    '        End Sub
-
-    '    End Class
-
-    '#End Region
 
     Public EcosimScenarioDBID As Integer
     ''' <summary>Array of ecospace group database IDs.</summary>
@@ -70,8 +44,7 @@ Public Class cEcospaceDataStructures
     'for now this will let the code function
     Public EcoseedOn As Boolean
 
-    Public chkMPA As Boolean
-
+    'Public chkMPA As Boolean
 
     ''' <summary>Current Model time step.</summary>
     ''' <remarks>This is the time in years, not the array index</remarks>
@@ -245,8 +218,6 @@ Public Class cEcospaceDataStructures
     Public RelCinorig(,) As Single    'for use with habitat change
     Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
     Public Port(,,) As Boolean
-    'Public DriverLayers As New List(Of cLayerDriverData)
-    'Public ImportanceLayers As New List(Of cLayerImportanceData)
 
     Public EffPower() As Single
 
@@ -469,6 +440,7 @@ Public Class cEcospaceDataStructures
 
 
     'VC Hobart Sep 2008: We need a data structure for handling salinity, temperature, etc.
+    'JS Nov 2011: consider how this logic interoperates with the new Driver layers.
     'it should eventually (perhaps) be dimensioned with time steps as well. 
     Public SpatialField(,,) As Single               'row, col, index
     Public SpatialFieldOptimum(,) As Boolean   ' group, index
@@ -542,6 +514,30 @@ Public Class cEcospaceDataStructures
 
     Public CapCalType As EwEUtils.Core.eEcospaceCapacityCalType = EwEUtils.Core.eEcospaceCapacityCalType.Capacity
 
+#Region " Spatial data adapters "
+
+    ''' <summary>Avalailable data adapters</summary>
+    Public DataAdapters As New Dictionary(Of eVarNameFlags, ISpatialDataAdapter)
+    ''' <summary>Flag stating how Ecospace time steps are interpreted when accessing remote data. If true, 
+    ''' an Ecospace time step is interpreted as an offset to the start time of a remote dataset. If false,
+    ''' an Ecospace time step is translated to an absolute time value for matching remote dataset data.
+    ''' </summary>
+    Public AdapterUseRelativeTime As Boolean = True
+
+    Public Property DataAdapter(ByVal varname As eVarNameFlags) As ISpatialDataAdapter
+        Get
+            If Me.DataAdapters.ContainsKey(varname) Then
+                Return Me.DataAdapters(varname)
+            End If
+            Return Nothing
+        End Get
+        Set(ByVal value As ISpatialDataAdapter)
+            Me.DataAdapters(varname) = value
+        End Set
+    End Property
+
+#End Region ' Spatial data adapters
+ 
     ''' <summary>
     ''' Nearest suitable map row (iPacket) for an IBM Packet by nStanzaGroups(nSplit), MaxStanzas, row, col
     ''' </summary>
@@ -555,7 +551,6 @@ Public Class cEcospaceDataStructures
     Public JtoUse(,,,) As Integer
 
     Public MovePacketsAtStanzaEntry As Boolean
-
 
 #End Region
 
@@ -972,6 +967,7 @@ Public Class cEcospaceDataStructures
 
             ReDim HabTime(NoHabChanges)
             ReDim HabChange(3, NoHabChanges)
+
             ReDim PHabType(InRow, InCol, NoHabitats)
             'ReDim HabType(InRow, InCol, NoHabitats)
 
@@ -1194,11 +1190,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(CatchMap, InRow, InCol, nvartot)
 
             ' Me.allocate(HabType, InRow + 1, InCol + 1)
-
-
             ReDim PHabType(Me.InRow, Me.InCol, NoHabitats)
             ReDim PAreaFished(Me.InRow, Me.InCol, nFleets)
-
 
             For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
@@ -1699,9 +1692,7 @@ Public Class cEcospaceDataStructures
             'set PHabType(,,) to 100% for cells that are loaded as a HabType from the database 
             'For irow As Integer = 1 To InRow
             '    For icol As Integer = 1 To InCol
-
             '        PHabType(irow, icol, HabType(irow, icol)) = 1
-
             '    Next icol
             'Next irow
 

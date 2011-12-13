@@ -141,7 +141,7 @@ Namespace Controls
                 Dim iHeightOffset As Integer = Me.Parent.Height - Me.Parent.ClientRectangle.Height
 
                 While Me.Parent.Height > Me.Height + iHeightOffset
-                    Application.DoEvents()
+                    System.Windows.Forms.Application.DoEvents()
                     Me.Parent.Height -= AnimationRate
                 End While
                 Me.Parent.Height = Me.Height + iHeightOffset
@@ -149,7 +149,7 @@ Namespace Controls
             Else
 
                 While Me.Parent.Height < Me.m_iExpandedHeight
-                    Application.DoEvents()
+                    System.Windows.Forms.Application.DoEvents()
                     Me.Parent.Height += AnimationRate
                 End While
                 Me.Parent.Height = Me.m_iExpandedHeight

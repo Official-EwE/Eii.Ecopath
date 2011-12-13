@@ -13,7 +13,7 @@ Imports EwEUtils.Database
 Namespace ExternalData
 
     ''' <summary>
-    ''' Implemention of IDataConsumerPlugin that fires an event when ever Network Analysis data is available.
+    ''' Implemention of IDataConsumerPlugin that fires an event when Network Analysis data is available.
     ''' </summary>
     Public Class cNetworkAnalysisDataSource
         Implements Data.IDataConsumerPlugin

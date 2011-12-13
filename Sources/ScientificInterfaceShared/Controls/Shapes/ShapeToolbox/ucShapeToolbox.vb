@@ -383,7 +383,7 @@ Namespace Controls
             End If
 
             'Set up the thumbnail image size
-            largeImageList.ImageSize = New Size(iThumbSize, iThumbSize)
+            largeImageList.ImageSize = New System.Drawing.Size(iThumbSize, iThumbSize)
 
             If Me.m_lShapes.Count > 0 Then
 

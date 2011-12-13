@@ -28,12 +28,18 @@ Namespace Controls.EwEGrid
             Dim lValues As New List(Of Object)
             Dim lRepresentations As New List(Of String)
 
+            ' No standard values provided?
             If (standardvalues Is Nothing) Then
-                For Each key As Object In [Enum].GetValues(formatter.GetDescribedType)
-                    lValues.Add(key)
-                    lRepresentations.Add(formatter.GetDescriptor(key))
-                Next
+                ' #Yes: formatting an enum?
+                If (formatter.GetDescribedType.IsEnum) Then
+                    ' #Yes: auto-extract standard values
+                    For Each key As Object In [Enum].GetValues(formatter.GetDescribedType)
+                        lValues.Add(key)
+                        lRepresentations.Add(formatter.GetDescriptor(key))
+                    Next
+                End If
             Else
+                ' #No: add standard values
                 For Each item As Object In standardvalues
                     lValues.Add(item)
                     lRepresentations.Add(formatter.GetDescriptor(item))
@@ -52,24 +58,32 @@ Namespace Controls.EwEGrid
         End Sub
 
         Protected Overrides Sub OnConvertingObjectToValue(ByVal e As SourceLibrary.ComponentModel.ConvertingObjectEventArgs)
-            If Not Me.ValueType.UnderlyingSystemType.IsAssignableFrom(e.Value.GetType) Then
-                Dim iValue As Integer = 0
-                If TypeOf (e.Value) Is String Then
-                    iValue = Integer.Parse(CStr(e.Value))
-                Else
-                    iValue = CInt(e.Value)
-                End If
-                If Me.ValueType.IsEnum Then
-                    If Not [Enum].IsDefined(Me.ValueType, iValue) Then
-                        ' Clear!
-                        e.Value = Me.StandardValueAtIndex(0)
-                    Else
-                        e.Value = [Enum].ToObject(Me.ValueType, iValue)
-                    End If
-                Else
-                    e.Value = iValue
+
+            If (e.Value IsNot Nothing) Then
+                If Not Me.ValueType.UnderlyingSystemType.IsAssignableFrom(e.Value.GetType) Then
+                    Try
+                        Dim iValue As Integer = 0
+                        If TypeOf (e.Value) Is String Then
+                            iValue = Integer.Parse(CStr(e.Value))
+                        Else
+                            iValue = CInt(e.Value)
+                        End If
+                        If Me.ValueType.IsEnum Then
+                            If Not [Enum].IsDefined(Me.ValueType, iValue) Then
+                                ' Clear!
+                                e.Value = Me.StandardValueAtIndex(0)
+                            Else
+                                e.Value = [Enum].ToObject(Me.ValueType, iValue)
+                            End If
+                        Else
+                            e.Value = iValue
+                        End If
+                    Catch ex As Exception
+
+                    End Try
                 End If
             End If
+
             MyBase.OnConvertingObjectToValue(e)
         End Sub
 

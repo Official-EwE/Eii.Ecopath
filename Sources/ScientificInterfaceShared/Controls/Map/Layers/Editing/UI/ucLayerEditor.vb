@@ -122,6 +122,8 @@ Namespace Controls.Map.Layers
         Public Overridable Sub UpdateContent(ByVal editor As cLayerEditor) _
             Implements ILayerEditorGUI.UpdateContent
 
+            ' ToDo: localize this method
+
             Dim strLabel As String = ""
             Dim img As Image = SharedResources.ProtectFormHS
 
@@ -129,10 +131,10 @@ Namespace Controls.Map.Layers
                 ' Get label text (could use diplay text?)
                 strLabel = Me.Editor.Layer.DisplayText() & " (Editor)"
                 ' Get layer image
-                If Me.Editor.IsReadOnly Then
+                If editor.IsReadOnly Then
                     img = SharedResources.ProtectFormHS
                 Else
-                    If Me.Editor.IsEditable Then
+                    If editor.IsEditable Then
                         img = SharedResources.Editable
                     Else
                         img = SharedResources.NotEditable

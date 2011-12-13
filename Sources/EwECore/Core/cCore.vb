@@ -19,6 +19,7 @@ Imports EwEUtils.Utilities
 Imports EwECore.ExternalData
 Imports EwEPlugin.Data
 Imports EwECore.Ecospace.Advection
+Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 
@@ -134,6 +135,8 @@ Public Class cCore
     Friend m_Stanza As cStanzaDatastructures = Nothing
     Friend m_FitToTimeSeriesData As cF2TSDataStructures = Nothing
     Friend m_tracerData As cContaminantTracerDataStructures = Nothing
+
+    Private m_spatialdataconnectionManager As SpatialData.cSpatialDataConnectionManager = Nothing
 
     ''' <summary>
     ''' List of all multi threaded models/processes <see cref="IThreadedProcess">IThreadedProcess</see> that the core can run.
@@ -7786,7 +7789,6 @@ Public Class cCore
     Friend m_EcospaceMPAs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceMPA, 1)
     Private m_EcospaceModelParams As cEcospaceModelParameters
     Private m_EcospaceBasemap As cEcospaceBasemap
-
     Private m_spaceresults As cEcospaceTimestep
     Private m_SpaceInterfaceCallBack As EcoSpaceInterfaceDelegate
 
@@ -7805,6 +7807,12 @@ Public Class cCore
 
 #End Region ' Variables
 
+    Public ReadOnly Property SpatialDataConnectionManager As SpatialData.cSpatialDataConnectionManager
+        Get
+            Return Me.m_spatialdataconnectionManager
+        End Get
+    End Property
+
     Private Function InitEcoSpace() As Boolean
 
         m_Ecospace = New cEcoSpace()
@@ -7820,6 +7828,9 @@ Public Class cCore
         m_EcoSpaceData.StanzaGroups = Me.m_Stanza
         m_EcoSpaceData.EcoPathData = Me.m_EcoPathData
         m_AdvectionManager = New cAdvectionManager
+
+        m_spatialdataconnectionManager = New SpatialData.cSpatialDataConnectionManager()
+        m_spatialdataconnectionManager.Init(Me)
 
         'counters needed 
         'this could change to get the counter from the above data structures
@@ -8755,6 +8766,7 @@ Public Class cCore
             Me.m_EcospaceModelParams = Nothing
 
             Me.m_Ecospace.Clear()
+
             Me.m_StateMonitor.SetEcospaceLoaded(False)
 
             ' Invoke plugin point
@@ -10991,13 +11003,14 @@ Public Class cCore
     Public Sub CloseEcotracerScenario()
         Me.m_EcoPathData.ActiveEcotracerScenario = -1
 
+        Me.m_StateMonitor.SetEcotracerLoaded(False)
+        cLog.Write("Ecotracer scenario closed")
+
         ' Invoke plugin point
         If (Me.PluginManager IsNot Nothing) Then
             Me.PluginManager.EcotracerClosedScenario()
         End If
 
-        Me.m_StateMonitor.SetEcotracerLoaded(False)
-        cLog.Write("Ecotracer scenario closed")
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -11493,16 +11506,6 @@ Public Class cCore
 #End Region ' Groups
 
 #End Region ' Ecotracer
-
-#Region " Data adapters "
-
-    'Public ReadOnly Property EconomicDataAdapter() As cEconomicDataAdapter
-    '    Get
-    '        Return Me.m_adapterEconomic
-    '    End Get
-    'End Property
-
-#End Region ' Data adapters
 
 #Region " Auxiliary data "
 

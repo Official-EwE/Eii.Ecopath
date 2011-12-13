@@ -37,6 +37,8 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Overrides Sub StartEdit(ByVal ptClick As Point, ByVal buttons As MouseEventArgs)
 
+            If (Not Me.IsEditable) Then Return
+
             ' Clicked on data cell?
             If Decimal.Equals(CDec(Layer.Value(ptClick.Y, ptClick.X)), CDec(Layer.ValueSet)) Then
                 ' #Yes: start clearing values

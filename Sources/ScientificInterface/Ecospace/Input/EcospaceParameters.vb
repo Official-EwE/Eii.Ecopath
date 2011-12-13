@@ -61,8 +61,8 @@ Namespace Ecospace
         ''' Event handler; called when the form is initially loaded.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub EcospaceParameters_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Load
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             Me.InitContent()
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
@@ -142,6 +142,9 @@ Namespace Ecospace
 
             Me.m_fpSaveCSV = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSaveCSV, ecospaceModelParams, eVarNameFlags.EcospaceSaveCSV)
             Me.m_fpSaveASC = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSaveASC, ecospaceModelParams, eVarNameFlags.EcospaceSaveASC)
+
+            'Me.m_fpUseRelTime = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseRelativeTime, ecospaceModelParams, eVarNameFlags.UseRelativeTime)
+
             Me.UpdateScenarioFormatProviders()
 
         End Sub

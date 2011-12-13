@@ -1,0 +1,77 @@
+﻿Imports EwEUtils
+Imports EwECore
+
+Public Class dlgConfig
+    Implements IUIElement
+
+    Private m_ctrl As Control = Nothing
+    Private m_uic As cUIContext = Nothing
+
+    Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
+        Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
+        Get
+            Return Me.m_uic
+        End Get
+        Set(value As ScientificInterfaceShared.Controls.cUIContext)
+            Me.m_uic = value
+        End Set
+    End Property
+
+    Public Shadows Function ShowDialog(owner As IWin32Window, strTitle As String, ctrl As Control) As DialogResult
+
+        ' Set window text
+        Me.Text = strTitle
+        ' Store control
+        Me.m_ctrl = ctrl
+        ' Base, do your work
+        Return MyBase.ShowDialog(owner)
+
+    End Function
+
+    Public Shadows Function ShowDialog(strTitle As String, ctrl As Control) As DialogResult
+        Return Me.ShowDialog(Nothing, strTitle, ctrl)
+    End Function
+
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        ' Resize to page control size
+        Dim szPanel As Size = Me.m_plContent.Size
+        Dim szPage As Size = Me.m_ctrl.Size
+
+        Me.Size = New Size(Me.Width + szPage.Width - szPanel.Width, _
+                           Me.Height + szPage.Height - szPanel.Height)
+
+        Me.m_ctrl.Dock = DockStyle.Fill
+        Me.m_plContent.Controls.Add(Me.m_ctrl)
+
+        Me.CenterToParent()
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+        Me.m_plContent.Controls.Remove(Me.m_ctrl)
+        Me.m_ctrl.Dispose()
+        Me.UIContext = Nothing
+        MyBase.OnFormClosed(e)
+    End Sub
+
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnOK.Click
+
+        Dim uic As cUIContext = Me.UIContext
+
+        Try
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
+        Catch ex As Exception
+            cLog.Write(ex, "dlgConfig::OnOK")
+        End Try
+
+        If (uic IsNot Nothing) Then
+            cApplicationStatusNotifier.StartProgress(uic.Core, ScientificInterfaceShared.My.Resources.STATUS_APPLYVALUES)
+        End If
+
+    End Sub
+
+End Class

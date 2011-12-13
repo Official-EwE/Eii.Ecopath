@@ -218,7 +218,7 @@ Namespace Controls
                 ' -10 to counter odd calculation effects that I do not understand
                 '   Issues seem font based, but no clue as to why the last few chars are sometimes 
                 '   not properly included in the label calculations
-                TextRenderer.MeasureText(strTemp, Me.Font, New Size(Me.m_rcLabel.Width - 10, Me.m_rcLabel.Height), _
+                TextRenderer.MeasureText(strTemp, Me.Font, New System.Drawing.Size(Me.m_rcLabel.Width - 10, Me.m_rcLabel.Height), _
                                          TextFormatFlags.Internal Or _
                                          TextFormatFlags.PathEllipsis Or _
                                          TextFormatFlags.ModifyString)

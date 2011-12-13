@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 
@@ -151,7 +152,7 @@ Public MustInherit Class cEcospaceLayer
     Protected ReadOnly Property Data() As Object
         Get
             If (Me.m_data Is Nothing) Then
-                Return Me.m_manager.GetLayerData(Me.m_vnData, Me.m_iData)
+                Return Me.m_manager.GetLayerData(Me.m_vnData)
             End If
             Return Me.m_data
         End Get
@@ -201,6 +202,21 @@ Public MustInherit Class cEcospaceLayer
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public MustOverride Sub Invalidate()
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' States if layer is receiving data from an external source.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property IsExternalData As Boolean
+        Get
+            Dim man As SpatialData.cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
+            If (man Is Nothing) Then Return False
+            Dim adapter As ISpatialDataAdapter = man.Adapter(Me.VarName)
+            If (adapter Is Nothing) Then Return False
+            Return adapter.IsConnected
+        End Get
+    End Property
 
 #End Region ' Cell manipulation
 

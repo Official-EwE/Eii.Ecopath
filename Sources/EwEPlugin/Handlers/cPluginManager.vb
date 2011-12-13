@@ -1292,7 +1292,6 @@ Public Class cPluginManager
 
     End Sub
 
-
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the CloseEcospaceScenario plug-in point on any available and responsive 
@@ -1304,7 +1303,6 @@ Public Class cPluginManager
         Me.TryInvokeMethod(GetType(IEcospaceLifespanPlugin), "ClosedEcospaceScenario")
 
     End Sub
-
 
     Public Function EcospaceBeginTimeStep(ByVal EcospaceDataStructures As Object, ByVal iTimeStep As Integer) As Boolean
 

@@ -35,17 +35,17 @@ Namespace Controls
             End Using
 
             If Me.m_bHorizontal Then
-                Using p As New Pen(SystemColors.ControlDark, 1)
+                Using p As New Pen(System.Drawing.SystemColors.ControlDark, 1)
                     e.Graphics.DrawLine(p, 0, 0, Me.Width, 0)
                 End Using
-                Using p As New Pen(SystemColors.ControlLightLight, 1)
+                Using p As New Pen(System.Drawing.SystemColors.ControlLightLight, 1)
                     e.Graphics.DrawLine(p, 0, 1, Me.Width, 1)
                 End Using
             Else
-                Using p As New Pen(SystemColors.ControlDark, 1)
+                Using p As New Pen(System.Drawing.SystemColors.ControlDark, 1)
                     e.Graphics.DrawLine(p, 0, 0, 0, Me.Height)
                 End Using
-                Using p As New Pen(SystemColors.ControlLightLight, 1)
+                Using p As New Pen(System.Drawing.SystemColors.ControlLightLight, 1)
                     e.Graphics.DrawLine(p, 1, Me.Height, 1, Me.Height)
                 End Using
             End If
