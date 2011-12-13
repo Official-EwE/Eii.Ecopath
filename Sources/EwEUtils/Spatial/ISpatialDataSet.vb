@@ -1,0 +1,197 @@
+﻿#Region " Imports "
+
+Option Strict On
+Imports System
+Imports System.Data
+Imports System.Drawing
+Imports System.Xml
+Imports EwEUtils.Core
+
+#End Region ' Imports
+
+Namespace SpatialData
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Interface for classes that provide access to sets of spatio-temporal data.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Interface ISpatialDataSet
+        Inherits IExternalDataSource
+
+#Region " Information "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Legible name of the dataset.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property Name As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Legible description of the dataset.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property Description As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the source of the dataset.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property Source As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Unique <see cref="GUID"/>, assigned by the dataset manager, to uniquely identify the data set.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property GUID As Guid
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the start time of the data in this set.
+        ''' </summary>
+        ''' <remarks>
+        ''' If no data is loaded or this property does not apply, this method is expected to return <see cref="DateTime.MaxValue"/>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property TimeStart() As DateTime
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the end time of the data in this set.
+        ''' </summary>
+        ''' <remarks>
+        ''' If no data is loaded or this property does not apply, this method is expected to return <see cref="DateTime.MinValue"/>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property TimeEnd() As DateTime
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Possible range of available time steps, may be NULL
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property TimeSteps As DateTime()
+
+#End Region ' Information
+
+#Region " Configuration "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the configuration information for the converter.
+        ''' </summary>
+        ''' <param name="doc"><see cref="XmlDocument"/> for creating and parsing nodes.</param>
+        ''' <remarks>Automatic serialization is not used here because of difficulties 
+        ''' that may derive from serializing complex data structures and other 
+        ''' headaches. It is deemed more cost-effective to allow full developer 
+        ''' control over the persistence logic.</remarks>
+        ''' -------------------------------------------------------------------
+        Property Configuration(ByVal doc As XmlDocument) As XmlNode
+
+#End Region ' Configuration
+
+#Region " Data "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether the data set has data for a given date and spatial extent.
+        ''' </summary>
+        ''' <param name="dateTime">The time to query data for. For practical
+        ''' purposes, time is assumed to be rounded to days.</param>
+        ''' <param name="ptfNE">North-east corner of the area to query data for. 
+        ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
+        ''' <see cref="Point.Y"/> as latiude.</param>
+        ''' <param name="ptfSW">South-west corner of the area to query data for. 
+        ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
+        ''' <see cref="Point.Y"/> as latiude.</param>
+        ''' <returns>True if data is available.</returns>
+        ''' -------------------------------------------------------------------
+        Function HasDataAtT(ByVal datetime As DateTime, _
+                            ByVal ptfNE As PointF, ByVal ptfSW As PointF) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load data for a given time and spatial extent.
+        ''' </summary>
+        ''' <param name="dateTime">The time to query data for. For practical
+        ''' purposes, time is assumed to be rounded to days.</param>
+        ''' <param name="ptfNE">North-east corner of the area to load data for. 
+        ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
+        ''' <see cref="Point.Y"/> as latiude.</param>
+        ''' <param name="ptfSW">South-west corner of the area to load data for. 
+        ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
+        ''' <see cref="Point.Y"/> as latiude.</param>
+        ''' <returns>True if data was loaded.</returns>
+        ''' -------------------------------------------------------------------
+        Function LoadDataAtT(ByVal datetime As DateTime, _
+                             ByVal ptfNE As PointF, _
+                             ByVal ptfSW As PointF) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether data has been <see cref="LoadDataAtT">loaded</see>.
+        ''' </summary>
+        ''' <returns>True if data has been <see cref="LoadDataAtT">loaded</see>.</returns>
+        ''' -------------------------------------------------------------------
+        Function IsLoaded() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Release any <see cref="LoadDataAtT">loaded</see> data.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Function Unload() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the names of all attributes for <see cref="LoadDataAtT">loaded</see> data. 
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Function GetAttributes() As String()
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the attribute <see cref="DataTable"/> for the <see cref="LoadDataAtT">loaded</see> data.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Function GetAttributeValues() As DataTable
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Obtains a <see cref="ISpatialRaster"/> from the <see cref="LoadDataAtT">loaded</see> data.
+        ''' </summary>
+        ''' <param name="dCellSize"></param>
+        ''' <param name="converter"></param>
+        ''' <param name="strAttributeFilterQuery"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Function GetRaster(ByVal dCellSize As Double, _
+                           ByVal converter As ISpatialDataConverter, _
+                           Optional ByVal strAttributeFilterQuery As String = "") As ISpatialRaster
+
+#End Region ' Data
+
+#Region " Cache "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the cache to use for the dataset. If not specified the
+        ''' <see cref="cSpatialDataCache.DefaultDataCache">default</see> cache
+        ''' should be used.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property Cache As cSpatialDataCache
+
+#End Region ' Cache
+
+    End Interface
+
+End Namespace
+
