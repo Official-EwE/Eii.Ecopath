@@ -3034,7 +3034,7 @@ Public Class cCore
         Try
             'work from the top down Tracer to Path
             Me.CloseEcotracerScenario()
-            Me.CloseEcoSpaceScenario()
+            Me.CloseEcospaceScenario()
             Me.CloseEcosimScenario()
 
             ' Forget model
@@ -6149,7 +6149,7 @@ Public Class cCore
 
     Public Sub CloseEcosimScenario()
 
-        Me.CloseEcoSpaceScenario()
+        Me.CloseEcospaceScenario()
         Me.CloseEcotracerScenario()
 
         Me.m_EcoPathData.ActiveEcosimScenario = -1
@@ -8644,7 +8644,7 @@ Public Class cCore
 
             'Clears out any memory
             'And updates core state
-            Me.CloseEcoSpaceScenario()
+            Me.CloseEcospaceScenario()
 
             Me.m_EcoPathData.ActiveEcospaceScenario = -1
 
@@ -8732,7 +8732,7 @@ Public Class cCore
 
     End Function
 
-    Public Sub CloseEcoSpaceScenario()
+    Public Sub CloseEcospaceScenario()
 
         'If (Not Me.StateMonitor.HasEcospaceLoaded) Then Return
         Try
