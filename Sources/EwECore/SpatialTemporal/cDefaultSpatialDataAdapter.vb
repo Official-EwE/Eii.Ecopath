@@ -229,7 +229,7 @@ Namespace SpatialData
                 ' Should iTime be interpreted as relative to the dataset start time?
                 If ecospaceDS.AdapterUseRelativeTime Then
                     ' #Yes: use year and month as relative to dataset start time
-                    If (Me.m_dataset Is Nothing) Then
+                    If (Me.m_dataset IsNot Nothing) Then
                         Dim dateSetStart As DateTime = Me.m_dataset.TimeStart
                         If (dateSetStart < DateTime.MaxValue) Then
                             ' Add run offset to dataset start time
