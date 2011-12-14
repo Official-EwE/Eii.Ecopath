@@ -223,9 +223,6 @@ Namespace SpatialData
                 Dim iTimeStepYear As Integer = CInt(Math.Floor(dTimeStepYearFraction))
                 Dim iTimeStepMonth As Integer = CInt(((dTimeStepYearFraction - iTimeStepYear) * 12))
 
-                ' Create absolute date
-                dateTimeStep = New DateTime(Math.Max(ecopathDS.FirstYear, 1) + iTimeStepYear, iTimeStepMonth, 1)
-
                 ' Should iTime be interpreted as relative to the dataset start time?
                 If ecospaceDS.AdapterUseRelativeTime Then
                     ' #Yes: use year and month as relative to dataset start time
@@ -238,6 +235,9 @@ Namespace SpatialData
                             dateTimeStep.AddMonths(iTimeStepMonth)
                         End If
                     End If
+                Else
+                    ' #No: Return absolute date
+                    dateTimeStep = New DateTime(Math.Max(ecopathDS.FirstYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
                 End If
 
                 Return dateTimeStep
