@@ -2,17 +2,12 @@
 
 Option Strict On
 
-Imports EwECore.Database
-Imports EwECore.DataSources
-Imports EwECore.Auxiliary
-Imports System.Data
 Imports System.Text
-Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Utilities
-Imports EwEUtils.Database
-Imports EwEUtils.Core
+Imports EwECore.Auxiliary
 Imports EwECore.MSE
+Imports EwEUtils.Core
+Imports EwEUtils.Database
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

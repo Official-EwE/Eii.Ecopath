@@ -3,15 +3,15 @@ Imports EwEUtils.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.2.0.03:</para>
+''' <para>Database update 6.2.0.05:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Added EwE version to updatelog.</description></item>
+''' <item><description>Fixed Capacity driver PK</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_02_00_03
+Friend Class cDBUpdate6_02_00_05
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -27,7 +27,7 @@ Friend Class cDBUpdate6_02_00_03
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.120003!
+            Return 6.120005!
         End Get
     End Property
 
@@ -39,21 +39,13 @@ Friend Class cDBUpdate6_02_00_03
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added ewe version to updatelog, scenarios"
+            Return "Fixed PK in Capacity driver map storage; needs to include shape"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-        Return Me.AddLastSavedEwEVersions(db)
-    End Function
-
-    Private Function AddLastSavedEwEVersions(ByVal db As cEwEDatabase) As Boolean
-        Dim bSucces As Boolean = db.Execute("ALTER TABLE UpdateLog ADD COLUMN EwEVersion TEXT(40)")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcopathModel ADD COLUMN LastSavedVersion TEXT(40)")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenario ADD COLUMN LastSavedVersion TEXT(40)")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN LastSavedVersion TEXT(40)")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcotracerScenario ADD COLUMN LastSavedVersion TEXT(40)")
-        Return bSucces
+        Dim bOkidoki As Boolean = db.Execute("ALTER TABLE EcospaceScenarioCapacitDrivers DROP CONSTRAINT " & db.GetPkKeyName("EcospaceScenarioCapacitDrivers"))
+        Return bOkidoki And db.Execute("ALTER TABLE EcospaceScenarioCapacitDrivers ADD PRIMARY KEY (ScenarioID, GroupID, VarName, VarDBID, ShapeID)")
     End Function
 
 

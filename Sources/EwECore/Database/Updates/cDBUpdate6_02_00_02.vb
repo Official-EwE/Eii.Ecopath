@@ -1,8 +1,5 @@
 ﻿Option Strict On
-Imports EwEPlugin
 Imports EwEUtils.Database
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

@@ -133,7 +133,7 @@ Namespace Ecospace.Basemap
                     ewec.Style = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                     Me(iLayer + 1, eColumnTypes.ColumnLayer) = ewec
 
-                    cmb = New Cells.Real.ComboBox("", GetType(String), Me.m_astrFields, True)
+                    cmb = New Cells.Real.ComboBox(SharedResources.GENERIC_VALUE_NONE, GetType(String), Me.m_astrFields, True)
                     cmb.EditableMode = EditableMode.SingleClick
                     Me(iLayer + 1, eColumnTypes.ColumnField) = cmb
                     Me(iLayer + 1, eColumnTypes.ColumnField).Behaviors.Add(Me.EwEEditHandler)
@@ -172,6 +172,7 @@ Namespace Ecospace.Basemap
                 Dim strField As String = ""
                 Dim cmb As Cells.Real.ComboBox = Nothing
                 Dim dm As DataModels.EditorComboBox = Nothing
+                Dim strValue As String = ""
 
                 For iRow As Integer = 1 To Me.RowsCount - 1
 
@@ -181,10 +182,15 @@ Namespace Ecospace.Basemap
                     dm = DirectCast(cmb.DataModel, DataModels.EditorComboBox)
                     dm.DefaultValue = SharedResources.GENERIC_VALUE_NONE
 
+                    If Me.m_dtLayerMapping.ContainsKey(layer) Then
+                        strValue = Me.m_dtLayerMapping(layer)
+                    Else
+                        strValue = SharedResources.GENERIC_VALUE_NONE
+                    End If
+
                     Try
-                        cmb.Value = Me.m_dtLayerMapping(layer)
+                        cmb.Value = strValue
                     Catch ex As Exception
-                        cmb.Value = SharedResources.GENERIC_VALUE_NONE
                     End Try
 
                 Next iRow
@@ -606,7 +612,7 @@ Namespace Ecospace.Basemap
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
-            Me.m_grid.Fields = New String() {"(none)", " "}
+            Me.m_grid.Fields = New String() {}
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
