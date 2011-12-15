@@ -9369,8 +9369,8 @@ Public Class cCore
                 grp.EatEffBad = m_EcoSpaceData.EatEffBad(iGroup)
                 grp.IsMigratory = m_EcoSpaceData.IsMigratory(iGroup)
                 grp.IsAdvected = m_EcoSpaceData.IsAdvected(iGroup)
-                grp.MigrationNSCon = m_EcoSpaceData.MigConcCol(iGroup)
-                grp.MigrationEWCon = m_EcoSpaceData.MigConcRow(iGroup)
+                grp.MigrationNSCon = m_EcoSpaceData.MigConcRow(iGroup)
+                grp.MigrationEWCon = m_EcoSpaceData.MigConcCol(iGroup)
                 grp.BarrierAvoidanceWeight = m_EcoSpaceData.barrierAvoidanceWeight(iGroup)
                 grp.PP = m_EcoPathData.PP(iGroup)
 
@@ -9422,8 +9422,8 @@ Public Class cCore
             m_EcoSpaceData.EatEffBad(iGroup) = grp.EatEffBad
             m_EcoSpaceData.IsAdvected(iGroup) = grp.IsAdvected
             m_EcoSpaceData.IsMigratory(iGroup) = grp.IsMigratory
-            m_EcoSpaceData.MigConcCol(iGroup) = grp.MigrationNSCon
-            m_EcoSpaceData.MigConcRow(iGroup) = grp.MigrationEWCon
+            m_EcoSpaceData.MigConcCol(iGroup) = grp.MigrationEWCon
+            m_EcoSpaceData.MigConcRow(iGroup) = grp.MigrationNSCon
             m_EcoSpaceData.barrierAvoidanceWeight(iGroup) = grp.BarrierAvoidanceWeight
 
             For i = 1 To N_MONTHS
