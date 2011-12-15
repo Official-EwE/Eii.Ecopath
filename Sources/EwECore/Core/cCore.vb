@@ -6214,7 +6214,7 @@ Public Class cCore
 
         ' Invoke plugin point to allow plug-ins to clean up now Ecosim has gone
         If (Me.PluginManager IsNot Nothing) Then
-            Me.PluginManager.EcosimClosedScenario()
+            Me.PluginManager.CloseEcosimScenario()
         End If
 
     End Sub
@@ -8771,7 +8771,7 @@ Public Class cCore
 
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
-                Me.PluginManager.EcospaceClosedScenario()
+                Me.PluginManager.CloseEcospaceScenario()
             End If
 
             'delegates
@@ -11008,7 +11008,7 @@ Public Class cCore
 
         ' Invoke plugin point
         If (Me.PluginManager IsNot Nothing) Then
-            Me.PluginManager.EcotracerClosedScenario()
+            Me.PluginManager.CloseEcotracerScenario()
         End If
 
     End Sub
