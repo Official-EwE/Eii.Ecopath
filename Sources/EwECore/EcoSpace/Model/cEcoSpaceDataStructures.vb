@@ -167,16 +167,13 @@ Public Class cEcospaceDataStructures
     Public RelVulBad() As Single
     Public IsAdvected() As Boolean
 
-    Public AMm(,,) As Single
     Public Bcell(,,) As Single
     Public Ccell(,,) As Single
     Public Clast(,,) As Single
     Public AMmTr(,,) As Single
     Public Ftr(,,) As Single
-    Public Bcw(,,) As Single
+
     Public Blast(,,) As Single
-    Public C(,,) As Single
-    Public d(,,) As Single
     Public Depth(,) As Integer
     Public DepthA(,) As Single
     Public DepthX(,) As Integer
@@ -192,17 +189,27 @@ Public Class cEcospaceDataStructures
     Public Xv(,,) As Single, Yv(,,) As Single 'SM, 3d arrays for time varying current velocities.
     Public flow(,) As Single
 
-    Public E(,,) As Single
-    Public BcwNomig(,,) As Single
-    Public CNomig(,,) As Single
-    Public dNomig(,,) As Single
-    Public Enomig(,,) As Single
-    Public F(,,) As Single
+
+    'jb 12-Dec-2011 moved to cEcospace
+    'Public BcwNomig(,,) As Single
+    'Public CNomig(,,) As Single
+    'Public dNomig(,,) As Single
+    'Public Enomig(,,) As Single
+    'Public F(,,) As Single
+
+    'Public Bcw(,,) As Single
+    'Public C(,,) As Single
+    'Public d(,,) As Single
+    'Public E(,,) As Single
+
+    'Public AMm(,,) As Single
+
+
 
     ' ----------------
     ' ToDo JOE: The datasource now interacts with 3-dim HabTypeJoe, no longer with 2-dim HabType.
     '           The user interface also uses HabTypeJoe.
-    Public HabType_old(,) As Integer
+    'Public HabType_old(,) As Integer
     'Public HabType(,,) As Single
     ' ----------------
 
@@ -211,11 +218,11 @@ Public Class cEcospaceDataStructures
     Public MPA(,) As Integer
     Public RelPP(,) As Single
     Public RelCin(,) As Single
-    Public DepthOrig(,) As Integer    'for use with habitat change
-    Public HabTypeorig(,) As Integer  'for use with habitat change
-    Public MPAorig(,) As Integer      'for use with habitat change
-    Public RelPPorig(,) As Single     'for use with habitat change
-    Public RelCinorig(,) As Single    'for use with habitat change
+    'Public DepthOrig(,) As Integer    'for use with habitat change
+    'Public HabTypeorig(,) As Integer  'for use with habitat change
+    'Public MPAorig(,) As Integer      'for use with habitat change
+    'Public RelPPorig(,) As Single     'for use with habitat change
+    'Public RelCinorig(,) As Single    'for use with habitat change
     Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
     Public Port(,,) As Boolean
 
@@ -455,7 +462,7 @@ Public Class cEcospaceDataStructures
     'we now assign groups/species to habitats, but to address climate change issues, it would make more sense
     'to use a distribution envelope, so that we can limit the species to their actual occurrence area, rather
     'than everywhere on a basemap where the right habitat is available
-    Public DistributionEnvelope(,,) As Boolean 'format: row, col, group
+    'Public DistributionEnvelope(,,) As Boolean 'format: row, col, group
 
     ''' <summary>Predation rate by Row, Col, Prey/Pred link</summary>
     ''' <remarks>Added for Model coupling</remarks>
@@ -537,7 +544,7 @@ Public Class cEcospaceDataStructures
     End Property
 
 #End Region ' Spatial data adapters
- 
+
     ''' <summary>
     ''' Nearest suitable map row (iPacket) for an IBM Packet by nStanzaGroups(nSplit), MaxStanzas, row, col
     ''' </summary>
@@ -634,12 +641,7 @@ Public Class cEcospaceDataStructures
 
         Try
 
-            AMm = Nothing
-            Bcell = Nothing
-            Bcw = Nothing
-            Blast = Nothing
-            C = Nothing
-            d = Nothing
+
             Depth = Nothing
             DepthA = Nothing
             DepthX = Nothing
@@ -652,21 +654,10 @@ Public Class cEcospaceDataStructures
             Xv = Nothing
             Yv = Nothing
             flow = Nothing
-            E = Nothing
-            BcwNomig = Nothing
-            CNomig = Nothing
-            dNomig = Nothing
-            Enomig = Nothing
-            F = Nothing
             Region = Nothing
             MPA = Nothing
             RelPP = Nothing
             RelCin = Nothing
-            DepthOrig = Nothing
-            HabTypeorig = Nothing 'for use with habitat change
-            MPAorig = Nothing     'for use with habitat change
-            RelPPorig = Nothing      'for use with habitat change
-            RelCinorig = Nothing     'for use with habitat change
             Sail = Nothing
             GroupDetritus = Nothing
 
@@ -714,6 +705,27 @@ Public Class cEcospaceDataStructures
             HabArea = Nothing
 
             PHabType = Nothing
+
+            'DepthOrig = Nothing
+            'HabTypeorig = Nothing 'for use with habitat change
+            'MPAorig = Nothing     'for use with habitat change
+            'RelPPorig = Nothing      'for use with habitat change
+            'RelCinorig = Nothing     'for use with habitat change
+
+            'AMm = Nothing
+            'Bcell = Nothing
+            'Bcw = Nothing
+            'Blast = Nothing
+            'C = Nothing
+            'd = Nothing
+
+            'E = Nothing
+            'BcwNomig = Nothing
+            'CNomig = Nothing
+            'dNomig = Nothing
+            'Enomig = Nothing
+            'F = Nothing
+
             ' HabType = Nothing
 
 
@@ -781,11 +793,12 @@ Public Class cEcospaceDataStructures
             RedimHabitatVariables()
 
             'dimension arrays to current problem size
-            DefaultBasemapDimensions()
+            'DefaultBasemapDimensions()
             ReDimMapVars()
 
             'requires nGroups, calculates nvartot and Nvarsplit
-            ReDimMapDims()
+            ' Debug.Assert(False, "Removed ReDimMapDims from SetDefaults")
+            'ReDimMapDims()
 
             RedimMigratoryVariables()
 
@@ -795,23 +808,24 @@ Public Class cEcospaceDataStructures
                 PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
 
-            For i = 1 To InRow
-                For j As Integer = 1 To InCol      'Default Values for new maps
-                    Depth(i, j) = 1
-                    DepthA(i, j) = Depth(i, j)
-                    RelPP(i, j) = 1
-                    RelCin(i, j) = 1
-                    For K As Integer = 1 To nFleets
-                        Sail(K, i, j) = 1
-                    Next
+            'jb removed for better memory management
+            'For i = 1 To InRow
+            '    For j As Integer = 1 To InCol      'Default Values for new maps
+            '        Depth(i, j) = 1
+            '        DepthA(i, j) = Depth(i, j)
+            '        RelPP(i, j) = 1
+            '        RelCin(i, j) = 1
+            '        For K As Integer = 1 To nFleets
+            '            Sail(K, i, j) = 1
+            '        Next
 
-                    'Proportion of habitat in a cell 
-                    'All Habitats(zero index) = 1
-                    'There is no preference for any one habitat
-                    PHabType(i, j, 0) = 1.0F
+            '        'Proportion of habitat in a cell 
+            '        'All Habitats(zero index) = 1
+            '        'There is no preference for any one habitat
+            '        PHabType(i, j, 0) = 1.0F
 
-                Next
-            Next
+            '    Next
+            'Next
 
             ReDimFleets()
 
@@ -968,8 +982,8 @@ Public Class cEcospaceDataStructures
             ReDim HabTime(NoHabChanges)
             ReDim HabChange(3, NoHabChanges)
 
-            ReDim PHabType(InRow, InCol, NoHabitats)
-            'ReDim HabType(InRow, InCol, NoHabitats)
+            Me.allocate(PHabType, InRow, InCol, NoHabitats)
+            '  ReDim PHabType(InRow, InCol, NoHabitats)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RedimHabitatVariables() Error: " & ex.Message)
@@ -987,6 +1001,8 @@ Public Class cEcospaceDataStructures
 
         If InRow = 0 Then InRow = 20 'number of map cell rows
         If InCol = 0 Then InCol = 20 'number of map cell columns
+        'If InRow = 0 Then InRow = 5 'number of map cell rows
+        'If InCol = 0 Then InCol = 5 'number of map cell columns
         If CellLength = 0 Then CellLength = 5 'map cell size, in degrees
 
     End Sub
@@ -994,12 +1010,6 @@ Public Class cEcospaceDataStructures
     Sub ReDimMapVars()
         Dim i As Integer, j As Integer
 
-        'jb EwE5 variables not used here
-        ''NvarTot = nvar + 2 * npairs
-        'ReDim regColr(NoRegions)
-        'X = ColorGrad(regColr)
-        'ReDim habColr(NoHabitats)
-        'X = ColorGrad(habColr)
         Try
 
             Debug.Assert(StanzaGroups IsNot Nothing, Me.ToString & ".ReDimMapVars() Stanzagroups needs to be set.")
@@ -1091,10 +1101,22 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,,,) As Single, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer, ByVal d4 As Integer)
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) * (d2 + 1) * (d3 + 1) * (d4 + 1) Then
+                System.Array.Clear(array, 0, array.Length)
+                Return
+            End If
+        End If
+
         Erase array
         array = Nothing
-        GC.Collect()
+        'Dim mgs As Single = CSng(d1 * d2 * d3 * d4 * 4 / 1048576)
+        'System.Console.WriteLine("Allocating=" & mgs.ToString & " Memory=" & (GC.GetTotalMemory(True) / 1048576).ToString)
+        'GC.Collect()
+
         ReDim array(d1, d2, d3, d4)
+
     End Sub
 
     ''' <summary>
@@ -1102,10 +1124,24 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,,) As Single, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer)
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) * (d2 + 1) * (d3 + 1) Then
+                System.Array.Clear(array, 0, array.Length)
+                Return
+            End If
+        End If
+
         Erase array
         array = Nothing
+
+        'GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
+        'Dim mgs As Single = CSng(d1 * d2 * d3 * 4 / 1048576)
+        'System.Console.WriteLine("Allocating=" & mgs.ToString & " Memory=" & (GC.GetTotalMemory(True) / 1048576).ToString)
+
         GC.Collect()
         ReDim array(d1, d2, d3)
+
     End Sub
 
     ''' <summary>
@@ -1113,10 +1149,20 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,) As Single, ByVal d1 As Integer, ByVal d2 As Integer)
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) * (d2 + 1) Then
+                System.Array.Clear(array, 0, array.Length)
+                Return
+            End If
+        End If
+
         Erase array
         array = Nothing
         GC.Collect()
+
         ReDim array(d1, d2)
+
     End Sub
 
     ''' <summary>
@@ -1124,10 +1170,20 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,) As Integer, ByVal d1 As Integer, ByVal d2 As Integer)
-        Erase array
-        array = Nothing
-        GC.Collect()
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) * (d2 + 1) Then
+                System.Array.Clear(array, 0, array.Length)
+                Return
+            End If
+        End If
+
+        'Erase array
+        'array = Nothing
+        'GC.Collect()
+
         ReDim array(d1, d2)
+
     End Sub
 
 
@@ -1148,12 +1204,24 @@ Public Class cEcospaceDataStructures
             Next
             nvartot = NGroups + Nvarsplit
 
-            Me.allocate(AMm, InRow + 1, InCol + 1, nvartot)
+            'force the garbage collection
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
+
             Me.allocate(Bcell, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(Bcw, InRow + 1, InCol + 1, nvartot)
             Me.allocate(Blast, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(C, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(d, InRow + 1, InCol + 1, nvartot)
+            Me.allocate(Me.HabCap, InRow + 1, InCol + 1, nvartot)
+            Me.allocate(Me.HabCapInput, InRow + 1, InCol + 1, nvartot)
+            Me.allocate(CatchMap, InRow, InCol, nvartot)
+            Me.allocate(PHabType, InRow, InCol, NoHabitats)
+            Me.allocate(PAreaFished, InRow, InCol, nFleets)
+            Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
+
+            'jb Temporarily removed
+            'Me.allocate(GroupDetritus, InRow + 1, InCol + 1, nvartot)
+
+            Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
+            Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
+
             Me.allocate(Depth, InRow + 1, InCol + 1)
             Me.allocate(DepthA, InRow + 1, InCol + 1)
             Me.allocate(DepthX, InRow + 1, InCol + 1)
@@ -1163,42 +1231,40 @@ Public Class cEcospaceDataStructures
             Me.allocate(Xvloc, InRow + 1, InCol + 1)
             Me.allocate(Yvloc, InRow + 1, InCol + 1)
             Me.allocate(UpVel, InRow + 1, InCol + 1)
-            Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
-            Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
             Me.allocate(flow, InRow + 1, InCol + 1)
-            Me.allocate(E, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(BcwNomig, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(CNomig, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(dNomig, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(Enomig, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(F, InRow + 1, InCol + 1, nvartot)
+
             Me.allocate(Region, InRow + 1, InCol + 1)
             Me.allocate(MPA, InRow + 1, InCol + 1)
             Me.allocate(RelPP, InRow + 1, InCol + 1)
             Me.allocate(RelCin, InRow + 1, InCol + 1)
-            Me.allocate(DepthOrig, InRow + 1, InCol + 1)   'for use with habitat change
-            Me.allocate(HabTypeorig, InRow + 1, InCol + 1)  'for use with habitat change
-            Me.allocate(MPAorig, InRow + 1, InCol + 1)      'for use with habitat change
-            Me.allocate(RelPPorig, InRow + 1, InCol + 1)      'for use with habitat change
-            Me.allocate(RelCinorig, InRow + 1, InCol + 1)     'for use with habitat change
-            Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
-            Me.allocate(GroupDetritus, InRow + 1, InCol + 1, nvartot)
 
-            Me.allocate(Me.HabCap, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(Me.HabCapInput, InRow + 1, InCol + 1, nvartot)
+            'Port is boolean so it can't use allocate
+            ReDim Port(nFleets, InRow + 1, InCol + 1)
+            ' 
 
-            Me.allocate(CatchMap, InRow, InCol, nvartot)
+            'jb not used in 6
+            'Me.allocate(DepthOrig, InRow + 1, InCol + 1)   'for use with habitat change
+            'Me.allocate(HabTypeorig, InRow + 1, InCol + 1)  'for use with habitat change
+            'Me.allocate(MPAorig, InRow + 1, InCol + 1)      'for use with habitat change
+            'Me.allocate(RelPPorig, InRow + 1, InCol + 1)      'for use with habitat change
+            'Me.allocate(RelCinorig, InRow + 1, InCol + 1)     'for use with habitat change
 
-            ' Me.allocate(HabType, InRow + 1, InCol + 1)
-            ReDim PHabType(Me.InRow, Me.InCol, NoHabitats)
-            ReDim PAreaFished(Me.InRow, Me.InCol, nFleets)
+
+            'In cEcospace redimed in RedimForRun()
+            'Me.allocate(E, InRow + 1, InCol + 1, nvartot)
+            'Me.allocate(BcwNomig, InRow + 1, InCol + 1, nvartot)
+            'Me.allocate(CNomig, InRow + 1, InCol + 1, nvartot)
+            'Me.allocate(dNomig, InRow + 1, InCol + 1, nvartot)
+            'Me.allocate(Enomig, InRow + 1, InCol + 1, nvartot)
+            'Me.allocate(F, InRow + 1, InCol + 1, nvartot)
+            'Me.allocate(AMm, InRow + 1, InCol + 1, nvartot)
+            'Me.allocate(C, InRow + 1, InCol + 1, nvartot)
+            'Me.allocate(d, InRow + 1, InCol + 1, nvartot)
+            'Me.allocate(Bcw, InRow + 1, InCol + 1, nvartot)
 
             For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
             'Boolean maps
-            ReDim Port(nFleets, InRow + 1, InCol + 1)
-            ReDim DistributionEnvelope(InRow + 1, InCol + 1, NGroups)
-
             ReDim ImportanceLayerMap(Me.nImportanceLayers, InRow + 1, InCol + 1)
             ReDim EnvironmentalLayerMap(Me.nEnvironmentalLayers, InRow + 1, InCol + 1)
 
@@ -1226,16 +1292,13 @@ Public Class cEcospaceDataStructures
                         Sail(k, i, j) = 1
                     Next
 
-                    'All groups in distributed over the total map extent
-                    For igrp As Integer = 1 To NGroups
-                        DistributionEnvelope(i, j, igrp) = True
-                    Next
-
                     'Use all habitats
                     PHabType(i, j, 0) = 1.0F
 
                 Next j
             Next i
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimMapDims() Error: " & ex.Message)
@@ -1317,9 +1380,14 @@ Public Class cEcospaceDataStructures
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Ecospace spatial reference data not used but left in place for legacy reasons 
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub redimForReferenceData()
 
-        '       If SpDatYear > 0 Then  'there are timeseries
+        Debug.Assert(False, "Ecospace spatial reference data has not been implemented yet!")
+
         Dim ttYears As Integer = CInt(TotalTime)
         ReDim SpaceBiomassByRegion(ttYears, NGroups, NoRegions)
         ReDim SpaceBiomassByRegionCount(ttYears, NGroups, NoRegions)
@@ -1327,13 +1395,6 @@ Public Class cEcospaceDataStructures
         ReDim SpaceCatchByRegionCount(ttYears, NGroups, NoRegions)
         ReDim SpaceEffortByRegionFleet(ttYears, nFleets, NoRegions)
         ReDim SpaceEffortByRegionFleetCount(ttYears, nFleets, NoRegions)
-
-        'If ConSimOn Then 'only if there are tracer data
-        '    ReDim SpaceTraceByRegion(TotalTime, NumGroups, NoRegions)
-        '    ReDim SpaceTraceByRegionCount(TotalTime, NumGroups, NoRegions)
-        'End If
-
-        '     End If
 
     End Sub
 

@@ -7227,6 +7227,9 @@ Namespace DataSources
             Me.m_db.ReleaseReader(reader)
 
             'set the size of the variables that hold the map data to InRow and InCol
+            'Call cEcospace.redimForRun() First because it allocates bigger blocks of memory
+            'this should help Out of Memory exceptions caused by heap fragmentation by doing the big stuff first
+            Me.m_core.m_Ecospace.redimForRun()
             ecospaceDS.ReDimMapDims()
 
             ' Set active scenario

@@ -2659,6 +2659,7 @@ Public Class cCore
         Me.m_EwEModel.West = Me.m_EcoPathData.ModelWest
         Me.m_EwEModel.East = Me.m_EcoPathData.ModelEast
         Me.m_EwEModel.LastSaved = Me.m_EcoPathData.ModelLastSaved
+        Me.m_EwEModel.isEcoSpaceModelCoupled = Me.m_EcoPathData.isEcospaceModelCoupled
         Me.m_EwEModel.AllowValidation = True
 
         ' Update relevant unit(s) in Ecopath
@@ -2693,7 +2694,8 @@ Public Class cCore
         ' Do not update LastSaved; exclusively set by core
 
         ' Update relevant unit(s) in Ecopath
-        Me.m_EcoPathData.currUnitIndex = Me.m_EwEModel.UnitCurrency
+
+        Me.m_EcoPathData.isEcospaceModelCoupled = Me.m_EwEModel.isEcoSpaceModelCoupled
 
         Return True
     End Function
@@ -7838,10 +7840,11 @@ Public Class cCore
         m_EcoSpaceData.nFleets = Me.nFleets
         m_EcoSpaceData.nLiving = Me.nLivingGroups
 
-        m_EcoSpaceData.ReDimFleets()
+        m_EcoSpaceData.DefaultBasemapDimensions()
+
+        ' m_EcoSpaceData.ReDimFleets()
         m_EcoSpaceData.SetDefaults()
 
-        m_EcoSpaceData.DefaultBasemapDimensions()
         m_EcoSpaceData.RedimMigratoryVariables()
 
         m_Ecospace.EcoSpaceData = Me.m_EcoSpaceData
@@ -12177,6 +12180,18 @@ Public Class cCore
 
         ' First update core data from object
         Select Case obj.DataType
+
+            Case eDataTypes.EwEModel
+                'EwEModel
+                Select Case value.varName
+
+                    Case eVarNameFlags.isEcospaceModelCoupled
+                        If CBool(value.Value) = True Then
+                            Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.RELOAD_ECOSPACE, eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Warning))
+                        End If
+
+                End Select
+
 
             Case eDataTypes.EcoPathGroupInput
                 Debug.Assert(TypeOf obj Is cEcoPathGroupInput)

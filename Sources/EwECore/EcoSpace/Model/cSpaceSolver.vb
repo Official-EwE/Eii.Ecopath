@@ -405,7 +405,7 @@ Public Class cSpaceSolver
 
             For iGrp = 1 To m_Data.NGroups
 
-                Me.m_Data.GroupDetritus(i, j, iGrp) = GroupDetritus(iGrp)
+                'Me.m_Data.GroupDetritus(i, j, iGrp) = GroupDetritus(iGrp)
 
                 F(i, j, iGrp) = Flowin(iGrp)
                 AMm(i, j, iGrp) = -FlowoutRate(iGrp) - Bcw(i + 1, j, iGrp) - C(i - 1, j, iGrp) - d(i, j, iGrp) - e(i, j, iGrp)
@@ -662,8 +662,11 @@ Public Class cSpaceSolver
                 Eatenof(i) = Eatenof(i) + eat
                 Eatenby(j) = Eatenby(j) + eat
 
-                'predation mort by link
-                m_Data.MPred(iRow, iCol, ii) = eat / (Bprey + 1.0E-20)
+
+                If Me.m_PathData.isEcospaceModelCoupled Then
+                    'predation mort by link
+                    m_Data.MPred(iRow, iCol, ii) = eat / (Bprey + 1.0E-20)
+                End If
 
                 '******** 
                 'THIS NEEDS TO CHANGE FOR THREADED STUFF

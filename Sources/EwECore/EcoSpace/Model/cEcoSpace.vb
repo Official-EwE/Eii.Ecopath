@@ -92,7 +92,7 @@ Public Class cEcoSpace
     'iWindow could be a constant
     Private iWindow As Integer
 
-    Private HabGrad(,,) As Single
+    'Private HabGrad(,,) As Single
     ' Private NcellsHab() As Integer
 
     'the analog of habgrad, but for migration, and has a monthly component
@@ -751,12 +751,7 @@ Public Class cEcoSpace
             Ecode = Nothing '(m_Data.Nvarsplit)
             F = Nothing '
             AMm = Nothing
-            Bcw = Nothing
             BcwNomig = Nothing
-            Bcw = Nothing '(,,) As Single
-            C = Nothing '(,,) As Single
-            d = Nothing '(,,) As Single
-            e = Nothing '(,,) As Single
             AMm = Nothing '(,,) As Single
             F = Nothing '(,,) As Single
             BEQlast = Nothing '(,,) As Single 'equilibrium biomass at the last timestep
@@ -766,8 +761,11 @@ Public Class cEcoSpace
             FtimeCell = Nothing
             HdenCell = Nothing
             HabAreaUsed = Nothing
-            HabGrad = Nothing
             RelFitness = Nothing
+            Bcw = Nothing '(,,) As Single
+            C = Nothing '(,,) As Single
+            d = Nothing '(,,) As Single
+            e = Nothing '(,,) As Single
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -861,7 +859,7 @@ Public Class cEcoSpace
             For m_Data.TimeNow = StartTime To (m_Data.TotalTime - m_Data.TimeStep) Step m_Data.TimeStep
 
                 Me.m_PauseSignal.WaitOne()
-
+                System.Console.WriteLine(m_Data.TimeNow.ToString)
                 'set time step counters
                 its = Int(m_Data.TimeNow * 12) + 1 ' i time assuming a monthly time step used for data array by month i.e. zscale()
                 itt += 1 'cumulative i time at the curent time step 
@@ -1553,13 +1551,14 @@ Public Class cEcoSpace
         Dim isp As Integer, ist As Integer
 
         Try
-
+            'Is this model coupled to an external model
+            If Me.m_EPdata.isEcospaceModelCoupled Then
+                'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
+                'inlinks is the number of prey/pred linkages
+                Me.m_Data.allocate(Me.m_Data.MPred, Me.m_Data.InRow + 1, Me.m_Data.InCol + 1, Me.m_SimData.inlinks)
+            End If
 
             ReDim totalIterThread(m_Data.nGridSolverThreads + 1)
-
-            'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
-            'inlinks is the number of prey/pred linkages
-            ReDim Me.m_Data.MPred(Me.m_Data.InRow + 1, Me.m_Data.InCol + 1, Me.m_SimData.inlinks)
 
             'm_Data.Depth(10, 10) = 0
             m_bsolverError = False
@@ -1592,7 +1591,6 @@ Public Class cEcoSpace
             Dim Wchange() As Single
             ReDim Wchange(m_Data.nvartot)
 
-            ReDim Cper(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
             ReDim Ecode(m_Data.Nvarsplit)
 
             If m_tracerData.EcoSpaceConSimOn Then
@@ -1747,9 +1745,9 @@ Public Class cEcoSpace
                             '    m_Data.Bcell(i, j, ip) = 0.1 * m_SimData.StartBiomass(ip)
                             'End If
                             'VC Hobart Sep 2008: only assign biomass if it is within distribution envelope
-                            If m_Data.DistributionEnvelope(i, j, ip) = False Then
-                                m_Data.Bcell(i, j, ip) = 0.0001 * m_SimData.StartBiomass(ip)
-                            End If
+                            'If m_Data.DistributionEnvelope(i, j, ip) = False Then
+                            '    m_Data.Bcell(i, j, ip) = 0.0001 * m_SimData.StartBiomass(ip)
+                            'End If
 
                             If m_Data.IsMigratory(ip) Then
                                 If i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1 Then m_Data.Bcell(i, j, ip) = 0
@@ -1895,7 +1893,8 @@ Public Class cEcoSpace
                 Next
             Next
 
-            ReDim BEQlast(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            'jb move to RedimForRun
+            ' ReDim BEQlast(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
             '**** this functionality has been moved below **** 
             'this finds which groups are being integrated, so they can be adeq
@@ -2025,7 +2024,7 @@ Public Class cEcoSpace
 
 
     ''' <summary>
-    ''' Redim all non local variables before running FindSpatialEquilibrium()
+    ''' Redim or Clear all variables that are needed for an Ecospace run
     ''' </summary>
     ''' <remarks>In EwE5 this was handled inside FindSpatialEquilibrium. 
     ''' These are variables that will be populated by the Ecospace initialization initSpatialEquilibrium().
@@ -2041,9 +2040,10 @@ Public Class cEcoSpace
         Try
 
             'redim new stanza stuff
-            GC.Collect()
-            Me.m_Data.allocate(m_Data.PredCell, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-            Me.m_Data.allocate(m_Data.IFDweight, m_Data.InRow, m_Data.InCol, m_Data.NGroups)
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
+            System.Console.WriteLine(GC.CollectionCount(2).ToString)
+
+            Me.m_Data.allocate(Cper, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
             Me.m_Data.allocate(RelFitness, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
             Me.m_Data.allocate(F, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
             Me.m_Data.allocate(AMm, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
@@ -2051,6 +2051,27 @@ Public Class cEcoSpace
             Me.m_Data.allocate(CNomig, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
             Me.m_Data.allocate(dNomig, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
             Me.m_Data.allocate(Enomig, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+
+            Me.m_Data.allocate(Bcw, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            Me.m_Data.allocate(C, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            Me.m_Data.allocate(d, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            Me.m_Data.allocate(e, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+
+            Me.m_Data.allocate(BEQlast, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            Me.m_Data.allocate(m_Data.PredCell, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+            Me.m_Data.allocate(m_Data.IFDweight, m_Data.InRow, m_Data.InCol, m_Data.NGroups)
+
+            Me.m_Data.allocate(m_Data.Blast, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            Me.m_Data.allocate(FtimeCell, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+            Me.m_Data.allocate(HdenCell, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+            Me.m_Data.allocate(RelMoveFit, m_Data.InRow + 1, m_Data.InCol + 1)
+
+            Me.m_Data.allocate(m_Data.Ftot, m_Data.NGroups, m_Data.InRow, m_Data.InCol)
+            Me.m_Data.allocate(m_Data.EffortSpace, m_Data.nFleets, m_Data.InRow, m_Data.InCol)
+
+            Me.m_Data.allocate(m_Data.Landings, m_Data.NGroups, m_Data.nFleets)
+
+            ReDim Btime(m_Data.NGroups)
 
             ReDim m_Data.ByPassIntegrate(m_Data.nvartot)
             ReDim m_Data.BBase(m_Data.NGroups)
@@ -2065,20 +2086,19 @@ Public Class cEcoSpace
             ReDim Flowin(m_Data.nvartot)
             ReDim FlowoutRate(m_Data.nvartot)
 
-            ' ReDim conSplit(m_Data.Nvarsplit)
             ReDim TotEffort(m_Data.nFleets)
             ReDim RecSplit(m_Data.Nvarsplit)
             ReDim PconSplit(m_Data.Nvarsplit)
             ReDim Tstanza(m_Data.Nvarsplit)
             ReDim NstanzaBase(m_Data.Nvarsplit)
 
-            ReDim Me.m_Data.Landings(m_Data.NGroups, m_Data.nFleets)
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
             nEcospaceTimeSteps = CInt(m_Data.TotalTime * (1.0 / m_Data.TimeStep))
             success = success And m_Data.redimTimeStepResults(nEcospaceTimeSteps)
 
         Catch ex As Exception
-            message = New cMessage(My.Resources.CoreMessages.ECOSPACE_INIT_ERROR, _
+            message = New cMessage(ex.Message, _
                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
         End Try
 
@@ -2095,7 +2115,7 @@ Public Class cEcoSpace
     Sub SetKmove()
         Dim i As Integer
 
-        ReDim RelMoveFit(m_Data.InRow + 1, m_Data.InCol + 1)
+
         ReDim PzoTOmove(m_Data.NGroups)
         ReDim Kmovefit(m_Data.NGroups)
 
@@ -2104,11 +2124,13 @@ Public Class cEcoSpace
             If m_EPdata.PB(i) > 0 Then Kmovefit(i) = 2.197225 / (PzoTOmove(i) * m_EPdata.PB(i))
         Next
 
-        ReDim m_Data.Blast(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim FtimeCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-        ReDim HdenCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        'jb Move to RedimForRun
+        'ReDim RelMoveFit(m_Data.InRow + 1, m_Data.InCol + 1)
+        'ReDim m_Data.Blast(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        'ReDim FtimeCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        'ReDim HdenCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
         'ReDim LastB(m_Data.nGroups)
-        ReDim Btime(m_Data.NGroups)
+        'ReDim Btime(m_Data.NGroups)
 
     End Sub
 
@@ -2586,12 +2608,17 @@ Public Class cEcoSpace
         Dim isp As Integer, ist As Integer, nvar2 As Integer, ir As Integer, ieco As Integer
         '   Erase Bcw, C, d, e
 
-        ReDim Bcw(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ReDim C(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        'd movement to right
-        ReDim d(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        'e movement to left
-        ReDim e(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        Me.m_Data.allocate(Bcw, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        Me.m_Data.allocate(C, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        Me.m_Data.allocate(d, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        Me.m_Data.allocate(e, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+
+        'ReDim Bcw(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        'ReDim C(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ''d movement to right
+        'ReDim d(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        ''e movement to left
+        'ReDim e(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
 
         AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
@@ -3173,8 +3200,11 @@ exitline:
         Dim SailCost As Single
         Static NoSailing As Boolean, TotE As Single
 
-        ReDim m_Data.Ftot(m_Data.NGroups, m_Data.InRow, m_Data.InCol)
-        ReDim m_Data.EffortSpace(m_Data.nFleets, m_Data.InRow, m_Data.InCol)
+        Me.m_Data.allocate(m_Data.Ftot, m_Data.NGroups, m_Data.InRow, m_Data.InCol)
+        Me.m_Data.allocate(m_Data.EffortSpace, m_Data.nFleets, m_Data.InRow, m_Data.InCol)
+
+        'ReDim m_Data.Ftot(m_Data.NGroups, m_Data.InRow, m_Data.InCol)
+        ' ReDim m_Data.EffortSpace(m_Data.nFleets, m_Data.InRow, m_Data.InCol)
 
         For ig = 1 To m_Data.nFleets
             TotE = TotEffort(ig) * m_Data.SEmult(ig)
@@ -5771,7 +5801,9 @@ exitline:
     ''' </remarks>
     Public Sub SetHabCap()
         'set up array of relative habitat capacities by cell and group
-        ReDim m_Data.HabCap(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+
+        Me.m_Data.allocate(m_Data.HabCap, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        '   ReDim m_Data.HabCap(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
         ReDim m_Data.TotHabCap(m_Data.NGroups)
         ReDim m_Data.MaxHabCap(m_Data.NGroups)
 
