@@ -405,7 +405,7 @@ Public Class cSpaceSolver
 
             For iGrp = 1 To m_Data.NGroups
 
-                'Me.m_Data.GroupDetritus(i, j, iGrp) = GroupDetritus(iGrp)
+                If Me.m_PathData.isEcospaceModelCoupled Then Me.m_Data.GroupDetritus(i, j, iGrp) = GroupDetritus(iGrp)
 
                 F(i, j, iGrp) = Flowin(iGrp)
                 AMm(i, j, iGrp) = -FlowoutRate(iGrp) - Bcw(i + 1, j, iGrp) - C(i - 1, j, iGrp) - d(i, j, iGrp) - e(i, j, iGrp)

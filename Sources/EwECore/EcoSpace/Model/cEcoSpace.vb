@@ -2071,6 +2071,8 @@ Public Class cEcoSpace
 
             Me.m_Data.allocate(m_Data.Landings, m_Data.NGroups, m_Data.nFleets)
 
+            If Me.m_EPdata.isEcospaceModelCoupled Then Me.m_Data.allocate(m_Data.GroupDetritus, m_Data.InRow, m_Data.InCol, m_Data.NGroups)
+
             ReDim Btime(m_Data.NGroups)
 
             ReDim m_Data.ByPassIntegrate(m_Data.nvartot)
