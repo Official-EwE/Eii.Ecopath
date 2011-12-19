@@ -139,6 +139,12 @@ Public Class cEwEModel
             val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
             m_values.Add(val.varName, val)
 
+            ' IsEcopaceCoupled
+            meta = New cVariableMetaData()
+            val = New cValue(New Boolean, eVarNameFlags.isEcospaceModelCoupled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.isEcospaceModelCoupled))
+            m_values.Add(val.varName, val)
+
+
             'set status flags to their default values
             ResetStatusFlags()
 
@@ -386,6 +392,17 @@ Public Class cEwEModel
             SetVariable(eVarNameFlags.LastSaved, value)
         End Set
     End Property
+
+    Public Property isEcoSpaceModelCoupled() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.isEcospaceModelCoupled))
+        End Get
+
+        Set(ByVal bGroupDigits As Boolean)
+            SetVariable(eVarNameFlags.isEcospaceModelCoupled, bGroupDigits)
+        End Set
+    End Property
+
 
 #End Region ' Variable via dot(.) operator
 
