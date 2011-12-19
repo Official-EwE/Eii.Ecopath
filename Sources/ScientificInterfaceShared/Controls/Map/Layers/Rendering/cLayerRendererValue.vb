@@ -33,6 +33,12 @@ Namespace Controls.Map.Layers
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether this attached layer should always rendered (True),
+        ''' or only when the layer is <see cref="cLayer.IsSelected"/> (False).
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property DrawAlways() As Boolean
             Get
                 Return Me.m_bDrawAlways

@@ -102,7 +102,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3729.14004, Culture=neutral, PublicKeyToken=de94e906589de6fe, processorArchitecture=x86" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.4368.1705, Culture=neutral, PublicKeyToken=ba313fadf1c28092, processorArchitecture=x86" />
     <Reference Include="ZedGraph, Version=5.1.4.19206, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>

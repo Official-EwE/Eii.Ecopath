@@ -140,13 +140,10 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3729.14004, Culture=neutral, PublicKeyToken=de94e906589de6fe, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.4368.1705, Culture=neutral, PublicKeyToken=ba313fadf1c28092, processorArchitecture=x86">
       <HintPath>..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <Reference Include="ZedGraph">
@@ -1810,6 +1807,10 @@
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
+      <Project>{206B8C0C-BC5A-40C3-822B-F17B638704FD}</Project>
+      <Name>EwEFlowDiagramPlugin %28EwE custom plugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
       <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
       <Name>EwENetworkAnalysisPlugin</Name>
@@ -1840,8 +1841,5 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

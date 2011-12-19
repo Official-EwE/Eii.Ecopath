@@ -1,5 +1,4 @@
-﻿Imports EwECore
-Imports EwEUtils.Commands
+﻿Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Controls
 
 Friend Class frmShapes

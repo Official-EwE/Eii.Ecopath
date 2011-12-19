@@ -95,7 +95,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.3729.14004, Culture=neutral, PublicKeyToken=de94e906589de6fe, processorArchitecture=x86">
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.4367.28198, Culture=neutral, PublicKeyToken=ba313fadf1c28092, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>

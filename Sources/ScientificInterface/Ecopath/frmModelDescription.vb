@@ -294,7 +294,7 @@ Public Class frmModelDescription
         Handles m_cmbModelAreaName.SelectedIndexChanged
 
         Dim location As cGeoCodeLocation = Me.m_cmbModelAreaName.SelectedLocation
-        If Location Is Nothing Then Return
+        If location Is Nothing Then Return
 
         Me.m_fpNorth.Value = Location.North
         Me.m_fpEast.Value = Location.East
