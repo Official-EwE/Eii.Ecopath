@@ -1423,6 +1423,12 @@ Namespace Core
         East
         AreaName
 
+        ''' <summary>
+        ''' Is this model coupled to an external model Ecospace model
+        ''' </summary>
+        ''' <remarks>False by default.</remarks>
+        isEcospaceModelCoupled
+
         ''' <summary>Group assigned to a given taxon.</summary>
         TaxonGroup
         ''' <summary>Stanza assigned to a given taxon.</summary>

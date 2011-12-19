@@ -996,4 +996,8 @@ System Error: {0}</value>
     <value>Executing database update {0}</value>
     <comment>{0}=version number</comment>
   </data>
+  <data name="RELOAD_ECOSPACE" xml:space="preserve">
+    <value>You must re-load Ecospace for your changes to take affect.</value>
+    <comment>isEcoSpaceModelCoupled has changed reload message</comment>
+  </data>
 </root>

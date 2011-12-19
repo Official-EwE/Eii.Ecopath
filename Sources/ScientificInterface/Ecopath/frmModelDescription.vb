@@ -22,6 +22,8 @@ Public Class frmModelDescription
     Private m_fpWest As cEwEFormatProvider = Nothing
     Private m_fpEast As cEwEFormatProvider = Nothing
 
+    Private m_fpIsCoupled As cEwEFormatProvider = Nothing
+
     ' Unit properties
     Private m_propUnitCurrency As cIntegerProperty = Nothing
     Private m_propUnitCurrencyText As cStringProperty = Nothing
@@ -60,6 +62,7 @@ Public Class frmModelDescription
         Me.m_fpEast = New cPropertyFormatProvider(Me.UIContext, Me.m_nudEast, eweModel, eVarNameFlags.East)
 
         Me.m_fpPSD = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
+        Me.m_fpIsCoupled = New cPropertyFormatProvider(Me.UIContext, Me.m_chkIsCoupled, eweModel, eVarNameFlags.isEcospaceModelCoupled)
 
         Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
         AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnUnitCurrencyChanged
@@ -116,6 +119,7 @@ Public Class frmModelDescription
         Me.m_fpWest.Release()
         Me.m_fpEast.Release()
         Me.m_fpPSD.Release()
+        Me.m_fpIsCoupled.Release()
 
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
         Me.CoreComponents = Nothing

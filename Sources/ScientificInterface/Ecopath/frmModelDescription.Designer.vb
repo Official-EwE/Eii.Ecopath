@@ -26,69 +26,70 @@ Partial Class frmModelDescription
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmModelDescription))
-        Dim CGoogleMapsLookup2 As SAUPUtil.Misc.GeoCode.cGoogleMapsLookup = New SAUPUtil.Misc.GeoCode.cGoogleMapsLookup
-        Me.m_udNumDigits = New cEwENumericUpDown
-        Me.lbNumDigits = New System.Windows.Forms.Label
-        Me.m_lblOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_lbDescription = New System.Windows.Forms.Label
-        Me.m_lbScenarioName = New System.Windows.Forms.Label
-        Me.m_lblModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_tbName = New System.Windows.Forms.TextBox
-        Me.m_lbAuthor = New System.Windows.Forms.Label
-        Me.m_tbAuthor = New System.Windows.Forms.TextBox
-        Me.m_lbContact = New System.Windows.Forms.Label
-        Me.m_lblFirstYear = New System.Windows.Forms.Label
-        Me.m_lblArea = New System.Windows.Forms.Label
-        Me.m_tbArea = New System.Windows.Forms.TextBox
-        Me.m_lblAreaUnit = New System.Windows.Forms.Label
-        Me.m_tlpUnits = New System.Windows.Forms.TableLayoutPanel
-        Me.m_gbCurrencyUnit = New System.Windows.Forms.GroupBox
-        Me.tbCurrencyNutrientOther = New System.Windows.Forms.TextBox
-        Me.rbNitrogen = New System.Windows.Forms.RadioButton
-        Me.rbNutrientOther = New System.Windows.Forms.RadioButton
-        Me.rbPhosporus = New System.Windows.Forms.RadioButton
-        Me.tbCurrencyEnergyOther = New System.Windows.Forms.TextBox
-        Me.rbCurrencyEnergyOther = New System.Windows.Forms.RadioButton
-        Me.m_lblNutrientRelated = New System.Windows.Forms.Label
-        Me.m_lblEnergyRelated = New System.Windows.Forms.Label
-        Me.rbWetWeight = New System.Windows.Forms.RadioButton
-        Me.rbJoules = New System.Windows.Forms.RadioButton
-        Me.rbCalorie = New System.Windows.Forms.RadioButton
-        Me.rbCarbon = New System.Windows.Forms.RadioButton
-        Me.rbDryWeight = New System.Windows.Forms.RadioButton
-        Me.m_gbTimeUnits = New System.Windows.Forms.GroupBox
-        Me.m_lblNote = New System.Windows.Forms.Label
-        Me.txbTimeOther = New System.Windows.Forms.TextBox
-        Me.rbTimeOther = New System.Windows.Forms.RadioButton
-        Me.rbDay = New System.Windows.Forms.RadioButton
-        Me.rbYear = New System.Windows.Forms.RadioButton
-        Me.m_gbMonetaryUnits = New System.Windows.Forms.GroupBox
-        Me.m_lblMonetaryUnit = New System.Windows.Forms.Label
-        Me.m_cmbMonetaryUnit = New ScientificInterfaceShared.Controls.cMonetaryUnitComboBox
-        Me.m_gbNumFormatting = New System.Windows.Forms.GroupBox
-        Me.m_cbGroupDigits = New System.Windows.Forms.CheckBox
-        Me.m_chkPSD = New System.Windows.Forms.CheckBox
-        Me.m_tbContact = New System.Windows.Forms.RichTextBox
-        Me.m_tbDescription = New System.Windows.Forms.RichTextBox
-        Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_nudFirstYear = New cEwENumericUpDown
-        Me.m_lblNumYears = New System.Windows.Forms.Label
-        Me.m_nudNumYears = New cEwENumericUpDown
-        Me.m_lblLocation = New System.Windows.Forms.Label
-        Me.m_nudNorth = New cEwENumericUpDown
-        Me.m_nudSouth = New cEwENumericUpDown
-        Me.m_nudWest = New cEwENumericUpDown
-        Me.m_nudEast = New cEwENumericUpDown
-        Me.m_lblNorth = New System.Windows.Forms.Label
-        Me.m_lblWest = New System.Windows.Forms.Label
-        Me.m_lblEast = New System.Windows.Forms.Label
-        Me.m_lblSouth = New System.Windows.Forms.Label
-        Me.m_cmbModelAreaName = New ScientificInterfaceShared.Controls.cGeocodeLookupComboBox
-        Me.m_pbSearching = New System.Windows.Forms.PictureBox
-        Me.m_plDescr = New System.Windows.Forms.Panel
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel
-        Me.Panel1 = New System.Windows.Forms.Panel
+        Dim CGoogleMapsLookup2 As SAUPUtil.Misc.GeoCode.cGoogleMapsLookup = New SAUPUtil.Misc.GeoCode.cGoogleMapsLookup()
+        Me.m_udNumDigits = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.lbNumDigits = New System.Windows.Forms.Label()
+        Me.m_lblOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lbDescription = New System.Windows.Forms.Label()
+        Me.m_lbScenarioName = New System.Windows.Forms.Label()
+        Me.m_lblModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tbName = New System.Windows.Forms.TextBox()
+        Me.m_lbAuthor = New System.Windows.Forms.Label()
+        Me.m_tbAuthor = New System.Windows.Forms.TextBox()
+        Me.m_lbContact = New System.Windows.Forms.Label()
+        Me.m_lblFirstYear = New System.Windows.Forms.Label()
+        Me.m_lblArea = New System.Windows.Forms.Label()
+        Me.m_tbArea = New System.Windows.Forms.TextBox()
+        Me.m_lblAreaUnit = New System.Windows.Forms.Label()
+        Me.m_tlpUnits = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_gbCurrencyUnit = New System.Windows.Forms.GroupBox()
+        Me.tbCurrencyNutrientOther = New System.Windows.Forms.TextBox()
+        Me.rbNitrogen = New System.Windows.Forms.RadioButton()
+        Me.rbNutrientOther = New System.Windows.Forms.RadioButton()
+        Me.rbPhosporus = New System.Windows.Forms.RadioButton()
+        Me.tbCurrencyEnergyOther = New System.Windows.Forms.TextBox()
+        Me.rbCurrencyEnergyOther = New System.Windows.Forms.RadioButton()
+        Me.m_lblNutrientRelated = New System.Windows.Forms.Label()
+        Me.m_lblEnergyRelated = New System.Windows.Forms.Label()
+        Me.rbWetWeight = New System.Windows.Forms.RadioButton()
+        Me.rbJoules = New System.Windows.Forms.RadioButton()
+        Me.rbCalorie = New System.Windows.Forms.RadioButton()
+        Me.rbCarbon = New System.Windows.Forms.RadioButton()
+        Me.rbDryWeight = New System.Windows.Forms.RadioButton()
+        Me.m_gbTimeUnits = New System.Windows.Forms.GroupBox()
+        Me.m_lblNote = New System.Windows.Forms.Label()
+        Me.txbTimeOther = New System.Windows.Forms.TextBox()
+        Me.rbTimeOther = New System.Windows.Forms.RadioButton()
+        Me.rbDay = New System.Windows.Forms.RadioButton()
+        Me.rbYear = New System.Windows.Forms.RadioButton()
+        Me.m_gbMonetaryUnits = New System.Windows.Forms.GroupBox()
+        Me.m_lblMonetaryUnit = New System.Windows.Forms.Label()
+        Me.m_cmbMonetaryUnit = New ScientificInterfaceShared.Controls.cMonetaryUnitComboBox()
+        Me.m_gbNumFormatting = New System.Windows.Forms.GroupBox()
+        Me.m_cbGroupDigits = New System.Windows.Forms.CheckBox()
+        Me.m_chkPSD = New System.Windows.Forms.CheckBox()
+        Me.m_tbContact = New System.Windows.Forms.RichTextBox()
+        Me.m_tbDescription = New System.Windows.Forms.RichTextBox()
+        Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_nudFirstYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_lblNumYears = New System.Windows.Forms.Label()
+        Me.m_nudNumYears = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_lblLocation = New System.Windows.Forms.Label()
+        Me.m_nudNorth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudWest = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudEast = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_lblNorth = New System.Windows.Forms.Label()
+        Me.m_lblWest = New System.Windows.Forms.Label()
+        Me.m_lblEast = New System.Windows.Forms.Label()
+        Me.m_lblSouth = New System.Windows.Forms.Label()
+        Me.m_cmbModelAreaName = New ScientificInterfaceShared.Controls.cGeocodeLookupComboBox()
+        Me.m_pbSearching = New System.Windows.Forms.PictureBox()
+        Me.m_plDescr = New System.Windows.Forms.Panel()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.m_chkIsCoupled = New System.Windows.Forms.CheckBox()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -513,10 +514,17 @@ Partial Class frmModelDescription
         '
         'Panel1
         '
+        Me.Panel1.Controls.Add(Me.m_chkIsCoupled)
         Me.Panel1.Controls.Add(Me.m_hdrExecution)
         Me.Panel1.Controls.Add(Me.m_chkPSD)
         resources.ApplyResources(Me.Panel1, "Panel1")
         Me.Panel1.Name = "Panel1"
+        '
+        'm_chkIsCoupled
+        '
+        resources.ApplyResources(Me.m_chkIsCoupled, "m_chkIsCoupled")
+        Me.m_chkIsCoupled.Name = "m_chkIsCoupled"
+        Me.m_chkIsCoupled.UseVisualStyleBackColor = True
         '
         'frmModelDescription
         '
@@ -550,7 +558,6 @@ Partial Class frmModelDescription
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents m_udNumDigits As System.Windows.Forms.NumericUpDown
     Private WithEvents lbNumDigits As System.Windows.Forms.Label
     Private WithEvents m_lblOptions As cEwEHeaderLabel
     Private WithEvents m_lbDescription As System.Windows.Forms.Label
@@ -593,14 +600,8 @@ Partial Class frmModelDescription
     Private WithEvents m_tbContact As System.Windows.Forms.RichTextBox
     Private WithEvents m_tbDescription As System.Windows.Forms.RichTextBox
     Private WithEvents m_hdrExecution As cEwEHeaderLabel
-    Private WithEvents m_nudFirstYear As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblNumYears As System.Windows.Forms.Label
-    Private WithEvents m_nudNumYears As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblLocation As System.Windows.Forms.Label
-    Private WithEvents m_nudNorth As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudSouth As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudWest As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudEast As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblNorth As System.Windows.Forms.Label
     Private WithEvents m_lblWest As System.Windows.Forms.Label
     Private WithEvents m_lblEast As System.Windows.Forms.Label
@@ -612,5 +613,13 @@ Partial Class frmModelDescription
     Private WithEvents m_plDescr As System.Windows.Forms.Panel
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents m_chkIsCoupled As System.Windows.Forms.CheckBox
+    Private WithEvents m_udNumDigits As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudFirstYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudNumYears As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudNorth As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudSouth As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudWest As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudEast As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
 End Class

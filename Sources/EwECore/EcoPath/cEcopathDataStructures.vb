@@ -315,6 +315,16 @@ Public Class cEcopathDataStructures
     ''' <remarks>These are the variables that need to be computed be Ecopath</remarks>
     Public mis() As Integer
 
+    ''' <summary>
+    ''' Is the currently loaded Ecospace model setup for coupling with an external model.
+    ''' </summary>
+    ''' <remarks>
+    ''' Coupling joins Ecospace to an external model that is used to dynamically compute PP or other lower trophic level values. 
+    ''' This flag is used to dimension variables during the load of an Ecospace model.
+    ''' Stored with the Ecopath data because this needs to be set before an Ecospace scenario is loaded so it can be used for dimensioning.
+    ''' </remarks>
+    Public isEcospaceModelCoupled As Boolean
+
 #End Region
 
 #Region " Borrowed from EcoRanger "
@@ -1262,6 +1272,10 @@ Public Class cEcopathDataStructures
 
     Public Sub New(ByVal CoreMessagePublisher As cMessagePublisher)
         Me.m_messages = CoreMessagePublisher
+
+        'No External coupling of Ecospace by default
+        Me.isEcospaceModelCoupled = False
+
     End Sub
 
 End Class

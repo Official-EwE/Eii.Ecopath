@@ -759,7 +759,8 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerSail
                 Return Me.m_core.m_EcoSpaceData.Sail
             Case eVarNameFlags.LayerDistribution
-                Return Me.m_core.m_EcoSpaceData.DistributionEnvelope
+                'jb removed the distribution envelope
+                Return Nothing 'Me.m_core.m_EcoSpaceData.DistributionEnvelope
         End Select
         Return Nothing
     End Function
