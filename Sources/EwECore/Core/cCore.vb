@@ -12186,7 +12186,8 @@ Public Class cCore
                 Select Case value.varName
 
                     Case eVarNameFlags.isEcospaceModelCoupled
-                        If CBool(value.Value) = True Then
+                        If Me.m_StateMonitor.HasEcospaceLoaded Then
+                            're-load Ecospace before the changes can take affect
                             Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.RELOAD_ECOSPACE, eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Warning))
                         End If
 
