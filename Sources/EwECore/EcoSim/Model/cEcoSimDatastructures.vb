@@ -649,7 +649,6 @@ Public Class cEcosimDatastructures
 
         ReDim SSGroup(nGroups)
 
-
         ReDim TLSim(nGroups)
 
         ReDim GroupDetritus(nGroups)
@@ -663,8 +662,6 @@ Public Class cEcosimDatastructures
         ReDim Propdiscardtime(nGear, nGroups)
 
     End Sub
-
-    ' End Sub
 
     Public Sub RedimOutputsByTime(ByVal nTimesteps As Integer)
         ReDim FIB(nTimesteps)
