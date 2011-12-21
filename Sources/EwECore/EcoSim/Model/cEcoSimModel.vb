@@ -4138,8 +4138,9 @@ Namespace Ecosim
             Dim t As Integer
 
             Dim QYear() As Single
-            ReDim QYear(Me.nGroups)
-            For i As Integer = 1 To Me.nGroups
+            ReDim QYear(Me.EcopathData.NumFleet)
+            For i As Integer = 1 To Me.EcopathData.NumFleet
+                'Dec 2011: VC changed dimentsion from me.nGroups to Numfleet
                 QYear(i) = 1
             Next
 

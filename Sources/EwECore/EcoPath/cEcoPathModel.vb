@@ -1282,8 +1282,8 @@ Namespace Ecopath
 
         Public Sub CheckDiscardFateZero()
             Dim nFound As Integer
-            Dim bNoDiscardFate(m_Data.NumGroups) As Boolean
-            Dim bHasDiscards(m_Data.NumGroups) As Boolean
+            Dim bNoDiscardFate(m_Data.NumFleet) As Boolean
+            Dim bHasDiscards(m_Data.NumFleet) As Boolean
             Dim msg As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
             Dim str As String = ""
