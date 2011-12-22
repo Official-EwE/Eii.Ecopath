@@ -334,7 +334,7 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the TopLeft latitude value for this layer.
+    ''' Get/set the TopLeft latitude value for the map.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Latitude() As Single
@@ -351,7 +351,7 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the TopLeft longitude value for this layer.
+    ''' Get/set the TopLeft longitude value for the map.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Longitude() As Single
@@ -368,7 +368,7 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the top left position for this layer, expressed in (lon, lat)
+    ''' Get/set the top-left (NW) extent of the map, expressed in degrees (lon, lat)
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property PosTopLeft() As Drawing.PointF
@@ -386,7 +386,7 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the top left position for this layer, expressed in (lon, lat)
+    ''' Get/set the bottom-right (SE) extent of the map, expressed in degrees (lon, lat)
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property PosBottomRight() As Drawing.PointF
