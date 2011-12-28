@@ -150,87 +150,6 @@ Public Class cPluginManager
 
     End Class
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper class to create and return XML nodes for any <see cref="ISettingsPlugin">ISettingsPlugin</see>
-    ''' in the framework managed settings XML document.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Class cPluginSettings
-
-        Public Shared Sub ProvideSettings(ByVal doc As XmlDocument, ByVal pi As IPlugin)
-
-            ' Only for support plug-ins
-            If Not (TypeOf pi Is ISettingsPlugin) Then Return
-            ' Only when plug-in manager has a valid XML document provided for storing settings
-            If (doc Is Nothing) Then Return
-
-            Try
-                Dim cpi As ISettingsPlugin = DirectCast(pi, ISettingsPlugin)
-                cpi.InitializeSettings(doc, GetSettings(doc, cpi))
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Create a default XML document for storing settings.
-        ''' </summary>
-        ''' <returns>A default XML document for storing settings.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function DefaultDocument() As XmlDocument
-            Dim doc As New XmlDocument()
-            doc.AppendChild(doc.CreateXmlDeclaration("1.0", "utf-8", "yes"))
-            Return doc
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns the settings node for a given IConfigurablePersistPlugin plug-in.
-        ''' </summary>
-        ''' <param name="pi"></param>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Private Shared Function GetSettings(ByVal doc As XmlDocument, _
-                                            ByVal pi As ISettingsPlugin) As XmlNode
-
-            Dim node As XmlNode = Nothing
-            Dim strName As String = ToValidNodeName(pi)
-
-            For Each node In doc.ChildNodes
-                If (String.Compare(node.Name, strName, True) = 0) Then
-                    Return node
-                End If
-            Next
-
-            node = doc.CreateElement(strName)
-            doc.AppendChild(node)
-            Return node
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Generate a name for a plug-in name.
-        ''' </summary>
-        ''' <param name="ip">Settings plug-in to return a node name for.</param>
-        ''' <returns>A node name</returns>
-        ''' -------------------------------------------------------------------
-        Private Shared Function ToValidNodeName(ByVal ip As ISettingsPlugin) As String
-            Dim sb As New StringBuilder()
-            Dim c As Char
-            Dim strName As String = ip.Name
-            For i As Integer = 0 To strName.Length - 1
-                c = strName(i)
-                If Char.IsLetterOrDigit(c) Then sb.Append(c)
-            Next
-            Return sb.ToString
-        End Function
-
-    End Class
-
 #End Region ' Helper classes
 
 #Region " Private variables "
@@ -247,8 +166,6 @@ Public Class cPluginManager
     ''' <summary>Id of the thread that create the plugin manager used to decide
     ''' if the sync object should be used to marshall plug-in calls across threads.</summary>
     Private m_ThreadID As Integer = 0
-    ''' <summary>Plug-in settings document.</summary>
-    Private m_settingsDoc As XmlDocument = cPluginSettings.DefaultDocument
     ''' <summary>Flag stating whether plug-ins have been loaded.</summary>
     Private m_bLoaded As Boolean = False
 
@@ -612,7 +529,6 @@ Public Class cPluginManager
                                     Try
                                         ' Initialize plugin
                                         ip.Initialize(Me.m_core)
-                                        cPluginSettings.ProvideSettings(Me.m_settingsDoc, ip)
                                     Catch ex As Exception
                                         ' Disable the plugin entirely
                                         plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
@@ -1726,34 +1642,6 @@ Public Class cPluginManager
     End Function
 
 #End Region ' MSE and MSY
-
-#Region " Settings "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Provide the plug-in manager with an XML document for <see cref="ISettingsPlugin">settings plug-ins</see> 
-    ''' to store and retrieve persistent settings.
-    ''' </summary>
-    ''' <remarks>
-    ''' Note that XML document should be provided before any plug-ins are loaded.
-    ''' The current implementation does NOT cascade a new settings document to
-    ''' already loaded plug-ins; such dynamics would make writing plug-ins even
-    ''' more daunting.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Public Property Settings() As XmlDocument
-        Get
-            Return Me.m_settingsDoc
-        End Get
-        Set(ByVal value As XmlDocument)
-            Debug.Assert(Not Me.m_bLoaded, "Settings should be configured before any plug-in is loaded")
-            If (value IsNot Nothing) Then
-                Me.m_settingsDoc = value
-            End If
-        End Set
-    End Property
-
-#End Region ' Settings
 
 #End Region ' Plugin invocation
 

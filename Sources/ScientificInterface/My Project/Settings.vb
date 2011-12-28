@@ -1,5 +1,6 @@
-﻿Imports ScientificInterfaceShared
-Imports System.Configuration
+﻿Imports System.Configuration
+Imports System.IO
+Imports EwEUtils
 
 ''' <summary>
 ''' Settings class that uses a custom <see cref="SettingsProvider"/>.
@@ -21,16 +22,7 @@ Partial Friend NotInheritable Class Settings
 
         MyBase.New()
 
-        Me.m_provider = New cEwESettingsProvider()
-
-        ' Eradicate existing providers
-        Me.Providers.Clear()
-        ' Add custom provider
-        Me.Providers.Add(Me.m_provider)
-        ' Hijack all existing properties
-        For Each sp As SettingsProperty In Me.Properties
-            sp.Provider = Me.m_provider
-        Next
+        Me.m_provider = New cEwESettingsProvider(Path.GetFileNameWithoutExtension(Application.ExecutablePath), Me)
 
     End Sub
 

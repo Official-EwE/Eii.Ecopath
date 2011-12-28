@@ -3,38 +3,32 @@
 Option Explicit On
 Option Strict On
 
+Imports System.ComponentModel
 Imports System.IO
-Imports System.Resources
 Imports System.Reflection
-Imports EwEPlugin
+Imports System.Threading
 Imports EwECore
-Imports EwECore.DataSources
 Imports EwECore.Database
+Imports EwECore.DataSources
+Imports EwEPlugin
+Imports EwEUtils
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
+Imports EwEUtils.Database
+Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecopath
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
 Imports ScientificInterface.Ecospace.Basemap
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterface.Ecotracer
-Imports ScientificInterface.Wizard
 Imports ScientificInterface.Other
+Imports ScientificInterface.Wizard
 Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
-Imports EwEUtils.Commands
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-Imports EwEUtils.Utilities
-Imports Microsoft.VisualBasic
-Imports System.Threading
-Imports System.ComponentModel
-Imports ScientificInterfaceShared.Commands
-Imports System.Drawing.Printing
-Imports EwEUtils.SystemUtilities
-Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 
@@ -49,6 +43,7 @@ Public Class AppLauncher
 #Region " Variables "
 
     Private m_uic As cUIContext = Nothing
+
     Private m_mhProgress As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
     Private m_mhEcospace As cMessageHandler = Nothing
@@ -591,11 +586,6 @@ Public Class AppLauncher
         Me.m_pluginManager = New cPluginManager()
         Me.m_pluginManager.UIContext = Me.UIContext
         Me.m_pluginManager.SyncObject = Me.UIContext.SyncObject
-        Try
-            Me.m_pluginManager.Settings = My.Settings.PluginConfiguration
-        Catch ex As Exception
-            ' Ignore
-        End Try
 
         ' Config plugin manager
         Me.m_pluginManager.Core = Me.Core
@@ -1345,12 +1335,7 @@ Public Class AppLauncher
     End Sub
 
     Private Sub SaveSettings()
-
-        If (Me.m_pluginManager IsNot Nothing) Then
-            My.Settings.PluginConfiguration = Me.m_pluginManager.Settings
-        End If
         My.Settings.Save()
-
     End Sub
 
 #End Region ' Settings

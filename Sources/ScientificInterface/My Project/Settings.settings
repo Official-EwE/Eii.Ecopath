@@ -116,9 +116,6 @@
     <Setting Name="AutoUpdatePlugins" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="PluginConfiguration" Type="System.Xml.XmlDocument" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="PresentationModeHideModelBar" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>

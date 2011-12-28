@@ -260,6 +260,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="My Project\Settings.vb">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tools\MSEBatch\gridMSEBatchFixedFIter.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1360,9 +1363,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Options\IOptionsPage.vb" />
-    <Compile Include="Settings.vb">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Tools\MSEBatch\frmMSERunBatch.Designer.vb">
       <DependentUpon>frmMSERunBatch.vb</DependentUpon>
     </Compile>
