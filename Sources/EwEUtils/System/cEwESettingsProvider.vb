@@ -2,19 +2,13 @@
 
 Option Strict On
 Imports System
-Imports System.Collections
-Imports System.Collections.Generic
-Imports System.Text
+Imports System.Collections.Specialized
 Imports System.Configuration
-Imports System.Configuration.Provider
+Imports System.Diagnostics
 Imports System.IO
 Imports System.Windows.Forms
-Imports System.Collections.Specialized
-Imports Microsoft.Win32
 Imports System.Xml
 Imports EwEUtils.SystemUtilities
-Imports System.Reflection
-Imports System.Diagnostics
 
 #End Region ' Imports
 
@@ -31,6 +25,33 @@ Imports System.Diagnostics
 ''' class stops the proliferation of standard .NET versioned settings directories 
 ''' that become impossible to manage.</item>
 ''' </summary>
+''' <remarks>
+''' <para>The following code illustrates how to use this class to store settings
+''' native to a class library:</para>
+''' <code>
+''' Imports System.IO
+''' Imports EwEUtils
+''' Imports System.Reflection
+''' 
+''' Namespace My
+''' 
+''' Partial Friend NotInheritable Class MySettings
+''' 
+'''     Private m_provider As cEwESettingsProvider = Nothing
+''' 
+'''     Public Sub New()
+''' 
+'''         MyBase.New()
+'''         Dim asm As Assembly = Assembly.GetAssembly(GetType(MySettings))
+'''         Me.m_provider = New cEwESettingsProvider(Path.GetFileNameWithoutExtension(asm.Location), Me)
+''' 
+'''     End Sub
+''' 
+''' End Class
+''' 
+''' End Namespace
+''' </code>
+''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cEwESettingsProvider
     Inherits SettingsProvider
@@ -46,7 +67,7 @@ Public Class cEwESettingsProvider
 
     Public Sub New(strAssembly As String, settings As ApplicationSettingsBase)
 
-        Debug.assert(settings IsNot Nothing)
+        Debug.Assert(settings IsNot Nothing)
 
         Me.m_strAssembly = strAssembly
         Me.m_settings = settings
