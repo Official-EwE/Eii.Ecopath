@@ -74,13 +74,13 @@ Namespace Ecospace
             Me.m_bpUseNewStanza = Nothing
             Me.m_bpAdjustSpace = Nothing
             Me.m_bpConTracing = Nothing
-            Me.m_fpSaveCSV = Nothing
-            Me.m_fpSaveASC = Nothing
-
+ 
             Me.m_fpScenarioName.Release()
             Me.m_fpScenarioDescription.Release()
             Me.m_fpAuthor.Release()
             Me.m_fpContact.Release()
+            Me.m_fpSaveCSV.Release()
+            Me.m_fpSaveASC.Release()
 
             Me.m_fpNumThreads.Release()
             Me.m_fpNumThreads2.Release()
