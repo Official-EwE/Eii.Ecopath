@@ -37,10 +37,17 @@ Namespace Ecospace
             Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_gbThreading = New System.Windows.Forms.GroupBox()
+            Me.m_lbNumThreads = New System.Windows.Forms.Label()
+            Me.m_nudNumThreads = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_gbCapCalcs = New System.Windows.Forms.GroupBox()
             Me.m_rbHab = New System.Windows.Forms.RadioButton()
             Me.m_rbCap = New System.Windows.Forms.RadioButton()
             Me.m_rbCapHap = New System.Windows.Forms.RadioButton()
+            Me.m_gbIMB = New System.Windows.Forms.GroupBox()
+            Me.m_cbMovePackets = New System.Windows.Forms.CheckBox()
+            Me.m_tbNumPackets = New System.Windows.Forms.TextBox()
+            Me.lbPacketsMultiplier = New System.Windows.Forms.Label()
             Me.m_nudMaxIterations = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lbTotalTime = New System.Windows.Forms.Label()
             Me.m_lblNumTimstepsPerYear = New System.Windows.Forms.Label()
@@ -66,23 +73,16 @@ Namespace Ecospace
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plBiomass = New System.Windows.Forms.Panel()
-            Me.m_gbThreading = New System.Windows.Forms.GroupBox()
-            Me.m_lbNumThreads = New System.Windows.Forms.Label()
-            Me.m_nudNumThreads = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_gbIMB = New System.Windows.Forms.GroupBox()
-            Me.m_tbNumPackets = New System.Windows.Forms.TextBox()
-            Me.lbPacketsMultiplier = New System.Windows.Forms.Label()
-            Me.m_cbMovePackets = New System.Windows.Forms.CheckBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
+            Me.m_gbThreading.SuspendLayout()
+            CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbCapCalcs.SuspendLayout()
+            Me.m_gbIMB.SuspendLayout()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbRunTime.SuspendLayout()
             Me.m_plBiomass.SuspendLayout()
-            Me.m_gbThreading.SuspendLayout()
-            CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_gbIMB.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -159,6 +159,27 @@ Namespace Ecospace
             Me.m_tlpModelTop.Controls.Add(Me.m_gbIMB, 1, 0)
             Me.m_tlpModelTop.Name = "m_tlpModelTop"
             '
+            'm_gbThreading
+            '
+            Me.m_gbThreading.Controls.Add(Me.m_lbNumThreads)
+            Me.m_gbThreading.Controls.Add(Me.m_nudNumThreads)
+            resources.ApplyResources(Me.m_gbThreading, "m_gbThreading")
+            Me.m_gbThreading.Name = "m_gbThreading"
+            Me.m_gbThreading.TabStop = False
+            '
+            'm_lbNumThreads
+            '
+            resources.ApplyResources(Me.m_lbNumThreads, "m_lbNumThreads")
+            Me.m_lbNumThreads.Name = "m_lbNumThreads"
+            '
+            'm_nudNumThreads
+            '
+            resources.ApplyResources(Me.m_nudNumThreads, "m_nudNumThreads")
+            Me.m_nudNumThreads.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudNumThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudNumThreads.Name = "m_nudNumThreads"
+            Me.m_nudNumThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            '
             'm_gbCapCalcs
             '
             Me.m_gbCapCalcs.Controls.Add(Me.m_rbHab)
@@ -188,6 +209,31 @@ Namespace Ecospace
             Me.m_rbCapHap.Name = "m_rbCapHap"
             Me.m_rbCapHap.TabStop = True
             Me.m_rbCapHap.UseVisualStyleBackColor = True
+            '
+            'm_gbIMB
+            '
+            Me.m_gbIMB.Controls.Add(Me.m_cbMovePackets)
+            Me.m_gbIMB.Controls.Add(Me.m_tbNumPackets)
+            Me.m_gbIMB.Controls.Add(Me.lbPacketsMultiplier)
+            resources.ApplyResources(Me.m_gbIMB, "m_gbIMB")
+            Me.m_gbIMB.Name = "m_gbIMB"
+            Me.m_gbIMB.TabStop = False
+            '
+            'm_cbMovePackets
+            '
+            resources.ApplyResources(Me.m_cbMovePackets, "m_cbMovePackets")
+            Me.m_cbMovePackets.Name = "m_cbMovePackets"
+            Me.m_cbMovePackets.UseVisualStyleBackColor = True
+            '
+            'm_tbNumPackets
+            '
+            resources.ApplyResources(Me.m_tbNumPackets, "m_tbNumPackets")
+            Me.m_tbNumPackets.Name = "m_tbNumPackets"
+            '
+            'lbPacketsMultiplier
+            '
+            resources.ApplyResources(Me.lbPacketsMultiplier, "lbPacketsMultiplier")
+            Me.lbPacketsMultiplier.Name = "lbPacketsMultiplier"
             '
             'm_nudMaxIterations
             '
@@ -339,53 +385,8 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_plBiomass, "m_plBiomass")
             Me.m_plBiomass.Controls.Add(Me.m_rbBaseBiomass)
             Me.m_plBiomass.Controls.Add(Me.m_rbAdjustedBiomass)
+            Me.m_plBiomass.Controls.Add(Me.m_hdrInitialization)
             Me.m_plBiomass.Name = "m_plBiomass"
-            '
-            'm_gbThreading
-            '
-            Me.m_gbThreading.Controls.Add(Me.m_lbNumThreads)
-            Me.m_gbThreading.Controls.Add(Me.m_nudNumThreads)
-            resources.ApplyResources(Me.m_gbThreading, "m_gbThreading")
-            Me.m_gbThreading.Name = "m_gbThreading"
-            Me.m_gbThreading.TabStop = False
-            '
-            'm_lbNumThreads
-            '
-            resources.ApplyResources(Me.m_lbNumThreads, "m_lbNumThreads")
-            Me.m_lbNumThreads.Name = "m_lbNumThreads"
-            '
-            'm_nudNumThreads
-            '
-            resources.ApplyResources(Me.m_nudNumThreads, "m_nudNumThreads")
-            Me.m_nudNumThreads.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-            Me.m_nudNumThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.m_nudNumThreads.Name = "m_nudNumThreads"
-            Me.m_nudNumThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
-            '
-            'm_gbIMB
-            '
-            Me.m_gbIMB.Controls.Add(Me.m_cbMovePackets)
-            Me.m_gbIMB.Controls.Add(Me.m_tbNumPackets)
-            Me.m_gbIMB.Controls.Add(Me.lbPacketsMultiplier)
-            resources.ApplyResources(Me.m_gbIMB, "m_gbIMB")
-            Me.m_gbIMB.Name = "m_gbIMB"
-            Me.m_gbIMB.TabStop = False
-            '
-            'm_tbNumPackets
-            '
-            resources.ApplyResources(Me.m_tbNumPackets, "m_tbNumPackets")
-            Me.m_tbNumPackets.Name = "m_tbNumPackets"
-            '
-            'lbPacketsMultiplier
-            '
-            resources.ApplyResources(Me.lbPacketsMultiplier, "lbPacketsMultiplier")
-            Me.lbPacketsMultiplier.Name = "lbPacketsMultiplier"
-            '
-            'm_cbMovePackets
-            '
-            resources.ApplyResources(Me.m_cbMovePackets, "m_cbMovePackets")
-            Me.m_cbMovePackets.Name = "m_cbMovePackets"
-            Me.m_cbMovePackets.UseVisualStyleBackColor = True
             '
             'EcospaceParameters
             '
@@ -402,25 +403,24 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_tbName)
             Me.Controls.Add(Me.m_hdrModel)
             Me.Controls.Add(Me.m_tbDescription)
-            Me.Controls.Add(Me.m_hdrInitialization)
             Me.Controls.Add(Me.m_lblDescription)
             Me.Controls.Add(Me.m_lbScenarioName)
             Me.Name = "EcospaceParameters"
             m_gbModel.ResumeLayout(False)
             m_gbModel.PerformLayout()
             Me.m_tlpModelTop.ResumeLayout(False)
+            Me.m_gbThreading.ResumeLayout(False)
+            Me.m_gbThreading.PerformLayout()
+            CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gbCapCalcs.ResumeLayout(False)
             Me.m_gbCapCalcs.PerformLayout()
+            Me.m_gbIMB.ResumeLayout(False)
+            Me.m_gbIMB.PerformLayout()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gbRunTime.ResumeLayout(False)
             Me.m_gbRunTime.PerformLayout()
             Me.m_plBiomass.ResumeLayout(False)
             Me.m_plBiomass.PerformLayout()
-            Me.m_gbThreading.ResumeLayout(False)
-            Me.m_gbThreading.PerformLayout()
-            CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_gbIMB.ResumeLayout(False)
-            Me.m_gbIMB.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
