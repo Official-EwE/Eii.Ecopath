@@ -196,7 +196,7 @@ Namespace Controls.Map
                                  ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
                     g.DrawString(l.Name, _
                                  ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y + (szfBox.Height / 3))
-                    g.DrawString(Me.m_uic.StyleGuide.FormatNumber(0), _
+                    g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Data.MinValue), _
                                  ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y + (szfBox.Height * 2 / 3))
             End Select
         End Sub

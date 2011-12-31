@@ -198,6 +198,13 @@ Public MustInherit Class cEcospaceLayer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get the minimum value in a layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride ReadOnly Property MinValue() As Single
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Invalidates the content of a layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------

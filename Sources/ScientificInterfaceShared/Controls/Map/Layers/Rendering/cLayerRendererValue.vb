@@ -69,9 +69,9 @@ Namespace Controls.Map.Layers
                                         ByVal style As cStyleGuide.eStyleFlags)
 
             Dim sValMax As Single = layer.MaxValue
-            Dim sValMin As Single = 0
+            Dim sValMin As Single = layer.MinValue
 
-            If layer.MetadataCell IsNot Nothing Then sValMin = layer.MetadataCell.Min
+            'If layer.MetadataCell IsNot Nothing Then sValMin = layer.MetadataCell.Min
 
             If Not Me.Autoscale Then
                 sValMax = Me.ScaleMax
@@ -95,7 +95,7 @@ Namespace Controls.Map.Layers
                         If (sValRange > 0.0) Then
                             ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
                             ' not (0, sValueMax)!!!
-                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue - sValMin, sValMax))
+                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue - sValMin, sValMax - sValMin))
                                 g.FillRectangle(br, rc)
                             End Using
                         Else

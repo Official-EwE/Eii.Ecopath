@@ -16,11 +16,13 @@ Public Class cEcospaceLayerInteger
 
     ''' <summary>Layer max value.</summary>
     Private m_iMaxValue As Integer = 0
+    ''' <summary>Layer min value.</summary>
+    Private m_iMinValue As Integer = 0
 
     ''' <summary>States whether the layer max value should be recalculated.</summary>
     ''' <remarks>True at startup to make sure that min/max are properly calculated
     ''' when first queried.</remarks>
-    Private m_bInvalidateMax As Boolean = True
+    Private m_bInvalidateMinMax As Boolean = True
 
 #End Region ' Private variables
 
@@ -96,8 +98,8 @@ Public Class cEcospaceLayerInteger
             If Me.ValidateCellValue(i) Then
                 If Me.ValidateCellPosition(iRow, iCol) Then
                     d(iRow, iCol) = i
-                    If (Me.m_bInvalidateMax = False) Then
-                        Me.m_bInvalidateMax = (Math.Abs(i) > Me.m_iMaxValue)
+                    If (Me.m_bInvalidateMinMax = False) Then
+                        Me.m_bInvalidateMinMax = (Math.Abs(i) > Me.m_iMaxValue)
                     End If
                 End If
             End If
@@ -106,32 +108,50 @@ Public Class cEcospaceLayerInteger
 
     Public Overrides ReadOnly Property MaxValue() As Single
         Get
-            If Me.m_bInvalidateMax Then Me.RecalcMax()
+            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
             Return Me.m_iMaxValue
         End Get
     End Property
 
+    Public Overrides ReadOnly Property MinValue() As Single
+        Get
+            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
+            Return Me.m_iMinValue
+        End Get
+    End Property
+
     Public Overrides Sub Invalidate()
-        Me.m_bInvalidateMax = True
+        Me.m_bInvalidateMinMax = True
     End Sub
 
 #End Region ' Cell interaction
 
 #Region " Internals "
 
-    Protected Overridable Sub RecalcMax()
+    Protected Overridable Sub RecalcMinMax()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
         Dim d As Integer(,) = DirectCast(Me.Data, Integer(,))
+
         Me.m_iMaxValue = Integer.MinValue
+        Me.m_iMinValue = Integer.MaxValue
         For iRow As Integer = 1 To bm.InRow
             For iCol As Integer = 1 To bm.InCol
-                If d(iRow, iCol) <> cCore.NULL_VALUE Then
-                    Me.m_iMaxValue = Math.Max(Math.Abs(d(iRow, iCol)), Me.m_iMaxValue)
+                If layerDepth.IsWaterCell(iRow, iCol) Then
+                    If d(iRow, iCol) <> cCore.NULL_VALUE Then
+                        Me.m_iMaxValue = Math.Max(d(iRow, iCol), Me.m_iMaxValue)
+                        Me.m_iMinValue = Math.Min(d(iRow, iCol), Me.m_iMinValue)
+                    End If
                 End If
             Next iCol
         Next iRow
-        Me.m_bInvalidateMax = False
+
+        If (Me.m_iMaxValue = Me.m_iMinValue) Then
+            Me.m_iMinValue = 0
+        End If
+
+        Me.m_bInvalidateMinMax = False
 
     End Sub
 

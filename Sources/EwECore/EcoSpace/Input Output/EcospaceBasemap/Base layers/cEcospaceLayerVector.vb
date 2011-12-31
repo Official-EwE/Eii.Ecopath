@@ -110,6 +110,15 @@ Public MustInherit Class cEcospaceLayerVector
         End Get
     End Property
 
+    ''' <summary>
+    ''' Get the min magnitude of all cells in the layer.
+    ''' </summary>
+    Public Overrides ReadOnly Property MinValue() As Single
+        Get
+            Return 0
+        End Get
+    End Property
+
     Public Overrides Sub Invalidate()
         Me.m_bInvalidateMax = True
     End Sub

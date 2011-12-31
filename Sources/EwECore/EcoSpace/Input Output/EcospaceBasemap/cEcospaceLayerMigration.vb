@@ -79,6 +79,12 @@ Public Class cEcospaceLayerMigration
         End Get
     End Property
 
+    Public Overrides ReadOnly Property MinValue() As Single
+        Get
+            Return 0
+        End Get
+    End Property
+
 #End Region ' Cell interaction
 
 #Region " Private bits "
