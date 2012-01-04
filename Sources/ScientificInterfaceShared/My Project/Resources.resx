@@ -2418,4 +2418,16 @@
   <data name="HEADER_CODE_LSID" xml:space="preserve">
     <value>LSID|Taxonomy Life Sciences Identifier, as defined by the Taxonomy Database Working Group</value>
   </data>
+  <data name="HEADER_COL" xml:space="preserve">
+    <value>Column</value>
+  </data>
+  <data name="HEADER_LATITUDE" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="HEADER_LONGITUDE" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="HEADER_ROW" xml:space="preserve">
+    <value>Row</value>
+  </data>
 </root>

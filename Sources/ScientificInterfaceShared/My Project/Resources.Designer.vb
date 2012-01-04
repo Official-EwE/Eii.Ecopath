@@ -2461,6 +2461,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Column.
+        '''</summary>
+        Public ReadOnly Property HEADER_COL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_COL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Color.
         '''</summary>
         Public ReadOnly Property HEADER_COLOR() As String
@@ -3406,6 +3415,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Latitude.
+        '''</summary>
+        Public ReadOnly Property HEADER_LATITUDE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LATITUDE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Layer.
         '''</summary>
         Public ReadOnly Property HEADER_LAYER() As String
@@ -3478,20 +3496,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Longitude.
+        '''</summary>
+        Public ReadOnly Property HEADER_LONGITUDE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LONGITUDE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Lower limit.
         '''</summary>
         Public ReadOnly Property HEADER_LOWERLIMIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_LOWERLIMIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Life Science Identifier.
-        '''</summary>
-        Public ReadOnly Property HEADER_LSID() As String
-            Get
-                Return ResourceManager.GetString("HEADER_LSID", resourceCulture)
             End Get
         End Property
         
@@ -4356,6 +4374,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_RHALFB0RATIO() As String
             Get
                 Return ResourceManager.GetString("HEADER_RHALFB0RATIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Row.
+        '''</summary>
+        Public ReadOnly Property HEADER_ROW() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ROW", resourceCulture)
             End Get
         End Property
         

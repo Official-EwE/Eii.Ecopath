@@ -353,8 +353,8 @@ Namespace Controls
         ''' <summary>
         ''' Attach a zedgraph helper to a zedgraph control.
         ''' </summary>
-        ''' <param name="uic">cUIContext providing UI contextual information.</param>
-        ''' <param name="zgc">ZedGraph control to control.</param>
+        ''' <param name="uic"><see cref="cUIContext"/> providing UI contextual information.</param>
+        ''' <param name="zgc"><see cref="ZedGraphControl"/> to style and interact with.</param>
         ''' <param name="iNumPanels">Number of panels to create.</param>
         ''' <remarks>
         ''' Make sure to cleanup using <see cref="Detach">Detach</see>.
