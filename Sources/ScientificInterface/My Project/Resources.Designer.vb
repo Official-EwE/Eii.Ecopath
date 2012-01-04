@@ -87,6 +87,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to External data.
+        '''</summary>
+        Public ReadOnly Property CAPTION_EXTERNAL_DATA() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_EXTERNAL_DATA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to External data for &apos;{0}&apos;.
+        '''</summary>
+        Public ReadOnly Property CAPTION_EXTERNAL_DATA_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_EXTERNAL_DATA_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MSE fleet ref. levels.
         '''</summary>
         Public ReadOnly Property CAPTION_MSEFLEETREF() As String
