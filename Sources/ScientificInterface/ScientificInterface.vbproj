@@ -809,6 +809,7 @@
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\dlgShowHideItems.resx">
       <SubType>Designer</SubType>
@@ -1618,16 +1619,17 @@
     <Content Include="Resources\Ecopath_beta.ico" />
     <None Include="Resources\EWE_forever.jpg" />
     <Content Include="Resources\Ecopath_beta.ico" />
-    <Content Include="Resources\EU_50px.jpg" />
+    <Content Include="Resources\logo_EU.jpg" />
     <None Include="Resources\ewe_wiki.url.txt" />
-    <Content Include="Resources\fimr_logo_50px.jpg" />
+    <Content Include="Resources\logo_FIMR.jpg" />
     <None Include="Resources\Importance.png" />
     <None Include="Resources\google.ico" />
-    <Content Include="Resources\Lenfest Logo_50px.jpg" />
-    <None Include="Resources\mgel_logo2.gif" />
-    <Content Include="Resources\sautxt_50px.jpg" />
+    <Content Include="Resources\logo_LENFEST.jpg" />
+    <None Include="Resources\logo_MGEL.gif" />
+    <None Include="Resources\logo_PEW.jpg" />
+    <Content Include="Resources\logo_SAUP.jpg" />
     <None Include="Resources\Seed.PNG" />
-    <Content Include="Resources\Sponsors.jpg" />
+    <None Include="Resources\logo_SAUP2.jpg" />
     <None Include="Resources\acknowledgements.rtf" />
     <None Include="Resources\Web.png" />
     <None Include="My Project\Application.myapp">
@@ -1818,10 +1820,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj">
       <Project>{0913D0AE-BDEC-4C3E-9551-D0A314BE9DE6}</Project>
       <Name>EwEResultsExtractorPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj">
-      <Project>{5E7BEAC5-84D8-4BC5-9B53-8C7888FC9786}</Project>
-      <Name>EwEShapeGridPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
       <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>

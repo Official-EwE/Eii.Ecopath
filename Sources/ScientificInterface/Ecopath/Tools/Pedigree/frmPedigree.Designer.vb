@@ -54,7 +54,7 @@ Namespace Ecopath.Tools
             '
             'm_tsbnEditPedigree
             '
-            Me.m_tsbnEditPedigree.Image = Global.ScientificInterface.My.Resources.Resources.certificate
+            Me.m_tsbnEditPedigree.Image = Global.ScientificInterface.My.Resources.certificate
             Me.m_tsbnEditPedigree.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditPedigree.Name = "m_tsbnEditPedigree"
             Me.m_tsbnEditPedigree.Size = New System.Drawing.Size(119, 22)

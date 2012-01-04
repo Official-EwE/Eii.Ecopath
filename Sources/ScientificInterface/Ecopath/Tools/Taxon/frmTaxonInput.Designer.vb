@@ -49,7 +49,7 @@ Namespace Ecopath.Input
             '
             'm_tsbnEditTaxa
             '
-            Me.m_tsbnEditTaxa.Image = Global.ScientificInterface.My.Resources.Resources.EditTaxa
+            Me.m_tsbnEditTaxa.Image = Global.ScientificInterface.My.Resources.EditTaxa
             Me.m_tsbnEditTaxa.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditTaxa.Name = "m_tsbnEditTaxa"
             Me.m_tsbnEditTaxa.Size = New System.Drawing.Size(94, 22)

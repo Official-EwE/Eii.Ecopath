@@ -150,7 +150,7 @@ Namespace Ecospace
             'm_tsbMPA
             '
             Me.m_tsbMPA.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearMPA, Me.m_tsmSetAllMPA})
-            Me.m_tsbMPA.Image = Global.ScientificInterface.My.Resources.Resources.MPA1
+            Me.m_tsbMPA.Image = Global.ScientificInterface.My.Resources.MPA1
             resources.ApplyResources(Me.m_tsbMPA, "m_tsbMPA")
             Me.m_tsbMPA.Name = "m_tsbMPA"
             '
@@ -167,7 +167,7 @@ Namespace Ecospace
             'm_tsbSeed
             '
             Me.m_tsbSeed.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearSeed, Me.m_tsmSetAllSeed})
-            Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Resources.Seed
+            Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Seed
             resources.ApplyResources(Me.m_tsbSeed, "m_tsbSeed")
             Me.m_tsbSeed.Name = "m_tsbSeed"
             '
@@ -183,7 +183,7 @@ Namespace Ecospace
             '
             'm_tsbEditLayers
             '
-            Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Resources.Importance
+            Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Importance
             resources.ApplyResources(Me.m_tsbEditLayers, "m_tsbEditLayers")
             Me.m_tsbEditLayers.Name = "m_tsbEditLayers"
             '
@@ -707,7 +707,7 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.PictureBox2, "PictureBox2")
             Me.PictureBox2.BackColor = System.Drawing.Color.White
-            Me.PictureBox2.Image = Global.ScientificInterface.My.Resources.Resources.Lenfest_Logo_50px
+            Me.PictureBox2.Image = Global.ScientificInterface.My.Resources.logo_LENFEST
             Me.PictureBox2.Name = "PictureBox2"
             Me.PictureBox2.TabStop = False
             '

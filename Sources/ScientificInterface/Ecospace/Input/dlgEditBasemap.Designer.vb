@@ -100,7 +100,7 @@ Partial Class dlgEditBasemap
         '
         'm_pbLink
         '
-        Me.m_pbLink.Image = ScientificInterfaceShared.My.Resources.Resources.chain_vert
+        Me.m_pbLink.Image = ScientificInterfaceShared.My.Resources.chain_vert
         resources.ApplyResources(Me.m_pbLink, "m_pbLink")
         Me.m_pbLink.Name = "m_pbLink"
         Me.m_pbLink.TabStop = False

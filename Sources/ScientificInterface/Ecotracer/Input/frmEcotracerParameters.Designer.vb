@@ -135,28 +135,28 @@ Namespace Ecotracer
             'm_pbSponsor1
             '
             resources.ApplyResources(Me.m_pbSponsor1, "m_pbSponsor1")
-            Me.m_pbSponsor1.Image = Global.ScientificInterface.My.Resources.Resources.fimr_logo_50px
+            Me.m_pbSponsor1.Image = Global.ScientificInterface.My.Resources.logo_FIMR
             Me.m_pbSponsor1.Name = "m_pbSponsor1"
             Me.m_pbSponsor1.TabStop = False
             '
             'm_pbSponsor2
             '
             resources.ApplyResources(Me.m_pbSponsor2, "m_pbSponsor2")
-            Me.m_pbSponsor2.Image = Global.ScientificInterface.My.Resources.Resources.EU_50px
+            Me.m_pbSponsor2.Image = Global.ScientificInterface.My.Resources.logo_EU
             Me.m_pbSponsor2.Name = "m_pbSponsor2"
             Me.m_pbSponsor2.TabStop = False
             '
             'm_pbSponsor3
             '
             resources.ApplyResources(Me.m_pbSponsor3, "m_pbSponsor3")
-            Me.m_pbSponsor3.Image = Global.ScientificInterface.My.Resources.Resources.Lenfest_Logo_50px
+            Me.m_pbSponsor3.Image = Global.ScientificInterface.My.Resources.logo_LENFEST
             Me.m_pbSponsor3.Name = "m_pbSponsor3"
             Me.m_pbSponsor3.TabStop = False
             '
             'm_pbSponsor4
             '
             resources.ApplyResources(Me.m_pbSponsor4, "m_pbSponsor4")
-            Me.m_pbSponsor4.Image = Global.ScientificInterface.My.Resources.Resources.sautxt_50px
+            Me.m_pbSponsor4.Image = Global.ScientificInterface.My.Resources.logo_SAUP
             Me.m_pbSponsor4.Name = "m_pbSponsor4"
             Me.m_pbSponsor4.TabStop = False
             '

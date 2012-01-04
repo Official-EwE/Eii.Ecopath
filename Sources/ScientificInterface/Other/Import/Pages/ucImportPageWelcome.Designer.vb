@@ -34,7 +34,7 @@
             '
             Me.m_pbWelcome.Anchor = System.Windows.Forms.AnchorStyles.Left
             Me.m_pbWelcome.BackColor = System.Drawing.Color.White
-            Me.m_pbWelcome.Image = Global.ScientificInterface.My.Resources.Resources.EwELogo_caption
+            Me.m_pbWelcome.Image = Global.ScientificInterface.My.Resources.logo_EWE5_caption
             Me.m_pbWelcome.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.m_pbWelcome.Location = New System.Drawing.Point(9, 9)
             Me.m_pbWelcome.Margin = New System.Windows.Forms.Padding(0)

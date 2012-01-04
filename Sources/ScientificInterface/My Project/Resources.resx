@@ -180,10 +180,6 @@
   <data name="PROMPT_ERROR_IMPORTFAILED" xml:space="preserve">
     <value>Failed to convert Ewe5 database to EwE6.</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="fimr_logo_50px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\fimr_logo_50px.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ECOSIM_SUITABILITY_PLOT_ELECTIVITY" xml:space="preserve">
     <value>Electivity</value>
   </data>
@@ -214,6 +210,7 @@
     <value>Creating Ecospace scenario '{0}'...</value>
     <comment>{0}: scenario name</comment>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Ecopath" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ecopath.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -473,7 +470,7 @@ Description: {1}</value>
   <data name="FPS_FG_TP" xml:space="preserve">
     <value>Target profitability</value>
   </data>
-  <data name="EwELogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="logo_EWE5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ewelogo.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="STATUS_PLEASE_WAIT" xml:space="preserve">
@@ -671,9 +668,6 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
     <value>Converting model '{0}' </value>
     <comment>{0} = EwE5 model name</comment>
   </data>
-  <data name="Lenfest_Logo_50px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\lenfest logo_50px.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="OPTIONS_FONTDLG_AXISTITLE" xml:space="preserve">
     <value>Sub titles|Font to render subtitles in graphs and figures</value>
   </data>
@@ -708,9 +702,6 @@ Location: {1}</value>
   <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
     <value>Egg production shape {0}</value>
     <comment>The default name for a new Ecosim Egg production shape. {0}: autonumber</comment>
-  </data>
-  <data name="sautxt_50px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\sautxt_50px.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MPA1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MPA.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -871,9 +862,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   <data name="SR_PLOT_TITLE" xml:space="preserve">
     <value>S/R plot</value>
   </data>
-  <data name="Sponsors" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\sponsors.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="OPTIONS_COLORDLG_PROMPT_ERROR" xml:space="preserve">
     <value>Generic errors|Values that the model was unable to compute due to a generic error</value>
   </data>
@@ -902,9 +890,6 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
   </data>
   <data name="PROMPT_ERROR_IMPORT_INVALIDDB" xml:space="preserve">
     <value>The selected database does not appear to be a valid EwE5 or EwE6 database.</value>
-  </data>
-  <data name="EU_50px" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\eu_50px.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_ERROR_IMAGETOOLARGE" xml:space="preserve">
     <value>Image is too large, select an image with width and height less than {0} pixels</value>
@@ -1140,7 +1125,7 @@ Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.
     <value>Model '{0}' failed to convert, see import log '{1}' for details</value>
     <comment>{0} = EwE5 model name, {1}=log file name</comment>
   </data>
-  <data name="EwELogo_caption" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="logo_EWE5_caption" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ewelogo_caption.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_WARNING_EMPTY_NAME" xml:space="preserve">
@@ -1490,5 +1475,23 @@ Description: {2}</value>
   </data>
   <data name="EWE_forever" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ewe_forever.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo_EU" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\logo_eu.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo_FIMR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\logo_fimr.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo_LENFEST" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\logo_lenfest.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo_PEW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo_PEW.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo_SAUP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\logo_saup.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="logo_SAUP2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo_SAUP2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
