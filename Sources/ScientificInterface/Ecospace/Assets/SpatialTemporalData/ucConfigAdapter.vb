@@ -211,6 +211,14 @@ Namespace Ecospace.Controls
 
             Debug.Assert(Me.m_uic IsNot Nothing)
 
+            Dim fmt As New cVarnameTypeFormatter()
+
+            If (Me.m_adt Is Nothing) Then
+                Me.m_hdrSource.Text = My.Resources.CAPTION_EXTERNAL_DATA
+            Else
+                Me.m_hdrSource.Text = String.Format(My.Resources.CAPTION_EXTERNAL_DATA_DETAIL, fmt.GetDescriptor(Me.m_adt.VarName))
+            End If
+
             Me.FillTemplateDatasetBox()
             Me.FillExistingDatasetBox(Me.SelectedDS)
             Me.FillExistingConverterBox()
