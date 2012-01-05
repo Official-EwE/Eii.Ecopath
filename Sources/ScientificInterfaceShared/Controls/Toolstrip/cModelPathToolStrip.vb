@@ -199,7 +199,10 @@ Namespace Controls
             Dim iMin As Integer = 0
             Dim iMax As Integer = Me.Width
             Dim strTemp As String = String.Copy(Me.m_strPath)
-            Dim sbTemp As New StringBuilder
+            Dim sbTemp As New StringBuilder()
+            Dim rcLabel As Rectangle = Nothing
+
+            ' ToDo: enable for right-to-left reading order
 
             For Each tsi As ToolStripItem In Me.Items
                 If Not tsi.IsOnOverflow And tsi.Available Then
@@ -212,16 +215,14 @@ Namespace Controls
             Next
 
             ' Calc conservative rect
-            Me.m_rcLabel = New Rectangle(iMin + 2, 2, iMax - iMin - 4, Me.ClientRectangle.Height - 4)
+            rcLabel = New Rectangle(iMin + 2, 2, iMax - iMin - 4, Me.ClientRectangle.Height - 4)
 
-            If (Me.m_rcLabel.Width > 0) Then
+            If (rcLabel.Width > 0) Then
                 ' -10 to counter odd calculation effects that I do not understand
                 '   Issues seem font based, but no clue as to why the last few chars are sometimes 
                 '   not properly included in the label calculations
-                TextRenderer.MeasureText(strTemp, Me.Font, New System.Drawing.Size(Me.m_rcLabel.Width - 10, Me.m_rcLabel.Height), _
-                                         TextFormatFlags.Internal Or _
-                                         TextFormatFlags.PathEllipsis Or _
-                                         TextFormatFlags.ModifyString)
+                Dim sz As Size = TextRenderer.MeasureText(strTemp, Me.Font, New System.Drawing.Size(Me.m_rcLabel.Width - 10, Me.m_rcLabel.Height), _
+                                                          TextFormatFlags.Internal Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString)
 
                 ' Chop off Nothing characters which will occur when string is shortened.
                 '   These chars are recognized and handled well by the String class, but 
@@ -232,9 +233,15 @@ Namespace Controls
                     End If
                     sbTemp.Append(c)
                 Next
+
+                ' Adjust label rect
+                rcLabel.X += rcLabel.Width - sz.Width
+                rcLabel.Width = sz.Width
             End If
 
+            ' Store
             Me.m_strLabel = sbTemp.ToString
+            Me.m_rcLabel = rcLabel
 
         End Sub
 
@@ -248,9 +255,18 @@ Namespace Controls
                 Return Me.m_bLabelHover
             End Get
             Set(ByVal value As Boolean)
+
                 If (value = Me.m_bLabelHover) Then Return
+
                 Me.m_bLabelHover = value
+
+                If (Me.m_bLabelHover) Then
+                    Me.Cursor = Cursors.Hand
+                Else
+                    Me.Cursor = Cursors.Default
+                End If
                 Me.Invalidate()
+
             End Set
         End Property
 
