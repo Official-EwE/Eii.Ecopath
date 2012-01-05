@@ -5067,12 +5067,14 @@ Namespace DataSources
                 shapeParms.ShapeFunctionType = CType(readerShape("FunctionType"), eShapeFunctionType)
 
                 ' Read z-scale
+                Dim sLast As Single = 1.0!
                 astrZScale = Me.SplitNumberString(CStr(readerShape("Zscale")))
                 For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, astrZScale.Length)
-                    ecosimDS.zscale(ipt, iForcingShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+                    sLast = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+                    ecosimDS.zscale(ipt, iForcingShape) = sLast
                 Next ipt
                 For ipt As Integer = Math.Min(ecosimDS.ForcePoints, astrZScale.Length) + 1 To ecosimDS.ForcePoints
-                    ecosimDS.zscale(ipt, iForcingShape) = 1.0
+                    ecosimDS.zscale(ipt, iForcingShape) = sLast
                 Next
 
                 ecosimDS.ForcingShapeParams(iForcingShape) = shapeParms
@@ -5752,8 +5754,16 @@ Namespace DataSources
                 drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
                 drow("ApplicationType") = ecosimDS.ForcingApplicationType(iShape)
 
+                Dim iTrackBack As Integer = ecosimDS.ForcePoints
+                Dim sLastVal As Single = ecosimDS.zscale(iTrackBack, iShape)
+
+                ' Minor optimization: do not save repeated values at the end of a shape
+                While (iTrackBack > 1) And (ecosimDS.zscale(iTrackBack - 1, iShape) = sLastVal)
+                    iTrackBack -= 1
+                End While
+
                 ' Assemble Zscale
-                For ipt As Integer = 1 To ecosimDS.ForcePoints
+                For ipt As Integer = 1 To iTrackBack
                     If (ipt > 1) Then sbZScale.Append(" ")
                     sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.zscale(ipt, iShape)))
                 Next
