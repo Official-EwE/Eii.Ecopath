@@ -221,7 +221,7 @@ Namespace Controls
                 ' -10 to counter odd calculation effects that I do not understand
                 '   Issues seem font based, but no clue as to why the last few chars are sometimes 
                 '   not properly included in the label calculations
-                Dim sz As Size = TextRenderer.MeasureText(strTemp, Me.Font, New System.Drawing.Size(Me.m_rcLabel.Width - 10, Me.m_rcLabel.Height), _
+                Dim sz As Size = TextRenderer.MeasureText(strTemp, Me.Font, New System.Drawing.Size(rcLabel.Width - 10, rcLabel.Height), _
                                                           TextFormatFlags.Internal Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString)
 
                 ' Chop off Nothing characters which will occur when string is shortened.
