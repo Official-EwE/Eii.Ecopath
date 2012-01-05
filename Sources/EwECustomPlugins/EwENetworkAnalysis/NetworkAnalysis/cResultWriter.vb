@@ -7,6 +7,7 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 Imports EwECore.DataSources
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -75,12 +76,10 @@ Public Class cResultWriter
 
     Private Function GetResultFileName(ByVal strPath As String, ByVal bWithPPR As Boolean, ByVal bAnnual As Boolean) As String
         Dim core As cCore = Me.m_manager.Core
-        Dim ds As IEwEDataSource = core.DataSource
-        Dim scen As cEcoSimScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
-
-        Return Path.Combine(strPath, cFileUtils.ToOutputFilename(ds.FileName, "NA", _
-                                                                 CStr(IIf(bAnnual, "annual", "monthly")) & "_" & CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR")), _
-                                                                 scen.Name))
+        Dim strFile As String = core.EcosimOutputFileName(My.Resources.CAPTION, _
+                                                          CStr(IIf(bAnnual, My.Resources.HEADER_ANNUAL, My.Resources.HEADER_MONTHLY)) & "_" & CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR")), _
+                                                          ".csv")
+        Return Path.Combine(strPath, strFile)
     End Function
 
     Friend ReadOnly Property NetworkManager() As cNetworkManager
@@ -90,13 +89,25 @@ Public Class cResultWriter
     End Property
 
     Private Function WriteData(ByVal strFileName As String, ByVal strData As String) As Boolean
+
+        ' ToDo: globalize this method
+        Dim strPath As String = Path.GetDirectoryName(strFileName)
+        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
+            Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_NOACCESS, strPath), True)
+            Return False
+        End If
+
         Dim sw As New StreamWriter(strFileName)
         If (sw IsNot Nothing) Then
             sw.Write(strData)
             sw.Close()
+            Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_SUCCESS, strFileName))
             Return True
         End If
+
+        Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_FAILED, strFileName), True)
         Return False
+
     End Function
 
     Private Function GetIndicesWithoutPPRData(ByVal bAnnualAverage As Boolean) As String
@@ -406,5 +417,11 @@ Public Class cResultWriter
 
         Return sb.ToString()
     End Function
+
+    Private Sub SendMessage(strMessage As String, Optional bError As Boolean = False)
+        Dim msg As New cMessage(strMessage, eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, _
+                                DirectCast(IIf(bError, eMessageImportance.Warning, eMessageImportance.Information), eMessageImportance))
+        Me.m_manager.Core.Messages.SendMessage(msg)
+    End Sub
 
 End Class

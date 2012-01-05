@@ -291,58 +291,54 @@ Namespace Utilities
         ''' <summary>
         ''' Creates a standard file name for EwE output files.
         ''' </summary>
-        ''' <param name="ModelName">Name of the model for which the output file is created.</param>
-        ''' <param name="ComponentName">Name of the component for which the output file is created.</param>
-        ''' <param name="Filter">Optional filter to specify an optional subcomponent for which the file is created.</param>
-        ''' <param name="ScenarioName">Optional scenario name for which the file is created.</param>
-        ''' <param name="Ext">Optional extension to add.</param>
+        ''' <param name="strModelName">Name of the model for which the output file is created.</param>
+        ''' <param name="strComponentName">Name of the component for which the output file is created.</param>
+        ''' <param name="strFilter">Optional filter to specify an optional subcomponent for which the file is created.</param>
+        ''' <param name="strScenarioName">Optional scenario name for which the file is created.</param>
+        ''' <param name="strExt">Optional extension to add.</param>
         ''' <returns>A file name of the form {<paramref name="ModelName"/>}-{<paramref name="ComponentName"/>}[-{<paramref name="Scenario"/>}][-{<paramref name="Filter"/>}][.{<paramref name="Ext"/>}].</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function ToOutputFilename(ByVal ModelName As String, _
-                                                ByVal ComponentName As String, _
-                                                Optional ByVal Filter As String = "", _
-                                                Optional ByVal ScenarioName As String = "", _
-                                                Optional ByVal Ext As String = ".csv") As String
+        Public Shared Function ToOutputFilename(ByVal strModelName As String, _
+                                                ByVal strComponentName As String, _
+                                                Optional ByVal strFilter As String = "", _
+                                                Optional ByVal strScenarioName As String = "", _
+                                                Optional ByVal strExt As String = ".csv") As String
 
             ' Sanity checks
-            Debug.Assert(Not String.IsNullOrEmpty(ModelName), "Model Name required")
-            Debug.Assert(Not String.IsNullOrEmpty(ComponentName), "Component Name required")
+            Debug.Assert(Not String.IsNullOrEmpty(strModelName), "Model Name required")
+            Debug.Assert(Not String.IsNullOrEmpty(strComponentName), "Component Name required")
 
-            Dim cPART_MAXSIZE As Integer = 10
-            Dim separator As String = "-"
+            Dim cSeparator As String = "-"
             Dim sb As New StringBuilder()
 
-            sb.Append("EwE6")
+            ' Add entire component as subdirectory
+            sb.Append(cFileUtils.ToValidFileName(strModelName, False))
+            sb.Append(cSeparator)
+            sb.Append(cFileUtils.ToValidFileName(strComponentName, False))
+            sb.Append(Path.DirectorySeparatorChar)
 
-            ' Add entire component name
-            sb.Append(separator)
-            sb.Append(ComponentName)
-
-            ' Add entire filter, if provided
-            If (Not String.IsNullOrEmpty(Filter)) Then
-                sb.Append(separator)
-                sb.Append(Filter)
+            ' Add entire scenario name as directory, if provided
+            If (Not String.IsNullOrWhiteSpace(strScenarioName)) Then
+                sb.Append(cFileUtils.ToValidFileName(strScenarioName, False))
+                sb.Append(Path.DirectorySeparatorChar)
             End If
 
-            ' Add 'cPART_MAXSIZE' model name characters
-            sb.Append(separator)
-            sb.Append(ModelName.Substring(0, Math.Min(ModelName.Length, cPART_MAXSIZE)))
-            ' Add 'cPART_MAXSIZE' scenario name characters, if provided
-            If (Not String.IsNullOrEmpty(ScenarioName)) Then
-                sb.Append(separator)
-                sb.Append(ScenarioName.Substring(0, Math.Min(ScenarioName.Length, cPART_MAXSIZE)))
+            ' Add entire filter as directory, if provided
+            If (String.IsNullOrWhiteSpace(strFilter)) Then
+                strFilter = "Output" & " " & Date.Now.ToShortDateString & " " & Date.Now.ToShortTimeString
             End If
+            sb.Append(cFileUtils.ToValidFileName(strFilter, False))
 
             ' Add extension, if provided
-            If (Not String.IsNullOrEmpty(Ext)) Then
+            If (Not String.IsNullOrWhiteSpace(strExt)) Then
                 ' Add a dot ('.') if the extension is provided without
-                If Not cStringUtils.BeginsWith(Ext, ".") Then
+                If Not cStringUtils.BeginsWith(strExt, ".") Then
                     sb.Append(".")
                 End If
-                sb.Append(Ext)
+                sb.Append(strExt)
             End If
 
-            Return cFileUtils.ToValidFileName(sb.ToString, False)
+            Return sb.ToString()
 
         End Function
 

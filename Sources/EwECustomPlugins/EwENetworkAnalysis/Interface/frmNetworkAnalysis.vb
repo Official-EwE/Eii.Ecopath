@@ -157,7 +157,7 @@ Public Class frmNetworkAnalysis
             If (Me.m_contentmanager Is Nothing) Then Return
             If (cmdDOC Is Nothing) Then Return
 
-            cmdDOC.Invoke(My.Resources.PROMPT_SAVE_DESTINATION)
+            cmdDOC.Invoke(Me.m_networkmanager.Core.OutputPath, My.Resources.PROMPT_SAVE_DESTINATION)
 
             If (cmdDOC.Result = DialogResult.OK) Then
                 Try

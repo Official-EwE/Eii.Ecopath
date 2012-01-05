@@ -2302,7 +2302,7 @@ Public Class cCore
         Get
             If String.IsNullOrEmpty(Me.m_strOutputPath) Then
                 If Me.DataSource IsNot Nothing Then
-                    Return Path.Combine(Me.DataSource.Directory, cFileUtils.ToValidFileName("EwEoutput " & Me.DataSource.FileName, False))
+                    Return Path.Combine(Me.DataSource.Directory, "EwE output")
                 End If
             End If
             Return Me.m_strOutputPath
@@ -2324,7 +2324,7 @@ Public Class cCore
     Public Function EcopathOutputFileName(ByVal strComponent As String, _
                                           Optional ByVal strFilter As String = "", _
                                           Optional ByVal strExt As String = "") As String
-        Return Me.OutputFileName("", strComponent, strFilter, strExt)
+        Return Me.OutputFileName("Ecopath", strComponent, strFilter, strExt)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2340,7 +2340,7 @@ Public Class cCore
                                          Optional ByVal strFilter As String = "", _
                                          Optional ByVal strExt As String = "") As String
         If Me.ActiveEcosimScenarioIndex = -1 Then Return ""
-        Return Me.OutputFileName(Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name, strComponent, strFilter, strExt)
+        Return Me.OutputFileName("Ecosim_" & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name, strComponent, strFilter, strExt)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2353,10 +2353,10 @@ Public Class cCore
     ''' <returns>A standardized output file.</returns>
     ''' -----------------------------------------------------------------------
     Public Function EcospaceOutputFileName(ByVal strComponent As String, _
-                                             Optional ByVal strFilter As String = "", _
-                                             Optional ByVal strExt As String = "") As String
+                                           Optional ByVal strFilter As String = "", _
+                                           Optional ByVal strExt As String = "") As String
         If Me.ActiveEcospaceScenarioIndex = -1 Then Return ""
-        Return Me.OutputFileName(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name, strComponent, strFilter, strExt)
+        Return Me.OutputFileName("Ecospace_" & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name, strComponent, strFilter, strExt)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2369,10 +2369,10 @@ Public Class cCore
     ''' <returns>A standardized output file.</returns>
     ''' -----------------------------------------------------------------------
     Public Function EcotracerOutputFileName(ByVal strComponent As String, _
-                                               Optional ByVal strFilter As String = "", _
-                                               Optional ByVal strExt As String = "") As String
+                                            Optional ByVal strFilter As String = "", _
+                                            Optional ByVal strExt As String = "") As String
         If Me.ActiveEcotracerScenarioIndex = -1 Then Return ""
-        Return Me.OutputFileName(Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name, strComponent, strFilter, strExt)
+        Return Me.OutputFileName("Ecotracer_" & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name, strComponent, strFilter, strExt)
     End Function
 
     ''' -----------------------------------------------------------------------

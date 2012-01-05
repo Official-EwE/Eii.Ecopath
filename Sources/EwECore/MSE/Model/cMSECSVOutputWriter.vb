@@ -21,7 +21,9 @@ Friend Class cMSECSVOutputWriter
     End Sub
 
     Public Function getOutputFileName(ByVal strDataType As String, ByVal strDataName As String) As String
-        Return Path.Combine(Me.DataDir, Me.m_core.EcosimOutputFileName(strDataType, strDataName, ".csv"))
+        Dim strOutputFileName As String = Path.Combine(Me.DataDir, Me.m_core.EcosimOutputFileName(strDataType, strDataName, ".csv"))
+        cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strOutputFileName), True)
+        Return strOutputFileName
     End Function
 
     Public ReadOnly Property DataDir() As String
