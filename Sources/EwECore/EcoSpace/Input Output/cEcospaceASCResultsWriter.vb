@@ -25,7 +25,7 @@ Public Class cEcospaceASCResultsWriter
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.getFileName("Biomass", igrp, "ASC", tsData.iTimeStep)
+            fn = Me.getFileName("Biomass", igrp, Me.getSubDirName(), tsData.iTimeStep)
             strm = New StreamWriter(fn, False)
 
             saveASC(strm, tsData, igrp)

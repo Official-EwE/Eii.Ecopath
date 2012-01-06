@@ -275,7 +275,7 @@ Namespace Ecospace.Basemap
             Debug.Assert(Me.m_uic IsNot Nothing)
 
             ' Set default file
-            Me.m_tbInput.Text = Path.Combine(Me.m_uic.Core.OutputPath, Me.m_uic.Core.EcospaceOutputFileName("layer"))
+            Me.m_tbInput.Text = Path.Combine(Me.m_uic.Core.OutputPath, Me.m_uic.Core.EcospaceOutputFileLocation("layer"))
 
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then

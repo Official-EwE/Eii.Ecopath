@@ -51,7 +51,6 @@ Namespace Ecospace
         Private m_uic As cUIContext = Nothing
         ''' <summary>Ecospace message handler to respond to.</summary>
         Private m_mhEcospace As cMessageHandler = Nothing
-        Private m_fpUseRel As cEwEFormatProvider = Nothing
 
 #End Region ' Private vars
 
@@ -89,21 +88,12 @@ Namespace Ecospace
                 Me.m_lbxAdapters.SelectedIndex = 0
             End If
 
-            ' Hook up checkbox
-            Me.m_fpUseRel = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseRelativeTime, ecospaceModelParams, EwEUtils.Core.eVarNameFlags.UseRelativeTime)
-
             ' Ooh!
             Me.CenterToParent()
 
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
-
-            ' Release proeprty
-            If (Me.m_fpUseRel IsNot Nothing) Then
-                Me.m_fpUseRel.Release()
-                Me.m_fpUseRel = Nothing
-            End If
 
             ' Release config screen
             Me.m_lbxAdapters.Items.Clear()

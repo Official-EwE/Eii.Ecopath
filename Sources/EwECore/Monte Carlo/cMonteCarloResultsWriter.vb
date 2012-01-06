@@ -57,14 +57,14 @@ Public Class cMonteCarloResultsWriter
 
     Private ReadOnly Property OuputFilename() As String
         Get
-            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileName("MonteCarlo", "IterationData", ".csv"))
+            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileLocation("IterationData", "MonteCarlo", ".csv"))
         End Get
     End Property
 
 
     Private ReadOnly Property VulOuputFilename() As String
         Get
-            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileName("MonteCarlo", "Vulnerability", ".csv"))
+            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileLocation("Vulnerability", "MonteCarlo", ".csv"))
         End Get
     End Property
 

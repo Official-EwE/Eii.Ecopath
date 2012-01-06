@@ -150,6 +150,7 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimRecruitmentPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimSubTimestepsPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceResultWriterPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceLifespanPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceCalcCostOfSailingPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPostPlugin.vb" />

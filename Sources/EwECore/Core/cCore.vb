@@ -2314,65 +2314,81 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get an output file name for Ecopath.
+    ''' Get an output file location for Ecopath.
     ''' </summary>
-    ''' <param name="strComponent">The component name to create the output file for.</param>
-    ''' <param name="strFilter">An optional filter to create the output file for.</param>
+    ''' <param name="strComponent">The component name to create the output location for.</param>
+    ''' <param name="strFilter">An optional filter to create the output location for.</param>
     ''' <param name="strExt">Optional file extension to use.</param>
-    ''' <returns>A standardized output file.</returns>
+    ''' <param name="bIncludeTime">Flag indicating whether a time step should be added to the 
+    ''' scenario part of the file location.</param>
+    ''' <returns>A standardized output file location.</returns>
+    ''' <remarks>For defaults of the various parameters refer to <see cref="cFileUtils.ToOutputFilename"/></remarks>
     ''' -----------------------------------------------------------------------
-    Public Function EcopathOutputFileName(ByVal strComponent As String, _
-                                          Optional ByVal strFilter As String = "", _
-                                          Optional ByVal strExt As String = "") As String
-        Return Me.OutputFileName("Ecopath", strComponent, strFilter, strExt)
+    Public Function EcopathOutputFileLocation(Optional ByVal strComponent As String = "", _
+                                              Optional ByVal strFilter As String = "", _
+                                              Optional ByVal strExt As String = "", _
+                                              Optional ByVal bIncludeTime As Boolean = False) As String
+        Return Me.OutputFileName(strComponent, "Ecopath", bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get an output file name for Ecosim.
+    ''' Get an output file location for Ecosim.
     ''' </summary>
-    ''' <param name="strComponent">The component name to create the output file for.</param>
-    ''' <param name="strFilter">An optional filter to create the output file for.</param>
+    ''' <param name="strComponent">The component name to create the output location for.</param>
+    ''' <param name="strFilter">An optional filter to create the output location for.</param>
     ''' <param name="strExt">Optional file extension to use.</param>
-    ''' <returns>A standardized output file.</returns>
+    ''' <param name="bIncludeTime">Flag indicating whether a time step should be added to the 
+    ''' scenario part of the file location.</param>
+    ''' <returns>A standardized output file location.</returns>
+    ''' <remarks>For defaults of the various parameters refer to <see cref="cFileUtils.ToOutputFilename"/></remarks>
     ''' -----------------------------------------------------------------------
-    Public Function EcosimOutputFileName(ByVal strComponent As String, _
-                                         Optional ByVal strFilter As String = "", _
-                                         Optional ByVal strExt As String = "") As String
+    Public Function EcosimOutputFileLocation(Optional ByVal strComponent As String = "", _
+                                             Optional ByVal strFilter As String = "", _
+                                             Optional ByVal strExt As String = "", _
+                                             Optional ByVal bIncludeTime As Boolean = False) As String
         If Me.ActiveEcosimScenarioIndex = -1 Then Return ""
-        Return Me.OutputFileName("Ecosim_" & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name, strComponent, strFilter, strExt)
+        Return Me.OutputFileName(strComponent, "Ecosim_" & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get an output file name for Ecospace.
+    ''' Get an output file location for Ecospace.
     ''' </summary>
-    ''' <param name="strComponent">The component name to create the output file for.</param>
-    ''' <param name="strFilter">An optional filter to create the output file for.</param>
+    ''' <param name="strComponent">The component name to create the output location for.</param>
+    ''' <param name="strFilter">An optional filter to create the output location for.</param>
     ''' <param name="strExt">Optional file extension to use.</param>
-    ''' <returns>A standardized output file.</returns>
+    ''' <param name="bIncludeTime">Flag indicating whether a time step should be added to the 
+    ''' scenario part of the file location.</param>
+    ''' <returns>A standardized output file location.</returns>
+    ''' <remarks>For defaults of the various parameters refer to <see cref="cFileUtils.ToOutputFilename"/></remarks>
     ''' -----------------------------------------------------------------------
-    Public Function EcospaceOutputFileName(ByVal strComponent As String, _
-                                           Optional ByVal strFilter As String = "", _
-                                           Optional ByVal strExt As String = "") As String
+    Public Function EcospaceOutputFileLocation(Optional ByVal strComponent As String = "", _
+                                               Optional ByVal strFilter As String = "", _
+                                               Optional ByVal strExt As String = "", _
+                                               Optional ByVal bIncludeTime As Boolean = False) As String
         If Me.ActiveEcospaceScenarioIndex = -1 Then Return ""
-        Return Me.OutputFileName("Ecospace_" & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name, strComponent, strFilter, strExt)
+        Return Me.OutputFileName(strComponent, "Ecospace_" & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get an output file name for Ecotracer.
+    ''' Get an output file location for Ecotracer.
     ''' </summary>
-    ''' <param name="strComponent">The component name to create the output file for.</param>
-    ''' <param name="strFilter">An optional filter to create the output file for.</param>
+    ''' <param name="strComponent">The component name to create the output location for.</param>
+    ''' <param name="strFilter">An optional filter to create the output location for.</param>
     ''' <param name="strExt">Optional file extension to use.</param>
-    ''' <returns>A standardized output file.</returns>
+    ''' <param name="bIncludeTime">Flag indicating whether a time step should be added to the 
+    ''' scenario part of the file location.</param>
+    ''' <returns>A standardized output file location.</returns>
+    ''' <remarks>For defaults of the various parameters refer to <see cref="cFileUtils.ToOutputFilename"/></remarks>
     ''' -----------------------------------------------------------------------
-    Public Function EcotracerOutputFileName(ByVal strComponent As String, _
-                                            Optional ByVal strFilter As String = "", _
-                                            Optional ByVal strExt As String = "") As String
+    Public Function EcotracerOutputFileLocation(ByVal strComponent As String, _
+                                                Optional ByVal strFilter As String = "", _
+                                                Optional ByVal strExt As String = "", _
+                                                Optional ByVal bIncludeTime As Boolean = False) As String
         If Me.ActiveEcotracerScenarioIndex = -1 Then Return ""
-        Return Me.OutputFileName("Ecotracer_" & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name, strComponent, strFilter, strExt)
+        Return Me.OutputFileName(strComponent, "Ecotracer_" & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2385,13 +2401,18 @@ Public Class cCore
     ''' <param name="strExt">Optional file extension to use.</param>
     ''' <returns>A standardized output file.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function OutputFileName(ByVal strScenario As String, _
-                                    ByVal strComponent As String, _
-                                    Optional ByVal strFilter As String = "", _
-                                    Optional ByVal strExt As String = "") As String
+    Private Function OutputFileName(ByVal strComponent As String, _
+                                    ByVal strScenario As String, _
+                                    ByVal bIncludeTime As Boolean, _
+                                    ByVal strExt As String, _
+                                    ByVal strFilter As String) As String
 
         If (Me.DataSource Is Nothing) Then Return ""
-        Return cFileUtils.ToOutputFilename(Me.DataSource.FileName, strComponent, strFilter, strScenario, strExt)
+
+        If bIncludeTime Then
+            strScenario = strScenario & " " & Date.Now.ToString("y-MM-dd HH-mm-ss")
+        End If
+        Return cFileUtils.ToOutputFilename(Me.DataSource.FileName, strComponent, strScenario, strExt, strFilter)
 
     End Function
 

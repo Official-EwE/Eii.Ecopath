@@ -289,32 +289,33 @@ Namespace Utilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Creates a standard file name for EwE output files.
+        ''' Creates a standard file path + file name for EwE output files.
         ''' </summary>
         ''' <param name="strModelName">Name of the model for which the output file is created.</param>
-        ''' <param name="strComponentName">Name of the component for which the output file is created.</param>
-        ''' <param name="strFilter">Optional filter to specify an optional subcomponent for which the file is created.</param>
+        ''' <param name="strComponentName">Optional name of the component for which the output file is created. If left empty, this value is assumed as {Output}.</param>
         ''' <param name="strScenarioName">Optional scenario name for which the file is created.</param>
-        ''' <param name="strExt">Optional extension to add.</param>
-        ''' <returns>A file name of the form {<paramref name="ModelName"/>}-{<paramref name="ComponentName"/>}[-{<paramref name="Scenario"/>}][-{<paramref name="Filter"/>}][.{<paramref name="Ext"/>}].</returns>
+        ''' <param name="strExt">Extension to use. If left emtpy, ".csv" is assumed.</param>
+        ''' <param name="strFilter">Optional filter to use.</param>
+        ''' <returns>A file name of the form {<paramref name="strModelName"/>}[-{<paramref name="strFilter"/>}]\[{<paramref name="strScenarioName"/>}\][{<paramref name="strComponentName"/>}][.{<paramref name="Ext"/>}].</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function ToOutputFilename(ByVal strModelName As String, _
                                                 ByVal strComponentName As String, _
-                                                Optional ByVal strFilter As String = "", _
-                                                Optional ByVal strScenarioName As String = "", _
-                                                Optional ByVal strExt As String = ".csv") As String
+                                                ByVal strScenarioName As String, _
+                                                ByVal strExt As String, _
+                                                Optional ByVal strFilter As String = "") As String
 
             ' Sanity checks
             Debug.Assert(Not String.IsNullOrEmpty(strModelName), "Model Name required")
-            Debug.Assert(Not String.IsNullOrEmpty(strComponentName), "Component Name required")
 
             Dim cSeparator As String = "-"
             Dim sb As New StringBuilder()
 
-            ' Add entire component as subdirectory
+            ' Add Model name and optional filter as subdirectory
             sb.Append(cFileUtils.ToValidFileName(strModelName, False))
-            sb.Append(cSeparator)
-            sb.Append(cFileUtils.ToValidFileName(strComponentName, False))
+            If (Not String.IsNullOrWhiteSpace(strFilter)) Then
+                sb.Append(cSeparator)
+                sb.Append(cFileUtils.ToValidFileName(strFilter, False))
+            End If
             sb.Append(Path.DirectorySeparatorChar)
 
             ' Add entire scenario name as directory, if provided
@@ -324,19 +325,20 @@ Namespace Utilities
             End If
 
             ' Add entire filter as directory, if provided
-            If (String.IsNullOrWhiteSpace(strFilter)) Then
-                strFilter = "Output" & " " & Date.Now.ToShortDateString & " " & Date.Now.ToShortTimeString
+            If (String.IsNullOrWhiteSpace(strComponentName)) Then
+                strComponentName = "Output"
             End If
-            sb.Append(cFileUtils.ToValidFileName(strFilter, False))
+            sb.Append(cFileUtils.ToValidFileName(strComponentName, False))
 
-            ' Add extension, if provided
-            If (Not String.IsNullOrWhiteSpace(strExt)) Then
-                ' Add a dot ('.') if the extension is provided without
-                If Not cStringUtils.BeginsWith(strExt, ".") Then
-                    sb.Append(".")
-                End If
-                sb.Append(strExt)
+            If (String.IsNullOrWhiteSpace(strExt)) Then
+                strExt = ".csv"
             End If
+
+            ' Add a dot ('.') if the extension is provided without
+            If Not cStringUtils.BeginsWith(strExt, ".") Then
+                sb.Append(".")
+            End If
+            sb.Append(strExt)
 
             Return sb.ToString()
 

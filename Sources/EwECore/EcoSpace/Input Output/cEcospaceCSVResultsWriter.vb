@@ -25,7 +25,7 @@ Public Class cEcospaceCSVResultsWriter
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.getFileName("Biomass", igrp, "CSV")
+            fn = Me.getFileName("Biomass", igrp, Me.getSubDirName())
             strm = New StreamWriter(fn, True)
 
             saveCSV(strm, tsData, igrp)

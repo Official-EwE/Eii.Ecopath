@@ -122,13 +122,13 @@ Namespace Controls
             MyBase.OnPaint(e)
             Dim br As Brush = Nothing
 
-            If String.IsNullOrEmpty(Me.m_strPath) Then Return
+            If (String.IsNullOrWhiteSpace(Me.m_strPath)) Then Return
 
-            If String.IsNullOrEmpty(Me.m_strLabel) Then
+            If (String.IsNullOrWhiteSpace(Me.m_strLabel)) Then
                 Me.RecalculateLabelTextAndPlacement()
             End If
 
-            If Me.RightToLeft = Windows.Forms.RightToLeft.Yes Then
+            If (Me.RightToLeft = Windows.Forms.RightToLeft.Yes) Then
                 Me.m_sfmt.Alignment = StringAlignment.Near
             Else
                 Me.m_sfmt.Alignment = StringAlignment.Far
@@ -205,8 +205,8 @@ Namespace Controls
             ' ToDo: enable for right-to-left reading order
 
             For Each tsi As ToolStripItem In Me.Items
-                If Not tsi.IsOnOverflow And tsi.Available Then
-                    If tsi.Alignment = ToolStripItemAlignment.Left Then
+                If (Not tsi.IsOnOverflow And tsi.Available) Then
+                    If (tsi.Alignment = ToolStripItemAlignment.Left) Then
                         iMin = Math.Max(tsi.Bounds.Right, iMin)
                     Else
                         iMax = Math.Min(tsi.Bounds.Left, iMax)
@@ -228,7 +228,7 @@ Namespace Controls
                 '   These chars are recognized and handled well by the String class, but 
                 '   Graphics.DrawString may still render such chars and characters beyond it.
                 For Each c As Char In strTemp
-                    If c = Nothing Then
+                    If (c = Nothing) Then
                         Exit For
                     End If
                     sbTemp.Append(c)
@@ -255,18 +255,18 @@ Namespace Controls
                 Return Me.m_bLabelHover
             End Get
             Set(ByVal value As Boolean)
-
+                ' Optimization
                 If (value = Me.m_bLabelHover) Then Return
-
+                ' Update flag
                 Me.m_bLabelHover = value
-
+                ' Respond with cursor feedback
                 If (Me.m_bLabelHover) Then
                     Me.Cursor = Cursors.Hand
                 Else
                     Me.Cursor = Cursors.Default
                 End If
+                ' Render
                 Me.Invalidate()
-
             End Set
         End Property
 

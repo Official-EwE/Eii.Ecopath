@@ -503,20 +503,14 @@
     <Compile Include="Ecospace\Input\dlgEditBasemap.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\EcospaceParameters.Designer.vb">
-      <DependentUpon>EcospaceParameters.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\frmEcospaceParameters.Designer.vb">
+      <DependentUpon>frmEcospaceParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\EcospaceParameters.vb">
+    <Compile Include="Ecospace\Input\frmEcospaceParameters.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridHabitatPreference.vb">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Input\BasemapFromGIS.Designer.vb">
-      <DependentUpon>BasemapFromGIS.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\BasemapFromGIS.vb">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridDefineHabitats.vb">
       <SubType>Component</SubType>
@@ -818,10 +812,6 @@
     <EmbeddedResource Include="Ecosim\Output\SRplot.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SRplot.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\BasemapFromGIS.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>BasemapFromGIS.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgDefineHabitats.resx">
       <SubType>Designer</SubType>
@@ -1760,9 +1750,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmShowAllFits.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\EcospaceParameters.resx">
+    <EmbeddedResource Include="Ecospace\Input\frmEcospaceParameters.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>EcospaceParameters.vb</DependentUpon>
+      <DependentUpon>frmEcospaceParameters.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\EwELogo.gif" />
     <EmbeddedResource Include="Resources\EwELogo_caption.jpg" />

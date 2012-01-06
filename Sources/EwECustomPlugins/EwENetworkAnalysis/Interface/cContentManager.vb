@@ -143,12 +143,13 @@ Public MustInherit Class cContentManager
     ''' Return the default file name - without extension - for saving the data 
     ''' managed here to a file of any type.
     ''' </summary>
+    ''' <param name="strComponent">Network Analysis component to get the file name for.</param>
     ''' <remarks>
     ''' Default implementation does not return a file name.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Filename(ByVal strFilter As String) As String
-        Return Me.UIContext.Core.EcopathOutputFileName("NA", strFilter)
+    Public Overridable Function Filename(ByVal strComponent As String) As String
+        Return Me.UIContext.Core.EcopathOutputFileLocation(strComponent, My.Resources.CAPTION)
     End Function
 
     ''' -----------------------------------------------------------------------

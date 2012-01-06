@@ -636,7 +636,7 @@ Namespace Ecosim
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(Me.Core.EcosimOutputFileName("all_fits"), SharedResources.FILEFILTER_IMAGE)
+            cmdFS.Invoke(Me.Core.EcosimOutputFileLocation("all_fits"), SharedResources.FILEFILTER_IMAGE)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 
                 Select Case cmdFS.FilterIndex

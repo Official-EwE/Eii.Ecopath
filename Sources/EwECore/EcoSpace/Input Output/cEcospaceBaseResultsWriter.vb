@@ -2,6 +2,7 @@
 #Region "Import"
 
 Imports System.IO
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -63,15 +64,9 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
         m_TimeStampDirName = System.IO.Path.Combine(Me.m_core.OutputPath, "Ecospace " & Me.getSubDirName & " " & Me.getTimeStamp)
 
-        If Directory.Exists(Me.TimeStampDirName) Then
-            Return
+        If (Not cFileUtils.IsDirectoryAvailable(Me.TimeStampDirName, True)) Then
+            Debug.Assert(False, Me.ToString & ".CreateTimeStampedDir() cannot create directory")
         End If
-
-        Try
-            Directory.CreateDirectory(TimeStampDirName)
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".CreateTimeStampedDir() Exception: " & ex.Message)
-        End Try
 
     End Sub
 
@@ -80,7 +75,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function getSubDirName() As String
+    Protected Function getSubDirName() As String
 
         Select Case Me.OuputType
             Case eSpaceOutputType.NA
