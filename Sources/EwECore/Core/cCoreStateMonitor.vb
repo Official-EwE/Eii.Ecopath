@@ -357,6 +357,13 @@ Public Class cCoreStateMonitor
     Friend Sub UpdateExecutionState(ByVal cc As eCoreComponentType, _
                                     Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
 
+        ' -- Experimental: hijack the core plugin manager to invalidate scenarios
+        Dim pm As EwEPlugin.cPluginManager = Me.m_core.PluginManager
+        Dim bHasEcopathRan As Boolean = Me.HasEcopathRan
+        Dim bHasEcosimRan As Boolean = Me.HasEcosimRan
+        Dim bHasEcospaceRan As Boolean = Me.HasEcospaceRan
+        ' -- X
+
         Select Case cc
             Case eCoreComponentType.Core, _
                  eCoreComponentType.DataSource, _
@@ -384,6 +391,13 @@ Public Class cCoreStateMonitor
                 Me.SetEcotracerLoaded(Me.HasEcotracerLoaded(), tsSendUpdate, False)
 
         End Select
+
+        ' -- Experimental: hijack the core plugin manager to invalidate scenarios
+        If (tsSendUpdate = TriState.False) Or (pm Is Nothing) Then Return
+        If (bHasEcospaceRan <> Me.HasEcospaceRan) Then pm.EcospaceRunInvalidated()
+        If (bHasEcosimRan <> Me.HasEcosimRan) Then pm.EcosimRunInvalidated()
+        If (bHasEcopathRan <> Me.HasEcopathRan) Then pm.EcopathRunInvalidated()
+        ' -- X
 
     End Sub
 

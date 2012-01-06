@@ -131,6 +131,7 @@
     <Compile Include="Plugin templates\Data exchange\IDataSearchResults.vb" />
     <Compile Include="Plugin templates\Data exchange\IPluginData.vb" />
     <Compile Include="Plugin templates\Database\IDatabasePlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathRunInvalidatedPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathRunCompletedPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathClosedPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathRunCompletedPostPlugin.vb" />
@@ -150,6 +151,8 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimRecruitmentPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimSubTimestepsPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimRunInvalidatedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceRunInvalidatedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceResultWriterPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceLifespanPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceCalcCostOfSailingPlugin.vb" />

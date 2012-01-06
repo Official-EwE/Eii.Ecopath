@@ -934,6 +934,19 @@ Public Class cPluginManager
 
     End Function
 
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the <see cref="IEcopathRunInvalidatedPlugin.EcopathRunInvalidated"/> 
+    ''' plug-in point on any available and responsive <see cref="IEcopathRunInvalidatedPlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Function EcopathRunInvalidated() As Boolean
+
+        ' Invoke IEcopathRunInvalidatedPlugin.EcopathRunInvalidated()
+        Return Me.TryInvokeMethod(GetType(IEcopathRunInvalidatedPlugin), "EcopathRunInvalidated")
+
+    End Function
+
 #End Region ' Ecopath
 
 #Region " Ecosim "
@@ -980,7 +993,7 @@ Public Class cPluginManager
     ''' <see cref="IEcosimLifespanPlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Sub CloseEcosimScenario()
+    Public Sub EcosimCloseScenario()
 
         Me.TryInvokeMethod(GetType(IEcosimLifespanPlugin), "CloseEcosimScenario")
 
@@ -1002,7 +1015,6 @@ Public Class cPluginManager
 
     End Function
 
-
     Public Function EcosimInitialized(ByVal EcosimDatastructures As Object) As Boolean
 
         ' Invoke IEcosimInitializedPlugin.EcosimInitialized(datasource)
@@ -1011,7 +1023,6 @@ Public Class cPluginManager
                                   New Object() {EcosimDatastructures})
 
     End Function
-
 
     Public Function EcosimModifyTimeseries(ByVal TimeSeriesDataStructures As Object) As Boolean
 
@@ -1049,7 +1060,6 @@ Public Class cPluginManager
 
     End Function
 
-
     Public Function EcosimSubTimestepBegin(ByRef BiomassAtTimestep() As Single, _
                                            ByVal TimeInYears As Single, _
                                            ByVal DeltaT As Single, _
@@ -1080,27 +1090,6 @@ Public Class cPluginManager
 
     End Function
 
-    'Public Function EcosimEndTimeStepStats(ByVal EcosimIndicies As Object) As Boolean
-
-    '    Dim collPlugins As ICollection(Of cPluginContext) = Me.GetPlugins(GetType(IEcosimEndTimestepStatsPlugin))
-    '    Try
-
-    '        ' give every plugin that supports this interface a chance at running
-    '        For Each ipc As cPluginContext In collPlugins
-    '            Try 
-    '                DirectCast(ipc.Plugin, IEcosimEndTimestepStatsPlugin).EcosimEndTimestepStatsPlugin(EcosimIndicies)
-    '            Catch ex As Exception
-    '                Debug.Assert(False, ipc.Plugin.Name & " EcosimEndTimeStatsStep() Error: " & ex.Message)
-    '                Me.RaiseException(ipc.Assembly, ipc.Plugin, ex)
-    '            End Try
-    '        Next
-
-    '    Catch ex As Exception
-    '        Return False
-    '    End Try
-
-    'End Function
-
     Public Function EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, _
                                       ByVal EcosimDatastructures As Object, _
                                       ByVal iTimeStep As Integer, _
@@ -1127,7 +1116,6 @@ Public Class cPluginManager
 
     End Function
 
-
     Public Function EcosimRunCompleted(ByVal EcosimDatastructures As Object) As Boolean
 
         ' Invoke IEcosimRunCompletedPlugin.EcosimRunCompleted(EcosimDatastructures)
@@ -1140,6 +1128,19 @@ Public Class cPluginManager
         Return bSucces And Me.TryInvokeMethod(GetType(IEcosimRunCompletedPostPlugin), _
                           "EcosimRunCompletedPost", _
                           New Object() {EcosimDatastructures})
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the <see cref="IEcosimRunInvalidatedPlugin.EcosimRunInvalidated"/> 
+    ''' plug-in point on any available and responsive <see cref="IEcosimRunInvalidatedPlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Function EcosimRunInvalidated() As Boolean
+
+        ' Invoke IEcosimRunInvalidatedPlugin.EcosimRunInvalidated()
+        Return Me.TryInvokeMethod(GetType(IEcosimRunInvalidatedPlugin), "EcosimRunInvalidated")
 
     End Function
 
@@ -1214,7 +1215,7 @@ Public Class cPluginManager
     ''' <see cref="IEcospaceLifespanPlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Sub CloseEcospaceScenario()
+    Public Sub EcospaceCloseScenario()
 
         Me.TryInvokeMethod(GetType(IEcospaceLifespanPlugin), "CloseEcospaceScenario")
 
@@ -1267,6 +1268,19 @@ Public Class cPluginManager
                                   "CalculateCostOfSailing", _
                                   New Object() {EcospaceDataStructures, Depth, Port, Sail}, _
                                   eInvocationType.Exclusive)
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the <see cref="IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated"/> 
+    ''' plug-in point on any available and responsive <see cref="IEcospaceRunInvalidatedPlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Function EcospaceRunInvalidated() As Boolean
+
+        ' Invoke IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated()
+        Return Me.TryInvokeMethod(GetType(IEcospaceRunInvalidatedPlugin), "EcospaceRunInvalidated")
 
     End Function
 
@@ -1333,7 +1347,7 @@ Public Class cPluginManager
     ''' <see cref="IEcotracerLifespanPlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Sub CloseEcotracerScenario()
+    Public Sub EcotracerCloseScenario()
 
         Me.TryInvokeMethod(GetType(IEcotracerLifespanPlugin), "CloseEcotracerScenario")
 

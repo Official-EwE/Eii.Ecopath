@@ -4325,7 +4325,6 @@ Public Class cCore
 
 #End Region ' Stats
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Return a <see cref="cStanzaGroup">stanza group</see> from the core.
@@ -6237,7 +6236,8 @@ Public Class cCore
 
         ' Invoke plugin point to allow plug-ins to clean up now Ecosim has gone
         If (Me.PluginManager IsNot Nothing) Then
-            Me.PluginManager.CloseEcosimScenario()
+            Me.PluginManager.EcosimRunInvalidated()
+            Me.PluginManager.EcosimCloseScenario()
         End If
 
     End Sub
@@ -8795,7 +8795,8 @@ Public Class cCore
 
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
-                Me.PluginManager.CloseEcospaceScenario()
+                Me.PluginManager.EcospaceRunInvalidated()
+                Me.PluginManager.EcospaceCloseScenario()
             End If
 
             'delegates
@@ -11032,7 +11033,7 @@ Public Class cCore
 
         ' Invoke plugin point
         If (Me.PluginManager IsNot Nothing) Then
-            Me.PluginManager.CloseEcotracerScenario()
+            Me.PluginManager.EcotracerCloseScenario()
         End If
 
     End Sub
