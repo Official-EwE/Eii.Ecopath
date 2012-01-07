@@ -143,11 +143,13 @@ Namespace Ecopath.Input
                         'Complete row with dummy cells
                         For i As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         iStanzaPrev = aiStanza(source.Index)
+                        iRow = Me.AddRow()
                     Else
                         hgcStanza = dtStanzaCells(sg)
+                        iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
+
                     'Display group info
-                    iRow = Me.AddRow()
                     hgcStanza.AddChildRow(iRow)
                     For iCol As Integer = 1 To Core.nDetritusGroups
 

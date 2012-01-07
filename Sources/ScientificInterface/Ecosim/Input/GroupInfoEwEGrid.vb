@@ -130,11 +130,12 @@ Namespace Ecosim
                         Me(iRow, eColumnTypes.TempSpreadRight) = New EwERowHeaderCell()
 
                         iStanzaGroupIndexPrev = iStanzaGroup(source.Index)
+                        iRow = Me.AddRow
                     Else
                         hgcStanza = dtStanzaCells(sg)
+                        iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
                     'Display group info
-                    iRow = Me.AddRow
                     hgcStanza.AddChildRow(iRow)
                     FillInRows(iRow, source, True)
                 End If

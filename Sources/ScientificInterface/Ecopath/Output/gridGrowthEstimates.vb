@@ -82,11 +82,12 @@ Namespace Ecopath.Output
                         ' Complete row with dummy cells
                         For i As Integer = 2 To 9 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaGroupIndexPrev = intStanzaGroupIndex(source.Index)
+                        iRow = Me.AddRow
                     Else
                         hgcStanza = dtStanzaCells(sg)
+                        iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
                     'Display group info
-                    iRow = Me.AddRow
                     hgcStanza.AddChildRow(iRow)
                     FillInRows(iRow, source, True)
                 End If

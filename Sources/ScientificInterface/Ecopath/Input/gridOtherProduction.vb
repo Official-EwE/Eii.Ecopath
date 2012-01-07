@@ -93,11 +93,13 @@ Namespace Ecopath.Input
                         'Complete row with dummy cells
                         For i As Integer = 2 To 6 : Me(iRow, i) = New EwERowHeaderCell() : Next
                         intStanzaPrev = intStanza(source.Index)
+                        iRow = Me.AddRow
                     Else
                         hgcStanza = dtStanzaCells(sg)
+                        iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
+
                     'Display group info
-                    iRow = Me.AddRow
                     hgcStanza.AddChildRow(iRow)
                     Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
