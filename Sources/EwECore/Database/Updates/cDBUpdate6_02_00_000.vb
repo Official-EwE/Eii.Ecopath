@@ -55,20 +55,16 @@ Friend Class cDBUpdate6_02_00_000
 
     Private Function AddStanzaFields(ByVal db As cEwEDatabase) As Boolean
 
-        Dim bSucces As Boolean = True
-        bSucces = bSucces And db.Execute("ALTER TABLE Stanza ADD COLUMN EggAtSpawn BYTE")
-        Me.LogProgress("AddStanzaFields", bSucces)
-        Return bSucces
+        db.Execute("ALTER TABLE Stanza ADD COLUMN EggAtSpawn BYTE")
+        Return True
 
     End Function
 
     Private Function AddHabitatPreference(ByVal db As cEwEDatabase) As Boolean
 
-        Dim bSucces As Boolean = True
-        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioGroupHabitat ADD COLUMN Preference SINGLE")
-        bSucces = bSucces And db.Execute("UPDATE EcospaceScenarioGroupHabitat SET Preference=1 WHERE HabitatID > 0")
-        Me.LogProgress("ChangAddHabitatPreferenceePrefhab", bSucces)
-        Return bSucces
+        db.Execute("ALTER TABLE EcospaceScenarioGroupHabitat ADD COLUMN Preference SINGLE")
+        db.Execute("UPDATE EcospaceScenarioGroupHabitat SET Preference=1 WHERE HabitatID > 0")
+        Return True
 
     End Function
 
